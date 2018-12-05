@@ -266,7 +266,7 @@ public class BasicEstateService {
         queryBasicEstateNetwork.setEstateId(estate.getId());
         queryBasicEstateParking.setEstateId(estate.getId());
         queryBasicEstateSupply.setEstateId(estate.getId());
-        queryBasicEstateTagging.setEstateId(estate.getId());
+        queryBasicEstateTagging.setApplyId(applyId);
         querySysAttachmentDto.setTableId(estate.getId());
 
 
@@ -761,7 +761,7 @@ public class BasicEstateService {
                         for (CaseEstateTagging caseEstateTagging : caseEstateTaggings) {
                             BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
                             BeanCopyHelp.copyPropertiesIgnoreNull(caseEstateTagging, basicEstateTagging);
-                            basicEstateTagging.setEstateId(basicEstate.getId());
+                            basicEstateTagging.setApplyId(0);
                             basicEstateTagging.setId(null);
                             basicEstateTagging.setGmtCreated(null);
                             basicEstateTagging.setGmtModified(null);

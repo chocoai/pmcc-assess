@@ -43,8 +43,14 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">楼盘名称<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" data-rule-maxlength="100" placeholder="楼盘名称" required="required"
-                           name="name" class="form-control" value="${basicEstate.name}">
+                    <div class="input-group">
+                        <input type="text" data-rule-maxlength="100" placeholder="楼盘名称" required="required"
+                               name="name" class="form-control" value="${basicEstate.name}">
+                        <span class="input-group-btn">
+                            <div onclick="estateMapMarker();" class="btn btn-info"><i
+                                    class="fa fa-map-marker"></i> 标注</div>
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="x-valid">
@@ -136,7 +142,6 @@
         </div>
 
 
-
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">楼栋数</label>
@@ -205,17 +210,6 @@
                 <div class="col-sm-11">
                         <textarea class="form-control" name="description"
                                   placeholder="楼盘概况">${basicEstate.description}</textarea>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">地图标注</label>
-                <div class="col-sm-5">
-                    <div class="btn btn-success"
-                         onclick="window.open('${pageContext.request.contextPath}/basicEstateTagging/index?estateId='+$('#basicEstateFrm').find('[name=id]').val()+'&estateName='+$('#basicEstateFrm').find('[name=name]').val()+'')">
-                        地图标注
-                    </div>
                 </div>
             </div>
         </div>
@@ -481,3 +475,24 @@
 
 <%@include file="/views/basic/modelView/estate/sonEstateView.jsp" %>
 <script src="${pageContext.request.contextPath}/js/basic/estate/estate.common.js"></script>
+<script type="text/javascript">
+    function estateMapMarker() {
+        layer.open({
+            type: 2,
+            title: '楼盘标注',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: '${pageContext.request.contextPath}/map/mapMarkerEstate?estateName=' + estateCommon.estateForm.find('[name=name]').val() + '&type=estate&onclickFunction=addEstateTagging',
+            success: function () {
+
+            }
+        });
+    }
+
+    //添加楼盘标注
+    function addEstateTagging(lng, lat) {
+
+    }
+</script>

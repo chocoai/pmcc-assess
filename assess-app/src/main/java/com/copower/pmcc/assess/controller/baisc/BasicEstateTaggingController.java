@@ -3,13 +3,11 @@ package com.copower.pmcc.assess.controller.baisc;
 import com.copower.pmcc.assess.dal.basic.entity.BasicEstateTagging;
 import com.copower.pmcc.assess.service.basic.BasicEstateTaggingService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -48,21 +46,10 @@ public class BasicEstateTaggingController {
     }
 
     @ResponseBody
-    @GetMapping(value = "/getBootstrapTableVo", name = "获取标注信息列表")
-    public BootstrapTableVo getBootstrapTableVo(Integer estateId) {
+    @RequestMapping(value = "/addBasicEstateTagging", name = "新增标注", method = {RequestMethod.POST})
+    public HttpResult addBasicEstateTagging(BasicEstateTagging basicEstateTagging) {
         try {
-            return basicEstateTaggingService.getBootstrapTableVo(estateId);
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return null;
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/saveAndUpdateBasicEstateTagging", name = "新增或者修改", method = {RequestMethod.POST})
-    public HttpResult saveAndUpdateBasicEstateTagging(BasicEstateTagging basicEstateTagging) {
-        try {
-            basicEstateTaggingService.saveBasicEstateTagging(basicEstateTagging);
+            basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);

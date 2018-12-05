@@ -1226,27 +1226,6 @@ public class PublicBasicService {
         return basicApply;
     }
 
-    /**
-     * 处理地图标注
-     *
-     * @param basicEstate
-     * @throws Exception
-     */
-    private void saveBasicBasicEstateTagging(BasicEstate basicEstate) throws Exception {
-        BasicEstateTagging query = new BasicEstateTagging();
-        query.setEstateId(0);
-        query.setCreator(commonService.thisUserAccount());
-        List<BasicEstateTagging> taggingList = basicEstateTaggingService.basicEstateTaggingList(query);
-        if (!ObjectUtils.isEmpty(taggingList)) {
-            BasicEstateTagging basicEstateTagging = taggingList.get(0);
-            basicEstateTagging.setEstateId(basicEstate.getId());
-            int id = basicEstateTagging.getId();
-            basicEstateTagging.setId(null);
-            basicEstateTaggingService.saveBasicEstateTagging(basicEstateTagging);
-            basicEstateTaggingService.deleteBasicEstateTagging(id);
-        }
-    }
-
     public BasicEstateVo getBasicEstateByAppId(Integer appId) throws Exception {
         BasicEstate basicEstate = new BasicEstate();
         basicEstate.setApplyId(appId);

@@ -301,6 +301,20 @@ basicCommon.getFormData = function () {
     return item;
 };
 
+//地图标注
+basicCommon.mapMarker = function () {
+    layer.open({
+        type: 2,
+        title: '标注',
+        shadeClose: true,
+        shade: false,
+        maxmin: true, //开启最大化最小化按钮
+        area: ['893px', '600px'],
+        content: '//fly.layui.com/'
+    });
+}
+
+
 
 
 
