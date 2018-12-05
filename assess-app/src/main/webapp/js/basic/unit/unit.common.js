@@ -97,7 +97,7 @@
         }
         layer.open({
             type: 2,
-            title: '楼盘标注',
+            title: '单元标注',
             shadeClose: true,
             shade: true,
             maxmin: true, //开启最大化最小化按钮

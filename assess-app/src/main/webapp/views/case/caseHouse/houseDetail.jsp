@@ -2,7 +2,7 @@
 <div class="x_panel">
     <div class="x_content">
         <div class="x_title">
-            <h4>房屋基本信息 </h4>
+            <h4>房屋基本信息</h4>
             <div class="clearfix"></div>
         </div>
         <form class="form-horizontal" id="basicHouseFrm">
@@ -202,13 +202,15 @@
                 <div class="x-valid" style="display: none;">
                     <label class="col-sm-1 control-label">出售总额</label>
                     <div class="col-sm-3">
-                        <input type="text" readonly="readonly" class="form-control" name="totalSale" value="${caseHouseTrading.totalSale}">
+                        <input type="text" readonly="readonly" class="form-control" name="totalSale"
+                               value="${caseHouseTrading.totalSale}">
                     </div>
                 </div>
                 <div class="x-valid" style="display: none;">
                     <label class="col-sm-1 control-label">分期支付利率</label>
                     <div class="col-sm-3">
-                        <input type="text" readonly="readonly" class="form-control" name="installmentInterestRate" value="${caseHouseTrading.installmentInterestRate}">
+                        <input type="text" readonly="readonly" class="form-control" name="installmentInterestRate"
+                               value="${caseHouseTrading.installmentInterestRate}">
                     </div>
                 </div>
             </div>
@@ -244,7 +246,8 @@
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">交易时间</label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatDate value="${caseHouseTrading.tradingTime}" pattern="yyyy-MM-dd"></fmt:formatDate> </label>
+                        <label class="form-control"><fmt:formatDate value="${caseHouseTrading.tradingTime}"
+                                                                    pattern="yyyy-MM-dd"></fmt:formatDate> </label>
                     </div>
                 </div>
                 <div class="x-valid">
@@ -298,26 +301,26 @@
     <%@include file="/views/case/caseHouse/caseHouseIntelligent.jsp" %>
 </div>
 
-<!-- 供排水	 -->
+<!-- 供排水 -->
 <div class="water" style="display: ${hasHouseWaterData?'block':'none'};">
     <%@include file="/views/case/caseHouse/caseHouseWater.jsp" %>
 </div>
 
-<!-- 新风情况	 -->
+<!-- 新风情况 -->
 <div class="houseNewWind" style="display: ${hasHouseEquipmentNewWind?'block':'none'};">
     <%@include file="/views/case/caseHouse/caseHouseNewWind.jsp" %>
 </div>
 
-<!-- 空调情况	 -->
+<!-- 空调情况 -->
 <div class="airConditioner" style="display: ${hasHouseEquipmentAirConditioner?'block':'none'};">
     <%@include file="/views/case/caseHouse/caseHouseAirConditioner.jsp" %>
 </div>
 
-<!-- 房间供暖	 -->
+<!-- 房间供暖 -->
 <div class="houseHeating" style="display: ${hasHouseEquipmentHeating?'block':'none'};">
     <%@include file="/views/case/caseHouse/caseHouseHeating.jsp" %>
 </div>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/case/case.common.js"></script>
 <script type="text/javascript">
     var objectData = new Object();
 

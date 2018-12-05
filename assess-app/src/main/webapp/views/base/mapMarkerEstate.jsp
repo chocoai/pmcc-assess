@@ -47,14 +47,16 @@
 
     //根据名称查询
     function searchByName(name) {
-        placeSearch.search(name, function (status, result) {
-            if (result.info == 'OK') {
-                if (result.poiList.pois.length > 0) {
-                    var poi = result.poiList.pois[0];
-                    map.setCenter([poi.location.lng, poi.location.lat]); //设置地图中心点
+        if(name){
+            placeSearch.search(name, function (status, result) {
+                if (result.info == 'OK') {
+                    if (result.poiList.pois.length > 0) {
+                        var poi = result.poiList.pois[0];
+                        map.setCenter([poi.location.lng, poi.location.lat]); //设置地图中心点
+                    }
                 }
-            }
-        })
+            })
+        }
     }
 
     //注册监听，当选中某条记录时会触发

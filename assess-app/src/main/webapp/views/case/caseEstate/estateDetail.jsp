@@ -450,8 +450,8 @@
 <div class="material" style="display: ${hasMatchingMaterialData?'block':'none'};">
     <%@include file="/views/case/caseEstate/caseMatchingMaterial.jsp" %>
 </div>
-
-<script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/case/case.common.js"></script>
+<script type="text/javascript">
     var CaseEstateFun = function () {
 
     };

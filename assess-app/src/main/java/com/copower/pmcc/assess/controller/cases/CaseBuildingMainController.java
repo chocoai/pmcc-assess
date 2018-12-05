@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMain;
 import com.copower.pmcc.assess.dto.output.cases.CaseBuildingVo;
 import com.copower.pmcc.assess.service.cases.CaseBuildingMainService;
 import com.copower.pmcc.assess.service.cases.CaseBuildingService;
+import com.copower.pmcc.assess.service.cases.CaseEstateService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -39,6 +40,8 @@ public class CaseBuildingMainController {
     private CaseBuildingMainService caseBuildingMainService;
     @Autowired
     private CaseBuildingService caseBuildingService;
+    @Autowired
+    private CaseEstateService caseEstateService;
 
     @RequestMapping(value = "/detailView", name = "详情页面 ", method = RequestMethod.GET)
     public ModelAndView editView(Integer id) {
@@ -54,6 +57,7 @@ public class CaseBuildingMainController {
                 modelAndView.addObject("caseBuilding", caseBuildingList.get(0));
             }
         }
+        modelAndView.addObject("caseEstate", caseEstateService.getCaseEstateById(caseBuildingMain.getEstateId()));
         return modelAndView;
     }
 
