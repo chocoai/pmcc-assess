@@ -47,7 +47,7 @@
                         <input type="text" data-rule-maxlength="100" placeholder="楼盘名称" required="required"
                                name="name" class="form-control" value="${basicEstate.name}">
                         <span class="input-group-btn">
-                            <div onclick="estateMapMarker();" class="btn btn-info"><i
+                            <div onclick="estateCommon.mapMarker();" class="btn btn-info"><i
                                     class="fa fa-map-marker"></i> 标注</div>
                         </span>
                     </div>
@@ -452,7 +452,6 @@
                 </div>
             </div>
         </div>
-
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">地形地势</label>
@@ -475,24 +474,3 @@
 
 <%@include file="/views/basic/modelView/estate/sonEstateView.jsp" %>
 <script src="${pageContext.request.contextPath}/js/basic/estate/estate.common.js"></script>
-<script type="text/javascript">
-    function estateMapMarker() {
-        layer.open({
-            type: 2,
-            title: '楼盘标注',
-            shadeClose: true,
-            shade: false,
-            maxmin: true, //开启最大化最小化按钮
-            area: ['893px', '600px'],
-            content: '${pageContext.request.contextPath}/map/mapMarkerEstate?estateName=' + estateCommon.estateForm.find('[name=name]').val() + '&type=estate&onclickFunction=addEstateTagging',
-            success: function () {
-
-            }
-        });
-    }
-
-    //添加楼盘标注
-    function addEstateTagging(lng, lat) {
-
-    }
-</script>

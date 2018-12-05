@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -34,7 +36,17 @@ public class BasicEstateTaggingService {
         return basicEstateTaggingDao.getBasicEstateTaggingById(id);
     }
 
+    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
     public void addBasicEstateTagging(BasicEstateTagging basicEstateTagging) throws Exception {
+        //先清除标记
+        BasicEstateTagging where = new BasicEstateTagging();
+        if (basicEstateTagging.getApplyId() == null || basicEstateTagging.getApplyId() == 0)
+            where.setCreator(commonService.thisUserAccount());
+        where.setApplyId(basicEstateTagging.getApplyId());
+        where.setType(basicEstateTagging.getType());
+        basicEstateTaggingDao.removeBasicEstateTagging(where);
+
+        basicEstateTagging.setCreator(commonService.thisUserAccount());
         basicEstateTaggingDao.addBasicEstateTagging(basicEstateTagging);
     }
 
@@ -50,6 +62,10 @@ public class BasicEstateTaggingService {
         return basicEstateTaggingDao.deleteBasicEstateTagging(id);
     }
 
+    public boolean updateBasicEstateTagging(BasicEstateTagging basicEstateTagging) throws SQLException {
+        return basicEstateTaggingDao.updateBasicEstateTagging(basicEstateTagging);
+    }
+
     /**
      * 获取数据列表
      *
@@ -58,6 +74,15 @@ public class BasicEstateTaggingService {
      * @throws Exception
      */
     public List<BasicEstateTagging> basicEstateTaggingList(BasicEstateTagging basicEstateTagging) throws Exception {
+        return basicEstateTaggingDao.basicEstateTaggingList(basicEstateTagging);
+    }
+
+    public List<BasicEstateTagging> getEstateTaggingList(Integer applyId, String type) throws SQLException {
+        BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
+        if (applyId == null || applyId == 0)
+            basicEstateTagging.setCreator(commonService.thisUserAccount());
+        basicEstateTagging.setApplyId(applyId);
+        basicEstateTagging.setType(type);
         return basicEstateTaggingDao.basicEstateTaggingList(basicEstateTagging);
     }
 

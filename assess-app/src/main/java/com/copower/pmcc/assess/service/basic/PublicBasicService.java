@@ -1221,6 +1221,18 @@ public class PublicBasicService {
                 }
             }
         }
+        //更新地图标注信息
+        BasicEstateTagging where=new BasicEstateTagging();
+        where.setApplyId(0);
+        where.setCreator(commonService.thisUserAccount());
+        List<BasicEstateTagging> taggings = basicEstateTaggingService.basicEstateTaggingList(where);
+        if(!CollectionUtils.isEmpty(taggings)){
+            for (BasicEstateTagging tagging : taggings) {
+                tagging.setApplyId(basicApply.getId());
+                basicEstateTaggingService.updateBasicEstateTagging(tagging);
+            }
+        }
+
         basicApply.setDraftFlag(isDraft);
         basicApplyService.updateBasicApply(basicApply);
         return basicApply;

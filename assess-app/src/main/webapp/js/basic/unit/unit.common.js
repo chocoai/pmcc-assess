@@ -5,9 +5,13 @@
 ;(function ($) {
     var unitCommon = {};
     unitCommon.unitForm = $('#basicUnitFrm');
+    unitCommon.unitMapiframe = undefined;
 
     unitCommon.getUnitId = function () {
         return unitCommon.unitForm.find('[name=id]').val();
+    }
+    unitCommon.getUnitNumber = function () {
+        return unitCommon.unitForm.find('[name=unitNumber]').val();
     }
 
     //添加单元
@@ -36,7 +40,7 @@
     //升级单元
     unitCommon.upgrade = function (_this, callback) {
         var caseUnitId = $(_this).closest('form').find("input[name='caseUnitId']").val();
-        if(!caseUnitId){
+        if (!caseUnitId) {
             toastr.info('请选择系统中已存在的单元信息！');
             return false;
         }
@@ -80,6 +84,64 @@
             success: function (result) {
                 if (result.ret) {
                     unitCommon.unitForm.initForm(result.data);
+                }
+            }
+        })
+    }
+
+    //楼栋标注
+    unitCommon.mapMarker = function (readonly) {
+        var contentUrl = getContextPath() + '/map/mapMarkerEstate?estateName=' + estateCommon.getEstateName();
+        if (readonly != true) {
+            contentUrl += '&click=unitCommon.addMarker';
+        }
+        layer.open({
+            type: 2,
+            title: '楼盘标注',
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: contentUrl,
+            success: function (layero) {
+                unitCommon.unitMapiframe = window[layero.find('iframe')[0]['name']];
+                unitCommon.loadMarkerList();
+            }
+        });
+    }
+
+    //添加标注
+    unitCommon.addMarker = function (lng, lat) {
+        $.ajax({
+            url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
+            data: {
+                applyId: basicCommon.getApplyId(),
+                type: 'unit',
+                lng: lng,
+                lat: lat,
+                name: unitCommon.getUnitNumber()
+            },
+            success: function (result) {
+                if (result.ret) {//标注成功后，刷新地图上的标注
+                    unitCommon.loadMarkerList();
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
+
+    //加载标注
+    unitCommon.loadMarkerList = function () {
+        $.ajax({
+            url: getContextPath() + '/basicEstateTagging/getEstateTaggingList',
+            data: {
+                applyId: basicCommon.getApplyId(),
+                type: 'unit'
+            },
+            success: function (result) {
+                if (result.ret && unitCommon.unitMapiframe) {//标注成功后，刷新地图上的标注
+                    unitCommon.unitMapiframe.loadMarkerList(result.data);
                 }
             }
         })

@@ -11,7 +11,13 @@
                     楼栋号
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="buildingNumber"></label>
+                    <div class="input-group">
+                        <label class="form-control" name="buildingNumber"></label>
+                        <span class="input-group-btn">
+                            <div onclick="buildingCommon.mapMarker(true);" class="btn btn-info"><i
+                                    class="fa fa-map-marker"></i> 标注</div>
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="x-valid">

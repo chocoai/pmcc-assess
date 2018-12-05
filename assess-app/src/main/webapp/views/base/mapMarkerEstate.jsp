@@ -12,10 +12,6 @@
             width: 25px;
             height: 34px;
         }
-
-        .bgMarker {
-            width: 19px; height: 33px; top: 0px; left: 0px;
-        }
     </style>
 </head>
 <body>
@@ -69,19 +65,18 @@
 
     //地图点击事件
     map.on('click', function (e) {
-        var excuteString = 'if (parent && parent.${onclickFunction}) {';
-        excuteString += 'parent.${onclickFunction}(e.lnglat.getLng(), e.lnglat.getLat());}';
-        eval(excuteString);
+        if('${click}'){
+            var excuteString = 'if (parent && parent.${click}) {';
+            excuteString += 'parent.${click}(e.lnglat.getLng(), e.lnglat.getLat());}';
+            eval(excuteString);
+        }
     });
 
 
     var markerArray = [];//标记数组
     //加载所有标注信息
     function loadMarkerList(taggingArray) {
-        for (var i = 0; i < markerArray.length; i++) {
-            markerArray[i].setMap(null);
-        }
-        markerArray.length = 0;
+        map.remove(markerArray);
         if (taggingArray && taggingArray.length > 0) {
             var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)});
             for (var i = 0; i < taggingArray.length; i++) {

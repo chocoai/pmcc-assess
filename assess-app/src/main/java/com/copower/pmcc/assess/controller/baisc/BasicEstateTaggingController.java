@@ -58,6 +58,17 @@ public class BasicEstateTaggingController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/getEstateTaggingList", name = "获取数据列表", method = {RequestMethod.POST})
+    public HttpResult getEstateTaggingList(Integer applyId,String type) {
+        try {
+            return HttpResult.newCorrectResult(basicEstateTaggingService.getEstateTaggingList(applyId,type));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/deleteBasicEstateTagging", name = "删除数据", method = {RequestMethod.POST})
     public HttpResult deleteBasicEstateTagging(Integer id) {
         try {
@@ -69,6 +80,4 @@ public class BasicEstateTaggingController {
     }
 
 
-    //?source=0&estateId=1&buildingNumber=1&unitNumber=1&houseNumber=1101
-    //0 过程库 1案例库
 }

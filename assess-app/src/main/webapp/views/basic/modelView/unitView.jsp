@@ -14,8 +14,14 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">单元编号<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="单元编号"
-                           name="unitNumber" class="form-control" required="required" value="${basicUnit.unitNumber}">
+                    <div class="input-group">
+                        <input type="text" data-rule-maxlength="100" placeholder="单元编号" required="required"
+                               name="unitNumber" class="form-control" value="${basicUnit.unitNumber}">
+                        <span class="input-group-btn">
+                            <div onclick="unitCommon.mapMarker();" class="btn btn-info"><i
+                                    class="fa fa-map-marker"></i> 标注</div>
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="x-valid">
