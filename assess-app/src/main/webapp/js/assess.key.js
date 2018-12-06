@@ -98,7 +98,7 @@ AssessDicKey.estate_school_level = "estate.school.level";//学校等级
 AssessDicKey.estate_environment_category = "estate.environment.category";//环境类别
 AssessDicKey.estate_environment_type = "estate.environment.type";//环境类型
 AssessDicKey.estate_environment_influence_degree = "estate.environment.Influence.degree";//影响程度
-AssessDicKey.estate_finance_service_content = "estate.finance.service.content";//金融服务内容
+AssessDicKey.estate_finance_service_content = "estate.finance.service.content";//服务类别
 AssessDicKey.estate_finance_nature = "estate.finance.nature";//金融机构性质
 AssessDicKey.estate_finance_category = "estate.finance.category";//金融类别
 AssessDicKey.estate_entertainment_category = "estate.entertainment.category";//休闲娱乐场所类别
@@ -173,10 +173,10 @@ AssessDicKey.examine_house_information_sources = "examine.house.information.sour
 
 AssessDicKey.estate_total_land_level = "estate.land_level";//土地级别
 AssessDicKey.estate_total_land_use = "estate.land_use";//土地用途
-AssessDicKey.estatePlaneness = "estate.planeness";//土地平整度
+AssessDicKey.estatePlaneness = "estate.planeness";//地形
 AssessDicKey.estateDevelopment_degree = "estate.development_degree";//土地开发程度
-AssessDicKey.estateShape_state = "estate.shape_state";//土地形状状况
-AssessDicKey.estateTopographic_terrain = "estate.topographic_terrain";//地形地势
+AssessDicKey.estateShape_state = "estate.shape_state";//土地形状
+AssessDicKey.estateTopographic_terrain = "estate.topographic_terrain";//地势
 AssessDicKey.estateSupplySituation = "estate.supply.situation";//供应情况
 
 AssessDicKey.build_addedvalueadditionaltaxrate = "build.addedValueAdditionalTaxRate";//增值及附加税率

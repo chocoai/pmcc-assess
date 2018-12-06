@@ -92,6 +92,11 @@
                     <div id="_house_new_huxing_plan"></div>
                 </div>
             </div>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <div class="btn btn-success">设置户型朝向</div>
+                </div>
+            </div>
         </div>
 d
         <div class="form-group">

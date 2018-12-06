@@ -706,8 +706,8 @@
                 cols.push({field: 'name', title: '金融名称'});
                 cols.push({field: 'categoryName', title: '金融类别'});
                 cols.push({field: 'natureName', title: '金融机构性质'});
-                cols.push({field: 'serviceContentName', title: '金融服务内容'});
-                cols.push({field: 'autoServiceContent', title: '自动服务内容'});
+                cols.push({field: 'serviceContentName', title: '服务类别'});
+                cols.push({field: 'autoServiceContent', title: '服务内容'});
                 $("#" + matchingFinance.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingFinance.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingFinance/getBootstrapTableVo", cols, {
                     estateId: ${empty basicEstate.id?0:basicEstate.id},

@@ -1092,7 +1092,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            金融服务内容<span class="symbol required"></span>
+                                            服务类别<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="serviceContent"
@@ -1104,7 +1104,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            自动服务内容
+                                            服务内容
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" name="autoServiceContent" class="form-control">
