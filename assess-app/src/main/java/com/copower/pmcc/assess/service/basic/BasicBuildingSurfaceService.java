@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/10/30 11:52
- * @Description:层面结构
+ * @Description:屋面结构
  */
 @Service
 public class BasicBuildingSurfaceService {

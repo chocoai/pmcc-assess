@@ -345,7 +345,7 @@
 <div class="x_content">
     <div class="x_title">
         <h3>
-            层面结构
+            屋面结构
         </h3>
         <div class="clearfix"></div>
     </div>
@@ -543,7 +543,7 @@
     };
     building.examineBuildingSurfaceLoadList = function () {
         var cols = [];
-        cols.push({field: 'structureName', title: '层面结构'});
+        cols.push({field: 'structureName', title: '屋面结构'});
         cols.push({field: 'description', title: '描述'});
         $("#" + building.getExamineBuildingSurfaceTable()).bootstrapTable('destroy');
         TableInit(building.getExamineBuildingSurfaceTable(), "${pageContext.request.contextPath}/examineBuildingSurface/getExamineBuildingSurfaceList", cols, {
