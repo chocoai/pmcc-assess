@@ -24,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -39,10 +38,6 @@ import java.util.List;
  */
 @Service
 public class PublicBasicService {
-    @Autowired
-    private BasicEstateTaggingService basicEstateTaggingService;
-    @Autowired
-    private ThreadPoolTaskExecutor taskExecutor;
     @Autowired
     private BasicHouseService basicHouseService;
     @Autowired
@@ -85,6 +80,8 @@ public class PublicBasicService {
     private BasicEstateParkingService basicEstateParkingService;
     @Autowired
     private BasicEstateSupplyService basicEstateSupplyService;
+    @Autowired
+    private BasicEstateTaggingService basicEstateTaggingService;
     @Autowired
     private BasicMatchingEducationService basicMatchingEducationService;
     @Autowired
@@ -164,6 +161,8 @@ public class PublicBasicService {
     @Autowired
     private CaseEstateSupplyService caseEstateSupplyService;
     @Autowired
+    private CaseEstateTaggingService caseEstateTaggingService;
+    @Autowired
     private CaseMatchingTrafficService caseMatchingTrafficService;
     @Autowired
     private CaseMatchingMedicalService caseMatchingMedicalService;
@@ -238,6 +237,7 @@ public class PublicBasicService {
         BasicEstateNetwork queryBasicEstateNetwork = new BasicEstateNetwork();
         BasicEstateParking queryBasicEstateParking = new BasicEstateParking();
         BasicEstateSupply queryBasicEstateSupply = new BasicEstateSupply();
+        BasicEstateTagging queryBasicEstateTagging = new BasicEstateTagging();
         BasicMatchingEducation queryBasicMatchingEducation = new BasicMatchingEducation();
         BasicMatchingEnvironment queryBasicMatchingEnvironment = new BasicMatchingEnvironment();
         BasicMatchingFinance queryBasicMatchingFinance = new BasicMatchingFinance();
@@ -250,6 +250,7 @@ public class PublicBasicService {
             queryBasicEstateNetwork.setEstateId(basicEstate.getId());
             queryBasicEstateParking.setEstateId(basicEstate.getId());
             queryBasicEstateSupply.setEstateId(basicEstate.getId());
+            queryBasicEstateTagging.setApplyId(basicApply.getId());
             queryBasicMatchingTraffic.setEstateId(basicEstate.getId());
             queryBasicMatchingMedical.setEstateId(basicEstate.getId());
             queryBasicMatchingMaterial.setEstateId(basicEstate.getId());
@@ -262,6 +263,7 @@ public class PublicBasicService {
         List<BasicEstateNetwork> basicEstateNetworkList = null;
         List<BasicEstateParking> basicEstateParkingList = null;
         List<BasicEstateSupply> basicEstateSupplyList = null;
+        List<BasicEstateTagging> basicEstateTaggingList = null;
         List<BasicMatchingEducation> basicMatchingEducationList = null;
         List<BasicMatchingEnvironment> basicMatchingEnvironmentList = null;
         List<BasicMatchingFinance> basicMatchingFinanceList = null;
@@ -273,6 +275,8 @@ public class PublicBasicService {
         basicEstateNetworkList = basicEstateNetworkService.basicEstateNetworkList(queryBasicEstateNetwork);
         basicEstateParkingList = basicEstateParkingService.basicEstateParkingList(queryBasicEstateParking);
         basicEstateSupplyList = basicEstateSupplyService.basicEstateSupplyList(queryBasicEstateSupply);
+        basicEstateTaggingList = basicEstateTaggingService.basicEstateTaggingList(queryBasicEstateTagging);
+
         basicMatchingEducationList = basicMatchingEducationService.basicMatchingEducationList(queryBasicMatchingEducation);
         basicMatchingEnvironmentList = basicMatchingEnvironmentService.basicMatchingEnvironmentList(queryBasicMatchingEnvironment);
         basicMatchingFinanceList = basicMatchingFinanceService.basicMatchingFinanceList(queryBasicMatchingFinance);
@@ -292,6 +296,7 @@ public class PublicBasicService {
                 this.flowWriteCaseFinance(basicMatchingFinanceList, caseEstate);
                 this.flowWriteCaseEnvironment(basicMatchingEnvironmentList, caseEstate);
                 this.flowWriteCaseEducation(basicMatchingEducationList, caseEstate);
+                this.flowWriteCaseTagging(basicEstateTaggingList,caseEstate);
             }
         }
         return caseEstate;
@@ -447,6 +452,20 @@ public class PublicBasicService {
                 caseEstateSupply.setGmtModified(null);
                 caseEstateSupply.setEstateId(caseEstate.getId());
                 caseEstateSupplyService.addCaseEstateSupply(caseEstateSupply);
+            }
+        }
+    }
+
+    private void flowWriteCaseTagging(List<BasicEstateTagging> basicEstateTaggingList, CaseEstate caseEstate) throws Exception {
+        if (!ObjectUtils.isEmpty(basicEstateTaggingList)) {
+            for (BasicEstateTagging oo : basicEstateTaggingList) {
+                CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
+                BeanUtils.copyProperties(oo, caseEstateTagging);
+                caseEstateTagging.setId(null);
+                caseEstateTagging.setGmtCreated(null);
+                caseEstateTagging.setGmtModified(null);
+                caseEstateTagging.setEstateId(caseEstate.getId());
+                caseEstateTaggingService.saveCaseEstateTagging(caseEstateTagging);
             }
         }
     }
