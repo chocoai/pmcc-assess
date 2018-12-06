@@ -93,8 +93,9 @@ public class CaseBuildingMainService {
         return caseBuildingMainDao.updateEstateId(oldEstateId, newEstateId);
     }
 
-    public List<CustomCaseEntity> autoCompleteCaseBuildingMain(String buildingNumber, Integer estateId, Integer maxRows) {
-        PageHelper.startPage(0, maxRows);
+    public List<CustomCaseEntity> autoCompleteCaseBuildingMain(String buildingNumber, Integer estateId) {
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<CustomCaseEntity> mainList = caseBuildingMainDao.getLatestVersionBuildingMainList(buildingNumber, estateId);
         return mainList;
     }

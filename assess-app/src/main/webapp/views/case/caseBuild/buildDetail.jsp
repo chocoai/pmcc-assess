@@ -2,7 +2,7 @@
 <div class="x_panel">
     <div class="x_content">
         <div class="x_title">
-            <h3>楼栋基本信息 </h3>
+            <h4>楼栋基本信息 </h4>
             <div class="clearfix"></div>
         </div>
         <form class="form-horizontal" id="basicBuildingMainFrm">

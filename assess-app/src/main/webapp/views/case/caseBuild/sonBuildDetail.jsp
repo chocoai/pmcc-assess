@@ -80,6 +80,7 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/case/case.common.js"></script>
 <script type="application/javascript">
     var buildingModel;
     (function () {

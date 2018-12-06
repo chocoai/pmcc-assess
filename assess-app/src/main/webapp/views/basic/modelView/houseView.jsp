@@ -346,7 +346,6 @@ d
     </form>
 </div>
 <%@include file="/views/basic/modelView/house/sonHouseView.jsp" %>
-<script src="${pageContext.request.contextPath}/js/basic/house/house.common.js"></script>
 <script src="${pageContext.request.contextPath}/js/basic/house/houseView.js"></script>
 <script src="${pageContext.request.contextPath}/js/basic/huxing.select.js"></script>
 

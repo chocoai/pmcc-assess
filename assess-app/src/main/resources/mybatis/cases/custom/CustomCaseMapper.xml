@@ -74,22 +74,22 @@
         select <include refid="Base_Column_List" />
         from tb_case_base_house
         <where>
-            <if test="caseBaseHouse.blockName != null" >
+            <if test="caseBaseHouse.blockName != null and caseBaseHouse.blockName!=''" >
                 and block_name LIKE concat(concat('%',#{caseBaseHouse.blockName}),'%')
             </if>
-            <if test="caseBaseHouse.fullName != null">
+            <if test="caseBaseHouse.fullName != null and caseBaseHouse.fullName!=''">
                 and full_name LIKE concat(concat('%',#{caseBaseHouse.fullName}),'%')
             </if>
-            <if test="caseBaseHouse.street != null">
+            <if test="caseBaseHouse.street != null and caseBaseHouse.street!=''">
                 and street LIKE concat(concat('%',#{caseBaseHouse.street}),'%')
             </if>
-            <if test="caseBaseHouse.province != null">
+            <if test="caseBaseHouse.province != null and caseBaseHouse.province!=''">
                 and province = #{caseBaseHouse.province}
             </if>
-            <if test="caseBaseHouse.city != null">
+            <if test="caseBaseHouse.city != null and caseBaseHouse.city!=''">
                 and city = #{caseBaseHouse.city}
             </if>
-            <if test="caseBaseHouse.district != null">
+            <if test="caseBaseHouse.district != null and caseBaseHouse.district!=''">
                 and district = #{caseBaseHouse.district}
             </if>
             <if test="caseBaseHouse.practicalUse != null">
@@ -98,11 +98,17 @@
             <if test="caseBaseHouse.tradingType != null">
                 and trading_type = #{caseBaseHouse.tradingType}
             </if>
-            <if test="tradingTimeStart != null and tradingTimeEnd != null">
-                and trading_time <![CDATA[ >= ]]> #{tradingTimeStart} and trading_time <![CDATA[ <= ]]> #{tradingTimeEnd}
+            <if test="tradingTimeStart != null">
+                and trading_time <![CDATA[ >= ]]> #{tradingTimeStart}
             </if>
-            <if test="tradingUnitPriceStart != null and tradingUnitPriceEnd != null">
-                and trading_unit_price <![CDATA[ >= ]]> #{tradingUnitPriceStart} and trading_unit_price <![CDATA[ <= ]]> #{tradingUnitPriceEnd}
+            <if test="tradingTimeEnd != null">
+                and trading_time <![CDATA[ <= ]]> #{tradingTimeEnd}
+            </if>
+            <if test="tradingUnitPriceStart != null">
+                and trading_unit_price <![CDATA[ >= ]]> #{tradingUnitPriceStart}
+            </if>
+            <if test="tradingUnitPriceEnd != null">
+                and trading_unit_price <![CDATA[ <= ]]> #{tradingUnitPriceEnd}
             </if>
         </where>
     </select>

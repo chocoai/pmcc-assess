@@ -219,44 +219,43 @@
         var group = $(_this).closest('.form-group');
         group.find('[name=caseEstateId]').val('');
         group.find('.btn-reference,.btn-upgrade').hide();
-        $(that).autocomplete({
-                source: function (request, response) {
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/caseEstate/autoCompleteCaseEstate",
-                        type: "get",
-                        dataType: "json",
-                        data: {
-                            maxRows: 10,
-                            province: basicCommon.basicApplyForm.find('[name=province]').val(),
-                            city: basicCommon.basicApplyForm.find('[name=city]').val(),
-                            name: $(that).val()
-                        },
-                        success: function (result) {
-                            if (result.ret) {
-                                var responseArray = [];
-                                $.each(result.data, function (i, item) {
-                                    responseArray.push({
-                                        label: item.name,
-                                        type: item.type,
-                                        id: item.id
-                                    });
-                                })
-                                response(responseArray);
-                            } else {
-                                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
-                            }
-                        }
-                    });
+        var defaults = AssessDefault.autocomplete();
+        defaults.source = function (request, response) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseEstate/autoCompleteCaseEstate",
+                type: "get",
+                dataType: "json",
+                data: {
+                    offset: 1,
+                    limit: 10,
+                    province: basicCommon.basicApplyForm.find('[name=province]').val(),
+                    city: basicCommon.basicApplyForm.find('[name=city]').val(),
+                    name: $(that).val()
                 },
-                minLength: 2,
-                select: function (event, ele) {
-                    group.find('[name=caseEstateId]').val(ele.item.id);
-                    group.find('.btn-reference,.btn-upgrade').show();
-                    //选择楼盘的类型
-                    $('#applyFormType' + ele.item.type).trigger('click');
+                success: function (result) {
+                    if (result.ret) {
+                        var responseArray = [];
+                        $.each(result.data, function (i, item) {
+                            responseArray.push({
+                                label: item.name,
+                                type: item.type,
+                                id: item.id
+                            });
+                        })
+                        response(responseArray);
+                    } else {
+                        Alert(result.errmsg);
+                    }
                 }
-            }
-        );
+            });
+        }
+        defaults.select = function (event, ele) {
+            group.find('[name=caseEstateId]').val(ele.item.id);
+            group.find('.btn-reference,.btn-upgrade').show();
+            //选择楼盘的类型
+            $('#applyFormType' + ele.item.type).trigger('click');
+        }
+        $(that).autocomplete(defaults);
     };
 
     /**
@@ -264,48 +263,47 @@
      */
     basicApplyIndex.autocompleteBuilding = function (_this) {
         var that = _this;
-        var estateId = basicCommon.basicApplyForm.find("input[name='caseEstateId']").val();
-        if (!estateId) return;
         var group = $(_this).closest('.form-group');
         group.find('[name=caseBuildingMainId]').val('');
         group.find('.btn-reference,.btn-upgrade').hide();
-        $(that).autocomplete({
-                source: function (request, response) {
-                    var itemVal = $(that).val();
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/caseBuildingMain/autoCompleteCaseBuilding",
-                        type: "get",
-                        dataType: "json",
-                        data: {
-                            maxRows: 10,
-                            buildingNumber: itemVal,
-                            estateId: estateId
-                        },
-                        success: function (result) {
-                            if (result.ret) {
-                                var responseArray = [];
-                                $.each(result.data, function (i, item) {
-                                    responseArray.push({
-                                        label: item.name,
-                                        type: item.type,
-                                        id: item.id
-                                    });
-                                })
-                                response(responseArray);
-                            } else {
-                                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
-                            }
-                        }
-                    });
+        var estateId = basicCommon.basicApplyForm.find("input[name='caseEstateId']").val();
+        if (!estateId) return;
+        var defaults = AssessDefault.autocomplete();
+        defaults.source = function (request, response) {
+            var itemVal = $(that).val();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseBuildingMain/autoCompleteCaseBuilding",
+                type: "get",
+                dataType: "json",
+                data: {
+                    offset: 1,
+                    limit: 10,
+                    buildingNumber: itemVal,
+                    estateId: estateId
                 },
-                minLength: 1,
-                    /*当从菜单中选择条目时触发。默认的动作是把文本域中的值替换为被选中的条目的值。取消该事件会阻止值被更新，但不会阻止菜单关闭。*/
-                select: function (event, ele) {
-                    group.find('[name=caseBuildingMainId]').val(ele.item.id);
-                    group.find('.btn-reference,.btn-upgrade').show();
+                success: function (result) {
+                    if (result.ret) {
+                        var responseArray = [];
+                        $.each(result.data, function (i, item) {
+                            responseArray.push({
+                                label: item.name,
+                                type: item.type,
+                                id: item.id
+                            });
+                        })
+                        response(responseArray);
+                    } else {
+                        Alert(result.errmsg);
+                    }
                 }
-            }
-        );
+            });
+        }
+        defaults.select = function (event, ele) {
+            group.find('[name=caseBuildingMainId]').val(ele.item.id);
+            group.find('.btn-reference,.btn-upgrade').show();
+        }
+        defaults.minLength = 1;
+        $(that).autocomplete(defaults);
     };
 
     /**
@@ -313,48 +311,47 @@
      */
     basicApplyIndex.autocompleteUnit = function (_this) {
         var that = _this;
-        var buildingId = basicCommon.basicApplyForm.find("input[name='caseBuildingMainId']").val();
-        if (!buildingId) return;
         var group = $(_this).closest('.form-group');
         group.find('[name=caseUnitId]').val('');
         group.find('.btn-reference,.btn-upgrade').hide();
-        $(that).autocomplete(
-            {
-                source: function (request, response) {
-                    var itemVal = $(that).val();
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/caseUnit/autoCompleteCaseUnit",
-                        type: "get",
-                        dataType: "json",
-                        data: {
-                            maxRows: 10,
-                            unitNumber: itemVal,
-                            caseBuildingMainId: buildingId
-                        },
-                        success: function (result) {
-                            if (result.ret) {
-                                var responseArray = [];
-                                $.each(result.data, function (i, item) {
-                                    responseArray.push({
-                                        label: item.name,
-                                        type: item.type,
-                                        id: item.id
-                                    });
-                                })
-                                response(responseArray);
-                            } else {
-                                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
-                            }
-                        }
-                    });
+        var buildingId = basicCommon.basicApplyForm.find("input[name='caseBuildingMainId']").val();
+        if (!buildingId) return;
+        var defaults = AssessDefault.autocomplete();
+        defaults.source = function (request, response) {
+            var itemVal = $(that).val();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseUnit/autoCompleteCaseUnit",
+                type: "get",
+                dataType: "json",
+                data: {
+                    offset: 1,
+                    limit: 10,
+                    unitNumber: itemVal,
+                    caseBuildingMainId: buildingId
                 },
-                minLength: 1,
-                select: function (event, ele) {
-                    group.find('[name=caseUnitId]').val(ele.item.id);
-                    group.find('.btn-reference,.btn-upgrade').show();
+                success: function (result) {
+                    if (result.ret) {
+                        var responseArray = [];
+                        $.each(result.data, function (i, item) {
+                            responseArray.push({
+                                label: item.name,
+                                type: item.type,
+                                id: item.id
+                            });
+                        })
+                        response(responseArray);
+                    } else {
+                        Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+                    }
                 }
-            }
-        );
+            });
+        }
+        defaults.select = function (event, ele) {
+            group.find('[name=caseUnitId]').val(ele.item.id);
+            group.find('.btn-reference,.btn-upgrade').show();
+        }
+        defaults.minLength = 1;
+        $(that).autocomplete(defaults);
     };
 
     /**
@@ -362,49 +359,47 @@
      */
     basicApplyIndex.autocompleteHouse = function (_this) {
         var that = _this;
-        var unitId = basicCommon.basicApplyForm.find("input[name='caseUnitId']").val();
-        if (!unitId) return;
         var group = $(_this).closest('.form-group');
         group.find('[name=caseHouseId]').val('');
         group.find('.btn-reference,.btn-upgrade').hide();
-        $(that).autocomplete(
-            {
-                source: function (request, response) {
-                    var itemVal = $(that).val();
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/caseHouse/autoCompleteCaseHouse",
-                        type: "get",
-                        dataType: "json",
-                        data: {
-                            maxRows: 10,
-                            houseNumber: itemVal,
-                            unitId: unitId
-                        },
-                        success: function (result) {
-                            if (result.ret) {
-                                var responseArray = [];
-                                $.each(result.data, function (i, item) {
-                                    responseArray.push({
-                                        label: item.name,
-                                        type: item.type,
-                                        id: item.id
-                                    });
-                                })
-                                response(responseArray);
-                            } else {
-                                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
-                            }
-                        }
-                    });
+        var unitId = basicCommon.basicApplyForm.find("input[name='caseUnitId']").val();
+        if (!unitId) return;
+        var defaults = AssessDefault.autocomplete();
+        defaults.source = function (request, response) {
+            var itemVal = $(that).val();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseHouse/autoCompleteCaseHouse",
+                type: "get",
+                dataType: "json",
+                data: {
+                    offset: 1,
+                    limit: 10,
+                    houseNumber: itemVal,
+                    unitId: unitId
                 },
-                minLength: 1,
-                /*当从菜单中选择条目时触发。默认的动作是把文本域中的值替换为被选中的条目的值。取消该事件会阻止值被更新，但不会阻止菜单关闭。*/
-                select: function (event, ele) {
-                    group.find('[name=caseHouseId]').val(ele.item.id);
-                    group.find('.btn-reference,.btn-upgrade').show();
+                success: function (result) {
+                    if (result.ret) {
+                        var responseArray = [];
+                        $.each(result.data, function (i, item) {
+                            responseArray.push({
+                                label: item.name,
+                                type: item.type,
+                                id: item.id
+                            });
+                        })
+                        response(responseArray);
+                    } else {
+                        Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+                    }
                 }
-            }
-        );
+            });
+        }
+        defaults.select = function (event, ele) {
+            group.find('[name=caseHouseId]').val(ele.item.id);
+            group.find('.btn-reference,.btn-upgrade').show();
+        }
+        defaults.minLength = 1;
+        $(that).autocomplete(defaults);
     };
 
     //检测是否为 草稿重新申请

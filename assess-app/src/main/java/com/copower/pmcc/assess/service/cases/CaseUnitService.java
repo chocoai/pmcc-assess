@@ -148,8 +148,9 @@ public class CaseUnitService {
         return caseUnitDao.updateBuildingMainId(oldBuildingMainId, newBuildingMainId);
     }
 
-    public List<CustomCaseEntity> autoCompleteCaseUnit(String unitNumber, Integer caseBuildingMainId, Integer maxRows){
-        PageHelper.startPage(0,maxRows);
+    public List<CustomCaseEntity> autoCompleteCaseUnit(String unitNumber, Integer caseBuildingMainId){
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<CustomCaseEntity> caseEntityList = caseUnitDao.getLatestVersionUnitList(unitNumber, caseBuildingMainId);
         return caseEntityList;
     }

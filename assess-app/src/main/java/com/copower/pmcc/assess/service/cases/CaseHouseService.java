@@ -248,8 +248,9 @@ public class CaseHouseService {
         return caseHouseDao.deleteHouse(id);
     }
 
-    public List<CustomCaseEntity> autoCompleteCaseHouse(String houseNumber, Integer unitId, Integer maxRows) throws Exception {
-        PageHelper.startPage(0, maxRows);
+    public List<CustomCaseEntity> autoCompleteCaseHouse(String houseNumber, Integer unitId) throws Exception {
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<CustomCaseEntity> houseList = caseHouseDao.getLatestVersionHouseList(houseNumber, unitId);
         return houseList;
     }

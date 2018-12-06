@@ -36,7 +36,13 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">楼盘名称</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstate.name}</label>
+                    <div class="input-group">
+                        <label class="form-control">${basicEstate.name}</label>
+                        <span class="input-group-btn">
+                            <div onclick="estateCommon.mapMarker(true);" class="btn btn-info"><i
+                                    class="fa fa-map-marker"></i> 标注</div>
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="x-valid">
@@ -367,5 +373,4 @@
     </form>
 </div>
 <%@include file="/views/basic/modelView/estate/sonEstateDetail.jsp" %>
-<script src="${pageContext.request.contextPath}/js/basic/estate/estate.common.js"></script>
 
