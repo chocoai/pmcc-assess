@@ -23,7 +23,7 @@
     <result column="volumetric_rate" property="volumetricRate" jdbcType="VARCHAR" />
     <result column="greening_rate" property="greeningRate" jdbcType="VARCHAR" />
     <result column="building_number" property="buildingNumber" jdbcType="INTEGER" />
-    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="INTEGER" />
     <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="average_price" property="averagePrice" jdbcType="VARCHAR" />
     <result column="price_range" property="priceRange" jdbcType="VARCHAR" />
@@ -151,7 +151,7 @@
       #{name,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, 
       #{number,jdbcType=VARCHAR}, #{landLevel,jdbcType=INTEGER}, #{attachNumber,jdbcType=VARCHAR}, 
       #{floorArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, #{volumetricRate,jdbcType=VARCHAR}, 
-      #{greeningRate,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=INTEGER}, #{position,jdbcType=VARCHAR}, 
+      #{greeningRate,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=INTEGER}, #{position,jdbcType=INTEGER}, 
       #{description,jdbcType=VARCHAR}, #{averagePrice,jdbcType=VARCHAR}, #{priceRange,jdbcType=VARCHAR}, 
       #{supplyHeating,jdbcType=INTEGER}, #{supplyPower,jdbcType=INTEGER}, #{supplyWater,jdbcType=INTEGER}, 
       #{supplyGas,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
@@ -319,7 +319,7 @@
         #{buildingNumber,jdbcType=INTEGER},
       </if>
       <if test="position != null" >
-        #{position,jdbcType=VARCHAR},
+        #{position,jdbcType=INTEGER},
       </if>
       <if test="description != null" >
         #{description,jdbcType=VARCHAR},
@@ -426,7 +426,7 @@
         building_number = #{record.buildingNumber,jdbcType=INTEGER},
       </if>
       <if test="record.position != null" >
-        position = #{record.position,jdbcType=VARCHAR},
+        position = #{record.position,jdbcType=INTEGER},
       </if>
       <if test="record.description != null" >
         description = #{record.description,jdbcType=VARCHAR},
@@ -486,7 +486,7 @@
       volumetric_rate = #{record.volumetricRate,jdbcType=VARCHAR},
       greening_rate = #{record.greeningRate,jdbcType=VARCHAR},
       building_number = #{record.buildingNumber,jdbcType=INTEGER},
-      position = #{record.position,jdbcType=VARCHAR},
+      position = #{record.position,jdbcType=INTEGER},
       description = #{record.description,jdbcType=VARCHAR},
       average_price = #{record.averagePrice,jdbcType=VARCHAR},
       price_range = #{record.priceRange,jdbcType=VARCHAR},
@@ -565,7 +565,7 @@
         building_number = #{buildingNumber,jdbcType=INTEGER},
       </if>
       <if test="position != null" >
-        position = #{position,jdbcType=VARCHAR},
+        position = #{position,jdbcType=INTEGER},
       </if>
       <if test="description != null" >
         description = #{description,jdbcType=VARCHAR},
@@ -622,7 +622,7 @@
       volumetric_rate = #{volumetricRate,jdbcType=VARCHAR},
       greening_rate = #{greeningRate,jdbcType=VARCHAR},
       building_number = #{buildingNumber,jdbcType=INTEGER},
-      position = #{position,jdbcType=VARCHAR},
+      position = #{position,jdbcType=INTEGER},
       description = #{description,jdbcType=VARCHAR},
       average_price = #{averagePrice,jdbcType=VARCHAR},
       price_range = #{priceRange,jdbcType=VARCHAR},

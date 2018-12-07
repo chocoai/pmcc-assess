@@ -73,9 +73,6 @@ public class CaseBuildingOutfitService {
     public CaseBuildingOutfitVo getCaseBuildingOutfitVo(CaseBuildingOutfit caseBuildingOutfit) {
         CaseBuildingOutfitVo vo = new CaseBuildingOutfitVo();
         BeanUtils.copyProperties(caseBuildingOutfit, vo);
-        if (caseBuildingOutfit.getDecorationPart() != null) {
-            vo.setDecorationPartName( baseDataDicService.getNameById(caseBuildingOutfit.getDecorationPart()));
-        }
         if (caseBuildingOutfit.getDecoratingMaterial() != null) {
             vo.setDecoratingMaterialName( baseDataDicService.getNameById(caseBuildingOutfit.getDecoratingMaterial()));
         }

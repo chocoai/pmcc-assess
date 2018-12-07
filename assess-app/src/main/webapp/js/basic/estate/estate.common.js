@@ -129,7 +129,9 @@
                 cityValue: data.basicEstate.city,
                 districtValue: data.basicEstate.district
             });
-
+            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_position, data.basicEstate.position, function (html, data) {
+                estateCommon.estateForm.find('select.position').empty().html(html).trigger('change');
+            }, true);
             AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateSupplySituation, data.basicEstate.supplyGas, function (html, data) {
                 estateCommon.estateForm.find('select.supplyGas').empty().html(html).trigger('change');
             }, true);

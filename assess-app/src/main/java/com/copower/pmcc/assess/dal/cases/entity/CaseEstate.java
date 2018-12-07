@@ -44,7 +44,7 @@ public class CaseEstate {
 
     private Integer buildingNumber;
 
-    private String position;
+    private Integer position;
 
     private String description;
 
@@ -228,12 +228,12 @@ public class CaseEstate {
         this.buildingNumber = buildingNumber;
     }
 
-    public String getPosition() {
+    public Integer getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
-        this.position = position == null ? null : position.trim();
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 
     public String getDescription() {

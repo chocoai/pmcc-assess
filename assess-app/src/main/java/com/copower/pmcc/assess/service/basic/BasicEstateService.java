@@ -199,6 +199,9 @@ public class BasicEstateService {
             //县
             vo.setDistrictName(erpAreaService.getSysAreaName(basicEstate.getDistrict()));
         }
+        if (basicEstate.getPosition() != null) {
+            vo.setPositionName(baseDataDicService.getNameById(basicEstate.getPosition()));
+        }
         if (basicEstate.getDeveloperId() != null) {
             DataDeveloper dataDeveloper = dataDeveloperService.getByDataDeveloperId(basicEstate.getDeveloperId());
             if (dataDeveloper != null) {

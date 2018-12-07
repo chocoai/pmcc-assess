@@ -56,8 +56,8 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">楼盘方位</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="楼盘方位"
-                           name="position" class="form-control" value="${basicEstate.position}">
+                    <select name="position" class="form-control search-select position select2">
+                    </select>
                 </div>
             </div>
             <div class="x-valid">
@@ -87,17 +87,17 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">街道名称</label>
+                <label class="col-sm-1 control-label">街道名称<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="街道名称"
+                    <input type="text" placeholder="街道名称" required
                            name="street" class="form-control" value="${basicEstate.street}">
                 </div>
             </div>
 
             <div class="x-valid">
-                <label class="col-sm-1 control-label">街道号</label>
+                <label class="col-sm-1 control-label">街道号<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text"
+                    <input type="text" required
                            placeholder="街道号" name="streetNumber" class="form-control"
                            value="${basicEstate.streetNumber}">
                 </div>
@@ -144,10 +144,10 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">楼栋数</label>
+                <label class="col-sm-1 control-label">楼栋数<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <input type="text" data-rule-maxlength="100" data-rule-number='true'
-                           placeholder="楼栋数(请输入数字)" name="buildingNumber"
+                           placeholder="楼栋数(请输入数字)" name="buildingNumber" required
                            class="form-control" value="${basicEstate.buildingNumber}">
                 </div>
             </div>

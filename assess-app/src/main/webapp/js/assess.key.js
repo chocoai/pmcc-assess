@@ -87,6 +87,7 @@ AssessDicKey.dataEntrustmentPurpose = "data.entrustment.purpose";//委托目的
 AssessDicKey.value_type = "value.type";//价值类型
 AssessDicKey.project_initiate_urgency = "project.initiate.urgency";//紧急程度
 
+AssessDicKey.estate_position = "estate.position";//楼盘方位
 AssessDicKey.estate_distance = "estate.distance";//交通距离
 AssessDicKey.estate_car_type = "estate.car.type";//车位类型
 AssessDicKey.estate_traffic_nature = "estate.traffic.nature";//交通枢纽性质
