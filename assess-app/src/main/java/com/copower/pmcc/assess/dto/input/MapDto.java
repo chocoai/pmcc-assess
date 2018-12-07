@@ -6,7 +6,7 @@ public class MapDto {
     private BigDecimal lat;
     private BigDecimal lon;
     private Integer id;
-    private Integer pid;
+    private Integer estateId;
     private String name;
     private String type;
 
@@ -37,15 +37,6 @@ public class MapDto {
         return this;
     }
 
-    public Integer getPid() {
-        return pid;
-    }
-
-    public MapDto setPid(Integer pid) {
-        this.pid = pid;
-        return this;
-    }
-
     public String getName() {
         return name;
     }
@@ -61,6 +52,15 @@ public class MapDto {
 
     public MapDto setType(String type) {
         this.type = type;
+        return this;
+    }
+
+    public Integer getEstateId() {
+        return estateId;
+    }
+
+    public MapDto setEstateId(Integer estateId) {
+        this.estateId = estateId;
         return this;
     }
 }

@@ -29,20 +29,24 @@ public class CaseEstateTaggingService {
     private CommonService commonService;
 
 
-    public List<MapDto> mapDtoList(Integer pid,String type) throws Exception {
+    public List<MapDto> mapDtoList(Integer estateId, String type) throws Exception {
         List<MapDto> mapDtoList = new ArrayList<MapDto>(10);
         CaseEstateTagging query = new CaseEstateTagging();
-        query.setPid(pid);
-        query.setType(type);
+        if (estateId != null) {
+            query.setEstateId(estateId);
+        }
+        if (StringUtils.isNotBlank(type)) {
+            query.setType(type);
+        }
         List<CaseEstateTagging> taggingList = getCaseEstateTaggingList(query);
-        if (!ObjectUtils.isEmpty(taggingList)){
-            for (CaseEstateTagging tagging:taggingList){
-                if (!NumberUtils.isNumber(tagging.getLat()) || !NumberUtils.isNumber(tagging.getLng())){
+        if (!ObjectUtils.isEmpty(taggingList)) {
+            for (CaseEstateTagging tagging : taggingList) {
+                if (!NumberUtils.isNumber(tagging.getLat()) || !NumberUtils.isNumber(tagging.getLng())) {
                     continue;
                 }
                 MapDto mapDto = new MapDto();
-                mapDto.setLat(new BigDecimal(tagging.getLat())).setLon(new BigDecimal(tagging.getLng())).setId(tagging.getId()).setType(tagging.getType());
-                if (StringUtils.isNotBlank(tagging.getName())){
+                mapDto.setLat(new BigDecimal(tagging.getLat())).setLon(new BigDecimal(tagging.getLng())).setId(tagging.getId()).setType(tagging.getType()).setEstateId(tagging.getEstateId());
+                if (StringUtils.isNotBlank(tagging.getName())) {
                     mapDto.setName(tagging.getName());
                 }
                 mapDtoList.add(mapDto);

@@ -101,7 +101,7 @@ public class CaseController {
         String view = "/case/areaEstateCaseMap";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         try {
-            modelAndView.addObject("mapList", JSON.toJSONString(caseEstateTaggingService.mapDtoList(0, EstateTaggingTypeEnum.ESTATE.getKey())));
+            modelAndView.addObject("mapList", JSON.toJSONString(caseEstateTaggingService.mapDtoList(null, EstateTaggingTypeEnum.ESTATE.getKey())));
         } catch (Exception e1) {
             logger.error("区域楼盘案例获取经度和纬度出错!",e1);
         }
