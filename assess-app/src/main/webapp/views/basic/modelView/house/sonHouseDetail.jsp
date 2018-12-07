@@ -206,7 +206,7 @@
         }
 
         //绑定事件
-        $('#' + houseRoom.prototype.config().table).closest('.x_panel').bind('click', function () {
+        $('#' + houseRoom.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             houseRoom.prototype.loadDataDicList();
         })
     })();
@@ -256,7 +256,7 @@
             }
         }
         //绑定事件
-        $('#' + houseCorollaryEquipment.prototype.config().table).closest('.x_panel').bind('click', function () {
+        $('#' + houseCorollaryEquipment.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             houseCorollaryEquipment.prototype.loadDataDicList();
         })
     })();
@@ -302,7 +302,7 @@
         }
 
         //绑定事件
-        $('#' + houseFaceStreet.prototype.config().table).closest('.x_panel').bind('click', function () {
+        $('#' + houseFaceStreet.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             houseFaceStreet.prototype.loadDataDicList();
         })
     })();
@@ -351,7 +351,7 @@
         }
 
         //绑定事件
-        $('#' + houseIntelligent.prototype.config().table).closest('.x_panel').bind('click', function () {
+        $('#' + houseIntelligent.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             houseIntelligent.prototype.loadDataDicList();
         })
     })();
@@ -399,7 +399,7 @@
         }
 
         //绑定事件
-        $('#' + houseWater.prototype.config().table).closest('.x_panel').bind('click', function () {
+        $('#' + houseWater.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             houseWater.prototype.loadDataDicList();
         })
     })();
@@ -446,7 +446,7 @@
         }
 
         //绑定事件
-        $('#' + houseHeating.prototype.config().table).closest('.x_panel').bind('click', function () {
+        $('#' + houseHeating.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             houseHeating.prototype.loadDataDicList();
         })
     })();
@@ -493,7 +493,7 @@
         }
 
         //绑定事件
-        $('#' + houseAirConditioner.prototype.config().table).closest('.x_panel').bind('click', function () {
+        $('#' + houseAirConditioner.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             houseAirConditioner.prototype.loadDataDicList();
         })
     })();
@@ -540,7 +540,7 @@
         }
 
         //绑定事件
-        $('#' + houseNewWind.prototype.config().table).closest('.x_panel').bind('click', function () {
+        $('#' + houseNewWind.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             houseNewWind.prototype.loadDataDicList();
         })
     })();

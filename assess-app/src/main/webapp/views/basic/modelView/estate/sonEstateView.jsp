@@ -269,7 +269,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>供排水情况</h4>
+        <h4>供水情况</h4>
         <div class="clearfix"></div>
     </div>
     <div class="x_content collapse">
@@ -277,6 +277,25 @@
                 data-toggle="modal" href="#divBox"> 新增
         </button>
         <table class="table table-bordered" id="EstateSupplyWaterList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
+<div class="x_panel" id="industryDrainWater">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>排水情况</h4>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content collapse">
+        <button type="button" class="btn btn-success" onclick="estateDrainWater.prototype.showModel()"
+                data-toggle="modal" href="#divBox"> 新增
+        </button>
+        <table class="table table-bordered" id="EstateDrainWaterList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
@@ -427,12 +446,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            供应量或功率<span class="symbol required"></span>
+                                            供应量或功率
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="power" class="form-control" data-rule-number='true'
-                                                   name="number"
-                                                   placeholder="供应量或功率" required="required">
+                                            <input type="text" name="power" class="form-control" data-rule-number='true' placeholder="供应量或功率" >
                                         </div>
                                     </div>
                                 </div>
@@ -523,9 +540,7 @@
                                             供应量或功率<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="power" class="form-control" data-rule-number='true'
-                                                   name="number"
-                                                   placeholder="供应量或功率" required="required">
+                                            <input type="text" name="power" class="form-control" data-rule-number='true' placeholder="供应量或功率" >
                                         </div>
                                     </div>
                                 </div>
@@ -613,12 +628,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            供应量或功率<span class="symbol required"></span>
+                                            供应量或功率
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="power" class="form-control" data-rule-number='true'
-                                                   name="number"
-                                                   placeholder="供应量或功率" required="required">
+                                            <input type="text" name="power" class="form-control" data-rule-number='true' placeholder="供应量或功率" >
                                         </div>
                                     </div>
                                 </div>
@@ -686,8 +699,9 @@
                                             供水商信誉<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="reputation" class="form-control"
-                                                   placeholder="供应商信誉" required="required">
+                                            <select required="required" name="reputation"
+                                                    class="form-control search-select select2 reputation">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -706,12 +720,102 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            供应量或功率<span class="symbol required"></span>
+                                            供应量或功率
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="power" class="form-control" data-rule-number='true'
-                                                   name="number"
-                                                   placeholder="供应量或功率" required="required">
+                                            <input type="text" name="power" class="form-control" data-rule-number='true' placeholder="供应量或功率" >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="estateSupplyWater.prototype.saveData()">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="divBoxEstateDrainWater" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">排水</h3>
+            </div>
+            <form id="frmEstateDrainWater" class="form-horizontal">
+                <input type="hidden" name="id">
+                <input type="hidden" name="type" class="type">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            废水处理商名称<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="name"
+                                                   placeholder="废水处理商名称" required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            排水保障等级<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="lineGrade"
+                                                    class="form-control search-select select2 lineGrade">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            废水处理商信誉<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="reputation"
+                                                    class="form-control search-select select2 reputation">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            废水处理商等级<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="grade"
+                                                    class="form-control search-select select2 grade">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            排水量或功率
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="power" class="form-control" data-rule-number='true' placeholder="排水量或功率" >
                                         </div>
                                     </div>
                                 </div>
@@ -764,7 +868,8 @@
                                             车位类型
                                         </label>
                                         <div class="col-sm-10">
-                                            <select class="form-control search-select select2 parkingType" name="parkingType">
+                                            <select class="form-control search-select select2 parkingType"
+                                                    name="parkingType">
                                             </select>
                                         </div>
                                     </div>
@@ -786,7 +891,8 @@
                                             平面图
                                         </label>
                                         <div class="col-sm-10">
-                                            <input id="house_estateParking" name="house_estateParking" placeholder="上传附件" class="form-control"
+                                            <input id="house_estateParking" name="house_estateParking"
+                                                   placeholder="上传附件" class="form-control"
                                                    type="file">
                                             <div id="_house_estateParking"></div>
                                         </div>
@@ -1000,7 +1106,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            环境类别<span class="symbol required"></span>
+                                            影响因素<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="category"
@@ -1107,7 +1213,7 @@
                                             服务内容
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="autoServiceContent" class="form-control">
+                                            <textarea class="form-control" name="autoServiceContent"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -1165,24 +1271,13 @@
                                             <label class="col-md-2 control-label">休闲娱乐名称</label>
                                             <div class="col-sm-10 ">
                                                 <div class="input-group">
-                                                    <input class="form-control" name="name" required="required" type="text">
+                                                    <input class="form-control" name="name" required="required"
+                                                           type="text">
                                                     <span class="input-group-btn">
                                                          <input type="button" class="btn btn-warning" value="X"
-                                                         onclick="matchingRecreation.prototype.cleanHTMLData(this)"></span>
+                                                                onclick="matchingRecreation.prototype.cleanHTMLData(this)"></span>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            休闲娱乐距离<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="distance"
-                                                    class="form-control search-select select2 distance">
-                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -1194,6 +1289,18 @@
                                         <div class="col-sm-10">
                                             <select required="required" name="category"
                                                     class="form-control search-select select2 category">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            休闲娱乐距离<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="distance"
+                                                    class="form-control search-select select2 distance">
                                             </select>
                                         </div>
                                     </div>
@@ -1500,7 +1607,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            名称<span class="symbol required"></span>
+                                            机构名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" name="organizationName" class="form-control"
@@ -1511,22 +1618,11 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            床位数<span class="symbol required"></span>
+                                            机构等级<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="bedNumber" class="form-control"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            医养条件距离<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="distance"
-                                                    class="form-control search-select select2 distance">
+                                            <select required="required" name="organizationLevel"
+                                                    class="form-control search-select select2 organizationLevel">
                                             </select>
                                         </div>
                                     </div>
@@ -1534,11 +1630,23 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            医养条件等级<span class="symbol required"></span>
+                                            机构床位数<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="organizationLevel"
-                                                    class="form-control search-select select2 organizationLevel">
+                                            <select required="required" name="bedNumber"
+                                                    class="form-control search-select select2 bedNumber">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            机构距离<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="distance"
+                                                    class="form-control search-select select2 distance">
                                             </select>
                                         </div>
                                     </div>

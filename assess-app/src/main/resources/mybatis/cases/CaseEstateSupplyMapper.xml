@@ -6,9 +6,9 @@
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="reputation" property="reputation" jdbcType="VARCHAR" />
-    <result column="grade" property="grade" jdbcType="VARCHAR" />
-    <result column="line_grade" property="lineGrade" jdbcType="VARCHAR" />
+    <result column="reputation" property="reputation" jdbcType="INTEGER" />
+    <result column="grade" property="grade" jdbcType="INTEGER" />
+    <result column="line_grade" property="lineGrade" jdbcType="INTEGER" />
     <result column="power" property="power" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -115,7 +115,7 @@
       power, creator, gmt_created, 
       gmt_modified)
     values (#{estateId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{reputation,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, #{lineGrade,jdbcType=VARCHAR}, 
+      #{reputation,jdbcType=INTEGER}, #{grade,jdbcType=INTEGER}, #{lineGrade,jdbcType=INTEGER}, 
       #{power,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -167,13 +167,13 @@
         #{name,jdbcType=VARCHAR},
       </if>
       <if test="reputation != null" >
-        #{reputation,jdbcType=VARCHAR},
+        #{reputation,jdbcType=INTEGER},
       </if>
       <if test="grade != null" >
-        #{grade,jdbcType=VARCHAR},
+        #{grade,jdbcType=INTEGER},
       </if>
       <if test="lineGrade != null" >
-        #{lineGrade,jdbcType=VARCHAR},
+        #{lineGrade,jdbcType=INTEGER},
       </if>
       <if test="power != null" >
         #{power,jdbcType=VARCHAR},
@@ -211,13 +211,13 @@
         name = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.reputation != null" >
-        reputation = #{record.reputation,jdbcType=VARCHAR},
+        reputation = #{record.reputation,jdbcType=INTEGER},
       </if>
       <if test="record.grade != null" >
-        grade = #{record.grade,jdbcType=VARCHAR},
+        grade = #{record.grade,jdbcType=INTEGER},
       </if>
       <if test="record.lineGrade != null" >
-        line_grade = #{record.lineGrade,jdbcType=VARCHAR},
+        line_grade = #{record.lineGrade,jdbcType=INTEGER},
       </if>
       <if test="record.power != null" >
         power = #{record.power,jdbcType=VARCHAR},
@@ -242,9 +242,9 @@
       estate_id = #{record.estateId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
-      reputation = #{record.reputation,jdbcType=VARCHAR},
-      grade = #{record.grade,jdbcType=VARCHAR},
-      line_grade = #{record.lineGrade,jdbcType=VARCHAR},
+      reputation = #{record.reputation,jdbcType=INTEGER},
+      grade = #{record.grade,jdbcType=INTEGER},
+      line_grade = #{record.lineGrade,jdbcType=INTEGER},
       power = #{record.power,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -266,13 +266,13 @@
         name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="reputation != null" >
-        reputation = #{reputation,jdbcType=VARCHAR},
+        reputation = #{reputation,jdbcType=INTEGER},
       </if>
       <if test="grade != null" >
-        grade = #{grade,jdbcType=VARCHAR},
+        grade = #{grade,jdbcType=INTEGER},
       </if>
       <if test="lineGrade != null" >
-        line_grade = #{lineGrade,jdbcType=VARCHAR},
+        line_grade = #{lineGrade,jdbcType=INTEGER},
       </if>
       <if test="power != null" >
         power = #{power,jdbcType=VARCHAR},
@@ -294,9 +294,9 @@
     set estate_id = #{estateId,jdbcType=INTEGER},
       type = #{type,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
-      reputation = #{reputation,jdbcType=VARCHAR},
-      grade = #{grade,jdbcType=VARCHAR},
-      line_grade = #{lineGrade,jdbcType=VARCHAR},
+      reputation = #{reputation,jdbcType=INTEGER},
+      grade = #{grade,jdbcType=INTEGER},
+      line_grade = #{lineGrade,jdbcType=INTEGER},
       power = #{power,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

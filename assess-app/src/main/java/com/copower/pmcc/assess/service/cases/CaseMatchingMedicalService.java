@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseMatchingMedicalDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseMatchingMedical;
 import com.copower.pmcc.assess.dto.output.cases.CaseMatchingMedicalVo;
@@ -13,7 +12,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -73,24 +71,9 @@ public class CaseMatchingMedicalService {
     public CaseMatchingMedicalVo getCaseMatchingMedicalVo(CaseMatchingMedical caseMatchingMedical) {
         CaseMatchingMedicalVo vo = new CaseMatchingMedicalVo();
         BeanUtils.copyProperties(caseMatchingMedical, vo);
-        vo.setOrganizationLevelName(baseDataDicService.getNameById(NumberUtils.isNumber(caseMatchingMedical.getOrganizationLevel()) ? Integer.parseInt(caseMatchingMedical.getOrganizationLevel()) : null));
+        vo.setOrganizationLevelName(baseDataDicService.getNameById(caseMatchingMedical.getOrganizationLevel()));
         vo.setDistanceName(baseDataDicService.getNameById(caseMatchingMedical.getDistance()));
         return vo;
-    }
-
-    private String getValue(String key, Integer v) {
-        StringBuilder builder = new StringBuilder(1024);
-        List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(key);
-        if (baseDataDic.size() >= 1) {
-            if (v != null) {
-                for (BaseDataDic base : baseDataDic) {
-                    if (base.getId().intValue() == v.intValue()) {
-                        builder.append(base.getName());
-                    }
-                }
-            }
-        }
-        return builder.toString();
     }
 
     /**

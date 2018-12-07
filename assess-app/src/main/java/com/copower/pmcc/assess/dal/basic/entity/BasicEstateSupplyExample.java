@@ -375,62 +375,52 @@ public class BasicEstateSupplyExample {
             return (Criteria) this;
         }
 
-        public Criteria andReputationEqualTo(String value) {
+        public Criteria andReputationEqualTo(Integer value) {
             addCriterion("reputation =", value, "reputation");
             return (Criteria) this;
         }
 
-        public Criteria andReputationNotEqualTo(String value) {
+        public Criteria andReputationNotEqualTo(Integer value) {
             addCriterion("reputation <>", value, "reputation");
             return (Criteria) this;
         }
 
-        public Criteria andReputationGreaterThan(String value) {
+        public Criteria andReputationGreaterThan(Integer value) {
             addCriterion("reputation >", value, "reputation");
             return (Criteria) this;
         }
 
-        public Criteria andReputationGreaterThanOrEqualTo(String value) {
+        public Criteria andReputationGreaterThanOrEqualTo(Integer value) {
             addCriterion("reputation >=", value, "reputation");
             return (Criteria) this;
         }
 
-        public Criteria andReputationLessThan(String value) {
+        public Criteria andReputationLessThan(Integer value) {
             addCriterion("reputation <", value, "reputation");
             return (Criteria) this;
         }
 
-        public Criteria andReputationLessThanOrEqualTo(String value) {
+        public Criteria andReputationLessThanOrEqualTo(Integer value) {
             addCriterion("reputation <=", value, "reputation");
             return (Criteria) this;
         }
 
-        public Criteria andReputationLike(String value) {
-            addCriterion("reputation like", value, "reputation");
-            return (Criteria) this;
-        }
-
-        public Criteria andReputationNotLike(String value) {
-            addCriterion("reputation not like", value, "reputation");
-            return (Criteria) this;
-        }
-
-        public Criteria andReputationIn(List<String> values) {
+        public Criteria andReputationIn(List<Integer> values) {
             addCriterion("reputation in", values, "reputation");
             return (Criteria) this;
         }
 
-        public Criteria andReputationNotIn(List<String> values) {
+        public Criteria andReputationNotIn(List<Integer> values) {
             addCriterion("reputation not in", values, "reputation");
             return (Criteria) this;
         }
 
-        public Criteria andReputationBetween(String value1, String value2) {
+        public Criteria andReputationBetween(Integer value1, Integer value2) {
             addCriterion("reputation between", value1, value2, "reputation");
             return (Criteria) this;
         }
 
-        public Criteria andReputationNotBetween(String value1, String value2) {
+        public Criteria andReputationNotBetween(Integer value1, Integer value2) {
             addCriterion("reputation not between", value1, value2, "reputation");
             return (Criteria) this;
         }
@@ -445,62 +435,52 @@ public class BasicEstateSupplyExample {
             return (Criteria) this;
         }
 
-        public Criteria andGradeEqualTo(String value) {
+        public Criteria andGradeEqualTo(Integer value) {
             addCriterion("grade =", value, "grade");
             return (Criteria) this;
         }
 
-        public Criteria andGradeNotEqualTo(String value) {
+        public Criteria andGradeNotEqualTo(Integer value) {
             addCriterion("grade <>", value, "grade");
             return (Criteria) this;
         }
 
-        public Criteria andGradeGreaterThan(String value) {
+        public Criteria andGradeGreaterThan(Integer value) {
             addCriterion("grade >", value, "grade");
             return (Criteria) this;
         }
 
-        public Criteria andGradeGreaterThanOrEqualTo(String value) {
+        public Criteria andGradeGreaterThanOrEqualTo(Integer value) {
             addCriterion("grade >=", value, "grade");
             return (Criteria) this;
         }
 
-        public Criteria andGradeLessThan(String value) {
+        public Criteria andGradeLessThan(Integer value) {
             addCriterion("grade <", value, "grade");
             return (Criteria) this;
         }
 
-        public Criteria andGradeLessThanOrEqualTo(String value) {
+        public Criteria andGradeLessThanOrEqualTo(Integer value) {
             addCriterion("grade <=", value, "grade");
             return (Criteria) this;
         }
 
-        public Criteria andGradeLike(String value) {
-            addCriterion("grade like", value, "grade");
-            return (Criteria) this;
-        }
-
-        public Criteria andGradeNotLike(String value) {
-            addCriterion("grade not like", value, "grade");
-            return (Criteria) this;
-        }
-
-        public Criteria andGradeIn(List<String> values) {
+        public Criteria andGradeIn(List<Integer> values) {
             addCriterion("grade in", values, "grade");
             return (Criteria) this;
         }
 
-        public Criteria andGradeNotIn(List<String> values) {
+        public Criteria andGradeNotIn(List<Integer> values) {
             addCriterion("grade not in", values, "grade");
             return (Criteria) this;
         }
 
-        public Criteria andGradeBetween(String value1, String value2) {
+        public Criteria andGradeBetween(Integer value1, Integer value2) {
             addCriterion("grade between", value1, value2, "grade");
             return (Criteria) this;
         }
 
-        public Criteria andGradeNotBetween(String value1, String value2) {
+        public Criteria andGradeNotBetween(Integer value1, Integer value2) {
             addCriterion("grade not between", value1, value2, "grade");
             return (Criteria) this;
         }
@@ -515,62 +495,52 @@ public class BasicEstateSupplyExample {
             return (Criteria) this;
         }
 
-        public Criteria andLineGradeEqualTo(String value) {
+        public Criteria andLineGradeEqualTo(Integer value) {
             addCriterion("line_grade =", value, "lineGrade");
             return (Criteria) this;
         }
 
-        public Criteria andLineGradeNotEqualTo(String value) {
+        public Criteria andLineGradeNotEqualTo(Integer value) {
             addCriterion("line_grade <>", value, "lineGrade");
             return (Criteria) this;
         }
 
-        public Criteria andLineGradeGreaterThan(String value) {
+        public Criteria andLineGradeGreaterThan(Integer value) {
             addCriterion("line_grade >", value, "lineGrade");
             return (Criteria) this;
         }
 
-        public Criteria andLineGradeGreaterThanOrEqualTo(String value) {
+        public Criteria andLineGradeGreaterThanOrEqualTo(Integer value) {
             addCriterion("line_grade >=", value, "lineGrade");
             return (Criteria) this;
         }
 
-        public Criteria andLineGradeLessThan(String value) {
+        public Criteria andLineGradeLessThan(Integer value) {
             addCriterion("line_grade <", value, "lineGrade");
             return (Criteria) this;
         }
 
-        public Criteria andLineGradeLessThanOrEqualTo(String value) {
+        public Criteria andLineGradeLessThanOrEqualTo(Integer value) {
             addCriterion("line_grade <=", value, "lineGrade");
             return (Criteria) this;
         }
 
-        public Criteria andLineGradeLike(String value) {
-            addCriterion("line_grade like", value, "lineGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andLineGradeNotLike(String value) {
-            addCriterion("line_grade not like", value, "lineGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andLineGradeIn(List<String> values) {
+        public Criteria andLineGradeIn(List<Integer> values) {
             addCriterion("line_grade in", values, "lineGrade");
             return (Criteria) this;
         }
 
-        public Criteria andLineGradeNotIn(List<String> values) {
+        public Criteria andLineGradeNotIn(List<Integer> values) {
             addCriterion("line_grade not in", values, "lineGrade");
             return (Criteria) this;
         }
 
-        public Criteria andLineGradeBetween(String value1, String value2) {
+        public Criteria andLineGradeBetween(Integer value1, Integer value2) {
             addCriterion("line_grade between", value1, value2, "lineGrade");
             return (Criteria) this;
         }
 
-        public Criteria andLineGradeNotBetween(String value1, String value2) {
+        public Criteria andLineGradeNotBetween(Integer value1, Integer value2) {
             addCriterion("line_grade not between", value1, value2, "lineGrade");
             return (Criteria) this;
         }

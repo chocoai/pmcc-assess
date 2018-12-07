@@ -305,62 +305,52 @@ public class BasicMatchingMedicalExample {
             return (Criteria) this;
         }
 
-        public Criteria andOrganizationLevelEqualTo(String value) {
+        public Criteria andOrganizationLevelEqualTo(Integer value) {
             addCriterion("organization_level =", value, "organizationLevel");
             return (Criteria) this;
         }
 
-        public Criteria andOrganizationLevelNotEqualTo(String value) {
+        public Criteria andOrganizationLevelNotEqualTo(Integer value) {
             addCriterion("organization_level <>", value, "organizationLevel");
             return (Criteria) this;
         }
 
-        public Criteria andOrganizationLevelGreaterThan(String value) {
+        public Criteria andOrganizationLevelGreaterThan(Integer value) {
             addCriterion("organization_level >", value, "organizationLevel");
             return (Criteria) this;
         }
 
-        public Criteria andOrganizationLevelGreaterThanOrEqualTo(String value) {
+        public Criteria andOrganizationLevelGreaterThanOrEqualTo(Integer value) {
             addCriterion("organization_level >=", value, "organizationLevel");
             return (Criteria) this;
         }
 
-        public Criteria andOrganizationLevelLessThan(String value) {
+        public Criteria andOrganizationLevelLessThan(Integer value) {
             addCriterion("organization_level <", value, "organizationLevel");
             return (Criteria) this;
         }
 
-        public Criteria andOrganizationLevelLessThanOrEqualTo(String value) {
+        public Criteria andOrganizationLevelLessThanOrEqualTo(Integer value) {
             addCriterion("organization_level <=", value, "organizationLevel");
             return (Criteria) this;
         }
 
-        public Criteria andOrganizationLevelLike(String value) {
-            addCriterion("organization_level like", value, "organizationLevel");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrganizationLevelNotLike(String value) {
-            addCriterion("organization_level not like", value, "organizationLevel");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrganizationLevelIn(List<String> values) {
+        public Criteria andOrganizationLevelIn(List<Integer> values) {
             addCriterion("organization_level in", values, "organizationLevel");
             return (Criteria) this;
         }
 
-        public Criteria andOrganizationLevelNotIn(List<String> values) {
+        public Criteria andOrganizationLevelNotIn(List<Integer> values) {
             addCriterion("organization_level not in", values, "organizationLevel");
             return (Criteria) this;
         }
 
-        public Criteria andOrganizationLevelBetween(String value1, String value2) {
+        public Criteria andOrganizationLevelBetween(Integer value1, Integer value2) {
             addCriterion("organization_level between", value1, value2, "organizationLevel");
             return (Criteria) this;
         }
 
-        public Criteria andOrganizationLevelNotBetween(String value1, String value2) {
+        public Criteria andOrganizationLevelNotBetween(Integer value1, Integer value2) {
             addCriterion("organization_level not between", value1, value2, "organizationLevel");
             return (Criteria) this;
         }
@@ -375,62 +365,52 @@ public class BasicMatchingMedicalExample {
             return (Criteria) this;
         }
 
-        public Criteria andBedNumberEqualTo(String value) {
+        public Criteria andBedNumberEqualTo(Integer value) {
             addCriterion("bed_number =", value, "bedNumber");
             return (Criteria) this;
         }
 
-        public Criteria andBedNumberNotEqualTo(String value) {
+        public Criteria andBedNumberNotEqualTo(Integer value) {
             addCriterion("bed_number <>", value, "bedNumber");
             return (Criteria) this;
         }
 
-        public Criteria andBedNumberGreaterThan(String value) {
+        public Criteria andBedNumberGreaterThan(Integer value) {
             addCriterion("bed_number >", value, "bedNumber");
             return (Criteria) this;
         }
 
-        public Criteria andBedNumberGreaterThanOrEqualTo(String value) {
+        public Criteria andBedNumberGreaterThanOrEqualTo(Integer value) {
             addCriterion("bed_number >=", value, "bedNumber");
             return (Criteria) this;
         }
 
-        public Criteria andBedNumberLessThan(String value) {
+        public Criteria andBedNumberLessThan(Integer value) {
             addCriterion("bed_number <", value, "bedNumber");
             return (Criteria) this;
         }
 
-        public Criteria andBedNumberLessThanOrEqualTo(String value) {
+        public Criteria andBedNumberLessThanOrEqualTo(Integer value) {
             addCriterion("bed_number <=", value, "bedNumber");
             return (Criteria) this;
         }
 
-        public Criteria andBedNumberLike(String value) {
-            addCriterion("bed_number like", value, "bedNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBedNumberNotLike(String value) {
-            addCriterion("bed_number not like", value, "bedNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBedNumberIn(List<String> values) {
+        public Criteria andBedNumberIn(List<Integer> values) {
             addCriterion("bed_number in", values, "bedNumber");
             return (Criteria) this;
         }
 
-        public Criteria andBedNumberNotIn(List<String> values) {
+        public Criteria andBedNumberNotIn(List<Integer> values) {
             addCriterion("bed_number not in", values, "bedNumber");
             return (Criteria) this;
         }
 
-        public Criteria andBedNumberBetween(String value1, String value2) {
+        public Criteria andBedNumberBetween(Integer value1, Integer value2) {
             addCriterion("bed_number between", value1, value2, "bedNumber");
             return (Criteria) this;
         }
 
-        public Criteria andBedNumberNotBetween(String value1, String value2) {
+        public Criteria andBedNumberNotBetween(Integer value1, Integer value2) {
             addCriterion("bed_number not between", value1, value2, "bedNumber");
             return (Criteria) this;
         }

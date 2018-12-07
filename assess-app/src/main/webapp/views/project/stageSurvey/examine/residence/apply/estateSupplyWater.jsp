@@ -69,10 +69,10 @@
             loadDataDicList: function () {
                 var cols = [];
                 cols.push({field: 'name', title: '供水名称'});
-                cols.push({field: 'reputation', title: '供水商信誉'});
+                cols.push({field: 'reputationName', title: '供水商信誉'});
                 // cols.push({field: 'type', title: '类型'});
                 cols.push({field: 'gradeName', title: '供水商等级'});
-                cols.push({field: 'lineGradeName', title: '供水线路等级'});
+                cols.push({field: 'lineGradeName', title: '供水保障等级'});
                 cols.push({field: 'power', title: '供应量或功率'});
                 cols.push({
                     field: 'id', title: '操作', formatter: function (value, row, index) {

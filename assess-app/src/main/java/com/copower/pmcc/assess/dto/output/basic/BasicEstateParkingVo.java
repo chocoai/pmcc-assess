@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dal.basic.entity.BasicEstateParking;
 public class BasicEstateParkingVo extends BasicEstateParking {
     private String fileViewName;
     private String parkingTypeName;
+    private String locationName;
 
     public String getFileViewName() {
         return fileViewName;
@@ -25,5 +26,13 @@ public class BasicEstateParkingVo extends BasicEstateParking {
 
     public void setParkingTypeName(String parkingTypeName) {
         this.parkingTypeName = parkingTypeName;
+    }
+
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
     }
 }

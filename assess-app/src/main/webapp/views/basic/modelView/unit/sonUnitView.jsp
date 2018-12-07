@@ -390,22 +390,22 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            准载人数<span class="symbol required"></span>
+                                            准载人数
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" placeholder="准载人数(数字)" data-rule-number='true'
-                                                   name="quasiLoadNumber" class="form-control" required="required">
+                                                   name="quasiLoadNumber" class="form-control" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            准载重量<span class="symbol required"></span>
+                                            准载重量
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" placeholder="准载重量(数字)" data-rule-number='true'
-                                                   name="quasiLoadWeight" class="form-control" required="required">
+                                                   name="quasiLoadWeight" class="form-control" >
                                         </div>
                                     </div>
                                 </div>

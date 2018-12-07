@@ -121,25 +121,9 @@ public class BasicEstateSupplyService {
         }
         BasicEstateSupplyVo vo = new BasicEstateSupplyVo();
         BeanUtils.copyProperties(basicEstateSupply,vo);
-        BaseDataDic dataDic = null;
-        if (StringUtils.isNotBlank(basicEstateSupply.getGrade())){
-            if (NumberUtils.isNumber(basicEstateSupply.getGrade())){
-                dataDic = baseDataDicService.getDataDicById(Integer.parseInt(basicEstateSupply.getGrade()));
-                if (dataDic != null){
-                    vo.setGradeName(dataDic.getName());
-                    dataDic = null;
-                }
-            }
-        }
-        if (StringUtils.isNotBlank(basicEstateSupply.getLineGrade())){
-            if (NumberUtils.isNumber(basicEstateSupply.getLineGrade())){
-                dataDic = baseDataDicService.getDataDicById(Integer.parseInt(basicEstateSupply.getLineGrade()));
-                if (dataDic != null){
-                    vo.setLineGradeName(dataDic.getName());
-                    dataDic = null;
-                }
-            }
-        }
+        vo.setReputationName(baseDataDicService.getNameById(basicEstateSupply.getReputation()));
+        vo.setLineGradeName(baseDataDicService.getNameById(basicEstateSupply.getLineGrade()));
+        vo.setGradeName(baseDataDicService.getNameById(basicEstateSupply.getGrade()));
         return vo;
     }
     

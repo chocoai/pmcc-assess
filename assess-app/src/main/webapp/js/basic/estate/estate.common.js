@@ -129,7 +129,9 @@
                 cityValue: data.basicEstate.city,
                 districtValue: data.basicEstate.district
             });
-
+            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_position, data.basicEstate.position, function (html, data) {
+                estateCommon.estateForm.find('select.position').empty().html(html).trigger('change');
+            }, true);
             AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateSupplySituation, data.basicEstate.supplyGas, function (html, data) {
                 estateCommon.estateForm.find('select.supplyGas').empty().html(html).trigger('change');
             }, true);
@@ -138,6 +140,9 @@
             }, true);
             AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateSupplySituation, data.basicEstate.supplyWater, function (html, data) {
                 estateCommon.estateForm.find('select.supplyWater').empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateSupplySituation, data.basicEstate.drainWater, function (html, data) {
+                estateCommon.estateForm.find('select.drainWater').empty().html(html).trigger('change');
             }, true);
             AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateSupplySituation, data.basicEstate.supplyHeating, function (html, data) {
                 estateCommon.estateForm.find('select.supplyHeating').empty().html(html).trigger('change');

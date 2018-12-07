@@ -343,7 +343,7 @@
         }
 
         //绑定事件
-        $('#'+estateNetwork.prototype.config().table).closest('.x_panel').bind('click',function () {
+        $('#'+estateNetwork.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
             estateNetwork.prototype.loadDataDicList();
         })
     })();
@@ -390,7 +390,7 @@
         }
 
         //绑定事件
-        $('#'+estateParking.prototype.config().table).closest('.x_panel').bind('click',function () {
+        $('#'+estateParking.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
             estateParking.prototype.loadDataDicList();
         })
     })();
@@ -419,9 +419,9 @@
             loadDataDicList: function () {
                 var cols = [];
                 cols.push({field: 'name', title: '供水名称'});
-                cols.push({field: 'reputation', title: '供水商信誉'});
+                cols.push({field: 'reputationName', title: '供水商信誉'});
                 cols.push({field: 'gradeName', title: '供水商等级'});
-                cols.push({field: 'lineGradeName', title: '供水线路等级'});
+                cols.push({field: 'lineGradeName', title: '供水保障等级'});
                 cols.push({field: 'power', title: '供应量或功率'});
                 $("#" + estateSupplyWater.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyWater.prototype.config().table, "${pageContext.request.contextPath}/basicEstateSupply/getBootstrapTableVo", cols, {
@@ -440,7 +440,7 @@
         }
 
         //绑定事件
-        $('#'+estateSupplyWater.prototype.config().table).closest('.x_panel').bind('click',function () {
+        $('#'+estateSupplyWater.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
             estateSupplyWater.prototype.loadDataDicList();
         })
     })();
@@ -468,7 +468,7 @@
             loadDataDicList: function () {
                 var cols = [];
                 cols.push({field: 'name', title: '名称'});
-                cols.push({field: 'reputation', title: '供电商信誉'});
+                cols.push({field: 'reputationName', title: '供电商信誉'});
                 cols.push({field: 'gradeName', title: '供电商等级'});
                 cols.push({field: 'lineGradeName', title: '供电线路等级'});
                 cols.push({field: 'power', title: '供应量或功率'});
@@ -489,7 +489,7 @@
         }
 
         //绑定事件
-        $('#'+estateSupplyPower.prototype.config().table).closest('.x_panel').bind('click',function () {
+        $('#'+estateSupplyPower.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
             estateSupplyPower.prototype.loadDataDicList();
         })
     })();
@@ -516,7 +516,7 @@
             loadDataDicList: function () {
                 var cols = [];
                 cols.push({field: 'name', title: '名称'});
-                cols.push({field: 'reputation', title: '供热商信誉'});
+                cols.push({field: 'reputationName', title: '供热商信誉'});
                 cols.push({field: 'gradeName', title: '供热商等级'});
                 cols.push({field: 'power', title: '供应量或功率'});
                 $("#" + estateSupplyHeating.prototype.config().table).bootstrapTable('destroy');
@@ -536,7 +536,7 @@
         }
 
         //绑定事件
-        $('#'+estateSupplyHeating.prototype.config().table).closest('.x_panel').bind('click',function () {
+        $('#'+estateSupplyHeating.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
             estateSupplyHeating.prototype.loadDataDicList();
         })
     })();
@@ -563,7 +563,7 @@
             loadDataDicList: function () {
                 var cols = [];
                 cols.push({field: 'name', title: '名称'});
-                cols.push({field: 'reputation', title: '供气商信誉'});
+                cols.push({field: 'reputationName', title: '供气商信誉'});
                 cols.push({field: 'gradeName', title: '供气商等级'});
                 cols.push({field: 'power', title: '供应量或功率'});
                 $("#" + estateSupplyGas.prototype.config().table).bootstrapTable('destroy');
@@ -583,7 +583,7 @@
         }
 
         //绑定事件
-        $('#'+estateSupplyGas.prototype.config().table).closest('.x_panel').bind('click',function () {
+        $('#'+estateSupplyGas.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
             estateSupplyGas.prototype.loadDataDicList();
         })
     })();
@@ -631,7 +631,7 @@
         }
 
         //绑定事件
-        $('#'+matchingEducation.prototype.config().table).closest('.x_panel').bind('click',function () {
+        $('#'+matchingEducation.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
             matchingEducation.prototype.loadDataDicList();
         })
     })();
@@ -659,7 +659,7 @@
             loadDataDicList: function () {
                 var cols = [];
                 cols.push({field: 'typeName', title: '环境类型'});
-                cols.push({field: 'categoryName', title: '环境类别'});
+                cols.push({field: 'categoryName', title: '影响因素'});
                 cols.push({field: 'influenceDegreeName', title: '影响程度'});
                 $("#" + matchingEnvironment.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingEnvironment.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingEnvironment/getBootstrapTableVo", cols, {
@@ -677,7 +677,7 @@
         }
 
         //绑定事件
-        $('#'+matchingEnvironment.prototype.config().table).closest('.x_panel').bind('click',function () {
+        $('#'+matchingEnvironment.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
             matchingEnvironment.prototype.loadDataDicList();
         })
     })();
@@ -724,7 +724,7 @@
         }
 
         //绑定事件
-        $('#'+matchingFinance.prototype.config().table).closest('.x_panel').bind('click',function () {
+        $('#'+matchingFinance.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
             matchingFinance.prototype.loadDataDicList();
         })
     })();
@@ -772,7 +772,7 @@
         }
 
         //绑定事件
-        $('#'+matchingMarket.prototype.config().table).closest('.x_panel').bind('click',function () {
+        $('#'+matchingMarket.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
             matchingMarket.prototype.loadDataDicList();
         })
     })();
@@ -820,7 +820,7 @@
         }
 
         //绑定事件
-        $('#'+matchingRestaurant.prototype.config().table).closest('.x_panel').bind('click',function () {
+        $('#'+matchingRestaurant.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
             matchingRestaurant.prototype.loadDataDicList();
         })
     })();
@@ -867,7 +867,7 @@
         }
 
         //绑定事件
-        $('#'+matchingRecreation.prototype.config().table).closest('.x_panel').bind('click',function () {
+        $('#'+matchingRecreation.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
             matchingRecreation.prototype.loadDataDicList();
         })
     })();
@@ -914,7 +914,7 @@
         }
 
         //绑定事件
-        $('#'+matchingMedical.prototype.config().table).closest('.x_panel').bind('click',function () {
+        $('#'+matchingMedical.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
             matchingMedical.prototype.loadDataDicList();
         })
     })();
@@ -961,7 +961,7 @@
         }
 
         //绑定事件
-        $('#'+matchingMaterial.prototype.config().table).closest('.x_panel').bind('click',function () {
+        $('#'+matchingMaterial.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
             matchingMaterial.prototype.loadDataDicList();
         })
     })();
@@ -1007,7 +1007,7 @@
         }
 
         //绑定事件
-        $('#'+matchingMainConversion.prototype.config().table).closest('.x_panel').bind('click',function () {
+        $('#'+matchingMainConversion.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
             matchingMainConversion.prototype.loadDataDicList();
         })
     })();
@@ -1053,7 +1053,7 @@
         }
 
         //绑定事件
-        $('#'+matchingMainRoad.prototype.config().table).closest('.x_panel').bind('click',function () {
+        $('#'+matchingMainRoad.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
             matchingMainRoad.prototype.loadDataDicList();
         })
     })();
@@ -1100,7 +1100,7 @@
         }
 
         //绑定事件
-        $('#'+matchingMetro.prototype.config().table).closest('.x_panel').bind('click',function () {
+        $('#'+matchingMetro.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
             matchingMetro.prototype.loadDataDicList();
         })
     })();
@@ -1146,7 +1146,7 @@
         }
 
         //绑定事件
-        $('#'+matchingTrafficHub.prototype.config().table).closest('.x_panel').bind('click',function () {
+        $('#'+matchingTrafficHub.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
             matchingTrafficHub.prototype.loadDataDicList();
         })
     })();
@@ -1194,7 +1194,7 @@
         }
 
         //绑定事件
-        $('#'+matchingTransit.prototype.config().table).closest('.x_panel').bind('click',function () {
+        $('#'+matchingTransit.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
             matchingTransit.prototype.loadDataDicList();
         })
     })();

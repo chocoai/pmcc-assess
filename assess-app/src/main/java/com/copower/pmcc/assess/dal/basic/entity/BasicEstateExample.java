@@ -1496,62 +1496,52 @@ public class BasicEstateExample {
             return (Criteria) this;
         }
 
-        public Criteria andPositionEqualTo(String value) {
+        public Criteria andPositionEqualTo(Integer value) {
             addCriterion("position =", value, "position");
             return (Criteria) this;
         }
 
-        public Criteria andPositionNotEqualTo(String value) {
+        public Criteria andPositionNotEqualTo(Integer value) {
             addCriterion("position <>", value, "position");
             return (Criteria) this;
         }
 
-        public Criteria andPositionGreaterThan(String value) {
+        public Criteria andPositionGreaterThan(Integer value) {
             addCriterion("position >", value, "position");
             return (Criteria) this;
         }
 
-        public Criteria andPositionGreaterThanOrEqualTo(String value) {
+        public Criteria andPositionGreaterThanOrEqualTo(Integer value) {
             addCriterion("position >=", value, "position");
             return (Criteria) this;
         }
 
-        public Criteria andPositionLessThan(String value) {
+        public Criteria andPositionLessThan(Integer value) {
             addCriterion("position <", value, "position");
             return (Criteria) this;
         }
 
-        public Criteria andPositionLessThanOrEqualTo(String value) {
+        public Criteria andPositionLessThanOrEqualTo(Integer value) {
             addCriterion("position <=", value, "position");
             return (Criteria) this;
         }
 
-        public Criteria andPositionLike(String value) {
-            addCriterion("position like", value, "position");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionNotLike(String value) {
-            addCriterion("position not like", value, "position");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionIn(List<String> values) {
+        public Criteria andPositionIn(List<Integer> values) {
             addCriterion("position in", values, "position");
             return (Criteria) this;
         }
 
-        public Criteria andPositionNotIn(List<String> values) {
+        public Criteria andPositionNotIn(List<Integer> values) {
             addCriterion("position not in", values, "position");
             return (Criteria) this;
         }
 
-        public Criteria andPositionBetween(String value1, String value2) {
+        public Criteria andPositionBetween(Integer value1, Integer value2) {
             addCriterion("position between", value1, value2, "position");
             return (Criteria) this;
         }
 
-        public Criteria andPositionNotBetween(String value1, String value2) {
+        public Criteria andPositionNotBetween(Integer value1, Integer value2) {
             addCriterion("position not between", value1, value2, "position");
             return (Criteria) this;
         }
@@ -1943,6 +1933,66 @@ public class BasicEstateExample {
 
         public Criteria andSupplyWaterNotBetween(Integer value1, Integer value2) {
             addCriterion("supply_water not between", value1, value2, "supplyWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterIsNull() {
+            addCriterion("drain_water is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterIsNotNull() {
+            addCriterion("drain_water is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterEqualTo(Integer value) {
+            addCriterion("drain_water =", value, "drainWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterNotEqualTo(Integer value) {
+            addCriterion("drain_water <>", value, "drainWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterGreaterThan(Integer value) {
+            addCriterion("drain_water >", value, "drainWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterGreaterThanOrEqualTo(Integer value) {
+            addCriterion("drain_water >=", value, "drainWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterLessThan(Integer value) {
+            addCriterion("drain_water <", value, "drainWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterLessThanOrEqualTo(Integer value) {
+            addCriterion("drain_water <=", value, "drainWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterIn(List<Integer> values) {
+            addCriterion("drain_water in", values, "drainWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterNotIn(List<Integer> values) {
+            addCriterion("drain_water not in", values, "drainWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterBetween(Integer value1, Integer value2) {
+            addCriterion("drain_water between", value1, value2, "drainWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterNotBetween(Integer value1, Integer value2) {
+            addCriterion("drain_water not between", value1, value2, "drainWater");
             return (Criteria) this;
         }
 

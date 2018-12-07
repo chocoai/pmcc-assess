@@ -46,7 +46,7 @@ public class BasicEstate {
 
     private Integer buildingNumber;
 
-    private String position;
+    private Integer position;
 
     private String description;
 
@@ -59,6 +59,8 @@ public class BasicEstate {
     private Integer supplyPower;
 
     private Integer supplyWater;
+
+    private Integer drainWater;
 
     private Integer supplyGas;
 
@@ -236,12 +238,12 @@ public class BasicEstate {
         this.buildingNumber = buildingNumber;
     }
 
-    public String getPosition() {
+    public Integer getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
-        this.position = position == null ? null : position.trim();
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 
     public String getDescription() {
@@ -290,6 +292,14 @@ public class BasicEstate {
 
     public void setSupplyWater(Integer supplyWater) {
         this.supplyWater = supplyWater;
+    }
+
+    public Integer getDrainWater() {
+        return drainWater;
+    }
+
+    public void setDrainWater(Integer drainWater) {
+        this.drainWater = drainWater;
     }
 
     public Integer getSupplyGas() {

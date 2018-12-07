@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateSupplyDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupply;
 import com.copower.pmcc.assess.dto.output.cases.CaseEstateSupplyVo;
@@ -19,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,30 +72,9 @@ public class CaseEstateSupplyService {
     private CaseEstateSupplyVo getCaseEstateSupplyVo(CaseEstateSupply oo) {
         CaseEstateSupplyVo vo = new CaseEstateSupplyVo();
         BeanUtils.copyProperties(oo, vo);
-        if (!StringUtils.isEmpty(oo.getGrade())) {
-            if (org.apache.commons.lang.StringUtils.isNumeric(oo.getGrade())) {
-                List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_SUPPLIER_GRADE);
-                if (baseDataDic.size() >= 1) {
-                    for (BaseDataDic base : baseDataDic) {
-                        if (base.getId().equals(Integer.parseInt(oo.getGrade()))) {
-                            vo.setGradeName(base.getName());
-                        }
-                    }
-                }
-            }
-        }
-        if (!StringUtils.isEmpty(oo.getLineGrade())) {
-            if (org.apache.commons.lang.StringUtils.isNumeric(oo.getLineGrade())) {
-                List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_LINE_WATER_SUPPLY_PIPE_GRADE);
-                if (baseDataDic.size() >= 1) {
-                    for (BaseDataDic base : baseDataDic) {
-                        if (base.getId().equals(Integer.parseInt(oo.getLineGrade()))) {
-                            vo.setLineGradeName(base.getName());
-                        }
-                    }
-                }
-            }
-        }
+        vo.setReputationName(baseDataDicService.getNameById(oo.getReputation()));
+        vo.setLineGradeName(baseDataDicService.getNameById(oo.getLineGrade()));
+        vo.setGradeName(baseDataDicService.getNameById(oo.getGrade()));
         return vo;
     }
 

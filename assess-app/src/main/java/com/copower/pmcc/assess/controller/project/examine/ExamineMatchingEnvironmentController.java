@@ -124,7 +124,7 @@ public class ExamineMatchingEnvironmentController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/environment_category",method = {RequestMethod.GET},name = "环境类别")
+    @RequestMapping(value = "/environment_category",method = {RequestMethod.GET},name = "影响因素")
     public HttpResult environment_category() {
         try {
             List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_ENVIRONMENT_CATEGORY);

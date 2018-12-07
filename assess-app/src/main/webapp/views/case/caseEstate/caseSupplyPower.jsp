@@ -61,7 +61,7 @@
             loadDataDicList: function () {
                 var cols = [];
                 cols.push({field: 'name', title: '名称'});
-                cols.push({field: 'reputation', title: '供电商信誉'});
+                cols.push({field: 'reputationName', title: '供电商信誉'});
                 // cols.push({field: 'type', title: '类型'});
                 cols.push({field: 'gradeName', title: '供电商等级'});
                 cols.push({field: 'lineGradeName', title: '供电线路等级'});

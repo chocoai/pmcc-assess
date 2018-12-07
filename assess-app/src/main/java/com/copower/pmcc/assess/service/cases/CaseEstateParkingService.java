@@ -1,8 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
 import com.copower.pmcc.assess.common.enums.ExamineFileUpLoadFieldEnum;
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateParkingDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateParking;
 import com.copower.pmcc.assess.dto.output.cases.CaseEstateParkingVo;
@@ -80,14 +78,8 @@ public class CaseEstateParkingService {
     public CaseEstateParkingVo getCaseEstateParkingVo(CaseEstateParking examineEstateParking) {
         CaseEstateParkingVo vo = new CaseEstateParkingVo();
         BeanUtils.copyProperties(examineEstateParking, vo);
-        List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_CAR_TYPE);
-        if (examineEstateParking.getParkingType() != null) {
-            for (BaseDataDic base : baseDataDic) {
-                if (base.getId().equals(examineEstateParking.getParkingType())) {
-                    vo.setParkingTypeName(base.getName());
-                }
-            }
-        }
+        vo.setLocationName(baseDataDicService.getNameById(examineEstateParking.getLocation()));
+        vo.setParkingTypeName(baseDataDicService.getNameById(examineEstateParking.getParkingType()));
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(examineEstateParking.getId(), ExamineFileUpLoadFieldEnum.houseEstateParking.getName(), FormatUtils.entityNameConvertToTableName(CaseEstateParking.class));
         StringBuilder builder = new StringBuilder();
         if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {

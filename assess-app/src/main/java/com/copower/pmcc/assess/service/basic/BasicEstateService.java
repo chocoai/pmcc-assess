@@ -199,6 +199,9 @@ public class BasicEstateService {
             //县
             vo.setDistrictName(erpAreaService.getSysAreaName(basicEstate.getDistrict()));
         }
+        if (basicEstate.getPosition() != null) {
+            vo.setPositionName(baseDataDicService.getNameById(basicEstate.getPosition()));
+        }
         if (basicEstate.getDeveloperId() != null) {
             DataDeveloper dataDeveloper = dataDeveloperService.getByDataDeveloperId(basicEstate.getDeveloperId());
             if (dataDeveloper != null) {
@@ -220,6 +223,7 @@ public class BasicEstateService {
         if (basicEstate.getSupplyWater() != null) {
             vo.setSupplyWaterName(baseDataDicService.getNameById(basicEstate.getSupplyWater()));
         }
+        vo.setDrainWaterName(baseDataDicService.getNameById(basicEstate.getDrainWater()));
         if (basicEstate.getSupplyHeating() != null) {
             vo.setSupplyHeatingName(baseDataDicService.getNameById(basicEstate.getSupplyHeating()));
         }

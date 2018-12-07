@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseBuildingOutfit" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="building_id" property="buildingId" jdbcType="INTEGER" />
-    <result column="decoration_part" property="decorationPart" jdbcType="INTEGER" />
+    <result column="decoration_part" property="decorationPart" jdbcType="VARCHAR" />
     <result column="decorating_material" property="decoratingMaterial" jdbcType="INTEGER" />
     <result column="material_price" property="materialPrice" jdbcType="INTEGER" />
     <result column="construction_technology" property="constructionTechnology" jdbcType="INTEGER" />
@@ -113,7 +113,7 @@
       material_price, construction_technology, 
       creator, gmt_created, gmt_modified, 
       build_number)
-    values (#{buildingId,jdbcType=INTEGER}, #{decorationPart,jdbcType=INTEGER}, #{decoratingMaterial,jdbcType=INTEGER}, 
+    values (#{buildingId,jdbcType=INTEGER}, #{decorationPart,jdbcType=VARCHAR}, #{decoratingMaterial,jdbcType=INTEGER}, 
       #{materialPrice,jdbcType=INTEGER}, #{constructionTechnology,jdbcType=INTEGER}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{buildNumber,jdbcType=VARCHAR})
@@ -157,7 +157,7 @@
         #{buildingId,jdbcType=INTEGER},
       </if>
       <if test="decorationPart != null" >
-        #{decorationPart,jdbcType=INTEGER},
+        #{decorationPart,jdbcType=VARCHAR},
       </if>
       <if test="decoratingMaterial != null" >
         #{decoratingMaterial,jdbcType=INTEGER},
@@ -198,7 +198,7 @@
         building_id = #{record.buildingId,jdbcType=INTEGER},
       </if>
       <if test="record.decorationPart != null" >
-        decoration_part = #{record.decorationPart,jdbcType=INTEGER},
+        decoration_part = #{record.decorationPart,jdbcType=VARCHAR},
       </if>
       <if test="record.decoratingMaterial != null" >
         decorating_material = #{record.decoratingMaterial,jdbcType=INTEGER},
@@ -230,7 +230,7 @@
     update tb_case_building_outfit
     set id = #{record.id,jdbcType=INTEGER},
       building_id = #{record.buildingId,jdbcType=INTEGER},
-      decoration_part = #{record.decorationPart,jdbcType=INTEGER},
+      decoration_part = #{record.decorationPart,jdbcType=VARCHAR},
       decorating_material = #{record.decoratingMaterial,jdbcType=INTEGER},
       material_price = #{record.materialPrice,jdbcType=INTEGER},
       construction_technology = #{record.constructionTechnology,jdbcType=INTEGER},
@@ -249,7 +249,7 @@
         building_id = #{buildingId,jdbcType=INTEGER},
       </if>
       <if test="decorationPart != null" >
-        decoration_part = #{decorationPart,jdbcType=INTEGER},
+        decoration_part = #{decorationPart,jdbcType=VARCHAR},
       </if>
       <if test="decoratingMaterial != null" >
         decorating_material = #{decoratingMaterial,jdbcType=INTEGER},
@@ -278,7 +278,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuildingOutfit" >
     update tb_case_building_outfit
     set building_id = #{buildingId,jdbcType=INTEGER},
-      decoration_part = #{decorationPart,jdbcType=INTEGER},
+      decoration_part = #{decorationPart,jdbcType=VARCHAR},
       decorating_material = #{decoratingMaterial,jdbcType=INTEGER},
       material_price = #{materialPrice,jdbcType=INTEGER},
       construction_technology = #{constructionTechnology,jdbcType=INTEGER},

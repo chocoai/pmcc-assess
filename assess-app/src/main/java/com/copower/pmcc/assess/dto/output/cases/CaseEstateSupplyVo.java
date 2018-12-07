@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupply;
 public class CaseEstateSupplyVo extends CaseEstateSupply {
     private String gradeName;
     private String lineGradeName;
+    private String reputationName;
 
     public String getGradeName() {
         return gradeName;
@@ -25,5 +26,13 @@ public class CaseEstateSupplyVo extends CaseEstateSupply {
 
     public void setLineGradeName(String lineGradeName) {
         this.lineGradeName = lineGradeName;
+    }
+
+    public String getReputationName() {
+        return reputationName;
+    }
+
+    public void setReputationName(String reputationName) {
+        this.reputationName = reputationName;
     }
 }

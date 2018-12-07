@@ -56,8 +56,8 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">楼盘方位</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="楼盘方位"
-                           name="position" class="form-control" value="${basicEstate.position}">
+                    <select name="position" class="form-control search-select position select2">
+                    </select>
                 </div>
             </div>
             <div class="x-valid">
@@ -87,17 +87,17 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">街道名称</label>
+                <label class="col-sm-1 control-label">街道名称<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="街道名称"
+                    <input type="text" placeholder="街道名称" required
                            name="street" class="form-control" value="${basicEstate.street}">
                 </div>
             </div>
 
             <div class="x-valid">
-                <label class="col-sm-1 control-label">街道号</label>
+                <label class="col-sm-1 control-label">街道号<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text"
+                    <input type="text" required
                            placeholder="街道号" name="streetNumber" class="form-control"
                            value="${basicEstate.streetNumber}">
                 </div>
@@ -144,10 +144,10 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">楼栋数</label>
+                <label class="col-sm-1 control-label">楼栋数<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <input type="text" data-rule-maxlength="100" data-rule-number='true'
-                           placeholder="楼栋数(请输入数字)" name="buildingNumber"
+                           placeholder="楼栋数(请输入数字)" name="buildingNumber" required
                            class="form-control" value="${basicEstate.buildingNumber}">
                 </div>
             </div>
@@ -298,7 +298,7 @@
                 </div>
 
                 <div class="x-valid supplyWater">
-                    <label class="col-sm-1 control-label">供排水情况</label>
+                    <label class="col-sm-1 control-label">供水情况</label>
                     <div class="col-sm-3">
                         <select class="form-control search-select select2 supplyWater" name="supplyWater">
                         </select>
@@ -306,6 +306,13 @@
                 </div>
             </div>
             <div class="form-group">
+                <div class="x-valid drainWater">
+                    <label class="col-sm-1 control-label">排水情况</label>
+                    <div class="col-sm-3">
+                        <select class="form-control search-select select2 drainWater" name="drainWater">
+                        </select>
+                    </div>
+                </div>
                 <div class="x-valid supplyHeating">
                     <label class="col-sm-1 control-label">供热信息</label>
                     <div class="col-sm-3">
@@ -421,9 +428,27 @@
                 </div>
             </div>
             <div class="x-valid">
+                <label class="col-sm-1 control-label">土地面积</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" data-rule-number='true'
+                           placeholder="土地面积(请输入数字)" name="landArea" value="${basicEstateLandState.landArea}">
+                </div>
+            </div>
+
+
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
                 <label class="col-sm-1 control-label">地形</label>
                 <div class="col-sm-3">
                     <select class="form-control search-select select2 planeness" name="planeness">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">地势</label>
+                <div class="col-sm-3">
+                    <select class="form-control search-select select2 topographicTerrain" name="topographicTerrain">
                     </select>
                 </div>
             </div>
@@ -436,7 +461,19 @@
                     </select>
                 </div>
             </div>
-
+             <span class="checkbox-inline">
+                 <input type="checkbox" name="method" value=""><label>通气</label>
+             </span>
+        </div>
+        <div class="x_title">
+            <h4>
+                <small>
+                    开发限制条件
+                </small>
+            </h4>
+            <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">开发限制条件</label>
                 <div class="col-sm-3">
@@ -444,28 +481,21 @@
                            name="restrictiveCondition" value="${basicEstateLandState.restrictiveCondition}">
                 </div>
             </div>
+        </div>
+        <div class="x_title">
+            <h4>
+                <small>
+                    土壤
+                </small>
+            </h4>
+            <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土壤</label>
                 <div class="col-sm-3">
                     <input type="text" class="form-control" placeholder="土壤"
                            name="soil" value="${basicEstateLandState.soil}">
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">地势</label>
-                <div class="col-sm-3">
-                    <select class="form-control search-select select2 topographicTerrain" name="topographicTerrain">
-                    </select>
-                </div>
-            </div>
-
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">土地面积</label>
-                <div class="col-sm-3">
-                    <input type="text" class="form-control" data-rule-number='true'
-                           placeholder="土地面积(请输入数字)" name="landArea" value="${basicEstateLandState.landArea}">
                 </div>
             </div>
         </div>

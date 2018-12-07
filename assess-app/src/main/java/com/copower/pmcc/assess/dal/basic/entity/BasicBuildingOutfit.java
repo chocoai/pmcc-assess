@@ -7,7 +7,7 @@ public class BasicBuildingOutfit {
 
     private Integer buildingId;
 
-    private Integer decorationPart;
+    private String decorationPart;
 
     private Integer decoratingMaterial;
 
@@ -39,12 +39,12 @@ public class BasicBuildingOutfit {
         this.buildingId = buildingId;
     }
 
-    public Integer getDecorationPart() {
+    public String getDecorationPart() {
         return decorationPart;
     }
 
-    public void setDecorationPart(Integer decorationPart) {
-        this.decorationPart = decorationPart;
+    public void setDecorationPart(String decorationPart) {
+        this.decorationPart = decorationPart == null ? null : decorationPart.trim();
     }
 
     public Integer getDecoratingMaterial() {

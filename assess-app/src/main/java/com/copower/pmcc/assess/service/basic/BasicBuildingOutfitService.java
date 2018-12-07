@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicBuildingOutfitDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicBuildingOutfit;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicBuildingOutfitVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -119,10 +118,6 @@ public class BasicBuildingOutfitService {
         }
         BasicBuildingOutfitVo vo = new BasicBuildingOutfitVo();
         BeanUtils.copyProperties(basicBuildingOutfit,vo);
-        BaseDataDic dataDic = null;
-        if (basicBuildingOutfit.getDecorationPart() != null) {
-            vo.setDecorationPartName(baseDataDicService.getNameById(basicBuildingOutfit.getDecorationPart()));
-        }
         if (basicBuildingOutfit.getDecoratingMaterial() != null) {
             vo.setDecoratingMaterialName(baseDataDicService.getNameById(basicBuildingOutfit.getDecoratingMaterial()));
         }

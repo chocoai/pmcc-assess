@@ -355,62 +355,52 @@ public class BasicEstateParkingExample {
             return (Criteria) this;
         }
 
-        public Criteria andLocationEqualTo(String value) {
+        public Criteria andLocationEqualTo(Integer value) {
             addCriterion("location =", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andLocationNotEqualTo(String value) {
+        public Criteria andLocationNotEqualTo(Integer value) {
             addCriterion("location <>", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andLocationGreaterThan(String value) {
+        public Criteria andLocationGreaterThan(Integer value) {
             addCriterion("location >", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andLocationGreaterThanOrEqualTo(String value) {
+        public Criteria andLocationGreaterThanOrEqualTo(Integer value) {
             addCriterion("location >=", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andLocationLessThan(String value) {
+        public Criteria andLocationLessThan(Integer value) {
             addCriterion("location <", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andLocationLessThanOrEqualTo(String value) {
+        public Criteria andLocationLessThanOrEqualTo(Integer value) {
             addCriterion("location <=", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andLocationLike(String value) {
-            addCriterion("location like", value, "location");
-            return (Criteria) this;
-        }
-
-        public Criteria andLocationNotLike(String value) {
-            addCriterion("location not like", value, "location");
-            return (Criteria) this;
-        }
-
-        public Criteria andLocationIn(List<String> values) {
+        public Criteria andLocationIn(List<Integer> values) {
             addCriterion("location in", values, "location");
             return (Criteria) this;
         }
 
-        public Criteria andLocationNotIn(List<String> values) {
+        public Criteria andLocationNotIn(List<Integer> values) {
             addCriterion("location not in", values, "location");
             return (Criteria) this;
         }
 
-        public Criteria andLocationBetween(String value1, String value2) {
+        public Criteria andLocationBetween(Integer value1, Integer value2) {
             addCriterion("location between", value1, value2, "location");
             return (Criteria) this;
         }
 
-        public Criteria andLocationNotBetween(String value1, String value2) {
+        public Criteria andLocationNotBetween(Integer value1, Integer value2) {
             addCriterion("location not between", value1, value2, "location");
             return (Criteria) this;
         }

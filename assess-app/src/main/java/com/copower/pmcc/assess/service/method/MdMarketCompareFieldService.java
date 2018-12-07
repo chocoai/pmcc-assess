@@ -237,7 +237,7 @@ public class MdMarketCompareFieldService {
                         //楼盘下供电
                         if (CollectionUtils.isNotEmpty(estateSupplyList)) {
                             for (ExamineEstateSupply supply : estateSupplyList) {
-                                if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATESUPPLYPOWER.getName())) {
+                                if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getName())) {
                                     getCommonSupply(stringBuilder, supply);
                                 }
                             }
@@ -246,7 +246,7 @@ public class MdMarketCompareFieldService {
                         //楼盘下供排水
                         if (CollectionUtils.isNotEmpty(estateSupplyList)) {
                             for (ExamineEstateSupply supply : estateSupplyList) {
-                                if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATESUPPLYWATER.getName())) {
+                                if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_WATER.getName())) {
                                     getCommonSupply(stringBuilder, supply);
                                 }
                             }
@@ -255,7 +255,7 @@ public class MdMarketCompareFieldService {
                         //楼盘下采暖供热
                         if (CollectionUtils.isNotEmpty(estateSupplyList)) {
                             for (ExamineEstateSupply supply : estateSupplyList) {
-                                if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATESUPPLYHEATING.getName())) {
+                                if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_HEATING.getName())) {
                                     getCommonSupply(stringBuilder, supply);
                                 }
                             }
@@ -264,7 +264,7 @@ public class MdMarketCompareFieldService {
                         //楼盘下供气
                         if (CollectionUtils.isNotEmpty(estateSupplyList)) {
                             for (ExamineEstateSupply supply : estateSupplyList) {
-                                if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATESUPPLYGAS.getName())) {
+                                if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_GAS.getName())) {
                                     getCommonSupply(stringBuilder, supply);
                                 }
                             }
@@ -653,7 +653,7 @@ public class MdMarketCompareFieldService {
         stringBuilder.append(StringUtils.isEmpty(supply.getName()) ? "" : String.format("供应商名称:%s、", supply.getName()));
         stringBuilder.append(StringUtils.isEmpty(supply.getReputation()) ? "" : String.format("供应商信誉:%s、", supply.getReputation()));
         stringBuilder.append(StringUtils.isEmpty(supply.getGrade()) ? "" : String.format("供应商等级:%s、", baseDataDicService.getNameById(Integer.valueOf(supply.getGrade()))));
-        stringBuilder.append(StringUtils.isEmpty(supply.getLineGrade()) ? "" : String.format("线路供水管等级:%s、", baseDataDicService.getNameById(Integer.valueOf(supply.getLineGrade()))));
+        stringBuilder.append(StringUtils.isEmpty(supply.getLineGrade()) ? "" : String.format("供应保障等级:%s、", baseDataDicService.getNameById(Integer.valueOf(supply.getLineGrade()))));
         stringBuilder.append(StringUtils.isEmpty(supply.getPower()) ? "" : String.format("供应量或功率:%s、", supply.getPower()));
     }
 

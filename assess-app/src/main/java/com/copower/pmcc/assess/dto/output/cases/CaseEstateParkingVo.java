@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseEstateParking;
  */
 public class CaseEstateParkingVo extends CaseEstateParking {
     private String parkingTypeName;
+    private String locationName;
     private String fileViewName;
 
     public String getParkingTypeName() {
@@ -25,5 +26,13 @@ public class CaseEstateParkingVo extends CaseEstateParking {
 
     public void setFileViewName(String fileViewName) {
         this.fileViewName = fileViewName;
+    }
+
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
     }
 }

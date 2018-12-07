@@ -8,33 +8,17 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
  * @Description:
  */
 public class CaseEstateVo extends CaseEstate {
-    private String volumetricRateName;
-    private String greeningRateName;
-
     private String provinceName;
     private String cityName;
     private String districtName;
+    private String positionName;
     private String landLevelName;
     private String supplyGasName;
     private String supplyPowerName;
     private String supplyWaterName;
+    private String drainWaterName;
     private String supplyHeatingName;
 
-    public String getVolumetricRateName() {
-        return volumetricRateName;
-    }
-
-    public void setVolumetricRateName(String volumetricRateName) {
-        this.volumetricRateName = volumetricRateName;
-    }
-
-    public String getGreeningRateName() {
-        return greeningRateName;
-    }
-
-    public void setGreeningRateName(String greeningRateName) {
-        this.greeningRateName = greeningRateName;
-    }
 
     public String getProvinceName() {
         return provinceName;
@@ -58,6 +42,14 @@ public class CaseEstateVo extends CaseEstate {
 
     public void setDistrictName(String districtName) {
         this.districtName = districtName;
+    }
+
+    public String getPositionName() {
+        return positionName;
+    }
+
+    public void setPositionName(String positionName) {
+        this.positionName = positionName;
     }
 
     public String getLandLevelName() {
@@ -98,5 +90,13 @@ public class CaseEstateVo extends CaseEstate {
 
     public void setSupplyHeatingName(String supplyHeatingName) {
         this.supplyHeatingName = supplyHeatingName;
+    }
+
+    public String getDrainWaterName() {
+        return drainWaterName;
+    }
+
+    public void setDrainWaterName(String drainWaterName) {
+        this.drainWaterName = drainWaterName;
     }
 }
