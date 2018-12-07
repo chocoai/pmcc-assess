@@ -60,6 +60,8 @@ public class BasicEstate {
 
     private Integer supplyWater;
 
+    private Integer drainWater;
+
     private Integer supplyGas;
 
     private String creator;
@@ -290,6 +292,14 @@ public class BasicEstate {
 
     public void setSupplyWater(Integer supplyWater) {
         this.supplyWater = supplyWater;
+    }
+
+    public Integer getDrainWater() {
+        return drainWater;
+    }
+
+    public void setDrainWater(Integer drainWater) {
+        this.drainWater = drainWater;
     }
 
     public Integer getSupplyGas() {

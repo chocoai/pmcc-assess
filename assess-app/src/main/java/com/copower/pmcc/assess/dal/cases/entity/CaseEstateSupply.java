@@ -11,11 +11,11 @@ public class CaseEstateSupply {
 
     private String name;
 
-    private String reputation;
+    private Integer reputation;
 
-    private String grade;
+    private Integer grade;
 
-    private String lineGrade;
+    private Integer lineGrade;
 
     private String power;
 
@@ -57,28 +57,28 @@ public class CaseEstateSupply {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getReputation() {
+    public Integer getReputation() {
         return reputation;
     }
 
-    public void setReputation(String reputation) {
-        this.reputation = reputation == null ? null : reputation.trim();
+    public void setReputation(Integer reputation) {
+        this.reputation = reputation;
     }
 
-    public String getGrade() {
+    public Integer getGrade() {
         return grade;
     }
 
-    public void setGrade(String grade) {
-        this.grade = grade == null ? null : grade.trim();
+    public void setGrade(Integer grade) {
+        this.grade = grade;
     }
 
-    public String getLineGrade() {
+    public Integer getLineGrade() {
         return lineGrade;
     }
 
-    public void setLineGrade(String lineGrade) {
-        this.lineGrade = lineGrade == null ? null : lineGrade.trim();
+    public void setLineGrade(Integer lineGrade) {
+        this.lineGrade = lineGrade;
     }
 
     public String getPower() {

@@ -9,9 +9,9 @@ public class BasicMatchingMedical {
 
     private String organizationName;
 
-    private String organizationLevel;
+    private Integer organizationLevel;
 
-    private String bedNumber;
+    private Integer bedNumber;
 
     private Integer distance;
 
@@ -45,20 +45,20 @@ public class BasicMatchingMedical {
         this.organizationName = organizationName == null ? null : organizationName.trim();
     }
 
-    public String getOrganizationLevel() {
+    public Integer getOrganizationLevel() {
         return organizationLevel;
     }
 
-    public void setOrganizationLevel(String organizationLevel) {
-        this.organizationLevel = organizationLevel == null ? null : organizationLevel.trim();
+    public void setOrganizationLevel(Integer organizationLevel) {
+        this.organizationLevel = organizationLevel;
     }
 
-    public String getBedNumber() {
+    public Integer getBedNumber() {
         return bedNumber;
     }
 
-    public void setBedNumber(String bedNumber) {
-        this.bedNumber = bedNumber == null ? null : bedNumber.trim();
+    public void setBedNumber(Integer bedNumber) {
+        this.bedNumber = bedNumber;
     }
 
     public Integer getDistance() {

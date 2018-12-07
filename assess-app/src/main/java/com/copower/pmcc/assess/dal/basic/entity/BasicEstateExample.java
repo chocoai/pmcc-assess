@@ -1936,6 +1936,66 @@ public class BasicEstateExample {
             return (Criteria) this;
         }
 
+        public Criteria andDrainWaterIsNull() {
+            addCriterion("drain_water is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterIsNotNull() {
+            addCriterion("drain_water is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterEqualTo(Integer value) {
+            addCriterion("drain_water =", value, "drainWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterNotEqualTo(Integer value) {
+            addCriterion("drain_water <>", value, "drainWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterGreaterThan(Integer value) {
+            addCriterion("drain_water >", value, "drainWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterGreaterThanOrEqualTo(Integer value) {
+            addCriterion("drain_water >=", value, "drainWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterLessThan(Integer value) {
+            addCriterion("drain_water <", value, "drainWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterLessThanOrEqualTo(Integer value) {
+            addCriterion("drain_water <=", value, "drainWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterIn(List<Integer> values) {
+            addCriterion("drain_water in", values, "drainWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterNotIn(List<Integer> values) {
+            addCriterion("drain_water not in", values, "drainWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterBetween(Integer value1, Integer value2) {
+            addCriterion("drain_water between", value1, value2, "drainWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrainWaterNotBetween(Integer value1, Integer value2) {
+            addCriterion("drain_water not between", value1, value2, "drainWater");
+            return (Criteria) this;
+        }
+
         public Criteria andSupplyGasIsNull() {
             addCriterion("supply_gas is null");
             return (Criteria) this;

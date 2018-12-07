@@ -90,10 +90,10 @@ public class CaseEstateController {
         }
         modelAndView.addObject("hasEstateNetworkData", caseEstateNetworkService.hasEstateNetworkData(id));
         modelAndView.addObject("hasEstateParkingData", caseEstateParkingService.hasEstateParkingData(id));
-        modelAndView.addObject("hasEstateSupplyGas", caseEstateSupplyService.hasEstateSupplyData(id, ExamineEstateSupplyEnumType.ESTATESUPPLYGAS.getName()));
-        modelAndView.addObject("hasEstateSupplyHeating", caseEstateSupplyService.hasEstateSupplyData(id, ExamineEstateSupplyEnumType.ESTATESUPPLYHEATING.getName()));
-        modelAndView.addObject("hasEstateSupplyPower", caseEstateSupplyService.hasEstateSupplyData(id, ExamineEstateSupplyEnumType.ESTATESUPPLYPOWER.getName()));
-        modelAndView.addObject("hasEstateSupplyWater", caseEstateSupplyService.hasEstateSupplyData(id, ExamineEstateSupplyEnumType.ESTATESUPPLYWATER.getName()));
+        modelAndView.addObject("hasEstateSupplyGas", caseEstateSupplyService.hasEstateSupplyData(id, ExamineEstateSupplyEnumType.ESTATE_SUPPLY_GAS.getName()));
+        modelAndView.addObject("hasEstateSupplyHeating", caseEstateSupplyService.hasEstateSupplyData(id, ExamineEstateSupplyEnumType.ESTATE_SUPPLY_HEATING.getName()));
+        modelAndView.addObject("hasEstateSupplyPower", caseEstateSupplyService.hasEstateSupplyData(id, ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getName()));
+        modelAndView.addObject("hasEstateSupplyWater", caseEstateSupplyService.hasEstateSupplyData(id, ExamineEstateSupplyEnumType.ESTATE_SUPPLY_WATER.getName()));
 
         modelAndView.addObject("hasMatchingEducationData", caseMatchingEducationService.hasMatchingEducationData(id));
         modelAndView.addObject("hasMatchingEnvironmentData", caseMatchingEnvironmentService.hasMatchingEnvironmentData(id));

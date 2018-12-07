@@ -122,7 +122,7 @@ public class ExamineEstateSupplyController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/line_water_supply_pipe_grade",method = {RequestMethod.GET},name = "线路供水管等级")
+    @RequestMapping(value = "/line_water_supply_pipe_grade",method = {RequestMethod.GET},name = "供应保障等级")
     public HttpResult estate_distance() {
         try {
             List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_LINE_WATER_SUPPLY_PIPE_GRADE);

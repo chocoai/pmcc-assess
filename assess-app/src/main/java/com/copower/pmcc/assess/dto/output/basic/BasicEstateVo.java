@@ -17,6 +17,7 @@ public class BasicEstateVo extends BasicEstate {
     private String supplyGasName;
     private String supplyPowerName;
     private String supplyWaterName;
+    private String drainWaterName;
     private String supplyHeatingName;
 
     public String getProvinceName() {
@@ -89,5 +90,13 @@ public class BasicEstateVo extends BasicEstate {
 
     public void setSupplyHeatingName(String supplyHeatingName) {
         this.supplyHeatingName = supplyHeatingName;
+    }
+
+    public String getDrainWaterName() {
+        return drainWaterName;
+    }
+
+    public void setDrainWaterName(String drainWaterName) {
+        this.drainWaterName = drainWaterName;
     }
 }

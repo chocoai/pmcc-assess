@@ -68,7 +68,7 @@
             loadDataDicList: function () {
                 var cols = [];
                 cols.push({field: 'typeName', title: '环境类型'});
-                cols.push({field: 'categoryName', title: '环境类别'});
+                cols.push({field: 'categoryName', title: '影响因素'});
                 cols.push({field: 'influenceDegreeName', title: '影响程度'});
                 cols.push({
                     field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -290,7 +290,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            环境类别<span class="symbol required"></span>
+                                            影响因素<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="category"

@@ -5,8 +5,8 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="organization_name" property="organizationName" jdbcType="VARCHAR" />
-    <result column="organization_level" property="organizationLevel" jdbcType="VARCHAR" />
-    <result column="bed_number" property="bedNumber" jdbcType="VARCHAR" />
+    <result column="organization_level" property="organizationLevel" jdbcType="INTEGER" />
+    <result column="bed_number" property="bedNumber" jdbcType="INTEGER" />
     <result column="distance" property="distance" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -111,8 +111,8 @@
     insert into tb_basic_matching_medical (estate_id, organization_name, organization_level, 
       bed_number, distance, creator, 
       gmt_created, gmt_modified)
-    values (#{estateId,jdbcType=INTEGER}, #{organizationName,jdbcType=VARCHAR}, #{organizationLevel,jdbcType=VARCHAR}, 
-      #{bedNumber,jdbcType=VARCHAR}, #{distance,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+    values (#{estateId,jdbcType=INTEGER}, #{organizationName,jdbcType=VARCHAR}, #{organizationLevel,jdbcType=INTEGER}, 
+      #{bedNumber,jdbcType=INTEGER}, #{distance,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingMedical" >
@@ -154,10 +154,10 @@
         #{organizationName,jdbcType=VARCHAR},
       </if>
       <if test="organizationLevel != null" >
-        #{organizationLevel,jdbcType=VARCHAR},
+        #{organizationLevel,jdbcType=INTEGER},
       </if>
       <if test="bedNumber != null" >
-        #{bedNumber,jdbcType=VARCHAR},
+        #{bedNumber,jdbcType=INTEGER},
       </if>
       <if test="distance != null" >
         #{distance,jdbcType=INTEGER},
@@ -192,10 +192,10 @@
         organization_name = #{record.organizationName,jdbcType=VARCHAR},
       </if>
       <if test="record.organizationLevel != null" >
-        organization_level = #{record.organizationLevel,jdbcType=VARCHAR},
+        organization_level = #{record.organizationLevel,jdbcType=INTEGER},
       </if>
       <if test="record.bedNumber != null" >
-        bed_number = #{record.bedNumber,jdbcType=VARCHAR},
+        bed_number = #{record.bedNumber,jdbcType=INTEGER},
       </if>
       <if test="record.distance != null" >
         distance = #{record.distance,jdbcType=INTEGER},
@@ -219,8 +219,8 @@
     set id = #{record.id,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
       organization_name = #{record.organizationName,jdbcType=VARCHAR},
-      organization_level = #{record.organizationLevel,jdbcType=VARCHAR},
-      bed_number = #{record.bedNumber,jdbcType=VARCHAR},
+      organization_level = #{record.organizationLevel,jdbcType=INTEGER},
+      bed_number = #{record.bedNumber,jdbcType=INTEGER},
       distance = #{record.distance,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -239,10 +239,10 @@
         organization_name = #{organizationName,jdbcType=VARCHAR},
       </if>
       <if test="organizationLevel != null" >
-        organization_level = #{organizationLevel,jdbcType=VARCHAR},
+        organization_level = #{organizationLevel,jdbcType=INTEGER},
       </if>
       <if test="bedNumber != null" >
-        bed_number = #{bedNumber,jdbcType=VARCHAR},
+        bed_number = #{bedNumber,jdbcType=INTEGER},
       </if>
       <if test="distance != null" >
         distance = #{distance,jdbcType=INTEGER},
@@ -263,8 +263,8 @@
     update tb_basic_matching_medical
     set estate_id = #{estateId,jdbcType=INTEGER},
       organization_name = #{organizationName,jdbcType=VARCHAR},
-      organization_level = #{organizationLevel,jdbcType=VARCHAR},
-      bed_number = #{bedNumber,jdbcType=VARCHAR},
+      organization_level = #{organizationLevel,jdbcType=INTEGER},
+      bed_number = #{bedNumber,jdbcType=INTEGER},
       distance = #{distance,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

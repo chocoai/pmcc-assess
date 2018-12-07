@@ -37,7 +37,7 @@ var matchingMainConversion;
                 }
             });
             $("#" + matchingMainConversion.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingMainConversion.prototype.config().table, getContextPath()+"/basicMatchingTraffic/getBootstrapTableVo", cols, {
+            TableInit(matchingMainConversion.prototype.config().table, getContextPath() + "/basicMatchingTraffic/getBootstrapTableVo", cols, {
                 type: matchingMainConversion.prototype.config().type,
                 estateId: estateCommon.getEstateId()
             }, {
@@ -51,7 +51,7 @@ var matchingMainConversion;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingTraffic/deleteBasicMatchingTraffic",
+                url: getContextPath() + "/basicMatchingTraffic/deleteBasicMatchingTraffic",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -81,7 +81,7 @@ var matchingMainConversion;
             var data = formParams(matchingMainConversion.prototype.config().frm);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
-                url: getContextPath()+"/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
+                url: getContextPath() + "/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -102,7 +102,7 @@ var matchingMainConversion;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingTraffic/getBasicMatchingTrafficById",
+                url: getContextPath() + "/basicMatchingTraffic/getBasicMatchingTrafficById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -131,7 +131,7 @@ var matchingMainConversion;
     }
 
     //绑定事件
-    $('#'+matchingMainConversion.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + matchingMainConversion.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         matchingMainConversion.prototype.loadDataDicList();
     })
 })();
@@ -170,7 +170,7 @@ var matchingMainRoad;
                 }
             });
             $("#" + matchingMainRoad.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingMainRoad.prototype.config().table, getContextPath()+"/basicMatchingTraffic/getBootstrapTableVo", cols, {
+            TableInit(matchingMainRoad.prototype.config().table, getContextPath() + "/basicMatchingTraffic/getBootstrapTableVo", cols, {
                 type: matchingMainRoad.prototype.config().type,
                 estateId: estateCommon.getEstateId()
             }, {
@@ -184,7 +184,7 @@ var matchingMainRoad;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingTraffic/deleteBasicMatchingTraffic",
+                url: getContextPath() + "/basicMatchingTraffic/deleteBasicMatchingTraffic",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -214,7 +214,7 @@ var matchingMainRoad;
             var data = formParams(matchingMainRoad.prototype.config().frm);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
-                url: getContextPath()+"/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
+                url: getContextPath() + "/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -235,7 +235,7 @@ var matchingMainRoad;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingTraffic/getBasicMatchingTrafficById",
+                url: getContextPath() + "/basicMatchingTraffic/getBasicMatchingTrafficById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -264,7 +264,7 @@ var matchingMainRoad;
     }
 
     //绑定事件
-    $('#'+matchingMainRoad.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + matchingMainRoad.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         matchingMainRoad.prototype.loadDataDicList();
     })
 })();
@@ -304,7 +304,7 @@ var matchingMetro;
                 }
             });
             $("#" + matchingMetro.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingMetro.prototype.config().table, getContextPath()+"/basicMatchingTraffic/getBootstrapTableVo", cols, {
+            TableInit(matchingMetro.prototype.config().table, getContextPath() + "/basicMatchingTraffic/getBootstrapTableVo", cols, {
                 type: matchingMetro.prototype.config().type,
                 estateId: estateCommon.getEstateId()
             }, {
@@ -318,7 +318,7 @@ var matchingMetro;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingTraffic/deleteBasicMatchingTraffic",
+                url: getContextPath() + "/basicMatchingTraffic/deleteBasicMatchingTraffic",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -358,7 +358,7 @@ var matchingMetro;
             var data = formParams(matchingMetro.prototype.config().frm);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
-                url: getContextPath()+"/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
+                url: getContextPath() + "/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -379,7 +379,7 @@ var matchingMetro;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingTraffic/getBasicMatchingTrafficById",
+                url: getContextPath() + "/basicMatchingTraffic/getBasicMatchingTrafficById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -444,7 +444,7 @@ var matchingMetro;
     }
 
     //绑定事件
-    $('#'+matchingMetro.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + matchingMetro.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         matchingMetro.prototype.loadDataDicList();
     })
 })();
@@ -484,7 +484,7 @@ var matchingTrafficHub;
                 }
             });
             $("#" + matchingTrafficHub.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingTrafficHub.prototype.config().table, getContextPath()+"/basicMatchingTraffic/getBootstrapTableVo", cols, {
+            TableInit(matchingTrafficHub.prototype.config().table, getContextPath() + "/basicMatchingTraffic/getBootstrapTableVo", cols, {
                 type: matchingTrafficHub.prototype.config().type,
                 estateId: estateCommon.getEstateId()
             }, {
@@ -498,7 +498,7 @@ var matchingTrafficHub;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingTraffic/deleteBasicMatchingTraffic",
+                url: getContextPath() + "/basicMatchingTraffic/deleteBasicMatchingTraffic",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -528,7 +528,7 @@ var matchingTrafficHub;
             var data = formParams(matchingTrafficHub.prototype.config().frm);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
-                url: getContextPath()+"/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
+                url: getContextPath() + "/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -549,7 +549,7 @@ var matchingTrafficHub;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingTraffic/getBasicMatchingTrafficById",
+                url: getContextPath() + "/basicMatchingTraffic/getBasicMatchingTrafficById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -581,7 +581,7 @@ var matchingTrafficHub;
     }
 
     //绑定事件
-    $('#'+matchingTrafficHub.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + matchingTrafficHub.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         matchingTrafficHub.prototype.loadDataDicList();
     })
 })();
@@ -622,7 +622,7 @@ var matchingTransit;
                 }
             });
             $("#" + matchingTransit.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingTransit.prototype.config().table, getContextPath()+"/basicMatchingTraffic/getBootstrapTableVo", cols, {
+            TableInit(matchingTransit.prototype.config().table, getContextPath() + "/basicMatchingTraffic/getBootstrapTableVo", cols, {
                 type: matchingTransit.prototype.config().type,
                 estateId: estateCommon.getEstateId()
             }, {
@@ -636,7 +636,7 @@ var matchingTransit;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingTraffic/deleteBasicMatchingTraffic",
+                url: getContextPath() + "/basicMatchingTraffic/deleteBasicMatchingTraffic",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -676,7 +676,7 @@ var matchingTransit;
             var data = formParams(matchingTransit.prototype.config().frm);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
-                url: getContextPath()+"/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
+                url: getContextPath() + "/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -697,7 +697,7 @@ var matchingTransit;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingTraffic/getBasicMatchingTrafficById",
+                url: getContextPath() + "/basicMatchingTraffic/getBasicMatchingTrafficById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -762,7 +762,7 @@ var matchingTransit;
     }
 
     //绑定事件
-    $('#'+matchingTransit.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + matchingTransit.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         matchingTransit.prototype.loadDataDicList();
     })
 })();
@@ -790,10 +790,10 @@ var matchingMedical;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'bedNumber', title: '床位数'});
-            cols.push({field: 'organizationName', title: '医养条件名称'});
-            cols.push({field: 'distanceName', title: '医养条件距离'});
-            cols.push({field: 'organizationLevelName', title: '医养条件机构等级'});
+            cols.push({field: 'organizationName', title: '机构名称'});
+            cols.push({field: 'organizationLevelName', title: '机构等级'});
+            cols.push({field: 'bedNumberName', title: '机构床位数'});
+            cols.push({field: 'distanceName', title: '机构距离'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -804,7 +804,7 @@ var matchingMedical;
                 }
             });
             $("#" + matchingMedical.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingMedical.prototype.config().table, getContextPath()+"/basicMatchingMedical/getBootstrapTableVo", cols, {
+            TableInit(matchingMedical.prototype.config().table, getContextPath() + "/basicMatchingMedical/getBootstrapTableVo", cols, {
                 estateId: estateCommon.getEstateId()
             }, {
                 showColumns: false,
@@ -817,7 +817,7 @@ var matchingMedical;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingMedical/deleteBasicMatchingMedical",
+                url: getContextPath() + "/basicMatchingMedical/deleteBasicMatchingMedical",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -846,7 +846,7 @@ var matchingMedical;
             var data = formParams(matchingMedical.prototype.config().frm);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
-                url: getContextPath()+"/basicMatchingMedical/saveAndUpdateBasicMatchingMedical",
+                url: getContextPath() + "/basicMatchingMedical/saveAndUpdateBasicMatchingMedical",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -867,7 +867,7 @@ var matchingMedical;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingMedical/getBasicMatchingMedicalById",
+                url: getContextPath() + "/basicMatchingMedical/getBasicMatchingMedicalById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -892,6 +892,9 @@ var matchingMedical;
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_examinematchingmedical_level, item.organizationLevel, function (html, data) {
                 $("#" + matchingMedical.prototype.config().frm).find("select.organizationLevel").empty().html(html).trigger('change');
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.estate_examinematchingmedical_bedNumber, item.bedNumber, function (html, data) {
+                $("#" + matchingMedical.prototype.config().frm).find("select.bedNumber").empty().html(html).trigger('change');
+            });
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_examinematchingmedical_distance, item.distance, function (html, data) {
                 $("#" + matchingMedical.prototype.config().frm).find("select.distance").empty().html(html).trigger('change');
             });
@@ -899,7 +902,7 @@ var matchingMedical;
     }
 
     //绑定事件
-    $('#'+matchingMedical.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + matchingMedical.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         matchingMedical.prototype.loadDataDicList();
     })
 })();
@@ -940,7 +943,7 @@ var matchingMaterial;
                 }
             });
             $("#" + matchingMaterial.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingMaterial.prototype.config().table, getContextPath()+"/basicMatchingMaterial/getBootstrapTableVo", cols, {
+            TableInit(matchingMaterial.prototype.config().table, getContextPath() + "/basicMatchingMaterial/getBootstrapTableVo", cols, {
                 estateId: estateCommon.getEstateId()
             }, {
                 showColumns: false,
@@ -953,7 +956,7 @@ var matchingMaterial;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingMaterial/deleteBasicMatchingMaterial",
+                url: getContextPath() + "/basicMatchingMaterial/deleteBasicMatchingMaterial",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -982,7 +985,7 @@ var matchingMaterial;
             var data = formParams(matchingMaterial.prototype.config().frm);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
-                url: getContextPath()+"/basicMatchingMaterial/saveAndUpdateBasicMatchingMaterial",
+                url: getContextPath() + "/basicMatchingMaterial/saveAndUpdateBasicMatchingMaterial",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -1003,7 +1006,7 @@ var matchingMaterial;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingMaterial/getBasicMatchingMaterialById",
+                url: getContextPath() + "/basicMatchingMaterial/getBasicMatchingMaterialById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -1038,7 +1041,7 @@ var matchingMaterial;
     }
 
     //绑定事件
-    $('#'+matchingMaterial.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + matchingMaterial.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         matchingMaterial.prototype.loadDataDicList();
     })
 })();
@@ -1080,7 +1083,7 @@ var matchingMarket;
                 }
             });
             $("#" + matchingMarket.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingMarket.prototype.config().table, getContextPath()+"/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
+            TableInit(matchingMarket.prototype.config().table, getContextPath() + "/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
                 type: matchingMarket.prototype.config().type,
                 estateId: estateCommon.getEstateId()
             }, {
@@ -1094,7 +1097,7 @@ var matchingMarket;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingLeisurePlace/deleteBasicMatchingLeisurePlace",
+                url: getContextPath() + "/basicMatchingLeisurePlace/deleteBasicMatchingLeisurePlace",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -1135,7 +1138,7 @@ var matchingMarket;
             data.estateId = estateCommon.getEstateId();
             data.type = matchingMarket.prototype.config().type;
             $.ajax({
-                url: getContextPath()+"/basicMatchingLeisurePlace/saveAndUpdateBasicMatchingLeisurePlace",
+                url: getContextPath() + "/basicMatchingLeisurePlace/saveAndUpdateBasicMatchingLeisurePlace",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -1156,7 +1159,7 @@ var matchingMarket;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingLeisurePlace/getBasicMatchingLeisurePlaceById",
+                url: getContextPath() + "/basicMatchingLeisurePlace/getBasicMatchingLeisurePlaceById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -1227,7 +1230,7 @@ var matchingMarket;
     }
 
     //绑定事件
-    $('#'+matchingMarket.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + matchingMarket.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         matchingMarket.prototype.loadDataDicList();
     })
 })();
@@ -1268,7 +1271,7 @@ var matchingRestaurant;
                 }
             });
             $("#" + matchingRestaurant.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingRestaurant.prototype.config().table, getContextPath()+"/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
+            TableInit(matchingRestaurant.prototype.config().table, getContextPath() + "/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
                 type: matchingRestaurant.prototype.config().type,
                 estateId: estateCommon.getEstateId()
             }, {
@@ -1282,7 +1285,7 @@ var matchingRestaurant;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingLeisurePlace/deleteBasicMatchingLeisurePlace",
+                url: getContextPath() + "/basicMatchingLeisurePlace/deleteBasicMatchingLeisurePlace",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -1323,7 +1326,7 @@ var matchingRestaurant;
             data.estateId = estateCommon.getEstateId();
             data.type = matchingRestaurant.prototype.config().type;
             $.ajax({
-                url: getContextPath()+"/basicMatchingLeisurePlace/saveAndUpdateBasicMatchingLeisurePlace",
+                url: getContextPath() + "/basicMatchingLeisurePlace/saveAndUpdateBasicMatchingLeisurePlace",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -1344,7 +1347,7 @@ var matchingRestaurant;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingLeisurePlace/getBasicMatchingLeisurePlaceById",
+                url: getContextPath() + "/basicMatchingLeisurePlace/getBasicMatchingLeisurePlaceById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -1415,7 +1418,7 @@ var matchingRestaurant;
     }
 
     //绑定事件
-    $('#'+matchingRestaurant.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + matchingRestaurant.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         matchingRestaurant.prototype.loadDataDicList();
     })
 })();
@@ -1455,7 +1458,7 @@ var matchingRecreation;
                 }
             });
             $("#" + matchingRecreation.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingRecreation.prototype.config().table, getContextPath()+"/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
+            TableInit(matchingRecreation.prototype.config().table, getContextPath() + "/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
                 type: matchingRecreation.prototype.config().type,
                 estateId: estateCommon.getEstateId()
             }, {
@@ -1469,7 +1472,7 @@ var matchingRecreation;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingLeisurePlace/deleteBasicMatchingLeisurePlace",
+                url: getContextPath() + "/basicMatchingLeisurePlace/deleteBasicMatchingLeisurePlace",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -1510,7 +1513,7 @@ var matchingRecreation;
             data.estateId = estateCommon.getEstateId();
             data.type = matchingRecreation.prototype.config().type;
             $.ajax({
-                url: getContextPath()+"/basicMatchingLeisurePlace/saveAndUpdateBasicMatchingLeisurePlace",
+                url: getContextPath() + "/basicMatchingLeisurePlace/saveAndUpdateBasicMatchingLeisurePlace",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -1531,7 +1534,7 @@ var matchingRecreation;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingLeisurePlace/getBasicMatchingLeisurePlaceById",
+                url: getContextPath() + "/basicMatchingLeisurePlace/getBasicMatchingLeisurePlaceById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -1599,7 +1602,7 @@ var matchingRecreation;
     }
 
     //绑定事件
-    $('#'+matchingRecreation.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + matchingRecreation.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         matchingRecreation.prototype.loadDataDicList();
     })
 })();
@@ -1654,7 +1657,7 @@ var matchingFinance;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingFinance/deleteBasicMatchingFinance",
+                url: getContextPath() + "/basicMatchingFinance/deleteBasicMatchingFinance",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -1683,7 +1686,7 @@ var matchingFinance;
             var data = formParams(matchingFinance.prototype.config().frm);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
-                url: getContextPath()+"/basicMatchingFinance/saveAndUpdateBasicMatchingFinance",
+                url: getContextPath() + "/basicMatchingFinance/saveAndUpdateBasicMatchingFinance",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -1704,7 +1707,7 @@ var matchingFinance;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingFinance/getBasicMatchingFinanceById",
+                url: getContextPath() + "/basicMatchingFinance/getBasicMatchingFinanceById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -1739,7 +1742,7 @@ var matchingFinance;
     }
 
     //绑定事件
-    $('#'+matchingFinance.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + matchingFinance.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         matchingFinance.prototype.loadDataDicList();
     })
 })();
@@ -1767,7 +1770,7 @@ var matchingEnvironment;
         loadDataDicList: function () {
             var cols = [];
             cols.push({field: 'typeName', title: '环境类型'});
-            cols.push({field: 'categoryName', title: '环境类别'});
+            cols.push({field: 'categoryName', title: '影响因素'});
             cols.push({field: 'influenceDegreeName', title: '影响程度'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -1779,7 +1782,7 @@ var matchingEnvironment;
                 }
             });
             $("#" + matchingEnvironment.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingEnvironment.prototype.config().table, getContextPath()+"/basicMatchingEnvironment/getBootstrapTableVo", cols, {
+            TableInit(matchingEnvironment.prototype.config().table, getContextPath() + "/basicMatchingEnvironment/getBootstrapTableVo", cols, {
                 estateId: estateCommon.getEstateId()
             }, {
                 showColumns: false,
@@ -1792,7 +1795,7 @@ var matchingEnvironment;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingEnvironment/deleteBasicMatchingEnvironment",
+                url: getContextPath() + "/basicMatchingEnvironment/deleteBasicMatchingEnvironment",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -1821,7 +1824,7 @@ var matchingEnvironment;
             var data = formParams(matchingEnvironment.prototype.config().frm);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
-                url: getContextPath()+"/basicMatchingEnvironment/saveAndUpdateBasicMatchingEnvironment",
+                url: getContextPath() + "/basicMatchingEnvironment/saveAndUpdateBasicMatchingEnvironment",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -1842,7 +1845,7 @@ var matchingEnvironment;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingEnvironment/getBasicMatchingEnvironmentById",
+                url: getContextPath() + "/basicMatchingEnvironment/getBasicMatchingEnvironmentById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -1864,9 +1867,14 @@ var matchingEnvironment;
         init: function (item) {
             $("#" + matchingEnvironment.prototype.config().frm).clearAll();
             $("#" + matchingEnvironment.prototype.config().frm).initForm(item);
-            AssessCommon.loadDataDicByKey(AssessDicKey.estate_environment_category, item.category, function (html, data) {
-                $("#" + matchingEnvironment.prototype.config().frm).find("select.category").empty().html(html).trigger('change');
-            });
+
+            $("#" + matchingEnvironment.prototype.config().frm).find("select.type").change(function () {
+                AssessCommon.loadDataDicByPid($(this).val(), item.category, function (html, data) {
+                    $("#" + matchingEnvironment.prototype.config().frm).find("select.category").empty().html(html).trigger('change');
+                });
+                item.category = null;
+            })
+
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_environment_type, item.type, function (html, data) {
                 $("#" + matchingEnvironment.prototype.config().frm).find("select.type").empty().html(html).trigger('change');
             });
@@ -1877,7 +1885,7 @@ var matchingEnvironment;
     }
 
     //绑定事件
-    $('#'+matchingEnvironment.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + matchingEnvironment.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         matchingEnvironment.prototype.loadDataDicList();
     })
 })();
@@ -1919,7 +1927,7 @@ var matchingEducation;
                 }
             });
             $("#" + matchingEducation.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingEducation.prototype.config().table, getContextPath()+"/basicMatchingEducation/getBootstrapTableVo", cols, {
+            TableInit(matchingEducation.prototype.config().table, getContextPath() + "/basicMatchingEducation/getBootstrapTableVo", cols, {
                 estateId: estateCommon.getEstateId()
             }, {
                 showColumns: false,
@@ -1932,7 +1940,7 @@ var matchingEducation;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingEducation/deleteBasicMatchingEducation",
+                url: getContextPath() + "/basicMatchingEducation/deleteBasicMatchingEducation",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -1961,7 +1969,7 @@ var matchingEducation;
             var data = formParams(matchingEducation.prototype.config().frm);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
-                url: getContextPath()+"/basicMatchingEducation/saveAndUpdateBasicMatchingEducation",
+                url: getContextPath() + "/basicMatchingEducation/saveAndUpdateBasicMatchingEducation",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -1982,7 +1990,7 @@ var matchingEducation;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicMatchingEducation/getBasicMatchingEducationById",
+                url: getContextPath() + "/basicMatchingEducation/getBasicMatchingEducationById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -2020,7 +2028,7 @@ var matchingEducation;
     }
 
     //绑定事件
-    $('#'+matchingEducation.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + matchingEducation.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         matchingEducation.prototype.loadDataDicList();
     })
 })();
@@ -2059,7 +2067,7 @@ var estateNetwork;
                 }
             });
             $("#" + estateNetwork.prototype.config().table).bootstrapTable('destroy');
-            TableInit(estateNetwork.prototype.config().table, getContextPath()+"/basicEstateNetwork/getBootstrapTableVo", cols, {
+            TableInit(estateNetwork.prototype.config().table, getContextPath() + "/basicEstateNetwork/getBootstrapTableVo", cols, {
                 estateId: estateCommon.getEstateId()
             }, {
                 showColumns: false,
@@ -2072,7 +2080,7 @@ var estateNetwork;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicEstateNetwork/deleteBasicEstateNetwork",
+                url: getContextPath() + "/basicEstateNetwork/deleteBasicEstateNetwork",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -2101,7 +2109,7 @@ var estateNetwork;
             var data = formParams(estateNetwork.prototype.config().frm);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
-                url: getContextPath()+"/basicEstateNetwork/saveAndUpdateBasicEstateNetwork",
+                url: getContextPath() + "/basicEstateNetwork/saveAndUpdateBasicEstateNetwork",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -2122,7 +2130,7 @@ var estateNetwork;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicEstateNetwork/getBasicEstateNetworkById",
+                url: getContextPath() + "/basicEstateNetwork/getBasicEstateNetworkById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -2144,7 +2152,7 @@ var estateNetwork;
     }
 
     //绑定事件
-    $('#'+estateNetwork.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + estateNetwork.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         estateNetwork.prototype.loadDataDicList();
     })
 })();
@@ -2185,7 +2193,7 @@ var estateParking;
                 }
             });
             $("#" + estateParking.prototype.config().table).bootstrapTable('destroy');
-            TableInit(estateParking.prototype.config().table, getContextPath()+"/basicEstateParking/getBootstrapTableVo", cols, {
+            TableInit(estateParking.prototype.config().table, getContextPath() + "/basicEstateParking/getBootstrapTableVo", cols, {
                 estateId: estateCommon.getEstateId()
             }, {
                 showColumns: false,
@@ -2198,7 +2206,7 @@ var estateParking;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicEstateParking/deleteBasicEstateParking",
+                url: getContextPath() + "/basicEstateParking/deleteBasicEstateParking",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -2227,7 +2235,7 @@ var estateParking;
             var data = formParams(estateParking.prototype.config().frm);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
-                url: getContextPath()+"/basicEstateParking/saveAndUpdateBasicEstateParking",
+                url: getContextPath() + "/basicEstateParking/saveAndUpdateBasicEstateParking",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -2248,7 +2256,7 @@ var estateParking;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicEstateParking/getBasicEstateParkingById",
+                url: getContextPath() + "/basicEstateParking/getBasicEstateParkingById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -2298,7 +2306,7 @@ var estateParking;
     }
 
     //绑定事件
-    $('#'+estateParking.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + estateParking.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         estateParking.prototype.loadDataDicList();
     })
 })();
@@ -2326,10 +2334,10 @@ var estateSupplyWater;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'name', title: '供水名称'});
-            cols.push({field: 'reputation', title: '供水商信誉'});
+            cols.push({field: 'name', title: '供水商名称'});
+            cols.push({field: 'lineGradeName', title: '供水保障等级'});
+            cols.push({field: 'reputationName', title: '供水商信誉'});
             cols.push({field: 'gradeName', title: '供水商等级'});
-            cols.push({field: 'lineGradeName', title: '供水线路等级'});
             cols.push({field: 'power', title: '供应量或功率'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -2342,7 +2350,7 @@ var estateSupplyWater;
             });
             var estateId = estateCommon.getEstateId();
             $("#" + estateSupplyWater.prototype.config().table).bootstrapTable('destroy');
-            TableInit(estateSupplyWater.prototype.config().table, getContextPath()+"/basicEstateSupply/getBootstrapTableVo", cols, {
+            TableInit(estateSupplyWater.prototype.config().table, getContextPath() + "/basicEstateSupply/getBootstrapTableVo", cols, {
                 type: estateSupplyWater.prototype.config().type,
                 estateId: estateId
             }, {
@@ -2356,7 +2364,7 @@ var estateSupplyWater;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicEstateSupply/deleteBasicEstateSupply",
+                url: getContextPath() + "/basicEstateSupply/deleteBasicEstateSupply",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -2386,7 +2394,7 @@ var estateSupplyWater;
             var data = formParams(estateSupplyWater.prototype.config().frm);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
-                url: getContextPath()+"/basicEstateSupply/saveAndUpdateBasicEstateSupply",
+                url: getContextPath() + "/basicEstateSupply/saveAndUpdateBasicEstateSupply",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -2407,7 +2415,7 @@ var estateSupplyWater;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicEstateSupply/getBasicEstateSupplyById",
+                url: getContextPath() + "/basicEstateSupply/getBasicEstateSupplyById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -2432,6 +2440,9 @@ var estateSupplyWater;
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_line_water_supply_pipe_grade, item.lineGrade, function (html, data) {
                 $("#" + estateSupplyWater.prototype.config().frm).find("select.lineGrade").empty().html(html).trigger('change');
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.estate_supplier_reputation, item.reputation, function (html, data) {
+                $("#" + estateSupplyWater.prototype.config().frm).find("select.reputation").empty().html(html).trigger('change');
+            });
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_supplier_grade, item.grade, function (html, data) {
                 $("#" + estateSupplyWater.prototype.config().frm).find("select.grade").empty().html(html).trigger('change');
             });
@@ -2439,8 +2450,150 @@ var estateSupplyWater;
     }
 
     //绑定事件
-    $('#'+estateSupplyWater.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + estateSupplyWater.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         estateSupplyWater.prototype.loadDataDicList();
+    })
+})();
+
+
+var estateDrainWater;
+(function () {
+    estateDrainWater = function () {};
+    estateDrainWater.prototype = {
+        config: function () {
+            var data = {};
+            data.table = "EstateDrainWaterList";
+            data.box = "divBoxEstateDrainWater";
+            data.frm = "frmEstateDrainWater";
+            data.type = "estateDrainWater";
+            return data;
+        },
+        isNotBlank: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        },
+        loadDataDicList: function () {
+            var cols = [];
+            cols.push({field: 'name', title: '废水处理商名称'});
+            cols.push({field: 'lineGradeName', title: '排水保障等级'});
+            cols.push({field: 'reputationName', title: '废水处理商信誉'});
+            cols.push({field: 'gradeName', title: '废水处理商等级'});
+            cols.push({field: 'power', title: '排水量或功率'});
+            cols.push({
+                field: 'id', title: '操作', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="estateDrainWater.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="estateDrainWater.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '</div>';
+                    return str;
+                }
+            });
+            var estateId = estateCommon.getEstateId();
+            $("#" + estateDrainWater.prototype.config().table).bootstrapTable('destroy');
+            TableInit(estateDrainWater.prototype.config().table, getContextPath() + "/basicEstateSupply/getBootstrapTableVo", cols, {
+                type: estateDrainWater.prototype.config().type,
+                estateId: estateId
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+        removeData: function (id) {
+            $.ajax({
+                url: getContextPath() + "/basicEstateSupply/deleteBasicEstateDrain",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        estateDrainWater.prototype.loadDataDicList();
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        showModel: function () {
+            estateDrainWater.prototype.init({});
+            $("#" + estateDrainWater.prototype.config().frm).find(".type").val(estateDrainWater.prototype.config().type);
+            $('#' + estateDrainWater.prototype.config().box).modal("show");
+        },
+        saveData: function () {
+            if (!$("#" + estateDrainWater.prototype.config().frm).valid()) {
+                return false;
+            }
+            var data = formParams(estateDrainWater.prototype.config().frm);
+            data.estateId = estateCommon.getEstateId();
+            $.ajax({
+                url: getContextPath() + "/basicEstateSupply/saveAndUpdateBasicEstateDrain",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        $('#' + estateDrainWater.prototype.config().box).modal('hide');
+                        estateDrainWater.prototype.loadDataDicList();
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        getAndInit: function (id) {
+            $.ajax({
+                url: getContextPath() + "/basicEstateSupply/getBasicEstateDrainById",
+                type: "get",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        if (estateDrainWater.prototype.isNotBlank(result.data)) {
+                            estateDrainWater.prototype.init(result.data);
+                        } else {
+                            estateDrainWater.prototype.init({});
+                        }
+                        $('#' + estateDrainWater.prototype.config().box).modal("show");
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        init: function (item) {
+            $("#" + estateDrainWater.prototype.config().frm).clearAll();
+            $("#" + estateDrainWater.prototype.config().frm).initForm(item);
+            AssessCommon.loadDataDicByKey(AssessDicKey.estate_line_water_supply_pipe_grade, item.lineGrade, function (html, data) {
+                $("#" + estateDrainWater.prototype.config().frm).find("select.lineGrade").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.estate_supplier_reputation, item.reputation, function (html, data) {
+                $("#" + estateDrainWater.prototype.config().frm).find("select.reputation").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.estate_supplier_grade, item.grade, function (html, data) {
+                $("#" + estateDrainWater.prototype.config().frm).find("select.grade").empty().html(html).trigger('change');
+            });
+        }
+    }
+
+    //绑定事件
+    $('#' + estateDrainWater.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+        estateDrainWater.prototype.loadDataDicList();
     })
 })();
 
@@ -2467,7 +2620,7 @@ var estateSupplyPower;
         loadDataDicList: function () {
             var cols = [];
             cols.push({field: 'name', title: '名称'});
-            cols.push({field: 'reputation', title: '供电商信誉'});
+            cols.push({field: 'reputationName', title: '供电商信誉'});
             cols.push({field: 'gradeName', title: '供电商等级'});
             cols.push({field: 'lineGradeName', title: '供电线路等级'});
             cols.push({field: 'power', title: '供应量或功率'});
@@ -2482,7 +2635,7 @@ var estateSupplyPower;
             });
             var estateId = estateCommon.getEstateId();
             $("#" + estateSupplyPower.prototype.config().table).bootstrapTable('destroy');
-            TableInit(estateSupplyPower.prototype.config().table, getContextPath()+"/basicEstateSupply/getBootstrapTableVo", cols, {
+            TableInit(estateSupplyPower.prototype.config().table, getContextPath() + "/basicEstateSupply/getBootstrapTableVo", cols, {
                 type: estateSupplyPower.prototype.config().type,
                 estateId: estateId
             }, {
@@ -2496,7 +2649,7 @@ var estateSupplyPower;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicEstateSupply/deleteBasicEstateSupply",
+                url: getContextPath() + "/basicEstateSupply/deleteBasicEstateSupply",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -2526,7 +2679,7 @@ var estateSupplyPower;
             var data = formParams(estateSupplyPower.prototype.config().frm);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
-                url: getContextPath()+"/basicEstateSupply/saveAndUpdateBasicEstateSupply",
+                url: getContextPath() + "/basicEstateSupply/saveAndUpdateBasicEstateSupply",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -2547,7 +2700,7 @@ var estateSupplyPower;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicEstateSupply/getBasicEstateSupplyById",
+                url: getContextPath() + "/basicEstateSupply/getBasicEstateSupplyById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -2579,7 +2732,7 @@ var estateSupplyPower;
     }
 
     //绑定事件
-    $('#'+estateSupplyPower.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + estateSupplyPower.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         estateSupplyPower.prototype.loadDataDicList();
     })
 })();
@@ -2606,7 +2759,7 @@ var estateSupplyHeating;
         loadDataDicList: function () {
             var cols = [];
             cols.push({field: 'name', title: '名称'});
-            cols.push({field: 'reputation', title: '供热商信誉'});
+            cols.push({field: 'reputationName', title: '供热商信誉'});
             cols.push({field: 'gradeName', title: '供热商等级'});
             cols.push({field: 'power', title: '供应量或功率'});
             cols.push({
@@ -2620,7 +2773,7 @@ var estateSupplyHeating;
             });
             var estateId = estateCommon.getEstateId();
             $("#" + estateSupplyHeating.prototype.config().table).bootstrapTable('destroy');
-            TableInit(estateSupplyHeating.prototype.config().table, getContextPath()+"/basicEstateSupply/getBootstrapTableVo", cols, {
+            TableInit(estateSupplyHeating.prototype.config().table, getContextPath() + "/basicEstateSupply/getBootstrapTableVo", cols, {
                 type: estateSupplyHeating.prototype.config().type,
                 estateId: estateId
             }, {
@@ -2634,7 +2787,7 @@ var estateSupplyHeating;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicEstateSupply/deleteBasicEstateSupply",
+                url: getContextPath() + "/basicEstateSupply/deleteBasicEstateSupply",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -2664,7 +2817,7 @@ var estateSupplyHeating;
             var data = formParams(estateSupplyHeating.prototype.config().frm);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
-                url: getContextPath()+"/basicEstateSupply/saveAndUpdateBasicEstateSupply",
+                url: getContextPath() + "/basicEstateSupply/saveAndUpdateBasicEstateSupply",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -2685,7 +2838,7 @@ var estateSupplyHeating;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicEstateSupply/getBasicEstateSupplyById",
+                url: getContextPath() + "/basicEstateSupply/getBasicEstateSupplyById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -2717,7 +2870,7 @@ var estateSupplyHeating;
     }
 
     //绑定事件
-    $('#'+estateSupplyHeating.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + estateSupplyHeating.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         estateSupplyHeating.prototype.loadDataDicList();
     })
 })();
@@ -2744,7 +2897,7 @@ var estateSupplyGas;
         loadDataDicList: function () {
             var cols = [];
             cols.push({field: 'name', title: '名称'});
-            cols.push({field: 'reputation', title: '供气商信誉'});
+            cols.push({field: 'reputationName', title: '供气商信誉'});
             cols.push({field: 'gradeName', title: '供气商等级'});
             cols.push({field: 'power', title: '供应量或功率'});
             cols.push({
@@ -2758,7 +2911,7 @@ var estateSupplyGas;
             });
             var estateId = estateCommon.getEstateId();
             $("#" + estateSupplyGas.prototype.config().table).bootstrapTable('destroy');
-            TableInit(estateSupplyGas.prototype.config().table, getContextPath()+"/basicEstateSupply/getBootstrapTableVo", cols, {
+            TableInit(estateSupplyGas.prototype.config().table, getContextPath() + "/basicEstateSupply/getBootstrapTableVo", cols, {
                 estateId: estateId,
                 type: estateSupplyGas.prototype.config().type
             }, {
@@ -2772,7 +2925,7 @@ var estateSupplyGas;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicEstateSupply/deleteBasicEstateSupply",
+                url: getContextPath() + "/basicEstateSupply/deleteBasicEstateSupply",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -2802,7 +2955,7 @@ var estateSupplyGas;
             var data = formParams(estateSupplyGas.prototype.config().frm);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
-                url: getContextPath()+"/basicEstateSupply/saveAndUpdateBasicEstateSupply",
+                url: getContextPath() + "/basicEstateSupply/saveAndUpdateBasicEstateSupply",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -2823,7 +2976,7 @@ var estateSupplyGas;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicEstateSupply/getBasicEstateSupplyById",
+                url: getContextPath() + "/basicEstateSupply/getBasicEstateSupplyById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -2855,7 +3008,7 @@ var estateSupplyGas;
     }
 
     //绑定事件
-    $('#'+estateSupplyGas.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + estateSupplyGas.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         estateSupplyGas.prototype.loadDataDicList();
     })
 })();

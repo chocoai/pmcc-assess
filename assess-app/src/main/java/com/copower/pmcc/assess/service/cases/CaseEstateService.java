@@ -164,6 +164,7 @@ public class CaseEstateService {
         if (caseEstate.getSupplyWater() != null) {
             vo.setSupplyWaterName(baseDataDicService.getNameById(caseEstate.getSupplyWater()));
         }
+        vo.setDrainWaterName(baseDataDicService.getNameById(caseEstate.getDrainWater()));
         if (caseEstate.getSupplyHeating() != null) {
             vo.setSupplyHeatingName(baseDataDicService.getNameById(caseEstate.getSupplyHeating()));
         }

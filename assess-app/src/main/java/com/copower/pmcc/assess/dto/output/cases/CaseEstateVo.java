@@ -16,6 +16,7 @@ public class CaseEstateVo extends CaseEstate {
     private String supplyGasName;
     private String supplyPowerName;
     private String supplyWaterName;
+    private String drainWaterName;
     private String supplyHeatingName;
 
 
@@ -89,5 +90,13 @@ public class CaseEstateVo extends CaseEstate {
 
     public void setSupplyHeatingName(String supplyHeatingName) {
         this.supplyHeatingName = supplyHeatingName;
+    }
+
+    public String getDrainWaterName() {
+        return drainWaterName;
+    }
+
+    public void setDrainWaterName(String drainWaterName) {
+        this.drainWaterName = drainWaterName;
     }
 }

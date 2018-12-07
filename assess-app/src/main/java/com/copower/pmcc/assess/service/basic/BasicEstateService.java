@@ -223,6 +223,7 @@ public class BasicEstateService {
         if (basicEstate.getSupplyWater() != null) {
             vo.setSupplyWaterName(baseDataDicService.getNameById(basicEstate.getSupplyWater()));
         }
+        vo.setDrainWaterName(baseDataDicService.getNameById(basicEstate.getDrainWater()));
         if (basicEstate.getSupplyHeating() != null) {
             vo.setSupplyHeatingName(baseDataDicService.getNameById(basicEstate.getSupplyHeating()));
         }

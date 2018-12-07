@@ -141,6 +141,9 @@
             AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateSupplySituation, data.basicEstate.supplyWater, function (html, data) {
                 estateCommon.estateForm.find('select.supplyWater').empty().html(html).trigger('change');
             }, true);
+            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateSupplySituation, data.basicEstate.drainWater, function (html, data) {
+                estateCommon.estateForm.find('select.drainWater').empty().html(html).trigger('change');
+            }, true);
             AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateSupplySituation, data.basicEstate.supplyHeating, function (html, data) {
                 estateCommon.estateForm.find('select.supplyHeating').empty().html(html).trigger('change');
             }, true);

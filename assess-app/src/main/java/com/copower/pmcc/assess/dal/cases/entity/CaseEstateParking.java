@@ -11,7 +11,7 @@ public class CaseEstateParking {
 
     private Integer parkingType;
 
-    private String location;
+    private Integer location;
 
     private String creator;
 
@@ -51,12 +51,12 @@ public class CaseEstateParking {
         this.parkingType = parkingType;
     }
 
-    public String getLocation() {
+    public Integer getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
-        this.location = location == null ? null : location.trim();
+    public void setLocation(Integer location) {
+        this.location = location;
     }
 
     public String getCreator() {

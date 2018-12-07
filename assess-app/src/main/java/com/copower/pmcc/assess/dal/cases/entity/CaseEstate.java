@@ -56,6 +56,8 @@ public class CaseEstate {
 
     private Integer supplyWater;
 
+    private Integer drainWater;
+
     private Integer supplyGas;
 
     private Integer supplyHeating;
@@ -274,6 +276,14 @@ public class CaseEstate {
 
     public void setSupplyWater(Integer supplyWater) {
         this.supplyWater = supplyWater;
+    }
+
+    public Integer getDrainWater() {
+        return drainWater;
+    }
+
+    public void setDrainWater(Integer drainWater) {
+        this.drainWater = drainWater;
     }
 
     public Integer getSupplyGas() {

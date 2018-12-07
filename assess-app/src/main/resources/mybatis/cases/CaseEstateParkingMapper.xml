@@ -6,7 +6,7 @@
     <result column="number" property="number" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="parking_type" property="parkingType" jdbcType="INTEGER" />
-    <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="location" property="location" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -110,7 +110,7 @@
       location, creator, gmt_created, 
       gmt_modified)
     values (#{number,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{parkingType,jdbcType=INTEGER}, 
-      #{location,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{location,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateParking" >
@@ -152,7 +152,7 @@
         #{parkingType,jdbcType=INTEGER},
       </if>
       <if test="location != null" >
-        #{location,jdbcType=VARCHAR},
+        #{location,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -187,7 +187,7 @@
         parking_type = #{record.parkingType,jdbcType=INTEGER},
       </if>
       <if test="record.location != null" >
-        location = #{record.location,jdbcType=VARCHAR},
+        location = #{record.location,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -209,7 +209,7 @@
       number = #{record.number,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
       parking_type = #{record.parkingType,jdbcType=INTEGER},
-      location = #{record.location,jdbcType=VARCHAR},
+      location = #{record.location,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -230,7 +230,7 @@
         parking_type = #{parkingType,jdbcType=INTEGER},
       </if>
       <if test="location != null" >
-        location = #{location,jdbcType=VARCHAR},
+        location = #{location,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -249,7 +249,7 @@
     set number = #{number,jdbcType=INTEGER},
       estate_id = #{estateId,jdbcType=INTEGER},
       parking_type = #{parkingType,jdbcType=INTEGER},
-      location = #{location,jdbcType=VARCHAR},
+      location = #{location,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
