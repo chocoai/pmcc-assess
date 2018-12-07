@@ -72,12 +72,11 @@
                                 <div class="col-sm-4">
                                     <input type="hidden" name="caseEstateId" value="${basicApply.caseEstateId}">
                                     <input type="text" class="form-control" name="estateName" placeholder="楼盘名称"
-                                           value="${basicApply.estateName}"
-                                           onkeydown="basicApplyIndex.autocompleteEstate(this);">
+                                           value="${basicApply.estateName}">
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                     <input type="button" class="btn btn-success" data-mode="add"
                                            onclick="estateCommon.add(this,basicCommon.showEstateTab);"
                                            value="添加">
@@ -102,12 +101,11 @@
                                     <input type="hidden" name="caseBuildingMainId"
                                            value="${basicApply.caseBuildingMainId}">
                                     <input type="text" class="form-control" name="buildingNumber" placeholder="楼栋编号"
-                                           value="${basicApply.buildingNumber}"
-                                           onkeydown="basicApplyIndex.autocompleteBuilding(this)">
+                                           value="${basicApply.buildingNumber}">
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                     <input type="button" class="btn btn-success" data-mode="add"
                                            onclick="buildingCommon.add(this,basicCommon.showBuildingTab);"
                                            value="添加">
@@ -130,13 +128,11 @@
                                 </label>
                                 <div class="col-sm-4">
                                     <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
-                                    <input type="text" class="form-control" name="unitNumber" placeholder="单元编号"
-                                           value="${basicApply.unitNumber}"
-                                           onkeydown="basicApplyIndex.autocompleteUnit(this);">
+                                    <input type="text" class="form-control" name="unitNumber" placeholder="单元编号" value="${basicApply.unitNumber}">
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                     <input type="button" class="btn btn-success" data-mode="add"
                                            onclick="unitCommon.add(this,basicCommon.showUnitTab);"
                                            value="添加">
@@ -158,13 +154,11 @@
                                 </label>
                                 <div class="col-sm-4">
                                     <input type="hidden" name="caseHouseId" value="${basicApply.caseHouseId}">
-                                    <input type="text" class="form-control" name="houseNumber" placeholder="房屋编号"
-                                           value="${basicApply.houseNumber}"
-                                           onkeydown="basicApplyIndex.autocompleteHouse(this)">
+                                    <input type="text" class="form-control" name="houseNumber" placeholder="房屋编号" value="${basicApply.houseNumber}">
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                     <input type="button" class="btn btn-success" data-mode="add"
                                            value="添加"
                                            onclick="houseCommon.add(this,basicCommon.showHouseTab);">
@@ -214,13 +208,13 @@
     /**
      * 楼盘 信息自动补全
      */
-    basicApplyIndex.autocompleteEstate = function (_this) {
-        var that = _this;
-        var group = $(_this).closest('.form-group');
-        group.find('[name=caseEstateId]').val('');
-        group.find('.btn-reference,.btn-upgrade').hide();
+    basicApplyIndex.autocompleteEstate = function () {
+        var that = basicCommon.basicApplyForm.find('[name=estateName]');
+        var group = $(that).closest('.form-group');
         var defaults = AssessDefault.autocomplete();
         defaults.source = function (request, response) {
+            group.find('[name=caseEstateId]').val('');
+            group.find('.btn-reference,.btn-upgrade').hide();
             $.ajax({
                 url: "${pageContext.request.contextPath}/caseEstate/autoCompleteCaseEstate",
                 type: "get",
@@ -261,15 +255,15 @@
     /**
      * 楼栋 信息自动补全
      */
-    basicApplyIndex.autocompleteBuilding = function (_this) {
-        var that = _this;
-        var group = $(_this).closest('.form-group');
-        group.find('[name=caseBuildingMainId]').val('');
-        group.find('.btn-reference,.btn-upgrade').hide();
-        var estateId = basicCommon.basicApplyForm.find("input[name='caseEstateId']").val();
-        if (!estateId) return;
+    basicApplyIndex.autocompleteBuilding = function () {
+        var that = basicCommon.basicApplyForm.find('[name=buildingNumber]');
+        var group = $(that).closest('.form-group');
         var defaults = AssessDefault.autocomplete();
         defaults.source = function (request, response) {
+            group.find('[name=caseBuildingMainId]').val('');
+            group.find('.btn-reference,.btn-upgrade').hide();
+            var estateId = basicCommon.basicApplyForm.find("input[name='caseEstateId']").val();
+            if (!estateId) return;
             var itemVal = $(that).val();
             $.ajax({
                 url: "${pageContext.request.contextPath}/caseBuildingMain/autoCompleteCaseBuilding",
@@ -309,15 +303,15 @@
     /**
      * 单元信息自动补全
      */
-    basicApplyIndex.autocompleteUnit = function (_this) {
-        var that = _this;
-        var group = $(_this).closest('.form-group');
-        group.find('[name=caseUnitId]').val('');
-        group.find('.btn-reference,.btn-upgrade').hide();
-        var buildingId = basicCommon.basicApplyForm.find("input[name='caseBuildingMainId']").val();
-        if (!buildingId) return;
+    basicApplyIndex.autocompleteUnit = function () {
+        var that = basicCommon.basicApplyForm.find('[name=unitNumber]');
+        var group = $(that).closest('.form-group');
         var defaults = AssessDefault.autocomplete();
         defaults.source = function (request, response) {
+            group.find('[name=caseUnitId]').val('');
+            group.find('.btn-reference,.btn-upgrade').hide();
+            var buildingId = basicCommon.basicApplyForm.find("input[name='caseBuildingMainId']").val();
+            if (!buildingId) return;
             var itemVal = $(that).val();
             $.ajax({
                 url: "${pageContext.request.contextPath}/caseUnit/autoCompleteCaseUnit",
@@ -357,15 +351,15 @@
     /**
      * 房屋信息自动补全
      */
-    basicApplyIndex.autocompleteHouse = function (_this) {
-        var that = _this;
-        var group = $(_this).closest('.form-group');
-        group.find('[name=caseHouseId]').val('');
-        group.find('.btn-reference,.btn-upgrade').hide();
-        var unitId = basicCommon.basicApplyForm.find("input[name='caseUnitId']").val();
-        if (!unitId) return;
+    basicApplyIndex.autocompleteHouse = function () {
+        var that = basicCommon.basicApplyForm.find('[name=houseNumber]');
+        var group = $(that).closest('.form-group');
         var defaults = AssessDefault.autocomplete();
         defaults.source = function (request, response) {
+            group.find('[name=caseHouseId]').val('');
+            group.find('.btn-reference,.btn-upgrade').hide();
+            var unitId = basicCommon.basicApplyForm.find("input[name='caseUnitId']").val();
+            if (!unitId) return;
             var itemVal = $(that).val();
             $.ajax({
                 url: "${pageContext.request.contextPath}/caseHouse/autoCompleteCaseHouse",
@@ -424,6 +418,10 @@
             basicCommon.basicApplyForm.find('[id=applyFormType${basicApply.type}]').trigger('click');
         } else {
             basicCommon.basicApplyForm.find('[name=type]:eq(0)').trigger('click');
+            basicApplyIndex.autocompleteEstate();
+            basicApplyIndex.autocompleteBuilding();
+            basicApplyIndex.autocompleteUnit();
+            basicApplyIndex.autocompleteHouse();
         }
     };
 

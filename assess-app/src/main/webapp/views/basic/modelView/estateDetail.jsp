@@ -75,7 +75,7 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">街道</label>
+                <label class="col-sm-1 control-label">街道名称</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstate.street}</label>
                 </div>
@@ -320,13 +320,13 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土地形状状况</label>
+                <label class="col-sm-1 control-label">土地形状</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.shapeStateName}</label>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土地平整度</label>
+                <label class="col-sm-1 control-label">地形</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.planenessName}</label>
                 </div>
@@ -357,7 +357,7 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">地形地势</label>
+                <label class="col-sm-1 control-label">地势</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.topographicTerrainName}</label>
                 </div>

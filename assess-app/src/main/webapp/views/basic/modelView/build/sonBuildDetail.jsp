@@ -21,7 +21,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>层面结构 <label class="control-label ExamineBuildingSurfaceList"></label></h4>
+        <h4>屋面结构 <label class="control-label ExamineBuildingSurfaceList"></label></h4>
     </div>
     <div class="x_content collapse">
         <table class="table table-bordered" id="ExamineBuildingSurfaceList">
@@ -134,11 +134,11 @@
                     }
 
                 },
-                /**层面结构**/
+                /**屋面结构**/
                 buildingSurface: {
                     loadDataDicList: function () {
                         var cols = [];
-                        cols.push({field: 'structureName', title: '层面结构'});
+                        cols.push({field: 'structureName', title: '屋面结构'});
                         cols.push({field: 'description', title: '描述'});
                         $("#" + buildingModelDetail.prototype.config().examineBuildingSurfaceTable).bootstrapTable('destroy');
                         TableInit(buildingModelDetail.prototype.config().examineBuildingSurfaceTable, "${pageContext.request.contextPath}/basicBuildingSurface/getBootstrapTableVo", cols, {

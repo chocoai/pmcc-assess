@@ -37,7 +37,7 @@ public class CaseBuildingSurfaceController {
     private CommonService commonService;
 
     @ResponseBody
-    @RequestMapping(value = "/getCaseBuildingSurfaceById",method = {RequestMethod.GET},name = "获取层面结构")
+    @RequestMapping(value = "/getCaseBuildingSurfaceById",method = {RequestMethod.GET},name = "获取屋面结构")
     public HttpResult getById(Integer id) {
         CaseBuildingSurface caseBuildingSurface = null;
         try {
@@ -52,7 +52,7 @@ public class CaseBuildingSurfaceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getCaseBuildingSurfaceList",method = {RequestMethod.GET},name = "层面结构列表")
+    @RequestMapping(value = "/getCaseBuildingSurfaceList",method = {RequestMethod.GET},name = "屋面结构列表")
     public BootstrapTableVo getCaseBuildingSurfaceList( Integer buildingId, String buildNumber) {
         BootstrapTableVo vo = null;
         try {
@@ -72,7 +72,7 @@ public class CaseBuildingSurfaceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/deleteCaseBuildingSurfaceById",method = {RequestMethod.POST},name = "删除层面结构")
+    @RequestMapping(value = "/deleteCaseBuildingSurfaceById",method = {RequestMethod.POST},name = "删除屋面结构")
     public HttpResult delete(Integer id) {
         try {
             if (id!=null){
@@ -86,7 +86,7 @@ public class CaseBuildingSurfaceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveAndUpdateCaseBuildingSurface",method = {RequestMethod.POST},name = "更新层面结构")
+    @RequestMapping(value = "/saveAndUpdateCaseBuildingSurface",method = {RequestMethod.POST},name = "更新屋面结构")
     public HttpResult save(CaseBuildingSurface caseBuildingSurface){
         try {
             if (caseBuildingSurface.getId()==null || caseBuildingSurface.getId().equals(0)){

@@ -358,7 +358,7 @@
 <div class="x_content">
     <div class="x_title">
         <h3>
-            层面结构 <label class="control-label ExamineBuildingSurfaceList"></label>
+            屋面结构 <label class="control-label ExamineBuildingSurfaceList"></label>
             <button type="button" class="btn btn-success" data-toggle="modal"
                     onclick="examineBuilding_.prototype.sonModelMethod.buildingSurface.showModel()"> 新增
             </button>
@@ -1200,7 +1200,7 @@
                     }
 
                 },
-                /**层面结构**/
+                /**屋面结构**/
                 buildingSurface: {
                     getAndInit: function (id) {
                         $.ajax({
@@ -1319,7 +1319,7 @@
                     },
                     loadDataDicList: function () {
                         var cols = [];
-                        cols.push({field: 'structureName', title: '层面结构'});
+                        cols.push({field: 'structureName', title: '屋面结构'});
                         cols.push({field: 'description', title: '描述'});
                         cols.push({
                             field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -1961,7 +1961,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">层面结构</h3>
+                <h3 class="modal-title">屋面结构</h3>
             </div>
             <form id="ExamineBuildingSurfaceFrm" class="form-horizontal">
                 <input type="hidden" name="id">
@@ -1972,7 +1972,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            层面结构
+                                            屋面结构
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="structure"

@@ -167,7 +167,7 @@ var buildingModelView;
                 }
 
             },
-            /**层面结构**/
+            /**屋面结构**/
             buildingSurface: {
                 getAndInit: function (id) {
                     $.ajax({
@@ -249,7 +249,7 @@ var buildingModelView;
                 },
                 loadDataDicList: function () {
                     var cols = [];
-                    cols.push({field: 'structureName', title: '层面结构'});
+                    cols.push({field: 'structureName', title: '屋面结构'});
                     cols.push({field: 'description', title: '描述'});
                     cols.push({
                         field: 'id', title: '操作', formatter: function (value, row, index) {

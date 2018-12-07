@@ -127,7 +127,7 @@ public class ExamineMatchingFinanceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/estate_finance_service_content",method = {RequestMethod.GET},name = "金融服务内容")
+    @RequestMapping(value = "/estate_finance_service_content",method = {RequestMethod.GET},name = "服务类别")
     public HttpResult environment_influence_degree() {
         try {
             List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_FINANCE_SERVICE_CONTENT);
