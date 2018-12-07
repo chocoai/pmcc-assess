@@ -8,7 +8,7 @@ package com.copower.pmcc.assess.common.enums;
  * @time: 15:46
  */
 public enum EstateTaggingTypeEnum {
-    ESTATE("estate", "楼盘"), BUILDING("building", "楼栋"), UNIT("unit", "单元"), OTHER("other", "其它");
+    ESTATE("estate", "楼盘"), BUILDING("building", "楼栋"), UNIT("unit", "单元"), OTHER("other", "其它"),HOUSE("house","房屋");
 
     private String key;
     private String value;

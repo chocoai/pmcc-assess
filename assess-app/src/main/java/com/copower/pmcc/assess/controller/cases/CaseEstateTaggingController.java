@@ -24,9 +24,9 @@ public class CaseEstateTaggingController {
 
     @ResponseBody
     @RequestMapping(value = "/listCaseEstateTagging",method = {RequestMethod.GET},name = "获取标记列表")
-    public HttpResult saveAndUpdate(Integer pid,String type){
+    public HttpResult saveAndUpdate(Integer estateId,String type){
         try {
-            return HttpResult.newCorrectResult(caseEstateTaggingService.mapDtoList(pid,type));
+            return HttpResult.newCorrectResult(caseEstateTaggingService.mapDtoList(estateId,type));
         } catch (Exception e) {
             logger.error(String.format("exception: %s",e.getMessage()),e);
             return HttpResult.newErrorResult("异常");
