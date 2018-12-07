@@ -857,8 +857,9 @@
                                             车位位置
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="location"
-                                                   placeholder="车位位置" required="required">
+                                            <select class="form-control search-select select2 location"
+                                                    name="location">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -1124,6 +1125,16 @@
                                             <select required="required" name="influenceDegree"
                                                     class="form-control search-select select2 influenceDegree">
                                             </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            描述
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <textarea name="remark" class="form-control"></textarea>
                                         </div>
                                     </div>
                                 </div>

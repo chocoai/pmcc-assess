@@ -9,7 +9,7 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMaintenance;
  */
 public class CaseBuildingMaintenanceVo extends CaseBuildingMaintenance {
     private String categoryName;
-
+    private String typeName;
     private String materialQualityName;
 
     public String getCategoryName() {
@@ -26,5 +26,13 @@ public class CaseBuildingMaintenanceVo extends CaseBuildingMaintenance {
 
     public void setMaterialQualityName(String materialQualityName) {
         this.materialQualityName = materialQualityName;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 }

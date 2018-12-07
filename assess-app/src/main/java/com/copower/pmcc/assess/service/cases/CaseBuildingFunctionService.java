@@ -89,15 +89,6 @@ public class CaseBuildingFunctionService {
         if (caseBuildingFunction.getDecorationPart() != null) {
             vo.setDecorationPartName(baseDataDicService.getNameById(caseBuildingFunction.getDecorationPart()));
         }
-        if (caseBuildingFunction.getDecoratingMaterial() != null) {
-            vo.setDecoratingMaterialName(baseDataDicService.getNameById(caseBuildingFunction.getDecoratingMaterial()));
-        }
-        if (caseBuildingFunction.getMaterialPrice() != null) {
-            vo.setMaterialPriceName(baseDataDicService.getNameById(caseBuildingFunction.getMaterialPrice()));
-        }
-        if (caseBuildingFunction.getConstructionTechnology() != null) {
-            vo.setConstructionTechnologyName(baseDataDicService.getNameById(caseBuildingFunction.getConstructionTechnology()));
-        }
         return vo;
     }
 

@@ -123,15 +123,6 @@ public class BasicBuildingFunctionService {
         if (basicBuildingFunction.getDecorationPart() != null) {
             vo.setDecorationPartName(baseDataDicService.getNameById(basicBuildingFunction.getDecorationPart()));
         }
-        if (basicBuildingFunction.getDecoratingMaterial() != null) {
-            vo.setDecoratingMaterialName(baseDataDicService.getNameById(basicBuildingFunction.getDecoratingMaterial()));
-        }
-        if (basicBuildingFunction.getMaterialPrice() != null) {
-            vo.setMaterialPriceName(baseDataDicService.getNameById(basicBuildingFunction.getMaterialPrice()));
-        }
-        if (basicBuildingFunction.getConstructionTechnology() != null) {
-            vo.setConstructionTechnologyName(baseDataDicService.getNameById(basicBuildingFunction.getConstructionTechnology()));
-        }
         return vo;
     }
 }

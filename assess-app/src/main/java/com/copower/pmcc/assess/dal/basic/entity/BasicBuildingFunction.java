@@ -17,6 +17,8 @@ public class BasicBuildingFunction {
 
     private Integer constructionTechnology;
 
+    private String remark;
+
     private String creator;
 
     private String buildNumber;
@@ -79,6 +81,14 @@ public class BasicBuildingFunction {
 
     public void setConstructionTechnology(Integer constructionTechnology) {
         this.constructionTechnology = constructionTechnology;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
     public String getCreator() {

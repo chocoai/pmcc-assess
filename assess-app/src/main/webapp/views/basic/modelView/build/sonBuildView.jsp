@@ -94,25 +94,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            装修部位
+                                            装修部位<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="decorationPart" required>
-                                            <%--<select required="required" name="decorationPart"--%>
-                                                    <%--class="form-control search-select select2 decorationPart">--%>
-                                            <%--</select>--%>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            施工工艺
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="constructionTechnology"
-                                                    class="form-control search-select select2 constructionTechnology">
-                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -131,6 +116,18 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            施工工艺
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="constructionTechnology"
+                                                    class="form-control search-select select2 constructionTechnology">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             材料价格区间
                                         </label>
                                         <div class="col-sm-10">
@@ -140,9 +137,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-
                             </div>
                         </div>
                     </div>
@@ -180,22 +174,11 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            名称
+                                            类型
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="名称"
-                                                   name="name" class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            分类
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="category"
-                                                    class="form-control search-select select2 category">
+                                            <select required="required" name="type"
+                                                    class="form-control search-select select2 type">
                                             </select>
                                         </div>
                                     </div>
@@ -208,6 +191,18 @@
                                         <div class="col-sm-10">
                                             <select required="required" name="materialQuality"
                                                     class="form-control search-select select2 materialQuality">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            分类
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="category"
+                                                    class="form-control search-select select2 category">
                                             </select>
                                         </div>
                                     </div>
@@ -305,7 +300,6 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
@@ -330,52 +324,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<div class="x-valid">--%>
-                                        <%--<label class="col-sm-2 control-label">--%>
-                                            <%--施工工艺--%>
-                                        <%--</label>--%>
-                                        <%--<div class="col-sm-10">--%>
-                                            <%--<select required="required" name="constructionTechnology"--%>
-                                                    <%--class="form-control search-select select2 constructionTechnology">--%>
-                                            <%--</select>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             现状描述
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea class="form-control"></textarea>
+                                            <textarea name="remark" class="form-control"></textarea>
                                         </div>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<div class="x-valid">--%>
-                                        <%--<label class="col-sm-2 control-label">--%>
-                                            <%--装修材料--%>
-                                        <%--</label>--%>
-                                        <%--<div class="col-sm-10">--%>
-                                            <%--<select required="required" name="decoratingMaterial"--%>
-                                                    <%--class="form-control search-select select2 decoratingMaterial">--%>
-                                            <%--</select>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<div class="form-group">--%>
-                                    <%--<div class="x-valid">--%>
-                                        <%--<label class="col-sm-2 control-label">--%>
-                                            <%--材料价格区间--%>
-                                        <%--</label>--%>
-                                        <%--<div class="col-sm-10">--%>
-                                            <%--<select required="required" name="materialPrice"--%>
-                                                    <%--class="form-control search-select select2 materialPrice">--%>
-                                            <%--</select>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
                             </div>
                         </div>
                     </div>
