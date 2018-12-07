@@ -654,7 +654,7 @@ public class MdMarketCompareFieldService {
         stringBuilder.append(StringUtils.isEmpty(supply.getReputation()) ? "" : String.format("供应商信誉:%s、", supply.getReputation()));
         stringBuilder.append(StringUtils.isEmpty(supply.getGrade()) ? "" : String.format("供应商等级:%s、", baseDataDicService.getNameById(Integer.valueOf(supply.getGrade()))));
         stringBuilder.append(StringUtils.isEmpty(supply.getLineGrade()) ? "" : String.format("线路供水管等级:%s、", baseDataDicService.getNameById(Integer.valueOf(supply.getLineGrade()))));
-        stringBuilder.append(StringUtils.isEmpty(supply.getPower()) ? "" : String.format("功率:%s、", supply.getPower()));
+        stringBuilder.append(StringUtils.isEmpty(supply.getPower()) ? "" : String.format("供应量或功率:%s、", supply.getPower()));
     }
 
     private void getCommonBuildingFunction(List<ExamineBuildingFunction> buildingFunctions, StringBuilder stringBuilder, BaseDataDic heatPreservationDic) {

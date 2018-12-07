@@ -140,10 +140,10 @@ var buildingModelView;
                 },
                 loadDataDicList: function () {
                     var cols = [];
-                    cols.push({field: 'decorationPartName', title: '装修部位'});
+                    cols.push({field: 'decorationPart', title: '装修部位'});
+                    cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
                     cols.push({field: 'decoratingMaterialName', title: '装修材料'});
                     cols.push({field: 'materialPriceName', title: '材料价格区间'});
-                    cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
                     cols.push({
                         field: 'id', title: '操作', formatter: function (value, row, index) {
                             var str = '<div class="btn-margin">';
@@ -273,7 +273,7 @@ var buildingModelView;
                     });
                 }
             },
-            /**维护结构**/
+            /**围护结构**/
             buildingMaintenance: {
                 getAndInit: function (id) {
                     $.ajax({
@@ -478,10 +478,10 @@ var buildingModelView;
                 loadDataDicList: function () {
                     var cols = [];
                     cols.push({field: 'typeName', title: '类型'});
-                    cols.push({field: 'decorationPartName', title: '装修部位'});
+                    cols.push({field: 'decorationPart', title: '装修部位'});
+                    cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
                     cols.push({field: 'decoratingMaterialName', title: '装修材料'});
                     cols.push({field: 'materialPriceName', title: '材料价格区间'});
-                    cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
                     cols.push({
                         field: 'id', title: '操作', formatter: function (value, row, index) {
                             var str = '<div class="btn-margin">';

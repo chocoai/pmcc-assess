@@ -37,7 +37,7 @@ public class CaseBuildingMaintenanceController {
     private CommonService commonService;
 
     @ResponseBody
-    @RequestMapping(value = "/getCaseBuildingMaintenanceById", method = {RequestMethod.GET}, name = "获取维护结构")
+    @RequestMapping(value = "/getCaseBuildingMaintenanceById", method = {RequestMethod.GET}, name = "获取围护结构")
     public HttpResult getById(Integer id) {
         CaseBuildingMaintenance caseBuildingMaintenance = null;
         try {
@@ -52,7 +52,7 @@ public class CaseBuildingMaintenanceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getCaseBuildingMaintenanceList", method = {RequestMethod.GET}, name = "维护结构列表")
+    @RequestMapping(value = "/getCaseBuildingMaintenanceList", method = {RequestMethod.GET}, name = "围护结构列表")
     public BootstrapTableVo getCaseBuildingMaintenanceList( Integer buildingId, String buildNumber) {
         BootstrapTableVo vo = null;
         try {
@@ -72,7 +72,7 @@ public class CaseBuildingMaintenanceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/deleteCaseBuildingMaintenanceById", method = {RequestMethod.POST}, name = "删除维护结构")
+    @RequestMapping(value = "/deleteCaseBuildingMaintenanceById", method = {RequestMethod.POST}, name = "删除围护结构")
     public HttpResult delete(Integer id) {
         try {
             if (id != null) {
@@ -86,7 +86,7 @@ public class CaseBuildingMaintenanceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveAndUpdateCaseBuildingMaintenance", method = {RequestMethod.POST}, name = "更新维护结构")
+    @RequestMapping(value = "/saveAndUpdateCaseBuildingMaintenance", method = {RequestMethod.POST}, name = "更新围护结构")
     public HttpResult save(CaseBuildingMaintenance caseBuildingMaintenance) {
         try {
             if (caseBuildingMaintenance.getId() == null || caseBuildingMaintenance.getId().equals(0)) {

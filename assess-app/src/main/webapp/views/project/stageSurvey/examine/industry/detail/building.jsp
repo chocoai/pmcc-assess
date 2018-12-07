@@ -360,7 +360,7 @@
 <div class="x_content">
     <div class="x_title">
         <h3>
-            维护结构
+            围护结构
         </h3>
         <div class="clearfix"></div>
     </div>

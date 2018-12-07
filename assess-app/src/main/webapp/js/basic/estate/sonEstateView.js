@@ -2330,7 +2330,7 @@ var estateSupplyWater;
             cols.push({field: 'reputation', title: '供水商信誉'});
             cols.push({field: 'gradeName', title: '供水商等级'});
             cols.push({field: 'lineGradeName', title: '供水线路等级'});
-            cols.push({field: 'power', title: '功率'});
+            cols.push({field: 'power', title: '供应量或功率'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -2470,7 +2470,7 @@ var estateSupplyPower;
             cols.push({field: 'reputation', title: '供电商信誉'});
             cols.push({field: 'gradeName', title: '供电商等级'});
             cols.push({field: 'lineGradeName', title: '供电线路等级'});
-            cols.push({field: 'power', title: '功率'});
+            cols.push({field: 'power', title: '供应量或功率'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -2608,7 +2608,7 @@ var estateSupplyHeating;
             cols.push({field: 'name', title: '名称'});
             cols.push({field: 'reputation', title: '供热商信誉'});
             cols.push({field: 'gradeName', title: '供热商等级'});
-            cols.push({field: 'power', title: '功率'});
+            cols.push({field: 'power', title: '供应量或功率'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -2746,7 +2746,7 @@ var estateSupplyGas;
             cols.push({field: 'name', title: '名称'});
             cols.push({field: 'reputation', title: '供气商信誉'});
             cols.push({field: 'gradeName', title: '供气商等级'});
-            cols.push({field: 'power', title: '功率'});
+            cols.push({field: 'power', title: '供应量或功率'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';

@@ -47,7 +47,7 @@
                         class="fa fa-chevron-up"></i></a></li>
             </ul>
             <h3>
-                维护结构
+                围护结构
             </h3>
             <div class="clearfix"></div>
         </div>
@@ -176,7 +176,7 @@
                         });
                     }
                 },
-                /**维护结构**/
+                /**围护结构**/
                 buildingMaintenance: {
                     loadDataDicList: function () {
                         var cols = [];

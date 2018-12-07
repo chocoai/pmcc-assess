@@ -75,7 +75,7 @@
                 // cols.push({field: 'type', title: '类型'});
                 cols.push({field: 'gradeName', title: '供气商等级'});
                 // cols.push({field: 'lineGradeName', title: '线路等级'});
-                cols.push({field: 'power', title: '功率'});
+                cols.push({field: 'power', title: '供应量或功率'});
                 // cols.push({
                 //     field: 'id', title: '操作', formatter: function (value, row, index) {
                 //         var str = '<div class="btn-margin">';
@@ -223,7 +223,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            供气线路等级
+                                            供气保障等级
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="lineGrade"
@@ -259,12 +259,12 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            功率
+                                            供应量或功率
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" name="power" class="form-control" data-rule-number='true'
                                                    name="number"
-                                                   placeholder="功率" required="required">
+                                                   placeholder="供应量或功率" required="required">
                                         </div>
                                     </div>
                                 </div>

@@ -3,7 +3,14 @@
  */
 $(function () {
     try {
-        $(".select2").select2();//初始化出select2
+        //$(".select2").select2();//初始化出select2
+        $(".select2").each(function () {
+            $(this).select2();
+            $(this).on("select2-highlight", function (e) {
+                //layer.tips('只想提示地精准些');
+                console.log(e);
+            });
+        })
     } catch (e) {
     }
 
@@ -303,7 +310,7 @@ $(function () {
                                 if (item.id == value) {
                                     retHtml += ' <option value="' + item.id + '" selected="selected">' + item.name + '</option>';
                                 } else {
-                                    retHtml += ' <option value="' + item.id + '">' + item.name + '</option>';
+                                    retHtml += ' <option data-remark="'+item.remark+'" value="' + item.id + '">' + item.name + '</option>';
                                 }
                             });
                             if (callback) {

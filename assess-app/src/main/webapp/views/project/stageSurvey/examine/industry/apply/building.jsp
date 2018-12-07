@@ -374,7 +374,7 @@
 <div class="x_content">
     <div class="x_title">
         <h3>
-            维护结构 <label class="control-label ExamineBuildingMaintenanceList"></label>
+            围护结构 <label class="control-label ExamineBuildingMaintenanceList"></label>
             <button type="button" class="btn btn-success" data-toggle="modal"
                     onclick="examineBuilding_.prototype.sonModelMethod.buildingMaintenance.showModel();"> 新增
             </button>
@@ -1346,7 +1346,7 @@
                         });
                     }
                 },
-                /**维护结构**/
+                /**围护结构**/
                 buildingMaintenance: {
                     getAndInit: function (id) {
                         $.ajax({
@@ -1892,7 +1892,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">维护结构</h3>
+                <h3 class="modal-title">围护结构</h3>
             </div>
             <form id="ExamineBuildingMaintenanceFrm" class="form-horizontal">
                 <input type="hidden" name="id">

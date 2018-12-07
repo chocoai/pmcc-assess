@@ -132,8 +132,8 @@ AssessDicKey.examine_building_construction_technology = "building.construction_t
 AssessDicKey.examine_building_decoration_part = "building.decoration_part";//装修部位
 AssessDicKey.examine_building_structure = "examine.building.structure";//屋面结构
 AssessDicKey.examine_building_function_type = "building.function.type";//建筑功能类型
-AssessDicKey.examine_building_maintenance_category = "examine.building.maintenance.category";//维护结构分类
-AssessDicKey.examine_building_materialquality = "examine.building.maintenance.materialQuality";//维护结构材质
+AssessDicKey.examine_building_maintenance_category = "examine.building.maintenance.category";//围护结构分类
+AssessDicKey.examine_building_materialquality = "examine.building.maintenance.materialQuality";//围护结构材质
 
 AssessDicKey.examineHouseType = "examine.house.type";//房屋类型
 AssessDicKey.examineHouseFinancingConditions = "examine.house.financing.conditions";//融资条件

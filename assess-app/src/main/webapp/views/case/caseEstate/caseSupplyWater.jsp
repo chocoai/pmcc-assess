@@ -64,7 +64,7 @@
                 // cols.push({field: 'type', title: '类型'});
                 cols.push({field: 'gradeName', title: '供水商等级'});
                 cols.push({field: 'lineGradeName', title: '供水线路等级'});
-                cols.push({field: 'power', title: '功率'});
+                cols.push({field: 'power', title: '供应量或功率'});
                 $("#" + estateSupplyWater.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyWater.prototype.config().table, "${pageContext.request.contextPath}/caseEstateSupply/getCaseEstateSupplyList", cols, {
                     type: estateSupplyWater.prototype.config().type,

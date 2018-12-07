@@ -43,7 +43,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>维护结构</h4>
+        <h4>围护结构</h4>
     </div>
     <div class="x_content collapse">
         <button type="button" class="btn btn-success" data-toggle="modal"
@@ -97,9 +97,10 @@
                                             装修部位
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="decorationPart"
-                                                    class="form-control search-select select2 decorationPart">
-                                            </select>
+                                            <input type="text" class="form-control" name="decorationPart" required>
+                                            <%--<select required="required" name="decorationPart"--%>
+                                                    <%--class="form-control search-select select2 decorationPart">--%>
+                                            <%--</select>--%>
                                         </div>
                                     </div>
                                 </div>
@@ -111,19 +112,6 @@
                                         <div class="col-sm-10">
                                             <select required="required" name="constructionTechnology"
                                                     class="form-control search-select select2 constructionTechnology">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            材料价格区间
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="materialPrice"
-                                                    class="form-control search-select select2 materialPrice">
                                             </select>
                                         </div>
                                     </div>
@@ -140,6 +128,21 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            材料价格区间
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="materialPrice"
+                                                    class="form-control search-select select2 materialPrice">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
                             </div>
                         </div>
                     </div>
@@ -166,7 +169,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">维护结构</h3>
+                <h3 class="modal-title">围护结构</h3>
             </div>
             <form id="ExamineBuildingMaintenanceFrm" class="form-horizontal">
                 <input type="hidden" name="id">
@@ -322,48 +325,57 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="decorationPart"
-                                                    class="form-control search-select select2 decorationPart">
+                                            class="form-control search-select select2 decorationPart">
                                             </select>
                                         </div>
                                     </div>
                                 </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<div class="x-valid">--%>
+                                        <%--<label class="col-sm-2 control-label">--%>
+                                            <%--施工工艺--%>
+                                        <%--</label>--%>
+                                        <%--<div class="col-sm-10">--%>
+                                            <%--<select required="required" name="constructionTechnology"--%>
+                                                    <%--class="form-control search-select select2 constructionTechnology">--%>
+                                            <%--</select>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            施工工艺
+                                            现状描述
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="constructionTechnology"
-                                                    class="form-control search-select select2 constructionTechnology">
-                                            </select>
+                                            <textarea class="form-control"></textarea>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            材料价格区间
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="materialPrice"
-                                                    class="form-control search-select select2 materialPrice">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            装修材料
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="decoratingMaterial"
-                                                    class="form-control search-select select2 decoratingMaterial">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<div class="x-valid">--%>
+                                        <%--<label class="col-sm-2 control-label">--%>
+                                            <%--装修材料--%>
+                                        <%--</label>--%>
+                                        <%--<div class="col-sm-10">--%>
+                                            <%--<select required="required" name="decoratingMaterial"--%>
+                                                    <%--class="form-control search-select select2 decoratingMaterial">--%>
+                                            <%--</select>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<div class="x-valid">--%>
+                                        <%--<label class="col-sm-2 control-label">--%>
+                                            <%--材料价格区间--%>
+                                        <%--</label>--%>
+                                        <%--<div class="col-sm-10">--%>
+                                            <%--<select required="required" name="materialPrice"--%>
+                                                    <%--class="form-control search-select select2 materialPrice">--%>
+                                            <%--</select>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                             </div>
                         </div>
                     </div>

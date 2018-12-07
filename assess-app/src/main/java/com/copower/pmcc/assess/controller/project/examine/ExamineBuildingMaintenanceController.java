@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/8/2 15:44
- * @Description:维护结构
+ * @Description:围护结构
  */
 
 @RequestMapping(value = "/examineBuildingMaintenance")
@@ -37,7 +37,7 @@ public class ExamineBuildingMaintenanceController {
     private BaseDataDicService baseDataDicService;
 
     @ResponseBody
-    @RequestMapping(value = "/getExamineBuildingMaintenanceById", method = {RequestMethod.GET}, name = "获取维护结构")
+    @RequestMapping(value = "/getExamineBuildingMaintenanceById", method = {RequestMethod.GET}, name = "获取围护结构")
     public HttpResult getById(Integer id) {
         ExamineBuildingMaintenance examineBuildingMaintenance = null;
         try {
@@ -52,7 +52,7 @@ public class ExamineBuildingMaintenanceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getExamineBuildingMaintenanceList", method = {RequestMethod.GET}, name = "维护结构列表")
+    @RequestMapping(value = "/getExamineBuildingMaintenanceList", method = {RequestMethod.GET}, name = "围护结构列表")
     public BootstrapTableVo getExamineBuildingMaintenanceList(Integer examineType, Integer declareId,Integer planDetailsId, Integer buildingId,String buildNumber) {
         BootstrapTableVo vo = null;
         try {
@@ -81,7 +81,7 @@ public class ExamineBuildingMaintenanceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/deleteExamineBuildingMaintenanceById", method = {RequestMethod.POST}, name = "删除维护结构")
+    @RequestMapping(value = "/deleteExamineBuildingMaintenanceById", method = {RequestMethod.POST}, name = "删除围护结构")
     public HttpResult delete(Integer id) {
         try {
             if (id != null) {
@@ -95,7 +95,7 @@ public class ExamineBuildingMaintenanceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveAndUpdateExamineBuildingMaintenance", method = {RequestMethod.POST}, name = "更新维护结构")
+    @RequestMapping(value = "/saveAndUpdateExamineBuildingMaintenance", method = {RequestMethod.POST}, name = "更新围护结构")
     public HttpResult save(ExamineBuildingMaintenance examineBuildingMaintenance) {
         try {
             if (examineBuildingMaintenance.getId() == null || examineBuildingMaintenance.getId().equals(0)) {
@@ -111,7 +111,7 @@ public class ExamineBuildingMaintenanceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/examine_building_maintenance_category", method = {RequestMethod.GET}, name = "维护结构分类")
+    @RequestMapping(value = "/examine_building_maintenance_category", method = {RequestMethod.GET}, name = "围护结构分类")
     public HttpResult environment_type() {
         try {
             List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_BUILDING_MAINTENANCE_CATEGORY);
@@ -123,7 +123,7 @@ public class ExamineBuildingMaintenanceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/examine_building_materialquality", method = {RequestMethod.GET}, name = "维护结构材质")
+    @RequestMapping(value = "/examine_building_materialquality", method = {RequestMethod.GET}, name = "围护结构材质")
     public HttpResult environment_category() {
         try {
             List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_BUILDING_MATERIALQUALITY);
