@@ -164,9 +164,10 @@
                         });
                         if (markerList.length >= 1) {
                             if (areaMap.getType(extData.type) == 'house') {
-                                console.log(data[0]);
+                                //特别处理 图片覆盖物 (并对此做放大和缩小处理) 此覆盖物上无事件
                                 map.add(areaMap.createImgMarker(data[0]));
                             } else {
+                                //一般覆盖物 覆盖物再次添加click事件,直到到房屋的户型图片覆盖物为止
                                 map.add(markerList);
                             }
                         } else {
@@ -200,9 +201,11 @@
     //自定义icon (主要是便于识别)
     areaMap.getContent = function (name) {
         var markerContent = '' +
-            '<div class="panel panel-body" style="width:60px;height:110px;">' +
-            '<img style="height:34px;width:26.5px;" src="http://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png">' + name +
-            // '<div class="btn btn-default" onclick=""></div>' +
+            '<div class="panel panel-body" style="width:95px;height:55px;">' +
+            '<p style="text-overflow: ellipsis; white-space: nowrap;">' + name  +
+            '<img style="height:25.5px;width:19.8px;float: left;" src="http://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png">' +
+            '<div style="clear:both"></div>' +
+            '</p>' +
             '</div>';
         return markerContent;
     };
@@ -251,11 +254,11 @@
         // 创建一个 Icon
         imgIcon = new AMap.Icon({
             // 图标尺寸
-            size: new AMap.Size(Number(dimensions.w) / 2, Number(dimensions.h) / 2),
+            size: new AMap.Size(Number(dimensions.w) * 10, Number(dimensions.h) * 10),
             // 图标的取图地址
             image: "${pageContext.request.contextPath}/image/B69B3AFB.png",
             // 图标所用图片大小
-            imageSize: new AMap.Size(Number(dimensions.w) / 2, Number(dimensions.h) / 2),
+            imageSize: new AMap.Size(Number(dimensions.w) / 2.5, Number(dimensions.h) / 2.5),
             // 图标取图偏移量
             imageOffset: new AMap.Pixel(-1, -1)
         });
@@ -281,7 +284,6 @@
         } catch (e) {
             console.error(e);
         }
-
         if (this.isNotBlankObject(mapList)) {
             $.each(mapList, function (i, n) {
                 if (AssessCommon.isNumber(n.lat) && AssessCommon.isNumber(n.lon)) {
@@ -315,6 +317,9 @@
         });
     };
 
+    /**
+     * 修改旋转角度
+     */
     areaMap.rotateTransform = function (flag) {
         var angle = Number(imgMarker.getAngle());
         if (flag) {
@@ -324,6 +329,7 @@
         }
     };
 
+    /*修改覆盖物的大小*/
     areaMap.zoom = function (flag) {
         var size = imgIcon.getImageSize();
         if (flag) {
