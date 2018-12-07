@@ -1,9 +1,7 @@
 package com.copower.pmcc.assess.controller.cases;
 
-import com.copower.pmcc.assess.common.enums.ExamineEstateSupplyEnumType;
-import com.copower.pmcc.assess.common.enums.ExamineHouseEquipmentTypeEnum;
-import com.copower.pmcc.assess.common.enums.ExamineMatchingLeisurePlaceTypeEnum;
-import com.copower.pmcc.assess.common.enums.ExamineMatchingTrafficTypeEnum;
+import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.cases.CaseBuildingVo;
 import com.copower.pmcc.assess.service.cases.*;
@@ -98,6 +96,17 @@ public class CaseController {
     @Autowired
     private CaseEstateTaggingService caseEstateTaggingService;
 
+    @RequestMapping(value = "/areaEstateCaseMap", name = "区域楼盘案例", method = {RequestMethod.GET})
+    public ModelAndView areaEstateCaseMap() {
+        String view = "/case/areaEstateCaseMap";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        try {
+            modelAndView.addObject("mapList", JSON.toJSONString(caseEstateTaggingService.mapDtoList(0, EstateTaggingTypeEnum.ESTATE.getKey())));
+        } catch (Exception e1) {
+            logger.error("区域楼盘案例获取经度和纬度出错!",e1);
+        }
+        return modelAndView;
+    }
 
     @RequestMapping(value = "/estateSearch", name = "楼盘案例查询", method = {RequestMethod.GET})
     public ModelAndView estateSearch() {
