@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicBuildingMaintenanceDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMaintenance;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicBuildingMaintenanceVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -119,15 +118,9 @@ public class BasicBuildingMaintenanceService {
         }
         BasicBuildingMaintenanceVo vo = new BasicBuildingMaintenanceVo();
         BeanUtils.copyProperties(basicBuildingMaintenance,vo);
-        BaseDataDic dataDic = null;
-        if (basicBuildingMaintenance.getCategory() != null){
-            dataDic = baseDataDicService.getDataDicById(basicBuildingMaintenance.getCategory());
-            vo.setCategoryName(dataDic.getName());
-        }
-        if (basicBuildingMaintenance.getMaterialQuality() != null){
-            dataDic = baseDataDicService.getDataDicById(basicBuildingMaintenance.getMaterialQuality());
-            vo.setMaterialQualityName(dataDic.getName());
-        }
+        vo.setCategoryName(baseDataDicService.getNameById(basicBuildingMaintenance.getCategory()));
+        vo.setTypeName(baseDataDicService.getNameById(basicBuildingMaintenance.getType()));
+        vo.setMaterialQualityName(baseDataDicService.getNameById(basicBuildingMaintenance.getMaterialQuality()));
         return vo;
     }
     

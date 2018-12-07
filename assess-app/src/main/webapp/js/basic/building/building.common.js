@@ -137,21 +137,24 @@
                     buildingCommon.buildingForm.initForm(result.data, function () {
                         //1.初始化下拉框；2.初始化上传控件；3.显示已上传的附件信息；4.加载从表数据
                         buildingCommon.buildingForm.find("select.buildingStructure").change(function () {
-                            var id = buildingCommon.buildingForm.find("select.buildingStructure").val();
-                            AssessCommon.loadDataDicByPid(id, result.data.buildingStructureLower, function (html, data) {
+                            AssessCommon.loadDataDicByPid($(this).val(), result.data.buildingStructureLower, function (html, data) {
                                 buildingCommon.buildingForm.find("select.buildingStructureLower").empty().html(html).trigger('change');
                             });
                             result.data.buildingStructureLower = null;
                         });
-                        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_category, result.data.buildingCategory, function (html, data) {
-                            buildingCommon.buildingForm.find('select.buildingCategory').empty().html(html).trigger('change');
+                        buildingCommon.buildingForm.find('select.propertyType').change(function () {
+                            AssessCommon.loadDataDicByPid($(this).val(), result.data.buildingCategory, function (html, data) {
+                                buildingCommon.buildingForm.find('select.buildingCategory').empty().html(html).trigger('change');
+                            });
+                            result.data.buildingCategory = null;
+                        })
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_type, result.data.propertyType, function (html, data) {
+                            buildingCommon.buildingForm.find('select.propertyType').empty().html(html).trigger('change');
                         });
                         AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_structure, result.data.buildingStructure, function (html, data) {
                             buildingCommon.buildingForm.find('select.buildingStructure').empty().html(html).trigger('change');
                         });
-                        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_type, result.data.propertyType, function (html, data) {
-                            buildingCommon.buildingForm.find('select.propertyType').empty().html(html).trigger('change');
-                        });
+
                         //初始化上传控件
                         $.each(buildingCommon.buildingFileControlIdArray, function (i, item) {
                             buildingCommon.fileUpload(item);

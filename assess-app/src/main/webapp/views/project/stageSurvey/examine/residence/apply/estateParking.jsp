@@ -111,7 +111,7 @@
             loadDataDicList: function () {
                 var cols = [];
                 cols.push({field: 'parkingTypeName', title: '车位类型'});
-                cols.push({field: 'location', title: '车辆位置'});
+                cols.push({field: 'locationName', title: '车辆位置'});
                 cols.push({field: 'fileViewName', title: '上传的附件'});
                 cols.push({
                     field: 'id', title: '操作', formatter: function (value, row, index) {

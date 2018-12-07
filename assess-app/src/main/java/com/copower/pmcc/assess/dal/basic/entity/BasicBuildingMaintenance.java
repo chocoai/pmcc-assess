@@ -7,7 +7,7 @@ public class BasicBuildingMaintenance {
 
     private Integer buildingId;
 
-    private String name;
+    private Integer type;
 
     private Integer category;
 
@@ -37,12 +37,12 @@ public class BasicBuildingMaintenance {
         this.buildingId = buildingId;
     }
 
-    public String getName() {
-        return name;
+    public Integer getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Integer getCategory() {

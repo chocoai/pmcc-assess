@@ -186,6 +186,25 @@
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
+                    物业类别
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="buildingCategoryName"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    物业公司
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="propertyName"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
                     建筑结构类型
                 </label>
                 <div class="col-sm-3">
@@ -200,31 +219,12 @@
                     <label class="form-control" name="buildingStructureLowerName"></label>
                 </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    建筑类别
-                </label>
-                <div class="col-sm-3">
-                    <label class="form-control" name="buildingCategoryName"></label>
-                </div>
-            </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     建筑公司
                 </label>
                 <div class="col-sm-3">
                     <label class="form-control" name="dataBuildingName"></label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    物业公司
-                </label>
-                <div class="col-sm-3">
-                    <label class="form-control" name="propertyName"></label>
                 </div>
             </div>
         </div>

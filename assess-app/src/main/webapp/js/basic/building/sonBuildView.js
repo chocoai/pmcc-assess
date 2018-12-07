@@ -53,7 +53,7 @@ var buildingModelView;
             buildingOutfit: {
                 getAndInit: function (id) {
                     $.ajax({
-                        url: getContextPath()+"/basicBuildingOutfit/getBasicBuildingOutfitById",
+                        url: getContextPath() + "/basicBuildingOutfit/getBasicBuildingOutfitById",
                         type: "get",
                         dataType: "json",
                         data: {id: id},
@@ -80,7 +80,7 @@ var buildingModelView;
                     var data = formParams(buildingModelView.prototype.config().sonFrm);
                     data.buildingId = buildingCommon.getBuildingId();
                     $.ajax({
-                        url: getContextPath()+"/basicBuildingOutfit/saveAndUpdateBasicBuildingOutfit",
+                        url: getContextPath() + "/basicBuildingOutfit/saveAndUpdateBasicBuildingOutfit",
                         type: "post",
                         dataType: "json",
                         data: data,
@@ -106,7 +106,7 @@ var buildingModelView;
                 },
                 removeData: function (id) {
                     $.ajax({
-                        url: getContextPath()+"/basicBuildingOutfit/deleteBasicBuildingOutfit",
+                        url: getContextPath() + "/basicBuildingOutfit/deleteBasicBuildingOutfit",
                         type: "post",
                         dataType: "json",
                         data: {id: id},
@@ -125,24 +125,27 @@ var buildingModelView;
                     })
                 },
                 init: function (item) {
-                    AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_decoration_part, item.decorationPart, function (html, data) {
-                        $("#" + buildingModelView.prototype.config().sonFrm).find('select.decorationPart').empty().html(html).trigger('change');
-                    });
+                    $("#" + buildingModelView.prototype.config().sonFrm).find('select.decoratingMaterial').change(function () {
+                        AssessCommon.loadDataDicByPid($(this).val(), item.constructionTechnology, function (html, data) {
+                            $("#" + buildingModelView.prototype.config().sonFrm).find('select.constructionTechnology').empty().html(html).trigger('change');
+                        });
+                        item.constructionTechnology = null;
+                    })
+                    $("#" + buildingModelView.prototype.config().sonFrm).find('select.constructionTechnology').change(function () {
+                        AssessCommon.loadDataDicByPid($(this).val(), item.materialPrice, function (html, data) {
+                            $("#" + buildingModelView.prototype.config().sonFrm).find('select.materialPrice').empty().html(html).trigger('change');
+                        });
+                        item.materialPrice = null;
+                    })
                     AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_decorating_material, item.decoratingMaterial, function (html, data) {
                         $("#" + buildingModelView.prototype.config().sonFrm).find('select.decoratingMaterial').empty().html(html).trigger('change');
-                    });
-                    AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_material_price, item.materialPrice, function (html, data) {
-                        $("#" + buildingModelView.prototype.config().sonFrm).find('select.materialPrice').empty().html(html).trigger('change');
-                    });
-                    AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_construction_technology, item.constructionTechnology, function (html, data) {
-                        $("#" + buildingModelView.prototype.config().sonFrm).find('select.constructionTechnology').empty().html(html).trigger('change');
                     });
                 },
                 loadDataDicList: function () {
                     var cols = [];
                     cols.push({field: 'decorationPart', title: '装修部位'});
-                    cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
                     cols.push({field: 'decoratingMaterialName', title: '装修材料'});
+                    cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
                     cols.push({field: 'materialPriceName', title: '材料价格区间'});
                     cols.push({
                         field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -154,8 +157,8 @@ var buildingModelView;
                         }
                     });
                     $("#" + buildingModelView.prototype.config().sonTable).bootstrapTable('destroy');
-                    TableInit(buildingModelView.prototype.config().sonTable, getContextPath()+"/basicBuildingOutfit/getBootstrapTableVo", cols, {
-                        buildingId:buildingCommon.getBuildingId()
+                    TableInit(buildingModelView.prototype.config().sonTable, getContextPath() + "/basicBuildingOutfit/getBootstrapTableVo", cols, {
+                        buildingId: buildingCommon.getBuildingId()
                     }, {
                         showColumns: false,
                         showRefresh: false,
@@ -171,7 +174,7 @@ var buildingModelView;
             buildingSurface: {
                 getAndInit: function (id) {
                     $.ajax({
-                        url: getContextPath()+"/basicBuildingSurface/getBasicBuildingSurfaceById",
+                        url: getContextPath() + "/basicBuildingSurface/getBasicBuildingSurfaceById",
                         type: "get",
                         dataType: "json",
                         data: {id: id},
@@ -198,7 +201,7 @@ var buildingModelView;
                     var data = formParams(buildingModelView.prototype.config().examineBuildingSurfaceFrm);
                     data.buildingId = buildingCommon.getBuildingId();
                     $.ajax({
-                        url: getContextPath()+"/basicBuildingSurface/saveAndUpdateBasicBuildingSurface",
+                        url: getContextPath() + "/basicBuildingSurface/saveAndUpdateBasicBuildingSurface",
                         type: "post",
                         dataType: "json",
                         data: data,
@@ -224,7 +227,7 @@ var buildingModelView;
                 },
                 removeData: function (id) {
                     $.ajax({
-                        url: getContextPath()+"/basicBuildingSurface/deleteBasicBuildingSurface",
+                        url: getContextPath() + "/basicBuildingSurface/deleteBasicBuildingSurface",
                         type: "post",
                         dataType: "json",
                         data: {id: id},
@@ -261,8 +264,8 @@ var buildingModelView;
                         }
                     });
                     $("#" + buildingModelView.prototype.config().examineBuildingSurfaceTable).bootstrapTable('destroy');
-                    TableInit(buildingModelView.prototype.config().examineBuildingSurfaceTable, getContextPath()+"/basicBuildingSurface/getBootstrapTableVo", cols, {
-                        buildingId:buildingCommon.getBuildingId()
+                    TableInit(buildingModelView.prototype.config().examineBuildingSurfaceTable, getContextPath() + "/basicBuildingSurface/getBootstrapTableVo", cols, {
+                        buildingId: buildingCommon.getBuildingId()
                     }, {
                         showColumns: false,
                         showRefresh: false,
@@ -277,7 +280,7 @@ var buildingModelView;
             buildingMaintenance: {
                 getAndInit: function (id) {
                     $.ajax({
-                        url: getContextPath()+"/basicBuildingMaintenance/getBasicBuildingMaintenanceById",
+                        url: getContextPath() + "/basicBuildingMaintenance/getBasicBuildingMaintenanceById",
                         type: "get",
                         dataType: "json",
                         data: {id: id},
@@ -304,7 +307,7 @@ var buildingModelView;
                     var data = formParams(buildingModelView.prototype.config().examineBuildingMaintenanceFrm);
                     data.buildingId = buildingCommon.getBuildingId();
                     $.ajax({
-                        url: getContextPath()+"/basicBuildingMaintenance/saveAndUpdateBasicBuildingMaintenance",
+                        url: getContextPath() + "/basicBuildingMaintenance/saveAndUpdateBasicBuildingMaintenance",
                         type: "post",
                         dataType: "json",
                         data: data,
@@ -330,7 +333,7 @@ var buildingModelView;
                 },
                 removeData: function (id) {
                     $.ajax({
-                        url: getContextPath()+"/basicBuildingMaintenance/deleteBasicBuildingMaintenance",
+                        url: getContextPath() + "/basicBuildingMaintenance/deleteBasicBuildingMaintenance",
                         type: "post",
                         dataType: "json",
                         data: {id: id},
@@ -349,18 +352,25 @@ var buildingModelView;
                     });
                 },
                 init: function (item) {
+                    $("#" + buildingModelView.prototype.config().examineBuildingMaintenanceFrm).find('select.type').change(function () {
+                        AssessCommon.loadDataDicByPid($(this).val(), item.materialQuality, function (html, data) {
+                            $("#" + buildingModelView.prototype.config().examineBuildingMaintenanceFrm).find('select.materialQuality').empty().html(html).trigger('change');
+                        });
+                        item.materialQuality = null;
+                    })
+                    AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_maintenance_type, item.type, function (html, data) {
+                        $("#" + buildingModelView.prototype.config().examineBuildingMaintenanceFrm).find('select.type').empty().html(html).trigger('change');
+                    });
                     AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_maintenance_category, item.category, function (html, data) {
                         $("#" + buildingModelView.prototype.config().examineBuildingMaintenanceFrm).find('select.category').empty().html(html).trigger('change');
                     });
-                    AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_materialquality, item.materialQuality, function (html, data) {
-                        $("#" + buildingModelView.prototype.config().examineBuildingMaintenanceFrm).find('select.materialQuality').empty().html(html).trigger('change');
-                    });
+
                 },
                 loadDataDicList: function () {
                     var cols = [];
-                    cols.push({field: 'categoryName', title: '类别'});
+                    cols.push({field: 'typeName', title: '类型'});
                     cols.push({field: 'materialQualityName', title: '材质'});
-                    cols.push({field: 'name', title: '名称'});
+                    cols.push({field: 'categoryName', title: '分类'});
                     cols.push({
                         field: 'id', title: '操作', formatter: function (value, row, index) {
                             var str = '<div class="btn-margin">';
@@ -371,8 +381,8 @@ var buildingModelView;
                         }
                     });
                     $("#" + buildingModelView.prototype.config().examineBuildingMaintenanceTable).bootstrapTable('destroy');
-                    TableInit(buildingModelView.prototype.config().examineBuildingMaintenanceTable, getContextPath()+"/basicBuildingMaintenance/getBootstrapTableVo", cols, {
-                        buildingId:buildingCommon.getBuildingId()
+                    TableInit(buildingModelView.prototype.config().examineBuildingMaintenanceTable, getContextPath() + "/basicBuildingMaintenance/getBootstrapTableVo", cols, {
+                        buildingId: buildingCommon.getBuildingId()
                     }, {
                         showColumns: false,
                         showRefresh: false,
@@ -387,7 +397,7 @@ var buildingModelView;
             buildingFunction: {
                 getAndInit: function (id) {
                     $.ajax({
-                        url: getContextPath()+"/basicBuildingFunction/getBasicBuildingFunctionById",
+                        url: getContextPath() + "/basicBuildingFunction/getBasicBuildingFunctionById",
                         type: "get",
                         dataType: "json",
                         data: {id: id},
@@ -414,7 +424,7 @@ var buildingModelView;
                     var data = formParams(buildingModelView.prototype.config().examineBuildingFunctionFrm);
                     data.buildingId = buildingCommon.getBuildingId();
                     $.ajax({
-                        url: getContextPath()+"/basicBuildingFunction/saveAndUpdateBasicBuildingFunction",
+                        url: getContextPath() + "/basicBuildingFunction/saveAndUpdateBasicBuildingFunction",
                         type: "post",
                         dataType: "json",
                         data: data,
@@ -440,7 +450,7 @@ var buildingModelView;
                 },
                 removeData: function (id) {
                     $.ajax({
-                        url: getContextPath()+"/basicBuildingFunction/deleteBasicBuildingFunction",
+                        url: getContextPath() + "/basicBuildingFunction/deleteBasicBuildingFunction",
                         type: "post",
                         dataType: "json",
                         data: {id: id},
@@ -462,15 +472,6 @@ var buildingModelView;
                     AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_decoration_part, item.decorationPart, function (html, data) {
                         $("#" + buildingModelView.prototype.config().examineBuildingFunctionFrm).find('select.decorationPart').empty().html(html).trigger('change');
                     });
-                    AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_decorating_material, item.decoratingMaterial, function (html, data) {
-                        $("#" + buildingModelView.prototype.config().examineBuildingFunctionFrm).find('select.decoratingMaterial').empty().html(html).trigger('change');
-                    });
-                    AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_material_price, item.materialPrice, function (html, data) {
-                        $("#" + buildingModelView.prototype.config().examineBuildingFunctionFrm).find('select.materialPrice').empty().html(html).trigger('change');
-                    });
-                    AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_construction_technology, item.constructionTechnology, function (html, data) {
-                        $("#" + buildingModelView.prototype.config().examineBuildingFunctionFrm).find('select.constructionTechnology').empty().html(html).trigger('change');
-                    });
                     AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_function_type, item.type, function (html, optionArray) {
                         $("#" + buildingModelView.prototype.config().examineBuildingFunctionFrm).find('select.type').empty().html(html).trigger('change');
                     });
@@ -478,10 +479,8 @@ var buildingModelView;
                 loadDataDicList: function () {
                     var cols = [];
                     cols.push({field: 'typeName', title: '类型'});
-                    cols.push({field: 'decorationPart', title: '装修部位'});
-                    cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
-                    cols.push({field: 'decoratingMaterialName', title: '装修材料'});
-                    cols.push({field: 'materialPriceName', title: '材料价格区间'});
+                    cols.push({field: 'decorationPartName', title: '装修部位'});
+                    cols.push({field: 'remark', title: '现状描述'});
                     cols.push({
                         field: 'id', title: '操作', formatter: function (value, row, index) {
                             var str = '<div class="btn-margin">';
@@ -492,8 +491,8 @@ var buildingModelView;
                         }
                     });
                     $("#" + buildingModelView.prototype.config().examineBuildingFunctionTable).bootstrapTable('destroy');
-                    TableInit(buildingModelView.prototype.config().examineBuildingFunctionTable, getContextPath()+"/basicBuildingFunction/getBootstrapTableVo", cols, {
-                        buildingId:buildingCommon.getBuildingId()
+                    TableInit(buildingModelView.prototype.config().examineBuildingFunctionTable, getContextPath() + "/basicBuildingFunction/getBootstrapTableVo", cols, {
+                        buildingId: buildingCommon.getBuildingId()
                     }, {
                         showColumns: false,
                         showRefresh: false,

@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseBuildingMaintenanceDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMaintenance;
@@ -72,11 +71,14 @@ public class CaseBuildingMaintenanceService {
     public CaseBuildingMaintenanceVo getCaseBuildingMaintenanceVo(CaseBuildingMaintenance caseBuildingMaintenance) {
         CaseBuildingMaintenanceVo vo = new CaseBuildingMaintenanceVo();
         BeanUtils.copyProperties(caseBuildingMaintenance, vo);
+        if (caseBuildingMaintenance.getType() != null) {
+            vo.setCategoryName(baseDataDicService.getNameById(caseBuildingMaintenance.getType()));
+        }
         if (caseBuildingMaintenance.getCategory() != null) {
-            vo.setCategoryName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_MAINTENANCE_CATEGORY, caseBuildingMaintenance.getCategory()));
+            vo.setCategoryName(baseDataDicService.getNameById(caseBuildingMaintenance.getCategory()));
         }
         if (caseBuildingMaintenance.getMaterialQuality() != null) {
-            vo.setMaterialQualityName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_MATERIALQUALITY, caseBuildingMaintenance.getMaterialQuality()));
+            vo.setMaterialQualityName(baseDataDicService.getNameById(caseBuildingMaintenance.getMaterialQuality()));
         }
         return vo;
     }
@@ -137,10 +139,11 @@ public class CaseBuildingMaintenanceService {
 
     /**
      * 根据查询条件判断是否有数据
+     *
      * @param buildingId
      * @return
      */
-    public boolean hasBuildingMaintenanceData(Integer buildingId){
-        return caseBuildingMaintenanceDao.countByBuildingId(buildingId)>0;
+    public boolean hasBuildingMaintenanceData(Integer buildingId) {
+        return caseBuildingMaintenanceDao.countByBuildingId(buildingId) > 0;
     }
 }

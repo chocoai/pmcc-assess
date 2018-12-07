@@ -370,7 +370,7 @@
             },
             loadDataDicList: function () {
                 var cols = [];
-                cols.push({field: 'location', title: '车辆位置'});
+                cols.push({field: 'locationName', title: '车辆位置'});
                 cols.push({field: 'parkingType', title: '车位类型'});
                 cols.push({field: 'number', title: '车位数量'});
                 cols.push({field: 'fileViewName', title: '上传的附件'});
@@ -661,6 +661,7 @@
                 cols.push({field: 'typeName', title: '环境类型'});
                 cols.push({field: 'categoryName', title: '影响因素'});
                 cols.push({field: 'influenceDegreeName', title: '影响程度'});
+                cols.push({field: 'remark', title: '描述'});
                 $("#" + matchingEnvironment.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingEnvironment.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingEnvironment/getBootstrapTableVo", cols, {
                     estateId: ${empty basicEstate.id?0:basicEstate.id},

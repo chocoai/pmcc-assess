@@ -70,6 +70,7 @@
                 cols.push({field: 'typeName', title: '环境类型'});
                 cols.push({field: 'categoryName', title: '影响因素'});
                 cols.push({field: 'influenceDegreeName', title: '影响程度'});
+                cols.push({field: 'remark', title: '描述'});
                 cols.push({
                     field: 'id', title: '操作', formatter: function (value, row, index) {
                         var str = '<div class="btn-margin">';

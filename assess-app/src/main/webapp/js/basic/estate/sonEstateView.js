@@ -1772,6 +1772,7 @@ var matchingEnvironment;
             cols.push({field: 'typeName', title: '环境类型'});
             cols.push({field: 'categoryName', title: '影响因素'});
             cols.push({field: 'influenceDegreeName', title: '影响程度'});
+            cols.push({field: 'remark', title: '描述'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -2179,7 +2180,7 @@ var estateParking;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'location', title: '车位位置'});
+            cols.push({field: 'locationName', title: '车位位置'});
             cols.push({field: 'parkingTypeName', title: '车位类型'});
             cols.push({field: 'number', title: '车位数量'});
             cols.push({field: 'fileViewName', title: '上传的附件'});
@@ -2278,6 +2279,11 @@ var estateParking;
         init: function (item) {
             $("#" + estateParking.prototype.config().frm).clearAll();
             $("#" + estateParking.prototype.config().frm).initForm(item);
+
+            AssessCommon.loadDataDicByKey(AssessDicKey.estate_car_location, item.location, function (html, data) {
+                $("#" + estateParking.prototype.config().frm).find("select.location").empty().html(html).trigger('change');
+            });
+
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_car_type, item.parkingType, function (html, data) {
                 $("#" + estateParking.prototype.config().frm).find("select.parkingType").empty().html(html).trigger('change');
             });

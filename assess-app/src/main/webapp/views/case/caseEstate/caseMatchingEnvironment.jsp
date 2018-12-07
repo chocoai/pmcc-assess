@@ -58,6 +58,7 @@
                 cols.push({field: 'typeName', title: '环境类型'});
                 cols.push({field: 'categoryName', title: '影响因素'});
                 cols.push({field: 'influenceDegreeName', title: '影响程度'});
+                cols.push({field: 'remark', title: '描述'});
                 $("#" + matchingEnvironment.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingEnvironment.prototype.config().table, "${pageContext.request.contextPath}/caseMatchingEnvironment/getCaseMatchingEnvironmentList", cols, {
                     type: matchingEnvironment.prototype.config().type,

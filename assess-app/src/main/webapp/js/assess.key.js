@@ -89,6 +89,7 @@ AssessDicKey.project_initiate_urgency = "project.initiate.urgency";//紧急程�
 
 AssessDicKey.estate_position = "estate.position";//楼盘方位
 AssessDicKey.estate_distance = "estate.distance";//交通距离
+AssessDicKey.estate_car_location = "estate.car.location";//车位位置
 AssessDicKey.estate_car_type = "estate.car.type";//车位类型
 AssessDicKey.estate_traffic_nature = "estate.traffic.nature";//交通枢纽性质
 AssessDicKey.estate_line_water_supply_pipe_grade = "estate.line.water.supply.pipe.grade";//供应保障等级
@@ -134,9 +135,10 @@ AssessDicKey.examine_building_material_price = "building.material_price";//材�
 AssessDicKey.examine_building_construction_technology = "building.construction_technology";//施工工艺
 AssessDicKey.examine_building_decoration_part = "building.decoration_part";//装修部位
 AssessDicKey.examine_building_structure = "examine.building.structure";//屋面结构
-AssessDicKey.examine_building_function_type = "building.function.type";//建筑功能类型
+AssessDicKey.examine_building_maintenance_type = "examine.building.maintenance.type";//围护结构类型
 AssessDicKey.examine_building_maintenance_category = "examine.building.maintenance.category";//围护结构分类
 AssessDicKey.examine_building_materialquality = "examine.building.maintenance.materialQuality";//围护结构材质
+AssessDicKey.examine_building_function_type = "building.function.type";//建筑功能类型
 
 AssessDicKey.examineHouseType = "examine.house.type";//房屋类型
 AssessDicKey.examineHouseFinancingConditions = "examine.house.financing.conditions";//融资条件
