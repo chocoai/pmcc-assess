@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.ExamineHouseEquipmentTypeEnum;
 import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
-import com.copower.pmcc.assess.dal.cases.entity.CaseHouse;
-import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTrading;
-import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingLease;
-import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingSell;
+import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.cases.CaseHouseTradingLeaseAndSellDto;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingVo;
 import com.copower.pmcc.assess.service.cases.*;
@@ -57,6 +54,12 @@ public class CaseHouseController {
     private CaseHouseWaterService caseHouseWaterService;
     @Autowired
     private CaseHouseEquipmentService caseHouseEquipmentService;
+    @Autowired
+    private CaseBuildingMainService caseBuildingMainService;
+    @Autowired
+    private CaseEstateService caseEstateService;
+    @Autowired
+    private CaseUnitService caseUnitService;
 
 
     @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
@@ -81,6 +84,13 @@ public class CaseHouseController {
         modelAndView.addObject("hasHouseEquipmentAirConditioner", caseHouseEquipmentService.hasHouseEquipmentData(id, ExamineHouseEquipmentTypeEnum.houseAirConditioner.getKey()));
         modelAndView.addObject("hasHouseEquipmentHeating", caseHouseEquipmentService.hasHouseEquipmentData(id, ExamineHouseEquipmentTypeEnum.houseHeating.getKey()));
         modelAndView.addObject("hasHouseEquipmentNewWind", caseHouseEquipmentService.hasHouseEquipmentData(id, ExamineHouseEquipmentTypeEnum.houseNewWind.getKey()));
+
+        CaseUnit caseUnit = caseUnitService.getCaseUnitById(caseHouse.getUnitId());
+        CaseBuildingMain caseBuildingMain = caseBuildingMainService.getCaseBuildingMainById(caseUnit.getBuildingMainId());
+        CaseEstate caseEstate = caseEstateService.getCaseEstateById(caseBuildingMain.getEstateId());
+        modelAndView.addObject("caseUnit", caseUnit);
+        modelAndView.addObject("caseBuildingMain", caseBuildingMain);
+        modelAndView.addObject("caseEstate", caseEstate);
         return modelAndView;
     }
 
@@ -245,9 +255,9 @@ public class CaseHouseController {
 
     @ResponseBody
     @RequestMapping(value = "/autoCompleteCaseHouse", method = {RequestMethod.GET}, name = "房屋-- 信息自动补全")
-    public HttpResult autoCompleteCaseHouse(String houseNumber, Integer unitId, Integer maxRows) {
+    public HttpResult autoCompleteCaseHouse(String houseNumber, Integer unitId) {
         try {
-            List<CustomCaseEntity> caseEntities = caseHouseService.autoCompleteCaseHouse(houseNumber, unitId, maxRows);
+            List<CustomCaseEntity> caseEntities = caseHouseService.autoCompleteCaseHouse(houseNumber, unitId);
             return HttpResult.newCorrectResult(caseEntities);
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");

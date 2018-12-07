@@ -53,7 +53,7 @@
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">街道</label>
+                    <label class="col-sm-1 control-label">街道名称</label>
                     <div class="col-sm-3">
                         <label class="form-control">${caseEstate.street}</label>
                     </div>
@@ -136,17 +136,6 @@
                     <label class="col-sm-1 control-label">楼盘概况</label>
                     <div class="col-sm-11">
                         <label class="form-control">${caseEstate.description}</label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">地图标注</label>
-                    <div class="col-sm-5">
-                        <div class="btn btn-success"
-                             onclick="window.open('${pageContext.request.contextPath}/caseEstate/detail?estateId=${caseEstate.id}')">
-                            地图标注
-                        </div>
                     </div>
                 </div>
             </div>
@@ -302,13 +291,13 @@
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">土地形状状况</label>
+                    <label class="col-sm-1 control-label">土地形状</label>
                     <div class="col-sm-3">
                         <label class="form-control">${caseEstateLandState.shapeStateName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">土地平整度</label>
+                    <label class="col-sm-1 control-label">地形</label>
                     <div class="col-sm-3">
                         <label class="form-control">${caseEstateLandState.planenessName}</label>
                     </div>
@@ -339,7 +328,7 @@
 
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">地形地势</label>
+                    <label class="col-sm-1 control-label">地势</label>
                     <div class="col-sm-3">
                         <label class="form-control">${caseEstateLandState.topographicTerrainName}</label>
                     </div>
@@ -450,8 +439,8 @@
 <div class="material" style="display: ${hasMatchingMaterialData?'block':'none'};">
     <%@include file="/views/case/caseEstate/caseMatchingMaterial.jsp" %>
 </div>
-
-<script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/case/case.common.js"></script>
+<script type="text/javascript">
     var CaseEstateFun = function () {
 
     };

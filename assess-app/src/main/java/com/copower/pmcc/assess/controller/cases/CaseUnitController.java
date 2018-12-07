@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.controller.cases;
 
 import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
+import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMain;
+import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouse;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
 import com.copower.pmcc.assess.service.cases.*;
@@ -39,7 +41,10 @@ public class CaseUnitController {
     private CaseUnitElevatorService caseUnitElevatorService;
     @Autowired
     private CaseUnitHuxingService caseUnitHuxingService;
-
+    @Autowired
+    private CaseBuildingMainService caseBuildingMainService;
+    @Autowired
+    private CaseEstateService caseEstateService;
 
 
     @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
@@ -52,6 +57,10 @@ public class CaseUnitController {
         modelAndView.addObject("hasUnitDecorateData",caseUnitDecorateService.hasUnitDecorateData(id));
         modelAndView.addObject("hasUnitElevatorData",caseUnitElevatorService.hasUnitElevatorData(id));
         modelAndView.addObject("hasUnitHuxingData",caseUnitHuxingService.hasUnitHuxingData(id));
+        CaseBuildingMain caseBuildingMain = caseBuildingMainService.getCaseBuildingMainById(caseUnit.getBuildingMainId());
+        CaseEstate caseEstate = caseEstateService.getCaseEstateById(caseBuildingMain.getEstateId());
+        modelAndView.addObject("caseBuildingMain", caseBuildingMain);
+        modelAndView.addObject("caseEstate", caseEstate);
         return modelAndView;
     }
 
@@ -136,9 +145,9 @@ public class CaseUnitController {
 
     @ResponseBody
     @RequestMapping(value = "/autoCompleteCaseUnit", method = {RequestMethod.GET}, name = "单元-- 信息自动补全")
-    public HttpResult autoCompleteCaseEstate(String unitNumber, Integer caseBuildingMainId, Integer maxRows) {
+    public HttpResult autoCompleteCaseEstate(String unitNumber, Integer caseBuildingMainId) {
         try {
-            List<CustomCaseEntity> caseEntities = caseUnitService.autoCompleteCaseUnit(unitNumber, caseBuildingMainId, maxRows);
+            List<CustomCaseEntity> caseEntities = caseUnitService.autoCompleteCaseUnit(unitNumber, caseBuildingMainId);
             return HttpResult.newCorrectResult(caseEntities);
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");

@@ -6,6 +6,7 @@
     var estateCommon = {};
     estateCommon.estateLandStateForm = $('#basicLandState');
     estateCommon.estateForm = $('#basicEstateFrm');
+    estateCommon.estateMapiframe = undefined;//地图标注iframe
     //附件上传控件id数组
     estateCommon.estateFileControlIdArray = [
         'estate_floor_total_plan',
@@ -17,6 +18,17 @@
 
     estateCommon.getEstateId = function () {
         return estateCommon.estateForm.find('[name=id]').val();
+    }
+
+    //获取楼盘名称
+    estateCommon.getEstateName = function () {
+        alert(basicCommon.basicApplyForm.find('[name=estatePartInMode]').val());
+        if (basicCommon.basicApplyForm.find('[name=estatePartInMode]').val()) {
+            return estateCommon.estateForm.find('[name=name]').val();
+        } else {
+            alert(basicCommon.basicApplyForm.find('[name=estateName]').val());
+            return basicCommon.basicApplyForm.find('[name=estateName]').val();
+        }
     }
 
     //添加楼盘
@@ -93,7 +105,7 @@
             data: {applyId: applyId},
             success: function (result) {
                 if (result.ret) {
-                    estateCommon.estateForm.initForm(result.data.basicEstate,function () {
+                    estateCommon.estateForm.initForm(result.data.basicEstate, function () {
                         //附件显示
                         $.each(estateCommon.estateFileControlIdArray, function (i, item) {
                             estateCommon.fileShow(item);
@@ -195,6 +207,65 @@
             deleteFlag: deleteFlag == undefined ? true : deleteFlag
         })
     }
+
+    //楼盘标注
+    estateCommon.mapMarker = function (readonly) {
+        var contentUrl = getContextPath() + '/map/mapMarkerEstate?estateName=' + estateCommon.getEstateName();
+        if (readonly != true) {
+            contentUrl += '&click=estateCommon.addMarker';
+        }
+        layer.open({
+            type: 2,
+            title: '楼盘标注',
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: contentUrl,
+            success: function (layero) {
+                estateCommon.estateMapiframe = window[layero.find('iframe')[0]['name']];
+                estateCommon.loadMarkerList();
+            }
+        });
+    }
+
+    //添加标注
+    estateCommon.addMarker = function (lng, lat) {
+        $.ajax({
+            url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
+            data: {
+                applyId: basicCommon.getApplyId(),
+                type: 'estate',
+                lng: lng,
+                lat: lat,
+                name: estateCommon.getEstateName()
+            },
+            success: function (result) {
+                if (result.ret) {//标注成功后，刷新地图上的标注
+                    estateCommon.loadMarkerList();
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
+
+    //加载标注
+    estateCommon.loadMarkerList = function () {
+        $.ajax({
+            url: getContextPath() + '/basicEstateTagging/getEstateTaggingList',
+            data: {
+                applyId: basicCommon.getApplyId(),
+                type: 'estate'
+            },
+            success: function (result) {
+                if (result.ret && estateCommon.estateMapiframe) {//标注成功后，刷新地图上的标注
+                    estateCommon.estateMapiframe.loadMarkerList(result.data);
+                }
+            }
+        })
+    }
+
 
     window.estateCommon = estateCommon;
 })(jQuery);

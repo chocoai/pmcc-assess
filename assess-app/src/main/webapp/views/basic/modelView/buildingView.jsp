@@ -16,8 +16,14 @@
                     楼栋号<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="楼栋号" name="buildingNumber"
-                           class="form-control" required="required">
+                    <div class="input-group">
+                        <input type="text" data-rule-maxlength="100" placeholder="楼栋号" required="required"
+                               name="buildingNumber" class="form-control" >
+                        <span class="input-group-btn">
+                            <div onclick="buildingCommon.mapMarker();" class="btn btn-info"><i
+                                    class="fa fa-map-marker"></i> 标注</div>
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="x-valid">
@@ -319,4 +325,3 @@
     </form>
 </div>
 <%@include file="/views/basic/modelView/build/sonBuildView.jsp" %>
-<script src="${pageContext.request.contextPath}/js/basic/building/building.common.js"></script>

@@ -43,8 +43,14 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">楼盘名称<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" data-rule-maxlength="100" placeholder="楼盘名称" required="required"
-                           name="name" class="form-control" value="${basicEstate.name}">
+                    <div class="input-group">
+                        <input type="text" data-rule-maxlength="100" placeholder="楼盘名称" required="required"
+                               name="name" class="form-control" value="${basicEstate.name}">
+                        <span class="input-group-btn">
+                            <div onclick="estateCommon.mapMarker();" class="btn btn-info"><i
+                                    class="fa fa-map-marker"></i> 标注</div>
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="x-valid">
@@ -81,9 +87,9 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">街道</label>
+                <label class="col-sm-1 control-label">街道名称</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="街道"
+                    <input type="text" placeholder="街道名称"
                            name="street" class="form-control" value="${basicEstate.street}">
                 </div>
             </div>
@@ -134,7 +140,6 @@
                 </div>
             </div>
         </div>
-
 
 
         <div class="form-group">
@@ -205,17 +210,6 @@
                 <div class="col-sm-11">
                         <textarea class="form-control" name="description"
                                   placeholder="楼盘概况">${basicEstate.description}</textarea>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">地图标注</label>
-                <div class="col-sm-5">
-                    <div class="btn btn-success"
-                         onclick="window.open('${pageContext.request.contextPath}/basicEstateTagging/index?estateId='+$('#basicEstateFrm').find('[name=id]').val()+'&estateName='+$('#basicEstateFrm').find('[name=name]').val()+'')">
-                        地图标注
-                    </div>
                 </div>
             </div>
         </div>
@@ -420,14 +414,14 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土地形状状况</label>
+                <label class="col-sm-1 control-label">土地形状</label>
                 <div class="col-sm-3">
                     <select class="form-control search-select select2 shapeState" name="shapeState">
                     </select>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土地平整度</label>
+                <label class="col-sm-1 control-label">地形</label>
                 <div class="col-sm-3">
                     <select class="form-control search-select select2 planeness" name="planeness">
                     </select>
@@ -458,10 +452,9 @@
                 </div>
             </div>
         </div>
-
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">地形地势</label>
+                <label class="col-sm-1 control-label">地势</label>
                 <div class="col-sm-3">
                     <select class="form-control search-select select2 topographicTerrain" name="topographicTerrain">
                     </select>
@@ -480,4 +473,16 @@
 </div>
 
 <%@include file="/views/basic/modelView/estate/sonEstateView.jsp" %>
-<script src="${pageContext.request.contextPath}/js/basic/estate/estate.common.js"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/position.autocomplete.js"></script>
+<script type="text/javascript">
+    $(function () {
+        estateCommon.estateForm.find('[name=position]').acptPosition({
+            provinceElement: estateCommon.estateForm.find('[name=province]'),
+            cityElement: estateCommon.estateForm.find('[name=city]'),
+            districtElement: estateCommon.estateForm.find('[name=district]'),
+            onSelect: function (id, name) {
+                estateCommon.estateForm.find('[name=position]').val(name);
+            }
+        })
+    })
+</script>

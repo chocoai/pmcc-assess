@@ -6,6 +6,10 @@ var basicCommon = {};
 basicCommon.basicApplyForm = $('#basicApplyFrm');
 basicCommon.contentTabPanel = $('#contentTabPanel');
 
+basicCommon.getApplyId = function () {
+    return basicCommon.basicApplyForm.find('[name=id]').val();
+}
+
 //开发商选择
 basicCommon.developerSelect = function (this_) {
     assessDeveloper.select(function (row) {

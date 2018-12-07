@@ -4,7 +4,7 @@ var industry = new Object();
 
 //doc
 /*
- * 1:工业与仓储 有 层面结构 和  维护结构
+ * 1:工业与仓储 有 屋面结构 和  围护结构
  * 2:非工业与仓储 供排水情况,供电信息,供热信息,供气信息 只填写有无
  * 3:供水平面图,供电平面图,供气平面图,采暖平面图 工业与仓储 才有
  * 4:户型 跨长,跨数,跨宽 工业与仓储 才有
@@ -17,8 +17,8 @@ industry.config = {
     industry: {key: 1, name: "工业与仓储"},
     defaultKey: "0",
     build: {
-        surface: "industrySurface",//层面结构
-        maintenance: "industryMaintenance",//维护结构
+        surface: "industrySurface",//屋面结构
+        maintenance: "industryMaintenance",//围护结构
     },
     estate: {
         supplyGas: "industrySupplyGas",//供气信息

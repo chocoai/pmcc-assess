@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * @Auther: zch
  * @Date: 2018/10/30 14:24
- * @Description:维护结构
+ * @Description:围护结构
  */
 @RequestMapping(value = "/basicBuildingMaintenance")
 @Controller

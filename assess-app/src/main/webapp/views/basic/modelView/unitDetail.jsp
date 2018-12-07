@@ -10,7 +10,13 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">单元编号</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicUnit.unitNumber}</label>
+                    <div class="input-group">
+                        <label class="form-control">${basicUnit.unitNumber}</label>
+                        <span class="input-group-btn">
+                            <div onclick="unitCommon.mapMarker(true);" class="btn btn-info"><i
+                                    class="fa fa-map-marker"></i> 标注</div>
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="x-valid">
@@ -23,4 +29,3 @@
     </form>
 </div>
 <%@include file="/views/basic/modelView/unit/sonUnitDetail.jsp" %>
-<script src="${pageContext.request.contextPath}/js/basic/unit/unit.common.js"></script>

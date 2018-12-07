@@ -66,7 +66,7 @@
                 // cols.push({field: 'type', title: '类型'});
                 cols.push({field: 'gradeName', title: '供气商等级'});
                 // cols.push({field: 'lineGradeName', title: '线路等级'});
-                cols.push({field: 'power', title: '功率'});
+                cols.push({field: 'power', title: '供应量或功率'});
                 $("#" + estateSupplyGas.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyGas.prototype.config().table, "${pageContext.request.contextPath}/caseEstateSupply/getCaseEstateSupplyList", cols, {
                     estateId: ${empty caseEstate.id?0:caseEstate.id},

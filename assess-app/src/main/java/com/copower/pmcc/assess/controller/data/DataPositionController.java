@@ -58,7 +58,6 @@ public class DataPositionController {
     @ResponseBody
     @RequestMapping(value = "/getDataPositionList", method = {RequestMethod.GET}, name = "获取方位维护列表")
     public BootstrapTableVo getDataPositionList(String province, String city, String district, String name) {
-        DataPosition dataPosition = new DataPosition();
         BootstrapTableVo vo = null;
         try {
             vo = dataPositionService.getDataPositionListVos(province, city, district,name);
@@ -95,38 +94,6 @@ public class DataPositionController {
         } catch (Exception e) {
             log.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/getDataPositionListByArea", method = {RequestMethod.GET}, name = "获取by区域")
-    public HttpResult getDataPositionListByArea(String province, String city, String district,String name) {
-        try {
-            return HttpResult.newCorrectResult(dataPositionService.dataPositionVoList(province, city, district,name));
-        } catch (Exception e) {
-            log.error(String.format("exception: %s", e.getMessage()), e);
-            return HttpResult.newErrorResult("获取版块信息异常");
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/dataPositionList", method = {RequestMethod.GET}, name = "获取 list")
-    public HttpResult dataPositionList(String province, String city, String district) {
-        try {
-            DataPosition dataPosition = new DataPosition();
-            if (org.apache.commons.lang.StringUtils.isNotBlank(province)) {
-                dataPosition.setProvince(province);
-            }
-            if (org.apache.commons.lang.StringUtils.isNotBlank(city)) {
-                dataPosition.setCity(city);
-            }
-            if (org.apache.commons.lang.StringUtils.isNotBlank(district)) {
-                dataPosition.setDistrict(district);
-            }
-            return HttpResult.newCorrectResult(dataPositionService.dataPositionVos(dataPosition));
-        } catch (Exception e) {
-            log.error(String.format("exception: %s", e.getMessage()), e);
-            return HttpResult.newErrorResult("获取版块信息 list exception");
         }
     }
     

@@ -79,16 +79,16 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土地形状状况<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">土地形状<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="土地形状状况" required="required" name="shapeState"
+                    <input type="text" class="form-control" placeholder="土地形状" required="required" name="shapeState"
                            value="${surveyExamineDataInfoVo.examineEstateLandStateVo.shapeState}">
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土地平整度<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">地形<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="土地平整度" required="required" name="planeness"
+                    <input type="text" class="form-control" placeholder="地形" required="required" name="planeness"
                            value="${surveyExamineDataInfoVo.examineEstateLandStateVo.planeness}">
                 </div>
             </div>
@@ -123,11 +123,11 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">地形地势<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">地势<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <input type="text" class="form-control"
                            value="${surveyExamineDataInfoVo.examineEstateLandStateVo.topographicTerrain}"
-                           placeholder="地形地势" required="required" name="topographicTerrain">
+                           placeholder="地势" required="required" name="topographicTerrain">
                 </div>
             </div>
 

@@ -92,6 +92,11 @@
                     <div id="_house_new_huxing_plan"></div>
                 </div>
             </div>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <div class="btn btn-success">设置户型朝向</div>
+                </div>
+            </div>
         </div>
 d
         <div class="form-group">
@@ -346,7 +351,6 @@ d
     </form>
 </div>
 <%@include file="/views/basic/modelView/house/sonHouseView.jsp" %>
-<script src="${pageContext.request.contextPath}/js/basic/house/house.common.js"></script>
 <script src="${pageContext.request.contextPath}/js/basic/house/houseView.js"></script>
 <script src="${pageContext.request.contextPath}/js/basic/huxing.select.js"></script>
 

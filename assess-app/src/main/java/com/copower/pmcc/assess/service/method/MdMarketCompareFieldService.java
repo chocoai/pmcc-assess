@@ -435,12 +435,12 @@ public class MdMarketCompareFieldService {
                         stringBuilder.append(StringUtils.isEmpty(landState.getSouthTo()) ? "" : String.format("南至:%s、", landState.getSouthTo()));
                         stringBuilder.append(StringUtils.isEmpty(landState.getWestTo()) ? "" : String.format("西至:%s、", landState.getWestTo()));
                         stringBuilder.append(StringUtils.isEmpty(landState.getNorthTo()) ? "" : String.format("北至:%s、", landState.getNorthTo()));
-                        stringBuilder.append(StringUtils.isEmpty(landState.getShapeState()) ? "" : String.format("土地形状状况:%s、", landState.getShapeState()));
-                        stringBuilder.append(StringUtils.isEmpty(landState.getPlaneness()) ? "" : String.format("土地平整度:%s、", landState.getPlaneness()));
+                        stringBuilder.append(StringUtils.isEmpty(landState.getShapeState()) ? "" : String.format("土地形状:%s、", landState.getShapeState()));
+                        stringBuilder.append(StringUtils.isEmpty(landState.getPlaneness()) ? "" : String.format("地形:%s、", landState.getPlaneness()));
                         stringBuilder.append(StringUtils.isEmpty(landState.getDevelopmentDegree()) ? "" : String.format("土地开发程度:%s、", landState.getDevelopmentDegree()));
                         stringBuilder.append(StringUtils.isEmpty(landState.getRestrictiveCondition()) ? "" : String.format("开发限制条件:%s、", landState.getRestrictiveCondition()));
                         stringBuilder.append(StringUtils.isEmpty(landState.getSoil()) ? "" : String.format("土壤:%s、", landState.getSoil()));
-                        stringBuilder.append(StringUtils.isEmpty(landState.getTopographicTerrain()) ? "" : String.format("地形地势:%s、", landState.getTopographicTerrain()));
+                        stringBuilder.append(StringUtils.isEmpty(landState.getTopographicTerrain()) ? "" : String.format("地势:%s、", landState.getTopographicTerrain()));
                         stringBuilder.append(StringUtils.isEmpty(landState.getLandArea()) ? "" : String.format("土地面积:%s、", landState.getLandArea()));
                         list.add(getMarketCompareItemDto(AssessMarketCompareConstant.LAND_ENTITY_STATUS, stringBuilder.toString()));
                         break;
@@ -654,7 +654,7 @@ public class MdMarketCompareFieldService {
         stringBuilder.append(StringUtils.isEmpty(supply.getReputation()) ? "" : String.format("供应商信誉:%s、", supply.getReputation()));
         stringBuilder.append(StringUtils.isEmpty(supply.getGrade()) ? "" : String.format("供应商等级:%s、", baseDataDicService.getNameById(Integer.valueOf(supply.getGrade()))));
         stringBuilder.append(StringUtils.isEmpty(supply.getLineGrade()) ? "" : String.format("线路供水管等级:%s、", baseDataDicService.getNameById(Integer.valueOf(supply.getLineGrade()))));
-        stringBuilder.append(StringUtils.isEmpty(supply.getPower()) ? "" : String.format("功率:%s、", supply.getPower()));
+        stringBuilder.append(StringUtils.isEmpty(supply.getPower()) ? "" : String.format("供应量或功率:%s、", supply.getPower()));
     }
 
     private void getCommonBuildingFunction(List<ExamineBuildingFunction> buildingFunctions, StringBuilder stringBuilder, BaseDataDic heatPreservationDic) {

@@ -28,7 +28,7 @@
                         class="fa fa-chevron-up"></i></a></li>
             </ul>
             <h3>
-                层面结构
+                屋面结构
             </h3>
             <div class="clearfix"></div>
         </div>
@@ -47,7 +47,7 @@
                         class="fa fa-chevron-up"></i></a></li>
             </ul>
             <h3>
-                维护结构
+                围护结构
             </h3>
             <div class="clearfix"></div>
         </div>
@@ -80,6 +80,7 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/case/case.common.js"></script>
 <script type="application/javascript">
     var buildingModel;
     (function () {
@@ -155,11 +156,11 @@
                     }
 
                 },
-                /**层面结构**/
+                /**屋面结构**/
                 buildingSurface: {
                     loadDataDicList: function () {
                         var cols = [];
-                        cols.push({field: 'structureName', title: '层面结构'});
+                        cols.push({field: 'structureName', title: '屋面结构'});
                         cols.push({field: 'description', title: '描述'});
                         $("#" + buildingModel.prototype.config().examineBuildingSurfaceTable).bootstrapTable('destroy');
                         TableInit(buildingModel.prototype.config().examineBuildingSurfaceTable, "${pageContext.request.contextPath}/caseBuildingSurface/getCaseBuildingSurfaceList", cols, {
@@ -175,7 +176,7 @@
                         });
                     }
                 },
-                /**维护结构**/
+                /**围护结构**/
                 buildingMaintenance: {
                     loadDataDicList: function () {
                         var cols = [];

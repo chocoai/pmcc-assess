@@ -13,13 +13,9 @@ public class CaseEstateTagging {
 
     private String lat;
 
-    private String buildingNumber;
-
-    private String unitNumber;
+    private String name;
 
     private String remark;
-
-    private String content;
 
     private String creator;
 
@@ -67,20 +63,12 @@ public class CaseEstateTagging {
         this.lat = lat == null ? null : lat.trim();
     }
 
-    public String getBuildingNumber() {
-        return buildingNumber;
+    public String getName() {
+        return name;
     }
 
-    public void setBuildingNumber(String buildingNumber) {
-        this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
-    }
-
-    public String getUnitNumber() {
-        return unitNumber;
-    }
-
-    public void setUnitNumber(String unitNumber) {
-        this.unitNumber = unitNumber == null ? null : unitNumber.trim();
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public String getRemark() {
@@ -89,14 +77,6 @@ public class CaseEstateTagging {
 
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
     }
 
     public String getCreator() {

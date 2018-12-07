@@ -49,7 +49,7 @@ public class AssessExamineTaskConstant {
     public static final String ESTATE_ENVIRONMENT_INFLUENCE_DEGREE = "estate.environment.Influence.degree";//影响程度
     public static final String ESTATE_FINANCE_CATEGORY = "estate.finance.category";//金融类别
     public static final String ESTATE_FINANCE_NATURE = "estate.finance.nature";//金融机构性质
-    public static final String ESTATE_FINANCE_SERVICE_CONTENT = "estate.finance.service.content";//金融服务内容
+    public static final String ESTATE_FINANCE_SERVICE_CONTENT = "estate.finance.service.content";//服务类别
     public static final String ESTATE_SHOP_GRADE = "estate.shop.grade";//购物商场档次
     public static final String ESTATE_SHOP_CATEGORY = "estate.shop.category";//购物场所类别
     public static final String ESTATE_SHOP_OR_ENTERTAINMENT_OR_DINING_DISTANCE = "estate.shop_or_entertainment_or_dining.distance";//购物场所,餐饮场所,休闲娱乐距离
@@ -72,9 +72,9 @@ public class AssessExamineTaskConstant {
     public static final String EXAMINE_BUILDING_CONSTRUCTION_TECHNOLOGY = "building.construction_technology";//施工工艺
     public static final String EXAMINE_BUILDING_DECORATION_PART = "building.decoration_part";//装修部位
     public static final String EXAMINE_BUILDING_MATERIAL_PRICE = "building.material_price";//材料价格区间
-    public static final String EXAMINE_BUILDING_STRUCTURE = "examine.building.structure";//层面结构
-    public static final String EXAMINE_BUILDING_MAINTENANCE_CATEGORY = "examine.building.maintenance.category";//维护结构分类
-    public static final String EXAMINE_BUILDING_MATERIALQUALITY = "examine.building.maintenance.materialQuality";//维护结构材质
+    public static final String EXAMINE_BUILDING_STRUCTURE = "examine.building.structure";//屋面结构
+    public static final String EXAMINE_BUILDING_MAINTENANCE_CATEGORY = "examine.building.maintenance.category";//围护结构分类
+    public static final String EXAMINE_BUILDING_MATERIALQUALITY = "examine.building.maintenance.materialQuality";//围护结构材质
     public static final String EXAMINE_BUILDING_FUNCTION_TYPE = "building.function.type";//建筑功能类型
     public static final String EXAMINE_BUILDING_FUNCTION_TYPE_HEAT_INSULATION = "building.function.type.heat.insulation";//隔热
     public static final String EXAMINE_BUILDING_FUNCTION_TYPE_WATERPROOF = "building.function.type.waterproof";//防水

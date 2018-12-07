@@ -9,7 +9,20 @@
 <div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
-
+            <div class="page-title" style="margin: 0px">
+                <div class="title_left">
+                    <h2>
+                        ${caseEstate.name}${caseBuildingMain.buildingName}${caseUnit.unitNumber}单元
+                        <small>
+                            <a class="btn btn-xs btn-success" target="_blank"
+                               href="${pageContext.request.contextPath}/caseEstate/detailView?id=${caseEstate.id}">楼盘信息</a>
+                            <a class="btn btn-xs btn-success" target="_blank"
+                               href="${pageContext.request.contextPath}/caseBuildingMain/detailView?id=${caseBuildingMain.id}">楼栋信息</a>
+                        </small>
+                    </h2>
+                </div>
+            </div>
+            <div class="clearfix"></div>
             <%@include file="/views/case/caseUnit/unitDetail.jsp" %>
 
             <div class="x_panel">

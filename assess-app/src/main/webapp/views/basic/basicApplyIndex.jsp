@@ -72,12 +72,11 @@
                                 <div class="col-sm-4">
                                     <input type="hidden" name="caseEstateId" value="${basicApply.caseEstateId}">
                                     <input type="text" class="form-control" name="estateName" placeholder="楼盘名称"
-                                           value="${basicApply.estateName}"
-                                           onkeydown="basicApplyIndex.autocompleteEstate(this);">
+                                           value="${basicApply.estateName}">
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                     <input type="button" class="btn btn-success" data-mode="add"
                                            onclick="estateCommon.add(this,basicCommon.showEstateTab);"
                                            value="添加">
@@ -102,12 +101,11 @@
                                     <input type="hidden" name="caseBuildingMainId"
                                            value="${basicApply.caseBuildingMainId}">
                                     <input type="text" class="form-control" name="buildingNumber" placeholder="楼栋编号"
-                                           value="${basicApply.buildingNumber}"
-                                           onkeydown="basicApplyIndex.autocompleteBuilding(this)">
+                                           value="${basicApply.buildingNumber}">
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                     <input type="button" class="btn btn-success" data-mode="add"
                                            onclick="buildingCommon.add(this,basicCommon.showBuildingTab);"
                                            value="添加">
@@ -130,13 +128,11 @@
                                 </label>
                                 <div class="col-sm-4">
                                     <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
-                                    <input type="text" class="form-control" name="unitNumber" placeholder="单元编号"
-                                           value="${basicApply.unitNumber}"
-                                           onkeydown="basicApplyIndex.autocompleteUnit(this);">
+                                    <input type="text" class="form-control" name="unitNumber" placeholder="单元编号" value="${basicApply.unitNumber}">
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                     <input type="button" class="btn btn-success" data-mode="add"
                                            onclick="unitCommon.add(this,basicCommon.showUnitTab);"
                                            value="添加">
@@ -158,13 +154,11 @@
                                 </label>
                                 <div class="col-sm-4">
                                     <input type="hidden" name="caseHouseId" value="${basicApply.caseHouseId}">
-                                    <input type="text" class="form-control" name="houseNumber" placeholder="房屋编号"
-                                           value="${basicApply.houseNumber}"
-                                           onkeydown="basicApplyIndex.autocompleteHouse(this)">
+                                    <input type="text" class="form-control" name="houseNumber" placeholder="房屋编号" value="${basicApply.houseNumber}">
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                     <input type="button" class="btn btn-success" data-mode="add"
                                            value="添加"
                                            onclick="houseCommon.add(this,basicCommon.showHouseTab);">
@@ -214,197 +208,192 @@
     /**
      * 楼盘 信息自动补全
      */
-    basicApplyIndex.autocompleteEstate = function (_this) {
-        var that = _this;
-        var group = $(_this).closest('.form-group');
-        group.find('[name=caseEstateId]').val('');
-        group.find('.btn-reference,.btn-upgrade').hide();
-        $(that).autocomplete({
-                source: function (request, response) {
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/caseEstate/autoCompleteCaseEstate",
-                        type: "get",
-                        dataType: "json",
-                        data: {
-                            maxRows: 10,
-                            province: basicCommon.basicApplyForm.find('[name=province]').val(),
-                            city: basicCommon.basicApplyForm.find('[name=city]').val(),
-                            name: $(that).val()
-                        },
-                        success: function (result) {
-                            if (result.ret) {
-                                var responseArray = [];
-                                $.each(result.data, function (i, item) {
-                                    responseArray.push({
-                                        label: item.name,
-                                        type: item.type,
-                                        id: item.id
-                                    });
-                                })
-                                response(responseArray);
-                            } else {
-                                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
-                            }
-                        }
-                    });
+    basicApplyIndex.autocompleteEstate = function () {
+        var that = basicCommon.basicApplyForm.find('[name=estateName]');
+        var group = $(that).closest('.form-group');
+        var defaults = AssessDefault.autocomplete();
+        defaults.source = function (request, response) {
+            group.find('[name=caseEstateId]').val('');
+            group.find('.btn-reference,.btn-upgrade').hide();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseEstate/autoCompleteCaseEstate",
+                type: "get",
+                dataType: "json",
+                data: {
+                    offset: 1,
+                    limit: 10,
+                    province: basicCommon.basicApplyForm.find('[name=province]').val(),
+                    city: basicCommon.basicApplyForm.find('[name=city]').val(),
+                    name: $(that).val()
                 },
-                minLength: 2,
-                select: function (event, ele) {
-                    group.find('[name=caseEstateId]').val(ele.item.id);
-                    group.find('.btn-reference,.btn-upgrade').show();
-                    //选择楼盘的类型
-                    $('#applyFormType' + ele.item.type).trigger('click');
+                success: function (result) {
+                    if (result.ret) {
+                        var responseArray = [];
+                        $.each(result.data, function (i, item) {
+                            responseArray.push({
+                                label: item.name,
+                                type: item.type,
+                                id: item.id
+                            });
+                        })
+                        response(responseArray);
+                    } else {
+                        Alert(result.errmsg);
+                    }
                 }
-            }
-        );
+            });
+        }
+        defaults.select = function (event, ele) {
+            group.find('[name=caseEstateId]').val(ele.item.id);
+            group.find('.btn-reference,.btn-upgrade').show();
+            //选择楼盘的类型
+            $('#applyFormType' + ele.item.type).trigger('click');
+        }
+        $(that).autocomplete(defaults);
     };
 
     /**
      * 楼栋 信息自动补全
      */
-    basicApplyIndex.autocompleteBuilding = function (_this) {
-        var that = _this;
-        var estateId = basicCommon.basicApplyForm.find("input[name='caseEstateId']").val();
-        if (!estateId) return;
-        var group = $(_this).closest('.form-group');
-        group.find('[name=caseBuildingMainId]').val('');
-        group.find('.btn-reference,.btn-upgrade').hide();
-        $(that).autocomplete({
-                source: function (request, response) {
-                    var itemVal = $(that).val();
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/caseBuildingMain/autoCompleteCaseBuilding",
-                        type: "get",
-                        dataType: "json",
-                        data: {
-                            maxRows: 10,
-                            buildingNumber: itemVal,
-                            estateId: estateId
-                        },
-                        success: function (result) {
-                            if (result.ret) {
-                                var responseArray = [];
-                                $.each(result.data, function (i, item) {
-                                    responseArray.push({
-                                        label: item.name,
-                                        type: item.type,
-                                        id: item.id
-                                    });
-                                })
-                                response(responseArray);
-                            } else {
-                                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
-                            }
-                        }
-                    });
+    basicApplyIndex.autocompleteBuilding = function () {
+        var that = basicCommon.basicApplyForm.find('[name=buildingNumber]');
+        var group = $(that).closest('.form-group');
+        var defaults = AssessDefault.autocomplete();
+        defaults.source = function (request, response) {
+            group.find('[name=caseBuildingMainId]').val('');
+            group.find('.btn-reference,.btn-upgrade').hide();
+            var estateId = basicCommon.basicApplyForm.find("input[name='caseEstateId']").val();
+            if (!estateId) return;
+            var itemVal = $(that).val();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseBuildingMain/autoCompleteCaseBuilding",
+                type: "get",
+                dataType: "json",
+                data: {
+                    offset: 1,
+                    limit: 10,
+                    buildingNumber: itemVal,
+                    estateId: estateId
                 },
-                minLength: 1,
-                    /*当从菜单中选择条目时触发。默认的动作是把文本域中的值替换为被选中的条目的值。取消该事件会阻止值被更新，但不会阻止菜单关闭。*/
-                select: function (event, ele) {
-                    group.find('[name=caseBuildingMainId]').val(ele.item.id);
-                    group.find('.btn-reference,.btn-upgrade').show();
+                success: function (result) {
+                    if (result.ret) {
+                        var responseArray = [];
+                        $.each(result.data, function (i, item) {
+                            responseArray.push({
+                                label: item.name,
+                                type: item.type,
+                                id: item.id
+                            });
+                        })
+                        response(responseArray);
+                    } else {
+                        Alert(result.errmsg);
+                    }
                 }
-            }
-        );
+            });
+        }
+        defaults.select = function (event, ele) {
+            group.find('[name=caseBuildingMainId]').val(ele.item.id);
+            group.find('.btn-reference,.btn-upgrade').show();
+        }
+        defaults.minLength = 1;
+        $(that).autocomplete(defaults);
     };
 
     /**
      * 单元信息自动补全
      */
-    basicApplyIndex.autocompleteUnit = function (_this) {
-        var that = _this;
-        var buildingId = basicCommon.basicApplyForm.find("input[name='caseBuildingMainId']").val();
-        if (!buildingId) return;
-        var group = $(_this).closest('.form-group');
-        group.find('[name=caseUnitId]').val('');
-        group.find('.btn-reference,.btn-upgrade').hide();
-        $(that).autocomplete(
-            {
-                source: function (request, response) {
-                    var itemVal = $(that).val();
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/caseUnit/autoCompleteCaseUnit",
-                        type: "get",
-                        dataType: "json",
-                        data: {
-                            maxRows: 10,
-                            unitNumber: itemVal,
-                            caseBuildingMainId: buildingId
-                        },
-                        success: function (result) {
-                            if (result.ret) {
-                                var responseArray = [];
-                                $.each(result.data, function (i, item) {
-                                    responseArray.push({
-                                        label: item.name,
-                                        type: item.type,
-                                        id: item.id
-                                    });
-                                })
-                                response(responseArray);
-                            } else {
-                                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
-                            }
-                        }
-                    });
+    basicApplyIndex.autocompleteUnit = function () {
+        var that = basicCommon.basicApplyForm.find('[name=unitNumber]');
+        var group = $(that).closest('.form-group');
+        var defaults = AssessDefault.autocomplete();
+        defaults.source = function (request, response) {
+            group.find('[name=caseUnitId]').val('');
+            group.find('.btn-reference,.btn-upgrade').hide();
+            var buildingId = basicCommon.basicApplyForm.find("input[name='caseBuildingMainId']").val();
+            if (!buildingId) return;
+            var itemVal = $(that).val();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseUnit/autoCompleteCaseUnit",
+                type: "get",
+                dataType: "json",
+                data: {
+                    offset: 1,
+                    limit: 10,
+                    unitNumber: itemVal,
+                    caseBuildingMainId: buildingId
                 },
-                minLength: 1,
-                select: function (event, ele) {
-                    group.find('[name=caseUnitId]').val(ele.item.id);
-                    group.find('.btn-reference,.btn-upgrade').show();
+                success: function (result) {
+                    if (result.ret) {
+                        var responseArray = [];
+                        $.each(result.data, function (i, item) {
+                            responseArray.push({
+                                label: item.name,
+                                type: item.type,
+                                id: item.id
+                            });
+                        })
+                        response(responseArray);
+                    } else {
+                        Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+                    }
                 }
-            }
-        );
+            });
+        }
+        defaults.select = function (event, ele) {
+            group.find('[name=caseUnitId]').val(ele.item.id);
+            group.find('.btn-reference,.btn-upgrade').show();
+        }
+        defaults.minLength = 1;
+        $(that).autocomplete(defaults);
     };
 
     /**
      * 房屋信息自动补全
      */
-    basicApplyIndex.autocompleteHouse = function (_this) {
-        var that = _this;
-        var unitId = basicCommon.basicApplyForm.find("input[name='caseUnitId']").val();
-        if (!unitId) return;
-        var group = $(_this).closest('.form-group');
-        group.find('[name=caseHouseId]').val('');
-        group.find('.btn-reference,.btn-upgrade').hide();
-        $(that).autocomplete(
-            {
-                source: function (request, response) {
-                    var itemVal = $(that).val();
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/caseHouse/autoCompleteCaseHouse",
-                        type: "get",
-                        dataType: "json",
-                        data: {
-                            maxRows: 10,
-                            houseNumber: itemVal,
-                            unitId: unitId
-                        },
-                        success: function (result) {
-                            if (result.ret) {
-                                var responseArray = [];
-                                $.each(result.data, function (i, item) {
-                                    responseArray.push({
-                                        label: item.name,
-                                        type: item.type,
-                                        id: item.id
-                                    });
-                                })
-                                response(responseArray);
-                            } else {
-                                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
-                            }
-                        }
-                    });
+    basicApplyIndex.autocompleteHouse = function () {
+        var that = basicCommon.basicApplyForm.find('[name=houseNumber]');
+        var group = $(that).closest('.form-group');
+        var defaults = AssessDefault.autocomplete();
+        defaults.source = function (request, response) {
+            group.find('[name=caseHouseId]').val('');
+            group.find('.btn-reference,.btn-upgrade').hide();
+            var unitId = basicCommon.basicApplyForm.find("input[name='caseUnitId']").val();
+            if (!unitId) return;
+            var itemVal = $(that).val();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseHouse/autoCompleteCaseHouse",
+                type: "get",
+                dataType: "json",
+                data: {
+                    offset: 1,
+                    limit: 10,
+                    houseNumber: itemVal,
+                    unitId: unitId
                 },
-                minLength: 1,
-                /*当从菜单中选择条目时触发。默认的动作是把文本域中的值替换为被选中的条目的值。取消该事件会阻止值被更新，但不会阻止菜单关闭。*/
-                select: function (event, ele) {
-                    group.find('[name=caseHouseId]').val(ele.item.id);
-                    group.find('.btn-reference,.btn-upgrade').show();
+                success: function (result) {
+                    if (result.ret) {
+                        var responseArray = [];
+                        $.each(result.data, function (i, item) {
+                            responseArray.push({
+                                label: item.name,
+                                type: item.type,
+                                id: item.id
+                            });
+                        })
+                        response(responseArray);
+                    } else {
+                        Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+                    }
                 }
-            }
-        );
+            });
+        }
+        defaults.select = function (event, ele) {
+            group.find('[name=caseHouseId]').val(ele.item.id);
+            group.find('.btn-reference,.btn-upgrade').show();
+        }
+        defaults.minLength = 1;
+        $(that).autocomplete(defaults);
     };
 
     //检测是否为 草稿重新申请
@@ -429,6 +418,10 @@
             basicCommon.basicApplyForm.find('[id=applyFormType${basicApply.type}]').trigger('click');
         } else {
             basicCommon.basicApplyForm.find('[name=type]:eq(0)').trigger('click');
+            basicApplyIndex.autocompleteEstate();
+            basicApplyIndex.autocompleteBuilding();
+            basicApplyIndex.autocompleteUnit();
+            basicApplyIndex.autocompleteHouse();
         }
     };
 

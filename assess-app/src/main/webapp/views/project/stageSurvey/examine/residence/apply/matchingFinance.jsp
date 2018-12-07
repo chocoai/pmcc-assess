@@ -71,8 +71,8 @@
                 cols.push({field: 'name', title: '金融名称'});
                 cols.push({field: 'categoryName', title: '金融类别'});
                 cols.push({field: 'natureName', title: '金融机构性质'});
-                cols.push({field: 'serviceContentName', title: '金融服务内容'});
-                cols.push({field: 'autoServiceContent', title: '自动服务内容'});
+                cols.push({field: 'serviceContentName', title: '服务类别'});
+                cols.push({field: 'autoServiceContent', title: '服务内容'});
                 cols.push({
                     field: 'id', title: '操作', formatter: function (value, row, index) {
                         var str = '<div class="btn-margin">';
@@ -289,7 +289,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            自动服务内容<span class="symbol required"></span>
+                                            服务内容<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" name="autoServiceContent" class="form-control"
@@ -325,7 +325,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            金融服务内容<span class="symbol required"></span>
+                                            服务类别<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="serviceContent"

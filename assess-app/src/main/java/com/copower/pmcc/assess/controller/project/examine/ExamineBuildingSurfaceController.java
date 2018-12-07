@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/8/2 15:45
- * @Description:层面结构
+ * @Description:屋面结构
  */
 @RequestMapping(value = "/examineBuildingSurface")
 @Controller
@@ -35,7 +35,7 @@ public class ExamineBuildingSurfaceController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/getExamineBuildingSurfaceById",method = {RequestMethod.GET},name = "获取层面结构")
+    @RequestMapping(value = "/getExamineBuildingSurfaceById",method = {RequestMethod.GET},name = "获取屋面结构")
     public HttpResult getById(Integer id) {
         ExamineBuildingSurface examineBuildingSurface = null;
         try {
@@ -50,7 +50,7 @@ public class ExamineBuildingSurfaceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getExamineBuildingSurfaceList",method = {RequestMethod.GET},name = "层面结构列表")
+    @RequestMapping(value = "/getExamineBuildingSurfaceList",method = {RequestMethod.GET},name = "屋面结构列表")
     public BootstrapTableVo getExamineBuildingSurfaceList(Integer examineType, Integer declareId,Integer planDetailsId,Integer buildingId,String buildNumber) {
         BootstrapTableVo vo = null;
         try {
@@ -79,7 +79,7 @@ public class ExamineBuildingSurfaceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/deleteExamineBuildingSurfaceById",method = {RequestMethod.POST},name = "删除层面结构")
+    @RequestMapping(value = "/deleteExamineBuildingSurfaceById",method = {RequestMethod.POST},name = "删除屋面结构")
     public HttpResult delete(Integer id) {
         try {
             if (id!=null){
@@ -93,7 +93,7 @@ public class ExamineBuildingSurfaceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveAndUpdateExamineBuildingSurface",method = {RequestMethod.POST},name = "更新层面结构")
+    @RequestMapping(value = "/saveAndUpdateExamineBuildingSurface",method = {RequestMethod.POST},name = "更新屋面结构")
     public HttpResult save(ExamineBuildingSurface examineBuildingSurface){
         try {
             if (examineBuildingSurface.getId()==null || examineBuildingSurface.getId().equals(0)){
@@ -109,7 +109,7 @@ public class ExamineBuildingSurfaceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/examine_building_structure",method = {RequestMethod.GET},name = "层面结构")
+    @RequestMapping(value = "/examine_building_structure",method = {RequestMethod.GET},name = "屋面结构")
     public HttpResult environment_type() {
         try {
             List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_BUILDING_STRUCTURE);

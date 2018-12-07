@@ -9,9 +9,15 @@
 <div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
-
+            <div class="page-title" style="margin: 0px">
+                <div class="title_left">
+                    <h2>
+                        ${caseEstate.name}
+                    </h2>
+                </div>
+            </div>
+            <div class="clearfix"></div>
             <%@include file="/views/case/caseEstate/estateDetail.jsp" %>
-
             <div class="x_panel">
                 <div class="x_content">
                     <div class="form-group">

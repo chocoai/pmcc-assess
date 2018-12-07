@@ -72,15 +72,15 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土地形状状况<span class="symbol readonly"></span></label>
+                <label class="col-sm-1 control-label">土地形状<span class="symbol readonly"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="土地形状状况" readonly="readonly" name="shapeState" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.shapeState}">
+                    <input type="text" class="form-control" placeholder="土地形状" readonly="readonly" name="shapeState" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.shapeState}">
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土地平整度<span class="symbol readonly"></span></label>
+                <label class="col-sm-1 control-label">地形<span class="symbol readonly"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="土地平整度" readonly="readonly" name="planeness" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.planeness}">
+                    <input type="text" class="form-control" placeholder="地形" readonly="readonly" name="planeness" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.planeness}">
                 </div>
             </div>
         </div>
@@ -109,9 +109,9 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">地形地势<span class="symbol readonly"></span></label>
+                <label class="col-sm-1 control-label">地势<span class="symbol readonly"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.topographicTerrain}" placeholder="地形地势" readonly="readonly" name="topographicTerrain">
+                    <input type="text" class="form-control" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.topographicTerrain}" placeholder="地势" readonly="readonly" name="topographicTerrain">
                 </div>
             </div>
             <div class="x-valid">

@@ -22,4 +22,12 @@ public class MapController {
         ModelAndView modelAndView = new ModelAndView("base/estateTaggingView");
         return modelAndView;
     }
+
+    @RequestMapping(value = "/mapMarkerEstate", name = "楼盘地图标注")
+    public ModelAndView mapMarkerEstate(String estateName,String click) {
+        ModelAndView modelAndView = new ModelAndView("base/mapMarkerEstate");
+        modelAndView.addObject("estateName",estateName);
+        modelAndView.addObject("click",click);
+        return modelAndView;
+    }
 }
