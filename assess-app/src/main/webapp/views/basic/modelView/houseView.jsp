@@ -98,12 +98,11 @@
                 </div>
             </div>
         </div>
-d
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">证载用途</label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 certUse" name="certUse">
+                    <select class="form-control search-select  certUse" name="certUse">
                     </select>
                 </div>
             </div>
@@ -158,33 +157,6 @@ d
         <input type="hidden" name="id" value="${basicHouseTrading.id}">
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">财产范围<span class="symbol required"></span></label>
-                <div class="col-sm-3">
-                    <select class="form-control search-select select2 scopeProperty" name="scopeProperty"
-                            required="required">
-                    </select>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">融资条件<span class="symbol required"></span></label>
-                <div class="col-sm-3">
-                    <select class="form-control search-select select2 financingConditions" name="financingConditions"
-                            required="required">
-                    </select>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">税费负担<span class="symbol required"></span></label>
-                <div class="col-sm-3">
-                    <select class="form-control search-select select2 taxBurden" name="taxBurden"
-                            required="required">
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="x-valid">
                 <label class="col-sm-1 control-label">交易情况<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <select class="form-control search-select select2 normalTransaction"
@@ -214,7 +186,32 @@ d
                 </div>
             </div>
         </div>
-
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">财产范围<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select class="form-control search-select select2 scopeProperty" name="scopeProperty"
+                            required="required">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">融资条件<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select class="form-control search-select select2 financingConditions" name="financingConditions"
+                            required="required">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">税费负担<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select class="form-control search-select select2 taxBurden" name="taxBurden"
+                            required="required">
+                    </select>
+                </div>
+            </div>
+        </div>
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">交易类型<span class="symbol required"></span></label>
@@ -263,13 +260,13 @@ d
                 </div>
             </div>
 
-            <div class="x-valid" style="display: none;">
-                <label class="col-sm-1 control-label">出售总额</label>
-                <div class="col-sm-3">
-                    <input type="text" placeholder="出售总额"
-                           name="totalSale" class="form-control" value="${basicHouseTrading.totalSale}">
-                </div>
-            </div>
+            <%--<div class="x-valid" style="display: none;">--%>
+                <%--<label class="col-sm-1 control-label">出售总额</label>--%>
+                <%--<div class="col-sm-3">--%>
+                    <%--<input type="text" placeholder="出售总额"--%>
+                           <%--name="totalSale" class="form-control" value="${basicHouseTrading.totalSale}">--%>
+                <%--</div>--%>
+            <%--</div>--%>
 
             <div class="x-valid" style="display: none;">
                 <label class="col-sm-1 control-label">分期支付利率</label>
@@ -289,9 +286,9 @@ d
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">押金</label>
+                <label class="col-sm-1 control-label">押金（元）</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="押金" class="form-control" name="deposit" value="${basicHouseTrading.deposit}">
+                    <input type="text" placeholder="押金（元）" class="form-control" name="deposit" value="${basicHouseTrading.deposit}">
                 </div>
             </div>
         </div>
@@ -321,15 +318,15 @@ d
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">交易总价</label>
+                <label class="col-sm-1 control-label">交易总价（元）</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="交易总价" class="form-control" name="tradingTotalPrice" value="${basicHouseTrading.tradingTotalPrice}">
+                    <input type="text" placeholder="交易总价（元）" class="form-control" name="tradingTotalPrice" value="${basicHouseTrading.tradingTotalPrice}">
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">交易单价</label>
+                <label class="col-sm-1 control-label">交易单价（元）</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="交易单价" class="form-control" name="tradingUnitPrice" value="${basicHouseTrading.tradingUnitPrice}">
+                    <input type="text" placeholder="交易单价（元）" class="form-control" name="tradingUnitPrice" value="${basicHouseTrading.tradingUnitPrice}">
                 </div>
             </div>
         </div>

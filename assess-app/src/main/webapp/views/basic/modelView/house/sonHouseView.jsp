@@ -77,7 +77,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>供排水情况</h4>
+        <h4>供水情况</h4>
     </div>
     <div class="x_content collapse">
         <button type="button" class="btn btn-success" onclick="houseWater.prototype.showModel()"
@@ -215,10 +215,10 @@
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            层高
+                                            层高/m
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="层高" name="layerHeight" class="form-control"
+                                            <input type="text" placeholder="层高/m" name="layerHeight" class="form-control"
                                             >
                                         </div>
                                     </div>
@@ -226,19 +226,19 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            开间
+                                            开间（宽）/m
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="开间" name="opening" class="form-control"
+                                            <input type="text" placeholder="开间（宽）/m" name="opening" class="form-control"
                                             >
                                         </div>
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            进深
+                                            进深（长）/m
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="进深" name="depth" class="form-control"
+                                            <input type="text" placeholder="进深（长）/m" name="depth" class="form-control"
                                             >
                                         </div>
                                     </div>
@@ -386,7 +386,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">供排水情况</h3>
+                <h3 class="modal-title">供水情况</h3>
             </div>
             <form id="frmHouseWater" class="form-horizontal">
                 <input type="hidden" name="id">
@@ -397,10 +397,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            取水设备<span class="symbol required"></span>
+                                            给水方式<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="取水设备" name="waterIntakeEquipment"
+                                            <input type="text" placeholder="给水方式" name="waterIntakeEquipment"
                                                    class="form-control" required="required">
                                         </div>
                                     </div>
@@ -408,7 +408,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            采水点数<span class="symbol required"></span>
+                                            给水管道布置<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" placeholder="采水点数" name="intakePointNumber"
@@ -419,7 +419,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            自然区间取水点数<span class="symbol required"></span>
+                                            给水管材料<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" placeholder="自然区间取水点数" name="natrueIntakePointNumber"
@@ -430,48 +430,11 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            排水回路<span class="symbol required"></span>
+                                            给水升压设备<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="drainageCircuit"
                                                     class="form-control search-select select2 drainageCircuit">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            前置净水设备价格区间<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="purificationEquipmentPrice"
-                                                    class="form-control search-select select2 purificationEquipmentPrice">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            取水设备价格区间<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="waterIntakeEquipmentPrice"
-                                                    class="form-control search-select select2 waterIntakeEquipmentPrice">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            供水管架设方式<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="supplyErectionMethod"
-                                                    class="form-control search-select select2 supplyErectionMethod">
                                             </select>
                                         </div>
                                     </div>
@@ -488,6 +451,43 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            消防给水<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="purificationEquipmentPrice"
+                                                    class="form-control search-select select2 purificationEquipmentPrice">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<div class="x-valid">--%>
+                                        <%--<label class="col-sm-2 control-label">--%>
+                                            <%--取水设备价格区间<span class="symbol required"></span>--%>
+                                        <%--</label>--%>
+                                        <%--<div class="col-sm-10">--%>
+                                            <%--<select required="required" name="waterIntakeEquipmentPrice"--%>
+                                                    <%--class="form-control search-select select2 waterIntakeEquipmentPrice">--%>
+                                            <%--</select>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<div class="x-valid">--%>
+                                        <%--<label class="col-sm-2 control-label">--%>
+                                            <%--供水管架设方式<span class="symbol required"></span>--%>
+                                        <%--</label>--%>
+                                        <%--<div class="col-sm-10">--%>
+                                            <%--<select required="required" name="supplyErectionMethod"--%>
+                                                    <%--class="form-control search-select select2 supplyErectionMethod">--%>
+                                            <%--</select>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+
                             </div>
                         </div>
                     </div>
@@ -546,30 +546,30 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            屋内通讯<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="internalCommunication"
-                                                    class="form-control search-select select2 internalCommunication">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            监控系统<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="monitoringSystem"
-                                                    class="form-control search-select select2 monitoringSystem">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<div class="x-valid">--%>
+                                        <%--<label class="col-sm-2 control-label">--%>
+                                            <%--屋内通讯<span class="symbol required"></span>--%>
+                                        <%--</label>--%>
+                                        <%--<div class="col-sm-10">--%>
+                                            <%--<select required="required" name="internalCommunication"--%>
+                                                    <%--class="form-control search-select select2 internalCommunication">--%>
+                                            <%--</select>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<div class="x-valid">--%>
+                                        <%--<label class="col-sm-2 control-label">--%>
+                                            <%--监控系统<span class="symbol required"></span>--%>
+                                        <%--</label>--%>
+                                        <%--<div class="col-sm-10">--%>
+                                            <%--<select required="required" name="monitoringSystem"--%>
+                                                    <%--class="form-control search-select select2 monitoringSystem">--%>
+                                            <%--</select>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">

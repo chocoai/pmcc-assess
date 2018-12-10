@@ -31,14 +31,14 @@ public class BaseDataDicDao {
     public List<BaseDataDic> getListObject(String fieldName, String name) {
         BaseDataDicExample example = new BaseDataDicExample();
         BaseDataDicExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
-        if(StringUtils.isBlank(fieldName)&&StringUtils.isBlank(name)){
+        if (StringUtils.isBlank(fieldName) && StringUtils.isBlank(name)) {
             criteria.andPidEqualTo(0);
         }
         if (StringUtils.isNotBlank(fieldName)) {
-            criteria.andFieldNameLike(MessageFormat.format("%{0}%",fieldName));
+            criteria.andFieldNameLike(MessageFormat.format("%{0}%", fieldName));
         }
         if (StringUtils.isNotBlank(name)) {
-            criteria.andNameLike(String.format("%%%s%%",name));
+            criteria.andNameLike(String.format("%%%s%%", name));
         }
         example.setOrderByClause("sorting");
         List<BaseDataDic> list = sysDataDicMapper.selectByExample(example);
@@ -53,12 +53,12 @@ public class BaseDataDicDao {
      *
      * @return
      */
-    public List<BaseDataDic> getListByPid(Integer pid,String search) {
+    public List<BaseDataDic> getListByPid(Integer pid, String search) {
         BaseDataDicExample example = new BaseDataDicExample();
         BaseDataDicExample.Criteria criteria = example.createCriteria();
         criteria.andPidEqualTo(pid).andBisDeleteEqualTo(false);
         if (StringUtils.isNotBlank(search)) {
-            criteria.andNameLike(search);
+            criteria.andNameLike(String.format("%%%s%%", search));
         }
         example.setOrderByClause("sorting");
         List<BaseDataDic> list = sysDataDicMapper.selectByExample(example);
@@ -92,7 +92,7 @@ public class BaseDataDicDao {
      */
     public List<BaseDataDic> getEnableList(String fieldName) {
         BaseDataDic sysDataDic = getSingleObject(fieldName);
-        if(sysDataDic==null) return null;
+        if (sysDataDic == null) return null;
         return getEnableListByPid(sysDataDic.getId());
     }
     //endregion
@@ -103,12 +103,12 @@ public class BaseDataDicDao {
      * @return
      */
     public BaseDataDic getSingleObject(String fieldName) {
-        if(StringUtils.isBlank(fieldName)) return null;
+        if (StringUtils.isBlank(fieldName)) return null;
         BaseDataDicExample example = new BaseDataDicExample();
         example.createCriteria().andFieldNameEqualTo(fieldName);
         example.setOrderByClause("sorting");
         List<BaseDataDic> list = sysDataDicMapper.selectByExample(example);
-        if(CollectionUtils.isEmpty(list))
+        if (CollectionUtils.isEmpty(list))
             return null;
         return list.get(0);
     }
@@ -158,12 +158,13 @@ public class BaseDataDicDao {
 
     /**
      * 根据名称判断是否已存在
+     *
      * @param filedName
      * @param id
      * @return
      */
     public boolean isExist(String filedName, Integer id) {
-        if(StringUtils.isBlank(filedName)) return false;
+        if (StringUtils.isBlank(filedName)) return false;
         BaseDataDicExample example = new BaseDataDicExample();
         BaseDataDicExample.Criteria criteria = example.createCriteria();
         criteria.andFieldNameEqualTo(filedName);
