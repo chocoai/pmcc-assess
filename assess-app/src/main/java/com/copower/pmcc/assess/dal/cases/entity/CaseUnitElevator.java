@@ -7,7 +7,9 @@ public class CaseUnitElevator {
 
     private Integer unitId;
 
-    private String type;
+    private Integer maintenance;
+
+    private Integer type;
 
     private String brand;
 
@@ -18,8 +20,6 @@ public class CaseUnitElevator {
     private String quasiLoadWeight;
 
     private String runningSpeed;
-
-    private String maintenance;
 
     private String creator;
 
@@ -43,12 +43,20 @@ public class CaseUnitElevator {
         this.unitId = unitId;
     }
 
-    public String getType() {
+    public Integer getMaintenance() {
+        return maintenance;
+    }
+
+    public void setMaintenance(Integer maintenance) {
+        this.maintenance = maintenance;
+    }
+
+    public Integer getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public String getBrand() {
@@ -89,14 +97,6 @@ public class CaseUnitElevator {
 
     public void setRunningSpeed(String runningSpeed) {
         this.runningSpeed = runningSpeed == null ? null : runningSpeed.trim();
-    }
-
-    public String getMaintenance() {
-        return maintenance;
-    }
-
-    public void setMaintenance(String maintenance) {
-        this.maintenance = maintenance == null ? null : maintenance.trim();
     }
 
     public String getCreator() {

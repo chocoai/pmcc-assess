@@ -889,9 +889,6 @@ var houseIntelligent;
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_monitoring_system, item.monitoringSystem, function (html, data) {
                 $("#" + houseIntelligent.prototype.config().frm).find("select.monitoringSystem").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_internal_communication, item.internalCommunication, function (html, data) {
-                $("#" + houseIntelligent.prototype.config().frm).find("select.internalCommunication").empty().html(html).trigger('change');
-            });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_lamps_lanterns, item.lampsLanterns, function (html, data) {
                 $("#" + houseIntelligent.prototype.config().frm).find("select.lampsLanterns").empty().html(html).trigger('change');
             });
@@ -1037,9 +1034,6 @@ var houseWater;
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_supply_erection_method, item.supplyErectionMethod, function (html, data) {
                 $("#" + houseWater.prototype.config().frm).find("select.supplyErectionMethod").empty().html(html).trigger('change');
-            });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_water_intake_equipment_price, item.waterIntakeEquipmentPrice, function (html, data) {
-                $("#" + houseWater.prototype.config().frm).find("select.waterIntakeEquipmentPrice").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_purification_equipment_price, item.purificationEquipmentPrice, function (html, data) {
                 $("#" + houseWater.prototype.config().frm).find("select.purificationEquipmentPrice").empty().html(html).trigger('change');

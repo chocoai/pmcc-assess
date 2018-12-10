@@ -75,21 +75,21 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            所在位置<span class="symbol required"></span>
+                                            装修部位<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input name="location" class="form-control" placeholder="所在位置" required="required">
+                                            <input name="decorationPart" class="form-control" placeholder="装修部位" required="required">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            装修部位<span class="symbol required"></span>
+                                            装修材料<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="decorationPart"
-                                                    class="form-control search-select select2 decorationPart">
+                                            <select required="required" name="decoratingMaterial"
+                                                    class="form-control search-select select2 decoratingMaterial">
                                             </select>
                                         </div>
                                     </div>
@@ -106,7 +106,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
@@ -115,18 +114,6 @@
                                         <div class="col-sm-10">
                                             <select required="required" name="materialPriceRange"
                                                     class="form-control search-select select2 materialPriceRange">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            装修材料<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="decoratingMaterial"
-                                                    class="form-control search-select select2 decoratingMaterial">
                                             </select>
                                         </div>
                                     </div>
@@ -348,8 +335,9 @@
                                             电梯维护情况<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="maintenance"
-                                                   placeholder="电梯维护情况" required="required">
+                                            <select required="required" name="maintenance"
+                                                    class="form-control search-select select2 maintenance">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

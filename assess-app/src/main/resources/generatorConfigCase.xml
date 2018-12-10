@@ -40,7 +40,7 @@
 
         <!-- 具体表 -->
 
-        <table tableName="tb_case_building_function"  domainObjectName="CaseBuildingFunction"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <table tableName="tb_case_house_trading"  domainObjectName="CaseHouseTrading"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
 
     </context>
 

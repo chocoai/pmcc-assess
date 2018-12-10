@@ -1,9 +1,7 @@
 package com.copower.pmcc.assess.service.project.examine;
 
 import com.copower.pmcc.assess.common.enums.ExamineFileUpLoadTwoFieldEnum;
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.examine.ExamineHouseCorollaryEquipmentDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineHouseCorollaryEquipment;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineHouseCorollaryEquipmentVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -24,7 +22,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,15 +77,8 @@ public class ExamineHouseCorollaryEquipmentService {
     public ExamineHouseCorollaryEquipmentVo getExamineHouseCorollaryEquipmentVo(ExamineHouseCorollaryEquipment examineHouseCorollaryEquipment) {
         ExamineHouseCorollaryEquipmentVo vo = new ExamineHouseCorollaryEquipmentVo();
         BeanUtils.copyProperties(examineHouseCorollaryEquipment, vo);
-        if (examineHouseCorollaryEquipment.getCategory() != null) {
-            vo.setCategoryName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_COROLLARY_EQUIPMENT_CATEGORY, examineHouseCorollaryEquipment.getCategory()));
-        }
-        if (examineHouseCorollaryEquipment.getType() != null) {
-            vo.setTypeName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_COROLLARY_EQUIPMENT_TYPE, examineHouseCorollaryEquipment.getType()));
-        }
-        if (examineHouseCorollaryEquipment.getPrice() != null) {
-            vo.setPriceName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_COROLLARY_EQUIPMENT_PRICE, examineHouseCorollaryEquipment.getPrice()));
-        }
+        vo.setTypeName(baseDataDicService.getNameById(examineHouseCorollaryEquipment.getType()));
+        vo.setCategoryName(baseDataDicService.getNameById(examineHouseCorollaryEquipment.getCategory()));
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(examineHouseCorollaryEquipment.getId(), ExamineFileUpLoadTwoFieldEnum.positionDiagramFileID.getName(),FormatUtils.entityNameConvertToTableName(ExamineHouseCorollaryEquipment.class));
         StringBuilder builder = new StringBuilder();
         if (!ObjectUtils.isEmpty(sysAttachmentDtos)){
@@ -105,23 +95,6 @@ public class ExamineHouseCorollaryEquipmentService {
         return vo;
     }
 
-    private String getValue(String key, Integer v) {
-        StringBuilder builder = new StringBuilder(1024);
-        if (!StringUtils.isEmpty(key)){
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(key);
-            if (baseDataDic.size() >= 1) {
-                if (v != null) {
-                    for (BaseDataDic base : baseDataDic) {
-                        if (base.getId().intValue() == v.intValue()) {
-                            builder.append(base.getName());
-                        }
-                    }
-                }
-            }
-        }
-        return builder.toString();
-    }
-
     /**
      * 新增
      *
@@ -129,18 +102,10 @@ public class ExamineHouseCorollaryEquipmentService {
      * @return
      */
     public boolean addExamineHouseCorollaryEquipment(ExamineHouseCorollaryEquipment examineHouseCorollaryEquipment) {
-        examineHouseCorollaryEquipment.setCreator(commonService.thisUserAccount());
-        //以后需要删除掉
-        if (ObjectUtils.isEmpty(examineHouseCorollaryEquipment.getDeclareId())) {
-            examineHouseCorollaryEquipment.setDeclareId(0);
-        }
-        if (ObjectUtils.isEmpty(examineHouseCorollaryEquipment.getExamineType())) {
-            examineHouseCorollaryEquipment.setExamineType(0);
-        }
-        int id = 0;
         try {
-            id = examineHouseCorollaryEquipmentDao.addHouse(examineHouseCorollaryEquipment);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ExamineHouseCorollaryEquipment.class),id);
+            examineHouseCorollaryEquipment.setCreator(commonService.thisUserAccount());
+            examineHouseCorollaryEquipmentDao.addHouse(examineHouseCorollaryEquipment);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ExamineHouseCorollaryEquipment.class),examineHouseCorollaryEquipment.getId());
             return  true;
         } catch (Exception e1) {
             logger.error("error:%s",e1.getMessage());

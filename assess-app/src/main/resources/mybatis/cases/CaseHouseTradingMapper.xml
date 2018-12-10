@@ -6,26 +6,28 @@
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="trading_time" property="tradingTime" jdbcType="TIMESTAMP" />
     <result column="trading_type" property="tradingType" jdbcType="INTEGER" />
-    <result column="information_type" property="informationType" jdbcType="VARCHAR" />
     <result column="trading_unit_price" property="tradingUnitPrice" jdbcType="DECIMAL" />
     <result column="trading_total_price" property="tradingTotalPrice" jdbcType="DECIMAL" />
-    <result column="trading_price" property="tradingPrice" jdbcType="DECIMAL" />
-    <result column="buyer_extra_tax_fee" property="buyerExtraTaxFee" jdbcType="VARCHAR" />
-    <result column="renting_extra_tax_fee" property="rentingExtraTaxFee" jdbcType="VARCHAR" />
+    <result column="buyer_extra_tax" property="buyerExtraTax" jdbcType="VARCHAR" />
+    <result column="buyer_extra_fee" property="buyerExtraFee" jdbcType="VARCHAR" />
+    <result column="renting_extra_tax" property="rentingExtraTax" jdbcType="VARCHAR" />
+    <result column="renting_extra_fee" property="rentingExtraFee" jdbcType="VARCHAR" />
     <result column="description_type" property="descriptionType" jdbcType="INTEGER" />
     <result column="description_content" property="descriptionContent" jdbcType="VARCHAR" />
     <result column="installment_interest_rate" property="installmentInterestRate" jdbcType="VARCHAR" />
-    <result column="payment_method" property="paymentMethod" jdbcType="VARCHAR" />
-    <result column="normal_transaction" property="normalTransaction" jdbcType="VARCHAR" />
-    <result column="tax_burden" property="taxBurden" jdbcType="VARCHAR" />
-    <result column="scope_property" property="scopeProperty" jdbcType="VARCHAR" />
-    <result column="financing_conditions" property="financingConditions" jdbcType="VARCHAR" />
+    <result column="payment_method" property="paymentMethod" jdbcType="INTEGER" />
+    <result column="normal_transaction" property="normalTransaction" jdbcType="INTEGER" />
+    <result column="tax_burden" property="taxBurden" jdbcType="INTEGER" />
+    <result column="scope_property" property="scopeProperty" jdbcType="INTEGER" />
+    <result column="down_payment_ratio" property="downPaymentRatio" jdbcType="VARCHAR" />
+    <result column="lending_rate" property="lendingRate" jdbcType="DECIMAL" />
+    <result column="loan_period" property="loanPeriod" jdbcType="INTEGER" />
     <result column="deposit" property="deposit" jdbcType="VARCHAR" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="total_sale" property="totalSale" jdbcType="VARCHAR" />
+    <result column="information_type" property="informationType" jdbcType="INTEGER" />
+    <result column="information_category" property="informationCategory" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
-    <result column="information" property="information" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -88,11 +90,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, house_id, trading_time, trading_type, information_type, trading_unit_price, trading_total_price, 
-    trading_price, buyer_extra_tax_fee, renting_extra_tax_fee, description_type, description_content, 
-    installment_interest_rate, payment_method, normal_transaction, tax_burden, scope_property, 
-    financing_conditions, deposit, creator, total_sale, name, phone, information, gmt_created, 
-    gmt_modified
+    id, house_id, trading_time, trading_type, trading_unit_price, trading_total_price, 
+    buyer_extra_tax, buyer_extra_fee, renting_extra_tax, renting_extra_fee, description_type, 
+    description_content, installment_interest_rate, payment_method, normal_transaction, 
+    tax_burden, scope_property, down_payment_ratio, lending_rate, loan_period, deposit, 
+    information_type, information_category, name, phone, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingExample" >
     select
@@ -129,23 +131,25 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_case_house_trading (house_id, trading_time, trading_type, 
-      information_type, trading_unit_price, trading_total_price, 
-      trading_price, buyer_extra_tax_fee, renting_extra_tax_fee, 
+      trading_unit_price, trading_total_price, buyer_extra_tax, 
+      buyer_extra_fee, renting_extra_tax, renting_extra_fee, 
       description_type, description_content, installment_interest_rate, 
       payment_method, normal_transaction, tax_burden, 
-      scope_property, financing_conditions, deposit, 
-      creator, total_sale, name, 
-      phone, information, gmt_created, 
-      gmt_modified)
+      scope_property, down_payment_ratio, lending_rate, 
+      loan_period, deposit, information_type, 
+      information_category, name, phone, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{houseId,jdbcType=INTEGER}, #{tradingTime,jdbcType=TIMESTAMP}, #{tradingType,jdbcType=INTEGER}, 
-      #{informationType,jdbcType=VARCHAR}, #{tradingUnitPrice,jdbcType=DECIMAL}, #{tradingTotalPrice,jdbcType=DECIMAL}, 
-      #{tradingPrice,jdbcType=DECIMAL}, #{buyerExtraTaxFee,jdbcType=VARCHAR}, #{rentingExtraTaxFee,jdbcType=VARCHAR}, 
+      #{tradingUnitPrice,jdbcType=DECIMAL}, #{tradingTotalPrice,jdbcType=DECIMAL}, #{buyerExtraTax,jdbcType=VARCHAR}, 
+      #{buyerExtraFee,jdbcType=VARCHAR}, #{rentingExtraTax,jdbcType=VARCHAR}, #{rentingExtraFee,jdbcType=VARCHAR}, 
       #{descriptionType,jdbcType=INTEGER}, #{descriptionContent,jdbcType=VARCHAR}, #{installmentInterestRate,jdbcType=VARCHAR}, 
-      #{paymentMethod,jdbcType=VARCHAR}, #{normalTransaction,jdbcType=VARCHAR}, #{taxBurden,jdbcType=VARCHAR}, 
-      #{scopeProperty,jdbcType=VARCHAR}, #{financingConditions,jdbcType=VARCHAR}, #{deposit,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{totalSale,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{phone,jdbcType=VARCHAR}, #{information,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{paymentMethod,jdbcType=INTEGER}, #{normalTransaction,jdbcType=INTEGER}, #{taxBurden,jdbcType=INTEGER}, 
+      #{scopeProperty,jdbcType=INTEGER}, #{downPaymentRatio,jdbcType=VARCHAR}, #{lendingRate,jdbcType=DECIMAL}, 
+      #{loanPeriod,jdbcType=INTEGER}, #{deposit,jdbcType=VARCHAR}, #{informationType,jdbcType=INTEGER}, 
+      #{informationCategory,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseTrading" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -162,23 +166,23 @@
       <if test="tradingType != null" >
         trading_type,
       </if>
-      <if test="informationType != null" >
-        information_type,
-      </if>
       <if test="tradingUnitPrice != null" >
         trading_unit_price,
       </if>
       <if test="tradingTotalPrice != null" >
         trading_total_price,
       </if>
-      <if test="tradingPrice != null" >
-        trading_price,
+      <if test="buyerExtraTax != null" >
+        buyer_extra_tax,
       </if>
-      <if test="buyerExtraTaxFee != null" >
-        buyer_extra_tax_fee,
+      <if test="buyerExtraFee != null" >
+        buyer_extra_fee,
       </if>
-      <if test="rentingExtraTaxFee != null" >
-        renting_extra_tax_fee,
+      <if test="rentingExtraTax != null" >
+        renting_extra_tax,
+      </if>
+      <if test="rentingExtraFee != null" >
+        renting_extra_fee,
       </if>
       <if test="descriptionType != null" >
         description_type,
@@ -201,17 +205,23 @@
       <if test="scopeProperty != null" >
         scope_property,
       </if>
-      <if test="financingConditions != null" >
-        financing_conditions,
+      <if test="downPaymentRatio != null" >
+        down_payment_ratio,
+      </if>
+      <if test="lendingRate != null" >
+        lending_rate,
+      </if>
+      <if test="loanPeriod != null" >
+        loan_period,
       </if>
       <if test="deposit != null" >
         deposit,
       </if>
-      <if test="creator != null" >
-        creator,
+      <if test="informationType != null" >
+        information_type,
       </if>
-      <if test="totalSale != null" >
-        total_sale,
+      <if test="informationCategory != null" >
+        information_category,
       </if>
       <if test="name != null" >
         name,
@@ -219,8 +229,8 @@
       <if test="phone != null" >
         phone,
       </if>
-      <if test="information != null" >
-        information,
+      <if test="creator != null" >
+        creator,
       </if>
       <if test="gmtCreated != null" >
         gmt_created,
@@ -239,23 +249,23 @@
       <if test="tradingType != null" >
         #{tradingType,jdbcType=INTEGER},
       </if>
-      <if test="informationType != null" >
-        #{informationType,jdbcType=VARCHAR},
-      </if>
       <if test="tradingUnitPrice != null" >
         #{tradingUnitPrice,jdbcType=DECIMAL},
       </if>
       <if test="tradingTotalPrice != null" >
         #{tradingTotalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="tradingPrice != null" >
-        #{tradingPrice,jdbcType=DECIMAL},
+      <if test="buyerExtraTax != null" >
+        #{buyerExtraTax,jdbcType=VARCHAR},
       </if>
-      <if test="buyerExtraTaxFee != null" >
-        #{buyerExtraTaxFee,jdbcType=VARCHAR},
+      <if test="buyerExtraFee != null" >
+        #{buyerExtraFee,jdbcType=VARCHAR},
       </if>
-      <if test="rentingExtraTaxFee != null" >
-        #{rentingExtraTaxFee,jdbcType=VARCHAR},
+      <if test="rentingExtraTax != null" >
+        #{rentingExtraTax,jdbcType=VARCHAR},
+      </if>
+      <if test="rentingExtraFee != null" >
+        #{rentingExtraFee,jdbcType=VARCHAR},
       </if>
       <if test="descriptionType != null" >
         #{descriptionType,jdbcType=INTEGER},
@@ -267,28 +277,34 @@
         #{installmentInterestRate,jdbcType=VARCHAR},
       </if>
       <if test="paymentMethod != null" >
-        #{paymentMethod,jdbcType=VARCHAR},
+        #{paymentMethod,jdbcType=INTEGER},
       </if>
       <if test="normalTransaction != null" >
-        #{normalTransaction,jdbcType=VARCHAR},
+        #{normalTransaction,jdbcType=INTEGER},
       </if>
       <if test="taxBurden != null" >
-        #{taxBurden,jdbcType=VARCHAR},
+        #{taxBurden,jdbcType=INTEGER},
       </if>
       <if test="scopeProperty != null" >
-        #{scopeProperty,jdbcType=VARCHAR},
+        #{scopeProperty,jdbcType=INTEGER},
       </if>
-      <if test="financingConditions != null" >
-        #{financingConditions,jdbcType=VARCHAR},
+      <if test="downPaymentRatio != null" >
+        #{downPaymentRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="lendingRate != null" >
+        #{lendingRate,jdbcType=DECIMAL},
+      </if>
+      <if test="loanPeriod != null" >
+        #{loanPeriod,jdbcType=INTEGER},
       </if>
       <if test="deposit != null" >
         #{deposit,jdbcType=VARCHAR},
       </if>
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
+      <if test="informationType != null" >
+        #{informationType,jdbcType=INTEGER},
       </if>
-      <if test="totalSale != null" >
-        #{totalSale,jdbcType=VARCHAR},
+      <if test="informationCategory != null" >
+        #{informationCategory,jdbcType=INTEGER},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -296,8 +312,8 @@
       <if test="phone != null" >
         #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="information != null" >
-        #{information,jdbcType=VARCHAR},
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreated != null" >
         #{gmtCreated,jdbcType=TIMESTAMP},
@@ -328,23 +344,23 @@
       <if test="record.tradingType != null" >
         trading_type = #{record.tradingType,jdbcType=INTEGER},
       </if>
-      <if test="record.informationType != null" >
-        information_type = #{record.informationType,jdbcType=VARCHAR},
-      </if>
       <if test="record.tradingUnitPrice != null" >
         trading_unit_price = #{record.tradingUnitPrice,jdbcType=DECIMAL},
       </if>
       <if test="record.tradingTotalPrice != null" >
         trading_total_price = #{record.tradingTotalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.tradingPrice != null" >
-        trading_price = #{record.tradingPrice,jdbcType=DECIMAL},
+      <if test="record.buyerExtraTax != null" >
+        buyer_extra_tax = #{record.buyerExtraTax,jdbcType=VARCHAR},
       </if>
-      <if test="record.buyerExtraTaxFee != null" >
-        buyer_extra_tax_fee = #{record.buyerExtraTaxFee,jdbcType=VARCHAR},
+      <if test="record.buyerExtraFee != null" >
+        buyer_extra_fee = #{record.buyerExtraFee,jdbcType=VARCHAR},
       </if>
-      <if test="record.rentingExtraTaxFee != null" >
-        renting_extra_tax_fee = #{record.rentingExtraTaxFee,jdbcType=VARCHAR},
+      <if test="record.rentingExtraTax != null" >
+        renting_extra_tax = #{record.rentingExtraTax,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rentingExtraFee != null" >
+        renting_extra_fee = #{record.rentingExtraFee,jdbcType=VARCHAR},
       </if>
       <if test="record.descriptionType != null" >
         description_type = #{record.descriptionType,jdbcType=INTEGER},
@@ -356,28 +372,34 @@
         installment_interest_rate = #{record.installmentInterestRate,jdbcType=VARCHAR},
       </if>
       <if test="record.paymentMethod != null" >
-        payment_method = #{record.paymentMethod,jdbcType=VARCHAR},
+        payment_method = #{record.paymentMethod,jdbcType=INTEGER},
       </if>
       <if test="record.normalTransaction != null" >
-        normal_transaction = #{record.normalTransaction,jdbcType=VARCHAR},
+        normal_transaction = #{record.normalTransaction,jdbcType=INTEGER},
       </if>
       <if test="record.taxBurden != null" >
-        tax_burden = #{record.taxBurden,jdbcType=VARCHAR},
+        tax_burden = #{record.taxBurden,jdbcType=INTEGER},
       </if>
       <if test="record.scopeProperty != null" >
-        scope_property = #{record.scopeProperty,jdbcType=VARCHAR},
+        scope_property = #{record.scopeProperty,jdbcType=INTEGER},
       </if>
-      <if test="record.financingConditions != null" >
-        financing_conditions = #{record.financingConditions,jdbcType=VARCHAR},
+      <if test="record.downPaymentRatio != null" >
+        down_payment_ratio = #{record.downPaymentRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lendingRate != null" >
+        lending_rate = #{record.lendingRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.loanPeriod != null" >
+        loan_period = #{record.loanPeriod,jdbcType=INTEGER},
       </if>
       <if test="record.deposit != null" >
         deposit = #{record.deposit,jdbcType=VARCHAR},
       </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
+      <if test="record.informationType != null" >
+        information_type = #{record.informationType,jdbcType=INTEGER},
       </if>
-      <if test="record.totalSale != null" >
-        total_sale = #{record.totalSale,jdbcType=VARCHAR},
+      <if test="record.informationCategory != null" >
+        information_category = #{record.informationCategory,jdbcType=INTEGER},
       </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
@@ -385,8 +407,8 @@
       <if test="record.phone != null" >
         phone = #{record.phone,jdbcType=VARCHAR},
       </if>
-      <if test="record.information != null" >
-        information = #{record.information,jdbcType=VARCHAR},
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
       </if>
       <if test="record.gmtCreated != null" >
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -405,26 +427,28 @@
       house_id = #{record.houseId,jdbcType=INTEGER},
       trading_time = #{record.tradingTime,jdbcType=TIMESTAMP},
       trading_type = #{record.tradingType,jdbcType=INTEGER},
-      information_type = #{record.informationType,jdbcType=VARCHAR},
       trading_unit_price = #{record.tradingUnitPrice,jdbcType=DECIMAL},
       trading_total_price = #{record.tradingTotalPrice,jdbcType=DECIMAL},
-      trading_price = #{record.tradingPrice,jdbcType=DECIMAL},
-      buyer_extra_tax_fee = #{record.buyerExtraTaxFee,jdbcType=VARCHAR},
-      renting_extra_tax_fee = #{record.rentingExtraTaxFee,jdbcType=VARCHAR},
+      buyer_extra_tax = #{record.buyerExtraTax,jdbcType=VARCHAR},
+      buyer_extra_fee = #{record.buyerExtraFee,jdbcType=VARCHAR},
+      renting_extra_tax = #{record.rentingExtraTax,jdbcType=VARCHAR},
+      renting_extra_fee = #{record.rentingExtraFee,jdbcType=VARCHAR},
       description_type = #{record.descriptionType,jdbcType=INTEGER},
       description_content = #{record.descriptionContent,jdbcType=VARCHAR},
       installment_interest_rate = #{record.installmentInterestRate,jdbcType=VARCHAR},
-      payment_method = #{record.paymentMethod,jdbcType=VARCHAR},
-      normal_transaction = #{record.normalTransaction,jdbcType=VARCHAR},
-      tax_burden = #{record.taxBurden,jdbcType=VARCHAR},
-      scope_property = #{record.scopeProperty,jdbcType=VARCHAR},
-      financing_conditions = #{record.financingConditions,jdbcType=VARCHAR},
+      payment_method = #{record.paymentMethod,jdbcType=INTEGER},
+      normal_transaction = #{record.normalTransaction,jdbcType=INTEGER},
+      tax_burden = #{record.taxBurden,jdbcType=INTEGER},
+      scope_property = #{record.scopeProperty,jdbcType=INTEGER},
+      down_payment_ratio = #{record.downPaymentRatio,jdbcType=VARCHAR},
+      lending_rate = #{record.lendingRate,jdbcType=DECIMAL},
+      loan_period = #{record.loanPeriod,jdbcType=INTEGER},
       deposit = #{record.deposit,jdbcType=VARCHAR},
-      creator = #{record.creator,jdbcType=VARCHAR},
-      total_sale = #{record.totalSale,jdbcType=VARCHAR},
+      information_type = #{record.informationType,jdbcType=INTEGER},
+      information_category = #{record.informationCategory,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       phone = #{record.phone,jdbcType=VARCHAR},
-      information = #{record.information,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -443,23 +467,23 @@
       <if test="tradingType != null" >
         trading_type = #{tradingType,jdbcType=INTEGER},
       </if>
-      <if test="informationType != null" >
-        information_type = #{informationType,jdbcType=VARCHAR},
-      </if>
       <if test="tradingUnitPrice != null" >
         trading_unit_price = #{tradingUnitPrice,jdbcType=DECIMAL},
       </if>
       <if test="tradingTotalPrice != null" >
         trading_total_price = #{tradingTotalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="tradingPrice != null" >
-        trading_price = #{tradingPrice,jdbcType=DECIMAL},
+      <if test="buyerExtraTax != null" >
+        buyer_extra_tax = #{buyerExtraTax,jdbcType=VARCHAR},
       </if>
-      <if test="buyerExtraTaxFee != null" >
-        buyer_extra_tax_fee = #{buyerExtraTaxFee,jdbcType=VARCHAR},
+      <if test="buyerExtraFee != null" >
+        buyer_extra_fee = #{buyerExtraFee,jdbcType=VARCHAR},
       </if>
-      <if test="rentingExtraTaxFee != null" >
-        renting_extra_tax_fee = #{rentingExtraTaxFee,jdbcType=VARCHAR},
+      <if test="rentingExtraTax != null" >
+        renting_extra_tax = #{rentingExtraTax,jdbcType=VARCHAR},
+      </if>
+      <if test="rentingExtraFee != null" >
+        renting_extra_fee = #{rentingExtraFee,jdbcType=VARCHAR},
       </if>
       <if test="descriptionType != null" >
         description_type = #{descriptionType,jdbcType=INTEGER},
@@ -471,28 +495,34 @@
         installment_interest_rate = #{installmentInterestRate,jdbcType=VARCHAR},
       </if>
       <if test="paymentMethod != null" >
-        payment_method = #{paymentMethod,jdbcType=VARCHAR},
+        payment_method = #{paymentMethod,jdbcType=INTEGER},
       </if>
       <if test="normalTransaction != null" >
-        normal_transaction = #{normalTransaction,jdbcType=VARCHAR},
+        normal_transaction = #{normalTransaction,jdbcType=INTEGER},
       </if>
       <if test="taxBurden != null" >
-        tax_burden = #{taxBurden,jdbcType=VARCHAR},
+        tax_burden = #{taxBurden,jdbcType=INTEGER},
       </if>
       <if test="scopeProperty != null" >
-        scope_property = #{scopeProperty,jdbcType=VARCHAR},
+        scope_property = #{scopeProperty,jdbcType=INTEGER},
       </if>
-      <if test="financingConditions != null" >
-        financing_conditions = #{financingConditions,jdbcType=VARCHAR},
+      <if test="downPaymentRatio != null" >
+        down_payment_ratio = #{downPaymentRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="lendingRate != null" >
+        lending_rate = #{lendingRate,jdbcType=DECIMAL},
+      </if>
+      <if test="loanPeriod != null" >
+        loan_period = #{loanPeriod,jdbcType=INTEGER},
       </if>
       <if test="deposit != null" >
         deposit = #{deposit,jdbcType=VARCHAR},
       </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
+      <if test="informationType != null" >
+        information_type = #{informationType,jdbcType=INTEGER},
       </if>
-      <if test="totalSale != null" >
-        total_sale = #{totalSale,jdbcType=VARCHAR},
+      <if test="informationCategory != null" >
+        information_category = #{informationCategory,jdbcType=INTEGER},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
@@ -500,8 +530,8 @@
       <if test="phone != null" >
         phone = #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="information != null" >
-        information = #{information,jdbcType=VARCHAR},
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreated != null" >
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
@@ -517,26 +547,28 @@
     set house_id = #{houseId,jdbcType=INTEGER},
       trading_time = #{tradingTime,jdbcType=TIMESTAMP},
       trading_type = #{tradingType,jdbcType=INTEGER},
-      information_type = #{informationType,jdbcType=VARCHAR},
       trading_unit_price = #{tradingUnitPrice,jdbcType=DECIMAL},
       trading_total_price = #{tradingTotalPrice,jdbcType=DECIMAL},
-      trading_price = #{tradingPrice,jdbcType=DECIMAL},
-      buyer_extra_tax_fee = #{buyerExtraTaxFee,jdbcType=VARCHAR},
-      renting_extra_tax_fee = #{rentingExtraTaxFee,jdbcType=VARCHAR},
+      buyer_extra_tax = #{buyerExtraTax,jdbcType=VARCHAR},
+      buyer_extra_fee = #{buyerExtraFee,jdbcType=VARCHAR},
+      renting_extra_tax = #{rentingExtraTax,jdbcType=VARCHAR},
+      renting_extra_fee = #{rentingExtraFee,jdbcType=VARCHAR},
       description_type = #{descriptionType,jdbcType=INTEGER},
       description_content = #{descriptionContent,jdbcType=VARCHAR},
       installment_interest_rate = #{installmentInterestRate,jdbcType=VARCHAR},
-      payment_method = #{paymentMethod,jdbcType=VARCHAR},
-      normal_transaction = #{normalTransaction,jdbcType=VARCHAR},
-      tax_burden = #{taxBurden,jdbcType=VARCHAR},
-      scope_property = #{scopeProperty,jdbcType=VARCHAR},
-      financing_conditions = #{financingConditions,jdbcType=VARCHAR},
+      payment_method = #{paymentMethod,jdbcType=INTEGER},
+      normal_transaction = #{normalTransaction,jdbcType=INTEGER},
+      tax_burden = #{taxBurden,jdbcType=INTEGER},
+      scope_property = #{scopeProperty,jdbcType=INTEGER},
+      down_payment_ratio = #{downPaymentRatio,jdbcType=VARCHAR},
+      lending_rate = #{lendingRate,jdbcType=DECIMAL},
+      loan_period = #{loanPeriod,jdbcType=INTEGER},
       deposit = #{deposit,jdbcType=VARCHAR},
-      creator = #{creator,jdbcType=VARCHAR},
-      total_sale = #{totalSale,jdbcType=VARCHAR},
+      information_type = #{informationType,jdbcType=INTEGER},
+      information_category = #{informationCategory,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
-      information = #{information,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

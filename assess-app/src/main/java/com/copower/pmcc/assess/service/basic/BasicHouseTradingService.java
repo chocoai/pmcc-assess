@@ -12,8 +12,6 @@ import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -116,43 +114,17 @@ public class BasicHouseTradingService {
         }
         BasicHouseTradingVo vo = new BasicHouseTradingVo();
         BeanUtils.copyProperties(basicHouseTrading,vo);
-        vo.setInformationName(baseDataDicService.getNameById(org.apache.commons.lang3.math.NumberUtils.isNumber(basicHouseTrading.getInformation())?Integer.parseInt(basicHouseTrading.getInformation()):null));
-        vo.setScopePropertyName(baseDataDicService.getNameById(org.apache.commons.lang3.math.NumberUtils.isNumber(basicHouseTrading.getScopeProperty())?Integer.parseInt(basicHouseTrading.getScopeProperty()):null));
-        vo.setFinancingConditionsName(baseDataDicService.getNameById(org.apache.commons.lang3.math.NumberUtils.isNumber(basicHouseTrading.getFinancingConditions())?Integer.parseInt(basicHouseTrading.getFinancingConditions()):null));
         if (basicHouseTrading.getTradingTime() != null){
             vo.setTradingTimeName(DateUtils.format(basicHouseTrading.getTradingTime()));
         }
-        if (basicHouseTrading.getTradingType() != null){
-            vo.setTradingTypeName(baseDataDicService.getNameById(basicHouseTrading.getTradingType()));
-        }
-        if (StringUtils.isNotEmpty(basicHouseTrading.getInformationType())){
-            if (NumberUtils.isNumber(basicHouseTrading.getInformationType())){
-                vo.setInformationTypeName(baseDataDicService.getNameById(Integer.parseInt(basicHouseTrading.getInformationType())));
-            }
-        }
-        if (StringUtils.isNotEmpty(basicHouseTrading.getPaymentMethod())){
-            if (NumberUtils.isNumber(basicHouseTrading.getPaymentMethod())){
-                vo.setPaymentMethodName(baseDataDicService.getNameById(Integer.parseInt(basicHouseTrading.getPaymentMethod())));
-            }
-        }
-        if (StringUtils.isNotEmpty(basicHouseTrading.getNormalTransaction())){
-            if (NumberUtils.isNumber(basicHouseTrading.getNormalTransaction())){
-                vo.setNormalTransactionName(baseDataDicService.getNameById(Integer.parseInt(basicHouseTrading.getNormalTransaction())));
-            }
-        }
-        if (StringUtils.isNotEmpty(basicHouseTrading.getDescriptionContent())){
-            if (NumberUtils.isNumber(basicHouseTrading.getDescriptionContent())){
-                vo.setDescriptionContentName(baseDataDicService.getNameById(Integer.parseInt(basicHouseTrading.getDescriptionContent())));
-            }
-        }
-        if (basicHouseTrading.getDescriptionType() != null){
-            vo.setDescriptionTypeName(baseDataDicService.getNameById(basicHouseTrading.getDescriptionType()));
-        }
-        if (StringUtils.isNotEmpty(basicHouseTrading.getTaxBurden())){
-            if (NumberUtils.isNumber(basicHouseTrading.getTaxBurden())){
-                vo.setTaxBurdenName(baseDataDicService.getNameById(Integer.parseInt(basicHouseTrading.getTaxBurden())));
-            }
-        }
+        vo.setTradingTypeName(baseDataDicService.getNameById(basicHouseTrading.getTradingType()));
+        vo.setPaymentMethodName(baseDataDicService.getNameById(basicHouseTrading.getPaymentMethod()));
+        vo.setNormalTransactionName(baseDataDicService.getNameById(basicHouseTrading.getNormalTransaction()));
+        vo.setDescriptionTypeName(baseDataDicService.getNameById(basicHouseTrading.getDescriptionType()));
+        vo.setTaxBurdenName(baseDataDicService.getNameById(basicHouseTrading.getTaxBurden()));
+        vo.setInformationTypeName(baseDataDicService.getNameById(basicHouseTrading.getInformationType()));
+        vo.setInformationCategoryName(baseDataDicService.getNameById(basicHouseTrading.getInformationCategory()));
+        vo.setScopePropertyName(baseDataDicService.getNameById(basicHouseTrading.getScopeProperty()));
         return vo;
     }
 

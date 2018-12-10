@@ -7,13 +7,11 @@ public class BasicUnitDecorate {
 
     private Integer unitId;
 
-    private Integer decorationPart;
+    private String decorationPart;
 
     private Integer decoratingMaterial;
 
     private Integer materialPriceRange;
-
-    private String location;
 
     private Integer constructionTechnology;
 
@@ -39,12 +37,12 @@ public class BasicUnitDecorate {
         this.unitId = unitId;
     }
 
-    public Integer getDecorationPart() {
+    public String getDecorationPart() {
         return decorationPart;
     }
 
-    public void setDecorationPart(Integer decorationPart) {
-        this.decorationPart = decorationPart;
+    public void setDecorationPart(String decorationPart) {
+        this.decorationPart = decorationPart == null ? null : decorationPart.trim();
     }
 
     public Integer getDecoratingMaterial() {
@@ -61,14 +59,6 @@ public class BasicUnitDecorate {
 
     public void setMaterialPriceRange(Integer materialPriceRange) {
         this.materialPriceRange = materialPriceRange;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location == null ? null : location.trim();
     }
 
     public Integer getConstructionTechnology() {

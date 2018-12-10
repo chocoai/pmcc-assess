@@ -10,13 +10,12 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTrading;
 public class CaseHouseTradingVo extends CaseHouseTrading {
     private String tradingTimeName;
     private String tradingTypeName;
-    private String informationTypeName;
     private String paymentMethodName;
     private String normalTransactionName;
-    private String descriptionContentName;
     private String descriptionTypeName;
     private String taxBurdenName;
-    private String informationName;
+    private String informationTypeName;
+    private String informationCategoryName;
     private String financingConditionsName;
     private String scopePropertyName;
     public String getTradingTimeName() {
@@ -59,14 +58,6 @@ public class CaseHouseTradingVo extends CaseHouseTrading {
         this.normalTransactionName = normalTransactionName;
     }
 
-    public String getDescriptionContentName() {
-        return descriptionContentName;
-    }
-
-    public void setDescriptionContentName(String descriptionContentName) {
-        this.descriptionContentName = descriptionContentName;
-    }
-
     public String getDescriptionTypeName() {
         return descriptionTypeName;
     }
@@ -83,12 +74,12 @@ public class CaseHouseTradingVo extends CaseHouseTrading {
         this.taxBurdenName = taxBurdenName;
     }
 
-    public String getInformationName() {
-        return informationName;
+    public String getInformationCategoryName() {
+        return informationCategoryName;
     }
 
-    public void setInformationName(String informationName) {
-        this.informationName = informationName;
+    public void setInformationCategoryName(String informationCategoryName) {
+        this.informationCategoryName = informationCategoryName;
     }
 
     public String getFinancingConditionsName() {

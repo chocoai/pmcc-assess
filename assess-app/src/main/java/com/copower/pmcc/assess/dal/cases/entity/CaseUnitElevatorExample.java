@@ -225,6 +225,66 @@ public class CaseUnitElevatorExample {
             return (Criteria) this;
         }
 
+        public Criteria andMaintenanceIsNull() {
+            addCriterion("maintenance is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaintenanceIsNotNull() {
+            addCriterion("maintenance is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaintenanceEqualTo(Integer value) {
+            addCriterion("maintenance =", value, "maintenance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaintenanceNotEqualTo(Integer value) {
+            addCriterion("maintenance <>", value, "maintenance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaintenanceGreaterThan(Integer value) {
+            addCriterion("maintenance >", value, "maintenance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaintenanceGreaterThanOrEqualTo(Integer value) {
+            addCriterion("maintenance >=", value, "maintenance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaintenanceLessThan(Integer value) {
+            addCriterion("maintenance <", value, "maintenance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaintenanceLessThanOrEqualTo(Integer value) {
+            addCriterion("maintenance <=", value, "maintenance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaintenanceIn(List<Integer> values) {
+            addCriterion("maintenance in", values, "maintenance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaintenanceNotIn(List<Integer> values) {
+            addCriterion("maintenance not in", values, "maintenance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaintenanceBetween(Integer value1, Integer value2) {
+            addCriterion("maintenance between", value1, value2, "maintenance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaintenanceNotBetween(Integer value1, Integer value2) {
+            addCriterion("maintenance not between", value1, value2, "maintenance");
+            return (Criteria) this;
+        }
+
         public Criteria andTypeIsNull() {
             addCriterion("type is null");
             return (Criteria) this;
@@ -235,62 +295,52 @@ public class CaseUnitElevatorExample {
             return (Criteria) this;
         }
 
-        public Criteria andTypeEqualTo(String value) {
+        public Criteria andTypeEqualTo(Integer value) {
             addCriterion("type =", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotEqualTo(String value) {
+        public Criteria andTypeNotEqualTo(Integer value) {
             addCriterion("type <>", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThan(String value) {
+        public Criteria andTypeGreaterThan(Integer value) {
             addCriterion("type >", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThanOrEqualTo(String value) {
+        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
             addCriterion("type >=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThan(String value) {
+        public Criteria andTypeLessThan(Integer value) {
             addCriterion("type <", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThanOrEqualTo(String value) {
+        public Criteria andTypeLessThanOrEqualTo(Integer value) {
             addCriterion("type <=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLike(String value) {
-            addCriterion("type like", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotLike(String value) {
-            addCriterion("type not like", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIn(List<String> values) {
+        public Criteria andTypeIn(List<Integer> values) {
             addCriterion("type in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotIn(List<String> values) {
+        public Criteria andTypeNotIn(List<Integer> values) {
             addCriterion("type not in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeBetween(String value1, String value2) {
+        public Criteria andTypeBetween(Integer value1, Integer value2) {
             addCriterion("type between", value1, value2, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotBetween(String value1, String value2) {
+        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
             addCriterion("type not between", value1, value2, "type");
             return (Criteria) this;
         }
@@ -622,76 +672,6 @@ public class CaseUnitElevatorExample {
 
         public Criteria andRunningSpeedNotBetween(String value1, String value2) {
             addCriterion("running_speed not between", value1, value2, "runningSpeed");
-            return (Criteria) this;
-        }
-
-        public Criteria andMaintenanceIsNull() {
-            addCriterion("maintenance is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMaintenanceIsNotNull() {
-            addCriterion("maintenance is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMaintenanceEqualTo(String value) {
-            addCriterion("maintenance =", value, "maintenance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMaintenanceNotEqualTo(String value) {
-            addCriterion("maintenance <>", value, "maintenance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMaintenanceGreaterThan(String value) {
-            addCriterion("maintenance >", value, "maintenance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMaintenanceGreaterThanOrEqualTo(String value) {
-            addCriterion("maintenance >=", value, "maintenance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMaintenanceLessThan(String value) {
-            addCriterion("maintenance <", value, "maintenance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMaintenanceLessThanOrEqualTo(String value) {
-            addCriterion("maintenance <=", value, "maintenance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMaintenanceLike(String value) {
-            addCriterion("maintenance like", value, "maintenance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMaintenanceNotLike(String value) {
-            addCriterion("maintenance not like", value, "maintenance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMaintenanceIn(List<String> values) {
-            addCriterion("maintenance in", values, "maintenance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMaintenanceNotIn(List<String> values) {
-            addCriterion("maintenance not in", values, "maintenance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMaintenanceBetween(String value1, String value2) {
-            addCriterion("maintenance between", value1, value2, "maintenance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMaintenanceNotBetween(String value1, String value2) {
-            addCriterion("maintenance not between", value1, value2, "maintenance");
             return (Criteria) this;
         }
 

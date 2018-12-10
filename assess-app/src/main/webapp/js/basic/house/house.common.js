@@ -6,6 +6,8 @@
     var houseCommon = {};
     houseCommon.houseTradingForm = $('#basicTradingFrm');
     houseCommon.houseForm = $('#basicHouseFrm');
+    houseCommon.houseTradingTypeSell = 'ExamineHouseTradingSell';
+    houseCommon.houseTradingTypeLease = 'ExamineHouseTradingLease';
     //附件上传控件id数组
     houseCommon.houseFileControlIdArray = [
         'house_huxing_plan',
@@ -130,6 +132,7 @@
 
         //交易情况
         houseCommon.houseTradingForm.initForm(data.basicHouseTrading, function () {
+            houseCommon.changeEvent(data.basicHouseTrading);
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHousetaxBurden, data.basicHouseTrading.taxBurden, function (html, data) {
                 houseCommon.houseTradingForm.find("select.taxBurden").empty().html(html).trigger('change');
             });
@@ -142,20 +145,17 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNormalTransaction, data.basicHouseTrading.normalTransaction, function (html, data) {
                 houseCommon.houseTradingForm.find("select.normalTransaction").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePaymentMethod, data.basicHouseTrading.paymentMethod, function (html, data) {
-                houseCommon.houseTradingForm.find("select.paymentMethod").empty().html(html).trigger('change');
-            });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseClassificationInformationSources, data.basicHouseTrading.informationType, function (html, data) {
-                houseCommon.houseTradingForm.find("select.informationType").empty().html(html).trigger('change');
-            });
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseFinancingConditions, data.basicHouseTrading.financingConditions, function (html, data) {
                 houseCommon.houseTradingForm.find("select.financingConditions").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseScopeProperty, data.basicHouseTrading.scopeProperty, function (html, data) {
                 houseCommon.houseTradingForm.find("select.scopeProperty").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_information_sources, data.basicHouseTrading.information, function (html, data) {
-                houseCommon.houseTradingForm.find("select.information").empty().html(html).trigger('change');
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseInformationSourceType, data.basicHouseTrading.informationType, function (html, data) {
+                houseCommon.houseTradingForm.find("select.informationType").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseInformationSourceCategory, data.basicHouseTrading.informationCategory, function (html, data) {
+                houseCommon.houseTradingForm.find("select.informationCategory").empty().html(html).trigger('change');
             });
         })
     }
@@ -212,5 +212,176 @@
             }
         })
     }
+
+    //下拉框change事件
+    houseCommon.changeEvent = function (basicHouseTrading) {
+        houseCommon.houseTradingForm.find('[name=tradingType]').change(function () {
+            var text = $(this).find("option:selected").text();
+            var paymentMethod = basicHouseTrading == null ? null : basicHouseTrading.paymentMethod;
+            if (text == '出售') {
+                houseCommon.houseTradingForm.find('.' + houseCommon.houseTradingTypeSell).show();
+                houseCommon.houseTradingForm.find('.' + houseCommon.houseTradingTypeLease).hide();
+                houseCommon.loadTradingSellAndLeaseList(houseCommon.houseTradingTypeSell);
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePaymentMethod, basicHouseTrading.paymentMethod, function (html, data) {
+                    houseCommon.houseTradingForm.find("select.paymentMethod").empty().html(html).trigger('change');
+                });
+
+            } else if (text == '出租') {
+                houseCommon.houseTradingForm.find('.' + houseCommon.houseTradingTypeSell).hide();
+                $('.' + houseCommon.houseTradingTypeLease).show();
+                houseCommon.loadTradingSellAndLeaseList(houseCommon.houseTradingTypeLease);
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePaymentMethodLease, basicHouseTrading.paymentMethod, function (html, data) {
+                    houseCommon.houseTradingForm.find("select.paymentMethod").empty().html(html).trigger('change');
+                });
+            } else {
+                houseCommon.houseTradingForm.find('.' + houseCommon.houseTradingTypeSell).hide();
+                houseCommon.houseTradingForm.find('.' + houseCommon.houseTradingTypeLease).hide();
+            }
+        })
+
+        houseCommon.houseTradingForm.find('[name=paymentMethod]').change(function () {
+            var text = $(this).find("option:selected").text();
+            if (text == '分期付款') {
+                $(this).closest('.form-group').children().eq(2).show();
+            } else {
+                $(this).closest('.form-group').children().eq(2).hide();
+            }
+        })
+
+        //信息来源类型
+        houseCommon.houseTradingForm.find("[name=informationType]").change(function () {
+            var text = $(this).find("option:selected").text();
+            if (text) {
+                if (text == '公开信息') {
+                    houseCommon.houseTradingForm.find('.infomationTypeOpen').show();
+                    houseCommon.houseTradingForm.find('.infomationTypeOther').hide();
+                } else {
+                    houseCommon.houseTradingForm.find('.infomationTypeOpen').hide();
+                    houseCommon.houseTradingForm.find('.infomationTypeOther').show();
+                }
+            }
+        })
+    }
+
+    //新增出售或出租
+    houseCommon.addTradingSellAndLease = function () {
+        var tradingID = houseCommon.houseTradingForm.find('[name=tradingType]').val();
+        var tradingType = null;
+        AssessCommon.getDataDicInfo(tradingID, function (data) {
+            tradingType = data.fieldName;
+            var frmSon = 'frmTradingLeaseAndSell';
+            var divBoxSon = 'divBoxTradingLeaseAndSell';
+            $("#" + frmSon).clearAll().find(".type").val(tradingType);
+            $("#" + divBoxSon).modal("show");
+            if (tradingType == houseCommon.houseTradingTypeSell) {
+                $("#" + divBoxSon).find(".lease").show();
+                $("#" + divBoxSon).find(".sell").hide();
+                $("#" + divBoxSon).find(".modal-title").html("出租信息");
+            }
+            if (tradingType == houseCommon.houseTradingTypeLease) {
+                $("#" + divBoxSon).find(".lease").hide();
+                $("#" + divBoxSon).find(".sell").show();
+                $("#" + divBoxSon).find(".modal-title").html("出售信息");
+            }
+        })
+    }
+
+    //加载出售获取出租
+    houseCommon.loadTradingSellAndLeaseList = function (type) {
+        var cols = [];
+        var tbListId = '';
+        if (type == houseCommon.houseTradingTypeSell) {
+            tbListId = 'tableTradingSell';
+            cols.push({field: 'instalmentInterest', title: '分期支付时间起'});
+            cols.push({field: 'instalmentPeriodStartName', title: '分期支付时间止'});
+            cols.push({field: 'instalmentPeriodEndName', title: '分期支付利息'});
+        }
+        if (type == houseCommon.houseTradingTypeLease) {
+            tbListId = 'tableTradingLease';
+            cols.push({field: 'rentGrowthRate', title: '租金增长比率'});
+            cols.push({field: 'rentPaymentTimeStartName', title: '租金支付时间起'});
+            cols.push({field: 'rentPaymentTimeEndName', title: '租金支付时间止'});
+        }
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += "<a class='btn btn-xs btn-warning tooltips' data-placement='top' data-original-title='删除' " + "onclick=houseCommon.deleteTradingSellAndLease(" + row.id + ",'" + type + "'" + ")" + ">";
+                str += "<i class='fa fa-minus fa-white'>" + "</i>";
+                str += "</a>";
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#" + tbListId).bootstrapTable('destroy');
+        TableInit(tbListId, getContextPath() + "/basicHouseTradingLeaseAndSell/getLeaseAndSellVos", cols, {
+            type: type,
+            houseId: houseCommon.getHouseId()
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    }
+
+    //保存出售或出租
+    houseCommon.saveTradingSellAndLease = function () {
+        var frmSon = 'frmTradingLeaseAndSell';
+        var divBoxSon = 'divBoxTradingLeaseAndSell';
+        if (!$("#" + frmSon).valid()) {
+            return false;
+        }
+        var data = formParams(frmSon);
+        data.tradingType = data.type;
+        data.houseId = houseCommon.getHouseId();
+        var url = getContextPath() + "/basicHouseTradingLeaseAndSell/saveAndUpdateHouseTradingLeaseAndSell";
+        $.ajax({
+            url: url,
+            type: "post",
+            dataType: "json",
+            data: data,
+            success: function (result) {
+                if (result.ret) {
+                    toastr.success('保存成功');
+                    $("#" + divBoxSon).modal("hide");
+                    houseCommon.loadTradingSellAndLeaseList(data.type);
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
+    //删除出售或出租
+    houseCommon.deleteTradingSellAndLease = function (id, type) {
+        $.ajax({
+            url: getContextPath() + "/basicHouseTradingLeaseAndSell/removeLeaseAndSell",
+            type: "post",
+            dataType: "json",
+            data: {
+                id: id,
+                type: type
+            },
+            success: function (result) {
+                if (result.ret) {
+                    toastr.success('删除成功');
+                    houseCommon.loadTradingSellAndLeaseList(type);
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    }
+
     window.houseCommon = houseCommon;
 })(jQuery);

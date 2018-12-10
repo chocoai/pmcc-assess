@@ -400,7 +400,7 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePaymentMethod,"${surveyExamineDataInfoVo.examineHouseTradingVo.paymentMethod}",function (html,data) {
                 $("#" + examineHouseTrading.prototype.config().frm).find("select.paymentMethod").html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseClassificationInformationSources,"${surveyExamineDataInfoVo.examineHouseTradingVo.informationType}",function (html,data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseInformationSourceType,"${surveyExamineDataInfoVo.examineHouseTradingVo.informationType}",function (html,data) {
                 $("#" + examineHouseTrading.prototype.config().frm).find("select.informationType").html(html).trigger('change');
             });
             $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").change(function () {

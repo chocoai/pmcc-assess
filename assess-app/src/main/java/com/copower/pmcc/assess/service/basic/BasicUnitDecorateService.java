@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicUnitDecorateDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnitDecorate;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicUnitDecorateVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -118,35 +117,9 @@ public class BasicUnitDecorateService {
         }
         BasicUnitDecorateVo vo = new BasicUnitDecorateVo();
         BeanUtils.copyProperties(basicUnitDecorate,vo);
-        BaseDataDic dataDic = null;
-        if (basicUnitDecorate.getConstructionTechnology() != null){
-            dataDic = baseDataDicService.getDataDicById(basicUnitDecorate.getConstructionTechnology());
-            if (dataDic != null){
-                vo.setConstructionTechnologyName(dataDic.getName());
-                dataDic = null;
-            }
-        }
-        if (basicUnitDecorate.getDecorationPart() != null){
-            dataDic = baseDataDicService.getDataDicById(basicUnitDecorate.getDecorationPart());
-            if (dataDic != null){
-                vo.setDecorationPartName(dataDic.getName());
-                dataDic = null;
-            }
-        }
-        if (basicUnitDecorate.getMaterialPriceRange() != null){
-            dataDic = baseDataDicService.getDataDicById(basicUnitDecorate.getMaterialPriceRange());
-            if (dataDic != null){
-                vo.setMaterialPriceName(dataDic.getName());
-                dataDic = null;
-            }
-        }
-        if (basicUnitDecorate.getDecoratingMaterial() != null){
-            dataDic = baseDataDicService.getDataDicById(basicUnitDecorate.getDecoratingMaterial());
-            if (dataDic != null){
-                vo.setDecoratingMaterialName(dataDic.getName());
-                dataDic = null;
-            }
-        }
+        vo.setConstructionTechnologyName(baseDataDicService.getNameById(basicUnitDecorate.getConstructionTechnology()));
+        vo.setMaterialPriceName(baseDataDicService.getNameById(basicUnitDecorate.getMaterialPriceRange()));
+        vo.setDecoratingMaterialName(baseDataDicService.getNameById(basicUnitDecorate.getDecoratingMaterial()));
         return vo;
     }
 }

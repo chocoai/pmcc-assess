@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dal.basic.entity.BasicUnitElevator;
  */
 public class BasicUnitElevatorVo extends BasicUnitElevator {
     private String typeName;
+    private String maintenanceName;
 
     public String getTypeName() {
         return typeName;
@@ -16,5 +17,13 @@ public class BasicUnitElevatorVo extends BasicUnitElevator {
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
+    }
+
+    public String getMaintenanceName() {
+        return maintenanceName;
+    }
+
+    public void setMaintenanceName(String maintenanceName) {
+        this.maintenanceName = maintenanceName;
     }
 }

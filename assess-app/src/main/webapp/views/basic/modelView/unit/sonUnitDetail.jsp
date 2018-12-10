@@ -73,11 +73,10 @@
             },
             loadDataDicList: function () {
                 var cols = [];
-                cols.push({field: 'locationName', title: '所在位置'});
-                cols.push({field: 'decorationPartName', title: '装修部位'});
+                cols.push({field: 'decorationPart', title: '装修部位'});
                 cols.push({field: 'decoratingMaterialName', title: '装修材料'});
-                cols.push({field: 'materialPriceName', title: '材料价格区间'});
                 cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
+                cols.push({field: 'materialPriceName', title: '材料价格区间'});
                 $("#" + unitDecorate.prototype.config().table).bootstrapTable('destroy');
                 TableInit(unitDecorate.prototype.config().table, "${pageContext.request.contextPath}/basicUnitDecorate/getBootstrapTableVo", cols, {
                     unitId: ${empty basicUnit.id?0:basicUnit.id},

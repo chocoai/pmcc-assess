@@ -89,5 +89,7 @@
             e.preventDefault();
             return false;
         })
+
+        houseCommon.changeEvent();
     })
 </script>

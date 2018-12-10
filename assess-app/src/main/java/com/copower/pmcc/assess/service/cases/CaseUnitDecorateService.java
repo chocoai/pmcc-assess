@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseUnitDecorateDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorate;
 import com.copower.pmcc.assess.dto.output.cases.CaseUnitDecorateVo;
@@ -72,34 +70,10 @@ public class CaseUnitDecorateService {
     public CaseUnitDecorateVo getCaseUnitDecorateVo(CaseUnitDecorate caseUnitDecorate) {
         CaseUnitDecorateVo vo = new CaseUnitDecorateVo();
         BeanUtils.copyProperties(caseUnitDecorate, vo);
-        if (caseUnitDecorate.getDecorationPart() != null) {
-            vo.setDecorationPartName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_DECORATION_PART, caseUnitDecorate.getDecorationPart()));
-        }
-        if (caseUnitDecorate.getDecoratingMaterial() != null) {
-            vo.setDecoratingMaterialName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_DECORATING_MATERIAL, caseUnitDecorate.getDecoratingMaterial()));
-        }
-        if (caseUnitDecorate.getMaterialPriceRange() != null) {
-            vo.setMaterialPriceName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_MATERIAL_PRICE, caseUnitDecorate.getMaterialPriceRange()));
-        }
-        if (caseUnitDecorate.getConstructionTechnology() != null) {
-            vo.setConstructionTechnologyName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_CONSTRUCTION_TECHNOLOGY, caseUnitDecorate.getConstructionTechnology()));
-        }
+        vo.setConstructionTechnologyName(baseDataDicService.getNameById(caseUnitDecorate.getConstructionTechnology()));
+        vo.setMaterialPriceName(baseDataDicService.getNameById(caseUnitDecorate.getMaterialPriceRange()));
+        vo.setDecoratingMaterialName(baseDataDicService.getNameById(caseUnitDecorate.getDecoratingMaterial()));
         return vo;
-    }
-
-    private String getValue(String key, Integer v) {
-        StringBuilder builder = new StringBuilder(1024);
-        List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(key);
-        if (baseDataDic.size() >= 1) {
-            if (v != null) {
-                for (BaseDataDic base : baseDataDic) {
-                    if (base.getId().intValue() == v.intValue()) {
-                        builder.append(base.getName());
-                    }
-                }
-            }
-        }
-        return builder.toString();
     }
 
     /**

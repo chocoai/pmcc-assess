@@ -19,11 +19,10 @@ var unitDecorate;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'locationName', title: '所在位置'});
-            cols.push({field: 'decorationPartName', title: '装修部位'});
+            cols.push({field: 'decorationPart', title: '装修部位'});
             cols.push({field: 'decoratingMaterialName', title: '装修材料'});
-            cols.push({field: 'materialPriceName', title: '材料价格区间'});
             cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
+            cols.push({field: 'materialPriceName', title: '材料价格区间'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -104,7 +103,7 @@ var unitDecorate;
                 success: function (result) {
                     if (result.ret) {
                         if (unitDecorate.prototype.isNotBlank(result.data)) {
-                            unitDecorate.prototype.init(result.data);
+                            $("#" + unitDecorate.prototype.config().frm).clearAll().initForm(result.data);
                         } else {
                             unitDecorate.prototype.init({});
                         }
@@ -117,19 +116,21 @@ var unitDecorate;
             })
         },
         init: function (item) {
-            $("#" + unitDecorate.prototype.config().frm).clearAll();
-            $("#" + unitDecorate.prototype.config().frm).initForm(item);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_decorating_material, item.decoratingMaterial, function (html, data) {
-                $("#" + unitDecorate.prototype.config().frm).find('select.decoratingMaterial').empty().html(html).trigger('change');
-            });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_material_price, item.materialPriceRange, function (html, data) {
-                $("#" + unitDecorate.prototype.config().frm).find('select.materialPriceRange').empty().html(html).trigger('change');
-            });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_construction_technology, item.constructionTechnology, function (html, data) {
-                $("#" + unitDecorate.prototype.config().frm).find('select.constructionTechnology').empty().html(html).trigger('change');
-            });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_decoration_part, item.decorationPart, function (html, data) {
-                $("#" + unitDecorate.prototype.config().frm).find('select.decorationPart').empty().html(html).trigger('change');
+            $("#" + unitDecorate.prototype.config().frm).clearAll().initForm(item, function () {
+                $("#" + unitDecorate.prototype.config().frm).find('select.decoratingMaterial').off('change').change(function () {
+                    console.log(item.constructionTechnology);
+                    AssessCommon.loadDataDicByPid($(this).val(), item.constructionTechnology, function (html, data) {
+                        $("#" + unitDecorate.prototype.config().frm).find('select.constructionTechnology').empty().html(html).trigger('change');
+                    });
+                })
+                $("#" + unitDecorate.prototype.config().frm).find('select.constructionTechnology').off('change').change(function () {
+                    AssessCommon.loadDataDicByPid($(this).val(), item.materialPriceRange, function (html, data) {
+                        $("#" + unitDecorate.prototype.config().frm).find('select.materialPriceRange').empty().html(html).trigger('change');
+                    });
+                })
+                AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_decorating_material, item.decoratingMaterial, function (html, data) {
+                    $("#" + unitDecorate.prototype.config().frm).find('select.decoratingMaterial').empty().html(html).trigger('change');
+                });
             });
         }
     }
@@ -401,7 +402,7 @@ var unitElevator;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'maintenance', title: '电梯维护情况'});
+            cols.push({field: 'maintenanceName', title: '电梯维护情况'});
             cols.push({field: 'typeName', title: '电梯类型'});
             cols.push({field: 'brand', title: '电梯品牌'});
             cols.push({field: 'number', title: '电梯数量'});
@@ -497,8 +498,10 @@ var unitElevator;
             })
         },
         init: function (item) {
-            $("#" + unitElevator.prototype.config().frm).clearAll();
-            $("#" + unitElevator.prototype.config().frm).initForm(item);
+            $("#" + unitElevator.prototype.config().frm).clearAll().initForm(item);
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitElevatorMaintenance, item.maintenance, function (html, data) {
+                $("#" + unitElevator.prototype.config().frm).find('select.maintenance').empty().html(html).trigger('change');
+            });
             AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitElevatorType, item.type, function (html, data) {
                 $("#" + unitElevator.prototype.config().frm).find('select.type').empty().html(html).trigger('change');
             });

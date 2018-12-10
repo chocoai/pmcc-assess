@@ -12,17 +12,17 @@ public class CaseHouseTrading {
 
     private Integer tradingType;
 
-    private String informationType;
-
     private BigDecimal tradingUnitPrice;
 
     private BigDecimal tradingTotalPrice;
 
-    private BigDecimal tradingPrice;
+    private String buyerExtraTax;
 
-    private String buyerExtraTaxFee;
+    private String buyerExtraFee;
 
-    private String rentingExtraTaxFee;
+    private String rentingExtraTax;
+
+    private String rentingExtraFee;
 
     private Integer descriptionType;
 
@@ -30,27 +30,31 @@ public class CaseHouseTrading {
 
     private String installmentInterestRate;
 
-    private String paymentMethod;
+    private Integer paymentMethod;
 
-    private String normalTransaction;
+    private Integer normalTransaction;
 
-    private String taxBurden;
+    private Integer taxBurden;
 
-    private String scopeProperty;
+    private Integer scopeProperty;
 
-    private String financingConditions;
+    private String downPaymentRatio;
+
+    private BigDecimal lendingRate;
+
+    private Integer loanPeriod;
 
     private String deposit;
 
-    private String creator;
+    private Integer informationType;
 
-    private String totalSale;
+    private Integer informationCategory;
 
     private String name;
 
     private String phone;
 
-    private String information;
+    private String creator;
 
     private Date gmtCreated;
 
@@ -88,14 +92,6 @@ public class CaseHouseTrading {
         this.tradingType = tradingType;
     }
 
-    public String getInformationType() {
-        return informationType;
-    }
-
-    public void setInformationType(String informationType) {
-        this.informationType = informationType == null ? null : informationType.trim();
-    }
-
     public BigDecimal getTradingUnitPrice() {
         return tradingUnitPrice;
     }
@@ -112,28 +108,36 @@ public class CaseHouseTrading {
         this.tradingTotalPrice = tradingTotalPrice;
     }
 
-    public BigDecimal getTradingPrice() {
-        return tradingPrice;
+    public String getBuyerExtraTax() {
+        return buyerExtraTax;
     }
 
-    public void setTradingPrice(BigDecimal tradingPrice) {
-        this.tradingPrice = tradingPrice;
+    public void setBuyerExtraTax(String buyerExtraTax) {
+        this.buyerExtraTax = buyerExtraTax == null ? null : buyerExtraTax.trim();
     }
 
-    public String getBuyerExtraTaxFee() {
-        return buyerExtraTaxFee;
+    public String getBuyerExtraFee() {
+        return buyerExtraFee;
     }
 
-    public void setBuyerExtraTaxFee(String buyerExtraTaxFee) {
-        this.buyerExtraTaxFee = buyerExtraTaxFee == null ? null : buyerExtraTaxFee.trim();
+    public void setBuyerExtraFee(String buyerExtraFee) {
+        this.buyerExtraFee = buyerExtraFee == null ? null : buyerExtraFee.trim();
     }
 
-    public String getRentingExtraTaxFee() {
-        return rentingExtraTaxFee;
+    public String getRentingExtraTax() {
+        return rentingExtraTax;
     }
 
-    public void setRentingExtraTaxFee(String rentingExtraTaxFee) {
-        this.rentingExtraTaxFee = rentingExtraTaxFee == null ? null : rentingExtraTaxFee.trim();
+    public void setRentingExtraTax(String rentingExtraTax) {
+        this.rentingExtraTax = rentingExtraTax == null ? null : rentingExtraTax.trim();
+    }
+
+    public String getRentingExtraFee() {
+        return rentingExtraFee;
+    }
+
+    public void setRentingExtraFee(String rentingExtraFee) {
+        this.rentingExtraFee = rentingExtraFee == null ? null : rentingExtraFee.trim();
     }
 
     public Integer getDescriptionType() {
@@ -160,44 +164,60 @@ public class CaseHouseTrading {
         this.installmentInterestRate = installmentInterestRate == null ? null : installmentInterestRate.trim();
     }
 
-    public String getPaymentMethod() {
+    public Integer getPaymentMethod() {
         return paymentMethod;
     }
 
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod == null ? null : paymentMethod.trim();
+    public void setPaymentMethod(Integer paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
-    public String getNormalTransaction() {
+    public Integer getNormalTransaction() {
         return normalTransaction;
     }
 
-    public void setNormalTransaction(String normalTransaction) {
-        this.normalTransaction = normalTransaction == null ? null : normalTransaction.trim();
+    public void setNormalTransaction(Integer normalTransaction) {
+        this.normalTransaction = normalTransaction;
     }
 
-    public String getTaxBurden() {
+    public Integer getTaxBurden() {
         return taxBurden;
     }
 
-    public void setTaxBurden(String taxBurden) {
-        this.taxBurden = taxBurden == null ? null : taxBurden.trim();
+    public void setTaxBurden(Integer taxBurden) {
+        this.taxBurden = taxBurden;
     }
 
-    public String getScopeProperty() {
+    public Integer getScopeProperty() {
         return scopeProperty;
     }
 
-    public void setScopeProperty(String scopeProperty) {
-        this.scopeProperty = scopeProperty == null ? null : scopeProperty.trim();
+    public void setScopeProperty(Integer scopeProperty) {
+        this.scopeProperty = scopeProperty;
     }
 
-    public String getFinancingConditions() {
-        return financingConditions;
+    public String getDownPaymentRatio() {
+        return downPaymentRatio;
     }
 
-    public void setFinancingConditions(String financingConditions) {
-        this.financingConditions = financingConditions == null ? null : financingConditions.trim();
+    public void setDownPaymentRatio(String downPaymentRatio) {
+        this.downPaymentRatio = downPaymentRatio == null ? null : downPaymentRatio.trim();
+    }
+
+    public BigDecimal getLendingRate() {
+        return lendingRate;
+    }
+
+    public void setLendingRate(BigDecimal lendingRate) {
+        this.lendingRate = lendingRate;
+    }
+
+    public Integer getLoanPeriod() {
+        return loanPeriod;
+    }
+
+    public void setLoanPeriod(Integer loanPeriod) {
+        this.loanPeriod = loanPeriod;
     }
 
     public String getDeposit() {
@@ -208,20 +228,20 @@ public class CaseHouseTrading {
         this.deposit = deposit == null ? null : deposit.trim();
     }
 
-    public String getCreator() {
-        return creator;
+    public Integer getInformationType() {
+        return informationType;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
+    public void setInformationType(Integer informationType) {
+        this.informationType = informationType;
     }
 
-    public String getTotalSale() {
-        return totalSale;
+    public Integer getInformationCategory() {
+        return informationCategory;
     }
 
-    public void setTotalSale(String totalSale) {
-        this.totalSale = totalSale == null ? null : totalSale.trim();
+    public void setInformationCategory(Integer informationCategory) {
+        this.informationCategory = informationCategory;
     }
 
     public String getName() {
@@ -240,12 +260,12 @@ public class CaseHouseTrading {
         this.phone = phone == null ? null : phone.trim();
     }
 
-    public String getInformation() {
-        return information;
+    public String getCreator() {
+        return creator;
     }
 
-    public void setInformation(String information) {
-        this.information = information == null ? null : information.trim();
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
     }
 
     public Date getGmtCreated() {

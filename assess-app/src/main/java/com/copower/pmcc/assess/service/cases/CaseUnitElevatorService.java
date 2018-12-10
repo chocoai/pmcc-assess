@@ -124,8 +124,8 @@ public class CaseUnitElevatorService {
         }
         CaseUnitElevatorVo vo = new CaseUnitElevatorVo();
         BeanUtils.copyProperties(caseUnitElevator, vo);
-        if (caseUnitElevator.getType() != null)
-            vo.setTypeName(baseDataDicService.getNameById(Integer.valueOf(caseUnitElevator.getType())));
+        vo.setTypeName(baseDataDicService.getNameById(caseUnitElevator.getType()));
+        vo.setMaintenanceName(baseDataDicService.getNameById(caseUnitElevator.getMaintenance()));
         return vo;
     }
 

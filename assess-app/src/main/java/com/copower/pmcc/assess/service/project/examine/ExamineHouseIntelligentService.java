@@ -85,9 +85,6 @@ public class ExamineHouseIntelligentService {
         if (examineHouseIntelligent.getInternalCommunication() != null){
             vo.setInternalCommunicationName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_INTERNAL_COMMUNICATION,examineHouseIntelligent.getInternalCommunication()));
         }
-        if (examineHouseIntelligent.getMonitoringSystem() != null){
-            vo.setMonitoringSystemName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_MONITORING_SYSTEM,examineHouseIntelligent.getMonitoringSystem()));
-        }
         if (examineHouseIntelligent.getIntelligentSystem() != null){
             vo.setIntelligentSystemName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_INTELLIGENT_SYSTEM,examineHouseIntelligent.getIntelligentSystem()));
         }

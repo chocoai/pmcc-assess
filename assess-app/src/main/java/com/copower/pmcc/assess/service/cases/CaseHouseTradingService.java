@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseTradingDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTrading;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingVo;
@@ -15,8 +14,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -96,72 +93,17 @@ public class CaseHouseTradingService {
     public CaseHouseTradingVo getCaseHouseTradingVo(CaseHouseTrading caseHouseTrading){
         CaseHouseTradingVo vo = new CaseHouseTradingVo();
         BeanUtils.copyProperties(caseHouseTrading,vo);
-        BaseDataDic dataDic = null;
         if (caseHouseTrading.getTradingTime() != null){
             vo.setTradingTimeName(DateUtils.format(caseHouseTrading.getTradingTime()));
         }
-        if (caseHouseTrading.getTradingType() != null){
-            dataDic = baseDataDicService.getDataDicById(caseHouseTrading.getTradingType());
-            if (dataDic != null){
-                vo.setTradingTypeName(dataDic.getName());
-                dataDic = null;
-            }
-        }
-        if (StringUtils.isNotEmpty(caseHouseTrading.getInformationType())){
-            if (NumberUtils.isNumber(caseHouseTrading.getInformationType())){
-                dataDic = baseDataDicService.getDataDicById(Integer.parseInt(caseHouseTrading.getInformationType()));
-                if (dataDic != null){
-                    vo.setInformationTypeName(dataDic.getName());
-                    dataDic = null;
-                }
-            }
-        }
-        if (StringUtils.isNotEmpty(caseHouseTrading.getPaymentMethod())){
-            if (NumberUtils.isNumber(caseHouseTrading.getPaymentMethod())){
-                dataDic = baseDataDicService.getDataDicById(Integer.parseInt(caseHouseTrading.getPaymentMethod()));
-                if (dataDic != null){
-                    vo.setPaymentMethodName(dataDic.getName());
-                    dataDic = null;
-                }
-            }
-        }
-        if (StringUtils.isNotEmpty(caseHouseTrading.getNormalTransaction())){
-            if (NumberUtils.isNumber(caseHouseTrading.getNormalTransaction())){
-                dataDic = baseDataDicService.getDataDicById(Integer.parseInt(caseHouseTrading.getNormalTransaction()));
-                if (dataDic != null){
-                    vo.setNormalTransactionName(dataDic.getName());
-                    dataDic = null;
-                }
-            }
-        }
-        if (StringUtils.isNotEmpty(caseHouseTrading.getDescriptionContent())){
-            if (NumberUtils.isNumber(caseHouseTrading.getDescriptionContent())){
-                dataDic = baseDataDicService.getDataDicById(Integer.parseInt(caseHouseTrading.getDescriptionContent()));
-                if (dataDic != null){
-                    vo.setDescriptionContentName(dataDic.getName());
-                    dataDic = null;
-                }
-            }
-        }
-        if (caseHouseTrading.getDescriptionType() != null){
-            dataDic = baseDataDicService.getDataDicById(caseHouseTrading.getDescriptionType());
-            if (dataDic != null){
-                vo.setDescriptionTypeName(dataDic.getName());
-                dataDic = null;
-            }
-        }
-        if (StringUtils.isNotEmpty(caseHouseTrading.getTaxBurden())){
-            if (NumberUtils.isNumber(caseHouseTrading.getTaxBurden())){
-                dataDic = baseDataDicService.getDataDicById(Integer.parseInt(caseHouseTrading.getTaxBurden()));
-                if (dataDic != null){
-                    vo.setTaxBurdenName(dataDic.getName());
-                    dataDic = null;
-                }
-            }
-        }
-        vo.setInformationName(baseDataDicService.getNameById(org.apache.commons.lang3.math.NumberUtils.isNumber(caseHouseTrading.getInformation())?Integer.parseInt(caseHouseTrading.getInformation()):null));
-        vo.setScopePropertyName(baseDataDicService.getNameById(org.apache.commons.lang3.math.NumberUtils.isNumber(caseHouseTrading.getScopeProperty())?Integer.parseInt(caseHouseTrading.getScopeProperty()):null));
-        vo.setFinancingConditionsName(baseDataDicService.getNameById(org.apache.commons.lang3.math.NumberUtils.isNumber(caseHouseTrading.getFinancingConditions())?Integer.parseInt(caseHouseTrading.getFinancingConditions()):null));
+        vo.setTradingTypeName(baseDataDicService.getNameById(caseHouseTrading.getTradingType()));
+        vo.setPaymentMethodName(baseDataDicService.getNameById(caseHouseTrading.getPaymentMethod()));
+        vo.setNormalTransactionName(baseDataDicService.getNameById(caseHouseTrading.getNormalTransaction()));
+        vo.setDescriptionTypeName(baseDataDicService.getNameById(caseHouseTrading.getDescriptionType()));
+        vo.setTaxBurdenName(baseDataDicService.getNameById(caseHouseTrading.getTaxBurden()));
+        vo.setInformationTypeName(baseDataDicService.getNameById(caseHouseTrading.getInformationType()));
+        vo.setInformationCategoryName(baseDataDicService.getNameById(caseHouseTrading.getInformationCategory()));
+        vo.setScopePropertyName(baseDataDicService.getNameById(caseHouseTrading.getScopeProperty()));
         return vo;
     }
 }

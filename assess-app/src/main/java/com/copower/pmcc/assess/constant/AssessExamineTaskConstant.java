@@ -93,7 +93,6 @@ public class AssessExamineTaskConstant {
     public static final String EXAMINE_HOUSE_SWITCH_CIRCUIT = "examine.house.switch_circuit";//开关回路
     public static final String EXAMINE_HOUSE_LAMPS_LANTERNS = "examine.house.lamps_lanterns";//灯具
     public static final String EXAMINE_HOUSE_INTERNAL_COMMUNICATION = "examine.house.internal_communication";//屋内通讯
-    public static final String EXAMINE_HOUSE_MONITORING_SYSTEM = "examine.house.monitoring_system";//监控系统
     public static final String EXAMINE_HOUSE_INTELLIGENT_SYSTEM = "examine.house.intelligent_system";//智能系统
     public static final String EXAMINE_HOUSE_SUPPLY_ERECTION_METHOD = "examine.house.water.supply_erection_method";//供水管架设方式
     public static final String EXAMINE_HOUSE_PRETREATED_WATER = "examine.house.water.pretreated_water";//前置净水

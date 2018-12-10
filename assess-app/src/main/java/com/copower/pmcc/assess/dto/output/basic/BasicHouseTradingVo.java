@@ -10,13 +10,12 @@ import com.copower.pmcc.assess.dal.basic.entity.BasicHouseTrading;
 public class BasicHouseTradingVo extends BasicHouseTrading {
     private String tradingTimeName;
     private String tradingTypeName;
-    private String informationTypeName;
     private String paymentMethodName;
     private String normalTransactionName;
-    private String descriptionContentName;
     private String descriptionTypeName;
     private String taxBurdenName;
-    private String informationName;
+    private String informationTypeName;
+    private String informationCategoryName;
     private String financingConditionsName;
     private String scopePropertyName;
 
@@ -60,15 +59,6 @@ public class BasicHouseTradingVo extends BasicHouseTrading {
         this.normalTransactionName = normalTransactionName;
     }
 
-    public String getDescriptionContentName() {
-        return descriptionContentName;
-    }
-
-    public void setDescriptionContentName(String descriptionContentName) {
-        this.descriptionContentName = descriptionContentName;
-    }
-
-
     public String getTaxBurdenName() {
         return taxBurdenName;
     }
@@ -85,12 +75,12 @@ public class BasicHouseTradingVo extends BasicHouseTrading {
         this.descriptionTypeName = descriptionTypeName;
     }
 
-    public String getInformationName() {
-        return informationName;
+    public String getInformationCategoryName() {
+        return informationCategoryName;
     }
 
-    public void setInformationName(String informationName) {
-        this.informationName = informationName;
+    public void setInformationCategoryName(String informationCategoryName) {
+        this.informationCategoryName = informationCategoryName;
     }
 
     public String getFinancingConditionsName() {

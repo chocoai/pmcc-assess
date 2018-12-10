@@ -4,13 +4,13 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseUnitElevator" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="unit_id" property="unitId" jdbcType="INTEGER" />
-    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="maintenance" property="maintenance" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
     <result column="brand" property="brand" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="INTEGER" />
     <result column="quasi_load_number" property="quasiLoadNumber" jdbcType="INTEGER" />
     <result column="quasi_load_weight" property="quasiLoadWeight" jdbcType="VARCHAR" />
     <result column="running_speed" property="runningSpeed" jdbcType="VARCHAR" />
-    <result column="maintenance" property="maintenance" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -74,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, unit_id, type, brand, number, quasi_load_number, quasi_load_weight, running_speed, 
-    maintenance, creator, gmt_created, gmt_modified
+    id, unit_id, maintenance, type, brand, number, quasi_load_number, quasi_load_weight, 
+    running_speed, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseUnitElevatorExample" >
     select
@@ -111,13 +111,13 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_unit_elevator (unit_id, type, brand, 
-      number, quasi_load_number, quasi_load_weight, 
-      running_speed, maintenance, creator, 
+    insert into tb_case_unit_elevator (unit_id, maintenance, type, 
+      brand, number, quasi_load_number, 
+      quasi_load_weight, running_speed, creator, 
       gmt_created, gmt_modified)
-    values (#{unitId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{brand,jdbcType=VARCHAR}, 
-      #{number,jdbcType=INTEGER}, #{quasiLoadNumber,jdbcType=INTEGER}, #{quasiLoadWeight,jdbcType=VARCHAR}, 
-      #{runningSpeed,jdbcType=VARCHAR}, #{maintenance,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+    values (#{unitId,jdbcType=INTEGER}, #{maintenance,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+      #{brand,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, #{quasiLoadNumber,jdbcType=INTEGER}, 
+      #{quasiLoadWeight,jdbcType=VARCHAR}, #{runningSpeed,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseUnitElevator" >
@@ -128,6 +128,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="unitId != null" >
         unit_id,
+      </if>
+      <if test="maintenance != null" >
+        maintenance,
       </if>
       <if test="type != null" >
         type,
@@ -147,9 +150,6 @@
       <if test="runningSpeed != null" >
         running_speed,
       </if>
-      <if test="maintenance != null" >
-        maintenance,
-      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -164,8 +164,11 @@
       <if test="unitId != null" >
         #{unitId,jdbcType=INTEGER},
       </if>
+      <if test="maintenance != null" >
+        #{maintenance,jdbcType=INTEGER},
+      </if>
       <if test="type != null" >
-        #{type,jdbcType=VARCHAR},
+        #{type,jdbcType=INTEGER},
       </if>
       <if test="brand != null" >
         #{brand,jdbcType=VARCHAR},
@@ -181,9 +184,6 @@
       </if>
       <if test="runningSpeed != null" >
         #{runningSpeed,jdbcType=VARCHAR},
-      </if>
-      <if test="maintenance != null" >
-        #{maintenance,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -211,8 +211,11 @@
       <if test="record.unitId != null" >
         unit_id = #{record.unitId,jdbcType=INTEGER},
       </if>
+      <if test="record.maintenance != null" >
+        maintenance = #{record.maintenance,jdbcType=INTEGER},
+      </if>
       <if test="record.type != null" >
-        type = #{record.type,jdbcType=VARCHAR},
+        type = #{record.type,jdbcType=INTEGER},
       </if>
       <if test="record.brand != null" >
         brand = #{record.brand,jdbcType=VARCHAR},
@@ -228,9 +231,6 @@
       </if>
       <if test="record.runningSpeed != null" >
         running_speed = #{record.runningSpeed,jdbcType=VARCHAR},
-      </if>
-      <if test="record.maintenance != null" >
-        maintenance = #{record.maintenance,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -250,13 +250,13 @@
     update tb_case_unit_elevator
     set id = #{record.id,jdbcType=INTEGER},
       unit_id = #{record.unitId,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=VARCHAR},
+      maintenance = #{record.maintenance,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
       brand = #{record.brand,jdbcType=VARCHAR},
       number = #{record.number,jdbcType=INTEGER},
       quasi_load_number = #{record.quasiLoadNumber,jdbcType=INTEGER},
       quasi_load_weight = #{record.quasiLoadWeight,jdbcType=VARCHAR},
       running_speed = #{record.runningSpeed,jdbcType=VARCHAR},
-      maintenance = #{record.maintenance,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -270,8 +270,11 @@
       <if test="unitId != null" >
         unit_id = #{unitId,jdbcType=INTEGER},
       </if>
+      <if test="maintenance != null" >
+        maintenance = #{maintenance,jdbcType=INTEGER},
+      </if>
       <if test="type != null" >
-        type = #{type,jdbcType=VARCHAR},
+        type = #{type,jdbcType=INTEGER},
       </if>
       <if test="brand != null" >
         brand = #{brand,jdbcType=VARCHAR},
@@ -288,9 +291,6 @@
       <if test="runningSpeed != null" >
         running_speed = #{runningSpeed,jdbcType=VARCHAR},
       </if>
-      <if test="maintenance != null" >
-        maintenance = #{maintenance,jdbcType=VARCHAR},
-      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -306,13 +306,13 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseUnitElevator" >
     update tb_case_unit_elevator
     set unit_id = #{unitId,jdbcType=INTEGER},
-      type = #{type,jdbcType=VARCHAR},
+      maintenance = #{maintenance,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
       brand = #{brand,jdbcType=VARCHAR},
       number = #{number,jdbcType=INTEGER},
       quasi_load_number = #{quasiLoadNumber,jdbcType=INTEGER},
       quasi_load_weight = #{quasiLoadWeight,jdbcType=VARCHAR},
       running_speed = #{runningSpeed,jdbcType=VARCHAR},
-      maintenance = #{maintenance,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

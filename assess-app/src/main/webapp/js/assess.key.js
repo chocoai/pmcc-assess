@@ -118,8 +118,6 @@ AssessDicKey.estate_examinematchingmedical_bedNumber = "estate.examineMatchingMe
 AssessDicKey.estate_examinematchingmedical_distance = "estate.examineMatchingMedical.distance";//医养机构距离
 AssessDicKey.examine_house_corollary_equipment_price = "examine.house.corollary.equipment.price";//配套设备设施 价格
 AssessDicKey.examine_house_corollary_equipment_type = "examine.house.corollary.equipment.type";//配套设备设施 类型
-AssessDicKey.examine_house_corollary_equipment_category = "examine.house.corollary.equipment.category";//配套设备设施 类别
-AssessDicKey.examine_house_equipment_price_range = "examine.house.equipment_price_range";//设备价格区间
 AssessDicKey.examine_house_way_wind = "examine.house.way.wind";//供风方式
 AssessDicKey.examine_house_air_conditioning_mode = "examine.house.Air_conditioning_mode";//空调制式
 AssessDicKey.examine_house_heating_method = "examine.house.heating.method";//供暖方式
@@ -150,6 +148,7 @@ AssessDicKey.examineHouseNewsHuxing = "examine.house.newsHuxing";//最新户型
 
 AssessDicKey.examineHouseHouse_layout = "unit.house_layout";//房型
 AssessDicKey.examineUnitOrientation = "examine.common.orientation";//朝向
+AssessDicKey.examineUnitElevatorMaintenance = "unit.elevator.maintenance";//电梯维护情况
 AssessDicKey.examineUnitElevatorType = "unit.elevator.type";//电梯类型
 
 AssessDicKey.examineHouseTransactionType = "examine.house.transaction.type";//交易类型
@@ -157,16 +156,15 @@ AssessDicKey.examineHouseDescriptionType = "examine.house.description_type";//�
 AssessDicKey.examineHousetaxBurden = "examine.house.tax.burden";//税费负担
 AssessDicKey.examineHouseNormalTransaction = "examine.house.normal.transaction";//正常交易
 AssessDicKey.examineHousePaymentMethod = "examine.house.payment.method";//付款方式
-AssessDicKey.examineHouseClassificationInformationSources = "examine.house.classification.information.sources";//信息来源分类
+AssessDicKey.examineHousePaymentMethodLease = "examine.house.payment.method.lease";//出租付款方式
+AssessDicKey.examineHouseInformationSourceType = "examine.house.information.source.type";//信息来源类型
+AssessDicKey.examineHouseInformationSourceCategory = "examine.house.information.source.category";//信息来源类别
 AssessDicKey.examineHouseIntelligent_wireMaterial = "examine.house.wire_material";//电线材质
 AssessDicKey.examine_house_supply_erection_method = "examine.house.water.supply_erection_method";//供水管架设方式
 AssessDicKey.examine_house_pretreated_water = "examine.house.water.pretreated_water";//前置净水
 AssessDicKey.examine_house_purification_equipment_price = "examine.house.water.purification_equipment_price";//前置净水设备价格区间
-AssessDicKey.examine_house_water_intake_equipment_price = "examine.house.water.water_intake_equipment_price";//取水设备价格区间
 AssessDicKey.examine_house_water_drainage_circuit = "examine.house.water.drainage_circuit";//排水回路
 AssessDicKey.examine_house_intelligent_system = "examine.house.intelligent_system";//智能系统
-AssessDicKey.examine_house_monitoring_system = "examine.house.monitoring_system";//监控系统
-AssessDicKey.examine_house_internal_communication = "examine.house.internal_communication";//屋内通讯
 AssessDicKey.examine_house_lamps_lanterns = "examine.house.lamps_lanterns";//灯具
 AssessDicKey.examine_house_switch_circuit = "examine.house.switch_circuit";//开关回路
 AssessDicKey.examine_house_wire_erection_method = "examine.house.wire_erection_method";//电线架设方式
@@ -174,7 +172,6 @@ AssessDicKey.examine_house_street_level = "examine.house.street_level";//街道�
 AssessDicKey.examine_house_traffic_flow = "examine.house.traffic_flow";//交通流量
 AssessDicKey.examine_house_visitors_flowrate = "examine.house.visitors_flowrate";//人流量
 AssessDicKey.examine_house_information_sources = "examine.house.information.sources";//信息来源
-
 
 AssessDicKey.estate_total_land_level = "estate.land_level";//土地级别
 AssessDicKey.estate_total_land_use = "estate.land_use";//土地用途

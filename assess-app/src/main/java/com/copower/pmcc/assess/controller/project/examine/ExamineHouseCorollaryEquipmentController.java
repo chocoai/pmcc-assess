@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.controller.project.examine;
 
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineHouseCorollaryEquipment;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.examine.ExamineHouseCorollaryEquipmentService;
@@ -15,8 +13,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 /**
  * @Auther: zch
@@ -101,39 +97,4 @@ public class ExamineHouseCorollaryEquipmentController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/examine_house_corollary_equipment_category", method = {RequestMethod.GET}, name = "配套设备设施 类别")
-    public HttpResult examine_house_corollary_equipment_category() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_COROLLARY_EQUIPMENT_CATEGORY);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/examine_house_corollary_equipment_type", method = {RequestMethod.GET}, name = "配套设备设施 类型")
-    public HttpResult examine_house_corollary_equipment_type() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_COROLLARY_EQUIPMENT_TYPE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/examine_house_corollary_equipment_price", method = {RequestMethod.GET}, name = "配套设备设施 价格")
-    public HttpResult examine_house_corollary_equipment_price() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_COROLLARY_EQUIPMENT_PRICE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-    }
 }

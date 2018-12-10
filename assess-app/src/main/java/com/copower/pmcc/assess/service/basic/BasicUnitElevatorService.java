@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicUnitElevatorDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnitElevator;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicUnitElevatorVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -15,7 +14,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -119,7 +117,8 @@ public class BasicUnitElevatorService {
         }
         BasicUnitElevatorVo vo = new BasicUnitElevatorVo();
         BeanUtils.copyProperties(basicUnitElevator,vo);
-        vo.setTypeName(baseDataDicService.getNameById(NumberUtils.isNumber(basicUnitElevator.getType())?Integer.parseInt(basicUnitElevator.getType()):null));
+        vo.setTypeName(baseDataDicService.getNameById(basicUnitElevator.getType()));
+        vo.setMaintenanceName(baseDataDicService.getNameById(basicUnitElevator.getMaintenance()));
         return vo;
     }
 }

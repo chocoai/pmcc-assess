@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.controller.project.examine;
 
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineHouseIntelligent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.examine.ExamineHouseIntelligentService;
@@ -17,8 +15,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 /**
  * @Auther: zch
@@ -37,14 +33,6 @@ public class ExamineHouseIntelligentController {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ExamineHouseIntelligentService examineHouseIntelligentService;
-
-//    @Deprecated
-//    @RequestMapping(value = "/view", name = "转到index页面 (临时)", method = {RequestMethod.GET})
-//    public ModelAndView index() {
-//        String view = "/task/survey/examine/residence/apply/houseIntelligent";
-//        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-//        return modelAndView;
-//    }
 
     @ResponseBody
     @RequestMapping(value = "/getExamineHouseIntelligentById", method = {RequestMethod.GET}, name = "获取电力通讯网络")
@@ -113,77 +101,4 @@ public class ExamineHouseIntelligentController {
             return HttpResult.newErrorResult("保存异常");
         }
     }
-
-    @ResponseBody
-    @RequestMapping(value = "/examine_house_wire_erection_method", method = {RequestMethod.GET}, name = "电线架设方式")
-    public HttpResult environment_type() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_WIRE_ERECTION_METHOD);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/examine_house_switch_circuit", method = {RequestMethod.GET}, name = "开关回路")
-    public HttpResult examine_house_switch_circuit() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_SWITCH_CIRCUIT);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/examine_house_lamps_lanterns", method = {RequestMethod.GET}, name = "灯具")
-    public HttpResult environment_influence_degree() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_LAMPS_LANTERNS);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/examine_house_internal_communication", method = {RequestMethod.GET}, name = "屋内通讯")
-    public HttpResult examine_house_internal_communication() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_INTERNAL_COMMUNICATION);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/examine_house_monitoring_system", method = {RequestMethod.GET}, name = "监控系统")
-    public HttpResult examine_house_monitoring_system() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_MONITORING_SYSTEM);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/examine_house_intelligent_system", method = {RequestMethod.GET}, name = "智能系统")
-    public HttpResult examine_house_intelligent_system() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_INTELLIGENT_SYSTEM);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-    }
-
 }
