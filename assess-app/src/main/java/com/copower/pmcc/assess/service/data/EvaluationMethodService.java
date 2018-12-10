@@ -106,7 +106,7 @@ public class EvaluationMethodService {
 
     public DataEvaluationMethodVo getMethodVo(DataEvaluationMethod oo) {
         if (oo == null) return null;
-        List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
+        List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD);
         DataEvaluationMethodVo vo = new DataEvaluationMethodVo();
         BeanUtils.copyProperties(oo, vo);
         BaseDataDic baseDataDic = null;

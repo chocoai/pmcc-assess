@@ -42,7 +42,7 @@ public class StageWeightProportionController {
     @RequestMapping(value="/Index",name="阶段权重占比视图")
     public ModelAndView index(){
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/stageWeightProportion");
-        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
+        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
 
         BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getDefaultType();
         List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(baseProjectClassify.getId(), true);

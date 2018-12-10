@@ -58,7 +58,7 @@ public class CsrCalculationController {
     public HttpResult getSelectOption() {
         List<KeyValueDto> keyValueDtos = new ArrayList<>();
         //取评估方法
-        List<BaseDataDic> cacheDataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);//
+        List<BaseDataDic> cacheDataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD);//
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("{");
         stringBuilder.append(String.format("\"evaluation_method\":%s", JSON.toJSONString(cacheDataDicList)));

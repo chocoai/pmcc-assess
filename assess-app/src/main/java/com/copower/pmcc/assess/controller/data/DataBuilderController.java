@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataBuilder;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -40,7 +39,7 @@ public class DataBuilderController {
     @RequestMapping(value = "/view", name = "转到index页面 ", method = {RequestMethod.GET})
     public ModelAndView index() {
         String view = "/data/dataBuilderView";
-        List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_COMMON_QUALIFICATION_LEVEL);
+        List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_BUILDER_QUALIFICATION_LEVEL);
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         modelAndView.addObject("baseList", baseDataDic);
         return modelAndView;

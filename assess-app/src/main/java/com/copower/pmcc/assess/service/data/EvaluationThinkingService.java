@@ -116,7 +116,7 @@ public class EvaluationThinkingService {
 
     public DataEvaluationThinkingVo getThinkingVo(DataEvaluationThinking oo) {
         if (oo == null) return null;
-        List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
+        List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD);
         DataEvaluationThinkingVo vo = new DataEvaluationThinkingVo();
         BeanUtils.copyProperties(oo, vo);
         try {
@@ -151,7 +151,7 @@ public class EvaluationThinkingService {
      */
     public Map<Integer, List<DataEvaluationThinking>> getEvaluationThinkingMap() {
         Map<Integer, List<DataEvaluationThinking>> map = Maps.newConcurrentMap();
-        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
+        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD);
         if (CollectionUtils.isNotEmpty(baseDataDics)) {
             for (BaseDataDic baseDataDic : baseDataDics) {
                 List<DataEvaluationThinking> thinkingList = evaluationThinkingDao.getThinkingListByMethod(String.valueOf(baseDataDic.getId()));

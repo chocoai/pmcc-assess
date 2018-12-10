@@ -119,8 +119,8 @@ public class EvaluationHypothesisService {
 
     public DataEvaluationHypothesisVo getHypothesisVo(DataEvaluationHypothesis oo) {
         if (oo == null) return null;
-        List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
-        List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
+        List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD);
+        List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         DataEvaluationHypothesisVo vo = new DataEvaluationHypothesisVo();
         BeanUtils.copyProperties(oo, vo);
         if (StringUtils.isNotBlank(oo.getMethod())) {

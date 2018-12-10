@@ -108,7 +108,7 @@ public class StageWeightProportionService {
 
     //拼接委托目的显示
     private List<ProportionTempVo> getStageProportion(List<StageWeightProportionVo> stageWeightProportionVos){
-        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);  //委托目的
+        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);  //委托目的
         List<ProportionTempVo> proportionTempVos = new ArrayList<ProportionTempVo>();
         for(BaseDataDic baseDataDic : baseDataDics){    //循环委托目的取name
             String name = baseDataDic.getName();    //委托目的具体名字
