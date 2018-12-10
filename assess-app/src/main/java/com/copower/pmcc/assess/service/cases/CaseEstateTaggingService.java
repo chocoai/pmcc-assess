@@ -2,13 +2,12 @@ package com.copower.pmcc.assess.service.cases;
 
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateTaggingDao;
-import com.copower.pmcc.assess.dal.cases.entity.CaseEstateTagging;
+import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.MapDto;
 import com.copower.pmcc.assess.dto.input.cases.CaseEstateTaggingDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.google.common.collect.Lists;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +16,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @Auther: zch
@@ -32,13 +29,21 @@ public class CaseEstateTaggingService {
     private CaseEstateTaggingDao caseEstateTaggingDao;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private CaseEstateService caseEstateService;
+    @Autowired
+    private CaseBuildingMainService caseBuildingMainService;
+    @Autowired
+    private CaseUnitService caseUnitService;
+    @Autowired
+    private CaseHouseService caseHouseService;
 
 
-    public List<MapDto> mapDtoList(Integer estateId, String type) throws Exception {
+    public List<MapDto> mapDtoList(Integer dataId, String type) throws Exception {
         List<MapDto> mapDtoList = new ArrayList<MapDto>(10);
         CaseEstateTagging query = new CaseEstateTagging();
-        if (estateId != null) {
-            query.setEstateId(estateId);
+        if (dataId != null) {
+            query.setDataId(dataId);
         }
         if (StringUtils.isNotBlank(type)) {
             query.setType(type);
@@ -50,7 +55,7 @@ public class CaseEstateTaggingService {
                     continue;
                 }
                 MapDto mapDto = new MapDto();
-                mapDto.setLat(new BigDecimal(tagging.getLat())).setLon(new BigDecimal(tagging.getLng())).setId(tagging.getId()).setType(tagging.getType()).setEstateId(tagging.getEstateId());
+                mapDto.setLat(new BigDecimal(tagging.getLat())).setLon(new BigDecimal(tagging.getLng())).setId(tagging.getId()).setType(tagging.getType()).setDataId(tagging.getDataId());
                 if (StringUtils.isNotBlank(tagging.getName())) {
                     mapDto.setName(tagging.getName());
                 }
@@ -113,56 +118,84 @@ public class CaseEstateTaggingService {
     public BootstrapTableVo getEstateTaggingList(Integer estateId) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         CaseEstateTagging where = new CaseEstateTagging();
-        where.setEstateId(estateId);
+        where.setDataId(estateId);
+        where.setType(EstateTaggingTypeEnum.ESTATE.getKey());
         List<CaseEstateTagging> caseEstateTaggingList = caseEstateTaggingDao.caseEstateTaggingList(where);
         vo.setTotal((long) caseEstateTaggingList.size());
         vo.setRows(ObjectUtils.isEmpty(caseEstateTaggingList) ? Lists.newArrayList() : caseEstateTaggingList);
         return vo;
     }
 
-    public CaseEstateTaggingDto getCaseEstateTaggingDto(CaseEstateTagging caseEstateTagging)throws Exception {
-        if (caseEstateTagging == null) {
+    public CaseEstateTagging getCaseEstateTagging(Integer dataId, String type) throws Exception {
+        if (dataId == null) {
+            return null;
+        }
+        if (StringUtils.isEmpty(type)) {
+            return null;
+        }
+        CaseEstateTagging query = new CaseEstateTagging();
+        query.setDataId(dataId);
+        query.setType(type);
+        List<CaseEstateTagging> caseEstateTaggingList = caseEstateTaggingDao.caseEstateTaggingList(query);
+        if (!ObjectUtils.isEmpty(caseEstateTaggingList)) {
+            return caseEstateTaggingList.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public CaseEstateTaggingDto getCaseEstateTaggingDto(Integer estateId) throws Exception {
+        CaseEstate caseEstate = caseEstateService.getCaseEstateById(estateId);
+        if (caseEstate == null) {
             return null;
         }
         CaseEstateTaggingDto dto = new CaseEstateTaggingDto();
-        org.springframework.beans.BeanUtils.copyProperties(caseEstateTagging, dto);
-        if (caseEstateTagging.getType().equals(EstateTaggingTypeEnum.ESTATE.getKey())) {
-            CaseEstateTagging queryA = new CaseEstateTagging();
-            queryA.setType(EstateTaggingTypeEnum.BUILDING.getKey());
-            queryA.setEstateId(caseEstateTagging.getEstateId());
-            List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingDao.caseEstateTaggingList(queryA);
-            if (!org.springframework.util.ObjectUtils.isEmpty(caseEstateTaggings)){
-                for (CaseEstateTagging tagging:caseEstateTaggings){
-                    CaseEstateTaggingDto taggingDto = new CaseEstateTaggingDto();
-                    org.springframework.beans.BeanUtils.copyProperties(tagging,taggingDto);
-                    CaseEstateTagging queryB = new CaseEstateTagging();
-                    queryB.setEstateId(caseEstateTagging.getEstateId());
-                    queryB.setType(EstateTaggingTypeEnum.UNIT.getKey());
-                    List<CaseEstateTagging> taggingList = caseEstateTaggingDao.caseEstateTaggingList(queryB);
-                    if (!org.springframework.util.ObjectUtils.isEmpty(taggingList)){
-                        for (CaseEstateTagging estateTagging:taggingList){
-                            CaseEstateTaggingDto caseEstateTaggingDto = new CaseEstateTaggingDto();
-                            org.springframework.beans.BeanUtils.copyProperties(estateTagging,caseEstateTaggingDto);
-                            CaseEstateTagging queryC = new CaseEstateTagging();
-                            queryC.setEstateId(caseEstateTagging.getEstateId());
-                            //HOUSE type 或者以后非ESTATE,非BUILDING,非UNIT 的bean
-                            queryC.setType(EstateTaggingTypeEnum.HOUSE.getKey());
-                            List<CaseEstateTagging> caseEstateTaggingList = caseEstateTaggingDao.caseEstateTaggingList(queryC);
-                            if (!org.springframework.util.ObjectUtils.isEmpty(caseEstateTaggingList)){
-                                for (CaseEstateTagging tagging1:caseEstateTaggingList){
-                                    CaseEstateTaggingDto dto1 = new CaseEstateTaggingDto();
-                                    org.springframework.beans.BeanUtils.copyProperties(tagging1,dto1);
-                                    caseEstateTaggingDto.getChildren().add(dto1);
+        CaseEstateTagging estateTagging = getCaseEstateTagging(caseEstate.getId(), EstateTaggingTypeEnum.ESTATE.getKey());
+        if (estateTagging != null) {
+            org.springframework.beans.BeanUtils.copyProperties(estateTagging, dto);
+            CaseBuildingMain queryMain = new CaseBuildingMain();
+            queryMain.setEstateId(caseEstate.getId());
+            List<CaseBuildingMain> mainList = caseBuildingMainService.getCaseBuildingMainList(queryMain);
+            if (!ObjectUtils.isEmpty(mainList)) {
+                for (CaseBuildingMain main : mainList) {
+                    CaseEstateTagging buildTagging = getCaseEstateTagging(main.getId(), EstateTaggingTypeEnum.BUILDING.getKey());
+                    if (buildTagging != null) {
+                        CaseEstateTaggingDto buildTaggingDto = new CaseEstateTaggingDto();
+                        org.springframework.beans.BeanUtils.copyProperties(buildTagging, buildTaggingDto);
+                        CaseUnit queryUnit = new CaseUnit();
+                        queryUnit.setBuildingMainId(main.getId());
+                        List<CaseUnit> caseUnitList = caseUnitService.getCaseUnitList(queryUnit);
+                        if (!ObjectUtils.isEmpty(caseUnitList)) {
+                            for (CaseUnit caseUnit : caseUnitList) {
+                                CaseEstateTagging unitTagging = getCaseEstateTagging(caseUnit.getId(), EstateTaggingTypeEnum.UNIT.getKey());
+                                CaseEstateTaggingDto unitTaggingDto = new CaseEstateTaggingDto();
+                                if (unitTagging != null) {
+                                    org.springframework.beans.BeanUtils.copyProperties(unitTagging, unitTaggingDto);
+
+                                    CaseHouse queryHouse = new CaseHouse();
+                                    queryHouse.setUnitId(caseUnit.getId());
+                                    List<CaseHouse> caseHouseList = caseHouseService.getCaseHouseList(queryHouse);
+                                    if (!ObjectUtils.isEmpty(caseHouseList)) {
+                                        for (CaseHouse caseHouse : caseHouseList) {
+                                            CaseEstateTagging houseTagging = getCaseEstateTagging(caseHouse.getId(), EstateTaggingTypeEnum.HOUSE.getKey());
+                                            if (houseTagging != null) {
+                                                CaseEstateTaggingDto houseDto = new CaseEstateTaggingDto();
+                                                org.springframework.beans.BeanUtils.copyProperties(houseTagging, houseDto);
+                                                unitTaggingDto.getChildren().add(houseDto);
+                                            }
+                                        }
+                                    }
+
+                                    buildTaggingDto.getChildren().add(unitTaggingDto);
                                 }
                             }
-                            taggingDto.getChildren().add(caseEstateTaggingDto);
                         }
+                        dto.getChildren().add(buildTaggingDto);
                     }
-                    dto.getChildren().add(taggingDto);
                 }
             }
         }
         return dto;
-    }
 
+    }
 }

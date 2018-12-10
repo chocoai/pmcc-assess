@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.BasicApplyFormNameEnum;
 import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
+import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basic.entity.*;
 import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
@@ -464,7 +465,8 @@ public class PublicBasicService {
                 caseEstateTagging.setId(null);
                 caseEstateTagging.setGmtCreated(null);
                 caseEstateTagging.setGmtModified(null);
-                caseEstateTagging.setEstateId(caseEstate.getId());
+                caseEstateTagging.setDataId(caseEstate.getId());
+                caseEstateTagging.setType(EstateTaggingTypeEnum.ESTATE.getKey());
                 caseEstateTaggingService.saveCaseEstateTagging(caseEstateTagging);
             }
         }

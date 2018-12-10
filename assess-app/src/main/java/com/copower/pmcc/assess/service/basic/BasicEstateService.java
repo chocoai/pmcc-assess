@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.common.BeanCopyHelp;
+import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basic.dao.BasicEstateDao;
 import com.copower.pmcc.assess.dal.basic.dao.BasicEstateLandStateDao;
 import com.copower.pmcc.assess.dal.basic.entity.*;
@@ -506,7 +507,8 @@ public class BasicEstateService {
         CaseEstateSupply caseEstateSupply = new CaseEstateSupply();
         caseEstateSupply.setEstateId(caseEstateId);
         CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
-        caseEstateTagging.setEstateId(caseEstateId);
+        caseEstateTagging.setDataId(caseEstateId);
+        caseEstateTagging.setType(EstateTaggingTypeEnum.ESTATE.getKey());
         CaseMatchingTraffic caseMatchingTraffic = new CaseMatchingTraffic();
         caseMatchingTraffic.setEstateId(caseEstateId);
         CaseMatchingMedical caseMatchingMedical = new CaseMatchingMedical();

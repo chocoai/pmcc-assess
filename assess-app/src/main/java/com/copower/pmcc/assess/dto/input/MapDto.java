@@ -6,9 +6,9 @@ public class MapDto {
     private BigDecimal lat;
     private BigDecimal lon;
     private Integer id;
-    private Integer estateId;
     private String name;
     private String type;
+    private Integer dataId;
 
     public BigDecimal getLat() {
         return lat;
@@ -55,12 +55,12 @@ public class MapDto {
         return this;
     }
 
-    public Integer getEstateId() {
-        return estateId;
+    public Integer getDataId() {
+        return dataId;
     }
 
-    public MapDto setEstateId(Integer estateId) {
-        this.estateId = estateId;
+    public MapDto setDataId(Integer dataId) {
+        this.dataId = dataId;
         return this;
     }
 }

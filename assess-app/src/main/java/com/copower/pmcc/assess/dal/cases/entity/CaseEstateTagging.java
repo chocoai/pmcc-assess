@@ -5,9 +5,7 @@ import java.util.Date;
 public class CaseEstateTagging {
     private Integer id;
 
-    private Integer pid;
-
-    private Integer estateId;
+    private Integer dataId;
 
     private String type;
 
@@ -33,20 +31,12 @@ public class CaseEstateTagging {
         this.id = id;
     }
 
-    public Integer getPid() {
-        return pid;
+    public Integer getDataId() {
+        return dataId;
     }
 
-    public void setPid(Integer pid) {
-        this.pid = pid;
-    }
-
-    public Integer getEstateId() {
-        return estateId;
-    }
-
-    public void setEstateId(Integer estateId) {
-        this.estateId = estateId;
+    public void setDataId(Integer dataId) {
+        this.dataId = dataId;
     }
 
     public String getType() {

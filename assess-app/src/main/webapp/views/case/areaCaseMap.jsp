@@ -27,17 +27,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="x_content">
-                    <img id="oImg" src="${pageContext.request.contextPath}/image/B69B3AFB.png" style="display: none">
-                    <div class="form-group" style="display: none">
-                        <div class="col-sm-12" style="margin-top:10px;height:50px;">
-                            <button class="btn btn-default" onclick="areaMap.rotateTransform(true)">右旋转</button>
-                            <button class="btn btn-default" onclick="areaMap.rotateTransform(false)">左旋转</button>
-                            <button class="btn btn-default" onclick="areaMap.zoom(true)">放大</button>
-                            <button class="btn btn-default" onclick="areaMap.zoom(false)">缩小</button>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>
@@ -49,8 +39,6 @@
 </html>
 <script type="text/javascript">
     var map = null;
-    var imgMarker = null;
-    var imgIcon = null;
     var areaMap = {};
 
     /**
@@ -110,32 +98,6 @@
         toastr.success('定位失败!');
     };
 
-    /**
-     * @author:  zch
-     * 描述:获取类型 (com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum)
-     * @date:2018-12-07
-     **/
-    areaMap.getType = function (type) {
-        var config = {
-            estate: "estate",
-            building: "building",
-            unit: "unit",
-            house: "house"
-        };
-        if (this.isNotBlank(type)) {
-            if (type == config.estate) {
-                return config.building;
-            }
-            if (type == config.building) {
-                return config.unit;
-            }
-            if (type == config.unit) {
-                return config.house;
-            }
-        } else {
-            return null;
-        }
-    };
 
     /**
      * 加载子地图
@@ -143,52 +105,15 @@
     areaMap.onSonLoadMap = function (e) {
         var lng = Number(e.lnglat.getLng());
         var lat = Number(e.lnglat.getLat());
-        var extData = e.target.F.extData;
-        var markerList = [];
-        console.log(extData);
+        var dataId = e.target.F.extData.dataId;
         var href = "${pageContext.request.contextPath}/case/estateCaseMap";
-        href += "?estateId=" + extData.estateId;
-        window.open(href, "");
-        <%--$.ajax({--%>
-            <%--url: "${pageContext.request.contextPath}/caseEstateTagging/listCaseEstateTagging",--%>
-            <%--type: "get",--%>
-            <%--dataType: "json",--%>
-            <%--data: {estateId: extData.estateId, type: areaMap.getType(extData.type)},--%>
-            <%--success: function (result) {--%>
-                <%--if (result.ret) {--%>
-                    <%--var data = result.data;--%>
-                    <%--if (data.length >= 1) {--%>
-                        <%--areaMap.destroyMap(map);--%>
-                        <%--areaMap.createMap(lng, lat, 18);--%>
-                        <%--$.each(data, function (i, n) {--%>
-                            <%--if (AssessCommon.isNumber(n.lat) && AssessCommon.isNumber(n.lon)) {--%>
-                                <%--var marker = areaMap.getMarker(n);--%>
-                                <%--markerList.push(marker);--%>
-                            <%--}--%>
-                        <%--});--%>
-                        <%--if (markerList.length >= 1) {--%>
-                            <%--if (areaMap.getType(extData.type) == 'house') {--%>
-                                <%--//特别处理 图片覆盖物 (并对此做放大和缩小处理) 此覆盖物上无事件--%>
-                                <%--map.add(areaMap.createImgMarker(data[0]));--%>
-                            <%--} else {--%>
-                                <%--//一般覆盖物 覆盖物再次添加click事件,直到到房屋的户型图片覆盖物为止--%>
-                                <%--map.add(markerList);--%>
-                            <%--}--%>
-                        <%--} else {--%>
-                            <%--Alert("数据不符合约定!或者经纬度有非数字的字符!");--%>
-                        <%--}--%>
-                    <%--} else {--%>
-                        <%--Alert("无子标记");--%>
-                    <%--}--%>
-                <%--}--%>
-                <%--else {--%>
-                    <%--Alert("失败，失败原因:" + result.errmsg);--%>
-                <%--}--%>
-            <%--},--%>
-            <%--error: function (result) {--%>
-                <%--Alert("调用服务端方法失败，失败原因:" + result);--%>
-            <%--}--%>
-        <%--});--%>
+        href += "?estateId=" + dataId;
+        if (areaMap.isNotBlank(dataId)) {
+            window.open(href, "");
+        } else {
+            Alert("无数据!");
+        }
+
     };
 
     // 创建一个 icon
@@ -206,7 +131,7 @@
     areaMap.getContent = function (name) {
         var markerContent = '' +
             '<div class="panel panel-body" style="width:95px;height:55px;">' +
-            '<p style="text-overflow: ellipsis; white-space: nowrap;">' + name  +
+            '<p style="text-overflow: ellipsis; white-space: nowrap;">' + name +
             '<img style="height:25.5px;width:19.8px;float: left;" src="http://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png">' +
             '<div style="clear:both"></div>' +
             '</p>' +
@@ -251,31 +176,6 @@
         return marker;
     };
 
-    //创建一个图片覆盖物
-    areaMap.createImgMarker = function (n) {
-        var dimensions = areaMap.getImgNaturalDimensions(document.getElementById("oImg"));
-        $("#oImg").next().show();
-        // 创建一个 Icon
-        imgIcon = new AMap.Icon({
-            // 图标尺寸
-            size: new AMap.Size(Number(dimensions.w) * 10, Number(dimensions.h) * 10),
-            // 图标的取图地址
-            image: "${pageContext.request.contextPath}/image/B69B3AFB.png",
-            // 图标所用图片大小
-            imageSize: new AMap.Size(Number(dimensions.w) / 2.5, Number(dimensions.h) / 2.5),
-            // 图标取图偏移量
-            imageOffset: new AMap.Pixel(-1, -1)
-        });
-        imgMarker = new AMap.Marker({
-            position: new AMap.LngLat(Number(n.lon), Number(n.lat)), // 经纬度对象
-            icon: imgIcon,
-            offset: new AMap.Pixel(-13, -30),
-            autoRotation: true,
-            extData: {id: 'startMarker'},
-            angle: 20
-        });
-        return imgMarker;
-    };
 
     /**
      * 创建标记物并且对标记物添加事件
@@ -319,58 +219,6 @@
                 Alert(str);
             });
         });
-    };
-
-    /**
-     * 修改旋转角度
-     */
-    areaMap.rotateTransform = function (flag) {
-        var angle = Number(imgMarker.getAngle());
-        if (flag) {
-            imgMarker.setAngle(angle + 5);
-        } else {
-            imgMarker.setAngle(angle - 5);
-        }
-    };
-
-    /*修改覆盖物的大小*/
-    areaMap.zoom = function (flag) {
-        var size = imgIcon.getImageSize();
-        if (flag) {
-            imgIcon.setImageSize({
-                height: Number(size.height) * 1.2,
-                width: Number(size.width) * 1.2
-            });
-            imgMarker.setIcon(imgIcon);
-        } else {
-            imgIcon.setImageSize({
-                height: Number(size.height) / 1.2,
-                width: Number(size.width) / 1.2
-            });
-            imgMarker.setIcon(imgIcon);
-        }
-    };
-
-    /**
-     * 获取原始图片的长度和宽度
-     * @param oImg
-     * @param callback
-     */
-    areaMap.getImgNaturalDimensions = function (oImg) {
-        var nWidth, nHeight;
-        if (oImg.naturalWidth) { // 现代浏览器
-            nWidth = oImg.naturalWidth;
-            nHeight = oImg.naturalHeight;
-            return {w: nWidth, h: nHeight};
-        } else { // IE6/7/8
-            var nImg = new Image();
-            nImg.src = oImg.src;
-            nImg.onload = function () {
-                nWidth = nImg.width;
-                nHeight = nImg.height;
-                return {w: nWidth, h: nHeight};
-            };
-        }
     };
 
 

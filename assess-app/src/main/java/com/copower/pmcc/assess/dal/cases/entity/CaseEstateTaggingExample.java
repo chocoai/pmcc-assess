@@ -165,123 +165,63 @@ public class CaseEstateTaggingExample {
             return (Criteria) this;
         }
 
-        public Criteria andPidIsNull() {
-            addCriterion("pid is null");
+        public Criteria andDataIdIsNull() {
+            addCriterion("data_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andPidIsNotNull() {
-            addCriterion("pid is not null");
+        public Criteria andDataIdIsNotNull() {
+            addCriterion("data_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPidEqualTo(Integer value) {
-            addCriterion("pid =", value, "pid");
+        public Criteria andDataIdEqualTo(Integer value) {
+            addCriterion("data_id =", value, "dataId");
             return (Criteria) this;
         }
 
-        public Criteria andPidNotEqualTo(Integer value) {
-            addCriterion("pid <>", value, "pid");
+        public Criteria andDataIdNotEqualTo(Integer value) {
+            addCriterion("data_id <>", value, "dataId");
             return (Criteria) this;
         }
 
-        public Criteria andPidGreaterThan(Integer value) {
-            addCriterion("pid >", value, "pid");
+        public Criteria andDataIdGreaterThan(Integer value) {
+            addCriterion("data_id >", value, "dataId");
             return (Criteria) this;
         }
 
-        public Criteria andPidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("pid >=", value, "pid");
+        public Criteria andDataIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("data_id >=", value, "dataId");
             return (Criteria) this;
         }
 
-        public Criteria andPidLessThan(Integer value) {
-            addCriterion("pid <", value, "pid");
+        public Criteria andDataIdLessThan(Integer value) {
+            addCriterion("data_id <", value, "dataId");
             return (Criteria) this;
         }
 
-        public Criteria andPidLessThanOrEqualTo(Integer value) {
-            addCriterion("pid <=", value, "pid");
+        public Criteria andDataIdLessThanOrEqualTo(Integer value) {
+            addCriterion("data_id <=", value, "dataId");
             return (Criteria) this;
         }
 
-        public Criteria andPidIn(List<Integer> values) {
-            addCriterion("pid in", values, "pid");
+        public Criteria andDataIdIn(List<Integer> values) {
+            addCriterion("data_id in", values, "dataId");
             return (Criteria) this;
         }
 
-        public Criteria andPidNotIn(List<Integer> values) {
-            addCriterion("pid not in", values, "pid");
+        public Criteria andDataIdNotIn(List<Integer> values) {
+            addCriterion("data_id not in", values, "dataId");
             return (Criteria) this;
         }
 
-        public Criteria andPidBetween(Integer value1, Integer value2) {
-            addCriterion("pid between", value1, value2, "pid");
+        public Criteria andDataIdBetween(Integer value1, Integer value2) {
+            addCriterion("data_id between", value1, value2, "dataId");
             return (Criteria) this;
         }
 
-        public Criteria andPidNotBetween(Integer value1, Integer value2) {
-            addCriterion("pid not between", value1, value2, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdIsNull() {
-            addCriterion("estate_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdIsNotNull() {
-            addCriterion("estate_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdEqualTo(Integer value) {
-            addCriterion("estate_id =", value, "estateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdNotEqualTo(Integer value) {
-            addCriterion("estate_id <>", value, "estateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdGreaterThan(Integer value) {
-            addCriterion("estate_id >", value, "estateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("estate_id >=", value, "estateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdLessThan(Integer value) {
-            addCriterion("estate_id <", value, "estateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdLessThanOrEqualTo(Integer value) {
-            addCriterion("estate_id <=", value, "estateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdIn(List<Integer> values) {
-            addCriterion("estate_id in", values, "estateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdNotIn(List<Integer> values) {
-            addCriterion("estate_id not in", values, "estateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdBetween(Integer value1, Integer value2) {
-            addCriterion("estate_id between", value1, value2, "estateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("estate_id not between", value1, value2, "estateId");
+        public Criteria andDataIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("data_id not between", value1, value2, "dataId");
             return (Criteria) this;
         }
 
