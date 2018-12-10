@@ -117,8 +117,8 @@ public class EvaluationBasisService {
 
     public DataEvaluationBasisVo getBasisVo(DataEvaluationBasis oo) {
         if (oo == null) return null;
-        List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
-        List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
+        List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD);
+        List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         DataEvaluationBasisVo vo = new DataEvaluationBasisVo();
         BeanUtils.copyProperties(oo, vo);
         if (org.apache.commons.lang3.StringUtils.isNotBlank(oo.getMethod())) {

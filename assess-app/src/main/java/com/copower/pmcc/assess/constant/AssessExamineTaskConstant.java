@@ -117,7 +117,7 @@ public class AssessExamineTaskConstant {
     public static final String EXAMINE_HOUSE_COROLLARY_EQUIPMENT_CATEGORY = "examine.house.corollary.equipment.category";//配套设备设施 类别
     public static final String EXAMINE_HOUSE_COROLLARY_EQUIPMENT_PRICE = "examine.house.corollary.equipment.price";//配套设备设施 价格
 
-    public static final String EXAMINE_COMMON_QUALIFICATION_LEVEL = "examine.common.qualification_level";//资质等级-
+
 
 
 }

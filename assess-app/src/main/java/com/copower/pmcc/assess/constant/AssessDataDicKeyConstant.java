@@ -11,11 +11,12 @@ public class AssessDataDicKeyConstant {
     /*
      * 基础数据
      */
-    public static final String ENTRUSTMENT_PURPOSE = "data.entrustment.purpose";//委托目的
-    public static final String EVALUATION_METHOD = "data.evaluation.method";//评估方法
-    public static final String BUILDING_NEW_RATE_USE = "data.building.new.rate.use";//建筑成新率用途
-    public static final String EARLYWARNING_TYPE = "data.earlywarning.type";  //预警类型
-    public static final String EARLYWARNING_MODE = "data.earlywarning.mode";  //预警方式
+    public static final String DATA_ENTRUSTMENT_PURPOSE = "data.entrustment.purpose";//委托目的
+    public static final String DATA_EVALUATION_METHOD = "data.evaluation.method";//评估方法
+    public static final String DATA_BUILDING_NEW_RATE_USE = "data.building.new.rate.use";//建筑成新率用途
+    public static final String DATA_EARLYWARNING_TYPE = "data.earlywarning.type";  //预警类型
+    public static final String DATA_EARLYWARNING_MODE = "data.earlywarning.mode";  //预警方式
+    public static final String DATA_BUILDER_QUALIFICATION_LEVEL = "data.builder.qualification_level";//建造商资质等级
 
     /*
      * 报告配置

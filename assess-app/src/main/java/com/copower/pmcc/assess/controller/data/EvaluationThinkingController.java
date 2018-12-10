@@ -37,7 +37,7 @@ public class EvaluationThinkingController {
 
     @RequestMapping(value = "/view", name = "转到index页面")
     public ModelAndView index() {
-        List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
+        List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD);
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/evaluationThinkingView");
         modelAndView.addObject("methodDicList", methodDicList);
         return modelAndView;

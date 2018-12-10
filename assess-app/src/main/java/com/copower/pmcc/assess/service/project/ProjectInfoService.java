@@ -607,7 +607,7 @@ public class ProjectInfoService {
 
     /*委托目的*/
     public List<BaseDataDic> list_entrustment_purpose() {
-        List<BaseDataDic> baseDataDics = bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
+        List<BaseDataDic> baseDataDics = bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         return baseDataDics;
     }
 

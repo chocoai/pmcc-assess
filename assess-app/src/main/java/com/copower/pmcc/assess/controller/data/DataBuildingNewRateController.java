@@ -48,7 +48,7 @@ public class DataBuildingNewRateController {
     @RequestMapping(value = "/Index")
     public ModelAndView index() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataArchitectureDic");
-        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.BUILDING_NEW_RATE_USE);
+        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_BUILDING_NEW_RATE_USE);
         modelAndView.addObject("useList", baseDataDics);
         return modelAndView;
     }

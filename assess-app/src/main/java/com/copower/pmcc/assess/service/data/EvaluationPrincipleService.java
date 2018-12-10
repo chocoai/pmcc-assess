@@ -116,8 +116,8 @@ public class EvaluationPrincipleService {
 
     public DataEvaluationPrincipleVo getPrincipleVo(DataEvaluationPrinciple evaluationPrinciple) {
         if (evaluationPrinciple == null) return null;
-        List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
-        List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
+        List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD);
+        List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         DataEvaluationPrincipleVo vo = new DataEvaluationPrincipleVo();
         BeanUtils.copyProperties(evaluationPrinciple, vo);
         if (org.apache.commons.lang3.StringUtils.isNotBlank(evaluationPrinciple.getMethod())) {

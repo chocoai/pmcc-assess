@@ -41,11 +41,11 @@ public class DataEarlyWarningController {
     @RequestMapping(value = "/Index", name = "预警设置初始页面 ")
     public ModelAndView index() {
         //获取委托类型字典列表
-        List<BaseDataDic> entrustPurposeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
+        List<BaseDataDic> entrustPurposeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         //获取预警类型字典列表
-        List<BaseDataDic> typeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EARLYWARNING_TYPE);
+        List<BaseDataDic> typeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EARLYWARNING_TYPE);
         //获取预警方式字典列表
-        List<BaseDataDic> modeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EARLYWARNING_MODE);
+        List<BaseDataDic> modeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EARLYWARNING_MODE);
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataEarlyWarning");
         modelAndView.addObject("entrustPurposeList",entrustPurposeList);
         modelAndView.addObject("typeList",typeList);

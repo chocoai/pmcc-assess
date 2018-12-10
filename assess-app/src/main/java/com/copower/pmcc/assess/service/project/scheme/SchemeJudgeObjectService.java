@@ -490,7 +490,7 @@ public class SchemeJudgeObjectService {
     private Map<Integer, ProjectPhase> getProjectPhaseMap(Integer categoryId) {
         //1.取得该阶段所有事项 2.取得方法下字典数据配置
         Map<Integer, ProjectPhase> map = Maps.newHashMap();
-        List<BaseDataDic> methodList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
+        List<BaseDataDic> methodList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD);
         for (BaseDataDic method : methodList) {
             ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(method.getFieldName(), categoryId);
             if (projectPhase != null)
