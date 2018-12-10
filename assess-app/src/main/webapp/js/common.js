@@ -5,10 +5,10 @@ $(function () {
     try {
         $(".select2").each(function () {
             $(this).select2();
-            // $(this).on("select2-highlight", function (e) {
-            //     layer.tips('只想提示地精准些',$(e.target));
-            //     console.log($(e.target).find('option').val());
-            // });
+            $(this).on("select2-highlight", function (e) {
+                // layer.tips('只想提示地精准些',$(e.target));
+                // console.log($(e.target).find('option').val());
+            });
         })
     } catch (e) {
     }
