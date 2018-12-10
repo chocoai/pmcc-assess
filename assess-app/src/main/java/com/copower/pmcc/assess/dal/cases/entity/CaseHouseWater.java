@@ -7,27 +7,19 @@ public class CaseHouseWater {
 
     private Integer houseId;
 
-    private Integer supplyErectionMethod;
+    private Integer supplyMode;
 
-    private String intakePointNumber;
+    private Integer pipingLayout;
+
+    private Integer pipeMaterial;
+
+    private Integer boosterEquipment;
 
     private Integer pretreatedWater;
 
-    private String purificationEquipment;
+    private Integer purificationEquipmentPrice;
 
-    private String purificationEquipmentPrice;
-
-    private String natrueIntakePointNumber;
-
-    private String waterIntakeEquipment;
-
-    private String waterIntakeEquipmentPrice;
-
-    private String drainageErectionMethod;
-
-    private Integer drainageCircuit;
-
-    private Integer drainageCircuitCount;
+    private Integer fireWaterSupply;
 
     private String creator;
 
@@ -51,20 +43,36 @@ public class CaseHouseWater {
         this.houseId = houseId;
     }
 
-    public Integer getSupplyErectionMethod() {
-        return supplyErectionMethod;
+    public Integer getSupplyMode() {
+        return supplyMode;
     }
 
-    public void setSupplyErectionMethod(Integer supplyErectionMethod) {
-        this.supplyErectionMethod = supplyErectionMethod;
+    public void setSupplyMode(Integer supplyMode) {
+        this.supplyMode = supplyMode;
     }
 
-    public String getIntakePointNumber() {
-        return intakePointNumber;
+    public Integer getPipingLayout() {
+        return pipingLayout;
     }
 
-    public void setIntakePointNumber(String intakePointNumber) {
-        this.intakePointNumber = intakePointNumber == null ? null : intakePointNumber.trim();
+    public void setPipingLayout(Integer pipingLayout) {
+        this.pipingLayout = pipingLayout;
+    }
+
+    public Integer getPipeMaterial() {
+        return pipeMaterial;
+    }
+
+    public void setPipeMaterial(Integer pipeMaterial) {
+        this.pipeMaterial = pipeMaterial;
+    }
+
+    public Integer getBoosterEquipment() {
+        return boosterEquipment;
+    }
+
+    public void setBoosterEquipment(Integer boosterEquipment) {
+        this.boosterEquipment = boosterEquipment;
     }
 
     public Integer getPretreatedWater() {
@@ -75,68 +83,20 @@ public class CaseHouseWater {
         this.pretreatedWater = pretreatedWater;
     }
 
-    public String getPurificationEquipment() {
-        return purificationEquipment;
-    }
-
-    public void setPurificationEquipment(String purificationEquipment) {
-        this.purificationEquipment = purificationEquipment == null ? null : purificationEquipment.trim();
-    }
-
-    public String getPurificationEquipmentPrice() {
+    public Integer getPurificationEquipmentPrice() {
         return purificationEquipmentPrice;
     }
 
-    public void setPurificationEquipmentPrice(String purificationEquipmentPrice) {
-        this.purificationEquipmentPrice = purificationEquipmentPrice == null ? null : purificationEquipmentPrice.trim();
+    public void setPurificationEquipmentPrice(Integer purificationEquipmentPrice) {
+        this.purificationEquipmentPrice = purificationEquipmentPrice;
     }
 
-    public String getNatrueIntakePointNumber() {
-        return natrueIntakePointNumber;
+    public Integer getFireWaterSupply() {
+        return fireWaterSupply;
     }
 
-    public void setNatrueIntakePointNumber(String natrueIntakePointNumber) {
-        this.natrueIntakePointNumber = natrueIntakePointNumber == null ? null : natrueIntakePointNumber.trim();
-    }
-
-    public String getWaterIntakeEquipment() {
-        return waterIntakeEquipment;
-    }
-
-    public void setWaterIntakeEquipment(String waterIntakeEquipment) {
-        this.waterIntakeEquipment = waterIntakeEquipment == null ? null : waterIntakeEquipment.trim();
-    }
-
-    public String getWaterIntakeEquipmentPrice() {
-        return waterIntakeEquipmentPrice;
-    }
-
-    public void setWaterIntakeEquipmentPrice(String waterIntakeEquipmentPrice) {
-        this.waterIntakeEquipmentPrice = waterIntakeEquipmentPrice == null ? null : waterIntakeEquipmentPrice.trim();
-    }
-
-    public String getDrainageErectionMethod() {
-        return drainageErectionMethod;
-    }
-
-    public void setDrainageErectionMethod(String drainageErectionMethod) {
-        this.drainageErectionMethod = drainageErectionMethod == null ? null : drainageErectionMethod.trim();
-    }
-
-    public Integer getDrainageCircuit() {
-        return drainageCircuit;
-    }
-
-    public void setDrainageCircuit(Integer drainageCircuit) {
-        this.drainageCircuit = drainageCircuit;
-    }
-
-    public Integer getDrainageCircuitCount() {
-        return drainageCircuitCount;
-    }
-
-    public void setDrainageCircuitCount(Integer drainageCircuitCount) {
-        this.drainageCircuitCount = drainageCircuitCount;
+    public void setFireWaterSupply(Integer fireWaterSupply) {
+        this.fireWaterSupply = fireWaterSupply;
     }
 
     public String getCreator() {

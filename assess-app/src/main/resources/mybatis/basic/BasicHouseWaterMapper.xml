@@ -4,17 +4,13 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicHouseWater" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
-    <result column="supply_erection_method" property="supplyErectionMethod" jdbcType="INTEGER" />
-    <result column="intake_point_number" property="intakePointNumber" jdbcType="VARCHAR" />
+    <result column="supply_mode" property="supplyMode" jdbcType="INTEGER" />
+    <result column="piping_layout" property="pipingLayout" jdbcType="INTEGER" />
+    <result column="pipe_material" property="pipeMaterial" jdbcType="INTEGER" />
+    <result column="booster_equipment" property="boosterEquipment" jdbcType="INTEGER" />
     <result column="pretreated_water" property="pretreatedWater" jdbcType="INTEGER" />
-    <result column="purification_equipment" property="purificationEquipment" jdbcType="VARCHAR" />
-    <result column="purification_equipment_price" property="purificationEquipmentPrice" jdbcType="VARCHAR" />
-    <result column="natrue_intake_point_number" property="natrueIntakePointNumber" jdbcType="VARCHAR" />
-    <result column="water_intake_equipment" property="waterIntakeEquipment" jdbcType="VARCHAR" />
-    <result column="water_intake_equipment_price" property="waterIntakeEquipmentPrice" jdbcType="VARCHAR" />
-    <result column="drainage_erection_method" property="drainageErectionMethod" jdbcType="VARCHAR" />
-    <result column="drainage_circuit" property="drainageCircuit" jdbcType="INTEGER" />
-    <result column="drainage_circuit_count" property="drainageCircuitCount" jdbcType="INTEGER" />
+    <result column="purification_equipment_price" property="purificationEquipmentPrice" jdbcType="INTEGER" />
+    <result column="fire_water_supply" property="fireWaterSupply" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -78,10 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, house_id, supply_erection_method, intake_point_number, pretreated_water, purification_equipment, 
-    purification_equipment_price, natrue_intake_point_number, water_intake_equipment, 
-    water_intake_equipment_price, drainage_erection_method, drainage_circuit, drainage_circuit_count, 
-    creator, gmt_created, gmt_modified
+    id, house_id, supply_mode, piping_layout, pipe_material, booster_equipment, pretreated_water, 
+    purification_equipment_price, fire_water_supply, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseWaterExample" >
     select
@@ -117,20 +111,16 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_house_water (house_id, supply_erection_method, intake_point_number, 
-      pretreated_water, purification_equipment, 
-      purification_equipment_price, natrue_intake_point_number, 
-      water_intake_equipment, water_intake_equipment_price, 
-      drainage_erection_method, drainage_circuit, 
-      drainage_circuit_count, creator, gmt_created, 
-      gmt_modified)
-    values (#{houseId,jdbcType=INTEGER}, #{supplyErectionMethod,jdbcType=INTEGER}, #{intakePointNumber,jdbcType=VARCHAR}, 
-      #{pretreatedWater,jdbcType=INTEGER}, #{purificationEquipment,jdbcType=VARCHAR}, 
-      #{purificationEquipmentPrice,jdbcType=VARCHAR}, #{natrueIntakePointNumber,jdbcType=VARCHAR}, 
-      #{waterIntakeEquipment,jdbcType=VARCHAR}, #{waterIntakeEquipmentPrice,jdbcType=VARCHAR}, 
-      #{drainageErectionMethod,jdbcType=VARCHAR}, #{drainageCircuit,jdbcType=INTEGER}, 
-      #{drainageCircuitCount,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_basic_house_water (house_id, supply_mode, piping_layout, 
+      pipe_material, booster_equipment, pretreated_water, 
+      purification_equipment_price, fire_water_supply, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{houseId,jdbcType=INTEGER}, #{supplyMode,jdbcType=INTEGER}, #{pipingLayout,jdbcType=INTEGER}, 
+      #{pipeMaterial,jdbcType=INTEGER}, #{boosterEquipment,jdbcType=INTEGER}, #{pretreatedWater,jdbcType=INTEGER}, 
+      #{purificationEquipmentPrice,jdbcType=INTEGER}, #{fireWaterSupply,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseWater" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -141,38 +131,26 @@
       <if test="houseId != null" >
         house_id,
       </if>
-      <if test="supplyErectionMethod != null" >
-        supply_erection_method,
+      <if test="supplyMode != null" >
+        supply_mode,
       </if>
-      <if test="intakePointNumber != null" >
-        intake_point_number,
+      <if test="pipingLayout != null" >
+        piping_layout,
+      </if>
+      <if test="pipeMaterial != null" >
+        pipe_material,
+      </if>
+      <if test="boosterEquipment != null" >
+        booster_equipment,
       </if>
       <if test="pretreatedWater != null" >
         pretreated_water,
       </if>
-      <if test="purificationEquipment != null" >
-        purification_equipment,
-      </if>
       <if test="purificationEquipmentPrice != null" >
         purification_equipment_price,
       </if>
-      <if test="natrueIntakePointNumber != null" >
-        natrue_intake_point_number,
-      </if>
-      <if test="waterIntakeEquipment != null" >
-        water_intake_equipment,
-      </if>
-      <if test="waterIntakeEquipmentPrice != null" >
-        water_intake_equipment_price,
-      </if>
-      <if test="drainageErectionMethod != null" >
-        drainage_erection_method,
-      </if>
-      <if test="drainageCircuit != null" >
-        drainage_circuit,
-      </if>
-      <if test="drainageCircuitCount != null" >
-        drainage_circuit_count,
+      <if test="fireWaterSupply != null" >
+        fire_water_supply,
       </if>
       <if test="creator != null" >
         creator,
@@ -188,38 +166,26 @@
       <if test="houseId != null" >
         #{houseId,jdbcType=INTEGER},
       </if>
-      <if test="supplyErectionMethod != null" >
-        #{supplyErectionMethod,jdbcType=INTEGER},
+      <if test="supplyMode != null" >
+        #{supplyMode,jdbcType=INTEGER},
       </if>
-      <if test="intakePointNumber != null" >
-        #{intakePointNumber,jdbcType=VARCHAR},
+      <if test="pipingLayout != null" >
+        #{pipingLayout,jdbcType=INTEGER},
+      </if>
+      <if test="pipeMaterial != null" >
+        #{pipeMaterial,jdbcType=INTEGER},
+      </if>
+      <if test="boosterEquipment != null" >
+        #{boosterEquipment,jdbcType=INTEGER},
       </if>
       <if test="pretreatedWater != null" >
         #{pretreatedWater,jdbcType=INTEGER},
       </if>
-      <if test="purificationEquipment != null" >
-        #{purificationEquipment,jdbcType=VARCHAR},
-      </if>
       <if test="purificationEquipmentPrice != null" >
-        #{purificationEquipmentPrice,jdbcType=VARCHAR},
+        #{purificationEquipmentPrice,jdbcType=INTEGER},
       </if>
-      <if test="natrueIntakePointNumber != null" >
-        #{natrueIntakePointNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="waterIntakeEquipment != null" >
-        #{waterIntakeEquipment,jdbcType=VARCHAR},
-      </if>
-      <if test="waterIntakeEquipmentPrice != null" >
-        #{waterIntakeEquipmentPrice,jdbcType=VARCHAR},
-      </if>
-      <if test="drainageErectionMethod != null" >
-        #{drainageErectionMethod,jdbcType=VARCHAR},
-      </if>
-      <if test="drainageCircuit != null" >
-        #{drainageCircuit,jdbcType=INTEGER},
-      </if>
-      <if test="drainageCircuitCount != null" >
-        #{drainageCircuitCount,jdbcType=INTEGER},
+      <if test="fireWaterSupply != null" >
+        #{fireWaterSupply,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -247,38 +213,26 @@
       <if test="record.houseId != null" >
         house_id = #{record.houseId,jdbcType=INTEGER},
       </if>
-      <if test="record.supplyErectionMethod != null" >
-        supply_erection_method = #{record.supplyErectionMethod,jdbcType=INTEGER},
+      <if test="record.supplyMode != null" >
+        supply_mode = #{record.supplyMode,jdbcType=INTEGER},
       </if>
-      <if test="record.intakePointNumber != null" >
-        intake_point_number = #{record.intakePointNumber,jdbcType=VARCHAR},
+      <if test="record.pipingLayout != null" >
+        piping_layout = #{record.pipingLayout,jdbcType=INTEGER},
+      </if>
+      <if test="record.pipeMaterial != null" >
+        pipe_material = #{record.pipeMaterial,jdbcType=INTEGER},
+      </if>
+      <if test="record.boosterEquipment != null" >
+        booster_equipment = #{record.boosterEquipment,jdbcType=INTEGER},
       </if>
       <if test="record.pretreatedWater != null" >
         pretreated_water = #{record.pretreatedWater,jdbcType=INTEGER},
       </if>
-      <if test="record.purificationEquipment != null" >
-        purification_equipment = #{record.purificationEquipment,jdbcType=VARCHAR},
-      </if>
       <if test="record.purificationEquipmentPrice != null" >
-        purification_equipment_price = #{record.purificationEquipmentPrice,jdbcType=VARCHAR},
+        purification_equipment_price = #{record.purificationEquipmentPrice,jdbcType=INTEGER},
       </if>
-      <if test="record.natrueIntakePointNumber != null" >
-        natrue_intake_point_number = #{record.natrueIntakePointNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="record.waterIntakeEquipment != null" >
-        water_intake_equipment = #{record.waterIntakeEquipment,jdbcType=VARCHAR},
-      </if>
-      <if test="record.waterIntakeEquipmentPrice != null" >
-        water_intake_equipment_price = #{record.waterIntakeEquipmentPrice,jdbcType=VARCHAR},
-      </if>
-      <if test="record.drainageErectionMethod != null" >
-        drainage_erection_method = #{record.drainageErectionMethod,jdbcType=VARCHAR},
-      </if>
-      <if test="record.drainageCircuit != null" >
-        drainage_circuit = #{record.drainageCircuit,jdbcType=INTEGER},
-      </if>
-      <if test="record.drainageCircuitCount != null" >
-        drainage_circuit_count = #{record.drainageCircuitCount,jdbcType=INTEGER},
+      <if test="record.fireWaterSupply != null" >
+        fire_water_supply = #{record.fireWaterSupply,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -298,17 +252,13 @@
     update tb_basic_house_water
     set id = #{record.id,jdbcType=INTEGER},
       house_id = #{record.houseId,jdbcType=INTEGER},
-      supply_erection_method = #{record.supplyErectionMethod,jdbcType=INTEGER},
-      intake_point_number = #{record.intakePointNumber,jdbcType=VARCHAR},
+      supply_mode = #{record.supplyMode,jdbcType=INTEGER},
+      piping_layout = #{record.pipingLayout,jdbcType=INTEGER},
+      pipe_material = #{record.pipeMaterial,jdbcType=INTEGER},
+      booster_equipment = #{record.boosterEquipment,jdbcType=INTEGER},
       pretreated_water = #{record.pretreatedWater,jdbcType=INTEGER},
-      purification_equipment = #{record.purificationEquipment,jdbcType=VARCHAR},
-      purification_equipment_price = #{record.purificationEquipmentPrice,jdbcType=VARCHAR},
-      natrue_intake_point_number = #{record.natrueIntakePointNumber,jdbcType=VARCHAR},
-      water_intake_equipment = #{record.waterIntakeEquipment,jdbcType=VARCHAR},
-      water_intake_equipment_price = #{record.waterIntakeEquipmentPrice,jdbcType=VARCHAR},
-      drainage_erection_method = #{record.drainageErectionMethod,jdbcType=VARCHAR},
-      drainage_circuit = #{record.drainageCircuit,jdbcType=INTEGER},
-      drainage_circuit_count = #{record.drainageCircuitCount,jdbcType=INTEGER},
+      purification_equipment_price = #{record.purificationEquipmentPrice,jdbcType=INTEGER},
+      fire_water_supply = #{record.fireWaterSupply,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -322,38 +272,26 @@
       <if test="houseId != null" >
         house_id = #{houseId,jdbcType=INTEGER},
       </if>
-      <if test="supplyErectionMethod != null" >
-        supply_erection_method = #{supplyErectionMethod,jdbcType=INTEGER},
+      <if test="supplyMode != null" >
+        supply_mode = #{supplyMode,jdbcType=INTEGER},
       </if>
-      <if test="intakePointNumber != null" >
-        intake_point_number = #{intakePointNumber,jdbcType=VARCHAR},
+      <if test="pipingLayout != null" >
+        piping_layout = #{pipingLayout,jdbcType=INTEGER},
+      </if>
+      <if test="pipeMaterial != null" >
+        pipe_material = #{pipeMaterial,jdbcType=INTEGER},
+      </if>
+      <if test="boosterEquipment != null" >
+        booster_equipment = #{boosterEquipment,jdbcType=INTEGER},
       </if>
       <if test="pretreatedWater != null" >
         pretreated_water = #{pretreatedWater,jdbcType=INTEGER},
       </if>
-      <if test="purificationEquipment != null" >
-        purification_equipment = #{purificationEquipment,jdbcType=VARCHAR},
-      </if>
       <if test="purificationEquipmentPrice != null" >
-        purification_equipment_price = #{purificationEquipmentPrice,jdbcType=VARCHAR},
+        purification_equipment_price = #{purificationEquipmentPrice,jdbcType=INTEGER},
       </if>
-      <if test="natrueIntakePointNumber != null" >
-        natrue_intake_point_number = #{natrueIntakePointNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="waterIntakeEquipment != null" >
-        water_intake_equipment = #{waterIntakeEquipment,jdbcType=VARCHAR},
-      </if>
-      <if test="waterIntakeEquipmentPrice != null" >
-        water_intake_equipment_price = #{waterIntakeEquipmentPrice,jdbcType=VARCHAR},
-      </if>
-      <if test="drainageErectionMethod != null" >
-        drainage_erection_method = #{drainageErectionMethod,jdbcType=VARCHAR},
-      </if>
-      <if test="drainageCircuit != null" >
-        drainage_circuit = #{drainageCircuit,jdbcType=INTEGER},
-      </if>
-      <if test="drainageCircuitCount != null" >
-        drainage_circuit_count = #{drainageCircuitCount,jdbcType=INTEGER},
+      <if test="fireWaterSupply != null" >
+        fire_water_supply = #{fireWaterSupply,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -370,17 +308,13 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseWater" >
     update tb_basic_house_water
     set house_id = #{houseId,jdbcType=INTEGER},
-      supply_erection_method = #{supplyErectionMethod,jdbcType=INTEGER},
-      intake_point_number = #{intakePointNumber,jdbcType=VARCHAR},
+      supply_mode = #{supplyMode,jdbcType=INTEGER},
+      piping_layout = #{pipingLayout,jdbcType=INTEGER},
+      pipe_material = #{pipeMaterial,jdbcType=INTEGER},
+      booster_equipment = #{boosterEquipment,jdbcType=INTEGER},
       pretreated_water = #{pretreatedWater,jdbcType=INTEGER},
-      purification_equipment = #{purificationEquipment,jdbcType=VARCHAR},
-      purification_equipment_price = #{purificationEquipmentPrice,jdbcType=VARCHAR},
-      natrue_intake_point_number = #{natrueIntakePointNumber,jdbcType=VARCHAR},
-      water_intake_equipment = #{waterIntakeEquipment,jdbcType=VARCHAR},
-      water_intake_equipment_price = #{waterIntakeEquipmentPrice,jdbcType=VARCHAR},
-      drainage_erection_method = #{drainageErectionMethod,jdbcType=VARCHAR},
-      drainage_circuit = #{drainageCircuit,jdbcType=INTEGER},
-      drainage_circuit_count = #{drainageCircuitCount,jdbcType=INTEGER},
+      purification_equipment_price = #{purificationEquipmentPrice,jdbcType=INTEGER},
+      fire_water_supply = #{fireWaterSupply,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseHouseWaterMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseHouseWater" >
+<mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseBouseWaterDrainMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseBouseWaterDrain" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
-    <result column="supply_mode" property="supplyMode" jdbcType="INTEGER" />
-    <result column="piping_layout" property="pipingLayout" jdbcType="INTEGER" />
-    <result column="pipe_material" property="pipeMaterial" jdbcType="INTEGER" />
-    <result column="booster_equipment" property="boosterEquipment" jdbcType="INTEGER" />
-    <result column="pretreated_water" property="pretreatedWater" jdbcType="INTEGER" />
-    <result column="purification_equipment_price" property="purificationEquipmentPrice" jdbcType="INTEGER" />
-    <result column="fire_water_supply" property="fireWaterSupply" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="drain_system" property="drainSystem" jdbcType="INTEGER" />
+    <result column="processing_mode" property="processingMode" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -74,16 +70,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, house_id, supply_mode, piping_layout, pipe_material, booster_equipment, pretreated_water, 
-    purification_equipment_price, fire_water_supply, creator, gmt_created, gmt_modified
+    id, house_id, type, drain_system, processing_mode, creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseWaterExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBouseWaterDrainExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_case_house_water
+    from tb_case_house_water_drain
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -94,63 +89,47 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_case_house_water
+    from tb_case_house_water_drain
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_case_house_water
+    delete from tb_case_house_water_drain
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseWaterExample" >
-    delete from tb_case_house_water
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBouseWaterDrainExample" >
+    delete from tb_case_house_water_drain
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseWater" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBouseWaterDrain" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_house_water (house_id, supply_mode, piping_layout, 
-      pipe_material, booster_equipment, pretreated_water, 
-      purification_equipment_price, fire_water_supply, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{houseId,jdbcType=INTEGER}, #{supplyMode,jdbcType=INTEGER}, #{pipingLayout,jdbcType=INTEGER}, 
-      #{pipeMaterial,jdbcType=INTEGER}, #{boosterEquipment,jdbcType=INTEGER}, #{pretreatedWater,jdbcType=INTEGER}, 
-      #{purificationEquipmentPrice,jdbcType=INTEGER}, #{fireWaterSupply,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_case_house_water_drain (house_id, type, drain_system, 
+      processing_mode, creator, gmt_created, 
+      gmt_modified)
+    values (#{houseId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{drainSystem,jdbcType=INTEGER}, 
+      #{processingMode,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseWater" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBouseWaterDrain" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_house_water
+    insert into tb_case_house_water_drain
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="houseId != null" >
         house_id,
       </if>
-      <if test="supplyMode != null" >
-        supply_mode,
+      <if test="type != null" >
+        type,
       </if>
-      <if test="pipingLayout != null" >
-        piping_layout,
+      <if test="drainSystem != null" >
+        drain_system,
       </if>
-      <if test="pipeMaterial != null" >
-        pipe_material,
-      </if>
-      <if test="boosterEquipment != null" >
-        booster_equipment,
-      </if>
-      <if test="pretreatedWater != null" >
-        pretreated_water,
-      </if>
-      <if test="purificationEquipmentPrice != null" >
-        purification_equipment_price,
-      </if>
-      <if test="fireWaterSupply != null" >
-        fire_water_supply,
+      <if test="processingMode != null" >
+        processing_mode,
       </if>
       <if test="creator != null" >
         creator,
@@ -166,26 +145,14 @@
       <if test="houseId != null" >
         #{houseId,jdbcType=INTEGER},
       </if>
-      <if test="supplyMode != null" >
-        #{supplyMode,jdbcType=INTEGER},
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
       </if>
-      <if test="pipingLayout != null" >
-        #{pipingLayout,jdbcType=INTEGER},
+      <if test="drainSystem != null" >
+        #{drainSystem,jdbcType=INTEGER},
       </if>
-      <if test="pipeMaterial != null" >
-        #{pipeMaterial,jdbcType=INTEGER},
-      </if>
-      <if test="boosterEquipment != null" >
-        #{boosterEquipment,jdbcType=INTEGER},
-      </if>
-      <if test="pretreatedWater != null" >
-        #{pretreatedWater,jdbcType=INTEGER},
-      </if>
-      <if test="purificationEquipmentPrice != null" >
-        #{purificationEquipmentPrice,jdbcType=INTEGER},
-      </if>
-      <if test="fireWaterSupply != null" >
-        #{fireWaterSupply,jdbcType=INTEGER},
+      <if test="processingMode != null" >
+        #{processingMode,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -198,14 +165,14 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseWaterExample" resultType="java.lang.Integer" >
-    select count(*) from tb_case_house_water
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBouseWaterDrainExample" resultType="java.lang.Integer" >
+    select count(*) from tb_case_house_water_drain
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_case_house_water
+    update tb_case_house_water_drain
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
@@ -213,26 +180,14 @@
       <if test="record.houseId != null" >
         house_id = #{record.houseId,jdbcType=INTEGER},
       </if>
-      <if test="record.supplyMode != null" >
-        supply_mode = #{record.supplyMode,jdbcType=INTEGER},
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
       </if>
-      <if test="record.pipingLayout != null" >
-        piping_layout = #{record.pipingLayout,jdbcType=INTEGER},
+      <if test="record.drainSystem != null" >
+        drain_system = #{record.drainSystem,jdbcType=INTEGER},
       </if>
-      <if test="record.pipeMaterial != null" >
-        pipe_material = #{record.pipeMaterial,jdbcType=INTEGER},
-      </if>
-      <if test="record.boosterEquipment != null" >
-        booster_equipment = #{record.boosterEquipment,jdbcType=INTEGER},
-      </if>
-      <if test="record.pretreatedWater != null" >
-        pretreated_water = #{record.pretreatedWater,jdbcType=INTEGER},
-      </if>
-      <if test="record.purificationEquipmentPrice != null" >
-        purification_equipment_price = #{record.purificationEquipmentPrice,jdbcType=INTEGER},
-      </if>
-      <if test="record.fireWaterSupply != null" >
-        fire_water_supply = #{record.fireWaterSupply,jdbcType=INTEGER},
+      <if test="record.processingMode != null" >
+        processing_mode = #{record.processingMode,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -249,16 +204,12 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_case_house_water
+    update tb_case_house_water_drain
     set id = #{record.id,jdbcType=INTEGER},
       house_id = #{record.houseId,jdbcType=INTEGER},
-      supply_mode = #{record.supplyMode,jdbcType=INTEGER},
-      piping_layout = #{record.pipingLayout,jdbcType=INTEGER},
-      pipe_material = #{record.pipeMaterial,jdbcType=INTEGER},
-      booster_equipment = #{record.boosterEquipment,jdbcType=INTEGER},
-      pretreated_water = #{record.pretreatedWater,jdbcType=INTEGER},
-      purification_equipment_price = #{record.purificationEquipmentPrice,jdbcType=INTEGER},
-      fire_water_supply = #{record.fireWaterSupply,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
+      drain_system = #{record.drainSystem,jdbcType=INTEGER},
+      processing_mode = #{record.processingMode,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -266,32 +217,20 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseWater" >
-    update tb_case_house_water
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBouseWaterDrain" >
+    update tb_case_house_water_drain
     <set >
       <if test="houseId != null" >
         house_id = #{houseId,jdbcType=INTEGER},
       </if>
-      <if test="supplyMode != null" >
-        supply_mode = #{supplyMode,jdbcType=INTEGER},
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
       </if>
-      <if test="pipingLayout != null" >
-        piping_layout = #{pipingLayout,jdbcType=INTEGER},
+      <if test="drainSystem != null" >
+        drain_system = #{drainSystem,jdbcType=INTEGER},
       </if>
-      <if test="pipeMaterial != null" >
-        pipe_material = #{pipeMaterial,jdbcType=INTEGER},
-      </if>
-      <if test="boosterEquipment != null" >
-        booster_equipment = #{boosterEquipment,jdbcType=INTEGER},
-      </if>
-      <if test="pretreatedWater != null" >
-        pretreated_water = #{pretreatedWater,jdbcType=INTEGER},
-      </if>
-      <if test="purificationEquipmentPrice != null" >
-        purification_equipment_price = #{purificationEquipmentPrice,jdbcType=INTEGER},
-      </if>
-      <if test="fireWaterSupply != null" >
-        fire_water_supply = #{fireWaterSupply,jdbcType=INTEGER},
+      <if test="processingMode != null" >
+        processing_mode = #{processingMode,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -305,16 +244,12 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseWater" >
-    update tb_case_house_water
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBouseWaterDrain" >
+    update tb_case_house_water_drain
     set house_id = #{houseId,jdbcType=INTEGER},
-      supply_mode = #{supplyMode,jdbcType=INTEGER},
-      piping_layout = #{pipingLayout,jdbcType=INTEGER},
-      pipe_material = #{pipeMaterial,jdbcType=INTEGER},
-      booster_equipment = #{boosterEquipment,jdbcType=INTEGER},
-      pretreated_water = #{pretreatedWater,jdbcType=INTEGER},
-      purification_equipment_price = #{purificationEquipmentPrice,jdbcType=INTEGER},
-      fire_water_supply = #{fireWaterSupply,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      drain_system = #{drainSystem,jdbcType=INTEGER},
+      processing_mode = #{processingMode,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

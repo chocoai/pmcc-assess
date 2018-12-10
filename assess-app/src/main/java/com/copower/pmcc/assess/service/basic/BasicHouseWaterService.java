@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicHouseWaterDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouseWater;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseWaterVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -15,7 +14,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -120,12 +118,12 @@ public class BasicHouseWaterService {
         }
         BasicHouseWaterVo vo = new BasicHouseWaterVo();
         BeanUtils.copyProperties(basicHouseWater,vo);
-        vo.setSupplyErectionMethodName(baseDataDicService.getNameById(basicHouseWater.getSupplyErectionMethod()));
-        vo.setPretreatedWaterName(baseDataDicService.getNameById(basicHouseWater.getPretreatedWater()));
-        vo.setDrainageCircuitName(baseDataDicService.getNameById(basicHouseWater.getDrainageCircuit()));
-        vo.setDrainageCircuitCountName(baseDataDicService.getNameById(basicHouseWater.getDrainageCircuitCount()));
-        vo.setPurificationEquipmentPriceName(baseDataDicService.getNameById(NumberUtils.isNumber(basicHouseWater.getPurificationEquipmentPrice())?Integer.parseInt(basicHouseWater.getPurificationEquipmentPrice()):null));
-        vo.setWaterIntakeEquipmentPriceName(baseDataDicService.getNameById(NumberUtils.isNumber(basicHouseWater.getWaterIntakeEquipmentPrice())?Integer.parseInt(basicHouseWater.getWaterIntakeEquipmentPrice()):null));
+//        vo.setSupplyErectionMethodName(baseDataDicService.getNameById(basicHouseWater.getSupplyErectionMethod()));
+//        vo.setPretreatedWaterName(baseDataDicService.getNameById(basicHouseWater.getPretreatedWater()));
+//        vo.setDrainageCircuitName(baseDataDicService.getNameById(basicHouseWater.getDrainageCircuit()));
+//        vo.setDrainageCircuitCountName(baseDataDicService.getNameById(basicHouseWater.getDrainageCircuitCount()));
+//        vo.setPurificationEquipmentPriceName(baseDataDicService.getNameById(NumberUtils.isNumber(basicHouseWater.getPurificationEquipmentPrice())?Integer.parseInt(basicHouseWater.getPurificationEquipmentPrice()):null));
+//        vo.setWaterIntakeEquipmentPriceName(baseDataDicService.getNameById(NumberUtils.isNumber(basicHouseWater.getWaterIntakeEquipmentPrice())?Integer.parseInt(basicHouseWater.getWaterIntakeEquipmentPrice()):null));
         return vo;
     }
     

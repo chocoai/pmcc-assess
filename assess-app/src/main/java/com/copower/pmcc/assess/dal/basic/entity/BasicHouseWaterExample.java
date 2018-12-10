@@ -225,133 +225,243 @@ public class BasicHouseWaterExample {
             return (Criteria) this;
         }
 
-        public Criteria andSupplyErectionMethodIsNull() {
-            addCriterion("supply_erection_method is null");
+        public Criteria andSupplyModeIsNull() {
+            addCriterion("supply_mode is null");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyErectionMethodIsNotNull() {
-            addCriterion("supply_erection_method is not null");
+        public Criteria andSupplyModeIsNotNull() {
+            addCriterion("supply_mode is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyErectionMethodEqualTo(Integer value) {
-            addCriterion("supply_erection_method =", value, "supplyErectionMethod");
+        public Criteria andSupplyModeEqualTo(Integer value) {
+            addCriterion("supply_mode =", value, "supplyMode");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyErectionMethodNotEqualTo(Integer value) {
-            addCriterion("supply_erection_method <>", value, "supplyErectionMethod");
+        public Criteria andSupplyModeNotEqualTo(Integer value) {
+            addCriterion("supply_mode <>", value, "supplyMode");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyErectionMethodGreaterThan(Integer value) {
-            addCriterion("supply_erection_method >", value, "supplyErectionMethod");
+        public Criteria andSupplyModeGreaterThan(Integer value) {
+            addCriterion("supply_mode >", value, "supplyMode");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyErectionMethodGreaterThanOrEqualTo(Integer value) {
-            addCriterion("supply_erection_method >=", value, "supplyErectionMethod");
+        public Criteria andSupplyModeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("supply_mode >=", value, "supplyMode");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyErectionMethodLessThan(Integer value) {
-            addCriterion("supply_erection_method <", value, "supplyErectionMethod");
+        public Criteria andSupplyModeLessThan(Integer value) {
+            addCriterion("supply_mode <", value, "supplyMode");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyErectionMethodLessThanOrEqualTo(Integer value) {
-            addCriterion("supply_erection_method <=", value, "supplyErectionMethod");
+        public Criteria andSupplyModeLessThanOrEqualTo(Integer value) {
+            addCriterion("supply_mode <=", value, "supplyMode");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyErectionMethodIn(List<Integer> values) {
-            addCriterion("supply_erection_method in", values, "supplyErectionMethod");
+        public Criteria andSupplyModeIn(List<Integer> values) {
+            addCriterion("supply_mode in", values, "supplyMode");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyErectionMethodNotIn(List<Integer> values) {
-            addCriterion("supply_erection_method not in", values, "supplyErectionMethod");
+        public Criteria andSupplyModeNotIn(List<Integer> values) {
+            addCriterion("supply_mode not in", values, "supplyMode");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyErectionMethodBetween(Integer value1, Integer value2) {
-            addCriterion("supply_erection_method between", value1, value2, "supplyErectionMethod");
+        public Criteria andSupplyModeBetween(Integer value1, Integer value2) {
+            addCriterion("supply_mode between", value1, value2, "supplyMode");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyErectionMethodNotBetween(Integer value1, Integer value2) {
-            addCriterion("supply_erection_method not between", value1, value2, "supplyErectionMethod");
+        public Criteria andSupplyModeNotBetween(Integer value1, Integer value2) {
+            addCriterion("supply_mode not between", value1, value2, "supplyMode");
             return (Criteria) this;
         }
 
-        public Criteria andIntakePointNumberIsNull() {
-            addCriterion("intake_point_number is null");
+        public Criteria andPipingLayoutIsNull() {
+            addCriterion("piping_layout is null");
             return (Criteria) this;
         }
 
-        public Criteria andIntakePointNumberIsNotNull() {
-            addCriterion("intake_point_number is not null");
+        public Criteria andPipingLayoutIsNotNull() {
+            addCriterion("piping_layout is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIntakePointNumberEqualTo(String value) {
-            addCriterion("intake_point_number =", value, "intakePointNumber");
+        public Criteria andPipingLayoutEqualTo(Integer value) {
+            addCriterion("piping_layout =", value, "pipingLayout");
             return (Criteria) this;
         }
 
-        public Criteria andIntakePointNumberNotEqualTo(String value) {
-            addCriterion("intake_point_number <>", value, "intakePointNumber");
+        public Criteria andPipingLayoutNotEqualTo(Integer value) {
+            addCriterion("piping_layout <>", value, "pipingLayout");
             return (Criteria) this;
         }
 
-        public Criteria andIntakePointNumberGreaterThan(String value) {
-            addCriterion("intake_point_number >", value, "intakePointNumber");
+        public Criteria andPipingLayoutGreaterThan(Integer value) {
+            addCriterion("piping_layout >", value, "pipingLayout");
             return (Criteria) this;
         }
 
-        public Criteria andIntakePointNumberGreaterThanOrEqualTo(String value) {
-            addCriterion("intake_point_number >=", value, "intakePointNumber");
+        public Criteria andPipingLayoutGreaterThanOrEqualTo(Integer value) {
+            addCriterion("piping_layout >=", value, "pipingLayout");
             return (Criteria) this;
         }
 
-        public Criteria andIntakePointNumberLessThan(String value) {
-            addCriterion("intake_point_number <", value, "intakePointNumber");
+        public Criteria andPipingLayoutLessThan(Integer value) {
+            addCriterion("piping_layout <", value, "pipingLayout");
             return (Criteria) this;
         }
 
-        public Criteria andIntakePointNumberLessThanOrEqualTo(String value) {
-            addCriterion("intake_point_number <=", value, "intakePointNumber");
+        public Criteria andPipingLayoutLessThanOrEqualTo(Integer value) {
+            addCriterion("piping_layout <=", value, "pipingLayout");
             return (Criteria) this;
         }
 
-        public Criteria andIntakePointNumberLike(String value) {
-            addCriterion("intake_point_number like", value, "intakePointNumber");
+        public Criteria andPipingLayoutIn(List<Integer> values) {
+            addCriterion("piping_layout in", values, "pipingLayout");
             return (Criteria) this;
         }
 
-        public Criteria andIntakePointNumberNotLike(String value) {
-            addCriterion("intake_point_number not like", value, "intakePointNumber");
+        public Criteria andPipingLayoutNotIn(List<Integer> values) {
+            addCriterion("piping_layout not in", values, "pipingLayout");
             return (Criteria) this;
         }
 
-        public Criteria andIntakePointNumberIn(List<String> values) {
-            addCriterion("intake_point_number in", values, "intakePointNumber");
+        public Criteria andPipingLayoutBetween(Integer value1, Integer value2) {
+            addCriterion("piping_layout between", value1, value2, "pipingLayout");
             return (Criteria) this;
         }
 
-        public Criteria andIntakePointNumberNotIn(List<String> values) {
-            addCriterion("intake_point_number not in", values, "intakePointNumber");
+        public Criteria andPipingLayoutNotBetween(Integer value1, Integer value2) {
+            addCriterion("piping_layout not between", value1, value2, "pipingLayout");
             return (Criteria) this;
         }
 
-        public Criteria andIntakePointNumberBetween(String value1, String value2) {
-            addCriterion("intake_point_number between", value1, value2, "intakePointNumber");
+        public Criteria andPipeMaterialIsNull() {
+            addCriterion("pipe_material is null");
             return (Criteria) this;
         }
 
-        public Criteria andIntakePointNumberNotBetween(String value1, String value2) {
-            addCriterion("intake_point_number not between", value1, value2, "intakePointNumber");
+        public Criteria andPipeMaterialIsNotNull() {
+            addCriterion("pipe_material is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPipeMaterialEqualTo(Integer value) {
+            addCriterion("pipe_material =", value, "pipeMaterial");
+            return (Criteria) this;
+        }
+
+        public Criteria andPipeMaterialNotEqualTo(Integer value) {
+            addCriterion("pipe_material <>", value, "pipeMaterial");
+            return (Criteria) this;
+        }
+
+        public Criteria andPipeMaterialGreaterThan(Integer value) {
+            addCriterion("pipe_material >", value, "pipeMaterial");
+            return (Criteria) this;
+        }
+
+        public Criteria andPipeMaterialGreaterThanOrEqualTo(Integer value) {
+            addCriterion("pipe_material >=", value, "pipeMaterial");
+            return (Criteria) this;
+        }
+
+        public Criteria andPipeMaterialLessThan(Integer value) {
+            addCriterion("pipe_material <", value, "pipeMaterial");
+            return (Criteria) this;
+        }
+
+        public Criteria andPipeMaterialLessThanOrEqualTo(Integer value) {
+            addCriterion("pipe_material <=", value, "pipeMaterial");
+            return (Criteria) this;
+        }
+
+        public Criteria andPipeMaterialIn(List<Integer> values) {
+            addCriterion("pipe_material in", values, "pipeMaterial");
+            return (Criteria) this;
+        }
+
+        public Criteria andPipeMaterialNotIn(List<Integer> values) {
+            addCriterion("pipe_material not in", values, "pipeMaterial");
+            return (Criteria) this;
+        }
+
+        public Criteria andPipeMaterialBetween(Integer value1, Integer value2) {
+            addCriterion("pipe_material between", value1, value2, "pipeMaterial");
+            return (Criteria) this;
+        }
+
+        public Criteria andPipeMaterialNotBetween(Integer value1, Integer value2) {
+            addCriterion("pipe_material not between", value1, value2, "pipeMaterial");
+            return (Criteria) this;
+        }
+
+        public Criteria andBoosterEquipmentIsNull() {
+            addCriterion("booster_equipment is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBoosterEquipmentIsNotNull() {
+            addCriterion("booster_equipment is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBoosterEquipmentEqualTo(Integer value) {
+            addCriterion("booster_equipment =", value, "boosterEquipment");
+            return (Criteria) this;
+        }
+
+        public Criteria andBoosterEquipmentNotEqualTo(Integer value) {
+            addCriterion("booster_equipment <>", value, "boosterEquipment");
+            return (Criteria) this;
+        }
+
+        public Criteria andBoosterEquipmentGreaterThan(Integer value) {
+            addCriterion("booster_equipment >", value, "boosterEquipment");
+            return (Criteria) this;
+        }
+
+        public Criteria andBoosterEquipmentGreaterThanOrEqualTo(Integer value) {
+            addCriterion("booster_equipment >=", value, "boosterEquipment");
+            return (Criteria) this;
+        }
+
+        public Criteria andBoosterEquipmentLessThan(Integer value) {
+            addCriterion("booster_equipment <", value, "boosterEquipment");
+            return (Criteria) this;
+        }
+
+        public Criteria andBoosterEquipmentLessThanOrEqualTo(Integer value) {
+            addCriterion("booster_equipment <=", value, "boosterEquipment");
+            return (Criteria) this;
+        }
+
+        public Criteria andBoosterEquipmentIn(List<Integer> values) {
+            addCriterion("booster_equipment in", values, "boosterEquipment");
+            return (Criteria) this;
+        }
+
+        public Criteria andBoosterEquipmentNotIn(List<Integer> values) {
+            addCriterion("booster_equipment not in", values, "boosterEquipment");
+            return (Criteria) this;
+        }
+
+        public Criteria andBoosterEquipmentBetween(Integer value1, Integer value2) {
+            addCriterion("booster_equipment between", value1, value2, "boosterEquipment");
+            return (Criteria) this;
+        }
+
+        public Criteria andBoosterEquipmentNotBetween(Integer value1, Integer value2) {
+            addCriterion("booster_equipment not between", value1, value2, "boosterEquipment");
             return (Criteria) this;
         }
 
@@ -415,76 +525,6 @@ public class BasicHouseWaterExample {
             return (Criteria) this;
         }
 
-        public Criteria andPurificationEquipmentIsNull() {
-            addCriterion("purification_equipment is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurificationEquipmentIsNotNull() {
-            addCriterion("purification_equipment is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurificationEquipmentEqualTo(String value) {
-            addCriterion("purification_equipment =", value, "purificationEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurificationEquipmentNotEqualTo(String value) {
-            addCriterion("purification_equipment <>", value, "purificationEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurificationEquipmentGreaterThan(String value) {
-            addCriterion("purification_equipment >", value, "purificationEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurificationEquipmentGreaterThanOrEqualTo(String value) {
-            addCriterion("purification_equipment >=", value, "purificationEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurificationEquipmentLessThan(String value) {
-            addCriterion("purification_equipment <", value, "purificationEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurificationEquipmentLessThanOrEqualTo(String value) {
-            addCriterion("purification_equipment <=", value, "purificationEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurificationEquipmentLike(String value) {
-            addCriterion("purification_equipment like", value, "purificationEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurificationEquipmentNotLike(String value) {
-            addCriterion("purification_equipment not like", value, "purificationEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurificationEquipmentIn(List<String> values) {
-            addCriterion("purification_equipment in", values, "purificationEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurificationEquipmentNotIn(List<String> values) {
-            addCriterion("purification_equipment not in", values, "purificationEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurificationEquipmentBetween(String value1, String value2) {
-            addCriterion("purification_equipment between", value1, value2, "purificationEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurificationEquipmentNotBetween(String value1, String value2) {
-            addCriterion("purification_equipment not between", value1, value2, "purificationEquipment");
-            return (Criteria) this;
-        }
-
         public Criteria andPurificationEquipmentPriceIsNull() {
             addCriterion("purification_equipment_price is null");
             return (Criteria) this;
@@ -495,463 +535,113 @@ public class BasicHouseWaterExample {
             return (Criteria) this;
         }
 
-        public Criteria andPurificationEquipmentPriceEqualTo(String value) {
+        public Criteria andPurificationEquipmentPriceEqualTo(Integer value) {
             addCriterion("purification_equipment_price =", value, "purificationEquipmentPrice");
             return (Criteria) this;
         }
 
-        public Criteria andPurificationEquipmentPriceNotEqualTo(String value) {
+        public Criteria andPurificationEquipmentPriceNotEqualTo(Integer value) {
             addCriterion("purification_equipment_price <>", value, "purificationEquipmentPrice");
             return (Criteria) this;
         }
 
-        public Criteria andPurificationEquipmentPriceGreaterThan(String value) {
+        public Criteria andPurificationEquipmentPriceGreaterThan(Integer value) {
             addCriterion("purification_equipment_price >", value, "purificationEquipmentPrice");
             return (Criteria) this;
         }
 
-        public Criteria andPurificationEquipmentPriceGreaterThanOrEqualTo(String value) {
+        public Criteria andPurificationEquipmentPriceGreaterThanOrEqualTo(Integer value) {
             addCriterion("purification_equipment_price >=", value, "purificationEquipmentPrice");
             return (Criteria) this;
         }
 
-        public Criteria andPurificationEquipmentPriceLessThan(String value) {
+        public Criteria andPurificationEquipmentPriceLessThan(Integer value) {
             addCriterion("purification_equipment_price <", value, "purificationEquipmentPrice");
             return (Criteria) this;
         }
 
-        public Criteria andPurificationEquipmentPriceLessThanOrEqualTo(String value) {
+        public Criteria andPurificationEquipmentPriceLessThanOrEqualTo(Integer value) {
             addCriterion("purification_equipment_price <=", value, "purificationEquipmentPrice");
             return (Criteria) this;
         }
 
-        public Criteria andPurificationEquipmentPriceLike(String value) {
-            addCriterion("purification_equipment_price like", value, "purificationEquipmentPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurificationEquipmentPriceNotLike(String value) {
-            addCriterion("purification_equipment_price not like", value, "purificationEquipmentPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurificationEquipmentPriceIn(List<String> values) {
+        public Criteria andPurificationEquipmentPriceIn(List<Integer> values) {
             addCriterion("purification_equipment_price in", values, "purificationEquipmentPrice");
             return (Criteria) this;
         }
 
-        public Criteria andPurificationEquipmentPriceNotIn(List<String> values) {
+        public Criteria andPurificationEquipmentPriceNotIn(List<Integer> values) {
             addCriterion("purification_equipment_price not in", values, "purificationEquipmentPrice");
             return (Criteria) this;
         }
 
-        public Criteria andPurificationEquipmentPriceBetween(String value1, String value2) {
+        public Criteria andPurificationEquipmentPriceBetween(Integer value1, Integer value2) {
             addCriterion("purification_equipment_price between", value1, value2, "purificationEquipmentPrice");
             return (Criteria) this;
         }
 
-        public Criteria andPurificationEquipmentPriceNotBetween(String value1, String value2) {
+        public Criteria andPurificationEquipmentPriceNotBetween(Integer value1, Integer value2) {
             addCriterion("purification_equipment_price not between", value1, value2, "purificationEquipmentPrice");
             return (Criteria) this;
         }
 
-        public Criteria andNatrueIntakePointNumberIsNull() {
-            addCriterion("natrue_intake_point_number is null");
+        public Criteria andFireWaterSupplyIsNull() {
+            addCriterion("fire_water_supply is null");
             return (Criteria) this;
         }
 
-        public Criteria andNatrueIntakePointNumberIsNotNull() {
-            addCriterion("natrue_intake_point_number is not null");
+        public Criteria andFireWaterSupplyIsNotNull() {
+            addCriterion("fire_water_supply is not null");
             return (Criteria) this;
         }
 
-        public Criteria andNatrueIntakePointNumberEqualTo(String value) {
-            addCriterion("natrue_intake_point_number =", value, "natrueIntakePointNumber");
+        public Criteria andFireWaterSupplyEqualTo(Integer value) {
+            addCriterion("fire_water_supply =", value, "fireWaterSupply");
             return (Criteria) this;
         }
 
-        public Criteria andNatrueIntakePointNumberNotEqualTo(String value) {
-            addCriterion("natrue_intake_point_number <>", value, "natrueIntakePointNumber");
+        public Criteria andFireWaterSupplyNotEqualTo(Integer value) {
+            addCriterion("fire_water_supply <>", value, "fireWaterSupply");
             return (Criteria) this;
         }
 
-        public Criteria andNatrueIntakePointNumberGreaterThan(String value) {
-            addCriterion("natrue_intake_point_number >", value, "natrueIntakePointNumber");
+        public Criteria andFireWaterSupplyGreaterThan(Integer value) {
+            addCriterion("fire_water_supply >", value, "fireWaterSupply");
             return (Criteria) this;
         }
 
-        public Criteria andNatrueIntakePointNumberGreaterThanOrEqualTo(String value) {
-            addCriterion("natrue_intake_point_number >=", value, "natrueIntakePointNumber");
+        public Criteria andFireWaterSupplyGreaterThanOrEqualTo(Integer value) {
+            addCriterion("fire_water_supply >=", value, "fireWaterSupply");
             return (Criteria) this;
         }
 
-        public Criteria andNatrueIntakePointNumberLessThan(String value) {
-            addCriterion("natrue_intake_point_number <", value, "natrueIntakePointNumber");
+        public Criteria andFireWaterSupplyLessThan(Integer value) {
+            addCriterion("fire_water_supply <", value, "fireWaterSupply");
             return (Criteria) this;
         }
 
-        public Criteria andNatrueIntakePointNumberLessThanOrEqualTo(String value) {
-            addCriterion("natrue_intake_point_number <=", value, "natrueIntakePointNumber");
+        public Criteria andFireWaterSupplyLessThanOrEqualTo(Integer value) {
+            addCriterion("fire_water_supply <=", value, "fireWaterSupply");
             return (Criteria) this;
         }
 
-        public Criteria andNatrueIntakePointNumberLike(String value) {
-            addCriterion("natrue_intake_point_number like", value, "natrueIntakePointNumber");
+        public Criteria andFireWaterSupplyIn(List<Integer> values) {
+            addCriterion("fire_water_supply in", values, "fireWaterSupply");
             return (Criteria) this;
         }
 
-        public Criteria andNatrueIntakePointNumberNotLike(String value) {
-            addCriterion("natrue_intake_point_number not like", value, "natrueIntakePointNumber");
+        public Criteria andFireWaterSupplyNotIn(List<Integer> values) {
+            addCriterion("fire_water_supply not in", values, "fireWaterSupply");
             return (Criteria) this;
         }
 
-        public Criteria andNatrueIntakePointNumberIn(List<String> values) {
-            addCriterion("natrue_intake_point_number in", values, "natrueIntakePointNumber");
+        public Criteria andFireWaterSupplyBetween(Integer value1, Integer value2) {
+            addCriterion("fire_water_supply between", value1, value2, "fireWaterSupply");
             return (Criteria) this;
         }
 
-        public Criteria andNatrueIntakePointNumberNotIn(List<String> values) {
-            addCriterion("natrue_intake_point_number not in", values, "natrueIntakePointNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andNatrueIntakePointNumberBetween(String value1, String value2) {
-            addCriterion("natrue_intake_point_number between", value1, value2, "natrueIntakePointNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andNatrueIntakePointNumberNotBetween(String value1, String value2) {
-            addCriterion("natrue_intake_point_number not between", value1, value2, "natrueIntakePointNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentIsNull() {
-            addCriterion("water_intake_equipment is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentIsNotNull() {
-            addCriterion("water_intake_equipment is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentEqualTo(String value) {
-            addCriterion("water_intake_equipment =", value, "waterIntakeEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentNotEqualTo(String value) {
-            addCriterion("water_intake_equipment <>", value, "waterIntakeEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentGreaterThan(String value) {
-            addCriterion("water_intake_equipment >", value, "waterIntakeEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentGreaterThanOrEqualTo(String value) {
-            addCriterion("water_intake_equipment >=", value, "waterIntakeEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentLessThan(String value) {
-            addCriterion("water_intake_equipment <", value, "waterIntakeEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentLessThanOrEqualTo(String value) {
-            addCriterion("water_intake_equipment <=", value, "waterIntakeEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentLike(String value) {
-            addCriterion("water_intake_equipment like", value, "waterIntakeEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentNotLike(String value) {
-            addCriterion("water_intake_equipment not like", value, "waterIntakeEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentIn(List<String> values) {
-            addCriterion("water_intake_equipment in", values, "waterIntakeEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentNotIn(List<String> values) {
-            addCriterion("water_intake_equipment not in", values, "waterIntakeEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentBetween(String value1, String value2) {
-            addCriterion("water_intake_equipment between", value1, value2, "waterIntakeEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentNotBetween(String value1, String value2) {
-            addCriterion("water_intake_equipment not between", value1, value2, "waterIntakeEquipment");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentPriceIsNull() {
-            addCriterion("water_intake_equipment_price is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentPriceIsNotNull() {
-            addCriterion("water_intake_equipment_price is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentPriceEqualTo(String value) {
-            addCriterion("water_intake_equipment_price =", value, "waterIntakeEquipmentPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentPriceNotEqualTo(String value) {
-            addCriterion("water_intake_equipment_price <>", value, "waterIntakeEquipmentPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentPriceGreaterThan(String value) {
-            addCriterion("water_intake_equipment_price >", value, "waterIntakeEquipmentPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentPriceGreaterThanOrEqualTo(String value) {
-            addCriterion("water_intake_equipment_price >=", value, "waterIntakeEquipmentPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentPriceLessThan(String value) {
-            addCriterion("water_intake_equipment_price <", value, "waterIntakeEquipmentPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentPriceLessThanOrEqualTo(String value) {
-            addCriterion("water_intake_equipment_price <=", value, "waterIntakeEquipmentPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentPriceLike(String value) {
-            addCriterion("water_intake_equipment_price like", value, "waterIntakeEquipmentPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentPriceNotLike(String value) {
-            addCriterion("water_intake_equipment_price not like", value, "waterIntakeEquipmentPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentPriceIn(List<String> values) {
-            addCriterion("water_intake_equipment_price in", values, "waterIntakeEquipmentPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentPriceNotIn(List<String> values) {
-            addCriterion("water_intake_equipment_price not in", values, "waterIntakeEquipmentPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentPriceBetween(String value1, String value2) {
-            addCriterion("water_intake_equipment_price between", value1, value2, "waterIntakeEquipmentPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterIntakeEquipmentPriceNotBetween(String value1, String value2) {
-            addCriterion("water_intake_equipment_price not between", value1, value2, "waterIntakeEquipmentPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageErectionMethodIsNull() {
-            addCriterion("drainage_erection_method is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageErectionMethodIsNotNull() {
-            addCriterion("drainage_erection_method is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageErectionMethodEqualTo(String value) {
-            addCriterion("drainage_erection_method =", value, "drainageErectionMethod");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageErectionMethodNotEqualTo(String value) {
-            addCriterion("drainage_erection_method <>", value, "drainageErectionMethod");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageErectionMethodGreaterThan(String value) {
-            addCriterion("drainage_erection_method >", value, "drainageErectionMethod");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageErectionMethodGreaterThanOrEqualTo(String value) {
-            addCriterion("drainage_erection_method >=", value, "drainageErectionMethod");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageErectionMethodLessThan(String value) {
-            addCriterion("drainage_erection_method <", value, "drainageErectionMethod");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageErectionMethodLessThanOrEqualTo(String value) {
-            addCriterion("drainage_erection_method <=", value, "drainageErectionMethod");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageErectionMethodLike(String value) {
-            addCriterion("drainage_erection_method like", value, "drainageErectionMethod");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageErectionMethodNotLike(String value) {
-            addCriterion("drainage_erection_method not like", value, "drainageErectionMethod");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageErectionMethodIn(List<String> values) {
-            addCriterion("drainage_erection_method in", values, "drainageErectionMethod");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageErectionMethodNotIn(List<String> values) {
-            addCriterion("drainage_erection_method not in", values, "drainageErectionMethod");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageErectionMethodBetween(String value1, String value2) {
-            addCriterion("drainage_erection_method between", value1, value2, "drainageErectionMethod");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageErectionMethodNotBetween(String value1, String value2) {
-            addCriterion("drainage_erection_method not between", value1, value2, "drainageErectionMethod");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitIsNull() {
-            addCriterion("drainage_circuit is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitIsNotNull() {
-            addCriterion("drainage_circuit is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitEqualTo(Integer value) {
-            addCriterion("drainage_circuit =", value, "drainageCircuit");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitNotEqualTo(Integer value) {
-            addCriterion("drainage_circuit <>", value, "drainageCircuit");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitGreaterThan(Integer value) {
-            addCriterion("drainage_circuit >", value, "drainageCircuit");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitGreaterThanOrEqualTo(Integer value) {
-            addCriterion("drainage_circuit >=", value, "drainageCircuit");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitLessThan(Integer value) {
-            addCriterion("drainage_circuit <", value, "drainageCircuit");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitLessThanOrEqualTo(Integer value) {
-            addCriterion("drainage_circuit <=", value, "drainageCircuit");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitIn(List<Integer> values) {
-            addCriterion("drainage_circuit in", values, "drainageCircuit");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitNotIn(List<Integer> values) {
-            addCriterion("drainage_circuit not in", values, "drainageCircuit");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitBetween(Integer value1, Integer value2) {
-            addCriterion("drainage_circuit between", value1, value2, "drainageCircuit");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitNotBetween(Integer value1, Integer value2) {
-            addCriterion("drainage_circuit not between", value1, value2, "drainageCircuit");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitCountIsNull() {
-            addCriterion("drainage_circuit_count is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitCountIsNotNull() {
-            addCriterion("drainage_circuit_count is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitCountEqualTo(Integer value) {
-            addCriterion("drainage_circuit_count =", value, "drainageCircuitCount");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitCountNotEqualTo(Integer value) {
-            addCriterion("drainage_circuit_count <>", value, "drainageCircuitCount");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitCountGreaterThan(Integer value) {
-            addCriterion("drainage_circuit_count >", value, "drainageCircuitCount");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitCountGreaterThanOrEqualTo(Integer value) {
-            addCriterion("drainage_circuit_count >=", value, "drainageCircuitCount");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitCountLessThan(Integer value) {
-            addCriterion("drainage_circuit_count <", value, "drainageCircuitCount");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitCountLessThanOrEqualTo(Integer value) {
-            addCriterion("drainage_circuit_count <=", value, "drainageCircuitCount");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitCountIn(List<Integer> values) {
-            addCriterion("drainage_circuit_count in", values, "drainageCircuitCount");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitCountNotIn(List<Integer> values) {
-            addCriterion("drainage_circuit_count not in", values, "drainageCircuitCount");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitCountBetween(Integer value1, Integer value2) {
-            addCriterion("drainage_circuit_count between", value1, value2, "drainageCircuitCount");
-            return (Criteria) this;
-        }
-
-        public Criteria andDrainageCircuitCountNotBetween(Integer value1, Integer value2) {
-            addCriterion("drainage_circuit_count not between", value1, value2, "drainageCircuitCount");
+        public Criteria andFireWaterSupplyNotBetween(Integer value1, Integer value2) {
+            addCriterion("fire_water_supply not between", value1, value2, "fireWaterSupply");
             return (Criteria) this;
         }
 

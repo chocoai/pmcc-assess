@@ -116,11 +116,7 @@ AssessDicKey.estate_supply_new_type = "estate.supply.new.type";//购物场所类
 AssessDicKey.estate_examinematchingmedical_level = "estate.examineMatchingMedical.level";//医养机构等级
 AssessDicKey.estate_examinematchingmedical_bedNumber = "estate.examineMatchingMedical.bedNumber";//医养机构床位数
 AssessDicKey.estate_examinematchingmedical_distance = "estate.examineMatchingMedical.distance";//医养机构距离
-AssessDicKey.examine_house_corollary_equipment_price = "examine.house.corollary.equipment.price";//配套设备设施 价格
-AssessDicKey.examine_house_corollary_equipment_type = "examine.house.corollary.equipment.type";//配套设备设施 类型
-AssessDicKey.examine_house_way_wind = "examine.house.way.wind";//供风方式
-AssessDicKey.examine_house_air_conditioning_mode = "examine.house.Air_conditioning_mode";//空调制式
-AssessDicKey.examine_house_heating_method = "examine.house.heating.method";//供暖方式
+
 
 
 AssessDicKey.examineBlockRegionalNature = "examine.block.regionalNature";
@@ -171,7 +167,14 @@ AssessDicKey.examine_house_wire_erection_method = "examine.house.wire_erection_m
 AssessDicKey.examine_house_street_level = "examine.house.street_level";//街道级别
 AssessDicKey.examine_house_traffic_flow = "examine.house.traffic_flow";//交通流量
 AssessDicKey.examine_house_visitors_flowrate = "examine.house.visitors_flowrate";//人流量
-AssessDicKey.examine_house_information_sources = "examine.house.information.sources";//信息来源
+
+AssessDicKey.examine_house_way_wind = "examine.house.way.wind";//供风系统类型
+AssessDicKey.examine_house_wind_equipment_price_range = "examine.house.wind.equipment_price_range";//供风设备价格区间
+AssessDicKey.examine_house_air_conditioning_mode = "examine.house.air.conditioning_mode";//空调制式
+AssessDicKey.examine_house_air_equipment_price_range = "examine.house.air.equipment_price_range";//空调设备价格区间
+AssessDicKey.examine_house_heating_method = "examine.house.heating.method";//供暖方式
+AssessDicKey.examine_house_heating_equipment_price_range = "examine.house.heating.equipment_price_range";//供暖设备价格区间
+AssessDicKey.examine_house_corollary_equipment_type = "examine.house.corollary.equipment.type";//配套设备设施 类型
 
 AssessDicKey.estate_total_land_level = "estate.land_level";//土地级别
 AssessDicKey.estate_total_land_use = "estate.land_use";//土地用途
@@ -183,12 +186,9 @@ AssessDicKey.estateSupplySituation = "estate.supply.situation";//供应情况
 
 AssessDicKey.build_addedvalueadditionaltaxrate = "build.addedValueAdditionalTaxRate";//增值及附加税率
 AssessDicKey.build_landAcquisitionTaxRate = "build.landAcquisitionTaxRate";//土地取得税率
-
 AssessDicKey.mdIncomeHistoryTypeIncome = "md.income.history.type.income";//收入类(历史数据)
 AssessDicKey.mdIncomeHistoryTypeCost = "md.income.history.type.cost";//成本类(历史数据)
-
 AssessDicKey.workProgrammeSetUse = "work.programme.set.use";//设定用途
-
 AssessDicKey.mdHypothesisDevelopment = "md.hypothesis.development";//建设、住宅、商业、办公、车库、地下商业、建设周期
 
 

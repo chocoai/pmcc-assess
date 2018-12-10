@@ -124,7 +124,7 @@ var houseHeating;
         init: function (item) {
             $("#" + houseHeating.prototype.config().frm).clearAll();
             $("#" + houseHeating.prototype.config().frm).initForm(item);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_equipment_price_range, item.equipmentPrice, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_heating_equipment_price_range, item.equipmentPrice, function (html, data) {
                 $("#" + houseHeating.prototype.config().frm).find("select.equipmentPrice").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_heating_method, item.category, function (html, data) {
@@ -261,7 +261,7 @@ var houseAirConditioner;
         init: function (item) {
             $("#" + houseAirConditioner.prototype.config().frm).clearAll();
             $("#" + houseAirConditioner.prototype.config().frm).initForm(item);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_equipment_price_range, item.equipmentPrice, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_air_equipment_price_range, item.equipmentPrice, function (html, data) {
                 $("#" + houseAirConditioner.prototype.config().frm).find("select.equipmentPrice").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_air_conditioning_mode, item.category, function (html, data) {
@@ -398,7 +398,7 @@ var houseNewWind;
         init: function (item) {
             $("#" + houseNewWind.prototype.config().frm).clearAll();
             $("#" + houseNewWind.prototype.config().frm).initForm(item);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_equipment_price_range, item.equipmentPrice, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_wind_equipment_price_range, item.equipmentPrice, function (html, data) {
                 $("#" + houseNewWind.prototype.config().frm).find("select.equipmentPrice").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_way_wind, item.category, function (html, data) {
@@ -435,13 +435,13 @@ var houseCorollaryEquipment;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'name', title: '名称'});
-            cols.push({field: 'parameterIndexH', title: '参数指标'});
-            cols.push({field: 'useH', title: '用途'});
-            cols.push({field: 'maintenanceStatus', title: '维护状况'});
             cols.push({field: 'typeName', title: '类型'});
             cols.push({field: 'categoryName', title: '类别'});
-            cols.push({field: 'priceName', title: '价格'});
+            cols.push({field: 'name', title: '名称'});
+            cols.push({field: 'parameterIndex', title: '参数指标'});
+            cols.push({field: 'equipmentUse', title: '用途'});
+            cols.push({field: 'maintenanceStatus', title: '维护状况'});
+            cols.push({field: 'price', title: '价格'});
             cols.push({field: 'fileViewName', title: '位置图'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -536,8 +536,15 @@ var houseCorollaryEquipment;
             })
         },
         init: function (item) {
-            $("#" + houseCorollaryEquipment.prototype.config().frm).clearAll();
-            $("#" + houseCorollaryEquipment.prototype.config().frm).initForm(item);
+            $("#" + houseCorollaryEquipment.prototype.config().frm).clearAll().initForm(item);
+            $("#" + houseCorollaryEquipment.prototype.config().frm).find("select.type").change(function () {
+                AssessCommon.loadDataDicByPid($(this).val(), item.category, function (html, data) {
+                    $("#" + houseCorollaryEquipment.prototype.config().frm).find("select.category").empty().html(html).trigger('change');
+                });
+            })
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_corollary_equipment_type, item.type, function (html, data) {
+                $("#" + houseCorollaryEquipment.prototype.config().frm).find("select.type").empty().html(html).trigger('change');
+            });
 
             FileUtils.uploadFiles({
                 target: houseCorollaryEquipment.prototype.config().FileID,
@@ -559,15 +566,6 @@ var houseCorollaryEquipment;
                 },
                 deleteFlag: true
             })
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_corollary_equipment_price, item.price_select, function (html, data) {
-                $("#" + houseCorollaryEquipment.prototype.config().frm).find("select.price_select").empty().html(html).trigger('change');
-            });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_corollary_equipment_type, item.type, function (html, data) {
-                $("#" + houseCorollaryEquipment.prototype.config().frm).find("select.type").empty().html(html).trigger('change');
-            });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_corollary_equipment_category, item.category, function (html, data) {
-                $("#" + houseCorollaryEquipment.prototype.config().frm).find("select.category").empty().html(html).trigger('change');
-            });
         }
     }
 

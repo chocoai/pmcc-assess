@@ -81,7 +81,6 @@ public class CaseHouseCorollaryEquipmentService {
         CaseHouseCorollaryEquipmentVo vo = new CaseHouseCorollaryEquipmentVo();
         BeanUtils.copyProperties(caseHouseCorollaryEquipment, vo);
         vo.setCategoryName(baseDataDicService.getNameById(caseHouseCorollaryEquipment.getCategory()));
-        vo.setPriceName(baseDataDicService.getNameById(caseHouseCorollaryEquipment.getPrice()));
         vo.setTypeName(baseDataDicService.getNameById(caseHouseCorollaryEquipment.getType()));
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(caseHouseCorollaryEquipment.getId(), null, FormatUtils.entityNameConvertToTableName(CaseHouseCorollaryEquipment.class));
         StringBuilder builder = new StringBuilder();

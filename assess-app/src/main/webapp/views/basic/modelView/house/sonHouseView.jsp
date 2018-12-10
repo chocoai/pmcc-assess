@@ -17,7 +17,7 @@
     </div>
 </div>
 
-<div class="x_panel" >
+<div class="x_panel">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i
@@ -218,7 +218,8 @@
                                             层高/m
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="层高/m" name="layerHeight" class="form-control"
+                                            <input type="text" placeholder="层高/m" name="layerHeight"
+                                                   class="form-control"
                                             >
                                         </div>
                                     </div>
@@ -454,6 +455,18 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            取水设备价格区间<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="waterIntakeEquipmentPrice"
+                                                    class="form-control search-select select2 waterIntakeEquipmentPrice">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             消防给水<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
@@ -463,31 +476,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<div class="x-valid">--%>
-                                        <%--<label class="col-sm-2 control-label">--%>
-                                            <%--取水设备价格区间<span class="symbol required"></span>--%>
-                                        <%--</label>--%>
-                                        <%--<div class="col-sm-10">--%>
-                                            <%--<select required="required" name="waterIntakeEquipmentPrice"--%>
-                                                    <%--class="form-control search-select select2 waterIntakeEquipmentPrice">--%>
-                                            <%--</select>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<div class="form-group">--%>
-                                    <%--<div class="x-valid">--%>
-                                        <%--<label class="col-sm-2 control-label">--%>
-                                            <%--供水管架设方式<span class="symbol required"></span>--%>
-                                        <%--</label>--%>
-                                        <%--<div class="col-sm-10">--%>
-                                            <%--<select required="required" name="supplyErectionMethod"--%>
-                                                    <%--class="form-control search-select select2 supplyErectionMethod">--%>
-                                            <%--</select>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-
                             </div>
                         </div>
                     </div>
@@ -546,30 +534,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<div class="x-valid">--%>
-                                        <%--<label class="col-sm-2 control-label">--%>
-                                            <%--屋内通讯<span class="symbol required"></span>--%>
-                                        <%--</label>--%>
-                                        <%--<div class="col-sm-10">--%>
-                                            <%--<select required="required" name="internalCommunication"--%>
-                                                    <%--class="form-control search-select select2 internalCommunication">--%>
-                                            <%--</select>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<div class="form-group">--%>
-                                    <%--<div class="x-valid">--%>
-                                        <%--<label class="col-sm-2 control-label">--%>
-                                            <%--监控系统<span class="symbol required"></span>--%>
-                                        <%--</label>--%>
-                                        <%--<div class="col-sm-10">--%>
-                                            <%--<select required="required" name="monitoringSystem"--%>
-                                                    <%--class="form-control search-select select2 monitoringSystem">--%>
-                                            <%--</select>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
@@ -726,47 +690,6 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="name" class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            参数指标<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="parameterIndexH" class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            维护状况<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="maintenanceStatus" class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            设备用途<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="useH" class="form-control"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
                                             类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
@@ -791,12 +714,53 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            名称<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="name" class="form-control" required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            参数指标<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="parameterIndex" class="form-control"
+                                                   required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            维护状况<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="maintenanceStatus" class="form-control"
+                                                   required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            设备用途<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="equipmentUse" class="form-control"
+                                                   required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             价格<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="price"
-                                                    class="form-control search-select select2 price_select">
-                                            </select>
+                                            <input type="text" name="price" class="form-control" required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -806,7 +770,8 @@
                                             附件<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input id="positionDiagramFileID" placeholder="上传附件" class="form-control" type="file">
+                                            <input id="positionDiagramFileID" placeholder="上传附件" class="form-control"
+                                                   type="file">
                                             <div id="_positionDiagramFileID"></div>
                                         </div>
                                     </div>
@@ -819,7 +784,8 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="houseCorollaryEquipment.prototype.saveData()">
+                    <button type="button" class="btn btn-primary"
+                            onclick="houseCorollaryEquipment.prototype.saveData()">
                         保存
                     </button>
                 </div>
