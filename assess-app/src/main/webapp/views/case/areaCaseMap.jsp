@@ -145,46 +145,50 @@
         var lat = Number(e.lnglat.getLat());
         var extData = e.target.F.extData;
         var markerList = [];
-        $.ajax({
-            url: "${pageContext.request.contextPath}/caseEstateTagging/listCaseEstateTagging",
-            type: "get",
-            dataType: "json",
-            data: {estateId: extData.estateId, type: areaMap.getType(extData.type)},
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    if (data.length >= 1) {
-                        areaMap.destroyMap(map);
-                        areaMap.createMap(lng, lat, 18);
-                        $.each(data, function (i, n) {
-                            if (AssessCommon.isNumber(n.lat) && AssessCommon.isNumber(n.lon)) {
-                                var marker = areaMap.getMarker(n);
-                                markerList.push(marker);
-                            }
-                        });
-                        if (markerList.length >= 1) {
-                            if (areaMap.getType(extData.type) == 'house') {
-                                //特别处理 图片覆盖物 (并对此做放大和缩小处理) 此覆盖物上无事件
-                                map.add(areaMap.createImgMarker(data[0]));
-                            } else {
-                                //一般覆盖物 覆盖物再次添加click事件,直到到房屋的户型图片覆盖物为止
-                                map.add(markerList);
-                            }
-                        } else {
-                            Alert("数据不符合约定!或者经纬度有非数字的字符!");
-                        }
-                    } else {
-                        Alert("无子标记");
-                    }
-                }
-                else {
-                    Alert("失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
+        console.log(extData);
+        var href = "${pageContext.request.contextPath}/case/estateCaseMap";
+        href += "?estateId=" + extData.estateId;
+        window.open(href, "");
+        <%--$.ajax({--%>
+            <%--url: "${pageContext.request.contextPath}/caseEstateTagging/listCaseEstateTagging",--%>
+            <%--type: "get",--%>
+            <%--dataType: "json",--%>
+            <%--data: {estateId: extData.estateId, type: areaMap.getType(extData.type)},--%>
+            <%--success: function (result) {--%>
+                <%--if (result.ret) {--%>
+                    <%--var data = result.data;--%>
+                    <%--if (data.length >= 1) {--%>
+                        <%--areaMap.destroyMap(map);--%>
+                        <%--areaMap.createMap(lng, lat, 18);--%>
+                        <%--$.each(data, function (i, n) {--%>
+                            <%--if (AssessCommon.isNumber(n.lat) && AssessCommon.isNumber(n.lon)) {--%>
+                                <%--var marker = areaMap.getMarker(n);--%>
+                                <%--markerList.push(marker);--%>
+                            <%--}--%>
+                        <%--});--%>
+                        <%--if (markerList.length >= 1) {--%>
+                            <%--if (areaMap.getType(extData.type) == 'house') {--%>
+                                <%--//特别处理 图片覆盖物 (并对此做放大和缩小处理) 此覆盖物上无事件--%>
+                                <%--map.add(areaMap.createImgMarker(data[0]));--%>
+                            <%--} else {--%>
+                                <%--//一般覆盖物 覆盖物再次添加click事件,直到到房屋的户型图片覆盖物为止--%>
+                                <%--map.add(markerList);--%>
+                            <%--}--%>
+                        <%--} else {--%>
+                            <%--Alert("数据不符合约定!或者经纬度有非数字的字符!");--%>
+                        <%--}--%>
+                    <%--} else {--%>
+                        <%--Alert("无子标记");--%>
+                    <%--}--%>
+                <%--}--%>
+                <%--else {--%>
+                    <%--Alert("失败，失败原因:" + result.errmsg);--%>
+                <%--}--%>
+            <%--},--%>
+            <%--error: function (result) {--%>
+                <%--Alert("调用服务端方法失败，失败原因:" + result);--%>
+            <%--}--%>
+        <%--});--%>
     };
 
     // 创建一个 icon

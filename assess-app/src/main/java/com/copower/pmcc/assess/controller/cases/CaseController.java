@@ -96,14 +96,32 @@ public class CaseController {
     @Autowired
     private CaseEstateTaggingService caseEstateTaggingService;
 
-    @RequestMapping(value = "/areaEstateCaseMap", name = "区域楼盘案例", method = {RequestMethod.GET})
+    @RequestMapping(value = "/areaCaseMap", name = "区域楼盘案例", method = {RequestMethod.GET})
     public ModelAndView areaEstateCaseMap() {
-        String view = "/case/areaEstateCaseMap";
+        String view = "/case/areaCaseMap";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         try {
             modelAndView.addObject("mapList", JSON.toJSONString(caseEstateTaggingService.mapDtoList(null, EstateTaggingTypeEnum.ESTATE.getKey())));
         } catch (Exception e1) {
-            logger.error("区域楼盘案例获取经度和纬度出错!",e1);
+            logger.error("区域楼盘案例获取经度和纬度出错!", e1);
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/estateCaseMap", name = "区域楼盘案例-", method = {RequestMethod.GET})
+    public ModelAndView estateCaseMap(Integer estateId) {
+        String view = "/case/estateCaseMap";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        try {
+            CaseEstateTagging query = new CaseEstateTagging();
+            query.setEstateId(estateId);
+            query.setType(EstateTaggingTypeEnum.ESTATE.getKey());
+            List<CaseEstateTagging> taggingList = caseEstateTaggingService.getCaseEstateTaggingList(query);
+            if (!ObjectUtils.isEmpty(taggingList)) {
+                modelAndView.addObject("mapTree", JSON.toJSONString(caseEstateTaggingService.getCaseEstateTaggingDto(taggingList.get(0))));
+            }
+        } catch (Exception e1) {
+            logger.error("区域楼盘案例获取经度和纬度出错!", e1);
         }
         return modelAndView;
     }
@@ -141,11 +159,11 @@ public class CaseController {
                             modelAndView.addObject("caseHouseTrading", caseHouseTradingService.getCaseHouseTradingVo(caseHouseTradingList.get(0)));
                         }
                         if (caseHouse.getUnitId() != null) {
-                            CaseUnit caseUnit =  caseUnitService.getCaseUnitById(caseHouse.getUnitId());
+                            CaseUnit caseUnit = caseUnitService.getCaseUnitById(caseHouse.getUnitId());
                             if (caseUnit != null) {
                                 modelAndView.addObject("caseUnit", caseUnit);
                                 CaseBuildingMain caseBuildingMain = caseBuildingMainService.getCaseBuildingMainById(caseUnit.getBuildingMainId());
-                                if (caseBuildingMain != null){
+                                if (caseBuildingMain != null) {
                                     modelAndView.addObject("caseBuildingMain", caseBuildingMain);
                                 }
                             }
