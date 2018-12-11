@@ -1866,16 +1866,13 @@ var matchingEnvironment;
             })
         },
         init: function (item) {
-            $("#" + matchingEnvironment.prototype.config().frm).clearAll();
-            $("#" + matchingEnvironment.prototype.config().frm).initForm(item);
-
-            $("#" + matchingEnvironment.prototype.config().frm).find("select.type").change(function () {
+            $("#" + matchingEnvironment.prototype.config().frm).clearAll().initForm(item);
+            $("#" + matchingEnvironment.prototype.config().frm).find("select.type").on('change', function () {
                 AssessCommon.loadDataDicByPid($(this).val(), item.category, function (html, data) {
                     $("#" + matchingEnvironment.prototype.config().frm).find("select.category").empty().html(html).trigger('change');
                 });
                 item.category = null;
-            })
-
+            });
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_environment_type, item.type, function (html, data) {
                 $("#" + matchingEnvironment.prototype.config().frm).find("select.type").empty().html(html).trigger('change');
             });
@@ -1887,6 +1884,7 @@ var matchingEnvironment;
 
     //绑定事件
     $('#' + matchingEnvironment.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+
         matchingEnvironment.prototype.loadDataDicList();
     })
 })();
@@ -2464,7 +2462,8 @@ var estateSupplyWater;
 
 var estateDrainWater;
 (function () {
-    estateDrainWater = function () {};
+    estateDrainWater = function () {
+    };
     estateDrainWater.prototype = {
         config: function () {
             var data = {};
@@ -2512,7 +2511,7 @@ var estateDrainWater;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath() + "/basicEstateSupply/deleteBasicEstateDrain",
+                url: getContextPath() + "/basicEstateSupply/deleteBasicEstateSupply",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -2542,7 +2541,7 @@ var estateDrainWater;
             var data = formParams(estateDrainWater.prototype.config().frm);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
-                url: getContextPath() + "/basicEstateSupply/saveAndUpdateBasicEstateDrain",
+                url: getContextPath() + "/basicEstateSupply/saveAndUpdateBasicEstateSupply",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -2563,7 +2562,7 @@ var estateDrainWater;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath() + "/basicEstateSupply/getBasicEstateDrainById",
+                url: getContextPath() + "/basicEstateSupply/getBasicEstateSupplyById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -2731,6 +2730,9 @@ var estateSupplyPower;
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_line_water_supply_pipe_grade, item.lineGrade, function (html, data) {
                 $("#" + estateSupplyPower.prototype.config().frm).find("select.lineGrade").empty().html(html).trigger('change');
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.estate_supplier_reputation, item.reputation, function (html, data) {
+                $("#" + estateSupplyPower.prototype.config().frm).find("select.reputation").empty().html(html).trigger('change');
+            });
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_supplier_grade, item.grade, function (html, data) {
                 $("#" + estateSupplyPower.prototype.config().frm).find("select.grade").empty().html(html).trigger('change');
             });
@@ -2869,6 +2871,9 @@ var estateSupplyHeating;
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_line_water_supply_pipe_grade, item.lineGrade, function (html, data) {
                 $("#" + estateSupplyHeating.prototype.config().frm).find("select.lineGrade").empty().html(html).trigger('change');
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.estate_supplier_reputation, item.reputation, function (html, data) {
+                $("#" + estateSupplyHeating.prototype.config().frm).find("select.reputation").empty().html(html).trigger('change');
+            });
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_supplier_grade, item.grade, function (html, data) {
                 $("#" + estateSupplyHeating.prototype.config().frm).find("select.grade").empty().html(html).trigger('change');
             });
@@ -3006,6 +3011,9 @@ var estateSupplyGas;
             $("#" + estateSupplyGas.prototype.config().frm).initForm(item);
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_line_water_supply_pipe_grade, item.lineGrade, function (html, data) {
                 $("#" + estateSupplyGas.prototype.config().frm).find("select.lineGrade").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.estate_supplier_reputation, item.reputation, function (html, data) {
+                $("#" + estateSupplyGas.prototype.config().frm).find("select.reputation").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_supplier_grade, item.grade, function (html, data) {
                 $("#" + estateSupplyGas.prototype.config().frm).find("select.grade").empty().html(html).trigger('change');

@@ -326,7 +326,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>供电信息</h4>
+        <h4>供热信息</h4>
         <div class="clearfix"></div>
     </div>
     <div class="x_content collapse">
@@ -426,8 +426,9 @@
                                             供气商信誉<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="reputation" class="form-control"
-                                                   placeholder="供应商信誉" required="required">
+                                            <select required="required" name="reputation"
+                                                    class="form-control search-select select2 reputation">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -517,8 +518,9 @@
                                             供热商信誉<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="reputation" class="form-control"
-                                                   placeholder="供应商信誉" required="required">
+                                            <select required="required" name="reputation"
+                                                    class="form-control search-select select2 reputation">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -608,8 +610,9 @@
                                             供电商信誉<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="reputation" class="form-control"
-                                                   placeholder="供应商信誉" required="required">
+                                            <select required="required" name="reputation"
+                                                    class="form-control search-select select2 reputation">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -827,7 +830,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="estateSupplyWater.prototype.saveData()">
+                    <button type="button" class="btn btn-primary" onclick="estateDrainWater.prototype.saveData()">
                         保存
                     </button>
                 </div>

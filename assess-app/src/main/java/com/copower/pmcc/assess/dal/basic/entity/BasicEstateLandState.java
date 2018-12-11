@@ -31,13 +31,27 @@ public class BasicEstateLandState {
 
     private Integer planeness;
 
+    private Integer topographicTerrain;
+
     private Integer developmentDegree;
 
-    private String restrictiveCondition;
+    private String developmentDegreeContent;
 
-    private String soil;
+    private String plotRatio;
 
-    private Integer topographicTerrain;
+    private String buildingDensity;
+
+    private String greenSpaceRate;
+
+    private String compatibleRatio;
+
+    private String bearingCapacity;
+
+    private String contaminated;
+
+    private String ph;
+
+    private String fertility;
 
     private String creator;
 
@@ -157,6 +171,14 @@ public class BasicEstateLandState {
         this.planeness = planeness;
     }
 
+    public Integer getTopographicTerrain() {
+        return topographicTerrain;
+    }
+
+    public void setTopographicTerrain(Integer topographicTerrain) {
+        this.topographicTerrain = topographicTerrain;
+    }
+
     public Integer getDevelopmentDegree() {
         return developmentDegree;
     }
@@ -165,28 +187,76 @@ public class BasicEstateLandState {
         this.developmentDegree = developmentDegree;
     }
 
-    public String getRestrictiveCondition() {
-        return restrictiveCondition;
+    public String getDevelopmentDegreeContent() {
+        return developmentDegreeContent;
     }
 
-    public void setRestrictiveCondition(String restrictiveCondition) {
-        this.restrictiveCondition = restrictiveCondition == null ? null : restrictiveCondition.trim();
+    public void setDevelopmentDegreeContent(String developmentDegreeContent) {
+        this.developmentDegreeContent = developmentDegreeContent == null ? null : developmentDegreeContent.trim();
     }
 
-    public String getSoil() {
-        return soil;
+    public String getPlotRatio() {
+        return plotRatio;
     }
 
-    public void setSoil(String soil) {
-        this.soil = soil == null ? null : soil.trim();
+    public void setPlotRatio(String plotRatio) {
+        this.plotRatio = plotRatio == null ? null : plotRatio.trim();
     }
 
-    public Integer getTopographicTerrain() {
-        return topographicTerrain;
+    public String getBuildingDensity() {
+        return buildingDensity;
     }
 
-    public void setTopographicTerrain(Integer topographicTerrain) {
-        this.topographicTerrain = topographicTerrain;
+    public void setBuildingDensity(String buildingDensity) {
+        this.buildingDensity = buildingDensity == null ? null : buildingDensity.trim();
+    }
+
+    public String getGreenSpaceRate() {
+        return greenSpaceRate;
+    }
+
+    public void setGreenSpaceRate(String greenSpaceRate) {
+        this.greenSpaceRate = greenSpaceRate == null ? null : greenSpaceRate.trim();
+    }
+
+    public String getCompatibleRatio() {
+        return compatibleRatio;
+    }
+
+    public void setCompatibleRatio(String compatibleRatio) {
+        this.compatibleRatio = compatibleRatio == null ? null : compatibleRatio.trim();
+    }
+
+    public String getBearingCapacity() {
+        return bearingCapacity;
+    }
+
+    public void setBearingCapacity(String bearingCapacity) {
+        this.bearingCapacity = bearingCapacity == null ? null : bearingCapacity.trim();
+    }
+
+    public String getContaminated() {
+        return contaminated;
+    }
+
+    public void setContaminated(String contaminated) {
+        this.contaminated = contaminated == null ? null : contaminated.trim();
+    }
+
+    public String getPh() {
+        return ph;
+    }
+
+    public void setPh(String ph) {
+        this.ph = ph == null ? null : ph.trim();
+    }
+
+    public String getFertility() {
+        return fertility;
+    }
+
+    public void setFertility(String fertility) {
+        this.fertility = fertility == null ? null : fertility.trim();
     }
 
     public String getCreator() {

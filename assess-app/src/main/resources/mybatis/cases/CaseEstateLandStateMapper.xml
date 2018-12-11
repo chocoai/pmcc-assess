@@ -16,9 +16,18 @@
     <result column="shape_state" property="shapeState" jdbcType="INTEGER" />
     <result column="planeness" property="planeness" jdbcType="INTEGER" />
     <result column="development_degree" property="developmentDegree" jdbcType="INTEGER" />
+    <result column="development_degree_content" property="developmentDegreeContent" jdbcType="VARCHAR" />
     <result column="restrictive_condition" property="restrictiveCondition" jdbcType="VARCHAR" />
     <result column="soil" property="soil" jdbcType="VARCHAR" />
     <result column="topographic_terrain" property="topographicTerrain" jdbcType="INTEGER" />
+    <result column="plot_ratio" property="plotRatio" jdbcType="VARCHAR" />
+    <result column="building_density" property="buildingDensity" jdbcType="VARCHAR" />
+    <result column="green_space_rate" property="greenSpaceRate" jdbcType="VARCHAR" />
+    <result column="compatible_ratio" property="compatibleRatio" jdbcType="VARCHAR" />
+    <result column="bearing_capacity" property="bearingCapacity" jdbcType="VARCHAR" />
+    <result column="contaminated" property="contaminated" jdbcType="VARCHAR" />
+    <result column="ph" property="ph" jdbcType="VARCHAR" />
+    <result column="fertility" property="fertility" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -83,8 +92,10 @@
   </sql>
   <sql id="Base_Column_List" >
     id, estate_id, name, land_use_type, land_use_category, land_level, land_area, east_to, 
-    south_to, west_to, north_to, shape_state, planeness, development_degree, restrictive_condition, 
-    soil, topographic_terrain, creator, gmt_created, gmt_modified
+    south_to, west_to, north_to, shape_state, planeness, development_degree, development_degree_content, 
+    restrictive_condition, soil, topographic_terrain, plot_ratio, building_density, green_space_rate, 
+    compatible_ratio, bearing_capacity, contaminated, ph, fertility, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandStateExample" >
     select
@@ -124,15 +135,21 @@
       land_use_category, land_level, land_area, 
       east_to, south_to, west_to, 
       north_to, shape_state, planeness, 
-      development_degree, restrictive_condition, 
-      soil, topographic_terrain, creator, 
+      development_degree, development_degree_content, 
+      restrictive_condition, soil, topographic_terrain, 
+      plot_ratio, building_density, green_space_rate, 
+      compatible_ratio, bearing_capacity, contaminated, 
+      ph, fertility, creator, 
       gmt_created, gmt_modified)
     values (#{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{landUseType,jdbcType=INTEGER}, 
       #{landUseCategory,jdbcType=INTEGER}, #{landLevel,jdbcType=INTEGER}, #{landArea,jdbcType=VARCHAR}, 
       #{eastTo,jdbcType=VARCHAR}, #{southTo,jdbcType=VARCHAR}, #{westTo,jdbcType=VARCHAR}, 
       #{northTo,jdbcType=VARCHAR}, #{shapeState,jdbcType=INTEGER}, #{planeness,jdbcType=INTEGER}, 
-      #{developmentDegree,jdbcType=INTEGER}, #{restrictiveCondition,jdbcType=VARCHAR}, 
-      #{soil,jdbcType=VARCHAR}, #{topographicTerrain,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{developmentDegree,jdbcType=INTEGER}, #{developmentDegreeContent,jdbcType=VARCHAR}, 
+      #{restrictiveCondition,jdbcType=VARCHAR}, #{soil,jdbcType=VARCHAR}, #{topographicTerrain,jdbcType=INTEGER}, 
+      #{plotRatio,jdbcType=VARCHAR}, #{buildingDensity,jdbcType=VARCHAR}, #{greenSpaceRate,jdbcType=VARCHAR}, 
+      #{compatibleRatio,jdbcType=VARCHAR}, #{bearingCapacity,jdbcType=VARCHAR}, #{contaminated,jdbcType=VARCHAR}, 
+      #{ph,jdbcType=VARCHAR}, #{fertility,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandState" >
@@ -180,6 +197,9 @@
       <if test="developmentDegree != null" >
         development_degree,
       </if>
+      <if test="developmentDegreeContent != null" >
+        development_degree_content,
+      </if>
       <if test="restrictiveCondition != null" >
         restrictive_condition,
       </if>
@@ -188,6 +208,30 @@
       </if>
       <if test="topographicTerrain != null" >
         topographic_terrain,
+      </if>
+      <if test="plotRatio != null" >
+        plot_ratio,
+      </if>
+      <if test="buildingDensity != null" >
+        building_density,
+      </if>
+      <if test="greenSpaceRate != null" >
+        green_space_rate,
+      </if>
+      <if test="compatibleRatio != null" >
+        compatible_ratio,
+      </if>
+      <if test="bearingCapacity != null" >
+        bearing_capacity,
+      </if>
+      <if test="contaminated != null" >
+        contaminated,
+      </if>
+      <if test="ph != null" >
+        ph,
+      </if>
+      <if test="fertility != null" >
+        fertility,
       </if>
       <if test="creator != null" >
         creator,
@@ -239,6 +283,9 @@
       <if test="developmentDegree != null" >
         #{developmentDegree,jdbcType=INTEGER},
       </if>
+      <if test="developmentDegreeContent != null" >
+        #{developmentDegreeContent,jdbcType=VARCHAR},
+      </if>
       <if test="restrictiveCondition != null" >
         #{restrictiveCondition,jdbcType=VARCHAR},
       </if>
@@ -247,6 +294,30 @@
       </if>
       <if test="topographicTerrain != null" >
         #{topographicTerrain,jdbcType=INTEGER},
+      </if>
+      <if test="plotRatio != null" >
+        #{plotRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingDensity != null" >
+        #{buildingDensity,jdbcType=VARCHAR},
+      </if>
+      <if test="greenSpaceRate != null" >
+        #{greenSpaceRate,jdbcType=VARCHAR},
+      </if>
+      <if test="compatibleRatio != null" >
+        #{compatibleRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="bearingCapacity != null" >
+        #{bearingCapacity,jdbcType=VARCHAR},
+      </if>
+      <if test="contaminated != null" >
+        #{contaminated,jdbcType=VARCHAR},
+      </if>
+      <if test="ph != null" >
+        #{ph,jdbcType=VARCHAR},
+      </if>
+      <if test="fertility != null" >
+        #{fertility,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -310,6 +381,9 @@
       <if test="record.developmentDegree != null" >
         development_degree = #{record.developmentDegree,jdbcType=INTEGER},
       </if>
+      <if test="record.developmentDegreeContent != null" >
+        development_degree_content = #{record.developmentDegreeContent,jdbcType=VARCHAR},
+      </if>
       <if test="record.restrictiveCondition != null" >
         restrictive_condition = #{record.restrictiveCondition,jdbcType=VARCHAR},
       </if>
@@ -318,6 +392,30 @@
       </if>
       <if test="record.topographicTerrain != null" >
         topographic_terrain = #{record.topographicTerrain,jdbcType=INTEGER},
+      </if>
+      <if test="record.plotRatio != null" >
+        plot_ratio = #{record.plotRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buildingDensity != null" >
+        building_density = #{record.buildingDensity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.greenSpaceRate != null" >
+        green_space_rate = #{record.greenSpaceRate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.compatibleRatio != null" >
+        compatible_ratio = #{record.compatibleRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bearingCapacity != null" >
+        bearing_capacity = #{record.bearingCapacity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contaminated != null" >
+        contaminated = #{record.contaminated,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ph != null" >
+        ph = #{record.ph,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fertility != null" >
+        fertility = #{record.fertility,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -349,9 +447,18 @@
       shape_state = #{record.shapeState,jdbcType=INTEGER},
       planeness = #{record.planeness,jdbcType=INTEGER},
       development_degree = #{record.developmentDegree,jdbcType=INTEGER},
+      development_degree_content = #{record.developmentDegreeContent,jdbcType=VARCHAR},
       restrictive_condition = #{record.restrictiveCondition,jdbcType=VARCHAR},
       soil = #{record.soil,jdbcType=VARCHAR},
       topographic_terrain = #{record.topographicTerrain,jdbcType=INTEGER},
+      plot_ratio = #{record.plotRatio,jdbcType=VARCHAR},
+      building_density = #{record.buildingDensity,jdbcType=VARCHAR},
+      green_space_rate = #{record.greenSpaceRate,jdbcType=VARCHAR},
+      compatible_ratio = #{record.compatibleRatio,jdbcType=VARCHAR},
+      bearing_capacity = #{record.bearingCapacity,jdbcType=VARCHAR},
+      contaminated = #{record.contaminated,jdbcType=VARCHAR},
+      ph = #{record.ph,jdbcType=VARCHAR},
+      fertility = #{record.fertility,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -401,6 +508,9 @@
       <if test="developmentDegree != null" >
         development_degree = #{developmentDegree,jdbcType=INTEGER},
       </if>
+      <if test="developmentDegreeContent != null" >
+        development_degree_content = #{developmentDegreeContent,jdbcType=VARCHAR},
+      </if>
       <if test="restrictiveCondition != null" >
         restrictive_condition = #{restrictiveCondition,jdbcType=VARCHAR},
       </if>
@@ -409,6 +519,30 @@
       </if>
       <if test="topographicTerrain != null" >
         topographic_terrain = #{topographicTerrain,jdbcType=INTEGER},
+      </if>
+      <if test="plotRatio != null" >
+        plot_ratio = #{plotRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingDensity != null" >
+        building_density = #{buildingDensity,jdbcType=VARCHAR},
+      </if>
+      <if test="greenSpaceRate != null" >
+        green_space_rate = #{greenSpaceRate,jdbcType=VARCHAR},
+      </if>
+      <if test="compatibleRatio != null" >
+        compatible_ratio = #{compatibleRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="bearingCapacity != null" >
+        bearing_capacity = #{bearingCapacity,jdbcType=VARCHAR},
+      </if>
+      <if test="contaminated != null" >
+        contaminated = #{contaminated,jdbcType=VARCHAR},
+      </if>
+      <if test="ph != null" >
+        ph = #{ph,jdbcType=VARCHAR},
+      </if>
+      <if test="fertility != null" >
+        fertility = #{fertility,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -437,9 +571,18 @@
       shape_state = #{shapeState,jdbcType=INTEGER},
       planeness = #{planeness,jdbcType=INTEGER},
       development_degree = #{developmentDegree,jdbcType=INTEGER},
+      development_degree_content = #{developmentDegreeContent,jdbcType=VARCHAR},
       restrictive_condition = #{restrictiveCondition,jdbcType=VARCHAR},
       soil = #{soil,jdbcType=VARCHAR},
       topographic_terrain = #{topographicTerrain,jdbcType=INTEGER},
+      plot_ratio = #{plotRatio,jdbcType=VARCHAR},
+      building_density = #{buildingDensity,jdbcType=VARCHAR},
+      green_space_rate = #{greenSpaceRate,jdbcType=VARCHAR},
+      compatible_ratio = #{compatibleRatio,jdbcType=VARCHAR},
+      bearing_capacity = #{bearingCapacity,jdbcType=VARCHAR},
+      contaminated = #{contaminated,jdbcType=VARCHAR},
+      ph = #{ph,jdbcType=VARCHAR},
+      fertility = #{fertility,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

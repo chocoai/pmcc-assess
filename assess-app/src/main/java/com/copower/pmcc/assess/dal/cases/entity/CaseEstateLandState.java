@@ -31,11 +31,29 @@ public class CaseEstateLandState {
 
     private Integer developmentDegree;
 
+    private String developmentDegreeContent;
+
     private String restrictiveCondition;
 
     private String soil;
 
     private Integer topographicTerrain;
+
+    private String plotRatio;
+
+    private String buildingDensity;
+
+    private String greenSpaceRate;
+
+    private String compatibleRatio;
+
+    private String bearingCapacity;
+
+    private String contaminated;
+
+    private String ph;
+
+    private String fertility;
 
     private String creator;
 
@@ -155,6 +173,14 @@ public class CaseEstateLandState {
         this.developmentDegree = developmentDegree;
     }
 
+    public String getDevelopmentDegreeContent() {
+        return developmentDegreeContent;
+    }
+
+    public void setDevelopmentDegreeContent(String developmentDegreeContent) {
+        this.developmentDegreeContent = developmentDegreeContent == null ? null : developmentDegreeContent.trim();
+    }
+
     public String getRestrictiveCondition() {
         return restrictiveCondition;
     }
@@ -177,6 +203,70 @@ public class CaseEstateLandState {
 
     public void setTopographicTerrain(Integer topographicTerrain) {
         this.topographicTerrain = topographicTerrain;
+    }
+
+    public String getPlotRatio() {
+        return plotRatio;
+    }
+
+    public void setPlotRatio(String plotRatio) {
+        this.plotRatio = plotRatio == null ? null : plotRatio.trim();
+    }
+
+    public String getBuildingDensity() {
+        return buildingDensity;
+    }
+
+    public void setBuildingDensity(String buildingDensity) {
+        this.buildingDensity = buildingDensity == null ? null : buildingDensity.trim();
+    }
+
+    public String getGreenSpaceRate() {
+        return greenSpaceRate;
+    }
+
+    public void setGreenSpaceRate(String greenSpaceRate) {
+        this.greenSpaceRate = greenSpaceRate == null ? null : greenSpaceRate.trim();
+    }
+
+    public String getCompatibleRatio() {
+        return compatibleRatio;
+    }
+
+    public void setCompatibleRatio(String compatibleRatio) {
+        this.compatibleRatio = compatibleRatio == null ? null : compatibleRatio.trim();
+    }
+
+    public String getBearingCapacity() {
+        return bearingCapacity;
+    }
+
+    public void setBearingCapacity(String bearingCapacity) {
+        this.bearingCapacity = bearingCapacity == null ? null : bearingCapacity.trim();
+    }
+
+    public String getContaminated() {
+        return contaminated;
+    }
+
+    public void setContaminated(String contaminated) {
+        this.contaminated = contaminated == null ? null : contaminated.trim();
+    }
+
+    public String getPh() {
+        return ph;
+    }
+
+    public void setPh(String ph) {
+        this.ph = ph == null ? null : ph.trim();
+    }
+
+    public String getFertility() {
+        return fertility;
+    }
+
+    public void setFertility(String fertility) {
+        this.fertility = fertility == null ? null : fertility.trim();
     }
 
     public String getCreator() {

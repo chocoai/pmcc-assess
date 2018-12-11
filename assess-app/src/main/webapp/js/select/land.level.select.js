@@ -12,10 +12,14 @@
     //加载列表数据
     AssessLandLevel.prototype.loadLandLevelList = function (province, city, district) {
         var cols = [];
-        cols.push({field: 'classify', title: '大类'});
-        cols.push({field: 'type', title: '类型'});
-        cols.push({field: 'category', title: '类别'});
-        cols.push({field: 'levelRange', title: '级别范围'});
+        cols.push({field: 'classify', title: '大类', width: '10%'});
+        cols.push({field: 'type', title: '类型', width: '10%'});
+        cols.push({field: 'category', title: '类别', width: '10%'});
+        cols.push({
+            field: 'levelRange', title: '级别范围', width: '50%', formatter: function (value, row, index) {
+                return '<span title="' + row.mainStreet + '">' + value + '</span>';
+            }
+        });
         cols.push({
             field: 'opt', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -62,7 +66,7 @@
         html += '</div>';
 
         $(document.body).append(html);
-        assessLandLevel.loadLandLevelList(options.province,options.city,options.district);
+        assessLandLevel.loadLandLevelList(options.province, options.city, options.district);
         $('#select_land_level_modal').modal('show');
     }
 

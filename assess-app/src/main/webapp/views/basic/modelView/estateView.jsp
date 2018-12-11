@@ -3,9 +3,7 @@
     <div class="x_content">
         <div class="x_title">
             <h3>
-                <small>
-                    楼盘基本信息
-                </small>
+                楼盘基本信息
             </h3>
             <div class="clearfix"></div>
         </div>
@@ -232,43 +230,42 @@
                 </div>
             </div>
         </div>
+        <div id="industry_water_supply_plan">
+            <div class="form-group">
+                <div class="x-valid" id="">
+                    <label class="col-sm-1 control-label">供水平面图</label>
+                    <div class="col-sm-5">
+                        <input id="water_supply_plan" placeholder="上传附件" class="form-control" type="file">
+                        <div id="_water_supply_plan"></div>
+                    </div>
+                </div>
 
-        <div class="form-group">
-            <div class="x-valid" id="industry_water_supply_plan">
-                <label class="col-sm-1 control-label">供水平面图</label>
-                <div class="col-sm-5">
-                    <input id="water_supply_plan" placeholder="上传附件" class="form-control" type="file">
-                    <div id="_water_supply_plan"></div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">供电平面图</label>
+                    <div class="col-sm-5">
+                        <input id="power_supply_plan" placeholder="上传附件" class="form-control" type="file">
+                        <div id="_power_supply_plan"></div>
+                    </div>
                 </div>
             </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">供气平面图</label>
+                    <div class="col-sm-5">
+                        <input id="air_supply_plan" placeholder="上传附件" class="form-control" type="file">
+                        <div id="_air_supply_plan"></div>
+                    </div>
+                </div>
 
-            <div class="x-valid" id="industry_power_supply_plan">
-                <label class="col-sm-1 control-label">供电平面图</label>
-                <div class="col-sm-5">
-                    <input id="power_supply_plan" placeholder="上传附件" class="form-control" type="file">
-                    <div id="_power_supply_plan"></div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">采暖平面图</label>
+                    <div class="col-sm-5">
+                        <input id="heating_plan" placeholder="上传附件" class="form-control" type="file">
+                        <div id="_heating_plan"></div>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="form-group">
-            <div class="x-valid" id="industry_air_supply_plan">
-                <label class="col-sm-1 control-label">供气平面图</label>
-                <div class="col-sm-5">
-                    <input id="air_supply_plan" placeholder="上传附件" class="form-control" type="file">
-                    <div id="_air_supply_plan"></div>
-                </div>
-            </div>
-
-            <div class="x-valid" id="industry_heating_plan">
-                <label class="col-sm-1 control-label">采暖平面图</label>
-                <div class="col-sm-5">
-                    <input id="heating_plan" placeholder="上传附件" class="form-control" type="file">
-                    <div id="_heating_plan"></div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <div class="x_content" id="industrySupplyInfo" style="display: none;">
@@ -327,9 +324,7 @@
 <div class="x_content">
     <div class="x_title">
         <h3>
-            <small>
-                土地基本信息
-            </small>
+            土地基本信息
         </h3>
         <div class="clearfix"></div>
     </div>
@@ -461,41 +456,87 @@
                     </select>
                 </div>
             </div>
-             <span class="checkbox-inline">
-                 <input type="checkbox" name="method" value=""><label>通气</label>
-             </span>
+            <div class="col-sm-6 col-sm-offset-1" id="developmentDegreeContentContainer">
+
+            </div>
         </div>
         <div class="x_title">
-            <h4>
+            <h3>
                 <small>
                     开发限制条件
                 </small>
-            </h4>
+            </h3>
             <div class="clearfix"></div>
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">开发限制条件</label>
+                <label class="col-sm-1 control-label">容积率</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="开发限制条件"
-                           name="restrictiveCondition" value="${basicEstateLandState.restrictiveCondition}">
+                    <input type="text" class="form-control" placeholder="容积率"
+                           name="plotRatio" value="${basicEstateLandState.plotRatio}">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建筑密度</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" placeholder="建筑密度"
+                           name="buildingDensity" value="${basicEstateLandState.buildingDensity}">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">绿地率</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" placeholder="绿地率"
+                           name="greenSpaceRate" value="${basicEstateLandState.greenSpaceRate}">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">兼容比例</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" placeholder="兼容比例"
+                           name="compatibleRatio" value="${basicEstateLandState.compatibleRatio}">
                 </div>
             </div>
         </div>
         <div class="x_title">
-            <h4>
+            <h3>
                 <small>
                     土壤
                 </small>
-            </h4>
+            </h3>
             <div class="clearfix"></div>
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土壤</label>
+                <label class="col-sm-1 control-label">承载力</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="土壤"
-                           name="soil" value="${basicEstateLandState.soil}">
+                    <input type="text" class="form-control" placeholder="承载力"
+                           name="bearingCapacity" value="${basicEstateLandState.bearingCapacity}">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">污染</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" placeholder="污染"
+                           name="contaminated" value="${basicEstateLandState.contaminated}">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">酸碱度</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" placeholder="酸碱度"
+                           name="ph" value="${basicEstateLandState.ph}">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">肥力</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" placeholder="肥力"
+                           name="fertility" value="${basicEstateLandState.fertility}">
                 </div>
             </div>
         </div>

@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basic.dao.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicEstateTagging;
 import com.copower.pmcc.erp.common.CommonService;
@@ -88,5 +89,14 @@ public class BasicEstateTaggingService {
 
     public void removeBasicEstateTagging(BasicEstateTagging basicEstateTagging) throws Exception {
         basicEstateTaggingDao.removeBasicEstateTagging(basicEstateTagging);
+    }
+
+    public Boolean hasBasicEstateTagging(Integer applyId, EstateTaggingTypeEnum estateTaggingTypeEnum) {
+        BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
+        basicEstateTagging.setApplyId(applyId);
+        basicEstateTagging.setType(estateTaggingTypeEnum.getKey());
+        if (applyId == null || applyId == 0)
+            basicEstateTagging.setCreator(commonService.thisUserAccount());
+        return basicEstateTaggingDao.getEstateTaggingCount(basicEstateTagging) > 0;
     }
 }

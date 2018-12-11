@@ -22,11 +22,9 @@
 
     //获取楼盘名称
     estateCommon.getEstateName = function () {
-        alert(basicCommon.basicApplyForm.find('[name=estatePartInMode]').val());
         if (basicCommon.basicApplyForm.find('[name=estatePartInMode]').val()) {
             return estateCommon.estateForm.find('[name=name]').val();
         } else {
-            alert(basicCommon.basicApplyForm.find('[name=estateName]').val());
             return basicCommon.basicApplyForm.find('[name=estateName]').val();
         }
     }
@@ -161,12 +159,35 @@
         estateCommon.estateLandStateForm.initForm(data.basicEstateLandState, function () {
             //绑定变更事件
             estateCommon.estateLandStateForm.find("select.landUseType").change(function () {
-                var id = estateCommon.estateLandStateForm.find("select.landUseType").val();
-                AssessCommon.loadDataDicByPid(id, data.basicEstateLandState.landUseCategory, function (html, data) {
+                AssessCommon.loadDataDicByPid($(this).val(), data.basicEstateLandState.landUseCategory, function (html, data) {
                     estateCommon.estateLandStateForm.find('select.landUseCategory').empty().html(html).trigger('change');
                 });
                 data.basicEstateLandState.landUseCategory = null;//第一次执行成功后置为空
             });
+            //土地开发程度为熟地时选择几通几平
+            estateCommon.estateLandStateForm.find('select.developmentDegree').change(function () {
+                $("#developmentDegreeContentContainer").empty();
+                var key = $(this).find("option:selected").attr('key');
+                if (key == AssessDicKey.estateDevelopment_degreePrepared_land) {
+                    AssessCommon.loadDataDicByPid($(this).val(), '', function (html, resultData) {
+                        if (resultData) {
+                            var resultHtml = '';
+                            var array = data.basicEstateLandState.developmentDegreeContent.split(',');
+                            $.each(resultData, function (i, item) {
+                                resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
+                                if ($.inArray(item.id.toString(), array) > -1) {
+                                    resultHtml += ' checked="checked" ';
+                                }
+                                resultHtml += ' id="developmentDegreeContent' + item.id + '" name="developmentDegreeContent" value="' + item.id + '">';
+                                resultHtml += '<label for="developmentDegreeContent' + item.id + '">' + item.name + '</label></span>';
+                            })
+                            $("#developmentDegreeContentContainer").html(resultHtml);
+                        }
+                    })
+                }
+            })
+
+
             AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_total_land_use, data.basicEstateLandState.landUseType, function (html, data) {
                 estateCommon.estateLandStateForm.find('select.landUseType').empty().html(html).trigger('change');
             }, true);

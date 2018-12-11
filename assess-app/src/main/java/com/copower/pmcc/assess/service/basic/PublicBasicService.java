@@ -1111,6 +1111,11 @@ public class PublicBasicService {
         JSONObject jsonObject = JSON.parseObject(formData);
         jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_APPLY.getVar());
         BasicApply basicApply = JSONObject.parseObject(jsonContent, BasicApply.class);
+        //检查是否标注了楼盘
+        if(!isDraft){
+            taggingValid(basicApply);
+        }
+
         if (basicApply.getId() == null || basicApply.getId() <= 0) {
             basicApply.setStatus(ProjectStatusEnum.RUNING.getKey());
             basicApply.setDraftFlag(isDraft);
@@ -1127,6 +1132,7 @@ public class PublicBasicService {
             jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATE.getVar());
             if (StringUtils.isNotBlank(jsonContent)) {
                 basicEstate = JSONObject.parseObject(jsonContent, BasicEstate.class);
+
                 if (basicEstate != null) {
                     modeEnum = BasicApplyPartInModeEnum.getEnumByKey(basicApply.getEstatePartInMode());
                     switch (modeEnum) {
@@ -1257,6 +1263,34 @@ public class PublicBasicService {
         basicApply.setDraftFlag(isDraft);
         basicApplyService.updateBasicApply(basicApply);
         return basicApply;
+    }
+
+    /**
+     * 标注信息验证
+     * @param basicApply
+     * @throws BusinessException
+     */
+    private void taggingValid(BasicApply basicApply) throws BusinessException {
+        if (StringUtils.isNotBlank(basicApply.getEstatePartInMode())) {
+            if(!basicEstateTaggingService.hasBasicEstateTagging(basicApply.getId(), EstateTaggingTypeEnum.ESTATE)){
+                throw new BusinessException("楼盘位置信息还未标注");
+            }
+        }
+        if (StringUtils.isNotBlank(basicApply.getBuildingPartInMode())) {
+            if(!basicEstateTaggingService.hasBasicEstateTagging(basicApply.getId(),EstateTaggingTypeEnum.BUILDING)){
+                throw new BusinessException("楼栋位置信息还未标注");
+            }
+        }
+        if (StringUtils.isNotBlank(basicApply.getUnitPartInMode())) {
+            if(!basicEstateTaggingService.hasBasicEstateTagging(basicApply.getId(),EstateTaggingTypeEnum.UNIT)){
+                throw new BusinessException("单元位置信息还未标注");
+            }
+        }
+        if (StringUtils.isNotBlank(basicApply.getHousePartInMode())) {
+            if(!basicEstateTaggingService.hasBasicEstateTagging(basicApply.getId(),EstateTaggingTypeEnum.HOUSE)){
+
+            }
+        }
     }
 
     public BasicEstateVo getBasicEstateByAppId(Integer appId) throws Exception {
