@@ -1,13 +1,13 @@
-package com.copower.pmcc.assess.dto.output.basic;
+package com.copower.pmcc.assess.dto.output.cases;
 
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouseWaterDrain;
+import com.copower.pmcc.assess.dal.cases.entity.CaseHouseWaterDrain;
 
 /**
  * @Auther: zch
- * @Date: 2018/12/11 11:49
+ * @Date: 2018/12/11 14:45
  * @Description:
  */
-public class BasicHouseWaterDrainVo extends BasicHouseWaterDrain {
+public class CaseHouseWaterDrainVo extends CaseHouseWaterDrain {
     private String drainSystemName;
     private String typeName;
     private String processingModeName;

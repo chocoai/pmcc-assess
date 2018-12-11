@@ -306,6 +306,11 @@
     <%@include file="/views/case/caseHouse/caseHouseWater.jsp" %>
 </div>
 
+<!-- 供排水 -->
+<div class="water" style="display: ${hasHouseWaterData?'block':'none'};">
+    <%@include file="/views/case/caseHouse/caseHouseWaterDrain.jsp" %>
+</div>
+
 <!-- 新风情况 -->
 <div class="houseNewWind" style="display: ${hasHouseEquipmentNewWind?'block':'none'};">
     <%@include file="/views/case/caseHouse/caseHouseNewWind.jsp" %>
@@ -320,6 +325,7 @@
 <div class="houseHeating" style="display: ${hasHouseEquipmentHeating?'block':'none'};">
     <%@include file="/views/case/caseHouse/caseHouseHeating.jsp" %>
 </div>
+
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/case/case.common.js"></script>
 <script type="text/javascript">
     var objectData = new Object();

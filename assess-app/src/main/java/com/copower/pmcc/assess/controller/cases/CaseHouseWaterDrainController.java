@@ -1,7 +1,7 @@
-package com.copower.pmcc.assess.controller.baisc;
+package com.copower.pmcc.assess.controller.cases;
 
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouseWaterDrain;
-import com.copower.pmcc.assess.service.basic.BasicHouseWaterDrainService;
+import com.copower.pmcc.assess.dal.cases.entity.CaseHouseWaterDrain;
+import com.copower.pmcc.assess.service.cases.CaseHouseWaterDrainService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -12,23 +12,23 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * @Auther: zch
- * @Date: 2018/12/11 11:51
+ * @Date: 2018/12/11 14:50
  * @Description:供排水情况
  */
-@RequestMapping(value = "/basicHouseWaterDrain")
+@RequestMapping(value = "/caseHouseWaterDrain")
 @RestController
-public class BasicHouseWaterDrainController {
+public class CaseHouseWaterDrainController {
 
-    @Autowired
-    private CommonService commonService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
-    private BasicHouseWaterDrainService basicHouseWaterDrainService;
+    private CommonService commonService;
+    @Autowired
+    private CaseHouseWaterDrainService caseHouseWaterDrainService;
 
     @GetMapping(value = "/get",name = "get")
     public HttpResult get(Integer id){
         try {
-            return HttpResult.newCorrectResult(200, basicHouseWaterDrainService.getBasicHouseWaterDrainById(id));
+            return HttpResult.newCorrectResult(200, caseHouseWaterDrainService.getCaseHouseWaterDrainById(id));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -36,9 +36,9 @@ public class BasicHouseWaterDrainController {
     }
 
     @PostMapping(value = "/saveAndUpdate",name = "saveAndUpdate")
-    public HttpResult saveAndUpdate(BasicHouseWaterDrain basicHouseWaterDrain){
+    public HttpResult saveAndUpdate(CaseHouseWaterDrain caseHouseWaterDrain){
         try {
-            return HttpResult.newCorrectResult(200, basicHouseWaterDrainService.saveAndUpdateBasicHouseWaterDrain(basicHouseWaterDrain));
+            return HttpResult.newCorrectResult(200, caseHouseWaterDrainService.saveAndUpdateCaseHouseWaterDrain(caseHouseWaterDrain));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -46,14 +46,9 @@ public class BasicHouseWaterDrainController {
     }
 
     @GetMapping(value = "/getBootstrapTableVo", name = "getBootstrapTableVo")
-    public BootstrapTableVo getBootstrapTableVo(BasicHouseWaterDrain basicHouseWaterDrain, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval) {
+    public BootstrapTableVo getBootstrapTableVo(CaseHouseWaterDrain caseHouseWaterDrain) {
         try {
-            if (basicHouseWaterDrain != null) {
-                if (!approval) {
-                    basicHouseWaterDrain.setCreator(commonService.thisUserAccount());
-                }
-            }
-            return basicHouseWaterDrainService.getBootstrapTableVo(basicHouseWaterDrain);
+            return caseHouseWaterDrainService.getCaseHouseWaterDrainListVos(caseHouseWaterDrain);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return null;
@@ -61,9 +56,9 @@ public class BasicHouseWaterDrainController {
     }
 
     @PostMapping(value = "/delete",name = "delete")
-    public HttpResult delete(BasicHouseWaterDrain basicHouseWaterDrain){
+    public HttpResult delete(CaseHouseWaterDrain caseHouseWaterDrain){
         try {
-            return HttpResult.newCorrectResult(200, basicHouseWaterDrainService.deleteBasicHouseWaterDrain(basicHouseWaterDrain.getId()));
+            return HttpResult.newCorrectResult(200, caseHouseWaterDrainService.removeCaseHouseWaterDrain(caseHouseWaterDrain));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
