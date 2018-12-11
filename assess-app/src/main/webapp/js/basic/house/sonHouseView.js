@@ -927,11 +927,13 @@ var houseWater;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'natrueIntakePointNumber', title: '自然区间取水点数'});
-            cols.push({field: 'intakePointNumber', title: '取水点数'});
-            cols.push({field: 'supplyErectionMethodName', title: '供水管架设方式'});
             cols.push({field: 'pretreatedWaterName', title: '前置净水'});
-            cols.push({field: 'drainageCircuitName', title: '排水回路'});
+            cols.push({field: 'supplyModeName', title: '给水方式'});
+            cols.push({field: 'pipingLayoutName', title: '给水管道布置'});
+            cols.push({field: 'pipeMaterialName', title: '给水管材料'});
+            cols.push({field: 'boosterEquipmentName', title: '给水升压设备'});
+            cols.push({field: 'purificationEquipmentPriceName', title: '前置净水设备价格区间'});
+            cols.push({field: 'fireWaterSupplyName', title: '消防给水'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -1027,17 +1029,26 @@ var houseWater;
         init: function (item) {
             $("#" + houseWater.prototype.config().frm).clearAll();
             $("#" + houseWater.prototype.config().frm).initForm(item);
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_pipe_material, item.pipeMaterial, function (html, data) {
+                $("#" + houseWater.prototype.config().frm).find("select.pipeMaterial").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_piping_layout, item.pipingLayout, function (html, data) {
+                $("#" + houseWater.prototype.config().frm).find("select.pipingLayout").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_supply_mode, item.supplyMode, function (html, data) {
+                $("#" + houseWater.prototype.config().frm).find("select.supplyMode").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_booster_equipment, item.boosterEquipment, function (html, data) {
+                $("#" + houseWater.prototype.config().frm).find("select.boosterEquipment").empty().html(html).trigger('change');
+            });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_pretreated_water, item.pretreatedWater, function (html, data) {
                 $("#" + houseWater.prototype.config().frm).find("select.pretreatedWater").empty().html(html).trigger('change');
-            });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_supply_erection_method, item.supplyErectionMethod, function (html, data) {
-                $("#" + houseWater.prototype.config().frm).find("select.supplyErectionMethod").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_purification_equipment_price, item.purificationEquipmentPrice, function (html, data) {
                 $("#" + houseWater.prototype.config().frm).find("select.purificationEquipmentPrice").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_water_drainage_circuit, item.drainageCircuit, function (html, data) {
-                $("#" + houseWater.prototype.config().frm).find("select.drainageCircuit").empty().html(html).trigger('change');
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_fire_water_supply, item.fireWaterSupply, function (html, data) {
+                $("#" + houseWater.prototype.config().frm).find("select.fireWaterSupply").empty().html(html).trigger('change');
             });
         }
     }

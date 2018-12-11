@@ -401,8 +401,9 @@
                                             给水方式<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="给水方式" name="waterIntakeEquipment"
-                                                   class="form-control" required="required">
+                                            <select name="supplyMode" class="form-control search-select select2 supplyMode">
+
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -412,8 +413,9 @@
                                             给水管道布置<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="采水点数" name="intakePointNumber"
-                                                   class="form-control" required="required">
+                                            <select name="pipingLayout" class="form-control search-select select2 pipingLayout">
+
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -423,8 +425,9 @@
                                             给水管材料<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="自然区间取水点数" name="natrueIntakePointNumber"
-                                                   class="form-control" required="required">
+                                            <select name="pipeMaterial" class="form-control search-select select2 pipeMaterial">
+
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -434,8 +437,8 @@
                                             给水升压设备<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="drainageCircuit"
-                                                    class="form-control search-select select2 drainageCircuit">
+                                            <select required="required" name="boosterEquipment"
+                                                    class="form-control search-select select2 boosterEquipment">
                                             </select>
                                         </div>
                                     </div>
@@ -455,11 +458,11 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            取水设备价格区间<span class="symbol required"></span>
+                                            供水_前置净水设备价格区间<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="waterIntakeEquipmentPrice"
-                                                    class="form-control search-select select2 waterIntakeEquipmentPrice">
+                                            <select required="required" name="purificationEquipmentPrice"
+                                                    class="form-control search-select select2 purificationEquipmentPrice">
                                             </select>
                                         </div>
                                     </div>
@@ -470,8 +473,8 @@
                                             消防给水<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="purificationEquipmentPrice"
-                                                    class="form-control search-select select2 purificationEquipmentPrice">
+                                            <select required="required" name="fireWaterSupply"
+                                                    class="form-control search-select select2 fireWaterSupply">
                                             </select>
                                         </div>
                                     </div>
