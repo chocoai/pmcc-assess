@@ -44,7 +44,8 @@ industry.config = {
         intelligent: "industryIntelligent",//电力通讯网络
         water: "industryWater",//供排水情况
         corollaryEquipment: "industryCorollaryEquipment",//配套设备设施
-        useEnvironment: "industryUseEnvironment"//使用环境
+        useEnvironment: "industryUseEnvironment",//使用环境
+        houseWaterDrain: "industryHouseWaterDrain"//供排水情况
     }
 };
 
@@ -100,6 +101,7 @@ industry.industryOne = {
         $("#" + industry.config.house.heating).show();
         $("#" + industry.config.house.intelligent).show();
         $("#" + industry.config.house.water).show();
+        $("#" + industry.config.house.houseWaterDrain).show();
     }
 };
 
@@ -145,6 +147,7 @@ industry.industryTwo = {
         $("#" + industry.config.house.heating).hide();
         $("#" + industry.config.house.intelligent).hide();
         $("#" + industry.config.house.water).hide();
+        $("#" + industry.config.house.houseWaterDrain).hide();
     }
 };
 

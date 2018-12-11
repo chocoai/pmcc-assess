@@ -71,12 +71,14 @@ public class CaseHouseWaterService {
     public CaseHouseWaterVo getCaseHouseWaterVo(CaseHouseWater caseHouseWater) {
         CaseHouseWaterVo vo = new CaseHouseWaterVo();
         BeanUtils.copyProperties(caseHouseWater, vo);
-//        vo.setSupplyErectionMethodName(baseDataDicService.getNameById(caseHouseWater.getSupplyErectionMethod()));
-//        vo.setPretreatedWaterName(baseDataDicService.getNameById(caseHouseWater.getPretreatedWater()));
-//        vo.setDrainageCircuitName(baseDataDicService.getNameById(caseHouseWater.getDrainageCircuit()));
-//        vo.setDrainageCircuitCountName(baseDataDicService.getNameById(caseHouseWater.getDrainageCircuitCount()));
-//        vo.setPurificationEquipmentPriceName(baseDataDicService.getNameById(NumberUtils.isNumber(caseHouseWater.getPurificationEquipmentPrice()) ? Integer.parseInt(caseHouseWater.getPurificationEquipmentPrice()) : null));
-//        vo.setWaterIntakeEquipmentPriceName(baseDataDicService.getNameById(NumberUtils.isNumber(caseHouseWater.getWaterIntakeEquipmentPrice()) ? Integer.parseInt(caseHouseWater.getWaterIntakeEquipmentPrice()) : null));
+        vo.setPretreatedWaterName(baseDataDicService.getNameById(caseHouseWater.getPretreatedWater()));
+        vo.setPurificationEquipmentPriceName(baseDataDicService.getNameById(caseHouseWater.getPurificationEquipmentPrice()));
+        vo.setBoosterEquipmentName(baseDataDicService.getNameById(caseHouseWater.getBoosterEquipment()));
+        vo.setPipingLayoutName(baseDataDicService.getNameById(caseHouseWater.getPipingLayout()));
+        vo.setPipeMaterialName(baseDataDicService.getNameById(caseHouseWater.getPipeMaterial()));
+        vo.setSupplyModeName(baseDataDicService.getNameById(caseHouseWater.getSupplyMode()));
+        vo.setPurificationEquipmentPriceName(baseDataDicService.getNameById(caseHouseWater.getPurificationEquipmentPrice()));
+        vo.setFireWaterSupplyName(baseDataDicService.getNameById(caseHouseWater.getFireWaterSupply()));
         return vo;
     }
 

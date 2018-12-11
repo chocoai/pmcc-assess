@@ -927,11 +927,13 @@ var houseWater;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'natrueIntakePointNumber', title: '自然区间取水点数'});
-            cols.push({field: 'intakePointNumber', title: '取水点数'});
-            cols.push({field: 'supplyErectionMethodName', title: '供水管架设方式'});
             cols.push({field: 'pretreatedWaterName', title: '前置净水'});
-            cols.push({field: 'drainageCircuitName', title: '排水回路'});
+            cols.push({field: 'supplyModeName', title: '给水方式'});
+            cols.push({field: 'pipingLayoutName', title: '给水管道布置'});
+            cols.push({field: 'pipeMaterialName', title: '给水管材料'});
+            cols.push({field: 'boosterEquipmentName', title: '给水升压设备'});
+            cols.push({field: 'purificationEquipmentPriceName', title: '前置净水设备价格区间'});
+            cols.push({field: 'fireWaterSupplyName', title: '消防给水'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -1027,17 +1029,26 @@ var houseWater;
         init: function (item) {
             $("#" + houseWater.prototype.config().frm).clearAll();
             $("#" + houseWater.prototype.config().frm).initForm(item);
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_pipe_material, item.pipeMaterial, function (html, data) {
+                $("#" + houseWater.prototype.config().frm).find("select.pipeMaterial").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_piping_layout, item.pipingLayout, function (html, data) {
+                $("#" + houseWater.prototype.config().frm).find("select.pipingLayout").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_supply_mode, item.supplyMode, function (html, data) {
+                $("#" + houseWater.prototype.config().frm).find("select.supplyMode").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_booster_equipment, item.boosterEquipment, function (html, data) {
+                $("#" + houseWater.prototype.config().frm).find("select.boosterEquipment").empty().html(html).trigger('change');
+            });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_pretreated_water, item.pretreatedWater, function (html, data) {
                 $("#" + houseWater.prototype.config().frm).find("select.pretreatedWater").empty().html(html).trigger('change');
-            });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_supply_erection_method, item.supplyErectionMethod, function (html, data) {
-                $("#" + houseWater.prototype.config().frm).find("select.supplyErectionMethod").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_purification_equipment_price, item.purificationEquipmentPrice, function (html, data) {
                 $("#" + houseWater.prototype.config().frm).find("select.purificationEquipmentPrice").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_water_drainage_circuit, item.drainageCircuit, function (html, data) {
-                $("#" + houseWater.prototype.config().frm).find("select.drainageCircuit").empty().html(html).trigger('change');
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_fire_water_supply, item.fireWaterSupply, function (html, data) {
+                $("#" + houseWater.prototype.config().frm).find("select.fireWaterSupply").empty().html(html).trigger('change');
             });
         }
     }
@@ -1047,6 +1058,137 @@ var houseWater;
         houseWater.prototype.loadDataDicList();
     })
 })();
+
+var houseWaterDrain = {};
+houseWaterDrain.config = {
+    table: "HouseWaterDrainList",
+    box: "divBoxHouseWaterDrain",
+    frm: "frmHouseWaterDrain",
+    type: "null"
+};
+houseWaterDrain.isNotBlank = function (item) {
+    if (item) {
+        return true;
+    }
+    return false;
+};
+houseWaterDrain.loadDataDicList = function () {
+    var cols = [];
+    cols.push({field: 'drainSystemName', title: '排水_系统'});
+    cols.push({field: 'typeName', title: '类别'});
+    cols.push({field: 'processingModeName', title: '排水_处理方式'});
+    cols.push({
+        field: 'id', title: '操作', formatter: function (value, row, index) {
+            var str = '<div class="btn-margin">';
+            str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseWaterDrain.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+            str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseWaterDrain.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+            str += '</div>';
+            return str;
+        }
+    });
+    $("#" + this.config.table).bootstrapTable('destroy');
+    TableInit(this.config.table, getContextPath() + "/basicHouseWaterDrain/getBootstrapTableVo", cols, {
+        houseId: houseCommon.getHouseId()
+    }, {
+        showColumns: false,
+        showRefresh: false,
+        search: false,
+        onLoadSuccess: function () {
+            $('.tooltips').tooltip();
+        }
+    });
+};
+houseWaterDrain.removeData = function (id) {
+    Alert("确认删除", 2, null, function () {
+        $.ajax({
+            url: getContextPath() + "/basicHouseWaterDrain/delete",
+            type: "post",
+            dataType: "json",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    houseWaterDrain.loadDataDicList();
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    });
+};
+houseWaterDrain.getAndInit = function (id) {
+    $.ajax({
+        url: getContextPath() + "/basicHouseWaterDrain/get",
+        type: "get",
+        dataType: "json",
+        data: {id: id},
+        success: function (result) {
+            if (result.ret) {
+                if (houseWaterDrain.isNotBlank(result.data)) {
+                    houseWaterDrain.init(result.data);
+                } else {
+                    houseWaterDrain.init({});
+                }
+                $('#' + houseWaterDrain.config.box).modal("show");
+            }
+        },
+        error: function (result) {
+            Alert("调用服务端方法失败，失败原因:" + result);
+        }
+    })
+};
+houseWaterDrain.showModel = function () {
+    this.init({});
+    $('#' + this.config.box).modal("show");
+};
+houseWaterDrain.init = function (item) {
+    var frm = this.config.frm;
+    $("#" + frm).clearAll();
+    $("#" + frm).initForm(item);
+    AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_water_drain_type, item.type, function (html, data) {
+        $("#" + frm).find("select.type").empty().html(html).trigger('change');
+    });
+    AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_water_drain_system, item.drainSystem, function (html, data) {
+        $("#" + frm).find("select.drainSystem").empty().html(html).trigger('change');
+    });
+    AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_water_drain_processing_mode, item.processingMode, function (html, data) {
+        $("#" + frm).find("select.processingMode").empty().html(html).trigger('change');
+    });
+};
+houseWaterDrain.saveData = function () {
+    var frm = this.config.frm;
+    if (!$("#" + frm).valid()) {
+        return false;
+    }
+    var data = formParams(frm);
+    data.houseId = houseCommon.getHouseId();
+    $.ajax({
+        url: getContextPath() + "/basicHouseWaterDrain/saveAndUpdate",
+        type: "post",
+        dataType: "json",
+        data: data,
+        success: function (result) {
+            if (result.ret) {
+                toastr.success('保存成功');
+                $('#' + houseWaterDrain.config.box).modal('hide');
+                houseWaterDrain.loadDataDicList();
+            }
+            else {
+                Alert("保存数据失败，失败原因:" + result.errmsg);
+            }
+        },
+        error: function (result) {
+            Alert("调用服务端方法失败，失败原因:" + result);
+        }
+    });
+};
+(function () {
+    //绑定事件
+    $('#' + houseWaterDrain.config.table).closest('.x_panel').find('.x_title').bind('click', function () {
+        houseWaterDrain.loadDataDicList();
+    })
+})();
+
 
 var houseRoom;
 (function () {

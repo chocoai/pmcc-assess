@@ -118,12 +118,14 @@ public class BasicHouseWaterService {
         }
         BasicHouseWaterVo vo = new BasicHouseWaterVo();
         BeanUtils.copyProperties(basicHouseWater,vo);
-//        vo.setSupplyErectionMethodName(baseDataDicService.getNameById(basicHouseWater.getSupplyErectionMethod()));
-//        vo.setPretreatedWaterName(baseDataDicService.getNameById(basicHouseWater.getPretreatedWater()));
-//        vo.setDrainageCircuitName(baseDataDicService.getNameById(basicHouseWater.getDrainageCircuit()));
-//        vo.setDrainageCircuitCountName(baseDataDicService.getNameById(basicHouseWater.getDrainageCircuitCount()));
-//        vo.setPurificationEquipmentPriceName(baseDataDicService.getNameById(NumberUtils.isNumber(basicHouseWater.getPurificationEquipmentPrice())?Integer.parseInt(basicHouseWater.getPurificationEquipmentPrice()):null));
-//        vo.setWaterIntakeEquipmentPriceName(baseDataDicService.getNameById(NumberUtils.isNumber(basicHouseWater.getWaterIntakeEquipmentPrice())?Integer.parseInt(basicHouseWater.getWaterIntakeEquipmentPrice()):null));
+        vo.setPretreatedWaterName(baseDataDicService.getNameById(basicHouseWater.getPretreatedWater()));
+        vo.setPurificationEquipmentPriceName(baseDataDicService.getNameById(basicHouseWater.getPurificationEquipmentPrice()));
+        vo.setBoosterEquipmentName(baseDataDicService.getNameById(basicHouseWater.getBoosterEquipment()));
+        vo.setPipingLayoutName(baseDataDicService.getNameById(basicHouseWater.getPipingLayout()));
+        vo.setPipeMaterialName(baseDataDicService.getNameById(basicHouseWater.getPipeMaterial()));
+        vo.setSupplyModeName(baseDataDicService.getNameById(basicHouseWater.getSupplyMode()));
+        vo.setPurificationEquipmentPriceName(baseDataDicService.getNameById(basicHouseWater.getPurificationEquipmentPrice()));
+        vo.setFireWaterSupplyName(baseDataDicService.getNameById(basicHouseWater.getFireWaterSupply()));
         return vo;
     }
     
