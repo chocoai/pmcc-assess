@@ -180,6 +180,7 @@ AssessDicKey.estate_total_land_level = "estate.land_level";//土地级别
 AssessDicKey.estate_total_land_use = "estate.land_use";//土地用途
 AssessDicKey.estatePlaneness = "estate.planeness";//地形
 AssessDicKey.estateDevelopment_degree = "estate.development_degree";//土地开发程度
+AssessDicKey.estateDevelopment_degreePrepared_land = "estate.development_degree.prepared_land";//熟地
 AssessDicKey.estateShape_state = "estate.shape_state";//土地形状
 AssessDicKey.estateTopographic_terrain = "estate.topographic_terrain";//地势
 AssessDicKey.estateSupplySituation = "estate.supply.situation";//供应情况

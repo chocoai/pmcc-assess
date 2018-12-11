@@ -307,9 +307,9 @@ $(function () {
                             var retHtml = '<option value="" selected>-请选择-</option>';
                             $.each(result.data, function (i, item) {
                                 if (item.id == value) {
-                                    retHtml += ' <option value="' + item.id + '" selected="selected">' + item.name + '</option>';
+                                    retHtml += ' <option key="'+item.fieldName+'" title="'+item.remark+'" value="' + item.id + '" selected="selected">' + item.name + '</option>';
                                 } else {
-                                    retHtml += ' <option data-remark="'+item.remark+'" value="' + item.id + '">' + item.name + '</option>';
+                                    retHtml += ' <option key="'+item.fieldName+'" title="'+item.remark+'" value="' + item.id + '">' + item.name + '</option>';
                                 }
                             });
                             if (callback) {
@@ -345,9 +345,9 @@ $(function () {
                             var retHtml = '<option value="" selected>-请选择-</option>';
                             $.each(result.data, function (i, item) {
                                 if (item.id == value) {
-                                    retHtml += ' <option title="'+item.remark+'" value="' + item.id + '" selected="selected">' + item.name + '</option>';
+                                    retHtml += ' <option key="'+item.fieldName+'" title="'+item.remark+'" value="' + item.id + '" selected="selected">' + item.name + '</option>';
                                 } else {
-                                    retHtml += ' <option title="'+item.remark+'" value="' + item.id + '">' + item.name + '</option>';
+                                    retHtml += ' <option key="'+item.fieldName+'" title="'+item.remark+'" value="' + item.id + '">' + item.name + '</option>';
                                 }
                             });
                             if (callback) {
@@ -362,6 +362,7 @@ $(function () {
                 });
             }
         },
+
         //获取区域单个信息
         getAreaById: function (target, callback) {
             $.ajax({
