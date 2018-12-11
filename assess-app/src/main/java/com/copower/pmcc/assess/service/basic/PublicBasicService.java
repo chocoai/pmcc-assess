@@ -54,6 +54,8 @@ public class PublicBasicService {
     @Autowired
     private BasicHouseIntelligentService basicHouseIntelligentService;
     @Autowired
+    private BasicHouseWaterDrainService basicHouseWaterDrainService;
+    @Autowired
     private BasicHouseFaceStreetService basicHouseFaceStreetService;
     @Autowired
     private BasicHouseEquipmentService basicHouseEquipmentService;
@@ -131,6 +133,8 @@ public class PublicBasicService {
     private CaseHouseService caseHouseService;
     @Autowired
     private CaseHouseTradingSellService caseHouseTradingSellService;
+    @Autowired
+    private CaseHouseWaterDrainService caseHouseWaterDrainService;
     @Autowired
     private CaseHouseTradingLeaseService caseHouseTradingLeaseService;
     @Autowired
@@ -768,6 +772,7 @@ public class PublicBasicService {
         List<BasicHouseEquipment> basicHouseEquipmentList = null;
         List<BasicHouseCorollaryEquipment> basicHouseCorollaryEquipmentList = null;
         List<SysAttachmentDto> sysAttachmentDtoList = null;
+        List<BasicHouseWaterDrain> basicHouseWaterDrainList = null;
 
         BasicHouseTradingSell querySell = new BasicHouseTradingSell();
         BasicHouseTradingLease queryLease = new BasicHouseTradingLease();
@@ -777,6 +782,7 @@ public class PublicBasicService {
         BasicHouseFaceStreet queryBasicHouseFaceStreet = new BasicHouseFaceStreet();
         BasicHouseEquipment queryBasicHouseEquipment = new BasicHouseEquipment();
         BasicHouseCorollaryEquipment queryBasicHouseCorollaryEquipment = new BasicHouseCorollaryEquipment();
+        BasicHouseWaterDrain queryWaterDrain = new BasicHouseWaterDrain();
         SysAttachmentDto queryFile = new SysAttachmentDto();
 
         if (basicHouse != null) {
@@ -790,6 +796,7 @@ public class PublicBasicService {
                 queryBasicHouseEquipment.setHouseId(basicHouse.getId());
                 queryBasicHouseCorollaryEquipment.setHouseId(basicHouse.getId());
                 queryFile.setTableId(basicHouse.getId());
+                queryWaterDrain.setHouseId(basicHouse.getId());
                 queryFile.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
             }
         }
@@ -803,12 +810,14 @@ public class PublicBasicService {
         basicHouseFaceStreetList = basicHouseFaceStreetService.basicHouseFaceStreetList(queryBasicHouseFaceStreet);
         basicHouseEquipmentList = basicHouseEquipmentService.basicHouseEquipmentList(queryBasicHouseEquipment);
         basicHouseCorollaryEquipmentList = basicHouseCorollaryEquipmentService.basicHouseCorollaryEquipmentList(queryBasicHouseCorollaryEquipment);
+        basicHouseWaterDrainList = basicHouseWaterDrainService.basicHouseWaterDrainList(queryWaterDrain);
 
         if (caseHouse != null) {
             if (caseHouse.getId() != null) {
                 this.flowWriteCaseSellAndLease(basicHouseTradingSellList, basicHouseTradingLeaseList, caseHouse);
                 this.flowWriteCaseHouseRoom(basicHouseRoomList, caseHouse);
                 this.flowWriteCaseWater(basicHouseWaterList, caseHouse);
+                this.flowWriteCaseWaterDrain(basicHouseWaterDrainList, caseHouse);
                 this.flowWriteCaseIntelligent(basicHouseIntelligentList, caseHouse);
                 this.flowWriteCaseFaceStreet(basicHouseFaceStreetList, caseHouse);
                 this.flowWriteCaseEquipment(basicHouseEquipmentList, caseHouse);
@@ -963,6 +972,20 @@ public class PublicBasicService {
                     logger.error(e1.getMessage(), e1);
                 }
             });
+        }
+    }
+
+    private void flowWriteCaseWaterDrain(List<BasicHouseWaterDrain> basicHouseWaterDrainList,CaseHouse caseHouse)throws Exception{
+        if (!ObjectUtils.isEmpty(basicHouseWaterDrainList)){
+            for (BasicHouseWaterDrain houseWaterDrain:basicHouseWaterDrainList){
+                CaseHouseWaterDrain caseHouseWaterDrain = new CaseHouseWaterDrain();
+                BeanUtils.copyProperties(houseWaterDrain,caseHouseWaterDrain);
+                caseHouseWaterDrain.setId(null);
+                caseHouseWaterDrain.setGmtCreated(null);
+                caseHouseWaterDrain.setGmtModified(null);
+                caseHouseWaterDrain.setHouseId(caseHouse.getId());
+                caseHouseWaterDrainService.saveAndUpdateCaseHouseWaterDrain(caseHouseWaterDrain);
+            }
         }
     }
 

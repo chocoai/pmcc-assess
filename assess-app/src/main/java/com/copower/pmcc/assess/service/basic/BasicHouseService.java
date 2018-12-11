@@ -92,6 +92,10 @@ public class BasicHouseService {
     private CaseHouseService caseHouseService;
     @Autowired
     private CaseHouseTradingService caseHouseTradingService;
+    @Autowired
+    private BasicHouseWaterDrainService basicHouseWaterDrainService;
+    @Autowired
+    private CaseHouseWaterDrainService caseHouseWaterDrainService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -199,6 +203,7 @@ public class BasicHouseService {
         List<BasicHouseFaceStreet> basicHouseFaceStreetList = null;
         List<BasicHouseEquipment> basicHouseEquipmentList = null;
         List<BasicHouseCorollaryEquipment> basicHouseCorollaryEquipmentList = null;
+        List<BasicHouseWaterDrain> basicHouseWaterDrainList = null;
         List<SysAttachmentDto> sysAttachmentDtoList = null;
 
         BasicHouseTradingSell querySell = new BasicHouseTradingSell();
@@ -209,7 +214,7 @@ public class BasicHouseService {
         BasicHouseFaceStreet queryBasicHouseFaceStreet = new BasicHouseFaceStreet();
         BasicHouseEquipment queryBasicHouseEquipment = new BasicHouseEquipment();
         BasicHouseCorollaryEquipment queryBasicHouseCorollaryEquipment = new BasicHouseCorollaryEquipment();
-
+        BasicHouseWaterDrain queryBasicHouseWaterDrain = new BasicHouseWaterDrain();
 
         queryLease.setHouseId(house.getId());
         querySell.setHouseId(house.getId());
@@ -219,6 +224,7 @@ public class BasicHouseService {
         queryBasicHouseFaceStreet.setHouseId(house.getId());
         queryBasicHouseEquipment.setHouseId(house.getId());
         queryBasicHouseCorollaryEquipment.setHouseId(house.getId());
+        queryBasicHouseWaterDrain.setHouseId(house.getId());
 
 
         queryLease.setCreator(commonService.thisUserAccount());
@@ -229,6 +235,7 @@ public class BasicHouseService {
         queryBasicHouseFaceStreet.setCreator(commonService.thisUserAccount());
         queryBasicHouseEquipment.setCreator(commonService.thisUserAccount());
         queryBasicHouseCorollaryEquipment.setCreator(commonService.thisUserAccount());
+        queryBasicHouseWaterDrain.setCreator(commonService.thisUserAccount());
 
         basicHouseTradingSellList = basicHouseTradingSellService.basicHouseTradingSells(querySell);
         basicHouseTradingLeaseList = basicHouseTradingLeaseService.basicHouseTradingLeaseList(queryLease);
@@ -238,6 +245,7 @@ public class BasicHouseService {
         basicHouseFaceStreetList = basicHouseFaceStreetService.basicHouseFaceStreetList(queryBasicHouseFaceStreet);
         basicHouseEquipmentList = basicHouseEquipmentService.basicHouseEquipmentList(queryBasicHouseEquipment);
         basicHouseCorollaryEquipmentList = basicHouseCorollaryEquipmentService.basicHouseCorollaryEquipmentList(queryBasicHouseCorollaryEquipment);
+        basicHouseWaterDrainList = basicHouseWaterDrainService.basicHouseWaterDrainList(queryBasicHouseWaterDrain);
 
 
         if (!ObjectUtils.isEmpty(basicHouseTradingSellList)) {
@@ -307,6 +315,15 @@ public class BasicHouseService {
             basicHouseCorollaryEquipmentList.forEach(oo -> {
                 try {
                     basicHouseCorollaryEquipmentService.deleteBasicHouseCorollaryEquipment(oo.getId());
+                } catch (Exception e1) {
+                    logger.error(e1.getMessage(), e1);
+                }
+            });
+        }
+        if (!ObjectUtils.isEmpty(basicHouseWaterDrainList)){
+            basicHouseWaterDrainList.parallelStream().forEach( oo -> {
+                try {
+                    basicHouseWaterDrainService.deleteBasicHouseWaterDrain(oo.getId());
                 } catch (Exception e1) {
                     logger.error(e1.getMessage(), e1);
                 }
@@ -451,6 +468,8 @@ public class BasicHouseService {
         caseHouseWater.setHouseId(caseHouseId);
         CaseHouseCorollaryEquipment caseHouseCorollaryEquipment = new CaseHouseCorollaryEquipment();
         caseHouseCorollaryEquipment.setHouseId(caseHouseId);
+        CaseHouseWaterDrain caseHouseWaterDrain = new CaseHouseWaterDrain();
+        caseHouseWaterDrain.setHouseId(caseHouseId);
 
         List<CaseHouseTradingSellVo> caseHouseTradingSellVos = caseHouseTradingSellService.caseHouseTradingSellList(caseHouseTradingSell, null);
         List<CaseHouseTradingLeaseVo> caseHouseTradingLeaseVos = caseHouseTradingLeaseService.caseHouseTradingLeaseList(caseHouseTradingLease, null);
@@ -460,6 +479,7 @@ public class BasicHouseService {
         List<CaseHouseIntelligent> caseHouseIntelligents = caseHouseIntelligentService.getCaseHouseIntelligentList(caseHouseIntelligent);
         List<CaseHouseWater> caseHouseWaters = caseHouseWaterService.getCaseHouseWaterList(caseHouseWater);
         List<CaseHouseCorollaryEquipment> caseHouseCorollaryEquipments = caseHouseCorollaryEquipmentService.getCaseHouseCorollaryEquipmentList(caseHouseCorollaryEquipment);
+        List<CaseHouseWaterDrain> caseHouseWaterDrainList = caseHouseWaterDrainService.getCaseHouseWaterDrainListO(caseHouseWaterDrain);
 
         if (!ObjectUtils.isEmpty(caseHouseTradingSellVos)) {
             for (CaseHouseTradingSellVo oo : caseHouseTradingSellVos) {
@@ -583,6 +603,22 @@ public class BasicHouseService {
                     }
                 }
             }
+        }
+        if (!ObjectUtils.isEmpty(caseHouseWaterDrainList)){
+            caseHouseWaterDrainList.parallelStream().forEach( oo -> {
+                try {
+                    BasicHouseWaterDrain basicHouseWaterDrain = new BasicHouseWaterDrain();
+                    BeanUtils.copyProperties(oo,basicHouseWaterDrain);
+                    basicHouseWaterDrain.setId(null);
+                    basicHouseWaterDrain.setHouseId(basicHouse.getId());
+                    basicHouseWaterDrain.setCreator(commonService.thisUserAccount());
+                    basicHouseWaterDrain.setGmtCreated(null);
+                    basicHouseWaterDrain.setGmtModified(null);
+                    basicHouseWaterDrainService.saveAndUpdateBasicHouseWaterDrain(basicHouseWaterDrain);
+                } catch (Exception e1) {
+                    logger.error("",e1);
+                }
+            });
         }
         return objectMap;
     }
