@@ -383,5 +383,20 @@
         });
     }
 
+    houseCommon.orientationFun = function () {
+        var content = "<div id='containerMap' style='padding: 20px;'>";
+        content += '';
+        content += "</div>";
+        var map = null;
+        layer.open({
+            type: 2,
+            title: '户型图处理',
+            maxmin: true,
+            area: ['800px', '660px'],
+            shadeClose: true, //点击遮罩关闭
+            content:  getContextPath() + '/map/mapMarkerEstate?estateName='+ "2355"
+        });
+    }
+
     window.houseCommon = houseCommon;
 })(jQuery);

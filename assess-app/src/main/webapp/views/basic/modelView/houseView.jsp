@@ -94,7 +94,8 @@
             </div>
             <div class="x-valid">
                 <div class="col-sm-3 col-sm-offset-1">
-                    <div class="btn btn-success">户型地图朝向</div>
+                    <div id="container"></div>
+                    <div class="btn btn-success" onclick="houseCommon.orientationFun()">户型地图朝向</div>
                 </div>
             </div>
         </div>
@@ -143,6 +144,7 @@
         </div>
     </form>
 </div>
+
 
 <div class="x_content">
     <div class="x_title">
@@ -392,6 +394,10 @@
 </div>
 <%@include file="/views/basic/modelView/house/sonHouseView.jsp" %>
 <script src="${pageContext.request.contextPath}/js/basic/huxing.select.js"></script>
+
+<script>
+</script>
+
 
 <div id="divBoxTradingLeaseAndSell" class="modal fade bs-example-modal-lg" data-backdrop="static"
      tabindex="-1"
