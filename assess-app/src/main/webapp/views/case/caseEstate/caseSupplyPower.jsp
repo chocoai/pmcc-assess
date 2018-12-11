@@ -10,8 +10,8 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h3>供电信息
-        </h3>
+        <h4>供电信息
+        </h4>
         <div class="clearfix"></div>
     </div>
     <div class="x_content collapse">
@@ -60,11 +60,10 @@
             },
             loadDataDicList: function () {
                 var cols = [];
-                cols.push({field: 'name', title: '名称'});
+                cols.push({field: 'name', title: '供应商名称'});
+                cols.push({field: 'lineGradeName', title: '供电保障等级'});
                 cols.push({field: 'reputationName', title: '供电商信誉'});
-                // cols.push({field: 'type', title: '类型'});
                 cols.push({field: 'gradeName', title: '供电商等级'});
-                cols.push({field: 'lineGradeName', title: '供电线路等级'});
                 cols.push({field: 'power', title: '供应量或功率'});
                 $("#" + estateSupplyPower.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyPower.prototype.config().table, "${pageContext.request.contextPath}/caseEstateSupply/getCaseEstateSupplyList", cols, {

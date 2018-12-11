@@ -109,7 +109,25 @@
                             estateCommon.fileShow(item);
                         })
                     });
-                    estateCommon.estateLandStateForm.initForm(result.data.basicEstateLandState);
+                    estateCommon.estateLandStateForm.initForm(result.data.basicEstateLandState,function () {
+                        if (result.data.basicEstateLandState.developmentDegreeContent){
+                            var array = result.data.basicEstateLandState.developmentDegreeContent.split(',');
+                            AssessCommon.loadDataDicByKey(AssessDicKey.estateDevelopment_degreePrepared_land, '', function (html, resultData) {
+                                if (resultData) {
+                                    var resultHtml = '';
+                                    $.each(resultData, function (i, item) {
+                                        resultHtml += '<span class="checkbox-inline"><input disabled="disabled" type="checkbox" ';
+                                        if ($.inArray(item.id.toString(), array) > -1) {
+                                            resultHtml += ' checked="checked" ';
+                                        }
+                                        resultHtml += ' id="developmentDegreeContent' + item.id + '" name="developmentDegreeContent" value="' + item.id + '">';
+                                        resultHtml += '<label for="developmentDegreeContent' + item.id + '">' + item.name + '</label></span>';
+                                    })
+                                    $("#developmentDegreeContentContainer").html(resultHtml);
+                                }
+                            })
+                        }
+                    });
                 }
             }
         })
@@ -172,7 +190,10 @@
                     AssessCommon.loadDataDicByPid($(this).val(), '', function (html, resultData) {
                         if (resultData) {
                             var resultHtml = '';
-                            var array = data.basicEstateLandState.developmentDegreeContent.split(',');
+                            var array = [];
+                            if (data.basicEstateLandState.developmentDegreeContent){
+                                array = data.basicEstateLandState.developmentDegreeContent.split(',');
+                            }
                             $.each(resultData, function (i, item) {
                                 resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
                                 if ($.inArray(item.id.toString(), array) > -1) {

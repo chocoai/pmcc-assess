@@ -3,7 +3,7 @@
     <div class="x_content">
         <div class="x_title">
             <h3>
-                <small>楼盘基本信息</small>
+                楼盘基本信息
             </h3>
             <div class="clearfix"></div>
         </div>
@@ -48,7 +48,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">楼盘方位</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstate.position}</label>
+                    <label class="form-control">${basicEstate.positionName}</label>
                 </div>
             </div>
             <div class="x-valid">
@@ -176,35 +176,33 @@
                 </div>
             </div>
         </div>
-
-        <div class="form-group">
-            <div class="x-valid" id="industry_water_supply_plan">
-                <label class="col-sm-1 control-label">供水平面图</label>
-                <div class="col-sm-5">
-                    <div id="_water_supply_plan"></div>
+        <div id="industry_water_supply_plan">
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">供水平面图</label>
+                    <div class="col-sm-5">
+                        <div id="_water_supply_plan"></div>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">供电平面图</label>
+                    <div class="col-sm-5">
+                        <div id="_power_supply_plan"></div>
+                    </div>
                 </div>
             </div>
-
-            <div class="x-valid" id="industry_power_supply_plan">
-                <label class="col-sm-1 control-label">供电平面图</label>
-                <div class="col-sm-5">
-                    <div id="_power_supply_plan"></div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">供气平面图</label>
+                    <div class="col-sm-5">
+                        <div id="_air_supply_plan"></div>
+                    </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="x-valid" id="industry_air_supply_plan">
-                <label class="col-sm-1 control-label">供气平面图</label>
-                <div class="col-sm-5">
-                    <div id="_air_supply_plan"></div>
-                </div>
-            </div>
-
-            <div class="x-valid" id="industry_heating_plan">
-                <label class="col-sm-1 control-label">采暖平面图</label>
-                <div class="col-sm-5">
-                    <div id="_heating_plan"></div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">采暖平面图</label>
+                    <div class="col-sm-5">
+                        <div id="_heating_plan"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -235,13 +233,19 @@
                 </div>
 
                 <div class="x-valid supplyWater">
-                    <label class="col-sm-1 control-label">供排水情况</label>
+                    <label class="col-sm-1 control-label">供水情况</label>
                     <div class="col-sm-3">
                         <label class="form-control">${basicEstate.supplyWaterName}</label>
                     </div>
                 </div>
             </div>
             <div class="form-group">
+                <div class="x-valid drainWater">
+                    <label class="col-sm-1 control-label">排水情况</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicEstate.drainWaterName}</label>
+                    </div>
+                </div>
                 <div class="x-valid supplyHeating">
                     <label class="col-sm-1 control-label">供热信息</label>
                     <div class="col-sm-3">
@@ -256,7 +260,7 @@
 <div class="x_content">
     <div class="x_title">
         <h3>
-            <small>土地基本信息</small>
+            土地基本信息
         </h3>
         <div class="clearfix"></div>
     </div>
@@ -265,12 +269,10 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地名称</label>
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.name}</label>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地用途类型</label>
                 <div class="col-sm-3">
@@ -283,15 +285,14 @@
                     <label class="form-control">${basicEstateLandState.landUseCategoryName}</label>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地级别</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.landLevelName}</label>
                 </div>
             </div>
-        </div>
-
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">东至</label>
                 <div class="col-sm-3">
@@ -304,15 +305,15 @@
                     <label class="form-control">${basicEstateLandState.southTo}</label>
                 </div>
             </div>
+        </div>
+
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">西至</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.westTo}</label>
                 </div>
             </div>
-        </div>
-
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">北至</label>
                 <div class="col-sm-3">
@@ -325,14 +326,28 @@
                     <label class="form-control">${basicEstateLandState.shapeStateName}</label>
                 </div>
             </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">土地面积</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicEstateLandState.landArea}</label>
+                </div>
+            </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">地形</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.planenessName}</label>
                 </div>
             </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">地势</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicEstateLandState.topographicTerrainName}</label>
+                </div>
+            </div>
         </div>
-
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地开发程度</label>
@@ -340,37 +355,82 @@
                     <label class="form-control">${basicEstateLandState.developmentDegreeName}</label>
                 </div>
             </div>
-
+            <div class="col-sm-6 col-sm-offset-1" id="developmentDegreeContentContainer"></div>
+        </div>
+        <div class="x_title">
+            <h3>
+                <small>
+                    开发限制条件
+                </small>
+            </h3>
+            <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">开发限制条件</label>
+                <label class="col-sm-1 control-label">容积率</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstateLandState.restrictiveCondition}</label>
+                    <label class="form-control">${basicEstateLandState.plotRatio}</label>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土壤</label>
+                <label class="col-sm-1 control-label">建筑密度</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstateLandState.soil}</label>
+                    <label class="form-control">${basicEstateLandState.buildingDensity}</label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">绿地率</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicEstateLandState.greenSpaceRate}</label>
                 </div>
             </div>
         </div>
-
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">地势</label>
+                <label class="col-sm-1 control-label">兼容比例</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstateLandState.topographicTerrainName}</label>
+                    <label class="form-control">${basicEstateLandState.compatibleRatio}</label>
                 </div>
             </div>
-
+        </div>
+        <div class="x_title">
+            <h3>
+                <small>
+                    土壤
+                </small>
+            </h3>
+            <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土地面积</label>
+                <label class="col-sm-1 control-label">承载力</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstateLandState.landArea}</label>
+                    <label class="form-control">${basicEstateLandState.bearingCapacity}</label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">污染</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicEstateLandState.contaminated}</label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">酸碱度</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicEstateLandState.ph}</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">肥力</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicEstateLandState.fertility}</label>
                 </div>
             </div>
         </div>
     </form>
 </div>
 <%@include file="/views/basic/modelView/estate/sonEstateDetail.jsp" %>
+
 

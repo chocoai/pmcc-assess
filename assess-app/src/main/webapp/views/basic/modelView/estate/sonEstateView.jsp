@@ -1101,8 +1101,7 @@
                                             环境类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="type"
-                                                    class="form-control search-select select2 type">
+                                            <select required="required" name="type" class="form-control type">
                                             </select>
                                         </div>
                                     </div>
@@ -1113,8 +1112,7 @@
                                             影响因素<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="category"
-                                                    class="form-control search-select select2 category">
+                                            <select required="required" name="category" class="form-control category">
                                             </select>
                                         </div>
                                     </div>
@@ -1125,8 +1123,7 @@
                                             影响程度<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="influenceDegree"
-                                                    class="form-control search-select select2 influenceDegree">
+                                            <select required="required" name="influenceDegree" class="form-control  influenceDegree">
                                             </select>
                                         </div>
                                     </div>

@@ -8,12 +8,9 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h3>购物商场信息
-        </h3>
+        <h4>购物商场信息</h4>
         <div class="clearfix"></div>
     </div>
-
-
     <div class="x_content collapse">
         <form class="form-horizontal">
             <div class="form-group">

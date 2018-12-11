@@ -9,8 +9,8 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h3>原料供应及销售条件信息
-        </h3>
+        <h4>原料供应及销售条件信息
+        </h4>
         <div class="clearfix"></div>
     </div>
 
