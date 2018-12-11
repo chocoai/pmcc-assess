@@ -23,10 +23,10 @@ public class CaseEstateTaggingController {
     private CaseEstateTaggingService caseEstateTaggingService;
 
     @ResponseBody
-    @RequestMapping(value = "/listCaseEstateTagging",method = {RequestMethod.GET},name = "获取标记列表")
-    public HttpResult saveAndUpdate(Integer estateId,String type){
+    @RequestMapping(value = "/queryCaseEstateTagging",method = {RequestMethod.GET},name = "获取标记列表子类")
+    public HttpResult queryCaseEstateTagging(Integer dataId,String type){
         try {
-            return HttpResult.newCorrectResult(caseEstateTaggingService.mapDtoList(estateId,type));
+            return HttpResult.newCorrectResult(caseEstateTaggingService.queryCaseEstateTagging(dataId,type));
         } catch (Exception e) {
             logger.error(String.format("exception: %s",e.getMessage()),e);
             return HttpResult.newErrorResult("异常");

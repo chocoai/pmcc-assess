@@ -40,8 +40,8 @@
             <div class="x_panel" style="display: none">
                 <div class="x_content">
                     <div class="col-sm-12" style="margin-top:10px;height:50px;">
-                        <button class="btn btn-default" onclick="areaMap.rotateTransform(true)">右旋转</button>
-                        <button class="btn btn-default" onclick="areaMap.rotateTransform(false)">左旋转</button>
+                        <%--<button class="btn btn-default" onclick="areaMap.rotateTransform(true)">右旋转</button>--%>
+                        <%--<button class="btn btn-default" onclick="areaMap.rotateTransform(false)">左旋转</button>--%>
                         <button class="btn btn-default" onclick="areaMap.zoom(true)">放大</button>
                         <button class="btn btn-default" onclick="areaMap.zoom(false)">缩小</button>
                     </div>
@@ -248,13 +248,53 @@
                             icon: "https://a.amap.com/jsapi_demos/static/images/green.png",
                             offset: new AMap.Pixel(-13, -30)
                         }));
-                        if (node.type == config.house) {
-                            $("#oImg").next().show();
-                            map.add(areaMap.getImgMarker(node));
-                        } else {
-                            $("#oImg").next().hide();
-                            map.add(areaMap.getMarker(node));
-                        }
+                        $.ajax({
+                            url: "${pageContext.request.contextPath}/caseEstateTagging/queryCaseEstateTagging",
+                            type: "get",
+                            dataType: "json",
+                            data: {dataId: node.dataId, type: node.type},
+                            success: function (result) {
+                                if (result.ret) {
+                                    var data = result.data;
+                                    switch (node.type) {
+                                        case config.house:
+                                            $("#oImg").next().show();
+                                            map.add(areaMap.getImgMarker(node));
+                                            break;
+                                        case config.estate:
+                                            $("#oImg").next().hide();
+                                            map.add(areaMap.getMarker(node));
+                                            if (areaMap.isNotBlank(data)) {
+                                                $.each(data, function (i, item) {
+                                                    map.add(areaMap.getMarker(item));
+                                                });
+                                            }
+                                            break;
+                                        case config.building:
+                                            $("#oImg").next().hide();
+                                            map.add(areaMap.getMarker(node));
+                                            if (areaMap.isNotBlank(data)) {
+                                                $.each(data, function (i, item) {
+                                                    map.add(areaMap.getMarker(item));
+                                                });
+                                            }
+                                            break;
+                                        case config.unit:
+                                            $("#oImg").next().hide();
+                                            map.add(areaMap.getMarker(node));
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                                else {
+                                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                                }
+                            },
+                            error: function (result) {
+                                Alert("调用服务端方法失败，失败原因:" + result);
+                            }
+                        });
                         map.setCenter([node.lng, node.lat]); //设置地图中心点
                         map.setZoom(18);
                     },

@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dto.input.MapDto;
 import com.copower.pmcc.assess.dto.input.cases.CaseEstateTaggingDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -37,6 +38,42 @@ public class CaseEstateTaggingService {
     private CaseUnitService caseUnitService;
     @Autowired
     private CaseHouseService caseHouseService;
+
+
+    public List<CaseEstateTagging> queryCaseEstateTagging(Integer dataId, String type) throws Exception {
+        List<CaseEstateTagging> caseEstateTaggingList = new ArrayList<CaseEstateTagging>(10);
+        if (Objects.equal(type, EstateTaggingTypeEnum.ESTATE.getKey())) {
+            CaseEstate caseEstate = caseEstateService.getCaseEstateById(dataId);
+            if (caseEstate != null) {
+                CaseBuildingMain queryMain = new CaseBuildingMain();
+                queryMain.setEstateId(caseEstate.getId());
+                List<CaseBuildingMain> mainList = caseBuildingMainService.getCaseBuildingMainList(queryMain);
+                if (!ObjectUtils.isEmpty(mainList)) {
+                    for (CaseBuildingMain caseBuildingMain : mainList) {
+                        CaseEstateTagging buildTagging = getCaseEstateTagging(caseBuildingMain.getId(), EstateTaggingTypeEnum.BUILDING.getKey());
+                        if (buildTagging != null) {
+                            caseEstateTaggingList.add(buildTagging);
+                        }
+                    }
+                }
+            }
+        }
+        if (Objects.equal(type,EstateTaggingTypeEnum.BUILDING.getKey())){
+            CaseBuildingMain main = caseBuildingMainService.getCaseBuildingMainById(dataId);
+            CaseUnit queryUnit = new CaseUnit();
+            queryUnit.setBuildingMainId(main.getId());
+            List<CaseUnit> caseUnitList = caseUnitService.getCaseUnitList(queryUnit);
+            if (!ObjectUtils.isEmpty(caseUnitList)){
+                for (CaseUnit caseUnit:caseUnitList){
+                    CaseEstateTagging buildTagging = getCaseEstateTagging(caseUnit.getId(), EstateTaggingTypeEnum.UNIT.getKey());
+                    if (buildTagging != null) {
+                        caseEstateTaggingList.add(buildTagging);
+                    }
+                }
+            }
+        }
+        return caseEstateTaggingList;
+    }
 
 
     public List<MapDto> mapDtoList(Integer dataId, String type) throws Exception {
@@ -85,7 +122,11 @@ public class CaseEstateTaggingService {
      * @throws Exception
      */
     public void saveCaseEstateTagging(CaseEstateTagging caseEstateTagging) throws Exception {
-        caseEstateTaggingDao.saveCaseEstateTagging(caseEstateTagging);
+        if (caseEstateTagging.getId() == null) {
+            caseEstateTaggingDao.saveCaseEstateTagging(caseEstateTagging);
+        } else {
+            caseEstateTaggingDao.updateCaseEstateTagging(caseEstateTagging);
+        }
     }
 
 
@@ -144,6 +185,13 @@ public class CaseEstateTaggingService {
         }
     }
 
+    /**
+     * 获取标记的经纬度
+     *
+     * @param estateId
+     * @return
+     * @throws Exception
+     */
     public CaseEstateTaggingDto getCaseEstateTaggingDto(Integer estateId) throws Exception {
         CaseEstate caseEstate = caseEstateService.getCaseEstateById(estateId);
         if (caseEstate == null) {
