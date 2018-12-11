@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.data;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail;
 import com.copower.pmcc.assess.service.ErpAreaService;
@@ -90,22 +91,26 @@ public class DataLandLevelController {
     public HttpResult delete(Integer id) {
         try {
             if (id != null) {
+                int count = dataLandLevelDetailService.getCountByLandLevelId(id);
+                if (count > 0) {
+                    return HttpResult.newErrorResult("请先删除明细中的数据");
+                }
                 DataLandLevel dataLandLevel = new DataLandLevel();
                 dataLandLevel.setId(id);
                 dataLandLevelService.removeDataLandLevel(dataLandLevel);
-                return HttpResult.newCorrectResult();
             }
+            return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
-        return null;
     }
 
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateDataLandLevel", method = {RequestMethod.POST}, name = "更新土地级别维护")
-    public HttpResult saveAndUpdate(DataLandLevel dataLandLevel) {
+    public HttpResult saveAndUpdate(String formData) {
         try {
+            DataLandLevel dataLandLevel = JSON.parseObject(formData, DataLandLevel.class);
             dataLandLevelService.saveAndUpdateDataLandLevel(dataLandLevel);
             return HttpResult.newCorrectResult("保存 success!");
         } catch (Exception e) {

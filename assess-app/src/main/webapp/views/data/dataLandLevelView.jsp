@@ -92,17 +92,17 @@
             data.frm = "frmFather";
             return data;
         },
-        isEmpty: function (item) {
-            if (item) {
-                return true;
-            }
-            return false;
-        },
+
         loadLandLevelList: function () {
             var cols = [];
             cols.push({field: 'provinceName', title: '省'});
             cols.push({field: 'cityName', title: '市'});
             cols.push({field: 'districtName', title: '县'});
+            cols.push({
+                field: 'releaseDate', title: '发布日期', formatter: function (value, row, index) {
+                    return formatDate(value);
+                }
+            });
             cols.push({field: 'fileViewName', title: '附件'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -140,11 +140,8 @@
                         landLevel.loadLandLevelList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        Alert(result.errmsg);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -196,7 +193,7 @@
                 url: "${pageContext.request.contextPath}/dataLandLevel/saveAndUpdateDataLandLevel",
                 type: "post",
                 dataType: "json",
-                data: data,
+                data: {formData: JSON.stringify(data)},
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
@@ -246,9 +243,6 @@
                         landLevel.showFileList(id);
                         $('#' + landLevel.config().box).modal("show");
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -256,11 +250,11 @@
         //加载土地级别信息
         loadLandLevelDetailList: function () {
             var cols = [];
-            cols.push({field: 'classify', title: '大类',width:'6%'});
-            cols.push({field: 'type', title: '类型',width:'6%'});
-            cols.push({field: 'category', title: '类别',width:'6%'});
-            cols.push({field: 'levelRange', title: '级别范围',width:'30%'});
-            cols.push({field: 'mainStreet', title: '主要街道',width:'40%'});
+            cols.push({field: 'classify', title: '大类', width: '6%'});
+            cols.push({field: 'type', title: '类型', width: '6%'});
+            cols.push({field: 'category', title: '类别', width: '6%'});
+            cols.push({field: 'levelRange', title: '级别范围', width: '30%'});
+            cols.push({field: 'mainStreet', title: '主要街道', width: '40%'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -395,7 +389,19 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">县</label>
+                                        <label class="col-sm-2 control-label">发布日期<span
+                                                class="symbol required"></span></label>
+                                        <div class="col-sm-10">
+                                            <input type="text" readonly="readonly"
+                                                   class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd"
+                                                   name="releaseDate"
+                                                   placeholder="发布日期" required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">附件</label>
                                         <div class="col-sm-10">
                                             <input id="uploadFile" placeholder="上传附件" class="form-control" type="file">
                                             <div id="_uploadFile"></div>
@@ -493,7 +499,8 @@
                                             级别范围
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea class="form-control" name="levelRange" placeholder="级别范围"></textarea>
+                                            <textarea class="form-control" name="levelRange"
+                                                      placeholder="级别范围"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -503,7 +510,8 @@
                                             主要街道
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea class="form-control" name="mainStreet" placeholder="主要街道"></textarea>
+                                            <textarea class="form-control" name="mainStreet"
+                                                      placeholder="主要街道"></textarea>
                                         </div>
                                     </div>
                                 </div>

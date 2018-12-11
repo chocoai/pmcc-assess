@@ -423,6 +423,14 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
+                <label class="col-sm-1 control-label">土地形状备注</label>
+                <div class="col-sm-11">
+                   <textarea class="form-control" name="shapeStateRemark"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
                 <label class="col-sm-1 control-label">土地面积</label>
                 <div class="col-sm-3">
                     <input type="text" class="form-control" data-rule-number='true'

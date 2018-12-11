@@ -42,6 +42,7 @@ public class DataLandLevelDao {
     public List<DataLandLevel> getDataLandLevelList(DataLandLevel dataLandLevel){
         DataLandLevelExample example = new DataLandLevelExample();
         MybatisUtils.convertObj2Example(dataLandLevel, example);
+        example.setOrderByClause("release_date desc");
         return dataLandLevelMapper.selectByExample(example);
     }
 }

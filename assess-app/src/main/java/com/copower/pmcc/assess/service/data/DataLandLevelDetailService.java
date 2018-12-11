@@ -146,4 +146,13 @@ public class DataLandLevelDetailService {
             dataLandLevelDetailDao.updateDataLandLevelDetail(levelDetail);
         }
     }
+
+    /**
+     *
+     * @param landLevelId
+     * @return
+     */
+    public int getCountByLandLevelId(Integer landLevelId){
+        return dataLandLevelDetailDao.getCountByLandLevelId(landLevelId);
+    }
 }

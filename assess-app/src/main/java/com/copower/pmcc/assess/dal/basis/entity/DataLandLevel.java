@@ -11,6 +11,8 @@ public class DataLandLevel {
 
     private String district;
 
+    private Date releaseDate;
+
     private String creator;
 
     private Date gmtCreated;
@@ -47,6 +49,14 @@ public class DataLandLevel {
 
     public void setDistrict(String district) {
         this.district = district == null ? null : district.trim();
+    }
+
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
     public String getCreator() {

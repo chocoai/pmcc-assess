@@ -945,6 +945,76 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
+        public Criteria andShapeStateRemarkIsNull() {
+            addCriterion("shape_state_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeStateRemarkIsNotNull() {
+            addCriterion("shape_state_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeStateRemarkEqualTo(String value) {
+            addCriterion("shape_state_remark =", value, "shapeStateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeStateRemarkNotEqualTo(String value) {
+            addCriterion("shape_state_remark <>", value, "shapeStateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeStateRemarkGreaterThan(String value) {
+            addCriterion("shape_state_remark >", value, "shapeStateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeStateRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("shape_state_remark >=", value, "shapeStateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeStateRemarkLessThan(String value) {
+            addCriterion("shape_state_remark <", value, "shapeStateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeStateRemarkLessThanOrEqualTo(String value) {
+            addCriterion("shape_state_remark <=", value, "shapeStateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeStateRemarkLike(String value) {
+            addCriterion("shape_state_remark like", value, "shapeStateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeStateRemarkNotLike(String value) {
+            addCriterion("shape_state_remark not like", value, "shapeStateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeStateRemarkIn(List<String> values) {
+            addCriterion("shape_state_remark in", values, "shapeStateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeStateRemarkNotIn(List<String> values) {
+            addCriterion("shape_state_remark not in", values, "shapeStateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeStateRemarkBetween(String value1, String value2) {
+            addCriterion("shape_state_remark between", value1, value2, "shapeStateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeStateRemarkNotBetween(String value1, String value2) {
+            addCriterion("shape_state_remark not between", value1, value2, "shapeStateRemark");
+            return (Criteria) this;
+        }
+
         public Criteria andPlanenessIsNull() {
             addCriterion("planeness is null");
             return (Criteria) this;

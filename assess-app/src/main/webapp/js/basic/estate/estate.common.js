@@ -109,8 +109,8 @@
                             estateCommon.fileShow(item);
                         })
                     });
-                    estateCommon.estateLandStateForm.initForm(result.data.basicEstateLandState,function () {
-                        if (result.data.basicEstateLandState.developmentDegreeContent){
+                    estateCommon.estateLandStateForm.initForm(result.data.basicEstateLandState, function () {
+                        if (result.data.basicEstateLandState.developmentDegreeContent) {
                             var array = result.data.basicEstateLandState.developmentDegreeContent.split(',');
                             AssessCommon.loadDataDicByKey(AssessDicKey.estateDevelopment_degreePrepared_land, '', function (html, resultData) {
                                 if (resultData) {
@@ -182,6 +182,11 @@
                 });
                 data.basicEstateLandState.landUseCategory = null;//第一次执行成功后置为空
             });
+            //土地形状变更
+            estateCommon.estateLandStateForm.find("select.shapeState").change(function () {
+                var remark = $(this).find('option:selected').attr('title');
+                estateCommon.estateLandStateForm.find("[name=shapeStateRemark]").val(remark);
+            });
             //土地开发程度为熟地时选择几通几平
             estateCommon.estateLandStateForm.find('select.developmentDegree').change(function () {
                 $("#developmentDegreeContentContainer").empty();
@@ -191,7 +196,7 @@
                         if (resultData) {
                             var resultHtml = '';
                             var array = [];
-                            if (data.basicEstateLandState.developmentDegreeContent){
+                            if (data.basicEstateLandState.developmentDegreeContent) {
                                 array = data.basicEstateLandState.developmentDegreeContent.split(',');
                             }
                             $.each(resultData, function (i, item) {

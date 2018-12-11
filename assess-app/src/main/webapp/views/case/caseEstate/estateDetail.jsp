@@ -301,6 +301,14 @@
             </div>
             <div class="form-group">
                 <div class="x-valid">
+                    <label class="col-sm-1 control-label">土地形状备注</label>
+                    <div class="col-sm-11">
+                        <label class="form-control">${caseEstateLandState.shapeStateRemark}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="x-valid">
                     <label class="col-sm-1 control-label">土地面积</label>
                     <div class="col-sm-3">
                         <label class="form-control">${caseEstateLandState.landArea}</label>

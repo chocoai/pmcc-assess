@@ -27,6 +27,8 @@ public class CaseEstateLandState {
 
     private Integer shapeState;
 
+    private String shapeStateRemark;
+
     private Integer planeness;
 
     private Integer developmentDegree;
@@ -155,6 +157,14 @@ public class CaseEstateLandState {
 
     public void setShapeState(Integer shapeState) {
         this.shapeState = shapeState;
+    }
+
+    public String getShapeStateRemark() {
+        return shapeStateRemark;
+    }
+
+    public void setShapeStateRemark(String shapeStateRemark) {
+        this.shapeStateRemark = shapeStateRemark == null ? null : shapeStateRemark.trim();
     }
 
     public Integer getPlaneness() {

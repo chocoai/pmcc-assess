@@ -44,4 +44,10 @@ public class DataLandLevelDetailDao {
         example.setOrderByClause("classify,type,category");
         return dataLandLevelDetailMapper.selectByExample(example);
     }
+
+    public int getCountByLandLevelId(Integer landLevelId){
+        DataLandLevelDetailExample example = new DataLandLevelDetailExample();
+        example.createCriteria().andLandLevelIdEqualTo(landLevelId).andBisDeleteEqualTo(false);
+        return dataLandLevelDetailMapper.countByExample(example);
+    }
 }

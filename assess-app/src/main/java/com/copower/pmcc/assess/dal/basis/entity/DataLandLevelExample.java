@@ -375,6 +375,66 @@ public class DataLandLevelExample {
             return (Criteria) this;
         }
 
+        public Criteria andReleaseDateIsNull() {
+            addCriterion("release_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReleaseDateIsNotNull() {
+            addCriterion("release_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReleaseDateEqualTo(Date value) {
+            addCriterion("release_date =", value, "releaseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andReleaseDateNotEqualTo(Date value) {
+            addCriterion("release_date <>", value, "releaseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andReleaseDateGreaterThan(Date value) {
+            addCriterion("release_date >", value, "releaseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andReleaseDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("release_date >=", value, "releaseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andReleaseDateLessThan(Date value) {
+            addCriterion("release_date <", value, "releaseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andReleaseDateLessThanOrEqualTo(Date value) {
+            addCriterion("release_date <=", value, "releaseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andReleaseDateIn(List<Date> values) {
+            addCriterion("release_date in", values, "releaseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andReleaseDateNotIn(List<Date> values) {
+            addCriterion("release_date not in", values, "releaseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andReleaseDateBetween(Date value1, Date value2) {
+            addCriterion("release_date between", value1, value2, "releaseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andReleaseDateNotBetween(Date value1, Date value2) {
+            addCriterion("release_date not between", value1, value2, "releaseDate");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

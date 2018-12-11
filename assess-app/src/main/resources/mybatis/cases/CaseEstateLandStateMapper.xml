@@ -14,6 +14,7 @@
     <result column="west_to" property="westTo" jdbcType="VARCHAR" />
     <result column="north_to" property="northTo" jdbcType="VARCHAR" />
     <result column="shape_state" property="shapeState" jdbcType="INTEGER" />
+    <result column="shape_state_remark" property="shapeStateRemark" jdbcType="VARCHAR" />
     <result column="planeness" property="planeness" jdbcType="INTEGER" />
     <result column="development_degree" property="developmentDegree" jdbcType="INTEGER" />
     <result column="development_degree_content" property="developmentDegreeContent" jdbcType="VARCHAR" />
@@ -92,10 +93,10 @@
   </sql>
   <sql id="Base_Column_List" >
     id, estate_id, name, land_use_type, land_use_category, land_level, land_area, east_to, 
-    south_to, west_to, north_to, shape_state, planeness, development_degree, development_degree_content, 
-    restrictive_condition, soil, topographic_terrain, plot_ratio, building_density, green_space_rate, 
-    compatible_ratio, bearing_capacity, contaminated, ph, fertility, creator, gmt_created, 
-    gmt_modified
+    south_to, west_to, north_to, shape_state, shape_state_remark, planeness, development_degree, 
+    development_degree_content, restrictive_condition, soil, topographic_terrain, plot_ratio, 
+    building_density, green_space_rate, compatible_ratio, bearing_capacity, contaminated, 
+    ph, fertility, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandStateExample" >
     select
@@ -134,8 +135,8 @@
     insert into tb_case_estate_land_state (estate_id, name, land_use_type, 
       land_use_category, land_level, land_area, 
       east_to, south_to, west_to, 
-      north_to, shape_state, planeness, 
-      development_degree, development_degree_content, 
+      north_to, shape_state, shape_state_remark, 
+      planeness, development_degree, development_degree_content, 
       restrictive_condition, soil, topographic_terrain, 
       plot_ratio, building_density, green_space_rate, 
       compatible_ratio, bearing_capacity, contaminated, 
@@ -144,8 +145,8 @@
     values (#{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{landUseType,jdbcType=INTEGER}, 
       #{landUseCategory,jdbcType=INTEGER}, #{landLevel,jdbcType=INTEGER}, #{landArea,jdbcType=VARCHAR}, 
       #{eastTo,jdbcType=VARCHAR}, #{southTo,jdbcType=VARCHAR}, #{westTo,jdbcType=VARCHAR}, 
-      #{northTo,jdbcType=VARCHAR}, #{shapeState,jdbcType=INTEGER}, #{planeness,jdbcType=INTEGER}, 
-      #{developmentDegree,jdbcType=INTEGER}, #{developmentDegreeContent,jdbcType=VARCHAR}, 
+      #{northTo,jdbcType=VARCHAR}, #{shapeState,jdbcType=INTEGER}, #{shapeStateRemark,jdbcType=VARCHAR}, 
+      #{planeness,jdbcType=INTEGER}, #{developmentDegree,jdbcType=INTEGER}, #{developmentDegreeContent,jdbcType=VARCHAR}, 
       #{restrictiveCondition,jdbcType=VARCHAR}, #{soil,jdbcType=VARCHAR}, #{topographicTerrain,jdbcType=INTEGER}, 
       #{plotRatio,jdbcType=VARCHAR}, #{buildingDensity,jdbcType=VARCHAR}, #{greenSpaceRate,jdbcType=VARCHAR}, 
       #{compatibleRatio,jdbcType=VARCHAR}, #{bearingCapacity,jdbcType=VARCHAR}, #{contaminated,jdbcType=VARCHAR}, 
@@ -190,6 +191,9 @@
       </if>
       <if test="shapeState != null" >
         shape_state,
+      </if>
+      <if test="shapeStateRemark != null" >
+        shape_state_remark,
       </if>
       <if test="planeness != null" >
         planeness,
@@ -276,6 +280,9 @@
       </if>
       <if test="shapeState != null" >
         #{shapeState,jdbcType=INTEGER},
+      </if>
+      <if test="shapeStateRemark != null" >
+        #{shapeStateRemark,jdbcType=VARCHAR},
       </if>
       <if test="planeness != null" >
         #{planeness,jdbcType=INTEGER},
@@ -375,6 +382,9 @@
       <if test="record.shapeState != null" >
         shape_state = #{record.shapeState,jdbcType=INTEGER},
       </if>
+      <if test="record.shapeStateRemark != null" >
+        shape_state_remark = #{record.shapeStateRemark,jdbcType=VARCHAR},
+      </if>
       <if test="record.planeness != null" >
         planeness = #{record.planeness,jdbcType=INTEGER},
       </if>
@@ -445,6 +455,7 @@
       west_to = #{record.westTo,jdbcType=VARCHAR},
       north_to = #{record.northTo,jdbcType=VARCHAR},
       shape_state = #{record.shapeState,jdbcType=INTEGER},
+      shape_state_remark = #{record.shapeStateRemark,jdbcType=VARCHAR},
       planeness = #{record.planeness,jdbcType=INTEGER},
       development_degree = #{record.developmentDegree,jdbcType=INTEGER},
       development_degree_content = #{record.developmentDegreeContent,jdbcType=VARCHAR},
@@ -501,6 +512,9 @@
       </if>
       <if test="shapeState != null" >
         shape_state = #{shapeState,jdbcType=INTEGER},
+      </if>
+      <if test="shapeStateRemark != null" >
+        shape_state_remark = #{shapeStateRemark,jdbcType=VARCHAR},
       </if>
       <if test="planeness != null" >
         planeness = #{planeness,jdbcType=INTEGER},
@@ -569,6 +583,7 @@
       west_to = #{westTo,jdbcType=VARCHAR},
       north_to = #{northTo,jdbcType=VARCHAR},
       shape_state = #{shapeState,jdbcType=INTEGER},
+      shape_state_remark = #{shapeStateRemark,jdbcType=VARCHAR},
       planeness = #{planeness,jdbcType=INTEGER},
       development_degree = #{developmentDegree,jdbcType=INTEGER},
       development_degree_content = #{developmentDegreeContent,jdbcType=VARCHAR},
