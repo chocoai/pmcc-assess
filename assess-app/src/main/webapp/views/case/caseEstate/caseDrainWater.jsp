@@ -1,14 +1,17 @@
 <%--
-  金融服务
+  供水
 --%>
+
+<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_panel">
-    <div class="x_title collapse-link" onclick="matchingFinance.prototype.viewInit()">
+    <div class="x_title collapse-link" onclick="estateDrainWater.prototype.viewInit()">
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>金融服务信息</h4>
+        <h4>排水信息
+        </h4>
         <div class="clearfix"></div>
     </div>
     <div class="x_content collapse">
@@ -19,7 +22,7 @@
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <table class="table table-bordered" id="MatchingFinanceList">
+                    <table class="table table-bordered" id="EstateDrainWaterList">
                         <!-- cerare document add ajax data-->
                     </table>
                 </div>
@@ -30,13 +33,13 @@
 
 <script type="application/javascript">
 
-    var matchingFinance;
+    var estateDrainWater;
     (function () {
         var flag = true;
-        matchingFinance = function () {
+        estateDrainWater = function () {
 
         };
-        matchingFinance.prototype = {
+        estateDrainWater.prototype = {
             setFlag: function (flag_) {
                 flag = flag_;
             },
@@ -44,26 +47,26 @@
                 return flag;
             },
             viewInit: function () {
-                matchingFinance.prototype.loadDataDicList();
+                estateDrainWater.prototype.loadDataDicList();
             },
             config: function () {
                 var data = {};
-                data.table = "MatchingFinanceList";
-                data.box = "divBoxMatchingFinance";
-                data.frm = "frmMatchingFinance";
-                data.type = "null";//
+                data.table = "EstateDrainWaterList";
+                data.box = "divBoxEstateDrainWater";
+                data.frm = "frmEstateDrainWater";
+                data.type = "estateDrainWater";//根据 ExamineEstateDrainEnumType 配置
                 return data;
             },
             loadDataDicList: function () {
                 var cols = [];
-                cols.push({field: 'name', title: '金融名称'});
-                cols.push({field: 'categoryName', title: '金融类别'});
-                cols.push({field: 'natureName', title: '金融机构性质'});
-                cols.push({field: 'serviceContentName', title: '服务类别'});
-                cols.push({field: 'autoServiceContent', title: '服务内容'});
-                $("#" + matchingFinance.prototype.config().table).bootstrapTable('destroy');
-                TableInit(matchingFinance.prototype.config().table, "${pageContext.request.contextPath}/caseMatchingFinance/getCaseMatchingFinanceList", cols, {
-                    type: matchingFinance.prototype.config().type,
+                cols.push({field: 'name', title: '废水处理商名称'});
+                cols.push({field: 'lineGradeName', title: '排水保障等级'});
+                cols.push({field: 'reputationName', title: '废水处理商信誉'});
+                cols.push({field: 'gradeName', title: '废水处理商等级'});
+                cols.push({field: 'power', title: '排水量或功率'});
+                $("#" + estateDrainWater.prototype.config().table).bootstrapTable('destroy');
+                TableInit(estateDrainWater.prototype.config().table, "${pageContext.request.contextPath}/caseEstateSupply/getCaseEstateSupplyList", cols, {
+                    type: estateDrainWater.prototype.config().type,
                     estateId: ${empty caseEstate.id?0:caseEstate.id},
                 }, {
                     showColumns: false,
@@ -73,9 +76,17 @@
                         $('.tooltips').tooltip();
                     }
                 });
-            }
-
+            },
         }
     })();
 
 </script>
+
+
+
+</html>
+
+
+
+
+

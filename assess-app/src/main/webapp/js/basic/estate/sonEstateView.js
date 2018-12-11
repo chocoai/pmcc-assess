@@ -1866,10 +1866,11 @@ var matchingEnvironment;
             })
         },
         init: function (item) {
+            $("#" + matchingEnvironment.prototype.config().frm).find("select.category").empty();//清空影响因素
             $("#" + matchingEnvironment.prototype.config().frm).clearAll().initForm(item);
-            $("#" + matchingEnvironment.prototype.config().frm).find("select.type").on('change', function () {
+            $("#" + matchingEnvironment.prototype.config().frm).find("select.type").off('change').on('change', function () {
                 AssessCommon.loadDataDicByPid($(this).val(), item.category, function (html, data) {
-                    $("#" + matchingEnvironment.prototype.config().frm).find("select.category").empty().html(html).trigger('change');
+                    $("#" + matchingEnvironment.prototype.config().frm).find("select.category").empty().html(html);
                 });
                 item.category = null;
             });
@@ -1877,7 +1878,7 @@ var matchingEnvironment;
                 $("#" + matchingEnvironment.prototype.config().frm).find("select.type").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_environment_influence_degree, item.influenceDegree, function (html, data) {
-                $("#" + matchingEnvironment.prototype.config().frm).find("select.influenceDegree").empty().html(html).trigger('change');
+                $("#" + matchingEnvironment.prototype.config().frm).find("select.influenceDegree").empty().html(html);
             });
         }
     }
@@ -2624,10 +2625,10 @@ var estateSupplyPower;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'name', title: '名称'});
+            cols.push({field: 'name', title: '供应商名称'});
+            cols.push({field: 'lineGradeName', title: '供电保障等级'});
             cols.push({field: 'reputationName', title: '供电商信誉'});
             cols.push({field: 'gradeName', title: '供电商等级'});
-            cols.push({field: 'lineGradeName', title: '供电线路等级'});
             cols.push({field: 'power', title: '供应量或功率'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -2766,7 +2767,8 @@ var estateSupplyHeating;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'name', title: '名称'});
+            cols.push({field: 'name', title: '供热商名称'});
+            cols.push({field: 'lineGradeName', title: '供热保障等级'});
             cols.push({field: 'reputationName', title: '供热商信誉'});
             cols.push({field: 'gradeName', title: '供热商等级'});
             cols.push({field: 'power', title: '供应量或功率'});
@@ -2907,7 +2909,8 @@ var estateSupplyGas;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'name', title: '名称'});
+            cols.push({field: 'name', title: '供应商名称'});
+            cols.push({field: 'lineGradeName', title: '供气保障等级'});
             cols.push({field: 'reputationName', title: '供气商信誉'});
             cols.push({field: 'gradeName', title: '供气商等级'});
             cols.push({field: 'power', title: '供应量或功率'});

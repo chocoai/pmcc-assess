@@ -94,6 +94,7 @@ public class CaseEstateController {
         modelAndView.addObject("hasEstateSupplyHeating", caseEstateSupplyService.hasEstateSupplyData(id, ExamineEstateSupplyEnumType.ESTATE_SUPPLY_HEATING.getName()));
         modelAndView.addObject("hasEstateSupplyPower", caseEstateSupplyService.hasEstateSupplyData(id, ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getName()));
         modelAndView.addObject("hasEstateSupplyWater", caseEstateSupplyService.hasEstateSupplyData(id, ExamineEstateSupplyEnumType.ESTATE_SUPPLY_WATER.getName()));
+        modelAndView.addObject("hasEstateDrainWater", caseEstateSupplyService.hasEstateSupplyData(id, ExamineEstateSupplyEnumType.ESTATE_DRAIN_WATER.getName()));
 
         modelAndView.addObject("hasMatchingEducationData", caseMatchingEducationService.hasMatchingEducationData(id));
         modelAndView.addObject("hasMatchingEnvironmentData", caseMatchingEnvironmentService.hasMatchingEnvironmentData(id));

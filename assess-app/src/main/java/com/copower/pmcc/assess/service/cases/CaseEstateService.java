@@ -140,9 +140,7 @@ public class CaseEstateService {
             //县
             vo.setDistrictName(erpAreaService.getSysAreaName(caseEstate.getDistrict()));
         }
-        if (caseEstate.getPosition() != null) {
-            vo.setPositionName(baseDataDicService.getNameById(caseEstate.getPosition()));
-        }
+        vo.setPositionName(baseDataDicService.getNameById(caseEstate.getPosition()));
         if (caseEstate.getDeveloperId() != null) {
             DataDeveloper dataDeveloper = dataDeveloperService.getByDataDeveloperId(caseEstate.getDeveloperId());
             if (dataDeveloper != null) {
@@ -155,19 +153,11 @@ public class CaseEstateService {
                 vo.setBlockName(dataBlock.getName());
             }
         }
-        if (caseEstate.getSupplyGas() != null) {
-            vo.setSupplyGasName(baseDataDicService.getNameById(caseEstate.getSupplyGas()));
-        }
-        if (caseEstate.getSupplyPower() != null) {
-            vo.setSupplyPowerName(baseDataDicService.getNameById(caseEstate.getSupplyPower()));
-        }
-        if (caseEstate.getSupplyWater() != null) {
-            vo.setSupplyWaterName(baseDataDicService.getNameById(caseEstate.getSupplyWater()));
-        }
+        vo.setSupplyGasName(baseDataDicService.getNameById(caseEstate.getSupplyGas()));
+        vo.setSupplyPowerName(baseDataDicService.getNameById(caseEstate.getSupplyPower()));
+        vo.setSupplyWaterName(baseDataDicService.getNameById(caseEstate.getSupplyWater()));
         vo.setDrainWaterName(baseDataDicService.getNameById(caseEstate.getDrainWater()));
-        if (caseEstate.getSupplyHeating() != null) {
-            vo.setSupplyHeatingName(baseDataDicService.getNameById(caseEstate.getSupplyHeating()));
-        }
+        vo.setSupplyHeatingName(baseDataDicService.getNameById(caseEstate.getSupplyHeating()));
         return vo;
     }
 

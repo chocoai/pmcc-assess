@@ -9,8 +9,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h3>交通枢纽信息
-        </h3>
+        <h4>交通枢纽信息</h4>
         <div class="clearfix"></div>
     </div>
 

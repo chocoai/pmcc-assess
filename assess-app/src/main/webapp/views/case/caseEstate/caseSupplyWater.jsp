@@ -10,8 +10,8 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h3>供水信息
-        </h3>
+        <h4>供水信息
+        </h4>
         <div class="clearfix"></div>
     </div>
     <div class="x_content collapse">
@@ -59,11 +59,10 @@
             },
             loadDataDicList: function () {
                 var cols = [];
-                cols.push({field: 'name', title: '供水名称'});
-                cols.push({field: 'reputationName', title: '供水商信誉'});
-                // cols.push({field: 'type', title: '类型'});
-                cols.push({field: 'gradeName', title: '供水商等级'});
+                cols.push({field: 'name', title: '供水商名称'});
                 cols.push({field: 'lineGradeName', title: '供水保障等级'});
+                cols.push({field: 'reputationName', title: '供水商信誉'});
+                cols.push({field: 'gradeName', title: '供水商等级'});
                 cols.push({field: 'power', title: '供应量或功率'});
                 $("#" + estateSupplyWater.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyWater.prototype.config().table, "${pageContext.request.contextPath}/caseEstateSupply/getCaseEstateSupplyList", cols, {
@@ -78,7 +77,6 @@
                     }
                 });
             },
-
         }
     })();
 

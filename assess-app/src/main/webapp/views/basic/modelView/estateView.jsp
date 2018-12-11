@@ -333,14 +333,11 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地名称</label>
-                <div class="col-sm-11">
+                <div class="col-sm-3">
                     <input type="text" class="form-control" name="name"
                            placeholder="名称" value="${basicEstateLandState.name}">
                 </div>
             </div>
-        </div>
-
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地用途类型</label>
                 <div class="col-sm-3">
@@ -357,6 +354,9 @@
                     </select>
                 </div>
             </div>
+        </div>
+
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地级别</label>
                 <div class="col-sm-3">
@@ -381,9 +381,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">东至</label>
                 <div class="col-sm-3">
@@ -398,6 +395,10 @@
                            name="southTo" value="${basicEstateLandState.southTo}">
                 </div>
             </div>
+        </div>
+
+        <div class="form-group">
+
             <div class="x-valid">
                 <label class="col-sm-1 control-label">西至</label>
                 <div class="col-sm-3">
@@ -405,9 +406,6 @@
                            name="westTo" value="${basicEstateLandState.westTo}">
                 </div>
             </div>
-        </div>
-
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">北至</label>
                 <div class="col-sm-3">
@@ -422,6 +420,8 @@
                     </select>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地面积</label>
                 <div class="col-sm-3">
@@ -429,10 +429,6 @@
                            placeholder="土地面积(请输入数字)" name="landArea" value="${basicEstateLandState.landArea}">
                 </div>
             </div>
-
-
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">地形</label>
                 <div class="col-sm-3">
@@ -457,7 +453,6 @@
                 </div>
             </div>
             <div class="col-sm-6 col-sm-offset-1" id="developmentDegreeContentContainer">
-
             </div>
         </div>
         <div class="x_title">
@@ -544,16 +539,3 @@
 </div>
 
 <%@include file="/views/basic/modelView/estate/sonEstateView.jsp" %>
-<script src="${pageContext.request.contextPath}/js/autocomplete/position.autocomplete.js"></script>
-<script type="text/javascript">
-    $(function () {
-        estateCommon.estateForm.find('[name=position]').acptPosition({
-            provinceElement: estateCommon.estateForm.find('[name=province]'),
-            cityElement: estateCommon.estateForm.find('[name=city]'),
-            districtElement: estateCommon.estateForm.find('[name=district]'),
-            onSelect: function (id, name) {
-                estateCommon.estateForm.find('[name=position]').val(name);
-            }
-        })
-    })
-</script>

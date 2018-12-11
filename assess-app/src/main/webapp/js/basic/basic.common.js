@@ -24,7 +24,6 @@ basicCommon.landLevelSelect = function (this_) {
     assessLandLevel.select({
         province: $form.find('[name=province]').val(),
         city: $form.find('[name=city]').val(),
-        district: $form.find('[name=district]').val(),
         success: function (data) {
             $(this_).parent().prev().val(data.name);
             $(this_).parent().prev().prev().val(data.id);
@@ -51,7 +50,6 @@ basicCommon.blockSelect = function (this_) {
     assessBlock.select({
         province: $form.find('[name=province]').val(),
         city: $form.find('[name=city]').val(),
-        district: $form.find('[name=district]').val(),
         success: function (row) {
             $(this_).parent().prev().val(row.name);
             $(this_).parent().prev().prev().val(row.id);

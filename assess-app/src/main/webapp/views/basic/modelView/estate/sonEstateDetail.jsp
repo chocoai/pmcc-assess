@@ -228,13 +228,25 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>供排水情况</h4>
+        <h4>供水情况</h4>
         <div class="clearfix"></div>
     </div>
     <div class="x_content collapse">
-        <table class="table table-bordered" id="EstateSupplyWaterList">
-            <!-- cerare document add ajax data-->
-        </table>
+        <table class="table table-bordered" id="EstateSupplyWaterList"></table>
+    </div>
+</div>
+
+<div class="x_panel" id="industryDrainWater">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>排水情况</h4>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content collapse">
+        <table class="table table-bordered" id="EstateDrainWaterList"></table>
     </div>
 </div>
 
@@ -260,7 +272,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>供电信息</h4>
+        <h4>供热信息</h4>
         <div class="clearfix"></div>
     </div>
     <div class="x_content collapse">
@@ -418,10 +430,10 @@
             },
             loadDataDicList: function () {
                 var cols = [];
-                cols.push({field: 'name', title: '供水名称'});
+                cols.push({field: 'name', title: '供水商名称'});
+                cols.push({field: 'lineGradeName', title: '供水保障等级'});
                 cols.push({field: 'reputationName', title: '供水商信誉'});
                 cols.push({field: 'gradeName', title: '供水商等级'});
-                cols.push({field: 'lineGradeName', title: '供水保障等级'});
                 cols.push({field: 'power', title: '供应量或功率'});
                 $("#" + estateSupplyWater.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyWater.prototype.config().table, "${pageContext.request.contextPath}/basicEstateSupply/getBootstrapTableVo", cols, {
@@ -442,6 +454,55 @@
         //绑定事件
         $('#'+estateSupplyWater.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
             estateSupplyWater.prototype.loadDataDicList();
+        })
+    })();
+
+    var estateDrainWater;
+    (function () {
+        estateDrainWater = function () {
+
+        };
+        estateDrainWater.prototype = {
+            config: function () {
+                var data = {};
+                data.table = "EstateDrainWaterList";
+                data.box = "divBoxEstateDrainWater";
+                data.frm = "frmEstateDrainWater";
+                data.type = "estateDrainWater";//根据 ExamineEstateSupplyEnumType 配置
+                return data;
+            },
+            isNotBlank: function (item) {
+                if (item) {
+                    return true;
+                }
+                return false;
+            },
+            loadDataDicList: function () {
+                var cols = [];
+                cols.push({field: 'name', title: '废水处理商名称'});
+                cols.push({field: 'lineGradeName', title: '排水保障等级'});
+                cols.push({field: 'reputationName', title: '废水处理商信誉'});
+                cols.push({field: 'gradeName', title: '废水处理商等级'});
+                cols.push({field: 'power', title: '排水量或功率'});
+                $("#" + estateDrainWater.prototype.config().table).bootstrapTable('destroy');
+                TableInit(estateDrainWater.prototype.config().table, "${pageContext.request.contextPath}/basicEstateSupply/getBootstrapTableVo", cols, {
+                    type: estateDrainWater.prototype.config().type,
+                    estateId: ${empty basicEstate.id?0:basicEstate.id},
+                    approval:true
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
+            }
+        }
+
+        //绑定事件
+        $('#'+estateDrainWater.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
+            estateDrainWater.prototype.loadDataDicList();
         })
     })();
 
@@ -467,10 +528,10 @@
             },
             loadDataDicList: function () {
                 var cols = [];
-                cols.push({field: 'name', title: '名称'});
+                cols.push({field: 'name', title: '供电商名称'});
+                cols.push({field: 'lineGradeName', title: '供电保障等级'});
                 cols.push({field: 'reputationName', title: '供电商信誉'});
                 cols.push({field: 'gradeName', title: '供电商等级'});
-                cols.push({field: 'lineGradeName', title: '供电线路等级'});
                 cols.push({field: 'power', title: '供应量或功率'});
                 $("#" + estateSupplyPower.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyPower.prototype.config().table, "${pageContext.request.contextPath}/basicEstateSupply/getBootstrapTableVo", cols, {
@@ -515,7 +576,8 @@
             },
             loadDataDicList: function () {
                 var cols = [];
-                cols.push({field: 'name', title: '名称'});
+                cols.push({field: 'name', title: '供热商名称'});
+                cols.push({field: 'lineGradeName', title: '供热保障等级'});
                 cols.push({field: 'reputationName', title: '供热商信誉'});
                 cols.push({field: 'gradeName', title: '供热商等级'});
                 cols.push({field: 'power', title: '供应量或功率'});
@@ -562,7 +624,8 @@
             },
             loadDataDicList: function () {
                 var cols = [];
-                cols.push({field: 'name', title: '名称'});
+                cols.push({field: 'name', title: '供气商名称'});
+                cols.push({field: 'lineGradeName', title: '供气保障等级'});
                 cols.push({field: 'reputationName', title: '供气商信誉'});
                 cols.push({field: 'gradeName', title: '供气商等级'});
                 cols.push({field: 'power', title: '供应量或功率'});
@@ -896,9 +959,9 @@
             loadDataDicList: function () {
                 var cols = [];
                 cols.push({field: 'organizationName', title: '名称'});
+                cols.push({field: 'organizationLevelName', title: '医养条件机构等级'});
                 cols.push({field: 'bedNumber', title: '床位数'});
                 cols.push({field: 'distanceName', title: '医养条件距离'});
-                cols.push({field: 'organizationLevelName', title: '医养条件机构等级'});
                 $("#" + matchingMedical.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingMedical.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingMedical/getBootstrapTableVo", cols, {
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
