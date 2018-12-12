@@ -103,7 +103,7 @@ var unitDecorate;
                 success: function (result) {
                     if (result.ret) {
                         if (unitDecorate.prototype.isNotBlank(result.data)) {
-                            $("#" + unitDecorate.prototype.config().frm).clearAll().initForm(result.data);
+                            unitDecorate.prototype.init(result.data);
                         } else {
                             unitDecorate.prototype.init({});
                         }
@@ -117,17 +117,16 @@ var unitDecorate;
         },
         init: function (item) {
             $("#" + unitDecorate.prototype.config().frm).clearAll().initForm(item, function () {
-                $("#" + unitDecorate.prototype.config().frm).find('select.decoratingMaterial').off('change').change(function () {
-                    console.log(item.constructionTechnology);
+                $("#" + unitDecorate.prototype.config().frm).find('select.decoratingMaterial').off('change').on('change',function () {
                     AssessCommon.loadDataDicByPid($(this).val(), item.constructionTechnology, function (html, data) {
                         $("#" + unitDecorate.prototype.config().frm).find('select.constructionTechnology').empty().html(html).trigger('change');
                     });
-                })
-                $("#" + unitDecorate.prototype.config().frm).find('select.constructionTechnology').off('change').change(function () {
+                });
+                $("#" + unitDecorate.prototype.config().frm).find('select.constructionTechnology').off('change').on('change',function () {
                     AssessCommon.loadDataDicByPid($(this).val(), item.materialPriceRange, function (html, data) {
                         $("#" + unitDecorate.prototype.config().frm).find('select.materialPriceRange').empty().html(html).trigger('change');
                     });
-                })
+                });
                 AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_decorating_material, item.decoratingMaterial, function (html, data) {
                     $("#" + unitDecorate.prototype.config().frm).find('select.decoratingMaterial').empty().html(html).trigger('change');
                 });
@@ -247,19 +246,19 @@ var unitHuxing;
             //格式化
             if (flag == "formatter") {
                 if (unitHuxing.prototype.isNotNull(item.house)) {
-                    text += item.house + "房-";
+                    text += item.house + "房";
                 }
                 if (unitHuxing.prototype.isNotNull(item.saloon)) {
-                    text += item.saloon + "客厅-";
+                    text += item.saloon + "厅";
                 }
                 if (unitHuxing.prototype.isNotNull(item.kitchen)) {
-                    text += item.kitchen + "厨房-";
+                    text += item.kitchen + "厨";
                 }
                 if (unitHuxing.prototype.isNotNull(item.toilet)) {
-                    text += item.toilet + "卫生间-";
+                    text += item.toilet + "卫";
                 }
                 if (unitHuxing.prototype.isNotNull(item.garden)) {
-                    text += item.garden + "花园-";
+                    text += item.garden + "花园";
                 }
                 if (unitHuxing.prototype.isNotNull(item.balcony)) {
                     text += item.balcony + "阳台";

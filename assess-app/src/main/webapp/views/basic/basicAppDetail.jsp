@@ -9,10 +9,15 @@
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
 
-
+            <form id="basicApplyFrm" class="form-horizontal">
+                <input type="hidden" name="id" value="${basicApply.id}">
+                <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
+                <input type="hidden" name="estatePartInMode" value="${basicApply.estatePartInMode}">
+                <input type="hidden" name="buildingPartInMode" value="${basicApply.buildingPartInMode}">
+                <input type="hidden" name="unitPartInMode" value="${basicApply.unitPartInMode}">
+                <input type="hidden" name="housePartInMode" value="${basicApply.housePartInMode}">
+            </form>
             <%@include file="/views/basic/basicDetailCommon.jsp" %>
-
-
             <div class="x_panel">
                 <div class="x_content">
                     <div class="form-group">

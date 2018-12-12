@@ -4,15 +4,11 @@ import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basic.dao.BasicBuildingDao;
 import com.copower.pmcc.assess.dal.basic.dao.BasicBuildingMainDao;
 import com.copower.pmcc.assess.dal.basic.entity.*;
-import com.copower.pmcc.assess.dal.basis.entity.DataBuilder;
-import com.copower.pmcc.assess.dal.basis.entity.DataProperty;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.*;
-import com.copower.pmcc.assess.service.data.DataBuilderService;
-import com.copower.pmcc.assess.service.data.DataPropertyService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -43,15 +39,11 @@ import java.util.List;
 @Service
 public class BasicBuildingService {
     @Autowired
-    private DataPropertyService dataPropertyService;
-    @Autowired
     private CommonService commonService;
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
     private BasicBuildingDao basicBuildingDao;
-    @Autowired
-    private DataBuilderService dataBuilderService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
@@ -111,16 +103,6 @@ public class BasicBuildingService {
         return basicBuildingDao.updateBasicBuilding(basicBuilding);
     }
 
-    public Integer upgradeVersion(BasicBuilding basicBuilding) throws Exception {
-        if (basicBuilding.getId() == null || basicBuilding.getId().intValue() == 0) {
-            basicBuilding.setCreator(commonService.thisUserAccount());
-            Integer id = basicBuildingDao.saveBasicBuilding(basicBuilding);
-        } else {
-            basicBuildingDao.updateBasicBuilding(basicBuilding);
-        }
-        return basicBuilding.getId();
-    }
-
     /**
      * 新增或者修改
      *
@@ -178,35 +160,15 @@ public class BasicBuildingService {
         }
         BasicBuildingVo vo = new BasicBuildingVo();
         BeanUtils.copyProperties(basicBuilding, vo);
-        if (basicBuilding.getPropertyType() != null) {
-            vo.setPropertyTypeName(baseDataDicService.getNameById(basicBuilding.getPropertyType()));
-        }
-        if (basicBuilding.getBuildingStructure() != null) {
-            vo.setBuildingStructureName(baseDataDicService.getNameById(basicBuilding.getBuildingStructure()));
-        }
-        if (basicBuilding.getBuildingStructureLower() != null) {
-            vo.setBuildingStructureLowerName(baseDataDicService.getNameById(basicBuilding.getBuildingStructureLower()));
-        }
-        if (basicBuilding.getBuildingCategory() != null) {
-            vo.setBuildingCategoryName(baseDataDicService.getNameById(basicBuilding.getBuildingCategory()));
-        }
+        vo.setPropertyTypeName(baseDataDicService.getNameById(basicBuilding.getPropertyType()));
+        vo.setPropertyCategoryName(baseDataDicService.getNameById(basicBuilding.getPropertyCategory()));
+        vo.setBuildingStructureTypeName(baseDataDicService.getNameById(basicBuilding.getBuildingStructureType()));
+        vo.setBuildingStructureCategoryName(baseDataDicService.getNameById(basicBuilding.getBuildingStructureCategory()));
         if (basicBuilding.getOpenTime() != null) {
             vo.setOpenTimeName(DateUtils.format(basicBuilding.getOpenTime()));
         }
         if (basicBuilding.getRoomTime() != null) {
             vo.setRoomTimeName(DateUtils.format(basicBuilding.getRoomTime()));
-        }
-        if (basicBuilding.getPropertyId() != null) {
-            DataProperty dataProperty = dataPropertyService.getByDataPropertyId(basicBuilding.getPropertyId());
-            if (dataProperty != null) {
-                vo.setPropertyName(dataProperty.getName());
-            }
-        }
-        if (basicBuilding.getBuilderId() != null) {
-            DataBuilder dataBuilder = dataBuilderService.getByDataBuilderId(basicBuilding.getBuilderId());
-            if (dataBuilder != null) {
-                vo.setDataBuildingName(dataBuilder.getName());
-            }
         }
         if (basicBuilding.getBeCompletedTime() != null) {
             vo.setBeCompletedTimeName(DateUtils.format(basicBuilding.getBeCompletedTime()));

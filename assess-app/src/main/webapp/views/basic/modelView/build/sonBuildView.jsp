@@ -108,7 +108,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="decoratingMaterial"
-                                                    class="form-control search-select select2 decoratingMaterial">
+                                                    class="form-control decoratingMaterial">
                                             </select>
                                         </div>
                                     </div>
@@ -120,7 +120,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="constructionTechnology"
-                                                    class="form-control search-select select2 constructionTechnology">
+                                                    class="form-control constructionTechnology">
                                             </select>
                                         </div>
                                     </div>
@@ -132,7 +132,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="materialPrice"
-                                                    class="form-control search-select select2 materialPrice">
+                                                    class="form-control materialPrice">
                                             </select>
                                         </div>
                                     </div>
@@ -177,8 +177,7 @@
                                             类型
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="type"
-                                                    class="form-control search-select select2 type">
+                                            <select required="required" name="type" class="form-control  type">
                                             </select>
                                         </div>
                                     </div>
@@ -189,8 +188,7 @@
                                             材质
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="materialQuality"
-                                                    class="form-control search-select select2 materialQuality">
+                                            <select required="required" name="materialQuality" class="form-control materialQuality">
                                             </select>
                                         </div>
                                     </div>
@@ -261,8 +259,7 @@
                                             描述
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="描述"
-                                                   name="description" class="form-control" required="required">
+                                            <textarea name="description" class="form-control" placeholder="描述"></textarea>
                                         </div>
                                     </div>
                                 </div>

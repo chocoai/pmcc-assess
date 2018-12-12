@@ -8,17 +8,9 @@ public class BasicBuilding {
 
     private Integer basicBuildingMainId;
 
-    private Integer builderId;
+    private String builder;
 
-    private Date beCompletedTime;
-
-    private Integer propertyId;
-
-    private String buildingNumber;
-
-    private String buildingName;
-
-    private Integer propertyType;
+    private String property;
 
     private String unitInterval;
 
@@ -36,11 +28,15 @@ public class BasicBuilding {
 
     private BigDecimal coverAnArea;
 
-    private Integer buildingCategory;
+    private Integer propertyType;
+
+    private Integer propertyCategory;
 
     private Date openTime;
 
     private Date roomTime;
+
+    private Date beCompletedTime;
 
     private BigDecimal floorHeight;
 
@@ -50,15 +46,11 @@ public class BasicBuilding {
 
     private BigDecimal netHeight;
 
-    private Integer buildingStructure;
+    private Integer buildingStructureType;
 
-    private Integer buildingStructureLower;
-
-    private String jsonContent;
+    private Integer buildingStructureCategory;
 
     private String creator;
-
-    private String name;
 
     private Date gmtCreated;
 
@@ -80,52 +72,20 @@ public class BasicBuilding {
         this.basicBuildingMainId = basicBuildingMainId;
     }
 
-    public Integer getBuilderId() {
-        return builderId;
+    public String getBuilder() {
+        return builder;
     }
 
-    public void setBuilderId(Integer builderId) {
-        this.builderId = builderId;
+    public void setBuilder(String builder) {
+        this.builder = builder == null ? null : builder.trim();
     }
 
-    public Date getBeCompletedTime() {
-        return beCompletedTime;
+    public String getProperty() {
+        return property;
     }
 
-    public void setBeCompletedTime(Date beCompletedTime) {
-        this.beCompletedTime = beCompletedTime;
-    }
-
-    public Integer getPropertyId() {
-        return propertyId;
-    }
-
-    public void setPropertyId(Integer propertyId) {
-        this.propertyId = propertyId;
-    }
-
-    public String getBuildingNumber() {
-        return buildingNumber;
-    }
-
-    public void setBuildingNumber(String buildingNumber) {
-        this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
-    }
-
-    public String getBuildingName() {
-        return buildingName;
-    }
-
-    public void setBuildingName(String buildingName) {
-        this.buildingName = buildingName == null ? null : buildingName.trim();
-    }
-
-    public Integer getPropertyType() {
-        return propertyType;
-    }
-
-    public void setPropertyType(Integer propertyType) {
-        this.propertyType = propertyType;
+    public void setProperty(String property) {
+        this.property = property == null ? null : property.trim();
     }
 
     public String getUnitInterval() {
@@ -192,12 +152,20 @@ public class BasicBuilding {
         this.coverAnArea = coverAnArea;
     }
 
-    public Integer getBuildingCategory() {
-        return buildingCategory;
+    public Integer getPropertyType() {
+        return propertyType;
     }
 
-    public void setBuildingCategory(Integer buildingCategory) {
-        this.buildingCategory = buildingCategory;
+    public void setPropertyType(Integer propertyType) {
+        this.propertyType = propertyType;
+    }
+
+    public Integer getPropertyCategory() {
+        return propertyCategory;
+    }
+
+    public void setPropertyCategory(Integer propertyCategory) {
+        this.propertyCategory = propertyCategory;
     }
 
     public Date getOpenTime() {
@@ -214,6 +182,14 @@ public class BasicBuilding {
 
     public void setRoomTime(Date roomTime) {
         this.roomTime = roomTime;
+    }
+
+    public Date getBeCompletedTime() {
+        return beCompletedTime;
+    }
+
+    public void setBeCompletedTime(Date beCompletedTime) {
+        this.beCompletedTime = beCompletedTime;
     }
 
     public BigDecimal getFloorHeight() {
@@ -248,28 +224,20 @@ public class BasicBuilding {
         this.netHeight = netHeight;
     }
 
-    public Integer getBuildingStructure() {
-        return buildingStructure;
+    public Integer getBuildingStructureType() {
+        return buildingStructureType;
     }
 
-    public void setBuildingStructure(Integer buildingStructure) {
-        this.buildingStructure = buildingStructure;
+    public void setBuildingStructureType(Integer buildingStructureType) {
+        this.buildingStructureType = buildingStructureType;
     }
 
-    public Integer getBuildingStructureLower() {
-        return buildingStructureLower;
+    public Integer getBuildingStructureCategory() {
+        return buildingStructureCategory;
     }
 
-    public void setBuildingStructureLower(Integer buildingStructureLower) {
-        this.buildingStructureLower = buildingStructureLower;
-    }
-
-    public String getJsonContent() {
-        return jsonContent;
-    }
-
-    public void setJsonContent(String jsonContent) {
-        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
+    public void setBuildingStructureCategory(Integer buildingStructureCategory) {
+        this.buildingStructureCategory = buildingStructureCategory;
     }
 
     public String getCreator() {
@@ -278,14 +246,6 @@ public class BasicBuilding {
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
     }
 
     public Date getGmtCreated() {

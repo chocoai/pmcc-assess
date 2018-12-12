@@ -18,9 +18,7 @@ public class CaseEstate {
 
     private String blockName;
 
-    private Integer developerId;
-
-    private String developerName;
+    private String developer;
 
     private String name;
 
@@ -126,20 +124,12 @@ public class CaseEstate {
         this.blockName = blockName == null ? null : blockName.trim();
     }
 
-    public Integer getDeveloperId() {
-        return developerId;
+    public String getDeveloper() {
+        return developer;
     }
 
-    public void setDeveloperId(Integer developerId) {
-        this.developerId = developerId;
-    }
-
-    public String getDeveloperName() {
-        return developerName;
-    }
-
-    public void setDeveloperName(String developerName) {
-        this.developerName = developerName == null ? null : developerName.trim();
+    public void setDeveloper(String developer) {
+        this.developer = developer == null ? null : developer.trim();
     }
 
     public String getName() {

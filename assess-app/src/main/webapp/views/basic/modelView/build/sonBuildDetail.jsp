@@ -115,10 +115,10 @@
                 buildingOutfit: {
                     loadDataDicList: function () {
                         var cols = [];
-                        cols.push({field: 'decorationPartName', title: '装修部位'});
+                        cols.push({field: 'decorationPart', title: '装修部位'});
                         cols.push({field: 'decoratingMaterialName', title: '装修材料'});
-                        cols.push({field: 'materialPriceName', title: '材料价格区间'});
                         cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
+                        cols.push({field: 'materialPriceName', title: '材料价格区间'});
                         $("#" + buildingModelDetail.prototype.config().sonTable).bootstrapTable('destroy');
                         TableInit(buildingModelDetail.prototype.config().sonTable, "${pageContext.request.contextPath}/basicBuildingOutfit/getBootstrapTableVo", cols, {
                             buildingId: buildingCommon.getBuildingId(),
@@ -158,9 +158,9 @@
                 buildingMaintenance: {
                     loadDataDicList: function () {
                         var cols = [];
-                        cols.push({field: 'categoryName', title: '类别'});
+                        cols.push({field: 'typeName', title: '类型'});
                         cols.push({field: 'materialQualityName', title: '材质'});
-                        cols.push({field: 'name', title: '名称'});
+                        cols.push({field: 'categoryName', title: '分类'});
                         $("#" + buildingModelDetail.prototype.config().examineBuildingMaintenanceTable).bootstrapTable('destroy');
                         TableInit(buildingModelDetail.prototype.config().examineBuildingMaintenanceTable, "${pageContext.request.contextPath}/basicBuildingMaintenance/getBootstrapTableVo", cols, {
                             buildingId: buildingCommon.getBuildingId(),
@@ -181,9 +181,7 @@
                         var cols = [];
                         cols.push({field: 'typeName', title: '类型'});
                         cols.push({field: 'decorationPartName', title: '装修部位'});
-                        cols.push({field: 'decoratingMaterialName', title: '装修材料'});
-                        cols.push({field: 'materialPriceName', title: '材料价格区间'});
-                        cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
+                        cols.push({field: 'remark', title: '现状描述'});
                         $("#" + buildingModelDetail.prototype.config().examineBuildingFunctionTable).bootstrapTable('destroy');
                         TableInit(buildingModelDetail.prototype.config().examineBuildingFunctionTable, "${pageContext.request.contextPath}/basicBuildingFunction/getBootstrapTableVo", cols, {
                             buildingId: buildingCommon.getBuildingId(),

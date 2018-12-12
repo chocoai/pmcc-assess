@@ -566,133 +566,73 @@ public class CaseEstateExample {
             return (Criteria) this;
         }
 
-        public Criteria andDeveloperIdIsNull() {
-            addCriterion("developer_id is null");
+        public Criteria andDeveloperIsNull() {
+            addCriterion("developer is null");
             return (Criteria) this;
         }
 
-        public Criteria andDeveloperIdIsNotNull() {
-            addCriterion("developer_id is not null");
+        public Criteria andDeveloperIsNotNull() {
+            addCriterion("developer is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDeveloperIdEqualTo(Integer value) {
-            addCriterion("developer_id =", value, "developerId");
+        public Criteria andDeveloperEqualTo(String value) {
+            addCriterion("developer =", value, "developer");
             return (Criteria) this;
         }
 
-        public Criteria andDeveloperIdNotEqualTo(Integer value) {
-            addCriterion("developer_id <>", value, "developerId");
+        public Criteria andDeveloperNotEqualTo(String value) {
+            addCriterion("developer <>", value, "developer");
             return (Criteria) this;
         }
 
-        public Criteria andDeveloperIdGreaterThan(Integer value) {
-            addCriterion("developer_id >", value, "developerId");
+        public Criteria andDeveloperGreaterThan(String value) {
+            addCriterion("developer >", value, "developer");
             return (Criteria) this;
         }
 
-        public Criteria andDeveloperIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("developer_id >=", value, "developerId");
+        public Criteria andDeveloperGreaterThanOrEqualTo(String value) {
+            addCriterion("developer >=", value, "developer");
             return (Criteria) this;
         }
 
-        public Criteria andDeveloperIdLessThan(Integer value) {
-            addCriterion("developer_id <", value, "developerId");
+        public Criteria andDeveloperLessThan(String value) {
+            addCriterion("developer <", value, "developer");
             return (Criteria) this;
         }
 
-        public Criteria andDeveloperIdLessThanOrEqualTo(Integer value) {
-            addCriterion("developer_id <=", value, "developerId");
+        public Criteria andDeveloperLessThanOrEqualTo(String value) {
+            addCriterion("developer <=", value, "developer");
             return (Criteria) this;
         }
 
-        public Criteria andDeveloperIdIn(List<Integer> values) {
-            addCriterion("developer_id in", values, "developerId");
+        public Criteria andDeveloperLike(String value) {
+            addCriterion("developer like", value, "developer");
             return (Criteria) this;
         }
 
-        public Criteria andDeveloperIdNotIn(List<Integer> values) {
-            addCriterion("developer_id not in", values, "developerId");
+        public Criteria andDeveloperNotLike(String value) {
+            addCriterion("developer not like", value, "developer");
             return (Criteria) this;
         }
 
-        public Criteria andDeveloperIdBetween(Integer value1, Integer value2) {
-            addCriterion("developer_id between", value1, value2, "developerId");
+        public Criteria andDeveloperIn(List<String> values) {
+            addCriterion("developer in", values, "developer");
             return (Criteria) this;
         }
 
-        public Criteria andDeveloperIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("developer_id not between", value1, value2, "developerId");
+        public Criteria andDeveloperNotIn(List<String> values) {
+            addCriterion("developer not in", values, "developer");
             return (Criteria) this;
         }
 
-        public Criteria andDeveloperNameIsNull() {
-            addCriterion("developer_name is null");
+        public Criteria andDeveloperBetween(String value1, String value2) {
+            addCriterion("developer between", value1, value2, "developer");
             return (Criteria) this;
         }
 
-        public Criteria andDeveloperNameIsNotNull() {
-            addCriterion("developer_name is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeveloperNameEqualTo(String value) {
-            addCriterion("developer_name =", value, "developerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeveloperNameNotEqualTo(String value) {
-            addCriterion("developer_name <>", value, "developerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeveloperNameGreaterThan(String value) {
-            addCriterion("developer_name >", value, "developerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeveloperNameGreaterThanOrEqualTo(String value) {
-            addCriterion("developer_name >=", value, "developerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeveloperNameLessThan(String value) {
-            addCriterion("developer_name <", value, "developerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeveloperNameLessThanOrEqualTo(String value) {
-            addCriterion("developer_name <=", value, "developerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeveloperNameLike(String value) {
-            addCriterion("developer_name like", value, "developerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeveloperNameNotLike(String value) {
-            addCriterion("developer_name not like", value, "developerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeveloperNameIn(List<String> values) {
-            addCriterion("developer_name in", values, "developerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeveloperNameNotIn(List<String> values) {
-            addCriterion("developer_name not in", values, "developerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeveloperNameBetween(String value1, String value2) {
-            addCriterion("developer_name between", value1, value2, "developerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeveloperNameNotBetween(String value1, String value2) {
-            addCriterion("developer_name not between", value1, value2, "developerName");
+        public Criteria andDeveloperNotBetween(String value1, String value2) {
+            addCriterion("developer not between", value1, value2, "developer");
             return (Criteria) this;
         }
 

@@ -125,18 +125,18 @@ var buildingModelView;
                     })
                 },
                 init: function (item) {
-                    $("#" + buildingModelView.prototype.config().sonFrm).find('select.decoratingMaterial').change(function () {
+                    $("#" + buildingModelView.prototype.config().sonFrm).find('select.decoratingMaterial').off('change').on('change',function () {
                         AssessCommon.loadDataDicByPid($(this).val(), item.constructionTechnology, function (html, data) {
                             $("#" + buildingModelView.prototype.config().sonFrm).find('select.constructionTechnology').empty().html(html).trigger('change');
                         });
                         item.constructionTechnology = null;
-                    })
-                    $("#" + buildingModelView.prototype.config().sonFrm).find('select.constructionTechnology').change(function () {
+                    });
+                    $("#" + buildingModelView.prototype.config().sonFrm).find('select.constructionTechnology').off('change').on('change',function () {
                         AssessCommon.loadDataDicByPid($(this).val(), item.materialPrice, function (html, data) {
                             $("#" + buildingModelView.prototype.config().sonFrm).find('select.materialPrice').empty().html(html).trigger('change');
                         });
                         item.materialPrice = null;
-                    })
+                    });
                     AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_decorating_material, item.decoratingMaterial, function (html, data) {
                         $("#" + buildingModelView.prototype.config().sonFrm).find('select.decoratingMaterial').empty().html(html).trigger('change');
                     });
@@ -352,12 +352,12 @@ var buildingModelView;
                     });
                 },
                 init: function (item) {
-                    $("#" + buildingModelView.prototype.config().examineBuildingMaintenanceFrm).find('select.type').change(function () {
+                    $("#" + buildingModelView.prototype.config().examineBuildingMaintenanceFrm).find('select.type').off('change').on('change',function () {
                         AssessCommon.loadDataDicByPid($(this).val(), item.materialQuality, function (html, data) {
                             $("#" + buildingModelView.prototype.config().examineBuildingMaintenanceFrm).find('select.materialQuality').empty().html(html).trigger('change');
                         });
                         item.materialQuality = null;
-                    })
+                    });
                     AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_maintenance_type, item.type, function (html, data) {
                         $("#" + buildingModelView.prototype.config().examineBuildingMaintenanceFrm).find('select.type').empty().html(html).trigger('change');
                     });

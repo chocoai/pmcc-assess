@@ -2,9 +2,7 @@
 <div class="x_content">
     <div class="x_title">
         <h3>
-            <small>
-                楼栋基本信息
-            </small>
+            楼栋基本信息
         </h3>
         <div class="clearfix"></div>
     </div>
@@ -207,7 +205,7 @@
                 </label>
                 <div class="col-sm-3">
                     <select name="propertyType" required="required"
-                            class="form-control search-select select2 propertyType">
+                            class="form-control propertyType">
                     </select>
                 </div>
             </div>
@@ -216,34 +214,17 @@
                     物业类别<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <select name="buildingCategory" required="required"
-                            class="form-control search-select select2 buildingCategory">
+                    <select name="propertyCategory" required="required"
+                            class="form-control propertyCategory">
                     </select>
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    物业公司<span class="symbol required"></span>
+                    物业公司
                 </label>
                 <div class="col-sm-3">
-                    <div class="input-group">
-                        <input type="hidden" name="propertyId">
-                        <input type="text" readonly="readonly" name="propertyName"
-                               placeholder="物业公司" class="form-control">
-                        <span class="input-group-btn">
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                data-toggle="tooltip"
-                                data-original-title="选择"
-                                onclick="basicCommon.propertySelect(this)">
-                        <i class="fa fa-search"></i>
-                        </button>
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                onclick="$(this).closest('.input-group').find('input').val('');"
-                                data-toggle="tooltip" data-original-title="清除">
-                        <i class="fa fa-trash-o"></i>
-                        </button>
-                        </span>
-                    </div>
+                    <input type="text" name="property" placeholder="物业公司" class="form-control">
                 </div>
             </div>
         </div>
@@ -254,8 +235,8 @@
                     建筑结构类型<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <select name="buildingStructure"
-                            class="form-control search-select select2 buildingStructure">
+                    <select name="buildingStructureType" required
+                            class="form-control buildingStructureType">
                     </select>
                 </div>
             </div>
@@ -264,35 +245,17 @@
                     建筑结构类别<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <select name="buildingStructureLower"
-                            class="form-control search-select select2 buildingStructureLower">
-                        <option>建筑类别</option>
+                    <select name="buildingStructureCategory" required
+                            class="form-control buildingStructureCategory">
                     </select>
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    建筑公司<span class="symbol required"></span>
+                    建筑公司
                 </label>
                 <div class="col-sm-3">
-                    <div class="input-group">
-                        <input type="hidden" name="builderId">
-                        <input type="text" readonly="readonly"
-                               placeholder="建筑公司" class="form-control" name="dataBuildingName">
-                        <span class="input-group-btn">
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                data-toggle="tooltip"
-                                data-original-title="选择"
-                                onclick="basicCommon.builderSelect(this)">
-                        <i class="fa fa-search"></i>
-                        </button>
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                onclick="$(this).closest('.input-group').find('input').val('');"
-                                data-toggle="tooltip" data-original-title="清除">
-                        <i class="fa fa-trash-o"></i>
-                        </button>
-                        </span>
-                    </div>
+                    <input type="text" placeholder="建筑公司" class="form-control" name="builder">
                 </div>
             </div>
 

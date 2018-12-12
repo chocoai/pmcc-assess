@@ -153,25 +153,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">开发商</label>
                 <div class="col-sm-3">
-                    <div class="input-group">
-                        <input type="hidden" name="developerId" value="${basicEstate.developerId}">
-                        <input type="text"
-                               placeholder="开发商" class="form-control" name="developerName"
-                               value="${basicEstate.developerName}">
-                        <span class="input-group-btn">
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                data-toggle="tooltip"
-                                data-original-title="选择"
-                                onclick="basicCommon.developerSelect(this)">
-                        <i class="fa fa-search"></i>
-                        </button>
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                onclick="$(this).closest('.input-group').find('input').val('');"
-                                data-toggle="tooltip" data-original-title="清除">
-                        <i class="fa fa-trash-o"></i>
-                        </button>
-                        </span>
-                    </div>
+                    <input type="text" placeholder="开发商" class="form-control" name="developer" value="${basicEstate.developer}">
                 </div>
             </div>
             <div class="x-valid">

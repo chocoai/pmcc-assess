@@ -6,7 +6,6 @@ import com.copower.pmcc.assess.dal.basic.dao.BasicEstateDao;
 import com.copower.pmcc.assess.dal.basic.dao.BasicEstateLandStateDao;
 import com.copower.pmcc.assess.dal.basic.entity.*;
 import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
-import com.copower.pmcc.assess.dal.basis.entity.DataDeveloper;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
@@ -201,12 +200,6 @@ public class BasicEstateService {
             vo.setDistrictName(erpAreaService.getSysAreaName(basicEstate.getDistrict()));
         }
         vo.setPositionName(baseDataDicService.getNameById(basicEstate.getPosition()));
-        if (basicEstate.getDeveloperId() != null) {
-            DataDeveloper dataDeveloper = dataDeveloperService.getByDataDeveloperId(basicEstate.getDeveloperId());
-            if (dataDeveloper != null) {
-                vo.setDeveloperName(dataDeveloper.getName());
-            }
-        }
         if (basicEstate.getBlockId() != null) {
             DataBlock dataBlock = dataBlockService.getDataBlockById(basicEstate.getBlockId());
             if (dataBlock != null) {

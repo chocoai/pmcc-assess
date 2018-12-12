@@ -1,10 +1,9 @@
 package com.copower.pmcc.assess.service.cases;
 
 import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
-import com.copower.pmcc.assess.dal.basis.entity.DataDeveloper;
 import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateDao;
-import com.copower.pmcc.assess.dal.cases.entity.*;
+import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
 import com.copower.pmcc.assess.dto.output.cases.CaseEstateVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -141,12 +140,6 @@ public class CaseEstateService {
             vo.setDistrictName(erpAreaService.getSysAreaName(caseEstate.getDistrict()));
         }
         vo.setPositionName(baseDataDicService.getNameById(caseEstate.getPosition()));
-        if (caseEstate.getDeveloperId() != null) {
-            DataDeveloper dataDeveloper = dataDeveloperService.getByDataDeveloperId(caseEstate.getDeveloperId());
-            if (dataDeveloper != null) {
-                vo.setDeveloperName(dataDeveloper.getName());
-            }
-        }
         if (caseEstate.getBlockId() != null) {
             DataBlock dataBlock = dataBlockService.getDataBlockById(caseEstate.getBlockId());
             if (dataBlock != null) {

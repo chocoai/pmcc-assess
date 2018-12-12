@@ -1,11 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_content">
     <div class="x_title">
-        <h3>
-            <small>
-                单元
-            </small>
-        </h3>
+        <h3>单元基本信息</h3>
         <div class="clearfix"></div>
     </div>
     <form class="form-horizontal" id="basicUnitFrm">

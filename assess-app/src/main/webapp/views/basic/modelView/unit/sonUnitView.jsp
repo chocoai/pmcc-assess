@@ -89,7 +89,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="decoratingMaterial"
-                                                    class="form-control search-select select2 decoratingMaterial">
+                                                    class="form-control decoratingMaterial">
                                             </select>
                                         </div>
                                     </div>
@@ -101,7 +101,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="constructionTechnology"
-                                                    class="form-control search-select select2 constructionTechnology">
+                                                    class="form-control constructionTechnology">
                                             </select>
                                         </div>
                                     </div>
@@ -113,7 +113,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="materialPriceRange"
-                                                    class="form-control search-select select2 materialPriceRange">
+                                                    class="form-control materialPriceRange">
                                             </select>
                                         </div>
                                     </div>
@@ -147,155 +147,150 @@
             <form id="frmUnitHuxing" class="form-horizontal">
                 <input type="hidden" name="id">
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            面积<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" placeholder="面积(数字)" data-rule-number='true' name="area"
-                                                   class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            朝向<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <select name="orientation" class="form-control search-select select2 orientation">
-                                            </select>
-                                        </div>
-                                    </div>
+                    <div id="industrySpan">
+                        <div class="x_title">
+                            <h3>
+                                <small>
+                                    生产用房
+                                </small>
+                            </h3>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group" style="display: none;">
+                            <div class="x-valid" id="industrySpanLength">
+                                <label class="col-sm-1 control-label">
+                                    跨长<span class="symbol required"></span>
+                                </label>
+                                <div class="col-sm-3">
+                                    <input type="text" placeholder="跨长(数字)" data-rule-number='true'
+                                           name="spanLength" class="form-control" required="required">
                                 </div>
-                                <div class="form-group" id="industrySpan" style="display: none;">
-                                    <div class="x-valid" id="industrySpanLength">
-                                        <label class="col-sm-1 control-label">
-                                            跨长<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" placeholder="跨长(数字)" data-rule-number='true'
-                                                   name="spanLength" class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid" id="industrySpanWidth">
-                                        <label class="col-sm-1 control-label">
-                                            跨宽<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" placeholder="跨宽(数字)" data-rule-number='true'
-                                                   name="spanWidth" class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid" id="industrySpanNumber">
-                                        <label class="col-sm-1 control-label">
-                                            跨数<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" placeholder="跨数(数字)" data-rule-number='true'
-                                                   name="spanNumber" class="form-control" required="required">
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class="x-valid" id="industrySpanWidth">
+                                <label class="col-sm-1 control-label">
+                                    跨宽<span class="symbol required"></span>
+                                </label>
+                                <div class="col-sm-3">
+                                    <input type="text" placeholder="跨宽(数字)" data-rule-number='true'
+                                           name="spanWidth" class="form-control" required="required">
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            户型 (房) <span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">卧室</span>
-                                                <input type="text" name="house" data-rule-number='true' class="form-control"
-                                                       required="required">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            户型 (厅)
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">客厅</span>
-                                                <input type="text" name="saloon" data-rule-number='true' class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            户型 (厨)
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">厨房</span>
-                                                <input type="text" name="kitchen" data-rule-number='true' class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class="x-valid" id="industrySpanNumber">
+                                <label class="col-sm-1 control-label">
+                                    跨数<span class="symbol required"></span>
+                                </label>
+                                <div class="col-sm-3">
+                                    <input type="text" placeholder="跨数(数字)" data-rule-number='true'
+                                           name="spanNumber" class="form-control" required="required">
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            户型 (卫) <span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">卫生间</span>
-                                                <input type="text" name="toilet" data-rule-number='true' class="form-control"
-                                                       required="required">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            户型 (花园)
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">花园</span>
-                                                <input type="text" name="garden" data-rule-number='true' class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            户型 (阳台)
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">阳台</span>
-                                                <input type="text" name="balcony" data-rule-number='true' class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            户型描述<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-11">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="x_title">
+                        <h3>
+                            <small>
+                                辅助用房
+                            </small>
+                        </h3>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                卧室
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" placeholder="个数" name="house" data-rule-number='true' class="form-control">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                客厅
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" placeholder="个数" name="saloon" data-rule-number='true' class="form-control">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                厨房
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" placeholder="个数" name="kitchen" data-rule-number='true' class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                卫生间
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" placeholder="个数" name="toilet" data-rule-number='true' class="form-control">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                花园
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" placeholder="个数" name="garden" data-rule-number='true' class="form-control">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                阳台
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" placeholder="个数" name="balcony" data-rule-number='true' class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="x_title">
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                面积<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" placeholder="面积(数字)" data-rule-number='true' name="area"
+                                       class="form-control" required="required">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                朝向<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-3">
+                                <select name="orientation" class="form-control search-select select2 orientation">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                户型描述<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-11">
                                             <textarea placeholder="户型描述" name="description"
                                                       class="form-control" required="required">
 
                                             </textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            户型图<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-11">
-                                            <input id="house_latest_family_planV"  placeholder="上传附件" class="form-control"
-                                                   type="file">
-                                            <div id="_house_latest_family_planV"></div>
-                                        </div>
-                                    </div>
-                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                户型图<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-11">
+                                <input id="house_latest_family_planV"  placeholder="上传附件" class="form-control"
+                                       type="file">
+                                <div id="_house_latest_family_planV"></div>
                             </div>
                         </div>
                     </div>

@@ -126,7 +126,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">开发商</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstate.developerName}</label>
+                    <label class="form-control">${basicEstate.developer}</label>
                 </div>
             </div>
             <div class="x-valid">

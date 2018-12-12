@@ -4,8 +4,8 @@
 
 ;(function ($) {
     var estateCommon = {};
-    estateCommon.estateLandStateForm = $('#basicLandState');
     estateCommon.estateForm = $('#basicEstateFrm');
+    estateCommon.estateLandStateForm = $('#basicLandState');
     estateCommon.estateMapiframe = undefined;//地图标注iframe
     //附件上传控件id数组
     estateCommon.estateFileControlIdArray = [
@@ -176,19 +176,19 @@
         });
         estateCommon.estateLandStateForm.initForm(data.basicEstateLandState, function () {
             //绑定变更事件
-            estateCommon.estateLandStateForm.find("select.landUseType").change(function () {
+            estateCommon.estateLandStateForm.find("select.landUseType").off('change').on('change',function () {
                 AssessCommon.loadDataDicByPid($(this).val(), data.basicEstateLandState.landUseCategory, function (html, data) {
                     estateCommon.estateLandStateForm.find('select.landUseCategory').empty().html(html).trigger('change');
                 });
                 data.basicEstateLandState.landUseCategory = null;//第一次执行成功后置为空
             });
             //土地形状变更
-            estateCommon.estateLandStateForm.find("select.shapeState").change(function () {
+            estateCommon.estateLandStateForm.find("select.shapeState").off('change').on('change',function () {
                 var remark = $(this).find('option:selected').attr('title');
                 estateCommon.estateLandStateForm.find("[name=shapeStateRemark]").val(remark);
             });
             //土地开发程度为熟地时选择几通几平
-            estateCommon.estateLandStateForm.find('select.developmentDegree').change(function () {
+            estateCommon.estateLandStateForm.find('select.developmentDegree').off('change').on('change',function () {
                 $("#developmentDegreeContentContainer").empty();
                 var key = $(this).find("option:selected").attr('key');
                 if (key == AssessDicKey.estateDevelopment_degreePrepared_land) {
@@ -211,8 +211,7 @@
                         }
                     })
                 }
-            })
-
+            });
 
             AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_total_land_use, data.basicEstateLandState.landUseType, function (html, data) {
                 estateCommon.estateLandStateForm.find('select.landUseType').empty().html(html).trigger('change');

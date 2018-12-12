@@ -136,23 +136,23 @@
                 if (result.ret) {
                     buildingCommon.buildingForm.initForm(result.data, function () {
                         //1.初始化下拉框；2.初始化上传控件；3.显示已上传的附件信息；4.加载从表数据
-                        buildingCommon.buildingForm.find("select.buildingStructure").change(function () {
-                            AssessCommon.loadDataDicByPid($(this).val(), result.data.buildingStructureLower, function (html, data) {
-                                buildingCommon.buildingForm.find("select.buildingStructureLower").empty().html(html).trigger('change');
+                        buildingCommon.buildingForm.find("select.buildingStructureType").off('change').on('change',function () {
+                            AssessCommon.loadDataDicByPid($(this).val(), result.data.buildingStructureCategory, function (html, data) {
+                                buildingCommon.buildingForm.find("select.buildingStructureCategory").empty().html(html).trigger('change');
                             });
-                            result.data.buildingStructureLower = null;
+                            result.data.buildingStructureCategory = null;
                         });
-                        buildingCommon.buildingForm.find('select.propertyType').change(function () {
-                            AssessCommon.loadDataDicByPid($(this).val(), result.data.buildingCategory, function (html, data) {
-                                buildingCommon.buildingForm.find('select.buildingCategory').empty().html(html).trigger('change');
+                        buildingCommon.buildingForm.find('select.propertyType').off('change').on('change',function () {
+                            AssessCommon.loadDataDicByPid($(this).val(), result.data.propertyCategory, function (html, data) {
+                                buildingCommon.buildingForm.find('select.propertyCategory').empty().html(html).trigger('change');
                             });
-                            result.data.buildingCategory = null;
-                        })
+                            result.data.propertyCategory = null;
+                        });
                         AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_type, result.data.propertyType, function (html, data) {
                             buildingCommon.buildingForm.find('select.propertyType').empty().html(html).trigger('change');
                         });
-                        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_structure, result.data.buildingStructure, function (html, data) {
-                            buildingCommon.buildingForm.find('select.buildingStructure').empty().html(html).trigger('change');
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_structure, result.data.buildingStructureType, function (html, data) {
+                            buildingCommon.buildingForm.find('select.buildingStructureType').empty().html(html).trigger('change');
                         });
 
                         //初始化上传控件
@@ -185,7 +185,6 @@
                         $.each(buildingCommon.buildingFileControlIdArray, function (i, item) {
                             buildingCommon.fileShow(item);
                         })
-
                         buildingModelDetail.prototype.viewInit(); //加载从表数据
                     });
                 }

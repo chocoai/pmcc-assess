@@ -306,11 +306,11 @@ $(function () {
                         if (result.ret) {
                             var retHtml = '<option value="" selected>-请选择-</option>';
                             $.each(result.data, function (i, item) {
+                                retHtml += '<option key="' + item.fieldName + '" title="' + item.remark + '" value="' + item.id + '"'
                                 if (item.id == value) {
-                                    retHtml += ' <option key="'+item.fieldName+'" title="'+item.remark+'" value="' + item.id + '" selected="selected">' + item.name + '</option>';
-                                } else {
-                                    retHtml += ' <option key="'+item.fieldName+'" title="'+item.remark+'" value="' + item.id + '">' + item.name + '</option>';
+                                    retHtml += 'selected="selected"'
                                 }
+                                retHtml += '>' + item.name + '</option>'
                             });
                             if (callback) {
                                 callback(retHtml, result.data);
@@ -344,11 +344,11 @@ $(function () {
                         if (result.ret) {
                             var retHtml = '<option value="" selected>-请选择-</option>';
                             $.each(result.data, function (i, item) {
+                                retHtml += '<option key="' + item.fieldName + '" title="' + item.remark + '" value="' + item.id + '"'
                                 if (item.id == value) {
-                                    retHtml += ' <option key="'+item.fieldName+'" title="'+item.remark+'" value="' + item.id + '" selected="selected">' + item.name + '</option>';
-                                } else {
-                                    retHtml += ' <option key="'+item.fieldName+'" title="'+item.remark+'" value="' + item.id + '">' + item.name + '</option>';
+                                    retHtml += 'selected="selected"'
                                 }
+                                retHtml += '>' + item.name + '</option>'
                             });
                             if (callback) {
                                 callback(retHtml, result.data);

@@ -1,8 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DataBuilder;
-import com.copower.pmcc.assess.dal.basis.entity.DataProperty;
 import com.copower.pmcc.assess.dal.cases.dao.CaseBuildingDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.cases.CaseBuildingFunctionVo;
@@ -15,7 +12,6 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -182,30 +178,10 @@ public class CaseBuildingService {
         }
         CaseBuildingVo vo = new CaseBuildingVo();
         BeanUtils.copyProperties(caseBuilding, vo);
-        if (caseBuilding.getPropertyType() != null) {
-            vo.setPropertyTypeName(baseDataDicService.getNameById(caseBuilding.getPropertyType()));
-        }
-        if (caseBuilding.getBuildingStructure() != null) {
-            vo.setBuildingStructureName(baseDataDicService.getNameById(caseBuilding.getBuildingStructure()));
-        }
-        if (caseBuilding.getBuildingStructureLower() != null) {
-            vo.setBuildingStructureLowerName(baseDataDicService.getNameById(caseBuilding.getBuildingStructureLower()));
-        }
-        if (caseBuilding.getBuildingCategory() != null) {
-            vo.setBuildingCategoryName(baseDataDicService.getNameById(caseBuilding.getBuildingCategory()));
-        }
-        if (caseBuilding.getPropertyId() != null) {
-            DataProperty dataProperty = dataPropertyService.getByDataPropertyId(caseBuilding.getPropertyId());
-            if (dataProperty != null) {
-                vo.setPropertyName(dataProperty.getName());
-            }
-        }
-        if (caseBuilding.getBuilderId() != null) {
-            DataBuilder dataBuilder = dataBuilderService.getByDataBuilderId(caseBuilding.getBuilderId());
-            if (dataBuilder != null) {
-                vo.setDataBuildingName(dataBuilder.getName());
-            }
-        }
+        vo.setPropertyTypeName(baseDataDicService.getNameById(caseBuilding.getPropertyType()));
+        vo.setPropertyCategoryName(baseDataDicService.getNameById(caseBuilding.getPropertyCategory()));
+        vo.setBuildingStructureTypeName(baseDataDicService.getNameById(caseBuilding.getBuildingStructureType()));
+        vo.setBuildingStructureCategoryName(baseDataDicService.getNameById(caseBuilding.getBuildingStructureCategory()));
         return vo;
     }
 }

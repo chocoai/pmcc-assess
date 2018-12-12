@@ -3,8 +3,6 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.css">
-    <script src='${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.js'></script>
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">

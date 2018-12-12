@@ -1,8 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.css">
+<script src='${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.js'></script>
 <script src="${pageContext.request.contextPath}/js/basic/industry.js"></script>
-<script src="${pageContext.request.contextPath}/js/select/developer.select.js"></script>
-<script src="${pageContext.request.contextPath}/js/select/builder.select.js"></script>
-<script src="${pageContext.request.contextPath}/js/select/property.select.js"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/developer.js"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/builder.js"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/property.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/land.level.select.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/block.select.js"></script>
 <div class="x_panel">
@@ -92,5 +94,8 @@
         })
 
         houseCommon.changeEvent();
+        estateCommon.estateForm.find('[name=developer]').apDeveloper();
+        buildingCommon.buildingForm.find('[name=property]').apProperty();
+        buildingCommon.buildingForm.find('[name=builder]').apBuilder();
     })
 </script>

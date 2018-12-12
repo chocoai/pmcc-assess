@@ -169,7 +169,7 @@
             },
             loadDataDicList: function () {
                 var cols = [];
-                cols.push({field: 'maintenance', title: '电梯维护情况'});
+                cols.push({field: 'maintenanceName', title: '电梯维护情况'});
                 cols.push({field: 'typeName', title: '电梯类型'});
                 cols.push({field: 'brand', title: '电梯品牌'});
                 cols.push({field: 'number', title: '电梯数量'});

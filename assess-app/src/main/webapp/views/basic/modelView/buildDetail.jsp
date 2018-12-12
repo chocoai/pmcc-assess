@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_content">
     <div class="x_title">
-        <h3><small>楼栋基本信息</small> </h3>
+        <h3>楼栋基本信息</h3>
         <div class="clearfix"></div>
     </div>
     <form class="form-horizontal" id="basicBuildingMainFrm">
@@ -189,7 +189,7 @@
                     物业类别
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="buildingCategoryName"></label>
+                    <label class="form-control" name="propertyCategoryName"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -197,7 +197,7 @@
                     物业公司
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="propertyName"></label>
+                    <label class="form-control" name="property"></label>
                 </div>
             </div>
         </div>
@@ -208,7 +208,7 @@
                     建筑结构类型
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="buildingStructureName"></label>
+                    <label class="form-control" name="buildingStructureTypeName"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -216,7 +216,7 @@
                     建筑结构类别
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="buildingStructureLowerName"></label>
+                    <label class="form-control" name="buildingStructureCategoryName"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -224,7 +224,7 @@
                     建筑公司
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="dataBuildingName"></label>
+                    <label class="form-control" name="builder"></label>
                 </div>
             </div>
         </div>
