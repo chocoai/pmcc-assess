@@ -384,17 +384,41 @@
     }
 
     houseCommon.orientationFun = function () {
-        var content = "<div id='containerMap' style='padding: 20px;'>";
-        content += '';
-        content += "</div>";
-        var map = null;
+        var unitId = $("#basicApplyFrm").find("input[name='caseUnitId']").val();
+        if (unitId){
+
+        }else {
+            $.ajax({
+                url: getContextPath() + "/basicUnit/basicUnitList",
+                type: "get",
+                dataType: "json",
+                async:true,
+                data: {
+                    applyId: 0,
+                    buildingMainId: 0
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        console.log(result);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        }
+        var contentUrl = getContextPath() + '/map/houseTagging?estateName=' + estateCommon.getEstateName();
         layer.open({
             type: 2,
-            title: '户型图处理',
-            maxmin: true,
-            area: ['800px', '660px'],
-            shadeClose: true, //点击遮罩关闭
-            content:  getContextPath() + '/map/mapMarkerEstate?estateName='+ "2355"
+            title: '房屋标注',
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: contentUrl,
+            success: function () {
+
+            }
         });
     }
 
