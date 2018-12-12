@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basic.dao.BasicUnitDao;
 import com.copower.pmcc.assess.dal.basic.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
@@ -64,9 +65,32 @@ public class BasicUnitService {
     private CaseUnitElevatorService caseUnitElevatorService;
     @Autowired
     private CaseUnitDecorateService caseUnitDecorateService;
+    @Autowired
+    private BasicEstateTaggingService basicEstateTaggingService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    public BasicEstateTagging getBasicEstateTagging(Integer id) throws Exception {
+        BasicUnit basicUnit = getBasicUnitByApplyId(id);
+        if (basicUnit == null) {
+            BasicUnit query = new BasicUnit();
+            query.setApplyId(0);
+            query.setCreator(commonService.thisUserAccount());
+            List<BasicUnit> basicUnitList = basicUnitDao.basicUnitList(query);
+            if (ObjectUtils.isEmpty(basicUnitList)) {
+                return null;
+            }
+            basicUnit = basicUnitList.get(0);
+        }
+        BasicEstateTagging query = new BasicEstateTagging();
+        query.setApplyId(0);
+        query.setType(EstateTaggingTypeEnum.UNIT.getKey());
+        List<BasicEstateTagging> basicEstateTaggings = basicEstateTaggingService.basicEstateTaggingList(query);
+        if (!ObjectUtils.isEmpty(basicEstateTaggings)) {
+            return basicEstateTaggings.get(0);
+        }
+        return null;
+    }
 
     /**
      * 获取数据
@@ -116,10 +140,10 @@ public class BasicUnitService {
      * @throws Exception
      */
     public List<BasicUnit> basicUnitList(BasicUnit basicUnit) throws Exception {
-        if (basicUnit==null){
+        if (basicUnit == null) {
             return null;
         }
-        if (StringUtils.isEmpty(basicUnit.getCreator())){
+        if (StringUtils.isEmpty(basicUnit.getCreator())) {
             basicUnit.setCreator(commonService.thisUserAccount());
         }
         return basicUnitDao.basicUnitList(basicUnit);
