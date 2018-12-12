@@ -24,10 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -39,7 +36,7 @@ import java.util.List;
 /**
  * Created by kings on 2018-5-10.
  */
-@Controller
+@RestController
 @RequestMapping("/public")
 public class PublicController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -58,7 +55,6 @@ public class PublicController {
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
 
-    @ResponseBody
     @RequestMapping(value = "/importAjaxFile", name = "导入文件", method = RequestMethod.POST)
     public HttpResult importAjaxFile(HttpServletRequest request,String tableName,@RequestParam(defaultValue = "0") String tableId,String fieldsName) {
         try {
@@ -74,7 +70,6 @@ public class PublicController {
         }
     }
 
-    @ResponseBody
     @RequestMapping(value = "/getSysAttachmentDto", method = {RequestMethod.GET}, name = "获取附件")
     public HttpResult getSysAttachmentDto(Integer attachmentId) {
         SysAttachmentDto sysAttachmentDto = baseAttachmentService.getSysAttachmentDto(attachmentId);
@@ -84,7 +79,14 @@ public class PublicController {
         return HttpResult.newErrorResult("异常");
     }
 
-    @ResponseBody
+    @RequestMapping(value = "/getSysAttachmentDtoList", method = {RequestMethod.GET}, name = "获取附件列表")
+    public HttpResult getSysAttachmentDtoList(SysAttachmentDto sysAttachmentDto) {
+        if (sysAttachmentDto != null) {
+            return HttpResult.newCorrectResult(baseAttachmentService.getAttachmentList(sysAttachmentDto));
+        }
+        return HttpResult.newErrorResult("异常");
+    }
+
     @RequestMapping(value = "/downloadFtpFileToLocal", method = {RequestMethod.GET}, name = "下载ftp附件到本地")
     public HttpResult downloadFtpFileToLocal(Integer attachmentId) {
         try {
@@ -94,7 +96,6 @@ public class PublicController {
         }
     }
 
-    @ResponseBody
     @RequestMapping(value = "/saveAndUpdateSysAttachmentDto", method = {RequestMethod.POST}, name = "新增或者更新附件")
     public HttpResult saveAndUpdateSysAttachmentDto(SysAttachmentDto sysAttachmentDto) {
         if (sysAttachmentDto != null) {
@@ -108,7 +109,6 @@ public class PublicController {
         return HttpResult.newErrorResult("异常");
     }
 
-    @ResponseBody
     @RequestMapping(value = "/getAreaList", name = "获取区域信息", method = RequestMethod.POST)
     public Object getAreaList(String pid) {
         try {
@@ -123,7 +123,6 @@ public class PublicController {
         return HttpResult.newCorrectResult();
     }
 
-    @ResponseBody
     @RequestMapping(value = "/getAreaById", name = "获取区域单个信息", method = RequestMethod.GET)
     public HttpResult getAreaById(String id) {
         SysAreaDto sysAreaDto = null;
@@ -143,7 +142,6 @@ public class PublicController {
         return HttpResult.newErrorResult("没有获取到数据!");
     }
 
-    @ResponseBody
     @RequestMapping(value = "/getApprovalLogByProject", name = "获取项目日志", method = RequestMethod.GET)
     public BootstrapTableVo getApprovalLogByProject(Integer projectId) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
@@ -182,7 +180,6 @@ public class PublicController {
         return approvalLog;
     }
 
-    @ResponseBody
     @RequestMapping(value = "/getApprovalLog", name = "获取流程审批日志", method = RequestMethod.GET)
     public BootstrapTableVo getApprovalLog(String processInsId) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
@@ -216,7 +213,6 @@ public class PublicController {
         });
     }
 
-    @ResponseBody
     @RequestMapping(value = "/closeProcess", name = "流程实例关闭")
     public HttpResult closeProcess(String processInsId) {
         try {

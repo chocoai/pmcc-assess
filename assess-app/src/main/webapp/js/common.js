@@ -111,6 +111,29 @@ $(function () {
                 return false;
             }
         },
+        //判断是否为图片(图像)
+        checkImgFile:function (filename) {
+            var flag = false; //状态
+            //常用图片后缀
+            var arr = ["bmp","dib","rle","emf","gif","jpg","jpeg","jpe","jif","pcx","dcx","pic","png","tga","tif","tiffxif","wmf","jfif"];
+            if (filename){
+                //取出上传文件的扩展名
+                var index = filename.lastIndexOf(".");
+                var ext = filename.substr(index+1);
+                //转换为小写比较
+                ext = ext.toLocaleLowerCase();
+                //循环比较
+                for(var i=0;i<arr.length;i++)
+                {
+                    if(ext == arr[i])
+                    {
+                        flag = true; //一旦找到合适的，立即退出循环
+                        break;
+                    }
+                }
+            }
+            return flag;
+        },
         //百分数转小数
         percentToPoint: function (value) {
             if (value) {

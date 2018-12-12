@@ -505,6 +505,126 @@ public class BasicEstateTaggingExample {
             return (Criteria) this;
         }
 
+        public Criteria andAttachmentIdIsNull() {
+            addCriterion("attachment_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentIdIsNotNull() {
+            addCriterion("attachment_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentIdEqualTo(Integer value) {
+            addCriterion("attachment_id =", value, "attachmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentIdNotEqualTo(Integer value) {
+            addCriterion("attachment_id <>", value, "attachmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentIdGreaterThan(Integer value) {
+            addCriterion("attachment_id >", value, "attachmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("attachment_id >=", value, "attachmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentIdLessThan(Integer value) {
+            addCriterion("attachment_id <", value, "attachmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentIdLessThanOrEqualTo(Integer value) {
+            addCriterion("attachment_id <=", value, "attachmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentIdIn(List<Integer> values) {
+            addCriterion("attachment_id in", values, "attachmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentIdNotIn(List<Integer> values) {
+            addCriterion("attachment_id not in", values, "attachmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentIdBetween(Integer value1, Integer value2) {
+            addCriterion("attachment_id between", value1, value2, "attachmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("attachment_id not between", value1, value2, "attachmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDegIsNull() {
+            addCriterion("deg is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDegIsNotNull() {
+            addCriterion("deg is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDegEqualTo(Integer value) {
+            addCriterion("deg =", value, "deg");
+            return (Criteria) this;
+        }
+
+        public Criteria andDegNotEqualTo(Integer value) {
+            addCriterion("deg <>", value, "deg");
+            return (Criteria) this;
+        }
+
+        public Criteria andDegGreaterThan(Integer value) {
+            addCriterion("deg >", value, "deg");
+            return (Criteria) this;
+        }
+
+        public Criteria andDegGreaterThanOrEqualTo(Integer value) {
+            addCriterion("deg >=", value, "deg");
+            return (Criteria) this;
+        }
+
+        public Criteria andDegLessThan(Integer value) {
+            addCriterion("deg <", value, "deg");
+            return (Criteria) this;
+        }
+
+        public Criteria andDegLessThanOrEqualTo(Integer value) {
+            addCriterion("deg <=", value, "deg");
+            return (Criteria) this;
+        }
+
+        public Criteria andDegIn(List<Integer> values) {
+            addCriterion("deg in", values, "deg");
+            return (Criteria) this;
+        }
+
+        public Criteria andDegNotIn(List<Integer> values) {
+            addCriterion("deg not in", values, "deg");
+            return (Criteria) this;
+        }
+
+        public Criteria andDegBetween(Integer value1, Integer value2) {
+            addCriterion("deg between", value1, value2, "deg");
+            return (Criteria) this;
+        }
+
+        public Criteria andDegNotBetween(Integer value1, Integer value2) {
+            addCriterion("deg not between", value1, value2, "deg");
+            return (Criteria) this;
+        }
+
         public Criteria andRemarkIsNull() {
             addCriterion("remark is null");
             return (Criteria) this;

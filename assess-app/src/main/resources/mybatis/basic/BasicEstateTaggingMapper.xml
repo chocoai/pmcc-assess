@@ -8,6 +8,8 @@
     <result column="lng" property="lng" jdbcType="VARCHAR" />
     <result column="lat" property="lat" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="attachment_id" property="attachmentId" jdbcType="INTEGER" />
+    <result column="deg" property="deg" jdbcType="INTEGER" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -72,7 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, apply_id, type, lng, lat, name, remark, creator, gmt_created, gmt_modified
+    id, apply_id, type, lng, lat, name, attachment_id, deg, remark, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateTaggingExample" >
     select
@@ -109,13 +112,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_estate_tagging (apply_id, type, lng, 
-      lat, name, remark, 
-      creator, gmt_created, gmt_modified
-      )
+      lat, name, attachment_id, 
+      deg, remark, creator, 
+      gmt_created, gmt_modified)
     values (#{applyId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{lng,jdbcType=VARCHAR}, 
-      #{lat,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{lat,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{attachmentId,jdbcType=INTEGER}, 
+      #{deg,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateTagging" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -137,6 +140,12 @@
       </if>
       <if test="name != null" >
         name,
+      </if>
+      <if test="attachmentId != null" >
+        attachment_id,
+      </if>
+      <if test="deg != null" >
+        deg,
       </if>
       <if test="remark != null" >
         remark,
@@ -166,6 +175,12 @@
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="attachmentId != null" >
+        #{attachmentId,jdbcType=INTEGER},
+      </if>
+      <if test="deg != null" >
+        #{deg,jdbcType=INTEGER},
       </if>
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
@@ -208,6 +223,12 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
+      <if test="record.attachmentId != null" >
+        attachment_id = #{record.attachmentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.deg != null" >
+        deg = #{record.deg,jdbcType=INTEGER},
+      </if>
       <if test="record.remark != null" >
         remark = #{record.remark,jdbcType=VARCHAR},
       </if>
@@ -233,6 +254,8 @@
       lng = #{record.lng,jdbcType=VARCHAR},
       lat = #{record.lat,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
+      attachment_id = #{record.attachmentId,jdbcType=INTEGER},
+      deg = #{record.deg,jdbcType=INTEGER},
       remark = #{record.remark,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -259,6 +282,12 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="attachmentId != null" >
+        attachment_id = #{attachmentId,jdbcType=INTEGER},
+      </if>
+      <if test="deg != null" >
+        deg = #{deg,jdbcType=INTEGER},
+      </if>
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
       </if>
@@ -281,6 +310,8 @@
       lng = #{lng,jdbcType=VARCHAR},
       lat = #{lat,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
+      attachment_id = #{attachmentId,jdbcType=INTEGER},
+      deg = #{deg,jdbcType=INTEGER},
       remark = #{remark,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
