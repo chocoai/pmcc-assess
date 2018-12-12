@@ -59,14 +59,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'wireErectionName', title: '电线架设方式'});
-                cols.push({field: 'switchCircuitName', title: '开关回路'});
-                cols.push({field: 'lampsLanternsName', title: '灯具'});
-                cols.push({field: 'internalCommunicationName', title: '屋内通讯'});
-                cols.push({field: 'monitoringSystemName', title: '监控系统'});
-                cols.push({field: 'intelligentSystemName', title: '智能系统'});
-
+                var cols = commonColumn.houseIntelligentColumn();
                 $("#" + houseIntelligent.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseIntelligent.prototype.config().table, "${pageContext.request.contextPath}/caseHouseIntelligent/getCaseHouseIntelligentList", cols, {
                     type: houseIntelligent.prototype.config().type,

@@ -276,7 +276,8 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="详情" onclick="baseFun.caseEstate.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="详情" onclick="baseFun.caseEstate.findData(' + row.id + ')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="详情" onclick="baseFun.caseEstate.findDataMap(' + row.id + ')"><i class="fa fa-map-marker fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -346,6 +347,12 @@
         findData: function (id) {
             var href = "${pageContext.request.contextPath}/caseEstate/detailView";
             href += "?id=" + id;
+            window.open(href, "");
+        },
+
+        findDataMap: function (id) {
+            var href = "${pageContext.request.contextPath}/case/estateCaseMap";
+            href += "?estateId=" + id;
             window.open(href, "");
         }
     };

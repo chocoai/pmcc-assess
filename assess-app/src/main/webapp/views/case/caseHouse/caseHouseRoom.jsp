@@ -55,15 +55,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'roomTypeName', title: '房间类型'});
-                cols.push({field: 'area', title: '面积'});
-                cols.push({field: 'sunshine', title: '日照'});
-                cols.push({field: 'lighting', title: '采光'});
-                cols.push({field: 'layerHeight', title: '层高'});
-                cols.push({field: 'opening', title: '开间'});
-                cols.push({field: 'depth', title: '进深'});
-                cols.push({field: 'aeration', title: '通风'});
+                var cols = commonColumn.houseRoomColumn();
                 cols.push({
                     field: 'id', title: '操作', formatter: function (value, row, index) {
                         var str = '<div class="btn-margin">';
@@ -92,11 +84,7 @@
                 $('#' + houseRoom.prototype.config().boxSubclass).modal("show");
             },
             subclassLoadList: function (id) {
-                var cols = [];
-                cols.push({field: 'materialName', title: '装修材料'});
-                cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
-                cols.push({field: 'partName', title: '房间装修部位'});
-                cols.push({field: 'materialPriceName', title: '装修材料价格区间'});
+                var cols = commonColumn.houseRoomDecorateColumn();
 
                 $("#" + houseRoom.prototype.config().tableSubclass).bootstrapTable('destroy');
                 TableInit(houseRoom.prototype.config().tableSubclass, "${pageContext.request.contextPath}/caseHouseRoom/getCaseHouseRoomDecorateLists", cols, {

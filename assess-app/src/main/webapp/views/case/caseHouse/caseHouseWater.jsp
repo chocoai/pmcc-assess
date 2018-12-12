@@ -58,14 +58,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'pretreatedWaterName', title: '前置净水'});
-                cols.push({field: 'supplyModeName', title: '给水方式'});
-                cols.push({field: 'pipingLayoutName', title: '给水管道布置'});
-                cols.push({field: 'pipeMaterialName', title: '给水管材料'});
-                cols.push({field: 'boosterEquipmentName', title: '给水升压设备'});
-                cols.push({field: 'purificationEquipmentPriceName', title: '前置净水设备价格区间'});
-                cols.push({field: 'fireWaterSupplyName', title: '消防给水'});
+                var cols = commonColumn.houseWaterColumn();
 
                 $("#" + houseWater.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseWater.prototype.config().table, "${pageContext.request.contextPath}/caseHouseWater/getCaseHouseWaterList", cols, {

@@ -7,13 +7,13 @@ public class BasicHouseRoomDecorate {
 
     private Integer roomId;
 
-    private Integer part;
+    private String part;
 
     private Integer material;
 
-    private String materialPrice;
+    private Integer constructionTechnology;
 
-    private String constructionTechnology;
+    private Integer materialPrice;
 
     private String creator;
 
@@ -37,12 +37,12 @@ public class BasicHouseRoomDecorate {
         this.roomId = roomId;
     }
 
-    public Integer getPart() {
+    public String getPart() {
         return part;
     }
 
-    public void setPart(Integer part) {
-        this.part = part;
+    public void setPart(String part) {
+        this.part = part == null ? null : part.trim();
     }
 
     public Integer getMaterial() {
@@ -53,20 +53,20 @@ public class BasicHouseRoomDecorate {
         this.material = material;
     }
 
-    public String getMaterialPrice() {
-        return materialPrice;
-    }
-
-    public void setMaterialPrice(String materialPrice) {
-        this.materialPrice = materialPrice == null ? null : materialPrice.trim();
-    }
-
-    public String getConstructionTechnology() {
+    public Integer getConstructionTechnology() {
         return constructionTechnology;
     }
 
-    public void setConstructionTechnology(String constructionTechnology) {
-        this.constructionTechnology = constructionTechnology == null ? null : constructionTechnology.trim();
+    public void setConstructionTechnology(Integer constructionTechnology) {
+        this.constructionTechnology = constructionTechnology;
+    }
+
+    public Integer getMaterialPrice() {
+        return materialPrice;
+    }
+
+    public void setMaterialPrice(Integer materialPrice) {
+        this.materialPrice = materialPrice;
     }
 
     public String getCreator() {

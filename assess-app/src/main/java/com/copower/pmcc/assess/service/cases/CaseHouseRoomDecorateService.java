@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseRoomDecorateDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseRoomDecorate;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseRoomDecorateVo;
@@ -13,8 +12,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -73,55 +70,10 @@ public class CaseHouseRoomDecorateService {
     public CaseHouseRoomDecorateVo getCaseHouseRoomDecorateVo(CaseHouseRoomDecorate caseHouseRoomDecorate) {
         CaseHouseRoomDecorateVo vo = new CaseHouseRoomDecorateVo();
         BeanUtils.copyProperties(caseHouseRoomDecorate, vo);
-        BaseDataDic dataDic = null;
-        if (StringUtils.isNotEmpty(caseHouseRoomDecorate.getConstructionTechnology())) {
-            if (NumberUtils.isNumber(caseHouseRoomDecorate.getConstructionTechnology())) {
-                dataDic = baseDataDicService.getDataDicById(Integer.parseInt(caseHouseRoomDecorate.getConstructionTechnology()));
-                if (dataDic != null) {
-                    vo.setConstructionTechnologyName(dataDic.getName());
-                    dataDic = null;
-                }
-            }
-        }
-        if (StringUtils.isNotEmpty(caseHouseRoomDecorate.getMaterialPrice())) {
-            if (NumberUtils.isNumber(caseHouseRoomDecorate.getMaterialPrice())) {
-                dataDic = baseDataDicService.getDataDicById(Integer.parseInt(caseHouseRoomDecorate.getMaterialPrice()));
-                if (dataDic != null) {
-                    vo.setMaterialPriceName(dataDic.getName());
-                    dataDic = null;
-                }
-            }
-        }
-        if (caseHouseRoomDecorate.getPart() != null){
-            dataDic = baseDataDicService.getDataDicById(caseHouseRoomDecorate.getPart());
-            if (dataDic != null){
-                vo.setPartName(dataDic.getName());
-                dataDic = null;
-            }
-        }
-        if (caseHouseRoomDecorate.getMaterial() != null){
-            dataDic = baseDataDicService.getDataDicById(caseHouseRoomDecorate.getMaterial());
-            if (dataDic != null){
-                vo.setMaterialName(dataDic.getName());
-                dataDic = null;
-            }
-        }
+        vo.setMaterialName(baseDataDicService.getNameById(caseHouseRoomDecorate.getMaterial()));
+        vo.setConstructionTechnologyName(baseDataDicService.getNameById(caseHouseRoomDecorate.getConstructionTechnology()));
+        vo.setMaterialPriceName(baseDataDicService.getNameById(caseHouseRoomDecorate.getMaterialPrice()));
         return vo;
-    }
-
-    private String getValue(String key, Integer v) {
-        StringBuilder builder = new StringBuilder(1024);
-        List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(key);
-        if (baseDataDic.size() >= 1) {
-            if (v != null) {
-                for (BaseDataDic base : baseDataDic) {
-                    if (base.getId().intValue() == v.intValue()) {
-                        builder.append(base.getName());
-                    }
-                }
-            }
-        }
-        return builder.toString();
     }
 
     /**
@@ -132,19 +84,6 @@ public class CaseHouseRoomDecorateService {
      */
     public boolean addCaseHouseRoomDecorate(CaseHouseRoomDecorate caseHouseRoomDecorate) {
         return caseHouseRoomDecorateDao.addHouseRoomDecorate(caseHouseRoomDecorate);
-    }
-
-    public void upgradeVersion(CaseHouseRoomDecorate caseHouseRoomDecorate)throws Exception{
-        if (caseHouseRoomDecorate.getId()==null || caseHouseRoomDecorate.getId().intValue()==0){
-            caseHouseRoomDecorateDao.addHouseRoomDecorate(caseHouseRoomDecorate);
-        }else {
-            CaseHouseRoomDecorate oo = getCaseHouseRoomDecorateById(caseHouseRoomDecorate.getId());
-            if (oo != null){
-
-                oo.setId(null);
-                caseHouseRoomDecorateDao.addHouseRoomDecorate(oo);
-            }
-        }
     }
 
     /**

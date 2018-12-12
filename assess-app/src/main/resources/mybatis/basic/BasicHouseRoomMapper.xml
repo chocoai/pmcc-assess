@@ -11,12 +11,13 @@
     <result column="aeration" property="aeration" jdbcType="VARCHAR" />
     <result column="Illumination" property="illumination" jdbcType="VARCHAR" />
     <result column="sound_insulation" property="soundInsulation" jdbcType="VARCHAR" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="sunshine" property="sunshine" jdbcType="VARCHAR" />
     <result column="lighting" property="lighting" jdbcType="VARCHAR" />
     <result column="opening" property="opening" jdbcType="VARCHAR" />
     <result column="depth" property="depth" jdbcType="VARCHAR" />
-    <result column="layer_height" property="layerHeight" jdbcType="DOUBLE" />
+    <result column="layer_height" property="layerHeight" jdbcType="DECIMAL" />
+    <result column="clear_height" property="clearHeight" jdbcType="DOUBLE" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -80,7 +81,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, house_id, room_type, name, area, orientation, aeration, Illumination, sound_insulation, 
-    creator, sunshine, lighting, opening, depth, layer_height, gmt_created, gmt_modified
+    sunshine, lighting, opening, depth, layer_height, clear_height, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoomExample" >
     select
@@ -118,16 +120,16 @@
     </selectKey>
     insert into tb_basic_house_room (house_id, room_type, name, 
       area, orientation, aeration, 
-      Illumination, sound_insulation, creator, 
-      sunshine, lighting, opening, 
-      depth, layer_height, gmt_created, 
-      gmt_modified)
+      Illumination, sound_insulation, sunshine, 
+      lighting, opening, depth, 
+      layer_height, clear_height, creator, 
+      gmt_created, gmt_modified)
     values (#{houseId,jdbcType=INTEGER}, #{roomType,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{area,jdbcType=DECIMAL}, #{orientation,jdbcType=VARCHAR}, #{aeration,jdbcType=VARCHAR}, 
-      #{illumination,jdbcType=VARCHAR}, #{soundInsulation,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{sunshine,jdbcType=VARCHAR}, #{lighting,jdbcType=VARCHAR}, #{opening,jdbcType=VARCHAR}, 
-      #{depth,jdbcType=VARCHAR}, #{layerHeight,jdbcType=DOUBLE}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{illumination,jdbcType=VARCHAR}, #{soundInsulation,jdbcType=VARCHAR}, #{sunshine,jdbcType=VARCHAR}, 
+      #{lighting,jdbcType=VARCHAR}, #{opening,jdbcType=VARCHAR}, #{depth,jdbcType=VARCHAR}, 
+      #{layerHeight,jdbcType=DECIMAL}, #{clearHeight,jdbcType=DOUBLE}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoom" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -159,9 +161,6 @@
       <if test="soundInsulation != null" >
         sound_insulation,
       </if>
-      <if test="creator != null" >
-        creator,
-      </if>
       <if test="sunshine != null" >
         sunshine,
       </if>
@@ -176,6 +175,12 @@
       </if>
       <if test="layerHeight != null" >
         layer_height,
+      </if>
+      <if test="clearHeight != null" >
+        clear_height,
+      </if>
+      <if test="creator != null" >
+        creator,
       </if>
       <if test="gmtCreated != null" >
         gmt_created,
@@ -209,9 +214,6 @@
       <if test="soundInsulation != null" >
         #{soundInsulation,jdbcType=VARCHAR},
       </if>
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
-      </if>
       <if test="sunshine != null" >
         #{sunshine,jdbcType=VARCHAR},
       </if>
@@ -225,7 +227,13 @@
         #{depth,jdbcType=VARCHAR},
       </if>
       <if test="layerHeight != null" >
-        #{layerHeight,jdbcType=DOUBLE},
+        #{layerHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="clearHeight != null" >
+        #{clearHeight,jdbcType=DOUBLE},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreated != null" >
         #{gmtCreated,jdbcType=TIMESTAMP},
@@ -271,9 +279,6 @@
       <if test="record.soundInsulation != null" >
         sound_insulation = #{record.soundInsulation,jdbcType=VARCHAR},
       </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
       <if test="record.sunshine != null" >
         sunshine = #{record.sunshine,jdbcType=VARCHAR},
       </if>
@@ -287,7 +292,13 @@
         depth = #{record.depth,jdbcType=VARCHAR},
       </if>
       <if test="record.layerHeight != null" >
-        layer_height = #{record.layerHeight,jdbcType=DOUBLE},
+        layer_height = #{record.layerHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="record.clearHeight != null" >
+        clear_height = #{record.clearHeight,jdbcType=DOUBLE},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
       </if>
       <if test="record.gmtCreated != null" >
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -311,12 +322,13 @@
       aeration = #{record.aeration,jdbcType=VARCHAR},
       Illumination = #{record.illumination,jdbcType=VARCHAR},
       sound_insulation = #{record.soundInsulation,jdbcType=VARCHAR},
-      creator = #{record.creator,jdbcType=VARCHAR},
       sunshine = #{record.sunshine,jdbcType=VARCHAR},
       lighting = #{record.lighting,jdbcType=VARCHAR},
       opening = #{record.opening,jdbcType=VARCHAR},
       depth = #{record.depth,jdbcType=VARCHAR},
-      layer_height = #{record.layerHeight,jdbcType=DOUBLE},
+      layer_height = #{record.layerHeight,jdbcType=DECIMAL},
+      clear_height = #{record.clearHeight,jdbcType=DOUBLE},
+      creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -350,9 +362,6 @@
       <if test="soundInsulation != null" >
         sound_insulation = #{soundInsulation,jdbcType=VARCHAR},
       </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
       <if test="sunshine != null" >
         sunshine = #{sunshine,jdbcType=VARCHAR},
       </if>
@@ -366,7 +375,13 @@
         depth = #{depth,jdbcType=VARCHAR},
       </if>
       <if test="layerHeight != null" >
-        layer_height = #{layerHeight,jdbcType=DOUBLE},
+        layer_height = #{layerHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="clearHeight != null" >
+        clear_height = #{clearHeight,jdbcType=DOUBLE},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreated != null" >
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
@@ -387,12 +402,13 @@
       aeration = #{aeration,jdbcType=VARCHAR},
       Illumination = #{illumination,jdbcType=VARCHAR},
       sound_insulation = #{soundInsulation,jdbcType=VARCHAR},
-      creator = #{creator,jdbcType=VARCHAR},
       sunshine = #{sunshine,jdbcType=VARCHAR},
       lighting = #{lighting,jdbcType=VARCHAR},
       opening = #{opening,jdbcType=VARCHAR},
       depth = #{depth,jdbcType=VARCHAR},
-      layer_height = #{layerHeight,jdbcType=DOUBLE},
+      layer_height = #{layerHeight,jdbcType=DECIMAL},
+      clear_height = #{clearHeight,jdbcType=DOUBLE},
+      creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

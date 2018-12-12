@@ -22,8 +22,6 @@ public class BasicHouseRoom {
 
     private String soundInsulation;
 
-    private String creator;
-
     private String sunshine;
 
     private String lighting;
@@ -32,7 +30,11 @@ public class BasicHouseRoom {
 
     private String depth;
 
-    private Double layerHeight;
+    private BigDecimal layerHeight;
+
+    private Double clearHeight;
+
+    private String creator;
 
     private Date gmtCreated;
 
@@ -110,14 +112,6 @@ public class BasicHouseRoom {
         this.soundInsulation = soundInsulation == null ? null : soundInsulation.trim();
     }
 
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
     public String getSunshine() {
         return sunshine;
     }
@@ -150,12 +144,28 @@ public class BasicHouseRoom {
         this.depth = depth == null ? null : depth.trim();
     }
 
-    public Double getLayerHeight() {
+    public BigDecimal getLayerHeight() {
         return layerHeight;
     }
 
-    public void setLayerHeight(Double layerHeight) {
+    public void setLayerHeight(BigDecimal layerHeight) {
         this.layerHeight = layerHeight;
+    }
+
+    public Double getClearHeight() {
+        return clearHeight;
+    }
+
+    public void setClearHeight(Double clearHeight) {
+        this.clearHeight = clearHeight;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
     }
 
     public Date getGmtCreated() {

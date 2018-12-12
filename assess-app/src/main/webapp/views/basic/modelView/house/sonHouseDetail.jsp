@@ -66,7 +66,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>供排水情况</h4>
+        <h4>供水情况</h4>
     </div>
     <div class="x_content collapse">
         <table class="table table-bordered" id="HouseWaterList">
@@ -81,7 +81,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>供排水情况</h4>
+        <h4>排水情况</h4>
     </div>
     <div class="x_content collapse">
         <table class="table table-bordered" id="HouseWaterDrainList">
@@ -162,15 +162,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'roomTypeName', title: '房间类型'});
-                cols.push({field: 'area', title: '面积'});
-                cols.push({field: 'sunshine', title: '日照'});
-                cols.push({field: 'lighting', title: '采光'});
-                cols.push({field: 'layerHeight', title: '层高'});
-                cols.push({field: 'opening', title: '开间'});
-                cols.push({field: 'depth', title: '进深'});
-                cols.push({field: 'aeration', title: '通风'});
+                var cols = commonColumn.houseRoomColumn();
                 cols.push({
                     field: 'id', title: '操作', formatter: function (value, row, index) {
                         var str = '<div class="btn-margin">';
@@ -200,11 +192,7 @@
                 $('#' + houseRoom.prototype.config().boxSubclass).modal("show");
             },
             subclassLoadList: function (id) {
-                var cols = [];
-                cols.push({field: 'materialName', title: '装修材料'});
-                cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
-                cols.push({field: 'partName', title: '房间装修部位'});
-                cols.push({field: 'materialPriceName', title: '装修材料价格区间'});
+                var cols = commonColumn.houseRoomDecorateColumn();
                 $("#" + houseRoom.prototype.config().tableSubclass).bootstrapTable('destroy');
                 TableInit(houseRoom.prototype.config().tableSubclass, "${pageContext.request.contextPath}/basicHouseRoom/getRoomDecorateBootstrapTableVo", cols, {
                     roomId: id,
@@ -343,13 +331,7 @@
                 return false;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'wireErectionName', title: '电线架设方式'});
-                cols.push({field: 'switchCircuitName', title: '开关回路'});
-                cols.push({field: 'lampsLanternsName', title: '灯具'});
-                cols.push({field: 'internalCommunicationName', title: '屋内通讯'});
-                cols.push({field: 'monitoringSystemName', title: '监控系统'});
-                cols.push({field: 'intelligentSystemName', title: '智能系统'});
+                var cols = commonColumn.houseIntelligentColumn();
                 $("#" + houseIntelligent.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseIntelligent.prototype.config().table, "${pageContext.request.contextPath}/basicHouseIntelligent/getBootstrapTableVo", cols, {
                     houseId:'${empty basicHouse.id?0:basicHouse.id}',
@@ -392,12 +374,7 @@
                 return false;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'natrueIntakePointNumber', title: '自然区间取水点数'});
-                cols.push({field: 'intakePointNumber', title: '取水点数'});
-                cols.push({field: 'supplyErectionMethodName', title: '供水管架设方式'});
-                cols.push({field: 'pretreatedWaterName', title: '前置净水'});
-                cols.push({field: 'drainageCircuitName', title: '排水回路'});
+                var cols = commonColumn.houseWaterColumn();
                 $("#" + houseWater.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseWater.prototype.config().table, "${pageContext.request.contextPath}/basicHouseWater/getBootstrapTableVo", cols, {
                     houseId:'${empty basicHouse.id?0:basicHouse.id}',
@@ -434,9 +411,9 @@
     };
     houseWaterDrain.loadDataDicList = function () {
         var cols = [];
-        cols.push({field: 'drainSystemName', title: '排水_系统'});
+        cols.push({field: 'drainSystemName', title: '排水系统'});
         cols.push({field: 'typeName', title: '类别'});
-        cols.push({field: 'processingModeName', title: '排水_处理方式'});
+        cols.push({field: 'processingModeName', title: '排水处理方式'});
         $("#" + this.config.table).bootstrapTable('destroy');
         TableInit(this.config.table, getContextPath() + "/basicHouseWaterDrain/getBootstrapTableVo", cols, {
             houseId:'${empty basicHouse.id?0:basicHouse.id}',

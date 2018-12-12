@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicHouseRoomDecorateDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoomDecorate;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseRoomDecorateVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -15,8 +14,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -117,39 +114,9 @@ public class BasicHouseRoomDecorateService {
         }
         BasicHouseRoomDecorateVo vo = new BasicHouseRoomDecorateVo();
         BeanUtils.copyProperties(basicHouseRoomDecorate, vo);
-        BaseDataDic dataDic = null;
-        if (StringUtils.isNotEmpty(basicHouseRoomDecorate.getConstructionTechnology())) {
-            if (NumberUtils.isNumber(basicHouseRoomDecorate.getConstructionTechnology())) {
-                dataDic = baseDataDicService.getDataDicById(Integer.parseInt(basicHouseRoomDecorate.getConstructionTechnology()));
-                if (dataDic != null) {
-                    vo.setConstructionTechnologyName(dataDic.getName());
-                    dataDic = null;
-                }
-            }
-        }
-        if (StringUtils.isNotEmpty(basicHouseRoomDecorate.getMaterialPrice())) {
-            if (NumberUtils.isNumber(basicHouseRoomDecorate.getMaterialPrice())) {
-                dataDic = baseDataDicService.getDataDicById(Integer.parseInt(basicHouseRoomDecorate.getMaterialPrice()));
-                if (dataDic != null) {
-                    vo.setMaterialPriceName(dataDic.getName());
-                    dataDic = null;
-                }
-            }
-        }
-        if (basicHouseRoomDecorate.getPart() != null){
-            dataDic = baseDataDicService.getDataDicById(basicHouseRoomDecorate.getPart());
-            if (dataDic != null){
-                vo.setPartName(dataDic.getName());
-                dataDic = null;
-            }
-        }
-        if (basicHouseRoomDecorate.getMaterial() != null){
-            dataDic = baseDataDicService.getDataDicById(basicHouseRoomDecorate.getMaterial());
-            if (dataDic != null){
-                vo.setMaterialName(dataDic.getName());
-                dataDic = null;
-            }
-        }
+        vo.setMaterialName(baseDataDicService.getNameById(basicHouseRoomDecorate.getMaterial()));
+        vo.setConstructionTechnologyName(baseDataDicService.getNameById(basicHouseRoomDecorate.getConstructionTechnology()));
+        vo.setMaterialPriceName(baseDataDicService.getNameById(basicHouseRoomDecorate.getMaterialPrice()));
         return vo;
     }
 }

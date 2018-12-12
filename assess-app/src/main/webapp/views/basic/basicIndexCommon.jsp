@@ -5,6 +5,8 @@
 <script src="${pageContext.request.contextPath}/js/autocomplete/developer.js"></script>
 <script src="${pageContext.request.contextPath}/js/autocomplete/builder.js"></script>
 <script src="${pageContext.request.contextPath}/js/autocomplete/property.js"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/new.wind.brand.js"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/heating.brand.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/land.level.select.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/block.select.js"></script>
 <div class="x_panel">
@@ -83,7 +85,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/estate/estate.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/building/building.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/unit/unit.common.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/house/house.common.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/house/house.common1.js"></script>
 <script type="text/javascript">
     $(function () {
         $('#contentTabPanel .fa-close').click(function (e) {
@@ -96,5 +98,8 @@
         estateCommon.estateForm.find('[name=developer]').apDeveloper();
         buildingCommon.buildingForm.find('[name=property]').apProperty();
         buildingCommon.buildingForm.find('[name=builder]').apBuilder();
+
+        $("#" + houseNewWind.prototype.config().frm).find("[name=equipment]").apNewWindBrand();
+        $("#" + houseHeating.prototype.config().frm).find("[name=equipment]").apHeatingBrand();
     })
 </script>

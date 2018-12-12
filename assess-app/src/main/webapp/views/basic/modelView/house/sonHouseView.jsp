@@ -95,7 +95,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>供排水情况</h4>
+        <h4>排水情况</h4>
     </div>
     <div class="x_content collapse">
         <button type="button" class="btn btn-success" onclick="houseWaterDrain.showModel()"
@@ -199,7 +199,51 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label"
+                                               title="层高通常指下层地板面或楼板面到上层楼板面之间的距离。层高减去楼板的厚度或结构层的高度的差,叫做净高。出于降低成本、节约建材和节约土地等考虑,一般住宅层高都在28米左右">
+                                            层高(m)
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" data-rule-number="true" placeholder="层高(m)"
+                                                   name="layerHeight" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label"
+                                               title="层高通常指下层地板面或楼板面到上层楼板面之间的距离。层高减去楼板的厚度或结构层的高度的差,叫做净高。出于降低成本、节约建材和节约土地等考虑,一般住宅层高都在28米左右">
+                                            净高(m)
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" data-rule-number="true" placeholder="净高(m)"
+                                                   name="clearHeight"
+                                                   class="form-control"
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            开间/宽(m)
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" data-rule-number="true" placeholder="开间/宽(m)"
+                                                   name="opening" class="form-control"
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            进深/长(m)
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" data-rule-number="true" placeholder="进深/长(m)"
+                                                   name="depth" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
@@ -220,7 +264,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
@@ -231,39 +274,6 @@
                                                    required="required">
                                         </div>
                                     </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            层高/m
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" placeholder="层高/m" name="layerHeight"
-                                                   class="form-control"
-                                            >
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            开间（宽）/m
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" placeholder="开间（宽）/m" name="opening" class="form-control"
-                                            >
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            进深（长）/m
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" placeholder="进深（长）/m" name="depth" class="form-control"
-                                            >
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             隔音
@@ -336,11 +346,20 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            装修部位
+                                            装修部位<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="part"
-                                                    class="form-control search-select select2 part">
+                                            <input type="text" name="part" class="form-control" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            装修材料<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="material" class="form-control  material">
                                             </select>
                                         </div>
                                     </div>
@@ -348,35 +367,23 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            装修材料
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="material"
-                                                    class="form-control search-select select2 material">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            装修材料价格区间
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="materialPrice"
-                                                    class="form-control search-select select2 materialPrice">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            施工工艺
+                                            施工工艺<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="constructionTechnology"
-                                                    class="form-control search-select select2 constructionTechnology">
+                                                    class="form-control constructionTechnology">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            装修材料价格区间<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="materialPrice"
+                                                    class="form-control materialPrice">
                                             </select>
                                         </div>
                                     </div>
@@ -419,7 +426,8 @@
                                             给水方式<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select name="supplyMode" class="form-control search-select select2 supplyMode">
+                                            <select name="supplyMode"
+                                                    class="form-control search-select select2 supplyMode">
 
                                             </select>
                                         </div>
@@ -431,7 +439,8 @@
                                             给水管道布置<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select name="pipingLayout" class="form-control search-select select2 pipingLayout">
+                                            <select name="pipingLayout"
+                                                    class="form-control search-select select2 pipingLayout">
 
                                             </select>
                                         </div>
@@ -443,7 +452,8 @@
                                             给水管材料<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select name="pipeMaterial" class="form-control search-select select2 pipeMaterial">
+                                            <select name="pipeMaterial"
+                                                    class="form-control search-select select2 pipeMaterial">
 
                                             </select>
                                         </div>
@@ -476,7 +486,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            供水_前置净水设备价格区间<span class="symbol required"></span>
+                                            前置净水设备价格区间<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="purificationEquipmentPrice"
@@ -514,14 +524,15 @@
     </div>
 </div>
 
-<div id="divBoxHouseWaterDrain" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="divBoxHouseWaterDrain" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">供排水情况</h3>
+                <h3 class="modal-title">排水情况</h3>
             </div>
             <form id="frmHouseWaterDrain" class="form-horizontal">
                 <input type="hidden" name="id">
@@ -532,7 +543,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            排水_系统<span class="symbol required"></span>
+                                            排水系统<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required name="drainSystem"
@@ -556,7 +567,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            排水_处理方式<span class="symbol required"></span>
+                                            排水处理方式<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="processingMode"
@@ -784,7 +795,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="type"
-                                                    class="form-control search-select select2 type">
+                                                    class="form-control type">
                                             </select>
                                         </div>
                                     </div>
@@ -795,8 +806,7 @@
                                             类别<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="category"
-                                                    class="form-control search-select select2 category">
+                                            <select required="required" name="category" class="form-control category">
                                             </select>
                                         </div>
                                     </div>

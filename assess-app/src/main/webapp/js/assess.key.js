@@ -176,10 +176,12 @@ AssessDicKey.examine_house_street_level = "examine.house.street_level";//街道�
 AssessDicKey.examine_house_traffic_flow = "examine.house.traffic_flow";//交通流量
 AssessDicKey.examine_house_visitors_flowrate = "examine.house.visitors_flowrate";//人流量
 
+AssessDicKey.examine_house_wind_brand = "examine.house.wind.brand";//新风品牌
 AssessDicKey.examine_house_way_wind = "examine.house.way.wind";//供风系统类型
 AssessDicKey.examine_house_wind_equipment_price_range = "examine.house.wind.equipment_price_range";//供风设备价格区间
 AssessDicKey.examine_house_air_conditioning_mode = "examine.house.air.conditioning_mode";//空调制式
 AssessDicKey.examine_house_air_equipment_price_range = "examine.house.air.equipment_price_range";//空调设备价格区间
+AssessDicKey.examine_house_heating_brand = "examine.house.heating.brand";//暖气品牌
 AssessDicKey.examine_house_heating_method = "examine.house.heating.method";//供暖方式
 AssessDicKey.examine_house_heating_equipment_price_range = "examine.house.heating.equipment_price_range";//供暖设备价格区间
 AssessDicKey.examine_house_corollary_equipment_type = "examine.house.corollary.equipment.type";//配套设备设施 类型

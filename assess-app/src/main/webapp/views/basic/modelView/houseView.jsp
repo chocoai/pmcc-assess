@@ -2,9 +2,7 @@
 <div class="x_content">
     <div class="x_title">
         <h3>
-            <small>
-                房屋基本信息
-            </small>
+            房屋基本信息
         </h3>
         <div class="clearfix"></div>
     </div>
@@ -42,7 +40,7 @@
                 <label class="col-sm-1 control-label">户型</label>
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <input type="text"
+                        <input type="text" readonly="readonly"
                                placeholder="户型" class="form-control" name="huxingName"
                                value="${basicHouse.huxingName}">
                         <span class="input-group-btn">
@@ -127,7 +125,7 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">房屋出租占用情况途描述</label>
+                <label class="col-sm-1 control-label">房屋出租占用情况描述</label>
                 <div class="col-sm-11">
                     <textarea class="form-control" name="description">${basicHouse.description}</textarea>
                 </div>
@@ -149,9 +147,7 @@
 <div class="x_content">
     <div class="x_title">
         <h3>
-            <small>
-                房屋交易信息
-            </small>
+            房屋交易信息
         </h3>
         <div class="clearfix"></div>
     </div>
@@ -161,33 +157,12 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">交易情况<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 normalTransaction"
+                    <select class="form-control normalTransaction"
                             name="normalTransaction"
                             required="required">
                     </select>
                 </div>
             </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">说明事项类型<span
-                        class="symbol required"></span></label>
-                <div class="col-sm-3">
-                    <select class="form-control search-select select2 descriptionType"
-                            name="descriptionType"
-                            required="required">
-                    </select>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">说明事项内容<span
-                        class="symbol required"></span></label>
-                <div class="col-sm-3">
-                    <input type="text" placeholder="说明事项内容" required="required"
-                           name="descriptionContent"
-                           class="form-control" value="${basicHouseTrading.descriptionContent}">
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">财产范围<span class="symbol required"></span></label>
                 <div class="col-sm-3">
@@ -205,43 +180,60 @@
                 </div>
             </div>
         </div>
+        <div class="form-group" id="abnormalTransaction" style="display: none;">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">说明事项类型<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select class="form-control search-select select2 descriptionType"
+                            name="descriptionType"
+                            required="required">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">说明事项内容</label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="说明事项内容" name="descriptionContent" class="form-control" value="${basicHouseTrading.descriptionContent}">
+                </div>
+            </div>
+        </div>
         <div class="x_title">
-            <h4>
+            <h3>
                 <small>
                     融资条件
                 </small>
-            </h4>
+            </h3>
             <div class="clearfix"></div>
         </div>
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">首付款比例</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" name="" placeholder="首付款比例">
+                    <input type="text" class="form-control" name="downPaymentRatio" placeholder="首付款比例">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">贷款利率</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" name="" placeholder="贷款利率">
+                    <input type="text" class="form-control" name="lendingRate" placeholder="贷款利率">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">贷款期限</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" name="" placeholder="贷款期限">
+                    <input type="text" class="form-control" name="loanPeriod" placeholder="贷款期限">
                 </div>
             </div>
         </div>
         <div class="x_title">
             <div class="clearfix"></div>
         </div>
-
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">交易类型<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 tradingType" name="tradingType"
+                    <select class="form-control tradingType" name="tradingType"
                             required="required">
                     </select>
                 </div>
@@ -249,7 +241,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">付款方式<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 paymentMethod"
+                    <select class="form-control paymentMethod"
                             name="paymentMethod"
                             required="required">
                     </select>
@@ -343,16 +335,16 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">交易总价（元）</label>
+                <label class="col-sm-1 control-label">交易总价（元）<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="交易总价（元）" class="form-control" name="tradingTotalPrice"
+                    <input type="text" placeholder="交易总价（元）" class="form-control" name="tradingTotalPrice" required
                            value="${basicHouseTrading.tradingTotalPrice}">
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">交易单价（元）</label>
+                <label class="col-sm-1 control-label">交易单价（元）<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="交易单价（元）" class="form-control" name="tradingUnitPrice"
+                    <input type="text" placeholder="交易单价（元）" class="form-control" name="tradingUnitPrice" required
                            value="${basicHouseTrading.tradingUnitPrice}">
                 </div>
             </div>

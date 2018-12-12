@@ -696,76 +696,6 @@ public class BasicHouseRoomExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreatorIsNull() {
-            addCriterion("creator is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorIsNotNull() {
-            addCriterion("creator is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorEqualTo(String value) {
-            addCriterion("creator =", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotEqualTo(String value) {
-            addCriterion("creator <>", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorGreaterThan(String value) {
-            addCriterion("creator >", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorGreaterThanOrEqualTo(String value) {
-            addCriterion("creator >=", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorLessThan(String value) {
-            addCriterion("creator <", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorLessThanOrEqualTo(String value) {
-            addCriterion("creator <=", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorLike(String value) {
-            addCriterion("creator like", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotLike(String value) {
-            addCriterion("creator not like", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorIn(List<String> values) {
-            addCriterion("creator in", values, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotIn(List<String> values) {
-            addCriterion("creator not in", values, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorBetween(String value1, String value2) {
-            addCriterion("creator between", value1, value2, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotBetween(String value1, String value2) {
-            addCriterion("creator not between", value1, value2, "creator");
-            return (Criteria) this;
-        }
-
         public Criteria andSunshineIsNull() {
             addCriterion("sunshine is null");
             return (Criteria) this;
@@ -1056,53 +986,183 @@ public class BasicHouseRoomExample {
             return (Criteria) this;
         }
 
-        public Criteria andLayerHeightEqualTo(Double value) {
+        public Criteria andLayerHeightEqualTo(BigDecimal value) {
             addCriterion("layer_height =", value, "layerHeight");
             return (Criteria) this;
         }
 
-        public Criteria andLayerHeightNotEqualTo(Double value) {
+        public Criteria andLayerHeightNotEqualTo(BigDecimal value) {
             addCriterion("layer_height <>", value, "layerHeight");
             return (Criteria) this;
         }
 
-        public Criteria andLayerHeightGreaterThan(Double value) {
+        public Criteria andLayerHeightGreaterThan(BigDecimal value) {
             addCriterion("layer_height >", value, "layerHeight");
             return (Criteria) this;
         }
 
-        public Criteria andLayerHeightGreaterThanOrEqualTo(Double value) {
+        public Criteria andLayerHeightGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("layer_height >=", value, "layerHeight");
             return (Criteria) this;
         }
 
-        public Criteria andLayerHeightLessThan(Double value) {
+        public Criteria andLayerHeightLessThan(BigDecimal value) {
             addCriterion("layer_height <", value, "layerHeight");
             return (Criteria) this;
         }
 
-        public Criteria andLayerHeightLessThanOrEqualTo(Double value) {
+        public Criteria andLayerHeightLessThanOrEqualTo(BigDecimal value) {
             addCriterion("layer_height <=", value, "layerHeight");
             return (Criteria) this;
         }
 
-        public Criteria andLayerHeightIn(List<Double> values) {
+        public Criteria andLayerHeightIn(List<BigDecimal> values) {
             addCriterion("layer_height in", values, "layerHeight");
             return (Criteria) this;
         }
 
-        public Criteria andLayerHeightNotIn(List<Double> values) {
+        public Criteria andLayerHeightNotIn(List<BigDecimal> values) {
             addCriterion("layer_height not in", values, "layerHeight");
             return (Criteria) this;
         }
 
-        public Criteria andLayerHeightBetween(Double value1, Double value2) {
+        public Criteria andLayerHeightBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("layer_height between", value1, value2, "layerHeight");
             return (Criteria) this;
         }
 
-        public Criteria andLayerHeightNotBetween(Double value1, Double value2) {
+        public Criteria andLayerHeightNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("layer_height not between", value1, value2, "layerHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearHeightIsNull() {
+            addCriterion("clear_height is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearHeightIsNotNull() {
+            addCriterion("clear_height is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearHeightEqualTo(Double value) {
+            addCriterion("clear_height =", value, "clearHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearHeightNotEqualTo(Double value) {
+            addCriterion("clear_height <>", value, "clearHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearHeightGreaterThan(Double value) {
+            addCriterion("clear_height >", value, "clearHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearHeightGreaterThanOrEqualTo(Double value) {
+            addCriterion("clear_height >=", value, "clearHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearHeightLessThan(Double value) {
+            addCriterion("clear_height <", value, "clearHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearHeightLessThanOrEqualTo(Double value) {
+            addCriterion("clear_height <=", value, "clearHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearHeightIn(List<Double> values) {
+            addCriterion("clear_height in", values, "clearHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearHeightNotIn(List<Double> values) {
+            addCriterion("clear_height not in", values, "clearHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearHeightBetween(Double value1, Double value2) {
+            addCriterion("clear_height between", value1, value2, "clearHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andClearHeightNotBetween(Double value1, Double value2) {
+            addCriterion("clear_height not between", value1, value2, "clearHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorIsNull() {
+            addCriterion("creator is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorIsNotNull() {
+            addCriterion("creator is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorEqualTo(String value) {
+            addCriterion("creator =", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotEqualTo(String value) {
+            addCriterion("creator <>", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorGreaterThan(String value) {
+            addCriterion("creator >", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorGreaterThanOrEqualTo(String value) {
+            addCriterion("creator >=", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorLessThan(String value) {
+            addCriterion("creator <", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorLessThanOrEqualTo(String value) {
+            addCriterion("creator <=", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorLike(String value) {
+            addCriterion("creator like", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotLike(String value) {
+            addCriterion("creator not like", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorIn(List<String> values) {
+            addCriterion("creator in", values, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotIn(List<String> values) {
+            addCriterion("creator not in", values, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorBetween(String value1, String value2) {
+            addCriterion("creator between", value1, value2, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotBetween(String value1, String value2) {
+            addCriterion("creator not between", value1, value2, "creator");
             return (Criteria) this;
         }
 

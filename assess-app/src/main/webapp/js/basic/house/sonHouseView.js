@@ -396,8 +396,7 @@ var houseNewWind;
             })
         },
         init: function (item) {
-            $("#" + houseNewWind.prototype.config().frm).clearAll();
-            $("#" + houseNewWind.prototype.config().frm).initForm(item);
+            $("#" + houseNewWind.prototype.config().frm).clearAll().initForm(item);
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_wind_equipment_price_range, item.equipmentPrice, function (html, data) {
                 $("#" + houseNewWind.prototype.config().frm).find("select.equipmentPrice").empty().html(html).trigger('change');
             });
@@ -406,6 +405,7 @@ var houseNewWind;
             });
         }
     }
+
 
     //绑定事件
     $('#' + houseNewWind.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
@@ -537,11 +537,11 @@ var houseCorollaryEquipment;
         },
         init: function (item) {
             $("#" + houseCorollaryEquipment.prototype.config().frm).clearAll().initForm(item);
-            $("#" + houseCorollaryEquipment.prototype.config().frm).find("select.type").change(function () {
+            $("#" + houseCorollaryEquipment.prototype.config().frm).find("select.type").off('change').on('change',function () {
                 AssessCommon.loadDataDicByPid($(this).val(), item.category, function (html, data) {
                     $("#" + houseCorollaryEquipment.prototype.config().frm).find("select.category").empty().html(html).trigger('change');
                 });
-            })
+            });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_corollary_equipment_type, item.type, function (html, data) {
                 $("#" + houseCorollaryEquipment.prototype.config().frm).find("select.type").empty().html(html).trigger('change');
             });
@@ -779,13 +779,7 @@ var houseIntelligent;
             return false;
         },
         loadDataDicList: function () {
-            var cols = [];
-            cols.push({field: 'wireErectionName', title: '电线架设方式'});
-            cols.push({field: 'switchCircuitName', title: '开关回路'});
-            cols.push({field: 'lampsLanternsName', title: '灯具'});
-            cols.push({field: 'internalCommunicationName', title: '屋内通讯'});
-            cols.push({field: 'monitoringSystemName', title: '监控系统'});
-            cols.push({field: 'intelligentSystemName', title: '智能系统'});
+            var cols = commonColumn.houseIntelligentColumn();
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -926,14 +920,7 @@ var houseWater;
             return false;
         },
         loadDataDicList: function () {
-            var cols = [];
-            cols.push({field: 'pretreatedWaterName', title: '前置净水'});
-            cols.push({field: 'supplyModeName', title: '给水方式'});
-            cols.push({field: 'pipingLayoutName', title: '给水管道布置'});
-            cols.push({field: 'pipeMaterialName', title: '给水管材料'});
-            cols.push({field: 'boosterEquipmentName', title: '给水升压设备'});
-            cols.push({field: 'purificationEquipmentPriceName', title: '前置净水设备价格区间'});
-            cols.push({field: 'fireWaterSupplyName', title: '消防给水'});
+            var cols = commonColumn.houseWaterColumn();
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -1074,9 +1061,9 @@ houseWaterDrain.isNotBlank = function (item) {
 };
 houseWaterDrain.loadDataDicList = function () {
     var cols = [];
-    cols.push({field: 'drainSystemName', title: '排水_系统'});
+    cols.push({field: 'drainSystemName', title: '排水系统'});
     cols.push({field: 'typeName', title: '类别'});
-    cols.push({field: 'processingModeName', title: '排水_处理方式'});
+    cols.push({field: 'processingModeName', title: '排水处理方式'});
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {
             var str = '<div class="btn-margin">';
@@ -1215,15 +1202,7 @@ var houseRoom;
             return data;
         },
         loadDataDicList: function () {
-            var cols = [];
-            cols.push({field: 'roomTypeName', title: '房间类型'});
-            cols.push({field: 'area', title: '面积'});
-            cols.push({field: 'sunshine', title: '日照'});
-            cols.push({field: 'lighting', title: '采光'});
-            cols.push({field: 'layerHeight', title: '层高'});
-            cols.push({field: 'opening', title: '开间'});
-            cols.push({field: 'depth', title: '进深'});
-            cols.push({field: 'aeration', title: '通风'});
+            var cols = commonColumn.houseRoomColumn();
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -1332,27 +1311,26 @@ var houseRoom;
             })
         },
         subclassInit: function (item) {
-            $("#" + houseRoom.prototype.config().frmSubclass).clearAll();
-            $("#" + houseRoom.prototype.config().frmSubclass).initForm(item);
+            $("#" + houseRoom.prototype.config().frmSubclass).clearAll().initForm(item);
+            $("#" + houseRoom.prototype.config().frmSubclass).find('select.material').off('change').on('change',function () {
+                AssessCommon.loadDataDicByPid($(this).val(), item.constructionTechnology, function (html, data) {
+                    $("#" + houseRoom.prototype.config().frmSubclass).find('select.constructionTechnology').empty().html(html).trigger('change');
+                });
+                item.constructionTechnology = null;
+            });
+            $("#" + houseRoom.prototype.config().frmSubclass).find('select.constructionTechnology').off('change').on('change',function () {
+                AssessCommon.loadDataDicByPid($(this).val(), item.materialPrice, function (html, data) {
+                    $("#" + houseRoom.prototype.config().frmSubclass).find('select.materialPrice').empty().html(html).trigger('change');
+                });
+                item.materialPrice = null;
+            });
+
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_decorating_material, item.material, function (html, data) {
                 $("#" + houseRoom.prototype.config().frmSubclass).find('select.material').empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_material_price, item.materialPrice, function (html, data) {
-                $("#" + houseRoom.prototype.config().frmSubclass).find('select.materialPrice').empty().html(html).trigger('change');
-            });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_construction_technology, item.constructionTechnology, function (html, data) {
-                $("#" + houseRoom.prototype.config().frmSubclass).find('select.constructionTechnology').empty().html(html).trigger('change');
-            });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_decoration_part, item.part, function (html, data) {
-                $("#" + houseRoom.prototype.config().frmSubclass).find('select.part').empty().html(html).trigger('change');
-            });
         },
         subclassLoadList: function (id) {
-            var cols = [];
-            cols.push({field: 'materialName', title: '装修材料'});
-            cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
-            cols.push({field: 'partName', title: '房间装修部位'});
-            cols.push({field: 'materialPriceName', title: '装修材料价格区间'});
+            var cols = commonColumn.houseRoomDecorateColumn();
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
