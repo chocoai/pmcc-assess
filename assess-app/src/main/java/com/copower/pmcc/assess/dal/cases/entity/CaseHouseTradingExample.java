@@ -1006,63 +1006,63 @@ public class CaseHouseTradingExample {
             return (Criteria) this;
         }
 
-        public Criteria andNormalTransactionIsNull() {
-            addCriterion("normal_transaction is null");
+        public Criteria andTransactionSituationIsNull() {
+            addCriterion("transaction_situation is null");
             return (Criteria) this;
         }
 
-        public Criteria andNormalTransactionIsNotNull() {
-            addCriterion("normal_transaction is not null");
+        public Criteria andTransactionSituationIsNotNull() {
+            addCriterion("transaction_situation is not null");
             return (Criteria) this;
         }
 
-        public Criteria andNormalTransactionEqualTo(Integer value) {
-            addCriterion("normal_transaction =", value, "normalTransaction");
+        public Criteria andTransactionSituationEqualTo(Integer value) {
+            addCriterion("transaction_situation =", value, "transactionSituation");
             return (Criteria) this;
         }
 
-        public Criteria andNormalTransactionNotEqualTo(Integer value) {
-            addCriterion("normal_transaction <>", value, "normalTransaction");
+        public Criteria andTransactionSituationNotEqualTo(Integer value) {
+            addCriterion("transaction_situation <>", value, "transactionSituation");
             return (Criteria) this;
         }
 
-        public Criteria andNormalTransactionGreaterThan(Integer value) {
-            addCriterion("normal_transaction >", value, "normalTransaction");
+        public Criteria andTransactionSituationGreaterThan(Integer value) {
+            addCriterion("transaction_situation >", value, "transactionSituation");
             return (Criteria) this;
         }
 
-        public Criteria andNormalTransactionGreaterThanOrEqualTo(Integer value) {
-            addCriterion("normal_transaction >=", value, "normalTransaction");
+        public Criteria andTransactionSituationGreaterThanOrEqualTo(Integer value) {
+            addCriterion("transaction_situation >=", value, "transactionSituation");
             return (Criteria) this;
         }
 
-        public Criteria andNormalTransactionLessThan(Integer value) {
-            addCriterion("normal_transaction <", value, "normalTransaction");
+        public Criteria andTransactionSituationLessThan(Integer value) {
+            addCriterion("transaction_situation <", value, "transactionSituation");
             return (Criteria) this;
         }
 
-        public Criteria andNormalTransactionLessThanOrEqualTo(Integer value) {
-            addCriterion("normal_transaction <=", value, "normalTransaction");
+        public Criteria andTransactionSituationLessThanOrEqualTo(Integer value) {
+            addCriterion("transaction_situation <=", value, "transactionSituation");
             return (Criteria) this;
         }
 
-        public Criteria andNormalTransactionIn(List<Integer> values) {
-            addCriterion("normal_transaction in", values, "normalTransaction");
+        public Criteria andTransactionSituationIn(List<Integer> values) {
+            addCriterion("transaction_situation in", values, "transactionSituation");
             return (Criteria) this;
         }
 
-        public Criteria andNormalTransactionNotIn(List<Integer> values) {
-            addCriterion("normal_transaction not in", values, "normalTransaction");
+        public Criteria andTransactionSituationNotIn(List<Integer> values) {
+            addCriterion("transaction_situation not in", values, "transactionSituation");
             return (Criteria) this;
         }
 
-        public Criteria andNormalTransactionBetween(Integer value1, Integer value2) {
-            addCriterion("normal_transaction between", value1, value2, "normalTransaction");
+        public Criteria andTransactionSituationBetween(Integer value1, Integer value2) {
+            addCriterion("transaction_situation between", value1, value2, "transactionSituation");
             return (Criteria) this;
         }
 
-        public Criteria andNormalTransactionNotBetween(Integer value1, Integer value2) {
-            addCriterion("normal_transaction not between", value1, value2, "normalTransaction");
+        public Criteria andTransactionSituationNotBetween(Integer value1, Integer value2) {
+            addCriterion("transaction_situation not between", value1, value2, "transactionSituation");
             return (Criteria) this;
         }
 

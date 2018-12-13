@@ -6,9 +6,9 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h3>
+        <h4>
             楼栋外装
-        </h3>
+        </h4>
         <div class="clearfix"></div>
     </div>
     <div class="x_content collapse">
@@ -27,9 +27,9 @@
                 <li><a class="collapse-link"><i
                         class="fa fa-chevron-up"></i></a></li>
             </ul>
-            <h3>
+            <h4>
                 屋面结构
-            </h3>
+            </h4>
             <div class="clearfix"></div>
         </div>
         <div class="x_content collapse">
@@ -46,9 +46,9 @@
                 <li><a class="collapse-link"><i
                         class="fa fa-chevron-up"></i></a></li>
             </ul>
-            <h3>
+            <h4>
                 围护结构
-            </h3>
+            </h4>
             <div class="clearfix"></div>
         </div>
         <div class="x_content collapse">
@@ -67,9 +67,9 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h3>
+        <h4>
             建筑功能
-        </h3>
+        </h4>
         <div class="clearfix"></div>
     </div>
     <div class="x_content collapse">
@@ -136,11 +136,7 @@
                 /**楼栋外装情况**/
                 buildingOutfit: {
                     loadDataDicList: function () {
-                        var cols = [];
-                        cols.push({field: 'decorationPartName', title: '装修部位'});
-                        cols.push({field: 'decoratingMaterialName', title: '装修材料'});
-                        cols.push({field: 'materialPriceName', title: '材料价格区间'});
-                        cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
+                        var cols = commonColumn.buildingOutfitColumn();
                         $("#" + buildingModel.prototype.config().sonTable).bootstrapTable('destroy');
                         TableInit(buildingModel.prototype.config().sonTable, "${pageContext.request.contextPath}/caseBuildingOutfit/getCaseBuildingOutfitList", cols, {
                             buildingId: buildingModel.prototype.getBuildingId(),
@@ -159,9 +155,7 @@
                 /**屋面结构**/
                 buildingSurface: {
                     loadDataDicList: function () {
-                        var cols = [];
-                        cols.push({field: 'structureName', title: '屋面结构'});
-                        cols.push({field: 'description', title: '描述'});
+                        var cols = commonColumn.buildingSurfaceColumn();
                         $("#" + buildingModel.prototype.config().examineBuildingSurfaceTable).bootstrapTable('destroy');
                         TableInit(buildingModel.prototype.config().examineBuildingSurfaceTable, "${pageContext.request.contextPath}/caseBuildingSurface/getCaseBuildingSurfaceList", cols, {
                             buildingId: buildingModel.prototype.getBuildingId(),
@@ -179,10 +173,7 @@
                 /**围护结构**/
                 buildingMaintenance: {
                     loadDataDicList: function () {
-                        var cols = [];
-                        cols.push({field: 'categoryName', title: '类别'});
-                        cols.push({field: 'materialQualityName', title: '材质'});
-                        cols.push({field: 'name', title: '名称'});
+                        var cols = commonColumn.buildingMaintenanceColumn();
                         $("#" + buildingModel.prototype.config().examineBuildingMaintenanceTable).bootstrapTable('destroy');
                         TableInit(buildingModel.prototype.config().examineBuildingMaintenanceTable, "${pageContext.request.contextPath}/caseBuildingMaintenance/getCaseBuildingMaintenanceList", cols, {
                             buildingId: buildingModel.prototype.getBuildingId(),
@@ -200,12 +191,7 @@
                 /**楼栋建筑功能**/
                 buildingFunction: {
                     loadDataDicList: function () {
-                        var cols = [];
-                        cols.push({field: 'typeName', title: '类型'});
-                        cols.push({field: 'decorationPartName', title: '装修部位'});
-                        cols.push({field: 'decoratingMaterialName', title: '装修材料'});
-                        cols.push({field: 'materialPriceName', title: '材料价格区间'});
-                        cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
+                        var cols = commonColumn.buildingFunctionColumn();
                         $("#" + buildingModel.prototype.config().examineBuildingFunctionTable).bootstrapTable('destroy');
                         TableInit(buildingModel.prototype.config().examineBuildingFunctionTable, "${pageContext.request.contextPath}/caseBuildingFunction/getCaseBuildingFunctionList", cols, {
                             buildingId: buildingModel.prototype.getBuildingId(),

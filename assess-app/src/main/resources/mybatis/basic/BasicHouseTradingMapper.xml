@@ -17,7 +17,7 @@
     <result column="description_content" property="descriptionContent" jdbcType="VARCHAR" />
     <result column="installment_interest_rate" property="installmentInterestRate" jdbcType="VARCHAR" />
     <result column="payment_method" property="paymentMethod" jdbcType="INTEGER" />
-    <result column="normal_transaction" property="normalTransaction" jdbcType="INTEGER" />
+    <result column="transaction_situation" property="transactionSituation" jdbcType="INTEGER" />
     <result column="tax_burden" property="taxBurden" jdbcType="INTEGER" />
     <result column="scope_property" property="scopeProperty" jdbcType="INTEGER" />
     <result column="down_payment_ratio" property="downPaymentRatio" jdbcType="VARCHAR" />
@@ -93,7 +93,7 @@
   <sql id="Base_Column_List" >
     id, apply_id, house_id, trading_time, trading_type, trading_total_price, trading_unit_price, 
     buyer_extra_tax, buyer_extra_fee, renting_extra_tax, renting_extra_fee, description_type, 
-    description_content, installment_interest_rate, payment_method, normal_transaction, 
+    description_content, installment_interest_rate, payment_method, transaction_situation, 
     tax_burden, scope_property, down_payment_ratio, lending_rate, loan_period, deposit, 
     information_type, information_category, name, phone, creator, gmt_created, gmt_modified
   </sql>
@@ -136,7 +136,7 @@
       buyer_extra_tax, buyer_extra_fee, renting_extra_tax, 
       renting_extra_fee, description_type, description_content, 
       installment_interest_rate, payment_method, 
-      normal_transaction, tax_burden, scope_property, 
+      transaction_situation, tax_burden, scope_property, 
       down_payment_ratio, lending_rate, loan_period, 
       deposit, information_type, information_category, 
       name, phone, creator, 
@@ -146,7 +146,7 @@
       #{buyerExtraTax,jdbcType=VARCHAR}, #{buyerExtraFee,jdbcType=VARCHAR}, #{rentingExtraTax,jdbcType=VARCHAR}, 
       #{rentingExtraFee,jdbcType=VARCHAR}, #{descriptionType,jdbcType=INTEGER}, #{descriptionContent,jdbcType=VARCHAR}, 
       #{installmentInterestRate,jdbcType=VARCHAR}, #{paymentMethod,jdbcType=INTEGER}, 
-      #{normalTransaction,jdbcType=INTEGER}, #{taxBurden,jdbcType=INTEGER}, #{scopeProperty,jdbcType=INTEGER}, 
+      #{transactionSituation,jdbcType=INTEGER}, #{taxBurden,jdbcType=INTEGER}, #{scopeProperty,jdbcType=INTEGER}, 
       #{downPaymentRatio,jdbcType=VARCHAR}, #{lendingRate,jdbcType=DECIMAL}, #{loanPeriod,jdbcType=INTEGER}, 
       #{deposit,jdbcType=VARCHAR}, #{informationType,jdbcType=INTEGER}, #{informationCategory,jdbcType=INTEGER}, 
       #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
@@ -200,8 +200,8 @@
       <if test="paymentMethod != null" >
         payment_method,
       </if>
-      <if test="normalTransaction != null" >
-        normal_transaction,
+      <if test="transactionSituation != null" >
+        transaction_situation,
       </if>
       <if test="taxBurden != null" >
         tax_burden,
@@ -286,8 +286,8 @@
       <if test="paymentMethod != null" >
         #{paymentMethod,jdbcType=INTEGER},
       </if>
-      <if test="normalTransaction != null" >
-        #{normalTransaction,jdbcType=INTEGER},
+      <if test="transactionSituation != null" >
+        #{transactionSituation,jdbcType=INTEGER},
       </if>
       <if test="taxBurden != null" >
         #{taxBurden,jdbcType=INTEGER},
@@ -384,8 +384,8 @@
       <if test="record.paymentMethod != null" >
         payment_method = #{record.paymentMethod,jdbcType=INTEGER},
       </if>
-      <if test="record.normalTransaction != null" >
-        normal_transaction = #{record.normalTransaction,jdbcType=INTEGER},
+      <if test="record.transactionSituation != null" >
+        transaction_situation = #{record.transactionSituation,jdbcType=INTEGER},
       </if>
       <if test="record.taxBurden != null" >
         tax_burden = #{record.taxBurden,jdbcType=INTEGER},
@@ -448,7 +448,7 @@
       description_content = #{record.descriptionContent,jdbcType=VARCHAR},
       installment_interest_rate = #{record.installmentInterestRate,jdbcType=VARCHAR},
       payment_method = #{record.paymentMethod,jdbcType=INTEGER},
-      normal_transaction = #{record.normalTransaction,jdbcType=INTEGER},
+      transaction_situation = #{record.transactionSituation,jdbcType=INTEGER},
       tax_burden = #{record.taxBurden,jdbcType=INTEGER},
       scope_property = #{record.scopeProperty,jdbcType=INTEGER},
       down_payment_ratio = #{record.downPaymentRatio,jdbcType=VARCHAR},
@@ -511,8 +511,8 @@
       <if test="paymentMethod != null" >
         payment_method = #{paymentMethod,jdbcType=INTEGER},
       </if>
-      <if test="normalTransaction != null" >
-        normal_transaction = #{normalTransaction,jdbcType=INTEGER},
+      <if test="transactionSituation != null" >
+        transaction_situation = #{transactionSituation,jdbcType=INTEGER},
       </if>
       <if test="taxBurden != null" >
         tax_burden = #{taxBurden,jdbcType=INTEGER},
@@ -572,7 +572,7 @@
       description_content = #{descriptionContent,jdbcType=VARCHAR},
       installment_interest_rate = #{installmentInterestRate,jdbcType=VARCHAR},
       payment_method = #{paymentMethod,jdbcType=INTEGER},
-      normal_transaction = #{normalTransaction,jdbcType=INTEGER},
+      transaction_situation = #{transactionSituation,jdbcType=INTEGER},
       tax_burden = #{taxBurden,jdbcType=INTEGER},
       scope_property = #{scopeProperty,jdbcType=INTEGER},
       down_payment_ratio = #{downPaymentRatio,jdbcType=VARCHAR},

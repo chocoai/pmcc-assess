@@ -394,7 +394,7 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHousetaxBurden,"${surveyExamineDataInfoVo.examineHouseTradingVo.taxBurden}",function (html,data) {
                 $("#" + examineHouseTrading.prototype.config().frm).find("select.taxBurden").html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNormalTransaction,"${surveyExamineDataInfoVo.examineHouseTradingVo.normalTransaction}",function (html,data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionSituation,"${surveyExamineDataInfoVo.examineHouseTradingVo.normalTransaction}",function (html,data) {
                 $("#" + examineHouseTrading.prototype.config().frm).find("select.normalTransaction").html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePaymentMethod,"${surveyExamineDataInfoVo.examineHouseTradingVo.paymentMethod}",function (html,data) {
@@ -440,7 +440,7 @@
                 if (examineHouseTrading.prototype.isEmpty(id)){
                     AssessCommon.getDataDicInfo(id,function (item){
                        var name = item.name;
-                        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNormalTransaction,"",function (html,data) {
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionSituation,"",function (html,data) {
                             if (name == '正常承担'){
                                 $.each(data,function (i,n) {
                                     if (n.name == "正常"){

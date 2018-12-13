@@ -143,7 +143,7 @@
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">交易情况</label>
                     <div class="col-sm-3">
-                        <label class="form-control">${caseHouseTrading.normalTransactionName}</label>
+                        <label class="form-control">${caseHouseTrading.transactionSituationName}</label>
                     </div>
                 </div>
                 <div class="x-valid">

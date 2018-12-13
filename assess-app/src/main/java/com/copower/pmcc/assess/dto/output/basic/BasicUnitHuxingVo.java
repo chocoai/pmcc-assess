@@ -11,6 +11,7 @@ public class BasicUnitHuxingVo extends BasicUnitHuxing {
     private String fileViewName;
     private String houseLayoutName;
     private String orientationName;
+    private String tableName;
 
     public String getFileViewName() {
         return fileViewName;
@@ -34,5 +35,13 @@ public class BasicUnitHuxingVo extends BasicUnitHuxing {
 
     public void setOrientationName(String orientationName) {
         this.orientationName = orientationName;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 }

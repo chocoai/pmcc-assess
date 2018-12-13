@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.cases.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class CaseHouse {
@@ -21,19 +22,21 @@ public class CaseHouse {
 
     private Integer practicalUse;
 
+    private Integer orientation;
+
+    private BigDecimal area;
+
     private String rightInterestsRestriction;
 
     private Integer useEnvironment;
 
     private String description;
 
-    private String orientation;
-
     private Date caseDate;
 
-    private String creator;
-
     private Integer version;
+
+    private String creator;
 
     private Date gmtCreated;
 
@@ -111,6 +114,22 @@ public class CaseHouse {
         this.practicalUse = practicalUse;
     }
 
+    public Integer getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(Integer orientation) {
+        this.orientation = orientation;
+    }
+
+    public BigDecimal getArea() {
+        return area;
+    }
+
+    public void setArea(BigDecimal area) {
+        this.area = area;
+    }
+
     public String getRightInterestsRestriction() {
         return rightInterestsRestriction;
     }
@@ -135,14 +154,6 @@ public class CaseHouse {
         this.description = description == null ? null : description.trim();
     }
 
-    public String getOrientation() {
-        return orientation;
-    }
-
-    public void setOrientation(String orientation) {
-        this.orientation = orientation == null ? null : orientation.trim();
-    }
-
     public Date getCaseDate() {
         return caseDate;
     }
@@ -151,20 +162,20 @@ public class CaseHouse {
         this.caseDate = caseDate;
     }
 
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
     public Integer getVersion() {
         return version;
     }
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
     }
 
     public Date getGmtCreated() {

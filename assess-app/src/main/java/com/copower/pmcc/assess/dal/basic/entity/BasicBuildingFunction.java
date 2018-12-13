@@ -21,8 +21,6 @@ public class BasicBuildingFunction {
 
     private String creator;
 
-    private String buildNumber;
-
     private Date gmtCreated;
 
     private Date gmtModified;
@@ -97,14 +95,6 @@ public class BasicBuildingFunction {
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
-    }
-
-    public String getBuildNumber() {
-        return buildNumber;
-    }
-
-    public void setBuildNumber(String buildNumber) {
-        this.buildNumber = buildNumber == null ? null : buildNumber.trim();
     }
 
     public Date getGmtCreated() {

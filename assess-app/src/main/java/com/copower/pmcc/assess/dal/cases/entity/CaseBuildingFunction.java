@@ -17,9 +17,9 @@ public class CaseBuildingFunction {
 
     private Integer constructionTechnology;
 
-    private String creator;
+    private String remark;
 
-    private String buildNumber;
+    private String creator;
 
     private Date gmtCreated;
 
@@ -81,20 +81,20 @@ public class CaseBuildingFunction {
         this.constructionTechnology = constructionTechnology;
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
+
     public String getCreator() {
         return creator;
     }
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
-    }
-
-    public String getBuildNumber() {
-        return buildNumber;
-    }
-
-    public void setBuildNumber(String buildNumber) {
-        this.buildNumber = buildNumber == null ? null : buildNumber.trim();
     }
 
     public Date getGmtCreated() {

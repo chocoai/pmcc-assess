@@ -98,7 +98,7 @@ public class CaseHouseTradingService {
         }
         vo.setTradingTypeName(baseDataDicService.getNameById(caseHouseTrading.getTradingType()));
         vo.setPaymentMethodName(baseDataDicService.getNameById(caseHouseTrading.getPaymentMethod()));
-        vo.setNormalTransactionName(baseDataDicService.getNameById(caseHouseTrading.getNormalTransaction()));
+        vo.setTransactionSituationName(baseDataDicService.getNameById(caseHouseTrading.getTransactionSituation()));
         vo.setDescriptionTypeName(baseDataDicService.getNameById(caseHouseTrading.getDescriptionType()));
         vo.setTaxBurdenName(baseDataDicService.getNameById(caseHouseTrading.getTaxBurden()));
         vo.setInformationTypeName(baseDataDicService.getNameById(caseHouseTrading.getInformationType()));

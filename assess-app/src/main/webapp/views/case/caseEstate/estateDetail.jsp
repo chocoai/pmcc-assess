@@ -3,7 +3,7 @@
     <form class="form-horizontal" id="frm_estate">
         <div class="x_content">
             <div class="x_title">
-                <h4>楼盘基本信息</h4>
+                <h3>楼盘基本信息</h3>
                 <div class="clearfix"></div>
             </div>
 
@@ -187,9 +187,9 @@
         <c:if test="${caseEstate.type eq 0}">
             <div class="x_content">
                 <div class="x_title">
-                    <h4>
-                        楼盘供应信息
-                    </h4>
+                    <h3>
+                        <small> 楼盘供应信息</small>
+                    </h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="form-horizontal">
@@ -235,7 +235,7 @@
 
     <div class="x_content">
         <div class="x_title">
-            <h4>楼盘土地实体情况 </h4>
+            <h3>楼盘土地实体情况 </h3>
             <div class="clearfix"></div>
         </div>
         <form id="frm_estateLandState" class="form-horizontal">

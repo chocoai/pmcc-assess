@@ -143,17 +143,20 @@ AssessDicKey.examineHouseEnvironmentUse = "examine.house.environment.use";//使�
 AssessDicKey.examineHouseNewsHuxing = "examine.house.newsHuxing";//最新户型
 
 AssessDicKey.examineHouseHouse_layout = "unit.house_layout";//房型
-AssessDicKey.examineUnitOrientation = "examine.common.orientation";//朝向
+AssessDicKey.examineCommonOrientation = "examine.common.orientation";//朝向
 AssessDicKey.examineUnitElevatorMaintenance = "unit.elevator.maintenance";//电梯维护情况
 AssessDicKey.examineUnitElevatorType = "unit.elevator.type";//电梯类型
 
 AssessDicKey.examineHouseTransactionType = "examine.house.transaction.type";//交易类型
 AssessDicKey.examineHouseDescriptionType = "examine.house.description_type";//说明事项类型
 AssessDicKey.examineHousetaxBurden = "examine.house.tax.burden";//税费负担
-AssessDicKey.examineHouseNormalTransaction = "examine.house.normal.transaction";//正常交易
+AssessDicKey.examineHouseTransactionSituation = "examine.house.transaction.situation";//交易情况
+AssessDicKey.examineHouseTransactionAbnormal = "examine.house.transaction.situation.abnormal";//交易情况-非正常
 AssessDicKey.examineHousePaymentMethod = "examine.house.payment.method";//付款方式
+AssessDicKey.examineHousePaymentMethodInstallment = "examine.house.payment.method.installment";//付款方式-分期付款
 AssessDicKey.examineHousePaymentMethodLease = "examine.house.payment.method.lease";//出租付款方式
 AssessDicKey.examineHouseInformationSourceType = "examine.house.information.source.type";//信息来源类型
+AssessDicKey.examineHouseInformationSourceTypeOpen = "examine.house.information.source.type.open";//信息来源类型-公开信息
 AssessDicKey.examineHouseInformationSourceCategory = "examine.house.information.source.category";//信息来源类别
 AssessDicKey.examineHouseIntelligent_wireMaterial = "examine.house.wire_material";//电线材质
 AssessDicKey.examine_house_supply_erection_method = "examine.house.water.supply_erection_method";//供水管架设方式

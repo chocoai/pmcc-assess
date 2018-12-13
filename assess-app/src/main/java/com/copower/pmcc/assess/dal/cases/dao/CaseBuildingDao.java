@@ -43,7 +43,6 @@ public class CaseBuildingDao {
     public List<CaseBuilding> getBuildingList(CaseBuilding caseBuilding) {
         CaseBuildingExample example = new CaseBuildingExample();
         MybatisUtils.convertObj2Example(caseBuilding, example);
-        example.setOrderByClause("building_number");
         return caseBuildingMapper.selectByExample(example);
     }
 

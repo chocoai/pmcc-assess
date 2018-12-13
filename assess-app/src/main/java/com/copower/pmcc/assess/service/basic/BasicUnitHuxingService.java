@@ -5,7 +5,6 @@ import com.copower.pmcc.assess.dal.basic.dao.BasicUnitHuxingDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnit;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnitHuxing;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnitHuxing;
-import com.copower.pmcc.assess.dto.output.basic.BasicSelectUnitHuxingVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicUnitHuxingVo;
 import com.copower.pmcc.assess.dto.output.cases.CaseUnitHuxingVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -185,7 +184,7 @@ public class BasicUnitHuxingService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BasicSelectUnitHuxingVo> list = Lists.newArrayList();
+        List<BasicUnitHuxingVo> list = Lists.newArrayList();
         if (basicUnit != null) {
             BasicUnitHuxing basicUnitHuxing = new BasicUnitHuxing();
             basicUnitHuxing.setUnitId(basicUnit.getId());
@@ -193,10 +192,8 @@ public class BasicUnitHuxingService {
             if(!CollectionUtils.isEmpty(basicUnitHuxingList)){
                 for (BasicUnitHuxing unitHuxing : basicUnitHuxingList) {
                     BasicUnitHuxingVo unitHuxingVo = getBasicUnitHuxingVo(unitHuxing);
-                    BasicSelectUnitHuxingVo basicSelectUnitHuxingVo=new BasicSelectUnitHuxingVo();
-                    BeanUtils.copyProperties(unitHuxingVo,basicSelectUnitHuxingVo);
-                    basicSelectUnitHuxingVo.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
-                    list.add(basicSelectUnitHuxingVo);
+                    unitHuxingVo.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
+                    list.add(unitHuxingVo);
                 }
             }
 
@@ -206,10 +203,10 @@ public class BasicUnitHuxingService {
             List<CaseUnitHuxingVo> huxingList = caseUnitHuxingService.getCaseUnitHuxingList(caseUnitHuxing);
             if(!CollectionUtils.isEmpty(huxingList)){
                 for (CaseUnitHuxingVo huxing : huxingList) {
-                    BasicSelectUnitHuxingVo basicSelectUnitHuxingVo=new BasicSelectUnitHuxingVo();
-                    BeanUtils.copyProperties(huxing,basicSelectUnitHuxingVo);
-                    basicSelectUnitHuxingVo.setTableName(FormatUtils.entityNameConvertToTableName(CaseUnitHuxing.class));
-                    list.add(basicSelectUnitHuxingVo);
+                    BasicUnitHuxingVo basicUnitHuxingVo=new BasicUnitHuxingVo();
+                    BeanUtils.copyProperties(huxing,basicUnitHuxingVo);
+                    basicUnitHuxingVo.setTableName(FormatUtils.entityNameConvertToTableName(CaseUnitHuxing.class));
+                    list.add(basicUnitHuxingVo);
                 }
             }
         }

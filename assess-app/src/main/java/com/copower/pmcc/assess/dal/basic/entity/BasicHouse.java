@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basic.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class BasicHouse {
@@ -21,13 +22,15 @@ public class BasicHouse {
 
     private Integer practicalUse;
 
+    private Integer orientation;
+
+    private BigDecimal area;
+
     private String rightInterestsRestriction;
 
     private Integer useEnvironment;
 
     private String description;
-
-    private String orientation;
 
     private Date caseDate;
 
@@ -109,6 +112,22 @@ public class BasicHouse {
         this.practicalUse = practicalUse;
     }
 
+    public Integer getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(Integer orientation) {
+        this.orientation = orientation;
+    }
+
+    public BigDecimal getArea() {
+        return area;
+    }
+
+    public void setArea(BigDecimal area) {
+        this.area = area;
+    }
+
     public String getRightInterestsRestriction() {
         return rightInterestsRestriction;
     }
@@ -131,14 +150,6 @@ public class BasicHouse {
 
     public void setDescription(String description) {
         this.description = description == null ? null : description.trim();
-    }
-
-    public String getOrientation() {
-        return orientation;
-    }
-
-    public void setOrientation(String orientation) {
-        this.orientation = orientation == null ? null : orientation.trim();
     }
 
     public Date getCaseDate() {

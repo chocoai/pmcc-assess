@@ -2,6 +2,44 @@
  * Created by kings on 2018-12-12.
  */
 var commonColumn = {};
+
+//楼栋-楼栋外装
+commonColumn.buildingOutfitColumn = function () {
+    var cols = [];
+    cols.push({field: 'decorationPart', title: '装修部位'});
+    cols.push({field: 'decoratingMaterialName', title: '装修材料'});
+    cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
+    cols.push({field: 'materialPriceName', title: '材料价格区间'});
+    return cols;
+}
+
+//楼栋-屋面结构
+commonColumn.buildingSurfaceColumn = function () {
+    var cols = [];
+    cols.push({field: 'structureName', title: '屋面结构'});
+    cols.push({field: 'description', title: '描述'});
+    return cols;
+}
+
+//楼栋-围护结构
+commonColumn.buildingMaintenanceColumn = function () {
+    var cols = [];
+    cols.push({field: 'typeName', title: '类型'});
+    cols.push({field: 'materialQualityName', title: '材质'});
+    cols.push({field: 'categoryName', title: '分类'});
+    return cols;
+}
+
+//楼栋-建筑功能
+commonColumn.buildingFunctionColumn = function () {
+    var cols = [];
+    cols.push({field: 'typeName', title: '类型'});
+    cols.push({field: 'decorationPartName', title: '装修部位'});
+    cols.push({field: 'remark', title: '现状描述'});
+    return cols;
+}
+
+
 //房屋-房间
 commonColumn.houseRoomColumn = function () {
     var cols = [];

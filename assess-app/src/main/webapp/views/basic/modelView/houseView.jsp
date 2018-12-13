@@ -18,10 +18,10 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">所在楼层</label>
+                <label class="col-sm-1 control-label">所在楼层<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <input type="text" data-rule-maxlength="100" data-rule-number='true'
-                           placeholder="所在楼层(请输入数字)" name="floor"
+                           placeholder="所在楼层(请输入数字)" name="floor" required
                            class="form-control" value="${basicHouse.floor}">
                 </div>
             </div>
@@ -67,13 +67,7 @@
                 </div>
             </div>
 
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">朝向</label>
-                <div class="col-sm-3">
-                    <input type="text" placeholder="朝向" name="orientation"
-                           class="form-control" value="${basicHouse.orientation}">
-                </div>
-            </div>
+
         </div>
         <div class="form-group">
             <div class="x-valid">
@@ -99,21 +93,36 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">证载用途</label>
+                <label class="col-sm-1 control-label">朝向<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 certUse" name="certUse">
+                    <select class="form-control search-select select2 orientation" name="orientation" required>
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">面积<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="面积" name="area" data-rule-number="true" required
+                           class="form-control" value="${basicHouse.area}">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">证载用途<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select class="form-control search-select select2 certUse" name="certUse" required>
                     </select>
                 </div>
             </div>
 
             <div class="x-valid">
-                <label class="col-sm-1 control-label">实际用途</label>
+                <label class="col-sm-1 control-label">实际用途<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 practicalUse" name="practicalUse">
+                    <select class="form-control search-select select2 practicalUse" name="practicalUse" required>
                     </select>
                 </div>
             </div>
-
             <div class="x-valid">
                 <label class="col-sm-1 control-label">权益限制</label>
                 <div class="col-sm-3">
@@ -142,8 +151,6 @@
         </div>
     </form>
 </div>
-
-
 <div class="x_content">
     <div class="x_title">
         <h3>
@@ -157,8 +164,8 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">交易情况<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select class="form-control normalTransaction"
-                            name="normalTransaction"
+                    <select class="form-control transactionSituation"
+                            name="transactionSituation"
                             required="required">
                     </select>
                 </div>

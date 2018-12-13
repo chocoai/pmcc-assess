@@ -71,8 +71,6 @@
                                     <label class="btn btn-primary" onclick="baseFun.caseEstate.find();">
                                         查询
                                     </label>
-                                    <a class="btn btn-success" target="_blank"
-                                       href="${pageContext.request.contextPath}/basicApply/basicApplyIndex">新增</a>
                                 </div>
                             </div>
                         </div>

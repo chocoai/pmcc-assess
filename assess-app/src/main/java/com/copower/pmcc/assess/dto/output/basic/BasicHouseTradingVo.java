@@ -11,7 +11,7 @@ public class BasicHouseTradingVo extends BasicHouseTrading {
     private String tradingTimeName;
     private String tradingTypeName;
     private String paymentMethodName;
-    private String normalTransactionName;
+    private String transactionSituationName;
     private String descriptionTypeName;
     private String taxBurdenName;
     private String informationTypeName;
@@ -51,12 +51,12 @@ public class BasicHouseTradingVo extends BasicHouseTrading {
         this.paymentMethodName = paymentMethodName;
     }
 
-    public String getNormalTransactionName() {
-        return normalTransactionName;
+    public String getTransactionSituationName() {
+        return transactionSituationName;
     }
 
-    public void setNormalTransactionName(String normalTransactionName) {
-        this.normalTransactionName = normalTransactionName;
+    public void setTransactionSituationName(String transactionSituationName) {
+        this.transactionSituationName = transactionSituationName;
     }
 
     public String getTaxBurdenName() {

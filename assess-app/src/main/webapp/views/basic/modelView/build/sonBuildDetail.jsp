@@ -114,11 +114,7 @@
                 /**楼栋外装情况**/
                 buildingOutfit: {
                     loadDataDicList: function () {
-                        var cols = [];
-                        cols.push({field: 'decorationPart', title: '装修部位'});
-                        cols.push({field: 'decoratingMaterialName', title: '装修材料'});
-                        cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
-                        cols.push({field: 'materialPriceName', title: '材料价格区间'});
+                        var cols = commonColumn.buildingOutfitColumn();
                         $("#" + buildingModelDetail.prototype.config().sonTable).bootstrapTable('destroy');
                         TableInit(buildingModelDetail.prototype.config().sonTable, "${pageContext.request.contextPath}/basicBuildingOutfit/getBootstrapTableVo", cols, {
                             buildingId: buildingCommon.getBuildingId(),
@@ -137,9 +133,7 @@
                 /**屋面结构**/
                 buildingSurface: {
                     loadDataDicList: function () {
-                        var cols = [];
-                        cols.push({field: 'structureName', title: '屋面结构'});
-                        cols.push({field: 'description', title: '描述'});
+                        var cols = commonColumn.buildingSurfaceColumn();
                         $("#" + buildingModelDetail.prototype.config().examineBuildingSurfaceTable).bootstrapTable('destroy');
                         TableInit(buildingModelDetail.prototype.config().examineBuildingSurfaceTable, "${pageContext.request.contextPath}/basicBuildingSurface/getBootstrapTableVo", cols, {
                             buildingId: buildingCommon.getBuildingId(),
@@ -157,10 +151,7 @@
                 /**围护结构**/
                 buildingMaintenance: {
                     loadDataDicList: function () {
-                        var cols = [];
-                        cols.push({field: 'typeName', title: '类型'});
-                        cols.push({field: 'materialQualityName', title: '材质'});
-                        cols.push({field: 'categoryName', title: '分类'});
+                        var cols = commonColumn.buildingMaintenanceColumn();
                         $("#" + buildingModelDetail.prototype.config().examineBuildingMaintenanceTable).bootstrapTable('destroy');
                         TableInit(buildingModelDetail.prototype.config().examineBuildingMaintenanceTable, "${pageContext.request.contextPath}/basicBuildingMaintenance/getBootstrapTableVo", cols, {
                             buildingId: buildingCommon.getBuildingId(),
@@ -178,10 +169,7 @@
                 /**楼栋建筑功能**/
                 buildingFunction: {
                     loadDataDicList: function () {
-                        var cols = [];
-                        cols.push({field: 'typeName', title: '类型'});
-                        cols.push({field: 'decorationPartName', title: '装修部位'});
-                        cols.push({field: 'remark', title: '现状描述'});
+                        var cols = commonColumn.buildingFunctionColumn();
                         $("#" + buildingModelDetail.prototype.config().examineBuildingFunctionTable).bootstrapTable('destroy');
                         TableInit(buildingModelDetail.prototype.config().examineBuildingFunctionTable, "${pageContext.request.contextPath}/basicBuildingFunction/getBootstrapTableVo", cols, {
                             buildingId: buildingCommon.getBuildingId(),

@@ -525,6 +525,76 @@ public class CaseBuildingFunctionExample {
             return (Criteria) this;
         }
 
+        public Criteria andRemarkIsNull() {
+            addCriterion("remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIsNotNull() {
+            addCriterion("remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEqualTo(String value) {
+            addCriterion("remark =", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotEqualTo(String value) {
+            addCriterion("remark <>", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThan(String value) {
+            addCriterion("remark >", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("remark >=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThan(String value) {
+            addCriterion("remark <", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThanOrEqualTo(String value) {
+            addCriterion("remark <=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLike(String value) {
+            addCriterion("remark like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotLike(String value) {
+            addCriterion("remark not like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIn(List<String> values) {
+            addCriterion("remark in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotIn(List<String> values) {
+            addCriterion("remark not in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkBetween(String value1, String value2) {
+            addCriterion("remark between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotBetween(String value1, String value2) {
+            addCriterion("remark not between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
@@ -592,76 +662,6 @@ public class CaseBuildingFunctionExample {
 
         public Criteria andCreatorNotBetween(String value1, String value2) {
             addCriterion("creator not between", value1, value2, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberIsNull() {
-            addCriterion("build_number is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberIsNotNull() {
-            addCriterion("build_number is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberEqualTo(String value) {
-            addCriterion("build_number =", value, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberNotEqualTo(String value) {
-            addCriterion("build_number <>", value, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberGreaterThan(String value) {
-            addCriterion("build_number >", value, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberGreaterThanOrEqualTo(String value) {
-            addCriterion("build_number >=", value, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberLessThan(String value) {
-            addCriterion("build_number <", value, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberLessThanOrEqualTo(String value) {
-            addCriterion("build_number <=", value, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberLike(String value) {
-            addCriterion("build_number like", value, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberNotLike(String value) {
-            addCriterion("build_number not like", value, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberIn(List<String> values) {
-            addCriterion("build_number in", values, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberNotIn(List<String> values) {
-            addCriterion("build_number not in", values, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberBetween(String value1, String value2) {
-            addCriterion("build_number between", value1, value2, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberNotBetween(String value1, String value2) {
-            addCriterion("build_number not between", value1, value2, "buildNumber");
             return (Criteria) this;
         }
 

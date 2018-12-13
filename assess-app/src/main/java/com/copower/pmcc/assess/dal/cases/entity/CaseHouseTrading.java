@@ -32,7 +32,7 @@ public class CaseHouseTrading {
 
     private Integer paymentMethod;
 
-    private Integer normalTransaction;
+    private Integer transactionSituation;
 
     private Integer taxBurden;
 
@@ -172,12 +172,12 @@ public class CaseHouseTrading {
         this.paymentMethod = paymentMethod;
     }
 
-    public Integer getNormalTransaction() {
-        return normalTransaction;
+    public Integer getTransactionSituation() {
+        return transactionSituation;
     }
 
-    public void setNormalTransaction(Integer normalTransaction) {
-        this.normalTransaction = normalTransaction;
+    public void setTransactionSituation(Integer transactionSituation) {
+        this.transactionSituation = transactionSituation;
     }
 
     public Integer getTaxBurden() {

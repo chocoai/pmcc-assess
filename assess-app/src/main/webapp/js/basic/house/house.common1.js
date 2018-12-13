@@ -115,8 +115,8 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseEnvironmentUse, data.basicHouse.useEnvironment, function (html, data) {
                 houseCommon.houseForm.find("select.useEnvironment").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNewsHuxing, data.basicHouse.newsHuxing, function (html, data) {
-                houseCommon.houseForm.find("select.newsHuxing").empty().html(html).trigger('change');
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonOrientation, data.basicHouse.orientation, function (html, data) {
+                houseCommon.houseForm.find("select.orientation").empty().html(html).trigger('change');
             });
 
             //初始化上传控件
@@ -133,8 +133,8 @@
         //交易情况
         houseCommon.houseTradingForm.initForm(data.basicHouseTrading, function () {
             houseCommon.changeEvent(data.basicHouseTrading);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNormalTransaction, data.basicHouseTrading.normalTransaction, function (html, data) {
-                houseCommon.houseTradingForm.find("select.normalTransaction").empty().html(html).trigger('change');
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionSituation, data.basicHouseTrading.transactionSituation, function (html, data) {
+                houseCommon.houseTradingForm.find("select.transactionSituation").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseScopeProperty, data.basicHouseTrading.scopeProperty, function (html, data) {
                 houseCommon.houseTradingForm.find("select.scopeProperty").empty().html(html).trigger('change');
@@ -197,7 +197,8 @@
             success: function (row) {
                 //1.赋值 2.拷贝附件并显示附件数据
                 $(_this).closest('.input-group').find(':text').val(row.name);
-                houseCommon.houseForm.find('[name=orientation]').val(row.orientationName);
+                houseCommon.houseForm.find('[name=area]').val(row.area);
+                houseCommon.houseForm.find('[name=orientation]').val(row.orientation).trigger('change');
                 $.ajax({
                     url: getContextPath() + '/basicHouse/copyHuxingPlan',
                     data: {
@@ -216,9 +217,9 @@
 
     //下拉框change事件
     houseCommon.changeEvent = function (basicHouseTrading) {
-        houseCommon.houseTradingForm.find("select.normalTransaction").off('change').on('change', function () {
-            var text = $(this).find("option:selected").text();
-            if (text == "不正常") {
+        houseCommon.houseTradingForm.find("select.transactionSituation").off('change').on('change', function () {
+            var key = $(this).find("option:selected").attr('key');
+            if (key == AssessDicKey.examineHouseTransactionAbnormal) {
                 $("#abnormalTransaction").show();
             } else {
                 $("#abnormalTransaction").hide();
@@ -226,16 +227,16 @@
         })
 
         houseCommon.houseTradingForm.find('[name=tradingType]').off('change').on('change', function () {
-            var text = $(this).find("option:selected").text();
+            var key = $(this).find("option:selected").attr('key');
             var paymentMethod = basicHouseTrading == null ? null : basicHouseTrading.paymentMethod;
-            if (text == '出售') {
+            if (key == houseCommon.houseTradingTypeSell) {
                 houseCommon.houseTradingForm.find('.' + houseCommon.houseTradingTypeSell).show();
                 houseCommon.houseTradingForm.find('.' + houseCommon.houseTradingTypeLease).hide();
                 houseCommon.loadTradingSellAndLeaseList(houseCommon.houseTradingTypeSell);
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePaymentMethod, basicHouseTrading.paymentMethod, function (html, data) {
                     houseCommon.houseTradingForm.find("select.paymentMethod").empty().html(html).trigger('change');
                 });
-            } else if (text == '出租') {
+            } else if (key == houseCommon.houseTradingTypeLease) {
                 houseCommon.houseTradingForm.find('.' + houseCommon.houseTradingTypeSell).hide();
                 $('.' + houseCommon.houseTradingTypeLease).show();
                 houseCommon.loadTradingSellAndLeaseList(houseCommon.houseTradingTypeLease);
@@ -249,8 +250,8 @@
         });
 
         houseCommon.houseTradingForm.find('[name=paymentMethod]').change(function () {
-            var text = $(this).find("option:selected").text();
-            if (text == '分期付款') {
+            var key = $(this).find("option:selected").attr('key');
+            if (key == AssessDicKey.examineHousePaymentMethodInstallment) {
                 $(this).closest('.form-group').children().eq(2).show();
             } else {
                 $(this).closest('.form-group').children().eq(2).hide();
@@ -259,53 +260,47 @@
 
         //信息来源类型
         houseCommon.houseTradingForm.find("[name=informationType]").change(function () {
-            var text = $(this).find("option:selected").text();
-            if (text) {
-                if (text == '公开信息') {
-                    houseCommon.houseTradingForm.find('.infomationTypeOpen').show();
-                    houseCommon.houseTradingForm.find('.infomationTypeOther').hide();
-                } else {
-                    houseCommon.houseTradingForm.find('.infomationTypeOpen').hide();
-                    houseCommon.houseTradingForm.find('.infomationTypeOther').show();
-                }
+            var key = $(this).find("option:selected").attr('key');
+            if (key == AssessDicKey.examineHouseInformationSourceTypeOpen) {
+                houseCommon.houseTradingForm.find('.infomationTypeOpen').show();
+                houseCommon.houseTradingForm.find('.infomationTypeOther').hide();
+            } else {
+                houseCommon.houseTradingForm.find('.infomationTypeOpen').hide();
+                houseCommon.houseTradingForm.find('.infomationTypeOther').show();
             }
         })
     }
 
     //新增出售或出租
     houseCommon.addTradingSellAndLease = function () {
-        var tradingID = houseCommon.houseTradingForm.find('[name=tradingType]').val();
-        var tradingType = null;
-        AssessCommon.getDataDicInfo(tradingID, function (data) {
-            tradingType = data.fieldName;
-            var frmSon = 'frmTradingLeaseAndSell';
-            var divBoxSon = 'divBoxTradingLeaseAndSell';
-            $("#" + frmSon).clearAll().find(".type").val(tradingType);
-            $("#" + divBoxSon).modal("show");
-            if (tradingType == houseCommon.houseTradingTypeSell) {
-                $("#" + divBoxSon).find(".lease").show();
-                $("#" + divBoxSon).find(".sell").hide();
-                $("#" + divBoxSon).find(".modal-title").html("出租信息");
-            }
-            if (tradingType == houseCommon.houseTradingTypeLease) {
-                $("#" + divBoxSon).find(".lease").hide();
-                $("#" + divBoxSon).find(".sell").show();
-                $("#" + divBoxSon).find(".modal-title").html("出售信息");
-            }
-        })
+        var key = houseCommon.houseTradingForm.find('[name=tradingType]').find("option:selected").attr('key');
+        var frmSon = 'frmTradingLeaseAndSell';
+        var divBoxSon = 'divBoxTradingLeaseAndSell';
+        $("#" + frmSon).clearAll().find(".type").val(key);
+        if (key == houseCommon.houseTradingTypeSell) {
+            $("#" + divBoxSon).find(".lease").hide();
+            $("#" + divBoxSon).find(".sell").show();
+            $("#" + divBoxSon).find(".modal-title").html("出售信息");
+        }
+        if (key == houseCommon.houseTradingTypeLease) {
+            $("#" + divBoxSon).find(".lease").show();
+            $("#" + divBoxSon).find(".sell").hide();
+            $("#" + divBoxSon).find(".modal-title").html("出租信息");
+        }
+        $("#" + divBoxSon).modal("show");
     }
 
     //加载出售获取出租
-    houseCommon.loadTradingSellAndLeaseList = function (type) {
+    houseCommon.loadTradingSellAndLeaseList = function (tradingType) {
         var cols = [];
         var tbListId = '';
-        if (type == houseCommon.houseTradingTypeSell) {
+        if (tradingType == houseCommon.houseTradingTypeSell) {
             tbListId = 'tableTradingSell';
             cols.push({field: 'instalmentInterest', title: '分期支付时间起'});
             cols.push({field: 'instalmentPeriodStartName', title: '分期支付时间止'});
             cols.push({field: 'instalmentPeriodEndName', title: '分期支付利息'});
         }
-        if (type == houseCommon.houseTradingTypeLease) {
+        if (tradingType == houseCommon.houseTradingTypeLease) {
             tbListId = 'tableTradingLease';
             cols.push({field: 'rentGrowthRate', title: '租金增长比率'});
             cols.push({field: 'rentPaymentTimeStartName', title: '租金支付时间起'});

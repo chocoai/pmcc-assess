@@ -368,7 +368,7 @@ var unitHuxing;
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseHouse_layout, item.houseLayout, function (html, data) {
                 $("#" + unitHuxing.prototype.config().frm).find('select.houseLayout').empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitOrientation, item.orientation, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonOrientation, item.orientation, function (html, data) {
                 $("#" + unitHuxing.prototype.config().frm).find('select.orientation').empty().html(html).trigger('change');
             });
         }

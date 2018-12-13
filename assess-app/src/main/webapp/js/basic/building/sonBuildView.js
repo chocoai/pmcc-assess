@@ -142,11 +142,7 @@ var buildingModelView;
                     });
                 },
                 loadDataDicList: function () {
-                    var cols = [];
-                    cols.push({field: 'decorationPart', title: '装修部位'});
-                    cols.push({field: 'decoratingMaterialName', title: '装修材料'});
-                    cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
-                    cols.push({field: 'materialPriceName', title: '材料价格区间'});
+                    var cols = commonColumn.buildingOutfitColumn();
                     cols.push({
                         field: 'id', title: '操作', formatter: function (value, row, index) {
                             var str = '<div class="btn-margin">';
@@ -251,9 +247,7 @@ var buildingModelView;
                     });
                 },
                 loadDataDicList: function () {
-                    var cols = [];
-                    cols.push({field: 'structureName', title: '屋面结构'});
-                    cols.push({field: 'description', title: '描述'});
+                    var cols = commonColumn.buildingSurfaceColumn();
                     cols.push({
                         field: 'id', title: '操作', formatter: function (value, row, index) {
                             var str = '<div class="btn-margin">';
@@ -367,10 +361,7 @@ var buildingModelView;
 
                 },
                 loadDataDicList: function () {
-                    var cols = [];
-                    cols.push({field: 'typeName', title: '类型'});
-                    cols.push({field: 'materialQualityName', title: '材质'});
-                    cols.push({field: 'categoryName', title: '分类'});
+                    var cols =commonColumn.buildingMaintenanceColumn();
                     cols.push({
                         field: 'id', title: '操作', formatter: function (value, row, index) {
                             var str = '<div class="btn-margin">';
@@ -477,10 +468,7 @@ var buildingModelView;
                     });
                 },
                 loadDataDicList: function () {
-                    var cols = [];
-                    cols.push({field: 'typeName', title: '类型'});
-                    cols.push({field: 'decorationPartName', title: '装修部位'});
-                    cols.push({field: 'remark', title: '现状描述'});
+                    var cols = commonColumn.buildingFunctionColumn();
                     cols.push({
                         field: 'id', title: '操作', formatter: function (value, row, index) {
                             var str = '<div class="btn-margin">';
