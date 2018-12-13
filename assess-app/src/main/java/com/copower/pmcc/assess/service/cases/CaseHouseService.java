@@ -259,15 +259,10 @@ public class CaseHouseService {
     public CaseHouseVo getCaseHouseVo(CaseHouse caseHouse) {
         CaseHouseVo vo = new CaseHouseVo();
         BeanUtils.copyProperties(caseHouse, vo);
-        if (caseHouse.getUseEnvironment() != null) {
-            vo.setUseEnvironmentName(baseDataDicService.getNameById(caseHouse.getUseEnvironment()));
-        }
-        if (caseHouse.getCertUse() != null) {
-            vo.setCertUseName(baseDataDicService.getNameById(caseHouse.getCertUse()));
-        }
-        if (caseHouse.getPracticalUse() != null) {
-            vo.setPracticalUseName(baseDataDicService.getNameById(caseHouse.getPracticalUse()));
-        }
+        vo.setUseEnvironmentName(baseDataDicService.getNameById(caseHouse.getUseEnvironment()));
+        vo.setCertUseName(baseDataDicService.getNameById(caseHouse.getCertUse()));
+        vo.setPracticalUseName(baseDataDicService.getNameById(caseHouse.getPracticalUse()));
+        vo.setOrientationName(baseDataDicService.getNameById(caseHouse.getOrientation()));
         return vo;
     }
 

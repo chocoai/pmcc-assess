@@ -1,5 +1,5 @@
 <%--
-供排水情况
+排水情况
 --%>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -9,7 +9,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>供排水情况</h4>
+        <h4>排水情况</h4>
     </div>
     <div class="x_content collapse">
         <table class="table table-bordered" id="HouseWaterDrainList">

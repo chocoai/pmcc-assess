@@ -9,8 +9,8 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h3>房屋配套设备设施信息
-        </h3>
+        <h4>房屋配套设备设施信息
+        </h4>
         <div class="clearfix"></div>
     </div>
 

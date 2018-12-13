@@ -12,7 +12,7 @@ public class CaseHouseVo extends CaseHouse {
     private String certUseName;
     private String practicalUseName;
     private String huxingName;
-    private String newsHuxingName;
+    private String orientationName;
 
     public String getUseEnvironmentName() {
         return useEnvironmentName;
@@ -46,11 +46,11 @@ public class CaseHouseVo extends CaseHouse {
         this.huxingName = huxingName;
     }
 
-    public String getNewsHuxingName() {
-        return newsHuxingName;
+    public String getOrientationName() {
+        return orientationName;
     }
 
-    public void setNewsHuxingName(String newsHuxingName) {
-        this.newsHuxingName = newsHuxingName;
+    public void setOrientationName(String orientationName) {
+        this.orientationName = orientationName;
     }
 }

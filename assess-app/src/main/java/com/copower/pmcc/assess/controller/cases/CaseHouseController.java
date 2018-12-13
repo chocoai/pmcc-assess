@@ -3,14 +3,18 @@ package com.copower.pmcc.assess.controller.cases;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.ExamineHouseEquipmentTypeEnum;
+import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.cases.CaseHouseTradingLeaseAndSellDto;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +64,8 @@ public class CaseHouseController {
     private CaseEstateService caseEstateService;
     @Autowired
     private CaseUnitService caseUnitService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
 
     @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
@@ -75,7 +81,8 @@ public class CaseHouseController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         caseHouse = caseHouseService.getCaseHouseById(id);
         modelAndView.addObject("caseHouse", caseHouseService.getCaseHouseVo(caseHouse));
-        modelAndView.addObject("caseHouseTrading", caseHouseTradingService.getCaseHouseTradingVo(caseHouseTrading));
+        CaseHouseTradingVo caseHouseTradingVo = caseHouseTradingService.getCaseHouseTradingVo(caseHouseTrading);
+        modelAndView.addObject("caseHouseTrading", caseHouseTradingVo);
         modelAndView.addObject("hasHouseFaceStreetData", caseHouseFaceStreetService.hasHouseFaceStreetData(id));
         modelAndView.addObject("hasHouseCorollaryEquipmentData", caseHouseCorollaryEquipmentService.hasHouseCorollaryEquipmentData(id));
         modelAndView.addObject("hasHouseIntelligentData", caseHouseIntelligentService.hasHouseIntelligentData(id));
@@ -84,7 +91,7 @@ public class CaseHouseController {
         modelAndView.addObject("hasHouseEquipmentAirConditioner", caseHouseEquipmentService.hasHouseEquipmentData(id, ExamineHouseEquipmentTypeEnum.houseAirConditioner.getKey()));
         modelAndView.addObject("hasHouseEquipmentHeating", caseHouseEquipmentService.hasHouseEquipmentData(id, ExamineHouseEquipmentTypeEnum.houseHeating.getKey()));
         modelAndView.addObject("hasHouseEquipmentNewWind", caseHouseEquipmentService.hasHouseEquipmentData(id, ExamineHouseEquipmentTypeEnum.houseNewWind.getKey()));
-
+        setHouseElementRender(caseHouseTradingVo,modelAndView);
         CaseUnit caseUnit = caseUnitService.getCaseUnitById(caseHouse.getUnitId());
         CaseBuildingMain caseBuildingMain = caseBuildingMainService.getCaseBuildingMainById(caseUnit.getBuildingMainId());
         CaseEstate caseEstate = caseEstateService.getCaseEstateById(caseBuildingMain.getEstateId());
@@ -92,6 +99,33 @@ public class CaseHouseController {
         modelAndView.addObject("caseBuildingMain", caseBuildingMain);
         modelAndView.addObject("caseEstate", caseEstate);
         return modelAndView;
+    }
+
+    /**
+     * 设置房屋中部分元素是否渲染
+     *
+     * @param caseHouseTradingVo
+     * @param modelAndView
+     */
+    private void setHouseElementRender(CaseHouseTradingVo caseHouseTradingVo, ModelAndView modelAndView) {
+        if (caseHouseTradingVo == null) return;
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(caseHouseTradingVo.getTransactionSituation());
+        if (baseDataDic != null && StringUtils.isNotBlank(baseDataDic.getFieldName())) {
+            modelAndView.addObject("isHouseAbnormal", baseDataDic.getFieldName().equals(AssessExamineTaskConstant.EXAMINE_HOUSE_TRANSACTION_SITUATION_ABNORMAL));
+        }
+        baseDataDic = baseDataDicService.getCacheDataDicById(caseHouseTradingVo.getPaymentMethod());
+        if (baseDataDic != null && StringUtils.isNotBlank(baseDataDic.getFieldName())) {
+            modelAndView.addObject("isHouseInstallment", baseDataDic.getFieldName().equals(AssessExamineTaskConstant.EXAMINE_HOUSE_PAYMENT_METHOD_INSTALLMENT));
+        }
+        baseDataDic = baseDataDicService.getCacheDataDicById(caseHouseTradingVo.getInformationType());
+        if (baseDataDic != null && StringUtils.isNotBlank(baseDataDic.getFieldName())) {
+            modelAndView.addObject("isHouseInfomationOpen", baseDataDic.getFieldName().equals(AssessExamineTaskConstant.EXAMINE_HOUSE_INFORMATION_SOURCE_TYPE_OPEN));
+        }
+        baseDataDic = baseDataDicService.getCacheDataDicById(caseHouseTradingVo.getTradingType());
+        if (baseDataDic != null && StringUtils.isNotBlank(baseDataDic.getFieldName())) {
+            modelAndView.addObject("isHouseSell", baseDataDic.getFieldName().equals(AssessExamineTaskConstant.EXAMINE_HOUSE_TRANSACTION_TYPE_SELL));
+            modelAndView.addObject("isHouseLease", baseDataDic.getFieldName().equals(AssessExamineTaskConstant.EXAMINE_HOUSE_TRANSACTION_TYPE_LEASE));
+        }
     }
 
     @ResponseBody
