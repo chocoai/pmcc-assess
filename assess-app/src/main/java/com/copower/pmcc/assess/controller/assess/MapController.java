@@ -55,12 +55,35 @@ public class MapController {
             tagging = new BasicEstateTagging();
             tagging.setLng("104.084335");
             tagging.setLat("30.590403");
+            tagging.setDeg(0);
+        } else {
+            if (tagging.getDeg() == null) {
+                tagging.setDeg(0);
+            }
         }
         if (NumberUtils.isNumber(sysAttachmentId)) {
             tagging.setAttachmentId(Integer.parseInt(sysAttachmentId));
         }
         modelAndView.addObject("click", click);
         modelAndView.addObject("tagging", tagging);
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/houseTaggingMore", name = "房屋标注(重复打开页面的时候)")
+    public ModelAndView houseTaggingMore(BasicEstateTagging tagging, String click) {
+        ModelAndView modelAndView = new ModelAndView("base/houseTaggingView");
+        modelAndView.addObject("click", click);
+        modelAndView.addObject("tagging", tagging);
+        if (tagging.getAttachmentId() == null) {
+            //临时数据
+            tagging.setAttachmentId(4506);
+        }
+        try {
+            String huxingImg = baseAttachmentService.getViewImageUrl(tagging.getAttachmentId());
+            modelAndView.addObject("huxingImg", huxingImg);
+        } catch (Exception e1) {
+            logger.error("附件不存在", e1);
+        }
         return modelAndView;
     }
 

@@ -50,7 +50,14 @@
         return false;
     };
     config.imageUrl = "${pageContext.request.contextPath}${huxingImg}";
-    config.position = {lng: '${tagging.lng}', lat: '${tagging.lat}'};
+    var lng = config.isNotBlank('${tagging.lng}') ? '${tagging.lng}' : 100;
+    var lat = config.isNotBlank('${tagging.lat}') ? '${tagging.lat}' : 30;
+    config.position = {
+        lng: lng,
+        lat: lat
+    };
+    var deg = config.isNotBlank('${tagging.deg}') ? '${tagging.deg}' : 0;
+    config.angle = deg;
 
     var imgMarker = null;
     var map = null;
@@ -78,8 +85,8 @@
                 dimensions = getImgNaturalDimensions(document.getElementById("oImg"));
             } catch (e) {
             }
-            var width = config.isNotBlank(dimensions.w)?parseFloat(dimensions.w):500;
-            var height = config.isNotBlank(dimensions.h)?parseFloat(dimensions.h):500;
+            var width = config.isNotBlank(dimensions.w) ? parseFloat(dimensions.w) : 500;
+            var height = config.isNotBlank(dimensions.h) ? parseFloat(dimensions.h) : 500;
             // 创建一个 Icon
             imgIcon = new AMap.Icon({
                 // 图标尺寸
@@ -97,7 +104,7 @@
                 offset: new AMap.Pixel(-13, -30),
                 autoRotation: true,
                 extData: {id: 'startMarker'},
-                angle: 20,
+                angle: config.angle,
                 draggable: true//开启拖拽
             });
             imgMarker.on('dragging', draggingFun);
@@ -137,9 +144,9 @@
     }
 
 
-     /**
-      *旋转监听函数
-      */
+    /**
+     *旋转监听函数
+     */
     function rotateTransform(flag) {
         var angle = Number(imgMarker.getAngle());
         if (flag) {
