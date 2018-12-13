@@ -40,6 +40,15 @@
 <script type="text/javascript">
 
     var config = {};
+    /**
+     * 判断字符串以及null等
+     */
+    config.isNotBlank = function (item) {
+        if (item) {
+            return true;
+        }
+        return false;
+    };
     config.imageUrl = "${pageContext.request.contextPath}${huxingImg}";
     config.position = {lng: '${tagging.lng}', lat: '${tagging.lat}'};
 
@@ -64,15 +73,21 @@
 
         });
         {
-            var dimensions = getImgNaturalDimensions(document.getElementById("oImg"));
+            var dimensions = {};
+            try {
+                dimensions = getImgNaturalDimensions(document.getElementById("oImg"));
+            } catch (e) {
+            }
+            var width = config.isNotBlank(dimensions.w)?parseFloat(dimensions.w):500;
+            var height = config.isNotBlank(dimensions.h)?parseFloat(dimensions.h):500;
             // 创建一个 Icon
             imgIcon = new AMap.Icon({
                 // 图标尺寸
-                size: new AMap.Size(Number(dimensions.w) * 10, Number(dimensions.h) * 10),
+                size: new AMap.Size(width * 10, height * 10),
                 // 图标的取图地址
                 image: config.imageUrl,
                 // 图标所用图片大小
-                imageSize: new AMap.Size(Number(dimensions.w) / 2.5, Number(dimensions.h) / 2.5),
+                imageSize: new AMap.Size(width / 2.5, height / 2.5),
                 // 图标取图偏移量
                 imageOffset: new AMap.Pixel(-1, -1)
             });
@@ -94,6 +109,8 @@
      * 拖拽事件监听函数
      */
     function draggingFun(e) {
+        var MAX_LNG = 0.001;
+        var MIN = 0;
         var angle = Number(imgMarker.getAngle());
         var data = {deg: angle, attachmentId:${tagging.attachmentId}};
         $.extend(data, {lng: e.lnglat.lng, lat: e.lnglat.lat});
