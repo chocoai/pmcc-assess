@@ -763,6 +763,8 @@ var houseIntelligent;
     houseIntelligent = function () {
 
     };
+    var arr = [{intelligentSystem:"intelligentSystem1",layingMethod:"layingMethod1"}];
+    var num = 1;
     houseIntelligent.prototype = {
         config: function () {
             var data = {};
@@ -887,8 +889,47 @@ var houseIntelligent;
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLayingMethod, item.layingMethod, function (html, data) {
                 $("#" + houseIntelligent.prototype.config().frm).find("select.layingMethod").empty().html(html).trigger('change');
             });
+            $.each( arr , function (i,n) {
+                AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_intelligent_system, null, function (html, data) {
+                    $("#" + houseIntelligent.prototype.config().frm).find("select."+ n.intelligentSystem).empty().html(html).trigger('change');
+                });
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLayingMethod, null, function (html, data) {
+                    $("#" + houseIntelligent.prototype.config().frm).find("select."+ n.layingMethod).empty().html(html).trigger('change');
+                });
+            });
+        },
+        appendHTML:function (item,this_) {
+            var lableValue = "智能系统";
+            num ++;
+            var intelligentSystem = "intelligentSystem" + num;
+            var layingMethod = "layingMethod" + num;
+            var html = "<div class='form-group' style='margin-top:8px;'>";
+                html += "<label class='col-md-2 col-sm-2  control-label'>" + lableValue + "</label>";
+                html += "<div class='col-sm-3'>";
+                html += "<select required='required' name='"+intelligentSystem +"' class='form-control search-select select2 "+intelligentSystem+"'>" +"</select>" ;
+                html += "</div>";
+
+                html += "<div class='col-sm-3'>";
+                html += "<select required='required' name='"+layingMethod +"' class='form-control search-select select2 "+layingMethod+"'>" +"</select>" ;
+                html += "</div>";
+
+                html += "<div class='col-sm-4'>";
+                html += "<input class='btn btn-warning' type='button' value='X' onclick='houseIntelligent.prototype.cleanHTMLData(this)'>";
+                html += "</div>";
+            html += "</div>";
+            $("#" + houseIntelligent.prototype.config().frm).find(".system").append(html);
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_intelligent_system, null, function (html, data) {
+                $("#" + houseIntelligent.prototype.config().frm).find("."+intelligentSystem).select2().empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLayingMethod, null, function (html, data) {
+                $("#" + houseIntelligent.prototype.config().frm).find("."+layingMethod).select2().empty().html(html).trigger('change');
+            });
+        },
+        cleanHTMLData:function (this_) {
+            $(this_).parent().parent().remove();
         }
     }
+
 
     //绑定事件
     $('#' + houseIntelligent.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
