@@ -3,7 +3,7 @@
 <div class="x_panel">
     <div class="x_content">
         <div class="x_title">
-            <h4>单元基本信息 </h4>
+            <h3>单元基本信息 </h3>
             <div class="clearfix"></div>
         </div>
         <form class="form-horizontal" id="frm_Unit">
@@ -29,21 +29,23 @@
                 </div>
             </div>
         </form>
+
+        <!-- 楼栋内装信息	 -->
+        <div style="display: ${hasUnitDecorateData?'block':'none'};">
+            <%@include file="/views/case/caseUnit/caseUnitDecorate.jsp" %>
+        </div>
+
+        <!-- 户型信息 -->
+        <div style="display: ${hasUnitHuxingData?'block':'none'};">
+            <%@include file="/views/case/caseUnit/caseUnitHuxing.jsp" %>
+        </div>
+
+        <!-- 电梯信息 -->
+        <div style="display: ${hasUnitElevatorData?'block':'none'};">
+            <%@include file="/views/case/caseUnit/caseUnitElevator.jsp" %>
+        </div>
     </div>
 </div>
 
-<!-- 楼栋内装信息	 -->
-<div style="display: ${hasUnitDecorateData?'block':'none'};">
-    <%@include file="/views/case/caseUnit/caseUnitDecorate.jsp" %>
-</div>
 
-<!-- 户型信息 -->
-<div style="display: ${hasUnitHuxingData?'block':'none'};">
-    <%@include file="/views/case/caseUnit/caseUnitHuxing.jsp" %>
-</div>
-
-<!-- 电梯信息 -->
-<div style="display: ${hasUnitElevatorData?'block':'none'};">
-    <%@include file="/views/case/caseUnit/caseUnitElevator.jsp" %>
-</div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/case/case.common.js"></script>

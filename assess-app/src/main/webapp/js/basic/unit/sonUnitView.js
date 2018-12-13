@@ -18,11 +18,7 @@ var unitDecorate;
             return false;
         },
         loadDataDicList: function () {
-            var cols = [];
-            cols.push({field: 'decorationPart', title: '装修部位'});
-            cols.push({field: 'decoratingMaterialName', title: '装修材料'});
-            cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
-            cols.push({field: 'materialPriceName', title: '材料价格区间'});
+            var cols = commonColumn.unitDecorateColumn();
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -154,15 +150,7 @@ var unitHuxing;
             return data;
         },
         loadDataDicList: function () {
-            var cols = [];
-            cols.push({field: 'name', title: '户型'});
-            cols.push({field: 'area', title: '面积'});
-            cols.push({field: 'orientationName', title: '朝向'});
-            cols.push({field: 'spanLength', title: '跨长'});
-            cols.push({field: 'spanWidth', title: '跨宽'});
-            cols.push({field: 'spanNumber', title: '跨数'});
-            cols.push({field: 'description', title: '描述'});
-            cols.push({field: 'fileViewName', title: '户型图'});
+            var cols = commonColumn.unitHuxingColumn();
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -400,14 +388,7 @@ var unitElevator;
             return data;
         },
         loadDataDicList: function () {
-            var cols = [];
-            cols.push({field: 'maintenanceName', title: '电梯维护情况'});
-            cols.push({field: 'typeName', title: '电梯类型'});
-            cols.push({field: 'brand', title: '电梯品牌'});
-            cols.push({field: 'number', title: '电梯数量'});
-            cols.push({field: 'quasiLoadNumber', title: '准载人数'});
-            cols.push({field: 'quasiLoadWeight', title: '准载重量'});
-            cols.push({field: 'runningSpeed', title: '运行速度'});
+            var cols = commonColumn.unitElevatorColumn();
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';

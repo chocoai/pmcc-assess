@@ -9,8 +9,8 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h3>户型信息
-        </h3>
+        <h4>户型信息
+        </h4>
         <div class="clearfix"></div>
     </div>
 
@@ -101,16 +101,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '户型'});
-                cols.push({field: 'area', title: '面积'});
-                cols.push({field: 'orientationName', title: '朝向'});
-                cols.push({field: 'spanLength', title: '跨长'});
-                cols.push({field: 'spanWidth', title: '跨宽'});
-                cols.push({field: 'spanNumber', title: '跨数'});
-                cols.push({field: 'description', title: '描述'});
-                cols.push({field: 'fileViewName', title: '户型图'});
-
+                var cols = commonColumn.unitHuxingColumn();
                 $("#" + unitHuxing.prototype.config().table).bootstrapTable('destroy');
                 TableInit(unitHuxing.prototype.config().table, "${pageContext.request.contextPath}/caseUnitHuxing/getCaseUnitHuxingList", cols, {
                     type: unitHuxing.prototype.config().type,

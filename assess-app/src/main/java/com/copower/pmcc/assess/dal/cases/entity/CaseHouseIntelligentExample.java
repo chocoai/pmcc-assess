@@ -225,66 +225,6 @@ public class CaseHouseIntelligentExample {
             return (Criteria) this;
         }
 
-        public Criteria andWireErectionIsNull() {
-            addCriterion("wire_erection is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWireErectionIsNotNull() {
-            addCriterion("wire_erection is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWireErectionEqualTo(Integer value) {
-            addCriterion("wire_erection =", value, "wireErection");
-            return (Criteria) this;
-        }
-
-        public Criteria andWireErectionNotEqualTo(Integer value) {
-            addCriterion("wire_erection <>", value, "wireErection");
-            return (Criteria) this;
-        }
-
-        public Criteria andWireErectionGreaterThan(Integer value) {
-            addCriterion("wire_erection >", value, "wireErection");
-            return (Criteria) this;
-        }
-
-        public Criteria andWireErectionGreaterThanOrEqualTo(Integer value) {
-            addCriterion("wire_erection >=", value, "wireErection");
-            return (Criteria) this;
-        }
-
-        public Criteria andWireErectionLessThan(Integer value) {
-            addCriterion("wire_erection <", value, "wireErection");
-            return (Criteria) this;
-        }
-
-        public Criteria andWireErectionLessThanOrEqualTo(Integer value) {
-            addCriterion("wire_erection <=", value, "wireErection");
-            return (Criteria) this;
-        }
-
-        public Criteria andWireErectionIn(List<Integer> values) {
-            addCriterion("wire_erection in", values, "wireErection");
-            return (Criteria) this;
-        }
-
-        public Criteria andWireErectionNotIn(List<Integer> values) {
-            addCriterion("wire_erection not in", values, "wireErection");
-            return (Criteria) this;
-        }
-
-        public Criteria andWireErectionBetween(Integer value1, Integer value2) {
-            addCriterion("wire_erection between", value1, value2, "wireErection");
-            return (Criteria) this;
-        }
-
-        public Criteria andWireErectionNotBetween(Integer value1, Integer value2) {
-            addCriterion("wire_erection not between", value1, value2, "wireErection");
-            return (Criteria) this;
-        }
-
         public Criteria andSwitchCircuitIsNull() {
             addCriterion("switch_circuit is null");
             return (Criteria) this;
@@ -345,6 +285,66 @@ public class CaseHouseIntelligentExample {
             return (Criteria) this;
         }
 
+        public Criteria andLayingMethodIsNull() {
+            addCriterion("laying_method is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayingMethodIsNotNull() {
+            addCriterion("laying_method is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayingMethodEqualTo(Integer value) {
+            addCriterion("laying_method =", value, "layingMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayingMethodNotEqualTo(Integer value) {
+            addCriterion("laying_method <>", value, "layingMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayingMethodGreaterThan(Integer value) {
+            addCriterion("laying_method >", value, "layingMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayingMethodGreaterThanOrEqualTo(Integer value) {
+            addCriterion("laying_method >=", value, "layingMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayingMethodLessThan(Integer value) {
+            addCriterion("laying_method <", value, "layingMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayingMethodLessThanOrEqualTo(Integer value) {
+            addCriterion("laying_method <=", value, "layingMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayingMethodIn(List<Integer> values) {
+            addCriterion("laying_method in", values, "layingMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayingMethodNotIn(List<Integer> values) {
+            addCriterion("laying_method not in", values, "layingMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayingMethodBetween(Integer value1, Integer value2) {
+            addCriterion("laying_method between", value1, value2, "layingMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayingMethodNotBetween(Integer value1, Integer value2) {
+            addCriterion("laying_method not between", value1, value2, "layingMethod");
+            return (Criteria) this;
+        }
+
         public Criteria andLampsLanternsIsNull() {
             addCriterion("lamps_lanterns is null");
             return (Criteria) this;
@@ -355,173 +355,63 @@ public class CaseHouseIntelligentExample {
             return (Criteria) this;
         }
 
-        public Criteria andLampsLanternsEqualTo(Integer value) {
+        public Criteria andLampsLanternsEqualTo(String value) {
             addCriterion("lamps_lanterns =", value, "lampsLanterns");
             return (Criteria) this;
         }
 
-        public Criteria andLampsLanternsNotEqualTo(Integer value) {
+        public Criteria andLampsLanternsNotEqualTo(String value) {
             addCriterion("lamps_lanterns <>", value, "lampsLanterns");
             return (Criteria) this;
         }
 
-        public Criteria andLampsLanternsGreaterThan(Integer value) {
+        public Criteria andLampsLanternsGreaterThan(String value) {
             addCriterion("lamps_lanterns >", value, "lampsLanterns");
             return (Criteria) this;
         }
 
-        public Criteria andLampsLanternsGreaterThanOrEqualTo(Integer value) {
+        public Criteria andLampsLanternsGreaterThanOrEqualTo(String value) {
             addCriterion("lamps_lanterns >=", value, "lampsLanterns");
             return (Criteria) this;
         }
 
-        public Criteria andLampsLanternsLessThan(Integer value) {
+        public Criteria andLampsLanternsLessThan(String value) {
             addCriterion("lamps_lanterns <", value, "lampsLanterns");
             return (Criteria) this;
         }
 
-        public Criteria andLampsLanternsLessThanOrEqualTo(Integer value) {
+        public Criteria andLampsLanternsLessThanOrEqualTo(String value) {
             addCriterion("lamps_lanterns <=", value, "lampsLanterns");
             return (Criteria) this;
         }
 
-        public Criteria andLampsLanternsIn(List<Integer> values) {
+        public Criteria andLampsLanternsLike(String value) {
+            addCriterion("lamps_lanterns like", value, "lampsLanterns");
+            return (Criteria) this;
+        }
+
+        public Criteria andLampsLanternsNotLike(String value) {
+            addCriterion("lamps_lanterns not like", value, "lampsLanterns");
+            return (Criteria) this;
+        }
+
+        public Criteria andLampsLanternsIn(List<String> values) {
             addCriterion("lamps_lanterns in", values, "lampsLanterns");
             return (Criteria) this;
         }
 
-        public Criteria andLampsLanternsNotIn(List<Integer> values) {
+        public Criteria andLampsLanternsNotIn(List<String> values) {
             addCriterion("lamps_lanterns not in", values, "lampsLanterns");
             return (Criteria) this;
         }
 
-        public Criteria andLampsLanternsBetween(Integer value1, Integer value2) {
+        public Criteria andLampsLanternsBetween(String value1, String value2) {
             addCriterion("lamps_lanterns between", value1, value2, "lampsLanterns");
             return (Criteria) this;
         }
 
-        public Criteria andLampsLanternsNotBetween(Integer value1, Integer value2) {
+        public Criteria andLampsLanternsNotBetween(String value1, String value2) {
             addCriterion("lamps_lanterns not between", value1, value2, "lampsLanterns");
-            return (Criteria) this;
-        }
-
-        public Criteria andInternalCommunicationIsNull() {
-            addCriterion("internal_communication is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andInternalCommunicationIsNotNull() {
-            addCriterion("internal_communication is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andInternalCommunicationEqualTo(Integer value) {
-            addCriterion("internal_communication =", value, "internalCommunication");
-            return (Criteria) this;
-        }
-
-        public Criteria andInternalCommunicationNotEqualTo(Integer value) {
-            addCriterion("internal_communication <>", value, "internalCommunication");
-            return (Criteria) this;
-        }
-
-        public Criteria andInternalCommunicationGreaterThan(Integer value) {
-            addCriterion("internal_communication >", value, "internalCommunication");
-            return (Criteria) this;
-        }
-
-        public Criteria andInternalCommunicationGreaterThanOrEqualTo(Integer value) {
-            addCriterion("internal_communication >=", value, "internalCommunication");
-            return (Criteria) this;
-        }
-
-        public Criteria andInternalCommunicationLessThan(Integer value) {
-            addCriterion("internal_communication <", value, "internalCommunication");
-            return (Criteria) this;
-        }
-
-        public Criteria andInternalCommunicationLessThanOrEqualTo(Integer value) {
-            addCriterion("internal_communication <=", value, "internalCommunication");
-            return (Criteria) this;
-        }
-
-        public Criteria andInternalCommunicationIn(List<Integer> values) {
-            addCriterion("internal_communication in", values, "internalCommunication");
-            return (Criteria) this;
-        }
-
-        public Criteria andInternalCommunicationNotIn(List<Integer> values) {
-            addCriterion("internal_communication not in", values, "internalCommunication");
-            return (Criteria) this;
-        }
-
-        public Criteria andInternalCommunicationBetween(Integer value1, Integer value2) {
-            addCriterion("internal_communication between", value1, value2, "internalCommunication");
-            return (Criteria) this;
-        }
-
-        public Criteria andInternalCommunicationNotBetween(Integer value1, Integer value2) {
-            addCriterion("internal_communication not between", value1, value2, "internalCommunication");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonitoringSystemIsNull() {
-            addCriterion("monitoring_system is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonitoringSystemIsNotNull() {
-            addCriterion("monitoring_system is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonitoringSystemEqualTo(Integer value) {
-            addCriterion("monitoring_system =", value, "monitoringSystem");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonitoringSystemNotEqualTo(Integer value) {
-            addCriterion("monitoring_system <>", value, "monitoringSystem");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonitoringSystemGreaterThan(Integer value) {
-            addCriterion("monitoring_system >", value, "monitoringSystem");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonitoringSystemGreaterThanOrEqualTo(Integer value) {
-            addCriterion("monitoring_system >=", value, "monitoringSystem");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonitoringSystemLessThan(Integer value) {
-            addCriterion("monitoring_system <", value, "monitoringSystem");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonitoringSystemLessThanOrEqualTo(Integer value) {
-            addCriterion("monitoring_system <=", value, "monitoringSystem");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonitoringSystemIn(List<Integer> values) {
-            addCriterion("monitoring_system in", values, "monitoringSystem");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonitoringSystemNotIn(List<Integer> values) {
-            addCriterion("monitoring_system not in", values, "monitoringSystem");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonitoringSystemBetween(Integer value1, Integer value2) {
-            addCriterion("monitoring_system between", value1, value2, "monitoringSystem");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonitoringSystemNotBetween(Integer value1, Integer value2) {
-            addCriterion("monitoring_system not between", value1, value2, "monitoringSystem");
             return (Criteria) this;
         }
 
@@ -535,52 +425,62 @@ public class CaseHouseIntelligentExample {
             return (Criteria) this;
         }
 
-        public Criteria andIntelligentSystemEqualTo(Integer value) {
+        public Criteria andIntelligentSystemEqualTo(String value) {
             addCriterion("intelligent_system =", value, "intelligentSystem");
             return (Criteria) this;
         }
 
-        public Criteria andIntelligentSystemNotEqualTo(Integer value) {
+        public Criteria andIntelligentSystemNotEqualTo(String value) {
             addCriterion("intelligent_system <>", value, "intelligentSystem");
             return (Criteria) this;
         }
 
-        public Criteria andIntelligentSystemGreaterThan(Integer value) {
+        public Criteria andIntelligentSystemGreaterThan(String value) {
             addCriterion("intelligent_system >", value, "intelligentSystem");
             return (Criteria) this;
         }
 
-        public Criteria andIntelligentSystemGreaterThanOrEqualTo(Integer value) {
+        public Criteria andIntelligentSystemGreaterThanOrEqualTo(String value) {
             addCriterion("intelligent_system >=", value, "intelligentSystem");
             return (Criteria) this;
         }
 
-        public Criteria andIntelligentSystemLessThan(Integer value) {
+        public Criteria andIntelligentSystemLessThan(String value) {
             addCriterion("intelligent_system <", value, "intelligentSystem");
             return (Criteria) this;
         }
 
-        public Criteria andIntelligentSystemLessThanOrEqualTo(Integer value) {
+        public Criteria andIntelligentSystemLessThanOrEqualTo(String value) {
             addCriterion("intelligent_system <=", value, "intelligentSystem");
             return (Criteria) this;
         }
 
-        public Criteria andIntelligentSystemIn(List<Integer> values) {
+        public Criteria andIntelligentSystemLike(String value) {
+            addCriterion("intelligent_system like", value, "intelligentSystem");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntelligentSystemNotLike(String value) {
+            addCriterion("intelligent_system not like", value, "intelligentSystem");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntelligentSystemIn(List<String> values) {
             addCriterion("intelligent_system in", values, "intelligentSystem");
             return (Criteria) this;
         }
 
-        public Criteria andIntelligentSystemNotIn(List<Integer> values) {
+        public Criteria andIntelligentSystemNotIn(List<String> values) {
             addCriterion("intelligent_system not in", values, "intelligentSystem");
             return (Criteria) this;
         }
 
-        public Criteria andIntelligentSystemBetween(Integer value1, Integer value2) {
+        public Criteria andIntelligentSystemBetween(String value1, String value2) {
             addCriterion("intelligent_system between", value1, value2, "intelligentSystem");
             return (Criteria) this;
         }
 
-        public Criteria andIntelligentSystemNotBetween(Integer value1, Integer value2) {
+        public Criteria andIntelligentSystemNotBetween(String value1, String value2) {
             addCriterion("intelligent_system not between", value1, value2, "intelligentSystem");
             return (Criteria) this;
         }

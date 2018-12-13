@@ -7,17 +7,13 @@ public class BasicHouseIntelligent {
 
     private Integer houseId;
 
-    private Integer wireErection;
-
     private Integer switchCircuit;
 
-    private Integer lampsLanterns;
+    private Integer layingMethod;
 
-    private Integer internalCommunication;
+    private String lampsLanterns;
 
-    private Integer monitoringSystem;
-
-    private Integer intelligentSystem;
+    private String intelligentSystem;
 
     private String creator;
 
@@ -41,14 +37,6 @@ public class BasicHouseIntelligent {
         this.houseId = houseId;
     }
 
-    public Integer getWireErection() {
-        return wireErection;
-    }
-
-    public void setWireErection(Integer wireErection) {
-        this.wireErection = wireErection;
-    }
-
     public Integer getSwitchCircuit() {
         return switchCircuit;
     }
@@ -57,36 +45,28 @@ public class BasicHouseIntelligent {
         this.switchCircuit = switchCircuit;
     }
 
-    public Integer getLampsLanterns() {
+    public Integer getLayingMethod() {
+        return layingMethod;
+    }
+
+    public void setLayingMethod(Integer layingMethod) {
+        this.layingMethod = layingMethod;
+    }
+
+    public String getLampsLanterns() {
         return lampsLanterns;
     }
 
-    public void setLampsLanterns(Integer lampsLanterns) {
-        this.lampsLanterns = lampsLanterns;
+    public void setLampsLanterns(String lampsLanterns) {
+        this.lampsLanterns = lampsLanterns == null ? null : lampsLanterns.trim();
     }
 
-    public Integer getInternalCommunication() {
-        return internalCommunication;
-    }
-
-    public void setInternalCommunication(Integer internalCommunication) {
-        this.internalCommunication = internalCommunication;
-    }
-
-    public Integer getMonitoringSystem() {
-        return monitoringSystem;
-    }
-
-    public void setMonitoringSystem(Integer monitoringSystem) {
-        this.monitoringSystem = monitoringSystem;
-    }
-
-    public Integer getIntelligentSystem() {
+    public String getIntelligentSystem() {
         return intelligentSystem;
     }
 
-    public void setIntelligentSystem(Integer intelligentSystem) {
-        this.intelligentSystem = intelligentSystem;
+    public void setIntelligentSystem(String intelligentSystem) {
+        this.intelligentSystem = intelligentSystem == null ? null : intelligentSystem.trim();
     }
 
     public String getCreator() {

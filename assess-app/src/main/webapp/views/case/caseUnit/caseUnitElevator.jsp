@@ -9,11 +9,10 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h3>电梯信息
-        </h3>
+        <h4>电梯信息
+        </h4>
         <div class="clearfix"></div>
     </div>
-
     <div class="x_content collapse">
         <form class="form-horizontal">
             <div class="form-group">
@@ -50,14 +49,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'maintenance', title: '电梯维护情况'});
-                cols.push({field: 'typeName', title: '电梯类型'});
-                cols.push({field: 'brand', title: '电梯品牌'});
-                cols.push({field: 'number', title: '电梯数量'});
-                cols.push({field: 'quasiLoadNumber', title: '准载人数'});
-                cols.push({field: 'quasiLoadWeight', title: '准载重量'});
-                cols.push({field: 'runningSpeed', title: '运行速度'});
+                var cols = commonColumn.unitElevatorColumn();
                 $("#" + unitElevator.prototype.config().table).bootstrapTable('destroy');
                 TableInit(unitElevator.prototype.config().table, "${pageContext.request.contextPath}/caseUnitElevator/getCaseUnitElevatorList", cols, {
                     unitId: '${empty caseUnit.id?0:caseUnit.id}'

@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicHouseIntelligentDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouseIntelligent;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseIntelligentVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -119,12 +118,7 @@ public class BasicHouseIntelligentService {
         }
         BasicHouseIntelligentVo vo = new BasicHouseIntelligentVo();
         BeanUtils.copyProperties(basicHouseIntelligent,vo);
-        vo.setIntelligentSystemName(baseDataDicService.getNameById(basicHouseIntelligent.getIntelligentSystem()));
-        vo.setMonitoringSystemName(baseDataDicService.getNameById(basicHouseIntelligent.getMonitoringSystem()));
-        vo.setInternalCommunicationName(baseDataDicService.getNameById(basicHouseIntelligent.getInternalCommunication()));
-        vo.setLampsLanternsName(baseDataDicService.getNameById(basicHouseIntelligent.getLampsLanterns()));
-        vo.setSwitchCircuitName(baseDataDicService.getNameById(basicHouseIntelligent.getSwitchCircuit()));
-        vo.setWireErectionName(baseDataDicService.getNameById(basicHouseIntelligent.getWireErection()));
+
         return vo;
     }
     

@@ -878,17 +878,14 @@ var houseIntelligent;
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_intelligent_system, item.intelligentSystem, function (html, data) {
                 $("#" + houseIntelligent.prototype.config().frm).find("select.intelligentSystem").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_monitoring_system, item.monitoringSystem, function (html, data) {
-                $("#" + houseIntelligent.prototype.config().frm).find("select.monitoringSystem").empty().html(html).trigger('change');
-            });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_lamps_lanterns, item.lampsLanterns, function (html, data) {
                 $("#" + houseIntelligent.prototype.config().frm).find("select.lampsLanterns").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_switch_circuit, item.switchCircuit, function (html, data) {
                 $("#" + houseIntelligent.prototype.config().frm).find("select.switchCircuit").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_wire_erection_method, item.wireErection, function (html, data) {
-                $("#" + houseIntelligent.prototype.config().frm).find("select.wireErection").empty().html(html).trigger('change');
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLayingMethod, item.layingMethod, function (html, data) {
+                $("#" + houseIntelligent.prototype.config().frm).find("select.layingMethod").empty().html(html).trigger('change');
             });
         }
     }

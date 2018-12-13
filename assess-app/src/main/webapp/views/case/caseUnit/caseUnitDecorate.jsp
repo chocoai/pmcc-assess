@@ -9,8 +9,8 @@
             <li><a class="collapse-link" ><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h3>楼栋内装信息
-        </h3>
+        <h4>楼栋内装信息
+        </h4>
         <div class="clearfix"></div>
     </div>
 
@@ -58,12 +58,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'locationName', title: '所在位置'});
-                cols.push({field: 'decorationPartName', title: '装修部位'});
-                cols.push({field: 'decoratingMaterialName', title: '装修材料'});
-                cols.push({field: 'materialPriceName', title: '材料价格区间'});
-                cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
+                var cols = commonColumn.unitDecorateColumn();
                 $("#" + unitDecorate.prototype.config().table).bootstrapTable('destroy');
                 TableInit(unitDecorate.prototype.config().table, "${pageContext.request.contextPath}/caseUnitDecorate/getCaseUnitDecorateList", cols, {
                     type: unitDecorate.prototype.config().type,

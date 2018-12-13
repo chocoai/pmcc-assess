@@ -622,7 +622,18 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            铺设方式<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="layingMethod"
+                                                    class="form-control search-select select2 layingMethod">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
@@ -650,12 +661,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            电线架设方式<span class="symbol required"></span>
+                                            描述
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="wireErection"
-                                                    class="form-control search-select select2 wireErection">
-                                            </select>
+                                            <textarea name="remark" class="form-control"></textarea>
                                         </div>
                                     </div>
                                 </div>

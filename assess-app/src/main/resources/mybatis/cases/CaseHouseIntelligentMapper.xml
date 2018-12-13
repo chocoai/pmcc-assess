@@ -4,12 +4,10 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseHouseIntelligent" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
-    <result column="wire_erection" property="wireErection" jdbcType="INTEGER" />
     <result column="switch_circuit" property="switchCircuit" jdbcType="INTEGER" />
-    <result column="lamps_lanterns" property="lampsLanterns" jdbcType="INTEGER" />
-    <result column="internal_communication" property="internalCommunication" jdbcType="INTEGER" />
-    <result column="monitoring_system" property="monitoringSystem" jdbcType="INTEGER" />
-    <result column="intelligent_system" property="intelligentSystem" jdbcType="INTEGER" />
+    <result column="laying_method" property="layingMethod" jdbcType="INTEGER" />
+    <result column="lamps_lanterns" property="lampsLanterns" jdbcType="VARCHAR" />
+    <result column="intelligent_system" property="intelligentSystem" jdbcType="CHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -73,8 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, house_id, wire_erection, switch_circuit, lamps_lanterns, internal_communication, 
-    monitoring_system, intelligent_system, creator, gmt_created, gmt_modified
+    id, house_id, switch_circuit, laying_method, lamps_lanterns, intelligent_system, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseIntelligentExample" >
     select
@@ -110,14 +108,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_house_intelligent (house_id, wire_erection, switch_circuit, 
-      lamps_lanterns, internal_communication, monitoring_system, 
-      intelligent_system, creator, gmt_created, 
-      gmt_modified)
-    values (#{houseId,jdbcType=INTEGER}, #{wireErection,jdbcType=INTEGER}, #{switchCircuit,jdbcType=INTEGER}, 
-      #{lampsLanterns,jdbcType=INTEGER}, #{internalCommunication,jdbcType=INTEGER}, #{monitoringSystem,jdbcType=INTEGER}, 
-      #{intelligentSystem,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_case_house_intelligent (house_id, switch_circuit, laying_method, 
+      lamps_lanterns, intelligent_system, creator, 
+      gmt_created, gmt_modified)
+    values (#{houseId,jdbcType=INTEGER}, #{switchCircuit,jdbcType=INTEGER}, #{layingMethod,jdbcType=INTEGER}, 
+      #{lampsLanterns,jdbcType=VARCHAR}, #{intelligentSystem,jdbcType=CHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseIntelligent" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -128,20 +124,14 @@
       <if test="houseId != null" >
         house_id,
       </if>
-      <if test="wireErection != null" >
-        wire_erection,
-      </if>
       <if test="switchCircuit != null" >
         switch_circuit,
       </if>
+      <if test="layingMethod != null" >
+        laying_method,
+      </if>
       <if test="lampsLanterns != null" >
         lamps_lanterns,
-      </if>
-      <if test="internalCommunication != null" >
-        internal_communication,
-      </if>
-      <if test="monitoringSystem != null" >
-        monitoring_system,
       </if>
       <if test="intelligentSystem != null" >
         intelligent_system,
@@ -160,23 +150,17 @@
       <if test="houseId != null" >
         #{houseId,jdbcType=INTEGER},
       </if>
-      <if test="wireErection != null" >
-        #{wireErection,jdbcType=INTEGER},
-      </if>
       <if test="switchCircuit != null" >
         #{switchCircuit,jdbcType=INTEGER},
       </if>
+      <if test="layingMethod != null" >
+        #{layingMethod,jdbcType=INTEGER},
+      </if>
       <if test="lampsLanterns != null" >
-        #{lampsLanterns,jdbcType=INTEGER},
-      </if>
-      <if test="internalCommunication != null" >
-        #{internalCommunication,jdbcType=INTEGER},
-      </if>
-      <if test="monitoringSystem != null" >
-        #{monitoringSystem,jdbcType=INTEGER},
+        #{lampsLanterns,jdbcType=VARCHAR},
       </if>
       <if test="intelligentSystem != null" >
-        #{intelligentSystem,jdbcType=INTEGER},
+        #{intelligentSystem,jdbcType=CHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -204,23 +188,17 @@
       <if test="record.houseId != null" >
         house_id = #{record.houseId,jdbcType=INTEGER},
       </if>
-      <if test="record.wireErection != null" >
-        wire_erection = #{record.wireErection,jdbcType=INTEGER},
-      </if>
       <if test="record.switchCircuit != null" >
         switch_circuit = #{record.switchCircuit,jdbcType=INTEGER},
       </if>
+      <if test="record.layingMethod != null" >
+        laying_method = #{record.layingMethod,jdbcType=INTEGER},
+      </if>
       <if test="record.lampsLanterns != null" >
-        lamps_lanterns = #{record.lampsLanterns,jdbcType=INTEGER},
-      </if>
-      <if test="record.internalCommunication != null" >
-        internal_communication = #{record.internalCommunication,jdbcType=INTEGER},
-      </if>
-      <if test="record.monitoringSystem != null" >
-        monitoring_system = #{record.monitoringSystem,jdbcType=INTEGER},
+        lamps_lanterns = #{record.lampsLanterns,jdbcType=VARCHAR},
       </if>
       <if test="record.intelligentSystem != null" >
-        intelligent_system = #{record.intelligentSystem,jdbcType=INTEGER},
+        intelligent_system = #{record.intelligentSystem,jdbcType=CHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -240,12 +218,10 @@
     update tb_case_house_intelligent
     set id = #{record.id,jdbcType=INTEGER},
       house_id = #{record.houseId,jdbcType=INTEGER},
-      wire_erection = #{record.wireErection,jdbcType=INTEGER},
       switch_circuit = #{record.switchCircuit,jdbcType=INTEGER},
-      lamps_lanterns = #{record.lampsLanterns,jdbcType=INTEGER},
-      internal_communication = #{record.internalCommunication,jdbcType=INTEGER},
-      monitoring_system = #{record.monitoringSystem,jdbcType=INTEGER},
-      intelligent_system = #{record.intelligentSystem,jdbcType=INTEGER},
+      laying_method = #{record.layingMethod,jdbcType=INTEGER},
+      lamps_lanterns = #{record.lampsLanterns,jdbcType=VARCHAR},
+      intelligent_system = #{record.intelligentSystem,jdbcType=CHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -259,23 +235,17 @@
       <if test="houseId != null" >
         house_id = #{houseId,jdbcType=INTEGER},
       </if>
-      <if test="wireErection != null" >
-        wire_erection = #{wireErection,jdbcType=INTEGER},
-      </if>
       <if test="switchCircuit != null" >
         switch_circuit = #{switchCircuit,jdbcType=INTEGER},
       </if>
+      <if test="layingMethod != null" >
+        laying_method = #{layingMethod,jdbcType=INTEGER},
+      </if>
       <if test="lampsLanterns != null" >
-        lamps_lanterns = #{lampsLanterns,jdbcType=INTEGER},
-      </if>
-      <if test="internalCommunication != null" >
-        internal_communication = #{internalCommunication,jdbcType=INTEGER},
-      </if>
-      <if test="monitoringSystem != null" >
-        monitoring_system = #{monitoringSystem,jdbcType=INTEGER},
+        lamps_lanterns = #{lampsLanterns,jdbcType=VARCHAR},
       </if>
       <if test="intelligentSystem != null" >
-        intelligent_system = #{intelligentSystem,jdbcType=INTEGER},
+        intelligent_system = #{intelligentSystem,jdbcType=CHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -292,12 +262,10 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseIntelligent" >
     update tb_case_house_intelligent
     set house_id = #{houseId,jdbcType=INTEGER},
-      wire_erection = #{wireErection,jdbcType=INTEGER},
       switch_circuit = #{switchCircuit,jdbcType=INTEGER},
-      lamps_lanterns = #{lampsLanterns,jdbcType=INTEGER},
-      internal_communication = #{internalCommunication,jdbcType=INTEGER},
-      monitoring_system = #{monitoringSystem,jdbcType=INTEGER},
-      intelligent_system = #{intelligentSystem,jdbcType=INTEGER},
+      laying_method = #{layingMethod,jdbcType=INTEGER},
+      lamps_lanterns = #{lampsLanterns,jdbcType=VARCHAR},
+      intelligent_system = #{intelligentSystem,jdbcType=CHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

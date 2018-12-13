@@ -64,7 +64,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/estate/estate.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/building/building.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/unit/unit.common.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/house/house.common1.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/house/house.common.js"></script>
 <script type="text/javascript">
     var objectData = new Object();
 
