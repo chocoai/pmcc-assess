@@ -318,7 +318,7 @@
         });
         $("#" + tbListId).bootstrapTable('destroy');
         TableInit(tbListId, getContextPath() + "/basicHouseTradingLeaseAndSell/getLeaseAndSellVos", cols, {
-            type: type,
+            type: tradingType,
             houseId: houseCommon.getHouseId()
         }, {
             showColumns: false,
