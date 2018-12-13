@@ -15,6 +15,10 @@ public class CaseEstateTagging {
 
     private String name;
 
+    private Integer attachmentId;
+
+    private Integer deg;
+
     private String remark;
 
     private String creator;
@@ -69,6 +73,22 @@ public class CaseEstateTagging {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public Integer getAttachmentId() {
+        return attachmentId;
+    }
+
+    public void setAttachmentId(Integer attachmentId) {
+        this.attachmentId = attachmentId;
+    }
+
+    public Integer getDeg() {
+        return deg;
+    }
+
+    public void setDeg(Integer deg) {
+        this.deg = deg;
     }
 
     public String getRemark() {

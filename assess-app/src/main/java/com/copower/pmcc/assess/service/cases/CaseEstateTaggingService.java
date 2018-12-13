@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.cases.dao.CaseEstateTaggingDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.MapDto;
 import com.copower.pmcc.assess.dto.input.cases.CaseEstateTaggingDto;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.google.common.base.Objects;
@@ -38,6 +39,8 @@ public class CaseEstateTaggingService {
     private CaseUnitService caseUnitService;
     @Autowired
     private CaseHouseService caseHouseService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
 
 
     public List<CaseEstateTagging> queryCaseEstateTagging(Integer dataId, String type) throws Exception {
@@ -229,6 +232,9 @@ public class CaseEstateTaggingService {
                                             if (houseTagging != null) {
                                                 CaseEstateTaggingDto houseDto = new CaseEstateTaggingDto();
                                                 org.springframework.beans.BeanUtils.copyProperties(houseTagging, houseDto);
+                                                if (houseTagging.getAttachmentId() != null){
+                                                    houseDto.setHuxingImg(baseAttachmentService.getViewImageUrl(houseTagging.getAttachmentId()));
+                                                }
                                                 unitTaggingDto.getChildren().add(houseDto);
                                             }
                                         }

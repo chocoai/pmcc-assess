@@ -83,11 +83,22 @@
                 autoRotation: true,
                 extData: {id: 'startMarker'},
                 angle: 20,
-                draggable: true,//开启拖拽
+                draggable: true//开启拖拽
             });
+            imgMarker.on('dragging', draggingFun);
             map.add(imgMarker);
         }
     });
+
+    /**
+     * 拖拽事件监听函数
+     */
+    function draggingFun(e) {
+        var angle = Number(imgMarker.getAngle());
+        var data = {deg: angle, attachmentId:${tagging.attachmentId}};
+        $.extend(data, {lng: e.lnglat.lng, lat: e.lnglat.lat});
+        write(data);
+    }
 
 
     function getImgNaturalDimensions(oImg) {
@@ -108,6 +119,10 @@
         }
     }
 
+
+     /**
+      *旋转监听函数
+      */
     function rotateTransform(flag) {
         var angle = Number(imgMarker.getAngle());
         if (flag) {
@@ -117,19 +132,23 @@
         }
         var data = {deg: angle, attachmentId:${tagging.attachmentId}};
         $.extend(data, {lng: imgMarker.getPosition().lng, lat: imgMarker.getPosition().lat});
-        try {
-            window.houseCommon.addMarker(JSON.stringify(data));
-        } catch (e) {
-            var excuteString = null;
-            excuteString = 'if (parent && parent.${click}) {';
-            excuteString += 'parent.${click}(';
-            excuteString += data.lng + ',' + data.lat + ',' + data.attachmentId + ',' + data.deg + ')';
-            excuteString += '; }';
-            eval(excuteString);
-        }
+        write(data);
+    }
+
+    function write(data) {
+        var excuteString = null;
+        excuteString = 'if (parent && parent.${click}) {';
+        excuteString += 'parent.${click}(';
+        excuteString += data.lng + ',' + data.lat + ',' + data.attachmentId + ',' + data.deg + ')';
+        excuteString += '; }';
+        eval(excuteString);
     }
 
 
+    /**
+     * 放大和缩小
+     * @param flag
+     */
     function zoom(flag) {
         var size = imgIcon.getImageSize();
         if (flag) {

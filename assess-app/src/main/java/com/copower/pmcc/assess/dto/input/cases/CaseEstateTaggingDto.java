@@ -14,6 +14,7 @@ public class CaseEstateTaggingDto extends CaseEstateTagging {
     private Set<CaseEstateTaggingDto> children = new HashSet<CaseEstateTaggingDto>();
     private String state = "open";
     private boolean checked = false;
+    private String huxingImg;
 
     public Set<CaseEstateTaggingDto> getChildren() {
         return children;
@@ -37,5 +38,13 @@ public class CaseEstateTaggingDto extends CaseEstateTagging {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+    public String getHuxingImg() {
+        return huxingImg;
+    }
+
+    public void setHuxingImg(String huxingImg) {
+        this.huxingImg = huxingImg;
     }
 }

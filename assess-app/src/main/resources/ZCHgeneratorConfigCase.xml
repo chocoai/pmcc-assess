@@ -44,7 +44,7 @@
 
         <!-- 具体表 -->
 
-        <table tableName="tb_case_house_water_drain" domainObjectName="CaseHouseWaterDrain">
+        <table tableName="tb_case_estate_tagging" domainObjectName="CaseEstateTagging">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
