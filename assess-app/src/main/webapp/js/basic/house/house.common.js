@@ -96,7 +96,10 @@
                             houseCommon.fileShow(item, false);
                         })
                     })
-                    houseCommon.houseTradingForm.initForm(result.data.basicHouseTrading);
+                    houseCommon.houseTradingForm.initForm(result.data.basicHouseTrading, function () {
+                        houseCommon.loadTradingSellAndLeaseList(AssessDicKey.examineHouseTransactionTypeSell, true);
+                        houseCommon.loadTradingSellAndLeaseList(AssessDicKey.examineHouseTransactionTypeLease, true);
+                    });
                 }
             }
         })
@@ -229,23 +232,23 @@
         houseCommon.houseTradingForm.find('[name=tradingType]').off('change').on('change', function () {
             var key = $(this).find("option:selected").attr('key');
             var paymentMethod = basicHouseTrading == null ? null : basicHouseTrading.paymentMethod;
-            if (key == houseCommon.houseTradingTypeSell) {
-                houseCommon.houseTradingForm.find('.' + houseCommon.houseTradingTypeSell).show();
-                houseCommon.houseTradingForm.find('.' + houseCommon.houseTradingTypeLease).hide();
-                houseCommon.loadTradingSellAndLeaseList(houseCommon.houseTradingTypeSell);
+            if (key == AssessDicKey.examineHouseTransactionTypeSell) {
+                houseCommon.houseTradingForm.find('.ExamineHouseTradingSell').show();
+                houseCommon.houseTradingForm.find('.ExamineHouseTradingLease').hide();
+                houseCommon.loadTradingSellAndLeaseList(AssessDicKey.examineHouseTransactionTypeSell);
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePaymentMethod, basicHouseTrading.paymentMethod, function (html, data) {
                     houseCommon.houseTradingForm.find("select.paymentMethod").empty().html(html).trigger('change');
                 });
-            } else if (key == houseCommon.houseTradingTypeLease) {
-                houseCommon.houseTradingForm.find('.' + houseCommon.houseTradingTypeSell).hide();
-                $('.' + houseCommon.houseTradingTypeLease).show();
-                houseCommon.loadTradingSellAndLeaseList(houseCommon.houseTradingTypeLease);
+            } else if (key == AssessDicKey.examineHouseTransactionTypeLease) {
+                houseCommon.houseTradingForm.find('.ExamineHouseTradingSell').hide();
+                houseCommon.houseTradingForm.find('.ExamineHouseTradingLease').show();
+                houseCommon.loadTradingSellAndLeaseList(AssessDicKey.examineHouseTransactionTypeLease);
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePaymentMethodLease, basicHouseTrading.paymentMethod, function (html, data) {
                     houseCommon.houseTradingForm.find("select.paymentMethod").empty().html(html).trigger('change');
                 });
             } else {
-                houseCommon.houseTradingForm.find('.' + houseCommon.houseTradingTypeSell).hide();
-                houseCommon.houseTradingForm.find('.' + houseCommon.houseTradingTypeLease).hide();
+                houseCommon.houseTradingForm.find('.ExamineHouseTradingSell').hide();
+                houseCommon.houseTradingForm.find('.ExamineHouseTradingLease').hide();
             }
         });
 
@@ -277,12 +280,12 @@
         var frmSon = 'frmTradingLeaseAndSell';
         var divBoxSon = 'divBoxTradingLeaseAndSell';
         $("#" + frmSon).clearAll().find(".type").val(key);
-        if (key == houseCommon.houseTradingTypeSell) {
+        if (key == AssessDicKey.examineHouseTransactionTypeSell) {
             $("#" + divBoxSon).find(".lease").hide();
             $("#" + divBoxSon).find(".sell").show();
             $("#" + divBoxSon).find(".modal-title").html("出售信息");
         }
-        if (key == houseCommon.houseTradingTypeLease) {
+        if (key == AssessDicKey.examineHouseTransactionTypeLease) {
             $("#" + divBoxSon).find(".lease").show();
             $("#" + divBoxSon).find(".sell").hide();
             $("#" + divBoxSon).find(".modal-title").html("出租信息");
@@ -291,31 +294,33 @@
     }
 
     //加载出售获取出租
-    houseCommon.loadTradingSellAndLeaseList = function (tradingType) {
+    houseCommon.loadTradingSellAndLeaseList = function (tradingType, readonly) {
         var cols = [];
         var tbListId = '';
-        if (tradingType == houseCommon.houseTradingTypeSell) {
+        if (tradingType == AssessDicKey.examineHouseTransactionTypeSell) {
             tbListId = 'tableTradingSell';
             cols.push({field: 'instalmentInterest', title: '分期支付时间起'});
             cols.push({field: 'instalmentPeriodStartName', title: '分期支付时间止'});
             cols.push({field: 'instalmentPeriodEndName', title: '分期支付利息'});
         }
-        if (tradingType == houseCommon.houseTradingTypeLease) {
+        if (tradingType == AssessDicKey.examineHouseTransactionTypeLease) {
             tbListId = 'tableTradingLease';
             cols.push({field: 'rentGrowthRate', title: '租金增长比率'});
             cols.push({field: 'rentPaymentTimeStartName', title: '租金支付时间起'});
             cols.push({field: 'rentPaymentTimeEndName', title: '租金支付时间止'});
         }
-        cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += "<a class='btn btn-xs btn-warning tooltips' data-placement='top' data-original-title='删除' " + "onclick=houseCommon.deleteTradingSellAndLease(" + row.id + ",'" + type + "'" + ")" + ">";
-                str += "<i class='fa fa-minus fa-white'>" + "</i>";
-                str += "</a>";
-                str += '</div>';
-                return str;
-            }
-        });
+        if (!readonly) {
+            cols.push({
+                field: 'id', title: '操作', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    str += "<a class='btn btn-xs btn-warning tooltips' data-placement='top' data-original-title='删除' " + "onclick=houseCommon.deleteTradingSellAndLease(" + row.id + ",'" + tradingType + "'" + ")" + ">";
+                    str += "<i class='fa fa-minus fa-white'>" + "</i>";
+                    str += "</a>";
+                    str += '</div>';
+                    return str;
+                }
+            });
+        }
         $("#" + tbListId).bootstrapTable('destroy');
         TableInit(tbListId, getContextPath() + "/basicHouseTradingLeaseAndSell/getLeaseAndSellVos", cols, {
             type: tradingType,
@@ -426,8 +431,12 @@
         });
     }
 
-    houseCommon.addMarker = function (lng,lat,attachmentId,deg) {
-        var data = {type:"house",applyId:houseCommon.getApplyId(),name:formSerializeArray(houseCommon.houseForm).houseNumber};
+    houseCommon.addMarker = function (lng, lat, attachmentId, deg) {
+        var data = {
+            type: "house",
+            applyId: houseCommon.getApplyId(),
+            name: formSerializeArray(houseCommon.houseForm).houseNumber
+        };
         data.lng = lng;
         data.lat = lat;
         data.deg = deg;
@@ -464,20 +473,20 @@
                         for (var i = 0; i < result.data.length; i++) {
                             if (result.data[i].fieldsName == houseCommon.houseFileControlIdArray[1]) {
                                 //后缀必须为图片
-                                if (AssessCommon.checkImgFile(result.data[i].fileName)){
+                                if (AssessCommon.checkImgFile(result.data[i].fileName)) {
                                     sysAttachmentId = result.data[i].id;
                                     break;
                                 }
                             }
                         }
-                        if (sysAttachmentId){
+                        if (sysAttachmentId) {
                             //.....
-                        }else {
+                        } else {
                             //假如未找到需要的情况下新户型那么找另一种
                             for (var i = 0; i < result.data.length; i++) {
                                 if (result.data[i].fieldsName == houseCommon.houseFileControlIdArray[0]) {
                                     //后缀必须为图片
-                                    if (AssessCommon.checkImgFile(result.data[i].fileName)){
+                                    if (AssessCommon.checkImgFile(result.data[i].fileName)) {
                                         sysAttachmentId = result.data[i].id;
                                         break;
                                     }
@@ -491,7 +500,7 @@
                 Alert("调用服务端方法失败，失败原因:" + result);
             }
         });
-        var contentUrl = getContextPath() + '/map/houseTagging?sysAttachmentId='+sysAttachmentId+"&unitId="+unitId+"&click=houseCommon.addMarker";
+        var contentUrl = getContextPath() + '/map/houseTagging?sysAttachmentId=' + sysAttachmentId + "&unitId=" + unitId + "&click=houseCommon.addMarker";
         layer.open({
             type: 2,
             title: '房屋标注',

@@ -2,7 +2,7 @@
 <div class="x_panel">
     <div class="x_content">
         <div class="x_title">
-            <h4>房屋基本信息</h4>
+            <h3>房屋基本信息</h3>
             <div class="clearfix"></div>
         </div>
         <form class="form-horizontal" id="basicHouseFrm">

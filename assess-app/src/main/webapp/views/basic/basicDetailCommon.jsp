@@ -66,83 +66,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/unit/unit.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/house/house.common.js"></script>
 <script type="text/javascript">
-    var objectData = new Object();
-
-    objectData.config = {
-        id: "basicApplyId",
-        basicHouse: {
-            key: "basicHouse",
-            name: "房屋",
-            frm: "basicHouseFrm",
-            tradingFrm: "basicTradingFrm",
-            leaseID: "BasicHouseTradingLease",//房屋出租
-            sellID: "BasicHouseTradingSell",//房屋出售
-            totalSale: "totalSale",//出售总额
-            divBoxSon: "divBoxTradingLeaseAndSell",
-            tableSon: "tableTradingLeaseAndSell",
-            frmSon: "frmTradingLeaseAndSell",
-            houseFileId: "house_img_plan"
-        }
-    };
-
-    objectData.house = {
-        init: function () {
-            var tradingID = "${basicHouseTrading.tradingType}";
-            var tradingType = null;
-            AssessCommon.getDataDicInfo(tradingID, function (data) {
-                tradingType = data.fieldName;
-                if (tradingType == objectData.config.basicHouse.leaseID) {
-                    $("#" + objectData.config.basicHouse.tradingFrm).find("." + objectData.config.basicHouse.sellID).hide();
-                    $("#" + objectData.config.basicHouse.tradingFrm).find("." + objectData.config.basicHouse.leaseID).show();
-                    $("#" + objectData.config.basicHouse.tableSon + "Div").show();
-                    objectData.house.subLoadList(objectData.config.basicHouse.leaseID);
-                }
-                if (tradingType == objectData.config.basicHouse.sellID) {
-                    $("#" + objectData.config.basicHouse.tradingFrm).find("." + objectData.config.basicHouse.sellID).show();
-                    $("#" + objectData.config.basicHouse.tradingFrm).find("." + objectData.config.basicHouse.leaseID).hide();
-                    $("#" + objectData.config.basicHouse.tradingFrm).find("#" + objectData.config.basicHouse.tableSon + "Div").hide();
-                }
-            });
-            AssessCommon.getDataDicInfo("${basicHouseTrading.paymentMethod}", function (data) {
-                if (data.name == '一次性') {
-                    $("#" + objectData.config.basicHouse.tradingFrm).find("input[name='totalSale']").parent().parent().show();
-                    $("#" + objectData.config.basicHouse.tradingFrm).find("input[name='installmentInterestRate']").parent().parent().hide();
-                    $("#" + objectData.config.basicHouse.tradingFrm).find("#" + objectData.config.basicHouse.tableSon + "Div").hide();
-                }
-                if (data.name == '分期付款') {
-                    $("#" + objectData.config.basicHouse.tradingFrm).find("input[name='totalSale']").parent().parent().hide();
-                    $("#" + objectData.config.basicHouse.tradingFrm).find("input[name='installmentInterestRate']").parent().parent().show();
-                    $("#" + objectData.config.basicHouse.tableSon + "Div").show();
-                }
-            });
-        },
-        subLoadList: function (type_) {
-            var cols = [];
-            if (type_ == objectData.config.basicHouse.leaseID) {
-                cols.push({field: 'rentGrowthRate', title: '租金增长比率'});
-                cols.push({field: 'rentPaymentTimeStartName', title: '租金支付时间起'});
-                cols.push({field: 'rentPaymentTimeEndName', title: '租金支付时间止'});
-            }
-            if (type_ == objectData.config.basicHouse.sellID) {
-                cols.push({field: 'instalmentInterest', title: '分期支付时间起'});
-                cols.push({field: 'instalmentPeriodStartName', title: '分期支付时间止'});
-                cols.push({field: 'instalmentPeriodEndName', title: '分期支付利息'});
-            }
-            $("#" + objectData.config.basicHouse.tableSon).bootstrapTable('destroy');
-            TableInit(objectData.config.basicHouse.tableSon, "${pageContext.request.contextPath}/basicHouseTradingLeaseAndSell/getLeaseAndSellVos", cols, {
-                type: type_, houseId: '${empty basicHouse.id?0:basicHouse.id}', approval: true
-            }, {
-                showColumns: false,
-                showRefresh: false,
-                search: false,
-                onLoadSuccess: function () {
-                    $('.tooltips').tooltip();
-                }
-            });
-        }
-    };
-
-
     $(function () {
         //选项卡处理
         industry.keyApp("${basicApply.type}");
@@ -161,7 +84,6 @@
 
         if ("${basicApply.housePartInMode}") {
             houseCommon.detail('${basicApply.id}');
-            objectData.house.init();
         }
 
         $('#caseTab a').eq(0).tab('show');

@@ -148,6 +148,8 @@ AssessDicKey.examineUnitElevatorMaintenance = "unit.elevator.maintenance";//电�
 AssessDicKey.examineUnitElevatorType = "unit.elevator.type";//电梯类型
 
 AssessDicKey.examineHouseTransactionType = "examine.house.transaction.type";//交易类型
+AssessDicKey.examineHouseTransactionTypeSell = "examine.house.transaction.type.sell";//交易类型-出售
+AssessDicKey.examineHouseTransactionTypeLease = "examine.house.transaction.type.lease";//交易类型-出租
 AssessDicKey.examineHouseDescriptionType = "examine.house.description_type";//说明事项类型
 AssessDicKey.examineHousetaxBurden = "examine.house.tax.burden";//税费负担
 AssessDicKey.examineHouseTransactionSituation = "examine.house.transaction.situation";//交易情况

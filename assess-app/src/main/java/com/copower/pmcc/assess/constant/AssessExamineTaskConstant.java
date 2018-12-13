@@ -58,9 +58,7 @@ public class AssessExamineTaskConstant {
     public static final String ESTATE_DINING_GRADE = "estate.dining.grade";//餐饮场所档次
     public static final String ESTATE_EXAMINEMATCHINGMEDICAL_LEVEL = "estate.examineMatchingMedical.level";//医养条件等级
     public static final String ESTATE_EXAMINEMATCHINGMEDICAL_DISTANCE = "estate.examineMatchingMedical.distance";//医养条件距离
-    public static final String ESTATE_TOTAL_BUILDING_TYPE = "estate.total_building_type";//总栋数 (0一栋 1多栋)
     public static final String ESTATE_TOTAL_LAND_USE = "estate.land_use";//土地用途
-    public static final String ESTATE_TOTAL_LAND_LEVEL = "estate.land_level";//土地级别
     public static final String ESTATE_SUPPLY_NEW_TYPE = "estate.supply.new.type";//购物场所类别
     public static final String ESTATE_SUPPLY_NEW_SCALE = "estate.supply.new.scale";//购物场所规模
     public static final String ESTATE_SUPPLY_NEW_DISTANCE = "estate.supply.new.distance";//购物场所距离
@@ -100,23 +98,13 @@ public class AssessExamineTaskConstant {
     public static final String EXAMINE_HOUSE_WATER_INTAKE_EQUIPMENT_PRICE = "examine.house.water.water_intake_equipment_price";//取水设备价格区间
     public static final String EXAMINE_HOUSE_WATER_DRAINAGE_CIRCUIT = "examine.house.water.drainage_circuit";//排水回路
     public static final String EXAMINE_HOUSE_WATER_DRAINAGE_CIRCUIT_COUNT = "examine.house.water.drainage_circuit_count";//排水回路数
-    public static final String EXAMINE_HOUSE_NEWSHUXING = "examine.house.newsHuxing";//最新户型
     public static final String EXAMINE_HOUSE_LOAD_UTILITY = "examine.house.load.utility";//证载用途
     public static final String EXAMINE_HOUSE_PRACTICAL_USE = "examine.house.practical.use";//实际用途
 
-    public static final String EXAMINE_HOUSE_TRANSACTION_TYPE = "examine.house.transaction.type";//交易类型
-    public static final String EXAMINE_HOUSE_NORMAL_TRANSACTION_YES = "examine.house.normal.transaction.yes";//正常交易
-    public static final String EXAMINE_HOUSE_NORMAL_TRANSACTION_NO = "examine.house.normal.transaction.no";//非正常交易
-    public static final String EXAMINE_HOUSE_PAYMENT_METHOD_DISPOSABLE = "examine.house.payment.method.disposable";//一次性
-    public static final String EXAMINE_HOUSE_PAYMENT_METHOD_INSTALMENT = "examine.house.payment.method.instalment";//分期付款
-
-    public static final String EXAMINE_HOUSE_DESCRIPTION_TYPE = "examine.house.description_type";//说明事项类型
-    public static final String EXAMINE_HOUSE_ENVIRONMENT_USE = "examine.house.environment.use";//使用环境
-    public static final String EXAMINE_HOUSE_COROLLARY_EQUIPMENT_TYPE = "examine.house.corollary.equipment.type";//配套设备设施 类型
-    public static final String EXAMINE_HOUSE_COROLLARY_EQUIPMENT_CATEGORY = "examine.house.corollary.equipment.category";//配套设备设施 类别
-    public static final String EXAMINE_HOUSE_COROLLARY_EQUIPMENT_PRICE = "examine.house.corollary.equipment.price";//配套设备设施 价格
-
-
-
-
+    public static final String EXAMINE_HOUSE_TRANSACTION_SITUATION = "examine.house.transaction.situation";//交易情况
+    public static final String EXAMINE_HOUSE_TRANSACTION_SITUATION_ABNORMAL = "examine.house.transaction.situation.abnormal";//交易情况-非正常
+    public static final String EXAMINE_HOUSE_PAYMENT_METHOD_INSTALLMENT = "examine.house.payment.method.installment";//付款方式-分期付款
+    public static final String EXAMINE_HOUSE_INFORMATION_SOURCE_TYPE_OPEN = "examine.house.information.source.type.open";//信息来源类型-公开信息
+    public static final String EXAMINE_HOUSE_TRANSACTION_TYPE_SELL = "examine.house.transaction.type.sell";//交易类型-出售
+    public static final String EXAMINE_HOUSE_TRANSACTION_TYPE_LEASE = "examine.house.transaction.type.lease";//交易类型-出租
 }

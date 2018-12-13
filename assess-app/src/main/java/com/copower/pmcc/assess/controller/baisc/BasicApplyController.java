@@ -1,14 +1,17 @@
 package com.copower.pmcc.assess.controller.baisc;
 
+import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basic.entity.BasicBuilding;
 import com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMain;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnit;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -46,6 +49,8 @@ public class BasicApplyController extends BaseController {
     private BasicUnitService basicUnitService;
     @Autowired
     private BasicHouseService basicHouseService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     @RequestMapping(value = "/basicApplyIndex", name = "案例基础数据 初始", method = RequestMethod.GET)
     public ModelAndView basicApplyIndex() {
@@ -77,7 +82,7 @@ public class BasicApplyController extends BaseController {
         } catch (BusinessException e) {
             log.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             return HttpResult.newErrorResult("案例申请提交异常");
         }
@@ -98,9 +103,9 @@ public class BasicApplyController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/basicApprovalSubmit", name = "审批页面 提交")
-    public HttpResult basicApprovalSubmit(ApprovalModelDto approvalModelDto,String blockName,Boolean writeBackBlockFlag) {
+    public HttpResult basicApprovalSubmit(ApprovalModelDto approvalModelDto, String blockName, Boolean writeBackBlockFlag) {
         try {
-            basicApplyService.processApprovalSubmit(approvalModelDto,blockName,writeBackBlockFlag);
+            basicApplyService.processApprovalSubmit(approvalModelDto, blockName, writeBackBlockFlag);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
@@ -133,7 +138,7 @@ public class BasicApplyController extends BaseController {
         } catch (BusinessException e) {
             log.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
-        }catch (Exception e1) {
+        } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("案例申请返回修改提交异常");
         }
@@ -165,10 +170,38 @@ public class BasicApplyController extends BaseController {
         modelAndView.addObject("basicUnit", basicUnit);
         modelAndView.addObject("basicHouse", basicHouseVo);
         modelAndView.addObject("basicHouseTrading", basicHouseTradingVo);
+        setHouseElementRender(basicHouseTradingVo, modelAndView);
         List<BasicBuilding> basicBuildingList = null;
         if (buildingMain != null) {
             basicBuildingList = publicBasicService.getMainById(buildingMain);
             modelAndView.addObject("basicBuildingList", basicBuildingList);
+        }
+    }
+
+    /**
+     * 设置房屋中部分元素是否渲染
+     *
+     * @param basicHouseTradingVo
+     * @param modelAndView
+     */
+    private void setHouseElementRender(BasicHouseTradingVo basicHouseTradingVo, ModelAndView modelAndView) {
+        if (basicHouseTradingVo == null) return;
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(basicHouseTradingVo.getTransactionSituation());
+        if (baseDataDic != null && StringUtils.isNotBlank(baseDataDic.getFieldName())) {
+            modelAndView.addObject("isHouseAbnormal", baseDataDic.getFieldName().equals(AssessExamineTaskConstant.EXAMINE_HOUSE_TRANSACTION_SITUATION_ABNORMAL));
+        }
+        baseDataDic = baseDataDicService.getCacheDataDicById(basicHouseTradingVo.getPaymentMethod());
+        if (baseDataDic != null && StringUtils.isNotBlank(baseDataDic.getFieldName())) {
+            modelAndView.addObject("isHouseInstallment", baseDataDic.getFieldName().equals(AssessExamineTaskConstant.EXAMINE_HOUSE_PAYMENT_METHOD_INSTALLMENT));
+        }
+        baseDataDic = baseDataDicService.getCacheDataDicById(basicHouseTradingVo.getInformationType());
+        if (baseDataDic != null && StringUtils.isNotBlank(baseDataDic.getFieldName())) {
+            modelAndView.addObject("isHouseInfomationOpen", baseDataDic.getFieldName().equals(AssessExamineTaskConstant.EXAMINE_HOUSE_INFORMATION_SOURCE_TYPE_OPEN));
+        }
+        baseDataDic = baseDataDicService.getCacheDataDicById(basicHouseTradingVo.getTradingType());
+        if (baseDataDic != null && StringUtils.isNotBlank(baseDataDic.getFieldName())) {
+            modelAndView.addObject("isHouseSell", baseDataDic.getFieldName().equals(AssessExamineTaskConstant.EXAMINE_HOUSE_TRANSACTION_TYPE_SELL));
+            modelAndView.addObject("isHouseLease", baseDataDic.getFieldName().equals(AssessExamineTaskConstant.EXAMINE_HOUSE_TRANSACTION_TYPE_LEASE));
         }
     }
 
