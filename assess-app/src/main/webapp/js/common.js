@@ -5,10 +5,6 @@ $(function () {
     try {
         $(".select2").each(function () {
             $(this).select2();
-            $(this).on("select2-highlight", function (e) {
-                // layer.tips('只想提示地精准些',$(e.target));
-                // console.log($(e.target).find('option').val());
-            });
         })
     } catch (e) {
     }
@@ -112,21 +108,19 @@ $(function () {
             }
         },
         //判断是否为图片(图像)
-        checkImgFile:function (filename) {
+        checkImgFile: function (filename) {
             var flag = false; //状态
             //常用图片后缀
-            var arr = ["bmp","dib","rle","emf","gif","jpg","jpeg","jpe","jif","pcx","dcx","pic","png","tga","tif","tiffxif","wmf","jfif"];
-            if (filename){
+            var arr = ["bmp", "dib", "rle", "emf", "gif", "jpg", "jpeg", "jpe", "jif", "pcx", "dcx", "pic", "png", "tga", "tif", "tiffxif", "wmf", "jfif"];
+            if (filename) {
                 //取出上传文件的扩展名
                 var index = filename.lastIndexOf(".");
-                var ext = filename.substr(index+1);
+                var ext = filename.substr(index + 1);
                 //转换为小写比较
                 ext = ext.toLocaleLowerCase();
                 //循环比较
-                for(var i=0;i<arr.length;i++)
-                {
-                    if(ext == arr[i])
-                    {
+                for (var i = 0; i < arr.length; i++) {
+                    if (ext == arr[i]) {
                         flag = true; //一旦找到合适的，立即退出循环
                         break;
                     }
