@@ -8,6 +8,17 @@
     houseCommon.houseForm = $('#basicHouseFrm');
     houseCommon.houseTradingTypeSell = 'ExamineHouseTradingSell';
     houseCommon.houseTradingTypeLease = 'ExamineHouseTradingLease';
+
+    /**
+     * 判断对象
+     */
+    houseCommon.isNotBlankObject = function (obj) {
+        for (var key in obj) {
+            return true;
+        }
+        return false
+    }
+
     //附件上传控件id数组
     houseCommon.houseFileControlIdArray = [
         'house_huxing_plan',
@@ -392,45 +403,8 @@
         });
     }
 
-    houseCommon.orientationFun = function () {
-        var unitId = $("#basicApplyFrm").find("input[name='caseUnitId']").val();
-        if (unitId) {
 
-        } else {
-            $.ajax({
-                url: getContextPath() + "/basicUnit/basicUnitList",
-                type: "get",
-                dataType: "json",
-                async: true,
-                data: {
-                    applyId: 0,
-                    buildingMainId: 0
-                },
-                success: function (result) {
-                    if (result.ret) {
-                        console.log(result);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
-        }
-        var contentUrl = getContextPath() + '/map/houseTagging?estateName=' + estateCommon.getEstateName();
-        layer.open({
-            type: 2,
-            title: '房屋标注',
-            shadeClose: true,
-            shade: true,
-            maxmin: true, //开启最大化最小化按钮
-            area: ['893px', '600px'],
-            content: contentUrl,
-            success: function () {
-
-            }
-        });
-    }
-
+    houseCommon.marker = {};//用做临时存储数据的json
     houseCommon.addMarker = function (lng, lat, attachmentId, deg) {
         var data = {
             type: "house",
@@ -441,17 +415,8 @@
         data.lat = lat;
         data.deg = deg;
         data.attachmentId = attachmentId;
-        $.ajax({
-            url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
-            data: data,
-            success: function (result) {
-                if (result.ret) {
-
-                } else {
-                    Alert(result.errmsg);
-                }
-            }
-        })
+        //把数据临时保存起来
+        houseCommon.marker = data;
     };
 
     houseCommon.orientationFun = function () {
@@ -469,7 +434,6 @@
             success: function (result) {
                 if (result.ret) {
                     if (result.data) {
-                        console.log(result.data);
                         for (var i = 0; i < result.data.length; i++) {
                             if (result.data[i].fieldsName == houseCommon.houseFileControlIdArray[1]) {
                                 //后缀必须为图片
@@ -500,7 +464,20 @@
                 Alert("调用服务端方法失败，失败原因:" + result);
             }
         });
+        var temp = {};
+        $.extend(temp, houseCommon.marker);
         var contentUrl = getContextPath() + '/map/houseTagging?sysAttachmentId=' + sysAttachmentId + "&unitId=" + unitId + "&click=houseCommon.addMarker";
+        if (this.isNotBlankObject(temp)) {
+            contentUrl = getContextPath() + '/map/houseTaggingMore?';
+            contentUrl += "attachmentId=" + temp.attachmentId;
+            contentUrl += "&deg=" + temp.deg;
+            contentUrl += "&lat=" + temp.lat;
+            contentUrl += "&lng=" + temp.lng;
+            contentUrl += "&name=" + temp.name;
+            contentUrl += "&type=" + temp.type;
+            contentUrl += "&applyId=" + temp.applyId;
+            contentUrl += "&click=houseCommon.addMarker";
+        }
         layer.open({
             type: 2,
             title: '房屋标注',
@@ -509,8 +486,22 @@
             maxmin: true, //开启最大化最小化按钮
             area: ['893px', '600px'],
             content: contentUrl,
-            success: function () {
+            success: function (layero) {
+                //假如有数据则显示在地图上 (重新载入 houseTaggingMore)
+            },
+            cancel: function () {
+                //关闭时,保存数据
+                $.ajax({
+                    url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
+                    data: houseCommon.marker,
+                    success: function (result) {
+                        if (result.ret) {
 
+                        } else {
+                            Alert(result.errmsg);
+                        }
+                    }
+                })
             }
         });
     }

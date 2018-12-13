@@ -242,7 +242,6 @@ public class PublicBasicService {
         BasicEstateNetwork queryBasicEstateNetwork = new BasicEstateNetwork();
         BasicEstateParking queryBasicEstateParking = new BasicEstateParking();
         BasicEstateSupply queryBasicEstateSupply = new BasicEstateSupply();
-        BasicEstateTagging queryBasicEstateTagging = new BasicEstateTagging();
         BasicMatchingEducation queryBasicMatchingEducation = new BasicMatchingEducation();
         BasicMatchingEnvironment queryBasicMatchingEnvironment = new BasicMatchingEnvironment();
         BasicMatchingFinance queryBasicMatchingFinance = new BasicMatchingFinance();
@@ -255,7 +254,6 @@ public class PublicBasicService {
             queryBasicEstateNetwork.setEstateId(basicEstate.getId());
             queryBasicEstateParking.setEstateId(basicEstate.getId());
             queryBasicEstateSupply.setEstateId(basicEstate.getId());
-            queryBasicEstateTagging.setApplyId(basicApply.getId());
             queryBasicMatchingTraffic.setEstateId(basicEstate.getId());
             queryBasicMatchingMedical.setEstateId(basicEstate.getId());
             queryBasicMatchingMaterial.setEstateId(basicEstate.getId());
@@ -280,7 +278,6 @@ public class PublicBasicService {
         basicEstateNetworkList = basicEstateNetworkService.basicEstateNetworkList(queryBasicEstateNetwork);
         basicEstateParkingList = basicEstateParkingService.basicEstateParkingList(queryBasicEstateParking);
         basicEstateSupplyList = basicEstateSupplyService.basicEstateSupplyList(queryBasicEstateSupply);
-        basicEstateTaggingList = basicEstateTaggingService.basicEstateTaggingList(queryBasicEstateTagging);
 
         basicMatchingEducationList = basicMatchingEducationService.basicMatchingEducationList(queryBasicMatchingEducation);
         basicMatchingEnvironmentList = basicMatchingEnvironmentService.basicMatchingEnvironmentList(queryBasicMatchingEnvironment);
@@ -301,7 +298,6 @@ public class PublicBasicService {
                 this.flowWriteCaseFinance(basicMatchingFinanceList, caseEstate);
                 this.flowWriteCaseEnvironment(basicMatchingEnvironmentList, caseEstate);
                 this.flowWriteCaseEducation(basicMatchingEducationList, caseEstate);
-                this.flowWriteCaseTagging(basicEstateTaggingList,caseEstate);
             }
         }
         return caseEstate;
@@ -461,7 +457,18 @@ public class PublicBasicService {
         }
     }
 
-    private void flowWriteCaseTagging(List<BasicEstateTagging> basicEstateTaggingList, CaseEstate caseEstate) throws Exception {
+    /**
+     * 标记回写
+     * @param typeEnum
+     * @param applyId
+     * @param dataId
+     * @throws Exception
+     */
+    private void flowWriteCaseTagging(EstateTaggingTypeEnum typeEnum,Integer applyId, Integer dataId) throws Exception {
+        BasicEstateTagging query = new BasicEstateTagging();
+        query.setApplyId(applyId);
+        query.setType(typeEnum.getKey());
+        List<BasicEstateTagging> basicEstateTaggingList = basicEstateTaggingService.basicEstateTaggingList(query);
         if (!ObjectUtils.isEmpty(basicEstateTaggingList)) {
             for (BasicEstateTagging oo : basicEstateTaggingList) {
                 CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
@@ -469,8 +476,8 @@ public class PublicBasicService {
                 caseEstateTagging.setId(null);
                 caseEstateTagging.setGmtCreated(null);
                 caseEstateTagging.setGmtModified(null);
-                caseEstateTagging.setDataId(caseEstate.getId());
-                caseEstateTagging.setType(EstateTaggingTypeEnum.ESTATE.getKey());
+                caseEstateTagging.setDataId(dataId);
+                caseEstateTagging.setType(typeEnum.getKey());
                 caseEstateTaggingService.saveCaseEstateTagging(caseEstateTagging);
             }
         }
@@ -734,7 +741,7 @@ public class PublicBasicService {
      * @param unitId
      * @throws Exception
      */
-    public void flowWriteCaseHouse(BasicApply basicApply, BasicHouse basicHouse, BasicHouseTrading basicTrading, Integer unitId) throws Exception {
+    public CaseHouse flowWriteCaseHouse(BasicApply basicApply, BasicHouse basicHouse, BasicHouseTrading basicTrading, Integer unitId) throws Exception {
 
         CaseHouse caseHouse = new CaseHouse();
         CaseHouseTrading caseHouseTrading = new CaseHouseTrading();
@@ -833,6 +840,7 @@ public class PublicBasicService {
             }
         }
         flowWriteCaseBaseHouse(basicApply, caseHouse, caseHouseTrading);
+        return  caseHouse;
     }
 
     private void flowWriteCaseBaseHouse(BasicApply basicApply, CaseHouse caseHouse, CaseHouseTrading caseHouseTrading) {
@@ -1113,8 +1121,12 @@ public class PublicBasicService {
             //1.如果是新增则将数据写入一份到baseHouse
             //2.如果是升级则将原baseHouse的数据删除，写入新的数据
             if (StringUtils.isNotBlank(basicApply.getHousePartInMode()) && basicHouse != null) {
-                this.flowWriteCaseHouse(basicApply, basicHouse, basicTrading, unitId);
+                CaseHouse caseHouse = this.flowWriteCaseHouse(basicApply, basicHouse, basicTrading, unitId);
+                this.flowWriteCaseTagging(EstateTaggingTypeEnum.HOUSE,basicApply.getId(),caseHouse.getId());
             }
+            this.flowWriteCaseTagging(EstateTaggingTypeEnum.ESTATE,basicApply.getId(),estateId);
+            this.flowWriteCaseTagging(EstateTaggingTypeEnum.BUILDING,basicApply.getId(),buildingMainId);
+            this.flowWriteCaseTagging(EstateTaggingTypeEnum.UNIT,basicApply.getId(),unitId);
         }
     }
 

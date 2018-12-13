@@ -232,6 +232,7 @@ public class CaseHouseService {
         Integer id = null;
         if (caseHouse.getId() == null || caseHouse.getId().intValue() == 0) {
             id = caseHouseDao.addHouse(caseHouse);
+            caseHouse.setId(id);
             return id;
         } else {
             caseHouseDao.updateHouse(caseHouse);
