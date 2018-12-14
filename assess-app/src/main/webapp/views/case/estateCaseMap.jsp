@@ -19,7 +19,7 @@
             <div class="x_panel">
                 <div class="x_content">
                     <div class="x_title">
-                        <h4>楼盘地图案例</h4>
+                        <h3>${caseEstate.name}</h3>
                         <div class="clearfix"></div>
                     </div>
                 </div>

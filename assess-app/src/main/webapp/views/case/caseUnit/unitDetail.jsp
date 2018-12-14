@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_panel">
     <div class="x_content">
@@ -15,9 +14,9 @@
                         <div class="input-group">
                             <label class="form-control">${caseUnit.unitNumber}</label>
                             <span class="input-group-btn">
-                            <div onclick="unitCommon.mapMarker(true);" class="btn btn-info"><i
+                            <div onclick="caseCommon.viewMapMarker('${caseUnit.id}','unit','');" class="btn btn-info"><i
                                     class="fa fa-map-marker"></i> 标注</div>
-                        </span>
+                            </span>
                         </div>
                     </div>
                 </div>

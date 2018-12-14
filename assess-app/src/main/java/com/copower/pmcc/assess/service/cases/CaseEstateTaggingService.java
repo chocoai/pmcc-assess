@@ -159,10 +159,10 @@ public class CaseEstateTaggingService {
         caseEstateTaggingDao.removeCaseEstateTagging(caseEstateTagging);
     }
 
-    public BootstrapTableVo getEstateTaggingList(Integer estateId) throws Exception {
+    public BootstrapTableVo getEstateTaggingList(Integer dataId) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         CaseEstateTagging where = new CaseEstateTagging();
-        where.setDataId(estateId);
+        where.setDataId(dataId);
         where.setType(EstateTaggingTypeEnum.ESTATE.getKey());
         List<CaseEstateTagging> caseEstateTaggingList = caseEstateTaggingDao.caseEstateTaggingList(where);
         vo.setTotal((long) caseEstateTaggingList.size());

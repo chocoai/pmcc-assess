@@ -5,7 +5,7 @@
     var caseCommon = {};
 
     //查看地图标注
-    caseCommon.viewMapMarker = function (estateId, type, name) {
+    caseCommon.viewMapMarker = function (dataId, type, name) {
         layer.open({
             type: 2,
             title: '位置标注',
@@ -19,7 +19,7 @@
                 $.ajax({
                     url: getContextPath() + '/basicEstateTagging/getEstateTaggingList',
                     data: {
-                        estateId: estateId,
+                        dataId: dataId,
                         type: type,
                         name: name
                     },

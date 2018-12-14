@@ -115,6 +115,7 @@ public class CaseController {
         try {
             if (estateId != null) {
                 modelAndView.addObject("mapTree", JSON.toJSONString(caseEstateTaggingService.getCaseEstateTaggingDto(estateId)));
+                modelAndView.addObject("caseEstate",caseEstateService.getCaseEstateById(estateId));
             }
         } catch (Exception e1) {
             logger.error("区域楼盘案例获取经度和纬度出错!", e1);

@@ -275,7 +275,7 @@
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
                     str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="详情" onclick="baseFun.caseEstate.findData(' + row.id + ')"><i class="fa fa-search fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="详情" onclick="baseFun.caseEstate.findDataMap(' + row.id + ')"><i class="fa fa-map-marker fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="地图" onclick="baseFun.caseEstate.findDataMap(' + row.id + ')"><i class="fa fa-map fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
