@@ -55,10 +55,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '通讯名称'});
-                cols.push({field: 'serviceContent', title: '服务内容'});
-                cols.push({field: 'indexParameter', title: '通信网络指标参数'});
+                var cols = commonColumn.estateNetworkColumn();
                 $("#" + estateNetwork.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateNetwork.prototype.config().table, "${pageContext.request.contextPath}/caseEstateNetwork/getCaseEstateNetworkList", cols, {
                     estateId: ${empty caseEstate.id?0:caseEstate.id},

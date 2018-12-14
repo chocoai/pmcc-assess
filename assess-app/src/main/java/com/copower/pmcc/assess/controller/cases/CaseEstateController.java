@@ -125,9 +125,9 @@ public class CaseEstateController {
 
     @ResponseBody
     @GetMapping(value = "/getEstateTaggingList", name = "获取标注信息列表")
-    public BootstrapTableVo getEstateTaggingList(Integer dataId) {
+    public BootstrapTableVo getEstateTaggingList(Integer dataId,String type) {
         try {
-            return caseEstateTaggingService.getEstateTaggingList(dataId);
+            return caseEstateTaggingService.getEstateTaggingList(dataId,type);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return null;

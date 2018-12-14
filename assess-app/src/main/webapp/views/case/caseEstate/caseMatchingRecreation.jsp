@@ -57,10 +57,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '休闲娱乐名称'});
-                cols.push({field: 'categoryName', title: '休闲娱乐类别'});
-                cols.push({field: 'distanceName', title: '休闲娱乐距离'});
+                var cols = commonColumn.matchingRecreationColumn();
                 $("#" + matchingRecreation.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingRecreation.prototype.config().table, "${pageContext.request.contextPath}/caseMatchingLeisurePlace/getCaseMatchingLeisurePlaceList", cols, {
                     type: matchingRecreation.prototype.config().type,

@@ -58,11 +58,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '名称'});
-                cols.push({field: 'categoryName', title: '类别'});
-                cols.push({field: 'scaleName', title: '规模'});
-                cols.push({field: 'distanceName', title: '距离'});
+                var cols = commonColumn.matchingMaterialColumn();
                 $("#" + matchingMaterial.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingMaterial.prototype.config().table, "${pageContext.request.contextPath}/caseMatchingMaterial/getCaseMatchingMaterialList", cols, {
                     type: matchingMaterial.prototype.config().type,

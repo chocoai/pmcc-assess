@@ -13,6 +13,8 @@ public class CaseMatchingEnvironment {
 
     private Integer influenceDegree;
 
+    private String remark;
+
     private String creator;
 
     private Date gmtCreated;
@@ -57,6 +59,14 @@ public class CaseMatchingEnvironment {
 
     public void setInfluenceDegree(Integer influenceDegree) {
         this.influenceDegree = influenceDegree;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
     public String getCreator() {

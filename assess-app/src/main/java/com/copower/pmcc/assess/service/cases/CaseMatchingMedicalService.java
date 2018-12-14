@@ -73,6 +73,7 @@ public class CaseMatchingMedicalService {
         BeanUtils.copyProperties(caseMatchingMedical, vo);
         vo.setOrganizationLevelName(baseDataDicService.getNameById(caseMatchingMedical.getOrganizationLevel()));
         vo.setDistanceName(baseDataDicService.getNameById(caseMatchingMedical.getDistance()));
+        vo.setBedNumberName(baseDataDicService.getNameById(caseMatchingMedical.getBedNumber()));
         return vo;
     }
 

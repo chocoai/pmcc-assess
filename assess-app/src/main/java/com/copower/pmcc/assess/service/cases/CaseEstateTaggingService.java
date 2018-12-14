@@ -159,11 +159,11 @@ public class CaseEstateTaggingService {
         caseEstateTaggingDao.removeCaseEstateTagging(caseEstateTagging);
     }
 
-    public BootstrapTableVo getEstateTaggingList(Integer dataId) throws Exception {
+    public BootstrapTableVo getEstateTaggingList(Integer dataId,String type) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         CaseEstateTagging where = new CaseEstateTagging();
         where.setDataId(dataId);
-        where.setType(EstateTaggingTypeEnum.ESTATE.getKey());
+        where.setType(type);
         List<CaseEstateTagging> caseEstateTaggingList = caseEstateTaggingDao.caseEstateTaggingList(where);
         vo.setTotal((long) caseEstateTaggingList.size());
         vo.setRows(ObjectUtils.isEmpty(caseEstateTaggingList) ? Lists.newArrayList() : caseEstateTaggingList);

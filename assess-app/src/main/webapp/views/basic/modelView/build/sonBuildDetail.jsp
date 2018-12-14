@@ -51,7 +51,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>围护结构 <label class="control-label examineBuildingFunctionList"></label></h4>
+        <h4>建筑功能 <label class="control-label examineBuildingFunctionList"></label></h4>
     </div>
     <div class="x_content collapse">
         <table class="table table-bordered" id="examineBuildingFunctionList">

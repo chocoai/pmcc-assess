@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="x_panel">
@@ -335,14 +334,11 @@
                 return false;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '通讯名称'});
-                cols.push({field: 'serviceContent', title: '服务内容'});
-                cols.push({field: 'indexParameter', title: '通信网络指标参数'});
+                var cols = commonColumn.estateNetworkColumn();
                 $("#" + estateNetwork.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateNetwork.prototype.config().table, "${pageContext.request.contextPath}/basicEstateNetwork/getBootstrapTableVo", cols, {
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval:true
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -355,7 +351,7 @@
         }
 
         //绑定事件
-        $('#'+estateNetwork.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
+        $('#' + estateNetwork.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             estateNetwork.prototype.loadDataDicList();
         })
     })();
@@ -381,15 +377,11 @@
                 return false;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'locationName', title: '车辆位置'});
-                cols.push({field: 'parkingType', title: '车位类型'});
-                cols.push({field: 'number', title: '车位数量'});
-                cols.push({field: 'fileViewName', title: '上传的附件'});
+                var cols = commonColumn.estateParkingColumn();
                 $("#" + estateParking.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateParking.prototype.config().table, "${pageContext.request.contextPath}/basicEstateParking/getBootstrapTableVo", cols, {
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval:true
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -402,7 +394,7 @@
         }
 
         //绑定事件
-        $('#'+estateParking.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
+        $('#' + estateParking.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             estateParking.prototype.loadDataDicList();
         })
     })();
@@ -429,17 +421,12 @@
                 return false;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '供水商名称'});
-                cols.push({field: 'lineGradeName', title: '供水保障等级'});
-                cols.push({field: 'reputationName', title: '供水商信誉'});
-                cols.push({field: 'gradeName', title: '供水商等级'});
-                cols.push({field: 'power', title: '供应量或功率'});
+                var cols = commonColumn.estateSupplyWaterColumn();
                 $("#" + estateSupplyWater.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyWater.prototype.config().table, "${pageContext.request.contextPath}/basicEstateSupply/getBootstrapTableVo", cols, {
                     type: estateSupplyWater.prototype.config().type,
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval:true
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -452,7 +439,7 @@
         }
 
         //绑定事件
-        $('#'+estateSupplyWater.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
+        $('#' + estateSupplyWater.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             estateSupplyWater.prototype.loadDataDicList();
         })
     })();
@@ -478,17 +465,12 @@
                 return false;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '废水处理商名称'});
-                cols.push({field: 'lineGradeName', title: '排水保障等级'});
-                cols.push({field: 'reputationName', title: '废水处理商信誉'});
-                cols.push({field: 'gradeName', title: '废水处理商等级'});
-                cols.push({field: 'power', title: '排水量或功率'});
+                var cols = commonColumn.estateDrainWaterColumn();
                 $("#" + estateDrainWater.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateDrainWater.prototype.config().table, "${pageContext.request.contextPath}/basicEstateSupply/getBootstrapTableVo", cols, {
                     type: estateDrainWater.prototype.config().type,
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval:true
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -501,7 +483,7 @@
         }
 
         //绑定事件
-        $('#'+estateDrainWater.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
+        $('#' + estateDrainWater.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             estateDrainWater.prototype.loadDataDicList();
         })
     })();
@@ -527,17 +509,12 @@
                 return false;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '供电商名称'});
-                cols.push({field: 'lineGradeName', title: '供电保障等级'});
-                cols.push({field: 'reputationName', title: '供电商信誉'});
-                cols.push({field: 'gradeName', title: '供电商等级'});
-                cols.push({field: 'power', title: '供应量或功率'});
+                var cols = commonColumn.estateSupplyPowerColumn();
                 $("#" + estateSupplyPower.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyPower.prototype.config().table, "${pageContext.request.contextPath}/basicEstateSupply/getBootstrapTableVo", cols, {
                     type: estateSupplyPower.prototype.config().type,
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval:true
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -550,7 +527,7 @@
         }
 
         //绑定事件
-        $('#'+estateSupplyPower.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
+        $('#' + estateSupplyPower.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             estateSupplyPower.prototype.loadDataDicList();
         })
     })();
@@ -575,17 +552,12 @@
                 return false;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '供热商名称'});
-                cols.push({field: 'lineGradeName', title: '供热保障等级'});
-                cols.push({field: 'reputationName', title: '供热商信誉'});
-                cols.push({field: 'gradeName', title: '供热商等级'});
-                cols.push({field: 'power', title: '供应量或功率'});
+                var cols = commonColumn.estateSupplyHeatingColumn();
                 $("#" + estateSupplyHeating.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyHeating.prototype.config().table, "${pageContext.request.contextPath}/basicEstateSupply/getBootstrapTableVo", cols, {
                     type: estateSupplyHeating.prototype.config().type,
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval:true
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -598,7 +570,7 @@
         }
 
         //绑定事件
-        $('#'+estateSupplyHeating.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
+        $('#' + estateSupplyHeating.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             estateSupplyHeating.prototype.loadDataDicList();
         })
     })();
@@ -623,17 +595,12 @@
                 return false;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '供气商名称'});
-                cols.push({field: 'lineGradeName', title: '供气保障等级'});
-                cols.push({field: 'reputationName', title: '供气商信誉'});
-                cols.push({field: 'gradeName', title: '供气商等级'});
-                cols.push({field: 'power', title: '供应量或功率'});
+                var cols = commonColumn.estateSupplyGasColumn();
                 $("#" + estateSupplyGas.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyGas.prototype.config().table, "${pageContext.request.contextPath}/basicEstateSupply/getBootstrapTableVo", cols, {
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
                     type: estateSupplyGas.prototype.config().type,
-                    approval:true
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -646,7 +613,7 @@
         }
 
         //绑定事件
-        $('#'+estateSupplyGas.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
+        $('#' + estateSupplyGas.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             estateSupplyGas.prototype.loadDataDicList();
         })
     })();
@@ -672,16 +639,11 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'schoolName', title: '学校名称'});
-                cols.push({field: 'schoolNatureName', title: '学校性质'});
-                cols.push({field: 'schoolGradationName', title: '学校级次'});
-                cols.push({field: 'schoolLevelName', title: '学校等级'});
-                cols.push({field: 'distanceName', title: '距离'});
+                var cols = commonColumn.matchingEducationColumn();
                 $("#" + matchingEducation.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingEducation.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingEducation/getBootstrapTableVo", cols, {
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval:true
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -694,7 +656,7 @@
         }
 
         //绑定事件
-        $('#'+matchingEducation.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
+        $('#' + matchingEducation.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             matchingEducation.prototype.loadDataDicList();
         })
     })();
@@ -720,15 +682,11 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'typeName', title: '环境类型'});
-                cols.push({field: 'categoryName', title: '影响因素'});
-                cols.push({field: 'influenceDegreeName', title: '影响程度'});
-                cols.push({field: 'remark', title: '描述'});
+                var cols = commonColumn.matchingEnvironmentColumn();
                 $("#" + matchingEnvironment.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingEnvironment.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingEnvironment/getBootstrapTableVo", cols, {
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval:true
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -741,7 +699,7 @@
         }
 
         //绑定事件
-        $('#'+matchingEnvironment.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
+        $('#' + matchingEnvironment.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             matchingEnvironment.prototype.loadDataDicList();
         })
     })();
@@ -766,16 +724,11 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '金融名称'});
-                cols.push({field: 'categoryName', title: '金融类别'});
-                cols.push({field: 'natureName', title: '金融机构性质'});
-                cols.push({field: 'serviceContentName', title: '服务类别'});
-                cols.push({field: 'autoServiceContent', title: '服务内容'});
+                var cols = commonColumn.matchingFinanceColumn();
                 $("#" + matchingFinance.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingFinance.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingFinance/getBootstrapTableVo", cols, {
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval:true
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -788,7 +741,7 @@
         }
 
         //绑定事件
-        $('#'+matchingFinance.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
+        $('#' + matchingFinance.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             matchingFinance.prototype.loadDataDicList();
         })
     })();
@@ -814,16 +767,12 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '购物商场名称'});
-                cols.push({field: 'categoryName', title: '购物商场类别'});
-                cols.push({field: 'gradeName', title: '购物商场档次'});
-                cols.push({field: 'distanceName', title: '购物商场距离'});
+                var cols = commonColumn.matchingMarketColumn();
                 $("#" + matchingMarket.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingMarket.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
                     type: matchingMarket.prototype.config().type,
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval:true
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -836,7 +785,7 @@
         }
 
         //绑定事件
-        $('#'+matchingMarket.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
+        $('#' + matchingMarket.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             matchingMarket.prototype.loadDataDicList();
         })
     })();
@@ -862,16 +811,12 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '餐饮名称'});
-                cols.push({field: 'categoryName', title: '餐饮类别'});
-                cols.push({field: 'gradeName', title: '餐饮档次'});
-                cols.push({field: 'distanceName', title: '餐饮距离'});
+                var cols = commonColumn.matchingRestaurantColumn();
                 $("#" + matchingRestaurant.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingRestaurant.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
                     type: matchingRestaurant.prototype.config().type,
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval:true
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -884,7 +829,7 @@
         }
 
         //绑定事件
-        $('#'+matchingRestaurant.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
+        $('#' + matchingRestaurant.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             matchingRestaurant.prototype.loadDataDicList();
         })
     })();
@@ -910,15 +855,12 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '休闲娱乐名称'});
-                cols.push({field: 'categoryName', title: '休闲娱乐类别'});
-                cols.push({field: 'distanceName', title: '休闲娱乐距离'});
+                var cols = commonColumn.matchingRecreationColumn();
                 $("#" + matchingRecreation.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingRecreation.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
                     type: matchingRecreation.prototype.config().type,
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval:true
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -931,7 +873,7 @@
         }
 
         //绑定事件
-        $('#'+matchingRecreation.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
+        $('#' + matchingRecreation.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             matchingRecreation.prototype.loadDataDicList();
         })
     })();
@@ -957,15 +899,11 @@
                 return false;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'organizationName', title: '名称'});
-                cols.push({field: 'organizationLevelName', title: '医养条件机构等级'});
-                cols.push({field: 'bedNumber', title: '床位数'});
-                cols.push({field: 'distanceName', title: '医养条件距离'});
+                var cols =commonColumn.matchingMedicalColumn();
                 $("#" + matchingMedical.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingMedical.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingMedical/getBootstrapTableVo", cols, {
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval:true
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -978,7 +916,7 @@
         }
 
         //绑定事件
-        $('#'+matchingMedical.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
+        $('#' + matchingMedical.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             matchingMedical.prototype.loadDataDicList();
         })
     })();
@@ -1004,15 +942,11 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '名称'});
-                cols.push({field: 'categoryName', title: '类别'});
-                cols.push({field: 'scaleName', title: '规模'});
-                cols.push({field: 'distanceName', title: '距离'});
+                var cols = commonColumn.matchingMaterialColumn();
                 $("#" + matchingMaterial.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingMaterial.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingMaterial/getBootstrapTableVo", cols, {
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval:true
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -1025,7 +959,7 @@
         }
 
         //绑定事件
-        $('#'+matchingMaterial.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
+        $('#' + matchingMaterial.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             matchingMaterial.prototype.loadDataDicList();
         })
     })();
@@ -1051,14 +985,12 @@
                 return false;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '名称'});
-                cols.push({field: 'distanceName', title: '距离'});
+                var cols = commonColumn.matchingMainConversionColumn();
                 $("#" + matchingMainConversion.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingMainConversion.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingTraffic/getBootstrapTableVo", cols, {
                     type: matchingMainConversion.prototype.config().type,
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval:true
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -1071,7 +1003,7 @@
         }
 
         //绑定事件
-        $('#'+matchingMainConversion.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
+        $('#' + matchingMainConversion.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             matchingMainConversion.prototype.loadDataDicList();
         })
     })();
@@ -1097,14 +1029,12 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '名称'});
-                cols.push({field: 'distanceName', title: '距离'});
+                var cols = commonColumn.matchingMainRoadColumn();
                 $("#" + matchingMainRoad.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingMainRoad.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingTraffic/getBootstrapTableVo", cols, {
                     type: matchingMainRoad.prototype.config().type,
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval:true
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -1117,7 +1047,7 @@
         }
 
         //绑定事件
-        $('#'+matchingMainRoad.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
+        $('#' + matchingMainRoad.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             matchingMainRoad.prototype.loadDataDicList();
         })
     })();
@@ -1143,15 +1073,12 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '名称'});
-                cols.push({field: 'distanceName', title: '距离'});
-                cols.push({field: 'theLine', title: '所在线路'});
+                var cols = commonColumn.matchingMetroColumn();
                 $("#" + matchingMetro.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingMetro.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingTraffic/getBootstrapTableVo", cols, {
                     type: matchingMetro.prototype.config().type,
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval:true
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -1164,7 +1091,7 @@
         }
 
         //绑定事件
-        $('#'+matchingMetro.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
+        $('#' + matchingMetro.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             matchingMetro.prototype.loadDataDicList();
         })
     })();
@@ -1190,14 +1117,12 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '名称'});
-                cols.push({field: 'distanceName', title: '距离'});
+                var cols = commonColumn.matchingTrafficHubColumn();
                 $("#" + matchingTrafficHub.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingTrafficHub.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingTraffic/getBootstrapTableVo", cols, {
                     type: matchingTrafficHub.prototype.config().type,
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval:true
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -1210,7 +1135,7 @@
         }
 
         //绑定事件
-        $('#'+matchingTrafficHub.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
+        $('#' + matchingTrafficHub.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             matchingTrafficHub.prototype.loadDataDicList();
         })
     })();
@@ -1237,15 +1162,12 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '名称'});
-                cols.push({field: 'distanceName', title: '距离'});
-                cols.push({field: 'theLine', title: '所在线路'});
+                var cols = commonColumn.matchingTransitColumn();
                 $("#" + matchingTransit.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingTransit.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingTraffic/getBootstrapTableVo", cols, {
                     type: matchingTransit.prototype.config().type,
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    approval:true
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -1258,7 +1180,7 @@
         }
 
         //绑定事件
-        $('#'+matchingTransit.prototype.config().table).closest('.x_panel').find('.x_title').bind('click',function () {
+        $('#' + matchingTransit.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
             matchingTransit.prototype.loadDataDicList();
         })
     })();

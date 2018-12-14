@@ -55,9 +55,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '名称'});
-                cols.push({field: 'distanceName', title: '距离'});
+                var cols = commonColumn.matchingMainRoadColumn();
                 $("#" + matchingMainRoad.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingMainRoad.prototype.config().table, "${pageContext.request.contextPath}/caseMatchingTraffic/getCaseMatchingTrafficList", cols, {
                     type: matchingMainRoad.prototype.config().type,

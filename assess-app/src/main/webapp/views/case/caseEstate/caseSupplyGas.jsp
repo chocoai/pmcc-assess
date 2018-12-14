@@ -60,12 +60,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '名称'});
-                cols.push({field: 'lineGradeName', title: '供气保障等级'});
-                cols.push({field: 'reputationName', title: '供气商信誉'});
-                cols.push({field: 'gradeName', title: '供气商等级'});
-                cols.push({field: 'power', title: '供应量或功率'});
+                var cols = commonColumn.estateSupplyGasColumn();
                 $("#" + estateSupplyGas.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyGas.prototype.config().table, "${pageContext.request.contextPath}/caseEstateSupply/getCaseEstateSupplyList", cols, {
                     estateId: ${empty caseEstate.id?0:caseEstate.id},

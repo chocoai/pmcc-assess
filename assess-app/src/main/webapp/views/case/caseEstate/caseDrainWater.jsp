@@ -58,12 +58,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '废水处理商名称'});
-                cols.push({field: 'lineGradeName', title: '排水保障等级'});
-                cols.push({field: 'reputationName', title: '废水处理商信誉'});
-                cols.push({field: 'gradeName', title: '废水处理商等级'});
-                cols.push({field: 'power', title: '排水量或功率'});
+                var cols = commonColumn.estateDrainWaterColumn();
                 $("#" + estateDrainWater.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateDrainWater.prototype.config().table, "${pageContext.request.contextPath}/caseEstateSupply/getCaseEstateSupplyList", cols, {
                     type: estateDrainWater.prototype.config().type,

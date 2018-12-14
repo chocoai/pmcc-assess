@@ -82,6 +82,9 @@
 </script>
 <script type="application/javascript">
     function saveform() {
+        if (!basicCommon.submitFormValid()) {
+            return false;
+        }
         var data = {};
         data.formData = JSON.stringify(basicCommon.getFormData());
         var approvalData = formParams('frm_approval');

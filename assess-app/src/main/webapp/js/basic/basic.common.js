@@ -143,7 +143,7 @@ basicCommon.saveDraftValid = function () {
     basicCommon.contentTabPanel.find('[required]').each(function () {
         $(this).removeAttr('required').attr('data-required', 'required');
     })
-    if (!basicCommon.isComplete(applyForm)) {
+    if (!basicCommon.isComplete(applyForm, true)) {
         return false;
     }
     return true;
@@ -164,9 +164,10 @@ basicCommon.submitFormValid = function () {
     basicCommon.contentTabPanel.find('[data-required]').each(function () {
         $(this).attr('required', 'required').removeAttr('data-required');
     })
-    if (!basicCommon.isComplete(applyForm)) {
+    if (!basicCommon.isComplete(applyForm, false)) {
         return false;
     }
+
     return true;
 }
 
@@ -180,7 +181,7 @@ basicCommon.hasApplyData = function (applyForm) {
 }
 
 //表单数据是否填写完整
-basicCommon.isComplete = function (applyForm) {
+basicCommon.isComplete = function (applyForm, isDraft) {
     var options = {
         hiddenValid: true
     }
@@ -188,6 +189,16 @@ basicCommon.isComplete = function (applyForm) {
         options.msg = '请检查楼盘基本信息';
         if (!estateCommon.estateForm.valid(options)) {
             return false;
+        }
+        if (!isDraft) {
+            if (estateCommon.estateForm.find('#_' + estateCommon.estateFileControlIdArray[0]).html().length <= 0) {
+                toastr.info('请上传楼盘总平图')
+                return false;
+            }
+            if (estateCommon.estateForm.find('#_' + estateCommon.estateFileControlIdArray[1]).html().length <= 0) {
+                toastr.info('请上传楼盘外观图')
+                return false;
+            }
         }
         options.msg = '请检查土地基本信息';
         if (!estateCommon.estateLandStateForm.valid(options)) {

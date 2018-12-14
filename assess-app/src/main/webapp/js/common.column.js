@@ -2,6 +2,203 @@
  * Created by kings on 2018-12-12.
  */
 var commonColumn = {};
+//楼盘-通信网络信息
+commonColumn.estateNetworkColumn = function () {
+    var cols = [];
+    cols.push({field: 'name', title: '通讯名称'});
+    cols.push({field: 'serviceContent', title: '服务内容'});
+    cols.push({field: 'indexParameter', title: '通信网络指标参数'});
+    return cols;
+}
+
+//楼盘-车位信息
+commonColumn.estateParkingColumn = function () {
+    var cols = [];
+    cols.push({field: 'locationName', title: '车位位置'});
+    cols.push({field: 'parkingTypeName', title: '车位类型'});
+    cols.push({field: 'number', title: '车位数量'});
+    cols.push({field: 'fileViewName', title: '附件'});
+    return cols;
+}
+
+//楼盘-教育条件信息
+commonColumn.matchingEducationColumn = function () {
+    var cols = [];
+    cols.push({field: 'schoolName', title: '学校名称'});
+    cols.push({field: 'schoolNatureName', title: '学校性质'});
+    cols.push({field: 'schoolGradationName', title: '学校级次'});
+    cols.push({field: 'schoolLevelName', title: '学校等级'});
+    cols.push({field: 'distanceName', title: '距离'});
+    return cols;
+}
+
+//楼盘-环境因素信息
+commonColumn.matchingEnvironmentColumn = function () {
+    var cols = [];
+    cols.push({field: 'typeName', title: '环境类型'});
+    cols.push({field: 'categoryName', title: '影响因素'});
+    cols.push({field: 'influenceDegreeName', title: '影响程度'});
+    cols.push({field: 'remark', title: '描述'});
+    return cols;
+}
+
+//楼盘-金融服务信息
+commonColumn.matchingFinanceColumn = function () {
+    var cols = [];
+    cols.push({field: 'name', title: '金融名称'});
+    cols.push({field: 'categoryName', title: '金融类别'});
+    cols.push({field: 'natureName', title: '金融机构性质'});
+    cols.push({field: 'serviceContentName', title: '服务类别'});
+    cols.push({field: 'autoServiceContent', title: '服务内容'});
+    return cols;
+}
+
+//楼盘-购物商场信息
+commonColumn.matchingMarketColumn = function () {
+    var cols = [];
+    cols.push({field: 'name', title: '购物商场名称'});
+    cols.push({field: 'categoryName', title: '购物商场类别'});
+    cols.push({field: 'gradeName', title: '购物商场档次'});
+    cols.push({field: 'distanceName', title: '购物商场距离'});
+    return cols;
+}
+
+//楼盘-休闲娱乐信息
+commonColumn.matchingRecreationColumn = function () {
+    var cols = [];
+    cols.push({field: 'name', title: '休闲娱乐名称'});
+    cols.push({field: 'categoryName', title: '休闲娱乐类别'});
+    cols.push({field: 'distanceName', title: '休闲娱乐距离'});
+    return cols;
+}
+
+//楼盘-餐饮信息
+commonColumn.matchingRestaurantColumn = function () {
+    var cols = [];
+    cols.push({field: 'name', title: '餐饮名称'});
+    cols.push({field: 'categoryName', title: '餐饮类别'});
+    cols.push({field: 'gradeName', title: '餐饮档次'});
+    cols.push({field: 'distanceName', title: '餐饮距离'});
+    return cols;
+}
+
+//楼盘-医养条件信息
+commonColumn.matchingMedicalColumn = function () {
+    var cols = [];
+    cols.push({field: 'organizationName', title: '机构名称'});
+    cols.push({field: 'organizationLevelName', title: '机构等级'});
+    cols.push({field: 'bedNumberName', title: '机构床位数'});
+    cols.push({field: 'distanceName', title: '机构距离'});
+    return cols;
+}
+
+//楼盘-公交信息
+commonColumn.matchingTransitColumn = function () {
+    var cols = [];
+    cols.push({field: 'name', title: '名称'});
+    cols.push({field: 'distanceName', title: '距离'});
+    cols.push({field: 'theLine', title: '所在线路'});
+    return cols;
+}
+
+//楼盘-地铁信息
+commonColumn.matchingMetroColumn = function () {
+    var cols = [];
+    cols.push({field: 'name', title: '名称'});
+    cols.push({field: 'distanceName', title: '距离'});
+    cols.push({field: 'theLine', title: '所在线路'});
+    return cols;
+}
+
+//楼盘-交通枢纽信息
+commonColumn.matchingTrafficHubColumn = function () {
+    var cols = [];
+    cols.push({field: 'name', title: '名称'});
+    cols.push({field: 'natureName', title: '性质'});
+    cols.push({field: 'distanceName', title: '距离'});
+    return cols;
+}
+
+//楼盘-主干道信息
+commonColumn.matchingMainRoadColumn = function () {
+    var cols = [];
+    cols.push({field: 'name', title: '名称'});
+    cols.push({field: 'distanceName', title: '距离'});
+    return cols;
+}
+
+//楼盘-主要转换信息
+commonColumn.matchingMainConversionColumn = function () {
+    var cols = [];
+    cols.push({field: 'name', title: '名称'});
+    cols.push({field: 'distanceName', title: '距离'});
+    return cols;
+}
+
+//楼盘-原材料信息
+commonColumn.matchingMaterialColumn = function () {
+    var cols = [];
+    cols.push({field: 'name', title: '名称'});
+    cols.push({field: 'categoryName', title: '类别'});
+    cols.push({field: 'scaleName', title: '规模'});
+    cols.push({field: 'distanceName', title: '距离'});
+    return cols;
+}
+
+//楼盘-供水信息
+commonColumn.estateSupplyWaterColumn = function () {
+    var cols = [];
+    cols.push({field: 'name', title: '供水商名称'});
+    cols.push({field: 'lineGradeName', title: '供水保障等级'});
+    cols.push({field: 'reputationName', title: '供水商信誉'});
+    cols.push({field: 'gradeName', title: '供水商等级'});
+    cols.push({field: 'power', title: '供应量或功率'});
+    return cols;
+}
+
+//楼盘-排水信息
+commonColumn.estateDrainWaterColumn = function () {
+    var cols = [];
+    cols.push({field: 'name', title: '废水处理商名称'});
+    cols.push({field: 'lineGradeName', title: '排水保障等级'});
+    cols.push({field: 'reputationName', title: '废水处理商信誉'});
+    cols.push({field: 'gradeName', title: '废水处理商等级'});
+    cols.push({field: 'power', title: '排水量或功率'});
+    return cols;
+}
+
+//楼盘-供电信息
+commonColumn.estateSupplyPowerColumn = function () {
+    var cols = [];
+    cols.push({field: 'name', title: '供应商名称'});
+    cols.push({field: 'lineGradeName', title: '供电保障等级'});
+    cols.push({field: 'reputationName', title: '供电商信誉'});
+    cols.push({field: 'gradeName', title: '供电商等级'});
+    cols.push({field: 'power', title: '供应量或功率'});
+    return cols;
+}
+
+//楼盘-供热信息
+commonColumn.estateSupplyHeatingColumn = function () {
+    var cols = [];
+    cols.push({field: 'name', title: '供热商名称'});
+    cols.push({field: 'lineGradeName', title: '供热保障等级'});
+    cols.push({field: 'reputationName', title: '供热商信誉'});
+    cols.push({field: 'gradeName', title: '供热商等级'});
+    cols.push({field: 'power', title: '供应量或功率'});
+    return cols;
+}
+
+//楼盘-供气信息
+commonColumn.estateSupplyGasColumn = function () {
+    var cols = [];
+    cols.push({field: 'name', title: '供应商名称'});
+    cols.push({field: 'lineGradeName', title: '供气保障等级'});
+    cols.push({field: 'reputationName', title: '供气商信誉'});
+    cols.push({field: 'gradeName', title: '供气商等级'});
+    cols.push({field: 'power', title: '供应量或功率'});
+    return cols;
+}
 
 //楼栋-楼栋外装
 commonColumn.buildingOutfitColumn = function () {

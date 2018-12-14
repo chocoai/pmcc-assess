@@ -58,12 +58,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '供应商名称'});
-                cols.push({field: 'lineGradeName', title: '供热保障等级'});
-                cols.push({field: 'reputationName', title: '供热商信誉'});
-                cols.push({field: 'gradeName', title: '供热商等级'});
-                cols.push({field: 'power', title: '供应量或功率'});
+                var cols = commonColumn.estateSupplyHeatingColumn();
                 $("#" + estateSupplyHeating.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyHeating.prototype.config().table, "${pageContext.request.contextPath}/caseEstateSupply/getCaseEstateSupplyList", cols, {
                     type: estateSupplyHeating.prototype.config().type,

@@ -9,7 +9,6 @@
         layer.open({
             type: 2,
             title: '位置标注',
-            shadeClose: true,
             shade: true,
             maxmin: true, //开启最大化最小化按钮
             area: ['893px', '600px'],
@@ -17,15 +16,16 @@
             success: function (layero) {
                 var iframe = window[layero.find('iframe')[0]['name']];
                 $.ajax({
-                    url: getContextPath() + '/basicEstateTagging/getEstateTaggingList',
+                    url: getContextPath() + '/caseEstate/getEstateTaggingList',
+                    type: 'get',
                     data: {
                         dataId: dataId,
                         type: type,
                         name: name
                     },
                     success: function (result) {
-                        if (result.ret && iframe) {
-                            iframe.loadMarkerList(result.data);
+                        if (result && iframe) {
+                            iframe.loadMarkerList(result.rows);
                         }
                     }
                 })

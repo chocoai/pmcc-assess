@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseMatchingMedical;
 public class CaseMatchingMedicalVo extends CaseMatchingMedical {
     private String distanceName;
     private String organizationLevelName;
+    private String bedNumberName;
 
     public String getDistanceName() {
         return distanceName;
@@ -25,5 +26,13 @@ public class CaseMatchingMedicalVo extends CaseMatchingMedical {
 
     public void setOrganizationLevelName(String organizationLevelName) {
         this.organizationLevelName = organizationLevelName;
+    }
+
+    public String getBedNumberName() {
+        return bedNumberName;
+    }
+
+    public void setBedNumberName(String bedNumberName) {
+        this.bedNumberName = bedNumberName;
     }
 }

@@ -56,10 +56,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '名称'});
-                cols.push({field: 'distanceName', title: '距离'});
-                cols.push({field: 'theLine', title: '所在线路'});
+                var cols = commonColumn.matchingTransitColumn();
                 $("#" + matchingTransit.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingTransit.prototype.config().table, "${pageContext.request.contextPath}/caseMatchingTraffic/getCaseMatchingTrafficList", cols, {
                     type: matchingTransit.prototype.config().type,

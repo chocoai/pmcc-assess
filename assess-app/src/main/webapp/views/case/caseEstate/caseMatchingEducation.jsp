@@ -50,12 +50,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'schoolName', title: '学校名称'});
-                cols.push({field: 'schoolNatureName', title: '学校性质'});
-                cols.push({field: 'schoolGradationName', title: '学校级次'});
-                cols.push({field: 'schoolLevelName', title: '学校等级'});
-                cols.push({field: 'distanceName', title: '距离'});
+                var cols = commonColumn.matchingEducationColumn();
                 $("#" + matchingEducation.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingEducation.prototype.config().table, "${pageContext.request.contextPath}/caseMatchingEducation/getCaseMatchingEducationList", cols, {
                     type: matchingEducation.prototype.config().type,

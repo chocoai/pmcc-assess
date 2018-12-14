@@ -56,11 +56,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '购物商场名称'});
-                cols.push({field: 'categoryName', title: '购物商场类别'});
-                cols.push({field: 'gradeName', title: '购物商场档次'});
-                cols.push({field: 'distanceName', title: '购物商场距离'});
+                var cols = commonColumn.matchingMarketColumn();
                 $("#" + matchingMarket.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingMarket.prototype.config().table, "${pageContext.request.contextPath}/caseMatchingLeisurePlace/getCaseMatchingLeisurePlaceList", cols, {
                     type: matchingMarket.prototype.config().type,

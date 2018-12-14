@@ -99,10 +99,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'parkingTypeName', title: '车位类型'});
-                cols.push({field: 'locationName', title: '车辆位置'});
-                cols.push({field: 'fileViewName', title: '上传的附件'});
+                var cols = commonColumn.estateParkingColumn();
                 $("#" + estateParking.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateParking.prototype.config().table, "${pageContext.request.contextPath}/caseEstateParking/getCaseEstateParkingList", cols, {
                     estateId: ${empty caseEstate.id?0:caseEstate.id},

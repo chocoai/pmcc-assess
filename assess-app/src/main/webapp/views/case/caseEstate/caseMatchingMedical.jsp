@@ -56,11 +56,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'organizationName', title: '机构名称'});
-                cols.push({field: 'organizationLevelName', title: '医养条件机构等级'});
-                cols.push({field: 'bedNumber', title: '床位数'});
-                cols.push({field: 'distanceName', title: '医养条件距离'});
+                var cols = commonColumn.matchingMedicalColumn();
                 $("#" + matchingMedical.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingMedical.prototype.config().table, "${pageContext.request.contextPath}/caseMatchingMedical/getCaseMatchingMedicalList", cols, {
                     type: matchingMedical.prototype.config().type,

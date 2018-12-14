@@ -323,14 +323,14 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地用途类型</label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 landUseType" name="landUseType">
+                    <select class="form-control landUseType" name="landUseType">
                     </select>
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地用途类别</label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 landUseCategory"
+                    <select class="form-control landUseCategory"
                             name="landUseCategory">
                         <option>请先选择土地用途类型</option>
                     </select>
@@ -398,7 +398,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地形状</label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 shapeState" name="shapeState">
+                    <select class="form-control shapeState" name="shapeState">
                     </select>
                 </div>
             </div>
@@ -438,7 +438,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地开发程度</label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 developmentDegree" name="developmentDegree">
+                    <select class="form-control developmentDegree" name="developmentDegree">
                     </select>
                 </div>
             </div>

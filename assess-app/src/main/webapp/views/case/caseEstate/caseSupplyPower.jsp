@@ -59,12 +59,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '供应商名称'});
-                cols.push({field: 'lineGradeName', title: '供电保障等级'});
-                cols.push({field: 'reputationName', title: '供电商信誉'});
-                cols.push({field: 'gradeName', title: '供电商等级'});
-                cols.push({field: 'power', title: '供应量或功率'});
+                var cols = commonColumn.estateSupplyPowerColumn();
                 $("#" + estateSupplyPower.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyPower.prototype.config().table, "${pageContext.request.contextPath}/caseEstateSupply/getCaseEstateSupplyList", cols, {
                     type: estateSupplyPower.prototype.config().type,

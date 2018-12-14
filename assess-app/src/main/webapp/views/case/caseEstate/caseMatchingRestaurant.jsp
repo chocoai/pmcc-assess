@@ -57,11 +57,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '餐饮名称'});
-                cols.push({field: 'categoryName', title: '餐饮类别'});
-                cols.push({field: 'gradeName', title: '餐饮档次'});
-                cols.push({field: 'distanceName', title: '餐饮距离'});
+                var cols = commonColumn.matchingRestaurantColumn();
                 $("#" + matchingRestaurant.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingRestaurant.prototype.config().table, "${pageContext.request.contextPath}/caseMatchingLeisurePlace/getCaseMatchingLeisurePlaceList", cols, {
                     type: matchingRestaurant.prototype.config().type,

@@ -245,7 +245,7 @@
             group.find('[name=caseEstateId]').val(ele.item.id);
             group.find('.btn-reference,.btn-upgrade').show();
             //选择楼盘的类型
-            $('#applyFormType' + ele.item.type).trigger('click');
+            basicCommon.basicApplyForm.find('[name=type][value='+ele.item.type+']').trigger('click');
         }
         $(that).autocomplete(defaults);
     };

@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseBuildingMaintenanceDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMaintenance;
 import com.copower.pmcc.assess.dto.output.cases.CaseBuildingMaintenanceVo;
@@ -72,7 +71,7 @@ public class CaseBuildingMaintenanceService {
         CaseBuildingMaintenanceVo vo = new CaseBuildingMaintenanceVo();
         BeanUtils.copyProperties(caseBuildingMaintenance, vo);
         if (caseBuildingMaintenance.getType() != null) {
-            vo.setCategoryName(baseDataDicService.getNameById(caseBuildingMaintenance.getType()));
+            vo.setTypeName(baseDataDicService.getNameById(caseBuildingMaintenance.getType()));
         }
         if (caseBuildingMaintenance.getCategory() != null) {
             vo.setCategoryName(baseDataDicService.getNameById(caseBuildingMaintenance.getCategory()));
@@ -81,21 +80,6 @@ public class CaseBuildingMaintenanceService {
             vo.setMaterialQualityName(baseDataDicService.getNameById(caseBuildingMaintenance.getMaterialQuality()));
         }
         return vo;
-    }
-
-    private String getValue(String key, Integer v) {
-        StringBuilder builder = new StringBuilder(1024);
-        List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(key);
-        if (baseDataDic.size() >= 1) {
-            if (v != null) {
-                for (BaseDataDic base : baseDataDic) {
-                    if (base.getId().intValue() == v.intValue()) {
-                        builder.append(base.getName());
-                    }
-                }
-            }
-        }
-        return builder.toString();
     }
 
     /**
