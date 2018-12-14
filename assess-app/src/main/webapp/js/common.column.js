@@ -301,7 +301,6 @@ commonColumn.houseRoomDecorateColumn = function () {
 //房屋-电力通信网络
 commonColumn.houseIntelligentColumn = function () {
     var cols = [];
-    cols.push({field: 'wireErectionName', title: '电线架设方式'});
     cols.push({field: 'switchCircuitName', title: '开关回路'});
     cols.push({field: 'lampsLanternsName', title: '灯具'});
     cols.push({field: 'intelligentSystemName', title: '智能系统'});

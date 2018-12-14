@@ -14,6 +14,8 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -118,7 +120,20 @@ public class BasicHouseIntelligentService {
         }
         BasicHouseIntelligentVo vo = new BasicHouseIntelligentVo();
         BeanUtils.copyProperties(basicHouseIntelligent,vo);
-
+        vo.setSwitchCircuitName(baseDataDicService.getNameById(basicHouseIntelligent.getSwitchCircuit()));
+        vo.setLayingMethodName(baseDataDicService.getNameById(basicHouseIntelligent.getLayingMethod()));
+        if (StringUtils.isNotBlank(basicHouseIntelligent.getLampsLanterns())){
+            String[] strings = basicHouseIntelligent.getLampsLanterns().split(",");
+            if (strings.length >= 1){
+                StringBuilder builder = new StringBuilder(128);
+                for (String id:strings){
+                    if (NumberUtils.isNumber(id)){
+                        builder.append(baseDataDicService.getNameById(Integer.parseInt(id)));
+                    }
+                }
+                vo.setLampsLanternsName(builder.toString());
+            }
+        }
         return vo;
     }
     
