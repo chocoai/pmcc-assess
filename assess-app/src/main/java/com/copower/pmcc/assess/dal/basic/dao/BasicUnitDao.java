@@ -41,20 +41,28 @@ public class BasicUnitDao {
 
     public List<BasicUnit> basicUnitList(BasicUnit basicUnit)throws SQLException{
         BasicUnitExample example = new BasicUnitExample();
-        MybatisUtils.convertObj2Example(basicUnit, example);
+        BasicUnitExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        if (basicUnit.getApplyId() != null){
+            criteria.andApplyIdEqualTo(basicUnit.getApplyId());
+        }
+        if (StringUtils.isNotBlank(basicUnit.getUnitNumber())){
+            criteria.andUnitNumberLike(new StringBuilder("%").append(basicUnit.getUnitNumber()).append("%").toString());
+        }
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(basicUnit.getElevatorHouseholdRatio())){
+            criteria.andElevatorHouseholdRatioEqualTo(basicUnit.getElevatorHouseholdRatio()) ;
+        }
+        if (basicUnit.getBuildingMainId() != null){
+            criteria.andBuildingMainIdEqualTo(basicUnit.getBuildingMainId());
+        }
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(basicUnit.getCreator())){
+            criteria.andCreatorEqualTo(basicUnit.getCreator()) ;
+        }
+        example.setOrderByClause("id desc");
         return basicUnitMapper.selectByExample(example);
     }
 
     public List<BasicUnit> autoComplete(BasicUnit basicUnit)throws SQLException{
-        BasicUnitExample example = new BasicUnitExample();
-        BasicUnitExample.Criteria criteria = example.createCriteria();
-        criteria.andIdIsNotNull();
-//        if (basicUnit.getBuildingId() != null){
-//            criteria.andBuildingIdEqualTo(basicUnit.getBuildingId());
-//        }
-        if (StringUtils.isNotBlank(basicUnit.getUnitNumber())){
-            criteria.andUnitNumberLike(new StringBuilder("%").append(basicUnit.getUnitNumber()).append("%").toString());
-        }
-        return basicUnitMapper.selectByExample(example);
+       return this.basicUnitList(basicUnit);
     }
 }
