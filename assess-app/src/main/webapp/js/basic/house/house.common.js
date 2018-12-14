@@ -404,7 +404,8 @@
     }
 
 
-    houseCommon.marker = {};//用做临时存储数据的json
+    //用做临时存储数据的json
+    houseCommon.marker = {};
     houseCommon.addMarker = function (lng, lat, attachmentId, deg) {
         var data = {
             type: "house",
@@ -419,8 +420,37 @@
         houseCommon.marker = data;
     };
 
-    houseCommon.orientationFun = function () {
-        var unitId = unitCommon.getUnitId();
+    //校验单元是否标注
+    houseCommon.checkUnitMarker = function (callback) {
+        $.ajax({
+            url: getContextPath() + "/basicEstateTagging/getEstateTaggingList",
+            type: "post",
+            dataType: "json",
+            async: false,
+            data: {applyId: basicCommon.getApplyId(), type: "unit"},
+            success: function (result) {
+                if (result.ret) {
+                    if (result.data) {
+                        console.log(result.data);
+                        if (result.data.length > 0) {
+                            callback(result.data[0]);
+                        } else {
+                            alert('单元未标注或者是单元未选择');
+                        }
+                    }
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    };
+
+    /**
+     * 获取所需的户型图
+     * @param callback
+     */
+    houseCommon.getMarkersysAttachmentId = function (callback) {
         var sysAttachmentId = "";
         $.ajax({
             url: getContextPath() + "/public/getSysAttachmentDtoList",
@@ -439,6 +469,7 @@
                                 //后缀必须为图片
                                 if (AssessCommon.checkImgFile(result.data[i].fileName)) {
                                     sysAttachmentId = result.data[i].id;
+                                    callback(sysAttachmentId);
                                     break;
                                 }
                             }
@@ -452,6 +483,7 @@
                                     //后缀必须为图片
                                     if (AssessCommon.checkImgFile(result.data[i].fileName)) {
                                         sysAttachmentId = result.data[i].id;
+                                        callback(sysAttachmentId);
                                         break;
                                     }
                                 }
@@ -464,47 +496,58 @@
                 Alert("调用服务端方法失败，失败原因:" + result);
             }
         });
-        var temp = {};
-        $.extend(temp, houseCommon.marker);
-        var contentUrl = getContextPath() + '/map/houseTagging?sysAttachmentId=' + sysAttachmentId + "&unitId=" + unitId + "&click=houseCommon.addMarker";
-        if (this.isNotBlankObject(temp)) {
-            contentUrl = getContextPath() + '/map/houseTaggingMore?';
-            contentUrl += "attachmentId=" + temp.attachmentId;
-            contentUrl += "&deg=" + temp.deg;
-            contentUrl += "&lat=" + temp.lat;
-            contentUrl += "&lng=" + temp.lng;
-            contentUrl += "&name=" + temp.name;
-            contentUrl += "&type=" + temp.type;
-            contentUrl += "&applyId=" + temp.applyId;
-            contentUrl += "&click=houseCommon.addMarker";
-        }
-        layer.open({
-            type: 2,
-            title: '房屋标注',
-            shadeClose: true,
-            shade: true,
-            maxmin: true, //开启最大化最小化按钮
-            area: ['893px', '600px'],
-            content: contentUrl,
-            success: function (layero) {
-                //假如有数据则显示在地图上 (重新载入 houseTaggingMore)
-            },
-            cancel: function () {
-                //关闭时,保存数据
-                $.ajax({
-                    url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
-                    data: houseCommon.marker,
-                    success: function (result) {
-                        if (result.ret) {
+    };
 
-                        } else {
-                            Alert(result.errmsg);
-                        }
+    /**
+     * 户型地图朝向
+     */
+    houseCommon.orientationFun = function () {
+        this.checkUnitMarker(function (data) {
+            houseCommon.getMarkersysAttachmentId(function (sysAttachmentId) {
+                var temp = {};
+                $.extend(temp, houseCommon.marker);
+                var unitId = unitCommon.getUnitId();
+                var contentUrl = getContextPath() + '/map/houseTagging?sysAttachmentId=' + sysAttachmentId + "&unitId=" + unitId + "&click=houseCommon.addMarker";
+                if (houseCommon.isNotBlankObject(temp)) {
+                    contentUrl = getContextPath() + '/map/houseTaggingMore?';
+                    contentUrl += "attachmentId=" + temp.attachmentId;
+                    contentUrl += "&deg=" + temp.deg;
+                    contentUrl += "&lat=" + temp.lat;
+                    contentUrl += "&lng=" + temp.lng;
+                    contentUrl += "&name=" + temp.name;
+                    contentUrl += "&type=" + temp.type;
+                    contentUrl += "&applyId=" + temp.applyId;
+                    contentUrl += "&click=houseCommon.addMarker";
+                }
+                layer.open({
+                    type: 2,
+                    title: '房屋标注',
+                    shadeClose: true,
+                    shade: true,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['893px', '600px'],
+                    content: contentUrl,
+                    success: function (layero) {
+                        //假如有数据则显示在地图上 (重新载入 houseTaggingMore)
+                    },
+                    cancel: function () {
+                        //关闭时,保存数据
+                        $.ajax({
+                            url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
+                            data: houseCommon.marker,
+                            success: function (result) {
+                                if (result.ret) {
+
+                                } else {
+                                    Alert(result.errmsg);
+                                }
+                            }
+                        })
                     }
-                })
-            }
+                });
+            });
         });
-    }
+    };
 
     window.houseCommon = houseCommon;
 })(jQuery);

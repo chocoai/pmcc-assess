@@ -61,10 +61,10 @@ public class BasicEstateTaggingController {
     @RequestMapping(value = "/getEstateTaggingList", name = "获取数据列表", method = {RequestMethod.POST})
     public HttpResult getEstateTaggingList(Integer applyId,String type) {
         try {
-            return HttpResult.newCorrectResult(basicEstateTaggingService.getEstateTaggingList(applyId,type));
+            return HttpResult.newCorrectResult(200,basicEstateTaggingService.getEstateTaggingList(applyId,type));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(e.getMessage());
+            return HttpResult.newErrorResult(500,e.getMessage());
         }
     }
 

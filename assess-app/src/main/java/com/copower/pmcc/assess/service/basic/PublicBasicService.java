@@ -1323,7 +1323,7 @@ public class PublicBasicService {
         }
         if (StringUtils.isNotBlank(basicApply.getHousePartInMode())) {
             if(!basicEstateTaggingService.hasBasicEstateTagging(basicApply.getId(),EstateTaggingTypeEnum.HOUSE)){
-
+                throw new BusinessException("房屋位置信息还未标注");
             }
         }
     }

@@ -51,6 +51,8 @@ public class BasicApplyController extends BaseController {
     private BasicHouseService basicHouseService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private BasicEstateTaggingService basicEstateTaggingService;
 
     @RequestMapping(value = "/basicApplyIndex", name = "案例基础数据 初始", method = RequestMethod.GET)
     public ModelAndView basicApplyIndex() {
@@ -61,6 +63,7 @@ public class BasicApplyController extends BaseController {
             basicBuildingService.clearInvalidData(0);
             basicUnitService.clearInvalidData(0);
             basicHouseService.clearInvalidData(0);
+            basicEstateTaggingService.clearInvalidData(0);
         } catch (Exception e1) {
             log.error("清除数据异常", e1);
         }
