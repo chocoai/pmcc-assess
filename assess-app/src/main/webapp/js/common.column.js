@@ -302,8 +302,10 @@ commonColumn.houseRoomDecorateColumn = function () {
 commonColumn.houseIntelligentColumn = function () {
     var cols = [];
     cols.push({field: 'switchCircuitName', title: '开关回路'});
+    cols.push({field: 'layingMethodName', title: '铺设方式'});
     cols.push({field: 'lampsLanternsName', title: '灯具'});
     cols.push({field: 'intelligentSystemName', title: '智能系统'});
+    cols.push({field: 'remark', title: '备注'});
     return cols;
 }
 

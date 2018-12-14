@@ -14,6 +14,8 @@ public class BasicHouseIntelligentVo extends BasicHouseIntelligent {
 
     private String lampsLanternsName;
 
+    private String intelligentSystemName;
+
     public String getSwitchCircuitName() {
         return switchCircuitName;
     }
@@ -36,5 +38,13 @@ public class BasicHouseIntelligentVo extends BasicHouseIntelligent {
 
     public void setLampsLanternsName(String lampsLanternsName) {
         this.lampsLanternsName = lampsLanternsName;
+    }
+
+    public String getIntelligentSystemName() {
+        return intelligentSystemName;
+    }
+
+    public void setIntelligentSystemName(String intelligentSystemName) {
+        this.intelligentSystemName = intelligentSystemName;
     }
 }

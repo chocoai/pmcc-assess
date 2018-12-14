@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basic.dao.BasicHouseIntelligentDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouseIntelligent;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseIntelligentVo;
@@ -67,7 +69,7 @@ public class BasicHouseIntelligentService {
             basicHouseIntelligent.setCreator(commonService.thisUserAccount());
             Integer id = basicHouseIntelligentDao.saveBasicHouseIntelligent(basicHouseIntelligent);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class), id);
-            return  id ;
+            return id;
         } else {
             BasicHouseIntelligent oo = basicHouseIntelligentDao.getBasicHouseIntelligentById(basicHouseIntelligent.getId());
             basicHouseIntelligentDao.updateBasicHouseIntelligent(basicHouseIntelligent);
@@ -98,7 +100,7 @@ public class BasicHouseIntelligentService {
         return basicHouseIntelligentDao.basicHouseIntelligentList(basicHouseIntelligent);
     }
 
-    public void removeBasicHouseIntelligent(BasicHouseIntelligent basicHouseIntelligent)throws Exception{
+    public void removeBasicHouseIntelligent(BasicHouseIntelligent basicHouseIntelligent) throws Exception {
         basicHouseIntelligentDao.removeBasicHouseIntelligent(basicHouseIntelligent);
     }
 
@@ -114,27 +116,68 @@ public class BasicHouseIntelligentService {
         return vo;
     }
 
-    public BasicHouseIntelligentVo getBasicHouseIntelligentVo(BasicHouseIntelligent basicHouseIntelligent){
-        if (basicHouseIntelligent==null){
+    public BasicHouseIntelligentVo getBasicHouseIntelligentVo(BasicHouseIntelligent basicHouseIntelligent) {
+        if (basicHouseIntelligent == null) {
             return null;
         }
         BasicHouseIntelligentVo vo = new BasicHouseIntelligentVo();
-        BeanUtils.copyProperties(basicHouseIntelligent,vo);
+        BeanUtils.copyProperties(basicHouseIntelligent, vo);
         vo.setSwitchCircuitName(baseDataDicService.getNameById(basicHouseIntelligent.getSwitchCircuit()));
         vo.setLayingMethodName(baseDataDicService.getNameById(basicHouseIntelligent.getLayingMethod()));
-        if (StringUtils.isNotBlank(basicHouseIntelligent.getLampsLanterns())){
+        if (StringUtils.isNotBlank(basicHouseIntelligent.getLampsLanterns())) {
             String[] strings = basicHouseIntelligent.getLampsLanterns().split(",");
-            if (strings.length >= 1){
+            if (strings.length >= 1) {
                 StringBuilder builder = new StringBuilder(128);
-                for (String id:strings){
-                    if (NumberUtils.isNumber(id)){
-                        builder.append(baseDataDicService.getNameById(Integer.parseInt(id)));
+                for (int i = 0; i < strings.length; i++) {
+                    if (NumberUtils.isNumber(strings[i])) {
+                        if (i == strings.length - 1) {
+                            builder.append(baseDataDicService.getNameById(Integer.parseInt(strings[i])));
+                        } else {
+                            builder.append(baseDataDicService.getNameById(Integer.parseInt(strings[i]))).append(",");
+                        }
                     }
                 }
                 vo.setLampsLanternsName(builder.toString());
             }
         }
+        if (StringUtils.isNotBlank(basicHouseIntelligent.getIntelligentSystem())) {
+            try {
+                List<String> stringList = JSONObject.parseArray(basicHouseIntelligent.getIntelligentSystem(), String.class);
+                StringBuilder builder = new StringBuilder(128);
+                if (!ObjectUtils.isEmpty(stringList)) {
+                    for (int i = 0; i < stringList.size(); i++) {
+                        if (i == stringList.size() - 1) {
+                            JSONObject jsonObject = JSON.parseObject(stringList.get(i));
+                            JSONObject intelligentSystem = JSON.parseObject(jsonObject.getString("intelligentSystem"));
+                            JSONObject layingMethod = JSON.parseObject(jsonObject.getString("layingMethod"));
+                            String intelligentValue = intelligentSystem.getString("value");
+                            String layingMethodValue = layingMethod.getString("value");
+                            if (NumberUtils.isNumber(intelligentValue) && NumberUtils.isNumber(layingMethodValue)) {
+                                builder.append("(").append(baseDataDicService.getNameById(Integer.parseInt(intelligentValue))).append("");
+                                builder.append("-");
+                                builder.append("").append(baseDataDicService.getNameById(Integer.parseInt(layingMethodValue))).append(")");
+                            }
+                        } else {
+                            JSONObject jsonObject = JSON.parseObject(stringList.get(i));
+                            JSONObject intelligentSystem = JSON.parseObject(jsonObject.getString("intelligentSystem"));
+                            JSONObject layingMethod = JSON.parseObject(jsonObject.getString("layingMethod"));
+                            String intelligentValue = intelligentSystem.getString("value");
+                            String layingMethodValue = layingMethod.getString("value");
+                            if (NumberUtils.isNumber(intelligentValue) && NumberUtils.isNumber(layingMethodValue)) {
+                                builder.append("(").append(baseDataDicService.getNameById(Integer.parseInt(intelligentValue))).append("");
+                                builder.append("-");
+                                builder.append("").append(baseDataDicService.getNameById(Integer.parseInt(layingMethodValue))).append(")");
+                                builder.append(",");
+                            }
+                        }
+                    }
+                }
+                vo.setIntelligentSystemName(builder.toString());
+            } catch (Exception e1) {
+                logger.error("json异常!", e1);
+            }
+        }
         return vo;
     }
-    
+
 }
