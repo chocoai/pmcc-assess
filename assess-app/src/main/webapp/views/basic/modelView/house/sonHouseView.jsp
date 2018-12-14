@@ -653,7 +653,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <button class="btn btn-xs btn-success"
-                                                    onclick="houseIntelligent.prototype.appendHTML('system',this)"><i
+                                                    onclick="houseIntelligent.prototype.appendHTML('',this)"><i
                                                     class="fa fa-plus"></i></button>
                                         </div>
                                     </div>
@@ -687,7 +687,8 @@
                                             描述
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea name="remark" class="form-control"></textarea>
+
+                                            <textarea required="required" name="remark" class="form-control"></textarea>
                                         </div>
                                     </div>
                                 </div>
