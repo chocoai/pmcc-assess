@@ -71,16 +71,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '名称'});
-                cols.push({field: 'parameterIndexH', title: '参数指标'});
-                cols.push({field: 'useH', title: '用途'});
-                cols.push({field: 'maintenanceStatus', title: '维护状况'});
-                cols.push({field: 'typeName', title: '类型'});
-                cols.push({field: 'categoryName', title: '类别'});
-                cols.push({field: 'priceName', title: '价格'});
-                cols.push({field: 'fileName', title: '位置图'});
-
+                var cols = commonColumn.houseCorollaryEquipmentColumn();
                 $("#" + houseCorollaryEquipment.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseCorollaryEquipment.prototype.config().table, "${pageContext.request.contextPath}/caseHouseCorollaryEquipment/getCaseHouseCorollaryEquipmentList", cols, {
                     type: houseCorollaryEquipment.prototype.config().type,

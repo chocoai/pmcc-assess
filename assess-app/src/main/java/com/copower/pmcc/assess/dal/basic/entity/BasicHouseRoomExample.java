@@ -1046,52 +1046,52 @@ public class BasicHouseRoomExample {
             return (Criteria) this;
         }
 
-        public Criteria andClearHeightEqualTo(Double value) {
+        public Criteria andClearHeightEqualTo(BigDecimal value) {
             addCriterion("clear_height =", value, "clearHeight");
             return (Criteria) this;
         }
 
-        public Criteria andClearHeightNotEqualTo(Double value) {
+        public Criteria andClearHeightNotEqualTo(BigDecimal value) {
             addCriterion("clear_height <>", value, "clearHeight");
             return (Criteria) this;
         }
 
-        public Criteria andClearHeightGreaterThan(Double value) {
+        public Criteria andClearHeightGreaterThan(BigDecimal value) {
             addCriterion("clear_height >", value, "clearHeight");
             return (Criteria) this;
         }
 
-        public Criteria andClearHeightGreaterThanOrEqualTo(Double value) {
+        public Criteria andClearHeightGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("clear_height >=", value, "clearHeight");
             return (Criteria) this;
         }
 
-        public Criteria andClearHeightLessThan(Double value) {
+        public Criteria andClearHeightLessThan(BigDecimal value) {
             addCriterion("clear_height <", value, "clearHeight");
             return (Criteria) this;
         }
 
-        public Criteria andClearHeightLessThanOrEqualTo(Double value) {
+        public Criteria andClearHeightLessThanOrEqualTo(BigDecimal value) {
             addCriterion("clear_height <=", value, "clearHeight");
             return (Criteria) this;
         }
 
-        public Criteria andClearHeightIn(List<Double> values) {
+        public Criteria andClearHeightIn(List<BigDecimal> values) {
             addCriterion("clear_height in", values, "clearHeight");
             return (Criteria) this;
         }
 
-        public Criteria andClearHeightNotIn(List<Double> values) {
+        public Criteria andClearHeightNotIn(List<BigDecimal> values) {
             addCriterion("clear_height not in", values, "clearHeight");
             return (Criteria) this;
         }
 
-        public Criteria andClearHeightBetween(Double value1, Double value2) {
+        public Criteria andClearHeightBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("clear_height between", value1, value2, "clearHeight");
             return (Criteria) this;
         }
 
-        public Criteria andClearHeightNotBetween(Double value1, Double value2) {
+        public Criteria andClearHeightNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("clear_height not between", value1, value2, "clearHeight");
             return (Criteria) this;
         }

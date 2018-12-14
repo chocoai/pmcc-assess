@@ -57,11 +57,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'streetName', title: '名称'});
-                cols.push({field: 'streetLevelName', title: '街道级别'});
-                cols.push({field: 'trafficFlowName', title: '交通流量'});
-                cols.push({field: 'visitorsFlowrateName', title: '人流量'});
+                var cols = commonColumn.houseFaceStreetColumn();
                 $("#" + houseFaceStreet.prototype.config().table).bootstrapTable('destroy');//examineHouseFaceStreet
                 TableInit(houseFaceStreet.prototype.config().table, "${pageContext.request.contextPath}/caseHouseFaceStreet/getCaseHouseFaceStreetList", cols, {
                     type: houseFaceStreet.prototype.config().type,

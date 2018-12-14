@@ -32,7 +32,7 @@ public class BasicHouseRoom {
 
     private BigDecimal layerHeight;
 
-    private Double clearHeight;
+    private BigDecimal clearHeight;
 
     private String creator;
 
@@ -152,11 +152,11 @@ public class BasicHouseRoom {
         this.layerHeight = layerHeight;
     }
 
-    public Double getClearHeight() {
+    public BigDecimal getClearHeight() {
         return clearHeight;
     }
 
-    public void setClearHeight(Double clearHeight) {
+    public void setClearHeight(BigDecimal clearHeight) {
         this.clearHeight = clearHeight;
     }
 

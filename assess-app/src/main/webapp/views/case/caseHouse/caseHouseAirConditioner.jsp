@@ -59,11 +59,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'equipment', title: '名称'});
-                cols.push({field: 'categoryName', title: '类别'});
-                cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
-
+                var cols = commonColumn.houseAirConditionerColumn();
                 $("#" + houseAirConditioner.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseAirConditioner.prototype.config().table, "${pageContext.request.contextPath}/caseHouseEquipment/getCaseHouseEquipmentList", cols, {
                     type: houseAirConditioner.prototype.config().type,

@@ -235,15 +235,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '名称'});
-                cols.push({field: 'parameterIndexH', title: '参数指标'});
-                cols.push({field: 'useH', title: '用途'});
-                cols.push({field: 'maintenanceStatus', title: '维护状况'});
-                cols.push({field: 'typeName', title: '类型'});
-                cols.push({field: 'categoryName', title: '类别'});
-                cols.push({field: 'priceName', title: '价格'});
-                cols.push({field: 'fileViewName', title: '位置图'});
+                var cols = commonColumn.houseCorollaryEquipmentColumn();
                 $("#" + houseCorollaryEquipment.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseCorollaryEquipment.prototype.config().table, "${pageContext.request.contextPath}/basicHouseCorollaryEquipment/getBootstrapTableVo", cols, {
                     houseId:'${empty basicHouse.id?0:basicHouse.id}',
@@ -284,11 +276,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'streetName', title: '名称'});
-                cols.push({field: 'streetLevelName', title: '街道级别'});
-                cols.push({field: 'trafficFlowName', title: '交通流量'});
-                cols.push({field: 'visitorsFlowrateName', title: '人流量'});
+                var cols = commonColumn.houseFaceStreetColumn();
                 $("#" + houseFaceStreet.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseFaceStreet.prototype.config().table, "${pageContext.request.contextPath}/basicHouseFaceStreet/getBootstrapTableVo", cols, {
                     houseId:'${empty basicHouse.id?0:basicHouse.id}',
@@ -410,10 +398,7 @@
         return false;
     };
     houseWaterDrain.loadDataDicList = function () {
-        var cols = [];
-        cols.push({field: 'drainSystemName', title: '排水系统'});
-        cols.push({field: 'typeName', title: '类别'});
-        cols.push({field: 'processingModeName', title: '排水处理方式'});
+        var cols = commonColumn.houseWaterDrainColumn();
         $("#" + this.config.table).bootstrapTable('destroy');
         TableInit(this.config.table, getContextPath() + "/basicHouseWaterDrain/getBootstrapTableVo", cols, {
             houseId:'${empty basicHouse.id?0:basicHouse.id}',
@@ -455,10 +440,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'equipment', title: '名称'});
-                cols.push({field: 'categoryName', title: '类别'});
-                cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
+                var cols = commonColumn.houseHeatingColumn();
                 $("#" + houseHeating.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseHeating.prototype.config().table, "${pageContext.request.contextPath}/basicHouseEquipment/getBootstrapTableVo", cols, {
                     type: houseHeating.prototype.config().type,
@@ -502,10 +484,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'equipment', title: '名称'});
-                cols.push({field: 'categoryName', title: '类别'});
-                cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
+                var cols = commonColumn.houseAirConditionerColumn();
                 $("#" + houseAirConditioner.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseAirConditioner.prototype.config().table, "${pageContext.request.contextPath}/basicHouseEquipment/getBootstrapTableVo", cols, {
                     type: houseAirConditioner.prototype.config().type,
@@ -549,10 +528,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'equipment', title: '名称'});
-                cols.push({field: 'categoryName', title: '类别'});
-                cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
+                var cols = commonColumn.houseNewWindColumn();
                 $("#" + houseNewWind.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseNewWind.prototype.config().table, "${pageContext.request.contextPath}/basicHouseEquipment/getBootstrapTableVo", cols, {
                     type: houseNewWind.prototype.config().type,

@@ -16,7 +16,7 @@
     <result column="opening" property="opening" jdbcType="VARCHAR" />
     <result column="depth" property="depth" jdbcType="VARCHAR" />
     <result column="layer_height" property="layerHeight" jdbcType="DECIMAL" />
-    <result column="clear_height" property="clearHeight" jdbcType="DOUBLE" />
+    <result column="clear_height" property="clearHeight" jdbcType="DECIMAL" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -128,7 +128,7 @@
       #{area,jdbcType=DECIMAL}, #{orientation,jdbcType=VARCHAR}, #{aeration,jdbcType=VARCHAR}, 
       #{illumination,jdbcType=VARCHAR}, #{soundInsulation,jdbcType=VARCHAR}, #{sunshine,jdbcType=VARCHAR}, 
       #{lighting,jdbcType=VARCHAR}, #{opening,jdbcType=VARCHAR}, #{depth,jdbcType=VARCHAR}, 
-      #{layerHeight,jdbcType=DECIMAL}, #{clearHeight,jdbcType=DOUBLE}, #{creator,jdbcType=VARCHAR}, 
+      #{layerHeight,jdbcType=DECIMAL}, #{clearHeight,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoom" >
@@ -230,7 +230,7 @@
         #{layerHeight,jdbcType=DECIMAL},
       </if>
       <if test="clearHeight != null" >
-        #{clearHeight,jdbcType=DOUBLE},
+        #{clearHeight,jdbcType=DECIMAL},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -295,7 +295,7 @@
         layer_height = #{record.layerHeight,jdbcType=DECIMAL},
       </if>
       <if test="record.clearHeight != null" >
-        clear_height = #{record.clearHeight,jdbcType=DOUBLE},
+        clear_height = #{record.clearHeight,jdbcType=DECIMAL},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -327,7 +327,7 @@
       opening = #{record.opening,jdbcType=VARCHAR},
       depth = #{record.depth,jdbcType=VARCHAR},
       layer_height = #{record.layerHeight,jdbcType=DECIMAL},
-      clear_height = #{record.clearHeight,jdbcType=DOUBLE},
+      clear_height = #{record.clearHeight,jdbcType=DECIMAL},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -378,7 +378,7 @@
         layer_height = #{layerHeight,jdbcType=DECIMAL},
       </if>
       <if test="clearHeight != null" >
-        clear_height = #{clearHeight,jdbcType=DOUBLE},
+        clear_height = #{clearHeight,jdbcType=DECIMAL},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -407,7 +407,7 @@
       opening = #{opening,jdbcType=VARCHAR},
       depth = #{depth,jdbcType=VARCHAR},
       layer_height = #{layerHeight,jdbcType=DECIMAL},
-      clear_height = #{clearHeight,jdbcType=DOUBLE},
+      clear_height = #{clearHeight,jdbcType=DECIMAL},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

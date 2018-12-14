@@ -128,6 +128,10 @@ basicCommon.hideTab = function (_this) {
 //4.验证楼盘、楼栋、单元、房屋这些信息是否正确关联
 //5.数据是否重复申请，包含案例的中的数据以及正在提交申请的数据
 
+//处理数据验证方案
+//1.有部分字段有验证但为隐藏时则不做验证，有一部分字段有验证属性隐藏时依然需要被验证
+//2.保存时只验证这些字段是否填写规范，而不验证数据是否必填。当为提交时则都需要验证
+
 //保存草稿时验证
 basicCommon.saveDraftValid = function () {
     var applyForm = formSerializeArray(basicCommon.basicApplyForm);
@@ -183,7 +187,7 @@ basicCommon.hasApplyData = function (applyForm) {
 //表单数据是否填写完整
 basicCommon.isComplete = function (applyForm, isDraft) {
     var options = {
-        hiddenValid: true
+        // hiddenValid: false
     }
     if (applyForm.estatePartInMode) {
         options.msg = '请检查楼盘基本信息';
@@ -192,11 +196,11 @@ basicCommon.isComplete = function (applyForm, isDraft) {
         }
         if (!isDraft) {
             if (estateCommon.estateForm.find('#_' + estateCommon.estateFileControlIdArray[0]).html().length <= 0) {
-                toastr.info('请上传楼盘总平图')
+                toastr.info('请上传楼盘总平图');
                 return false;
             }
             if (estateCommon.estateForm.find('#_' + estateCommon.estateFileControlIdArray[1]).html().length <= 0) {
-                toastr.info('请上传楼盘外观图')
+                toastr.info('请上传楼盘外观图');
                 return false;
             }
         }

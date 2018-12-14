@@ -34,10 +34,7 @@
         return false;
     };
     houseWaterDrain.loadDataDicList = function () {
-        var cols = [];
-        cols.push({field: 'drainSystemName', title: '排水_系统'});
-        cols.push({field: 'typeName', title: '类别'});
-        cols.push({field: 'processingModeName', title: '排水_处理方式'});
+        var cols = commonColumn.houseWaterDrainColumn();
         $("#" + this.config.table).bootstrapTable('destroy');
         TableInit(this.config.table, getContextPath() + "/caseHouseWaterDrain/getBootstrapTableVo", cols, {
             houseId:'${empty caseHouse.id?0:caseHouse.id}'

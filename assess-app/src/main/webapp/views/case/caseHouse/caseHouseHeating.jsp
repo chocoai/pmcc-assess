@@ -59,11 +59,7 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'equipment', title: '名称'});
-                cols.push({field: 'categoryName', title: '类别'});
-                cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
-
+                var cols = commonColumn.houseHeatingColumn();
                 $("#" + houseHeating.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseHeating.prototype.config().table, "${pageContext.request.contextPath}/caseHouseEquipment/getCaseHouseEquipmentList", cols, {
                     type: houseHeating.prototype.config().type,

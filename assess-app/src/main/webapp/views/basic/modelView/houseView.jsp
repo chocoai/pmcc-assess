@@ -192,7 +192,7 @@
                 <label class="col-sm-1 control-label">说明事项类型<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 descriptionType"
+                    <select class="form-control descriptionType"
                             name="descriptionType"
                             required="required">
                     </select>

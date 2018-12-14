@@ -319,3 +319,67 @@ commonColumn.houseWaterColumn = function () {
     cols.push({field: 'fireWaterSupplyName', title: '消防给水'});
     return cols;
 }
+
+//房屋-排水
+commonColumn.houseWaterDrainColumn = function () {
+    var cols = [];
+    cols.push({field: 'drainSystemName', title: '排水系统'});
+    cols.push({field: 'typeName', title: '类别'});
+    cols.push({field: 'processingModeName', title: '排水处理方式'});
+    return cols;
+}
+
+//房屋-供热
+commonColumn.houseHeatingColumn = function () {
+    var cols = [];
+    cols.push({field: 'equipment', title: '设备品牌'});
+    cols.push({field: 'categoryName', title: '类别'});
+    cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
+    return cols;
+}
+
+//房屋-空调
+commonColumn.houseAirConditionerColumn = function () {
+    var cols = [];
+    cols.push({field: 'equipment', title: '设备品牌'});
+    cols.push({field: 'categoryName', title: '类别'});
+    cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
+    return cols;
+}
+
+//房屋-新风
+commonColumn.houseNewWindColumn = function () {
+    var cols = [];
+    cols.push({field: 'equipment', title: '设备品牌'});
+    cols.push({field: 'categoryName', title: '类别'});
+    cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
+    return cols;
+}
+
+//房屋-配套设置
+commonColumn.houseCorollaryEquipmentColumn = function () {
+    var cols = [];
+    cols.push({field: 'typeName', title: '类型'});
+    cols.push({field: 'categoryName', title: '类别'});
+    cols.push({field: 'name', title: '名称'});
+    cols.push({field: 'parameterIndex', title: '参数指标'});
+    cols.push({field: 'equipmentUse', title: '用途'});
+    cols.push({field: 'maintenanceStatus', title: '维护状况'});
+    cols.push({field: 'price', title: '价格'});
+    cols.push({field: 'fileViewName', title: '附件'});
+    return cols;
+}
+
+//房屋-临街状况
+commonColumn.houseFaceStreetColumn = function () {
+    var cols = [];
+    cols.push({field: 'streetName', title: '名称'});
+    cols.push({field: 'streetLevelName', title: '街道级别'});
+    cols.push({field: 'trafficFlowName', title: '交通流量'});
+    cols.push({field: 'visitorsFlowrateName', title: '人流量'});
+    return cols;
+}
+
+
+
+

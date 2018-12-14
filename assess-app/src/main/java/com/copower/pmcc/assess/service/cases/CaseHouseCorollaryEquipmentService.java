@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseCorollaryEquipmentDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseCorollaryEquipment;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseCorollaryEquipmentVo;
@@ -22,7 +21,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,23 +94,6 @@ public class CaseHouseCorollaryEquipmentService {
             vo.setFileName(builder.toString());
         }
         return vo;
-    }
-
-    private String getValue(String key, Integer v) {
-        StringBuilder builder = new StringBuilder(1024);
-        if (!StringUtils.isEmpty(key)) {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(key);
-            if (baseDataDic.size() >= 1) {
-                if (v != null) {
-                    for (BaseDataDic base : baseDataDic) {
-                        if (base.getId().intValue() == v.intValue()) {
-                            builder.append(base.getName());
-                        }
-                    }
-                }
-            }
-        }
-        return builder.toString();
     }
 
     /**
