@@ -15,6 +15,8 @@ public class CaseHouseIntelligent {
 
     private String intelligentSystem;
 
+    private String remark;
+
     private String creator;
 
     private Date gmtCreated;
@@ -67,6 +69,14 @@ public class CaseHouseIntelligent {
 
     public void setIntelligentSystem(String intelligentSystem) {
         this.intelligentSystem = intelligentSystem == null ? null : intelligentSystem.trim();
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
     public String getCreator() {
