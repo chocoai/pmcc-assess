@@ -84,7 +84,7 @@ public class BasicEstateTaggingService {
         return basicEstateTaggingDao.basicEstateTaggingList(basicEstateTagging);
     }
 
-    public List<BasicEstateTagging> getEstateTaggingList(Integer applyId, String type) throws SQLException {
+    public List<BasicEstateTagging> getEstateTaggingList(Integer applyId, String type) throws Exception {
         BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
         if (applyId == null || applyId == 0)
             basicEstateTagging.setCreator(commonService.thisUserAccount());

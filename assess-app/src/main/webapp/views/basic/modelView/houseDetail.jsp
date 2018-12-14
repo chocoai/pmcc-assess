@@ -55,6 +55,12 @@
                 <div class="col-sm-3" id="_house_new_huxing_plan">
                 </div>
             </div>
+            <div class="x-valid">
+                <div class="col-sm-3 col-sm-offset-1">
+                    <div id="container"></div>
+                    <div class="btn btn-success" onclick="houseCommon.orientationFun(true,'${basicHouse.applyId}')">户型地图朝向</div>
+                </div>
+            </div>
         </div>
         <div class="form-group">
             <div class="x-valid">

@@ -870,8 +870,31 @@ var houseIntelligent;
         init: function (item) {
             $("#" + houseIntelligent.prototype.config().frm).clearAll();
             $("#" + houseIntelligent.prototype.config().frm).initForm(item);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_lamps_lanterns, item.lampsLanterns, function (html, data) {
-                $("#" + houseIntelligent.prototype.config().frm).find("select.lampsLanterns").empty().html(html).trigger('change');
+            $("#" + houseIntelligent.prototype.config().frm).find(".system").empty();
+            $.ajax({
+                url: getContextPath() + "/baseDataDic/getDataDicListByFieldName",
+                type: "get",
+                dataType: "json",
+                async: true,
+                data: {
+                    fieldName: AssessDicKey.examine_house_lamps_lanterns
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        var retHtml = '';
+                        $.each(result.data, function (i, item) {
+                            retHtml += '<option key="' + item.fieldName + '" title="' + item.remark + '" value="' + item.id + '"';
+                            retHtml += '>' + item.name + '</option>';
+                        });
+                        $("#" + houseIntelligent.prototype.config().frm).find("select.lampsLanterns").empty().html(retHtml).trigger('change');
+                        if (houseIntelligent.prototype.isNotBlank(item.lampsLanterns)) {
+                            $("#" + houseIntelligent.prototype.config().frm).find("select.lampsLanterns").val(item.lampsLanterns.split(",")).trigger("change");
+                        }
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_switch_circuit, item.switchCircuit, function (html, data) {
                 $("#" + houseIntelligent.prototype.config().frm).find("select.switchCircuit").empty().html(html).trigger('change');
@@ -950,8 +973,8 @@ var houseIntelligent;
                 $("#" + houseIntelligent.prototype.config().frm).find(".system").prev().remove();
                 $("#" + houseIntelligent.prototype.config().frm).find(".system").empty();
                 $.each(data, function (i, n) {
-                    var intelligentSystem = n.intelligentSystem.key+"";
-                    var layingMethod = n.layingMethod.key +"";
+                    var intelligentSystem = n.intelligentSystem.key + "";
+                    var layingMethod = n.layingMethod.key + "";
                     var html = houseIntelligent.prototype.createHTML(intelligentSystem, layingMethod);
                     $("#" + houseIntelligent.prototype.config().frm).find(".system").append(html);
                     AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_intelligent_system, n.intelligentSystem.value, function (html, data) {

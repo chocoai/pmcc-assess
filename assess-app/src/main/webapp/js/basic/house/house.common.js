@@ -501,52 +501,75 @@
     /**
      * 户型地图朝向
      */
-    houseCommon.orientationFun = function () {
-        this.checkUnitMarker(function (data) {
-            houseCommon.getMarkersysAttachmentId(function (sysAttachmentId) {
-                var temp = {};
-                $.extend(temp, houseCommon.marker);
-                var unitId = unitCommon.getUnitId();
-                var contentUrl = getContextPath() + '/map/houseTagging?sysAttachmentId=' + sysAttachmentId + "&unitId=" + unitId + "&click=houseCommon.addMarker";
-                if (houseCommon.isNotBlankObject(temp)) {
-                    contentUrl = getContextPath() + '/map/houseTaggingMore?';
-                    contentUrl += "attachmentId=" + temp.attachmentId;
-                    contentUrl += "&deg=" + temp.deg;
-                    contentUrl += "&lat=" + temp.lat;
-                    contentUrl += "&lng=" + temp.lng;
-                    contentUrl += "&name=" + temp.name;
-                    contentUrl += "&type=" + temp.type;
-                    contentUrl += "&applyId=" + temp.applyId;
-                    contentUrl += "&click=houseCommon.addMarker";
-                }
-                layer.open({
-                    type: 2,
-                    title: '房屋标注',
-                    shadeClose: true,
-                    shade: true,
-                    maxmin: true, //开启最大化最小化按钮
-                    area: ['893px', '600px'],
-                    content: contentUrl,
-                    success: function (layero) {
-                        //假如有数据则显示在地图上 (重新载入 houseTaggingMore)
-                    },
-                    cancel: function () {
-                        //关闭时,保存数据
-                        $.ajax({
-                            url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
-                            data: houseCommon.marker,
-                            success: function (result) {
-                                if (result.ret) {
+    houseCommon.orientationFun = function (readonly, applyId) {
+        //仅仅显示而已
+        if (readonly) {
+            var contentUrl = getContextPath() + '/map/houseTaggingMore?readonly=true&applyId='+applyId ;
+            layer.open({
+                type: 2,
+                title: '房屋标注',
+                shadeClose: true,
+                shade: true,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['893px', '600px'],
+                content: contentUrl,
+                success: function (layero) {
 
-                                } else {
-                                    Alert(result.errmsg);
-                                }
-                            }
-                        })
+                },
+                cancel: function () {
+
+                }
+            });
+        }
+        //标记位置和方位
+        if (!readonly) {
+            this.checkUnitMarker(function (data) {
+                houseCommon.getMarkersysAttachmentId(function (sysAttachmentId) {
+                    var temp = {};
+                    $.extend(temp, houseCommon.marker);
+                    var unitId = unitCommon.getUnitId();
+                    var contentUrl = getContextPath() + '/map/houseTagging?sysAttachmentId=' + sysAttachmentId + "&unitId=" + unitId + "&click=houseCommon.addMarker";
+                    if (houseCommon.isNotBlankObject(temp)) {
+                        contentUrl = getContextPath() + '/map/houseTaggingMore?';
+                        contentUrl += "attachmentId=" + temp.attachmentId;
+                        contentUrl += "&deg=" + temp.deg;
+                        contentUrl += "&lat=" + temp.lat;
+                        contentUrl += "&lng=" + temp.lng;
+                        contentUrl += "&name=" + temp.name;
+                        contentUrl += "&type=" + temp.type;
+                        contentUrl += "&applyId=" + temp.applyId;
+                        contentUrl += "&readonly=false";
+                        contentUrl += "&click=houseCommon.addMarker";
                     }
+                    layer.open({
+                        type: 2,
+                        title: '房屋标注',
+                        shadeClose: true,
+                        shade: true,
+                        maxmin: true, //开启最大化最小化按钮
+                        area: ['893px', '600px'],
+                        content: contentUrl,
+                        success: function (layero) {
+                            //假如有数据则显示在地图上 (重新载入 houseTaggingMore)
+                        },
+                        cancel: function () {
+                            //关闭时,保存数据
+                            $.ajax({
+                                url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
+                                data: houseCommon.marker,
+                                success: function (result) {
+                                    if (result.ret) {
+
+                                    } else {
+                                        Alert(result.errmsg);
+                                    }
+                                }
+                            })
+                        }
+                    });
                 });
             });
-        });
+        }
     };
 
     window.houseCommon = houseCommon;

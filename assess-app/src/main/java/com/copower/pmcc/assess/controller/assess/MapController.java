@@ -1,17 +1,22 @@
 package com.copower.pmcc.assess.controller.assess;
 
+import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basic.entity.BasicEstateTagging;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.basic.BasicEstateTaggingService;
 import com.copower.pmcc.assess.service.basic.BasicUnitService;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * Created by kings on 2018-5-17.
@@ -23,6 +28,8 @@ public class MapController {
     private BasicUnitService basicUnitService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private BasicEstateTaggingService basicEstateTaggingService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @RequestMapping(value = "/positionPicker", name = "当前位置定位")
@@ -70,19 +77,37 @@ public class MapController {
     }
 
     @GetMapping(value = "/houseTaggingMore", name = "房屋标注(重复打开页面的时候)")
-    public ModelAndView houseTaggingMore(BasicEstateTagging tagging, String click) {
-        ModelAndView modelAndView = new ModelAndView("base/houseTaggingView");
-        modelAndView.addObject("click", click);
-        modelAndView.addObject("tagging", tagging);
-        if (tagging.getAttachmentId() == null) {
-            //临时数据
-            tagging.setAttachmentId(4506);
-        }
-        try {
-            String huxingImg = baseAttachmentService.getViewImageUrl(tagging.getAttachmentId());
-            modelAndView.addObject("huxingImg", huxingImg);
-        } catch (Exception e1) {
-            logger.error("附件不存在", e1);
+    public ModelAndView houseTaggingMore(BasicEstateTagging tagging, String click,@RequestParam(name = "readonly",defaultValue = "false")Boolean readonly) {
+        ModelAndView modelAndView = null;
+        if (!readonly){
+            //标记位置和方位
+            modelAndView = new ModelAndView("base/houseTaggingView");
+            modelAndView.addObject("click", click);
+            modelAndView.addObject("tagging", tagging);
+            if (tagging.getAttachmentId() == null) {
+                //临时数据
+                tagging.setAttachmentId(4506);
+            }
+            try {
+                String huxingImg = baseAttachmentService.getViewImageUrl(tagging.getAttachmentId());
+                modelAndView.addObject("huxingImg", huxingImg);
+            } catch (Exception e1) {
+                logger.error("附件不存在", e1);
+            }
+        }else {
+            //仅仅显示标记而已
+            modelAndView = new ModelAndView("base/houseTaggingReadonlyView");
+            try {
+                List<BasicEstateTagging> basicEstateTaggings = basicEstateTaggingService.getEstateTaggingList(tagging.getApplyId(), EstateTaggingTypeEnum.HOUSE.getKey());
+                if (!ObjectUtils.isEmpty(basicEstateTaggings)) {
+                    BasicEstateTagging basicEstateTagging = basicEstateTaggings.get(0) ;
+                    String huxingImg = baseAttachmentService.getViewImageUrl(basicEstateTagging.getAttachmentId());
+                    modelAndView.addObject("huxingImg", huxingImg);
+                    modelAndView.addObject("tagging", basicEstateTagging);
+                }
+            } catch (Exception e1) {
+                logger.error("未获取到数据!",e1);
+            }
         }
         return modelAndView;
     }
