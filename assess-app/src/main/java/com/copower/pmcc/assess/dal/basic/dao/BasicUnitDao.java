@@ -41,7 +41,23 @@ public class BasicUnitDao {
 
     public List<BasicUnit> basicUnitList(BasicUnit basicUnit)throws SQLException{
         BasicUnitExample example = new BasicUnitExample();
-        MybatisUtils.convertObj2Example(basicUnit, example);
+        BasicUnitExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        if (basicUnit.getApplyId() != null){
+            criteria.andApplyIdEqualTo(basicUnit.getApplyId());
+        }
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(basicUnit.getUnitNumber())){
+            criteria.andUnitNumberEqualTo(basicUnit.getUnitNumber()) ;
+        }
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(basicUnit.getElevatorHouseholdRatio())){
+            criteria.andElevatorHouseholdRatioEqualTo(basicUnit.getElevatorHouseholdRatio()) ;
+        }
+        if (basicUnit.getBuildingMainId() != null){
+            criteria.andBuildingMainIdEqualTo(basicUnit.getBuildingMainId());
+        }
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(basicUnit.getCreator())){
+            criteria.andCreatorEqualTo(basicUnit.getCreator()) ;
+        }
         return basicUnitMapper.selectByExample(example);
     }
 
