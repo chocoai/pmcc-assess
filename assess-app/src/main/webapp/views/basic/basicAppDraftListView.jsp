@@ -22,7 +22,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form id="frmQuery" class="form-horizontal">
+                    <div id="frmQuery" class="form-horizontal">
                         <div class="form-group ">
                             <div>
                                 <label class="col-sm-1 control-label">
@@ -36,14 +36,14 @@
                             </div>
 
                             <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary"
+                                <div class="btn btn-primary"
                                         onclick="dataObjFun.loadDataList()">
                                     查询
-                                </button>
+                                </div>
                             </div>
                         </div>
 
-                    </form>
+                    </div>
                     <table class="table table-bordered" id="tb_FatherList">
                         <!-- cerare document add ajax data-->
                     </table>

@@ -113,12 +113,12 @@ var unitDecorate;
         },
         init: function (item) {
             $("#" + unitDecorate.prototype.config().frm).clearAll().initForm(item, function () {
-                $("#" + unitDecorate.prototype.config().frm).find('select.decoratingMaterial').off('change').on('change',function () {
+                $("#" + unitDecorate.prototype.config().frm).find('select.decoratingMaterial').off('change').on('change', function () {
                     AssessCommon.loadDataDicByPid($(this).val(), item.constructionTechnology, function (html, data) {
                         $("#" + unitDecorate.prototype.config().frm).find('select.constructionTechnology').empty().html(html).trigger('change');
                     });
                 });
-                $("#" + unitDecorate.prototype.config().frm).find('select.constructionTechnology').off('change').on('change',function () {
+                $("#" + unitDecorate.prototype.config().frm).find('select.constructionTechnology').off('change').on('change', function () {
                     AssessCommon.loadDataDicByPid($(this).val(), item.materialPriceRange, function (html, data) {
                         $("#" + unitDecorate.prototype.config().frm).find('select.materialPriceRange').empty().html(html).trigger('change');
                     });
@@ -200,6 +200,11 @@ var unitHuxing;
             if (!$("#" + unitHuxing.prototype.config().frm).valid()) {
                 return false;
             }
+            if ($("#_" + unitHuxing.prototype.config().unitHuxingFileIDFildName).html().length <= 0) {
+                toastr.info("请上传户型图");
+                return false;
+            }
+
             var data = formParams(unitHuxing.prototype.config().frm);
             data.unitId = unitCommon.getUnitId();
             data.houseCategory = unitHuxing.prototype.rule("get", data);
@@ -226,7 +231,7 @@ var unitHuxing;
         },
         /**
          * @author:  zch
-         * 描述:户型的类别填写方式【】房【】厅【】厨【】卫【】花园【】阳台
+         * 描述:户型的类别填写方式【】室【】厅【】厨【】卫【】花园【】阳台
          * @date:
          **/
         rule: function (flag, item) {
@@ -234,7 +239,7 @@ var unitHuxing;
             //格式化
             if (flag == "formatter") {
                 if (unitHuxing.prototype.isNotNull(item.house)) {
-                    text += item.house + "房";
+                    text += item.house + "室";
                 }
                 if (unitHuxing.prototype.isNotNull(item.saloon)) {
                     text += item.saloon + "厅";

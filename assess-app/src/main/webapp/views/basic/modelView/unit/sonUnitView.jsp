@@ -156,8 +156,8 @@
                             </h3>
                             <div class="clearfix"></div>
                         </div>
-                        <div class="form-group" style="display: none;">
-                            <div class="x-valid" id="industrySpanLength">
+                        <div class="form-group">
+                            <div class="x-valid">
                                 <label class="col-sm-1 control-label">
                                     跨长<span class="symbol required"></span>
                                 </label>
