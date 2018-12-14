@@ -126,7 +126,8 @@
                                 </label>
                                 <div class="col-sm-4">
                                     <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
-                                    <input type="text" class="form-control" name="unitNumber" placeholder="单元编号" value="${basicApply.unitNumber}">
+                                    <input type="text" class="form-control" name="unitNumber" placeholder="单元编号"
+                                           value="${basicApply.unitNumber}">
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -152,7 +153,8 @@
                                 </label>
                                 <div class="col-sm-4">
                                     <input type="hidden" name="caseHouseId" value="${basicApply.caseHouseId}">
-                                    <input type="text" class="form-control" name="houseNumber" placeholder="房屋编号" value="${basicApply.houseNumber}">
+                                    <input type="text" class="form-control" name="houseNumber" placeholder="房屋编号"
+                                           value="${basicApply.houseNumber}">
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -213,6 +215,9 @@
         defaults.source = function (request, response) {
             group.find('[name=caseEstateId]').val('');
             group.find('.btn-reference,.btn-upgrade').hide();
+            basicApplyIndex.clearBuilding();
+            basicApplyIndex.clearUnit();
+            basicApplyIndex.clearHouse();
             $.ajax({
                 url: "${pageContext.request.contextPath}/caseEstate/autoCompleteCaseEstate",
                 type: "get",
@@ -244,8 +249,12 @@
         defaults.select = function (event, ele) {
             group.find('[name=caseEstateId]').val(ele.item.id);
             group.find('.btn-reference,.btn-upgrade').show();
+
+            //处理auto相同值不触发问题
+            basicCommon.basicApplyForm.find('[name=buildingNumber]').autocomplete("destroy");
+            basicApplyIndex.autocompleteBuilding();
             //选择楼盘的类型
-            basicCommon.basicApplyForm.find('[name=type][value='+ele.item.type+']').trigger('click');
+            basicCommon.basicApplyForm.find('[name=type][value=' + ele.item.type + ']').trigger('click');
         }
         $(that).autocomplete(defaults);
     };
@@ -260,6 +269,8 @@
         defaults.source = function (request, response) {
             group.find('[name=caseBuildingMainId]').val('');
             group.find('.btn-reference,.btn-upgrade').hide();
+            basicApplyIndex.clearUnit();
+            basicApplyIndex.clearHouse();
             var estateId = basicCommon.basicApplyForm.find("input[name='caseEstateId']").val();
             if (!estateId) return;
             var itemVal = $(that).val();
@@ -293,8 +304,12 @@
         defaults.select = function (event, ele) {
             group.find('[name=caseBuildingMainId]').val(ele.item.id);
             group.find('.btn-reference,.btn-upgrade').show();
+
+            //处理auto相同值不触发问题
+            basicCommon.basicApplyForm.find('[name=unitNumber]').autocomplete("destroy");
+            basicApplyIndex.autocompleteUnit();
         }
-        defaults.minLength = 1;
+        defaults.minLength = 0;
         $(that).autocomplete(defaults);
     };
 
@@ -308,6 +323,7 @@
         defaults.source = function (request, response) {
             group.find('[name=caseUnitId]').val('');
             group.find('.btn-reference,.btn-upgrade').hide();
+            basicApplyIndex.clearHouse();
             var buildingId = basicCommon.basicApplyForm.find("input[name='caseBuildingMainId']").val();
             if (!buildingId) return;
             var itemVal = $(that).val();
@@ -341,8 +357,12 @@
         defaults.select = function (event, ele) {
             group.find('[name=caseUnitId]').val(ele.item.id);
             group.find('.btn-reference,.btn-upgrade').show();
+
+            //处理auto相同值不触发问题
+            basicCommon.basicApplyForm.find('[name=houseNumber]').autocomplete("destroy");
+            basicApplyIndex.autocompleteHouse();
         }
-        defaults.minLength = 1;
+        defaults.minLength = 0;
         $(that).autocomplete(defaults);
     };
 
@@ -390,9 +410,45 @@
             group.find('[name=caseHouseId]').val(ele.item.id);
             group.find('.btn-reference,.btn-upgrade').show();
         }
-        defaults.minLength = 1;
+        defaults.minLength = 0;
         $(that).autocomplete(defaults);
     };
+
+    //清空楼盘查询数据
+    basicApplyIndex.clearEstate = function () {
+        basicCommon.basicApplyForm.find('[name=estatePartInMode]').val('');
+        basicCommon.basicApplyForm.find('[name=caseEstateId]').val('');
+        var estateName = basicCommon.basicApplyForm.find('[name=estateName]');
+        estateName.val('');
+        estateName.closest('.form-group').find('.btn-reference,.btn-upgrade').hide();
+    }
+
+    //清空楼栋查询数据
+    basicApplyIndex.clearBuilding = function () {
+        basicCommon.basicApplyForm.find('[name=buildingPartInMode]').val('');
+        basicCommon.basicApplyForm.find('[name=caseBuildingMainId]').val('');
+        var buildingNumber = basicCommon.basicApplyForm.find('[name=buildingNumber]');
+        buildingNumber.val('');
+        buildingNumber.closest('.form-group').find('.btn-reference,.btn-upgrade').hide();
+    }
+
+    //清空单元查询数据
+    basicApplyIndex.clearUnit = function () {
+        basicCommon.basicApplyForm.find('[name=unitPartInMode]').val('');
+        basicCommon.basicApplyForm.find('[name=caseUnitId]').val('');
+        var unitNumber = basicCommon.basicApplyForm.find('[name=unitNumber]');
+        unitNumber.val('');
+        unitNumber.closest('.form-group').find('.btn-reference,.btn-upgrade').hide();
+    }
+
+    //清空房屋查询数据
+    basicApplyIndex.clearHouse = function () {
+        basicCommon.basicApplyForm.find('[name=housePartInMode]').val('');
+        basicCommon.basicApplyForm.find('[name=caseHouseId]').val('');
+        var houseNumber = basicCommon.basicApplyForm.find('[name=houseNumber]');
+        houseNumber.val('');
+        houseNumber.closest('.form-group').find('.btn-reference,.btn-upgrade').hide();
+    }
 
     //检测是否为 草稿重新申请
     basicApplyIndex.startApply = function () {

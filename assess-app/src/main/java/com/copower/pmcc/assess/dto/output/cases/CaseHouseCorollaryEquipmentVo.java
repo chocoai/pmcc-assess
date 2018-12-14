@@ -12,7 +12,7 @@ public class CaseHouseCorollaryEquipmentVo extends CaseHouseCorollaryEquipment {
 
     private String categoryName;
     private String priceName;
-    private String fileName;
+    private String fileViewName;
 
     public String getTypeName() {
         return typeName;
@@ -38,11 +38,11 @@ public class CaseHouseCorollaryEquipmentVo extends CaseHouseCorollaryEquipment {
         this.priceName = priceName;
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getFileViewName() {
+        return fileViewName;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setFileViewName(String fileViewName) {
+        this.fileViewName = fileViewName;
     }
 }

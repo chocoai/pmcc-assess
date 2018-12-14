@@ -187,7 +187,7 @@ basicCommon.hasApplyData = function (applyForm) {
 //表单数据是否填写完整
 basicCommon.isComplete = function (applyForm, isDraft) {
     var options = {
-        // hiddenValid: false
+        hiddenValid: true
     }
     if (applyForm.estatePartInMode) {
         options.msg = '请检查楼盘基本信息';
