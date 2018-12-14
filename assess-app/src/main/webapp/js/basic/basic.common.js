@@ -186,10 +186,9 @@ basicCommon.hasApplyData = function (applyForm) {
 
 //表单数据是否填写完整
 basicCommon.isComplete = function (applyForm, isDraft) {
-    var options = {
-        hiddenValid: true
-    }
+    var options = {}
     if (applyForm.estatePartInMode) {
+        basicCommon.showEstateTab();
         options.msg = '请检查楼盘基本信息';
         if (!estateCommon.estateForm.valid(options)) {
             return false;
@@ -210,6 +209,7 @@ basicCommon.isComplete = function (applyForm, isDraft) {
         }
     }
     if (applyForm.buildingPartInMode) {
+        basicCommon.showBuildingTab();
         options.msg = '请检查楼栋信息';
         if (!buildingCommon.buildingMainForm.valid(options.msg)) {
             return false;
@@ -220,12 +220,14 @@ basicCommon.isComplete = function (applyForm, isDraft) {
         }
     }
     if (applyForm.unitPartInMode) {
+        basicCommon.showUnitTab();
         options.msg = '请检查单元信息';
         if (!unitCommon.unitForm.valid(options.msg)) {
             return false;
         }
     }
     if (applyForm.housePartInMode) {
+        basicCommon.showHouseTab();
         options.msg = '请检查房屋基本信息';
         if (!houseCommon.houseForm.valid(options.msg)) {
             return false;
