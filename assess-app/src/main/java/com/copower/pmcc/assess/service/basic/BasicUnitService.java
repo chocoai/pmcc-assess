@@ -143,9 +143,6 @@ public class BasicUnitService {
         if (basicUnit == null) {
             return null;
         }
-        if (StringUtils.isEmpty(basicUnit.getCreator())) {
-            basicUnit.setCreator(commonService.thisUserAccount());
-        }
         return basicUnitDao.basicUnitList(basicUnit);
     }
 
