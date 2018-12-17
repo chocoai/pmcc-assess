@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
+import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.dao.CaseUnitDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
@@ -41,6 +42,8 @@ public class CaseUnitService {
     private CaseUnitHuxingService caseUnitHuxingService;
     @Autowired
     private CaseHouseService caseHouseService;
+    @Autowired
+    private CaseEstateTaggingService caseEstateTaggingService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public void initAndUpdateSon(Integer oldId,Integer newId){
@@ -168,5 +171,16 @@ public class CaseUnitService {
      */
     public boolean hasUnit(String unitNumber, Integer caseBuildingMainId){
         return caseUnitDao.getUnitCount(unitNumber, caseBuildingMainId) > 0;
+    }
+
+    public CaseEstateTagging getCaseEstateTaggingByUnitId(Integer unitId)throws Exception{
+        CaseEstateTagging query = new CaseEstateTagging();
+        query.setDataId(unitId);
+        query.setType(EstateTaggingTypeEnum.UNIT.getKey());
+        List<CaseEstateTagging> caseEstateTaggingList = caseEstateTaggingService.getCaseEstateTaggingList(query);
+        if (!ObjectUtils.isEmpty(caseEstateTaggingList)){
+            return caseEstateTaggingList.get(0);
+        }
+        return null;
     }
 }

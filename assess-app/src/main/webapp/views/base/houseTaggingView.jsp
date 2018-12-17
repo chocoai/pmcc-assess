@@ -82,7 +82,9 @@
         {
             var dimensions = {};
             try {
-                dimensions = getImgNaturalDimensions(document.getElementById("oImg"));
+                var oImg = $("oImg") ;
+                dimensions.w = oImg.width();
+                dimensions.h = oImg.height();
             } catch (e) {
             }
             var width = config.isNotBlank(dimensions.w) ? parseFloat(dimensions.w) : 500;

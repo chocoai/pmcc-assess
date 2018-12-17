@@ -17,7 +17,14 @@
             return true;
         }
         return false
-    }
+    };
+
+    /**
+     * 判断字符串以及null等
+     */
+    houseCommon.isNotBlank = function () {
+
+    };
 
     //附件上传控件id数组
     houseCommon.houseFileControlIdArray = [
@@ -428,9 +435,9 @@
             unitId = Number(unitId);
         } catch (e) {
         }
-        if (unitId >= 1){
+        if (unitId >= 1) {
             callback(unitId);
-        }else {
+        } else {
             $.ajax({
                 url: getContextPath() + "/basicEstateTagging/getEstateTaggingList",
                 type: "post",
@@ -513,7 +520,7 @@
     houseCommon.orientationFun = function (readonly, applyId) {
         //仅仅显示而已
         if (readonly) {
-            var contentUrl = getContextPath() + '/map/houseTaggingMore?readonly=true&applyId='+applyId ;
+            var contentUrl = getContextPath() + '/map/houseTaggingMore?readonly=true&applyId=' + applyId;
             layer.open({
                 type: 2,
                 title: '房屋标注',
@@ -537,7 +544,19 @@
                     var temp = {};
                     $.extend(temp, houseCommon.marker);
                     var unitId = unitCommon.getUnitId();
-                    var contentUrl = getContextPath() + '/map/houseTagging?sysAttachmentId=' + sysAttachmentId + "&unitId=" + unitId + "&click=houseCommon.addMarker";
+                    var contentUrl = "";
+                    contentUrl = getContextPath() + '/map/houseTagging?sysAttachmentId=' + sysAttachmentId + "&click=houseCommon.addMarker";
+                    //两种情况,一种是案例单元id而另一种情况是非案例单元id
+                    if (houseCommon.isNotBlank(unitId)) {
+                        contentUrl += "&unitId=" + unitId;
+                        contentUrl += "&case_=false";
+                    } else {
+                        //处理引用单元的问题 (因为如果是引用那么unitId为null 则必须以basicCommon里的方法来获取单元id,并且这的unitId是case数据库表中的unitId)
+                        unitId = basicCommon.basicApplyForm.find("input[name='caseUnitId']").val();
+                        contentUrl += "&unitId=" + unitId;
+                        contentUrl += "&case_=true";
+                    }
+                    //当前页面 多次打开页面的情况处理
                     if (houseCommon.isNotBlankObject(temp)) {
                         contentUrl = getContextPath() + '/map/houseTaggingMore?';
                         contentUrl += "attachmentId=" + temp.attachmentId;
