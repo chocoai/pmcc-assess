@@ -16,22 +16,38 @@
             <ul class="nav nav-tabs bar_tabs" role="tablist" id="caseTab">
                 <c:if test="${not empty basicApply.estatePartInMode}">
                     <li role="presentation" class="">
-                        <a href="#basicEstate" role="tab" data-toggle="tab" aria-expanded="true">楼盘</a>
+                        <a href="#basicEstate" role="tab" data-toggle="tab" aria-expanded="true">楼盘
+                            <c:if test="${basicApply.estatePartInMode eq 'upgrade'}">
+                                <small>(升级版本)</small>
+                            </c:if>
+                        </a>
                     </li>
                 </c:if>
                 <c:if test="${not empty basicApply.buildingPartInMode}">
                     <li role="presentation" class="">
-                        <a href="#caseBuild" role="tab" data-toggle="tab" aria-expanded="true">楼栋</a>
+                        <a href="#caseBuild" role="tab" data-toggle="tab" aria-expanded="true">楼栋
+                            <c:if test="${basicApply.buildingPartInMode eq 'upgrade'}">
+                                <small>(升级版本)</small>
+                            </c:if>
+                        </a>
                     </li>
                 </c:if>
                 <c:if test="${not empty basicApply.unitPartInMode}">
                     <li role="presentation" class="">
-                        <a href="#caseUnit" role="tab" data-toggle="tab" aria-expanded="true">单元</a>
+                        <a href="#caseUnit" role="tab" data-toggle="tab" aria-expanded="true">单元
+                            <c:if test="${basicApply.unitPartInMode eq 'upgrade'}">
+                                <small>(升级版本)</small>
+                            </c:if>
+                        </a>
                     </li>
                 </c:if>
                 <c:if test="${not empty basicApply.housePartInMode}">
                     <li role="presentation" class="">
-                        <a href="#caseHouse" role="tab" data-toggle="tab" aria-expanded="true">房屋</a>
+                        <a href="#caseHouse" role="tab" data-toggle="tab" aria-expanded="true">房屋
+                            <c:if test="${basicApply.housePartInMode eq 'upgrade'}">
+                                <small>(升级版本)</small>
+                            </c:if>
+                        </a>
                     </li>
                 </c:if>
             </ul>

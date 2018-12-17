@@ -3,16 +3,10 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basic.dao.BasicUnitDao;
 import com.copower.pmcc.assess.dal.basic.entity.*;
-import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
-import com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorate;
-import com.copower.pmcc.assess.dal.cases.entity.CaseUnitElevator;
-import com.copower.pmcc.assess.dal.cases.entity.CaseUnitHuxing;
+import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.cases.CaseUnitHuxingVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.cases.CaseUnitDecorateService;
-import com.copower.pmcc.assess.service.cases.CaseUnitElevatorService;
-import com.copower.pmcc.assess.service.cases.CaseUnitHuxingService;
-import com.copower.pmcc.assess.service.cases.CaseUnitService;
+import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -22,7 +16,6 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -67,6 +60,10 @@ public class BasicUnitService {
     private CaseUnitDecorateService caseUnitDecorateService;
     @Autowired
     private BasicEstateTaggingService basicEstateTaggingService;
+    @Autowired
+    private CaseEstateTaggingService caseEstateTaggingService;
+    @Autowired
+    private BasicEstateService basicEstateService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -276,6 +273,12 @@ public class BasicUnitService {
         basicUnit.setGmtModified(null);
         basicUnitDao.saveBasicUnit(basicUnit);
 
+        CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
+        caseEstateTagging.setDataId(caseUnitId);
+        caseEstateTagging.setType(EstateTaggingTypeEnum.UNIT.getKey());
+        List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
+        basicEstateService.copyTaggingFromCase(caseEstateTaggings);
+
         taskExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -288,7 +291,7 @@ public class BasicUnitService {
                         for (CaseUnitElevator caseUnitElevator : caseUnitHuxingList) {
                             BasicUnitElevator basicUnitElevator = new BasicUnitElevator();
                             BeanUtils.copyProperties(caseUnitElevator, basicUnitElevator);
-                            basicUnitElevator.setUnitId(0);
+                            basicUnitElevator.setUnitId(basicUnit.getId());
                             basicUnitElevator.setId(null);
                             basicUnitElevator.setGmtCreated(null);
                             basicUnitElevator.setGmtModified(null);
@@ -313,7 +316,7 @@ public class BasicUnitService {
                         for (CaseUnitDecorate caseUnitDecorate : caseUnitHuxingList) {
                             BasicUnitDecorate basicUnitDecorate = new BasicUnitDecorate();
                             BeanUtils.copyProperties(caseUnitDecorate, basicUnitDecorate);
-                            basicUnitDecorate.setUnitId(0);
+                            basicUnitDecorate.setUnitId(basicUnit.getId());
                             basicUnitDecorate.setId(null);
                             basicUnitDecorate.setGmtCreated(null);
                             basicUnitDecorate.setGmtModified(null);
@@ -338,7 +341,7 @@ public class BasicUnitService {
                         for (CaseUnitHuxingVo caseUnitHuxing : caseUnitHuxingList) {
                             BasicUnitHuxing basicUnitHuxing = new BasicUnitHuxing();
                             BeanUtils.copyProperties(caseUnitHuxing, basicUnitHuxing);
-                            basicUnitHuxing.setUnitId(0);
+                            basicUnitHuxing.setUnitId(basicUnit.getId());
                             basicUnitHuxing.setId(null);
                             basicUnitHuxing.setGmtCreated(null);
                             basicUnitHuxing.setGmtModified(null);

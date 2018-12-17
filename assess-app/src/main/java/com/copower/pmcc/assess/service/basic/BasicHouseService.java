@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basic.dao.BasicHouseDao;
 import com.copower.pmcc.assess.dal.basic.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
@@ -47,7 +48,7 @@ public class BasicHouseService {
     @Autowired
     private BasicHouseRoomService basicHouseRoomService;
     @Autowired
-    private BasicUnitHuxingService basicUnitHuxingService;
+    private CaseEstateTaggingService caseEstateTaggingService;
     @Autowired
     private BasicHouseTradingLeaseService basicHouseTradingLeaseService;
     @Autowired
@@ -96,6 +97,8 @@ public class BasicHouseService {
     private BasicHouseWaterDrainService basicHouseWaterDrainService;
     @Autowired
     private CaseHouseWaterDrainService caseHouseWaterDrainService;
+    @Autowired
+    private BasicEstateService basicEstateService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -421,6 +424,12 @@ public class BasicHouseService {
         basicHouse.setGmtModified(null);
         basicHouseDao.saveBasicHouse(basicHouse);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()), getBasicHouseVo(basicHouse));
+
+        CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
+        caseEstateTagging.setDataId(caseHouseId);
+        caseEstateTagging.setType(EstateTaggingTypeEnum.HOUSE.getKey());
+        List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
+        basicEstateService.copyTaggingFromCase(caseEstateTaggings);
 
         //附件拷贝
         SysAttachmentDto queryFile = new SysAttachmentDto();

@@ -736,18 +736,7 @@ public class BasicEstateService {
             public void run() {
                 try {
                     List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-                    if (!ObjectUtils.isEmpty(caseEstateTaggings)) {
-                        for (CaseEstateTagging caseEstateTagging : caseEstateTaggings) {
-                            BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
-                            BeanCopyHelp.copyPropertiesIgnoreNull(caseEstateTagging, basicEstateTagging);
-                            basicEstateTagging.setApplyId(0);
-                            basicEstateTagging.setId(null);
-                            basicEstateTagging.setGmtCreated(null);
-                            basicEstateTagging.setGmtModified(null);
-                            basicEstateTagging.setCreator(commonService.thisUserAccount());
-                            basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);
-                        }
-                    }
+                    copyTaggingFromCase(caseEstateTaggings);
                 } catch (Exception e1) {
                     logger.error("", e1);
                 }
@@ -757,4 +746,24 @@ public class BasicEstateService {
         return objectMap;
     }
 
+
+    /**
+     * 拷贝tagging数据
+     * @param caseEstateTaggings
+     * @throws Exception
+     */
+    public void copyTaggingFromCase(List<CaseEstateTagging> caseEstateTaggings) throws Exception {
+        if (!ObjectUtils.isEmpty(caseEstateTaggings)) {
+            for (CaseEstateTagging caseEstateTagging : caseEstateTaggings) {
+                BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
+                BeanCopyHelp.copyPropertiesIgnoreNull(caseEstateTagging, basicEstateTagging);
+                basicEstateTagging.setApplyId(0);
+                basicEstateTagging.setId(null);
+                basicEstateTagging.setGmtCreated(null);
+                basicEstateTagging.setGmtModified(null);
+                basicEstateTagging.setCreator(commonService.thisUserAccount());
+                basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);
+            }
+        }
+    }
 }
