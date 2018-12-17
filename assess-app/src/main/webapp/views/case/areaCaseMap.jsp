@@ -3,6 +3,21 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <style>
+        .info {
+            padding: .75rem 1.25rem;
+            margin-bottom: 1rem;
+            border-radius: .25rem;
+            position: fixed;
+            top: 1rem;
+            background-color: white;
+            width: auto;
+            min-width: 22rem;
+            border-width: 0;
+            right: 1rem;
+            box-shadow: 0 2px 6px 0 rgba(114, 124, 245, .5);
+        }
+    </style>
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">
@@ -24,6 +39,21 @@
                         <div class="form-group">
                             <div class="col-sm-12" style="margin-top:10px;height: 700px;" id="container">
 
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="info">
+                                <h4>搜索楼盘</h4>
+                                <div class="input-item">
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" placeholder="楼盘名称">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="button" class="btn btn-primary"
+                                               onclick="areaMap.searchMarker(this)" value="搜索"/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -220,6 +250,15 @@
                 Alert(str);
             });
         });
+    };
+
+    /**
+     * 楼盘搜索
+     * @param this_
+     */
+    areaMap.searchMarker = function (this_) {
+        var item = $(this_).parent().prev().find("input").val();
+
     };
 
 
