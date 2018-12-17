@@ -96,7 +96,7 @@ public class CaseController {
     @Autowired
     private CaseEstateTaggingService caseEstateTaggingService;
 
-    @RequestMapping(value = "/areaCaseMap", name = "区域楼盘案例", method = {RequestMethod.GET})
+    @RequestMapping(value = "/areaCaseMap", name = "案例地图", method = {RequestMethod.GET})
     public ModelAndView areaEstateCaseMap() {
         String view = "/case/areaCaseMap";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);

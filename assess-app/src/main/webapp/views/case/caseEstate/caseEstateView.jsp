@@ -13,6 +13,10 @@
                 <div class="title_left">
                     <h2>
                         ${caseEstate.name}
+                        <small>
+                            <a class="btn btn-xs btn-success" target="_blank"
+                               href="${pageContext.request.contextPath}/case/estateCaseMap?estateId=${caseEstate.id}">楼盘地图</a>
+                        </small>
                     </h2>
                 </div>
             </div>

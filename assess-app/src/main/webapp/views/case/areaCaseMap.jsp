@@ -12,8 +12,8 @@
         <div class="right_col" role="main">
             <div class="page-title">
                 <div class="title_left">
-                    <h2><i class="fa "></i>
-                        区域楼盘案例
+                    <h2>
+                        案例地图
                     </h2>
                 </div>
             </div>

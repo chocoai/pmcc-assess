@@ -251,14 +251,7 @@
     </div>
 
     <div class="x_content" id="industrySupplyInfo" style="display: none;">
-        <div class="x_title">
-            <h3>
-                <small>
-                    楼盘供应信息
-                </small>
-            </h3>
-            <div class="clearfix"></div>
-        </div>
+        <div class="x_title">楼盘供应信息</div>
         <div class="form-horizontal">
             <div class="form-group">
                 <div class="x-valid supplyGas">
@@ -445,14 +438,7 @@
             <div class="col-sm-6 col-sm-offset-1" id="developmentDegreeContentContainer">
             </div>
         </div>
-        <div class="x_title">
-            <h3>
-                <small>
-                    开发限制条件
-                </small>
-            </h3>
-            <div class="clearfix"></div>
-        </div>
+        <div class="x_title">开发限制条件</div>
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">容积率</label>
@@ -485,14 +471,7 @@
                 </div>
             </div>
         </div>
-        <div class="x_title">
-            <h3>
-                <small>
-                    土壤
-                </small>
-            </h3>
-            <div class="clearfix"></div>
-        </div>
+        <div class="x_title">土壤</div>
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">承载力</label>

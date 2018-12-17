@@ -205,14 +205,7 @@
                 </div>
             </div>
         </div>
-        <div class="x_title">
-            <h3>
-                <small>
-                    融资条件
-                </small>
-            </h3>
-            <div class="clearfix"></div>
-        </div>
+        <div class="x_title">融资条件</div>
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">首付款比例</label>
