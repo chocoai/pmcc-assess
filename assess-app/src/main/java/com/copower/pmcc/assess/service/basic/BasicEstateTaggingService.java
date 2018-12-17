@@ -26,9 +26,11 @@ public class BasicEstateTaggingService {
     private CommonService commonService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public void clearInvalidData(Integer appId)throws Exception{
+    public void clearInvalidData(Integer appId) throws Exception {
         BasicEstateTagging query = new BasicEstateTagging();
         query.setApplyId(appId);
+        if (appId == null || appId == 0)
+            query.setCreator(commonService.thisUserAccount());
         basicEstateTaggingDao.removeBasicEstateTagging(query);
     }
 

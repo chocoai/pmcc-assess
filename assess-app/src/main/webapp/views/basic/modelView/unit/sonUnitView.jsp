@@ -148,14 +148,7 @@
                 <input type="hidden" name="id">
                 <div class="modal-body">
                     <div id="industrySpan">
-                        <div class="x_title">
-                            <h3>
-                                <small>
-                                    生产用房
-                                </small>
-                            </h3>
-                            <div class="clearfix"></div>
-                        </div>
+                        <div class="x_title">生产用房</div>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
@@ -186,14 +179,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="x_title">
-                        <h3>
-                            <small>
-                                辅助用房
-                            </small>
-                        </h3>
-                        <div class="clearfix"></div>
-                    </div>
+                    <div class="x_title">辅助用房</div>
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-1 control-label">

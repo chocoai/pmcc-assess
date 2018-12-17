@@ -234,7 +234,6 @@ public class BasicEstateService {
         BasicEstateNetwork queryBasicEstateNetwork = new BasicEstateNetwork();
         BasicEstateParking queryBasicEstateParking = new BasicEstateParking();
         BasicEstateSupply queryBasicEstateSupply = new BasicEstateSupply();
-        BasicEstateTagging queryBasicEstateTagging = new BasicEstateTagging();
         BasicMatchingEducation queryBasicMatchingEducation = new BasicMatchingEducation();
         BasicMatchingEnvironment queryBasicMatchingEnvironment = new BasicMatchingEnvironment();
         BasicMatchingFinance queryBasicMatchingFinance = new BasicMatchingFinance();
@@ -254,7 +253,6 @@ public class BasicEstateService {
         queryBasicEstateNetwork.setEstateId(estate.getId());
         queryBasicEstateParking.setEstateId(estate.getId());
         queryBasicEstateSupply.setEstateId(estate.getId());
-        queryBasicEstateTagging.setApplyId(applyId);
         querySysAttachmentDto.setTableId(estate.getId());
 
 
@@ -268,7 +266,6 @@ public class BasicEstateService {
         queryBasicEstateNetwork.setCreator(commonService.thisUserAccount());
         queryBasicEstateParking.setCreator(commonService.thisUserAccount());
         queryBasicEstateSupply.setCreator(commonService.thisUserAccount());
-        queryBasicEstateTagging.setCreator(commonService.thisUserAccount());
         querySysAttachmentDto.setCreater(commonService.thisUserAccount());
 
         List<BasicEstateNetwork> basicEstateNetworkList = null;
@@ -281,13 +278,11 @@ public class BasicEstateService {
         List<BasicMatchingMaterial> basicMatchingMaterialList = null;
         List<BasicMatchingMedical> basicMatchingMedicalList = null;
         List<BasicMatchingTraffic> basicMatchingTrafficList = null;
-        List<BasicEstateTagging> basicEstateTaggingList = null;
         List<SysAttachmentDto> sysAttachmentDtoList = null;
 
         basicEstateNetworkList = basicEstateNetworkService.basicEstateNetworkList(queryBasicEstateNetwork);
         basicEstateParkingList = basicEstateParkingService.basicEstateParkingList(queryBasicEstateParking);
         basicEstateSupplyList = basicEstateSupplyService.basicEstateSupplyList(queryBasicEstateSupply);
-        basicEstateTaggingList = basicEstateTaggingService.basicEstateTaggingList(queryBasicEstateTagging);
         basicMatchingEducationList = basicMatchingEducationService.basicMatchingEducationList(queryBasicMatchingEducation);
         basicMatchingEnvironmentList = basicMatchingEnvironmentService.basicMatchingEnvironmentList(queryBasicMatchingEnvironment);
         basicMatchingFinanceList = basicMatchingFinanceService.basicMatchingFinanceList(queryBasicMatchingFinance);
@@ -311,11 +306,6 @@ public class BasicEstateService {
         if (!ObjectUtils.isEmpty(basicEstateSupplyList)) {
             for (BasicEstateSupply oo : basicEstateSupplyList) {
                 basicEstateSupplyService.deleteBasicEstateSupply(oo.getId());
-            }
-        }
-        if (!ObjectUtils.isEmpty(basicEstateTaggingList)) {
-            for (BasicEstateTagging oo : basicEstateTaggingList) {
-                basicEstateTaggingService.deleteBasicEstateTagging(oo.getId());
             }
         }
         if (!ObjectUtils.isEmpty(basicMatchingEducationList)) {
