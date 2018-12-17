@@ -129,21 +129,23 @@
             });
         },
         removeData: function (id) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/dataLandLevel/deleteDataLandLevelById",
-                type: "post",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('删除成功');
-                        landLevel.loadLandLevelList();
+            Alert("确认删除!",2,null,function () {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/dataLandLevel/deleteDataLandLevelById",
+                    type: "post",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('删除成功');
+                            landLevel.loadLandLevelList();
+                        }
+                        else {
+                            Alert(result.errmsg);
+                        }
                     }
-                    else {
-                        Alert(result.errmsg);
-                    }
-                }
-            })
+                })
+            });
         },
         showModel: function () {
             $("#" + landLevel.config().frm).clearAll();

@@ -145,25 +145,27 @@
      * @date:
      **/
     dataObjFun.deleteDataById = function (id) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/dataBlock/deleteDataBlockById",
-            type: "post",
-            dataType: "json",
-            data: {id: id},
-            success: function (result) {
-                if (result.ret) {
-                    toastr.success('删除成功');
-                    dataObjFun.loadDataList();
-                }
-                else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
-    }
+       Alert("确认删除!",2,null,function () {
+           $.ajax({
+               url: "${pageContext.request.contextPath}/dataBlock/deleteDataBlockById",
+               type: "post",
+               dataType: "json",
+               data: {id: id},
+               success: function (result) {
+                   if (result.ret) {
+                       toastr.success('删除成功');
+                       dataObjFun.loadDataList();
+                   }
+                   else {
+                       Alert("保存数据失败，失败原因:" + result.errmsg);
+                   }
+               },
+               error: function (result) {
+                   Alert("调用服务端方法失败，失败原因:" + result);
+               }
+           })
+       });
+    };
     /**
      * @author:  zch
      * 描述:编辑

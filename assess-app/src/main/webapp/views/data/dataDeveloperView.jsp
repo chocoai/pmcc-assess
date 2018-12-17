@@ -111,24 +111,26 @@
             });
         },
         removeData:function (id) {
-            $.ajax({
-                url:"${pageContext.request.contextPath}/dataDeveloper/deleteDataDeveloperById",
-                type: "post",
-                dataType: "json",
-                data: {id:id},
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('删除成功');
-                        dataDeveloper.prototype.loadDataDicList();
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
+           Alert("确认删除!",2,null,function () {
+               $.ajax({
+                   url:"${pageContext.request.contextPath}/dataDeveloper/deleteDataDeveloperById",
+                   type: "post",
+                   dataType: "json",
+                   data: {id:id},
+                   success: function (result) {
+                       if (result.ret) {
+                           toastr.success('删除成功');
+                           dataDeveloper.prototype.loadDataDicList();
+                       }
+                       else {
+                           Alert("保存数据失败，失败原因:" + result.errmsg);
+                       }
+                   },
+                   error: function (result) {
+                       Alert("调用服务端方法失败，失败原因:" + result);
+                   }
+               })
+           });
         },
         showModel:function () {
             $("#"+dataDeveloper.prototype.config().frm).clearAll();

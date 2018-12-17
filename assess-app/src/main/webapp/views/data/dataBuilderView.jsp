@@ -106,31 +106,31 @@
             });
         },
         removeData: function (id) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/dataBuilder/deleteDataBuilderById",
-                type: "post",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('删除成功');
-                        dataBuilder.prototype.loadDataDicList();
+            Alert("确认删除!",2,null,function () {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/dataBuilder/deleteDataBuilderById",
+                    type: "post",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('删除成功');
+                            dataBuilder.prototype.loadDataDicList();
+                        }
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
                     }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
+                })
+            });
         },
         showModel: function () {
             $("#qualificationGrade").val(null).trigger("change");
             $("#qualificationGradeV").val(null).trigger("change");
             $("#" + dataBuilder.prototype.config().frm).clearAll();
-
-            // $("#qualificationGradeV").select2();
             $('#' + dataBuilder.prototype.config().box).modal("show");
         },
         saveData: function () {
@@ -210,7 +210,6 @@
                                 }
                                 $("#qualificationGrade").parent().parent().parent().show();
                                 $("#qualificationGrade").html(option);
-                                // $("#qualificationGrade").select2({ minimumResultsForSearch: -1 });//加载样式
                             } else {
                                 $("#qualificationGrade").empty();
                                 $("#qualificationGrade").parent().parent().parent().hide();
