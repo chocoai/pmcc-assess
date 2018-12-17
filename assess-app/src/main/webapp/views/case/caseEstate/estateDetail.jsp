@@ -193,10 +193,7 @@
         <c:if test="${caseEstate.type eq 0}">
             <div class="x_content">
                 <div class="x_title">
-                    <h3>
-                        <small> 楼盘供应信息</small>
-                    </h3>
-                    <div class="clearfix"></div>
+                    楼盘供应信息
                 </div>
                 <div class="form-horizontal">
                     <div class="form-group">

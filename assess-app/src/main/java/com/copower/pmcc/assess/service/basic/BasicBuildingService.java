@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.common.BeanCopyHelp;
+import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basic.dao.BasicBuildingDao;
 import com.copower.pmcc.assess.dal.basic.dao.BasicBuildingMainDao;
 import com.copower.pmcc.assess.dal.basic.entity.*;
@@ -57,6 +58,8 @@ public class BasicBuildingService {
     @Autowired
     private BasicBuildingMainDao basicBuildingMainDao;
     @Autowired
+    private BasicEstateService basicEstateService;
+    @Autowired
     private CaseBuildingService caseBuildingService;
     @Autowired
     private CaseBuildingMainService caseBuildingMainService;
@@ -68,6 +71,8 @@ public class BasicBuildingService {
     private CaseBuildingSurfaceService caseBuildingSurfaceService;
     @Autowired
     private CaseBuildingFunctionService caseBuildingFunctionService;
+    @Autowired
+    private CaseEstateTaggingService caseEstateTaggingService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -303,6 +308,12 @@ public class BasicBuildingService {
         basicBuildingMain.setGmtModified(null);
         basicBuildingMainDao.saveBasicBuildingMain(basicBuildingMain);
 
+        CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
+        caseEstateTagging.setDataId(caseMainBuildingId);
+        caseEstateTagging.setType(EstateTaggingTypeEnum.BUILDING.getKey());
+        List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
+        basicEstateService.copyTaggingFromCase(caseEstateTaggings);
+
         CaseBuilding where = new CaseBuilding();
         where.setCaseBuildingMainId(caseMainBuildingId);
         List<CaseBuilding> caseBuildingList = caseBuildingService.getCaseBuildingList(where);
@@ -329,7 +340,7 @@ public class BasicBuildingService {
             if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
                 for (SysAttachmentDto attachmentDto : sysAttachmentDtoList) {
                     SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-                    sysAttachmentDto.setTableId(0);
+                    sysAttachmentDto.setTableId(basicBuilding.getId());
                     sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
                     baseAttachmentService.copyFtpAttachment(attachmentDto.getId(), sysAttachmentDto);
                 }

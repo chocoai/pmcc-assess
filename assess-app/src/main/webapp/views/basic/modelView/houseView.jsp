@@ -87,7 +87,7 @@
             <div class="x-valid">
                 <div class="col-sm-3 col-sm-offset-1">
                     <div id="container"></div>
-                    <div class="btn btn-success" onclick="houseCommon.orientationFun(false,0)">户型地图朝向</div>
+                    <div class="btn btn-success" onclick="houseCommon.orientationFun(false,0)">户型图朝向</div>
                 </div>
             </div>
         </div>

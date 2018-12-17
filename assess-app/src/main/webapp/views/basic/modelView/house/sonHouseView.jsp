@@ -637,10 +637,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            灯具<span class="symbol required"></span>
+                                            灯具
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="lampsLanterns" multiple="multiple"
+                                            <select name="lampsLanterns" multiple="multiple"
                                                     class="form-control search-select select2 lampsLanterns">
                                             </select>
                                         </div>
@@ -687,8 +687,7 @@
                                             描述
                                         </label>
                                         <div class="col-sm-10">
-
-                                            <textarea required="required" name="remark" class="form-control"></textarea>
+                                            <textarea  name="remark" class="form-control"></textarea>
                                         </div>
                                     </div>
                                 </div>

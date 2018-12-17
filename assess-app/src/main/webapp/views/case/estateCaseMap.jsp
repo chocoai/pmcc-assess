@@ -14,12 +14,17 @@
 <div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
-
-
             <div class="x_panel">
                 <div class="x_content">
                     <div class="x_title">
-                        <h3>${caseEstate.name}</h3>
+                        <div class="nav navbar-right">
+                            <%--<button class="btn btn-default" onclick="areaMap.rotateTransform(true)">右旋转</button>--%>
+                            <%--<button class="btn btn-default" onclick="areaMap.rotateTransform(false)">左旋转</button>--%>
+                            <div class="btn  btn-default" onclick="areaMap.zoom(true)">放大</div>
+                            <div class="btn  btn-default" onclick="areaMap.zoom(false)">缩小</div>
+                        </div>
+                        <h3>${caseEstate.name}
+                        </h3>
                         <div class="clearfix"></div>
                     </div>
                 </div>
@@ -35,20 +40,7 @@
                     </div>
                 </div>
             </div>
-
             <img id="oImg" style="display: none">
-            <div class="x_panel" style="display: none">
-                <div class="x_content">
-                    <div class="col-sm-12" style="margin-top:10px;height:50px;">
-                        <%--<button class="btn btn-default" onclick="areaMap.rotateTransform(true)">右旋转</button>--%>
-                        <%--<button class="btn btn-default" onclick="areaMap.rotateTransform(false)">左旋转</button>--%>
-                        <button class="btn btn-default" onclick="areaMap.zoom(true)">放大</button>
-                        <button class="btn btn-default" onclick="areaMap.zoom(false)">缩小</button>
-                    </div>
-                </div>
-            </div>
-
-
             <div class="x_panel">
                 <div class="x_content">
                     <div class="form-group">
@@ -154,7 +146,7 @@
     areaMap.getContent = function (name) {
         var div = "";
         div += '<div class="" style="width:15px;height:135px;">';
-        div += "<label class='label label-info' style='padding-top:-10px;'>" + name +"</label>" ;
+        div += "<label class='label label-info' style='padding-top:-10px;'>" + name + "</label>";
         div += '<img style="height:12.75px;width:10px;" src="http://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png">';
         div += '</div>';
         return div;
@@ -232,7 +224,7 @@
     };
 
     /*
-    加载树
+     加载树
      */
     areaMap.loadTree = function () {
         var mapTree = '${mapTree}';

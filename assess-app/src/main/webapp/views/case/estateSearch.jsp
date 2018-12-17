@@ -368,6 +368,7 @@
             }
             var cols = [];
             cols.push({field: 'buildingNumber', title: '楼栋编号'});
+            cols.push({field: 'buildingName', title: '楼栋名称'});
             cols.push({field: 'version', title: '版本'});
             cols.push({
                 field: 'id', title: '查询', formatter: function (value, row, index) {
@@ -405,8 +406,8 @@
         },
         loadDataList: function (buildingId) {
             var cols = [];
-            cols.push({field: 'elevatorHouseholdRatio', title: '梯户比'});
             cols.push({field: 'unitNumber', title: '单元编号'});
+            cols.push({field: 'elevatorHouseholdRatio', title: '梯户比'});
             cols.push({field: 'version', title: '版本'});
             cols.push({
                 field: 'id', title: '查询', formatter: function (value, row, index) {
