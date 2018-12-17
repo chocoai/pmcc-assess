@@ -3,6 +3,8 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.css">
+    <script src='${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.js'></script>
     <style>
         .info {
             padding: .75rem 1.25rem;
@@ -47,7 +49,8 @@
                                 <h4>搜索楼盘</h4>
                                 <div class="input-item">
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" placeholder="楼盘名称">
+                                        <input type="text" class="form-control" placeholder="楼盘名称" id="estateId"
+                                               onkeydown="areaMap.autocomplete(this)">
                                     </div>
                                     <div class="col-sm-2">
                                         <input type="button" class="btn btn-primary"
@@ -66,6 +69,7 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+<script src='${pageContext.request.contextPath}/js/autocomplete/estate.case.js'></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js"></script>
 </html>
 <script type="text/javascript">
@@ -258,11 +262,43 @@
      */
     areaMap.searchMarker = function (this_) {
         var item = $(this_).parent().prev().find("input").val();
+        var lat = null;
+        var lon = null;
+        if (this.isNotBlank(item)) {
+            var data = map.getAllOverlays('marker');
+            for (var i = 0; i < data.length; i++) {
+                var marker = data[i];
+                var extData = marker.getExtData();
+                if (extData.name == item) {
+                    lon = extData.lon;
+                    lat = extData.lat;
+                    break;
+                }
+            }
+        }
+        if (this.isNotBlank(lon)) {
+            map.setCenter([lon, lat]); //设置地图中心点
+            map.setZoom(18);
+        }
+    };
 
+    /**
+     * 自动补全
+     */
+    areaMap.autocomplete = function (this_) {
+        console.log(this_);
+        if (this.isNotBlank($(this_).val())) {
+            console.log($(this_).val());
+            // $(this_).apEstate();
+        }
     };
 
 
     $(document).ready(function () {
+        $("#estateId").apEstate();
+        // $("#estateId").bind("onkeydown",function () {
+        //
+        // });
         areaMap.createMap(104.083199, 30.593365, 12);
         //自动定位
         map.plugin('AMap.Geolocation', function () {
