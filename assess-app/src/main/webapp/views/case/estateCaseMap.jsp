@@ -269,7 +269,7 @@
                                             break;
                                         case config.estate:
                                             $("#oImg").next().hide();
-                                            map.add(areaMap.getMarker(node));
+                                            //map.add(areaMap.getMarker(node));
                                             if (areaMap.isNotBlank(data)) {
                                                 $.each(data, function (i, item) {
                                                     map.add(areaMap.getMarker(item));
@@ -278,7 +278,7 @@
                                             break;
                                         case config.building:
                                             $("#oImg").next().hide();
-                                            map.add(areaMap.getMarker(node));
+                                            //map.add(areaMap.getMarker(node));
                                             if (areaMap.isNotBlank(data)) {
                                                 $.each(data, function (i, item) {
                                                     map.add(areaMap.getMarker(item));

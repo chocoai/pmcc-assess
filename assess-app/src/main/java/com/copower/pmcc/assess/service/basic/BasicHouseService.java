@@ -447,7 +447,7 @@ public class BasicHouseService {
             basicHouseTrading.setGmtCreated(null);
             basicHouseTrading.setGmtModified(null);
             basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
-            objectMap.put(FormatUtils.toLowerCaseFirstChar(CaseHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));
+            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));
         }
 
 

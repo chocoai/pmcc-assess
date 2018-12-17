@@ -13,6 +13,7 @@
             <div class="page-title">
                 <div class="title_left">
                     <h2>
+                        <i class="fa fa-map"></i>
                         案例地图
                     </h2>
                 </div>
@@ -91,11 +92,11 @@
             str.push('精度：' + data.accuracy + ' 米');
         }//如为IP精确定位结果则没有精度信息
         str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
-        toastr.success(str.join('<br>'));
+        //toastr.success(str.join('<br>'));
     };
 
     areaMap.onError = function (data) {
-        toastr.success('定位失败!');
+        //toastr.success('定位失败!');
     };
 
 
