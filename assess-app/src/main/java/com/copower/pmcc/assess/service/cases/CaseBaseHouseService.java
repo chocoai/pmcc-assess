@@ -93,14 +93,9 @@ public class CaseBaseHouseService {
     /**
      * 删除数据by caseHouseId
      *
-     * @param caseHouseId
+     * @param id
      */
-    public void deleteBaseHouseByHouseId(Integer caseHouseId) {
-        CaseBaseHouse caseBaseHouse = new CaseBaseHouse();
-        caseBaseHouse.setCaseHouseId(caseHouseId);
-        List<CaseBaseHouse> houseList = getBaseHouseList(caseBaseHouse);
-        if (!CollectionUtils.isEmpty(houseList)) {
-            houseList.forEach(o -> caseBaseHouseDao.deleteBaseHouse(o.getId()));
-        }
+    public void deleteBaseHouseById(Integer id) {
+        caseBaseHouseDao.deleteBaseHouse(id);
     }
 }

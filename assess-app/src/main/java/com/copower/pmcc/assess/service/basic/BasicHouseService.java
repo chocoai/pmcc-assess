@@ -420,6 +420,7 @@ public class BasicHouseService {
         BeanUtils.copyProperties(caseHouse, basicHouse);
         basicHouse.setApplyId(0);
         basicHouse.setCreator(commonService.thisUserAccount());
+        basicHouse.setId(null);
         basicHouse.setGmtCreated(null);
         basicHouse.setGmtModified(null);
         basicHouseDao.saveBasicHouse(basicHouse);
@@ -439,7 +440,7 @@ public class BasicHouseService {
         if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
             for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
                 SysAttachmentDto attachmentDto = new SysAttachmentDto();
-                attachmentDto.setTableId(0);
+                attachmentDto.setTableId(basicHouse.getId());
                 attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
                 baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
             }
@@ -451,8 +452,10 @@ public class BasicHouseService {
         if (!ObjectUtils.isEmpty(caseHouseTradings)) {
             BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
             BeanUtils.copyProperties(caseHouseTradings.get(0), basicHouseTrading);
+            basicHouseTrading.setApplyId(0);
             basicHouseTrading.setHouseId(basicHouse.getId());
             basicHouseTrading.setCreator(commonService.thisUserAccount());
+            basicHouseTrading.setId(null);
             basicHouseTrading.setGmtCreated(null);
             basicHouseTrading.setGmtModified(null);
             basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);

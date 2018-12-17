@@ -844,23 +844,26 @@ public class PublicBasicService {
     }
 
     private void flowWriteCaseBaseHouse(BasicApply basicApply, CaseHouse caseHouse, CaseHouseTrading caseHouseTrading) {
-        if (BasicApplyPartInModeEnum.UPGRADE.getKey().equals(basicApply.getHousePartInMode())) {
-            //清除上个版本对应的数据
-            CaseHouse where = new CaseHouse();
-            where.setUnitId(caseHouse.getUnitId());
-            where.setHouseNumber(caseHouse.getHouseNumber());
-            where.setVersion(caseHouse.getVersion() - 1);
-            List<CaseHouse> houseList = caseHouseService.getCaseHouseList(where);
-            if (!CollectionUtils.isEmpty(houseList)) {
-                for (CaseHouse house : houseList) {
-                    caseHouseService.deleteCaseHouse(house.getId());
-                }
-            }
-        }
         //根据房屋信息逐步找到对应楼盘的信息
         CaseUnit caseUnit = caseUnitService.getCaseUnitById(caseHouse.getUnitId());
         CaseBuildingMain buildingMain = caseBuildingMainService.getCaseBuildingMainById(caseUnit.getBuildingMainId());
         CaseEstate caseEstate = caseEstateService.getCaseEstateById(buildingMain.getEstateId());
+        String fullName=String.format("%s%s栋%s单元%s号", caseEstate.getName(), buildingMain.getBuildingNumber(), caseUnit.getUnitNumber(), caseHouse.getHouseNumber());
+        if (BasicApplyPartInModeEnum.UPGRADE.getKey().equals(basicApply.getHousePartInMode())) {
+            //清除上个版本对应的数据
+            CaseBaseHouse where = new CaseBaseHouse();
+            where.setType(caseEstate.getType());
+            where.setProvince(caseEstate.getProvince());
+            where.setCity(caseEstate.getCity());
+            where.setDistrict(caseEstate.getDistrict());
+            where.setFullName(fullName);
+            List<CaseBaseHouse> houseList = caseBaseHouseService.getBaseHouseList(where);
+            if (!CollectionUtils.isEmpty(houseList)) {
+                for (CaseBaseHouse house : houseList) {
+                    caseBaseHouseService.deleteBaseHouseById(house.getId());
+                }
+            }
+        }
         CaseBaseHouse caseBaseHouse = new CaseBaseHouse();
         caseBaseHouse.setCaseHouseId(caseHouse.getId());
         caseBaseHouse.setType(caseEstate.getType());
@@ -868,7 +871,7 @@ public class PublicBasicService {
         caseBaseHouse.setCity(caseEstate.getCity());
         caseBaseHouse.setDistrict(caseEstate.getDistrict());
         caseBaseHouse.setBlockName(caseEstate.getBlockName());
-        caseBaseHouse.setFullName(String.format("%s%s栋%s单元%s号", caseEstate.getName(), buildingMain.getBuildingNumber(), caseUnit.getUnitNumber(), caseHouse.getHouseNumber()));
+        caseBaseHouse.setFullName(fullName);
         caseBaseHouse.setStreet(caseEstate.getStreet());
         caseBaseHouse.setPracticalUse(caseHouse.getPracticalUse());
         caseBaseHouse.setTradingType(caseHouseTrading.getTradingType());
@@ -1095,6 +1098,7 @@ public class PublicBasicService {
                     dataBlock.setCreator(basicEstate.getCreator());
                     dataBlockService.saveAndUpdateDataBlock(dataBlock);
                 }
+                this.flowWriteCaseTagging(EstateTaggingTypeEnum.ESTATE,basicApply.getId(),estateId);
             }
 
             //处理楼栋
@@ -1105,6 +1109,7 @@ public class PublicBasicService {
                     caseUnitService.updateBuildingMainId(buildingMainId, caseBuildingMain.getId());
                 }
                 buildingMainId = caseBuildingMain.getId();
+                this.flowWriteCaseTagging(EstateTaggingTypeEnum.BUILDING,basicApply.getId(),buildingMainId);
             }
 
             //处理单元
@@ -1115,6 +1120,7 @@ public class PublicBasicService {
                     caseHouseService.updateUnitId(unitId, caseUnit.getId());
                 }
                 unitId = caseUnit.getId();
+                this.flowWriteCaseTagging(EstateTaggingTypeEnum.UNIT,basicApply.getId(),unitId);
             }
 
             //处理房屋
@@ -1124,9 +1130,6 @@ public class PublicBasicService {
                 CaseHouse caseHouse = this.flowWriteCaseHouse(basicApply, basicHouse, basicTrading, unitId);
                 this.flowWriteCaseTagging(EstateTaggingTypeEnum.HOUSE,basicApply.getId(),caseHouse.getId());
             }
-            this.flowWriteCaseTagging(EstateTaggingTypeEnum.ESTATE,basicApply.getId(),estateId);
-            this.flowWriteCaseTagging(EstateTaggingTypeEnum.BUILDING,basicApply.getId(),buildingMainId);
-            this.flowWriteCaseTagging(EstateTaggingTypeEnum.UNIT,basicApply.getId(),unitId);
         }
     }
 
