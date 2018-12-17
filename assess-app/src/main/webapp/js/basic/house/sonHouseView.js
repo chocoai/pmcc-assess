@@ -742,11 +742,8 @@ var houseIntelligent;
     houseIntelligent = function () {
 
     };
-    var arr = [{
-        intelligentSystem: {key: "intelligentSystem1", value: ""},
-        layingMethod: {key: "layingMethod1", value: ""}
-    }];
-    var num = 1;
+    var arr = [];
+    var num = 0;
     houseIntelligent.prototype = {
         config: function () {
             var data = {};
@@ -825,7 +822,15 @@ var houseIntelligent;
                 });
 
             });
-            data.intelligentSystem = JSON.stringify(tempArr);
+            var new_arr = [];
+            for (var i = 0; i < tempArr.length; i++) {
+                var items = tempArr[i];
+                //判断元素是否存在于new_arr中，如果不存在则插入到new_arr的最后
+                if ($.inArray(items, new_arr) == -1) {
+                    new_arr.push(items);
+                }
+            }
+            data.intelligentSystem = JSON.stringify(new_arr);
             $.ajax({
                 url: getContextPath() + "/basicHouseIntelligent/saveAndUpdateBasicHouseIntelligent",
                 type: "post",
@@ -836,6 +841,8 @@ var houseIntelligent;
                         toastr.success('保存成功');
                         $('#' + houseIntelligent.prototype.config().box).modal('hide');
                         houseIntelligent.prototype.loadDataDicList();
+                        num = 0;
+                        arr.length = 0 ;
                     }
                     else {
                         Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -868,9 +875,9 @@ var houseIntelligent;
             })
         },
         init: function (item) {
+            $("#" + houseIntelligent.prototype.config().frm).find(".system").empty();
             $("#" + houseIntelligent.prototype.config().frm).clearAll();
             $("#" + houseIntelligent.prototype.config().frm).initForm(item);
-            $("#" + houseIntelligent.prototype.config().frm).find(".system").empty();
             $.ajax({
                 url: getContextPath() + "/baseDataDic/getDataDicListByFieldName",
                 type: "get",
@@ -905,6 +912,7 @@ var houseIntelligent;
             if (houseIntelligent.prototype.isNotBlank(item.id)) {
                 houseIntelligent.prototype.writeHTMLData(item.intelligentSystem);
             } else {
+                houseIntelligent.prototype.appendHTML("", "");
                 $.each(arr, function (i, n) {
                     AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_intelligent_system, n.intelligentSystem.value, function (html, data) {
                         $("#" + houseIntelligent.prototype.config().frm).find("select." + n.intelligentSystem.key).empty().html(html).trigger('change');
@@ -970,7 +978,6 @@ var houseIntelligent;
             if (houseIntelligent.prototype.isNotBlank(str)) {
                 var data = JSON.parse(str);
                 arr = [];
-                $("#" + houseIntelligent.prototype.config().frm).find(".system").prev().remove();
                 $("#" + houseIntelligent.prototype.config().frm).find(".system").empty();
                 $.each(data, function (i, n) {
                     var intelligentSystem = n.intelligentSystem.key + "";

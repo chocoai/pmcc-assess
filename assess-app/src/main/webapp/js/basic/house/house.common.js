@@ -422,28 +422,37 @@
 
     //校验单元是否标注
     houseCommon.checkUnitMarker = function (callback) {
-        $.ajax({
-            url: getContextPath() + "/basicEstateTagging/getEstateTaggingList",
-            type: "post",
-            dataType: "json",
-            async: false,
-            data: {applyId: basicCommon.getApplyId(), type: "unit"},
-            success: function (result) {
-                if (result.ret) {
-                    if (result.data) {
-                        console.log(result.data);
-                        if (result.data.length > 0) {
-                            callback(result.data[0]);
-                        } else {
-                            alert('单元未标注或者是单元未选择');
+        var unitId = null;
+        try {
+            unitId = basicCommon.basicApplyForm.find("input[name='caseUnitId']").val();
+            unitId = Number(unitId);
+        } catch (e) {
+        }
+        if (unitId >= 1){
+            callback(unitId);
+        }else {
+            $.ajax({
+                url: getContextPath() + "/basicEstateTagging/getEstateTaggingList",
+                type: "post",
+                dataType: "json",
+                async: false,
+                data: {applyId: basicCommon.getApplyId(), type: "unit"},
+                success: function (result) {
+                    if (result.ret) {
+                        if (result.data) {
+                            if (result.data.length > 0) {
+                                callback(result.data[0]);
+                            } else {
+                                alert('单元未标注或者是单元未选择');
+                            }
                         }
                     }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
                 }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
+            });
+        }
     };
 
     /**

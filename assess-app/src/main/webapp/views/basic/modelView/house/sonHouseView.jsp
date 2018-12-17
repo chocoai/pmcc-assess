@@ -658,28 +658,28 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            智能系统
-                                        </label>
-                                        <div class="col-sm-3" >
-                                            <select required="required" name="intelligentSystem1"
-                                                    class="form-control search-select select2 intelligentSystem1">
-                                            </select>
-                                        </div>
-                                        <div class="col-sm-3" >
-                                            <select required="required" name="layingMethod1"
-                                                    class="form-control search-select select2 layingMethod1">
-                                            </select>
-                                        </div>
-                                        <div class="col-sm-4" >
-                                            <input type="button" class="btn btn-warning" value="X"
-                                                   onclick="houseIntelligent.prototype.cleanHTMLData(this)">
+                                <div style="margin-bottom: 8px;" class="system">
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                智能系统
+                                            </label>
+                                            <div class="col-sm-3" >
+                                                <select required="required" name="intelligentSystem1"
+                                                        class="form-control search-select select2 intelligentSystem1">
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-3" >
+                                                <select required="required" name="layingMethod1"
+                                                        class="form-control search-select select2 layingMethod1">
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-4" >
+                                                <input type="button" class="btn btn-warning" value="X"
+                                                       onclick="houseIntelligent.prototype.cleanHTMLData(this)">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div style="margin-bottom: 8px;" class="system">
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
