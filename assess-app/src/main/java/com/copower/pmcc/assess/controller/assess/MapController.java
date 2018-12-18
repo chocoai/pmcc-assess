@@ -6,7 +6,9 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseEstateTagging;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.basic.BasicEstateTaggingService;
 import com.copower.pmcc.assess.service.basic.BasicUnitService;
+import com.copower.pmcc.assess.service.cases.CaseHouseService;
 import com.copower.pmcc.assess.service.cases.CaseUnitService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +37,8 @@ public class MapController {
     private BasicEstateTaggingService basicEstateTaggingService;
     @Autowired
     private CaseUnitService caseUnitService;
+    @Autowired
+    private CaseHouseService caseHouseService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @RequestMapping(value = "/positionPicker", name = "当前位置定位")
@@ -60,11 +64,11 @@ public class MapController {
         try {
             //案例单元id tb_case_unit
             if (case_) {
-                if (unitId != null ){
+                if (unitId != null) {
                     CaseEstateTagging caseEstateTagging = caseUnitService.getCaseEstateTaggingByUnitId(unitId);
-                    if (caseEstateTagging != null){
+                    if (caseEstateTagging != null) {
                         tagging = new BasicEstateTagging();
-                        BeanUtils.copyProperties(caseEstateTagging,tagging);
+                        BeanUtils.copyProperties(caseEstateTagging, tagging);
                     }
                 }
             }
@@ -94,8 +98,8 @@ public class MapController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/houseTaggingMore", name = "房屋标注(重复打开页面的时候)")
-    public ModelAndView houseTaggingMore(BasicEstateTagging tagging, String click, @RequestParam(name = "readonly", defaultValue = "false") Boolean readonly) {
+    @GetMapping(value = "/houseTaggingMore", name = "房屋标注(重复打开页面的时候 以及只读标注信息)")
+    public ModelAndView houseTaggingMore(BasicEstateTagging tagging, String click, @RequestParam(name = "readonly", defaultValue = "false") Boolean readonly, @RequestParam(name = "case_", defaultValue = "false") Boolean case_, Integer houseId) {
         ModelAndView modelAndView = null;
         if (!readonly) {
             //标记位置和方位
@@ -113,18 +117,45 @@ public class MapController {
                 logger.error("附件不存在", e1);
             }
         } else {
-            //仅仅显示标记而已
             modelAndView = new ModelAndView("base/houseTaggingReadonlyView");
-            try {
-                List<BasicEstateTagging> basicEstateTaggings = basicEstateTaggingService.getEstateTaggingList(tagging.getApplyId(), EstateTaggingTypeEnum.HOUSE.getKey());
-                if (!ObjectUtils.isEmpty(basicEstateTaggings)) {
-                    BasicEstateTagging basicEstateTagging = basicEstateTaggings.get(0);
-                    String huxingImg = baseAttachmentService.getViewImageUrl(basicEstateTagging.getAttachmentId());
-                    modelAndView.addObject("huxingImg", huxingImg);
-                    modelAndView.addObject("tagging", basicEstateTagging);
+            //仅仅显示标记而已
+            if (case_) {
+                if (houseId != null) {
+                    try {
+                        CaseEstateTagging caseEstateTagging = caseHouseService.getCaseEstateTaggingByUnitId(houseId);
+                        if (caseEstateTagging != null) {
+                            tagging = new BasicEstateTagging();
+                            BeanUtils.copyProperties(caseEstateTagging, tagging);
+                            String huxingImg = baseAttachmentService.getViewImageUrl(tagging.getAttachmentId());
+                            if (StringUtils.isNotBlank(huxingImg)) {
+                                modelAndView.addObject("huxingImg", huxingImg);
+                            }
+                            modelAndView.addObject("tagging", tagging);
+                        } else {
+                            tagging = new BasicEstateTagging();
+                            tagging.setLng("104.084335");
+                            tagging.setLat("30.590403");
+                            tagging.setDeg(0);
+                            modelAndView.addObject("tagging", tagging);
+                        }
+                    } catch (Exception e1) {
+                        logger.error("未获取到数据!", e1);
+                    }
                 }
-            } catch (Exception e1) {
-                logger.error("未获取到数据!", e1);
+            } else {
+                try {
+                    List<BasicEstateTagging> basicEstateTaggings = basicEstateTaggingService.getEstateTaggingList(tagging.getApplyId(), EstateTaggingTypeEnum.HOUSE.getKey());
+                    if (!ObjectUtils.isEmpty(basicEstateTaggings)) {
+                        BasicEstateTagging basicEstateTagging = basicEstateTaggings.get(0);
+                        String huxingImg = baseAttachmentService.getViewImageUrl(basicEstateTagging.getAttachmentId());
+                        if (StringUtils.isNotBlank(huxingImg)) {
+                            modelAndView.addObject("huxingImg", huxingImg);
+                        }
+                        modelAndView.addObject("tagging", basicEstateTagging);
+                    }
+                } catch (Exception e1) {
+                    logger.error("未获取到数据!", e1);
+                }
             }
         }
         return modelAndView;

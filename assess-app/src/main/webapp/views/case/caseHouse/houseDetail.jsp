@@ -56,6 +56,10 @@
                     <div class="col-sm-3" id="_house_new_huxing_plan">
                     </div>
                 </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">户型地图朝向</label>
+                    <div class="btn btn-success" onclick="objectData.orientationFun(true,'${caseHouse.id}')">户型地图朝向</div>
+                </div>
             </div>
             <div class="form-group">
                 <div class="x-valid">
@@ -111,6 +115,7 @@
                         <div id="_house_img_plan"></div>
                     </div>
                 </div>
+
             </div>
         </form>
     </div>
@@ -420,6 +425,28 @@
                 search: false,
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
+                }
+            });
+        }
+    };
+
+    objectData.orientationFun = function (readonly,houseId) {
+        //仅仅显示而已
+        if (readonly) {
+            var contentUrl =  '${pageContext.request.contextPath}/map/houseTaggingMore?readonly=true&houseId=' + houseId+"&type=house&case_=true";
+            layer.open({
+                type: 2,
+                title: '房屋标注',
+                shadeClose: true,
+                shade: true,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['893px', '600px'],
+                content: contentUrl,
+                success: function (layero) {
+
+                },
+                cancel: function () {
+
                 }
             });
         }

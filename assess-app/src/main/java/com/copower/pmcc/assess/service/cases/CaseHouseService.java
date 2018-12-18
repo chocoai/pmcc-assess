@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
+import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
@@ -58,6 +59,8 @@ public class CaseHouseService {
     private CaseHouseTradingService caseHouseTradingService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private CaseEstateTaggingService caseEstateTaggingService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public BootstrapTableVo getCaseHouseListVos(CaseHouse caseHouse) {
@@ -268,5 +271,16 @@ public class CaseHouseService {
 
     public Boolean hasHouse(String houseNumber, Integer unitId) {
         return caseHouseDao.getHouseCount(houseNumber, unitId) > 0;
+    }
+
+    public CaseEstateTagging getCaseEstateTaggingByUnitId(Integer houseId)throws Exception{
+        CaseEstateTagging query = new CaseEstateTagging();
+        query.setDataId(houseId);
+        query.setType(EstateTaggingTypeEnum.HOUSE.getKey());
+        List<CaseEstateTagging> caseEstateTaggingList = caseEstateTaggingService.getCaseEstateTaggingList(query);
+        if (!ObjectUtils.isEmpty(caseEstateTaggingList)){
+            return caseEstateTaggingList.get(0);
+        }
+        return null;
     }
 }
