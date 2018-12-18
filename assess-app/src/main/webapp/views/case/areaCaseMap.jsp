@@ -44,24 +44,25 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <div class="info">
+                        <div class="form-group info">
+                            <div>
                                 <h4>搜索楼盘</h4>
-                                <div class="input-item">
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" placeholder="楼盘名称" id="estateId"
-                                               onkeydown="areaMap.autocomplete(this)">
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <input type="button" class="btn btn-primary"
-                                               onclick="areaMap.searchMarker(this)" value="搜索"/>
+                                <div class="">
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control" name="estateName" placeholder="楼盘名称"
+                                               id="estateId" onkeydown="areaMap.autocomplete(this)" onblur="$(this).val(null);">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
+            </div>
 
+            <div class="x_panel">
+                <div class="x_content">
+
+                </div>
             </div>
         </div>
     </div>
@@ -75,6 +76,12 @@
 <script type="text/javascript">
     var map = null;
     var areaMap = {};
+    var config = {
+        estate: "estate",
+        building: "building",
+        unit: "unit",
+        house: "house"
+    };
 
     /**
      * 判断字符串以及null等
@@ -126,11 +133,11 @@
             str.push('精度：' + data.accuracy + ' 米');
         }//如为IP精确定位结果则没有精度信息
         str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
-        //toastr.success(str.join('<br>'));
+        // toastr.success(str.join('<br>'));
     };
 
     areaMap.onError = function (data) {
-        //toastr.success('定位失败!');
+        toastr.success('定位失败!');
     };
 
 
@@ -175,12 +182,6 @@
     };
 
     function getName(n) {
-        var config = {
-            estate: "estate",
-            building: "building",
-            unit: "unit",
-            house: "house"
-        };
         if (n.type == config.estate) {
             return areaMap.isNotBlank(n.name) ? n.name : "暂无名称";
         }
@@ -258,10 +259,9 @@
 
     /**
      * 楼盘搜索
-     * @param this_
+     * @param item
      */
-    areaMap.searchMarker = function (this_) {
-        var item = $(this_).parent().prev().find("input").val();
+    areaMap.searchMarker = function (item) {
         var lat = null;
         var lon = null;
         if (this.isNotBlank(item)) {
@@ -269,7 +269,7 @@
             for (var i = 0; i < data.length; i++) {
                 var marker = data[i];
                 var extData = marker.getExtData();
-                if (extData.name == item) {
+                if (extData.dataId == item) {
                     lon = extData.lon;
                     lat = extData.lat;
                     break;
@@ -285,20 +285,49 @@
     /**
      * 自动补全
      */
-    areaMap.autocomplete = function (this_) {
-        console.log(this_);
-        if (this.isNotBlank($(this_).val())) {
-            console.log($(this_).val());
-            // $(this_).apEstate();
-        }
+    areaMap.autocomplete = function () {
+        $("#estateId").autocomplete({
+            source: function (request, response) {
+                var itemVal = $("#estateId").val();
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/caseEstate/autoCompleteCaseEstate",
+                    type: "get",
+                    dataType: "json",
+                    async: false,
+                    data: {
+                        maxRows: 10,
+                        offset: 1,
+                        limit: 10,
+                        name: itemVal
+                    },
+                    success: function (result) {
+                        if (result.ret) {
+                            response($.map(result.data, function (item) {
+                                return {
+                                    label: item.name,
+                                    value: item.name,
+                                    id: item.id
+                                }
+                            }));
+                        } else {
+                            Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+                        }
+                    }
+                });
+            },
+            minLength: 1,
+            /*当从菜单中选择条目时触发。默认的动作是把文本域中的值替换为被选中的条目的值。取消该事件会阻止值被更新，但不会阻止菜单关闭。*/
+            select: function (event, ui) {
+                areaMap.searchMarker(ui.item.id);
+            },
+            /*当焦点移动到一个条目上（未选择）时触发。默认的动作是把文本域中的值替换为获得焦点的条目的值，即使该事件是通过键盘交互触发的。取消该事件会阻止值被更新，但不会阻止菜单项获得焦点。*/
+            focus: function (event, ui) {
+            }
+        });
     };
 
 
     $(document).ready(function () {
-        $("#estateId").apEstate();
-        // $("#estateId").bind("onkeydown",function () {
-        //
-        // });
         areaMap.createMap(104.083199, 30.593365, 12);
         //自动定位
         map.plugin('AMap.Geolocation', function () {

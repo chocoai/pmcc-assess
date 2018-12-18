@@ -24,23 +24,23 @@
                         name: $(that).val()
                     },
                     success: function (data) {
-                        console.log(data);
-                        if (data) {
-                            var responseArray = [];
-                            $.each(data, function (i, item) {
-                                responseArray.push({
+                        if (result.ret) {
+                            response($.map(result.data, function (item) {
+                                return {
                                     label: item.name,
-                                    type: item.type,
+                                    value: item.name,
                                     id: item.id
-                                });
-                            })
-                            response(responseArray);
+                                }
+                            }));
+                        } else {
+                            Alert("调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     }
                 });
             }
             params.select = function (event, ele) {
                 that.val(ele.item.label);
+                console.log(ele);
                 if (defaults.onSelect) {
                     defaults.onSelect(ele.item.id, ele.item.label)
                 }
