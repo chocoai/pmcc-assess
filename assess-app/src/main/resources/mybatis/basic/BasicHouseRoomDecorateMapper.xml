@@ -4,10 +4,11 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoomDecorate" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="room_id" property="roomId" jdbcType="INTEGER" />
-    <result column="part" property="part" jdbcType="VARCHAR" />
+    <result column="part" property="part" jdbcType="INTEGER" />
     <result column="material" property="material" jdbcType="INTEGER" />
     <result column="construction_technology" property="constructionTechnology" jdbcType="INTEGER" />
     <result column="material_price" property="materialPrice" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -71,8 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, room_id, part, material, construction_technology, material_price, creator, gmt_created, 
-    gmt_modified
+    id, room_id, part, material, construction_technology, material_price, remark, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoomDecorateExample" >
     select
@@ -110,12 +111,12 @@
     </selectKey>
     insert into tb_basic_house_room_decorate (room_id, part, material, 
       construction_technology, material_price, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{roomId,jdbcType=INTEGER}, #{part,jdbcType=VARCHAR}, #{material,jdbcType=INTEGER}, 
+      remark, creator, gmt_created, 
+      gmt_modified)
+    values (#{roomId,jdbcType=INTEGER}, #{part,jdbcType=INTEGER}, #{material,jdbcType=INTEGER}, 
       #{constructionTechnology,jdbcType=INTEGER}, #{materialPrice,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoomDecorate" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -138,6 +139,9 @@
       <if test="materialPrice != null" >
         material_price,
       </if>
+      <if test="remark != null" >
+        remark,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -153,7 +157,7 @@
         #{roomId,jdbcType=INTEGER},
       </if>
       <if test="part != null" >
-        #{part,jdbcType=VARCHAR},
+        #{part,jdbcType=INTEGER},
       </if>
       <if test="material != null" >
         #{material,jdbcType=INTEGER},
@@ -163,6 +167,9 @@
       </if>
       <if test="materialPrice != null" >
         #{materialPrice,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -191,7 +198,7 @@
         room_id = #{record.roomId,jdbcType=INTEGER},
       </if>
       <if test="record.part != null" >
-        part = #{record.part,jdbcType=VARCHAR},
+        part = #{record.part,jdbcType=INTEGER},
       </if>
       <if test="record.material != null" >
         material = #{record.material,jdbcType=INTEGER},
@@ -201,6 +208,9 @@
       </if>
       <if test="record.materialPrice != null" >
         material_price = #{record.materialPrice,jdbcType=INTEGER},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -220,10 +230,11 @@
     update tb_basic_house_room_decorate
     set id = #{record.id,jdbcType=INTEGER},
       room_id = #{record.roomId,jdbcType=INTEGER},
-      part = #{record.part,jdbcType=VARCHAR},
+      part = #{record.part,jdbcType=INTEGER},
       material = #{record.material,jdbcType=INTEGER},
       construction_technology = #{record.constructionTechnology,jdbcType=INTEGER},
       material_price = #{record.materialPrice,jdbcType=INTEGER},
+      remark = #{record.remark,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -238,7 +249,7 @@
         room_id = #{roomId,jdbcType=INTEGER},
       </if>
       <if test="part != null" >
-        part = #{part,jdbcType=VARCHAR},
+        part = #{part,jdbcType=INTEGER},
       </if>
       <if test="material != null" >
         material = #{material,jdbcType=INTEGER},
@@ -248,6 +259,9 @@
       </if>
       <if test="materialPrice != null" >
         material_price = #{materialPrice,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -264,10 +278,11 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoomDecorate" >
     update tb_basic_house_room_decorate
     set room_id = #{roomId,jdbcType=INTEGER},
-      part = #{part,jdbcType=VARCHAR},
+      part = #{part,jdbcType=INTEGER},
       material = #{material,jdbcType=INTEGER},
       construction_technology = #{constructionTechnology,jdbcType=INTEGER},
       material_price = #{materialPrice,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

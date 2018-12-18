@@ -87,7 +87,17 @@ AssessDicKey.dataEntrustmentPurpose = "data.entrustment.purpose";//委托目的
 AssessDicKey.value_type = "value.type";//价值类型
 AssessDicKey.project_initiate_urgency = "project.initiate.urgency";//紧急程度
 
+//楼盘
 AssessDicKey.estate_position = "estate.position";//楼盘方位
+AssessDicKey.estate_total_land_level = "estate.land_level";//土地级别
+AssessDicKey.estate_total_land_use = "estate.land_use";//土地用途
+AssessDicKey.estatePlaneness = "estate.planeness";//地形
+AssessDicKey.estateDevelopment_degree = "estate.development_degree";//土地开发程度
+AssessDicKey.estateDevelopment_degreePrepared_land = "estate.development_degree.prepared_land";//熟地
+AssessDicKey.estateShape_state = "estate.shape_state";//土地形状
+AssessDicKey.estateTopographic_terrain = "estate.topographic_terrain";//地势
+AssessDicKey.estateSupplySituation = "estate.supply.situation";//供应情况
+
 AssessDicKey.estate_distance = "estate.distance";//交通距离
 AssessDicKey.estate_car_location = "estate.car.location";//车位位置
 AssessDicKey.estate_car_type = "estate.car.type";//车位类型
@@ -117,10 +127,7 @@ AssessDicKey.estate_examinematchingmedical_level = "estate.examineMatchingMedica
 AssessDicKey.estate_examinematchingmedical_bedNumber = "estate.examineMatchingMedical.bedNumber";//医养机构床位数
 AssessDicKey.estate_examinematchingmedical_distance = "estate.examineMatchingMedical.distance";//医养机构距离
 
-
-
-AssessDicKey.examineBlockRegionalNature = "examine.block.regionalNature";
-AssessDicKey.estateTotalBuildingType = "estate.total_building_type";//总栋数 (0一栋 1多栋)
+//楼栋
 AssessDicKey.examine_building_property_type = "building.property_type";//物业类型
 AssessDicKey.examine_building_property_structure = "building.building_structure";//建筑结构
 AssessDicKey.examine_building_property_category = "building.building_category";//建筑类别
@@ -134,19 +141,23 @@ AssessDicKey.examine_building_maintenance_category = "examine.building.maintenan
 AssessDicKey.examine_building_materialquality = "examine.building.maintenance.materialQuality";//围护结构材质
 AssessDicKey.examine_building_function_type = "building.function.type";//建筑功能类型
 
-AssessDicKey.examineHouseType = "examine.house.type";//房屋类型
+//单元
+AssessDicKey.examineUnitInteriorDecorationMaterial = "unit.interior.decoration.material";//内装装修材料
+AssessDicKey.examineUnitElevatorMaintenance = "unit.elevator.maintenance";//电梯维护情况
+AssessDicKey.examineUnitElevatorType = "unit.elevator.type";//电梯类型
+AssessDicKey.examineUnitHuxingType = "unit.huxing.type";//户型类别
+AssessDicKey.examineUnitHuxingTypeProduction = "unit.huxing.type.production";//户型类别-生产用房
+AssessDicKey.examineUnitHuxingTypeStay = "unit.huxing.type.stay";//户型类别-住宿(招待所)用房
+AssessDicKey.examineUnitHuxingTypeOffice = "unit.huxing.type.office";//户型类别-行政办公用房
+
+//房屋
 AssessDicKey.examineHouseFinancingConditions = "examine.house.financing.conditions";//融资条件
 AssessDicKey.examineHouseScopeProperty = "examine.house.scope.property";//财产范围
 AssessDicKey.examineHouseLoadUtility = "examine.house.load.utility";//证载用途
 AssessDicKey.examineHousePracticalUse = "examine.house.practical.use";//实际用途
 AssessDicKey.examineHouseEnvironmentUse = "examine.house.environment.use";//使用环境
-AssessDicKey.examineHouseNewsHuxing = "examine.house.newsHuxing";//最新户型
-
 AssessDicKey.examineHouseHouse_layout = "unit.house_layout";//房型
 AssessDicKey.examineCommonOrientation = "examine.common.orientation";//朝向
-AssessDicKey.examineUnitElevatorMaintenance = "unit.elevator.maintenance";//电梯维护情况
-AssessDicKey.examineUnitElevatorType = "unit.elevator.type";//电梯类型
-
 AssessDicKey.examineHouseTransactionType = "examine.house.transaction.type";//交易类型
 AssessDicKey.examineHouseTransactionTypeSell = "examine.house.transaction.type.sell";//交易类型-出售
 AssessDicKey.examineHouseTransactionTypeLease = "examine.house.transaction.type.lease";//交易类型-出租
@@ -160,6 +171,9 @@ AssessDicKey.examineHousePaymentMethodLease = "examine.house.payment.method.leas
 AssessDicKey.examineHouseInformationSourceType = "examine.house.information.source.type";//信息来源类型
 AssessDicKey.examineHouseInformationSourceTypeOpen = "examine.house.information.source.type.open";//信息来源类型-公开信息
 AssessDicKey.examineHouseInformationSourceCategory = "examine.house.information.source.category";//信息来源类别
+
+AssessDicKey.examine_house_room_part = "examine.house.room.part";//房间装修部位
+AssessDicKey.examine_house_room_material = "examine.house.room.material";//房间装修材料
 AssessDicKey.examineHouseIntelligent_wireMaterial = "examine.house.wire_material";//电线材质
 AssessDicKey.examine_house_supply_erection_method = "examine.house.water.supply_erection_method";//供水管架设方式
 AssessDicKey.examine_house_pretreated_water = "examine.house.water.pretreated_water";//前置净水
@@ -180,7 +194,6 @@ AssessDicKey.examineHouseLayingMethod = "examine.house.laying.method";//电线�
 AssessDicKey.examine_house_street_level = "examine.house.street_level";//街道级别
 AssessDicKey.examine_house_traffic_flow = "examine.house.traffic_flow";//交通流量
 AssessDicKey.examine_house_visitors_flowrate = "examine.house.visitors_flowrate";//人流量
-
 AssessDicKey.examine_house_wind_brand = "examine.house.wind.brand";//新风品牌
 AssessDicKey.examine_house_way_wind = "examine.house.way.wind";//供风系统类型
 AssessDicKey.examine_house_wind_equipment_price_range = "examine.house.wind.equipment_price_range";//供风设备价格区间
@@ -191,15 +204,8 @@ AssessDicKey.examine_house_heating_method = "examine.house.heating.method";//供
 AssessDicKey.examine_house_heating_equipment_price_range = "examine.house.heating.equipment_price_range";//供暖设备价格区间
 AssessDicKey.examine_house_corollary_equipment_type = "examine.house.corollary.equipment.type";//配套设备设施 类型
 
-AssessDicKey.estate_total_land_level = "estate.land_level";//土地级别
-AssessDicKey.estate_total_land_use = "estate.land_use";//土地用途
-AssessDicKey.estatePlaneness = "estate.planeness";//地形
-AssessDicKey.estateDevelopment_degree = "estate.development_degree";//土地开发程度
-AssessDicKey.estateDevelopment_degreePrepared_land = "estate.development_degree.prepared_land";//熟地
-AssessDicKey.estateShape_state = "estate.shape_state";//土地形状
-AssessDicKey.estateTopographic_terrain = "estate.topographic_terrain";//地势
-AssessDicKey.estateSupplySituation = "estate.supply.situation";//供应情况
 
+//其它
 AssessDicKey.build_addedvalueadditionaltaxrate = "build.addedValueAdditionalTaxRate";//增值及附加税率
 AssessDicKey.build_landAcquisitionTaxRate = "build.landAcquisitionTaxRate";//土地取得税率
 AssessDicKey.mdIncomeHistoryTypeIncome = "md.income.history.type.income";//收入类(历史数据)

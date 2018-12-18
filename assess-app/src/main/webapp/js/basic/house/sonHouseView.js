@@ -1426,8 +1426,12 @@ var houseRoom;
                 item.materialPrice = null;
             });
 
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_decorating_material, item.material, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_material, item.material, function (html, data) {
                 $("#" + houseRoom.prototype.config().frmSubclass).find('select.material').empty().html(html).trigger('change');
+            });
+
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_part, item.part, function (html, data) {
+                $("#" + houseRoom.prototype.config().frmSubclass).find('select.part').empty().html(html).trigger('change');
             });
         },
         subclassLoadList: function (id) {

@@ -123,7 +123,7 @@ var unitDecorate;
                         $("#" + unitDecorate.prototype.config().frm).find('select.materialPriceRange').empty().html(html).trigger('change');
                     });
                 });
-                AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_decorating_material, item.decoratingMaterial, function (html, data) {
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitInteriorDecorationMaterial, item.decoratingMaterial, function (html, data) {
                     $("#" + unitDecorate.prototype.config().frm).find('select.decoratingMaterial').empty().html(html).trigger('change');
                 });
             });
@@ -333,7 +333,25 @@ var unitHuxing;
         },
         init: function (item) {
             $("#" + unitHuxing.prototype.config().frm).clearAll();
-            $("#" + unitHuxing.prototype.config().frm).initForm(item);
+            $("#" + unitHuxing.prototype.config().frm).initForm(item, function () {
+                $("#" + unitHuxing.prototype.config().frm).find('select.type').off('change').on('change', function () {
+                    var key = $(this).find('option:selected').attr('key');
+                    if (key == AssessDicKey.examineUnitHuxingTypeStay) {
+                        $("#huxingTypeStay").show();
+                        $("#huxingTypeProduction,#huxingTypeOffice").hide();
+                    } else if (key == AssessDicKey.examineUnitHuxingTypeProduction) {
+                        $("#huxingTypeProduction").show();
+                        $("#huxingTypeStay,#huxingTypeOffice").hide();
+                    } else if (key == AssessDicKey.examineUnitHuxingTypeOffice) {
+                        $("#huxingTypeOffice").show();
+                        $("#huxingTypeProduction,#huxingTypeStay").hide();
+                    } else {
+                        if (basicCommon.basicApplyForm.find('[name=type]').val() == '1') {
+                            $("#huxingTypeStay,#huxingTypeProduction,#huxingTypeOffice").hide();
+                        }
+                    }
+                })
+            });
             FileUtils.uploadFiles({
                 target: unitHuxing.prototype.config().unitHuxingFileIDFildName,
                 disabledTarget: "btn_submit",
@@ -358,8 +376,9 @@ var unitHuxing;
             if (unitHuxing.prototype.isNotNull(item.houseCategory)) {
                 unitHuxing.prototype.rule("set", JSON.parse(item.houseCategory));
             }
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseHouse_layout, item.houseLayout, function (html, data) {
-                $("#" + unitHuxing.prototype.config().frm).find('select.houseLayout').empty().html(html).trigger('change');
+
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitHuxingType, item.type, function (html, data) {
+                $("#" + unitHuxing.prototype.config().frm).find('select.type').empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonOrientation, item.orientation, function (html, data) {
                 $("#" + unitHuxing.prototype.config().frm).find('select.orientation').empty().html(html).trigger('change');

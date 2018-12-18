@@ -8,9 +8,13 @@ public class CaseUnitHuxing {
 
     private Integer unitId;
 
-    private Integer houseLayout;
+    private Integer type;
+
+    private String name;
 
     private BigDecimal area;
+
+    private String orientation;
 
     private BigDecimal spanLength;
 
@@ -18,15 +22,15 @@ public class CaseUnitHuxing {
 
     private BigDecimal spanNumber;
 
-    private String description;
+    private BigDecimal bay;
 
-    private String creator;
+    private BigDecimal deep;
 
     private String houseCategory;
 
-    private String name;
+    private String description;
 
-    private String orientation;
+    private String creator;
 
     private Date gmtCreated;
 
@@ -48,12 +52,20 @@ public class CaseUnitHuxing {
         this.unitId = unitId;
     }
 
-    public Integer getHouseLayout() {
-        return houseLayout;
+    public Integer getType() {
+        return type;
     }
 
-    public void setHouseLayout(Integer houseLayout) {
-        this.houseLayout = houseLayout;
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public BigDecimal getArea() {
@@ -62,6 +74,14 @@ public class CaseUnitHuxing {
 
     public void setArea(BigDecimal area) {
         this.area = area;
+    }
+
+    public String getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(String orientation) {
+        this.orientation = orientation == null ? null : orientation.trim();
     }
 
     public BigDecimal getSpanLength() {
@@ -88,6 +108,30 @@ public class CaseUnitHuxing {
         this.spanNumber = spanNumber;
     }
 
+    public BigDecimal getBay() {
+        return bay;
+    }
+
+    public void setBay(BigDecimal bay) {
+        this.bay = bay;
+    }
+
+    public BigDecimal getDeep() {
+        return deep;
+    }
+
+    public void setDeep(BigDecimal deep) {
+        this.deep = deep;
+    }
+
+    public String getHouseCategory() {
+        return houseCategory;
+    }
+
+    public void setHouseCategory(String houseCategory) {
+        this.houseCategory = houseCategory == null ? null : houseCategory.trim();
+    }
+
     public String getDescription() {
         return description;
     }
@@ -102,30 +146,6 @@ public class CaseUnitHuxing {
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
-    }
-
-    public String getHouseCategory() {
-        return houseCategory;
-    }
-
-    public void setHouseCategory(String houseCategory) {
-        this.houseCategory = houseCategory == null ? null : houseCategory.trim();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public String getOrientation() {
-        return orientation;
-    }
-
-    public void setOrientation(String orientation) {
-        this.orientation = orientation == null ? null : orientation.trim();
     }
 
     public Date getGmtCreated() {

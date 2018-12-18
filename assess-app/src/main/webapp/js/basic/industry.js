@@ -35,7 +35,10 @@ industry.config = {
         material: "industryMaterial"
     },
     unit: {
-        span: "industrySpan"//跨长 跨宽 跨数
+        huxingType: "huxingType",//户型类别
+        huxingTypeStay: "huxingTypeStay",//住宿(招待所)用房
+        huxingTypeProduction: "huxingTypeProduction",//生产用房
+        huxingTypeOffice: "huxingTypeOffice"//行政办公用房
     },
     house: {
         airConditioner: "industryAirConditioner",//空调情况
@@ -90,7 +93,10 @@ industry.industryOne = {
         $("#" + industry.config.estate.matchingInfo).show();
     },
     unit: function () {
-        $("#" + industry.config.unit.span).hide();
+        $("#" + industry.config.unit.huxingType).hide();
+        $("#" + industry.config.unit.huxingTypeProduction).hide();
+        $("#" + industry.config.unit.huxingTypeOffice).hide();
+        $("#" + industry.config.unit.huxingTypeStay).show();
     },
     house: function () {
         $("#" + industry.config.house.useEnvironment).hide();
@@ -136,7 +142,10 @@ industry.industryTwo = {
         $("#" + industry.config.estate.matchingInfo).hide();
     },
     unit: function () {
-        $("#" + industry.config.unit.span).show();
+        $("#" + industry.config.unit.huxingType).show();
+        $("#" + industry.config.unit.huxingTypeProduction).hide();
+        $("#" + industry.config.unit.huxingTypeOffice).hide();
+        $("#" + industry.config.unit.huxingTypeStay).hide();
     },
     house: function () {
         $("#" + industry.config.house.corollaryEquipment).show();

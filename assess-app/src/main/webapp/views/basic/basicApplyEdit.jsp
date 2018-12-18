@@ -11,6 +11,7 @@
             <%@include file="/views/share/form_head.jsp" %>
             <form id="basicApplyFrm" class="form-horizontal">
                 <input type="hidden" name="id" value="${basicApply.id}">
+                <input type="hidden" name="type" value="${basicApply.type}">
                 <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
                 <input type="hidden" name="estatePartInMode" value="${basicApply.estatePartInMode}">
                 <input type="hidden" name="buildingPartInMode" value="${basicApply.buildingPartInMode}">

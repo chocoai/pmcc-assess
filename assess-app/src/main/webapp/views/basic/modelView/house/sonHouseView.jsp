@@ -349,7 +349,8 @@
                                             装修部位<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="part" class="form-control" required>
+                                            <select required="required" name="part" class="form-control  part">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

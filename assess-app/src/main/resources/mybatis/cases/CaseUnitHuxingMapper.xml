@@ -4,16 +4,18 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseUnitHuxing" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="unit_id" property="unitId" jdbcType="INTEGER" />
-    <result column="house_layout" property="houseLayout" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="area" property="area" jdbcType="DECIMAL" />
+    <result column="orientation" property="orientation" jdbcType="VARCHAR" />
     <result column="span_length" property="spanLength" jdbcType="DECIMAL" />
     <result column="span_width" property="spanWidth" jdbcType="INTEGER" />
     <result column="span_number" property="spanNumber" jdbcType="DECIMAL" />
+    <result column="bay" property="bay" jdbcType="DECIMAL" />
+    <result column="deep" property="deep" jdbcType="DECIMAL" />
+    <result column="house_category" property="houseCategory" jdbcType="VARCHAR" />
     <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="house_category" property="houseCategory" jdbcType="VARCHAR" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="orientation" property="orientation" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -76,8 +78,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, unit_id, house_layout, area, span_length, span_width, span_number, description, 
-    creator, house_category, name, orientation, gmt_created, gmt_modified
+    id, unit_id, type, name, area, orientation, span_length, span_width, span_number, 
+    bay, deep, house_category, description, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseUnitHuxingExample" >
     select
@@ -113,16 +115,18 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_unit_huxing (unit_id, house_layout, area, 
-      span_length, span_width, span_number, 
-      description, creator, house_category, 
-      name, orientation, gmt_created, 
-      gmt_modified)
-    values (#{unitId,jdbcType=INTEGER}, #{houseLayout,jdbcType=INTEGER}, #{area,jdbcType=DECIMAL}, 
-      #{spanLength,jdbcType=DECIMAL}, #{spanWidth,jdbcType=INTEGER}, #{spanNumber,jdbcType=DECIMAL}, 
-      #{description,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{houseCategory,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{orientation,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_case_unit_huxing (unit_id, type, name, 
+      area, orientation, span_length, 
+      span_width, span_number, bay, 
+      deep, house_category, description, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{unitId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{area,jdbcType=DECIMAL}, #{orientation,jdbcType=VARCHAR}, #{spanLength,jdbcType=DECIMAL}, 
+      #{spanWidth,jdbcType=INTEGER}, #{spanNumber,jdbcType=DECIMAL}, #{bay,jdbcType=DECIMAL}, 
+      #{deep,jdbcType=DECIMAL}, #{houseCategory,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseUnitHuxing" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -133,11 +137,17 @@
       <if test="unitId != null" >
         unit_id,
       </if>
-      <if test="houseLayout != null" >
-        house_layout,
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="name != null" >
+        name,
       </if>
       <if test="area != null" >
         area,
+      </if>
+      <if test="orientation != null" >
+        orientation,
       </if>
       <if test="spanLength != null" >
         span_length,
@@ -148,20 +158,20 @@
       <if test="spanNumber != null" >
         span_number,
       </if>
+      <if test="bay != null" >
+        bay,
+      </if>
+      <if test="deep != null" >
+        deep,
+      </if>
+      <if test="houseCategory != null" >
+        house_category,
+      </if>
       <if test="description != null" >
         description,
       </if>
       <if test="creator != null" >
         creator,
-      </if>
-      <if test="houseCategory != null" >
-        house_category,
-      </if>
-      <if test="name != null" >
-        name,
-      </if>
-      <if test="orientation != null" >
-        orientation,
       </if>
       <if test="gmtCreated != null" >
         gmt_created,
@@ -174,11 +184,17 @@
       <if test="unitId != null" >
         #{unitId,jdbcType=INTEGER},
       </if>
-      <if test="houseLayout != null" >
-        #{houseLayout,jdbcType=INTEGER},
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
       </if>
       <if test="area != null" >
         #{area,jdbcType=DECIMAL},
+      </if>
+      <if test="orientation != null" >
+        #{orientation,jdbcType=VARCHAR},
       </if>
       <if test="spanLength != null" >
         #{spanLength,jdbcType=DECIMAL},
@@ -189,20 +205,20 @@
       <if test="spanNumber != null" >
         #{spanNumber,jdbcType=DECIMAL},
       </if>
+      <if test="bay != null" >
+        #{bay,jdbcType=DECIMAL},
+      </if>
+      <if test="deep != null" >
+        #{deep,jdbcType=DECIMAL},
+      </if>
+      <if test="houseCategory != null" >
+        #{houseCategory,jdbcType=VARCHAR},
+      </if>
       <if test="description != null" >
         #{description,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="houseCategory != null" >
-        #{houseCategory,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="orientation != null" >
-        #{orientation,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreated != null" >
         #{gmtCreated,jdbcType=TIMESTAMP},
@@ -227,11 +243,17 @@
       <if test="record.unitId != null" >
         unit_id = #{record.unitId,jdbcType=INTEGER},
       </if>
-      <if test="record.houseLayout != null" >
-        house_layout = #{record.houseLayout,jdbcType=INTEGER},
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.area != null" >
         area = #{record.area,jdbcType=DECIMAL},
+      </if>
+      <if test="record.orientation != null" >
+        orientation = #{record.orientation,jdbcType=VARCHAR},
       </if>
       <if test="record.spanLength != null" >
         span_length = #{record.spanLength,jdbcType=DECIMAL},
@@ -242,20 +264,20 @@
       <if test="record.spanNumber != null" >
         span_number = #{record.spanNumber,jdbcType=DECIMAL},
       </if>
+      <if test="record.bay != null" >
+        bay = #{record.bay,jdbcType=DECIMAL},
+      </if>
+      <if test="record.deep != null" >
+        deep = #{record.deep,jdbcType=DECIMAL},
+      </if>
+      <if test="record.houseCategory != null" >
+        house_category = #{record.houseCategory,jdbcType=VARCHAR},
+      </if>
       <if test="record.description != null" >
         description = #{record.description,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.houseCategory != null" >
-        house_category = #{record.houseCategory,jdbcType=VARCHAR},
-      </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
-      </if>
-      <if test="record.orientation != null" >
-        orientation = #{record.orientation,jdbcType=VARCHAR},
       </if>
       <if test="record.gmtCreated != null" >
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -272,16 +294,18 @@
     update tb_case_unit_huxing
     set id = #{record.id,jdbcType=INTEGER},
       unit_id = #{record.unitId,jdbcType=INTEGER},
-      house_layout = #{record.houseLayout,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
       area = #{record.area,jdbcType=DECIMAL},
+      orientation = #{record.orientation,jdbcType=VARCHAR},
       span_length = #{record.spanLength,jdbcType=DECIMAL},
       span_width = #{record.spanWidth,jdbcType=INTEGER},
       span_number = #{record.spanNumber,jdbcType=DECIMAL},
+      bay = #{record.bay,jdbcType=DECIMAL},
+      deep = #{record.deep,jdbcType=DECIMAL},
+      house_category = #{record.houseCategory,jdbcType=VARCHAR},
       description = #{record.description,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
-      house_category = #{record.houseCategory,jdbcType=VARCHAR},
-      name = #{record.name,jdbcType=VARCHAR},
-      orientation = #{record.orientation,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -294,11 +318,17 @@
       <if test="unitId != null" >
         unit_id = #{unitId,jdbcType=INTEGER},
       </if>
-      <if test="houseLayout != null" >
-        house_layout = #{houseLayout,jdbcType=INTEGER},
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="area != null" >
         area = #{area,jdbcType=DECIMAL},
+      </if>
+      <if test="orientation != null" >
+        orientation = #{orientation,jdbcType=VARCHAR},
       </if>
       <if test="spanLength != null" >
         span_length = #{spanLength,jdbcType=DECIMAL},
@@ -309,20 +339,20 @@
       <if test="spanNumber != null" >
         span_number = #{spanNumber,jdbcType=DECIMAL},
       </if>
+      <if test="bay != null" >
+        bay = #{bay,jdbcType=DECIMAL},
+      </if>
+      <if test="deep != null" >
+        deep = #{deep,jdbcType=DECIMAL},
+      </if>
+      <if test="houseCategory != null" >
+        house_category = #{houseCategory,jdbcType=VARCHAR},
+      </if>
       <if test="description != null" >
         description = #{description,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="houseCategory != null" >
-        house_category = #{houseCategory,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="orientation != null" >
-        orientation = #{orientation,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreated != null" >
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
@@ -336,16 +366,18 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseUnitHuxing" >
     update tb_case_unit_huxing
     set unit_id = #{unitId,jdbcType=INTEGER},
-      house_layout = #{houseLayout,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
       area = #{area,jdbcType=DECIMAL},
+      orientation = #{orientation,jdbcType=VARCHAR},
       span_length = #{spanLength,jdbcType=DECIMAL},
       span_width = #{spanWidth,jdbcType=INTEGER},
       span_number = #{spanNumber,jdbcType=DECIMAL},
+      bay = #{bay,jdbcType=DECIMAL},
+      deep = #{deep,jdbcType=DECIMAL},
+      house_category = #{houseCategory,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
-      house_category = #{houseCategory,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
-      orientation = #{orientation,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

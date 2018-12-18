@@ -7,13 +7,15 @@ public class CaseHouseRoomDecorate {
 
     private Integer roomId;
 
-    private String part;
+    private Integer part;
 
     private Integer material;
 
     private Integer constructionTechnology;
 
     private Integer materialPrice;
+
+    private String remark;
 
     private String creator;
 
@@ -37,12 +39,12 @@ public class CaseHouseRoomDecorate {
         this.roomId = roomId;
     }
 
-    public String getPart() {
+    public Integer getPart() {
         return part;
     }
 
-    public void setPart(String part) {
-        this.part = part == null ? null : part.trim();
+    public void setPart(Integer part) {
+        this.part = part;
     }
 
     public Integer getMaterial() {
@@ -67,6 +69,14 @@ public class CaseHouseRoomDecorate {
 
     public void setMaterialPrice(Integer materialPrice) {
         this.materialPrice = materialPrice;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
     public String getCreator() {
