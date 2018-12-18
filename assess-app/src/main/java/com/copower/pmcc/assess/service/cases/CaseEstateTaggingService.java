@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.cases;
 
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.dal.cases.custom.mapper.CustomCaseMapper;
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateTaggingDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.MapDto;
@@ -18,6 +19,8 @@ import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -41,6 +44,8 @@ public class CaseEstateTaggingService {
     private CaseHouseService caseHouseService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private CustomCaseMapper customCaseMapper;
 
 
     public List<CaseEstateTagging> queryCaseEstateTagging(Integer dataId, String type) throws Exception {
@@ -61,13 +66,13 @@ public class CaseEstateTaggingService {
                 }
             }
         }
-        if (Objects.equal(type,EstateTaggingTypeEnum.BUILDING.getKey())){
+        if (Objects.equal(type, EstateTaggingTypeEnum.BUILDING.getKey())) {
             CaseBuildingMain main = caseBuildingMainService.getCaseBuildingMainById(dataId);
             CaseUnit queryUnit = new CaseUnit();
             queryUnit.setBuildingMainId(main.getId());
             List<CaseUnit> caseUnitList = caseUnitService.getCaseUnitList(queryUnit);
-            if (!ObjectUtils.isEmpty(caseUnitList)){
-                for (CaseUnit caseUnit:caseUnitList){
+            if (!ObjectUtils.isEmpty(caseUnitList)) {
+                for (CaseUnit caseUnit : caseUnitList) {
                     CaseEstateTagging buildTagging = getCaseEstateTagging(caseUnit.getId(), EstateTaggingTypeEnum.UNIT.getKey());
                     if (buildTagging != null) {
                         caseEstateTaggingList.add(buildTagging);
@@ -159,7 +164,7 @@ public class CaseEstateTaggingService {
         caseEstateTaggingDao.removeCaseEstateTagging(caseEstateTagging);
     }
 
-    public BootstrapTableVo getEstateTaggingList(Integer dataId,String type) throws Exception {
+    public BootstrapTableVo getEstateTaggingList(Integer dataId, String type) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         CaseEstateTagging where = new CaseEstateTagging();
         where.setDataId(dataId);
@@ -201,55 +206,90 @@ public class CaseEstateTaggingService {
             return null;
         }
         CaseEstateTaggingDto dto = new CaseEstateTaggingDto();
+        //找到楼盘对应的标记信息数据
         CaseEstateTagging estateTagging = getCaseEstateTagging(caseEstate.getId(), EstateTaggingTypeEnum.ESTATE.getKey());
         if (estateTagging != null) {
             org.springframework.beans.BeanUtils.copyProperties(estateTagging, dto);
             CaseBuildingMain queryMain = new CaseBuildingMain();
             queryMain.setEstateId(caseEstate.getId());
-            List<CaseBuildingMain> mainList = caseBuildingMainService.getCaseBuildingMainList(queryMain);
+            //楼栋数据列表
+            List<CaseBuildingMain> mainList = customCaseMapper.screenBuildList(estateId);
+
+            //接着找出相同的
             if (!ObjectUtils.isEmpty(mainList)) {
                 for (CaseBuildingMain main : mainList) {
+                    //找到楼栋数据对应的标记信息数据
                     CaseEstateTagging buildTagging = getCaseEstateTagging(main.getId(), EstateTaggingTypeEnum.BUILDING.getKey());
                     if (buildTagging != null) {
                         CaseEstateTaggingDto buildTaggingDto = new CaseEstateTaggingDto();
                         org.springframework.beans.BeanUtils.copyProperties(buildTagging, buildTaggingDto);
-                        CaseUnit queryUnit = new CaseUnit();
-                        queryUnit.setBuildingMainId(main.getId());
-                        List<CaseUnit> caseUnitList = caseUnitService.getCaseUnitList(queryUnit);
-                        if (!ObjectUtils.isEmpty(caseUnitList)) {
-                            for (CaseUnit caseUnit : caseUnitList) {
-                                CaseEstateTagging unitTagging = getCaseEstateTagging(caseUnit.getId(), EstateTaggingTypeEnum.UNIT.getKey());
-                                CaseEstateTaggingDto unitTaggingDto = new CaseEstateTaggingDto();
-                                if (unitTagging != null) {
-                                    org.springframework.beans.BeanUtils.copyProperties(unitTagging, unitTaggingDto);
-
-                                    CaseHouse queryHouse = new CaseHouse();
-                                    queryHouse.setUnitId(caseUnit.getId());
-                                    List<CaseHouse> caseHouseList = caseHouseService.getCaseHouseList(queryHouse);
-                                    if (!ObjectUtils.isEmpty(caseHouseList)) {
-                                        for (CaseHouse caseHouse : caseHouseList) {
-                                            CaseEstateTagging houseTagging = getCaseEstateTagging(caseHouse.getId(), EstateTaggingTypeEnum.HOUSE.getKey());
-                                            if (houseTagging != null) {
-                                                CaseEstateTaggingDto houseDto = new CaseEstateTaggingDto();
-                                                org.springframework.beans.BeanUtils.copyProperties(houseTagging, houseDto);
-                                                if (houseTagging.getAttachmentId() != null){
-                                                    houseDto.setHuxingImg(baseAttachmentService.getViewImageUrl(houseTagging.getAttachmentId()));
-                                                }
-                                                unitTaggingDto.getChildren().add(houseDto);
-                                            }
-                                        }
-                                    }
-
-                                    buildTaggingDto.getChildren().add(unitTaggingDto);
-                                }
-                            }
-                        }
                         dto.getChildren().add(buildTaggingDto);
                     }
                 }
             }
         }
         return dto;
+    }
 
+
+    @Deprecated
+    private boolean parseBuild(List<CaseBuildingMain> mainList) {
+        boolean flag = false;
+        flag = this.checkCaseBuildingMain(mainList);
+        if (!flag) {
+            //如果检测到列表中没有相同的 那么跳出递归
+            return flag;
+        } else {
+
+            for (CaseBuildingMain main : mainList) {
+
+                for (int i = 0; i < mainList.size(); i++) {
+                    int n1 = Integer.parseInt(main.getBuildingNumber());
+                    int n2 = Integer.parseInt(mainList.get(i).getBuildingNumber());
+                    int v1 = main.getVersion().intValue();
+                    int v2 = mainList.get(i).getVersion().intValue();
+                    if (n1 == n2 && main.hashCode() != mainList.get(i).hashCode()) {
+                        //那么比较两者的版本大小(默认是舍去版本小的)
+
+                        if (v1 >= v2) {
+                            mainList.remove(mainList.get(i));
+                            //马上重新开始方法
+                            this.parseBuild(mainList);
+                            //直到不在存在相同号码为止
+                        } else {
+                            mainList.remove(main);
+                            this.parseBuild(mainList);
+                            //直到不在存在相同号码为止
+                        }
+                    }
+                }
+
+            }
+        }
+        return flag;
+    }
+
+
+
+    /**
+     * 检测列表中是否还有相同的
+     *
+     * @param mainList
+     * @return
+     */
+    @Deprecated
+    private boolean checkCaseBuildingMain(List<CaseBuildingMain> mainList) {
+        boolean flag = false;
+        outer:
+        for (CaseBuildingMain main : mainList) {
+            for (CaseBuildingMain caseBuildingMain : mainList) {
+                //当检测到相同的号码时马上跳出循环
+                if (Integer.parseInt(main.getBuildingNumber()) == Integer.parseInt(caseBuildingMain.getBuildingNumber()) && main.hashCode() != caseBuildingMain.hashCode()) {
+                    flag = true;
+                    break outer;
+                }
+            }
+        }
+        return flag;
     }
 }

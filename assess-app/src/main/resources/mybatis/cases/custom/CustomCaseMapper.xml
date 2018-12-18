@@ -64,17 +64,19 @@
         GROUP BY house_number ORDER BY version DESC,house_number
     </select>
 
-    <sql id="Base_Column_List" >
+    <sql id="Base_Column_ListCaseBaseHouse">
         id, case_house_id, type, province, city, district, block_name, full_name, street,
         practical_use, trading_type, trading_time, trading_unit_price, version, creator,
         gmt_created, gmt_modified
     </sql>
 
-    <select id="findCaseBaseHouseList" parameterType="map" resultMap="com.copower.pmcc.assess.dal.cases.mapper.CaseBaseHouseMapper.BaseResultMap">
-        select <include refid="Base_Column_List" />
+    <select id="findCaseBaseHouseList" parameterType="map"
+            resultMap="com.copower.pmcc.assess.dal.cases.mapper.CaseBaseHouseMapper.BaseResultMap">
+        select
+        <include refid="Base_Column_ListCaseBaseHouse"/>
         from tb_case_base_house
         <where>
-            <if test="caseBaseHouse.blockName != null and caseBaseHouse.blockName!=''" >
+            <if test="caseBaseHouse.blockName != null and caseBaseHouse.blockName!=''">
                 and block_name LIKE concat(concat('%',#{caseBaseHouse.blockName}),'%')
             </if>
             <if test="caseBaseHouse.fullName != null and caseBaseHouse.fullName!=''">
@@ -111,6 +113,20 @@
                 and trading_unit_price <![CDATA[ <= ]]> #{tradingUnitPriceEnd}
             </if>
         </where>
+    </select>
+
+    <sql id="Base_Column_ListCaseBuildingMain">
+        id, estate_id, type, building_number, building_name, floor_count, location, version,
+        multipart_flag, creator, gmt_created, gmt_modified
+    </sql>
+    <select id="screenBuildList" parameterType="map"
+            resultMap="com.copower.pmcc.assess.dal.cases.mapper.CaseBuildingMainMapper.BaseResultMap">
+        select
+        <include refid="Base_Column_ListCaseBuildingMain"/>
+        from (SELECT
+        <include refid="Base_Column_ListCaseBuildingMain"/>
+        from tb_case_building_main where estate_id = #{estateId} ORDER BY version DESC) AS T
+        GROUP BY building_number ORDER BY version DESC,building_number
     </select>
 </mapper>
 
