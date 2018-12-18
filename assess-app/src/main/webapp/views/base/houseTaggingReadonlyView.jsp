@@ -44,8 +44,8 @@
         return false;
     };
     config.imageUrl = "${pageContext.request.contextPath}${huxingImg}";
-    var lng = config.isNotBlank('${tagging.lng}') ? '${tagging.lng}' : 100;
-    var lat = config.isNotBlank('${tagging.lat}') ? '${tagging.lat}' : 30;
+    var lng = config.isNotBlank('${tagging.lng}') ? '${tagging.lng}' : 104.083783;
+    var lat = config.isNotBlank('${tagging.lat}') ? '${tagging.lat}' : 30.589819;
     config.position = {
         lng: lng,
         lat: lat
@@ -57,7 +57,6 @@
     var map = null;
     var imgIcon = null;
 
-    console.log(config) ;
     $(document).ready(function () {
         //初始化地图对象，加载地图
         map = new AMap.Map("container", {
@@ -69,10 +68,7 @@
 
             }
         });
-        //地图点击事件
-        map.on('click', function (e) {
 
-        });
         {
             var dimensions = {};
             try {
@@ -113,28 +109,16 @@
         var MAX_LNG = 0.001;
         var MIN = 0;
         var angle = Number(imgMarker.getAngle());
-        var data = {deg: angle, attachmentId:${tagging.attachmentId}};
+        var data = {deg: angle, attachmentId:'${tagging.attachmentId}'};
         $.extend(data, {lng: e.lnglat.lng, lat: e.lnglat.lat});
-        write(data);
     }
 
 
     function getImgNaturalDimensions(oImg) {
-
-        var nWidth, nHeight;
-        if (oImg.naturalWidth) { // 现代浏览器
-            nWidth = oImg.naturalWidth;
-            nHeight = oImg.naturalHeight;
-            return {w: nWidth, h: nHeight};
-        } else { // IE6/7/8
-            var nImg = new Image();
-            nImg.src = oImg.src;
-            nImg.onload = function () {
-                nWidth = nImg.width;
-                nHeight = nImg.height;
-                return {w: nWidth, h: nHeight};
-            };
-        }
+        return {
+            w:$(oImg).width(),
+            h:$(oImg).height()
+        } ;
     }
 
 
@@ -148,15 +132,9 @@
         } else {
             imgMarker.setAngle(angle - 5);
         }
-        var data = {deg: angle, attachmentId:${tagging.attachmentId}};
+        var data = {deg: angle, attachmentId:'${tagging.attachmentId}'};
         $.extend(data, {lng: imgMarker.getPosition().lng, lat: imgMarker.getPosition().lat});
-        write(data);
     }
-
-    function write(data) {
-
-    }
-
 
     /**
      * 放大和缩小

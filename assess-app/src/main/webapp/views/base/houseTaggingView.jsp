@@ -82,7 +82,7 @@
         {
             var dimensions = {};
             try {
-                var oImg = $("oImg") ;
+                var oImg = $("#oImg") ;
                 dimensions.w = oImg.width();
                 dimensions.h = oImg.height();
             } catch (e) {
@@ -121,7 +121,7 @@
         var MAX_LNG = 0.001;
         var MIN = 0;
         var angle = Number(imgMarker.getAngle());
-        var data = {deg: angle, attachmentId:${tagging.attachmentId}};
+        var data = {deg: angle, attachmentId:'${tagging.attachmentId}'};
         $.extend(data, {lng: e.lnglat.lng, lat: e.lnglat.lat});
         write(data);
     }
@@ -156,7 +156,7 @@
         } else {
             imgMarker.setAngle(angle - 5);
         }
-        var data = {deg: angle, attachmentId:${tagging.attachmentId}};
+        var data = {deg: angle, attachmentId:'${tagging.attachmentId}'};
         $.extend(data, {lng: imgMarker.getPosition().lng, lat: imgMarker.getPosition().lat});
         write(data);
     }

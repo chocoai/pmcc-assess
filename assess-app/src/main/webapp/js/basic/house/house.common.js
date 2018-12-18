@@ -520,7 +520,7 @@
     houseCommon.orientationFun = function (readonly, applyId) {
         //仅仅显示而已
         if (readonly) {
-            var contentUrl = getContextPath() + '/map/houseTaggingMore?readonly=true&applyId=' + applyId;
+            var contentUrl = getContextPath() + '/map/houseTaggingMore?readonly=true&applyId=' + applyId+"&type=house";
             layer.open({
                 type: 2,
                 title: '房屋标注',
