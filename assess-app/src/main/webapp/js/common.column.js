@@ -288,7 +288,7 @@ commonColumn.houseRoomColumn = function () {
 //房屋-房间-装修
 commonColumn.houseRoomDecorateColumn = function () {
     var cols = [];
-    cols.push({field: 'part', title: '房间装修部位'});
+    cols.push({field: 'partName', title: '房间装修部位'});
     cols.push({field: 'materialName', title: '装修材料'});
     cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
     cols.push({field: 'materialPriceName', title: '装修材料价格区间'});
