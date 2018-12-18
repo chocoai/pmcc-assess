@@ -292,7 +292,7 @@ commonColumn.houseRoomDecorateColumn = function () {
     cols.push({field: 'materialName', title: '装修材料'});
     cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
     cols.push({field: 'materialPriceName', title: '装修材料价格区间'});
-    cols.push({field: 'remark', title: '描述'});
+    cols.push({field: 'remark', title: '部位描述'});
     return cols;
 }
 

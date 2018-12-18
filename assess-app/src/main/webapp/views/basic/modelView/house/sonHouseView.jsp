@@ -357,6 +357,16 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            部位描述
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <textarea name="remark" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             装修材料<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
@@ -389,16 +399,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            备注
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <textarea name="remark" class="form-control"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
