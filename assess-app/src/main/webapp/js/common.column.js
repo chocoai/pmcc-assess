@@ -252,9 +252,6 @@ commonColumn.unitHuxingColumn = function () {
     cols.push({field: 'name', title: '户型'});
     cols.push({field: 'area', title: '面积'});
     cols.push({field: 'orientationName', title: '朝向'});
-    cols.push({field: 'spanLength', title: '跨长'});
-    cols.push({field: 'spanWidth', title: '跨宽'});
-    cols.push({field: 'spanNumber', title: '跨数'});
     cols.push({field: 'description', title: '描述'});
     cols.push({field: 'fileViewName', title: '户型图'});
     return cols;
@@ -295,6 +292,7 @@ commonColumn.houseRoomDecorateColumn = function () {
     cols.push({field: 'materialName', title: '装修材料'});
     cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
     cols.push({field: 'materialPriceName', title: '装修材料价格区间'});
+    cols.push({field: 'remark', title: '描述'});
     return cols;
 }
 
