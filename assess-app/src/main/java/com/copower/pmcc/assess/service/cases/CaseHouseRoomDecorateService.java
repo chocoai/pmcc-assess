@@ -70,6 +70,7 @@ public class CaseHouseRoomDecorateService {
     public CaseHouseRoomDecorateVo getCaseHouseRoomDecorateVo(CaseHouseRoomDecorate caseHouseRoomDecorate) {
         CaseHouseRoomDecorateVo vo = new CaseHouseRoomDecorateVo();
         BeanUtils.copyProperties(caseHouseRoomDecorate, vo);
+        vo.setPartName(baseDataDicService.getNameById(caseHouseRoomDecorate.getPart()));
         vo.setMaterialName(baseDataDicService.getNameById(caseHouseRoomDecorate.getMaterial()));
         vo.setConstructionTechnologyName(baseDataDicService.getNameById(caseHouseRoomDecorate.getConstructionTechnology()));
         vo.setMaterialPriceName(baseDataDicService.getNameById(caseHouseRoomDecorate.getMaterialPrice()));

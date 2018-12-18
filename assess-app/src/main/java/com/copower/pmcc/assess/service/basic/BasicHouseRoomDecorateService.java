@@ -114,6 +114,7 @@ public class BasicHouseRoomDecorateService {
         }
         BasicHouseRoomDecorateVo vo = new BasicHouseRoomDecorateVo();
         BeanUtils.copyProperties(basicHouseRoomDecorate, vo);
+        vo.setPartName(baseDataDicService.getNameById(basicHouseRoomDecorate.getPart()));
         vo.setMaterialName(baseDataDicService.getNameById(basicHouseRoomDecorate.getMaterial()));
         vo.setConstructionTechnologyName(baseDataDicService.getNameById(basicHouseRoomDecorate.getConstructionTechnology()));
         vo.setMaterialPriceName(baseDataDicService.getNameById(basicHouseRoomDecorate.getMaterialPrice()));

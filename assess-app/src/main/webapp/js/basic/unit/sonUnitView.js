@@ -208,7 +208,14 @@ var unitHuxing;
             var data = formParams(unitHuxing.prototype.config().frm);
             data.unitId = unitCommon.getUnitId();
             data.houseCategory = unitHuxing.prototype.rule("get", data);
-            data.name = unitHuxing.prototype.rule("formatter", data);
+            var key = $("#" + unitHuxing.prototype.config().frm).find('select.type').find('option:selected').attr('key');
+            if (key == AssessDicKey.examineUnitHuxingTypeProduction) {
+                data.name = "跨长" + data.spanLength + ",跨宽" + data.spanWidth + ",跨数" + data.spanNumber;
+            } else if (key == AssessDicKey.examineUnitHuxingTypeOffice) {
+                data.name = "开间" + data.bay + ",进深" + data.deep;
+            } else {
+                data.name = unitHuxing.prototype.rule("formatter", data);
+            }
             $.ajax({
                 url: getContextPath() + "/basicUnitHuxing/saveAndUpdateBasicUnitHuxing",
                 type: "post",
@@ -346,7 +353,7 @@ var unitHuxing;
                         $("#huxingTypeOffice").show();
                         $("#huxingTypeProduction,#huxingTypeStay").hide();
                     } else {
-                        if (basicCommon.basicApplyForm.find('[name=type]').val() == '1') {
+                        if (basicCommon.basicApplyForm.find('[name=type]:checked').val() == 1) {
                             $("#huxingTypeStay,#huxingTypeProduction,#huxingTypeOffice").hide();
                         }
                     }

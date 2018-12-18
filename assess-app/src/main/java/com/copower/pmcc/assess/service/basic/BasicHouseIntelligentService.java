@@ -1,12 +1,11 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basic.dao.BasicHouseIntelligentDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouseIntelligent;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseIntelligentVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.cases.CaseHouseIntelligentService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -17,7 +16,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -42,6 +40,8 @@ public class BasicHouseIntelligentService {
     private BasicHouseIntelligentDao basicHouseIntelligentDao;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private CaseHouseIntelligentService caseHouseIntelligentService;
     @Autowired
     private CommonService commonService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -125,57 +125,10 @@ public class BasicHouseIntelligentService {
         vo.setSwitchCircuitName(baseDataDicService.getNameById(basicHouseIntelligent.getSwitchCircuit()));
         vo.setLayingMethodName(baseDataDicService.getNameById(basicHouseIntelligent.getLayingMethod()));
         if (StringUtils.isNotBlank(basicHouseIntelligent.getLampsLanterns())) {
-            String[] strings = basicHouseIntelligent.getLampsLanterns().split(",");
-            if (strings.length >= 1) {
-                StringBuilder builder = new StringBuilder(128);
-                for (int i = 0; i < strings.length; i++) {
-                    if (NumberUtils.isNumber(strings[i])) {
-                        if (i == strings.length - 1) {
-                            builder.append(baseDataDicService.getNameById(Integer.parseInt(strings[i])));
-                        } else {
-                            builder.append(baseDataDicService.getNameById(Integer.parseInt(strings[i]))).append(",");
-                        }
-                    }
-                }
-                vo.setLampsLanternsName(builder.toString());
-            }
+            vo.setLampsLanternsName(caseHouseIntelligentService.getLampsLanternsName(basicHouseIntelligent.getLampsLanterns()));
         }
         if (StringUtils.isNotBlank(basicHouseIntelligent.getIntelligentSystem())) {
-            try {
-                List<String> stringList = JSONObject.parseArray(basicHouseIntelligent.getIntelligentSystem(), String.class);
-                StringBuilder builder = new StringBuilder(128);
-                if (!ObjectUtils.isEmpty(stringList)) {
-                    for (int i = 0; i < stringList.size(); i++) {
-                        if (i == stringList.size() - 1) {
-                            JSONObject jsonObject = JSON.parseObject(stringList.get(i));
-                            JSONObject intelligentSystem = JSON.parseObject(jsonObject.getString("intelligentSystem"));
-                            JSONObject layingMethod = JSON.parseObject(jsonObject.getString("layingMethod"));
-                            String intelligentValue = intelligentSystem.getString("value");
-                            String layingMethodValue = layingMethod.getString("value");
-                            if (NumberUtils.isNumber(intelligentValue) && NumberUtils.isNumber(layingMethodValue)) {
-                                builder.append("(").append(baseDataDicService.getNameById(Integer.parseInt(intelligentValue))).append("");
-                                builder.append("-");
-                                builder.append("").append(baseDataDicService.getNameById(Integer.parseInt(layingMethodValue))).append(")");
-                            }
-                        } else {
-                            JSONObject jsonObject = JSON.parseObject(stringList.get(i));
-                            JSONObject intelligentSystem = JSON.parseObject(jsonObject.getString("intelligentSystem"));
-                            JSONObject layingMethod = JSON.parseObject(jsonObject.getString("layingMethod"));
-                            String intelligentValue = intelligentSystem.getString("value");
-                            String layingMethodValue = layingMethod.getString("value");
-                            if (NumberUtils.isNumber(intelligentValue) && NumberUtils.isNumber(layingMethodValue)) {
-                                builder.append("(").append(baseDataDicService.getNameById(Integer.parseInt(intelligentValue))).append("");
-                                builder.append("-");
-                                builder.append("").append(baseDataDicService.getNameById(Integer.parseInt(layingMethodValue))).append(")");
-                                builder.append(",");
-                            }
-                        }
-                    }
-                }
-                vo.setIntelligentSystemName(builder.toString());
-            } catch (Exception e1) {
-                logger.error("json异常!", e1);
-            }
+            vo.setIntelligentSystemName(caseHouseIntelligentService.getIntelligentSystemName(basicHouseIntelligent.getIntelligentSystem()));
         }
         return vo;
     }
