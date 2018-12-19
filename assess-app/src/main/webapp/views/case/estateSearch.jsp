@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 13426
-  Date: 2018/9/11
-  Time: 15:13
-  To change this template use File | Settings | File Templates.
---%>
+
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
@@ -62,8 +56,7 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">楼盘名称</label>
                                 <div class="col-sm-2">
-                                    <input type="text" class="form-control" name="search"
-                                           onkeydown="baseFun.caseEstate.searchInput();"/>
+                                    <input type="text" class="form-control" name="search"/>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -165,6 +158,7 @@
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js"></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/estate.case.js'></script>
 </html>
 <script type="text/javascript">
     var BaseViewFun = function () {
@@ -305,37 +299,11 @@
         },
         /**
          * @author:  zch
-         * 描述:自动填充
+         * 描述:自动填充 (使用插件)
          * @date:2018-09-13
          **/
         searchInput: function () {
-            $("#" + baseFun.config.father.caseEstate.frm() + " input[name='search']").autocomplete(
-                {
-                    source: function (request, response) {
-                        var itemVal = $("#" + baseFun.config.father.caseEstate.frm() + " input[name='search']").val();
-                        $.ajax({
-                            url: "${pageContext.request.contextPath}/caseEstate/autoCompleteCaseEstate",
-                            type: "get",
-                            dataType: "json",
-                            data: {
-                                maxRows: 10,
-                                name: itemVal
-                            },
-                            success: function (result) {
-                                response($.each(result.data, function (i, item) {
-                                    return {
-                                        label: item.value,
-                                        value: item.key
-                                    }
-                                }));
-                            }
-                        });
-                    },
-                    minLength: 1,
-                    select: function (event, ele) {
-                    }
-                }
-            );
+
         },
         /**
          * @author:  zch
@@ -477,7 +445,11 @@
         baseFun.caseBuild.loadDataList(null);
         baseFun.caseUnit.loadDataList(null);
         baseFun.caseHouse.loadDataList(null);
-
+        $("#" + baseFun.config.father.caseEstate.frm() + " input[name='search']").apEstate({
+            onSelect: function (id, name) {
+                $("#" + baseFun.config.father.caseEstate.frm() + " input[name='search']").val(name) ;
+            }
+        });
         //定位成功回调方法
         try {
             mapPosition.complete(function (data) {
