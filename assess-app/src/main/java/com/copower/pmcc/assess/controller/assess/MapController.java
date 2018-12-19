@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.assess;
 
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +40,9 @@ public class MapController {
             modelAndView.addObject("huxingImg", huxingImg);
         }
         modelAndView.addObject("attachmentId", attachmentId);
-        modelAndView.addObject("lng", lng);
-        modelAndView.addObject("lat", lat);
-        modelAndView.addObject("deg", deg);
+        modelAndView.addObject("lng", StringUtils.isEmpty(lng) ? "" : lng);
+        modelAndView.addObject("lat", StringUtils.isEmpty(lat) ? "" : lat);
+        modelAndView.addObject("deg", StringUtils.isEmpty(deg) ? "" : deg);
         modelAndView.addObject("readonly", readonly == null ? true : readonly);
         return modelAndView;
     }
