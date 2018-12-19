@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.cases;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
+import com.copower.pmcc.assess.dto.input.cases.CaseEstateTaggingDto;
 import com.copower.pmcc.assess.dto.output.cases.CaseBuildingVo;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -114,7 +115,16 @@ public class CaseController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         try {
             if (estateId != null) {
-                modelAndView.addObject("mapTree", JSON.toJSONString(caseEstateTaggingService.getCaseEstateTaggingDto(estateId)));
+                CaseEstateTaggingDto dto = caseEstateTaggingService.getCaseEstateTagging(estateId,EstateTaggingTypeEnum.ESTATE.getKey()) ;
+                if (dto != null){
+                    List<CaseEstateTaggingDto> list = caseEstateTaggingService.queryCaseEstateTagging(dto.getDataId(),EstateTaggingTypeEnum.ESTATE.getKey()) ;
+                    if (!ObjectUtils.isEmpty(list)){
+                        for (CaseEstateTaggingDto caseEstateTaggingDto:list){
+                            dto.getChildren().add(caseEstateTaggingDto);
+                        }
+                    }
+                }
+                modelAndView.addObject("mapTree", JSON.toJSONString(dto));
                 modelAndView.addObject("caseEstate",caseEstateService.getCaseEstateById(estateId));
             }
         } catch (Exception e1) {

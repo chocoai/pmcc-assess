@@ -15,11 +15,10 @@
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
             <div class="x_panel">
+
                 <div class="x_content">
                     <div class="x_title">
                         <div class="nav navbar-right">
-                            <%--<button class="btn btn-default" onclick="areaMap.rotateTransform(true)">右旋转</button>--%>
-                            <%--<button class="btn btn-default" onclick="areaMap.rotateTransform(false)">左旋转</button>--%>
                             <div class="btn  btn-default" onclick="areaMap.zoom(true)">放大</div>
                             <div class="btn  btn-default" onclick="areaMap.zoom(false)">缩小</div>
                         </div>
@@ -28,6 +27,9 @@
                         <div class="clearfix"></div>
                     </div>
                 </div>
+
+                <img id="oImg" style="display: none">
+
                 <div class="x_content">
                     <div class="col-sm-10 col-md-10" style="margin-top:10px;height: 700px;" id="container">
                     </div>
@@ -40,7 +42,6 @@
                     </div>
                 </div>
             </div>
-            <img id="oImg" style="display: none">
             <div class="x_panel">
                 <div class="x_content">
                     <div class="form-group">
@@ -200,7 +201,7 @@
     };
 
     areaMap.onSonLoadMap = function (e) {
-        console.log(e);
+
     };
 
     areaMap.event = function () {
@@ -234,7 +235,7 @@
             } catch (e) {
             }
             areaMap.createMap(mapTree.lng, mapTree.lat, 17);
-            //加载
+            //异步加载
             $('#treeId').tree({
                     data: [mapTree],//json格式数据
                     checkbox: false,  //显示勾选框
@@ -256,30 +257,41 @@
                                     var data = result.data;
                                     switch (node.type) {
                                         case config.house:
-                                            $("#oImg").next().show();
                                             areaMap.createImgMarker(node, map);
                                             break;
                                         case config.estate:
-                                            $("#oImg").next().hide();
-                                            //map.add(areaMap.getMarker(node));
                                             if (areaMap.isNotBlank(data)) {
-                                                $.each(data, function (i, item) {
-                                                    map.add(areaMap.getMarker(item));
-                                                });
+                                                if (data) {
+                                                    $.each(data, function (i, item) {
+                                                        if (item) {
+                                                            map.add(areaMap.getMarker(item));
+                                                        }
+                                                    });
+                                                }
+                                                areaMap.appendChild(data, node);
                                             }
                                             break;
                                         case config.building:
-                                            $("#oImg").next().hide();
-                                            //map.add(areaMap.getMarker(node));
                                             if (areaMap.isNotBlank(data)) {
-                                                $.each(data, function (i, item) {
-                                                    map.add(areaMap.getMarker(item));
-                                                });
+                                                if (data) {
+                                                    $.each(data, function (i, item) {
+                                                        if (item) {
+                                                            map.add(areaMap.getMarker(item));
+                                                        }
+                                                    });
+                                                }
+                                                areaMap.appendChild(data, node);
                                             }
                                             break;
                                         case config.unit:
-                                            $("#oImg").next().hide();
-                                            map.add(areaMap.getMarker(node));
+                                            if (data) {
+                                                $.each(data, function (i, item) {
+                                                    if (item) {
+                                                        map.add(areaMap.getMarker(item));
+                                                    }
+                                                });
+                                            }
+                                            areaMap.appendChild(data, node);
                                             break;
                                         default:
                                             break;
@@ -296,7 +308,7 @@
                         map.setCenter([node.lng, node.lat]); //设置地图中心点
                         map.setZoom(18);
                     },
-                    onLoadSuccess: function () {
+                    onLoadSuccess: function (data) {
 
                     },
                     onDblClick: function (node) {
@@ -307,6 +319,28 @@
                     }
                 }
             )
+        }
+    };
+
+    /**
+     * 插入子节点
+     */
+    areaMap.appendChild = function (data, node) {
+        var childrenNodes = $('#treeId').tree('getChildren', node.target);
+        if (childrenNodes.length >= 1) {
+            //说明已经添加过了子节点
+        } else {
+            $.each(data, function (i, item) {
+                if (childrenNodes.length >= 1) {
+                    //说明已经添加过了子节点
+                } else {
+                    //在楼栋节点添加单元子节点
+                    $('#treeId').tree('append', {
+                        parent: node.target,
+                        data: item
+                    });
+                }
+            });
         }
     };
 

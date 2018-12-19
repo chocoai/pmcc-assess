@@ -121,12 +121,36 @@
     </sql>
     <select id="screenBuildList" parameterType="map"
             resultMap="com.copower.pmcc.assess.dal.cases.mapper.CaseBuildingMainMapper.BaseResultMap">
-        select
+        SELECT
         <include refid="Base_Column_ListCaseBuildingMain"/>
-        from (SELECT
+        FROM
+        ( SELECT DISTINCT
         <include refid="Base_Column_ListCaseBuildingMain"/>
-        from tb_case_building_main where estate_id = #{estateId} ORDER BY version DESC) AS T
-        GROUP BY building_number ORDER BY version DESC,building_number
+        FROM tb_case_building_main WHERE 1 = 1 AND estate_id = #{estateId} ORDER BY version DESC ) AS T
+        GROUP BY
+        building_number
+        ORDER BY
+        version DESC,
+        building_number
+    </select>
+
+
+    <!-- 筛选标注信息中的单元 -->
+    <select id="screenUnitList" parameterType="map"
+            resultMap="com.copower.pmcc.assess.dal.cases.mapper.CaseUnitMapper.BaseResultMap">
+       select * from
+        (SELECT DISTINCT id, building_main_id ,version,unit_number FROM tb_case_unit WHERE 1 = 1 AND
+         building_main_id = #{buildingMainId} ORDER BY version DESC )
+         AS T GROUP BY unit_number ORDER BY version DESC,unit_number
+    </select>
+
+    <!-- 筛选标注信息中的房屋 -->
+    <select id="screenHouseList" parameterType="map"
+            resultMap="com.copower.pmcc.assess.dal.cases.mapper.CaseHouseMapper.BaseResultMap">
+         select * from
+        (SELECT DISTINCT id, unit_id ,version,house_number FROM tb_case_house WHERE 1 = 1 AND     unit_id = #{unitId}
+        ORDER BY version DESC )
+         AS T GROUP BY house_number ORDER BY version DESC,house_number
     </select>
 </mapper>
 
