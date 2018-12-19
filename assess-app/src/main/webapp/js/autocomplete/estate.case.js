@@ -23,7 +23,7 @@
                         limit: defaults.limit,
                         name: $(that).val()
                     },
-                    success: function (data) {
+                    success: function (result) {
                         if (result.ret) {
                             response($.map(result.data, function (item) {
                                 return {

@@ -5,21 +5,7 @@
     <%@include file="/views/share/main_css.jsp" %>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.css">
     <script src='${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.js'></script>
-    <style>
-        .info {
-            padding: .75rem 1.25rem;
-            margin-bottom: 1rem;
-            border-radius: .25rem;
-            position: fixed;
-            top: 1rem;
-            background-color: white;
-            width: auto;
-            min-width: 22rem;
-            border-width: 0;
-            right: 1rem;
-            box-shadow: 0 2px 6px 0 rgba(114, 124, 245, .5);
-        }
-    </style>
+    <script src='${pageContext.request.contextPath}/js/autocomplete/estate.case.js'></script>
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">
@@ -34,6 +20,11 @@
                         案例地图
                     </h2>
                 </div>
+                <div class="title_right">
+                    <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right">
+                        <input type="text" id="txt_estate_search" class="form-control" placeholder="楼盘查询....">
+                    </div>
+                </div>
             </div>
             <div class="x_panel">
                 <div class="x_content">
@@ -43,22 +34,10 @@
 
                             </div>
                         </div>
-
-                        <div class="form-group info">
-                            <div>
-                                <h4>搜索楼盘</h4>
-                                <div class="">
-                                    <div class="col-sm-12">
-                                        <input type="text" class="form-control" name="estateName" placeholder="楼盘名称"
-                                               id="estateId" onkeydown="areaMap.autocomplete(this)" onblur="$(this).val(null);">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </form>
                 </div>
-            </div>
 
+            </div>
             <div class="x_panel">
                 <div class="x_content">
 
@@ -282,50 +261,6 @@
         }
     };
 
-    /**
-     * 自动补全
-     */
-    areaMap.autocomplete = function () {
-        $("#estateId").autocomplete({
-            source: function (request, response) {
-                var itemVal = $("#estateId").val();
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/caseEstate/autoCompleteCaseEstate",
-                    type: "get",
-                    dataType: "json",
-                    async: false,
-                    data: {
-                        maxRows: 10,
-                        offset: 1,
-                        limit: 10,
-                        name: itemVal
-                    },
-                    success: function (result) {
-                        if (result.ret) {
-                            response($.map(result.data, function (item) {
-                                return {
-                                    label: item.name,
-                                    value: item.name,
-                                    id: item.id
-                                }
-                            }));
-                        } else {
-                            Alert("调用服务端方法失败，失败原因:" + result.errmsg);
-                        }
-                    }
-                });
-            },
-            minLength: 1,
-            /*当从菜单中选择条目时触发。默认的动作是把文本域中的值替换为被选中的条目的值。取消该事件会阻止值被更新，但不会阻止菜单关闭。*/
-            select: function (event, ui) {
-                areaMap.searchMarker(ui.item.id);
-            },
-            /*当焦点移动到一个条目上（未选择）时触发。默认的动作是把文本域中的值替换为获得焦点的条目的值，即使该事件是通过键盘交互触发的。取消该事件会阻止值被更新，但不会阻止菜单项获得焦点。*/
-            focus: function (event, ui) {
-            }
-        });
-    };
-
 
     $(document).ready(function () {
         areaMap.createMap(104.083199, 30.593365, 12);
@@ -345,5 +280,11 @@
             AMap.event.addListener(geolocation, 'error', areaMap.onError);      //返回定位出错信息
         });
         areaMap.createMarker();
+
+        $("#txt_estate_search").apEstate({
+            onSelect: function (id, name) {
+                areaMap.searchMarker(id);
+            }
+        });
     });
 </script>
