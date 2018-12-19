@@ -19,8 +19,6 @@ import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -35,52 +33,54 @@ public class CaseEstateTaggingService {
     @Autowired
     private CommonService commonService;
     @Autowired
-    private CaseEstateService caseEstateService;
-    @Autowired
-    private CaseBuildingMainService caseBuildingMainService;
-    @Autowired
-    private CaseUnitService caseUnitService;
-    @Autowired
-    private CaseHouseService caseHouseService;
-    @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private CustomCaseMapper customCaseMapper;
 
-
-    public List<CaseEstateTagging> queryCaseEstateTagging(Integer dataId, String type) throws Exception {
-        List<CaseEstateTagging> caseEstateTaggingList = new ArrayList<CaseEstateTagging>(10);
+    public List<CaseEstateTaggingDto> queryCaseEstateTagging(Integer dataId, String type) throws Exception {
+        List<CaseEstateTaggingDto> caseEstateTaggingDtos = new ArrayList<CaseEstateTaggingDto>(10);
         if (Objects.equal(type, EstateTaggingTypeEnum.ESTATE.getKey())) {
-            CaseEstate caseEstate = caseEstateService.getCaseEstateById(dataId);
-            if (caseEstate != null) {
-                CaseBuildingMain queryMain = new CaseBuildingMain();
-                queryMain.setEstateId(caseEstate.getId());
-                List<CaseBuildingMain> mainList = caseBuildingMainService.getCaseBuildingMainList(queryMain);
-                if (!ObjectUtils.isEmpty(mainList)) {
-                    for (CaseBuildingMain caseBuildingMain : mainList) {
-                        CaseEstateTagging buildTagging = getCaseEstateTagging(caseBuildingMain.getId(), EstateTaggingTypeEnum.BUILDING.getKey());
-                        if (buildTagging != null) {
-                            caseEstateTaggingList.add(buildTagging);
+            List<CaseBuildingMain> caseBuildingMainList = customCaseMapper.screenBuildList(dataId);
+            if (!ObjectUtils.isEmpty(caseBuildingMainList)) {
+                for (CaseBuildingMain main : caseBuildingMainList) {
+                    CaseEstateTaggingDto dto = getCaseEstateTagging(main.getId(), EstateTaggingTypeEnum.BUILDING.getKey());
+                    if (dto != null) {
+                        caseEstateTaggingDtos.add(dto);
+                    }
+                }
+            }
+        }
+        if (Objects.equal(type, EstateTaggingTypeEnum.UNIT.getKey())) {
+            List<CaseHouse> caseHouseList = customCaseMapper.screenHouseList(dataId);
+            if (!ObjectUtils.isEmpty(caseHouseList)) {
+                for (CaseHouse caseHouse : caseHouseList) {
+                    CaseEstateTaggingDto dto = getCaseEstateTagging(caseHouse.getId(), EstateTaggingTypeEnum.HOUSE.getKey());
+                    if (dto != null) {
+                        //必要的 (处理为本地图片地址否则无法识别)
+                        if (dto.getAttachmentId() != null) {
+                            String huxingImg = baseAttachmentService.getViewImageUrl(dto.getAttachmentId());
+                            if (StringUtils.isNotBlank(huxingImg)) {
+                                dto.setHuxingImg(huxingImg);
+                            }
                         }
+                        caseEstateTaggingDtos.add(dto);
                     }
                 }
             }
         }
         if (Objects.equal(type, EstateTaggingTypeEnum.BUILDING.getKey())) {
-            CaseBuildingMain main = caseBuildingMainService.getCaseBuildingMainById(dataId);
-            CaseUnit queryUnit = new CaseUnit();
-            queryUnit.setBuildingMainId(main.getId());
-            List<CaseUnit> caseUnitList = caseUnitService.getCaseUnitList(queryUnit);
+            List<CaseUnit> caseUnitList = customCaseMapper.screenUnitList(dataId);
             if (!ObjectUtils.isEmpty(caseUnitList)) {
                 for (CaseUnit caseUnit : caseUnitList) {
-                    CaseEstateTagging buildTagging = getCaseEstateTagging(caseUnit.getId(), EstateTaggingTypeEnum.UNIT.getKey());
-                    if (buildTagging != null) {
-                        caseEstateTaggingList.add(buildTagging);
+                    CaseEstateTaggingDto dto = getCaseEstateTagging(caseUnit.getId(), EstateTaggingTypeEnum.UNIT.getKey());
+                    if (dto != null) {
+                        caseEstateTaggingDtos.add(dto);
                     }
                 }
             }
         }
-        return caseEstateTaggingList;
+
+        return caseEstateTaggingDtos;
     }
 
 
@@ -131,6 +131,7 @@ public class CaseEstateTaggingService {
      */
     public void saveCaseEstateTagging(CaseEstateTagging caseEstateTagging) throws Exception {
         if (caseEstateTagging.getId() == null) {
+            caseEstateTagging.setCreator(commonService.thisUserAccount());
             caseEstateTaggingDao.saveCaseEstateTagging(caseEstateTagging);
         } else {
             caseEstateTaggingDao.updateCaseEstateTagging(caseEstateTagging);
@@ -175,7 +176,7 @@ public class CaseEstateTaggingService {
         return vo;
     }
 
-    public CaseEstateTagging getCaseEstateTagging(Integer dataId, String type) throws Exception {
+    public CaseEstateTaggingDto getCaseEstateTagging(Integer dataId, String type) throws Exception {
         if (dataId == null) {
             return null;
         }
@@ -187,109 +188,12 @@ public class CaseEstateTaggingService {
         query.setType(type);
         List<CaseEstateTagging> caseEstateTaggingList = caseEstateTaggingDao.caseEstateTaggingList(query);
         if (!ObjectUtils.isEmpty(caseEstateTaggingList)) {
-            return caseEstateTaggingList.get(0);
+            CaseEstateTaggingDto dto = new CaseEstateTaggingDto();
+            org.springframework.beans.BeanUtils.copyProperties(caseEstateTaggingList.get(0), dto);
+            return dto;
         } else {
             return null;
         }
     }
 
-    /**
-     * 获取标记的经纬度
-     *
-     * @param estateId
-     * @return
-     * @throws Exception
-     */
-    public CaseEstateTaggingDto getCaseEstateTaggingDto(Integer estateId) throws Exception {
-        CaseEstate caseEstate = caseEstateService.getCaseEstateById(estateId);
-        if (caseEstate == null) {
-            return null;
-        }
-        CaseEstateTaggingDto dto = new CaseEstateTaggingDto();
-        //找到楼盘对应的标记信息数据
-        CaseEstateTagging estateTagging = getCaseEstateTagging(caseEstate.getId(), EstateTaggingTypeEnum.ESTATE.getKey());
-        if (estateTagging != null) {
-            org.springframework.beans.BeanUtils.copyProperties(estateTagging, dto);
-            CaseBuildingMain queryMain = new CaseBuildingMain();
-            queryMain.setEstateId(caseEstate.getId());
-            //楼栋数据列表
-            List<CaseBuildingMain> mainList = customCaseMapper.screenBuildList(estateId);
-
-            //接着找出相同的
-            if (!ObjectUtils.isEmpty(mainList)) {
-                for (CaseBuildingMain main : mainList) {
-                    //找到楼栋数据对应的标记信息数据
-                    CaseEstateTagging buildTagging = getCaseEstateTagging(main.getId(), EstateTaggingTypeEnum.BUILDING.getKey());
-                    if (buildTagging != null) {
-                        CaseEstateTaggingDto buildTaggingDto = new CaseEstateTaggingDto();
-                        org.springframework.beans.BeanUtils.copyProperties(buildTagging, buildTaggingDto);
-                        dto.getChildren().add(buildTaggingDto);
-                    }
-                }
-            }
-        }
-        return dto;
-    }
-
-
-    @Deprecated
-    private boolean parseBuild(List<CaseBuildingMain> mainList) {
-        boolean flag = false;
-        flag = this.checkCaseBuildingMain(mainList);
-        if (!flag) {
-            //如果检测到列表中没有相同的 那么跳出递归
-            return flag;
-        } else {
-
-            for (CaseBuildingMain main : mainList) {
-
-                for (int i = 0; i < mainList.size(); i++) {
-                    int n1 = Integer.parseInt(main.getBuildingNumber());
-                    int n2 = Integer.parseInt(mainList.get(i).getBuildingNumber());
-                    int v1 = main.getVersion().intValue();
-                    int v2 = mainList.get(i).getVersion().intValue();
-                    if (n1 == n2 && main.hashCode() != mainList.get(i).hashCode()) {
-                        //那么比较两者的版本大小(默认是舍去版本小的)
-
-                        if (v1 >= v2) {
-                            mainList.remove(mainList.get(i));
-                            //马上重新开始方法
-                            this.parseBuild(mainList);
-                            //直到不在存在相同号码为止
-                        } else {
-                            mainList.remove(main);
-                            this.parseBuild(mainList);
-                            //直到不在存在相同号码为止
-                        }
-                    }
-                }
-
-            }
-        }
-        return flag;
-    }
-
-
-
-    /**
-     * 检测列表中是否还有相同的
-     *
-     * @param mainList
-     * @return
-     */
-    @Deprecated
-    private boolean checkCaseBuildingMain(List<CaseBuildingMain> mainList) {
-        boolean flag = false;
-        outer:
-        for (CaseBuildingMain main : mainList) {
-            for (CaseBuildingMain caseBuildingMain : mainList) {
-                //当检测到相同的号码时马上跳出循环
-                if (Integer.parseInt(main.getBuildingNumber()) == Integer.parseInt(caseBuildingMain.getBuildingNumber()) && main.hashCode() != caseBuildingMain.hashCode()) {
-                    flag = true;
-                    break outer;
-                }
-            }
-        }
-        return flag;
-    }
 }
