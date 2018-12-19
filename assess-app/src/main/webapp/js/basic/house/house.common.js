@@ -8,7 +8,7 @@
     houseCommon.houseForm = $('#basicHouseFrm');
     houseCommon.houseTradingTypeSell = 'ExamineHouseTradingSell';
     houseCommon.houseTradingTypeLease = 'ExamineHouseTradingLease';
-
+    houseCommon.houseMapiframe = undefined;
     /**
      * 判断对象
      */
@@ -19,13 +19,6 @@
         return false
     };
 
-    /**
-     * 判断字符串以及null等
-     */
-    houseCommon.isNotBlank = function () {
-
-    };
-
     //附件上传控件id数组
     houseCommon.houseFileControlIdArray = [
         'house_huxing_plan',
@@ -34,9 +27,6 @@
 
     houseCommon.getHouseId = function () {
         return houseCommon.houseForm.find('[name=id]').val();
-    }
-    houseCommon.getApplyId = function () {
-        return houseCommon.houseForm.find('[name=applyId]').val();
     }
 
     //添加房屋
@@ -147,7 +137,11 @@
 
             //附件显示
             $.each(houseCommon.houseFileControlIdArray, function (i, item) {
-                houseCommon.fileShow(item);
+                if (houseCommon.houseFileControlIdArray[0] == item) {
+                    houseCommon.fileShow(item, false);
+                } else {
+                    houseCommon.fileShow(item);
+                }
             })
         });
 
@@ -193,7 +187,13 @@
                 tableName: AssessDBKey.BasicHouse,
                 tableId: houseCommon.getHouseId()
             },
-            deleteFlag: true
+            deleteFlag: true,
+            onUploadComplete: function () {
+                houseCommon.fileShow(fieldsName);
+                if (houseCommon.houseFileControlIdArray[1] == fieldsName) {
+                    houseCommon.deleteHouseTagging();//删除新户型图片时清空标注信息
+                }
+            }
         });
     }
 
@@ -206,14 +206,19 @@
                 tableName: AssessDBKey.BasicHouse,
                 tableId: houseCommon.getHouseId()
             },
-            deleteFlag: deleteFlag == undefined ? true : deleteFlag
+            deleteFlag: deleteFlag == undefined ? true : deleteFlag,
+            deleteSuccess: function (attachemntId) {
+                if (houseCommon.houseFileControlIdArray[1] == fieldsName) {
+                    houseCommon.deleteHouseTagging();//删除新户型图片时清空标注信息
+                }
+            }
         })
     }
 
     //户型选择
     houseCommon.selectHuxing = function (_this) {
         assessHuxing.select({
-            basicApplyId: houseCommon.getApplyId(),
+            basicApplyId: basicCommon.getApplyId(),
             caseUnitId: basicCommon.basicApplyForm.find('[name=caseUnitId]').val(),
             success: function (row) {
                 //1.赋值 2.拷贝附件并显示附件数据
@@ -230,6 +235,7 @@
                     },
                     success: function (result) {
                         houseCommon.fileShow(houseCommon.houseFileControlIdArray[0], false);
+                        houseCommon.deleteHouseTagging();
                     }
                 })
             }
@@ -410,64 +416,12 @@
         });
     }
 
-
-    //用做临时存储数据的json
-    houseCommon.marker = {};
-    houseCommon.addMarker = function (lng, lat, attachmentId, deg) {
-        var data = {
-            type: "house",
-            applyId: houseCommon.getApplyId(),
-            name: formSerializeArray(houseCommon.houseForm).houseNumber
-        };
-        data.lng = lng;
-        data.lat = lat;
-        data.deg = deg;
-        data.attachmentId = attachmentId;
-        //把数据临时保存起来
-        houseCommon.marker = data;
-    };
-
-    //校验单元是否标注
-    houseCommon.checkUnitMarker = function (callback) {
-        var unitId = null;
-        try {
-            unitId = basicCommon.basicApplyForm.find("input[name='caseUnitId']").val();
-            unitId = Number(unitId);
-        } catch (e) {
-        }
-        if (unitId >= 1) {
-            callback(unitId);
-        } else {
-            $.ajax({
-                url: getContextPath() + "/basicEstateTagging/getEstateTaggingList",
-                type: "post",
-                dataType: "json",
-                async: false,
-                data: {applyId: basicCommon.getApplyId(), type: "unit"},
-                success: function (result) {
-                    if (result.ret) {
-                        if (result.data) {
-                            if (result.data.length > 0) {
-                                callback(result.data[0]);
-                            } else {
-                                alert('单元未标注或者是单元未选择');
-                            }
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
-        }
-    };
-
     /**
      * 获取所需的户型图
      * @param callback
      */
     houseCommon.getMarkersysAttachmentId = function (callback) {
-        var sysAttachmentId = "";
+        var sysAttachmentId;
         $.ajax({
             url: getContextPath() + "/public/getSysAttachmentDtoList",
             type: "get",
@@ -478,113 +432,116 @@
                 tableName: AssessDBKey.BasicHouse
             },
             success: function (result) {
-                if (result.ret) {
-                    if (result.data) {
+                if (result.ret && result.data) {
+                    for (var i = 0; i < result.data.length; i++) {
+                        if (result.data[i].fieldsName == houseCommon.houseFileControlIdArray[1]) {
+                            //后缀必须为图片
+                            if (AssessCommon.checkImgFile(result.data[i].fileName)) {
+                                sysAttachmentId = result.data[i].id;
+                                break;
+                            }
+                        }
+                    }
+                    if (!sysAttachmentId) {
+                        //假如未找到需要的情况下新户型那么找另一种
                         for (var i = 0; i < result.data.length; i++) {
-                            if (result.data[i].fieldsName == houseCommon.houseFileControlIdArray[1]) {
+                            if (result.data[i].fieldsName == houseCommon.houseFileControlIdArray[0]) {
                                 //后缀必须为图片
                                 if (AssessCommon.checkImgFile(result.data[i].fileName)) {
                                     sysAttachmentId = result.data[i].id;
-                                    callback(sysAttachmentId);
                                     break;
                                 }
                             }
                         }
-                        if (sysAttachmentId) {
-                            //.....
-                        } else {
-                            //假如未找到需要的情况下新户型那么找另一种
-                            for (var i = 0; i < result.data.length; i++) {
-                                if (result.data[i].fieldsName == houseCommon.houseFileControlIdArray[0]) {
-                                    //后缀必须为图片
-                                    if (AssessCommon.checkImgFile(result.data[i].fileName)) {
-                                        sysAttachmentId = result.data[i].id;
-                                        callback(sysAttachmentId);
-                                        break;
-                                    }
-                                }
-                            }
-                        }
                     }
                 }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
             }
         });
+        return sysAttachmentId;
     };
+
+    //获取单元的标注信息
+    houseCommon.getUnitMarker = function () {
+        var unitMarker;
+        $.ajax({
+            url: getContextPath() + '/basicEstateTagging/getUnitTagging',
+            data: {
+                unitPartInMode: basicCommon.basicApplyForm.find("input[name='unitPartInMode']").val(),
+                applyId: basicCommon.getApplyId(),
+                caseUnitId: basicCommon.basicApplyForm.find("input[name='caseUnitId']").val()
+            },
+            async: false,
+            success: function (result) {
+                if (result.ret) {
+                    unitMarker = result.data;
+                }
+            }
+        })
+        return unitMarker;
+    }
 
     /**
      * 户型地图朝向
      */
-    houseCommon.orientationFun = function (readonly, applyId) {
-        //仅仅显示而已
-        if (readonly) {
-            var contentUrl = getContextPath() + '/map/houseTaggingMore?readonly=true&applyId=' + applyId+"&type=house";
-            layer.open({
-                type: 2,
-                title: '房屋标注',
-                shadeClose: true,
-                shade: true,
-                maxmin: true, //开启最大化最小化按钮
-                area: ['893px', '600px'],
-                content: contentUrl,
-                success: function (layero) {
-
-                },
-                cancel: function () {
-
+    houseCommon.orientationFun = function (readonly) {
+        $.ajax({
+            url: getContextPath() + '/basicEstateTagging/getEstateTaggingList',
+            data: {
+                applyId: basicCommon.getApplyId(),
+                type: "house"
+            },
+            async: false,
+            success: function (result) {
+                var data = {};
+                if (result.ret && result.data && result.data.length > 0) {
+                    data = result.data[0];
+                } else {
+                    var attachmentId = houseCommon.getMarkersysAttachmentId();
+                    if (!attachmentId) {
+                        toastr.info("未找到相关户型图片");
+                        return;
+                    }
+                    data.attachmentId = attachmentId;
+                    var unitMarker = houseCommon.getUnitMarker();
+                    if (!unitMarker) {
+                        toastr.info("还未标注单元位置信息");
+                        return;
+                    }
+                    data.lng = unitMarker.lng;
+                    data.lat = unitMarker.lat;
+                    data.deg = 0;
                 }
-            });
-        }
-        //标记位置和方位
-        if (!readonly) {
-            this.checkUnitMarker(function (data) {
-                houseCommon.getMarkersysAttachmentId(function (sysAttachmentId) {
-                    var temp = {};
-                    $.extend(temp, houseCommon.marker);
-                    var unitId = unitCommon.getUnitId();
-                    var contentUrl = "";
-                    contentUrl = getContextPath() + '/map/houseTagging?sysAttachmentId=' + sysAttachmentId + "&click=houseCommon.addMarker";
-                    //两种情况,一种是案例单元id而另一种情况是非案例单元id
-                    if (houseCommon.isNotBlank(unitId)) {
-                        contentUrl += "&unitId=" + unitId;
-                        contentUrl += "&case_=false";
-                    } else {
-                        //处理引用单元的问题 (因为如果是引用那么unitId为null 则必须以basicCommon里的方法来获取单元id,并且这的unitId是case数据库表中的unitId)
-                        unitId = basicCommon.basicApplyForm.find("input[name='caseUnitId']").val();
-                        contentUrl += "&unitId=" + unitId;
-                        contentUrl += "&case_=true";
-                    }
-                    //当前页面 多次打开页面的情况处理
-                    if (houseCommon.isNotBlankObject(temp)) {
-                        contentUrl = getContextPath() + '/map/houseTaggingMore?';
-                        contentUrl += "attachmentId=" + temp.attachmentId;
-                        contentUrl += "&deg=" + temp.deg;
-                        contentUrl += "&lat=" + temp.lat;
-                        contentUrl += "&lng=" + temp.lng;
-                        contentUrl += "&name=" + temp.name;
-                        contentUrl += "&type=" + temp.type;
-                        contentUrl += "&applyId=" + temp.applyId;
-                        contentUrl += "&readonly=false";
-                        contentUrl += "&click=houseCommon.addMarker";
-                    }
-                    layer.open({
-                        type: 2,
-                        title: '房屋标注',
-                        shadeClose: true,
-                        shade: true,
-                        maxmin: true, //开启最大化最小化按钮
-                        area: ['893px', '600px'],
-                        content: contentUrl,
-                        success: function (layero) {
-                            //假如有数据则显示在地图上 (重新载入 houseTaggingMore)
-                        },
-                        cancel: function () {
-                            //关闭时,保存数据
+
+                var contentUrl = getContextPath() + '/map/houseTagging?';
+                contentUrl += 'attachmentId=' + data.attachmentId;
+                contentUrl += '&lng=' + data.lng;
+                contentUrl += '&lat=' + data.lat;
+                contentUrl += '&deg=' + data.deg;
+                contentUrl += '&readonly=' + readonly;
+                layer.open({
+                    type: 2,
+                    title: '房屋标注',
+                    shade: true,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['893px', '600px'],
+                    content: contentUrl,
+                    success: function (layero) {
+                        houseCommon.houseMapiframe = window[layero.find('iframe')[0]['name']];
+                    },
+                    cancel: function () {
+                        if (!readonly) {
+                            //到iframe中获取数据
                             $.ajax({
                                 url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
-                                data: houseCommon.marker,
+                                data: {
+                                    applyId: basicCommon.getApplyId(),
+                                    type: "house",
+                                    lng: houseCommon.houseMapiframe.config.position.lng,
+                                    lat: houseCommon.houseMapiframe.config.position.lat,
+                                    deg: houseCommon.houseMapiframe.config.deg,
+                                    attachmentId: houseCommon.houseMapiframe.config.attachmentId,
+                                    name: houseCommon.houseForm.find('[name=houseNumber]').val()
+                                },
                                 success: function (result) {
                                     if (result.ret) {
 
@@ -594,11 +551,28 @@
                                 }
                             })
                         }
-                    });
+                    }
                 });
-            });
-        }
+            }
+        })
     };
+
+    //清除房屋标注
+    houseCommon.deleteHouseTagging = function () {
+        $.ajax({
+            url: getContextPath() + '/basicEstateTagging/deleteHouseTagging',
+            data: {
+                applyId: basicCommon.getApplyId()
+            },
+            success: function (result) {
+                if (result.ret) {
+
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
 
     window.houseCommon = houseCommon;
 })(jQuery);

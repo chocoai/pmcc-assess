@@ -40,7 +40,7 @@ public class BasicEstateTaggingDao {
         basicEstateTaggingMapper.deleteByExample(example);
     }
 
-    public boolean deleteBasicEstateTagging(Integer id) throws SQLException {
+    public boolean deleteBasicEstateTagging(Integer id) {
         return basicEstateTaggingMapper.deleteByPrimaryKey(id) == 1;
     }
 

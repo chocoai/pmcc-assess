@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.cases;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.common.enums.ExamineHouseEquipmentTypeEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -66,10 +67,12 @@ public class CaseHouseController {
     private CaseUnitService caseUnitService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private CaseEstateTaggingService caseEstateTaggingService;
 
 
     @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
-    public ModelAndView detailView(Integer id) {
+    public ModelAndView detailView(Integer id) throws Exception {
         String view = "/case/caseHouse/caseHouseView";
         CaseHouse caseHouse = null;
         CaseHouseTrading caseHouseTrading = new CaseHouseTrading();
@@ -98,6 +101,7 @@ public class CaseHouseController {
         modelAndView.addObject("caseUnit", caseUnit);
         modelAndView.addObject("caseBuildingMain", caseBuildingMain);
         modelAndView.addObject("caseEstate", caseEstate);
+        modelAndView.addObject("caseEstateTagging",   caseEstateTaggingService.getCaseEstateTagging(id, EstateTaggingTypeEnum.HOUSE.getKey()));
         return modelAndView;
     }
 

@@ -19,12 +19,14 @@
 <div id="container" style="width: 100%;height: 100%;" tabindex="0"></div>
 <div id="myPageTop">
     <table>
-        <tr>
-            <td>
-                <button class="btn btn-default" onclick="rotateTransform(true)">右旋转</button>
-                <button class="btn btn-default" onclick="rotateTransform(false)">左旋转</button>
-            </td>
-        </tr>
+        <c:if test="${readonly ne true}">
+            <tr>
+                <td>
+                    <button class="btn btn-default" onclick="rotateTransform(true)">右旋转</button>
+                    <button class="btn btn-default" onclick="rotateTransform(false)">左旋转</button>
+                </td>
+            </tr>
+        </c:if>
         <tr>
             <td>
                 <button class="btn btn-default" onclick="zoom(true)">放大</button>
@@ -50,14 +52,15 @@
         return false;
     };
     config.imageUrl = "${pageContext.request.contextPath}${huxingImg}";
-    var lng = config.isNotBlank('${tagging.lng}') ? '${tagging.lng}' : 100;
-    var lat = config.isNotBlank('${tagging.lat}') ? '${tagging.lat}' : 30;
+    var lng = config.isNotBlank('${lng}') ? '${lng}' : 100;
+    var lat = config.isNotBlank('${lat}') ? '${lat}' : 30;
     config.position = {
         lng: lng,
         lat: lat
     };
-    var deg = config.isNotBlank('${tagging.deg}') ? '${tagging.deg}' : 0;
-    config.angle = deg;
+    var deg = config.isNotBlank('${deg}') ? '${deg}' : 0;
+    config.deg = deg;
+    config.attachmentId = '${attachmentId}';
 
     var imgMarker = null;
     var map = null;
@@ -75,55 +78,46 @@
 
             }
         });
-        //地图点击事件
-        map.on('click', function (e) {
 
-        });
-        {
-            var dimensions = {};
-            try {
-                var oImg = $("#oImg") ;
-                dimensions.w = oImg.width();
-                dimensions.h = oImg.height();
-            } catch (e) {
-            }
-            var width = config.isNotBlank(dimensions.w) ? parseFloat(dimensions.w) : 500;
-            var height = config.isNotBlank(dimensions.h) ? parseFloat(dimensions.h) : 500;
-            // 创建一个 Icon
-            imgIcon = new AMap.Icon({
-                // 图标尺寸
-                size: new AMap.Size(width * 10, height * 10),
-                // 图标的取图地址
-                image: config.imageUrl,
-                // 图标所用图片大小
-                imageSize: new AMap.Size(width / 2.5, height / 2.5),
-                // 图标取图偏移量
-                imageOffset: new AMap.Pixel(-1, -1)
-            });
-            imgMarker = new AMap.Marker({
-                position: [config.position.lng, config.position.lat], // 经纬度对象
-                icon: imgIcon,
-                offset: new AMap.Pixel(-13, -30),
-                autoRotation: true,
-                extData: {id: 'startMarker'},
-                angle: config.angle,
-                draggable: true//开启拖拽
-            });
-            imgMarker.on('dragging', draggingFun);
-            map.add(imgMarker);
+        var dimensions = {};
+        try {
+            var oImg = $("#oImg");
+            dimensions.w = oImg.width();
+            dimensions.h = oImg.height();
+        } catch (e) {
         }
+        var width = config.isNotBlank(dimensions.w) ? parseFloat(dimensions.w) : 500;
+        var height = config.isNotBlank(dimensions.h) ? parseFloat(dimensions.h) : 500;
+        // 创建一个 Icon
+        imgIcon = new AMap.Icon({
+            // 图标尺寸
+            size: new AMap.Size(width * 10, height * 10),
+            // 图标的取图地址
+            image: config.imageUrl,
+            // 图标所用图片大小
+            imageSize: new AMap.Size(width / 2.5, height / 2.5),
+            // 图标取图偏移量
+            imageOffset: new AMap.Pixel(-1, -1)
+        });
+        imgMarker = new AMap.Marker({
+            position: [config.position.lng, config.position.lat], // 经纬度对象
+            icon: imgIcon,
+            offset: new AMap.Pixel(-13, -30),
+            autoRotation: ${!readonly},
+            extData: {id: 'startMarker'},
+            angle: config.deg,
+            draggable: ${!readonly} //开启拖拽
+        });
+        imgMarker.on('dragging', draggingFun);
+        map.add(imgMarker);
     });
 
     /**
      * 拖拽事件监听函数
      */
     function draggingFun(e) {
-        var MAX_LNG = 0.001;
-        var MIN = 0;
-        var angle = Number(imgMarker.getAngle());
-        var data = {deg: angle, attachmentId:'${tagging.attachmentId}'};
-        $.extend(data, {lng: e.lnglat.lng, lat: e.lnglat.lat});
-        write(data);
+        config.position.lng = lng;
+        config.position.lat = lat;
     }
 
 
@@ -156,18 +150,7 @@
         } else {
             imgMarker.setAngle(angle - 5);
         }
-        var data = {deg: angle, attachmentId:'${tagging.attachmentId}'};
-        $.extend(data, {lng: imgMarker.getPosition().lng, lat: imgMarker.getPosition().lat});
-        write(data);
-    }
-
-    function write(data) {
-        var excuteString = null;
-        excuteString = 'if (parent && parent.${click}) {';
-        excuteString += 'parent.${click}(';
-        excuteString += data.lng + ',' + data.lat + ',' + data.attachmentId + ',' + data.deg + ')';
-        excuteString += '; }';
-        eval(excuteString);
+        config.deg = angle;
     }
 
 

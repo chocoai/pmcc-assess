@@ -8,7 +8,6 @@
     </div>
     <form class="form-horizontal" id="basicHouseFrm">
         <input type="hidden" name="id" value="${basicHouse.id}">
-        <input type="hidden" name="applyId" value="${basicHouse.applyId}">
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">房号<span class="symbol required"></span></label>

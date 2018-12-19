@@ -3,12 +3,17 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basic.dao.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicEstateTagging;
+import com.copower.pmcc.assess.dal.cases.entity.CaseEstateTagging;
+import com.copower.pmcc.assess.service.cases.CaseEstateTaggingService;
 import com.copower.pmcc.erp.common.CommonService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -22,6 +27,10 @@ import java.util.List;
 public class BasicEstateTaggingService {
     @Autowired
     private BasicEstateTaggingDao basicEstateTaggingDao;
+    @Autowired
+    private CaseEstateTaggingService caseEstateTaggingService;
+    @Autowired
+    private BasicApplyService basicApplyService;
     @Autowired
     private CommonService commonService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -106,5 +115,47 @@ public class BasicEstateTaggingService {
         if (applyId == null || applyId == 0)
             basicEstateTagging.setCreator(commonService.thisUserAccount());
         return basicEstateTaggingDao.getEstateTaggingCount(basicEstateTagging) > 0;
+    }
+
+    /**
+     * 获取单元下的标注
+     *
+     * @param unitPartInMode
+     * @param applyId
+     * @param caseUnitId
+     * @return
+     */
+    public BasicEstateTagging getUnitTagging(String unitPartInMode, Integer applyId, Integer caseUnitId) throws Exception {
+        BasicEstateTagging tagging = new BasicEstateTagging();
+        if (StringUtils.isBlank(unitPartInMode)) {
+            CaseEstateTagging caseEstateTagging = caseEstateTaggingService.getCaseEstateTagging(caseUnitId, EstateTaggingTypeEnum.UNIT.getKey());
+            if (caseEstateTagging == null) return null;
+            BeanUtils.copyProperties(caseEstateTagging, tagging);
+        } else {
+            BasicEstateTagging where = new BasicEstateTagging();
+            where.setApplyId(applyId);
+            where.setType(EstateTaggingTypeEnum.UNIT.getKey());
+            if (applyId == null || applyId == 0)
+                where.setCreator(commonService.thisUserAccount());
+            List<BasicEstateTagging> taggingList = basicEstateTaggingDao.basicEstateTaggingList(where);
+            if (!CollectionUtils.isEmpty(taggingList))
+                tagging = taggingList.get(0);
+        }
+        return tagging;
+    }
+
+    /**
+     * 删除房屋下标注信息
+     * @param applyId
+     */
+    public void deleteHouseTagging(Integer applyId) throws SQLException {
+        BasicEstateTagging where = new BasicEstateTagging();
+        where.setApplyId(applyId);
+        where.setType(EstateTaggingTypeEnum.HOUSE.getKey());
+        if (applyId == null || applyId == 0)
+            where.setCreator(commonService.thisUserAccount());
+        List<BasicEstateTagging> taggingList = basicEstateTaggingDao.basicEstateTaggingList(where);
+        if(CollectionUtils.isEmpty(taggingList)) return;
+        taggingList.forEach(o->basicEstateTaggingDao.deleteBasicEstateTagging(o.getId()));
     }
 }
