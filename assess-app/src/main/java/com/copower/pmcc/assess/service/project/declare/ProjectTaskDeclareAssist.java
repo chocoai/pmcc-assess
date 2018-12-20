@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.project.declare;
 
-import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareApply;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.ErpAreaService;
@@ -27,7 +27,7 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private DeclareInfoService declareInfoService;
+    private DeclareApplyService declareApplyService;
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
@@ -71,11 +71,11 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
-        DeclareInfo declareInfo = new DeclareInfo();
-        declareInfo.setProjectId(projectPlanDetails.getProjectId());
-        declareInfo.setPlanDetailsId(projectPlanDetails.getId());
-        declareInfo.setProcessInsId(processInsId);
-        declareInfoService.saveDeclareInfo(declareInfo);
+        DeclareApply declareApply = new DeclareApply();
+        declareApply.setProjectId(projectPlanDetails.getProjectId());
+        declareApply.setPlanDetailsId(projectPlanDetails.getId());
+        declareApply.setProcessInsId(processInsId);
+        declareApplyService.saveDeclareApply(declareApply);
         bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, DeclareRealtyEstateCertEvent.class.getSimpleName());//修改监听器
     }
 

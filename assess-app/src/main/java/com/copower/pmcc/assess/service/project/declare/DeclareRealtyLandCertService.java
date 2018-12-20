@@ -416,19 +416,19 @@ public class DeclareRealtyLandCertService {
         return vo;
     }
 
-    public void eventWriteDeclareInfo(DeclareInfo declareInfo) {
+    public void eventWriteDeclareApply(DeclareApply declareApply) {
         DeclareRecord declareRecord = null;
-        if (declareInfo == null) {
+        if (declareApply == null) {
             return;
         }
         DeclareRealtyLandCert query = new DeclareRealtyLandCert();
-        query.setPlanDetailsId(declareInfo.getPlanDetailsId());
+        query.setPlanDetailsId(declareApply.getPlanDetailsId());
         List<DeclareRealtyLandCert> lists = declareRealtyLandCertDao.getDeclareRealtyLandCertList(query);
         for (DeclareRealtyLandCert oo : lists) {
             declareRecord = new DeclareRecord();
             BeanUtils.copyProperties(oo, declareRecord);
             declareRecord.setId(null);
-            declareRecord.setProjectId(declareInfo.getProjectId());
+            declareRecord.setProjectId(declareApply.getProjectId());
             declareRecord.setDataTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class));
             declareRecord.setDataTableId(oo.getId());
             declareRecord.setName(oo.getLandCertName());

@@ -18,7 +18,8 @@
                         </h3>
                         <div class="clearfix"></div>
                     </div>
-                    <form class="form-horizontal" id="frmCertificate">
+                    <form class="form-horizontal" id="declareApplyForm">
+                        <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
                         <div id="frmCertificateHTML">
 
                         </div>
@@ -68,7 +69,7 @@
 <script>
     var config = {
         declare: {
-            frm: "frmCertificate"
+            frm: "declareApplyForm"
         },
         declareRealtyHouseCert: {
             name: "房产证",

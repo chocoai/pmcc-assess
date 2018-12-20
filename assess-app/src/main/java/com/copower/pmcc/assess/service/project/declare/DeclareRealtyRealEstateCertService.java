@@ -219,19 +219,19 @@ public class DeclareRealtyRealEstateCertService {
         return vo;
     }
 
-    public void eventWriteDeclareInfo(DeclareInfo declareInfo){
+    public void eventWriteDeclareApply(DeclareApply declareApply){
         DeclareRecord declareRecord = null;
-        if (declareInfo == null) {
+        if (declareApply == null) {
             return;
         }
         DeclareRealtyRealEstateCert query = new DeclareRealtyRealEstateCert();
-        query.setPlanDetailsId(declareInfo.getPlanDetailsId());
+        query.setPlanDetailsId(declareApply.getPlanDetailsId());
         List<DeclareRealtyRealEstateCert> lists = declareRealtyRealEstateCertDao.getDeclareRealtyRealEstateCertList(query);
         for (DeclareRealtyRealEstateCert oo : lists) {
             declareRecord = new DeclareRecord();
             BeanUtils.copyProperties(oo,declareRecord);
             declareRecord.setId(null);
-            declareRecord.setProjectId(declareInfo.getProjectId());
+            declareRecord.setProjectId(declareApply.getProjectId());
             declareRecord.setDataTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class));
             declareRecord.setDataTableId(oo.getId());
             declareRecord.setName(oo.getCertName());

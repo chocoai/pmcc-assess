@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.service.project.declare;
 
-import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareInfoDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareUseClassifyDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareApply;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareUseClassify;
 import com.copower.pmcc.assess.dto.output.base.BaseFormModuleVo;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
@@ -22,9 +22,9 @@ import java.util.List;
  * Created by kings on 2018-5-10.
  */
 @Service
-public class DeclareInfoService {
+public class DeclareApplyService {
     @Autowired
-    private DeclareInfoDao declareInfoDao;
+    private DeclareApplyDao declareApplyDao;
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -40,22 +40,22 @@ public class DeclareInfoService {
      * @param processInsId
      * @return
      */
-    public DeclareInfo getDeclareInfoByProcessInsId(String processInsId) {
+    public DeclareApply getDeclareApplyByProcessInsId(String processInsId) {
         if (StringUtils.isBlank(processInsId)) return null;
-        return declareInfoDao.getDeclareInfoByProcessInsId(processInsId);
+        return declareApplyDao.getDeclareApplyByProcessInsId(processInsId);
     }
 
     /**
      * 保存申报数据
      *
-     * @param declareInfo
+     * @param declareApply
      */
-    public void saveDeclareInfo(DeclareInfo declareInfo) throws BusinessException {
-        if (declareInfo.getId() != null && declareInfo.getId() > 0) {
-            declareInfoDao.updateDeclareInfo(declareInfo);
+    public void saveDeclareApply(DeclareApply declareApply) throws BusinessException {
+        if (declareApply.getId() != null && declareApply.getId() > 0) {
+            declareApplyDao.updateDeclareApply(declareApply);
         } else {
-            declareInfo.setCreator(commonService.thisUserAccount());
-            declareInfoDao.addDeclareInfo(declareInfo);
+            declareApply.setCreator(commonService.thisUserAccount());
+            declareApplyDao.addDeclareApply(declareApply);
         }
     }
 

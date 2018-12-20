@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.event.project;
 
-import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareApply;
 import com.copower.pmcc.assess.service.project.declare.*;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -19,7 +19,7 @@ public class DeclareRealtyEstateCertEvent extends ProjectTaskEvent {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private DeclareInfoService declareInfoService;
+    private DeclareApplyService declareApplyService;
     @Autowired
     private DeclareBuildEngineeringService declareBuildEngineeringService;
     @Autowired
@@ -34,15 +34,15 @@ public class DeclareRealtyEstateCertEvent extends ProjectTaskEvent {
     @Override
     public void processFinishExecute(ProcessExecution processExecution)throws  Exception {
         super.processFinishExecute(processExecution);
-        DeclareInfo declareInfo = declareInfoService.getDeclareInfoByProcessInsId(processExecution.getProcessInstanceId());
-        if (declareInfo == null) {
+        DeclareApply declareApply = declareApplyService.getDeclareApplyByProcessInsId(processExecution.getProcessInstanceId());
+        if (declareApply == null) {
             return;
         }
-        declareBuildEngineeringService.eventWriteDeclareInfo(declareInfo);
-        declareBuildEquipmentInstallService.eventWriteDeclareInfo(declareInfo);
-        declareRealtyHouseCertService.eventWriteDeclareInfo(declareInfo);
-        declareRealtyRealEstateCertService.eventWriteDeclareInfo(declareInfo);
-        declareRealtyLandCertService.eventWriteDeclareInfo(declareInfo);
+        declareBuildEngineeringService.eventWriteDeclareApply(declareApply);
+        declareBuildEquipmentInstallService.eventWriteDeclareApply(declareApply);
+        declareRealtyHouseCertService.eventWriteDeclareApply(declareApply);
+        declareRealtyRealEstateCertService.eventWriteDeclareApply(declareApply);
+        declareRealtyLandCertService.eventWriteDeclareApply(declareApply);
 
     }
 }

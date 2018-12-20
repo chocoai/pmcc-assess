@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
 import com.copower.pmcc.assess.dto.output.base.BaseFormModuleVo;
-import com.copower.pmcc.assess.service.project.declare.DeclareInfoService;
+import com.copower.pmcc.assess.service.project.declare.DeclareApplyService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/declare")
 public class DeclareController {
     @Autowired
-    private DeclareInfoService declareInfoService;
+    private DeclareApplyService declareInfoService;
 
     @ResponseBody
     @RequestMapping(value = "/addDeclareUserClassify", name = "添加使用的项目分类", method = RequestMethod.POST)

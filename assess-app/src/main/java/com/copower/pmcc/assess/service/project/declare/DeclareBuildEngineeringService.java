@@ -236,19 +236,19 @@ public class DeclareBuildEngineeringService {
         return vo;
     }
 
-    public void eventWriteDeclareInfo(DeclareInfo declareInfo){
+    public void eventWriteDeclareApply(DeclareApply declareApply){
         DeclareRecord declareRecord = null;
-        if (declareInfo == null) {
+        if (declareApply == null) {
             return;
         }
         DeclareBuildEngineering query = new DeclareBuildEngineering();
-        query.setPlanDetailsId(declareInfo.getPlanDetailsId());
+        query.setPlanDetailsId(declareApply.getPlanDetailsId());
         List<DeclareBuildEngineering> lists = declareBuildEngineeringDao.getDeclareBuildEngineeringList(query);
         for (DeclareBuildEngineering oo : lists) {
             declareRecord = new DeclareRecord();
             BeanUtils.copyProperties(oo,declareRecord);
             declareRecord.setId(null);
-            declareRecord.setProjectId(declareInfo.getProjectId());
+            declareRecord.setProjectId(declareApply.getProjectId());
             declareRecord.setOwnership(oo.getOccupancyUnit());
             declareRecord.setSeat(oo.getBeLocated());
             declareRecord.setFloorArea(oo.getBuildArea());

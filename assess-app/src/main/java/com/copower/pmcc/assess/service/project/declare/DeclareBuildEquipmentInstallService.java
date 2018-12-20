@@ -236,19 +236,19 @@ public class DeclareBuildEquipmentInstallService {
         return vo;
     }
 
-    public void eventWriteDeclareInfo(DeclareInfo declareInfo){
+    public void eventWriteDeclareApply(DeclareApply declareApply){
         DeclareRecord declareRecord = null;
-        if (declareInfo == null) {
+        if (declareApply == null) {
             return;
         }
         DeclareBuildEquipmentInstall query = new DeclareBuildEquipmentInstall();
-        query.setPlanDetailsId(declareInfo.getPlanDetailsId());
+        query.setPlanDetailsId(declareApply.getPlanDetailsId());
         List<DeclareBuildEquipmentInstall> lists = declareBuildEquipmentInstallDao.getDeclareBuildEquipmentInstallList(query);
         for (DeclareBuildEquipmentInstall oo : lists) {
             declareRecord = new DeclareRecord();
             BeanUtils.copyProperties(oo,declareRecord);
             declareRecord.setId(null);
-            declareRecord.setProjectId(declareInfo.getProjectId());
+            declareRecord.setProjectId(declareApply.getProjectId());
             declareRecord.setOwnership(oo.getOccupancyUnit());
             declareRecord.setSeat(oo.getBeLocated());
             declareRecord.setDataTableName(FormatUtils.entityNameConvertToTableName(DeclareBuildEquipmentInstall.class));
