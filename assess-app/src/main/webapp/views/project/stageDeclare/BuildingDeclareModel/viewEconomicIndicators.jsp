@@ -242,6 +242,9 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
+                <button type="button" data-dismiss="modal" class="btn btn-warning">
+                    删除
+                </button>
                 <button type="button" class="btn btn-primary" onclick="economicIndicators.saveData();">
                     保存
                 </button>

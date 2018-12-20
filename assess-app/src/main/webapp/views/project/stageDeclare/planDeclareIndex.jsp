@@ -23,7 +23,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>工作计划说明</h2>
+                    <h3>工作计划说明</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -50,18 +50,21 @@
                         </c:if>
                     </form>
                 </div>
+                <div class="x_content">
+                    <div class="treeGrid panel-body x_content" style="padding: 0px;">
+                        <table id="PlanItemListed" class="table table-bordered" style="max-height: auto;"></table>
+                    </div>
+                </div>
             </div>
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${panelTitle}阶段工作计划</h2>
+                    <h3>${panelTitle}阶段工作计划</h3>
                     <div class="clearfix"></div>
                 </div>
-                <div class="treeGrid panel-body x_content" style="padding: 0px;">
-                    <table id="PlanItemListed" class="table table-bordered" style="max-height: auto;"></table>
-                </div>
+
             </div>
             <div class="x_panel">
                 <div class="x_content">

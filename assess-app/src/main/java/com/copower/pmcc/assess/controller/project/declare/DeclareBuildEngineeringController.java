@@ -1,11 +1,11 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineering;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCert;
 import com.copower.pmcc.assess.dto.input.project.declare.DeclareBuildEngineeringDto;
 import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @Auther: zch
@@ -79,19 +80,21 @@ public class DeclareBuildEngineeringController {
 
     @ResponseBody
     @RequestMapping(value = "/deleteDeclareBuildEngineeringById", method = {RequestMethod.POST}, name = "删除土建维护")
-    public HttpResult delete(Integer id) {
+    public HttpResult delete(String ids) {
         try {
-            if (id != null) {
-                DeclareBuildEngineering declareBuildEngineering = new DeclareBuildEngineering();
-                declareBuildEngineering.setId(id);
-                declareBuildEngineeringService.removeDeclareBuildEngineering(declareBuildEngineering);
-                return HttpResult.newCorrectResult();
+            if (!StringUtils.isEmpty(ids)) {
+                List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+                for (Integer id : integers) {
+                    DeclareBuildEngineering declareBuildEngineering = new DeclareBuildEngineering();
+                    declareBuildEngineering.setId(id);
+                    declareBuildEngineeringService.removeDeclareBuildEngineering(declareBuildEngineering);
+                }
             }
+            return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
-        return null;
     }
 
     @ResponseBody
@@ -112,7 +115,7 @@ public class DeclareBuildEngineeringController {
 
     @ResponseBody
     @RequestMapping(value = "/listDeclareBuildEngineering", method = {RequestMethod.GET}, name = "土建维护 list")
-    public HttpResult list(Integer pid, String province, String city, String district, Integer planDetailsId,String declareType) {
+    public HttpResult list(Integer pid, String province, String city, String district, Integer planDetailsId, String declareType) {
         try {
             DeclareBuildEngineering declareBuildEngineering = new DeclareBuildEngineering();
             if (!StringUtils.isEmpty(province)) {
@@ -130,7 +133,7 @@ public class DeclareBuildEngineeringController {
             if (pid != null) {
                 declareBuildEngineering.setPid(pid);
             }
-            if (org.apache.commons.lang.StringUtils.isNotBlank(declareType)){
+            if (org.apache.commons.lang.StringUtils.isNotBlank(declareType)) {
                 declareBuildEngineering.setDeclareType(declareType);
             }
             return HttpResult.newCorrectResult(declareBuildEngineeringService.declareBuildEngineeringVoList(declareBuildEngineering));
@@ -150,7 +153,7 @@ public class DeclareBuildEngineeringController {
             if (multipartFile.isEmpty()) {
                 return HttpResult.newErrorResult("上传的文件不能为空");
             }
-            String str = declareBuildEngineeringService.importData(oo,multipartFile);
+            String str = declareBuildEngineeringService.importData(oo, multipartFile);
             return HttpResult.newCorrectResult(str);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());

@@ -123,8 +123,8 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">容积率</label>
                 <div class="col-sm-3">
-                    <input type="text" data-rule-maxlength="100" data-rule-number='true'
-                           placeholder="容积率(请输入数字)" name="volumetricRate" class="form-control"
+                    <input type="text" data-rule-maxlength="100"
+                           placeholder="容积率" name="volumetricRate" class="form-control"
                            value="${basicEstate.volumetricRate}">
                 </div>
             </div>
@@ -132,20 +132,19 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">绿化率</label>
                 <div class="col-sm-3">
-                    <input type="text" data-rule-maxlength="100" data-rule-number='true'
-                           placeholder="绿化率(请输入数字)" name="greeningRate" class="form-control"
+                    <input type="text" data-rule-maxlength="100"
+                           placeholder="绿化率" name="greeningRate" class="form-control"
                            value="${basicEstate.greeningRate}">
                 </div>
             </div>
         </div>
 
-
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">楼栋数<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">总楼栋数<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <input type="text" data-rule-maxlength="100" data-rule-number='true'
-                           placeholder="楼栋数(请输入数字)" name="buildingNumber" required
+                           placeholder="总楼栋数(请输入数字)" name="buildingNumber" required
                            class="form-control" value="${basicEstate.buildingNumber}">
                 </div>
             </div>
@@ -153,7 +152,8 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">开发商</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="开发商" class="form-control" name="developer" value="${basicEstate.developer}">
+                    <input type="text" placeholder="开发商" class="form-control" name="developer"
+                           value="${basicEstate.developer}">
                 </div>
             </div>
             <div class="x-valid">
@@ -400,7 +400,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地形状备注</label>
                 <div class="col-sm-11">
-                   <textarea class="form-control" name="shapeStateRemark"></textarea>
+                    <textarea class="form-control" name="shapeStateRemark"></textarea>
                 </div>
             </div>
         </div>

@@ -145,7 +145,7 @@ equipmentInstallation.saveAndUpdateData = function () {
         return false;
     }
     var data = formParams(equipmentInstallationConfig.frm);
-    data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';
+    data.planDetailsId = declareCommon.getPlanDetailsId();
     data.declareType = declareFunObj.getDeclareType("设备安装");
     $.ajax({
         type: "POST",
@@ -1379,24 +1379,15 @@ equipmentInstallation.loadList = function () {
     });
     $("#" + equipmentInstallationConfig.table).bootstrapTable('destroy');
     TableInit(equipmentInstallationConfig.table, getContextPath()+"/declareBuildEquipmentInstall/getDeclareBuildEquipmentInstallList", cols, {
-        planDetailsId: ${empty projectPlanDetails.id?0:projectPlanDetails.id},
+        planDetailsId: declareCommon.getPlanDetailsId(),
     }, {
         method: "get",
         showColumns: false,
-        showRefresh: true,
+        showRefresh: false,
         search: false,
         striped: true,
-        rowAttributes: function (row, index) {
-
-        },
         onLoadSuccess: function (data) {
             $('.tooltips').tooltip();
-        },
-        onCheckAll: function (rows) {
-            console.info(rows);
-        },
-        onCheck: function (row) {
-            console.info(row);
         }
     });
 };
@@ -1411,7 +1402,7 @@ equipmentInstallation.inputFile = function () {
         type: "POST",
         url: getContextPath()+"/declareBuildEquipmentInstall/importData",
         data: {
-            planDetailsId: ${empty projectPlanDetails.id?0:projectPlanDetails.id}
+            planDetailsId: declareCommon.getPlanDetailsId()
         },//要传到后台的参数，没有可以不写
         secureuri: false,//是否启用安全提交，默认为false
         fileElementId: equipmentInstallationConfig.excelUpload,//文件选择框的id属性

@@ -117,7 +117,7 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">楼栋数</label>
+                <label class="col-sm-1 control-label">总楼栋数</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstate.buildingNumber}</label>
                 </div>

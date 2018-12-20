@@ -145,24 +145,34 @@ civilEngineering.showAddModel = function () {
  * 描述:在建工程（土建）删除
  * @date:2018-09-27
  **/
-civilEngineering.deleteData = function (id) {
-    Alert("是否删除", 2, null, function () {
-        $.ajax({
-            type: "post",
-            url: getContextPath()+"/declareBuildEngineering/deleteDeclareBuildEngineeringById",
-            data: {id: id},
-            success: function (result) {
-                if (result.ret) {
-                    civilEngineering.loadList();
-                } else {
-                    Alert("保存失败:" + result.errmsg);
+civilEngineering.deleteData = function () {
+
+    var rows = $("#" + civilEngineeringConfig.table).bootstrapTable('getSelections');
+    if (!rows || rows.length <= 0) {
+        toastr.info("请选择要删除的数据");
+    } else {
+        Alert("确认要删除么？", 2, null, function () {
+            var idArray = [];
+            $.each(rows, function (i, item) {
+                idArray.push(item.id);
+            })
+            $.ajax({
+                type: "post",
+                url: getContextPath() + "/declareBuildEngineering/deleteDeclareBuildEngineeringById",
+                data: {ids: idArray.join()},
+                success: function (result) {
+                    if (result.ret) {
+                        civilEngineering.loadList();
+                    } else {
+                        Alert("保存失败:" + result.errmsg);
+                    }
+                },
+                error: function (e) {
+                    Alert("调用服务端方法失败，失败原因:" + e);
                 }
-            },
-            error: function (e) {
-                Alert("调用服务端方法失败，失败原因:" + e);
-            }
-        });
-    });
+            });
+        })
+    }
 };
 
 /**
@@ -170,45 +180,52 @@ civilEngineering.deleteData = function (id) {
  * 描述:在建工程（土建）编辑
  * @date:2018-09-27
  **/
-civilEngineering.editData = function (id) {
-    $("#" + civilEngineeringConfig.frm).clearAll();
-    if (civilEngineering.civilEngineeringFlag) {
-        civilEngineering.init();
-        civilEngineering.civilEngineeringFlag = false;
-    }
-    $.ajax({
-        url: getContextPath()+"/declareBuildEngineering/getDeclareBuildEngineeringById",
-        type: "get",
-        dataType: "json",
-        data: {id: id},
-        success: function (result) {
-            if (result.ret) {
-                var data = result.data;
-                if (civilEngineering.isEmpty(data)) {
-                    $("#" + civilEngineeringConfig.frm).initForm(result.data);
-                    civilEngineering.showFile(civilEngineeringConfig.fileId, AssessDBKey.DeclareBuildEngineering, data.id);
-                    civilEngineering.fileUpload(civilEngineeringConfig.fileId, AssessDBKey.DeclareBuildEngineering, data.id);
-                    $("#" + civilEngineeringConfig.frm + " input[name='declarationDate']").val(formatDate(data.declarationDate));
-                    $("#" + civilEngineeringConfig.frm + " input[name='expectedCompletionDate']").val(formatDate(data.expectedCompletionDate));
-                    $("#" + civilEngineeringConfig.frm + " input[name='startDate']").val(formatDate(data.startDate));
-                    AssessCommon.initAreaInfo({
-                        provinceTarget: $("#" + civilEngineeringConfig.frm + "province"),
-                        cityTarget: $("#" + civilEngineeringConfig.frm + "city"),
-                        districtTarget: $("#" + civilEngineeringConfig.frm + "district"),
-                        provinceValue: result.data.province,
-                        cityValue: result.data.city,
-                        districtValue: result.data.district
-                    });
-                }
-            }
-        },
-        error: function (result) {
-            Alert("调用服务端方法失败，失败原因:" + result);
+civilEngineering.editData = function () {
+    var rows = $("#" + civilEngineeringConfig.table).bootstrapTable('getSelections');
+    if (!rows || rows.length <= 0) {
+        toastr.info("请选择要编辑的数据");
+    } else if (rows.length == 1) {
+        $("#" + civilEngineeringConfig.frm).clearAll();
+        if (civilEngineering.civilEngineeringFlag) {
+            civilEngineering.init();
+            civilEngineering.civilEngineeringFlag = false;
         }
-    });
-    //使校验生效
-    $("#" + civilEngineeringConfig.frm).validate();
-    $('#' + civilEngineeringConfig.box).modal("show");
+        $.ajax({
+            url: getContextPath() + "/declareBuildEngineering/getDeclareBuildEngineeringById",
+            type: "get",
+            dataType: "json",
+            data: {id: rows[0].id},
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data;
+                    if (civilEngineering.isEmpty(data)) {
+                        $("#" + civilEngineeringConfig.frm).initForm(result.data);
+                        civilEngineering.showFile(civilEngineeringConfig.fileId, AssessDBKey.DeclareBuildEngineering, data.id);
+                        civilEngineering.fileUpload(civilEngineeringConfig.fileId, AssessDBKey.DeclareBuildEngineering, data.id);
+                        $("#" + civilEngineeringConfig.frm + " input[name='declarationDate']").val(formatDate(data.declarationDate));
+                        $("#" + civilEngineeringConfig.frm + " input[name='expectedCompletionDate']").val(formatDate(data.expectedCompletionDate));
+                        $("#" + civilEngineeringConfig.frm + " input[name='startDate']").val(formatDate(data.startDate));
+                        AssessCommon.initAreaInfo({
+                            provinceTarget: $("#" + civilEngineeringConfig.frm + "province"),
+                            cityTarget: $("#" + civilEngineeringConfig.frm + "city"),
+                            districtTarget: $("#" + civilEngineeringConfig.frm + "district"),
+                            provinceValue: result.data.province,
+                            cityValue: result.data.city,
+                            districtValue: result.data.district
+                        });
+                    }
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+        //使校验生效
+        $("#" + civilEngineeringConfig.frm).validate();
+        $('#' + civilEngineeringConfig.box).modal("show");
+    } else {
+        toastr.info("只能选择一行数据进行编辑");
+    }
 };
 
 /**
@@ -221,11 +238,11 @@ civilEngineering.saveAndUpdateData = function () {
         return false;
     }
     var data = formParams(civilEngineeringConfig.frm);
-    data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';
+    data.planDetailsId = declareCommon.getPlanDetailsId();
     data.declareType = declareFunObj.getDeclareType("土建");
     $.ajax({
         type: "POST",
-        url: getContextPath()+"/declareBuildEngineering/saveAndUpdateDeclareBuildEngineering",
+        url: getContextPath() + "/declareBuildEngineering/saveAndUpdateDeclareBuildEngineering",
         data: data,
         success: function (result) {
             if (result.ret) {
@@ -250,7 +267,7 @@ civilEngineering.saveAndUpdateData = function () {
 civilEngineering.handleFather = function (item) {
     $.ajax({
         type: "POST",
-        url: getContextPath()+"/declareBuildEngineeringAndEquipmentCenter/saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter",
+        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter",
         data: item,
         success: function (result) {
             if (result.ret) {
@@ -446,7 +463,7 @@ civilEngineering.declareRealtyRealEstateCertView = function (id) {
     }
     $.ajax({
         type: "get",
-        url: getContextPath()+"/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
         data: {id: id},
         success: function (result) {
             if (result.ret) {
@@ -455,7 +472,7 @@ civilEngineering.declareRealtyRealEstateCertView = function (id) {
                 $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm).clearAll();
                 if (civilEngineering.isEmpty(realEstateId)) {
                     $.ajax({
-                        url: getContextPath()+"/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertById",
+                        url: getContextPath() + "/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertById",
                         type: "get",
                         dataType: "json",
                         data: {id: realEstateId},
@@ -512,7 +529,7 @@ civilEngineering.declareRealtyRealEstateCertSaveAndUpdate = function () {
     var data = formParams(civilEngineeringConfig.declareRealtyRealEstateCert.frm);
     $.ajax({
         type: "POST",
-        url: getContextPath()+"/declareRealtyRealEstateCert/saveAndUpdateDeclareRealtyRealEstateCert",
+        url: getContextPath() + "/declareRealtyRealEstateCert/saveAndUpdateDeclareRealtyRealEstateCert",
         data: data,
         success: function (result) {
             if (result.ret) {
@@ -714,7 +731,7 @@ civilEngineering.declareRealtyLandCertView = function (id) {
     $("#" + civilEngineeringConfig.declareRealtyLandCert.frm).clearAll();
     $.ajax({
         type: "get",
-        url: getContextPath()+"/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
         data: {id: id},
         success: function (result) {
             if (result.ret) {
@@ -722,7 +739,7 @@ civilEngineering.declareRealtyLandCertView = function (id) {
                 var landId = data.landId;
                 if (civilEngineering.isEmpty(landId)) {
                     $.ajax({
-                        url: getContextPath()+"/declareRealtyLandCert/getDeclareRealtyLandCertById",
+                        url: getContextPath() + "/declareRealtyLandCert/getDeclareRealtyLandCertById",
                         type: "get",
                         dataType: "json",
                         data: {id: landId},
@@ -776,7 +793,7 @@ civilEngineering.declareRealtyLandCertSaveAndUpdate = function () {
     var data = formParams(civilEngineeringConfig.declareRealtyLandCert.frm);
     $.ajax({
         type: "POST",
-        url: getContextPath()+"/declareRealtyLandCert/saveAndUpdateDeclareRealtyLandCert",
+        url: getContextPath() + "/declareRealtyLandCert/saveAndUpdateDeclareRealtyLandCert",
         data: data,
         success: function (result) {
             if (result.ret) {
@@ -808,14 +825,14 @@ civilEngineering.declareBuildingPermitView = function (id) {
     $("#" + civilEngineeringConfig.declareBuildingPermit.frm).clearAll();
     $.ajax({
         type: "get",
-        url: getContextPath()+"/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
         data: {id: id},
         success: function (result) {
             if (result.ret) {
                 var buildingPermitId = result.data.buildingPermitId;
                 if (civilEngineering.isEmpty(buildingPermitId)) {
                     $.ajax({
-                        url: getContextPath()+"/declareBuildingPermit/getDeclareBuildingPermitById",
+                        url: getContextPath() + "/declareBuildingPermit/getDeclareBuildingPermitById",
                         type: "get",
                         dataType: "json",
                         data: {id: buildingPermitId},
@@ -863,7 +880,7 @@ civilEngineering.declareBuildingPermitSaveAndUpdate = function () {
     var data = formParams(civilEngineeringConfig.declareBuildingPermit.frm);
     $.ajax({
         type: "POST",
-        url: getContextPath()+"/declareBuildingPermit/saveAndUpdateDeclareBuildingPermit",
+        url: getContextPath() + "/declareBuildingPermit/saveAndUpdateDeclareBuildingPermit",
         data: data,
         success: function (result) {
             if (result.ret) {
@@ -895,14 +912,14 @@ civilEngineering.declareLandUsePermitView = function (id) {
     $("#" + civilEngineeringConfig.declareLandUsePermit.frm).clearAll();
     $.ajax({
         type: "get",
-        url: getContextPath()+"/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
         data: {id: id},
         success: function (result) {
             if (result.ret) {
                 var landUsePermitId = result.data.landUsePermitId;
                 if (civilEngineering.isEmpty(landUsePermitId)) {
                     $.ajax({
-                        url: getContextPath()+"/declareLandUsePermit/getDeclareLandUsePermitById",
+                        url: getContextPath() + "/declareLandUsePermit/getDeclareLandUsePermitById",
                         type: "get",
                         dataType: "json",
                         data: {id: landUsePermitId},
@@ -951,7 +968,7 @@ civilEngineering.declareLandUsePermitSaveAndUpdate = function () {
     var data = formParams(civilEngineeringConfig.declareLandUsePermit.frm);
     $.ajax({
         type: "POST",
-        url: getContextPath()+"/declareLandUsePermit/saveAndUpdateDeclareLandUsePermit",
+        url: getContextPath() + "/declareLandUsePermit/saveAndUpdateDeclareLandUsePermit",
         data: data,
         success: function (result) {
             if (result.ret) {
@@ -984,14 +1001,14 @@ civilEngineering.declarePreSalePermitView = function (id) {
     $("#" + civilEngineeringConfig.declarePreSalePermit.frm).clearAll();
     $.ajax({
         type: "get",
-        url: getContextPath()+"/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
         data: {id: id},
         success: function (result) {
             if (result.ret) {
                 var preSalePermitId = result.data.preSalePermitId;
                 if (civilEngineering.isEmpty(preSalePermitId)) {
                     $.ajax({
-                        url: getContextPath()+"/declarePreSalePermit/getDeclarePreSalePermitById",
+                        url: getContextPath() + "/declarePreSalePermit/getDeclarePreSalePermitById",
                         type: "get",
                         dataType: "json",
                         data: {id: preSalePermitId},
@@ -1040,7 +1057,7 @@ civilEngineering.declarePreSalePermitSaveAndUpdate = function () {
     var data = formParams(civilEngineeringConfig.declarePreSalePermit.frm);
     $.ajax({
         type: "POST",
-        url: getContextPath()+"/declarePreSalePermit/saveAndUpdateDeclarePreSalePermit",
+        url: getContextPath() + "/declarePreSalePermit/saveAndUpdateDeclarePreSalePermit",
         data: data,
         success: function (result) {
             if (result.ret) {
@@ -1072,14 +1089,14 @@ civilEngineering.declareBuildingConstructionPermitView = function (id) {
     $("#" + civilEngineeringConfig.declareBuildingConstructionPermit.frm).clearAll();
     $.ajax({
         type: "get",
-        url: getContextPath()+"/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
         data: {id: id},
         success: function (result) {
             if (result.ret) {
                 var buildingConstructionPermitId = result.data.buildingConstructionPermitId;
                 if (civilEngineering.isEmpty(buildingConstructionPermitId)) {
                     $.ajax({
-                        url: getContextPath()+"/declareBuildingConstructionPermit/getDeclareBuildingConstructionPermitById",
+                        url: getContextPath() + "/declareBuildingConstructionPermit/getDeclareBuildingConstructionPermitById",
                         type: "get",
                         dataType: "json",
                         data: {id: buildingConstructionPermitId},
@@ -1130,7 +1147,7 @@ civilEngineering.declareBuildingConstructionPermitSaveAndUpdate = function () {
     var data = formParams(civilEngineeringConfig.declareBuildingConstructionPermit.frm);
     $.ajax({
         type: "POST",
-        url: getContextPath()+"/declareBuildingConstructionPermit/saveAndUpdateDeclareBuildingConstructionPermit",
+        url: getContextPath() + "/declareBuildingConstructionPermit/saveAndUpdateDeclareBuildingConstructionPermit",
         data: data,
         success: function (result) {
             if (result.ret) {
@@ -1140,7 +1157,7 @@ civilEngineering.declareBuildingConstructionPermitSaveAndUpdate = function () {
                     var pid = data.pid;
                     var fData = {};
                     fData.buildingConstructionPermitId = item;
-                    fData.id = data.pid ;
+                    fData.id = data.pid;
                     civilEngineering.handleFather(fData);
                     toastr.success('成功!');
                 }
@@ -1161,12 +1178,12 @@ civilEngineering.declareBuildingConstructionPermitSaveAndUpdate = function () {
 civilEngineering.declareEconomicIndicatorsView = function (pid) {
     $.ajax({
         type: "get",
-        url: getContextPath()+"/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
         data: {id: pid},
         success: function (result) {
             if (result.ret) {
                 var indicatorId = result.data.indicatorId;
-                if (civilEngineering.isEmpty(indicatorId)){
+                if (civilEngineering.isEmpty(indicatorId)) {
                     $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).clearAll();
                     $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('[name=pid]').val(indicatorId);
                     $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('[name=planDetailsId]').val('${projectPlanDetails.id}');
@@ -1174,17 +1191,17 @@ civilEngineering.declareEconomicIndicatorsView = function (pid) {
                     economicIndicators.initForm(indicatorId, function () {
                         $('#' + civilEngineeringConfig.declareEconomicIndicators.box).modal("show");
                     });
-                }else {
+                } else {
                     $.ajax({
                         type: "POST",
-                        url: getContextPath()+"/declareBuildEconomicIndicatorsCenter/saveAndUpdateDeclareBuildEconomicIndicatorsCenter",
-                        data: {planDetailsId:"${projectPlanDetails.id}"},
+                        url: getContextPath() + "/declareBuildEconomicIndicatorsCenter/saveAndUpdateDeclareBuildEconomicIndicatorsCenter",
+                        data: {planDetailsId: declareCommon.getPlanDetailsId()},
                         success: function (result) {
                             if (result.ret) {
                                 var id = result.data;
                                 var fData = {};
                                 fData.indicatorId = id;
-                                fData.id = pid ;
+                                fData.id = pid;
                                 civilEngineering.handleFather(fData);
                                 $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).clearAll();
                                 $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('[name=pid]').val(id);
@@ -1244,7 +1261,7 @@ civilEngineering.pasteData = function (id, centerId) {
             var copyId = civilEngineering.copyId;
             $.ajax({
                 type: "post",
-                url: getContextPath()+"/declareBuildEngineeringAndEquipmentCenter/copyDeclareBuildEngineeringAndEquipmentCenter",
+                url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/copyDeclareBuildEngineeringAndEquipmentCenter",
                 data: {ids: id, copyId: copyId, type: "DeclareBuildEngineering"},
                 success: function (result) {
                     if (result.ret) {
@@ -1270,17 +1287,17 @@ civilEngineering.pasteAll = function () {
         if (this.isEmpty(item)) {
             if (item.length >= 1) {
                 var copyId = civilEngineering.copyId;
-                var ids = "" ;
-                $.each(item,function (i,n) {
-                    if (i == item.length-1){
+                var ids = "";
+                $.each(item, function (i, n) {
+                    if (i == item.length - 1) {
                         ids += n.id
-                    }else {
-                        ids += n.id+",";
+                    } else {
+                        ids += n.id + ",";
                     }
                 });
                 $.ajax({
                     type: "post",
-                    url: getContextPath()+"/declareBuildEngineeringAndEquipmentCenter/copyDeclareBuildEngineeringAndEquipmentCenter",
+                    url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/copyDeclareBuildEngineeringAndEquipmentCenter",
                     data: {ids: ids, copyId: copyId, type: "DeclareBuildEngineering"},
                     success: function (result) {
                         if (result.ret) {
@@ -1343,75 +1360,45 @@ civilEngineering.loadList = function () {
     cols.push({field: 'provinceName', title: '省', visible: false});
     cols.push({field: 'cityName', title: '市', visible: false});
     cols.push({field: 'districtName', title: '县', visible: false});
-    cols.push({field: 'bookNetValue', title: '帐面净值', visible: false});
+    cols.push({field: 'bookNetValue', title: '帐面净值', visible: true});
     cols.push({field: 'bookValue', title: '帐面价值', visible: true});
     cols.push({field: 'declarer', title: '申报人'});
     cols.push({field: 'beLocated', title: '坐落'});
-    cols.push({field: 'centerId', title: '中间表id', visible: true});
+    cols.push({field: 'centerId', title: '中间表id', visible: false});
     cols.push({field: 'fileViewName', title: '附件'});
     cols.push({
-        field: 'id', title: '子类以及自身操作', formatter: function (value, row, index) {
-            var str = '<div class="dropdown">';
-            str += "<button class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu1'>" + "操作" + "<span class='caret'>" + "</span>" + "</button>";
-            str += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu1'>";
-            str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.deleteData(" + row.id + ")'" + ">" + "删除" + "</a>" + "</li>";
-            str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.editData(" + row.id + ")'" + ">" + "编辑" + "</a>" + "</li>";
-            str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyLandCertView(" + row.centerId + ")'" + ">" + "土地证" + "</a>" + "</li>";
-            str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyRealEstateCertView(" + row.centerId + ")'" + ">" + "不动产" + "</a>" + "</li>";
-            str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingPermitView(" + row.centerId + ")'" + ">" + "建设工程规划许可证" + "</a>" + "</li>";
-            str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareLandUsePermitView(" + row.centerId + ")'" + ">" + "建设用地规划许可证" + "</a>" + "</li>";
-            str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingConstructionPermitView(" + row.centerId + ")'" + ">" + "建筑工程施工许可证" + "</a>" + "</li>";
-            str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declarePreSalePermitView(" + row.centerId + ")'" + ">" + "商品房预售许可证" + "</a>" + "</li>";
-            str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareEconomicIndicatorsView(" + row.centerId + ")'" + ">" + "经济规划指标" + "</a>" + "</li>";
-            str += "</ul>";
-            str += "</div>";
-            return str;
-        }
-    });
-    cols.push({
-        field: 'id', title: '复制从表数据', formatter: function (value, row, index) {
-            var str = '<div class="btn-margin">';
-            str += '<a class="btn btn-xs btn-success tooltips" id="civilEngineeringCopy' + row.id + '" data-placement="top" data-original-title="复制" onclick="civilEngineering.copyData(' + row.id + ',' + row.centerId + ')"><i class="fa fa-copy fa-white"></i></a>';
-            str += '</div>';
-            return str;
-        }
-    });
-    cols.push({
-        field: 'id', title: '放弃粘贴数据', formatter: function (value, row, index) {
-            var str = '<div class="btn-margin" style="display: none">';
-            str += '<a class="btn btn-xs btn-success tooltips" id="civilEngineeringCancel' + row.id + '" data-placement="top" data-original-title="放弃" onclick="civilEngineering.cancelData(' + row.id + ',' + row.centerId + ')">放弃</a>';
-            str += '</div>';
-            return str;
-        }
-    });
-    cols.push({
-        field: 'id', title: '粘贴从表数据', formatter: function (value, row, index) {
-            var str = '<div class="btn-margin" style="display: none">';
-            str += '<a class="btn btn-xs btn-success tooltips" id="civilEngineeringPaste' + row.id + '" data-placement="top" data-original-title="粘贴" onclick="civilEngineering.pasteData(' + row.id + ',' + row.centerId + ')"><i class="fa fa-paste fa-white"></i></a>';
-            str += '</div>';
-            return str;
+        field: 'id', title: '操作', formatter: function (value, row, index) {
+            var html = $("#civilEngineeringHtml").html();
+            return html.replace(/paramCenterId/g, row.centerId);
+            // return $("#civilEngineeringHtml").html();
+            // var str = '<div class="dropdown">';
+            // str += "<button class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu1'>" + "操作" + "<span class='caret'>" + "</span>" + "</button>";
+            // str += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu1'>";
+            // str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.deleteData(" + row.id + ")'" + ">" + "删除" + "</a>" + "</li>";
+            // str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.editData(" + row.id + ")'" + ">" + "编辑" + "</a>" + "</li>";
+            // str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyLandCertView(" + row.centerId + ")'" + ">" + "土地证" + "</a>" + "</li>";
+            // str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyRealEstateCertView(" + row.centerId + ")'" + ">" + "不动产" + "</a>" + "</li>";
+            // str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingPermitView(" + row.centerId + ")'" + ">" + "建设工程规划许可证" + "</a>" + "</li>";
+            // str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareLandUsePermitView(" + row.centerId + ")'" + ">" + "建设用地规划许可证" + "</a>" + "</li>";
+            // str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingConstructionPermitView(" + row.centerId + ")'" + ">" + "建筑工程施工许可证" + "</a>" + "</li>";
+            // str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declarePreSalePermitView(" + row.centerId + ")'" + ">" + "商品房预售许可证" + "</a>" + "</li>";
+            // str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareEconomicIndicatorsView(" + row.centerId + ")'" + ">" + "经济规划指标" + "</a>" + "</li>";
+            // str += "</ul>";
+            // str += "</div>";
+            // return str;
         }
     });
     $("#" + civilEngineeringConfig.table).bootstrapTable('destroy');
-    TableInit(civilEngineeringConfig.table, getContextPath()+"/declareBuildEngineering/getDeclareBuildEngineeringList", cols, {
-        planDetailsId: ${empty projectPlanDetails.id?0:projectPlanDetails.id},
+    TableInit(civilEngineeringConfig.table, getContextPath() + "/declareBuildEngineering/getDeclareBuildEngineeringList", cols, {
+        planDetailsId: declareCommon.getPlanDetailsId()
     }, {
         method: "get",
         showColumns: false,
-        showRefresh: true,
+        showRefresh: false,
         search: false,
         striped: true,
-        rowAttributes: function (row, index) {
-
-        },
         onLoadSuccess: function (data) {
             $('.tooltips').tooltip();
-        },
-        onCheckAll: function (rows) {
-
-        },
-        onCheck: function (row) {
-
         }
     });
 };
@@ -1425,9 +1412,9 @@ civilEngineering.loadList = function () {
 civilEngineering.inputFile = function () {
     $.ajaxFileUpload({
         type: "POST",
-        url: getContextPath()+"/declareBuildEngineering/importData",
+        url: getContextPath() + "/declareBuildEngineering/importData",
         data: {
-            planDetailsId: ${empty projectPlanDetails.id?0:projectPlanDetails.id}
+            planDetailsId: declareCommon.getPlanDetailsId()
         },//要传到后台的参数，没有可以不写
         secureuri: false,//是否启用安全提交，默认为false
         fileElementId: civilEngineeringConfig.excelUpload,//文件选择框的id属性

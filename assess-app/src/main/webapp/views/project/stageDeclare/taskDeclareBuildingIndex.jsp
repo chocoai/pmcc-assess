@@ -12,28 +12,17 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <div class="x_panel">
-                <div class="x_content">
-                    <div class="x_title">
-                        <h3>申报证书类型
-                        </h3>
-                        <div class="clearfix"></div>
-                    </div>
-                    <form class="form-horizontal" id="frmCertificate">
-                        <div id="frmCertificateHTML">
-
-                        </div>
-                    </form>
-                </div>
-            </div>
+            <form class="form-horizontal" id="declareApplyForm">
+                <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+            </form>
 
             <!-- 土建 -->
-            <div id="viewCivilEngineering" style="display: none;">
+            <div id="viewCivilEngineering">
                 <%@include file="/views/project/stageDeclare/BuildingDeclareModel/viewCivilEngineering.jsp" %>
             </div>
 
             <!-- 设备安装 -->
-            <div id="viewEquipmentInstallation" style="display: none;">
+            <div id="viewEquipmentInstallation">
                 <%@include file="/views/project/stageDeclare/BuildingDeclareModel/viewEquipmentInstallation.jsp" %>
             </div>
 
@@ -56,12 +45,13 @@
 </body>
 <%@include file="/views/project/stageDeclare/BuildingDeclareModel/viewEconomicIndicators.jsp" %>
 <%@include file="/views/share/main_footer.jsp" %>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
 <script>
     var config = {
         declare: {
-            frm: "frmCertificate"
+            frm: "declareApplyForm"
         },
         civilEngineering: {
             name: "土建",
@@ -88,11 +78,11 @@
      * @date:2018-10-22
      **/
     declareFunObj.getDeclareType = function (name) {
-        var declareType = null ;
-        $("#" + config.declare.frm + " :checkbox").each(function (j,oo) {
+        var declareType = null;
+        $("#" + config.declare.frm + " :checkbox").each(function (j, oo) {
             AssessCommon.getProjectClassifyInfoAsync($(oo).val(), function (data) {
                 if (declareFunObj.isEmpty(data)) {
-                    if (data.name == name){
+                    if (data.name == name) {
                         declareType = data.id;
                     }
                 }
@@ -102,21 +92,24 @@
     };
 
     declareFunObj.updateInit = function () {
-        AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleDeclareBuildingCertificateType, function (html, data){
+        AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleDeclareBuildingCertificateType, function (html, data) {
             $.each(data, function (i, n) {
                 if (config.civilEngineering.name == n.name) {
                     $.ajax({
                         type: "get",
                         url: "${pageContext.request.contextPath}/declareBuildEngineering/listDeclareBuildEngineering",
-                        data: {planDetailsId:'${empty projectPlanDetails.id?0:projectPlanDetails.id}',declareType:n.id},
+                        data: {
+                            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}',
+                            declareType: n.id
+                        },
                         success: function (result) {
                             if (result.ret) {
-                                if (declareFunObj.isEmpty(result.data)){
-                                    if (result.data.length >= 1){
+                                if (declareFunObj.isEmpty(result.data)) {
+                                    if (result.data.length >= 1) {
                                         declareFunObj.civilEngineering.toggle();//view 显示
-                                        $("#" + config.declare.frm + " :checkbox").each(function (j,oo) {
-                                            if ($(oo).val() == n.id){
-                                                $(this).prop("checked",true);//单选框 选中
+                                        $("#" + config.declare.frm + " :checkbox").each(function (j, oo) {
+                                            if ($(oo).val() == n.id) {
+                                                $(this).prop("checked", true);//单选框 选中
                                             }
                                         });
                                     }
@@ -136,15 +129,18 @@
                     $.ajax({
                         type: "get",
                         url: "${pageContext.request.contextPath}/declareBuildEquipmentInstall/listDeclareBuildEquipmentInstall",
-                        data: {planDetailsId:'${empty projectPlanDetails.id?0:projectPlanDetails.id}',declareType:n.id},
+                        data: {
+                            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}',
+                            declareType: n.id
+                        },
                         success: function (result) {
                             if (result.ret) {
-                                if (declareFunObj.isEmpty(result.data)){
-                                    if (result.data.length >= 1){
+                                if (declareFunObj.isEmpty(result.data)) {
+                                    if (result.data.length >= 1) {
                                         declareFunObj.equipmentInstallation.toggle();//view 显示
-                                        $("#" + config.declare.frm + " :checkbox").each(function (j,oo) {
-                                            if ($(oo).val() == n.id){
-                                                $(this).prop("checked",true);//单选框 选中
+                                        $("#" + config.declare.frm + " :checkbox").each(function (j, oo) {
+                                            if ($(oo).val() == n.id) {
+                                                $(this).prop("checked", true);//单选框 选中
                                             }
                                         });
                                     }
@@ -224,7 +220,7 @@
     };
 
     $(function () {
-        declareFunObj.declare.init();
+        //declareFunObj.declare.init();
     });
 </script>
 <script type="application/javascript">

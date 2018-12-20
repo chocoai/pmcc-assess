@@ -1,11 +1,10 @@
 /**
  * Created by kings on 2018-12-20.
  */
-var basicCommon = {};
-basicCommon.basicApplyForm = $('#basicApplyFrm');
-basicCommon.contentTabPanel = $('#contentTabPanel');
+var declareCommon = {};
+declareCommon.declareApplyForm = $('#declareApplyForm');
 
-basicCommon.getPlanDetailsId = function () {
-    return basicCommon.basicApplyForm.find('[name=id]').val();
+declareCommon.getPlanDetailsId = function () {
+    return declareCommon.declareApplyForm.find('[name=planDetailsId]').val();
 }
 

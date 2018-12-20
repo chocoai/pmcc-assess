@@ -20,7 +20,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${panelTitle}阶段工作计划</h2>
+                    <h3>${panelTitle}阶段工作计划</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -75,18 +75,10 @@
                         </c:if>
                     </form>
                 </div>
-            </div>
-
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h2>${panelTitle}阶段工作计划</h2>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="treeGrid panel-body x_content" style="padding: 0px;">
-                    <table id="PlanItemListed" class="table table-bordered" style="max-height: auto;"></table>
+                <div class="x_content">
+                    <div class="treeGrid panel-body x_content" style="padding: 0px;">
+                        <table id="PlanItemListed" class="table table-bordered" style="max-height: auto;"></table>
+                    </div>
                 </div>
             </div>
             <div class="x_panel">
@@ -112,7 +104,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="h4_modeTitle">计划编辑</h4>
+                <h3 class="modal-title" id="h4_modeTitle">计划编辑</h3>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -211,8 +203,7 @@
                                         说明
                                     </label>
                                     <div class="col-sm-10">
-                                        <input type="text" placeholder="说明" maxlength="50" id="planRemarks" name="planRemarks"
-                                               class="form-control">
+                                        <textarea id="planRemarks" name="planRemarks" class="form-control" placeholder="说明" maxlength="200"></textarea>
                                     </div>
                                 </div>
                             </form>
@@ -220,7 +211,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消

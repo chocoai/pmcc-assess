@@ -13,20 +13,14 @@
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <div class="x_panel">
                 <div class="x_content">
-                    <div class="x_title">
-                        <h3>申报证书类型
-                        </h3>
-                        <div class="clearfix"></div>
-                    </div>
                     <form class="form-horizontal" id="declareApplyForm">
                         <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
-                        <div id="frmCertificateHTML">
+                        <div id="declareApplyFormHTML">
 
                         </div>
                     </form>
                 </div>
             </div>
-
             <!-- 房产证 -->
             <div id="viewDeclareRealtyHouseCert" style="display: none">
                 <%@include file="/views/project/stageDeclare/HouseDeclarationModel/viewDeclareRealtyHouseCert.jsp" %>
@@ -60,13 +54,10 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
-
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;" >
-
 <script type="text/javascript">
-</script>
-<script>
     var config = {
         declare: {
             frm: "declareApplyForm"
