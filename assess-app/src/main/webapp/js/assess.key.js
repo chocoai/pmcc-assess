@@ -226,3 +226,4 @@ AssessFTKey.ftMethodIncomeHistory = "ft.method.income.history";//收益法历史
 AssessFTKey.ftMethodIncomeHistoryRestaurant = "ft.method.income.history.restaurant";//收益法餐饮、酒店、宾馆历史数据模板
 AssessFTKey.ftDeclareBuildEngineering = "ft.declare.build.engineering";//在建工程土建模板
 AssessFTKey.ftDeclareBuildEquipmentInstall = "ft.declare.build.equipmentInstall";//在建工程设备安装模板
+AssessFTKey.ftOperationManualCaseBase = "ft.operation.manual.case.base";//案例库操作手册

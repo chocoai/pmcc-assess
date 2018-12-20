@@ -11,28 +11,21 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <div class="x_panel">
-                <div class="x_content">
-                    <form class="form-horizontal" id="declareApplyForm">
-                        <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
-                        <div id="declareApplyFormHTML">
-
-                        </div>
-                    </form>
-                </div>
-            </div>
+            <form class="form-horizontal" id="declareApplyForm">
+                <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+            </form>
             <!-- 房产证 -->
-            <div id="viewDeclareRealtyHouseCert" style="display: none">
+            <div id="viewDeclareRealtyHouseCert">
                 <%@include file="/views/project/stageDeclare/HouseDeclarationModel/viewDeclareRealtyHouseCert.jsp" %>
             </div>
 
             <!-- 土地证 -->
-            <div id="viewDeclareRealtyLandCert" style="display: none">
+            <div id="viewDeclareRealtyLandCert">
                 <%@include file="/views/project/stageDeclare/HouseDeclarationModel/viewDeclareRealtyLandCert.jsp" %>
             </div>
 
             <!-- 不动产证 -->
-            <div id="viewDeclareRealtyRealEstateCert" style="display: none">
+            <div id="viewDeclareRealtyRealEstateCert">
                 <%@include file="/views/project/stageDeclare/HouseDeclarationModel/viewDeclareRealtyRealEstateCert.jsp" %>
             </div>
 
@@ -277,7 +270,7 @@
 
 
     $(function () {
-        declareFunObj.declare.init();
+        //declareFunObj.declare.init();
     });
 </script>
 <script type="application/javascript">

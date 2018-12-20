@@ -12,12 +12,12 @@
         <%@include file="/views/share/main_head.jsp" %>
         <div class="right_col" role="main">
             <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
+                <div class="x_title">
                     <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
                         ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
+                        <small>
+                            <div type="button" class="btn btn-xs btn-primary" onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftOperationManualCaseBase);">操作手册</div>
+                        </small>
                     </h2>
                     <div class="clearfix"></div>
                 </div>
@@ -36,10 +36,10 @@
                             </div>
 
                             <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary"
+                                <div type="button" class="btn btn-primary"
                                         onclick="dataObjFun.loadDataList()">
                                     查询
-                                </button>
+                                </div>
                                 <a class="btn btn-success" target="_blank"
                                    href="${pageContext.request.contextPath}/basicApply/basicApplyIndex">新增</a>
                             </div>
