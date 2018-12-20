@@ -467,9 +467,9 @@
         <div class="x_title">
             <h3>联系人
                 <small>
-                    <button type="button" class="btn btn-primary docs-tooltip"
+                    <button type="button" class="btn btn-xs btn-primary docs-tooltip"
                             onclick="Contacts.prototype.UNIT_INFORMATION().crmContacts.showModel();">
-                        查询更多<i class="fa fa-search"></i>
+                        <i class="fa fa-search"></i>查询更多
                     </button>
                 </small>
             </h3>

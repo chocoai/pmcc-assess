@@ -16,10 +16,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="x_panel">
-                        <div class="x_title collapse-link">
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                            </ul>
+                        <div class="x_title">
                             <h2>
                                 <i class="fa ${baseViewDto.currentMenu.icon}"></i>
                                 ${baseViewDto.currentMenu.name}
@@ -27,8 +24,6 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
-                            <%@include file="/views/project/projectCenterHeader.jsp" %>
-
                             <table id="tb_csr_projectList" class="table table-bordered">
                             </table>
                         </div>
@@ -51,7 +46,6 @@
     //债权人列表
     function loadCsrProjectInfoList(name) {
         var cols = [];
-        cols.push({field: 'id', title: '项目编号'});
         cols.push({field: 'name', title: '项目名称'});
         cols.push({field: 'statusName', title: '项目状态'});
         cols.push({field: 'projectCategoryName', title: '项目类别'});
@@ -62,7 +56,8 @@
                 return str;
             }
         });
-        TableInit("tb_csr_projectList", "${pageContext.request.contextPath}/projectCenter/getCsrProjectInfoListA", cols, {
+        $("#tb_csr_projectList").bootstrapTable('destroy');
+        TableInit("tb_csr_projectList", "${pageContext.request.contextPath}/projectCenter/getCsrProjectInfoList", cols, {
             name: name
         }, {
             showColumns: false,
@@ -70,26 +65,9 @@
             search: true,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
-            },
-            onSearch: function () {
-                //搜索
-                loadCsrProjectInfoList(this.searchText);
-                name = "" + this.searchText + "";
-                console.log(this.searchText);
             }
         });
-        var result = $("#tb_csr_projectList").bootstrapTable('getSelections');
     }
-
-    // $('#tb_csr_projectList').bootstrapTable({
-    //     onSearch: function () {
-    //         console.log("search");
-    //     }
-    // });
-    function search() {
-        TableReload("tb_csr_projectList", "${pageContext.request.contextPath}/projectCenter/getCsrProjectInfoListA", {name: $("#projectName").val()});
-    }
-
 </script>
 </body>
 </html>

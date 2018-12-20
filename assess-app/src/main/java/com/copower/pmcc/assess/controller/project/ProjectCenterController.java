@@ -92,7 +92,7 @@ public class ProjectCenterController {
 
     @RequestMapping(value = "/projectCsrList", name = "项目 债权列表")
     public ModelAndView projectCsrList() {
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectCsrList");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/csr/projectCsrList");
         return modelAndView;
     }
 

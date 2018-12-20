@@ -908,45 +908,10 @@ public class CsrProjectInfoService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<CsrProjectInfo> csrProjectInfos = csrProjectInfoDao.getCsrProjectInfoList(name);
-        List<CsrProjectInfoVo> vos = new ArrayList<CsrProjectInfoVo>();
-        for (CsrProjectInfo projectInfo : csrProjectInfos) {
-            vos.add(change(projectInfo));
-        }
+        List<CsrProjectInfoVo> vos = LangUtils.transform(csrProjectInfos, o -> getCsrProjectInfoVo(o));
         vo.setRows(vos);
         vo.setTotal(page.getTotal());
         return vo;
-    }
-
-    public CsrProjectInfoVo change(CsrProjectInfo csrProjectInfo) {
-        CsrProjectInfoVo vo = new CsrProjectInfoVo();
-        BeanUtils.copyProperties(csrProjectInfo, vo);
-        if (!org.springframework.util.StringUtils.isEmpty(csrProjectInfo.getStatus())) {
-            vo.setStatusName(getProjectStatusEnum(csrProjectInfo.getStatus()));
-        }
-        if (!ObjectUtils.isEmpty(csrProjectInfo.getCustomerType())) {
-            vo.setCustomerTypeName(getCustomerTypeEnum(csrProjectInfo.getCustomerType()));
-        }
-        return vo;
-    }
-
-    public String getProjectStatusEnum(String key) {
-        String name = "";
-        for (ProjectStatusEnum s : ProjectStatusEnum.values()) {
-            if (key.equals(s.getKey())) {
-                name = s.getName();
-            }
-        }
-        return name;
-    }
-
-    public String getCustomerTypeEnum(Integer key) {
-        String name = "";
-        for (CustomerTypeEnum s : CustomerTypeEnum.values()) {
-            if (s.getId().equals(key)) {
-                name = s.getName();
-            }
-        }
-        return name;
     }
 
     /**

@@ -208,12 +208,27 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">项目成员</label>
             <div class="col-sm-3">
-                <input type="hidden" id="userAccountMember" name="userAccountMember"
-                       value="${projectInfo.projectMemberVo.userAccountMember}">
-                <input type="text" id="userAccountMemberName" class="form-control"
-                       readonly="readonly"
-                       onclick="ProjectInfoInit.prototype.selectUserAccountMember();"
-                       value="${projectInfo.projectMemberVo.userAccountMemberName}">
+                <div class="input-group">
+                    <input type="hidden" id="userAccountMember" name="userAccountMember"
+                           value="${projectInfo.projectMemberVo.userAccountMember}">
+                    <input type="text" id="userAccountMemberName" class="form-control"
+                           readonly="readonly"
+                           onclick="ProjectInfoInit.prototype.selectUserAccountMember();"
+                           value="${projectInfo.projectMemberVo.userAccountMemberName}">
+                    <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default docs-tooltip"
+                                                    data-toggle="tooltip"
+                                                    data-original-title="选择"
+                                                    onclick="ProjectInfoInit.prototype.selectUserAccountMember();">
+                                            <i class="fa fa-search"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-default docs-tooltip"
+                                                    onclick="$(this).closest('.input-group').find('input').val('');"
+                                                    data-toggle="tooltip" data-original-title="清除">
+                                            <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </span>
+                </div>
             </div>
         </div>
     </div>
