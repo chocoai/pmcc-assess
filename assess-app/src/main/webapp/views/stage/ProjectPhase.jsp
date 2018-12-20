@@ -134,7 +134,7 @@
         //-----初始化页面显示----//
         var typeId = $('#typeId').val();
         if (typeId) {
-            //projectWorkStagePhaseObj.loadCategory(typeId);
+            projectWorkStagePhaseObj.loadCategory(typeId);
             workStageObj.renderWorkStageStep(projectWorkStagePhaseObj.workStageWizard, typeId);
             workPhaseObj.rendWorkPhaseTable(projectWorkStagePhaseObj.workPhaseTable, typeId, 0);
             $('#create_work_stage').removeAttr('disabled');
