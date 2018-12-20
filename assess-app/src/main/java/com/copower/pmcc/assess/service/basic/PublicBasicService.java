@@ -20,6 +20,7 @@ import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.google.common.base.Objects;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -459,12 +460,13 @@ public class PublicBasicService {
 
     /**
      * 标记回写
+     *
      * @param typeEnum
      * @param applyId
      * @param dataId
      * @throws Exception
      */
-    private void flowWriteCaseTagging(EstateTaggingTypeEnum typeEnum,Integer applyId, Integer dataId) throws Exception {
+    private void flowWriteCaseTagging(EstateTaggingTypeEnum typeEnum, Integer applyId, Integer dataId) throws Exception {
         BasicEstateTagging query = new BasicEstateTagging();
         query.setApplyId(applyId);
         query.setType(typeEnum.getKey());
@@ -840,7 +842,7 @@ public class PublicBasicService {
             }
         }
         flowWriteCaseBaseHouse(basicApply, caseHouse, caseHouseTrading);
-        return  caseHouse;
+        return caseHouse;
     }
 
     private void flowWriteCaseBaseHouse(BasicApply basicApply, CaseHouse caseHouse, CaseHouseTrading caseHouseTrading) {
@@ -848,7 +850,7 @@ public class PublicBasicService {
         CaseUnit caseUnit = caseUnitService.getCaseUnitById(caseHouse.getUnitId());
         CaseBuildingMain buildingMain = caseBuildingMainService.getCaseBuildingMainById(caseUnit.getBuildingMainId());
         CaseEstate caseEstate = caseEstateService.getCaseEstateById(buildingMain.getEstateId());
-        String fullName=String.format("%s%s栋%s单元%s号", caseEstate.getName(), buildingMain.getBuildingNumber(), caseUnit.getUnitNumber(), caseHouse.getHouseNumber());
+        String fullName = String.format("%s%s栋%s单元%s号", caseEstate.getName(), buildingMain.getBuildingNumber(), caseUnit.getUnitNumber(), caseHouse.getHouseNumber());
         if (BasicApplyPartInModeEnum.UPGRADE.getKey().equals(basicApply.getHousePartInMode())) {
             //清除上个版本对应的数据
             CaseBaseHouse where = new CaseBaseHouse();
@@ -986,11 +988,11 @@ public class PublicBasicService {
         }
     }
 
-    private void flowWriteCaseWaterDrain(List<BasicHouseWaterDrain> basicHouseWaterDrainList,CaseHouse caseHouse)throws Exception{
-        if (!ObjectUtils.isEmpty(basicHouseWaterDrainList)){
-            for (BasicHouseWaterDrain houseWaterDrain:basicHouseWaterDrainList){
+    private void flowWriteCaseWaterDrain(List<BasicHouseWaterDrain> basicHouseWaterDrainList, CaseHouse caseHouse) throws Exception {
+        if (!ObjectUtils.isEmpty(basicHouseWaterDrainList)) {
+            for (BasicHouseWaterDrain houseWaterDrain : basicHouseWaterDrainList) {
                 CaseHouseWaterDrain caseHouseWaterDrain = new CaseHouseWaterDrain();
-                BeanUtils.copyProperties(houseWaterDrain,caseHouseWaterDrain);
+                BeanUtils.copyProperties(houseWaterDrain, caseHouseWaterDrain);
                 caseHouseWaterDrain.setId(null);
                 caseHouseWaterDrain.setGmtCreated(null);
                 caseHouseWaterDrain.setGmtModified(null);
@@ -1090,7 +1092,7 @@ public class PublicBasicService {
                 estateId = caseEstate.getId();
                 //回写版块到基础数据中
                 if (basicApply.getWriteBackBlockFlag() == Boolean.TRUE) {
-                    DataBlock dataBlock=new DataBlock();
+                    DataBlock dataBlock = new DataBlock();
                     dataBlock.setProvince(basicEstate.getProvince());
                     dataBlock.setCity(basicEstate.getCity());
                     dataBlock.setDistrict(basicEstate.getDistrict());
@@ -1098,7 +1100,7 @@ public class PublicBasicService {
                     dataBlock.setCreator(basicEstate.getCreator());
                     dataBlockService.saveAndUpdateDataBlock(dataBlock);
                 }
-                this.flowWriteCaseTagging(EstateTaggingTypeEnum.ESTATE,basicApply.getId(),estateId);
+                this.flowWriteCaseTagging(EstateTaggingTypeEnum.ESTATE, basicApply.getId(), estateId);
             }
 
             //处理楼栋
@@ -1109,7 +1111,7 @@ public class PublicBasicService {
                     caseUnitService.updateBuildingMainId(buildingMainId, caseBuildingMain.getId());
                 }
                 buildingMainId = caseBuildingMain.getId();
-                this.flowWriteCaseTagging(EstateTaggingTypeEnum.BUILDING,basicApply.getId(),buildingMainId);
+                this.flowWriteCaseTagging(EstateTaggingTypeEnum.BUILDING, basicApply.getId(), buildingMainId);
             }
 
             //处理单元
@@ -1120,7 +1122,7 @@ public class PublicBasicService {
                     caseHouseService.updateUnitId(unitId, caseUnit.getId());
                 }
                 unitId = caseUnit.getId();
-                this.flowWriteCaseTagging(EstateTaggingTypeEnum.UNIT,basicApply.getId(),unitId);
+                this.flowWriteCaseTagging(EstateTaggingTypeEnum.UNIT, basicApply.getId(), unitId);
             }
 
             //处理房屋
@@ -1128,7 +1130,7 @@ public class PublicBasicService {
             //2.如果是升级则将原baseHouse的数据删除，写入新的数据
             if (StringUtils.isNotBlank(basicApply.getHousePartInMode()) && basicHouse != null) {
                 CaseHouse caseHouse = this.flowWriteCaseHouse(basicApply, basicHouse, basicTrading, unitId);
-                this.flowWriteCaseTagging(EstateTaggingTypeEnum.HOUSE,basicApply.getId(),caseHouse.getId());
+                this.flowWriteCaseTagging(EstateTaggingTypeEnum.HOUSE, basicApply.getId(), caseHouse.getId());
             }
         }
     }
@@ -1150,7 +1152,7 @@ public class PublicBasicService {
         jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_APPLY.getVar());
         BasicApply basicApply = JSONObject.parseObject(jsonContent, BasicApply.class);
         //检查是否标注了楼盘
-        if(!isDraft){
+        if (!isDraft) {
             taggingValid(basicApply);
         }
 
@@ -1164,9 +1166,9 @@ public class PublicBasicService {
         }
 
         BasicApplyPartInModeEnum modeEnum = null;
+        //楼盘过程数据
+        BasicEstate basicEstate = null;
         if (StringUtils.isNotBlank(basicApply.getEstatePartInMode())) {
-            //楼盘过程数据
-            BasicEstate basicEstate = null;
             jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATE.getVar());
             if (StringUtils.isNotBlank(jsonContent)) {
                 basicEstate = JSONObject.parseObject(jsonContent, BasicEstate.class);
@@ -1201,10 +1203,10 @@ public class PublicBasicService {
             }
         }
 
+        BasicBuildingMain basicBuildingMain = null;
         if (StringUtils.isNotBlank(basicApply.getBuildingPartInMode())) {
             //楼栋主数据
             jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_BUILDING_MAIN.getVar());
-            BasicBuildingMain basicBuildingMain = null;
             if (StringUtils.isNotBlank(jsonContent)) {
                 basicBuildingMain = JSONObject.parseObject(jsonContent, BasicBuildingMain.class);
                 if (basicBuildingMain != null) {
@@ -1232,10 +1234,10 @@ public class PublicBasicService {
             }
         }
 
+        BasicUnit basicUnit = null;
         if (StringUtils.isNotBlank(basicApply.getUnitPartInMode())) {
             //单元过程数据
             jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_UNIT.getVar());
-            BasicUnit basicUnit = null;
             if (StringUtils.isNotEmpty(jsonContent)) {
                 basicUnit = JSONObject.parseObject(jsonContent, BasicUnit.class);
                 if (basicUnit != null) {
@@ -1256,10 +1258,10 @@ public class PublicBasicService {
             }
         }
 
+        BasicHouse basicHouse = null;
         if (StringUtils.isNotBlank(basicApply.getHousePartInMode())) {
             //处理房屋数据
             jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_HOUSE.getVar());
-            BasicHouse basicHouse = null;
             if (StringUtils.isNotEmpty(jsonContent)) {
                 basicHouse = JSONObject.parseObject(jsonContent, BasicHouse.class);
                 if (basicHouse != null) {
@@ -1287,12 +1289,41 @@ public class PublicBasicService {
             }
         }
         //更新地图标注信息
-        BasicEstateTagging where=new BasicEstateTagging();
+        BasicEstateTagging where = new BasicEstateTagging();
         where.setApplyId(0);
         where.setCreator(commonService.thisUserAccount());
         List<BasicEstateTagging> taggings = basicEstateTaggingService.basicEstateTaggingList(where);
-        if(!CollectionUtils.isEmpty(taggings)){
+        if (!CollectionUtils.isEmpty(taggings)) {
             for (BasicEstateTagging tagging : taggings) {
+                //防止用户反复修改如楼盘号码楼栋编号等数字
+                if (Objects.equal(tagging.getType(), EstateTaggingTypeEnum.ESTATE.getKey())) {
+                    if (basicEstate != null) {
+                        if (org.apache.commons.lang3.StringUtils.isNotBlank(basicEstate.getName())) {
+                            tagging.setName(basicEstate.getName());
+                        }
+                    }
+                }
+                if (Objects.equal(tagging.getType(), EstateTaggingTypeEnum.BUILDING.getKey())) {
+                    if (basicBuildingMain != null) {
+                        if (org.apache.commons.lang3.StringUtils.isNotBlank(basicBuildingMain.getBuildingNumber())) {
+                            tagging.setName(basicBuildingMain.getBuildingNumber());
+                        }
+                    }
+                }
+                if (Objects.equal(tagging.getType(), EstateTaggingTypeEnum.UNIT.getKey())) {
+                    if (basicUnit != null) {
+                        if (org.apache.commons.lang3.StringUtils.isNotBlank(basicUnit.getUnitNumber())) {
+                            tagging.setName(basicUnit.getUnitNumber());
+                        }
+                    }
+                }
+                if (Objects.equal(tagging.getType(), EstateTaggingTypeEnum.HOUSE.getKey())) {
+                    if (basicHouse != null) {
+                        if (org.apache.commons.lang3.StringUtils.isNotBlank(basicHouse.getHouseNumber())) {
+                            tagging.setName(basicHouse.getHouseNumber());
+                        }
+                    }
+                }
                 tagging.setApplyId(basicApply.getId());
                 basicEstateTaggingService.updateBasicEstateTagging(tagging);
             }
@@ -1305,27 +1336,28 @@ public class PublicBasicService {
 
     /**
      * 标注信息验证
+     *
      * @param basicApply
      * @throws BusinessException
      */
     private void taggingValid(BasicApply basicApply) throws BusinessException {
         if (StringUtils.isNotBlank(basicApply.getEstatePartInMode())) {
-            if(!basicEstateTaggingService.hasBasicEstateTagging(basicApply.getId(), EstateTaggingTypeEnum.ESTATE)){
+            if (!basicEstateTaggingService.hasBasicEstateTagging(basicApply.getId(), EstateTaggingTypeEnum.ESTATE)) {
                 throw new BusinessException("楼盘位置信息还未标注");
             }
         }
         if (StringUtils.isNotBlank(basicApply.getBuildingPartInMode())) {
-            if(!basicEstateTaggingService.hasBasicEstateTagging(basicApply.getId(),EstateTaggingTypeEnum.BUILDING)){
+            if (!basicEstateTaggingService.hasBasicEstateTagging(basicApply.getId(), EstateTaggingTypeEnum.BUILDING)) {
                 throw new BusinessException("楼栋位置信息还未标注");
             }
         }
         if (StringUtils.isNotBlank(basicApply.getUnitPartInMode())) {
-            if(!basicEstateTaggingService.hasBasicEstateTagging(basicApply.getId(),EstateTaggingTypeEnum.UNIT)){
+            if (!basicEstateTaggingService.hasBasicEstateTagging(basicApply.getId(), EstateTaggingTypeEnum.UNIT)) {
                 throw new BusinessException("单元位置信息还未标注");
             }
         }
         if (StringUtils.isNotBlank(basicApply.getHousePartInMode())) {
-            if(!basicEstateTaggingService.hasBasicEstateTagging(basicApply.getId(),EstateTaggingTypeEnum.HOUSE)){
+            if (!basicEstateTaggingService.hasBasicEstateTagging(basicApply.getId(), EstateTaggingTypeEnum.HOUSE)) {
                 throw new BusinessException("房屋位置信息还未标注");
             }
         }
