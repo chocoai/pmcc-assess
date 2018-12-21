@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dto.input.project.declare.DeclareRealtyHouseCertD
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @Auther: zch
@@ -80,12 +82,15 @@ public class DeclareRealtyHouseCertController {
 
     @ResponseBody
     @RequestMapping(value = "/deleteDeclareRealtyHouseCertById", method = {RequestMethod.POST}, name = "删除房产证维护")
-    public HttpResult delete(Integer id) {
+    public HttpResult delete(String ids) {
         try {
-            if (id != null) {
-                DeclareRealtyHouseCert declareRealtyHouseCert = new DeclareRealtyHouseCert();
-                declareRealtyHouseCert.setId(id);
-                declareRealtyHouseCertService.removeDeclareRealtyHouseCert(declareRealtyHouseCert);
+            if (!StringUtils.isEmpty(ids)) {
+                List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+                for (Integer id : integers) {
+                    DeclareRealtyHouseCert declareRealtyHouseCert = new DeclareRealtyHouseCert();
+                    declareRealtyHouseCert.setId(id);
+                    declareRealtyHouseCertService.removeDeclareRealtyHouseCert(declareRealtyHouseCert);
+                }
                 return HttpResult.newCorrectResult();
             }
         } catch (Exception e1) {
@@ -113,7 +118,7 @@ public class DeclareRealtyHouseCertController {
 
     @ResponseBody
     @RequestMapping(value = "/listDeclareRealtyHouseCert", method = {RequestMethod.GET}, name = "房产证维护 list")
-    public HttpResult list(Integer pid, String province, String city, String district, Integer planDetailsId,String declareType,String enable) {
+    public HttpResult list(Integer pid, String province, String city, String district, Integer planDetailsId, String declareType, String enable) {
         try {
             DeclareRealtyHouseCert declareRealtyHouseCert = new DeclareRealtyHouseCert();
             if (!StringUtils.isEmpty(province)) {
@@ -131,10 +136,10 @@ public class DeclareRealtyHouseCertController {
             if (pid != null) {
                 declareRealtyHouseCert.setPid(pid);
             }
-            if (org.apache.commons.lang.StringUtils.isNotBlank(declareType)){
+            if (org.apache.commons.lang.StringUtils.isNotBlank(declareType)) {
                 declareRealtyHouseCert.setDeclareType(declareType);
             }
-            if (org.apache.commons.lang.StringUtils.isNotBlank(enable)){
+            if (org.apache.commons.lang.StringUtils.isNotBlank(enable)) {
                 declareRealtyHouseCert.setEnable(enable);
             }
             return HttpResult.newCorrectResult(declareRealtyHouseCertService.lists(declareRealtyHouseCert));
@@ -154,7 +159,7 @@ public class DeclareRealtyHouseCertController {
             if (multipartFile.isEmpty()) {
                 return HttpResult.newErrorResult("上传的文件不能为空");
             }
-            String str = declareRealtyHouseCertService.importData(declareRealtyHouseCert,multipartFile);
+            String str = declareRealtyHouseCertService.importData(declareRealtyHouseCert, multipartFile);
             return HttpResult.newCorrectResult(str);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());

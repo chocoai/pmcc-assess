@@ -86,8 +86,7 @@ civilEngineering.showFile = function (target, tableName, id) {
         formData: {
             fieldsName: target,
             tableName: tableName,
-            tableId: id,
-            projectId: 0
+            tableId: id
         },
         deleteFlag: true
     });
@@ -1336,30 +1335,11 @@ civilEngineering.cancelData = function (id, centerId) {
 civilEngineering.loadList = function () {
     var cols = [];
     cols.push({
-        checkbox: true,
-        formatter: {
-            disabled: false,//设置是否可用
-            checked: false//设置选中
-        }
-    });
-    cols.push({
         field: 'area', title: '区域', formatter: function (value, row, index) {
-            var result = '';
-            if (row.provinceName) {
-                result = row.provinceName;
-            }
-            if (row.cityName) {
-                result += row.cityName;
-            }
-            if (row.districtName) {
-                result += row.districtName;
-            }
-            return result;
+            return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
         }
     });
-    cols.push({field: 'provinceName', title: '省', visible: false});
-    cols.push({field: 'cityName', title: '市', visible: false});
-    cols.push({field: 'districtName', title: '县', visible: false});
+    cols.push({field: 'name', title: '项目名称', visible: true});
     cols.push({field: 'bookNetValue', title: '帐面净值', visible: true});
     cols.push({field: 'bookValue', title: '帐面价值', visible: true});
     cols.push({field: 'declarer', title: '申报人'});
@@ -1370,22 +1350,6 @@ civilEngineering.loadList = function () {
         field: 'id', title: '操作', formatter: function (value, row, index) {
             var html = $("#civilEngineeringHtml").html();
             return html.replace(/paramCenterId/g, row.centerId);
-            // return $("#civilEngineeringHtml").html();
-            // var str = '<div class="dropdown">';
-            // str += "<button class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu1'>" + "操作" + "<span class='caret'>" + "</span>" + "</button>";
-            // str += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu1'>";
-            // str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.deleteData(" + row.id + ")'" + ">" + "删除" + "</a>" + "</li>";
-            // str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.editData(" + row.id + ")'" + ">" + "编辑" + "</a>" + "</li>";
-            // str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyLandCertView(" + row.centerId + ")'" + ">" + "土地证" + "</a>" + "</li>";
-            // str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyRealEstateCertView(" + row.centerId + ")'" + ">" + "不动产" + "</a>" + "</li>";
-            // str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingPermitView(" + row.centerId + ")'" + ">" + "建设工程规划许可证" + "</a>" + "</li>";
-            // str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareLandUsePermitView(" + row.centerId + ")'" + ">" + "建设用地规划许可证" + "</a>" + "</li>";
-            // str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingConstructionPermitView(" + row.centerId + ")'" + ">" + "建筑工程施工许可证" + "</a>" + "</li>";
-            // str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declarePreSalePermitView(" + row.centerId + ")'" + ">" + "商品房预售许可证" + "</a>" + "</li>";
-            // str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareEconomicIndicatorsView(" + row.centerId + ")'" + ">" + "经济规划指标" + "</a>" + "</li>";
-            // str += "</ul>";
-            // str += "</div>";
-            // return str;
         }
     });
     $("#" + civilEngineeringConfig.table).bootstrapTable('destroy');
@@ -1400,7 +1364,7 @@ civilEngineering.loadList = function () {
         onLoadSuccess: function (data) {
             $('.tooltips').tooltip();
         }
-    });
+    }, true);
 };
 
 

@@ -38,7 +38,7 @@
                                             <c:forEach var="categoryItem" items="${typeItem.keyValueDtos}">
                                                 <li>
                                                     <a target="_blank"
-                                                       href="${pageContext.request.contextPath}/${categoryItem.explain}?projectClassId=${classItem.key}&projectTypeId=${typeItem.key}&projectCategoryId=${categoryItem.key}">${categoryItem.value}</a>
+                                                       href="${pageContext.request.contextPath}/${categoryItem.explain}?projectClassId=${classItem.key}&projectTypeId=${typeItem.key}&projectCategoryId=${categoryItem.key}"><span>${categoryItem.value}</span></a>
                                                 </li>
                                             </c:forEach>
                                         </ul>
@@ -49,8 +49,6 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
     <!-- end: MAIN CONTAINER -->

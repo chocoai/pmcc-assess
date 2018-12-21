@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 </head>
 
-<%@include file="/views/project/stageDeclare/BuildingDeclareModel/viewEconomicIndicatorsDetail.jsp" %>
+<%@include file="/views/project/stageDeclare/buildingDeclareModel/viewEconomicIndicatorsDetail.jsp" %>
 <body class="nav-md footer_fixed">
 <div class="container body">
     <div class="main_container">
@@ -15,74 +15,55 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
-            <div class="x_panel">
+            <!-- 土建 -->
+            <div class="x_panel" id="viewCivilEngineering">
                 <div class="x_content">
                     <div class="x_title">
-                        <h3>申报证书类型
+                        <h3>
+                            在建工程（土建）
                         </h3>
                         <div class="clearfix"></div>
                     </div>
-                    <form class="form-horizontal" id="frmCertificate">
-                        <div id="frmCertificateHTML">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-12">
 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <table class="table table-bordered" id="civilEngineeringTableList">
+                                    <!-- cerare document add ajax data-->
+                                </table>
+                            </div>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <!-- 土建 -->
-            <div class="x_panel" id="viewCivilEngineering">
-                <div class="x_panel">
-                    <div class="x_content">
-                        <div class="x_title">
-                            <h3>
-                                在建工程（土建）申报
-                            </h3>
-                            <div class="clearfix"></div>
-                        </div>
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <div class="col-sm-12">
-
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <table class="table table-bordered" id="civilEngineeringTableList">
-                                        <!-- cerare document add ajax data-->
-                                    </table>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
             <!-- 设备安装 -->
             <div class="x_panel" id="viewEquipmentInstallation">
-                <div class="x_panel">
-                    <div class="x_content">
-                        <div class="x_title">
-                            <h3>
-                                在建工程（设备安装）
-                            </h3>
-                            <div class="clearfix"></div>
-                        </div>
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <div class="col-sm-12">
-
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <table class="table table-bordered" id="equipmentInstallationTableList">
-                                        <!-- cerare document add ajax data-->
-                                    </table>
-                                </div>
-                            </div>
-                        </form>
+                <div class="x_content">
+                    <div class="x_title">
+                        <h3>
+                            在建工程（设备安装）
+                        </h3>
+                        <div class="clearfix"></div>
                     </div>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <table class="table table-bordered" id="equipmentInstallationTableList">
+                                    <!-- cerare document add ajax data-->
+                                </table>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -656,9 +637,11 @@
 
     equipmentInstallation.loadList = function () {
         var cols = [];
-        cols.push({field: 'provinceName', title: '省'});
-        cols.push({field: 'cityName', title: '市'});
-        cols.push({field: 'districtName', title: '县'});
+        cols.push({
+            field: 'provinceName', title: '区域', formatter: function (value, row, index) {
+                return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
+            }
+        });
         cols.push({field: 'bookEquipmentFee', title: '账面设备费'});
         cols.push({field: 'bookCapitalCost', title: '账面资金成本'});
         cols.push({field: 'bookInstallationFee', title: '账面安装费'});
@@ -1255,9 +1238,11 @@
 
     civilEngineering.loadList = function () {
         var cols = [];
-        cols.push({field: 'provinceName', title: '省'});
-        cols.push({field: 'cityName', title: '市'});
-        cols.push({field: 'districtName', title: '县'});
+        cols.push({
+            field: 'provinceName', title: '区域', formatter: function (value, row, index) {
+                return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
+            }
+        });
         cols.push({field: 'bookNetValue', title: '帐面净值'});
         cols.push({field: 'bookValue', title: '帐面价值'});
         cols.push({field: 'declarer', title: '申报人'});

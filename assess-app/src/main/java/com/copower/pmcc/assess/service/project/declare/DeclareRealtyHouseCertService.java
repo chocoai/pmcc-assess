@@ -203,7 +203,7 @@ public class DeclareRealtyHouseCertService {
      */
     public String importData(DeclareRealtyHouseCert declareRealtyHouseCert, MultipartFile multipartFile) throws Exception {
         String declareType = null;
-        List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLEHOUSEPROPERTYCERTIFICATETYPE);
+        List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE);
         if (!ObjectUtils.isEmpty(baseProjectClassifies)){
             for (BaseProjectClassify baseProjectClassify:baseProjectClassifies){
                 if (Objects.equal(baseProjectClassify.getName(),DeclareTypeEnum.HOUSE.getKey())){

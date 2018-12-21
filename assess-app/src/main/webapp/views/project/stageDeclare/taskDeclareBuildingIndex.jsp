@@ -14,16 +14,17 @@
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <form class="form-horizontal" id="declareApplyForm">
                 <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+                <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
             </form>
 
             <!-- 土建 -->
             <div id="viewCivilEngineering">
-                <%@include file="/views/project/stageDeclare/BuildingDeclareModel/viewCivilEngineering.jsp" %>
+                <%@include file="/views/project/stageDeclare/buildingDeclareModel/viewCivilEngineering.jsp" %>
             </div>
 
             <!-- 设备安装 -->
             <div id="viewEquipmentInstallation">
-                <%@include file="/views/project/stageDeclare/BuildingDeclareModel/viewEquipmentInstallation.jsp" %>
+                <%@include file="/views/project/stageDeclare/buildingDeclareModel/viewEquipmentInstallation.jsp" %>
             </div>
 
             <div class="x_panel">
@@ -43,7 +44,7 @@
     </div>
 </div>
 </body>
-<%@include file="/views/project/stageDeclare/BuildingDeclareModel/viewEconomicIndicators.jsp" %>
+<%@include file="/views/project/stageDeclare/buildingDeclareModel/viewEconomicIndicators.jsp" %>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
@@ -226,6 +227,22 @@
 <script type="application/javascript">
     //提交
     function submit() {
+        //检查是否填写了申报数据
+        var rows = $("#" + civilEngineeringConfig.table).bootstrapTable('getData');
+        if (rows && rows.length > 0) {
+            submitForm();
+            return false;
+        }
+        rows = $("#" + equipmentInstallationConfig.table).bootstrapTable('getData');
+        if (rows && rows.length > 0) {
+            submitForm();
+            return false;
+        }
+        toastr.info("请添加相关申报信息");
+    }
+
+    //提交表单
+    function submitForm() {
         if ("${processInsId}" != "0") {
             submitEditToServer("");
         }
@@ -233,7 +250,6 @@
             submitToServer("");
         }
     }
-
 </script>
 
 

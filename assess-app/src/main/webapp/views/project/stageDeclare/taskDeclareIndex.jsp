@@ -13,20 +13,22 @@
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <form class="form-horizontal" id="declareApplyForm">
                 <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+                <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
             </form>
             <!-- 房产证 -->
             <div id="viewDeclareRealtyHouseCert">
-                <%@include file="/views/project/stageDeclare/HouseDeclarationModel/viewDeclareRealtyHouseCert.jsp" %>
+                <%@include file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyHouseCert.jsp" %>
             </div>
 
             <!-- 土地证 -->
             <div id="viewDeclareRealtyLandCert">
-                <%@include file="/views/project/stageDeclare/HouseDeclarationModel/viewDeclareRealtyLandCert.jsp" %>
+                <%@include file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyLandCert.jsp" %>
             </div>
 
             <!-- 不动产证 -->
             <div id="viewDeclareRealtyRealEstateCert">
-                <%@include file="/views/project/stageDeclare/HouseDeclarationModel/viewDeclareRealtyRealEstateCert.jsp" %>
+                <%@include
+                        file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyRealEstateCert.jsp" %>
             </div>
 
             <div class="x_panel">
@@ -49,7 +51,7 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
-<input type="file" id="ajaxFileUpload" name="file" style="display: none;" >
+<input type="file" id="ajaxFileUpload" name="file" style="display: none;">
 <script type="text/javascript">
     var config = {
         declare: {
@@ -57,15 +59,15 @@
         },
         declareRealtyHouseCert: {
             name: "房产证",
-            view:"viewDeclareRealtyHouseCert"
+            view: "viewDeclareRealtyHouseCert"
         },
         declareRealtyLandCert: {
             name: "土地证",
-            view:"viewDeclareRealtyLandCert"
+            view: "viewDeclareRealtyLandCert"
         },
         declareRealtyRealEstateCert: {
             name: "不动产证",
-            view:"viewDeclareRealtyRealEstateCert"
+            view: "viewDeclareRealtyRealEstateCert"
         }
     };
 
@@ -79,16 +81,16 @@
     };
 
     /**
-    * @author:  zch
-    * 描述:获取申报证书类型
-    * @date:2018-10-22
-    **/
+     * @author:  zch
+     * 描述:获取申报证书类型
+     * @date:2018-10-22
+     **/
     declareFunObj.getDeclareType = function (name) {
-        var declareType = null ;
-        $("#" + config.declare.frm + " :checkbox").each(function (j,oo) {
+        var declareType = null;
+        $("#" + config.declare.frm + " :checkbox").each(function (j, oo) {
             AssessCommon.getProjectClassifyInfoAsync($(oo).val(), function (data) {
                 if (declareFunObj.isEmpty(data)) {
-                    if (data.name == name){
+                    if (data.name == name) {
                         declareType = data.id;
                     }
                 }
@@ -105,15 +107,19 @@
                     $.ajax({
                         type: "get",
                         url: "${pageContext.request.contextPath}/declareRealtyLandCert/listDeclareRealtyLandCert",
-                        data: {planDetailsId:'${empty projectPlanDetails.id?0:projectPlanDetails.id}',declareType:n.id,enable:"yes"},
+                        data: {
+                            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}',
+                            declareType: n.id,
+                            enable: "yes"
+                        },
                         success: function (result) {
                             if (result.ret) {
-                                if (declareFunObj.isEmpty(result.data)){
-                                    if (result.data.length >= 1){
+                                if (declareFunObj.isEmpty(result.data)) {
+                                    if (result.data.length >= 1) {
                                         declareFunObj.declareRealtyLandCert.toggle();//view 显示
-                                        $("#" + config.declare.frm + " :checkbox").each(function (j,oo) {
-                                            if ($(oo).val() == n.id){
-                                                $(this).prop("checked",true);//单选框 选中
+                                        $("#" + config.declare.frm + " :checkbox").each(function (j, oo) {
+                                            if ($(oo).val() == n.id) {
+                                                $(this).prop("checked", true);//单选框 选中
                                             }
                                         });
                                     }
@@ -131,15 +137,19 @@
                     $.ajax({
                         type: "get",
                         url: "${pageContext.request.contextPath}/declareRealtyHouseCert/listDeclareRealtyHouseCert",
-                        data: {planDetailsId:'${empty projectPlanDetails.id?0:projectPlanDetails.id}',declareType:n.id,enable:"yes"},
+                        data: {
+                            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}',
+                            declareType: n.id,
+                            enable: "yes"
+                        },
                         success: function (result) {
                             if (result.ret) {
-                                if (declareFunObj.isEmpty(result.data)){
-                                    if (result.data.length >= 1){
+                                if (declareFunObj.isEmpty(result.data)) {
+                                    if (result.data.length >= 1) {
                                         declareFunObj.declareRealtyHouseCert.toggle();//view 显示
-                                        $("#" + config.declare.frm + " :checkbox").each(function (j,oo) {
-                                            if ($(oo).val() == n.id){
-                                                $(this).prop("checked",true);//单选框 选中
+                                        $("#" + config.declare.frm + " :checkbox").each(function (j, oo) {
+                                            if ($(oo).val() == n.id) {
+                                                $(this).prop("checked", true);//单选框 选中
                                             }
                                         });
                                     }
@@ -157,15 +167,18 @@
                     $.ajax({
                         type: "get",
                         url: "${pageContext.request.contextPath}/declareRealtyRealEstateCert/listDeclareRealtyRealEstateCert",
-                        data: {planDetailsId:'${empty projectPlanDetails.id?0:projectPlanDetails.id}',declareType:n.id},
+                        data: {
+                            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}',
+                            declareType: n.id
+                        },
                         success: function (result) {
                             if (result.ret) {
-                                if (declareFunObj.isEmpty(result.data)){
-                                    if (result.data.length >= 1){
+                                if (declareFunObj.isEmpty(result.data)) {
+                                    if (result.data.length >= 1) {
                                         declareFunObj.declareRealtyRealEstateCert.toggle();//view 显示
-                                        $("#" + config.declare.frm + " :checkbox").each(function (j,oo) {
-                                            if ($(oo).val() == n.id){
-                                                $(this).prop("checked",true);//单选框 选中
+                                        $("#" + config.declare.frm + " :checkbox").each(function (j, oo) {
+                                            if ($(oo).val() == n.id) {
+                                                $(this).prop("checked", true);//单选框 选中
                                             }
                                         });
                                     }
@@ -200,8 +213,8 @@
                         if (j < data.length) {
                             resetHtml += "<div class='col-sm-2'>";
                             resetHtml += "<span class='checkbox-inline'>";
-                            resetHtml += "<input type='checkbox' id='classify"+data[j].id+"' name='other' required='required' value='" + data[j].id + "'" + ">";
-                            resetHtml +="<label for='classify"+data[j].id+"'>"+ data[j].name+"<label>";
+                            resetHtml += "<input type='checkbox' id='classify" + data[j].id + "' name='other' required='required' value='" + data[j].id + "'" + ">";
+                            resetHtml += "<label for='classify" + data[j].id + "'>" + data[j].name + "<label>";
                             resetHtml += "</span>";
                             resetHtml += "</div>";
                         }
@@ -276,6 +289,27 @@
 <script type="application/javascript">
     //提交
     function submit() {
+        //检查是否填写了申报数据
+        var rows = $("#" + declareRealtyHouseCertConfig.table).bootstrapTable('getData');
+        if (rows && rows.length > 0) {
+            submitForm();
+            return false;
+        }
+        rows = $("#" + declareRealtyLandCertConfig.table).bootstrapTable('getData');
+        if (rows && rows.length > 0) {
+            submitForm();
+            return false;
+        }
+        rows = $("#" + declareRealtyRealEstateCertConfig.table).bootstrapTable('getData');
+        if (rows && rows.length > 0) {
+            submitForm();
+            return false;
+        }
+        toastr.info("请添加相关申报信息");
+    }
+
+    //提交表单
+    function submitForm() {
         if ("${processInsId}" != "0") {
             submitEditToServer("");
         }
@@ -285,7 +319,6 @@
     }
 
 </script>
-
 
 
 </html>
