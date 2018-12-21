@@ -78,7 +78,7 @@
             city: searchMap.isNotBlank(city) ? city : "四川",
             citylimit: true,  //是否强制限制在设置的城市内搜索
             pageSize: 10,// 单页显示结果条数
-            // map: mapSearch // 展现结果的地图实例
+            map: mapSearch // 展现结果的地图实例
         };
         AMap.plugin('AMap.PlaceSearch', function () {
             var placeSearch = new AMap.PlaceSearch(options);
@@ -113,15 +113,21 @@
             pageIndex: 1, // 页码
             city: searchMap.isNotBlank(city) ? city : "四川", // 兴趣点城市
             citylimit: true,  //是否强制限制在设置的城市内搜索
-            // map: mapSearch // 展现结果的地图实例
+            map: mapSearch // 展现结果的地图实例
         };
-        AMap.service(["AMap.PlaceSearch"], function () {
-            //构造地点查询类
-            var placeSearch = new AMap.PlaceSearch(options);
-            placeSearch.searchNearBy(word, [position.lng, position.lat], searchMap.isNotBlank(distance) ? distance : "200", function (status, result) {
-                callback(result);
+        console.log(options);
+        try {
+            AMap.service(["AMap.PlaceSearch"], function () {
+                //构造地点查询类
+                var placeSearch = new AMap.PlaceSearch(options);
+                placeSearch.searchNearBy(word, [position.lng, position.lat], searchMap.isNotBlank(distance) ? distance : "200", function (status, result) {
+                    callback(result);
+                    console.log(status) ;
+                });
             });
-        });
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     /**
@@ -132,6 +138,7 @@
      * @param callback
      */
     searchMap.transferSearch = function (name, distance, position, callback) {
+        console.log("transferSearch") ;
         if (this.isNotBlank(name) && this.isNotBlank(distance) && this.isNotBlankObject(position)) {
             this.classificationSearch(name, '交通设施服务', null, distance, position, callback);
         } else {
@@ -218,6 +225,7 @@
             // console.log(result);
         })
     };
+    window.onload = function (ev) { assessSearchMap.createMap(104.086965, 30.587458, 17); };
     window.assessSearchMap = searchMap;
 })(jQuery);
 
