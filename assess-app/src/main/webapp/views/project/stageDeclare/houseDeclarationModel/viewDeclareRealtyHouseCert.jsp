@@ -105,9 +105,6 @@
                                             <div id="_declareRealtyHouseCertFileId"></div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-4">
-                                        <label class="btn btn-default" onclick="declareRealtyHouseCert.distinguish();">识别</label>
-                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">

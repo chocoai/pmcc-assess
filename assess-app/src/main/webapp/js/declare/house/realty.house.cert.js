@@ -71,15 +71,6 @@ declareRealtyHouseCert.fileUpload = function (target, tableName, id) {
             return formData;
         }, onUploadComplete: function (result, file) {
             declareRealtyHouseCert.showFile(target, tableName, id);
-            //房产证识别
-            if (target == declareRealtyHouseCertConfig.fileId) {
-                if (declareRealtyHouseCert.isEmpty(result)) {
-                    AssessCommon.parseRealtyHouseCert(result, AssessDBKey.HouseOcrkey, function (data) {
-                        declareRealtyHouseCert.sysOcrRecordId = data.sysOcrRecordId;
-                    });
-                }
-            }
-            declareRealtyHouseCert.loadList();
         },
         deleteFlag: true
     });
