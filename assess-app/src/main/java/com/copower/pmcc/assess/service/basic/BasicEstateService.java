@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.common.BeanCopyHelp;
+import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basic.dao.BasicEstateDao;
 import com.copower.pmcc.assess.dal.basic.dao.BasicEstateLandStateDao;
@@ -426,7 +427,7 @@ public class BasicEstateService {
      * @throws Exception
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
-    public Map<String, Object> appWriteEstate(Integer caseEstateId) throws Exception {
+    public Map<String, Object> appWriteEstate(Integer caseEstateId, String estatePartInMode) throws Exception {
         this.clearInvalidData(0);
         if (caseEstateId == null) {
             throw new Exception("null point");
@@ -731,24 +732,26 @@ public class BasicEstateService {
             }
         });
 
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-                    copyTaggingFromCase(caseEstateTaggings);
-                } catch (Exception e1) {
-                    logger.error("", e1);
+        if (org.apache.commons.lang3.StringUtils.equals(estatePartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
+            taskExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
+                        copyTaggingFromCase(caseEstateTaggings);
+                    } catch (Exception e1) {
+                        logger.error("", e1);
+                    }
                 }
-            }
-        });
-
+            });
+        }
         return objectMap;
     }
 
 
     /**
      * 拷贝tagging数据
+     *
      * @param caseEstateTaggings
      * @throws Exception
      */

@@ -47,13 +47,17 @@
     //升级楼栋
     buildingCommon.upgrade = function (_this, callback) {
         var caseBuildingMainId = $(_this).closest('form').find("input[name='caseBuildingMainId']").val();
+        var buildingPartInMode = $(_this).attr('data-mode');
         if (!caseBuildingMainId) {
             toastr.info('请选择系统中已存在的楼栋信息！');
             return false;
         }
         $.ajax({
             url: getContextPath() + '/basicBuilding/appWriteBuilding',
-            data: {caseMainBuildingId: caseBuildingMainId},
+            data: {
+                caseMainBuildingId: caseBuildingMainId,
+                buildingPartInMode: buildingPartInMode
+            },
             success: function (result) {
                 if (result.ret) {
                     buildingCommon.buildingMainForm.initForm(result.data);
@@ -136,13 +140,13 @@
                 if (result.ret) {
                     buildingCommon.buildingForm.initForm(result.data, function () {
                         //1.初始化下拉框；2.初始化上传控件；3.显示已上传的附件信息；4.加载从表数据
-                        buildingCommon.buildingForm.find("select.buildingStructureType").off('change').on('change',function () {
+                        buildingCommon.buildingForm.find("select.buildingStructureType").off('change').on('change', function () {
                             AssessCommon.loadDataDicByPid($(this).val(), result.data.buildingStructureCategory, function (html, data) {
                                 buildingCommon.buildingForm.find("select.buildingStructureCategory").empty().html(html).trigger('change');
                             });
                             result.data.buildingStructureCategory = null;
                         });
-                        buildingCommon.buildingForm.find('select.propertyType').off('change').on('change',function () {
+                        buildingCommon.buildingForm.find('select.propertyType').off('change').on('change', function () {
                             AssessCommon.loadDataDicByPid($(this).val(), result.data.propertyCategory, function (html, data) {
                                 buildingCommon.buildingForm.find('select.propertyCategory').empty().html(html).trigger('change');
                             });

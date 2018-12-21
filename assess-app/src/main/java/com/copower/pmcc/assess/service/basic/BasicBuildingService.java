@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.common.BeanCopyHelp;
+import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basic.dao.BasicBuildingDao;
 import com.copower.pmcc.assess.dal.basic.dao.BasicBuildingMainDao;
@@ -293,7 +294,7 @@ public class BasicBuildingService {
      * @throws Exception
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
-    public BasicBuildingMain appWriteBuilding(Integer caseMainBuildingId) throws Exception {
+    public BasicBuildingMain appWriteBuilding(Integer caseMainBuildingId,String buildingPartInMode) throws Exception {
         if (caseMainBuildingId == null) {
             throw new Exception("null point");
         }
@@ -308,11 +309,14 @@ public class BasicBuildingService {
         basicBuildingMain.setGmtModified(null);
         basicBuildingMainDao.saveBasicBuildingMain(basicBuildingMain);
 
-        CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
-        caseEstateTagging.setDataId(caseMainBuildingId);
-        caseEstateTagging.setType(EstateTaggingTypeEnum.BUILDING.getKey());
-        List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-        basicEstateService.copyTaggingFromCase(caseEstateTaggings);
+        if (org.apache.commons.lang3.StringUtils.equals(buildingPartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
+            CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
+            caseEstateTagging.setDataId(caseMainBuildingId);
+            caseEstateTagging.setType(EstateTaggingTypeEnum.BUILDING.getKey());
+            List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
+            basicEstateService.copyTaggingFromCase(caseEstateTaggings);
+        }
+
 
         CaseBuilding where = new CaseBuilding();
         where.setCaseBuildingMainId(caseMainBuildingId);

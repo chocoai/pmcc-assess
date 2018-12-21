@@ -133,7 +133,7 @@
                 </div>
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        径深
+                        进深
                     </label>
                     <div class="col-sm-3">
                         <label class="form-control" name="diameterDepth">${caseBuilding.diameterDepth}</label>

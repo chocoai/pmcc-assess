@@ -29,100 +29,100 @@ public class BasicHouseController {
 
     @ResponseBody
     @RequestMapping(value = "/getBasicHouseById", name = "获取数据", method = {RequestMethod.GET})
-    public HttpResult getBasicHouseById(Integer id){
+    public HttpResult getBasicHouseById(Integer id) {
         try {
             return HttpResult.newCorrectResult(basicHouseService.getBasicHouseById(id));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateBasicHouse", name = "新增或者修改", method = {RequestMethod.POST})
-    public HttpResult saveAndUpdateBasicHouse(BasicHouse basicHouse){
+    public HttpResult saveAndUpdateBasicHouse(BasicHouse basicHouse) {
         try {
             return HttpResult.newCorrectResult(basicHouseService.saveAndUpdateBasicHouse(basicHouse));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/deleteBasicHouse", name = "删除数据", method = {RequestMethod.POST})
-    public HttpResult deleteBasicHouse(Integer id){
+    public HttpResult deleteBasicHouse(Integer id) {
         try {
             return HttpResult.newCorrectResult(basicHouseService.deleteBasicHouse(id));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
-    public BootstrapTableVo getBootstrapTableVo(BasicHouse basicHouse){
+    public BootstrapTableVo getBootstrapTableVo(BasicHouse basicHouse) {
         try {
             return basicHouseService.getBootstrapTableVo(basicHouse);
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return null;
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/basicHouseList", name = "获取数据列表", method = {RequestMethod.GET})
-    public HttpResult basicHouseList(BasicHouse basicHouse){
+    public HttpResult basicHouseList(BasicHouse basicHouse) {
         try {
             return HttpResult.newCorrectResult(basicHouseService.basicHouseList(basicHouse));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/getBasicHouseByApplyId", name = "获取数据", method = {RequestMethod.GET})
-    public HttpResult getBasicHouseByApplyId(Integer applyId){
+    public HttpResult getBasicHouseByApplyId(Integer applyId) {
         try {
             return HttpResult.newCorrectResult(basicHouseService.getBasicHouseByApplyId(applyId));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/addHouseAndTrading", name = "添加房屋及交易信息", method = {RequestMethod.POST})
-    public HttpResult addHouseAndTrading(String houseNumber){
+    public HttpResult addHouseAndTrading(String houseNumber) {
         try {
             return HttpResult.newCorrectResult(basicHouseService.addHouseAndTrading(houseNumber));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult("添加房屋及交易信息异常");
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/appWriteHouse", name = "过程数据", method = {RequestMethod.POST})
-    public HttpResult appWriteHouse(Integer caseHouseId){
+    public HttpResult appWriteHouse(Integer caseHouseId, String housePartInMode) {
         try {
-            return HttpResult.newCorrectResult(200,basicHouseService.appWriteHouse(caseHouseId));
+            return HttpResult.newCorrectResult(200, basicHouseService.appWriteHouse(caseHouseId, housePartInMode));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/copyHuxingPlan", name = "拷贝户型图", method = {RequestMethod.POST})
-    public HttpResult copyHuxingPlan(Integer sourceTableId,String sourceTableName,Integer targetTableId,String fieldsName){
+    public HttpResult copyHuxingPlan(Integer sourceTableId, String sourceTableName, Integer targetTableId, String fieldsName) {
         try {
-            basicHouseService.copyHuxingPlan(sourceTableId,sourceTableName,targetTableId,fieldsName);
+            basicHouseService.copyHuxingPlan(sourceTableId, sourceTableName, targetTableId, fieldsName);
             return HttpResult.newCorrectResult(null);
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult("拷贝户型图异常");
         }
     }

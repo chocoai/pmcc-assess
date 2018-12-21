@@ -12,11 +12,14 @@
             <form id="basicApplyFrm" class="form-horizontal">
                 <input type="hidden" name="id" value="${basicApply.id}">
                 <input type="hidden" name="type" value="${basicApply.type}">
-                <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
                 <input type="hidden" name="estatePartInMode" value="${basicApply.estatePartInMode}">
                 <input type="hidden" name="buildingPartInMode" value="${basicApply.buildingPartInMode}">
                 <input type="hidden" name="unitPartInMode" value="${basicApply.unitPartInMode}">
                 <input type="hidden" name="housePartInMode" value="${basicApply.housePartInMode}">
+                <input type="hidden" name="caseEstateId" value="${basicApply.caseEstateId}">
+                <input type="hidden" name="caseBuildingMainId" value="${basicApply.caseBuildingMainId}">
+                <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
+                <input type="hidden" name="caseHouseId" value="${basicApply.caseHouseId}">
             </form>
             <%@include file="/views/basic/basicIndexCommon.jsp" %>
             <div class="x_panel">

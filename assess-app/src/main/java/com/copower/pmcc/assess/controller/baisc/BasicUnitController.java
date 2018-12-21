@@ -29,77 +29,77 @@ public class BasicUnitController {
 
     @ResponseBody
     @RequestMapping(value = "/getBasicUnitById", name = "获取数据", method = {RequestMethod.GET})
-    public HttpResult getBasicUnitById(Integer id){
+    public HttpResult getBasicUnitById(Integer id) {
         try {
             return HttpResult.newCorrectResult(basicUnitService.getBasicUnitById(id));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateBasicUnit", name = "新增或者修改", method = {RequestMethod.POST})
-    public HttpResult saveAndUpdateBasicUnit(BasicUnit basicUnit){
+    public HttpResult saveAndUpdateBasicUnit(BasicUnit basicUnit) {
         try {
             return HttpResult.newCorrectResult(basicUnitService.saveAndUpdateBasicUnit(basicUnit));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/deleteBasicUnit", name = "删除数据", method = {RequestMethod.POST})
-    public HttpResult deleteBasicUnit(Integer id){
+    public HttpResult deleteBasicUnit(Integer id) {
         try {
             return HttpResult.newCorrectResult(basicUnitService.deleteBasicUnit(id));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
-    public BootstrapTableVo getBootstrapTableVo(BasicUnit basicUnit){
+    public BootstrapTableVo getBootstrapTableVo(BasicUnit basicUnit) {
         try {
             return basicUnitService.getBootstrapTableVo(basicUnit);
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return null;
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/basicUnitList", name = "获取数据列表", method = {RequestMethod.GET})
-    public HttpResult basicUnitList(BasicUnit basicUnit){
+    public HttpResult basicUnitList(BasicUnit basicUnit) {
         try {
             return HttpResult.newCorrectResult(basicUnitService.basicUnitList(basicUnit));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/getBasicUnitByApplyId", name = "获取数据", method = {RequestMethod.GET})
-    public HttpResult getBasicUnitByApplyId(Integer applyId){
+    public HttpResult getBasicUnitByApplyId(Integer applyId) {
         try {
             return HttpResult.newCorrectResult(basicUnitService.getBasicUnitByApplyId(applyId));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/addUnit", name = "添加单元信息", method = {RequestMethod.POST})
-    public HttpResult addUnit(String unitNumber){
+    public HttpResult addUnit(String unitNumber) {
         try {
             return HttpResult.newCorrectResult(basicUnitService.addUnit(unitNumber));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult("添加楼盘及土地基本信息异常");
         }
     }
@@ -107,12 +107,12 @@ public class BasicUnitController {
 
     @ResponseBody
     @RequestMapping(value = "/appWriteUnit", name = "过程数据转移", method = {RequestMethod.POST})
-    public HttpResult appWriteUnit(Integer caseUnitId){
+    public HttpResult appWriteUnit(Integer caseUnitId, String unitPartInMode) {
         try {
-            return HttpResult.newCorrectResult(200,basicUnitService.appWriteUnit(caseUnitId));
+            return HttpResult.newCorrectResult(200, basicUnitService.appWriteUnit(caseUnitId, unitPartInMode));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 }

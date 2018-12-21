@@ -40,13 +40,17 @@
     //升级单元
     unitCommon.upgrade = function (_this, callback) {
         var caseUnitId = $(_this).closest('form').find("input[name='caseUnitId']").val();
+        var unitPartInMode = $(_this).attr('data-mode');
         if (!caseUnitId) {
             toastr.info('请选择系统中已存在的单元信息！');
             return false;
         }
         $.ajax({
             url: getContextPath() + '/basicUnit/appWriteUnit',
-            data: {caseUnitId: caseUnitId},
+            data: {
+                caseUnitId: caseUnitId,
+                unitPartInMode: unitPartInMode
+            },
             success: function (result) {
                 if (result.ret) {
                     unitCommon.unitForm.initForm(result.data);
