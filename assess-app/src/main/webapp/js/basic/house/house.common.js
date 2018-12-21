@@ -54,14 +54,18 @@
 
     //升级房屋
     houseCommon.upgrade = function (_this, callback) {
-        var caseHouseId = $(_this).closest('form').find("input[name='caseHouseId']").val()
+        var caseHouseId = $(_this).closest('form').find("input[name='caseHouseId']").val();
+        var housePartInMode = $(_this).closest('form').find("input[name='housePartInMode']").val();
         if (!caseHouseId) {
             toastr.info('请选择系统中已存在的房屋信息！');
             return false;
         }
         $.ajax({
             url: getContextPath() + '/basicHouse/appWriteHouse',
-            data: {caseHouseId: caseHouseId},
+            data: {
+                caseHouseId: caseHouseId,
+                housePartInMode: housePartInMode
+            },
             success: function (result) {
                 if (result.ret) {
                     houseCommon.showHouseView(result.data);

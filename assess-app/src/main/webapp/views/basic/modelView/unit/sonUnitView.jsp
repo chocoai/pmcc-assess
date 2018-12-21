@@ -287,12 +287,10 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-1 control-label">
-                                户型描述<span class="symbol required"></span>
+                                户型描述
                             </label>
                             <div class="col-sm-11">
-                                            <textarea placeholder="户型描述" name="description"
-                                                      class="form-control" required="required">
-
+                                            <textarea placeholder="户型描述" name="description" class="form-control" >
                                             </textarea>
                             </div>
                         </div>

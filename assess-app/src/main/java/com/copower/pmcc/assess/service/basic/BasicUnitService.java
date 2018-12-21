@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basic.dao.BasicUnitDao;
 import com.copower.pmcc.assess.dal.basic.entity.*;
@@ -258,7 +259,7 @@ public class BasicUnitService {
      * @throws Exception
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
-    public BasicUnit appWriteUnit(Integer caseUnitId) throws Exception {
+    public BasicUnit appWriteUnit(Integer caseUnitId,String unitPartInMode) throws Exception {
         this.clearInvalidData(0);
         if (caseUnitId == null) {
             throw new Exception("null point");
@@ -273,11 +274,14 @@ public class BasicUnitService {
         basicUnit.setGmtModified(null);
         basicUnitDao.saveBasicUnit(basicUnit);
 
-        CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
-        caseEstateTagging.setDataId(caseUnitId);
-        caseEstateTagging.setType(EstateTaggingTypeEnum.UNIT.getKey());
-        List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-        basicEstateService.copyTaggingFromCase(caseEstateTaggings);
+        if (org.apache.commons.lang3.StringUtils.equals(unitPartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
+            CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
+            caseEstateTagging.setDataId(caseUnitId);
+            caseEstateTagging.setType(EstateTaggingTypeEnum.UNIT.getKey());
+            List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
+            basicEstateService.copyTaggingFromCase(caseEstateTaggings);
+        }
+
 
         taskExecutor.execute(new Runnable() {
             @Override

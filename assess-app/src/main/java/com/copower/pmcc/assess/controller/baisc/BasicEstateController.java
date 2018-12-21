@@ -29,89 +29,89 @@ public class BasicEstateController {
 
     @ResponseBody
     @RequestMapping(value = "/getBasicEstateById", name = "获取数据", method = {RequestMethod.GET})
-    public HttpResult getBasicEstateById(Integer id){
+    public HttpResult getBasicEstateById(Integer id) {
         try {
             return HttpResult.newCorrectResult(basicEstateService.getBasicEstateById(id));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateBasicEstate", name = "新增或者修改", method = {RequestMethod.POST})
-    public HttpResult saveAndUpdateBasicEstate(BasicEstate basicEstate){
+    public HttpResult saveAndUpdateBasicEstate(BasicEstate basicEstate) {
         try {
             return HttpResult.newCorrectResult(basicEstateService.saveAndUpdateBasicEstate(basicEstate));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/deleteBasicEstate", name = "删除数据", method = {RequestMethod.POST})
-    public HttpResult deleteBasicEstate(Integer id){
+    public HttpResult deleteBasicEstate(Integer id) {
         try {
             return HttpResult.newCorrectResult(basicEstateService.deleteBasicEstate(id));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
-    public BootstrapTableVo getBootstrapTableVo(BasicEstate basicEstate){
+    public BootstrapTableVo getBootstrapTableVo(BasicEstate basicEstate) {
         try {
             return basicEstateService.getBootstrapTableVo(basicEstate);
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return null;
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/basicEstateList", name = "获取数据列表", method = {RequestMethod.GET})
-    public HttpResult basicEstateList(BasicEstate basicEstate){
+    public HttpResult basicEstateList(BasicEstate basicEstate) {
         try {
             return HttpResult.newCorrectResult(basicEstateService.basicEstateList(basicEstate));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
 
     @ResponseBody
     @RequestMapping(value = "/getBasicEstateByApplyId", name = "获取数据", method = {RequestMethod.GET})
-    public HttpResult getBasicEstateByApplyId(Integer applyId){
+    public HttpResult getBasicEstateByApplyId(Integer applyId) {
         try {
             return HttpResult.newCorrectResult(basicEstateService.getBasicEstateMapByApplyId(applyId));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/addEstateAndLandstate", name = "添加楼盘及土地基本信息", method = {RequestMethod.POST})
-    public HttpResult addEstateAndLandstate(String estateName,String province,String city){
+    public HttpResult addEstateAndLandstate(String estateName, String province, String city) {
         try {
-            return HttpResult.newCorrectResult(basicEstateService.addEstateAndLandstate(estateName,province,city));
+            return HttpResult.newCorrectResult(basicEstateService.addEstateAndLandstate(estateName, province, city));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult("添加楼盘及土地基本信息异常");
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/appWriteEstate", name = "过程数据转移", method = {RequestMethod.POST})
-    public HttpResult appWriteEstate(Integer caseEstateId){
+    public HttpResult appWriteEstate(Integer caseEstateId, String estatePartInMode) {
         try {
-            return HttpResult.newCorrectResult(basicEstateService.appWriteEstate(caseEstateId));
+            return HttpResult.newCorrectResult(basicEstateService.appWriteEstate(caseEstateId, estatePartInMode));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }

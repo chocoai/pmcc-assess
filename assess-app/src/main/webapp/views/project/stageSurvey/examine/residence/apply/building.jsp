@@ -216,10 +216,10 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    径深
+                    进深
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="径深(数字)" data-rule-number='true'
+                    <input type="text" placeholder="进深(数字)" data-rule-number='true'
                            name="diameterDepth" class="form-control">
                 </div>
             </div>

@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basic.dao.BasicHouseDao;
 import com.copower.pmcc.assess.dal.basic.entity.*;
@@ -409,7 +410,7 @@ public class BasicHouseService {
      * @throws Exception
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
-    public Map<String, Object> appWriteHouse(Integer caseHouseId) throws Exception {
+    public Map<String, Object> appWriteHouse(Integer caseHouseId,String housePartInMode) throws Exception {
         if (caseHouseId == null) {
             throw new Exception("null ponit");
         }
@@ -426,11 +427,14 @@ public class BasicHouseService {
         basicHouseDao.saveBasicHouse(basicHouse);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()), getBasicHouseVo(basicHouse));
 
-        CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
-        caseEstateTagging.setDataId(caseHouseId);
-        caseEstateTagging.setType(EstateTaggingTypeEnum.HOUSE.getKey());
-        List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-        basicEstateService.copyTaggingFromCase(caseEstateTaggings);
+        if (org.apache.commons.lang3.StringUtils.equals(housePartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
+            CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
+            caseEstateTagging.setDataId(caseHouseId);
+            caseEstateTagging.setType(EstateTaggingTypeEnum.HOUSE.getKey());
+            List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
+            basicEstateService.copyTaggingFromCase(caseEstateTaggings);
+        }
+
 
         //附件拷贝
         SysAttachmentDto queryFile = new SysAttachmentDto();
