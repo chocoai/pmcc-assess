@@ -9,6 +9,9 @@
 <script src="${pageContext.request.contextPath}/js/autocomplete/heating.brand.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/land.level.select.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/block.select.js"></script>
+
+<script src="${pageContext.request.contextPath}/js/select/selectMap/transit.select.js"></script>
+<script src="${pageContext.request.contextPath}/js/map.placeSearch.js"></script>
 <div class="x_panel">
     <div class="x_title">
         <ul class="nav navbar-right panel_toolbox">
