@@ -227,6 +227,22 @@
 <script type="application/javascript">
     //提交
     function submit() {
+        //检查是否填写了申报数据
+        var rows = $("#" + civilEngineeringConfig.table).bootstrapTable('getData');
+        if (rows && rows.length > 0) {
+            submitForm();
+            return false;
+        }
+        rows = $("#" + equipmentInstallationConfig.table).bootstrapTable('getData');
+        if (rows && rows.length > 0) {
+            submitForm();
+            return false;
+        }
+        toastr.info("请添加相关申报信息");
+    }
+
+    //提交表单
+    function submitForm() {
         if ("${processInsId}" != "0") {
             submitEditToServer("");
         }
@@ -234,7 +250,6 @@
             submitToServer("");
         }
     }
-
 </script>
 
 
