@@ -14,7 +14,7 @@
         </h3>
         <div class="clearfix"></div>
     </div>
-    <div class="x_content" style="display: none">
+    <div class="x_content collapse">
         <div>
             <%--<button type="button" class="btn btn-success" onclick="estateSupplyWater.prototype.showModel()"--%>
                     <%--data-toggle="modal" href="#divBox"> 新增--%>

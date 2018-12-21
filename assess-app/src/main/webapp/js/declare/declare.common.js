@@ -7,4 +7,6 @@ declareCommon.declareApplyForm = $('#declareApplyForm');
 declareCommon.getPlanDetailsId = function () {
     return declareCommon.declareApplyForm.find('[name=planDetailsId]').val();
 }
-
+declareCommon.getProjectId = function () {
+    return declareCommon.declareApplyForm.find('[name=projectId]').val();
+}

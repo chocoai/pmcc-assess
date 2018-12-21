@@ -2,11 +2,11 @@
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/declare/building/civil.engineering.js"></script>
 <div class="x_panel">
-    <div class="x_content">
-        <div class="x_title">
-            <h3>在建工程（土建）</h3>
-            <div class="clearfix"></div>
-        </div>
+    <div class="x_title collapse-link">
+        <h3>在建工程（土建）</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content collapse">
         <form class="form-horizontal">
             <div class="form-group">
                 <div class="btn-group">
@@ -16,10 +16,15 @@
                     <div class="btn btn-primary" onclick="civilEngineering.deleteData();"> 删除</div>
                     <div class="btn btn-primary" onclick="civilEngineering.pasteAll();"> 复制</div>
                     <div class="btn btn-primary" onclick="civilEngineering.pasteAll();"> 粘贴</div>
-                    <div class="btn btn-primary"
-                         onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftDeclareBuildEngineering);"> 下载模板
-                    </div>
-                    <div class="btn btn-primary" onclick="$('#civilEngineeringUpload').val('').trigger('click');">导入数据
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入数据
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftDeclareBuildEngineering)"><span>下载模板</span></a>
+                            </li>
+                            <li><a onclick="$('#civilEngineeringUpload').val('').trigger('click')"><span>导入</span></a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -966,9 +971,6 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button" data-dismiss="modal" class="btn btn-warning">
-                    删除
-                </button>
                 <button type="button" class="btn btn-primary"
                         onclick="civilEngineering.saveAndUpdateData();">
                     保存
@@ -1868,13 +1870,13 @@
         <a class="btn btn-primary btn-o dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
             关联信息<span class="caret"></span>
         </a>
-        <ul class="dropdown-menu dropdown-usermenu pull-right" style="font-size: 14px;">
+        <ul class="dropdown-menu" style="font-size: 14px;">
             <li><a href="javascript://;"
-                   onclick="civilEngineering.declareRealtyLandCertView(paramCenterId)"><span>土地证</span></a></li>
+                   onclick="civilEngineering.declareRealtyLandCertView(paramCenterId)"><i class="fa fa-check"></i> <span>土地证</span></a></li>
             <li><a href="javascript://;"
                    onclick="civilEngineering.declareRealtyRealEstateCertView(paramCenterId)"><span>不动产证</span></a></li>
             <li><a href="javascript://;"
-                   onclick="civilEngineering.declareBuildingPermitView(paramCenterId)"><span>建设工程规划许可证</span></a></li>
+                   onclick="civilEngineering.declareBuildingPermitView(paramCenterId)"><i class="fa fa-check"></i><span>建设工程规划许可证</span></a></li>
             <li><a href="javascript://;"
                    onclick="civilEngineering.declareLandUsePermitView(paramCenterId)"><span>建设用地规划许可证</span></a></li>
             <li><a href="javascript://;"

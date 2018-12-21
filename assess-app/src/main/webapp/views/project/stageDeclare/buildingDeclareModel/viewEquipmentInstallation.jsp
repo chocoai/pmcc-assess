@@ -1,36 +1,36 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_panel">
-    <div class="x_content">
-        <div class="x_title">
-            <h3>
-                在建工程（设备安装） &nbsp;&nbsp;&nbsp;&nbsp;
-                <small>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-success" onclick="equipmentInstallation.showAddModel();"
-                                data-toggle="modal"> 新增
-                        </button>
-                        <button type="button" class="btn btn-primary" onclick="equipmentInstallation.pasteAll();"
-                                data-toggle="modal"> 粘贴
-                        </button>
-                    </div>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入设备安装Excel文件
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a class="btn"
-                                   onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftDeclareBuildEquipmentInstall)">下载模板</a>
-                            </li>
-                            <li><a class="btn btn-default"
-                                   onclick="$('#equipmentInstallationUpload').val('').trigger('click')">导入</a></li>
-                        </ul>
-                    </div>
-                </small>
-            </h3>
-            <div class="clearfix"></div>
-        </div>
+    <div class="x_title collapse-link">
+        <h3>
+            在建工程（设备安装）
+        </h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content collapse">
         <form class="form-horizontal">
+            <div class="form-group">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-success" onclick="equipmentInstallation.showAddModel();"
+                            data-toggle="modal"> 新增
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="equipmentInstallation.pasteAll();"
+                            data-toggle="modal"> 粘贴
+                    </button>
+                </div>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入设备安装Excel文件
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a class="btn"
+                               onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftDeclareBuildEquipmentInstall)">下载模板</a>
+                        </li>
+                        <li><a class="btn btn-default"
+                               onclick="$('#equipmentInstallationUpload').val('').trigger('click')">导入</a></li>
+                    </ul>
+                </div>
+            </div>
             <div class="form-group">
                 <div class="x-valid">
                     <table class="table table-bordered" id="equipmentInstallationTableList">

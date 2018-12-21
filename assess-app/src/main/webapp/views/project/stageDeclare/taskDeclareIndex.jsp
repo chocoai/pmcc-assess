@@ -13,20 +13,21 @@
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <form class="form-horizontal" id="declareApplyForm">
                 <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+                <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
             </form>
             <!-- 房产证 -->
             <div id="viewDeclareRealtyHouseCert">
-                <%@include file="/views/project/stageDeclare/HouseDeclarationModel/viewDeclareRealtyHouseCert.jsp" %>
+                <%@include file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyHouseCert.jsp" %>
             </div>
 
             <!-- 土地证 -->
             <div id="viewDeclareRealtyLandCert">
-                <%@include file="/views/project/stageDeclare/HouseDeclarationModel/viewDeclareRealtyLandCert.jsp" %>
+                <%@include file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyLandCert.jsp" %>
             </div>
 
             <!-- 不动产证 -->
             <div id="viewDeclareRealtyRealEstateCert">
-                <%@include file="/views/project/stageDeclare/HouseDeclarationModel/viewDeclareRealtyRealEstateCert.jsp" %>
+                <%@include file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyRealEstateCert.jsp" %>
             </div>
 
             <div class="x_panel">

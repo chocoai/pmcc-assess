@@ -81,8 +81,7 @@ equipmentInstallation.showFile = function (target, tableName, id) {
         formData: {
             fieldsName: target,
             tableName: tableName,
-            tableId: id,
-            projectId: 0
+            tableId: id
         },
         deleteFlag: true
     });

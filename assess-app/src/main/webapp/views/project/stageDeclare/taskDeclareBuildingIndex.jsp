@@ -14,16 +14,17 @@
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <form class="form-horizontal" id="declareApplyForm">
                 <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+                <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
             </form>
 
             <!-- 土建 -->
             <div id="viewCivilEngineering">
-                <%@include file="/views/project/stageDeclare/BuildingDeclareModel/viewCivilEngineering.jsp" %>
+                <%@include file="/views/project/stageDeclare/buildingDeclareModel/viewCivilEngineering.jsp" %>
             </div>
 
             <!-- 设备安装 -->
             <div id="viewEquipmentInstallation">
-                <%@include file="/views/project/stageDeclare/BuildingDeclareModel/viewEquipmentInstallation.jsp" %>
+                <%@include file="/views/project/stageDeclare/buildingDeclareModel/viewEquipmentInstallation.jsp" %>
             </div>
 
             <div class="x_panel">
@@ -43,7 +44,7 @@
     </div>
 </div>
 </body>
-<%@include file="/views/project/stageDeclare/BuildingDeclareModel/viewEconomicIndicators.jsp" %>
+<%@include file="/views/project/stageDeclare/buildingDeclareModel/viewEconomicIndicators.jsp" %>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
