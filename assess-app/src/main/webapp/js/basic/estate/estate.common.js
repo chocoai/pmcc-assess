@@ -61,7 +61,7 @@
     //升级楼盘
     estateCommon.upgrade = function (_this, callback) {
         var caseEstateId = $(_this).closest('form').find("input[name='caseEstateId']").val();
-        var estatePartInMode = $(_this).closest('form').find("input[name='estatePartInMode']").val();
+        var estatePartInMode = $(_this).attr('data-mode');
         if (!caseEstateId) {
             toastr.info('请选择系统中已存在的楼盘信息！');
             return false;

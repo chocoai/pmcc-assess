@@ -47,7 +47,7 @@
     //升级楼栋
     buildingCommon.upgrade = function (_this, callback) {
         var caseBuildingMainId = $(_this).closest('form').find("input[name='caseBuildingMainId']").val();
-        var buildingPartInMode = $(_this).closest('form').find("input[name='buildingPartInMode']").val();
+        var buildingPartInMode = $(_this).attr('data-mode');
         if (!caseBuildingMainId) {
             toastr.info('请选择系统中已存在的楼栋信息！');
             return false;

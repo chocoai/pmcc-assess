@@ -55,7 +55,7 @@
     //升级房屋
     houseCommon.upgrade = function (_this, callback) {
         var caseHouseId = $(_this).closest('form').find("input[name='caseHouseId']").val();
-        var housePartInMode = $(_this).closest('form').find("input[name='housePartInMode']").val();
+        var housePartInMode = $(_this).attr('data-mode');
         if (!caseHouseId) {
             toastr.info('请选择系统中已存在的房屋信息！');
             return false;
