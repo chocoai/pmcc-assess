@@ -472,7 +472,7 @@ var matchingMetro;
     })
 })();
 
-var matchingTrafficHub;
+var matchingTrafficHub;//交通枢纽信息
 (function () {
     matchingTrafficHub = function () {
 
@@ -494,6 +494,9 @@ var matchingTrafficHub;
         },
         loadDataDicList: function () {
             var cols = commonColumn.matchingTrafficHubColumn();
+            cols.unshift({
+                checkbox: true
+            });
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -535,6 +538,33 @@ var matchingTrafficHub;
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
+        },
+        clear:function () {
+            var data = $("#" + matchingTrafficHub.prototype.config().table).bootstrapTable('getSelections');
+            var ids = "";
+            if (data.length >= 1){
+                $.each(data, function (i, n) {
+                    if (i == data.length - 1) {
+                        ids += n.id;
+                    } else {
+                        ids += n.id + ",";
+                    }
+                });
+                $.ajax({
+                    url: getContextPath() + "/basicMatchingTraffic/removeIds",
+                    type: "post",
+                    dataType: "json",
+                    data: {ids: ids},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('清空所选项成功!');
+                            matchingTrafficHub.prototype.loadDataDicList();
+                        }
+                    }
+                })
+            }else {
+                Alert("至少选择一个!") ;
+            }
         },
         showModel: function () {
             matchingTrafficHub.prototype.init({});
@@ -815,7 +845,7 @@ var matchingTransit;
 })();
 
 
-var matchingMedical;
+var matchingMedical;//医疗
 (function () {
     matchingMedical = function () {
 
@@ -837,6 +867,9 @@ var matchingMedical;
         },
         loadDataDicList: function () {
             var cols = commonColumn.matchingMedicalColumn();
+            cols.unshift({
+                checkbox: true
+            });
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -877,6 +910,33 @@ var matchingMedical;
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
+        },
+        clear:function () {
+            var data = $("#" + matchingMedical.prototype.config().table).bootstrapTable('getSelections');
+            var ids = "";
+            if (data.length >= 1){
+                $.each(data, function (i, n) {
+                    if (i == data.length - 1) {
+                        ids += n.id;
+                    } else {
+                        ids += n.id + ",";
+                    }
+                });
+                $.ajax({
+                    url: getContextPath() + "/basicMatchingMedical/removeIds",
+                    type: "post",
+                    dataType: "json",
+                    data: {ids: ids},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('清空所选项成功!');
+                            matchingMedical.prototype.loadDataDicList();
+                        }
+                    }
+                });
+            }else {
+                Alert("至少选择一个!") ;
+            }
         },
         showModel: function () {
             matchingMedical.prototype.init({});
@@ -1086,7 +1146,7 @@ var matchingMaterial;
 })();
 
 
-var matchingMarket;
+var matchingMarket; //商场
 (function () {
     matchingMarket = function () {
 
@@ -1108,6 +1168,9 @@ var matchingMarket;
         },
         loadDataDicList: function () {
             var cols = commonColumn.matchingMarketColumn();
+            cols.unshift({
+                checkbox: true
+            });
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -1149,6 +1212,33 @@ var matchingMarket;
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
+        },
+        clear:function () {
+            var data = $("#" + matchingMarket.prototype.config().table).bootstrapTable('getSelections');
+            var ids = "";
+            if (data.length >= 1){
+                $.each(data, function (i, n) {
+                    if (i == data.length - 1) {
+                        ids += n.id;
+                    } else {
+                        ids += n.id + ",";
+                    }
+                });
+                $.ajax({
+                    url: getContextPath() + "/basicMatchingLeisurePlace/removeIds",
+                    type: "post",
+                    dataType: "json",
+                    data: {ids: ids},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('清空所选项成功!');
+                            matchingMarket.prototype.loadDataDicList();
+                        }
+                    }
+                });
+            }else {
+                Alert("至少选择一个!") ;
+            }
         },
         showModel: function () {
             matchingMarket.prototype.init({});
@@ -1267,10 +1357,14 @@ var matchingMarket;
     //绑定事件
     $('#' + matchingMarket.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         matchingMarket.prototype.loadDataDicList();
+        //用做高德地图抓取数据type
+        AssessCommon.loadDataDicByKey(AssessDicKey.estate_shop_category, null, function (html, data) {
+            $("#" + matchingMarket.prototype.config().table).closest("form").find('select.category').empty().html(html).trigger('change');
+        });
     })
 })();
 
-var matchingRestaurant;
+var matchingRestaurant;//餐饮
 (function () {
     matchingRestaurant = function () {
 
@@ -1292,6 +1386,9 @@ var matchingRestaurant;
         },
         loadDataDicList: function () {
             var cols = commonColumn.matchingRestaurantColumn();
+            cols.unshift({
+                checkbox: true
+            });
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -1333,6 +1430,33 @@ var matchingRestaurant;
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
+        },
+        clear:function () {
+            var data = $("#" + matchingRestaurant.prototype.config().table).bootstrapTable('getSelections');
+            var ids = "";
+            if (data.length >= 1){
+                $.each(data, function (i, n) {
+                    if (i == data.length - 1) {
+                        ids += n.id;
+                    } else {
+                        ids += n.id + ",";
+                    }
+                });
+                $.ajax({
+                    url: getContextPath() + "/basicMatchingLeisurePlace/removeIds",
+                    type: "post",
+                    dataType: "json",
+                    data: {ids: ids},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('清空所选项成功!');
+                            matchingRestaurant.prototype.loadDataDicList();
+                        }
+                    }
+                });
+            }else {
+                Alert("至少选择一个!") ;
+            }
         },
         showModel: function () {
             matchingRestaurant.prototype.init({});
@@ -1451,10 +1575,14 @@ var matchingRestaurant;
     //绑定事件
     $('#' + matchingRestaurant.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         matchingRestaurant.prototype.loadDataDicList();
+        //用做高德地图抓取数据type
+        AssessCommon.loadDataDicByKey(AssessDicKey.estate_dining_category, null, function (html, data) {
+            $("#" + matchingRestaurant.prototype.config().table).closest("form").find('select.category').empty().html(html).trigger('change');
+        });
     })
 })();
 
-var matchingRecreation;
+var matchingRecreation;//娱乐
 (function () {
     matchingRecreation = function () {
 

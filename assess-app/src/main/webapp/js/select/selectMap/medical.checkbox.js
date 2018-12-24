@@ -1,7 +1,7 @@
-//餐饮信息 高德地图抓取周边餐饮信息数据
+//医疗 高德地图抓取周边医疗数据
 
 (function ($) {
-    var AssessMatchingRestaurant = function () {
+    var AssessMetro = function () {
 
     };
 
@@ -9,7 +9,7 @@
      * 获取要查询的参数如:经纬度以及抓取数据后为选择做必要的处理
      * @param that
      */
-    AssessMatchingRestaurant.prototype.select = function (that) {
+    AssessMetro.prototype.select = function (that) {
         $.ajax({
             url: getContextPath() + '/basicEstateTagging/getEstateTaggingList',
             data: {
@@ -21,21 +21,12 @@
                     if (result.data.length >= 1) {
                         var data = result.data[0];
                         if (data) {
-                            var id = $("#" + matchingRestaurant.prototype.config().table).closest("form").find('select.category').val() ;
-                            if (id){
-                                AssessCommon.getDataDicInfo(id,function (item) {
-                                    var options = {
-                                        distance: $(that).parent().prev().val(),
-                                        lng: data.lng,
-                                        lat: data.lat,
-                                        type:item.name
-
-                                    };
-                                    AssessMatchingRestaurant.prototype.appendHtml(options);
-                                });
-                            }else {
-                                Alert("类型必须选择!") ;
-                            }
+                            var options = {
+                                distance: $(that).parent().prev().val(),
+                                lng: data.lng,
+                                lat: data.lat
+                            };
+                            AssessMetro.prototype.appendHtml(options);
                         }
                     } else {
                         Alert("无标记");
@@ -49,14 +40,14 @@
      * append html
      * @param options
      */
-    AssessMatchingRestaurant.prototype.appendHtml = function (options) {
-        var target = $("#select_matchingRestaurant_modal");
+    AssessMetro.prototype.appendHtml = function (options) {
+        var target = $("#select_Medical_modal");
         if (target.length > 0) {
-            $("#select_matchingRestaurant_modal").remove();
+            $("#select_Medical_modal").remove();
         }
         try {
-            assessSearchMap.otherSearch(options.type, options.distance, options, function (data) {
-                var html = '<div id="select_matchingRestaurant_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" ';
+            assessSearchMap.localUseTypeSearch('医院', options.distance, options, function (data) {
+                var html = '<div id="select_Medical_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" ';
                 html += 'role="dialog" data-keyboard="false" tabindex="1" >';
                 html += '<div class="modal-dialog  modal-lg">';
                 html += '<div class="modal-content">';
@@ -64,13 +55,13 @@
 
                 html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span';
                 html += 'aria-hidden="true">&times;</span></button>';
-                html += '<h3 class="modal-title">餐饮选择 &nbsp;&nbsp;&nbsp;&nbsp;';
+                html += '<h3 class="modal-title">医疗选择 &nbsp;&nbsp;&nbsp;&nbsp;';
                 html += "<span class='label label-primary'>" + '全选或全不选' + "</span>";
-                html += "<input type='checkbox' onclick='assessMatchingRestaurant.checkedFun(this,true)'>";
+                html += "<input type='checkbox' onclick='assessMatchingMedical.checkedFun(this,true)'>";
                 html += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
-                html += "<input type='checkbox' onclick='assessMatchingRestaurant.checkedFun(this,false)'>";
+                html += "<input type='checkbox' onclick='assessMatchingMedical.checkedFun(this,false)'>";
                 html += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='badge'>记录max20</span>";
-                html += "&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' class='btn btn-success' value='保存选中选项' onclick='assessMatchingRestaurant.save(this)'>" ;
+                html += "&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' class='btn btn-success' value='保存选中选项' onclick='assessMatchingMedical.save(this)'>" ;
                 html += "</h3>";
                 html += '</div>';
 
@@ -80,7 +71,7 @@
                 html += "<div class='row'>";
                 html += "<div class='col-md-12'>";
                 html += "<div class='panel-body'>";
-                html += AssessMatchingRestaurant.prototype.write(data);
+                html += AssessMetro.prototype.write(data);
                 html += '</div>';
                 html += '</div>';
                 html += '</div>';
@@ -91,7 +82,7 @@
                 html += '</div>';
 
                 $(document.body).append(html);
-                $('#select_matchingRestaurant_modal').modal('show');
+                $('#select_Medical_modal').modal('show');
             });
         } catch (e) {
             console.log(e);
@@ -102,14 +93,15 @@
      * 保存选中的
      * @param this_
      */
-    AssessMatchingRestaurant.prototype.onSelected = function (this_) {
+    AssessMetro.prototype.onSelected = function (this_) {
         var item = $(this_).parent().parent();
+        var theLine = item.find("label.theLine").html();
+        var str = theLine.split(";").join(',');
         var data = {
-            name: item.find("input[name='name']").val(),
-            estateId: estateCommon.getEstateId(),
+            organizationName: item.find("input[name='name']").val(),
             distance: item.find("input[name='distance']").val(),
-            category: $("#" + matchingRestaurant.prototype.config().table).closest("form").find('select.category').val(),
-            type:'matchingRestaurant' //根据 ExamineMatchingLeisurePlaceTypeEnum 配置
+            theLine: str,
+            estateId: estateCommon.getEstateId()
         };
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_distance, null, function (html, n) {
             var a500 = {};
@@ -118,7 +110,7 @@
             var a2000 = {};
             var a2000Max = {};
             $.each(n, function (i, v) {
-                var number = AssessMatchingRestaurant.prototype.getNumber(v.name);
+                var number = AssessMetro.prototype.getNumber(v.name);
                 number = Number(number);
                 if (v.name == '小于等于500m') {
                     a500.number = number;
@@ -153,15 +145,15 @@
                 data.distance = a2000Max.id;
             }
             $.ajax({
-                url: getContextPath() + "/basicMatchingLeisurePlace/saveAndUpdateBasicMatchingLeisurePlace",
+                url: getContextPath() + "/basicMatchingMedical/saveAndUpdateBasicMatchingMedical",
                 type: "post",
                 dataType: "json",
                 data: data,
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
-                        matchingRestaurant.prototype.loadDataDicList();
-                        $('#select_matchingRestaurant_modal').modal('hide');
+                        matchingMedical.prototype.loadDataDicList();
+                        $('#select_Medical_modal').modal('hide');
                     }
                     else {
                         Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -174,16 +166,16 @@
         });
     };
 
-    AssessMatchingRestaurant.prototype.save = function (that) {
+    AssessMetro.prototype.save = function (that) {
         var form = $(that).parent().parent().next();
         form.find(":checkbox").each(function (i, n) {
             if ($(this).prop("checked")) {
-                AssessMatchingRestaurant.prototype.onSelected(this);
+                AssessMetro.prototype.onSelected(this);
             }
         });
     };
 
-    AssessMatchingRestaurant.prototype.write = function (data) {
+    AssessMetro.prototype.write = function (data) {
         var retHtml = "";
         $.each(data.poiList.pois, function (i, item) {
             retHtml += "<div class='form-group'>";
@@ -193,7 +185,7 @@
             retHtml += "<input type='text' class='form-control' name='distance' readonly='readonly' value='" + item.distance + "'" + ">";
             retHtml += "</div>";
 
-            retHtml += "<label class='col-sm-1 control-label'>地址</label>";
+            retHtml += "<label class='col-sm-1 control-label'>线路</label>";
             retHtml += "<div class='col-sm-5'>";
             retHtml += "<label class='form-control theLine'>" + item.address + "</label>";
             retHtml += "</div>";
@@ -210,7 +202,7 @@
     /**
      * 截图字符串中的数字
      */
-    AssessMatchingRestaurant.prototype.getNumber = function (str) {
+    AssessMetro.prototype.getNumber = function (str) {
         var reg = /[1-9][0-9]*/g;
         return str.match(reg)[0];
     };
@@ -220,7 +212,7 @@
      * @param that
      * @param flag true 表示全选或者全不选,否则表示反选
      */
-    AssessMatchingRestaurant.prototype.checkedFun = function (that, flag) {
+    AssessMetro.prototype.checkedFun = function (that, flag) {
         var form = $(that).parent().parent().next();
         if (flag) {//全选或者全不选
             var number = 1;
@@ -258,5 +250,5 @@
     };
 
 
-    window.assessMatchingRestaurant = new AssessMatchingRestaurant();
+    window.assessMatchingMedical = new AssessMetro();
 })(jQuery);

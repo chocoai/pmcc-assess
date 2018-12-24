@@ -260,12 +260,58 @@
             <div class="clearfix"></div>
         </div>
         <div class="x_content collapse">
-            <button type="button" class="btn btn-success" onclick="matchingRestaurant.prototype.showModel()"
-                    data-toggle="modal" href="#divBox"> 新增
-            </button>
-            <table class="table table-bordered" id="MatchingRestaurantList">
-                <!-- cerare document add ajax data-->
-            </table>
+            <div class="col-md-12">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-success" onclick="matchingRestaurant.prototype.showModel()"
+                                    data-toggle="modal" href="#divBox"> 新增
+                            </button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-success" onclick="matchingRestaurant.prototype.clear()"> 清空数据
+                            </button>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                餐饮类别
+                            </label>
+                            <div class="col-sm-2">
+                                <select required="required" name="category"
+                                        class="form-control search-select select2 category">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="text"
+                                       placeholder="距离" class="form-control" name="distance">
+                                <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="选择"
+                                onclick="assessMatchingRestaurant.select(this)">
+                        <i class="fa fa-search"></i>
+                        </button>
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                data-toggle="tooltip" data-original-title="清除">
+                        <i class="fa fa-trash-o"></i>
+                        </button>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered" id="MatchingRestaurantList">
+                                <!-- cerare document add ajax data-->
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <div class="x_panel">
@@ -278,12 +324,58 @@
             <div class="clearfix"></div>
         </div>
         <div class="x_content collapse">
-            <button type="button" class="btn btn-success" onclick="matchingMarket.prototype.showModel()"
-                    data-toggle="modal" href="#divBox"> 新增
-            </button>
-            <table class="table table-bordered" id="MatchingMarketList">
-                <!-- cerare document add ajax data-->
-            </table>
+            <div class="col-md-12">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-success" onclick="matchingMarket.prototype.showModel()"
+                                    data-toggle="modal" href="#divBox"> 新增
+                            </button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-success" onclick="matchingMarket.prototype.clear()"> 清空数据
+                            </button>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                商场类别
+                            </label>
+                            <div class="col-sm-2">
+                                <select required="required" name="category"
+                                        class="form-control search-select select2 category">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="text"
+                                       placeholder="距离" class="form-control" name="distance">
+                                <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="选择"
+                                onclick="assessMatchingMarket.select(this)">
+                        <i class="fa fa-search"></i>
+                        </button>
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                data-toggle="tooltip" data-original-title="清除">
+                        <i class="fa fa-trash-o"></i>
+                        </button>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered" id="MatchingMarketList">
+                                <!-- cerare document add ajax data-->
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <div class="x_panel">
@@ -296,12 +388,48 @@
             <div class="clearfix"></div>
         </div>
         <div class="x_content collapse">
-            <button type="button" class="btn btn-success" onclick="matchingMedical.prototype.showModel()"
-                    data-toggle="modal" href="#divBox"> 新增
-            </button>
-            <table class="table table-bordered" id="MatchingMedicalList">
-                <!-- cerare document add ajax data-->
-            </table>
+            <div class="col-md-12">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-success" onclick="matchingMedical.prototype.showModel()"
+                                    data-toggle="modal" href="#divBox"> 新增
+                            </button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-success" onclick="matchingMedical.prototype.clear()"> 清空数据
+                            </button>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <input type="text"
+                                       placeholder="距离" class="form-control" name="distance">
+                                <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="选择"
+                                onclick="assessMatchingMedical.select(this)">
+                        <i class="fa fa-search"></i>
+                        </button>
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                data-toggle="tooltip" data-original-title="清除">
+                        <i class="fa fa-trash-o"></i>
+                        </button>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered" id="MatchingMedicalList">
+                                <!-- cerare document add ajax data-->
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -372,12 +500,48 @@
         <div class="clearfix"></div>
     </div>
     <div class="x_content collapse">
-        <button type="button" class="btn btn-success" onclick="matchingTrafficHub.prototype.showModel()"
-                data-toggle="modal" href="#divBox"> 新增
-        </button>
-        <table class="table table-bordered" id="MatchingTrafficHubList">
-            <!-- cerare document add ajax data-->
-        </table>
+        <div class="col-md-12">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <button type="button" class="btn btn-success" onclick="matchingTrafficHub.prototype.showModel()"
+                                data-toggle="modal" href="#divBox"> 新增
+                        </button>
+                    </div>
+                    <div class="col-sm-3">
+                        <button type="button" class="btn btn-success" onclick="matchingTrafficHub.prototype.clear()"> 清空数据
+                        </button>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <input type="text"
+                                   placeholder="距离" class="form-control" name="distance">
+                            <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="选择"
+                                onclick="assessMatchingTrafficHub.select(this)">
+                        <i class="fa fa-search"></i>
+                        </button>
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                data-toggle="tooltip" data-original-title="清除">
+                        <i class="fa fa-trash-o"></i>
+                        </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered" id="MatchingTrafficHubList">
+                            <!-- cerare document add ajax data-->
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
