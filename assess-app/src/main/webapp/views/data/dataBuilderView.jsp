@@ -26,11 +26,11 @@
                         <div class="form-group ">
                             <div>
                                 <label class="col-sm-1 control-label">
-                                    建造商
+                                    名称
                                 </label>
                                 <div class="col-sm-2">
                                     <input type="text" data-rule-maxlength="50"
-                                           placeholder="建造商 名称" id="queryName" name="queryName"
+                                           placeholder="名称" id="queryName" name="queryName"
                                            class="form-control">
                                 </div>
                             </div>
@@ -65,7 +65,6 @@
 <script type="text/javascript">
     $(function () {
         dataBuilder.prototype.loadDataDicList();
-        dataBuilder.prototype.init();
     });
     var dataBuilder = function () {
 
@@ -81,8 +80,9 @@
         loadDataDicList: function () {
             var cols = [];
             cols.push({field: 'name', title: '名称'});
-            cols.push({field: 'socialPrestige', title: '社会信誉'});
+            cols.push({field: 'qualificationGradeName', title: '资质等级'});
             cols.push({field: 'companyNature', title: '公司性质'});
+            cols.push({field: 'socialPrestige', title: '社会信誉'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -106,7 +106,7 @@
             });
         },
         removeData: function (id) {
-            Alert("确认删除!",2,null,function () {
+            Alert("确认删除!", 2, null, function () {
                 $.ajax({
                     url: "${pageContext.request.contextPath}/dataBuilder/deleteDataBuilderById",
                     type: "post",
@@ -128,8 +128,6 @@
             });
         },
         showModel: function () {
-            $("#qualificationGrade").val(null).trigger("change");
-            $("#qualificationGradeV").val(null).trigger("change");
             $("#" + dataBuilder.prototype.config().frm).clearAll();
             $('#' + dataBuilder.prototype.config().box).modal("show");
         },
@@ -138,13 +136,6 @@
                 return false;
             }
             var data = formParams(dataBuilder.prototype.config().frm);
-            var size = $("#qualificationGrade option").size();
-            if (size == 0) {
-
-            }
-            if (size >= 1) {
-                data.qualificationGrade = $("#qualificationGrade").val();
-            }
             $.ajax({
                 url: "${pageContext.request.contextPath}/dataBuilder/saveAndUpdateDataBuilder",
                 type: "post",
@@ -173,16 +164,7 @@
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        $("#" + dataBuilder.prototype.config().frm).clearAll();
-                        $("#" + dataBuilder.prototype.config().frm).initForm(result.data);
-                        $("#qualificationGradeV").select2();
-                        var size = $("#qualificationGrade option").size();
-                        if (size == 0) {
-                            $("#qualificationGradeV").val(result.data.qualificationGrade).trigger("change");
-                        }
-                        if (size >= 1) {
-                            $("#qualificationGrade").val(result.data.qualificationGrade).trigger("change");
-                        }
+                        $("#" + dataBuilder.prototype.config().frm).clearAll().initForm(result.data);
                         $('#' + dataBuilder.prototype.config().box).modal("show");
                     }
                 },
@@ -190,38 +172,6 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
-        },
-        init: function () {
-            $("#qualificationGradeV").change(function () {
-                var id = $("#qualificationGradeV").val();
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/dataBuilder/getBasisList",
-                    dataType: "JSON",
-                    data: {'id': id},
-                    type: "GET",
-                    success: function (result) {
-                        if (result.ret && result.data) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#qualificationGrade").parent().parent().parent().show();
-                                $("#qualificationGrade").html(option);
-                            } else {
-                                $("#qualificationGrade").empty();
-                                $("#qualificationGrade").parent().parent().parent().hide();
-                            }
-
-                        }
-                    },
-                    error: function (e) {
-                        Alert("调用服务端方法失败，失败原因:" + e);
-                    }
-                });
-            });
         }
     }
 </script>
@@ -243,7 +193,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            名称
+                                            名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="name"
@@ -257,9 +207,8 @@
                                             资质等级
                                         </label>
                                         <div class="col-sm-10">
-                                            <select id="qualificationGradeV" required="required"
-                                                    name="qualificationGrade"
-                                                    class="form-control search-select select2">
+                                            <select name="qualificationGrade" class="form-control search-select select2">
+                                                <option value="">-请选择-</option>
                                                 <c:forEach items="${baseList}" var="item">
                                                     <option value="${item.id}">${item.name}</option>
                                                 </c:forEach>
@@ -273,8 +222,7 @@
                                             公司性质
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="companyNature"
-                                                   placeholder="公司性质" required="required">
+                                            <input type="text" class="form-control" name="companyNature" placeholder="公司性质">
                                         </div>
                                     </div>
                                 </div>
@@ -284,9 +232,7 @@
                                             社会信誉
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea class="form-control" name="socialPrestige" placeholder="社会信誉"
-                                                      required="required">
-
+                                            <textarea class="form-control" name="socialPrestige" placeholder="社会信誉">
                                             </textarea>
                                         </div>
                                     </div>

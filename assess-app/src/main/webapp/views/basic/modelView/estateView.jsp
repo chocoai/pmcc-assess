@@ -337,14 +337,14 @@
                 <div class="col-sm-3">
                     <div class="input-group">
                         <input type="hidden" name="landLevel" value="${basicEstateLandState.landLevel}">
-                        <input type="text" readonly="readonly"
+                        <input type="text" readonly="readonly" onclick="basicCommon.landLevelSelect(this);"
                                placeholder="土地级别" class="form-control" name="landLevelName"
                                value="${basicEstateLandState.landLevelName}">
                         <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
-                                onclick="basicCommon.landLevelSelect(this)">
+                                onclick="basicCommon.landLevelSelect(this);">
                         <i class="fa fa-search"></i>
                         </button>
                         <button type="button" class="btn btn-default docs-tooltip"
