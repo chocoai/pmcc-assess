@@ -1,6 +1,7 @@
-//金融 高德地图抓取周边金融数据
+//教育条件 高德地图抓取周边教育条件数据
+
 (function ($) {
-    var AssessMatchingFinance = function () {
+    var AssessMatchingEducation = function () {
 
     };
 
@@ -8,7 +9,7 @@
      * 获取要查询的参数如:经纬度以及抓取数据后为选择做必要的处理
      * @param that
      */
-    AssessMatchingFinance.prototype.select = function (that) {
+    AssessMatchingEducation.prototype.select = function (that) {
         $.ajax({
             url: getContextPath() + '/basicEstateTagging/getEstateTaggingList',
             data: {
@@ -20,7 +21,7 @@
                     if (result.data.length >= 1) {
                         var data = result.data[0];
                         if (data) {
-                            var id = $("#" + matchingFinance.prototype.config().table).closest("form").find('select.category').val() ;
+                            var id = $("#" + matchingEducation.prototype.config().table).closest("form").find('select.schoolGradation').val() ;
                             if (id){
                                 AssessCommon.getDataDicInfo(id,function (item) {
                                     var options = {
@@ -30,7 +31,7 @@
                                         type:item.name
 
                                     };
-                                    AssessMatchingFinance.prototype.appendHtml(options);
+                                    AssessMatchingEducation.prototype.appendHtml(options);
                                 });
                             }else {
                                 Alert("类型必须选择!") ;
@@ -48,17 +49,17 @@
      * append html
      * @param options
      */
-    AssessMatchingFinance.prototype.appendHtml = function (options) {
-        var target = $("#select_matchingfinance_modal");
+    AssessMatchingEducation.prototype.appendHtml = function (options) {
+        var target = $("#select_matchingeducation_modal");
         if (target.length > 0) {
-            $("#select_matchingfinance_modal").remove();
+            $("#select_matchingeducation_modal").remove();
         }
         try {
             if (options.type == '信托'){
                 Alert("高德地图案例中金融机构类型无信托");
             }else {
                 assessSearchMap.localUseTypeSearch(options.type, options.distance, options, function (data) {
-                    var html = '<div id="select_matchingfinance_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" ';
+                    var html = '<div id="select_matchingeducation_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" ';
                     html += 'role="dialog" data-keyboard="false" tabindex="1" >';
                     html += '<div class="modal-dialog  modal-lg">';
                     html += '<div class="modal-content">';
@@ -66,13 +67,13 @@
 
                     html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span';
                     html += 'aria-hidden="true">&times;</span></button>';
-                    html += '<h3 class="modal-title">金融机构选择 &nbsp;&nbsp;&nbsp;&nbsp;';
+                    html += '<h3 class="modal-title">教育机构选择 &nbsp;&nbsp;&nbsp;&nbsp;';
                     html += "<span class='label label-primary'>" + '全选或全不选' + "</span>";
-                    html += "<input type='checkbox' onclick='assessMatchingFinance.checkedFun(this,true)'>";
+                    html += "<input type='checkbox' onclick='assessMatchingEducation.checkedFun(this,true)'>";
                     html += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
-                    html += "<input type='checkbox' onclick='assessMatchingFinance.checkedFun(this,false)'>";
+                    html += "<input type='checkbox' onclick='assessMatchingEducation.checkedFun(this,false)'>";
                     html += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='badge'>记录max20</span>";
-                    html += "&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' class='btn btn-success' value='保存选中选项' onclick='assessMatchingFinance.save(this)'>" ;
+                    html += "&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' class='btn btn-success' value='保存选中选项' onclick='assessMatchingEducation.save(this)'>" ;
                     html += "</h3>";
                     html += '</div>';
 
@@ -82,7 +83,7 @@
                     html += "<div class='row'>";
                     html += "<div class='col-md-12'>";
                     html += "<div class='panel-body'>";
-                    html += AssessMatchingFinance.prototype.write(data);
+                    html += AssessMatchingEducation.prototype.write(data);
                     html += '</div>';
                     html += '</div>';
                     html += '</div>';
@@ -93,7 +94,7 @@
                     html += '</div>';
 
                     $(document.body).append(html);
-                    $('#select_matchingfinance_modal').modal('show');
+                    $('#select_matchingeducation_modal').modal('show');
                 });
             }
         } catch (e) {
@@ -105,44 +106,87 @@
      * 保存选中的
      * @param this_
      */
-    AssessMatchingFinance.prototype.onSelected = function (this_) {
+    AssessMatchingEducation.prototype.onSelected = function (this_) {
         var item = $(this_).parent().parent();
         var data = {
-            name: item.find("input[name='name']").val(),
+            schoolName: item.find("input[name='name']").val(),
             estateId: estateCommon.getEstateId(),
-            category: $("#" + matchingFinance.prototype.config().table).closest("form").find('select.category').val()
+            distance: item.find("input[name='distance']").val(),
+            schoolGradation: $("#" + matchingEducation.prototype.config().table).closest("form").find('select.schoolGradation').val()
         };
-        $.ajax({
-            url: getContextPath() + "/basicMatchingFinance/saveAndUpdateBasicMatchingFinance",
-            type: "post",
-            dataType: "json",
-            data: data,
-            success: function (result) {
-                if (result.ret) {
-                    toastr.success('保存成功');
-                    matchingFinance.prototype.loadDataDicList();
-                    $('#select_matchingfinance_modal').modal('hide');
+        AssessCommon.loadDataDicByKey(AssessDicKey.estate_distance, null, function (html, n) {
+            var a500 = {};
+            var a1000 = {};
+            var a1500 = {};
+            var a2000 = {};
+            var a2000Max = {};
+            $.each(n, function (i, v) {
+                var number = AssessMatchingEducation.prototype.getNumber(v.name);
+                number = Number(number);
+                if (v.name == '小于等于500m') {
+                    a500.number = number;
+                    a500.id = v.id;
                 }
-                else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                if (v.name == '小于等于1000m') {
+                    a1000.number = number;
+                    a1000.id = v.id;
                 }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                if (v.name == '小于等于1500m') {
+                    a1500.number = number;
+                    a1500.id = v.id;
+                }
+                if (v.name == '小于等于2000m') {
+                    a2000.number = number;
+                    a2000.id = v.id;
+                }
+                if (v.name == '大于2000m') {
+                    a2000Max.number = number;
+                    a2000Max.id = v.id;
+                }
+            });
+            if (data.distance < a500.number) {
+                data.distance = a500.id;
+            }else if (a500.number > data.distance < a1000.number){
+                data.distance = a1000.id;
+            }else if (a1000.number > data.distance < a1500.number){
+                data.distance = a1500.id;
+            }else if (a1500.number > data.distance < a2000.number){
+                data.distance = a2000.id;
+            }else if(data.distance > a2000Max.number){
+                data.distance = a2000Max.id;
             }
+            $.ajax({
+                url: getContextPath() + "/basicMatchingEducation/saveAndUpdateBasicMatchingEducation",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        matchingEducation.prototype.loadDataDicList();
+                        $('#select_matchingeducation_modal').modal('hide');
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
         });
     };
 
-    AssessMatchingFinance.prototype.save = function (that) {
+    AssessMatchingEducation.prototype.save = function (that) {
         var form = $(that).parent().parent().next();
         form.find(":checkbox").each(function (i, n) {
             if ($(this).prop("checked")) {
-                AssessMatchingFinance.prototype.onSelected(this);
+                AssessMatchingEducation.prototype.onSelected(this);
             }
         });
     };
 
-    AssessMatchingFinance.prototype.write = function (data) {
+    AssessMatchingEducation.prototype.write = function (data) {
         var retHtml = "";
         $.each(data.poiList.pois, function (i, item) {
             retHtml += "<div class='form-group'>";
@@ -169,7 +213,7 @@
     /**
      * 截图字符串中的数字
      */
-    AssessMatchingFinance.prototype.getNumber = function (str) {
+    AssessMatchingEducation.prototype.getNumber = function (str) {
         var reg = /[1-9][0-9]*/g;
         return str.match(reg)[0];
     };
@@ -179,7 +223,7 @@
      * @param that
      * @param flag true 表示全选或者全不选,否则表示反选
      */
-    AssessMatchingFinance.prototype.checkedFun = function (that, flag) {
+    AssessMatchingEducation.prototype.checkedFun = function (that, flag) {
         var form = $(that).parent().parent().next();
         if (flag) {//全选或者全不选
             var number = 1;
@@ -217,5 +261,5 @@
     };
 
 
-    window.assessMatchingFinance = new AssessMatchingFinance();
+    window.assessMatchingEducation = new AssessMatchingEducation();
 })(jQuery);

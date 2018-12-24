@@ -287,6 +287,9 @@ var matchingMetro;
         },
         loadDataDicList: function () {
             var cols = commonColumn.matchingMetroColumn();
+            cols.unshift({
+                checkbox: true
+            });
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -328,6 +331,33 @@ var matchingMetro;
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
+        },
+        clear:function () {
+            var data = $("#" + matchingMetro.prototype.config().table).bootstrapTable('getSelections');
+            var ids = "";
+            if (data.length >= 1){
+                $.each(data, function (i, n) {
+                    if (i == data.length - 1) {
+                        ids += n.id;
+                    } else {
+                        ids += n.id + ",";
+                    }
+                });
+                $.ajax({
+                    url: getContextPath() + "/basicMatchingTraffic/removeIds",
+                    type: "post",
+                    dataType: "json",
+                    data: {ids: ids},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('清空所选项成功!');
+                            matchingMetro.prototype.loadDataDicList();
+                        }
+                    }
+                })
+            }else {
+                Alert("至少选择一个!") ;
+            }
         },
         showModel: function () {
             matchingMetro.prototype.init({});
@@ -599,6 +629,9 @@ var matchingTransit;
         },
         loadDataDicList: function () {
             var cols = commonColumn.matchingTransitColumn();
+            cols.unshift({
+                checkbox: true
+            });
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -640,6 +673,33 @@ var matchingTransit;
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
+        },
+        clear: function () {
+            var data = $("#" + matchingTransit.prototype.config().table).bootstrapTable('getSelections');
+            var ids = "";
+            if (data.length >= 1){
+                $.each(data, function (i, n) {
+                    if (i == data.length - 1) {
+                        ids += n.id;
+                    } else {
+                        ids += n.id + ",";
+                    }
+                });
+                $.ajax({
+                    url: getContextPath() + "/basicMatchingTraffic/removeIds",
+                    type: "post",
+                    dataType: "json",
+                    data: {ids: ids},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('清空所选项成功!');
+                            matchingTransit.prototype.loadDataDicList();
+                        }
+                    }
+                })
+            }else {
+                Alert("至少选择一个!") ;
+            }
         },
         showModel: function () {
             matchingTransit.prototype.init({});
@@ -1416,6 +1476,9 @@ var matchingRecreation;
         },
         loadDataDicList: function () {
             var cols = commonColumn.matchingRecreationColumn();
+            cols.unshift({
+                checkbox: true
+            });
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -1457,6 +1520,33 @@ var matchingRecreation;
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
+        },
+        clear:function () {
+            var data = $("#" + matchingRecreation.prototype.config().table).bootstrapTable('getSelections');
+            var ids = "";
+            if (data.length >= 1){
+                $.each(data, function (i, n) {
+                    if (i == data.length - 1) {
+                        ids += n.id;
+                    } else {
+                        ids += n.id + ",";
+                    }
+                });
+                $.ajax({
+                    url: getContextPath() + "/basicMatchingLeisurePlace/removeIds",
+                    type: "post",
+                    dataType: "json",
+                    data: {ids: ids},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('清空所选项成功!');
+                            matchingRecreation.prototype.loadDataDicList();
+                        }
+                    }
+                });
+            }else {
+                Alert("至少选择一个!") ;
+            }
         },
         showModel: function () {
             matchingRecreation.prototype.init({});
@@ -1572,6 +1662,10 @@ var matchingRecreation;
     //绑定事件
     $('#' + matchingRecreation.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         matchingRecreation.prototype.loadDataDicList();
+        //用做高德地图抓取数据type
+        AssessCommon.loadDataDicByKey(AssessDicKey.estate_entertainment_category, null, function (html, data) {
+            $("#" + matchingRecreation.prototype.config().table).closest("form").find('select.category').empty().html(html).trigger('change');
+        });
     })
 })();
 
@@ -1597,6 +1691,9 @@ var matchingFinance;
         },
         loadDataDicList: function () {
             var cols = commonColumn.matchingFinanceColumn();
+            cols.unshift({
+                checkbox: true
+            });
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -1637,6 +1734,33 @@ var matchingFinance;
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
+        },
+        clear:function () {
+            var data = $("#" + matchingFinance.prototype.config().table).bootstrapTable('getSelections');
+            var ids = "";
+            if (data.length >= 1){
+                $.each(data, function (i, n) {
+                    if (i == data.length - 1) {
+                        ids += n.id;
+                    } else {
+                        ids += n.id + ",";
+                    }
+                });
+                $.ajax({
+                    url: getContextPath() + "/basicMatchingFinance/removeIds",
+                    type: "post",
+                    dataType: "json",
+                    data: {ids: ids},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('清空所选项成功!');
+                            matchingFinance.prototype.loadDataDicList();
+                        }
+                    }
+                })
+            }else {
+                Alert("至少选择一个!") ;
+            }
         },
         showModel: function () {
             matchingFinance.prototype.init({});
@@ -1702,10 +1826,14 @@ var matchingFinance;
                 $("#" + matchingFinance.prototype.config().frm).find("select.category").empty().html(html).trigger('change');
             });
         }
-    }
+    };
 
     //绑定事件
     $('#' + matchingFinance.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+        //用做高德地图抓取数据type
+        AssessCommon.loadDataDicByKey(AssessDicKey.estate_finance_category, null, function (html, data) {
+            $("#" + matchingFinance.prototype.config().table).closest("form").find('select.category').empty().html(html).trigger('change');
+        });
         matchingFinance.prototype.loadDataDicList();
     })
 })();
@@ -1871,6 +1999,9 @@ var matchingEducation;
         },
         loadDataDicList: function () {
             var cols = commonColumn.matchingEducationColumn();
+            cols.unshift({
+                checkbox: true
+            });
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -1911,6 +2042,33 @@ var matchingEducation;
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
+        },
+        clear:function () {
+            var data = $("#" + matchingEducation.prototype.config().table).bootstrapTable('getSelections');
+            var ids = "";
+            if (data.length >= 1){
+                $.each(data, function (i, n) {
+                    if (i == data.length - 1) {
+                        ids += n.id;
+                    } else {
+                        ids += n.id + ",";
+                    }
+                });
+                $.ajax({
+                    url: getContextPath() + "/basicMatchingEducation/removeIds",
+                    type: "post",
+                    dataType: "json",
+                    data: {ids: ids},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('清空所选项成功!');
+                            matchingEducation.prototype.loadDataDicList();
+                        }
+                    }
+                });
+            }else {
+                Alert("至少选择一个!") ;
+            }
         },
         showModel: function () {
             matchingEducation.prototype.init({});
@@ -1979,11 +2137,15 @@ var matchingEducation;
                 $("#" + matchingEducation.prototype.config().frm).find("select.distance").empty().html(html).trigger('change');
             });
         }
-    }
+    };
 
     //绑定事件
     $('#' + matchingEducation.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
         matchingEducation.prototype.loadDataDicList();
+        //用做高德地图抓取数据type
+        AssessCommon.loadDataDicByKey(AssessDicKey.estate_school_gradation, null, function (html, data) {
+            $("#" + matchingEducation.prototype.config().table).closest("form").find('select.schoolGradation').empty().html(html).trigger('change');
+        });
     })
 })();
 

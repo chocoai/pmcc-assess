@@ -49,5 +49,11 @@ public class BasicMatchingLeisurePlaceDao {
         MybatisUtils.convertObj2Example(basicMatchingLeisurePlace, example);
         return basicMatchingLeisurePlaceMapper.selectByExample(example);
     }
+
+    public void removeIds(List<Integer> ids){
+        BasicMatchingLeisurePlaceExample example = new BasicMatchingLeisurePlaceExample();
+        example.createCriteria().andIdIn(ids) ;
+        basicMatchingLeisurePlaceMapper.deleteByExample(example);
+    }
     
 }

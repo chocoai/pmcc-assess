@@ -49,5 +49,12 @@ public class BasicMatchingEducationDao {
         MybatisUtils.convertObj2Example(basicMatchingEducation, example);
         return basicMatchingEducationMapper.selectByExample(example);
     }
+
+    public void removeIds(List<Integer> ids){
+        BasicMatchingEducationExample example = new BasicMatchingEducationExample();
+        BasicMatchingEducationExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids);
+        basicMatchingEducationMapper.deleteByExample(example);
+    }
     
 }

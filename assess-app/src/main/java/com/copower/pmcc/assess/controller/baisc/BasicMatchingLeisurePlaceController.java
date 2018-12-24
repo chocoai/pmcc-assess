@@ -30,62 +30,74 @@ public class BasicMatchingLeisurePlaceController {
 
     @ResponseBody
     @RequestMapping(value = "/getBasicMatchingLeisurePlaceById", name = "获取数据", method = {RequestMethod.GET})
-    public HttpResult getBasicMatchingLeisurePlaceById(Integer id){
+    public HttpResult getBasicMatchingLeisurePlaceById(Integer id) {
         try {
-            return HttpResult.newCorrectResult(200,basicMatchingLeisurePlaceService.getBasicMatchingLeisurePlaceById(id));
+            return HttpResult.newCorrectResult(200, basicMatchingLeisurePlaceService.getBasicMatchingLeisurePlaceById(id));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateBasicMatchingLeisurePlace", name = "新增或者修改", method = {RequestMethod.POST})
-    public HttpResult saveAndUpdateBasicMatchingLeisurePlace(BasicMatchingLeisurePlace basicMatchingLeisurePlace){
+    public HttpResult saveAndUpdateBasicMatchingLeisurePlace(BasicMatchingLeisurePlace basicMatchingLeisurePlace) {
         try {
-            return HttpResult.newCorrectResult(200,basicMatchingLeisurePlaceService.saveAndUpdateBasicMatchingLeisurePlace(basicMatchingLeisurePlace));
+            return HttpResult.newCorrectResult(200, basicMatchingLeisurePlaceService.saveAndUpdateBasicMatchingLeisurePlace(basicMatchingLeisurePlace));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/deleteBasicMatchingLeisurePlace", name = "删除数据", method = {RequestMethod.POST})
-    public HttpResult deleteBasicMatchingLeisurePlace(Integer id){
+    public HttpResult deleteBasicMatchingLeisurePlace(Integer id) {
         try {
-            return HttpResult.newCorrectResult(200,basicMatchingLeisurePlaceService.deleteBasicMatchingLeisurePlace(id));
+            return HttpResult.newCorrectResult(200, basicMatchingLeisurePlaceService.deleteBasicMatchingLeisurePlace(id));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/removeIds", name = "删除数据", method = {RequestMethod.POST})
+    public HttpResult removeIds(String ids) {
+        try {
+            basicMatchingLeisurePlaceService.removeIds(ids);
+            return HttpResult.newCorrectResult(200, ids);
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
-    public BootstrapTableVo getBootstrapTableVo(BasicMatchingLeisurePlace basicMatchingLeisurePlace,@RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
+    public BootstrapTableVo getBootstrapTableVo(BasicMatchingLeisurePlace basicMatchingLeisurePlace, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval) {
         try {
-            if (basicMatchingLeisurePlace != null){
+            if (basicMatchingLeisurePlace != null) {
                 if (!approval) {
                     basicMatchingLeisurePlace.setCreator(commonService.thisUserAccount());
                 }
             }
             return basicMatchingLeisurePlaceService.getBootstrapTableVo(basicMatchingLeisurePlace);
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return null;
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/basicMatchingLeisurePlaceList", name = "获取数据列表", method = {RequestMethod.GET})
-    public HttpResult basicMatchingLeisurePlaceList(BasicMatchingLeisurePlace basicMatchingLeisurePlace){
+    public HttpResult basicMatchingLeisurePlaceList(BasicMatchingLeisurePlace basicMatchingLeisurePlace) {
         try {
-            return HttpResult.newCorrectResult(200,basicMatchingLeisurePlaceService.basicMatchingLeisurePlaceList(basicMatchingLeisurePlace));
+            return HttpResult.newCorrectResult(200, basicMatchingLeisurePlaceService.basicMatchingLeisurePlaceList(basicMatchingLeisurePlace));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
-    
+
 }

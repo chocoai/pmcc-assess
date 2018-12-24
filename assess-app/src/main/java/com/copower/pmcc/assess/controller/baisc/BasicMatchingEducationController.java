@@ -62,6 +62,18 @@ public class BasicMatchingEducationController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/removeIds", name = "删除数据", method = {RequestMethod.POST})
+    public HttpResult removeIds(String ids){
+        try {
+            basicMatchingEducationService.removeIds(ids);
+            return HttpResult.newCorrectResult(200,ids);
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            return HttpResult.newErrorResult(500,e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
     public BootstrapTableVo getBootstrapTableVo(BasicMatchingEducation basicMatchingEducation,@RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
         try {

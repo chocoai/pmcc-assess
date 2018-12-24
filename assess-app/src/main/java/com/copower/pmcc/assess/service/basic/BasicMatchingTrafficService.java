@@ -15,11 +15,13 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.NumberUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -123,6 +125,18 @@ public class BasicMatchingTrafficService {
         vo.setDistanceName(baseDataDicService.getNameById(basicMatchingTraffic.getDistance()));
         vo.setNatureName(baseDataDicService.getNameById(basicMatchingTraffic.getNature()));
         return vo;
+    }
+
+    public void remove(String id){
+        List<Integer> ids = new ArrayList<Integer>(10) ;
+        if (StringUtils.isNotBlank(id)){
+            for (String str :id.split(",")){
+                if (org.apache.commons.lang3.math.NumberUtils.isNumber(str)){
+                    ids.add(Integer.parseInt(str));
+                }
+            }
+            basicMatchingTrafficDao.remove(ids);
+        }
     }
     
 }

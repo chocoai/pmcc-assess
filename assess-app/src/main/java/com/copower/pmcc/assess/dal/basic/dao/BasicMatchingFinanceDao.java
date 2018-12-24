@@ -49,5 +49,12 @@ public class BasicMatchingFinanceDao {
         MybatisUtils.convertObj2Example(basicMatchingFinance, example);
         return basicMatchingFinanceMapper.selectByExample(example);
     }
+
+    public void removeIds(List<Integer> ids){
+        BasicMatchingFinanceExample example = new BasicMatchingFinanceExample();
+        BasicMatchingFinanceExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids);
+        basicMatchingFinanceMapper.deleteByExample(example);
+    }
     
 }

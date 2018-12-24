@@ -3,7 +3,7 @@
  * 需要传入搜索类型,搜索中心的经纬度以及搜索半径
  */
 (function ($) {
-    document.write('<script type="text/javascript" src="//webapi.amap.com/maps?v=1.4.6&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.ToolBar&plugin=AMap.PlaceSearch&plugin=AMap.Transfer"></script>');
+    document.write('<script type="text/javascript" src="//webapi.amap.com/maps?v=1.4.6&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.ToolBar&plugin=AMap.PlaceSearch"></script>');
     document.write('<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>');
     document.write('<div id="containerSearchMap" style="display: none;" tabindex="0"></div>');
     document.write("<link rel='stylesheet' type='text/css' href='https://a.amap.com/jsapi_demos/static/demo-center/css/prety-json.css'> </link>");
@@ -87,7 +87,17 @@
                 var node = new PrettyJSON.view.Node({
                     data: result
                 });
-                callback(result);
+                if (status == 'complete'){
+                    if (searchMap.isNotBlank(result)) {
+                        callback(result);
+                    }
+                }
+                if (status == 'no_data'){
+                    Alert("无结果");
+                }
+                if (status == 'error'){
+                    console.error("高德地图报错!") ;
+                }
             })
         })
     };
@@ -115,14 +125,22 @@
             citylimit: true,  //是否强制限制在设置的城市内搜索
             map: mapSearch // 展现结果的地图实例
         };
-        console.log(options);
         try {
             AMap.service(["AMap.PlaceSearch"], function () {
                 //构造地点查询类
                 var placeSearch = new AMap.PlaceSearch(options);
                 placeSearch.searchNearBy(word, [position.lng, position.lat], searchMap.isNotBlank(distance) ? distance : "200", function (status, result) {
-                    callback(result);
-                    console.log(status) ;
+                    if (status == 'complete'){
+                        if (searchMap.isNotBlank(result)) {
+                            callback(result);
+                        }
+                    }
+                    if (status == 'no_data'){
+                        Alert("无结果");
+                    }
+                    if (status == 'error'){
+                        console.error("高德地图报错!") ;
+                    }
                 });
             });
         } catch (e) {
@@ -138,7 +156,6 @@
      * @param callback
      */
     searchMap.transferSearch = function (name, distance, position, callback) {
-        console.log("transferSearch") ;
         if (this.isNotBlank(name) && this.isNotBlank(distance) && this.isNotBlankObject(position)) {
             this.classificationSearch(name, '交通设施服务', null, distance, position, callback);
         } else {
@@ -217,15 +234,21 @@
             });
         });
 
-        searchMap.otherSearch('金融机构', 8000, {lng: 104.086965, lat: 30.587458}, function (result) {
+        this.otherSearch('电影城', 8000, {lng: 104.086965, lat: 30.587458}, function (result) {
             console.log(result);
         });
 
-        this.transferSearch('主干道', 1000, {lng: 104.086965, lat: 30.587458}, function (result) {
+        this.transferSearch('地铁', 1000, {lng: 104.086965, lat: 30.587458}, function (result) {
             // console.log(result);
-        })
+        });
+
+        this.localUseTypeSearch('停车场', 3000, {lng: 104.086965, lat: 30.587458}, function (result) {
+            // console.log(result);
+        });
     };
-    window.onload = function (ev) { assessSearchMap.createMap(104.086965, 30.587458, 17); };
+    window.onload = function (ev) {
+        assessSearchMap.createMap(104.086965, 30.587458, 17);
+    };
     window.assessSearchMap = searchMap;
 })(jQuery);
 
