@@ -1,12 +1,14 @@
-//公交
+//公交 高德地图抓取周边公交数据
 (function ($) {
     var AssessTransit = function () {
 
     };
 
-
+    /**
+     * 获取要查询的参数如:经纬度以及抓取数据后为选择做必要的处理
+     * @param that
+     */
     AssessTransit.prototype.select = function (that) {
-        console.log("AssessTransit.prototype.select");
         $.ajax({
             url: getContextPath() + '/basicEstateTagging/getEstateTaggingList',
             data: {
@@ -33,8 +35,11 @@
         });
     };
 
+    /**
+     * append html
+     * @param options
+     */
     AssessTransit.prototype.appendHtml = function (options) {
-        console.log("AssessTransit.prototype.appendHtml");
         var target = $("#select_transit_modal");
         if (target.length > 0) {
             $("#select_transit_modal").remove();
@@ -46,10 +51,19 @@
                 html += '<div class="modal-dialog  modal-lg">';
                 html += '<div class="modal-content">';
                 html += '<div class="modal-header">';
+
                 html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span';
                 html += 'aria-hidden="true">&times;</span></button>';
-                html += '<h3 class="modal-title">公交站选择</h3>';
+                html += '<h3 class="modal-title">公交站选择 &nbsp;&nbsp;&nbsp;&nbsp;';
+                html += "<span class='label label-primary'>" + '全选或全不选' + "</span>";
+                html += "<input type='checkbox' onclick='assessTransit.checkedFun(this,true)'>";
+                html += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
+                html += "<input type='checkbox' onclick='assessTransit.checkedFun(this,false)'>";
+                html += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='badge'>记录max20</span>";
+                html += "&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' class='btn btn-success' value='保存选中选项' onclick='assessTransit.save(this)'>" ;
+                html += "</h3>";
                 html += '</div>';
+
                 html += "<form class='form-horizontal'>";
                 html += '<div class="modal-body">';
 
@@ -68,13 +82,16 @@
 
                 $(document.body).append(html);
                 $('#select_transit_modal').modal('show');
-                console.log(data);
             });
         } catch (e) {
             console.log(e);
         }
     };
 
+    /**
+     * 保存选中的
+     * @param this_
+     */
     AssessTransit.prototype.onSelected = function (this_) {
         var item = $(this_).parent().parent();
         var theLine = item.find("label.theLine").html();
@@ -118,17 +135,13 @@
             });
             if (data.distance < a500.number) {
                 data.distance = a500.id;
-            }
-            if (a500.number > data.distance < a1000.number) {
+            }else if (a500.number > data.distance < a1000.number){
                 data.distance = a1000.id;
-            }
-            if (a1000.number > data.distance < a1500.number) {
+            }else if (a1000.number > data.distance < a1500.number){
                 data.distance = a1500.id;
-            }
-            if (a1500.number > data.distance < a2000.number) {
+            }else if (a1500.number > data.distance < a2000.number){
                 data.distance = a2000.id;
-            }
-            if (data.distance > a2000Max.number) {
+            }else if(data.distance > a2000Max.number){
                 data.distance = a2000Max.id;
             }
             $.ajax({
@@ -153,6 +166,15 @@
         });
     };
 
+    AssessTransit.prototype.save = function (that) {
+        var form = $(that).parent().parent().next();
+        form.find(":checkbox").each(function (i, n) {
+            if ($(this).prop("checked")) {
+                AssessTransit.prototype.onSelected(this);
+            }
+        });
+    };
+
     AssessTransit.prototype.write = function (data) {
         var retHtml = "";
         $.each(data.poiList.pois, function (i, item) {
@@ -166,11 +188,10 @@
             retHtml += "<label class='col-sm-1 control-label'>线路</label>";
             retHtml += "<div class='col-sm-5'>";
             retHtml += "<label class='form-control theLine'>" + item.address + "</label>";
-            // retHtml += "<input type='text' class='form-control' name='theLine' readonly='readonly' value='" + item.address + "'" + ">";
             retHtml += "</div>";
 
             retHtml += "<div class='col-sm-3'>";
-            retHtml += item.name + "<input type='checkbox' name='name' readonly='readonly' value='" + item.name + "' onclick='assessTransit.onSelected(this)'" + ">";
+            retHtml += item.name + "<input type='checkbox' name='name' readonly='readonly' value='" + item.name + "' onclick=''" + ">";
             retHtml += '</div>';
 
             retHtml += '</div>';
@@ -184,6 +205,48 @@
     AssessTransit.prototype.getNumber = function (str) {
         var reg = /[1-9][0-9]*/g;
         return str.match(reg)[0];
+    };
+
+    /**
+     *
+     * @param that
+     * @param flag true 表示全选或者全不选,否则表示反选
+     */
+    AssessTransit.prototype.checkedFun = function (that, flag) {
+        var form = $(that).parent().parent().next();
+        if (flag) {//全选或者全不选
+            var number = 1;
+            form.find(":checkbox").each(function (i, n) {
+                if ($(this).prop("checked")) {
+                    number++;
+                }
+            });
+            if (number == 1) {
+                form.find(":checkbox").prop("checked", true);
+            } else {
+                form.find(":checkbox").prop("checked", false);
+            }
+        } else {
+            //首先让选中的失效
+            form.find(":checkbox").each(function (i, n) {
+                if ($(this).prop("checked")) {
+                    $(this).prop("disabled", true);
+                }
+            });
+            //然后让没有选中的元素设置为选中
+            form.find(":checkbox").each(function (i, n) {
+                if (!$(this).prop("checked")) {
+                    $(this).prop("checked", true);
+                }
+            });
+            //最后是让失效的元素恢复,并且使其不选中
+            form.find(":checkbox").each(function (i, n) {
+                if ($(this).prop("disabled")) {
+                    $(this).prop("disabled", false);
+                    $(this).prop("checked", false);
+                }
+            });
+        }
     };
 
 

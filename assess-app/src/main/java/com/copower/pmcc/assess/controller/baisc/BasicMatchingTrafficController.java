@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.service.basic.BasicMatchingTrafficService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,18 @@ public class BasicMatchingTrafficController {
     public HttpResult deleteBasicMatchingTraffic(Integer id){
         try {
             return HttpResult.newCorrectResult(200,basicMatchingTrafficService.deleteBasicMatchingTraffic(id));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            return HttpResult.newErrorResult(500,e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/removeIds", name = "删除数据", method = {RequestMethod.POST})
+    public HttpResult removeIds(String ids){
+        try {
+            basicMatchingTrafficService.remove(ids);
+            return HttpResult.newCorrectResult(200,ids);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult(500,e.getMessage());

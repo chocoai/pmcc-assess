@@ -186,7 +186,11 @@
                                 data-toggle="modal" href="#divBox"> 新增
                         </button>
                     </div>
-                    <div class="col-sm-9">
+                    <div class="col-sm-3">
+                        <button type="button" class="btn btn-success" onclick="matchingTransit.prototype.clear()"> 清空数据
+                        </button>
+                    </div>
+                    <div class="col-sm-6">
                         <div class="input-group">
                             <input type="text"
                                    placeholder="距离" class="form-control" name="distance">

@@ -599,6 +599,9 @@ var matchingTransit;
         },
         loadDataDicList: function () {
             var cols = commonColumn.matchingTransitColumn();
+            cols.unshift({
+                checkbox: true
+            });
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -640,6 +643,33 @@ var matchingTransit;
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
+        },
+        clear: function () {
+            var data = $("#" + matchingTransit.prototype.config().table).bootstrapTable('getSelections');
+            var ids = "";
+            if (data.length >= 1){
+                $.each(data, function (i, n) {
+                    if (i == data.length - 1) {
+                        ids += n.id;
+                    } else {
+                        ids += n.id + ",";
+                    }
+                });
+                $.ajax({
+                    url: getContextPath() + "/basicMatchingTraffic/removeIds",
+                    type: "post",
+                    dataType: "json",
+                    data: {ids: ids},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('清空所选项成功!');
+                            matchingTransit.prototype.loadDataDicList();
+                        }
+                    }
+                })
+            }else {
+                Alert("至少选择一个!") ;
+            }
         },
         showModel: function () {
             matchingTransit.prototype.init({});

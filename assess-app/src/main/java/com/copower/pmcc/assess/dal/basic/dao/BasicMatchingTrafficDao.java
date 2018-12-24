@@ -49,5 +49,12 @@ public class BasicMatchingTrafficDao {
         MybatisUtils.convertObj2Example(basicMatchingTraffic, example);
         return basicMatchingTrafficMapper.selectByExample(example);
     }
+
+    public void remove(List<Integer> ids){
+        BasicMatchingTrafficExample example = new BasicMatchingTrafficExample();
+        BasicMatchingTrafficExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids);
+        basicMatchingTrafficMapper.deleteByExample(example) ;
+    }
     
 }
