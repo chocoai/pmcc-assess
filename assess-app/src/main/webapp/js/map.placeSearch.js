@@ -243,7 +243,7 @@
         });
 
         this.localUseTypeSearch('主干道', 8000, {lng: 104.086965, lat: 30.587458}, function (result) {
-            // console.log(result);
+            console.log(result);
         });
     };
     window.onload = function (ev) {

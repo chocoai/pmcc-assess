@@ -112,6 +112,5 @@
 
         $("#" + houseNewWind.prototype.config().frm).find("[name=equipment]").apNewWindBrand();
         $("#" + houseHeating.prototype.config().frm).find("[name=equipment]").apHeatingBrand();
-        assessSearchMap.test();
     })
 </script>
