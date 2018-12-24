@@ -11,6 +11,8 @@
 <script src="${pageContext.request.contextPath}/js/select/block.select.js"></script>
 
 <script src="${pageContext.request.contextPath}/js/select/selectMap/transit.checkbox.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/metro.checkbox.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/finance.checkbox.js"></script>
 <script src="${pageContext.request.contextPath}/js/map.placeSearch.js"></script>
 <div class="x_panel">
     <div class="x_title">
@@ -104,5 +106,6 @@
 
         $("#" + houseNewWind.prototype.config().frm).find("[name=equipment]").apNewWindBrand();
         $("#" + houseHeating.prototype.config().frm).find("[name=equipment]").apHeatingBrand();
+        assessSearchMap.test();
     })
 </script>

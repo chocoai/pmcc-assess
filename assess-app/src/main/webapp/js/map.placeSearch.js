@@ -115,7 +115,6 @@
             citylimit: true,  //是否强制限制在设置的城市内搜索
             map: mapSearch // 展现结果的地图实例
         };
-        console.log(options);
         try {
             AMap.service(["AMap.PlaceSearch"], function () {
                 //构造地点查询类
@@ -138,7 +137,6 @@
      * @param callback
      */
     searchMap.transferSearch = function (name, distance, position, callback) {
-        console.log("transferSearch") ;
         if (this.isNotBlank(name) && this.isNotBlank(distance) && this.isNotBlankObject(position)) {
             this.classificationSearch(name, '交通设施服务', null, distance, position, callback);
         } else {
@@ -217,13 +215,16 @@
             });
         });
 
-        searchMap.otherSearch('金融机构', 8000, {lng: 104.086965, lat: 30.587458}, function (result) {
-            console.log(result);
+        searchMap.otherSearch('保险 | 银行', 8000, {lng: 104.086965, lat: 30.587458}, function (result) {
+            // console.log(result);
         });
 
-        this.transferSearch('主干道', 1000, {lng: 104.086965, lat: 30.587458}, function (result) {
+        this.transferSearch('地铁', 1000, {lng: 104.086965, lat: 30.587458}, function (result) {
             // console.log(result);
-        })
+        });
+        searchMap.otherSearch('信托', 3000, {lng: 104.086965, lat: 30.587458}, function (result) {
+            console.log(result);
+        });
     };
     window.onload = function (ev) { assessSearchMap.createMap(104.086965, 30.587458, 17); };
     window.assessSearchMap = searchMap;

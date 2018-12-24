@@ -15,6 +15,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +68,7 @@ public class BasicMatchingFinanceService {
             basicMatchingFinance.setCreator(commonService.thisUserAccount());
             Integer id = basicMatchingFinanceDao.saveBasicMatchingFinance(basicMatchingFinance);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicMatchingFinance.class), id);
-            return  id ;
+            return id;
         } else {
             BasicMatchingFinance oo = basicMatchingFinanceDao.getBasicMatchingFinanceById(basicMatchingFinance.getId());
             basicMatchingFinanceDao.updateBasicMatchingFinance(basicMatchingFinance);
@@ -98,7 +99,7 @@ public class BasicMatchingFinanceService {
         return basicMatchingFinanceDao.basicMatchingFinanceList(basicMatchingFinance);
     }
 
-    public void removeBasicMatchingFinance(BasicMatchingFinance basicMatchingFinance)throws Exception{
+    public void removeBasicMatchingFinance(BasicMatchingFinance basicMatchingFinance) throws Exception {
         basicMatchingFinanceDao.removeBasicMatchingFinance(basicMatchingFinance);
     }
 
@@ -114,17 +115,29 @@ public class BasicMatchingFinanceService {
         return vo;
     }
 
-    public BasicMatchingFinanceVo getBasicMatchingFinanceVo(BasicMatchingFinance basicMatchingFinance){
-        if (basicMatchingFinance==null){
+    public BasicMatchingFinanceVo getBasicMatchingFinanceVo(BasicMatchingFinance basicMatchingFinance) {
+        if (basicMatchingFinance == null) {
             return null;
         }
         BasicMatchingFinanceVo vo = new BasicMatchingFinanceVo();
-        BeanUtils.copyProperties(basicMatchingFinance,vo);
+        BeanUtils.copyProperties(basicMatchingFinance, vo);
         BaseDataDic dataDic = null;
         vo.setNatureName(baseDataDicService.getNameById(basicMatchingFinance.getCategory()));
         vo.setServiceContentName(baseDataDicService.getNameById(NumberUtils.isNumber(basicMatchingFinance.getServiceContent()) ? Integer.parseInt(basicMatchingFinance.getServiceContent()) : null));
         vo.setCategoryName(baseDataDicService.getNameById(basicMatchingFinance.getNature()));
         return vo;
     }
-    
+
+    public void removeIds(String id) {
+        if (StringUtils.isNotBlank(id)) {
+            List<Integer> ids = new ArrayList<>(10);
+            for (String str : id.split(",")) {
+                if (NumberUtils.isNumber(str)) {
+                    ids.add(Integer.parseInt(str));
+                }
+            }
+            basicMatchingFinanceDao.removeIds(ids);
+        }
+    }
+
 }
