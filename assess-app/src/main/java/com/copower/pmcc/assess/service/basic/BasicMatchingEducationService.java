@@ -15,6 +15,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,6 +126,18 @@ public class BasicMatchingEducationService {
         vo.setSchoolGradationName(baseDataDicService.getNameById(basicMatchingEducation.getSchoolGradation()));
         vo.setSchoolLevelName(baseDataDicService.getNameById(NumberUtils.isNumber(basicMatchingEducation.getSchoolLevel())?Integer.parseInt(basicMatchingEducation.getSchoolLevel()):null));
         return vo;
+    }
+
+    public void removeIds(String str){
+        if (StringUtils.isNotBlank(str)){
+            List<Integer> ids = new ArrayList<>(10);
+            for (String id:str.split(",")){
+                if (NumberUtils.isNumber(id)){
+                    ids.add(Integer.parseInt(id)) ;
+                }
+            }
+            basicMatchingEducationDao.removeIds(ids);
+        }
     }
     
 }

@@ -13,6 +13,9 @@
 <script src="${pageContext.request.contextPath}/js/select/selectMap/transit.checkbox.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/selectMap/metro.checkbox.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/selectMap/finance.checkbox.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/education.checkbox.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/recreation.checkbox.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/restaurant.checkbox.js"></script>
 <script src="${pageContext.request.contextPath}/js/map.placeSearch.js"></script>
 <div class="x_panel">
     <div class="x_title">

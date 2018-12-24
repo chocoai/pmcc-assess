@@ -87,7 +87,17 @@
                 var node = new PrettyJSON.view.Node({
                     data: result
                 });
-                callback(result);
+                if (status == 'complete'){
+                    if (searchMap.isNotBlank(result)) {
+                        callback(result);
+                    }
+                }
+                if (status == 'no_data'){
+                    Alert("无结果");
+                }
+                if (status == 'error'){
+                    console.error("高德地图报错!") ;
+                }
             })
         })
     };
@@ -120,8 +130,17 @@
                 //构造地点查询类
                 var placeSearch = new AMap.PlaceSearch(options);
                 placeSearch.searchNearBy(word, [position.lng, position.lat], searchMap.isNotBlank(distance) ? distance : "200", function (status, result) {
-                    callback(result);
-                    console.log(status) ;
+                    if (status == 'complete'){
+                        if (searchMap.isNotBlank(result)) {
+                            callback(result);
+                        }
+                    }
+                    if (status == 'no_data'){
+                        Alert("无结果");
+                    }
+                    if (status == 'error'){
+                        console.error("高德地图报错!") ;
+                    }
                 });
             });
         } catch (e) {
@@ -215,18 +234,21 @@
             });
         });
 
-        searchMap.otherSearch('保险 | 银行', 8000, {lng: 104.086965, lat: 30.587458}, function (result) {
-            // console.log(result);
+        this.otherSearch('电影城', 8000, {lng: 104.086965, lat: 30.587458}, function (result) {
+            console.log(result);
         });
 
         this.transferSearch('地铁', 1000, {lng: 104.086965, lat: 30.587458}, function (result) {
             // console.log(result);
         });
-        searchMap.otherSearch('信托', 3000, {lng: 104.086965, lat: 30.587458}, function (result) {
-            console.log(result);
+
+        this.localUseTypeSearch('停车场', 3000, {lng: 104.086965, lat: 30.587458}, function (result) {
+            // console.log(result);
         });
     };
-    window.onload = function (ev) { assessSearchMap.createMap(104.086965, 30.587458, 17); };
+    window.onload = function (ev) {
+        assessSearchMap.createMap(104.086965, 30.587458, 17);
+    };
     window.assessSearchMap = searchMap;
 })(jQuery);
 
