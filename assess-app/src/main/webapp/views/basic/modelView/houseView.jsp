@@ -161,46 +161,40 @@
         <input type="hidden" name="id" value="${basicHouseTrading.id}">
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">交易情况<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">交易情况</label>
                 <div class="col-sm-3">
-                    <select class="form-control transactionSituation"
-                            name="transactionSituation"
-                            required="required">
+                    <select class="form-control transactionSituation" name="transactionSituation">
                     </select>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">财产范围<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">财产范围</label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 scopeProperty" name="scopeProperty"
-                            required="required">
+                    <select class="form-control search-select select2 scopeProperty" name="scopeProperty">
                     </select>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">税费负担<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">税费负担</label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 taxBurden" name="taxBurden"
-                            required="required">
+                    <select class="form-control search-select select2 taxBurden" name="taxBurden">
                     </select>
                 </div>
             </div>
         </div>
         <div class="form-group" id="abnormalTransaction" style="display: none;">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">说明事项类型<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">说明事项类型</label>
                 <div class="col-sm-3">
-                    <select class="form-control descriptionType"
-                            name="descriptionType"
-                            required="required">
+                    <select class="form-control descriptionType" name="descriptionType">
                     </select>
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">说明事项内容</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="说明事项内容" name="descriptionContent" class="form-control" value="${basicHouseTrading.descriptionContent}">
+                    <input type="text" placeholder="说明事项内容" name="descriptionContent" class="form-control"
+                           value="${basicHouseTrading.descriptionContent}">
                 </div>
             </div>
         </div>
@@ -238,11 +232,9 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">付款方式<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">付款方式</label>
                 <div class="col-sm-3">
-                    <select class="form-control paymentMethod"
-                            name="paymentMethod"
-                            required="required">
+                    <select class="form-control paymentMethod" name="paymentMethod">
                     </select>
                 </div>
             </div>
@@ -350,12 +342,9 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">信息来源类型<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">信息来源类型</label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 informationType"
-                            name="informationType"
-                            required="required">
+                    <select class="form-control search-select select2 informationType" name="informationType">
                     </select>
                 </div>
             </div>
