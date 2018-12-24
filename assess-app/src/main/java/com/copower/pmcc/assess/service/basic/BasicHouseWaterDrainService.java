@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicHouseWaterDrainDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouseWaterDrain;
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouseWaterDrain;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseWaterDrainVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -97,8 +96,8 @@ public class BasicHouseWaterDrainService {
         return basicHouseWaterDrainDao.basicHouseWaterDrainList(basicHouseWaterDrain);
     }
 
-    public void removeBasicHouseWaterDrain(BasicHouseWaterDrain basicHouseWaterDrain)throws Exception{
-        basicHouseWaterDrainDao.removeBasicHouseWaterDrain(basicHouseWaterDrain);
+    public boolean deleteBasicHouseWaterDrain(BasicHouseWaterDrain basicHouseWaterDrain)throws Exception{
+         return basicHouseWaterDrainDao.deleteBasicHouseWaterDrain(basicHouseWaterDrain);
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicHouseWaterDrain basicHouseWaterDrain) throws Exception {

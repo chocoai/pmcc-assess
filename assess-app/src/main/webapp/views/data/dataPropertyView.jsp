@@ -33,11 +33,11 @@
                         <div class="form-group ">
                             <div>
                                 <label class="col-sm-1 control-label">
-                                    物业公司
+                                    名称
                                 </label>
                                 <div class="col-sm-2">
                                     <input type="text" data-rule-maxlength="50"
-                                           placeholder="物业公司 名称" id="queryName" name="queryName"
+                                           placeholder="名称" id="queryName" name="queryName"
                                            class="form-control">
                                 </div>
                             </div>
@@ -199,7 +199,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            名称
+                                            名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="name"
@@ -214,7 +214,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="companyNature"
-                                                   placeholder="公司性质" required="required">
+                                                   placeholder="公司性质">
                                         </div>
                                     </div>
                                 </div>
@@ -224,7 +224,7 @@
                                             社会信誉
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea class="form-control" name="socialPrestige" placeholder="社会信誉" required="required">
+                                            <textarea class="form-control" name="socialPrestige" placeholder="社会信誉">
 
                                             </textarea>
                                         </div>

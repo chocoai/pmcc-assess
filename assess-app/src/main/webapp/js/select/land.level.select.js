@@ -37,7 +37,20 @@
             showColumns: false,
             showRefresh: false,
             uniqueId: "id",
-            search: false
+            search: false,
+            onLoadSuccess: function (data) {
+                console.log(data);
+                if (data && data.rows && data.rows.length > 0) {
+                    FileUtils.getFileShows({
+                        target: "select_land_level_file",
+                        formData: {
+                            tableName: AssessDBKey.DataLandLevel,
+                            tableId: data.rows[0].landLevelId
+                        },
+                        deleteFlag: false
+                    })
+                }
+            }
         });
     }
 
@@ -59,6 +72,13 @@
         html += '<h3 class="modal-title">土地级别选择</h3>';
         html += '</div>';
         html += '<div class="modal-body">';
+        html += '<div class="form-group form-horizontal">';
+        html += '<div class="x-valid">';
+        html += '<div class="col-sm-12">';
+        html += '<div id="_select_land_level_file"></div>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
         html += '<table id="select_land_level_list" class="table table-bordered">';
         html += '</table>';
         html += '</div>';
@@ -66,6 +86,7 @@
         html += '</div>';
 
         $(document.body).append(html);
+
         assessLandLevel.loadLandLevelList(options.province, options.city, options.district);
         $('#select_land_level_modal').modal('show');
     }

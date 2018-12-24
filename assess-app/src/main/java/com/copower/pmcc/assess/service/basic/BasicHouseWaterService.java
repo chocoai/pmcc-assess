@@ -85,6 +85,10 @@ public class BasicHouseWaterService {
         return basicHouseWaterDao.deleteBasicHouseWater(id);
     }
 
+    public boolean deleteBasicHouseWater(BasicHouseWater basicHouseWater)throws Exception{
+        return basicHouseWaterDao.deleteBasicHouseWater(basicHouseWater);
+    }
+
     /**
      * 获取数据列表
      *
@@ -96,9 +100,7 @@ public class BasicHouseWaterService {
         return basicHouseWaterDao.basicHouseWaterList(basicHouseWater);
     }
 
-    public void removeBasicHouseWater(BasicHouseWater basicHouseWater)throws Exception{
-        basicHouseWaterDao.removeBasicHouseWater(basicHouseWater);
-    }
+
 
     public BootstrapTableVo getBootstrapTableVo(BasicHouseWater basicHouseWater) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();

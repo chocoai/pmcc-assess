@@ -21,33 +21,33 @@ public class BasicHouseEquipmentDao {
     @Autowired
     private BasicHouseEquipmentMapper basicHouseEquipmentMapper;
 
-    public BasicHouseEquipment getBasicHouseEquipmentById(Integer id)throws SQLException {
+    public BasicHouseEquipment getBasicHouseEquipmentById(Integer id) throws SQLException {
         return basicHouseEquipmentMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment)throws SQLException{
+    public Integer saveBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment) throws SQLException {
         basicHouseEquipmentMapper.insertSelective(basicHouseEquipment);
         return basicHouseEquipment.getId();
     }
 
-    public boolean updateBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment)throws SQLException{
-        return basicHouseEquipmentMapper.updateByPrimaryKeySelective(basicHouseEquipment)==1;
+    public boolean updateBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment) throws SQLException {
+        return basicHouseEquipmentMapper.updateByPrimaryKeySelective(basicHouseEquipment) == 1;
     }
 
-    public void removeBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment)throws SQLException{
+    public boolean deleteBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment) throws SQLException {
         BasicHouseEquipmentExample example = new BasicHouseEquipmentExample();
         MybatisUtils.convertObj2Example(basicHouseEquipment, example);
-        basicHouseEquipmentMapper.deleteByExample(example);
+        return basicHouseEquipmentMapper.deleteByExample(example) > 0;
     }
 
-    public boolean deleteBasicHouseEquipment(Integer id)throws SQLException{
-        return  basicHouseEquipmentMapper.deleteByPrimaryKey(id)==1;
+    public boolean deleteBasicHouseEquipment(Integer id) throws SQLException {
+        return basicHouseEquipmentMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicHouseEquipment> basicHouseEquipmentList(BasicHouseEquipment basicHouseEquipment)throws SQLException{
+    public List<BasicHouseEquipment> basicHouseEquipmentList(BasicHouseEquipment basicHouseEquipment) throws SQLException {
         BasicHouseEquipmentExample example = new BasicHouseEquipmentExample();
         MybatisUtils.convertObj2Example(basicHouseEquipment, example);
         return basicHouseEquipmentMapper.selectByExample(example);
     }
-    
+
 }

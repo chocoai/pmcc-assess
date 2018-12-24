@@ -49,6 +49,10 @@ public class BasicHouseTradingSellService {
         return basicHouseTradingSellDao.deleteBasicHouseTradingSell(id);
     }
 
+    public boolean deleteBasicHouseTradingSell(BasicHouseTradingSell basicHouseTradingSell)throws Exception{
+        return basicHouseTradingSellDao.deleteBasicHouseTradingSell(basicHouseTradingSell);
+    }
+
     public BootstrapTableVo getBootstrapTableVo(BasicHouseTradingSell basicHouseTradingSell,String type)throws Exception{
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();

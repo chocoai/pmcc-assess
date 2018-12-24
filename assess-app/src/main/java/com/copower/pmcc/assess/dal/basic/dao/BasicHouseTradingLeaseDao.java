@@ -37,6 +37,12 @@ public class BasicHouseTradingLeaseDao {
         return basicHouseTradingLeaseMapper.deleteByPrimaryKey(id) == 1;
     }
 
+    public boolean deleteBasicHouseTradingLease(BasicHouseTradingLease basicHouseTradingLease) throws SQLException {
+        BasicHouseTradingLeaseExample example = new BasicHouseTradingLeaseExample();
+        MybatisUtils.convertObj2Example(basicHouseTradingLease, example);
+        return basicHouseTradingLeaseMapper.deleteByExample(example) > 0;
+    }
+
 
     public List<BasicHouseTradingLease> basicHouseTradingLeaseList(BasicHouseTradingLease basicHouseTradingLease) throws SQLException {
         BasicHouseTradingLeaseExample example = new BasicHouseTradingLeaseExample();

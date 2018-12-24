@@ -161,6 +161,8 @@
     </div>
 </div>
 
+<%@include file="/views/basic/modelView/house/damagedDegreeView.jsp" %>
+
 <script src="${pageContext.request.contextPath}/js/basic/house/sonHouseView.js"></script>
 
 <div id="divBoxHouseRoom" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"

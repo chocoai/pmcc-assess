@@ -16,7 +16,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -88,6 +87,10 @@ public class BasicHouseEquipmentService {
         return basicHouseEquipmentDao.deleteBasicHouseEquipment(id);
     }
 
+    public boolean deleteBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment) throws Exception {
+        return basicHouseEquipmentDao.deleteBasicHouseEquipment(basicHouseEquipment);
+    }
+
     /**
      * 获取数据列表
      *
@@ -97,10 +100,6 @@ public class BasicHouseEquipmentService {
      */
     public List<BasicHouseEquipment> basicHouseEquipmentList(BasicHouseEquipment basicHouseEquipment) throws Exception {
         return basicHouseEquipmentDao.basicHouseEquipmentList(basicHouseEquipment);
-    }
-
-    public void removeBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment) throws Exception {
-        basicHouseEquipmentDao.removeBasicHouseEquipment(basicHouseEquipment);
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicHouseEquipment basicHouseEquipment) throws Exception {

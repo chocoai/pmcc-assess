@@ -32,13 +32,20 @@ public class AssessCacheConstant {
     public static final String PMCC_ASSESS_WORK_PHASE_KEY = "pmcc:assess:work:phase:key";
     public static final String PMCC_ASSESS_WORK_PHASE_CATEGORYID = "pmcc:assess:work:phase:categoryid";
 
-
-    //数据字典
+    //
     public static final String PMCC_ASSESS_DATA_DIC = "pmcc:assess:data:dic";
     public static final String PMCC_ASSESS_DATA_DIC_ID = "pmcc:assess:data:dic:id";
     public static final String PMCC_ASSESS_DATA_DIC_PID = "pmcc:assess:data:dic:pid";
     public static final String PMCC_ASSESS_DATA_DIC_FIELD = "pmcc:assess:data:dic:field";
     public static final String PMCC_ASSESS_DATA_DIC_FIELD_ITEM = "pmcc:assess:data:dic:field:item";
+
+
+    //房屋完损度
+    public static final String PMCC_ASSESS_DAMAGED_DEGREE= "pmcc:assess:damaged:degree";
+    public static final String PMCC_ASSESS_DAMAGED_DEGREE_ID = "pmcc:assess:damaged:degree:id";
+    public static final String PMCC_ASSESS_DAMAGED_DEGREE_PID = "pmcc:assess:damaged:degree:pid";
+    public static final String PMCC_ASSESS_DAMAGED_DEGREE_FIELD = "pmcc:assess:damaged:degree:field";
+    public static final String PMCC_ASSESS_DAMAGED_DEGREE_FIELD_ITEM = "pmcc:assess:damaged:degree:field:item";
 
     //设定用途字段
     public static final String PMCC_ASSESS_SET_USE = "pmcc:assess:set:use";

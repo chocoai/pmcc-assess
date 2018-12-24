@@ -39,14 +39,14 @@
                 <label class="col-sm-1 control-label">户型</label>
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <input type="text" readonly="readonly"
+                        <input type="text" readonly="readonly" onclick="houseCommon.selectHuxing(this);"
                                placeholder="户型" class="form-control" name="huxingName"
                                value="${basicHouse.huxingName}">
                         <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
-                                onclick="houseCommon.selectHuxing(this)">
+                                onclick="houseCommon.selectHuxing(this);">
                         <i class="fa fa-search"></i>
                         </button>
                         <button type="button" class="btn btn-default docs-tooltip"

@@ -13,6 +13,8 @@ public class DataLandLevel {
 
     private Date releaseDate;
 
+    private Date valuationDate;
+
     private String creator;
 
     private Date gmtCreated;
@@ -57,6 +59,14 @@ public class DataLandLevel {
 
     public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public Date getValuationDate() {
+        return valuationDate;
+    }
+
+    public void setValuationDate(Date valuationDate) {
+        this.valuationDate = valuationDate;
     }
 
     public String getCreator() {

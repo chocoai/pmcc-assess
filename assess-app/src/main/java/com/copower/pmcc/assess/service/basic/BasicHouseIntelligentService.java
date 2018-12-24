@@ -100,8 +100,8 @@ public class BasicHouseIntelligentService {
         return basicHouseIntelligentDao.basicHouseIntelligentList(basicHouseIntelligent);
     }
 
-    public void removeBasicHouseIntelligent(BasicHouseIntelligent basicHouseIntelligent) throws Exception {
-        basicHouseIntelligentDao.removeBasicHouseIntelligent(basicHouseIntelligent);
+    public boolean deleteBasicHouseIntelligent(BasicHouseIntelligent basicHouseIntelligent) throws Exception {
+        return basicHouseIntelligentDao.deleteBasicHouseIntelligent(basicHouseIntelligent);
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicHouseIntelligent basicHouseIntelligent) throws Exception {

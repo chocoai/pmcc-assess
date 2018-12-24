@@ -30,41 +30,12 @@
                 </div>
                 <div class="x_content">
                     <form id="frmQuery" class="form-horizontal">
-                        <div class="form-group ">
-                            <label class="col-sm-1 control-label">
-                                省
-                            </label>
-                            <div class="col-sm-1">
-                                <select class="form-control search-select select2" id="queryProvince">
-                                </select>
-                            </div>
-                            <label class="col-sm-1 control-label">
-                                市
-                            </label>
-                            <div class="col-sm-1">
-                                <select class="form-control search-select select2" id="queryCity">
-                                </select>
-                            </div>
-                            <label class="col-sm-1 control-label">
-                                区/县
-                            </label>
-                            <div class="col-sm-1">
-                                <select class="form-control search-select select2" id="queryDistrict">
-                                </select>
-                            </div>
-                            <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary"
-                                        onclick="landLevel.loadLandLevelList()">
-                                    查询
-                                </button>
-
-                                <button type="button" class="btn btn-success"
-                                        onclick="landLevel.showModel()"
-                                        data-toggle="modal" href="#divBox"> 新增
-                                </button>
-                            </div>
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-success"
+                                    onclick="landLevel.showModel()"
+                                    data-toggle="modal" href="#divBox"> 新增
+                            </button>
                         </div>
-
                     </form>
                     <table class="table table-bordered" id="tb_FatherList">
                         <!-- cerare document add ajax data-->
@@ -103,13 +74,18 @@
                     return formatDate(value);
                 }
             });
+            cols.push({
+                field: 'valuationDate', title: '评估基准日', formatter: function (value, row, index) {
+                    return formatDate(value);
+                }
+            });
             cols.push({field: 'fileViewName', title: '附件'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="landLevel.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
                     str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="landLevel.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="landLevel.showLandLevelDetailListModal(' + row.id + ')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="landLevel.showLandLevelDetailListModal(' + row.id + ')"><i class="fa fa-th-list fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -129,7 +105,7 @@
             });
         },
         removeData: function (id) {
-            Alert("确认删除!",2,null,function () {
+            Alert("确认删除!", 2, null, function () {
                 $.ajax({
                     url: "${pageContext.request.contextPath}/dataLandLevel/deleteDataLandLevelById",
                     type: "post",
@@ -391,13 +367,21 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">发布日期<span
-                                                class="symbol required"></span></label>
+                                        <label class="col-sm-2 control-label">发布日期</label>
                                         <div class="col-sm-10">
                                             <input type="text" readonly="readonly"
                                                    class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd"
-                                                   name="releaseDate"
-                                                   placeholder="发布日期" required="required">
+                                                   name="releaseDate" placeholder="发布日期">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">评估基准日</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" readonly="readonly"
+                                                   class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd"
+                                                   name="valuationDate" placeholder="发布日期">
                                         </div>
                                     </div>
                                 </div>

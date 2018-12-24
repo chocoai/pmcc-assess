@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataLandLevelMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataLandLevel" >
+<mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseHouseDamagedDegreeMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseHouseDamagedDegree" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="province" property="province" jdbcType="VARCHAR" />
-    <result column="city" property="city" jdbcType="VARCHAR" />
-    <result column="district" property="district" jdbcType="VARCHAR" />
-    <result column="release_date" property="releaseDate" jdbcType="TIMESTAMP" />
-    <result column="valuation_date" property="valuationDate" jdbcType="TIMESTAMP" />
+    <result column="house_id" property="houseId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="category" property="category" jdbcType="INTEGER" />
+    <result column="entity_condition" property="entityCondition" jdbcType="INTEGER" />
+    <result column="entity_condition_content" property="entityConditionContent" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="DECIMAL" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -71,16 +72,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, province, city, district, release_date, valuation_date, creator, gmt_created, 
-    gmt_modified
+    id, house_id, type, category, entity_condition, entity_condition_content, score, 
+    creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseDamagedDegreeExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_data_land_level
+    from tb_case_house_damaged_degree
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -91,50 +92,55 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_data_land_level
+    from tb_case_house_damaged_degree
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_data_land_level
+    delete from tb_case_house_damaged_degree
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelExample" >
-    delete from tb_data_land_level
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseDamagedDegreeExample" >
+    delete from tb_case_house_damaged_degree
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevel" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseDamagedDegree" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_land_level (province, city, district, 
-      release_date, valuation_date, creator, 
-      gmt_created, gmt_modified)
-    values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
-      #{releaseDate,jdbcType=TIMESTAMP}, #{valuationDate,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_case_house_damaged_degree (house_id, type, category, 
+      entity_condition, entity_condition_content, 
+      score, creator, gmt_created, 
+      gmt_modified)
+    values (#{houseId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}, 
+      #{entityCondition,jdbcType=INTEGER}, #{entityConditionContent,jdbcType=VARCHAR}, 
+      #{score,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevel" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseDamagedDegree" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_land_level
+    insert into tb_case_house_damaged_degree
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="province != null" >
-        province,
+      <if test="houseId != null" >
+        house_id,
       </if>
-      <if test="city != null" >
-        city,
+      <if test="type != null" >
+        type,
       </if>
-      <if test="district != null" >
-        district,
+      <if test="category != null" >
+        category,
       </if>
-      <if test="releaseDate != null" >
-        release_date,
+      <if test="entityCondition != null" >
+        entity_condition,
       </if>
-      <if test="valuationDate != null" >
-        valuation_date,
+      <if test="entityConditionContent != null" >
+        entity_condition_content,
+      </if>
+      <if test="score != null" >
+        score,
       </if>
       <if test="creator != null" >
         creator,
@@ -147,20 +153,23 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="province != null" >
-        #{province,jdbcType=VARCHAR},
+      <if test="houseId != null" >
+        #{houseId,jdbcType=INTEGER},
       </if>
-      <if test="city != null" >
-        #{city,jdbcType=VARCHAR},
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
       </if>
-      <if test="district != null" >
-        #{district,jdbcType=VARCHAR},
+      <if test="category != null" >
+        #{category,jdbcType=INTEGER},
       </if>
-      <if test="releaseDate != null" >
-        #{releaseDate,jdbcType=TIMESTAMP},
+      <if test="entityCondition != null" >
+        #{entityCondition,jdbcType=INTEGER},
       </if>
-      <if test="valuationDate != null" >
-        #{valuationDate,jdbcType=TIMESTAMP},
+      <if test="entityConditionContent != null" >
+        #{entityConditionContent,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=DECIMAL},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -173,32 +182,35 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelExample" resultType="java.lang.Integer" >
-    select count(*) from tb_data_land_level
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseDamagedDegreeExample" resultType="java.lang.Integer" >
+    select count(*) from tb_case_house_damaged_degree
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_data_land_level
+    update tb_case_house_damaged_degree
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.province != null" >
-        province = #{record.province,jdbcType=VARCHAR},
+      <if test="record.houseId != null" >
+        house_id = #{record.houseId,jdbcType=INTEGER},
       </if>
-      <if test="record.city != null" >
-        city = #{record.city,jdbcType=VARCHAR},
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
       </if>
-      <if test="record.district != null" >
-        district = #{record.district,jdbcType=VARCHAR},
+      <if test="record.category != null" >
+        category = #{record.category,jdbcType=INTEGER},
       </if>
-      <if test="record.releaseDate != null" >
-        release_date = #{record.releaseDate,jdbcType=TIMESTAMP},
+      <if test="record.entityCondition != null" >
+        entity_condition = #{record.entityCondition,jdbcType=INTEGER},
       </if>
-      <if test="record.valuationDate != null" >
-        valuation_date = #{record.valuationDate,jdbcType=TIMESTAMP},
+      <if test="record.entityConditionContent != null" >
+        entity_condition_content = #{record.entityConditionContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.score != null" >
+        score = #{record.score,jdbcType=DECIMAL},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -215,13 +227,14 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_data_land_level
+    update tb_case_house_damaged_degree
     set id = #{record.id,jdbcType=INTEGER},
-      province = #{record.province,jdbcType=VARCHAR},
-      city = #{record.city,jdbcType=VARCHAR},
-      district = #{record.district,jdbcType=VARCHAR},
-      release_date = #{record.releaseDate,jdbcType=TIMESTAMP},
-      valuation_date = #{record.valuationDate,jdbcType=TIMESTAMP},
+      house_id = #{record.houseId,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
+      category = #{record.category,jdbcType=INTEGER},
+      entity_condition = #{record.entityCondition,jdbcType=INTEGER},
+      entity_condition_content = #{record.entityConditionContent,jdbcType=VARCHAR},
+      score = #{record.score,jdbcType=DECIMAL},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -229,23 +242,26 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevel" >
-    update tb_data_land_level
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseDamagedDegree" >
+    update tb_case_house_damaged_degree
     <set >
-      <if test="province != null" >
-        province = #{province,jdbcType=VARCHAR},
+      <if test="houseId != null" >
+        house_id = #{houseId,jdbcType=INTEGER},
       </if>
-      <if test="city != null" >
-        city = #{city,jdbcType=VARCHAR},
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
       </if>
-      <if test="district != null" >
-        district = #{district,jdbcType=VARCHAR},
+      <if test="category != null" >
+        category = #{category,jdbcType=INTEGER},
       </if>
-      <if test="releaseDate != null" >
-        release_date = #{releaseDate,jdbcType=TIMESTAMP},
+      <if test="entityCondition != null" >
+        entity_condition = #{entityCondition,jdbcType=INTEGER},
       </if>
-      <if test="valuationDate != null" >
-        valuation_date = #{valuationDate,jdbcType=TIMESTAMP},
+      <if test="entityConditionContent != null" >
+        entity_condition_content = #{entityConditionContent,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=DECIMAL},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -259,13 +275,14 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevel" >
-    update tb_data_land_level
-    set province = #{province,jdbcType=VARCHAR},
-      city = #{city,jdbcType=VARCHAR},
-      district = #{district,jdbcType=VARCHAR},
-      release_date = #{releaseDate,jdbcType=TIMESTAMP},
-      valuation_date = #{valuationDate,jdbcType=TIMESTAMP},
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseDamagedDegree" >
+    update tb_case_house_damaged_degree
+    set house_id = #{houseId,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      category = #{category,jdbcType=INTEGER},
+      entity_condition = #{entityCondition,jdbcType=INTEGER},
+      entity_condition_content = #{entityConditionContent,jdbcType=VARCHAR},
+      score = #{score,jdbcType=DECIMAL},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
