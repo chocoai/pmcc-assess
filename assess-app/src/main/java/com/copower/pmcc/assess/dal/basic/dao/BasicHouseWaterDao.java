@@ -21,33 +21,33 @@ public class BasicHouseWaterDao {
     @Autowired
     private BasicHouseWaterMapper basicHouseWaterMapper;
 
-    public BasicHouseWater getBasicHouseWaterById(Integer id)throws SQLException {
+    public BasicHouseWater getBasicHouseWaterById(Integer id) throws SQLException {
         return basicHouseWaterMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicHouseWater(BasicHouseWater basicHouseWater)throws SQLException{
+    public Integer saveBasicHouseWater(BasicHouseWater basicHouseWater) throws SQLException {
         basicHouseWaterMapper.insertSelective(basicHouseWater);
         return basicHouseWater.getId();
     }
 
-    public boolean updateBasicHouseWater(BasicHouseWater basicHouseWater)throws SQLException{
-        return basicHouseWaterMapper.updateByPrimaryKeySelective(basicHouseWater)==1;
+    public boolean updateBasicHouseWater(BasicHouseWater basicHouseWater) throws SQLException {
+        return basicHouseWaterMapper.updateByPrimaryKeySelective(basicHouseWater) == 1;
     }
 
-    public void removeBasicHouseWater(BasicHouseWater basicHouseWater)throws SQLException{
+    public boolean deleteBasicHouseWater(BasicHouseWater basicHouseWater) throws SQLException {
         BasicHouseWaterExample example = new BasicHouseWaterExample();
         MybatisUtils.convertObj2Example(basicHouseWater, example);
-        basicHouseWaterMapper.deleteByExample(example);
+        return basicHouseWaterMapper.deleteByExample(example) > 0;
     }
 
-    public boolean deleteBasicHouseWater(Integer id)throws SQLException{
-        return  basicHouseWaterMapper.deleteByPrimaryKey(id)==1;
+    public boolean deleteBasicHouseWater(Integer id) throws SQLException {
+        return basicHouseWaterMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicHouseWater> basicHouseWaterList(BasicHouseWater basicHouseWater)throws SQLException{
+    public List<BasicHouseWater> basicHouseWaterList(BasicHouseWater basicHouseWater) throws SQLException {
         BasicHouseWaterExample example = new BasicHouseWaterExample();
         MybatisUtils.convertObj2Example(basicHouseWater, example);
         return basicHouseWaterMapper.selectByExample(example);
     }
-    
+
 }

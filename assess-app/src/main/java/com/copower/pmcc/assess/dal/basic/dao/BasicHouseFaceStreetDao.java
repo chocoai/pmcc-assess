@@ -21,33 +21,33 @@ public class BasicHouseFaceStreetDao {
     @Autowired
     private BasicHouseFaceStreetMapper basicHouseFaceStreetMapper;
 
-    public BasicHouseFaceStreet getBasicHouseFaceStreetById(Integer id)throws SQLException {
+    public BasicHouseFaceStreet getBasicHouseFaceStreetById(Integer id) throws SQLException {
         return basicHouseFaceStreetMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicHouseFaceStreet(BasicHouseFaceStreet basicHouseFaceStreet)throws SQLException{
+    public Integer saveBasicHouseFaceStreet(BasicHouseFaceStreet basicHouseFaceStreet) throws SQLException {
         basicHouseFaceStreetMapper.insertSelective(basicHouseFaceStreet);
         return basicHouseFaceStreet.getId();
     }
 
-    public boolean updateBasicHouseFaceStreet(BasicHouseFaceStreet basicHouseFaceStreet)throws SQLException{
-        return basicHouseFaceStreetMapper.updateByPrimaryKeySelective(basicHouseFaceStreet)==1;
+    public boolean updateBasicHouseFaceStreet(BasicHouseFaceStreet basicHouseFaceStreet) throws SQLException {
+        return basicHouseFaceStreetMapper.updateByPrimaryKeySelective(basicHouseFaceStreet) == 1;
     }
 
-    public void removeBasicHouseFaceStreet(BasicHouseFaceStreet basicHouseFaceStreet)throws SQLException{
+    public boolean deleteBasicHouseFaceStreet(BasicHouseFaceStreet basicHouseFaceStreet) throws SQLException {
         BasicHouseFaceStreetExample example = new BasicHouseFaceStreetExample();
         MybatisUtils.convertObj2Example(basicHouseFaceStreet, example);
-        basicHouseFaceStreetMapper.deleteByExample(example);
+        return basicHouseFaceStreetMapper.deleteByExample(example) > 0;
     }
 
-    public boolean deleteBasicHouseFaceStreet(Integer id)throws SQLException{
-        return  basicHouseFaceStreetMapper.deleteByPrimaryKey(id)==1;
+    public boolean deleteBasicHouseFaceStreet(Integer id) throws SQLException {
+        return basicHouseFaceStreetMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicHouseFaceStreet> basicHouseFaceStreetList(BasicHouseFaceStreet basicHouseFaceStreet)throws SQLException{
+    public List<BasicHouseFaceStreet> basicHouseFaceStreetList(BasicHouseFaceStreet basicHouseFaceStreet) throws SQLException {
         BasicHouseFaceStreetExample example = new BasicHouseFaceStreetExample();
         MybatisUtils.convertObj2Example(basicHouseFaceStreet, example);
         return basicHouseFaceStreetMapper.selectByExample(example);
     }
-    
+
 }

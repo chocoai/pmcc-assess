@@ -100,6 +100,8 @@ public class BasicHouseService {
     private CaseHouseWaterDrainService caseHouseWaterDrainService;
     @Autowired
     private BasicEstateService basicEstateService;
+    @Autowired
+    private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -199,15 +201,6 @@ public class BasicHouseService {
         BasicHouse house = houseList.get(0);
         BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(house.getId());
 
-        List<BasicHouseTradingSell> basicHouseTradingSellList = null;
-        List<BasicHouseTradingLease> basicHouseTradingLeaseList = null;
-        List<BasicHouseRoom> basicHouseRoomList = null;
-        List<BasicHouseWater> basicHouseWaterList = null;
-        List<BasicHouseIntelligent> basicHouseIntelligentList = null;
-        List<BasicHouseFaceStreet> basicHouseFaceStreetList = null;
-        List<BasicHouseEquipment> basicHouseEquipmentList = null;
-        List<BasicHouseCorollaryEquipment> basicHouseCorollaryEquipmentList = null;
-        List<BasicHouseWaterDrain> basicHouseWaterDrainList = null;
         List<SysAttachmentDto> sysAttachmentDtoList = null;
 
         BasicHouseTradingSell querySell = new BasicHouseTradingSell();
@@ -219,6 +212,7 @@ public class BasicHouseService {
         BasicHouseEquipment queryBasicHouseEquipment = new BasicHouseEquipment();
         BasicHouseCorollaryEquipment queryBasicHouseCorollaryEquipment = new BasicHouseCorollaryEquipment();
         BasicHouseWaterDrain queryBasicHouseWaterDrain = new BasicHouseWaterDrain();
+        BasicHouseDamagedDegree queryBasicHouseDamagedDegree = new BasicHouseDamagedDegree();
 
         queryLease.setHouseId(house.getId());
         querySell.setHouseId(house.getId());
@@ -229,47 +223,20 @@ public class BasicHouseService {
         queryBasicHouseEquipment.setHouseId(house.getId());
         queryBasicHouseCorollaryEquipment.setHouseId(house.getId());
         queryBasicHouseWaterDrain.setHouseId(house.getId());
+        queryBasicHouseDamagedDegree.setHouseId(house.getId());
+
+        basicHouseTradingSellService.deleteBasicHouseTradingSell(querySell);
+        basicHouseTradingLeaseService.deleteBasicHouseTradingLease(queryLease);
+        List<BasicHouseRoom> basicHouseRoomList = basicHouseRoomService.basicHouseRoomList(queryRoom);
+        basicHouseWaterService.deleteBasicHouseWater(queryBasicHouseWater);
+        basicHouseIntelligentService.deleteBasicHouseIntelligent(queryBasicHouseIntelligent);
+        basicHouseFaceStreetService.deleteBasicHouseFaceStreet(queryBasicHouseFaceStreet);
+        basicHouseEquipmentService.deleteBasicHouseEquipment(queryBasicHouseEquipment);
+        List<BasicHouseCorollaryEquipment> basicHouseCorollaryEquipmentList = basicHouseCorollaryEquipmentService.basicHouseCorollaryEquipmentList(queryBasicHouseCorollaryEquipment);
+        basicHouseWaterDrainService.deleteBasicHouseWaterDrain(queryBasicHouseWaterDrain);
+        basicHouseDamagedDegreeService.deleteBasicHouseDamagedDegree(queryBasicHouseDamagedDegree);
 
 
-        queryLease.setCreator(commonService.thisUserAccount());
-        querySell.setCreator(commonService.thisUserAccount());
-        queryRoom.setCreator(commonService.thisUserAccount());
-        queryBasicHouseWater.setCreator(commonService.thisUserAccount());
-        queryBasicHouseIntelligent.setCreator(commonService.thisUserAccount());
-        queryBasicHouseFaceStreet.setCreator(commonService.thisUserAccount());
-        queryBasicHouseEquipment.setCreator(commonService.thisUserAccount());
-        queryBasicHouseCorollaryEquipment.setCreator(commonService.thisUserAccount());
-        queryBasicHouseWaterDrain.setCreator(commonService.thisUserAccount());
-
-        basicHouseTradingSellList = basicHouseTradingSellService.basicHouseTradingSells(querySell);
-        basicHouseTradingLeaseList = basicHouseTradingLeaseService.basicHouseTradingLeaseList(queryLease);
-        basicHouseRoomList = basicHouseRoomService.basicHouseRoomList(queryRoom);
-        basicHouseWaterList = basicHouseWaterService.basicHouseWaterList(queryBasicHouseWater);
-        basicHouseIntelligentList = basicHouseIntelligentService.basicHouseIntelligentList(queryBasicHouseIntelligent);
-        basicHouseFaceStreetList = basicHouseFaceStreetService.basicHouseFaceStreetList(queryBasicHouseFaceStreet);
-        basicHouseEquipmentList = basicHouseEquipmentService.basicHouseEquipmentList(queryBasicHouseEquipment);
-        basicHouseCorollaryEquipmentList = basicHouseCorollaryEquipmentService.basicHouseCorollaryEquipmentList(queryBasicHouseCorollaryEquipment);
-        basicHouseWaterDrainList = basicHouseWaterDrainService.basicHouseWaterDrainList(queryBasicHouseWaterDrain);
-
-
-        if (!ObjectUtils.isEmpty(basicHouseTradingSellList)) {
-            basicHouseTradingSellList.forEach(oo -> {
-                try {
-                    basicHouseTradingSellService.deleteBasicHouseTradingSell(oo.getId());
-                } catch (Exception e1) {
-                    logger.error(e1.getMessage(), e1);
-                }
-            });
-        }
-        if (!ObjectUtils.isEmpty(basicHouseTradingLeaseList)) {
-            basicHouseTradingLeaseList.forEach(oo -> {
-                try {
-                    basicHouseTradingLeaseService.deleteBasicHouseTradingLease(oo.getId());
-                } catch (Exception e1) {
-                    logger.error(e1.getMessage(), e1);
-                }
-            });
-        }
         if (!ObjectUtils.isEmpty(basicHouseRoomList)) {
             basicHouseRoomList.forEach(oo -> {
                 try {
@@ -279,55 +246,11 @@ public class BasicHouseService {
                 }
             });
         }
-        if (!ObjectUtils.isEmpty(basicHouseWaterList)) {
-            basicHouseWaterList.forEach(oo -> {
-                try {
-                    basicHouseWaterService.deleteBasicHouseWater(oo.getId());
-                } catch (Exception e1) {
-                    logger.error(e1.getMessage(), e1);
-                }
-            });
-        }
-        if (!ObjectUtils.isEmpty(basicHouseIntelligentList)) {
-            basicHouseIntelligentList.forEach(oo -> {
-                try {
-                    basicHouseIntelligentService.deleteBasicHouseIntelligent(oo.getId());
-                } catch (Exception e1) {
-                    logger.error(e1.getMessage(), e1);
-                }
-            });
-        }
-        if (!ObjectUtils.isEmpty(basicHouseFaceStreetList)) {
-            basicHouseFaceStreetList.forEach(oo -> {
-                try {
-                    basicHouseFaceStreetService.deleteBasicHouseFaceStreet(oo.getId());
-                } catch (Exception e1) {
-                    logger.error(e1.getMessage(), e1);
-                }
-            });
-        }
-        if (!ObjectUtils.isEmpty(basicHouseEquipmentList)) {
-            basicHouseEquipmentList.forEach(oo -> {
-                try {
-                    basicHouseEquipmentService.deleteBasicHouseEquipment(oo.getId());
-                } catch (Exception e1) {
-                    logger.error(e1.getMessage(), e1);
-                }
-            });
-        }
+
         if (!ObjectUtils.isEmpty(basicHouseCorollaryEquipmentList)) {
             basicHouseCorollaryEquipmentList.forEach(oo -> {
                 try {
                     basicHouseCorollaryEquipmentService.deleteBasicHouseCorollaryEquipment(oo.getId());
-                } catch (Exception e1) {
-                    logger.error(e1.getMessage(), e1);
-                }
-            });
-        }
-        if (!ObjectUtils.isEmpty(basicHouseWaterDrainList)){
-            basicHouseWaterDrainList.parallelStream().forEach( oo -> {
-                try {
-                    basicHouseWaterDrainService.deleteBasicHouseWaterDrain(oo.getId());
                 } catch (Exception e1) {
                     logger.error(e1.getMessage(), e1);
                 }
@@ -410,7 +333,7 @@ public class BasicHouseService {
      * @throws Exception
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
-    public Map<String, Object> appWriteHouse(Integer caseHouseId,String housePartInMode) throws Exception {
+    public Map<String, Object> appWriteHouse(Integer caseHouseId, String housePartInMode) throws Exception {
         if (caseHouseId == null) {
             throw new Exception("null ponit");
         }
@@ -620,11 +543,11 @@ public class BasicHouseService {
                 }
             }
         }
-        if (!ObjectUtils.isEmpty(caseHouseWaterDrainList)){
-            caseHouseWaterDrainList.parallelStream().forEach( oo -> {
+        if (!ObjectUtils.isEmpty(caseHouseWaterDrainList)) {
+            caseHouseWaterDrainList.parallelStream().forEach(oo -> {
                 try {
                     BasicHouseWaterDrain basicHouseWaterDrain = new BasicHouseWaterDrain();
-                    BeanUtils.copyProperties(oo,basicHouseWaterDrain);
+                    BeanUtils.copyProperties(oo, basicHouseWaterDrain);
                     basicHouseWaterDrain.setId(null);
                     basicHouseWaterDrain.setHouseId(basicHouse.getId());
                     basicHouseWaterDrain.setCreator(commonService.thisUserAccount());
@@ -632,7 +555,7 @@ public class BasicHouseService {
                     basicHouseWaterDrain.setGmtModified(null);
                     basicHouseWaterDrainService.saveAndUpdateBasicHouseWaterDrain(basicHouseWaterDrain);
                 } catch (Exception e1) {
-                    logger.error("",e1);
+                    logger.error("", e1);
                 }
             });
         }

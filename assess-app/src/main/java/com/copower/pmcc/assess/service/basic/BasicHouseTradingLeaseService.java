@@ -46,6 +46,10 @@ public class BasicHouseTradingLeaseService {
         return basicHouseTradingLeaseDao.deleteBasicHouseTradingLease(id);
     }
 
+    public boolean deleteBasicHouseTradingLease(BasicHouseTradingLease basicHouseTradingLease)throws Exception{
+        return basicHouseTradingLeaseDao.deleteBasicHouseTradingLease(basicHouseTradingLease);
+    }
+
     public BasicHouseTradingLease getByBasicHouseTradingLeaseId(Integer id)throws Exception{
         return basicHouseTradingLeaseDao.getBasicHouseTradingLeaseById(id);
     }
