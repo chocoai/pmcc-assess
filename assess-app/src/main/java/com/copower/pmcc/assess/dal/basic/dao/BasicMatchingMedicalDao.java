@@ -49,5 +49,11 @@ public class BasicMatchingMedicalDao {
         MybatisUtils.convertObj2Example(basicMatchingMedical, example);
         return basicMatchingMedicalMapper.selectByExample(example);
     }
+
+    public void removeIds(List<Integer> ids){
+        BasicMatchingMedicalExample example = new BasicMatchingMedicalExample();
+        example.createCriteria().andIdIn(ids) ;
+        basicMatchingMedicalMapper.deleteByExample(example) ;
+    }
     
 }
