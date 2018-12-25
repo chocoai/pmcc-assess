@@ -246,9 +246,25 @@
             if (id) {
                 $('#divBoxCRMContacts').modal("show");
                 objProject.commonContacts.findCRMContacts($("#divBoxCRMContacts").find("input[name='name']")[0]);
-            }else {
+            } else {
                 Alert("未选择单元");
             }
+        },
+        copyContacts: function (data, callback) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/initiateContacts/copyContacts",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        callback();
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
         }
     };
 
@@ -403,6 +419,8 @@
                     $("#possessor_tab").show();
                     $("#possessor_tab_unit").hide();
                 }
+                //拷贝数据
+                objProject.possessor.copyConsignor();
             });
             $.each(objProject.config.possessor.files, function (i, n) {
                 objProject.showFile(n, AssessDBKey.InitiatePossessor, objProject.isNotBlank(item.id) ? item.id : "0");
@@ -460,6 +478,63 @@
         },
         contactsShow: function () {
             $("#" + objProject.config.possessor.table).parent().parent().show();
+        },
+        //copy 委托人信息
+        copyConsignor: function () {
+            var consignor = formParams(objProject.config.consignor.frm); //委托人信息
+            var data = {
+                pEntrustmentUnit: consignor.csEntrustmentUnit,
+                pLegalRepresentative: consignor.csLegalRepresentative,
+                pSociologyCode: consignor.csSociologyCode,
+                pAddress: consignor.csAddress,
+                pScopeOperation: consignor.csScopeOperation,
+                pUnitProperties: consignor.csUnitProperties
+            };
+            $("#" + objProject.config.possessor.frm).initForm(data);
+            var select = $('#' + objProject.config.possessor.table).bootstrapTable('getData');
+            //当委托人已经有联系人则默认为拷贝过占有人数据了
+            if (select.length >= 1){
+                return false;
+            }
+            //检测
+            var item = $('#' + objProject.config.consignor.table).bootstrapTable('getData');
+            if (item) {
+                if (item.length >= 1) {
+                    var ids = "";
+                    $.each(item, function (i, n) {
+                        if (i == item.length - 1) {
+                            ids += n.id;
+                        } else {
+                            ids += n.id + ",";
+                        }
+                    });
+                    var replaceData = {};
+                    replaceData.ids = ids;
+                    replaceData.cType = objProject.config.possessor.contacts.nodeKey;
+                    replaceData.cPid = objProject.isNotBlank('${projectInfo.possessorVo.id}') ? '${projectInfo.possessorVo.id}' : '0';
+                    //联系人拷贝
+                    objProject.commonContacts.copyContacts(replaceData, function () {
+                        objProject.possessor.loadContactList();
+                    });
+                    //附件拷贝
+                    $.ajax({
+                        url: getContextPath() + "/public/getSysAttachmentDtoList",
+                        type: "get",
+                        dataType: "json",
+                        async: false,
+                        data: {
+                            tableId: objProject.isNotBlank('${projectInfo.consignorVo.id}') ? '${projectInfo.consignorVo.id}' : '0',
+                            tableName: AssessDBKey.InitiateConsignor
+                        },
+                        success: function (result) {
+                            if (result.ret && result.data) {
+                                //明天处理
+                                console.log(result.data) ;
+                            }
+                        }
+                    });
+                }
+            }
         }
     };
 
@@ -614,9 +689,9 @@
     objProject.getFormData = function () {
         var data = {};
         var projectInfo = formParams(this.config.info.frm);//项目信息
-        projectInfo.projectTypeId = '${projectInfo.projectTypeId}' ;
-        projectInfo.projectClassId = '${projectInfo.projectClassId}' ;
-        projectInfo.projectCategoryId = '${projectInfo.projectCategoryId}' ;
+        projectInfo.projectTypeId = '${projectInfo.projectTypeId}';
+        projectInfo.projectClassId = '${projectInfo.projectClassId}';
+        projectInfo.projectCategoryId = '${projectInfo.projectCategoryId}';
         var consignor = formParams(this.config.consignor.frm); //委托人信息
         var possessor = formParams(this.config.possessor.frm); //占有人信息
         var unitinformation = formParams(this.config.unit_information.frm); //报告使用单位信息

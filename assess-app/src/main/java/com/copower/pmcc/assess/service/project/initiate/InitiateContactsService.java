@@ -14,6 +14,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Ordering;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +44,31 @@ public class InitiateContactsService {
     @Autowired
     private InitiateUnitInformationService unitInformationService;
 
-    public InitiateContacts get(Integer id){
-        return dao.get(id) ;
+    public InitiateContacts get(Integer id) {
+        return dao.get(id);
+    }
+
+    public void copyContacts(String str, InitiateContacts initiateContacts) {
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(str)) {
+            List<Integer> ids = new ArrayList<>(10);
+            for (String id : str.split(",")) {
+                if (NumberUtils.isNumber(id)) {
+                    ids.add(Integer.parseInt(id));
+                }
+            }
+            List<InitiateContacts> initiateContactsList = dao.getByIds(ids);
+            if (!ObjectUtils.isEmpty(initiateContactsList)) {
+                for (InitiateContacts contacts:initiateContactsList){
+                    contacts.setcType(initiateContacts.getcType());
+                    contacts.setcPid(initiateContacts.getcPid());
+                    contacts.setCustomerId(initiateContacts.getCustomerId());
+                    contacts.setCrmId(initiateContacts.getCrmId());
+                    contacts.setCreator(commonService.thisUserAccount());
+                    contacts.setId(null);
+                    dao.save(contacts);
+                }
+            }
+        }
     }
 
     public boolean saveUpdateInitiateContacts(InitiateContacts initiateContacts) {
@@ -61,24 +85,24 @@ public class InitiateContactsService {
         }
     }
 
-    public BootstrapTableVo getBootstrapTableVo(InitiateContacts initiateContacts){
+    public BootstrapTableVo getBootstrapTableVo(InitiateContacts initiateContacts) {
         if (initiateContacts == null) {
             return null;
         }
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<InitiateContacts> contactsList = dao.initiateContactsList(initiateContacts) ;
+        List<InitiateContacts> contactsList = dao.initiateContactsList(initiateContacts);
         vo.setTotal(page.getTotal());
-        vo.setRows(ObjectUtils.isEmpty(contactsList)?new ArrayList<InitiateContacts>(1):contactsList);
+        vo.setRows(ObjectUtils.isEmpty(contactsList) ? new ArrayList<InitiateContacts>(1) : contactsList);
         return vo;
     }
 
-    public List<InitiateContacts> initiateContactsList(InitiateContacts initiateContacts){
-        return dao.initiateContactsList(initiateContacts) ;
+    public List<InitiateContacts> initiateContactsList(InitiateContacts initiateContacts) {
+        return dao.initiateContactsList(initiateContacts);
     }
 
-    public void clear(InitiateContacts initiateContacts){
+    public void clear(InitiateContacts initiateContacts) {
         dao.clear(initiateContacts);
     }
 
@@ -146,7 +170,7 @@ public class InitiateContactsService {
                     InitiateContacts query = new InitiateContacts();
                     query.setcType(cType);
                     query.setcPid(unitInformationVo.getId());
-                    List<InitiateContacts> contactsVos = initiateContactsList(query) ;
+                    List<InitiateContacts> contactsVos = initiateContactsList(query);
                     for (InitiateContacts contacts : contactsVos) {
                         String tempString = contacts.getCrmId();
                         String uUseUnit = unitInformationVo.getuUseUnit();
@@ -190,6 +214,7 @@ public class InitiateContactsService {
 
     /**
      * 更新主表的id值
+     *
      * @param pid
      * @param flag
      */
@@ -198,7 +223,7 @@ public class InitiateContactsService {
         query.setcPid(0);
         query.setcType(flag);
         query.setCreator(commonService.thisUserAccount());
-        List<InitiateContacts> contactsList = initiateContactsList(query) ;
+        List<InitiateContacts> contactsList = initiateContactsList(query);
         if (!ObjectUtils.isEmpty(contactsList)) {
             for (InitiateContacts contact : contactsList) {
                 contact.setcPid(pid);
@@ -215,7 +240,6 @@ public class InitiateContactsService {
     public boolean update(InitiateContacts dto) {
         return dao.update(dto);
     }
-
 
 
     public boolean remove(Integer pid, Integer type) {
