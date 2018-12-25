@@ -83,4 +83,15 @@ public class InitiateContactsController {
             return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
+
+    @PostMapping(value = "/copyContacts", name = "拷贝联系人到其它地方")
+    public HttpResult copyContacts(String ids,InitiateContacts initiateContacts){
+        try {
+            initiateContactsService.copyContacts(ids,initiateContacts);
+            return HttpResult.newCorrectResult(200, initiateContacts);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
 }

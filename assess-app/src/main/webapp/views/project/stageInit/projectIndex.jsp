@@ -103,12 +103,7 @@
 
 
     $(document).ready(function () {
-        if ('${empty processInsId}') {
-            //申请页面
-            objProject.loadInit();
-        } else {
-            //修改页面
-        }
+        objProject.loadInit();
     });
 
     function projectApply() {
@@ -124,8 +119,6 @@
             var approvalData = formParams("frm_approval");
             data.projectInfoId = '${projectInfo.id}' ;
             data = $.extend(data, approvalData);
-            console.log("test") ;
-            console.log(data) ;
         }
         Loading.progressShow();
         $.ajax({

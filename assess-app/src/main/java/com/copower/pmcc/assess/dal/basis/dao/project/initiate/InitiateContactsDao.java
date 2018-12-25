@@ -64,6 +64,12 @@ public class InitiateContactsDao {
         return mapper.selectByExample(example);
     }
 
+    public List<InitiateContacts> getByIds(List<Integer> ids){
+        InitiateContactsExample example = new InitiateContactsExample();
+        example.createCriteria().andIdIn(ids) ;
+        return mapper.selectByExample(example);
+    }
+
 
     public InitiateContacts get(Integer id) {
         return mapper.selectByPrimaryKey(id);
