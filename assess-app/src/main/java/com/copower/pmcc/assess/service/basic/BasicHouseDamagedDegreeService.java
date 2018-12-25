@@ -1,13 +1,33 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.copower.pmcc.assess.common.enums.DataDamagedDegreeEnum;
 import com.copower.pmcc.assess.dal.basic.dao.BasicHouseDamagedDegreeDao;
+import com.copower.pmcc.assess.dal.basic.dao.BasicHouseDamagedDegreeDetailDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouseDamagedDegree;
+import com.copower.pmcc.assess.dal.basic.entity.BasicHouseDamagedDegreeDetail;
+import com.copower.pmcc.assess.dal.basis.entity.DataDamagedDegree;
+import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeDetailVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.data.DataDamagedDegreeService;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
  * @Auther: zch
@@ -17,11 +37,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class BasicHouseDamagedDegreeService {
     @Autowired
-    private BasicHouseDamagedDegreeDao basicHouseDamagedDegreeDao;
+    private CommonService commonService;
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private CommonService commonService;
+    private DataDamagedDegreeService dataDamagedDegreeService;
+    @Autowired
+    private BasicHouseDamagedDegreeDao basicHouseDamagedDegreeDao;
+    @Autowired
+    private BasicHouseDamagedDegreeDetailDao basicHouseDamagedDegreeDetailDao;
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -31,7 +56,7 @@ public class BasicHouseDamagedDegreeService {
      * @return
      * @throws Exception
      */
-    public BasicHouseDamagedDegree getBasicHouseDamagedDegreeById(Integer id) throws Exception {
+    public BasicHouseDamagedDegree getDamagedDegreeById(Integer id) throws Exception {
         return basicHouseDamagedDegreeDao.getBasicHouseDamagedDegreeById(id);
     }
 
@@ -42,25 +67,126 @@ public class BasicHouseDamagedDegreeService {
      * @return
      * @throws Exception
      */
-    public void saveAndUpdateBasicHouseDamagedDegree(BasicHouseDamagedDegree basicHouseDamagedDegree) throws Exception {
+    public void saveAndUpdateDamagedDegree(BasicHouseDamagedDegree basicHouseDamagedDegree) throws Exception {
         if (basicHouseDamagedDegree.getId() == null || basicHouseDamagedDegree.getId().intValue() == 0) {
             basicHouseDamagedDegree.setCreator(commonService.thisUserAccount());
             basicHouseDamagedDegreeDao.saveBasicHouseDamagedDegree(basicHouseDamagedDegree);
         } else {
-            BasicHouseDamagedDegree oo = basicHouseDamagedDegreeDao.getBasicHouseDamagedDegreeById(basicHouseDamagedDegree.getId());
             basicHouseDamagedDegreeDao.updateBasicHouseDamagedDegree(basicHouseDamagedDegree);
         }
     }
 
     /**
+     * @param houseId
+     * @return
+     */
+    public List<BasicHouseDamagedDegreeVo> getDamagedDegreeList(Integer houseId) {
+        BasicHouseDamagedDegree basicHouseDamagedDegree = new BasicHouseDamagedDegree();
+        basicHouseDamagedDegree.setHouseId(houseId);
+        List<BasicHouseDamagedDegree> list = basicHouseDamagedDegreeDao.getDamagedDegreeList(basicHouseDamagedDegree);
+        List<BasicHouseDamagedDegreeVo> vos = LangUtils.transform(list, o -> getBasicHouseDamagedDegreeVo(o));
+        return vos;
+    }
+
+    /**
      * 删除数据
+     *
      * @param basicHouseDamagedDegree
      * @return
      */
-    public Boolean deleteBasicHouseDamagedDegree(BasicHouseDamagedDegree basicHouseDamagedDegree){
+    public Boolean deleteDamagedDegree(BasicHouseDamagedDegree basicHouseDamagedDegree) {
         return basicHouseDamagedDegreeDao.deleteBasicHouseDamagedDegree(basicHouseDamagedDegree);
     }
 
+    public BasicHouseDamagedDegreeVo getBasicHouseDamagedDegreeVo(BasicHouseDamagedDegree basicHouseDamagedDegree) {
+        BasicHouseDamagedDegreeVo basicHouseDamagedDegreeVo = new BasicHouseDamagedDegreeVo();
+        BeanUtils.copyProperties(basicHouseDamagedDegree, basicHouseDamagedDegreeVo);
+        basicHouseDamagedDegreeVo.setTypeName(dataDamagedDegreeService.getNameById(basicHouseDamagedDegree.getType()));
+        DataDamagedDegree dataDamagedDegree = dataDamagedDegreeService.getCacheDamagedDegreeById(basicHouseDamagedDegree.getCategory());
+        if (dataDamagedDegree != null) {
+            basicHouseDamagedDegreeVo.setCategoryName(dataDamagedDegree.getName());
+            basicHouseDamagedDegreeVo.setStandardScore(dataDamagedDegree.getStandardScore());
+            basicHouseDamagedDegreeVo.setIntact(dataDamagedDegree.getIntact());
+            basicHouseDamagedDegreeVo.setBasicallyIntact(dataDamagedDegree.getBasicallyIntact());
+            basicHouseDamagedDegreeVo.setGeneralDamage(dataDamagedDegree.getGeneralDamage());
+            basicHouseDamagedDegreeVo.setSeriousDamage(dataDamagedDegree.getSeriousDamage());
+        }
+        if (!StringUtils.isEmpty(basicHouseDamagedDegree.getEntityCondition()))
+            basicHouseDamagedDegreeVo.setEntityConditionName(DataDamagedDegreeEnum.getEnumByKey(basicHouseDamagedDegree.getEntityCondition()).getValue());
+        return basicHouseDamagedDegreeVo;
+    }
+
+    //明细项数据处理-----------------------------------------------------------------------------------------------------
+
+    /**
+     * 获取数据
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public BasicHouseDamagedDegreeDetail getDamagedDegreeDetailById(Integer id) throws Exception {
+        return basicHouseDamagedDegreeDetailDao.getBasicHouseDamagedDegreeDetailById(id);
+    }
+
+    /**
+     * 新增或者修改
+     *
+     * @param basicHouseDamagedDegreeDetail
+     * @return
+     * @throws Exception
+     */
+    public void saveAndUpdateDamagedDegreeDetail(BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail) throws Exception {
+        if (basicHouseDamagedDegreeDetail.getId() == null || basicHouseDamagedDegreeDetail.getId().intValue() == 0) {
+            basicHouseDamagedDegreeDetail.setCreator(commonService.thisUserAccount());
+            basicHouseDamagedDegreeDetailDao.saveBasicHouseDamagedDegreeDetail(basicHouseDamagedDegreeDetail);
+        } else {
+            basicHouseDamagedDegreeDetailDao.updateBasicHouseDamagedDegreeDetail(basicHouseDamagedDegreeDetail);
+        }
+    }
+
+    /**
+     * 删除数据
+     *
+     * @param basicHouseDamagedDegreeDetail
+     * @return
+     */
+    public Boolean deleteDamagedDegreeDetail(BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail) {
+        return basicHouseDamagedDegreeDetailDao.deleteBasicHouseDamagedDegreeDetail(basicHouseDamagedDegreeDetail);
+    }
+
+    public Boolean deleteDamagedDegreeDetail(Integer id) {
+        return basicHouseDamagedDegreeDetailDao.deleteBasicHouseDamagedDegreeDetail(id);
+    }
+
+    public BasicHouseDamagedDegreeDetailVo getBasicHouseDamagedDegreeDetailVo(BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail) {
+        BasicHouseDamagedDegreeDetailVo basicHouseDamagedDegreeDetailVo = new BasicHouseDamagedDegreeDetailVo();
+        BeanUtils.copyProperties(basicHouseDamagedDegreeDetail, basicHouseDamagedDegreeDetailVo);
+        DataDamagedDegree dataDamagedDegree = dataDamagedDegreeService.getCacheDamagedDegreeById(basicHouseDamagedDegreeDetail.getType());
+        if (dataDamagedDegree != null) {
+            basicHouseDamagedDegreeDetailVo.setTypeName(dataDamagedDegree.getName());
+            basicHouseDamagedDegreeDetailVo.setStandardScore(dataDamagedDegree.getStandardScore());
+            basicHouseDamagedDegreeDetailVo.setIntact(dataDamagedDegree.getIntact());
+            basicHouseDamagedDegreeDetailVo.setBasicallyIntact(dataDamagedDegree.getBasicallyIntact());
+            basicHouseDamagedDegreeDetailVo.setGeneralDamage(dataDamagedDegree.getGeneralDamage());
+            basicHouseDamagedDegreeDetailVo.setSeriousDamage(dataDamagedDegree.getSeriousDamage());
+        }
+        if (!StringUtils.isEmpty(basicHouseDamagedDegreeDetail.getEntityCondition()))
+            basicHouseDamagedDegreeDetailVo.setEntityConditionName(DataDamagedDegreeEnum.getEnumByKey(basicHouseDamagedDegreeDetail.getEntityCondition()).getValue());
+        return basicHouseDamagedDegreeDetailVo;
+    }
 
 
+    public BootstrapTableVo getDamagedDegreeDetailList(Integer damagedDegreeId) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail = new BasicHouseDamagedDegreeDetail();
+        basicHouseDamagedDegreeDetail.setDamagedDegreeId(damagedDegreeId);
+        List<BasicHouseDamagedDegreeDetail> degreeDetailList = basicHouseDamagedDegreeDetailDao.getDamagedDegreeDetailList(basicHouseDamagedDegreeDetail);
+        List<BasicHouseDamagedDegreeDetailVo> vos = LangUtils.transform(degreeDetailList, o -> getBasicHouseDamagedDegreeDetailVo(o));
+        vo.setTotal(page.getTotal());
+        vo.setRows(ObjectUtils.isEmpty(vos) ? Lists.newArrayList() : vos);
+        return vo;
+    }
 }

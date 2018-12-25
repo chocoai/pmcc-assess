@@ -4,13 +4,16 @@ import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basic.dao.BasicHouseDao;
 import com.copower.pmcc.assess.dal.basic.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.DataDamagedDegree;
 import com.copower.pmcc.assess.dal.cases.entity.*;
+import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingLeaseVo;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingSellVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.*;
+import com.copower.pmcc.assess.service.data.DataDamagedDegreeService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -21,13 +24,14 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -102,6 +106,10 @@ public class BasicHouseService {
     private BasicEstateService basicEstateService;
     @Autowired
     private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
+    @Autowired
+    private DataDamagedDegreeService dataDamagedDegreeService;
+    @Autowired
+    private CaseHouseDamagedDegreeService caseHouseDamagedDegreeService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -213,6 +221,7 @@ public class BasicHouseService {
         BasicHouseCorollaryEquipment queryBasicHouseCorollaryEquipment = new BasicHouseCorollaryEquipment();
         BasicHouseWaterDrain queryBasicHouseWaterDrain = new BasicHouseWaterDrain();
         BasicHouseDamagedDegree queryBasicHouseDamagedDegree = new BasicHouseDamagedDegree();
+        BasicHouseDamagedDegreeDetail queryBasicHouseDamagedDegreeDetail = new BasicHouseDamagedDegreeDetail();
 
         queryLease.setHouseId(house.getId());
         querySell.setHouseId(house.getId());
@@ -224,6 +233,7 @@ public class BasicHouseService {
         queryBasicHouseCorollaryEquipment.setHouseId(house.getId());
         queryBasicHouseWaterDrain.setHouseId(house.getId());
         queryBasicHouseDamagedDegree.setHouseId(house.getId());
+        queryBasicHouseDamagedDegreeDetail.setHouseId(house.getId());
 
         basicHouseTradingSellService.deleteBasicHouseTradingSell(querySell);
         basicHouseTradingLeaseService.deleteBasicHouseTradingLease(queryLease);
@@ -234,8 +244,8 @@ public class BasicHouseService {
         basicHouseEquipmentService.deleteBasicHouseEquipment(queryBasicHouseEquipment);
         List<BasicHouseCorollaryEquipment> basicHouseCorollaryEquipmentList = basicHouseCorollaryEquipmentService.basicHouseCorollaryEquipmentList(queryBasicHouseCorollaryEquipment);
         basicHouseWaterDrainService.deleteBasicHouseWaterDrain(queryBasicHouseWaterDrain);
-        basicHouseDamagedDegreeService.deleteBasicHouseDamagedDegree(queryBasicHouseDamagedDegree);
-
+        basicHouseDamagedDegreeService.deleteDamagedDegree(queryBasicHouseDamagedDegree);
+        basicHouseDamagedDegreeService.deleteDamagedDegreeDetail(queryBasicHouseDamagedDegreeDetail);
 
         if (!ObjectUtils.isEmpty(basicHouseRoomList)) {
             basicHouseRoomList.forEach(oo -> {
@@ -310,7 +320,6 @@ public class BasicHouseService {
         this.clearInvalidData(0);
         Map<String, Object> objectMap = Maps.newHashMap();
 
-
         BasicHouse basicHouse = new BasicHouse();
         basicHouse.setHouseNumber(houseNumber);
         basicHouse.setApplyId(0);
@@ -323,6 +332,23 @@ public class BasicHouseService {
         basicHouseTrading.setCreator(commonService.thisUserAccount());
         basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));
+
+        //添加房屋完损度
+        List<DataDamagedDegree> degreeList = dataDamagedDegreeService.getCacheDamagedDegreeListByPid(0);
+        if (!CollectionUtils.isEmpty(degreeList)) {
+            for (DataDamagedDegree degree : degreeList) {
+                List<DataDamagedDegree> damagedDegreeList = dataDamagedDegreeService.getCacheDamagedDegreeListByPid(degree.getId());
+                if (!CollectionUtils.isEmpty(damagedDegreeList)) {
+                    for (DataDamagedDegree damagedDegree : damagedDegreeList) {
+                        BasicHouseDamagedDegree basicHouseDamagedDegree = new BasicHouseDamagedDegreeVo();
+                        basicHouseDamagedDegree.setHouseId(basicHouse.getId());
+                        basicHouseDamagedDegree.setType(degree.getId());
+                        basicHouseDamagedDegree.setCategory(damagedDegree.getId());
+                        basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(basicHouseDamagedDegree);
+                    }
+                }
+            }
+        }
         return objectMap;
     }
 
@@ -347,10 +373,13 @@ public class BasicHouseService {
         basicHouse.setId(null);
         basicHouse.setGmtCreated(null);
         basicHouse.setGmtModified(null);
+        if (StringUtils.equals(housePartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
+            basicHouse.setHouseNumber(null);
+        }
         basicHouseDao.saveBasicHouse(basicHouse);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()), getBasicHouseVo(basicHouse));
 
-        if (org.apache.commons.lang3.StringUtils.equals(housePartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
+        if (StringUtils.equals(housePartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
             CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
             caseEstateTagging.setDataId(caseHouseId);
             caseEstateTagging.setType(EstateTaggingTypeEnum.HOUSE.getKey());
@@ -418,7 +447,8 @@ public class BasicHouseService {
         List<CaseHouseIntelligent> caseHouseIntelligents = caseHouseIntelligentService.getCaseHouseIntelligentList(caseHouseIntelligent);
         List<CaseHouseWater> caseHouseWaters = caseHouseWaterService.getCaseHouseWaterList(caseHouseWater);
         List<CaseHouseCorollaryEquipment> caseHouseCorollaryEquipments = caseHouseCorollaryEquipmentService.getCaseHouseCorollaryEquipmentList(caseHouseCorollaryEquipment);
-        List<CaseHouseWaterDrain> caseHouseWaterDrainList = caseHouseWaterDrainService.getCaseHouseWaterDrainListO(caseHouseWaterDrain);
+        List<CaseHouseWaterDrain> caseHouseWaterDrainList = caseHouseWaterDrainService.getCaseHouseWaterDrainList(caseHouseWaterDrain);
+        List<CaseHouseDamagedDegree> damagedDegreeList = caseHouseDamagedDegreeService.getDamagedDegreeListByHouseId(caseHouseId);
 
         if (!ObjectUtils.isEmpty(caseHouseTradingSellVos)) {
             for (CaseHouseTradingSellVo oo : caseHouseTradingSellVos) {
@@ -558,6 +588,32 @@ public class BasicHouseService {
                     logger.error("", e1);
                 }
             });
+        }
+        if (CollectionUtils.isNotEmpty(damagedDegreeList)) {
+            for (CaseHouseDamagedDegree caseHouseDamagedDegree : damagedDegreeList) {
+                BasicHouseDamagedDegree basicHouseDamagedDegree = new BasicHouseDamagedDegree();
+                BeanUtils.copyProperties(caseHouseDamagedDegree, basicHouseDamagedDegree);
+                basicHouseDamagedDegree.setId(null);
+                basicHouseDamagedDegree.setHouseId(basicHouse.getId());
+                basicHouseDamagedDegree.setCreator(commonService.thisUserAccount());
+                basicHouseDamagedDegree.setGmtCreated(null);
+                basicHouseDamagedDegree.setGmtModified(null);
+                basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(basicHouseDamagedDegree);
+                List<CaseHouseDamagedDegreeDetail> damagedDegreeDetailList = caseHouseDamagedDegreeService.getDamagedDegreeDetailList(caseHouseDamagedDegree.getId());
+                if (CollectionUtils.isNotEmpty(damagedDegreeDetailList)) {
+                    for (CaseHouseDamagedDegreeDetail caseHouseDamagedDegreeDetail : damagedDegreeDetailList) {
+                        BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail = new BasicHouseDamagedDegreeDetail();
+                        BeanUtils.copyProperties(caseHouseDamagedDegreeDetail, basicHouseDamagedDegreeDetail);
+                        basicHouseDamagedDegreeDetail.setDamagedDegreeId(basicHouseDamagedDegree.getId());
+                        basicHouseDamagedDegreeDetail.setId(null);
+                        basicHouseDamagedDegreeDetail.setHouseId(basicHouse.getId());
+                        basicHouseDamagedDegreeDetail.setCreator(commonService.thisUserAccount());
+                        basicHouseDamagedDegreeDetail.setGmtCreated(null);
+                        basicHouseDamagedDegreeDetail.setGmtModified(null);
+                        basicHouseDamagedDegreeService.saveAndUpdateDamagedDegreeDetail(basicHouseDamagedDegreeDetail);
+                    }
+                }
+            }
         }
         return objectMap;
     }

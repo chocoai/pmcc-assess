@@ -40,7 +40,7 @@
 
         <!-- 具体表 -->
         <table tableName="tb_basic_house_damaged_degree" domainObjectName="BasicHouseDamagedDegree"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-
+        <table tableName="tb_basic_house_damaged_degree_detail" domainObjectName="BasicHouseDamagedDegreeDetail"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
     </context>
 
 </generatorConfiguration>

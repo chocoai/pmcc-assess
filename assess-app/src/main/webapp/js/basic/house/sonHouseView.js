@@ -842,7 +842,7 @@ var houseIntelligent;
                         $('#' + houseIntelligent.prototype.config().box).modal('hide');
                         houseIntelligent.prototype.loadDataDicList();
                         num = 0;
-                        arr.length = 0 ;
+                        arr.length = 0;
                     }
                     else {
                         Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -1518,4 +1518,182 @@ var houseRoom;
         houseRoom.prototype.loadDataDicList();
     })
 })();
+
+
+var damagedDegree = {};
+
+//加载完损度数据列表
+damagedDegree.loadDamagedDegreeList = function () {
+    $.ajax({
+        url: getContextPath() + '/basicHouseDamagedDegree/getDamagedDegreeList',
+        type: 'get',
+        data: {
+            houseId: houseCommon.getHouseId()
+        },
+        success: function (result) {
+            if (result.ret && result.data) {
+                var tabHtml = '', tabContentHtml = '';
+                var groupArray = [];
+                $.each(result.data, function (i, item) { //循环数据分组
+                    if ($.inArray(item.type, groupArray) < 0) {
+                        groupArray.push(item.type);
+                        tabHtml += '<li role="presentation"><a href="#tab_content_' + item.type + '" role="tab" data-toggle="tab" aria-expanded="true">' + item.typeName + '</a></li>';
+                    }
+                })
+
+                $.each(groupArray, function (i, group) {//循环分组
+                    var contentHtml = $('#damagedDegreeTabContentHtml').html().replace(/{type}/g, group);
+                    var tbodyContentHtml = '';
+                    $.each(result.data, function (i, item) {
+                        if (item.type == group) {
+                            var trHtml = $("#damagedDegreeTabTrHtml").html();
+                            trHtml = trHtml.replace(/{id}/g, item.id).replace(/{category}/g, item.category).replace(/{categoryName}/g, item.categoryName);
+                            trHtml = trHtml.replace(/{standardScore}/g, item.standardScore).replace(/{intact}/g, item.intact);
+                            trHtml = trHtml.replace(/{basicallyIntact}/g, item.basicallyIntact).replace(/{generalDamage}/g, item.generalDamage);
+                            trHtml = trHtml.replace(/{seriousDamage}/g, item.seriousDamage);
+                            tbodyContentHtml += trHtml;
+                        }
+                    })
+                    contentHtml = contentHtml.replace(/{tbodyContent}/g, tbodyContentHtml);
+                    tabContentHtml += contentHtml;
+                })
+                $("#damagedDegreeTab").empty().append(tabHtml);
+                $("#damagedDegreeTabContent").empty().append(tabContentHtml);
+            }
+        }
+    })
+};
+
+//现状change
+damagedDegree.entityConditionChange = function (_this) {
+    var group = $(_this).closest('.group');
+    group.find('[name=entityConditionContent]').val($(_this).attr('data-' + $(_this).val()));
+};
+
+//显示modal
+damagedDegree.damagedDegreeDetailModalShow = function (damagedDegreeId, category) {
+    $("#damagedDegreeId").val(damagedDegreeId);
+    damagedDegree.initDamagedDegreeDetailType(category);
+    damagedDegree.loadDamagedDegreeDetailList();
+    $("#damagedDegreeDetailListModal").modal();
+};
+
+//加载明细项数据列表
+damagedDegree.loadDamagedDegreeDetailList = function () {
+    var cols = [];
+    cols.push({field: 'typeName', title: '类型'});
+    cols.push({field: 'entityConditionName', title: '实体状况'});
+    cols.push({field: 'entityConditionContent', title: '状况内容'});
+    cols.push({field: 'score', title: '得分'});
+    cols.push({
+        field: 'id', title: '操作', formatter: function (value, row, index) {
+            var str = '<div class="btn-margin">';
+            str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="damagedDegree.editDamagedDegreeDetail(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
+            str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="damagedDegree.deleteDamagedDegreeDetail(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
+            str += '</div>';
+            return str;
+        }
+    });
+    $("#damagedDegreeDetailList").bootstrapTable('destroy');
+    TableInit("damagedDegreeDetailList", getContextPath() + "/basicHouseDamagedDegree/getDamagedDegreeDetailList", cols, {
+        damagedDegreeId: $("#damagedDegreeId").val()
+    }, {
+        showColumns: false,
+        showRefresh: false,
+        search: false,
+        onLoadSuccess: function () {
+            $('.tooltips').tooltip();
+        }
+    });
+};
+
+//新增
+damagedDegree.addDamagedDegreeDetail = function () {
+    $("#damagedDegreeDetailForm").clearAll();
+    $("#damagedDegreeDetailListModal").modal();
+};
+
+//编辑
+damagedDegree.editDamagedDegreeDetail = function (index) {
+    var row = $("#damagedDegreeDetailList").bootstrapTable('getData')[index];
+    $("#damagedDegreeDetailForm").clearAll().initForm(row);
+    $("#damagedDegreeDetailListModal").modal();
+};
+
+//删除
+damagedDegree.deleteDamagedDegreeDetail = function (id) {
+    $.ajax({
+        url: getContextPath() + "/basicHouseDamagedDegree/deleteDamagedDegreeDetail",
+        data: {id: id},
+        success: function (result) {
+            if (result.ret) {
+                damagedDegree.loadDamagedDegreeDetailList();
+                $("#damagedDegreeDetailListModal").modal('hide');
+            } else {
+                Alert(result.errmsg);
+            }
+        }
+    })
+};
+
+//保存
+damagedDegree.saveDamagedDegreeDetail = function () {
+    if (!$("#damagedDegreeDetailForm").valid()) {
+        return false;
+    }
+    var data = formParams("damagedDegreeDetailForm");
+    data.houseId = houseCommon.getHouseId();
+    data.damagedDegreeId = $("#damagedDegreeId").val();
+    $.ajax({
+        url: getContextPath() + "/basicHouseDamagedDegree/saveAndUpdateDamagedDegreeDetail",
+        data: data,
+        success: function (result) {
+            if (result.ret) {
+                damagedDegree.loadDamagedDegreeDetailList();
+                $("#damagedDegreeDetailListModal").modal('hide');
+            } else {
+                Alert(result.errmsg);
+            }
+        }
+    })
+};
+
+//初始化类型
+damagedDegree.initDamagedDegreeDetailType = function (damagedDegreeId) {
+    $.ajax({
+        url: getContextPath() + "/dataDamagedDegree/getCacheDamagedDegreeListByPid",
+        type: 'get',
+        data: {
+            pid: damagedDegreeId
+        },
+        success: function (result) {
+            if (result.ret && result.data) {
+                var typeElement = $("#damagedDegreeDetailForm").find('[name=type]');
+                typeElement.empty().append('<option value="">-请选择-</option>');
+                $.each(result.data, function (i, item) {
+                    var optionHtml = '<option value="' + item.id + '" ';
+                    optionHtml += 'data-intact="' + item.intact + '" ';
+                    optionHtml += 'data-basicallyIntact="' + item.basicallyIntact + '" ';
+                    optionHtml += 'data-generalDamage="' + item.generalDamage + '" ';
+                    optionHtml += 'data-seriousDamage="' + item.seriousDamage + '" ';
+                    optionHtml += '>' + item.name;
+                    if (item.standardScore) {
+                        optionHtml += '(' + item.standardScore + '分)';
+                    }
+                    optionHtml += '</option>';
+                    typeElement.append(optionHtml);
+                })
+            }
+        }
+    })
+}
+
+//自动填充明细项状况内容
+damagedDegree.autoFillEntityConditionContent = function () {
+    var option = $("#damagedDegreeDetailForm").find('[name=type]').find("option:selected");
+    var entityCondition = $("#damagedDegreeDetailForm").find('[name=entityCondition]').val();
+    if (option && entityCondition) {
+        $("#damagedDegreeDetailForm").find('[name=entityConditionContent]').val($(option).attr('data-' + entityCondition));
+    }
+}
 

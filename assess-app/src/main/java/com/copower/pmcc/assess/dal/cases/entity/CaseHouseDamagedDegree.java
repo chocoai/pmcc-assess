@@ -12,7 +12,7 @@ public class CaseHouseDamagedDegree {
 
     private Integer category;
 
-    private Integer entityCondition;
+    private String entityCondition;
 
     private String entityConditionContent;
 
@@ -56,12 +56,12 @@ public class CaseHouseDamagedDegree {
         this.category = category;
     }
 
-    public Integer getEntityCondition() {
+    public String getEntityCondition() {
         return entityCondition;
     }
 
-    public void setEntityCondition(Integer entityCondition) {
-        this.entityCondition = entityCondition;
+    public void setEntityCondition(String entityCondition) {
+        this.entityCondition = entityCondition == null ? null : entityCondition.trim();
     }
 
     public String getEntityConditionContent() {

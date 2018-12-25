@@ -54,13 +54,13 @@ public class CaseHouseWaterDrainService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CaseHouseWaterDrainVo> vos = getCaseHouseWaterDrainList(caseHouseWaterDrain);
+        List<CaseHouseWaterDrainVo> vos = getCaseHouseWaterDrainVoList(caseHouseWaterDrain);
         vo.setTotal(page.getTotal());
         vo.setRows(vos);
         return vo;
     }
 
-    public List<CaseHouseWaterDrainVo> getCaseHouseWaterDrainList(CaseHouseWaterDrain caseHouseWaterDrain) {
+    public List<CaseHouseWaterDrainVo> getCaseHouseWaterDrainVoList(CaseHouseWaterDrain caseHouseWaterDrain) {
         List<CaseHouseWaterDrain> caseHouseWaterDrains = caseHouseWaterDrainDao.getBuildingOutfitList(caseHouseWaterDrain);
         List<CaseHouseWaterDrainVo> vos = Lists.newArrayList();
         if (!ObjectUtils.isEmpty(caseHouseWaterDrains)) {
@@ -71,7 +71,7 @@ public class CaseHouseWaterDrainService {
         return vos;
     }
 
-    public List<CaseHouseWaterDrain> getCaseHouseWaterDrainListO(CaseHouseWaterDrain caseHouseWaterDrain) {
+    public List<CaseHouseWaterDrain> getCaseHouseWaterDrainList(CaseHouseWaterDrain caseHouseWaterDrain) {
         List<CaseHouseWaterDrain> caseHouseWaterDrains = caseHouseWaterDrainDao.getBuildingOutfitList(caseHouseWaterDrain);
         return caseHouseWaterDrains;
     }

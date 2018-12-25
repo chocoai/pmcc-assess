@@ -356,52 +356,62 @@ public class BasicHouseDamagedDegreeExample {
             return (Criteria) this;
         }
 
-        public Criteria andEntityConditionEqualTo(Integer value) {
+        public Criteria andEntityConditionEqualTo(String value) {
             addCriterion("entity_condition =", value, "entityCondition");
             return (Criteria) this;
         }
 
-        public Criteria andEntityConditionNotEqualTo(Integer value) {
+        public Criteria andEntityConditionNotEqualTo(String value) {
             addCriterion("entity_condition <>", value, "entityCondition");
             return (Criteria) this;
         }
 
-        public Criteria andEntityConditionGreaterThan(Integer value) {
+        public Criteria andEntityConditionGreaterThan(String value) {
             addCriterion("entity_condition >", value, "entityCondition");
             return (Criteria) this;
         }
 
-        public Criteria andEntityConditionGreaterThanOrEqualTo(Integer value) {
+        public Criteria andEntityConditionGreaterThanOrEqualTo(String value) {
             addCriterion("entity_condition >=", value, "entityCondition");
             return (Criteria) this;
         }
 
-        public Criteria andEntityConditionLessThan(Integer value) {
+        public Criteria andEntityConditionLessThan(String value) {
             addCriterion("entity_condition <", value, "entityCondition");
             return (Criteria) this;
         }
 
-        public Criteria andEntityConditionLessThanOrEqualTo(Integer value) {
+        public Criteria andEntityConditionLessThanOrEqualTo(String value) {
             addCriterion("entity_condition <=", value, "entityCondition");
             return (Criteria) this;
         }
 
-        public Criteria andEntityConditionIn(List<Integer> values) {
+        public Criteria andEntityConditionLike(String value) {
+            addCriterion("entity_condition like", value, "entityCondition");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityConditionNotLike(String value) {
+            addCriterion("entity_condition not like", value, "entityCondition");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityConditionIn(List<String> values) {
             addCriterion("entity_condition in", values, "entityCondition");
             return (Criteria) this;
         }
 
-        public Criteria andEntityConditionNotIn(List<Integer> values) {
+        public Criteria andEntityConditionNotIn(List<String> values) {
             addCriterion("entity_condition not in", values, "entityCondition");
             return (Criteria) this;
         }
 
-        public Criteria andEntityConditionBetween(Integer value1, Integer value2) {
+        public Criteria andEntityConditionBetween(String value1, String value2) {
             addCriterion("entity_condition between", value1, value2, "entityCondition");
             return (Criteria) this;
         }
 
-        public Criteria andEntityConditionNotBetween(Integer value1, Integer value2) {
+        public Criteria andEntityConditionNotBetween(String value1, String value2) {
             addCriterion("entity_condition not between", value1, value2, "entityCondition");
             return (Criteria) this;
         }

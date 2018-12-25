@@ -6,7 +6,7 @@
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="category" property="category" jdbcType="INTEGER" />
-    <result column="entity_condition" property="entityCondition" jdbcType="INTEGER" />
+    <result column="entity_condition" property="entityCondition" jdbcType="VARCHAR" />
     <result column="entity_condition_content" property="entityConditionContent" jdbcType="VARCHAR" />
     <result column="score" property="score" jdbcType="DECIMAL" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -114,7 +114,7 @@
       score, creator, gmt_created, 
       gmt_modified)
     values (#{houseId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}, 
-      #{entityCondition,jdbcType=INTEGER}, #{entityConditionContent,jdbcType=VARCHAR}, 
+      #{entityCondition,jdbcType=VARCHAR}, #{entityConditionContent,jdbcType=VARCHAR}, 
       #{score,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -163,7 +163,7 @@
         #{category,jdbcType=INTEGER},
       </if>
       <if test="entityCondition != null" >
-        #{entityCondition,jdbcType=INTEGER},
+        #{entityCondition,jdbcType=VARCHAR},
       </if>
       <if test="entityConditionContent != null" >
         #{entityConditionContent,jdbcType=VARCHAR},
@@ -204,7 +204,7 @@
         category = #{record.category,jdbcType=INTEGER},
       </if>
       <if test="record.entityCondition != null" >
-        entity_condition = #{record.entityCondition,jdbcType=INTEGER},
+        entity_condition = #{record.entityCondition,jdbcType=VARCHAR},
       </if>
       <if test="record.entityConditionContent != null" >
         entity_condition_content = #{record.entityConditionContent,jdbcType=VARCHAR},
@@ -232,7 +232,7 @@
       house_id = #{record.houseId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=INTEGER},
       category = #{record.category,jdbcType=INTEGER},
-      entity_condition = #{record.entityCondition,jdbcType=INTEGER},
+      entity_condition = #{record.entityCondition,jdbcType=VARCHAR},
       entity_condition_content = #{record.entityConditionContent,jdbcType=VARCHAR},
       score = #{record.score,jdbcType=DECIMAL},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -255,7 +255,7 @@
         category = #{category,jdbcType=INTEGER},
       </if>
       <if test="entityCondition != null" >
-        entity_condition = #{entityCondition,jdbcType=INTEGER},
+        entity_condition = #{entityCondition,jdbcType=VARCHAR},
       </if>
       <if test="entityConditionContent != null" >
         entity_condition_content = #{entityConditionContent,jdbcType=VARCHAR},
@@ -280,7 +280,7 @@
     set house_id = #{houseId,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
       category = #{category,jdbcType=INTEGER},
-      entity_condition = #{entityCondition,jdbcType=INTEGER},
+      entity_condition = #{entityCondition,jdbcType=VARCHAR},
       entity_condition_content = #{entityConditionContent,jdbcType=VARCHAR},
       score = #{score,jdbcType=DECIMAL},
       creator = #{creator,jdbcType=VARCHAR},
