@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!-- 占有人 -->
 <div class="x_content">
@@ -17,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <div id="legal_person1">
+        <div id="possessor_tab_unit">
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
@@ -100,7 +99,7 @@
             </div>
         </div>
 
-        <div id="no_legal_person1" style="display: none;">
+        <div id="possessor_tab" style="display: none;">
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
@@ -158,7 +157,7 @@
             <div class="clearfix"></div>
         </div>
         <div class="x_content">
-            <button class="btn btn-success" data-toggle="modal" onclick="">新增联系人</button>
+            <button class="btn btn-success" data-toggle="modal" onclick="objProject.possessor.showContactModel()">新增联系人</button>
             <table class="table table-bordered" id="tb_ListPossessor">
                 <!-- cerare document add ajax data-->
             </table>
@@ -176,64 +175,11 @@
                 <h3 class="modal-title">联系人</h3>
             </div>
             <form id="frmPossessorContacts" class="form-horizontal">
-                <input type="hidden" name="id">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            姓名<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="cName"  placeholder="姓名"
-                                                   class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            部门<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="cDept" placeholder="部门"
-                                                   class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            电话号码<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="cPhone" data-rule-number='true' name="number" placeholder="号码（请输入数字）"
-                                                   class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            邮箱
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="cEmail" placeholder="邮箱"
-                                                   class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="">
+                    <button type="button" class="btn btn-primary" onclick="objProject.possessor.saveContact()">
                         保存
                     </button>
                 </div>

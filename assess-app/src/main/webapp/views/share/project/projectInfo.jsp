@@ -468,7 +468,7 @@
             <h3>联系人
                 <small>
                     <button type="button" class="btn btn-xs btn-primary docs-tooltip"
-                            onclick="Contacts.prototype.UNIT_INFORMATION().crmContacts.showModel();">
+                            onclick="showModelCrmContacts()">
                         <i class="fa fa-search"></i>查询更多
                     </button>
                 </small>
@@ -478,6 +478,113 @@
         </table>
     </div>
 </div>
+
+
+<script>
+    $(function () {
+        //---------
+        FileUtils.getFileShows({
+            target: "attachmentProjectInfoId",
+            formData: {
+                tableName: AssessDBKey.ProjectInfo,
+                tableId: ${projectInfo.id}
+            },
+            deleteFlag: false
+        });
+        //---------
+        FileUtils.getFileShows({
+            target: "pAttachmentProjectEnclosureId",
+            formData: {
+                tableName: AssessDBKey.InitiatePossessor,
+                tableId: ${projectInfo.possessorVo.id}
+            },
+            deleteFlag: false
+        });
+
+        //---------
+        FileUtils.getFileShows({
+            target: "csAttachmentProjectEnclosureId",
+            formData: {
+                tableName: AssessDBKey.InitiateConsignor,
+                tableId: ${projectInfo.consignorVo.id}
+            },
+            deleteFlag: false
+        })
+        //---------
+    });
+
+    function loadInitContactsList(cPid, tb_List, cType) {
+        var cols = [];
+        cols.push({field: 'cName', title: '姓名'});
+        cols.push({field: 'cDept', title: '部门'});
+        cols.push({field: 'cEmail', title: '邮箱'});
+        cols.push({field: 'cPhone', title: '部门'});
+        TableInit(tb_List, "${pageContext.request.contextPath}/initiateContacts/getBootstrapTableVo", cols, {
+            cPid: cPid,
+            cType: cType
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false
+        });
+    }
+
+    var config = {
+        /**
+         * 根据此处约定设置
+         * com.copower.pmcc.assess.common.enums.InitiateContactsEnum
+         */
+        CONSIGNOR: {
+            key: "CONSIGNOR", name: "委托人", nodeKey: 1, table: "CONSIGNOR_TableList"
+        },
+        POSSESSOR: {
+            key: "POSSESSOR", name: "占有人", nodeKey: 2, table: "POSSESSOR_TableList"
+        },
+        UNIT_INFORMATION: {
+            key: "UNIT_INFORMATION",
+            name: "报告使用单位",
+            nodeKey: 3,
+            table: "UNIT_INFORMATION_TableList"
+        }
+    };
+
+    function showModelCrmContacts() {
+        $('#divBoxCRMContacts').modal("show");
+        findCRMContacts($("#divBoxCRMContacts").find("input[name='name']")[0]);
+    }
+
+    function findCRMContacts(that) {
+        var text = $(that).parent().parent().prev().find("input[name='name']").val();
+        var id = '${projectInfo.unitInformationVo.uUseUnit}';
+        var data = {customerId: id, searchCrm: text};
+        if (id) {
+            var cols = [];
+            cols.push({field: 'name', title: '姓名', searchable: true});
+            cols.push({field: 'department', title: '部门'});
+            cols.push({field: 'phoneNumber', title: '电话号码'});
+            cols.push({field: 'email', title: '邮箱'});
+            cols.push({field: 'id', visible: false, title: "id"});
+            $("#tb_ListCRMContacts").bootstrapTable("destroy");
+            TableInit('tb_ListCRMContacts', "${pageContext.request.contextPath}/initiateCrmCustomer/getCustomerLinkmanPageList", cols, data, {
+                showColumns: false,
+                showRefresh: false,
+                search: false
+            });
+        } else {
+            Alert("未选择单元");
+        }
+    }
+
+
+    //选项框
+    $(document).ready(function () {
+        loadInitContactsList("${projectInfo.consignorVo.id}", config.CONSIGNOR.table, config.CONSIGNOR.nodeKey);
+        loadInitContactsList("${projectInfo.possessorVo.id}", config.POSSESSOR.table, config.POSSESSOR.nodeKey);
+        loadInitContactsList('${projectInfo.unitInformationVo.id}',config.UNIT_INFORMATION.table, config.UNIT_INFORMATION.nodeKey);
+
+    });
+</script>
+
 <div id="divBoxCRMContacts" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -485,7 +592,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">联系人</h3>
+                <h3 class="modal-title">crm联系人</h3>
             </div>
             <form class="form-horizontal">
                 <div class="modal-body">
@@ -503,7 +610,7 @@
                                     <div class="x-valid">
                                         <div class="col-sm-6">
                                             <input type="button"
-                                                   onclick="Contacts.prototype.UNIT_INFORMATION().crmContacts.findCRMContacts();"
+                                                   onclick="findCRMContacts(this)"
                                                    class="btn btn-success" value="查询">
                                         </div>
                                     </div>
@@ -526,83 +633,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    $(function () {
-        //---------
-        FileUtils.getFileShows({
-            target: "attachmentProjectInfoId",
-            formData: {
-                tableName: AssessDBKey.ProjectInfo,
-                tableId: ${projectInfo.id}
-            },
-            deleteFlag: false
-        })
-        //---------
-        FileUtils.getFileShows({
-            target: "pAttachmentProjectEnclosureId",
-            formData: {
-                tableName: AssessDBKey.InitiatePossessor,
-                tableId: ${projectInfo.possessorVo.id}
-            },
-            deleteFlag: false
-        })
-
-        //---------
-        FileUtils.getFileShows({
-            target: "csAttachmentProjectEnclosureId",
-            formData: {
-                tableName: AssessDBKey.InitiateConsignor,
-                tableId: ${projectInfo.consignorVo.id}
-            },
-            deleteFlag: false
-        })
-        //---------
-    });
-
-    function loadInitContactsList(id, tb_List, flag) {
-        var cols = [];
-        cols.push({field: 'cName', title: '姓名'});
-        cols.push({field: 'cDept', title: '部门'});
-        cols.push({field: 'cEmail', title: '邮箱'});
-        cols.push({field: 'cPhone', title: '部门'});
-
-        TableInit(tb_List, "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols, {
-            pid: id,
-            type: flag
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false
-        });
-        console.log("id:" + id + " " + tb_List + " " + flag);
-    }
-
-    var config = {
-        /**
-         * 根据此处约定设置
-         * com.copower.pmcc.assess.common.enums.InitiateContactsEnum
-         */
-        CONSIGNOR: {
-            key: "CONSIGNOR", name: "委托人", nodeKey: 1, table: "CONSIGNOR_TableList"
-        },
-        POSSESSOR: {
-            key: "POSSESSOR", name: "占有人", nodeKey: 2, table: "POSSESSOR_TableList"
-        },
-        UNIT_INFORMATION: {
-            key: "UNIT_INFORMATION",
-            name: "报告使用单位",
-            nodeKey: 3,
-            table: "UNIT_INFORMATION_TableList"
-        }
-    }
-    //选项框
-    $(document).ready(function () {
-        loadInitContactsList("${projectInfo.consignorVo.id}", config.CONSIGNOR.table, config.CONSIGNOR.nodeKey);
-        loadInitContactsList("${projectInfo.possessorVo.id}", config.POSSESSOR.table, config.POSSESSOR.nodeKey);
-        loadInitContactsList('${projectInfo.unitInformationVo.id}',config.UNIT_INFORMATION.table, config.UNIT_INFORMATION.nodeKey);
-
-        //全局变量设值
-        customerId_UNIT_INFORMATION = '${projectInfo.unitInformationVo.uUseUnit}' ;
-    });
-</script>

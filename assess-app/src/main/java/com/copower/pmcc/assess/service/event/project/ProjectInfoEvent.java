@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
+import com.copower.pmcc.assess.service.project.initiate.InitiateContactsService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,8 @@ public class ProjectInfoEvent extends BaseProcessEvent {
     private ProjectPlanService projectPlanService;
     @Autowired
     private ProjectInfoService projectInfoService;
+    @Autowired
+    private InitiateContactsService initiateContactsService;
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution)throws  Exception {
@@ -35,11 +38,12 @@ public class ProjectInfoEvent extends BaseProcessEvent {
         //将下阶段设置为可编辑计划
         try {
             //回写crm联系人信息
-
             ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processExecution.getProcessInstanceId());
-            //回写到CRM中
-            projectInfoService.writeCrmCustomerDto(projectInfo.getId(), InitiateContactsEnum.UNIT_INFORMATION.getId());
-            projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getName());//更新流程状态
+            if (projectInfo != null){
+                initiateContactsService.writeCrmCustomerDto(projectInfo.getId(),InitiateContactsEnum.UNIT_INFORMATION.getId()) ;
+            }
+            //更新流程状态
+            projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getName());
             projectInfoService.updateProjectInfo(projectInfo);
             List<ProjectPlan> projectPlans = projectPlanService.getProjectplanByProjectId(projectInfo.getId(), "");
             projectPlanService.updatePlanStatus(projectPlans.get(0).getId());

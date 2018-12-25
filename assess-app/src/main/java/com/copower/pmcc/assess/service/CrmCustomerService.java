@@ -28,6 +28,9 @@ public class CrmCustomerService {
      * @return
      */
     public CrmCustomerDto getCustomer(Integer id) {
+        if (id==null){
+            return null;
+        }
         return crmRpcCustomerService.getCustomer(id);
     }
 

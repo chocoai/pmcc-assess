@@ -1,44 +1,32 @@
 package com.copower.pmcc.assess.controller.project;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectFollow;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.dto.input.project.initiate.InitiateContactsDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
-import com.copower.pmcc.assess.dto.output.project.initiate.InitiateContactsVo;
-import com.copower.pmcc.assess.service.CrmCustomerService;
-import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.change.ProjectFollowService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
-import com.copower.pmcc.assess.service.project.ProjectTaskAllService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.assess.service.project.ProjectPlanService;
+import com.copower.pmcc.assess.service.project.initiate.InitiateContactsService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
-import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.google.common.base.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -69,17 +57,9 @@ public class ProjectInfoController {
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
-    private ErpAreaService erpAreaService;
-    @Autowired
     private HttpServletRequest request;
     @Autowired
-    private ErpRpcDepartmentService erpRpcDepartmentService;
-    @Autowired
-    private ProjectPlanService projectPlanService;
-    @Autowired
-    private ProjectTaskAllService projectTaskAllService;
-    @Autowired
-    private CrmCustomerService crmCustomerService;
+    private InitiateContactsService initiateContactsService;
 
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view(Integer projectClassId, Integer projectTypeId, Integer projectCategoryId) {
@@ -87,23 +67,18 @@ public class ProjectInfoController {
         modelAndView.addObject("boxCnName", "项目立项");
         modelAndView.addObject("thisTitle", "项目立项");
         modelAndView.addObject("boxprocessIcon", "fa-bookmark-o");
-
-        modelAndView.addObject("ProjectAFFILIATED", projectInfoService.getUnitPropertiesList());//单位性质 crm中获取
-        modelAndView.addObject("InitiateContactsMap", projectInfoService.getTypeInitiateContactsMap());//联系人类别
-        modelAndView.addObject("list_entrustment_purpose", projectInfoService.list_entrustment_purpose());//委托目的
-        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
-        modelAndView.addObject("project_initiate_urgency", projectInfoService.project_initiate_urgency());//紧急程度
-        modelAndView.addObject("value_type", projectInfoService.value_type());//价值类型
-        modelAndView.addObject("departmentAssess", erpRpcDepartmentService.getDepartmentAssess());//可选的执业部门
-
+        //单位性质 crm中获取
+        modelAndView.addObject("ProjectAFFILIATED", projectInfoService.getUnitPropertiesList());
         ProjectInfo projectInfo = new ProjectInfo();
         projectInfo.setId(0);
         projectInfo.setProjectClassId(projectClassId);
         projectInfo.setProjectTypeId(projectTypeId);
         projectInfo.setProjectCategoryId(projectCategoryId);
-        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfo);
-        projectInfoService.init();
+        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
         modelAndView.addObject("projectInfo", projectInfoVo);
+        initiateContactsService.remove(0, InitiateContactsEnum.CONSIGNOR.getId());
+        initiateContactsService.remove(0, InitiateContactsEnum.POSSESSOR.getId());
+        initiateContactsService.remove(0, InitiateContactsEnum.UNIT_INFORMATION.getId());
         return modelAndView;
     }
 
@@ -111,16 +86,11 @@ public class ProjectInfoController {
     public ModelAndView projectInfoEdit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageInit/projectIndex", processInsId, boxId, taskId, agentUserAccount);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
-        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfo);
+        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("projectId", projectInfoVo.getId());
-        modelAndView.addObject("ProjectAFFILIATED", projectInfoService.getUnitPropertiesList());//单位性质 crm中获取
-        modelAndView.addObject("InitiateContactsMap", projectInfoService.getTypeInitiateContactsMap());//联系人类别
-        modelAndView.addObject("list_entrustment_purpose", projectInfoService.list_entrustment_purpose());//委托目的
-        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
-        modelAndView.addObject("project_initiate_urgency", projectInfoService.project_initiate_urgency());//紧急程度
-        modelAndView.addObject("value_type", projectInfoService.value_type());//价值类型
-
+        //单位性质 crm中获取
+        modelAndView.addObject("ProjectAFFILIATED", projectInfoService.getUnitPropertiesList());
         return modelAndView;
     }
 
@@ -128,7 +98,7 @@ public class ProjectInfoController {
     public ModelAndView projectApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageInit/projectApproval", processInsId, boxId, taskId, agentUserAccount);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
-        ProjectInfoVo vo = projectInfoService.getProjectInfoVoView(projectInfo);
+        ProjectInfoVo vo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
         modelAndView.addObject("projectInfo", vo);
         modelAndView.addObject("projectId", vo.getId());
         return modelAndView;
@@ -140,7 +110,7 @@ public class ProjectInfoController {
         ProjectInfo projectInfo = new ProjectInfo();
         projectInfo.setAssignProcessInsId(processInsId);
         List<ProjectInfo> projectInfoList = projectInfoService.getProjectInfoList(projectInfo);
-        ProjectInfoVo vo = projectInfoService.getProjectInfoVoView(projectInfoList.get(0));
+        ProjectInfoVo vo = projectInfoService.getSimpleProjectInfoVo(projectInfoList.get(0));
         modelAndView.addObject("projectInfo", vo);
         modelAndView.addObject("projectId", vo.getId());
         return modelAndView;
@@ -210,11 +180,10 @@ public class ProjectInfoController {
     @RequestMapping(value = "/projectInfoDetails", name = "项目详细信息")
     public ModelAndView projectInfoDetails(Integer projectId) {
         ModelAndView modelAndView = new ModelAndView("/project/projectInfoDetails");
-        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfoService.getProjectInfoById(projectId));
+        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
         modelAndView.addObject("projectInfo", projectInfoVo);
         return modelAndView;
     }
-
 
     /**
      * 查看项目详情的地址入口统一，但根据不同的项目类别请求不同的地址
@@ -239,7 +208,7 @@ public class ProjectInfoController {
         if (enumByName != null) {
             modelAndView.addObject("projectStatusEnum", enumByName.getKey());
         }
-        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfo);
+        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
         modelAndView.addObject("projectInfo", projectInfoVo);
         List<ProjectPlanVo> projectPlanList = projectInfoService.getProjectPlanList(projectId);
         modelAndView.addObject("projectPlanList", projectPlanList);
@@ -264,7 +233,7 @@ public class ProjectInfoController {
         if (enumByName != null) {
             modelAndView.addObject("projectStatusEnum", enumByName.getKey());
         }
-        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfo);
+        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("thisTitle", projectInfo.getProjectName());
         modelAndView.addObject("projectFlog", "1");
@@ -297,158 +266,4 @@ public class ProjectInfoController {
         bootstrapTableVo.setRows(projectPlanDetailsVos);
         return bootstrapTableVo;
     }
-
-
-    @ResponseBody
-    @RequestMapping(value = "/getProjectContactsVos", name = "取得联系人列表 crm中取得以及更改之后直接从数据库获取", method = {RequestMethod.GET})
-    public BootstrapTableVo listContactsVo(Integer crmId, Integer type, Integer pid, String crmContacts, String searchCrm, Integer customerId) {
-        BootstrapTableVo vo = null;
-        //crm查询
-        if (Objects.equal("crmContacts",crmContacts)) {
-            vo = projectInfoService.crmContacts(customerId,searchCrm);
-        }else {
-            vo = projectInfoService.listContactsVo(crmId, type, pid);
-        }
-        return vo;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/findCrmProjectContactsVos", method = {RequestMethod.POST, RequestMethod.GET}, name = "crm中获取客户的联系人")
-    public HttpResult findContactsTotal( Integer customerId,String total){
-        BootstrapTableVo vo = null;
-        if (Objects.equal("total",total)){
-            if (customerId != null){
-                return HttpResult.newCorrectResult(crmCustomerService.getCustomerLinkmanList(customerId).size());
-            }
-        }
-        return HttpResult.newCorrectResult(vo);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/Contacts/save", method = {RequestMethod.POST, RequestMethod.GET}, name = "联系人 增加与修改")
-    public HttpResult addContacts(InitiateContactsDto dto, String formData) {
-        List<InitiateContactsDto> dtos = null;
-        try {
-            if (dto.getId() != null && dto.getId().intValue() != 0) {//不再使用专门的 update controller
-                projectInfoService.updateContacts(dto);
-            } else {
-                projectInfoService.addContacts(dto);
-            }
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-        try {
-            if (!org.springframework.util.StringUtils.isEmpty(formData)) {
-                JSONObject jsonObject = JSON.parseObject(formData);
-                String jsonContent = jsonObject.getString("contacts");
-                dtos = JSONObject.parseArray(jsonContent, InitiateContactsDto.class);
-                if (!ObjectUtils.isEmpty(dtos)) {
-                    projectInfoService.addContacts(dtos);
-                }
-            }
-        } catch (Exception e1) {
-            logger.error(e1.getMessage());
-            return HttpResult.newErrorResult(e1.getMessage());
-        }
-        return HttpResult.newCorrectResult();
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/Contacts/delete", name = "联系人 删除", method = RequestMethod.POST)
-    public HttpResult deleteContacts(@RequestParam(value = "id") Integer id) {
-        try {
-            projectInfoService.removeContacts(id);
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-        return HttpResult.newCorrectResult();
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/Contacts/get", name = "联系人 获取", method = RequestMethod.GET)
-    public HttpResult getContacts(@RequestParam(value = "id") Integer id) {
-        try {
-            InitiateContactsVo contactsVo = projectInfoService.getInitiateContacts(id);
-            return HttpResult.newCorrectResult(contactsVo);
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/getCRMList", name = "CRM 获取", method = RequestMethod.POST)
-    public Object getCRMList(Integer crmId) {
-        if (crmId != null) {
-            CrmCustomerDto crmCustomerDto = projectInfoService.getCRM(crmId);
-            try {
-                if (crmCustomerDto != null)
-                    return crmCustomerDto;
-            } catch (Exception e) {
-                logger.error(e.getMessage());
-                return HttpResult.newErrorResult(e.getMessage());
-            }
-        }
-        return HttpResult.newCorrectResult();
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/UnitInformation/get", method = {RequestMethod.POST}, name = "报告使用单位 获取")
-    public Object unitinformationGet(Integer id) {
-        try {
-            if (id != null) {
-                return projectInfoService.getInitiateUnitInformation(id);
-            }
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-        return HttpResult.newCorrectResult();
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/Possessor/get", method = {RequestMethod.POST}, name = "占有人 获取")
-    public Object possessorGet(Integer id) {
-        try {
-            if (id != null) {
-                return projectInfoService.getInitiatePossessor(id);
-            }
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-        return HttpResult.newCorrectResult();
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/Consignor/get", method = {RequestMethod.POST}, name = "委托 获取")
-    public Object consignorGet(Integer id) {
-        try {
-            if (id != null) {
-                return projectInfoService.getInitiateConsignor(id);
-            }
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-        return HttpResult.newCorrectResult();
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/getUnitPropertiesList", method = {RequestMethod.POST}, name = "单位性质")
-    public Object getUnitPropertiesList() {
-        try {
-            List<CrmBaseDataDicDto> crmBaseDataDicDtos = projectInfoService.getUnitPropertiesList();
-            if (!ObjectUtils.isEmpty(crmBaseDataDicDtos)) {
-                return crmBaseDataDicDtos;
-            }
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-        return HttpResult.newCorrectResult();
-    }
-
 }

@@ -2,22 +2,23 @@ package com.copower.pmcc.assess.service.project.initiate;
 
 import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.initiate.InitiateContactsDao;
-import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.basis.entity.InitiateContacts;
-import com.copower.pmcc.assess.dto.input.project.initiate.InitiateContactsDto;
-import com.copower.pmcc.assess.dto.output.project.initiate.InitiateContactsVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
 import com.copower.pmcc.assess.service.CrmCustomerService;
 import com.copower.pmcc.crm.api.dto.CrmCustomerLinkmanDto;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Ordering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -30,7 +31,6 @@ import java.util.*;
 @Service
 public class InitiateContactsService {
     private Logger logger = LoggerFactory.getLogger(getClass());
-
     @Lazy
     @Autowired
     private CrmCustomerService crmCustomerService;
@@ -41,9 +41,46 @@ public class InitiateContactsService {
     @Autowired
     private InitiateContactsDao dao;
     @Autowired
-    private ProjectInfoDao projectInfoDao;
-    @Autowired
     private InitiateUnitInformationService unitInformationService;
+
+    public InitiateContacts get(Integer id){
+        return dao.get(id) ;
+    }
+
+    public boolean saveUpdateInitiateContacts(InitiateContacts initiateContacts) {
+        if (initiateContacts == null) {
+            return false;
+        }
+        if (initiateContacts.getId() == null || initiateContacts.getId().intValue() == 0) {
+            initiateContacts.setCreator(commonService.thisUserAccount());
+            Integer id = dao.save(initiateContacts);
+            initiateContacts.setId(id);
+            return true;
+        } else {
+            return dao.update(initiateContacts);
+        }
+    }
+
+    public BootstrapTableVo getBootstrapTableVo(InitiateContacts initiateContacts){
+        if (initiateContacts == null) {
+            return null;
+        }
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<InitiateContacts> contactsList = dao.initiateContactsList(initiateContacts) ;
+        vo.setTotal(page.getTotal());
+        vo.setRows(ObjectUtils.isEmpty(contactsList)?new ArrayList<InitiateContacts>(1):contactsList);
+        return vo;
+    }
+
+    public List<InitiateContacts> initiateContactsList(InitiateContacts initiateContacts){
+        return dao.initiateContactsList(initiateContacts) ;
+    }
+
+    public void clear(InitiateContacts initiateContacts){
+        dao.clear(initiateContacts);
+    }
 
     /**
      * 从crm中输入数据
@@ -52,13 +89,11 @@ public class InitiateContactsService {
      * @param cType
      * @return
      */
-    @Transactional
     public void writeContacts(Integer customerId, Integer cType, Integer pid) {
-        List<CrmCustomerLinkmanDto> writeCustomer = new ArrayList<>();
         if (customerId != null) {
             List<CrmCustomerLinkmanDto> linkmanDtos = crmCustomerService.getCustomerLinkmanList(customerId);
             try {
-                Ordering<CrmCustomerLinkmanDto> firstOrdering  = Ordering.from(new Comparator<CrmCustomerLinkmanDto>() {
+                Ordering<CrmCustomerLinkmanDto> firstOrdering = Ordering.from(new Comparator<CrmCustomerLinkmanDto>() {
                     @Override
                     public int compare(CrmCustomerLinkmanDto o1, CrmCustomerLinkmanDto o2) {
                         return o1.getId().compareTo(o2.getId());
@@ -69,7 +104,7 @@ public class InitiateContactsService {
                 int temp = 5;
                 for (int i = 0; i < temp; i++) {
                     CrmCustomerLinkmanDto crmCustomerLinkmanDto = linkmanDtos.get(i);
-                    InitiateContactsDto contactsDto = new InitiateContactsDto();
+                    InitiateContacts contactsDto = new InitiateContacts();
                     if (contactsDto != null) {
                         contactsDto.setcPid(pid);
                         contactsDto.setcDept(crmCustomerLinkmanDto.getDepartment());
@@ -81,8 +116,8 @@ public class InitiateContactsService {
                         contactsDto.setCreator(commonService.thisUserAccount());
                         contactsDto.setCustomerId(String.valueOf(customerId));
                         //为了使得页面刷新不至于再次写入数据,因此需要校验 已经写入的数据不再写入了
-                        List<InitiateContacts> contactsList = dao.getList(pid,cType,null,customerId,crmCustomerLinkmanDto.getId());
-                        if (contactsList.size() == 0){
+                        List<InitiateContacts> contactsList = dao.getList(pid, cType, null, customerId, crmCustomerLinkmanDto.getId());
+                        if (contactsList.size() == 0) {
                             dao.save(contactsDto);
                         }
                     }
@@ -103,12 +138,16 @@ public class InitiateContactsService {
      */
     public void writeCrmCustomerDto(Integer projectID, Integer cType) {
         if (!ObjectUtils.isEmpty(cType)) {
-            if (cType.equals(InitiateContactsEnum.UNIT_INFORMATION.getId())) {//只有报告使用单位才能回写
+            //只有报告使用单位才能回写
+            if (cType.equals(InitiateContactsEnum.UNIT_INFORMATION.getId())) {
                 //CRM中暂时没有提供方法
                 InitiateUnitInformationVo unitInformationVo = unitInformationService.getDataByProjectId(projectID);
                 if (unitInformationVo != null) {
-                    List<InitiateContactsVo> contactsVos = getVoList(unitInformationVo.getId(), cType,null);
-                    for (InitiateContactsVo contacts : contactsVos) {
+                    InitiateContacts query = new InitiateContacts();
+                    query.setcType(cType);
+                    query.setcPid(unitInformationVo.getId());
+                    List<InitiateContacts> contactsVos = initiateContactsList(query) ;
+                    for (InitiateContacts contacts : contactsVos) {
                         String tempString = contacts.getCrmId();
                         String uUseUnit = unitInformationVo.getuUseUnit();
                         if (!StringUtils.isEmpty(uUseUnit)) {
@@ -123,15 +162,17 @@ public class InitiateContactsService {
                                 crmCustomer.setCustomerId(customerID);
                                 crmCustomer.setCustomerManager(null);
                                 crmCustomer.setOtherContact(null);
-                                if (!StringUtils.isEmpty(tempString)) {//需要更新的crm
+                                //需要更新的crm
+                                if (!StringUtils.isEmpty(tempString)) {
                                     Integer crmID = Integer.parseInt(tempString);
                                     crmCustomerService.updateCrmCustomer(crmCustomer);
-                                } else {//需要添加进去的crm
+                                } else {
+                                    //需要添加进去的crm
                                     crmCustomerService.saveCrmCustomer(crmCustomer);
                                 }
                             } catch (Exception e) {
                                 try {
-                                    logger.error(String.format("exception: ======> ",e.getMessage()),e);
+                                    logger.error(String.format("exception: ======> ", e.getMessage()), e);
                                     throw e;
                                 } catch (Exception e1) {
 
@@ -146,79 +187,39 @@ public class InitiateContactsService {
         }
     }
 
-    @Transactional
-    public boolean add(InitiateContactsDto dto) {
-        if ((dto.getCreator() == null)) dto.setCreator(commonService.thisUserAccount());
-        if (dto.getGmtCreated() == null) dto.setGmtCreated(new Date());
-        if (dto.getcPid() == null || dto.getcPid() == 0) {
-            dto.setcPid(InitiateContactsDto.C_PID);
-        }
-        return dao.add(dto);
-    }
 
-    /*更新主表的id值*/
+    /**
+     * 更新主表的id值
+     * @param pid
+     * @param flag
+     */
     public void update(int pid, int flag) {
-        List<InitiateContacts> contactsList = dao.getList(0,flag,commonService.thisUserAccount(),null,null);
-        if (!ObjectUtils.isEmpty(contactsList)){
-            for (InitiateContacts contact:contactsList){
+        InitiateContacts query = new InitiateContacts();
+        query.setcPid(0);
+        query.setcType(flag);
+        query.setCreator(commonService.thisUserAccount());
+        List<InitiateContacts> contactsList = initiateContactsList(query) ;
+        if (!ObjectUtils.isEmpty(contactsList)) {
+            for (InitiateContacts contact : contactsList) {
                 contact.setcPid(pid);
                 dao.update(contact);
             }
         }
     }
 
-    public InitiateContactsVo get(Integer id) {
-        InitiateContacts initiateContacts = dao.get(id);
-        InitiateContactsVo vo = new InitiateContactsVo();
-        BeanUtils.copyProperties(initiateContacts,vo);
-        return vo;
-    }
 
-    public InitiateContactsDto getById(Integer id) {
-        InitiateContacts initiateContacts = dao.get(id);
-        InitiateContactsDto vo = new InitiateContactsDto();
-        BeanUtils.copyProperties(initiateContacts,vo);
-        return vo;
-    }
-
-    @Transactional
     public boolean remove(Integer id) {
         return dao.remove(id);
     }
 
-    public boolean update(InitiateContactsDto dto) {
-
+    public boolean update(InitiateContacts dto) {
         return dao.update(dto);
     }
 
-    public List<InitiateContactsVo> getVoList(Integer cPid, Integer cType,Integer customerId) {
-        List<InitiateContactsVo> vos = new ArrayList<>();
-        dao.getList(cPid, cType, null,customerId,null).parallelStream().forEach(oo -> vos.add(change(oo)));
-        return vos;
-    }
-
-    private InitiateContactsDto change(InitiateContactsVo vo) {
-        InitiateContactsDto dto = new InitiateContactsDto();
-        BeanUtils.copyProperties(vo, dto);
-        return dto;
-    }
-
-    private InitiateContactsVo change(InitiateContacts initiateContacts) {
-        InitiateContactsVo vo = new InitiateContactsVo();
-        BeanUtils.copyProperties(initiateContacts, vo);
-        return vo;
-    }
 
 
-    public boolean remove(Integer pid,Integer type){
-        return dao.remove(pid,type);
+    public boolean remove(Integer pid, Integer type) {
+        return dao.remove(pid, type);
     }
 
-    public Map<String, String> getTypeMap() {
-        Map<String, String> map = new HashMap<>();
-        map.put("" + InitiateContactsEnum.CONSIGNOR.getId(), InitiateContactsEnum.CONSIGNOR.getName());
-        map.put("" + InitiateContactsEnum.POSSESSOR.getId(), InitiateContactsEnum.POSSESSOR.getName());
-        map.put("" + InitiateContactsEnum.UNIT_INFORMATION.getId(), InitiateContactsEnum.UNIT_INFORMATION.getName());
-        return map;
-    }
 }

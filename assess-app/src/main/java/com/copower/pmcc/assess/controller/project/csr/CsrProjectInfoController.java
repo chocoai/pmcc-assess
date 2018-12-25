@@ -81,9 +81,6 @@ public class CsrProjectInfoController {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/csr/projectApproval", processInsId, boxId, taskId, agentUserAccount);
         CsrProjectInfoVo csrProjectInfo = csrProjectInfoService.getCsrProjectInfoVo(processInsId);
         modelAndView.addObject("csrProjectInfo", csrProjectInfo);
-        modelAndView.addObject("list_entrustment_purpose", projectInfoService.list_entrustment_purpose());//委托目的
-        modelAndView.addObject("project_initiate_urgency", projectInfoService.project_initiate_urgency());//紧急程度
-        modelAndView.addObject("value_type", projectInfoService.value_type());//价值类型
         return modelAndView;
     }
 

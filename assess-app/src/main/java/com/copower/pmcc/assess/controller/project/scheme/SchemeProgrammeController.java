@@ -81,7 +81,7 @@ public class SchemeProgrammeController {
         modelAndView.addObject("dataDicMethodList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD));
         modelAndView.addObject("evaluationMethodMap", evaluationMethodService.getEvaluationMethodMap());
         modelAndView.addObject("evaluationThinkingMap", evaluationThinkingService.getEvaluationThinkingMap());
-        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfoService.getProjectInfoById(projectId));
+        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("planId", planId);
         return modelAndView;
@@ -96,7 +96,7 @@ public class SchemeProgrammeController {
         modelAndView.addObject("bestUseList", dataBestUseDescriptionService.dataBestUseDescriptionList());
         modelAndView.addObject("setUseList", baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_PRACTICAL_USE));
         modelAndView.addObject("dataDicMethodList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD));
-        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfoService.getProjectInfoById(projectId));
+        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("planId", planId);
         return modelAndView;

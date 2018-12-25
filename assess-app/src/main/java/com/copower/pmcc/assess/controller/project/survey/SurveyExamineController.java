@@ -77,7 +77,7 @@ public class SurveyExamineController {
         }
         modelAndView.addObject("surveyExamineInfo", surveyExamineInfo);
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
-        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
+        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
         modelAndView.addObject("projectInfo", projectInfoVo);
         return modelAndView;
     }

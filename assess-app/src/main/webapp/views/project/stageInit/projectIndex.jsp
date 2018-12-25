@@ -3,15 +3,14 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-    <script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/project-init.js"></script>
+    <%@include file="/views/project/stageInit/other/otherProjectIndexJs.jsp" %>
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
             <%@include file="/views/share/form_head.jsp" %>
-            <!--填写表单-->
+
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
@@ -21,12 +20,11 @@
                         项目信息
                         <small>${projectInfo.projectClassName}/${projectInfo.projectTypeName}/${projectInfo.projectCategoryName}</small>
                     </h2>
-                    <input type="hidden" value="${projectInfo.id}" id="projectInfoId">
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
                     <!-- 项目基本信息 start -->
-                    <%@include file="/views/project/stageInit/initModel/info.jsp" %>
+                    <%@include file="/views/project/stageInit/other/projectInfo.jsp" %>
                     <!-- 项目基本信息 end -->
                 </div>
             </div>
@@ -39,7 +37,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <!-- 委托人 start -->
-                <%@include file="/views/project/stageInit/initModel/consignor.jsp" %>
+                <%@include file="/views/project/stageInit/other/projectConsignor.jsp" %>
                 <!-- 委托人 end -->
             </div>
 
@@ -52,7 +50,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <!-- 占有人 start -->
-                <%@include file="/views/project/stageInit/initModel/possessor.jsp" %>
+                <%@include file="/views/project/stageInit/other/projectPossessor.jsp" %>
                 <!-- 占有人 end -->
             </div>
 
@@ -65,9 +63,10 @@
                     <div class="clearfix"></div>
                 </div>
                 <!-- 报告使用单位 start -->
-                <%@include file="/views/project/stageInit/initModel/unit_information.jsp" %>
+                <%@include file="/views/project/stageInit/other/projectUnit_information.jsp" %>
                 <!-- 报告使用单位 end -->
             </div>
+
 
             <div class="x_panel">
                 <div class="x_content">
@@ -98,54 +97,35 @@
 </body>
 </html>
 
+
 <script type="text/javascript">
-    function getFormData() {
-        var data = {};
-        var projectInfo = formParams("frm_project_info");//项目信息
-        var consignor = formParams("frm_consignor"); //委托人信息
-        var possessor = formParams("frm_possessor"); //占有人信息
-        var unitinformation = formParams("frm_unitinformation"); //报告使用单位信息
-        data.projectInfo = projectInfo;
-        data.consignor = consignor;
-        data.possessor = possessor;
-        data.unitinformation = unitinformation;
-        return data;
-    }
+
+
+
+    $(document).ready(function () {
+        if ('${empty processInsId}') {
+            //申请页面
+            objProject.loadInit();
+        } else {
+            //修改页面
+        }
+    });
 
     function projectApply() {
-        //js校验
-        if (!$("#frm_project_info").valid()) {
-            return false;
-        }
-        if (!$("#frm_consignor").valid()) {
-            return false;
-        }
-        if (!hasLinkman(Contacts.prototype.CONSIGNOR().getData().table)) {
-            Alert('还未填写委托人联系人信息');
-            return false;
-        }
-        if (!$("#frm_possessor").valid()) {
-            return false;
-        }
-        if (!hasLinkman(Contacts.prototype.POSSESSOR().getData().table)) {
-            Alert('还未填写占有人联系人信息');
-            return false;
-        }
-        if (!$("#frm_unitinformation").valid()) {
-            return false;
-        }
-        if (!hasLinkman(Contacts.prototype.UNIT_INFORMATION().getData().table)) {
-            Alert('还未填写报告使用单位联系人信息');
+        if (!objProject.valid()) {
             return false;
         }
         var data = {};
-        data.formData = JSON.stringify(getFormData());
-        data.projectInfoId = $("#projectInfoId").val();
+        data.formData = JSON.stringify(objProject.getFormData());
         var url = "${pageContext.request.contextPath}/projectInfo/projectApplySubmit";
+
         if ("${empty processInsId?"0":processInsId}" != "0") {
             url = "${pageContext.request.contextPath}/projectInfo/projectEditSubmit";
             var approvalData = formParams("frm_approval");
-            data = $.extend({}, approvalData, data);
+            data.projectInfoId = '${projectInfo.id}' ;
+            data = $.extend(data, approvalData);
+            console.log("test") ;
+            console.log(data) ;
         }
         Loading.progressShow();
         $.ajax({
@@ -168,31 +148,4 @@
             }
         });
     }
-
-    //是否填写了联系人
-    function hasLinkman(tbListId) {
-        var rows = $("#" + tbListId).bootstrapTable('getData');
-        if (rows == null || rows.length <= 0) return false;
-        return true;
-    }
-
-    $(function () {
-        Contacts.prototype.getUrl = function () {
-            return "${pageContext.request.contextPath}";
-        };
-        //载入选项框
-        POSSESSOR.prototype.tabControl();
-        CONSIGNOR.prototype.tabControl();
-
-        Contacts.prototype.UNIT_INFORMATION().loadDataList("${projectInfo.unitInformationVo.id}", null);
-        Contacts.prototype.CONSIGNOR().loadDataList("${projectInfo.consignorVo.id}");
-        Contacts.prototype.POSSESSOR().loadDataList("${projectInfo.possessorVo.id}");
-
-        /**返回修改页面**/
-        var projectInfo = "${projectInfo.consignorVo}";
-        if (projectInfo != null && projectInfo != '') {//返回修改页面
-            POSSESSOR.prototype.tabControlUpdate("${projectInfo.possessorVo.pType}");
-            CONSIGNOR.prototype.tabControlUpdate("${projectInfo.consignorVo.csType}")
-        }
-    });
 </script>

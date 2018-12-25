@@ -111,7 +111,7 @@ public class ProjectPlanController {
         modelAndView.addObject("projectFlog", "1");
 
 
-        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfo);
+        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
         List<ProjectPhase> projectPhases = getProjectPhases(projectPlan, projectInfoVo);
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("projectPhases", projectPhases);
@@ -278,7 +278,7 @@ public class ProjectPlanController {
         modelAndView.addObject("planId", projectPlan.getId());
         //显示数据
         modelAndView.addObject("boxCnName", projectPlan.getPlanName() + "-" + "返回修改");
-        ProjectInfoVo projectInfo = projectInfoService.getProjectInfoVoView(projectInfoService.getProjectInfoById(projectPlan.getProjectId()));
+        ProjectInfoVo projectInfo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectPlan.getProjectId()));
         modelAndView.addObject("projectInfo", projectInfo);
 
         List<ProjectPhase> projectPhases = getProjectPhases(projectPlan, projectInfo);
@@ -343,7 +343,7 @@ public class ProjectPlanController {
         modelAndView.addObject("reviewMark", viewUrl);
         //显示数据
         modelAndView.addObject("boxCnName", projectPlan.getPlanName() + "-" + "计划详情");
-        modelAndView.addObject("projectInfo", projectInfoService.getProjectInfoVoView(projectInfoService.getProjectInfoById(projectPlan.getProjectId())));
+        modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectPlan.getProjectId())));
         return modelAndView;
     }
 

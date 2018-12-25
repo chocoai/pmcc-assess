@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.basis.dao.project.initiate;
 import com.copower.pmcc.assess.dal.basis.entity.InitiateContacts;
 import com.copower.pmcc.assess.dal.basis.entity.InitiateContactsExample;
 import com.copower.pmcc.assess.dal.basis.mapper.InitiateContactsMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ObjectUtils;
@@ -47,8 +48,20 @@ public class InitiateContactsDao {
         return mapper.deleteByExample(example) >= 1;
     }
 
+    public void clear(InitiateContacts contacts){
+        InitiateContactsExample example = new InitiateContactsExample();
+        MybatisUtils.convertObj2Example(contacts, example);
+        mapper.deleteByExample(example);
+    }
+
     public boolean update(InitiateContacts contacts) {
         return mapper.updateByPrimaryKeySelective(contacts) == 1;
+    }
+
+    public List<InitiateContacts> initiateContactsList(InitiateContacts initiateContacts){
+        InitiateContactsExample example = new InitiateContactsExample();
+        MybatisUtils.convertObj2Example(initiateContacts, example);
+        return mapper.selectByExample(example);
     }
 
 

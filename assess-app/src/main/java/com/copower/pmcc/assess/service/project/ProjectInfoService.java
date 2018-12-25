@@ -5,7 +5,6 @@ import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
-import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectMemberDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
@@ -17,7 +16,6 @@ import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateConsignorVo;
-import com.copower.pmcc.assess.dto.output.project.initiate.InitiateContactsVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiatePossessorVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
 import com.copower.pmcc.assess.service.CrmCustomerService;
@@ -49,22 +47,15 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
-import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
-import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
-import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
-import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -76,10 +67,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 描述:项目基础信息
@@ -90,7 +79,9 @@ import java.util.Map;
  */
 @Service
 public class ProjectInfoService {
+
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
+
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -163,7 +154,7 @@ public class ProjectInfoService {
         return projectApplyChange(projectDto.getConsignor(), projectDto.getUnitinformation(), projectDto.getPossessor(), change(projectMember), projectDto.getProjectInfo(), bisNextUser);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     public boolean projectApplyChange(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto, ProjectMemberDto projectMemberDto,
                                       ProjectInfoDto projectInfoDto, Boolean bisNextUser) {
         boolean flag = true;
@@ -253,12 +244,14 @@ public class ProjectInfoService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void projectEditApproval(ApprovalModelDto approvalModelDto, String formData, Integer projectInfoId) throws Exception {
-        projectUpdate(format(formData), projectInfoId);//保存数据
-        processControllerComponent.processSubmitLoopTaskNodeArg(publicService.getEditApprovalModel(approvalModelDto), false);//提交流程
+        //保存数据
+        projectUpdate(format(formData), projectInfoId);
+        //提交流程
+        processControllerComponent.processSubmitLoopTaskNodeArg(publicService.getEditApprovalModel(approvalModelDto), false);
     }
 
     /*项目立项修改*/
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     public void projectUpdate(InitiateProjectDto initiateProjectDto, Integer projectInfoId) throws Exception {
         ProjectInfoDto projectInfo = initiateProjectDto.getProjectInfo();
         ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfoId);
@@ -550,20 +543,17 @@ public class ProjectInfoService {
             //委托目的
             projectInfoVo.setEntrustPurposeName(bidBaseDataDicService.getCacheDataDicById(projectInfo.getEntrustPurpose()).getName());
         }
-        return projectInfoVo;
-    }
-
-    public ProjectInfoVo getProjectInfoVoView(ProjectInfo projectInfo) {
-        ProjectInfoVo projectInfoVo = getSimpleProjectInfoVo(projectInfo);
         if (StringUtils.isNotBlank(projectInfo.getProvince())) {
-
-            projectInfoVo.setProvinceName(erpAreaService.getSysAreaName(projectInfo.getProvince()));//省
+            //省
+            projectInfoVo.setProvinceName(erpAreaService.getSysAreaName(projectInfo.getProvince()));
         }
         if (StringUtils.isNotBlank(projectInfo.getCity())) {
-            projectInfoVo.setCityName(erpAreaService.getSysAreaName(projectInfo.getCity()));//市或者县
+            //市
+            projectInfoVo.setCityName(erpAreaService.getSysAreaName(projectInfo.getCity()));
         }
         if (StringUtils.isNotBlank(projectInfo.getDistrict())) {
-            projectInfoVo.setDistrictName(erpAreaService.getSysAreaName(projectInfo.getDistrict()));//县
+            //县
+            projectInfoVo.setDistrictName(erpAreaService.getSysAreaName(projectInfo.getDistrict()));
         }
         //紧急程度
         if (projectInfo.getUrgency() != null) {
@@ -576,16 +566,25 @@ public class ProjectInfoService {
             //价值类型
             projectInfoVo.setValueTypeName(bidBaseDataDicService.getCacheDataDicById(projectInfo.getValueType()).getName());
         }
+
         InitiateConsignorVo consignorVo = consignorService.getDataByProjectId(projectInfo.getId());
-        projectInfoVo.setConsignorVo(consignorVo);
+        if (consignorVo != null) {
+            projectInfoVo.setConsignorVo(consignorVo);
+        }
 
         InitiatePossessorVo possessorVo = possessorService.getDataByProjectId(projectInfo.getId());
-        projectInfoVo.setPossessorVo(possessorVo);
+        if (possessorVo != null) {
+            projectInfoVo.setPossessorVo(possessorVo);
+        }
 
         InitiateUnitInformationVo informationVo = unitInformationService.getDataByProjectId(projectInfo.getId());
-        projectInfoVo.setUnitInformationVo(informationVo);
+        if (informationVo != null) {
+            projectInfoVo.setUnitInformationVo(informationVo);
+        }
         ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfo.getId());
-        projectInfoVo.setProjectMemberVo(projectMemberVo);
+        if (projectMemberVo != null) {
+            projectInfoVo.setProjectMemberVo(projectMemberVo);
+        }
         return projectInfoVo;
     }
 
@@ -597,88 +596,9 @@ public class ProjectInfoService {
         projectInfoDao.updateProjectInfo(projectInfo);
     }
 
-    public CrmCustomerDto getCRM(Integer id) {
-        return crmCustomerService.getCustomer(id);
-    }
 
     public SysDepartmentDto getDepartmentDto(Integer id) {
         return erpRpcDepartmentService.getDepartmentById(id);
-    }
-
-    /*委托目的*/
-    public List<BaseDataDic> list_entrustment_purpose() {
-        List<BaseDataDic> baseDataDics = bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
-        return baseDataDics;
-    }
-
-    /*紧急程度*/
-    public List<BaseDataDic> project_initiate_urgency() {
-        List<BaseDataDic> baseDataDics = bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_INITIATE_URGENCY);
-        return baseDataDics;
-    }
-
-    /*价值类型*/
-    public List<BaseDataDic> value_type() {
-        List<BaseDataDic> baseDataDics = bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE);
-        return baseDataDics;
-    }
-
-    /*联系人 vo crm*/
-    public BootstrapTableVo listContactsVo(Integer customerId, Integer cType, Integer pid) {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<InitiateContactsVo> vos = null;
-        if (ObjectUtils.isEmpty(pid)) {
-            pid = InitiateContactsDto.C_PID;
-        }
-        if (!ObjectUtils.isEmpty(customerId)) {
-            initiateContactsService.writeContacts(customerId, cType, pid);//写入本地
-        }
-        vos = initiateContactsService.getVoList(pid, cType, customerId);//从本地获取
-        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<InitiateContactsVo>() : vos);
-        vo.setTotal(page.getTotal());
-        return vo;
-    }
-
-    public BootstrapTableVo crmContacts(Integer customerId, String search) {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        try {
-            vo = crmCustomerService.getCustomerLinkmanPageList(customerId, search);
-        } catch (Exception e1) {
-            logger.error(e1.getMessage(), e1);
-        }
-        return vo;
-    }
-
-    /*联系人类型*/
-    public Map<String, String> getTypeInitiateContactsMap() {
-        return initiateContactsService.getTypeMap();
-    }
-
-    //添加联系人
-    public boolean addContacts(InitiateContactsDto dto) {
-        return initiateContactsService.add(dto);
-    }
-
-    public void addContacts(List<InitiateContactsDto> dtos) {
-        for (InitiateContactsDto dto : dtos) {
-            this.addContacts(dto);
-        }
-    }
-
-    /*联系人删除*/
-    public boolean removeContacts(Integer id) {
-        return initiateContactsService.remove(id);
-    }
-
-    /*联系人修改*/
-    public boolean updateContacts(InitiateContactsDto dto) {
-        return initiateContactsService.update(dto);
-    }
-
-    public InitiateContactsVo getInitiateContacts(Integer id) {
-        return initiateContactsService.get(id);
     }
 
     public ProjectInfo change(ProjectInfoDto dto) {
@@ -701,30 +621,6 @@ public class ProjectInfoService {
         return dto;
     }
 
-    /*报告使用单位 获取*/
-    public InitiateUnitInformationVo getInitiateUnitInformation(Integer id) {
-        return unitInformationService.get(id);
-    }
-
-    /*占有人 获取*/
-    public InitiatePossessorVo getInitiatePossessor(Integer id) {
-        return possessorService.get(id);
-    }
-
-    /*委托人 获取*/
-    public InitiateConsignorVo getInitiateConsignor(Integer id) {
-        return consignorService.get(id);
-    }
-
-    /**
-     * 单位性质 crm
-     *
-     * @return
-     */
-    public List<CrmBaseDataDicDto> getUnitPropertiesList() {
-        List<CrmBaseDataDicDto> crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
-        return crmBaseDataDicDtos;
-    }
 
     public int saveProjectInfo(ProjectInfo projectInfo) {
         if (projectInfo.getId() == null || projectInfo.getId() == 0) {
@@ -737,19 +633,14 @@ public class ProjectInfoService {
     }
 
     /**
-     * 回写到CRM中
+     * 单位性质 crm
      *
-     * @param projectID
-     * @param cType
+     * @return
      */
-    public void writeCrmCustomerDto(Integer projectID, Integer cType) {
-        initiateContactsService.writeCrmCustomerDto(projectID, cType);
+    public List<CrmBaseDataDicDto> getUnitPropertiesList() {
+        List<CrmBaseDataDicDto> crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
+        return crmBaseDataDicDtos;
     }
 
-    public void init() {
-        initiateContactsService.remove(0, InitiateContactsEnum.CONSIGNOR.getId());
-        initiateContactsService.remove(0, InitiateContactsEnum.POSSESSOR.getId());
-        initiateContactsService.remove(0, InitiateContactsEnum.UNIT_INFORMATION.getId());
-    }
 
 }
