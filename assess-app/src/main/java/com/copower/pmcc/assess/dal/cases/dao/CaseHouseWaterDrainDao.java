@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.dal.cases.dao;
 
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseWaterDrain;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseWaterDrainExample;
+import com.copower.pmcc.assess.dal.cases.entity.CaseHouseWaterExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseHouseWaterDrainMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,5 +69,14 @@ public class CaseHouseWaterDrainDao {
         return caseHouseWaterDrainMapper.deleteByPrimaryKey(id) > 0;
     }
 
-
+    /**
+     * 获取数据条数
+     * @param houseId
+     * @return
+     */
+    public int countByHouseId(Integer houseId){
+        CaseHouseWaterDrainExample example = new CaseHouseWaterDrainExample();
+        example.createCriteria().andHouseIdEqualTo(houseId);
+        return caseHouseWaterDrainMapper.countByExample(example);
+    }
 }

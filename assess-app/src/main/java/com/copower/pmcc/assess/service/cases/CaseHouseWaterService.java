@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseWaterDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseWater;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseWaterVo;
@@ -80,21 +79,6 @@ public class CaseHouseWaterService {
         vo.setPurificationEquipmentPriceName(baseDataDicService.getNameById(caseHouseWater.getPurificationEquipmentPrice()));
         vo.setFireWaterSupplyName(baseDataDicService.getNameById(caseHouseWater.getFireWaterSupply()));
         return vo;
-    }
-
-    private String getValue(String key, Integer v) {
-        StringBuilder builder = new StringBuilder(1024);
-        List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(key);
-        if (baseDataDic.size() >= 1) {
-            if (v != null) {
-                for (BaseDataDic base : baseDataDic) {
-                    if (base.getId().intValue() == v.intValue()) {
-                        builder.append(base.getName());
-                    }
-                }
-            }
-        }
-        return builder.toString();
     }
 
     /**

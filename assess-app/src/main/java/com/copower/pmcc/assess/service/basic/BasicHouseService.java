@@ -134,7 +134,7 @@ public class BasicHouseService {
     public Integer saveAndUpdateBasicHouse(BasicHouse basicHouse) throws Exception {
         if (basicHouse.getId() == null || basicHouse.getId().intValue() == 0) {
             basicHouse.setCreator(commonService.thisUserAccount());
-            return basicHouseDao.saveBasicHouse(basicHouse);
+            return basicHouseDao.addBasicHouse(basicHouse);
         } else {
             basicHouseDao.updateBasicHouse(basicHouse);
             return null;
@@ -324,7 +324,7 @@ public class BasicHouseService {
         basicHouse.setHouseNumber(houseNumber);
         basicHouse.setApplyId(0);
         basicHouse.setCreator(commonService.thisUserAccount());
-        basicHouseDao.saveBasicHouse(basicHouse);
+        basicHouseDao.addBasicHouse(basicHouse);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()), getBasicHouseVo(basicHouse));
 
         BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
@@ -373,10 +373,10 @@ public class BasicHouseService {
         basicHouse.setId(null);
         basicHouse.setGmtCreated(null);
         basicHouse.setGmtModified(null);
-        if (StringUtils.equals(housePartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
+        if (StringUtils.equals(housePartInMode, BasicApplyPartInModeEnum.REFERENCE.getKey())) {
             basicHouse.setHouseNumber(null);
         }
-        basicHouseDao.saveBasicHouse(basicHouse);
+        basicHouseDao.addBasicHouse(basicHouse);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()), getBasicHouseVo(basicHouse));
 
         if (StringUtils.equals(housePartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
@@ -599,7 +599,7 @@ public class BasicHouseService {
                 basicHouseDamagedDegree.setGmtCreated(null);
                 basicHouseDamagedDegree.setGmtModified(null);
                 basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(basicHouseDamagedDegree);
-                List<CaseHouseDamagedDegreeDetail> damagedDegreeDetailList = caseHouseDamagedDegreeService.getDamagedDegreeDetailList(caseHouseDamagedDegree.getId());
+                List<CaseHouseDamagedDegreeDetail> damagedDegreeDetailList = caseHouseDamagedDegreeService.getDamagedDegreeDetails(caseHouseDamagedDegree.getId());
                 if (CollectionUtils.isNotEmpty(damagedDegreeDetailList)) {
                     for (CaseHouseDamagedDegreeDetail caseHouseDamagedDegreeDetail : damagedDegreeDetailList) {
                         BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail = new BasicHouseDamagedDegreeDetail();

@@ -26,7 +26,7 @@ public class BasicHouseDao {
         return basicHouseMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicHouse(BasicHouse basicHouse)throws SQLException{
+    public Integer addBasicHouse(BasicHouse basicHouse)throws SQLException{
         basicHouseMapper.insertSelective(basicHouse);
         return basicHouse.getId();
     }

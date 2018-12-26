@@ -26,7 +26,7 @@ public class BasicEstateDao {
         return basicEstateMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicEstate(BasicEstate basicEstate) throws SQLException {
+    public Integer addBasicEstate(BasicEstate basicEstate) throws SQLException {
         basicEstateMapper.insertSelective(basicEstate);
         return basicEstate.getId();
     }

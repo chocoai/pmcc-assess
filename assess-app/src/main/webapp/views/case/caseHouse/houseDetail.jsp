@@ -340,49 +340,54 @@
 
     <div class="x_content">
         <!-- 房间 -->
-        <div class="room" style="display: ${hasHouseRoomData?'block':'none'};">
+        <c:if test="${hasHouseRoomData}">
             <%@include file="/views/case/caseHouse/caseHouseRoom.jsp" %>
-        </div>
+        </c:if>
 
         <!-- 临街 -->
-        <div class="street" style="display: ${hasHouseFaceStreetData?'block':'none'};">
+        <c:if test="${hasHouseFaceStreetData}">
             <%@include file="/views/case/caseHouse/caseHouseFaceStreet.jsp" %>
-        </div>
+        </c:if>
 
         <!-- 房屋配套设备设施 -->
-        <div class="corollary_equipment" style="display: ${hasHouseCorollaryEquipmentData?'block':'none'};">
+        <c:if test="${hasHouseCorollaryEquipmentData}">
             <%@include file="/views/case/caseHouse/caseHouseCorollaryEquipment.jsp" %>
-        </div>
+        </c:if>
 
         <!-- 电力通讯网络 -->
-        <div class="intelligent" style="display: ${hasHouseIntelligentData?'block':'none'};">
+        <c:if test="${hasHouseIntelligentData}">
             <%@include file="/views/case/caseHouse/caseHouseIntelligent.jsp" %>
-        </div>
+        </c:if>
 
         <!-- 供水 -->
-        <div class="water" style="display: ${hasHouseWaterData?'block':'none'};">
+        <c:if test="${hasHouseWaterData}">
             <%@include file="/views/case/caseHouse/caseHouseWater.jsp" %>
-        </div>
+        </c:if>
 
         <!-- 排水 -->
-        <div class="water" style="display: ${hasHouseWaterData?'block':'none'};">
+        <c:if test="${hasHouseWaterDrainData}">
             <%@include file="/views/case/caseHouse/caseHouseWaterDrain.jsp" %>
-        </div>
+        </c:if>
 
         <!-- 新风情况 -->
-        <div class="houseNewWind" style="display: ${hasHouseEquipmentNewWind?'block':'none'};">
+        <c:if test="${hasHouseEquipmentNewWind}">
             <%@include file="/views/case/caseHouse/caseHouseNewWind.jsp" %>
-        </div>
+        </c:if>
 
         <!-- 空调情况 -->
-        <div class="airConditioner" style="display: ${hasHouseEquipmentAirConditioner?'block':'none'};">
+        <c:if test="${hasHouseEquipmentAirConditioner}">
             <%@include file="/views/case/caseHouse/caseHouseAirConditioner.jsp" %>
-        </div>
+        </c:if>
 
-        <!-- 房间供暖 -->
-        <div class="houseHeating" style="display: ${hasHouseEquipmentHeating?'block':'none'};">
+        <!-- 房屋供暖 -->
+        <c:if test="${hasHouseEquipmentHeating}">
             <%@include file="/views/case/caseHouse/caseHouseHeating.jsp" %>
-        </div>
+        </c:if>
+
+        <!-- 房屋完损度 -->
+        <c:if test="${hasHouseDamagedDegreeData}">
+            <%@include file="/views/case/caseHouse/caseDamagedDegree.jsp" %>
+        </c:if>
     </div>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/case/case.common.js"></script>

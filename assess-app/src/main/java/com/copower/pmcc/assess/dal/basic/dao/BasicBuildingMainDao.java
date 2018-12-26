@@ -26,7 +26,7 @@ public class BasicBuildingMainDao {
         return basicBuildingMainMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicBuildingMain(BasicBuildingMain basicBuildingMain)throws SQLException{
+    public Integer addBasicBuildingMain(BasicBuildingMain basicBuildingMain)throws SQLException{
         basicBuildingMainMapper.insertSelective(basicBuildingMain);
         return basicBuildingMain.getId();
     }

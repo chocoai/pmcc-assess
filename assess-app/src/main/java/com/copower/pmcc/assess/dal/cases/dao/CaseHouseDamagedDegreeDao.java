@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.dal.cases.dao;
 
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseDamagedDegree;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseDamagedDegreeExample;
+import com.copower.pmcc.assess.dal.cases.entity.CaseHouseWaterExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseHouseDamagedDegreeMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +42,16 @@ public class CaseHouseDamagedDegreeDao {
         CaseHouseDamagedDegreeExample example = new CaseHouseDamagedDegreeExample();
         MybatisUtils.convertObj2Example(CaseHouseDamagedDegree, example);
         return caseHouseDamagedDegreeMapper.selectByExample(example);
+    }
+
+    /**
+     * 获取数据条数
+     * @param houseId
+     * @return
+     */
+    public int countByHouseId(Integer houseId){
+        CaseHouseDamagedDegreeExample example = new CaseHouseDamagedDegreeExample();
+        example.createCriteria().andHouseIdEqualTo(houseId);
+        return caseHouseDamagedDegreeMapper.countByExample(example);
     }
 }

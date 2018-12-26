@@ -18,6 +18,7 @@ import com.copower.pmcc.assess.service.data.DataDeveloperService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -25,6 +26,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -140,7 +142,7 @@ public class BasicEstateService {
     public Integer saveAndUpdateBasicEstate(BasicEstate basicEstate) throws Exception {
         if (basicEstate.getId() == null || basicEstate.getId().intValue() == 0) {
             basicEstate.setCreator(commonService.thisUserAccount());
-            Integer id = basicEstateDao.saveBasicEstate(basicEstate);
+            Integer id = basicEstateDao.addBasicEstate(basicEstate);
             return id;
         } else {
             basicEstateDao.updateBasicEstate(basicEstate);
@@ -407,7 +409,7 @@ public class BasicEstateService {
         basicEstate.setCity(city);
         basicEstate.setApplyId(0);
         basicEstate.setCreator(commonService.thisUserAccount());
-        basicEstateDao.saveBasicEstate(basicEstate);
+        basicEstateDao.addBasicEstate(basicEstate);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstate.class.getSimpleName()), getBasicEstateVo(basicEstate));
 
         BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
@@ -430,7 +432,7 @@ public class BasicEstateService {
     public Map<String, Object> appWriteEstate(Integer caseEstateId, String estatePartInMode) throws Exception {
         this.clearInvalidData(0);
         if (caseEstateId == null) {
-            throw new Exception("null point");
+            throw new BusinessException("null point");
         }
         Map<String, Object> objectMap = new HashMap<String, Object>(2);
         CaseEstate caseEstate = caseEstateService.getCaseEstateById(caseEstateId);
@@ -441,7 +443,10 @@ public class BasicEstateService {
         basicEstate.setCreator(commonService.thisUserAccount());
         basicEstate.setGmtCreated(null);
         basicEstate.setGmtModified(null);
-        basicEstateDao.saveBasicEstate(basicEstate);
+        if (StringUtils.equals(estatePartInMode, BasicApplyPartInModeEnum.REFERENCE.getKey())) {
+            basicEstate.setName(null);
+        }
+        basicEstateDao.addBasicEstate(basicEstate);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstate.class.getSimpleName()), getBasicEstateVo(basicEstate));
 
         //附件拷贝

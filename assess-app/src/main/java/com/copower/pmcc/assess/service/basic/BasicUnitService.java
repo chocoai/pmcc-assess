@@ -17,6 +17,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -111,7 +112,7 @@ public class BasicUnitService {
     public Integer saveAndUpdateBasicUnit(BasicUnit basicUnit) throws Exception {
         if (basicUnit.getId() == null || basicUnit.getId().intValue() == 0) {
             basicUnit.setCreator(commonService.thisUserAccount());
-            Integer id = basicUnitDao.saveBasicUnit(basicUnit);
+            Integer id = basicUnitDao.addBasicUnit(basicUnit);
             return id;
         } else {
             basicUnitDao.updateBasicUnit(basicUnit);
@@ -247,7 +248,7 @@ public class BasicUnitService {
         basicUnit.setUnitNumber(unitNumber);
         basicUnit.setApplyId(0);
         basicUnit.setCreator(commonService.thisUserAccount());
-        basicUnitDao.saveBasicUnit(basicUnit);
+        basicUnitDao.addBasicUnit(basicUnit);
         return basicUnit;
     }
 
@@ -272,9 +273,12 @@ public class BasicUnitService {
         basicUnit.setCreator(commonService.thisUserAccount());
         basicUnit.setGmtCreated(null);
         basicUnit.setGmtModified(null);
-        basicUnitDao.saveBasicUnit(basicUnit);
+        if (StringUtils.equals(unitPartInMode, BasicApplyPartInModeEnum.REFERENCE.getKey())) {
+            basicUnit.setUnitNumber(null);
+        }
+        basicUnitDao.addBasicUnit(basicUnit);
 
-        if (org.apache.commons.lang3.StringUtils.equals(unitPartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
+        if (StringUtils.equals(unitPartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
             CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
             caseEstateTagging.setDataId(caseUnitId);
             caseEstateTagging.setType(EstateTaggingTypeEnum.UNIT.getKey());

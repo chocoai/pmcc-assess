@@ -26,7 +26,7 @@ public class BasicUnitDao {
         return basicUnitMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicUnit(BasicUnit basicUnit)throws SQLException{
+    public Integer addBasicUnit(BasicUnit basicUnit)throws SQLException{
         basicUnitMapper.insertSelective(basicUnit);
         return basicUnit.getId();
     }

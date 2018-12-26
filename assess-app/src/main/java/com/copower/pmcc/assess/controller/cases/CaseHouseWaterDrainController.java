@@ -3,12 +3,14 @@ package com.copower.pmcc.assess.controller.cases;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseWaterDrain;
 import com.copower.pmcc.assess.service.cases.CaseHouseWaterDrainService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @Auther: zch
@@ -18,10 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/caseHouseWaterDrain")
 @RestController
 public class CaseHouseWaterDrainController {
-
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    @Autowired
-    private CommonService commonService;
     @Autowired
     private CaseHouseWaterDrainService caseHouseWaterDrainService;
 

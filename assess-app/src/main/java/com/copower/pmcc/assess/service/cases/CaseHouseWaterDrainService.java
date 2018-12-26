@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.service.cases;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseWaterDrainDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseWaterDrain;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseWaterDrainVo;
-import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -31,8 +30,6 @@ public class CaseHouseWaterDrainService {
     private CaseHouseWaterDrainDao caseHouseWaterDrainDao;
     @Autowired
     private CommonService commonService;
-    @Autowired
-    private ErpAreaService erpAreaService;
     @Autowired
     private BaseDataDicService baseDataDicService;
 
@@ -94,5 +91,13 @@ public class CaseHouseWaterDrainService {
         return vo;
     }
 
-
+    /**
+     * 根据查询条件判断是否有数据
+     *
+     * @param houseId
+     * @return
+     */
+    public boolean hasHouseWaterDrainData(Integer houseId) {
+        return caseHouseWaterDrainDao.countByHouseId(houseId) > 0;
+    }
 }

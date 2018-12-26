@@ -1081,10 +1081,11 @@ public class PublicBasicService {
                 if (!CollectionUtils.isEmpty(degreeDetails)) {
                     for (BasicHouseDamagedDegreeDetail degreeDetail : degreeDetails) {
                         CaseHouseDamagedDegreeDetail caseHouseDamagedDegreeDetail = new CaseHouseDamagedDegreeDetail();
-                        BeanUtils.copyProperties(degreeDetail, caseHouseDamagedDegree);
+                        BeanUtils.copyProperties(degreeDetail, caseHouseDamagedDegreeDetail);
                         caseHouseDamagedDegreeDetail.setId(null);
                         caseHouseDamagedDegreeDetail.setGmtCreated(null);
                         caseHouseDamagedDegreeDetail.setGmtModified(null);
+                        caseHouseDamagedDegreeDetail.setDamagedDegreeId(caseHouseDamagedDegree.getId());
                         caseHouseDamagedDegreeDetail.setHouseId(caseHouse.getId());
                         caseHouseDamagedDegreeService.addCaseHouseDamagedDegreeDetail(caseHouseDamagedDegreeDetail);
                     }
@@ -1402,7 +1403,7 @@ public class PublicBasicService {
         }
         if (StringUtils.isNotBlank(basicApply.getHousePartInMode())) {
             if (!basicEstateTaggingService.hasBasicEstateTagging(basicApply.getId(), EstateTaggingTypeEnum.HOUSE)) {
-                throw new BusinessException("房屋位置信息还未标注");
+                throw new BusinessException("房屋户型图朝向还未设置");
             }
         }
     }

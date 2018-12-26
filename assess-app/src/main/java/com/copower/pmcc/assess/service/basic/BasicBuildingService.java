@@ -21,6 +21,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -198,7 +199,7 @@ public class BasicBuildingService {
         basicBuildingMain.setBuildingName(buildingNumber + '栋');
         basicBuildingMain.setApplyId(0);
         basicBuildingMain.setCreator(commonService.thisUserAccount());
-        basicBuildingMainDao.saveBasicBuildingMain(basicBuildingMain);
+        basicBuildingMainDao.addBasicBuildingMain(basicBuildingMain);
 
         BasicBuilding basicBuilding = new BasicBuilding();
         basicBuilding.setBasicBuildingMainId(basicBuildingMain.getId());
@@ -294,7 +295,7 @@ public class BasicBuildingService {
      * @throws Exception
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
-    public BasicBuildingMain appWriteBuilding(Integer caseMainBuildingId,String buildingPartInMode) throws Exception {
+    public BasicBuildingMain appWriteBuilding(Integer caseMainBuildingId, String buildingPartInMode) throws Exception {
         if (caseMainBuildingId == null) {
             throw new Exception("null point");
         }
@@ -307,9 +308,13 @@ public class BasicBuildingService {
         basicBuildingMain.setCreator(commonService.thisUserAccount());
         basicBuildingMain.setGmtCreated(null);
         basicBuildingMain.setGmtModified(null);
-        basicBuildingMainDao.saveBasicBuildingMain(basicBuildingMain);
+        if (StringUtils.equals(buildingPartInMode, BasicApplyPartInModeEnum.REFERENCE.getKey())) {
+            basicBuildingMain.setBuildingNumber(null);
+            basicBuildingMain.setBuildingName(null);
+        }
+        basicBuildingMainDao.addBasicBuildingMain(basicBuildingMain);
 
-        if (org.apache.commons.lang3.StringUtils.equals(buildingPartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
+        if (StringUtils.equals(buildingPartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
             CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
             caseEstateTagging.setDataId(caseMainBuildingId);
             caseEstateTagging.setType(EstateTaggingTypeEnum.BUILDING.getKey());

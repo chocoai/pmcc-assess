@@ -126,7 +126,7 @@
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    进深<span class="symbol required"></span>
+                    进深
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="进深(数字)" data-rule-number='true'

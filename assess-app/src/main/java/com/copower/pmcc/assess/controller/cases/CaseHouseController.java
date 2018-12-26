@@ -69,6 +69,10 @@ public class CaseHouseController {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CaseEstateTaggingService caseEstateTaggingService;
+    @Autowired
+    private CaseHouseWaterDrainService caseHouseWaterDrainService;
+    @Autowired
+    private CaseHouseDamagedDegreeService caseHouseDamagedDegreeService;
 
 
     @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
@@ -91,9 +95,11 @@ public class CaseHouseController {
         modelAndView.addObject("hasHouseIntelligentData", caseHouseIntelligentService.hasHouseIntelligentData(id));
         modelAndView.addObject("hasHouseRoomData", caseHouseRoomService.hasHouseRoomData(id));
         modelAndView.addObject("hasHouseWaterData", caseHouseWaterService.hasHouseWaterData(id));
+        modelAndView.addObject("hasHouseWaterDrainData", caseHouseWaterDrainService.hasHouseWaterDrainData(id));
         modelAndView.addObject("hasHouseEquipmentAirConditioner", caseHouseEquipmentService.hasHouseEquipmentData(id, ExamineHouseEquipmentTypeEnum.houseAirConditioner.getKey()));
         modelAndView.addObject("hasHouseEquipmentHeating", caseHouseEquipmentService.hasHouseEquipmentData(id, ExamineHouseEquipmentTypeEnum.houseHeating.getKey()));
         modelAndView.addObject("hasHouseEquipmentNewWind", caseHouseEquipmentService.hasHouseEquipmentData(id, ExamineHouseEquipmentTypeEnum.houseNewWind.getKey()));
+        modelAndView.addObject("hasHouseDamagedDegreeData", caseHouseDamagedDegreeService.hasHouseDamagedDegreeData(id));
         setHouseElementRender(caseHouseTradingVo,modelAndView);
         CaseUnit caseUnit = caseUnitService.getCaseUnitById(caseHouse.getUnitId());
         CaseBuildingMain caseBuildingMain = caseBuildingMainService.getCaseBuildingMainById(caseUnit.getBuildingMainId());

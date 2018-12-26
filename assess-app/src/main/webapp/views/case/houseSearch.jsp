@@ -48,14 +48,14 @@
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">版块名称</label>
                                 <div class="col-sm-2">
                                     <input type="text" class="form-control" name="blockName" placeholder="版块名称"/>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">楼盘名称</label>
                                 <div class="col-sm-2">
@@ -68,8 +68,6 @@
                                     <input type="text" class="form-control" name="street" placeholder="街道名称"/>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
                                     实际用途
@@ -90,41 +88,42 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    交易单价
-                                </label>
-                                <div class="col-sm-2">
-                                    <input type="text" class="form-control" placeholder="从" id="tradingUnitPriceStart"
-                                         name="tradingUnitPriceStart"  style="width: 45%;display:inline;"/>~
-                                    <input type="text" class="form-control" placeholder="到" id="tradingUnitPriceEnd"
-                                          name="tradingUnitPriceEnd" style="width: 45%;display:inline;"/>
-                                </div>
-                            </div>
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
                                     交易时间
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-1">
                                     <input type="text" class="form-control date-picker dbdate"
-                                           data-date-format="yyyy-mm-dd" name="tradingTimeStart" placeholder="开始时间"
-                                           style="width: 45%;display:inline;"/>~
+                                           data-date-format="yyyy-mm-dd" name="tradingTimeStart" placeholder="开始时间"/>
+                                </div>
+                                <div class="col-sm-1">
                                     <input type="text" class="form-control date-picker dbdate"
-                                           data-date-format="yyyy-mm-dd" name="tradingTimeEnd" placeholder="结束时间"
-                                           style="width: 45%;display:inline;"/>
+                                           data-date-format="yyyy-mm-dd" name="tradingTimeEnd" placeholder="结束时间"/>
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <div class="col-sm-2 col-sm-offset-1">
-                                    <label class="btn btn-primary" onclick="houseSearch.loadDataList()">
-                                        查询
-                                    </label>
-                                    <label class="btn btn-primary" onclick="houseSearch.clearQuery()">
-                                        清空
-                                    </label>
+                                <label class="col-sm-1 control-label">
+                                    交易单价
+                                </label>
+                                <div class="col-sm-1">
+                                    <input type="text" class="form-control" placeholder="从"
+                                           id="tradingUnitPriceStart"
+                                           data-rule-number="true" name="tradingUnitPriceStart"/>
                                 </div>
+                                <div class="col-sm-1">
+                                    <input type="text" class="form-control" placeholder="到" id="tradingUnitPriceEnd"
+                                           data-rule-number="true" name="tradingUnitPriceEnd"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-2 col-sm-offset-1">
+                                <label class="btn btn-primary" onclick="houseSearch.loadDataList()">
+                                    查询
+                                </label>
+                                <label class="btn btn-primary" onclick="houseSearch.clearQuery()">
+                                    清空
+                                </label>
                             </div>
                         </div>
                     </form>
@@ -154,21 +153,26 @@
     };
 
     //清空查询条件
-    houseSearch.clearQuery=function () {
+    houseSearch.clearQuery = function () {
         $("#frmCaseBaseHouse").find('input:text').val('');
-        $("#frmCaseBaseHouse").find('.select2').select2('val','').trigger('change');
+        $("#frmCaseBaseHouse").find('.select2').select2('val', '').trigger('change');
     }
 
     houseSearch.loadDataList = function () {
+        if (!$("#frmCaseBaseHouse").valid()) {
+            return false;
+        }
         var cols = [];
         cols.push({field: 'fullName', title: '名称'});
         cols.push({field: 'blockName', title: '版块名称'});
         cols.push({field: 'street', title: '街道'});
         cols.push({field: 'practicalUseName', title: '实际用途'});
         cols.push({field: 'tradingTypeName', title: '交易类型'});
-        cols.push({field: 'tradingTime', title: '交易时间', formatter: function (value, row, index) {
-            return formatDate(value);
-        }});
+        cols.push({
+            field: 'tradingTime', title: '交易时间', formatter: function (value, row, index) {
+                return formatDate(value);
+            }
+        });
         cols.push({field: 'tradingUnitPrice', title: '交易单价'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -181,13 +185,13 @@
         $("#tbCaseBaseHouseList").bootstrapTable('destroy');
         TableInit("tbCaseBaseHouseList", "${pageContext.request.contextPath}/case/getBootstrapTableCaseBaseHouseVo", cols,
             formSerializeArray($("#frmCaseBaseHouse")), {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            onLoadSuccess: function () {
-                $('.tooltips').tooltip();
-            }
-        });
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
     };
 
     houseSearch.loadData = function (data) {
@@ -224,5 +228,6 @@
         } catch (e) {
             houseSearch.loadDataList();
         }
+        $("#frmCaseBaseHouse").validate();
     });
 </script>
