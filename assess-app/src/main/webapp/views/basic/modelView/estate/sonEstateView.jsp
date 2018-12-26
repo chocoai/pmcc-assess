@@ -66,58 +66,34 @@
         <div class="clearfix"></div>
     </div>
     <div class="x_content collapse">
-        <div class="col-md-12">
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <div class="col-sm-3">
-                        <button type="button" class="btn btn-success" onclick="matchingFinance.prototype.showModel()"
-                                data-toggle="modal" href="#divBox"> 新增
-                        </button>
-                    </div>
-                    <div class="col-sm-3">
-                        <button type="button" class="btn btn-success" onclick="matchingFinance.prototype.clear()"> 清空数据
-                        </button>
-                    </div>
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">
-                            金融类别
-                        </label>
-                        <div class="col-sm-2">
-                            <select required="required" name="category"
-                                    class="form-control search-select select2 category">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="input-group">
-                            <input type="text"
-                                   placeholder="距离" class="form-control" name="distance">
-                            <span class="input-group-btn">
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                data-toggle="tooltip"
-                                data-original-title="选择"
-                                onclick="assessMatchingFinance.select(this)">
-                        <i class="fa fa-search"></i>
-                        </button>
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                onclick="$(this).closest('.input-group').find('input').val('');"
-                                data-toggle="tooltip" data-original-title="清除">
-                        <i class="fa fa-trash-o"></i>
-                        </button>
-                            </span>
-                        </div>
-                    </div>
+        <form class="form-horizontal">
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-success" onclick="matchingFinance.prototype.showModel()"
+                        data-toggle="modal" href="#divBox"> 新增
+                </button>
+                <button type="button" class="btn btn-warning" onclick="matchingFinance.prototype.clear()"> 删除
+                </button>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    金融类别
+                </label>
+                <div class="col-sm-2">
+                    <select name="category" class="form-control  category">
+                    </select>
                 </div>
-
-                <div class="form-group">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered" id="MatchingFinanceList">
-                            <!-- cerare document add ajax data-->
-                        </table>
-                    </div>
+            </div>
+            <div class="col-sm-3">
+                <input type="text" placeholder="距离(单位/m)" class="form-control" name="distance" value="3000">
+            </div>
+            <div class="col-sm-1">
+                <div type="button" class="btn btn-default docs-tooltip" onclick="assessMatchingFinance.select(this)">
+                    <i class="fa fa-search"></i>搜索
                 </div>
-            </form>
-        </div>
+            </div>
+            <table class="table table-bordered" id="MatchingFinanceList">
+            </table>
+        </form>
     </div>
 </div>
 
@@ -136,12 +112,14 @@
                 <form class="form-horizontal">
                     <div class="form-group">
                         <div class="col-sm-3">
-                            <button type="button" class="btn btn-success" onclick="matchingEducation.prototype.showModel()"
+                            <button type="button" class="btn btn-success"
+                                    onclick="matchingEducation.prototype.showModel()"
                                     data-toggle="modal" href="#divBox"> 新增
                             </button>
                         </div>
                         <div class="col-sm-3">
-                            <button type="button" class="btn btn-success" onclick="matchingEducation.prototype.clear()"> 清空数据
+                            <button type="button" class="btn btn-success" onclick="matchingEducation.prototype.clear()">
+                                清空数据
                             </button>
                         </div>
                         <div class="x-valid">
@@ -200,12 +178,14 @@
                 <form class="form-horizontal">
                     <div class="form-group">
                         <div class="col-sm-3">
-                            <button type="button" class="btn btn-success" onclick="matchingRecreation.prototype.showModel()"
+                            <button type="button" class="btn btn-success"
+                                    onclick="matchingRecreation.prototype.showModel()"
                                     data-toggle="modal" href="#divBox"> 新增
                             </button>
                         </div>
                         <div class="col-sm-3">
-                            <button type="button" class="btn btn-success" onclick="matchingRecreation.prototype.clear()"> 清空数据
+                            <button type="button" class="btn btn-success"
+                                    onclick="matchingRecreation.prototype.clear()"> 清空数据
                             </button>
                         </div>
                         <div class="x-valid">
@@ -264,12 +244,14 @@
                 <form class="form-horizontal">
                     <div class="form-group">
                         <div class="col-sm-3">
-                            <button type="button" class="btn btn-success" onclick="matchingRestaurant.prototype.showModel()"
+                            <button type="button" class="btn btn-success"
+                                    onclick="matchingRestaurant.prototype.showModel()"
                                     data-toggle="modal" href="#divBox"> 新增
                             </button>
                         </div>
                         <div class="col-sm-3">
-                            <button type="button" class="btn btn-success" onclick="matchingRestaurant.prototype.clear()"> 清空数据
+                            <button type="button" class="btn btn-success"
+                                    onclick="matchingRestaurant.prototype.clear()"> 清空数据
                             </button>
                         </div>
                         <div class="x-valid">
@@ -333,7 +315,8 @@
                             </button>
                         </div>
                         <div class="col-sm-3">
-                            <button type="button" class="btn btn-success" onclick="matchingMarket.prototype.clear()"> 清空数据
+                            <button type="button" class="btn btn-success" onclick="matchingMarket.prototype.clear()">
+                                清空数据
                             </button>
                         </div>
                         <div class="x-valid">
@@ -392,12 +375,14 @@
                 <form class="form-horizontal">
                     <div class="form-group">
                         <div class="col-sm-3">
-                            <button type="button" class="btn btn-success" onclick="matchingMedical.prototype.showModel()"
+                            <button type="button" class="btn btn-success"
+                                    onclick="matchingMedical.prototype.showModel()"
                                     data-toggle="modal" href="#divBox"> 新增
                             </button>
                         </div>
                         <div class="col-sm-3">
-                            <button type="button" class="btn btn-success" onclick="matchingMedical.prototype.clear()"> 清空数据
+                            <button type="button" class="btn btn-success" onclick="matchingMedical.prototype.clear()">
+                                清空数据
                             </button>
                         </div>
                         <div class="col-sm-6">
@@ -509,7 +494,8 @@
                         </button>
                     </div>
                     <div class="col-sm-3">
-                        <button type="button" class="btn btn-success" onclick="matchingTrafficHub.prototype.clear()"> 清空数据
+                        <button type="button" class="btn btn-success" onclick="matchingTrafficHub.prototype.clear()">
+                            清空数据
                         </button>
                     </div>
                     <div class="col-sm-6">
@@ -826,7 +812,8 @@
                                             供应量或功率
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="power" class="form-control" data-rule-number='true' placeholder="供应量或功率" >
+                                            <input type="text" name="power" class="form-control" data-rule-number='true'
+                                                   placeholder="供应量或功率">
                                         </div>
                                     </div>
                                 </div>
@@ -918,7 +905,8 @@
                                             供应量或功率<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="power" class="form-control" data-rule-number='true' placeholder="供应量或功率" >
+                                            <input type="text" name="power" class="form-control" data-rule-number='true'
+                                                   placeholder="供应量或功率">
                                         </div>
                                     </div>
                                 </div>
@@ -1010,7 +998,8 @@
                                             供应量或功率
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="power" class="form-control" data-rule-number='true' placeholder="供应量或功率" >
+                                            <input type="text" name="power" class="form-control" data-rule-number='true'
+                                                   placeholder="供应量或功率">
                                         </div>
                                     </div>
                                 </div>
@@ -1102,7 +1091,8 @@
                                             供应量或功率
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="power" class="form-control" data-rule-number='true' placeholder="供应量或功率" >
+                                            <input type="text" name="power" class="form-control" data-rule-number='true'
+                                                   placeholder="供应量或功率">
                                         </div>
                                     </div>
                                 </div>
@@ -1194,7 +1184,8 @@
                                             排水量或功率
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="power" class="form-control" data-rule-number='true' placeholder="排水量或功率" >
+                                            <input type="text" name="power" class="form-control" data-rule-number='true'
+                                                   placeholder="排水量或功率">
                                         </div>
                                     </div>
                                 </div>
@@ -1499,7 +1490,8 @@
                                             影响程度<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="influenceDegree" class="form-control  influenceDegree">
+                                            <select required="required" name="influenceDegree"
+                                                    class="form-control  influenceDegree">
                                             </select>
                                         </div>
                                     </div>

@@ -20,20 +20,20 @@
                     if (result.data.length >= 1) {
                         var data = result.data[0];
                         if (data) {
-                            var id = $("#" + matchingFinance.prototype.config().table).closest("form").find('select.category').val() ;
-                            if (id){
-                                AssessCommon.getDataDicInfo(id,function (item) {
+                            var id = $("#" + matchingFinance.prototype.config().table).closest("form").find('select.category').val();
+                            if (id) {
+                                AssessCommon.getDataDicInfo(id, function (item) {
                                     var options = {
-                                        distance: $(that).parent().prev().val(),
+                                        distance: $(that).closest('form').find('[name=distance]').val(),
                                         lng: data.lng,
                                         lat: data.lat,
-                                        type:item.name
+                                        type: item.name
 
                                     };
                                     AssessMatchingFinance.prototype.appendHtml(options);
                                 });
-                            }else {
-                                Alert("类型必须选择!") ;
+                            } else {
+                                Alert("类型必须选择!");
                             }
                         }
                     } else {
@@ -54,9 +54,9 @@
             $("#select_matchingfinance_modal").remove();
         }
         try {
-            if (options.type == '信托'){
+            if (options.type == '信托') {
                 Alert("高德地图案例中金融机构类型无信托");
-            }else {
+            } else {
                 assessSearchMap.localUseTypeSearch(options.type, options.distance, options, function (data) {
                     var html = '<div id="select_matchingfinance_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" ';
                     html += 'role="dialog" data-keyboard="false" tabindex="1" >';
@@ -72,7 +72,7 @@
                     html += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
                     html += "<input type='checkbox' onclick='assessMatchingFinance.checkedFun(this,false)'>";
                     html += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='badge'>记录max20</span>";
-                    html += "&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' class='btn btn-success' value='保存选中选项' onclick='assessMatchingFinance.save(this)'>" ;
+                    html += "&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' class='btn btn-success' value='保存选项' onclick='assessMatchingFinance.save(this)'>";
                     html += "</h3>";
                     html += '</div>';
 
@@ -146,7 +146,10 @@
         var retHtml = "";
         $.each(data.poiList.pois, function (i, item) {
             retHtml += "<div class='form-group'>";
-
+            retHtml += "<div class='col-sm-3'><span class='checkbox-inline'>";
+            retHtml += "<input type='checkbox' id='matchingFinance" + i + "' name='name' readonly='readonly' value='" + item.name + "' onclick=''" + ">";
+            retHtml += "<label for='matchingFinance" + i + "'>" + item.name + "</label>";
+            retHtml += '</span></div>';
             retHtml += "<label class='col-sm-1 control-label'>距离</label>";
             retHtml += "<div class='col-sm-2'>";
             retHtml += "<input type='text' class='form-control' name='distance' readonly='readonly' value='" + item.distance + "'" + ">";
@@ -156,11 +159,6 @@
             retHtml += "<div class='col-sm-5'>";
             retHtml += "<label class='form-control theLine'>" + item.address + "</label>";
             retHtml += "</div>";
-
-            retHtml += "<div class='col-sm-3'>";
-            retHtml += item.name + "<input type='checkbox' name='name' readonly='readonly' value='" + item.name + "' onclick=''" + ">";
-            retHtml += '</div>';
-
             retHtml += '</div>';
         });
         return retHtml;
