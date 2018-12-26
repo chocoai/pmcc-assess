@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.project;
 
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
-import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
@@ -18,7 +17,6 @@ import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateConsignorVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiatePossessorVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
-import com.copower.pmcc.assess.service.CrmCustomerService;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -28,7 +26,6 @@ import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.event.project.ProjectAssignEvent;
 import com.copower.pmcc.assess.service.event.project.ProjectInfoEvent;
 import com.copower.pmcc.assess.service.project.initiate.InitiateConsignorService;
-import com.copower.pmcc.assess.service.project.initiate.InitiateContactsService;
 import com.copower.pmcc.assess.service.project.initiate.InitiatePossessorService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateUnitInformationService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
@@ -48,6 +45,7 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
@@ -91,9 +89,6 @@ public class ProjectInfoService {
     @Lazy
     @Autowired
     private CrmRpcBaseDataDicService crmRpcBaseDataDicService;
-    @Lazy
-    @Autowired
-    private CrmCustomerService crmCustomerService;
     @Autowired
     private ProjectInfoDao projectInfoDao;
     @Autowired
@@ -106,9 +101,6 @@ public class ProjectInfoService {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectPlanDao projectPlanDao;
-    @Lazy
-    @Autowired
-    private InitiateContactsService initiateContactsService;
     @Autowired
     private InitiateConsignorService consignorService;
     @Autowired
@@ -124,8 +116,6 @@ public class ProjectInfoService {
     @Autowired
     private ProjectPhaseService projectPhaseService;
     @Autowired
-    private BaseAttachmentService baseAttachmentService;
-    @Autowired
     private BaseParameterService baseParameterServcie;
     @Autowired
     private ProjectMemberDao projectMemberDao;
@@ -139,6 +129,8 @@ public class ProjectInfoService {
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
 
 
     /**
@@ -155,40 +147,26 @@ public class ProjectInfoService {
     }
 
     @Transactional(rollbackFor = {Exception.class})
-    public boolean projectApplyChange(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto, ProjectMemberDto projectMemberDto,
+    public boolean projectApplyChange(InitiateConsignor consignor, InitiateUnitInformation unitInformation, InitiatePossessor possessor, ProjectMemberDto projectMemberDto,
                                       ProjectInfoDto projectInfoDto, Boolean bisNextUser) {
         boolean flag = true;
         try {
             ProjectInfo projectInfo = change(projectInfoDto);
-            if (projectInfo.getCreator() == null)
+            if (org.apache.commons.lang3.StringUtils.isEmpty(projectInfo.getCreator())) {
                 projectInfo.setCreator(commonService.thisUserAccount());
-
-            int projectId = 0;
-            projectId = projectInfoDao.saveProjectInfo_returnID(projectInfo);// save
-
-            consignorDto.setProjectId(projectId);
-            int consignorId = consignorService.add(consignorDto);
-            unitInformationDto.setProjectId(projectId);
-            int unitInformationId = unitInformationService.add(unitInformationDto);
-            possessorDto.setProjectId(projectId);
-            int possessorId = possessorService.add(possessorDto);
-            //更新联系人中的主表id (这根据联系人的标识符(flag)来确定联系人类型)
-
-            initiateContactsService.update(consignorId, InitiateContactsEnum.CONSIGNOR.getId());
-            initiateContactsService.update(possessorId, InitiateContactsEnum.POSSESSOR.getId());
-            initiateContactsService.update(unitInformationId, InitiateContactsEnum.UNIT_INFORMATION.getId());
-
-            //附件更新
+            }
+            int projectId = projectInfoDao.saveProjectInfo_returnID(projectInfo);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class), projectId);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(InitiateConsignor.class), consignorId);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(InitiatePossessor.class), possessorId);
-
+            consignor.setProjectId(projectId);
+            unitInformation.setProjectId(projectId);
+            possessor.setProjectId(projectId);
+            consignorService.saveAndUpdateInitiateConsignor(consignor);
+            unitInformationService.saveAndUpdate(unitInformation);
+            possessorService.saveAndUpdate(possessor);
             //保存项目成员
-
             projectMemberDto.setProjectId(projectId);
             projectMemberDto.setCreator(commonService.thisUserAccount());
             projectMemberService.saveReturnId(projectMemberDto);
-
             //如果没有设置项目经理，则由部门领导分派项目经理
             if (StringUtils.isBlank(projectMemberDto.getUserAccountManager())) {
                 //发起流程
@@ -200,7 +178,8 @@ public class ProjectInfoService {
                 processInfo.setProjectId(projectInfo.getId());
                 processInfo.setProcessName(boxReDto.getProcessName());
                 processInfo.setGroupName(boxReDto.getGroupName());
-                processInfo.setFolio(projectInfo.getProjectName());//流程描述
+                //流程描述
+                processInfo.setFolio(projectInfo.getProjectName());
                 processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
                 processInfo.setBoxId(boxReDto.getId());
                 processInfo.setStartUser(commonService.thisUserAccount());
@@ -226,7 +205,8 @@ public class ProjectInfoService {
                     logger.error(e.getMessage(), e);
                 }
             } else {
-                initProjectInfo(projectInfo);//初始化项目信息
+                //初始化项目信息
+                initProjectInfo(projectInfo);
             }
         } catch (Exception e) {
             flag = false;
@@ -265,10 +245,10 @@ public class ProjectInfoService {
             projectMemberVo.setUserAccountMember(userAccountMember);
         }
         projectInfoDao.updateProjectInfo(change(projectInfo));
-        consignorService.update(initiateProjectDto.getConsignor());
-        possessorService.update(initiateProjectDto.getPossessor());
+        consignorService.saveAndUpdateInitiateConsignor(initiateProjectDto.getConsignor());
+        possessorService.saveAndUpdate(initiateProjectDto.getPossessor());
+        unitInformationService.saveAndUpdate(initiateProjectDto.getUnitinformation());
         projectMemberService.updateProjectMember(projectMemberVo);
-        unitInformationService.update(initiateProjectDto.getUnitinformation());
     }
 
 
@@ -513,11 +493,11 @@ public class ProjectInfoService {
 
     public ProjectInfoVo getSimpleProjectInfoVo(ProjectInfo projectInfo) {
         ProjectInfoVo projectInfoVo = new ProjectInfoVo();
-        BeanUtils.copyProperties(projectInfo, projectInfoVo);
-        if (!ObjectUtils.isEmpty(projectInfo.getId()) && projectInfo.getId() > 0) {
-            ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfo.getId());
-            projectInfoVo.setProjectMemberVo(projectMemberVo);
+        if (projectInfo == null) {
+            return projectInfoVo;
         }
+        BeanUtils.copyProperties(projectInfo, projectInfoVo);
+
         //项目类型
         if (projectInfo.getProjectClassId() != null) {
             BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(projectInfo.getProjectClassId());
@@ -567,23 +547,31 @@ public class ProjectInfoService {
             projectInfoVo.setValueTypeName(bidBaseDataDicService.getCacheDataDicById(projectInfo.getValueType()).getName());
         }
 
-        InitiateConsignorVo consignorVo = consignorService.getDataByProjectId(projectInfo.getId());
-        if (consignorVo != null) {
-            projectInfoVo.setConsignorVo(consignorVo);
+        if (projectInfo.getId() != null && projectInfo.getId().intValue() > 0) {
+            InitiateConsignorVo consignorVo = consignorService.getDataByProjectId(projectInfo.getId());
+            if (consignorVo != null) {
+                projectInfoVo.setConsignorVo(consignorVo);
+            }
         }
 
-        InitiatePossessorVo possessorVo = possessorService.getDataByProjectId(projectInfo.getId());
-        if (possessorVo != null) {
-            projectInfoVo.setPossessorVo(possessorVo);
+        if (projectInfo.getId() != null && projectInfo.getId().intValue() > 0) {
+            InitiatePossessorVo possessorVo = possessorService.getDataByProjectId(projectInfo.getId());
+            if (possessorVo != null) {
+                projectInfoVo.setPossessorVo(possessorVo);
+            }
         }
 
-        InitiateUnitInformationVo informationVo = unitInformationService.getDataByProjectId(projectInfo.getId());
-        if (informationVo != null) {
-            projectInfoVo.setUnitInformationVo(informationVo);
+        if (projectInfo.getId() != null && projectInfo.getId().intValue() > 0) {
+            InitiateUnitInformationVo informationVo = unitInformationService.getDataByProjectId(projectInfo.getId());
+            if (informationVo != null) {
+                projectInfoVo.setUnitInformationVo(informationVo);
+            }
         }
-        ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfo.getId());
-        if (projectMemberVo != null) {
-            projectInfoVo.setProjectMemberVo(projectMemberVo);
+        if (projectInfo.getId() != null && projectInfo.getId().intValue() > 0) {
+            ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfo.getId());
+            if (projectMemberVo != null) {
+                projectInfoVo.setProjectMemberVo(projectMemberVo);
+            }
         }
         return projectInfoVo;
     }
@@ -640,6 +628,22 @@ public class ProjectInfoService {
     public List<CrmBaseDataDicDto> getUnitPropertiesList() {
         List<CrmBaseDataDicDto> crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
         return crmBaseDataDicDtos;
+    }
+
+    public void clear(){
+        consignorService.clear();
+        possessorService.clear();
+        unitInformationService.clear();
+        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+        sysAttachmentDto.setTableId(0);
+        sysAttachmentDto.setCreater(commonService.thisUserAccount());
+        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
+        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
+        if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
+            for (SysAttachmentDto attachmentDto : sysAttachmentDtoList) {
+                baseAttachmentService.deleteAttachmentByDto(attachmentDto);
+            }
+        }
     }
 
 

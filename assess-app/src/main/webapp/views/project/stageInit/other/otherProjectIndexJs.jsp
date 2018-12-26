@@ -524,12 +524,22 @@
                         async: false,
                         data: {
                             tableId: objProject.isNotBlank('${projectInfo.consignorVo.id}') ? '${projectInfo.consignorVo.id}' : '0',
-                            tableName: AssessDBKey.InitiateConsignor
+                            tableName: AssessDBKey.InitiateConsignor,
+                            creater: "${currUserAccount}"
                         },
                         success: function (result) {
                             if (result.ret && result.data) {
-                                //明天处理
-                                console.log(result.data) ;
+                                if (result.data.length >= 1){
+                                    var oldFile = result.data[0] ;
+                                    oldFile.fieldsName = objProject.config.possessor.files.pAttachmentProjectEnclosureId;
+                                    oldFile.tableName = AssessDBKey.InitiatePossessor;
+                                    oldFile.id = null;
+                                    AssessCommon.saveAndUpdateSysAttachmentDto(oldFile,function () {
+                                        $.each(objProject.config.possessor.files, function (i, n) {
+                                            objProject.showFile(n, AssessDBKey.InitiatePossessor, objProject.isNotBlank('${projectInfo.possessorVo.id}') ? '${projectInfo.possessorVo.id}' : '0');
+                                        });
+                                    })
+                                }
                             }
                         }
                     });
@@ -627,6 +637,7 @@
     objProject.selectUserAccountMember = function (this_) {
         var info = formParams(this.config.info.frm);
         if (!this.isNotBlank(info.userAccountManager)) {
+            Alert("先选择项目经理");
             return false;
         }
         erpEmployee.select({

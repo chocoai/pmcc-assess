@@ -1,22 +1,23 @@
 package com.copower.pmcc.assess.service.project.initiate;
 
+import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.initiate.InitiateConsignorDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.InitiateConsignor;
-import com.copower.pmcc.assess.dto.input.project.initiate.InitiateConsignorDto;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateConsignorVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
-import com.google.common.base.Objects;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -39,96 +40,100 @@ public class InitiateConsignorService {
     @Lazy
     @Autowired
     private CrmRpcBaseDataDicService crmRpcBaseDataDicService;
+    @Autowired
+    private InitiateContactsService initiateContactsService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
 
-    public int add(InitiateConsignorDto dto) {
-        //对 委托人进行单独处理
-        if (dto.getCsType() == InitiateConsignorDto.CSTYPEa) {
-            dto.setCsUnitProperties(null);
-            dto.setCsScopeOperation(null);
-            dto.setCsSociologyCode(null);
-            dto.setCsLegalRepresentative(null);
-            dto.setCsEntrustmentUnit(null);
+    public Integer saveAndUpdateInitiateConsignor(InitiateConsignor initiateConsignor) {
+        if (initiateConsignor == null){
+            return null;
         }
-        if (dto.getCreator() == null) dto.setCreator(commonService.thisUserAccount());
-        return dao.add(dto);
+        final Integer CSTYPEa = 0;
+        final Integer CSTYPEb = 1;
+        if (initiateConsignor.getId() == null || initiateConsignor.getId().intValue() == 0) {
+            initiateConsignor.setCreator(commonService.thisUserAccount());
+            //对 委托人进行单独处理
+            if (initiateConsignor.getCsType().equals(CSTYPEa)) {
+                initiateConsignor.setCsUnitProperties(null);
+                initiateConsignor.setCsScopeOperation(null);
+                initiateConsignor.setCsSociologyCode(null);
+                initiateConsignor.setCsLegalRepresentative(null);
+                initiateConsignor.setCsEntrustmentUnit(null);
+            }
+            Integer id = dao.add(initiateConsignor);
+            initiateContactsService.update(id, InitiateContactsEnum.CONSIGNOR.getId());
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(InitiateConsignor.class), id);
+            return id;
+        }else {
+            dao.update(initiateConsignor);
+            return initiateConsignor.getId();
+        }
+    }
+
+
+    public List<InitiateConsignor> initiateConsignorList(InitiateConsignor query) {
+
+        return dao.initiateConsignorList(query);
     }
 
     public InitiateConsignorVo getDataByProjectId(Integer projectId) {
-        return change(dao.getDataByProjectId(projectId));
+        InitiateConsignor consignor = new InitiateConsignor();
+        consignor.setProjectId(projectId);
+        List<InitiateConsignor> initiateConsignors = initiateConsignorList(consignor);
+        if (!ObjectUtils.isEmpty(initiateConsignors)) {
+            return getInitiateConsignorVo(initiateConsignors.get(0));
+        }
+        return null;
     }
 
     public InitiateConsignorVo get(Integer id) {
-        return change(dao.get(id));
+        return getInitiateConsignorVo(dao.get(id));
     }
 
-    public InitiateConsignorDto getById(Integer id) {
-        return dao.get(id);
-    }
-
-    @Transactional
     public boolean remove(Integer id) {
         return dao.remove(id);
     }
 
-    @Transactional
-    public boolean update(InitiateConsignorDto dto) {
-        return dao.update(dto);
-    }
 
 
-    private List<InitiateConsignorVo> getVoList() {
-        List<InitiateConsignorVo> vos = new ArrayList<>();
-        dao.getList().parallelStream().forEach(oo -> vos.add(change(oo)));
-        return vos;
-    }
-
-
-    private InitiateConsignorVo change(InitiateConsignor initiateConsignor) {
-        if (initiateConsignor == null) return null;
+    public InitiateConsignorVo getInitiateConsignorVo(InitiateConsignor initiateConsignor) {
+        if (initiateConsignor == null) {
+            return null;
+        }
         InitiateConsignorVo vo = new InitiateConsignorVo();
         BeanUtils.copyProperties(initiateConsignor, vo);
-        List<CrmBaseDataDicDto> crmBaseDataDicDtos = getUnitPropertiesList();
-        if (!ObjectUtils.isEmpty(crmBaseDataDicDtos)){
-            for (CrmBaseDataDicDto dicDto:crmBaseDataDicDtos){
-                if (!StringUtils.isEmpty(initiateConsignor.getCsUnitProperties())){
-                    if (dicDto.getId().equals(Integer.parseInt(initiateConsignor.getCsUnitProperties()))){
+        List<CrmBaseDataDicDto> crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
+        if (!ObjectUtils.isEmpty(crmBaseDataDicDtos)) {
+            for (CrmBaseDataDicDto dicDto : crmBaseDataDicDtos) {
+                if (!StringUtils.isEmpty(initiateConsignor.getCsUnitProperties())) {
+                    if (dicDto.getId().equals(Integer.parseInt(initiateConsignor.getCsUnitProperties()))) {
                         vo.setCsUnitPropertiesName(dicDto.getName());
                     }
                 }
             }
         }
         if (!StringUtils.isEmpty(initiateConsignor.getCsEntrustmentUnit())) {
-            if (isNumeric(initiateConsignor.getCsEntrustmentUnit())){
-            BaseDataDic baseDataDic = baseDataDicService.getDataDicById(Integer.valueOf(initiateConsignor.getCsEntrustmentUnit()));
-            if (baseDataDic != null)
-                vo.setCsEntrustmentUnitName(baseDataDic.getName());
+            if (NumberUtils.isNumber(initiateConsignor.getCsEntrustmentUnit())) {
+                vo.setCsEntrustmentUnitName(baseDataDicService.getNameById(Integer.valueOf(initiateConsignor.getCsEntrustmentUnit())));
             }
         }
         return vo;
     }
 
-    /**
-     * 单位性质 crm
-     *
-     * @return
-     */
-    private List<CrmBaseDataDicDto> getUnitPropertiesList() {
-        List<CrmBaseDataDicDto> crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
-        return crmBaseDataDicDtos;
-    }
 
-    /**
-     * 判断是否为数字
-     * @param str
-     * @return
-     */
-    public boolean isNumeric(String str) {
-        for (int i = str.length(); --i >= 0; ) {
-            if (!Character.isDigit(str.charAt(i))) {
-                return false;
+    public void clear() {
+        initiateContactsService.remove(0, InitiateContactsEnum.CONSIGNOR.getId());
+        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+        sysAttachmentDto.setTableId(0);
+        sysAttachmentDto.setCreater(commonService.thisUserAccount());
+        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(InitiateConsignor.class));
+        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
+        if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
+            for (SysAttachmentDto attachmentDto : sysAttachmentDtoList) {
+                baseAttachmentService.deleteAttachmentByDto(attachmentDto);
             }
         }
-        return true;
     }
 
 
