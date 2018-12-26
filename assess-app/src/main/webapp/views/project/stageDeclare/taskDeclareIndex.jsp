@@ -15,6 +15,8 @@
                 <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
                 <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
             </form>
+            <!-- 申报各种类型的html视图 -->
+            <%@include file="/views/project/stageDeclare/declareApplyModel.jsp" %>
             <!-- 房产证 -->
             <div id="viewDeclareRealtyHouseCert">
                 <%@include file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyHouseCert.jsp" %>
