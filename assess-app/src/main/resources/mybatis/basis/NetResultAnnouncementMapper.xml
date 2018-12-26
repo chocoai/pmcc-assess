@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.NetResultAnnouncementMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.NetResultAnnouncement" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="main_id" property="mainId" jdbcType="INTEGER" />
+    <result column="zdbh" property="zdbh" jdbcType="VARCHAR" />
+    <result column="zdwz" property="zdwz" jdbcType="VARCHAR" />
+    <result column="jydmj" property="jydmj" jdbcType="VARCHAR" />
+    <result column="tdyt" property="tdyt" jdbcType="VARCHAR" />
+    <result column="qsj" property="qsj" jdbcType="VARCHAR" />
+    <result column="cjsj" property="cjsj" jdbcType="VARCHAR" />
+    <result column="ccj" property="ccj" jdbcType="VARCHAR" />
+    <result column="jdr" property="jdr" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, main_id, zdbh, zdwz, jydmj, tdyt, qsj, cjsj, ccj, jdr
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetResultAnnouncementExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_net_result_announcement
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_net_result_announcement
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_net_result_announcement
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetResultAnnouncementExample" >
+    delete from tb_net_result_announcement
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetResultAnnouncement" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_net_result_announcement (main_id, zdbh, zdwz, 
+      jydmj, tdyt, qsj, cjsj, 
+      ccj, jdr)
+    values (#{mainId,jdbcType=INTEGER}, #{zdbh,jdbcType=VARCHAR}, #{zdwz,jdbcType=VARCHAR}, 
+      #{jydmj,jdbcType=VARCHAR}, #{tdyt,jdbcType=VARCHAR}, #{qsj,jdbcType=VARCHAR}, #{cjsj,jdbcType=VARCHAR}, 
+      #{ccj,jdbcType=VARCHAR}, #{jdr,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetResultAnnouncement" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_net_result_announcement
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mainId != null" >
+        main_id,
+      </if>
+      <if test="zdbh != null" >
+        zdbh,
+      </if>
+      <if test="zdwz != null" >
+        zdwz,
+      </if>
+      <if test="jydmj != null" >
+        jydmj,
+      </if>
+      <if test="tdyt != null" >
+        tdyt,
+      </if>
+      <if test="qsj != null" >
+        qsj,
+      </if>
+      <if test="cjsj != null" >
+        cjsj,
+      </if>
+      <if test="ccj != null" >
+        ccj,
+      </if>
+      <if test="jdr != null" >
+        jdr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mainId != null" >
+        #{mainId,jdbcType=INTEGER},
+      </if>
+      <if test="zdbh != null" >
+        #{zdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="zdwz != null" >
+        #{zdwz,jdbcType=VARCHAR},
+      </if>
+      <if test="jydmj != null" >
+        #{jydmj,jdbcType=VARCHAR},
+      </if>
+      <if test="tdyt != null" >
+        #{tdyt,jdbcType=VARCHAR},
+      </if>
+      <if test="qsj != null" >
+        #{qsj,jdbcType=VARCHAR},
+      </if>
+      <if test="cjsj != null" >
+        #{cjsj,jdbcType=VARCHAR},
+      </if>
+      <if test="ccj != null" >
+        #{ccj,jdbcType=VARCHAR},
+      </if>
+      <if test="jdr != null" >
+        #{jdr,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetResultAnnouncementExample" resultType="java.lang.Integer" >
+    select count(*) from tb_net_result_announcement
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_net_result_announcement
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.mainId != null" >
+        main_id = #{record.mainId,jdbcType=INTEGER},
+      </if>
+      <if test="record.zdbh != null" >
+        zdbh = #{record.zdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zdwz != null" >
+        zdwz = #{record.zdwz,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jydmj != null" >
+        jydmj = #{record.jydmj,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tdyt != null" >
+        tdyt = #{record.tdyt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qsj != null" >
+        qsj = #{record.qsj,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cjsj != null" >
+        cjsj = #{record.cjsj,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ccj != null" >
+        ccj = #{record.ccj,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jdr != null" >
+        jdr = #{record.jdr,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_net_result_announcement
+    set id = #{record.id,jdbcType=INTEGER},
+      main_id = #{record.mainId,jdbcType=INTEGER},
+      zdbh = #{record.zdbh,jdbcType=VARCHAR},
+      zdwz = #{record.zdwz,jdbcType=VARCHAR},
+      jydmj = #{record.jydmj,jdbcType=VARCHAR},
+      tdyt = #{record.tdyt,jdbcType=VARCHAR},
+      qsj = #{record.qsj,jdbcType=VARCHAR},
+      cjsj = #{record.cjsj,jdbcType=VARCHAR},
+      ccj = #{record.ccj,jdbcType=VARCHAR},
+      jdr = #{record.jdr,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetResultAnnouncement" >
+    update tb_net_result_announcement
+    <set >
+      <if test="mainId != null" >
+        main_id = #{mainId,jdbcType=INTEGER},
+      </if>
+      <if test="zdbh != null" >
+        zdbh = #{zdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="zdwz != null" >
+        zdwz = #{zdwz,jdbcType=VARCHAR},
+      </if>
+      <if test="jydmj != null" >
+        jydmj = #{jydmj,jdbcType=VARCHAR},
+      </if>
+      <if test="tdyt != null" >
+        tdyt = #{tdyt,jdbcType=VARCHAR},
+      </if>
+      <if test="qsj != null" >
+        qsj = #{qsj,jdbcType=VARCHAR},
+      </if>
+      <if test="cjsj != null" >
+        cjsj = #{cjsj,jdbcType=VARCHAR},
+      </if>
+      <if test="ccj != null" >
+        ccj = #{ccj,jdbcType=VARCHAR},
+      </if>
+      <if test="jdr != null" >
+        jdr = #{jdr,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetResultAnnouncement" >
+    update tb_net_result_announcement
+    set main_id = #{mainId,jdbcType=INTEGER},
+      zdbh = #{zdbh,jdbcType=VARCHAR},
+      zdwz = #{zdwz,jdbcType=VARCHAR},
+      jydmj = #{jydmj,jdbcType=VARCHAR},
+      tdyt = #{tdyt,jdbcType=VARCHAR},
+      qsj = #{qsj,jdbcType=VARCHAR},
+      cjsj = #{cjsj,jdbcType=VARCHAR},
+      ccj = #{ccj,jdbcType=VARCHAR},
+      jdr = #{jdr,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

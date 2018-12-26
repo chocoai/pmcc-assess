@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.NetAuctionAnnouncementMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.NetAuctionAnnouncement" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="main_id" property="mainId" jdbcType="INTEGER" />
+    <result column="zdbh" property="zdbh" jdbcType="VARCHAR" />
+    <result column="zdwz" property="zdwz" jdbcType="VARCHAR" />
+    <result column="jydmj" property="jydmj" jdbcType="VARCHAR" />
+    <result column="tdytjsyqx" property="tdytjsyqx" jdbcType="VARCHAR" />
+    <result column="qpjj" property="qpjj" jdbcType="VARCHAR" />
+    <result column="jmbxj" property="jmbxj" jdbcType="VARCHAR" />
+    <result column="pmcrsj" property="pmcrsj" jdbcType="VARCHAR" />
+    <result column="rjl" property="rjl" jdbcType="VARCHAR" />
+    <result column="jzmd" property="jzmd" jdbcType="VARCHAR" />
+    <result column="jzgd" property="jzgd" jdbcType="VARCHAR" />
+    <result column="ghydsyxz" property="ghydsyxz" jdbcType="VARCHAR" />
+    <result column="czzymjjfs" property="czzymjjfs" jdbcType="VARCHAR" />
+    <result column="crr" property="crr" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, main_id, zdbh, zdwz, jydmj, tdytjsyqx, qpjj, jmbxj, pmcrsj, rjl, jzmd, jzgd, 
+    ghydsyxz, czzymjjfs, crr
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetAuctionAnnouncementExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_net_auction_announcement
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_net_auction_announcement
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_net_auction_announcement
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetAuctionAnnouncementExample" >
+    delete from tb_net_auction_announcement
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetAuctionAnnouncement" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_net_auction_announcement (main_id, zdbh, zdwz, 
+      jydmj, tdytjsyqx, qpjj, 
+      jmbxj, pmcrsj, rjl, 
+      jzmd, jzgd, ghydsyxz, 
+      czzymjjfs, crr)
+    values (#{mainId,jdbcType=INTEGER}, #{zdbh,jdbcType=VARCHAR}, #{zdwz,jdbcType=VARCHAR}, 
+      #{jydmj,jdbcType=VARCHAR}, #{tdytjsyqx,jdbcType=VARCHAR}, #{qpjj,jdbcType=VARCHAR}, 
+      #{jmbxj,jdbcType=VARCHAR}, #{pmcrsj,jdbcType=VARCHAR}, #{rjl,jdbcType=VARCHAR}, 
+      #{jzmd,jdbcType=VARCHAR}, #{jzgd,jdbcType=VARCHAR}, #{ghydsyxz,jdbcType=VARCHAR}, 
+      #{czzymjjfs,jdbcType=VARCHAR}, #{crr,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetAuctionAnnouncement" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_net_auction_announcement
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mainId != null" >
+        main_id,
+      </if>
+      <if test="zdbh != null" >
+        zdbh,
+      </if>
+      <if test="zdwz != null" >
+        zdwz,
+      </if>
+      <if test="jydmj != null" >
+        jydmj,
+      </if>
+      <if test="tdytjsyqx != null" >
+        tdytjsyqx,
+      </if>
+      <if test="qpjj != null" >
+        qpjj,
+      </if>
+      <if test="jmbxj != null" >
+        jmbxj,
+      </if>
+      <if test="pmcrsj != null" >
+        pmcrsj,
+      </if>
+      <if test="rjl != null" >
+        rjl,
+      </if>
+      <if test="jzmd != null" >
+        jzmd,
+      </if>
+      <if test="jzgd != null" >
+        jzgd,
+      </if>
+      <if test="ghydsyxz != null" >
+        ghydsyxz,
+      </if>
+      <if test="czzymjjfs != null" >
+        czzymjjfs,
+      </if>
+      <if test="crr != null" >
+        crr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mainId != null" >
+        #{mainId,jdbcType=INTEGER},
+      </if>
+      <if test="zdbh != null" >
+        #{zdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="zdwz != null" >
+        #{zdwz,jdbcType=VARCHAR},
+      </if>
+      <if test="jydmj != null" >
+        #{jydmj,jdbcType=VARCHAR},
+      </if>
+      <if test="tdytjsyqx != null" >
+        #{tdytjsyqx,jdbcType=VARCHAR},
+      </if>
+      <if test="qpjj != null" >
+        #{qpjj,jdbcType=VARCHAR},
+      </if>
+      <if test="jmbxj != null" >
+        #{jmbxj,jdbcType=VARCHAR},
+      </if>
+      <if test="pmcrsj != null" >
+        #{pmcrsj,jdbcType=VARCHAR},
+      </if>
+      <if test="rjl != null" >
+        #{rjl,jdbcType=VARCHAR},
+      </if>
+      <if test="jzmd != null" >
+        #{jzmd,jdbcType=VARCHAR},
+      </if>
+      <if test="jzgd != null" >
+        #{jzgd,jdbcType=VARCHAR},
+      </if>
+      <if test="ghydsyxz != null" >
+        #{ghydsyxz,jdbcType=VARCHAR},
+      </if>
+      <if test="czzymjjfs != null" >
+        #{czzymjjfs,jdbcType=VARCHAR},
+      </if>
+      <if test="crr != null" >
+        #{crr,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetAuctionAnnouncementExample" resultType="java.lang.Integer" >
+    select count(*) from tb_net_auction_announcement
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_net_auction_announcement
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.mainId != null" >
+        main_id = #{record.mainId,jdbcType=INTEGER},
+      </if>
+      <if test="record.zdbh != null" >
+        zdbh = #{record.zdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zdwz != null" >
+        zdwz = #{record.zdwz,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jydmj != null" >
+        jydmj = #{record.jydmj,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tdytjsyqx != null" >
+        tdytjsyqx = #{record.tdytjsyqx,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qpjj != null" >
+        qpjj = #{record.qpjj,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jmbxj != null" >
+        jmbxj = #{record.jmbxj,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pmcrsj != null" >
+        pmcrsj = #{record.pmcrsj,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rjl != null" >
+        rjl = #{record.rjl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jzmd != null" >
+        jzmd = #{record.jzmd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jzgd != null" >
+        jzgd = #{record.jzgd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ghydsyxz != null" >
+        ghydsyxz = #{record.ghydsyxz,jdbcType=VARCHAR},
+      </if>
+      <if test="record.czzymjjfs != null" >
+        czzymjjfs = #{record.czzymjjfs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crr != null" >
+        crr = #{record.crr,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_net_auction_announcement
+    set id = #{record.id,jdbcType=INTEGER},
+      main_id = #{record.mainId,jdbcType=INTEGER},
+      zdbh = #{record.zdbh,jdbcType=VARCHAR},
+      zdwz = #{record.zdwz,jdbcType=VARCHAR},
+      jydmj = #{record.jydmj,jdbcType=VARCHAR},
+      tdytjsyqx = #{record.tdytjsyqx,jdbcType=VARCHAR},
+      qpjj = #{record.qpjj,jdbcType=VARCHAR},
+      jmbxj = #{record.jmbxj,jdbcType=VARCHAR},
+      pmcrsj = #{record.pmcrsj,jdbcType=VARCHAR},
+      rjl = #{record.rjl,jdbcType=VARCHAR},
+      jzmd = #{record.jzmd,jdbcType=VARCHAR},
+      jzgd = #{record.jzgd,jdbcType=VARCHAR},
+      ghydsyxz = #{record.ghydsyxz,jdbcType=VARCHAR},
+      czzymjjfs = #{record.czzymjjfs,jdbcType=VARCHAR},
+      crr = #{record.crr,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetAuctionAnnouncement" >
+    update tb_net_auction_announcement
+    <set >
+      <if test="mainId != null" >
+        main_id = #{mainId,jdbcType=INTEGER},
+      </if>
+      <if test="zdbh != null" >
+        zdbh = #{zdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="zdwz != null" >
+        zdwz = #{zdwz,jdbcType=VARCHAR},
+      </if>
+      <if test="jydmj != null" >
+        jydmj = #{jydmj,jdbcType=VARCHAR},
+      </if>
+      <if test="tdytjsyqx != null" >
+        tdytjsyqx = #{tdytjsyqx,jdbcType=VARCHAR},
+      </if>
+      <if test="qpjj != null" >
+        qpjj = #{qpjj,jdbcType=VARCHAR},
+      </if>
+      <if test="jmbxj != null" >
+        jmbxj = #{jmbxj,jdbcType=VARCHAR},
+      </if>
+      <if test="pmcrsj != null" >
+        pmcrsj = #{pmcrsj,jdbcType=VARCHAR},
+      </if>
+      <if test="rjl != null" >
+        rjl = #{rjl,jdbcType=VARCHAR},
+      </if>
+      <if test="jzmd != null" >
+        jzmd = #{jzmd,jdbcType=VARCHAR},
+      </if>
+      <if test="jzgd != null" >
+        jzgd = #{jzgd,jdbcType=VARCHAR},
+      </if>
+      <if test="ghydsyxz != null" >
+        ghydsyxz = #{ghydsyxz,jdbcType=VARCHAR},
+      </if>
+      <if test="czzymjjfs != null" >
+        czzymjjfs = #{czzymjjfs,jdbcType=VARCHAR},
+      </if>
+      <if test="crr != null" >
+        crr = #{crr,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetAuctionAnnouncement" >
+    update tb_net_auction_announcement
+    set main_id = #{mainId,jdbcType=INTEGER},
+      zdbh = #{zdbh,jdbcType=VARCHAR},
+      zdwz = #{zdwz,jdbcType=VARCHAR},
+      jydmj = #{jydmj,jdbcType=VARCHAR},
+      tdytjsyqx = #{tdytjsyqx,jdbcType=VARCHAR},
+      qpjj = #{qpjj,jdbcType=VARCHAR},
+      jmbxj = #{jmbxj,jdbcType=VARCHAR},
+      pmcrsj = #{pmcrsj,jdbcType=VARCHAR},
+      rjl = #{rjl,jdbcType=VARCHAR},
+      jzmd = #{jzmd,jdbcType=VARCHAR},
+      jzgd = #{jzgd,jdbcType=VARCHAR},
+      ghydsyxz = #{ghydsyxz,jdbcType=VARCHAR},
+      czzymjjfs = #{czzymjjfs,jdbcType=VARCHAR},
+      crr = #{crr,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
