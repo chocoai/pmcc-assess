@@ -194,10 +194,10 @@ basicCommon.isComplete = function (applyForm, isDraft) {
             return false;
         }
         if (!isDraft) {
-            if (estateCommon.estateForm.find('#_' + estateCommon.estateFileControlIdArray[0]).html().length <= 0) {
-                toastr.info('请上传楼盘总平图');
-                return false;
-            }
+            // if (estateCommon.estateForm.find('#_' + estateCommon.estateFileControlIdArray[0]).html().length <= 0) {
+            //     toastr.info('请上传楼盘总平图');
+            //     return false;
+            // }
             if (estateCommon.estateForm.find('#_' + estateCommon.estateFileControlIdArray[1]).html().length <= 0) {
                 toastr.info('请上传楼盘外观图');
                 return false;
@@ -316,6 +316,7 @@ basicCommon.getFormData = function () {
     if (basicApply.housePartInMode) {
         item.basicHouse = formSerializeArray(houseCommon.houseForm);
         item.basicTrading = formSerializeArray(houseCommon.houseTradingForm);
+        item.basicDamagedDegree = damagedDegree.getFormData();
     }
     return item;
 };

@@ -133,11 +133,13 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonOrientation, data.basicHouse.orientation, function (html, data) {
                 houseCommon.houseForm.find("select.orientation").empty().html(html).trigger('change');
             });
+            //完损度数据加载
+            damagedDegree.loadDamagedDegreeList();
 
             //初始化上传控件
             $.each(houseCommon.houseFileControlIdArray, function (i, item) {
                 houseCommon.fileUpload(item);
-            })
+            });
 
             //附件显示
             $.each(houseCommon.houseFileControlIdArray, function (i, item) {

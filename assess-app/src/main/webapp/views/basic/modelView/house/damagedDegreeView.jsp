@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="x_panel">
-    <div class="x_title collapse-link" onclick="damagedDegree.loadDamagedDegreeList();">
+    <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
@@ -37,8 +37,7 @@
                 <h3 class="modal-title" id="titleContent">明细数据列表</h3>
             </div>
             <div class="panel-body">
-                <div type="button" class="btn btn-success" onclick="damagedDegree.addDamagedDegreeDetail()"
-                     data-toggle="modal" href="#damagedDegreeDetailModal"> 新增
+                <div type="button" class="btn btn-success" onclick="damagedDegree.addDamagedDegreeDetail()"> 新增
                 </div>
                 <input type="hidden" id="damagedDegreeId">
                 <table class="table table-bordered" id="damagedDegreeDetailList">
@@ -68,7 +67,8 @@
                                             类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select class="form-control" name="type" onchange="damagedDegree.autoFillEntityConditionContent();">
+                                            <select class="form-control" name="type"
+                                                    onchange="damagedDegree.autoFillEntityConditionContent();">
                                             </select>
                                         </div>
                                     </div>
@@ -79,7 +79,8 @@
                                             实体状况
                                         </label>
                                         <div class="col-sm-10">
-                                            <select class="form-control" name="entityCondition" onchange="damagedDegree.autoFillEntityConditionContent();">
+                                            <select class="form-control" name="entityCondition"
+                                                    onchange="damagedDegree.autoFillEntityConditionContent();">
                                                 <option value="">-请选择-</option>
                                                 <option value="intact">完好</option>
                                                 <option value="basicallyIntact">基本完好</option>
@@ -118,7 +119,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="saveSubDataDic()">
+                    <button type="button" class="btn btn-primary" onclick="damagedDegree.saveDamagedDegreeDetail()">
                         保存
                     </button>
                 </div>
@@ -141,7 +142,6 @@
             </tr>
             </thead>
             <tbody>
-            {tbodyContent}
             </tbody>
         </table>
     </div>
@@ -171,7 +171,9 @@
             <input type="text" name="score" class="form-control">
         </td>
         <td>
-            <div class="btn btn-xs btn-primary" onclick="damagedDegree.damagedDegreeDetailModalShow('{id}','{category}')">明细内容</div>
+            <div class="btn btn-xs btn-primary" {isShow}
+                 onclick="damagedDegree.damagedDegreeDetailModalShow('{id}','{category}')">明细内容
+            </div>
         </td>
     </tr>
 </script>

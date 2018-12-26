@@ -1532,33 +1532,37 @@ damagedDegree.loadDamagedDegreeList = function () {
         },
         success: function (result) {
             if (result.ret && result.data) {
-                var tabHtml = '', tabContentHtml = '';
+                $("#damagedDegreeTab,#damagedDegreeTabContent").empty();
+                var tabContentHtml = '';
                 var groupArray = [];
                 $.each(result.data, function (i, item) { //循环数据分组
                     if ($.inArray(item.type, groupArray) < 0) {
                         groupArray.push(item.type);
-                        tabHtml += '<li role="presentation"><a href="#tab_content_' + item.type + '" role="tab" data-toggle="tab" aria-expanded="true">' + item.typeName + '</a></li>';
+                        var tabHtml = '<li role="presentation"><a href="#tab_content_' + item.type + '" role="tab" data-toggle="tab" aria-expanded="true">' + item.typeName + '</a></li>';
+                        $("#damagedDegreeTab").append(tabHtml);
                     }
                 })
 
                 $.each(groupArray, function (i, group) {//循环分组
                     var contentHtml = $('#damagedDegreeTabContentHtml').html().replace(/{type}/g, group);
+                    $("#damagedDegreeTabContent").append(contentHtml);
                     var tbodyContentHtml = '';
                     $.each(result.data, function (i, item) {
                         if (item.type == group) {
                             var trHtml = $("#damagedDegreeTabTrHtml").html();
-                            trHtml = trHtml.replace(/{id}/g, item.id).replace(/{category}/g, item.category).replace(/{categoryName}/g, item.categoryName);
-                            trHtml = trHtml.replace(/{standardScore}/g, item.standardScore).replace(/{intact}/g, item.intact);
-                            trHtml = trHtml.replace(/{basicallyIntact}/g, item.basicallyIntact).replace(/{generalDamage}/g, item.generalDamage);
-                            trHtml = trHtml.replace(/{seriousDamage}/g, item.seriousDamage);
-                            tbodyContentHtml += trHtml;
+                            trHtml = trHtml.replace(/{id}/g, item.id).replace(/{category}/g, AssessCommon.toString(item.category)).replace(/{categoryName}/g, AssessCommon.toString(item.categoryName));
+                            trHtml = trHtml.replace(/{standardScore}/g, AssessCommon.toString(item.standardScore)).replace(/{intact}/g, AssessCommon.toString(item.intact));
+                            trHtml = trHtml.replace(/{basicallyIntact}/g, AssessCommon.toString(item.basicallyIntact)).replace(/{generalDamage}/g, AssessCommon.toString(item.generalDamage));
+                            trHtml = trHtml.replace(/{seriousDamage}/g, AssessCommon.toString(item.seriousDamage)).replace(/{isShow}/g, item.hasChildren ? '' : 'style="display: none"');
+                            $("#damagedDegreeTabContent").find('.tab-pane:last').find('tbody').append(trHtml);
+                            var trElement = $("#damagedDegreeTabContent").find('.tab-pane:last').find('tbody').find('tr:last');
+                            trElement.find('[name=entityCondition]').val(item.entityCondition);
+                            trElement.find('[name=entityConditionContent]').val(item.entityConditionContent);
+                            trElement.find('[name=score]').val(item.score);
                         }
                     })
-                    contentHtml = contentHtml.replace(/{tbodyContent}/g, tbodyContentHtml);
-                    tabContentHtml += contentHtml;
                 })
-                $("#damagedDegreeTab").empty().append(tabHtml);
-                $("#damagedDegreeTabContent").empty().append(tabContentHtml);
+                $('#damagedDegreeTab a').eq(0).tab('show');
             }
         }
     })
@@ -1581,10 +1585,11 @@ damagedDegree.damagedDegreeDetailModalShow = function (damagedDegreeId, category
 //加载明细项数据列表
 damagedDegree.loadDamagedDegreeDetailList = function () {
     var cols = [];
-    cols.push({field: 'typeName', title: '类型'});
-    cols.push({field: 'entityConditionName', title: '实体状况'});
-    cols.push({field: 'entityConditionContent', title: '状况内容'});
-    cols.push({field: 'score', title: '得分'});
+    cols.push({field: 'typeName', title: '类型', width: '10%'});
+    cols.push({field: 'standardScore', title: '标准分', width: '10%'});
+    cols.push({field: 'entityConditionName', title: '实体状况', width: '10%'});
+    cols.push({field: 'entityConditionContent', title: '状况内容', width: '40%'});
+    cols.push({field: 'score', title: '得分', width: '10%'});
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {
             var str = '<div class="btn-margin">';
@@ -1610,14 +1615,14 @@ damagedDegree.loadDamagedDegreeDetailList = function () {
 //新增
 damagedDegree.addDamagedDegreeDetail = function () {
     $("#damagedDegreeDetailForm").clearAll();
-    $("#damagedDegreeDetailListModal").modal();
+    $("#damagedDegreeDetailModal").modal();
 };
 
 //编辑
 damagedDegree.editDamagedDegreeDetail = function (index) {
     var row = $("#damagedDegreeDetailList").bootstrapTable('getData')[index];
     $("#damagedDegreeDetailForm").clearAll().initForm(row);
-    $("#damagedDegreeDetailListModal").modal();
+    $("#damagedDegreeDetailModal").modal();
 };
 
 //删除
@@ -1628,7 +1633,6 @@ damagedDegree.deleteDamagedDegreeDetail = function (id) {
         success: function (result) {
             if (result.ret) {
                 damagedDegree.loadDamagedDegreeDetailList();
-                $("#damagedDegreeDetailListModal").modal('hide');
             } else {
                 Alert(result.errmsg);
             }
@@ -1650,7 +1654,7 @@ damagedDegree.saveDamagedDegreeDetail = function () {
         success: function (result) {
             if (result.ret) {
                 damagedDegree.loadDamagedDegreeDetailList();
-                $("#damagedDegreeDetailListModal").modal('hide');
+                $("#damagedDegreeDetailModal").modal('hide');
             } else {
                 Alert(result.errmsg);
             }
@@ -1695,5 +1699,19 @@ damagedDegree.autoFillEntityConditionContent = function () {
     if (option && entityCondition) {
         $("#damagedDegreeDetailForm").find('[name=entityConditionContent]').val($(option).attr('data-' + entityCondition));
     }
+}
+
+//获取需保存的数据
+damagedDegree.getFormData = function () {
+    var dataArray = [];
+    $("#damagedDegreeTabContent").find('.group').each(function () {
+        var data = {};
+        data.id = $(this).find('[name=id]').val();
+        data.entityCondition = $(this).find('[name=entityCondition]').val();
+        data.entityConditionContent = $(this).find('[name=entityConditionContent]').val();
+        data.score = $(this).find('[name=score]').val();
+        dataArray.push(data);
+    })
+    return dataArray;
 }
 

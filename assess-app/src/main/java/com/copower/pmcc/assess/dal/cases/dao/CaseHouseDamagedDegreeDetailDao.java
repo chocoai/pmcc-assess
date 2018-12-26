@@ -23,7 +23,7 @@ public class CaseHouseDamagedDegreeDetailDao {
         return caseHouseDamagedDegreeDetailMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveCaseHouseDamagedDegreeDetail(CaseHouseDamagedDegreeDetail CaseHouseDamagedDegreeDetail)  {
+    public Integer addCaseHouseDamagedDegreeDetail(CaseHouseDamagedDegreeDetail CaseHouseDamagedDegreeDetail)  {
         caseHouseDamagedDegreeDetailMapper.insertSelective(CaseHouseDamagedDegreeDetail);
         return CaseHouseDamagedDegreeDetail.getId();
     }

@@ -27,9 +27,17 @@ public class CaseHouseDamagedDegreeService {
         return caseHouseDamagedDegreeDao.getDamagedDegreeList(caseHouseDamagedDegree);
     }
 
+    public void addCaseHouseDamagedDegree(CaseHouseDamagedDegree caseHouseDamagedDegree){
+        caseHouseDamagedDegreeDao.addCaseHouseDamagedDegree(caseHouseDamagedDegree);
+    }
+
     public List<CaseHouseDamagedDegreeDetail> getDamagedDegreeDetailList(Integer damagedDegreeId){
         CaseHouseDamagedDegreeDetail caseHouseDamagedDegreeDetail=new CaseHouseDamagedDegreeDetail();
         caseHouseDamagedDegreeDetail.setDamagedDegreeId(damagedDegreeId);
         return caseHouseDamagedDegreeDetailDao.getDamagedDegreeDetailList(caseHouseDamagedDegreeDetail);
+    }
+
+    public void addCaseHouseDamagedDegreeDetail(CaseHouseDamagedDegreeDetail caseHouseDamagedDegreeDetail){
+        caseHouseDamagedDegreeDetailDao.addCaseHouseDamagedDegreeDetail(caseHouseDamagedDegreeDetail);
     }
 }

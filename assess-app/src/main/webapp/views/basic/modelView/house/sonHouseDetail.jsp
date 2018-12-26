@@ -134,8 +134,8 @@
         </table>
     </div>
 </div>
-
-<script>
+<%@include file="/views/basic/modelView/house/damagedDegreeDetail.jsp" %>
+<script type="text/javascript">
 
     var houseRoom;
     (function () {

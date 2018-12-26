@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -76,14 +77,19 @@ public class BasicHouseDamagedDegreeService {
         }
     }
 
+    public List<BasicHouseDamagedDegree> getDamagedDegreeList(Integer houseId) {
+        BasicHouseDamagedDegree basicHouseDamagedDegree = new BasicHouseDamagedDegree();
+        basicHouseDamagedDegree.setHouseId(houseId);
+        List<BasicHouseDamagedDegree> list = basicHouseDamagedDegreeDao.getDamagedDegreeList(basicHouseDamagedDegree);
+        return list;
+    }
+
     /**
      * @param houseId
      * @return
      */
-    public List<BasicHouseDamagedDegreeVo> getDamagedDegreeList(Integer houseId) {
-        BasicHouseDamagedDegree basicHouseDamagedDegree = new BasicHouseDamagedDegree();
-        basicHouseDamagedDegree.setHouseId(houseId);
-        List<BasicHouseDamagedDegree> list = basicHouseDamagedDegreeDao.getDamagedDegreeList(basicHouseDamagedDegree);
+    public List<BasicHouseDamagedDegreeVo> getDamagedDegreeVoList(Integer houseId) {
+        List<BasicHouseDamagedDegree> list = getDamagedDegreeList(houseId);
         List<BasicHouseDamagedDegreeVo> vos = LangUtils.transform(list, o -> getBasicHouseDamagedDegreeVo(o));
         return vos;
     }
@@ -110,6 +116,7 @@ public class BasicHouseDamagedDegreeService {
             basicHouseDamagedDegreeVo.setBasicallyIntact(dataDamagedDegree.getBasicallyIntact());
             basicHouseDamagedDegreeVo.setGeneralDamage(dataDamagedDegree.getGeneralDamage());
             basicHouseDamagedDegreeVo.setSeriousDamage(dataDamagedDegree.getSeriousDamage());
+            basicHouseDamagedDegreeVo.setHasChildren(!CollectionUtils.isEmpty(dataDamagedDegreeService.getCacheDamagedDegreeListByPid(dataDamagedDegree.getId())));
         }
         if (!StringUtils.isEmpty(basicHouseDamagedDegree.getEntityCondition()))
             basicHouseDamagedDegreeVo.setEntityConditionName(DataDamagedDegreeEnum.getEnumByKey(basicHouseDamagedDegree.getEntityCondition()).getValue());
@@ -176,6 +183,12 @@ public class BasicHouseDamagedDegreeService {
         return basicHouseDamagedDegreeDetailVo;
     }
 
+    public List<BasicHouseDamagedDegreeDetail> getDamagedDegreeDetails(Integer damagedDegreeId) {
+        BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail = new BasicHouseDamagedDegreeDetail();
+        basicHouseDamagedDegreeDetail.setDamagedDegreeId(damagedDegreeId);
+        List<BasicHouseDamagedDegreeDetail> degreeDetailList = basicHouseDamagedDegreeDetailDao.getDamagedDegreeDetailList(basicHouseDamagedDegreeDetail);
+        return degreeDetailList;
+    }
 
     public BootstrapTableVo getDamagedDegreeDetailList(Integer damagedDegreeId) {
         BootstrapTableVo vo = new BootstrapTableVo();

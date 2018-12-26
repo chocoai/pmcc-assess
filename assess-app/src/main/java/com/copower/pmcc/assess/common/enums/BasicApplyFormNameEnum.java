@@ -14,7 +14,8 @@ public enum BasicApplyFormNameEnum {
     BASIC_BUILDING("basicBuilding","楼栋部分"),
     BASIC_UNIT("basicUnit","单元"),
     BASIC_HOUSE("basicHouse","房屋"),
-    BASIC_TRADING("basicTrading","房屋交易");
+    BASIC_TRADING("basicTrading","房屋交易"),
+    BASIC_DAMAGED_DEGREE("basicDamagedDegree","房屋完损度");
     private String var;
     private String describe;
 

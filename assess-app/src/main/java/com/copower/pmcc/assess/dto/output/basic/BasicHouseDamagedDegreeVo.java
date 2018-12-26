@@ -16,6 +16,7 @@ public class BasicHouseDamagedDegreeVo extends BasicHouseDamagedDegree {
     private String basicallyIntact;
     private String generalDamage;
     private String seriousDamage;
+    private Boolean hasChildren;
 
     public String getTypeName() {
         return typeName;
@@ -79,5 +80,13 @@ public class BasicHouseDamagedDegreeVo extends BasicHouseDamagedDegree {
 
     public void setSeriousDamage(String seriousDamage) {
         this.seriousDamage = seriousDamage;
+    }
+
+    public Boolean getHasChildren() {
+        return hasChildren;
+    }
+
+    public void setHasChildren(Boolean hasChildren) {
+        this.hasChildren = hasChildren;
     }
 }

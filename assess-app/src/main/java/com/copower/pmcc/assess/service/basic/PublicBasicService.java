@@ -190,6 +190,11 @@ public class PublicBasicService {
     private CommonService commonService;
     @Autowired
     private DataBlockService dataBlockService;
+    @Autowired
+    private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
+    @Autowired
+    private CaseHouseDamagedDegreeService caseHouseDamagedDegreeService;
+
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -782,6 +787,7 @@ public class PublicBasicService {
         List<BasicHouseCorollaryEquipment> basicHouseCorollaryEquipmentList = null;
         List<SysAttachmentDto> sysAttachmentDtoList = null;
         List<BasicHouseWaterDrain> basicHouseWaterDrainList = null;
+        List<BasicHouseDamagedDegree> basicHouseDamagedDegreeList = null;
 
         BasicHouseTradingSell querySell = new BasicHouseTradingSell();
         BasicHouseTradingLease queryLease = new BasicHouseTradingLease();
@@ -820,6 +826,7 @@ public class PublicBasicService {
         basicHouseEquipmentList = basicHouseEquipmentService.basicHouseEquipmentList(queryBasicHouseEquipment);
         basicHouseCorollaryEquipmentList = basicHouseCorollaryEquipmentService.basicHouseCorollaryEquipmentList(queryBasicHouseCorollaryEquipment);
         basicHouseWaterDrainList = basicHouseWaterDrainService.basicHouseWaterDrainList(queryWaterDrain);
+        basicHouseDamagedDegreeList = basicHouseDamagedDegreeService.getDamagedDegreeList(basicHouse.getId());
 
         if (caseHouse != null) {
             if (caseHouse.getId() != null) {
@@ -831,6 +838,7 @@ public class PublicBasicService {
                 this.flowWriteCaseFaceStreet(basicHouseFaceStreetList, caseHouse);
                 this.flowWriteCaseEquipment(basicHouseEquipmentList, caseHouse);
                 this.flowWriteCaseCorollaryEquipment(basicHouseCorollaryEquipmentList, caseHouse);
+                this.flowWriteCaseDamagedDegree(basicHouseDamagedDegreeList,caseHouse);
                 if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
                     for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
                         SysAttachmentDto attachmentDto = new SysAttachmentDto();
@@ -1058,6 +1066,33 @@ public class PublicBasicService {
         }
     }
 
+    private void flowWriteCaseDamagedDegree(List<BasicHouseDamagedDegree> basicHouseDamagedDegrees, CaseHouse caseHouse) throws Exception {
+        if (!ObjectUtils.isEmpty(basicHouseDamagedDegrees)) {
+            for (BasicHouseDamagedDegree basicHouseDamagedDegree : basicHouseDamagedDegrees) {
+                CaseHouseDamagedDegree caseHouseDamagedDegree = new CaseHouseDamagedDegree();
+                BeanUtils.copyProperties(basicHouseDamagedDegree, caseHouseDamagedDegree);
+                caseHouseDamagedDegree.setId(null);
+                caseHouseDamagedDegree.setGmtCreated(null);
+                caseHouseDamagedDegree.setGmtModified(null);
+                caseHouseDamagedDegree.setHouseId(caseHouse.getId());
+                caseHouseDamagedDegreeService.addCaseHouseDamagedDegree(caseHouseDamagedDegree);
+
+                List<BasicHouseDamagedDegreeDetail> degreeDetails = basicHouseDamagedDegreeService.getDamagedDegreeDetails(basicHouseDamagedDegree.getId());
+                if (!CollectionUtils.isEmpty(degreeDetails)) {
+                    for (BasicHouseDamagedDegreeDetail degreeDetail : degreeDetails) {
+                        CaseHouseDamagedDegreeDetail caseHouseDamagedDegreeDetail = new CaseHouseDamagedDegreeDetail();
+                        BeanUtils.copyProperties(degreeDetail, caseHouseDamagedDegree);
+                        caseHouseDamagedDegreeDetail.setId(null);
+                        caseHouseDamagedDegreeDetail.setGmtCreated(null);
+                        caseHouseDamagedDegreeDetail.setGmtModified(null);
+                        caseHouseDamagedDegreeDetail.setHouseId(caseHouse.getId());
+                        caseHouseDamagedDegreeService.addCaseHouseDamagedDegreeDetail(caseHouseDamagedDegreeDetail);
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * 回写数据并且升级版本
      *
@@ -1278,12 +1313,21 @@ public class PublicBasicService {
                     }
                     basicHouse.setApplyId(basicApply.getId());
                     Integer house = basicHouseService.saveAndUpdateBasicHouse(basicHouse);
+                    //交易信息
                     jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar());
                     BasicHouseTrading basicTrading = JSONObject.parseObject(jsonContent, BasicHouseTrading.class);
                     if (basicTrading != null) {
                         basicTrading.setHouseId(house);
                         basicTrading.setApplyId(basicApply.getId());
                         basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading);
+                    }
+                    //完损度
+                    jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_DAMAGED_DEGREE.getVar());
+                    List<BasicHouseDamagedDegree> damagedDegreeList = JSONObject.parseArray(jsonContent, BasicHouseDamagedDegree.class);
+                    if (!CollectionUtils.isEmpty(damagedDegreeList)) {
+                        for (BasicHouseDamagedDegree degree : damagedDegreeList) {
+                            basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(degree);
+                        }
                     }
                 }
             }

@@ -25,7 +25,7 @@ public class BasicHouseDamagedDegreeController extends BaseController {
     @RequestMapping(value = "/getDamagedDegreeList", name = "获取完损度数据", method = {RequestMethod.GET})
     public HttpResult getDamagedDegreeList(Integer houseId) {
         try {
-            return HttpResult.newCorrectResult(basicHouseDamagedDegreeService.getDamagedDegreeList(houseId));
+            return HttpResult.newCorrectResult(basicHouseDamagedDegreeService.getDamagedDegreeVoList(houseId));
         } catch (Exception e) {
             log.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());
