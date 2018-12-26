@@ -1,11 +1,11 @@
 package com.copower.pmcc.assess.dto.output.project.initiate;
 
-import com.copower.pmcc.assess.dto.input.project.initiate.InitiateConsignorDto;
+import com.copower.pmcc.assess.dal.basis.entity.InitiateConsignor;
 
 /**
  * Created by 13426 on 2018/5/4.
  */
-public class InitiateConsignorVo extends InitiateConsignorDto {
+public class InitiateConsignorVo extends InitiateConsignor {
     private String csEntrustmentUnitName;
     private String csUnitPropertiesName;
 

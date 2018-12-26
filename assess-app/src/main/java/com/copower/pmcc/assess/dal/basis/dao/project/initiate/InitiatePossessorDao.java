@@ -3,13 +3,10 @@ package com.copower.pmcc.assess.dal.basis.dao.project.initiate;
 import com.copower.pmcc.assess.dal.basis.entity.InitiatePossessor;
 import com.copower.pmcc.assess.dal.basis.entity.InitiatePossessorExample;
 import com.copower.pmcc.assess.dal.basis.mapper.InitiatePossessorMapper;
-import com.copower.pmcc.assess.dto.input.project.initiate.InitiatePossessorDto;
-import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.BeanUtils;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,50 +19,27 @@ public class InitiatePossessorDao {
     @Autowired
     private InitiatePossessorMapper mapper;
 
-    public int add(InitiatePossessorDto dto){
-        InitiatePossessor initiatePossessor = change(dto);
-        mapper.insertSelective(initiatePossessor);
-        return initiatePossessor.getId();
+    public int add(InitiatePossessor possessor){
+        mapper.insertSelective(possessor);
+        return possessor.getId();
     }
 
     public boolean remove(Integer id){
         return mapper.deleteByPrimaryKey(id)==1;
     }
 
-    public boolean update(InitiatePossessorDto dto){
-        return mapper.updateByPrimaryKeySelective(change(dto))==1;
+    public boolean update(InitiatePossessor initiatePossessor){
+        return mapper.updateByPrimaryKeySelective(initiatePossessor)==1;
     }
 
-    public InitiatePossessor getDataByProjectId(Integer projectId){
+    public InitiatePossessor get(Integer id){
+        return mapper.selectByPrimaryKey(id);
+    }
+
+    public List<InitiatePossessor> initiatePossessorList(InitiatePossessor initiatePossessor){
         InitiatePossessorExample example = new InitiatePossessorExample();
-        example.createCriteria().andIdIsNotNull().andProjectIdEqualTo(projectId);
-        List<InitiatePossessor> consignors = mapper.selectByExample(example);
-        if(CollectionUtils.isNotEmpty(consignors))
-            return consignors.get(0);
-        return null;
-    }
-    
-    public InitiatePossessorDto get(Integer id){
-        return change(mapper.selectByPrimaryKey(id));
+        MybatisUtils.convertObj2Example(initiatePossessor, example);
+        return mapper.selectByExample(example) ;
     }
 
-    public List<InitiatePossessorDto> getList(){
-        List<InitiatePossessorDto> dtos = new ArrayList<>();
-        InitiatePossessorExample example = new InitiatePossessorExample();
-        example.createCriteria().andIdIsNotNull();
-        mapper.selectByExample(example).parallelStream().forEach(oo -> dtos.add(change(oo)));
-        return dtos;
-    }
-
-    private InitiatePossessor change(InitiatePossessorDto dto){
-        InitiatePossessor data = new InitiatePossessor();
-        BeanUtils.copyProperties(dto,data);
-        return data;
-    }
-
-    private InitiatePossessorDto change(InitiatePossessor data){
-        InitiatePossessorDto dto = new InitiatePossessorDto();
-        BeanUtils.copyProperties(data,dto);
-        return dto;
-    }
 }

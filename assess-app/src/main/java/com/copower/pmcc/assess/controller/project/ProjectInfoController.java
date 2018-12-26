@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.controller.project;
 
-import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectFollow;
@@ -14,7 +13,9 @@ import com.copower.pmcc.assess.service.project.change.ProjectFollowService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.assess.service.project.initiate.InitiateContactsService;
+import com.copower.pmcc.assess.service.project.initiate.InitiateConsignorService;
+import com.copower.pmcc.assess.service.project.initiate.InitiatePossessorService;
+import com.copower.pmcc.assess.service.project.initiate.InitiateUnitInformationService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -59,7 +60,11 @@ public class ProjectInfoController {
     @Autowired
     private HttpServletRequest request;
     @Autowired
-    private InitiateContactsService initiateContactsService;
+    private InitiateConsignorService initiateConsignorService;
+    @Autowired
+    private InitiatePossessorService initiatePossessorService;
+    @Autowired
+    private InitiateUnitInformationService unitInformationService;
 
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view(Integer projectClassId, Integer projectTypeId, Integer projectCategoryId) {
@@ -76,9 +81,9 @@ public class ProjectInfoController {
         projectInfo.setProjectCategoryId(projectCategoryId);
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
         modelAndView.addObject("projectInfo", projectInfoVo);
-        initiateContactsService.remove(0, InitiateContactsEnum.CONSIGNOR.getId());
-        initiateContactsService.remove(0, InitiateContactsEnum.POSSESSOR.getId());
-        initiateContactsService.remove(0, InitiateContactsEnum.UNIT_INFORMATION.getId());
+        initiateConsignorService.clear();
+        initiatePossessorService.clear();
+        unitInformationService.clear();
         return modelAndView;
     }
 

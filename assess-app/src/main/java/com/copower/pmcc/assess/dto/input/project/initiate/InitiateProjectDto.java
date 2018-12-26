@@ -1,37 +1,40 @@
 package com.copower.pmcc.assess.dto.input.project.initiate;
 
+import com.copower.pmcc.assess.dal.basis.entity.InitiateConsignor;
+import com.copower.pmcc.assess.dal.basis.entity.InitiatePossessor;
+import com.copower.pmcc.assess.dal.basis.entity.InitiateUnitInformation;
 import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
 
 /**
  * Created by 13426 on 2018/5/8.
  */
 public class InitiateProjectDto {
-    private InitiatePossessorDto possessor;
-    private InitiateConsignorDto consignor;
-    private InitiateUnitInformationDto unitinformation;
+    private InitiatePossessor possessor;
+    private InitiateConsignor consignor;
+    private InitiateUnitInformation unitinformation;
     private ProjectInfoDto projectInfo;
 
-    public InitiatePossessorDto getPossessor() {
+    public InitiatePossessor getPossessor() {
         return possessor;
     }
 
-    public void setPossessor(InitiatePossessorDto possessor) {
+    public void setPossessor(InitiatePossessor possessor) {
         this.possessor = possessor;
     }
 
-    public InitiateConsignorDto getConsignor() {
+    public InitiateConsignor getConsignor() {
         return consignor;
     }
 
-    public void setConsignor(InitiateConsignorDto consignor) {
+    public void setConsignor(InitiateConsignor consignor) {
         this.consignor = consignor;
     }
 
-    public InitiateUnitInformationDto getUnitinformation() {
+    public InitiateUnitInformation getUnitinformation() {
         return unitinformation;
     }
 
-    public void setUnitinformation(InitiateUnitInformationDto unitinformation) {
+    public void setUnitinformation(InitiateUnitInformation unitinformation) {
         this.unitinformation = unitinformation;
     }
 

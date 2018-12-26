@@ -3,13 +3,11 @@ package com.copower.pmcc.assess.dal.basis.dao.project.initiate;
 import com.copower.pmcc.assess.dal.basis.entity.InitiateConsignor;
 import com.copower.pmcc.assess.dal.basis.entity.InitiateConsignorExample;
 import com.copower.pmcc.assess.dal.basis.mapper.InitiateConsignorMapper;
-import com.copower.pmcc.assess.dto.input.project.initiate.InitiateConsignorDto;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,51 +20,30 @@ public class InitiateConsignorDao {
     @Autowired
     private InitiateConsignorMapper mapper;
 
-    public int add(InitiateConsignorDto dto){
-        InitiateConsignor consignor = change(dto);
-        mapper.insertSelective(consignor);
-        return consignor.getId();
+    public int add(InitiateConsignor initiateConsignor) {
+        mapper.insertSelective(initiateConsignor);
+        return initiateConsignor.getId();
     }
 
-    public InitiateConsignor getDataByProjectId(Integer projectId){
+
+    public boolean remove(Integer id) {
+        return mapper.deleteByPrimaryKey(id) == 1;
+    }
+
+    public boolean update(InitiateConsignor consignor) {
+        return mapper.updateByPrimaryKeySelective(consignor) == 1;
+    }
+
+
+    public InitiateConsignor get(Integer id) {
+        return mapper.selectByPrimaryKey(id);
+    }
+
+    public List<InitiateConsignor> initiateConsignorList(InitiateConsignor query){
         InitiateConsignorExample example = new InitiateConsignorExample();
-        example.createCriteria().andIdIsNotNull().andProjectIdEqualTo(projectId);
-        List<InitiateConsignor> consignors = mapper.selectByExample(example);
-        if(CollectionUtils.isNotEmpty(consignors))
-            return consignors.get(0);
-        return null;
-    }
-
-    public boolean remove(Integer id){
-        return mapper.deleteByPrimaryKey(id)==1;
-    }
-
-    public boolean update(InitiateConsignorDto dto){
-        return mapper.updateByPrimaryKeySelective(change(dto))==1;
+        MybatisUtils.convertObj2Example(example, example);
+        return mapper.selectByExample(example);
     }
 
 
-    public InitiateConsignorDto get(Integer id){
-        return change(mapper.selectByPrimaryKey(id));
-    }
-
-    public List<InitiateConsignorDto> getList(){
-        List<InitiateConsignorDto> dtos = new ArrayList<>();
-        InitiateConsignorExample example = new InitiateConsignorExample();
-        example.createCriteria().andIdIsNotNull();
-        mapper.selectByExample(example).parallelStream().forEach(oo -> dtos.add(change(oo)));
-        return dtos;
-    }
-
-    private InitiateConsignor change(InitiateConsignorDto dto){
-        InitiateConsignor data = new InitiateConsignor();
-        BeanUtils.copyProperties(dto,data);
-        return data;
-    }
-
-    private InitiateConsignorDto change(InitiateConsignor data){
-        InitiateConsignorDto dto = new InitiateConsignorDto();
-        BeanUtils.copyProperties(data,dto);
-        return dto;
-    }
 }
