@@ -79,155 +79,6 @@ declareRealtyLandCert.isEmpty = function (item) {
     return false;
 };
 
-/**
- * @author:  zch
- * 描述:数据拼接
- * @date:2018-09-21
- **/
-declareRealtyLandCert.role = {
-    CertName: {
-        init: function () {
-            $("#" + declareRealtyLandCertConfig.frm + " input[name='location']").blur(function () {
-                if (declareRealtyLandCert.isEmpty($("#" + declareRealtyLandCertConfig.frm + " input[name='location']").val())) {
-                    declareRealtyLandCert.role.CertName.write();
-                }
-            });
-            $("#" + declareRealtyLandCertConfig.frm + " input[name='year']").blur(function () {
-                if (declareRealtyLandCert.isEmpty($("#" + declareRealtyLandCertConfig.frm + " input[name='year']").val())) {
-                    declareRealtyLandCert.role.CertName.write();
-                }
-            });
-            $("#" + declareRealtyLandCertConfig.frm + " input[name='number']").blur(function () {
-                if (declareRealtyLandCert.isEmpty($("#" + declareRealtyLandCertConfig.frm + " input[name='number']").val())) {
-                    declareRealtyLandCert.role.CertName.write();
-                }
-            });
-            $("#" + declareRealtyLandCertConfig.frm + " .type").change(function () {
-                /**
-                 * 这 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
-                 **/
-                var id = $("#" + declareRealtyLandCertConfig.frm + " .type").eq(1).val();
-                if (declareRealtyLandCert.isEmpty(id)) {
-                    declareRealtyLandCert.role.CertName.write();
-                }
-            });
-        },
-        write: function () {
-            var temp = "";
-            var id = $("#" + declareRealtyLandCertConfig.frm + " .type").eq(1).val();
-            var location = $("#" + declareRealtyLandCertConfig.frm + " input[name='location']").val();
-            var year = $("#" + declareRealtyLandCertConfig.frm + " input[name='year']").val();
-            var number = $("#" + declareRealtyLandCertConfig.frm + " input[name='number']").val();
-            if (declareRealtyLandCert.isEmpty(id)) {
-                AssessCommon.getDataDicInfo(id, function (data) {
-                    if (declareRealtyLandCert.isEmpty(data)) {
-                        var temp = location + data.name + year + "第" + number + "号";
-                        $("#" + declareRealtyLandCertConfig.frm + " input[name='landCertName']").val(temp);
-                    }
-                });
-            } else {
-                var temp = location + year + "第" + number + "号";
-                $("#" + declareRealtyLandCertConfig.frm + " input[name='landCertName']").val(temp);
-            }
-        }
-    },
-    beLocated: {
-        init: function () {
-            $("#" + declareRealtyLandCertConfig.frm + " input[name='unit']").blur(function () {
-                if (declareRealtyLandCert.isEmpty($("#" + declareRealtyLandCertConfig.frm + " input[name='unit']").val())) {
-                    declareRealtyLandCert.role.beLocated.write();
-                }
-            });
-            $("#" + declareRealtyLandCertConfig.frm + " input[name='floor']").blur(function () {
-                if (declareRealtyLandCert.isEmpty($("#" + declareRealtyLandCertConfig.frm + " input[name='floor']").val())) {
-                    declareRealtyLandCert.role.beLocated.write();
-                }
-            });
-            $("#" + declareRealtyLandCertConfig.frm + " input[name='roomNumber']").blur(function () {
-                if (declareRealtyLandCert.isEmpty($("#" + declareRealtyLandCertConfig.frm + " input[name='roomNumber']").val())) {
-                    declareRealtyLandCert.role.beLocated.write();
-                }
-            });
-            $("#" + declareRealtyLandCertConfig.frm + " input[name='streetNumber']").blur(function () {
-                if (declareRealtyLandCert.isEmpty($("#" + declareRealtyLandCertConfig.frm + " input[name='streetNumber']").val())) {
-                    declareRealtyLandCert.role.beLocated.write();
-                }
-            });
-            $("#" + declareRealtyLandCertConfig.frm + " input[name='attachedNumber']").blur(function () {
-                if (declareRealtyLandCert.isEmpty($("#" + declareRealtyLandCertConfig.frm + " input[name='attachedNumber']").val())) {
-                    declareRealtyLandCert.role.beLocated.write();
-                }
-            });
-            $("#" + declareRealtyLandCertConfig.frm + " input[name='buildingNumber']").blur(function () {
-                if (declareRealtyLandCert.isEmpty($("#" + declareRealtyLandCertConfig.frm + " input[name='buildingNumber']").val())) {
-                    declareRealtyLandCert.role.beLocated.write();
-                }
-            });
-            $("#" + declareRealtyLandCertConfig.frm + " .district").change(function () {
-                /**
-                 * 这 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
-                 **/
-                var id = $("#" + declareRealtyLandCertConfig.frm + " .district").eq(1).val();
-                if (declareRealtyLandCert.isEmpty(id)) {
-                    declareRealtyLandCert.role.beLocated.write();
-                }
-            });
-        },
-        write: function () {
-            var temp = null;
-            var district = $("#" + declareRealtyLandCertConfig.frm + " .district").eq(1).val();
-            var unit = $("#" + declareRealtyLandCertConfig.frm + " input[name='unit']").val();
-            var floor = $("#" + declareRealtyLandCertConfig.frm + " input[name='floor']").val();
-            var roomNumber = $("#" + declareRealtyLandCertConfig.frm + " input[name='roomNumber']").val();
-            var streetNumber = $("#" + declareRealtyLandCertConfig.frm + " input[name='streetNumber']").val();
-            var attachedNumber = $("#" + declareRealtyLandCertConfig.frm + " input[name='attachedNumber']").val();
-            var buildingNumber = $("#" + declareRealtyLandCertConfig.frm + " input[name='buildingNumber']").val();
-            if (!declareRealtyLandCert.isEmpty(unit)) {
-                unit = "";
-            } else {
-                unit = unit + "单元";
-            }
-            if (!declareRealtyLandCert.isEmpty(floor)) {
-                floor = "";
-            } else {
-                floor = floor + "楼";
-            }
-            if (!declareRealtyLandCert.isEmpty(roomNumber)) {
-                roomNumber = "";
-            } else {
-                roomNumber = roomNumber + "号";
-            }
-            if (!declareRealtyLandCert.isEmpty(streetNumber)) {
-                streetNumber = "";
-            }
-            if (!declareRealtyLandCert.isEmpty(attachedNumber)) {
-                attachedNumber = "";
-            } else {
-                attachedNumber = "附" + attachedNumber;
-            }
-            if (!declareRealtyLandCert.isEmpty(buildingNumber)) {
-                buildingNumber = "";
-            } else {
-                buildingNumber = buildingNumber + "栋";
-            }
-            if (declareRealtyLandCert.isEmpty(district)) {
-                AssessCommon.getAreaById(district, function (data) {
-                    if (!declareRealtyLandCert.isEmpty(data)) {
-                        district = "";
-                    } else {
-                        district = data.name;
-                    }
-                    temp = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                    $("#" + declareRealtyLandCertConfig.frm + " input[name='beLocated']").val(temp);
-                });
-            } else {
-                district = "";
-                temp = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                $("#" + declareRealtyLandCertConfig.frm + " input[name='beLocated']").val(temp);
-            }
-        }
-    }
-};
 
 declareRealtyLandCert.objectWriteSelectData = function (frm, data, name) {
     if (declareRealtyLandCert.isEmpty(data)) {
@@ -237,37 +88,42 @@ declareRealtyLandCert.objectWriteSelectData = function (frm, data, name) {
     }
 };
 
-declareRealtyLandCert.init = function () {
+declareRealtyLandCert.init = function (item) {
     AssessCommon.initAreaInfo({
-        provinceTarget: $("#" + declareRealtyLandCertConfig.frm + "province"),
-        cityTarget: $("#" + declareRealtyLandCertConfig.frm + "city"),
-        districtTarget: $("#" + declareRealtyLandCertConfig.frm + "district"),
-        provinceValue: '',
-        cityValue: '',
-        districtValue: ''
+        provinceTarget: $("#" + declareRealtyLandCertConfig.frm).find("select[name='province']"),
+        cityTarget: $("#" + declareRealtyLandCertConfig.frm).find("select[name='city']"),
+        districtTarget: $("#" + declareRealtyLandCertConfig.frm).find("select[name='district']"),
+        provinceValue: item.province,
+        cityValue: item.city,
+        districtValue: item.district
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType,'', function (html, data) {
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, item.type, function (html, data) {
         $("#" + declareRealtyLandCertConfig.frm).find('select.type').empty().html(html).trigger('change');
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType,'', function (html, data) {
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, item.useRightType, function (html, data) {
         $("#" + declareRealtyLandCertConfig.frm).find('select.useRightType').empty().html(html).trigger('change');
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "", function (html, data) {
+    AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, item.purpose, function (html, data) {
         $("#" + declareRealtyLandCertConfig.frm).find('select.purpose').empty().html(html).trigger('change');
     });
-    declareRealtyLandCert.role.CertName.init();
-    declareRealtyLandCert.role.beLocated.init();
+    declareRealtyLandCert.fileUpload2(declareRealtyLandCertConfig.fileId, AssessDBKey.DeclareRealtyLandCert, declareRealtyLandCert.isEmpty(item.id) ? item.id : "0");
 };
 
 declareRealtyLandCert.showAddModel = function () {
-    $("#" + declareRealtyLandCertConfig.frm).clearAll();
-    if (declareRealtyLandCert.declareRealtyLandCertFlag) {
-        declareRealtyLandCert.init();
-        declareRealtyLandCert.declareRealtyLandCertFlag = false;
-    }
-    $("#" + declareRealtyLandCertConfig.frm).validate();
+    $('#' + declareRealtyLandCertConfig.box).find("#" + commonDeclareApplyModel.config.land.handleId).remove();
+    $('#' + declareRealtyLandCertConfig.box).find(".panel-body").prepend(commonDeclareApplyModel.land.getHtml());
     $('#' + declareRealtyLandCertConfig.box).modal("show");
-    declareRealtyLandCert.fileUpload2(declareRealtyLandCertConfig.fileId, AssessDBKey.DeclareRealtyLandCert, 0);
+    $("#" + declareRealtyLandCertConfig.frm).clearAll();
+    $("#" + declareRealtyLandCertConfig.frm).validate();
+    declareRealtyLandCert.init({});
+    try {
+        //由于是填充的hmtl所以需要手动初始化select2
+        DatepickerUtils.parse();
+        $('#' + declareRealtyLandCertConfig.box).find(".select2").each(function () {
+            $(this).select2();
+        });
+    } catch (e) {
+    }
 };
 
 declareRealtyLandCert.deleteData = function (id) {
@@ -275,7 +131,7 @@ declareRealtyLandCert.deleteData = function (id) {
         function () {
             $.ajax({
                 type: "POST",
-                url: getContextPath()+"/declareRealtyLandCert/deleteDeclareRealtyLandCertById",
+                url: getContextPath() + "/declareRealtyLandCert/deleteDeclareRealtyLandCertById",
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
@@ -302,7 +158,7 @@ declareRealtyLandCert.editData = function (id) {
     declareRealtyLandCert.showFile(declareRealtyLandCertConfig.fileId, AssessDBKey.DeclareRealtyLandCert, id);
     declareRealtyLandCert.fileUpload2(declareRealtyLandCertConfig.fileId, AssessDBKey.DeclareRealtyLandCert, id);
     $.ajax({
-        url: getContextPath()+"/declareRealtyLandCert/getDeclareRealtyLandCertById",
+        url: getContextPath() + "/declareRealtyLandCert/getDeclareRealtyLandCertById",
         type: "get",
         dataType: "json",
         data: {id: id},
@@ -368,7 +224,7 @@ declareRealtyLandCert.loadList = function () {
         }
     });
     $("#" + declareRealtyLandCertConfig.table).bootstrapTable('destroy');
-    TableInit(declareRealtyLandCertConfig.table, getContextPath()+"/declareRealtyLandCert/getDeclareRealtyLandCertList", cols, {
+    TableInit(declareRealtyLandCertConfig.table, getContextPath() + "/declareRealtyLandCert/getDeclareRealtyLandCertList", cols, {
         planDetailsId: declareCommon.getPlanDetailsId()
     }, {
         showColumns: false,
@@ -392,7 +248,7 @@ declareRealtyLandCert.saveAndUpdateData = function () {
     }
     $.ajax({
         type: "POST",
-        url: getContextPath()+"/declareRealtyLandCert/saveAndUpdateDeclareRealtyLandCert",
+        url: getContextPath() + "/declareRealtyLandCert/saveAndUpdateDeclareRealtyLandCert",
         data: data,
         success: function (result) {
             if (result.ret) {
@@ -415,19 +271,19 @@ declareRealtyLandCert.saveAndUpdateData = function () {
  * @date:2018-09-21
  **/
 declareRealtyLandCert.landEnclosure = function (id) {
-    $("#"+declareRealtyLandCertConfig.newFileId).attr("data-id",id);
-    $("#"+declareRealtyLandCertConfig.newFileId).trigger('click');
+    $("#" + declareRealtyLandCertConfig.newFileId).attr("data-id", id);
+    $("#" + declareRealtyLandCertConfig.newFileId).trigger('click');
 };
 declareRealtyLandCert.landEnclosureFun = function () {
-    var id = $("#"+declareRealtyLandCertConfig.newFileId).attr("data-id");
+    var id = $("#" + declareRealtyLandCertConfig.newFileId).attr("data-id");
     $.ajaxFileUpload({
         type: "POST",
-        url: getContextPath()+"/public/importAjaxFile",
+        url: getContextPath() + "/public/importAjaxFile",
         data: {
             planDetailsId: declareCommon.getPlanDetailsId(),
-            tableName:AssessDBKey.DeclareRealtyLandCert,
-            tableId:id,
-            fieldsName:declareRealtyLandCertConfig.fileId
+            tableName: AssessDBKey.DeclareRealtyLandCert,
+            tableId: id,
+            fieldsName: declareRealtyLandCertConfig.fileId
         },//要传到后台的参数，没有可以不写
         secureuri: false,//是否启用安全提交，默认为false
         fileElementId: declareRealtyLandCertConfig.newFileId,//文件选择框的id属性
@@ -456,15 +312,15 @@ declareRealtyLandCert.distinguish = function () {
  * @date:2018-09-21
  **/
 declareRealtyLandCert.houseEnclosureFun = function () {
-    var id = $("#"+declareRealtyLandCertConfig.newHouseFileId).attr("data-id");
+    var id = $("#" + declareRealtyLandCertConfig.newHouseFileId).attr("data-id");
     $.ajaxFileUpload({
         type: "POST",
-        url: getContextPath()+"/public/importAjaxFile",
+        url: getContextPath() + "/public/importAjaxFile",
         data: {
             planDetailsId: declareCommon.getPlanDetailsId(),
-            tableName:AssessDBKey.DeclareRealtyHouseCert,
-            tableId:id,
-            fieldsName:declareRealtyLandCertConfig.houseFileId
+            tableName: AssessDBKey.DeclareRealtyHouseCert,
+            tableId: id,
+            fieldsName: declareRealtyLandCertConfig.houseFileId
         },//要传到后台的参数，没有可以不写
         secureuri: false,//是否启用安全提交，默认为false
         fileElementId: declareRealtyLandCertConfig.newHouseFileId,//文件选择框的id属性
@@ -490,7 +346,7 @@ declareRealtyLandCert.houseEnclosure = function (id) {
     var data = $("#" + declareRealtyLandCertConfig.table).bootstrapTable('getRowByUniqueId', id);
     if (declareRealtyLandCert.isEmpty(data.pid)) {
         $.ajax({
-            url: getContextPath()+"/declareRealtyHouseCert/getDeclareRealtyHouseCertById",
+            url: getContextPath() + "/declareRealtyHouseCert/getDeclareRealtyHouseCertById",
             type: "get",
             dataType: "json",
             async: false,
@@ -499,8 +355,8 @@ declareRealtyLandCert.houseEnclosure = function (id) {
                 if (result.ret) {
                     var item = result.data;
                     if (declareRealtyLandCert.isEmpty(item)) {
-                        $("#"+declareRealtyLandCertConfig.newHouseFileId).attr("data-id",item.id);
-                        $("#"+declareRealtyLandCertConfig.newHouseFileId).trigger('click');
+                        $("#" + declareRealtyLandCertConfig.newHouseFileId).attr("data-id", item.id);
+                        $("#" + declareRealtyLandCertConfig.newHouseFileId).trigger('click');
                     } else {
                         toastr.success('关联数据已经被删除了!');
                     }
@@ -526,7 +382,7 @@ declareRealtyLandCert.houseCard = function (id) {
     var item = $("#" + declareRealtyLandCertConfig.table).bootstrapTable('getRowByUniqueId', id);
     if (declareRealtyLandCert.isEmpty(item.pid)) {
         $.ajax({
-            url: getContextPath()+"/declareRealtyHouseCert/getDeclareRealtyHouseCertById",
+            url: getContextPath() + "/declareRealtyHouseCert/getDeclareRealtyHouseCertById",
             type: "get",
             dataType: "json",
             data: {id: item.pid, planDetailsId: declareCommon.getPlanDetailsId()},
@@ -554,7 +410,7 @@ declareRealtyLandCert.houseCard = function (id) {
         })
     } else {
         $.ajax({
-            url: getContextPath()+"/declareRealtyLandCert/getDeclareRealtyLandCertById",
+            url: getContextPath() + "/declareRealtyLandCert/getDeclareRealtyLandCertById",
             type: "get",
             dataType: "json",
             data: {id: id},
@@ -573,19 +429,19 @@ declareRealtyLandCert.houseCard = function (id) {
                         $("#" + declareRealtyLandCertConfig.HouseCert.frm).initForm(
                             {
                                 pid: id,
-                                beLocated:result.data.beLocated,
-                                streetNumber:result.data.streetNumber,
-                                attachedNumber:result.data.attachedNumber,
-                                buildingNumber:result.data.buildingNumber,
-                                unit:result.data.unit,
-                                roomNumber:result.data.roomNumber,
-                                floor:result.data.floor
+                                beLocated: result.data.beLocated,
+                                streetNumber: result.data.streetNumber,
+                                attachedNumber: result.data.attachedNumber,
+                                buildingNumber: result.data.buildingNumber,
+                                unit: result.data.unit,
+                                roomNumber: result.data.roomNumber,
+                                floor: result.data.floor
                             }
                         );
-                        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareHouseCertificateType,result.data.type, function (html, data) {
+                        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareHouseCertificateType, result.data.type, function (html, data) {
                             $("#" + declareRealtyLandCertConfig.HouseCert.frm).find('select.type').empty().html(html).trigger('change');
                         });
-                        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation,'', function (html, data) {
+                        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, '', function (html, data) {
                             $("#" + declareRealtyLandCertConfig.HouseCert.frm).find('select.publicSituation').empty().html(html).trigger('change');
                         });
                         declareRealtyLandCert.fileUpload2(declareRealtyLandCertConfig.houseFileId, AssessDBKey.DeclareRealtyHouseCert, 0);
@@ -604,10 +460,10 @@ declareRealtyLandCert.houseCardSaveAndUpdate = function () {
         return false;
     }
     var data = formParams(declareRealtyLandCertConfig.HouseCert.frm);
-   
+
     $.ajax({
         type: "POST",
-        url: getContextPath()+"/declareRealtyHouseCert/saveAndUpdateDeclareRealtyHouseCert",
+        url: getContextPath() + "/declareRealtyHouseCert/saveAndUpdateDeclareRealtyHouseCert",
         data: data,
         success: function (result) {
             if (result.ret) {
@@ -628,7 +484,7 @@ declareRealtyLandCert.houseCardSaveAndUpdate = function () {
 declareRealtyLandCert.inputFileHouse = function () {
     $.ajaxFileUpload({
         type: "POST",
-        url: getContextPath()+"/declareRealtyLandCert/importDataHouse",
+        url: getContextPath() + "/declareRealtyLandCert/importDataHouse",
         data: {
             planDetailsId: declareCommon.getPlanDetailsId()
         },//要传到后台的参数，没有可以不写
@@ -657,7 +513,7 @@ declareRealtyLandCert.inputFileHouse = function () {
 declareRealtyLandCert.inputFile = function () {
     $.ajaxFileUpload({
         type: "POST",
-        url: getContextPath()+"/declareRealtyLandCert/importData",
+        url: getContextPath() + "/declareRealtyLandCert/importData",
         data: {
             planDetailsId: declareCommon.getPlanDetailsId()
         },//要传到后台的参数，没有可以不写

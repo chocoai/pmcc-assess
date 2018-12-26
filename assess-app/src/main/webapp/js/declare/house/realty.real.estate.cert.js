@@ -12,9 +12,7 @@ var declareRealtyRealEstateCertConfig = {
 };
 
 var declareRealtyRealEstateCert = new Object();
-//标识符
-declareRealtyRealEstateCert.declareRealtyRealEstateCertFlag = true;
-declareRealtyRealEstateCert.startPath = null;
+
 declareRealtyRealEstateCert.isEmpty = function (item) {
     if (item) {
         return true;
@@ -35,13 +33,6 @@ declareRealtyRealEstateCert.fileUpload2 = function (target, tableName, id) {
             return formData;
         }, onUploadComplete: function (result, file) {
             declareRealtyRealEstateCert.showFile(target, tableName, id);
-            //不动产识别
-            if (target == declareRealtyRealEstateCertConfig.newFileId) {
-                if (declareRealtyRealEstateCert.isEmpty(result)){
-
-                }
-            }
-            declareRealtyRealEstateCert.loadList();
         },
         deleteFlag: true
     });
@@ -65,157 +56,7 @@ declareRealtyRealEstateCert.showFile = function (target, tableName, id) {
     })
 };
 
-/**
- * @author:  zch
- * 描述:数据拼接
- * @date:2018-09-21
- **/
-declareRealtyRealEstateCert.role = {
-    CertName: {
-        init: function () {
-            $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='location']").blur(function () {
-                if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='location']").val())) {
-                    declareRealtyRealEstateCert.role.CertName.write();
-                }
-            });
-            $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='number']").blur(function () {
-                if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='number']").val())) {
-                    declareRealtyRealEstateCert.role.CertName.write();
-                }
-            });
-            $("#" + declareRealtyRealEstateCertConfig.frm + " .type").change(function () {
-                /**
-                 * 这 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
-                 **/
-                var id = $("#" + declareRealtyRealEstateCertConfig.frm + " .type").eq(1).val();
-                if (declareRealtyRealEstateCert.isEmpty(id)) {
-                    declareRealtyRealEstateCert.role.CertName.write();
-                }
-            });
-        },
-        write: function () {
-            var location = $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='location']").val();
-            var number = $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='number']").val();
-            var id = $("#" + declareRealtyRealEstateCertConfig.frm + " .type").eq(1).val();
-            if (!declareRealtyRealEstateCert.isEmpty(location)) {
-                location = "";
-            }
-            if (!declareRealtyRealEstateCert.isEmpty(number)) {
-                number = "";
-            }
-            if (!declareRealtyRealEstateCert.isEmpty(id)) {
-                id = "";
-            }
-            if (declareRealtyRealEstateCert.isEmpty(id)) {
-                AssessCommon.getDataDicInfo(id, function (data) {
-                    if (declareRealtyRealEstateCert.isEmpty(data)) {
-                        var temp = location + "房权证" + data.name + "字地" + number + "号";
-                        $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='certName']").val(temp);
-                    }
-                });
-            } else {
-                var temp = location + "房权证" + id + "字地" + number + "号";
-                $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='certName']").val(temp);
-            }
-        }
-    },
-    beLocated: {
-        init: function () {
-            $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='unit']").blur(function () {
-                if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='unit']").val())) {
-                    declareRealtyRealEstateCert.role.beLocated.write();
-                }
-            });
-            $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='floor']").blur(function () {
-                if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='floor']").val())) {
-                    declareRealtyRealEstateCert.role.beLocated.write();
-                }
-            });
-            $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='roomNumber']").blur(function () {
-                if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='roomNumber']").val())) {
-                    declareRealtyRealEstateCert.role.beLocated.write();
-                }
-            });
-            $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='streetNumber']").blur(function () {
-                if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='streetNumber']").val())) {
-                    declareRealtyRealEstateCert.role.beLocated.write();
-                }
-            });
-            $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='attachedNumber']").blur(function () {
-                if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='attachedNumber']").val())) {
-                    declareRealtyRealEstateCert.role.beLocated.write();
-                }
-            });
-            $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='buildingNumber']").blur(function () {
-                if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='buildingNumber']").val())) {
-                    declareRealtyRealEstateCert.role.beLocated.write();
-                }
-            });
-            $("#" + declareRealtyRealEstateCertConfig.frm + " .district").change(function () {
-                /**
-                 * 这 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
-                 **/
-                var id = $("#" + declareRealtyRealEstateCertConfig.frm + " .district").eq(1).val();
-                if (declareRealtyRealEstateCert.isEmpty(id)) {
-                    declareRealtyRealEstateCert.role.beLocated.write();
-                }
-            });
-        },
-        write: function () {
-            var temp = "";
-            var district = $("#" + declareRealtyRealEstateCertConfig.frm + " .district").eq(1).val();
-            var unit = $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='unit']").val();
-            var floor = $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='floor']").val();
-            var roomNumber = $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='roomNumber']").val();
-            var streetNumber = $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='streetNumber']").val();
-            var attachedNumber = $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='attachedNumber']").val();
-            var buildingNumber = $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='buildingNumber']").val();
-            if (!declareRealtyRealEstateCert.isEmpty(unit)) {
-                unit = "";
-            } else {
-                unit = unit + "单元";
-            }
-            if (!declareRealtyRealEstateCert.isEmpty(floor)) {
-                floor = "";
-            } else {
-                floor = floor + "楼";
-            }
-            if (!declareRealtyRealEstateCert.isEmpty(roomNumber)) {
-                roomNumber = "";
-            } else {
-                roomNumber = roomNumber + "号";
-            }
-            if (!declareRealtyRealEstateCert.isEmpty(streetNumber)) {
-                streetNumber = "";
-            }
-            if (!declareRealtyRealEstateCert.isEmpty(attachedNumber)) {
-                attachedNumber = "";
-            } else {
-                attachedNumber =   "附" + attachedNumber;
-            }
-            if (!declareRealtyRealEstateCert.isEmpty(buildingNumber)) {
-                buildingNumber = "";
-            } else {
-                buildingNumber = buildingNumber + "栋";
-            }
-            if (declareRealtyRealEstateCert.isEmpty(district)) {
-                AssessCommon.getAreaById(district, function (data) {
-                    if (!declareRealtyRealEstateCert.isEmpty(data)) {
-                        district = "";
-                    } else {
-                        district = data.name;
-                    }
-                    temp = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                    $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='beLocated']").val(temp);
-                });
-            } else {
-                district = "";
-                temp = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='beLocated']").val(temp);
-            }
-        }
-    }
-};
+
 
 declareRealtyRealEstateCert.objectWriteSelectData = function (frm, data, name) {
     if (declareRealtyRealEstateCert.isEmpty(data)) {
@@ -226,49 +67,56 @@ declareRealtyRealEstateCert.objectWriteSelectData = function (frm, data, name) {
 };
 
 
-declareRealtyRealEstateCert.init = function () {
-    AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "", function (html, data) {
+declareRealtyRealEstateCert.init = function (item) {
+    $("#" + declareRealtyRealEstateCertConfig.frm).initForm(item);
+    AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, item.purpose, function (html, data) {
         $("#" + declareRealtyRealEstateCertConfig.frm).find('select.purpose').empty().html(html).trigger('change');
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareHouseCertificateType,'', function (html, data) {
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareHouseCertificateType,item.type, function (html, data) {
         $("#" + declareRealtyRealEstateCertConfig.frm).find('select.type').empty().html(html).trigger('change');
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation,'', function (html, data) {
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation,item.publicSituation, function (html, data) {
         $("#" + declareRealtyRealEstateCertConfig.frm).find('select.publicSituation').empty().html(html).trigger('change');
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType,'', function (html, data) {
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType,item.useRightType, function (html, data) {
         $("#" + declareRealtyRealEstateCertConfig.frm).find('select.useRightType').empty().html(html).trigger('change');
     });
     AssessCommon.initAreaInfo({
-        provinceTarget: $("#" + declareRealtyRealEstateCertConfig.frm + "province"),
-        cityTarget: $("#" + declareRealtyRealEstateCertConfig.frm + "city"),
-        districtTarget: $("#" + declareRealtyRealEstateCertConfig.frm + "district"),
-        provinceValue: '',
-        cityValue: '',
-        districtValue: ''
+        provinceTarget: $("#" + declareRealtyRealEstateCertConfig.frm).find("select[name='province']"),
+        cityTarget: $("#" + declareRealtyRealEstateCertConfig.frm).find("select[name='city']"),
+        districtTarget: $("#" + declareRealtyRealEstateCertConfig.frm).find("select[name='district']"),
+        provinceValue: item.province,
+        cityValue: item.city,
+        districtValue: item.district
     });
-    declareRealtyRealEstateCert.role.CertName.init();
-    declareRealtyRealEstateCert.role.beLocated.init();
+    $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='registrationTime']").val(formatDate(item.registrationTime));
+    $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='useEndDate']").val(formatDate(item.useEndDate));
+    $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='useStartDate']").val(formatDate(item.useStartDate));
+    $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='registrationDate']").val(formatDate(item.registrationDate));
+    $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='terminationDate']").val(formatDate(item.terminationDate));
+    declareRealtyRealEstateCert.showFile(declareRealtyRealEstateCertConfig.newFileId, AssessDBKey.DeclareRealtyRealEstateCert, declareRealtyRealEstateCert.isEmpty(item.id)?item.id:'0');
+    declareRealtyRealEstateCert.fileUpload2(declareRealtyRealEstateCertConfig.newFileId, AssessDBKey.DeclareRealtyRealEstateCert, declareRealtyRealEstateCert.isEmpty(item.id)?item.id:'0');
 };
 
 declareRealtyRealEstateCert.showAddModel = function () {
-    $("#" + declareRealtyRealEstateCertConfig.frm).clearAll();
-    if (declareRealtyRealEstateCert.declareRealtyRealEstateCertFlag) {
-        declareRealtyRealEstateCert.init();
-        declareRealtyRealEstateCert.declareRealtyRealEstateCertFlag = false;
+    $('#' + declareRealtyRealEstateCertConfig.box).find("#" + commonDeclareApplyModel.config.realEstateCert.handleId).remove();
+    $('#' + declareRealtyRealEstateCertConfig.box).find(".panel-body").append(commonDeclareApplyModel.realEstateCert.getHtml());
+    declareRealtyRealEstateCert.init({});
+    try { //由于是填充的hmtl所以需要手动初始化select2
+        DatepickerUtils.parse();
+        $('#' + declareRealtyRealEstateCertConfig.box).find(".select2").each(function () {
+            $(this).select2();
+        });
+    } catch (e) {
     }
+    $("#" + declareRealtyRealEstateCertConfig.frm).clearAll();
     $("#" + declareRealtyRealEstateCertConfig.frm).validate();
     $('#' + declareRealtyRealEstateCertConfig.box).modal("show");
-    declareRealtyRealEstateCert.fileUpload2(declareRealtyRealEstateCertConfig.newFileId, AssessDBKey.DeclareRealtyRealEstateCert, 0);
 };
 
 
 declareRealtyRealEstateCert.editData = function (id) {
-    $("#" + declareRealtyRealEstateCertConfig.frm).clearAll();
-    if (declareRealtyRealEstateCert.declareRealtyRealEstateCertFlag) {
-        declareRealtyRealEstateCert.init();
-        declareRealtyRealEstateCert.declareRealtyRealEstateCertFlag = false;
-    }
+    declareRealtyRealEstateCert.showAddModel();
     $.ajax({
         url: getContextPath()+"/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertById",
         type: "get",
@@ -276,34 +124,17 @@ declareRealtyRealEstateCert.editData = function (id) {
         data: {id: id},
         success: function (result) {
             if (result.ret) {
-                var data = result.data;
-                if (declareRealtyRealEstateCert.isEmpty(data)) {
-                    $("#" + declareRealtyRealEstateCertConfig.frm).initForm(result.data);
-                    $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='registrationTime']").val(formatDate(data.registrationTime));
-                    $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='useEndDate']").val(formatDate(data.useEndDate));
-                    $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='useStartDate']").val(formatDate(data.useStartDate));
-                    $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='registrationDate']").val(formatDate(data.registrationDate));
-                    $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='terminationDate']").val(formatDate(data.terminationDate));
-                    declareRealtyRealEstateCert.objectWriteSelectData(declareRealtyRealEstateCertConfig.frm, data.type, "type");
-                    declareRealtyRealEstateCert.objectWriteSelectData(declareRealtyRealEstateCertConfig.frm, data.useRightType, "useRightType");
-                    declareRealtyRealEstateCert.objectWriteSelectData(declareRealtyRealEstateCertConfig.frm, data.purpose, "purpose");
-                    AssessCommon.initAreaInfo({
-                        provinceTarget: $("#" + declareRealtyRealEstateCertConfig.frm + "province"),
-                        cityTarget: $("#" + declareRealtyRealEstateCertConfig.frm + "city"),
-                        districtTarget: $("#" + declareRealtyRealEstateCertConfig.frm + "district"),
-                        provinceValue: result.data.province,
-                        cityValue: result.data.city,
-                        districtValue: result.data.district
-                    });
+                if (result.data){
+                    declareRealtyRealEstateCert.init(result.data);
+                }else {
+                    declareRealtyRealEstateCert.init({});
                 }
             }
         },
         error: function (result) {
             Alert("调用服务端方法失败，失败原因:" + result);
         }
-    })
-    declareRealtyRealEstateCert.showFile(declareRealtyRealEstateCertConfig.newFileId, AssessDBKey.DeclareRealtyRealEstateCert, id);
-    declareRealtyRealEstateCert.fileUpload2(declareRealtyRealEstateCertConfig.newFileId, AssessDBKey.DeclareRealtyRealEstateCert, id);
+    });
     $('#' + declareRealtyRealEstateCertConfig.box).modal("show");
     $("#" + declareRealtyRealEstateCertConfig.frm).validate();
 };
