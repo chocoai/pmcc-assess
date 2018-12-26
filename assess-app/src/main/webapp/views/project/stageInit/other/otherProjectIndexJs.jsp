@@ -637,6 +637,7 @@
     objProject.selectUserAccountMember = function (this_) {
         var info = formParams(this.config.info.frm);
         if (!this.isNotBlank(info.userAccountManager)) {
+            Alert("先选择项目经理");
             return false;
         }
         erpEmployee.select({

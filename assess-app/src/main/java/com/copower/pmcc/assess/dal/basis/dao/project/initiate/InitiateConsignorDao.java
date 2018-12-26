@@ -41,7 +41,7 @@ public class InitiateConsignorDao {
 
     public List<InitiateConsignor> initiateConsignorList(InitiateConsignor query){
         InitiateConsignorExample example = new InitiateConsignorExample();
-        MybatisUtils.convertObj2Example(example, example);
+        MybatisUtils.convertObj2Example(query, example);
         return mapper.selectByExample(example);
     }
 

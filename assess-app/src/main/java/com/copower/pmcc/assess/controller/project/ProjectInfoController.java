@@ -13,9 +13,6 @@ import com.copower.pmcc.assess.service.project.change.ProjectFollowService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.assess.service.project.initiate.InitiateConsignorService;
-import com.copower.pmcc.assess.service.project.initiate.InitiatePossessorService;
-import com.copower.pmcc.assess.service.project.initiate.InitiateUnitInformationService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -59,12 +56,6 @@ public class ProjectInfoController {
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
     private HttpServletRequest request;
-    @Autowired
-    private InitiateConsignorService initiateConsignorService;
-    @Autowired
-    private InitiatePossessorService initiatePossessorService;
-    @Autowired
-    private InitiateUnitInformationService unitInformationService;
 
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view(Integer projectClassId, Integer projectTypeId, Integer projectCategoryId) {
@@ -81,9 +72,7 @@ public class ProjectInfoController {
         projectInfo.setProjectCategoryId(projectCategoryId);
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
         modelAndView.addObject("projectInfo", projectInfoVo);
-        initiateConsignorService.clear();
-        initiatePossessorService.clear();
-        unitInformationService.clear();
+        projectInfoService.clear();
         return modelAndView;
     }
 

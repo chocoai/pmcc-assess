@@ -19,6 +19,7 @@ import com.copower.pmcc.assess.dto.output.project.initiate.InitiatePossessorVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
@@ -44,6 +45,7 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
@@ -127,6 +129,8 @@ public class ProjectInfoService {
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
 
 
     /**
@@ -152,6 +156,7 @@ public class ProjectInfoService {
                 projectInfo.setCreator(commonService.thisUserAccount());
             }
             int projectId = projectInfoDao.saveProjectInfo_returnID(projectInfo);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class), projectId);
             consignor.setProjectId(projectId);
             unitInformation.setProjectId(projectId);
             possessor.setProjectId(projectId);
@@ -623,6 +628,22 @@ public class ProjectInfoService {
     public List<CrmBaseDataDicDto> getUnitPropertiesList() {
         List<CrmBaseDataDicDto> crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
         return crmBaseDataDicDtos;
+    }
+
+    public void clear(){
+        consignorService.clear();
+        possessorService.clear();
+        unitInformationService.clear();
+        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+        sysAttachmentDto.setTableId(0);
+        sysAttachmentDto.setCreater(commonService.thisUserAccount());
+        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
+        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
+        if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
+            for (SysAttachmentDto attachmentDto : sysAttachmentDtoList) {
+                baseAttachmentService.deleteAttachmentByDto(attachmentDto);
+            }
+        }
     }
 
 
