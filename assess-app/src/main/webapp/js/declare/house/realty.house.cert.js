@@ -239,15 +239,17 @@ declareRealtyHouseCert.editData = function () {
  * @date:2018-09-19
  **/
 declareRealtyHouseCert.showAddModel = function () {
-    $("#" + declareRealtyHouseCertConfig.frm).clearAll();
-    if (declareRealtyHouseCert.declareRealtyHouseCertFlag) {
-        declareRealtyHouseCert.init();
-        declareRealtyHouseCert.declareRealtyHouseCertFlag = false;
-    }
-    declareRealtyHouseCert.fileUpload(declareRealtyHouseCertConfig.fileId, AssessDBKey.DeclareRealtyHouseCert, 0);
-    declareRealtyHouseCert.showFile(declareRealtyHouseCertConfig.fileId, AssessDBKey.DeclareRealtyHouseCert, 0);
     //使校验生效
+    $('#' + declareRealtyHouseCertConfig.box).find("#" + commonDeclareApplyModel.config.house.handleId).remove();
+    $('#' + declareRealtyHouseCertConfig.box).find(".panel-body").append(commonDeclareApplyModel.house.getHtml());
     $("#" + declareRealtyHouseCertConfig.frm).validate();
+    declareRealtyHouseCert.init({});
+    //由于是填充的hmtl所以需要手动初始化select2
+    DatepickerUtils.parse();
+    $('#' + declareRealtyHouseCertConfig.box).find(".select2").each(function () {
+        $(this).select2();
+    });
+    $("#" + declareRealtyHouseCertConfig.frm).clearAll();
     $('#' + declareRealtyHouseCertConfig.box).modal("show");
 };
 
@@ -256,23 +258,23 @@ declareRealtyHouseCert.showAddModel = function () {
  * 描述:房产证 初始化
  * @date:2018-09-19
  **/
-declareRealtyHouseCert.init = function () {
+declareRealtyHouseCert.init = function (item) {
     AssessCommon.initAreaInfo({
-        provinceTarget: $("#" + declareRealtyHouseCertConfig.frm + "province"),
-        cityTarget: $("#" + declareRealtyHouseCertConfig.frm + "city"),
-        districtTarget: $("#" + declareRealtyHouseCertConfig.frm + "district"),
-        provinceValue: '',
-        cityValue: '',
-        districtValue: ''
+        provinceTarget: $("#" + declareRealtyHouseCertConfig.frm).find("select[name='province']"),
+        cityTarget: $("#" + declareRealtyHouseCertConfig.frm).find("select[name='city']"),
+        districtTarget: $("#" + declareRealtyHouseCertConfig.frm).find("select[name='district']"),
+        provinceValue: item.province,
+        cityValue: item.city,
+        districtValue: item.district
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareHouseCertificateType, '', function (html, data) {
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareHouseCertificateType, item.type, function (html, data) {
         $("#" + declareRealtyHouseCertConfig.frm).find('select.type').empty().html(html).trigger('change');
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, '', function (html, data) {
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, item.publicSituation, function (html, data) {
         $("#" + declareRealtyHouseCertConfig.frm).find('select.publicSituation').empty().html(html).trigger('change');
     });
-    declareRealtyHouseCert.role.writeCertName.init();
-    declareRealtyHouseCert.role.beLocated.init();
+    declareRealtyHouseCert.fileUpload(declareRealtyHouseCertConfig.fileId, AssessDBKey.DeclareRealtyHouseCert, declareRealtyHouseCert.isEmpty(item.id) ? item.id : '0');
+    declareRealtyHouseCert.showFile(declareRealtyHouseCertConfig.fileId, AssessDBKey.DeclareRealtyHouseCert, declareRealtyHouseCert.isEmpty(item.id) ? item.id : '0');
 };
 
 /**
@@ -311,7 +313,7 @@ declareRealtyHouseCert.loadList = function () {
         onLoadSuccess: function () {
             $('.tooltips').tooltip();
         }
-    },true);
+    }, true);
 };
 
 
@@ -497,146 +499,7 @@ declareRealtyHouseCert.landEnclosure = function (id) {
 
 };
 
-/**
- * @author:  zch
- * 描述:房产证 格式化某些input
- * @date:2018-09-19
- **/
-declareRealtyHouseCert.role = {
-    //房产权证号
-    writeCertName: {
-        init: function () {
-            $("#" + declareRealtyHouseCertConfig.frm + " input[name='location']").blur(function () {
-                declareRealtyHouseCert.role.writeCertName.write();
-            });
-            $("#" + declareRealtyHouseCertConfig.frm + " input[name='number']").blur(function () {
-                declareRealtyHouseCert.role.writeCertName.write();
-            });
-            $("#" + declareRealtyHouseCertConfig.frm + " .type").change(function () {
-                /**
-                 * 这 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
-                 **/
-                var id = $("#" + declareRealtyHouseCertConfig.frm).find('select.type').val();
-                if (declareRealtyHouseCert.isEmpty(id)) {
-                    declareRealtyHouseCert.role.writeCertName.write();
-                }
-            });
-        },
-        //拼接 房产权证号
-        write: function () {
-            var location = $("#" + declareRealtyHouseCertConfig.frm + " input[name='location']").val();
-            var number = $("#" + declareRealtyHouseCertConfig.frm + " input[name='number']").val();
-            var id = $("#" + declareRealtyHouseCertConfig.frm).find('select.type').val();
-            if (!declareRealtyHouseCert.isEmpty(location)) {
-                location = "";
-            }
-            if (!declareRealtyHouseCert.isEmpty(number)) {
-                number = "";
-            }
-            if (!declareRealtyHouseCert.isEmpty(id)) {
-                id = "";
-            }
-            if (declareRealtyHouseCert.isEmpty(id)) {
-                AssessCommon.getDataDicInfo(id, function (data) {
-                    if (declareRealtyHouseCert.isEmpty(data)) {
-                        var temp = location + "房权证" + data.name + "字地" + number + "号";
-                        $("#" + declareRealtyHouseCertConfig.frm + " input[name='certName']").val(temp);
-                    }
-                    console.log(data);
-                });
-            } else {
-                var temp = location + "房权证" + id + "字地" + number + "号";
-                $("#" + declareRealtyHouseCertConfig.frm + " input[name='certName']").val(temp);
-            }
-        }
-    },
-    //房屋坐落
-    beLocated: {
-        init: function () {
-            $("#" + declareRealtyHouseCertConfig.frm + " input[name='unit']").blur(function () {
-                declareRealtyHouseCert.role.beLocated.write();
-            });
-            $("#" + declareRealtyHouseCertConfig.frm + " input[name='floor']").blur(function () {
-                declareRealtyHouseCert.role.beLocated.write();
-            });
-            $("#" + declareRealtyHouseCertConfig.frm + " input[name='roomNumber']").blur(function () {
-                declareRealtyHouseCert.role.beLocated.write();
-            });
-            $("#" + declareRealtyHouseCertConfig.frm + " input[name='streetNumber']").blur(function () {
-                declareRealtyHouseCert.role.beLocated.write();
-            });
-            $("#" + declareRealtyHouseCertConfig.frm + " input[name='attachedNumber']").blur(function () {
-                declareRealtyHouseCert.role.beLocated.write();
-            });
-            $("#" + declareRealtyHouseCertConfig.frm + " input[name='buildingNumber']").blur(function () {
-                declareRealtyHouseCert.role.beLocated.write();
-            });
-            $("#" + declareRealtyHouseCertConfig.frm + " .district").change(function () {
-                /**
-                 * 这 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
-                 **/
-                var id = $("#" + declareRealtyHouseCertConfig.frm + " .district").eq(1).val();
-                if (declareRealtyHouseCert.isEmpty(id)) {
-                    declareRealtyHouseCert.role.beLocated.write();
-                }
-            });
-        },
-        //房屋坐落 拼接
-        write: function () {
-            var temp = null;
-            var district = $("#" + declareRealtyHouseCertConfig.frm + " .district").eq(1).val();
-            var unit = $("#" + declareRealtyHouseCertConfig.frm + " input[name='unit']").val();
-            var floor = $("#" + declareRealtyHouseCertConfig.frm + " input[name='floor']").val();
-            var roomNumber = $("#" + declareRealtyHouseCertConfig.frm + " input[name='roomNumber']").val();
-            var streetNumber = $("#" + declareRealtyHouseCertConfig.frm + " input[name='streetNumber']").val();
-            var attachedNumber = $("#" + declareRealtyHouseCertConfig.frm + " input[name='attachedNumber']").val();
-            var buildingNumber = $("#" + declareRealtyHouseCertConfig.frm + " input[name='buildingNumber']").val();
-            if (!declareRealtyHouseCert.isEmpty(unit)) {
-                unit = "";
-            } else {
-                unit = unit + "单元";
-            }
-            if (!declareRealtyHouseCert.isEmpty(floor)) {
-                floor = "";
-            } else {
-                floor = floor + "楼";
-            }
-            if (!declareRealtyHouseCert.isEmpty(roomNumber)) {
-                roomNumber = "";
-            } else {
-                roomNumber = roomNumber + "号";
-            }
-            if (!declareRealtyHouseCert.isEmpty(streetNumber)) {
-                streetNumber = "";
-            }
-            if (!declareRealtyHouseCert.isEmpty(attachedNumber)) {
-                attachedNumber = "";
-            } else {
-                attachedNumber = "附" + attachedNumber;
-            }
-            if (!declareRealtyHouseCert.isEmpty(buildingNumber)) {
-                buildingNumber = "";
-            } else {
-                buildingNumber = buildingNumber + "栋";
-            }
-            if (declareRealtyHouseCert.isEmpty(district)) {
-                AssessCommon.getAreaById(district, function (data) {
-                    if (!declareRealtyHouseCert.isEmpty(data)) {
-                        district = "";
-                    } else {
-                        district = data.name;
-                    }
-                    temp = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                    $("#" + declareRealtyHouseCertConfig.frm + " input[name='beLocated']").val(temp);
-                });
-            } else {
-                district = "";
-                temp = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                $("#" + declareRealtyHouseCertConfig.frm + " input[name='beLocated']").val(temp);
-            }
-        }
-    }
-};
+
 
 
 /**
