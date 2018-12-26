@@ -430,7 +430,7 @@ public class ProjectPlanService {
             for (ProjectPlanDetails item : projectPlanDetails) {
                 if (StringUtils.isBlank(item.getExecuteUserAccount()) && item.getExecuteDepartmentId() != null) {
                     bisAllUser = false;
-                    List<String> departmentDA = bpmRpcBoxRoleUserService.getDepartmentDA(item.getExecuteDepartmentId());
+                    List<String> departmentDA = bpmRpcBoxRoleUserService.getDepartmentFgld(item.getExecuteDepartmentId());
                     if (CollectionUtils.isNotEmpty(departmentDA)) {
                         item.setExecuteUserAccount(FormatUtils.transformListString(departmentDA));
                     }

@@ -193,7 +193,7 @@ public class ProjectInfoService {
                 } else {
                     Integer departmentId = projectInfo.getDepartmentId();
                     //取部门领导
-                    List<String> departmentCE = bpmRpcBoxRoleUserService.getDepartmentCE(departmentId);
+                    List<String> departmentCE = bpmRpcBoxRoleUserService.getDepartmentBmfzr(departmentId);
                     processInfo.setNextUser(departmentCE);
                 }
                 try {
@@ -394,7 +394,7 @@ public class ProjectInfoService {
             if (StringUtils.isBlank(projectMember.getUserAccountManager())) {
                 ProjectInfo projectInfo = getProjectInfoById(approvalModelDto.getProjectId());
                 Integer departmentId = projectInfo.getDepartmentId();
-                List<String> departmentCE = bpmRpcBoxRoleUserService.getDepartmentCE(departmentId);
+                List<String> departmentCE = bpmRpcBoxRoleUserService.getDepartmentBmfzr(departmentId);
                 if (CollectionUtils.isEmpty(departmentCE))
                     throw new BusinessException("未找到对应的部门领导");
                 projectMember.setUserAccountManager(departmentCE.get(0));
