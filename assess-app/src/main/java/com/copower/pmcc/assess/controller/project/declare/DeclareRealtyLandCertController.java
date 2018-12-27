@@ -3,9 +3,11 @@ package com.copower.pmcc.assess.controller.project.declare;
 import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCert;
 import com.copower.pmcc.assess.dto.input.project.declare.DeclareRealtyLandCertDto;
+import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -36,10 +38,10 @@ public class DeclareRealtyLandCertController {
     @ResponseBody
     @RequestMapping(value = "/getDeclareRealtyLandCertById", method = {RequestMethod.GET}, name = "获取土地证维护")
     public HttpResult getById(Integer id) {
-        DeclareRealtyLandCert declareRealtyLandCert = null;
+        DeclareRealtyLandCertVo declareRealtyLandCert = null;
         try {
             if (id != null) {
-                declareRealtyLandCert = declareRealtyLandCertService.getDeclareRealtyLandCertById(id);
+                declareRealtyLandCert = declareRealtyLandCertService.getDeclareRealtyLandCertVo(declareRealtyLandCertService.getDeclareRealtyLandCertById(id));
             }
         } catch (Exception e1) {
             logger.error(String.format("exception: %s" + e1.getMessage()), e1);
@@ -80,12 +82,16 @@ public class DeclareRealtyLandCertController {
 
     @ResponseBody
     @RequestMapping(value = "/deleteDeclareRealtyLandCertById", method = {RequestMethod.POST}, name = "删除土地证维护")
-    public HttpResult delete(Integer id) {
+    public HttpResult delete(String ids) {
         try {
-            if (id != null) {
-                DeclareRealtyLandCert declareRealtyLandCert = new DeclareRealtyLandCert();
-                declareRealtyLandCert.setId(id);
-                declareRealtyLandCertService.removeDeclareRealtyLandCert(declareRealtyLandCert);
+            if (org.apache.commons.lang3.StringUtils.isNotBlank(ids)) {
+                for (String id:ids.split(",")){
+                    if (NumberUtils.isNumber(id)){
+                        DeclareRealtyLandCert declareRealtyLandCert = new DeclareRealtyLandCert();
+                        declareRealtyLandCert.setId(Integer.parseInt(id));
+                        declareRealtyLandCertService.removeDeclareRealtyLandCert(declareRealtyLandCert);
+                    }
+                }
                 return HttpResult.newCorrectResult();
             }
         } catch (Exception e1) {

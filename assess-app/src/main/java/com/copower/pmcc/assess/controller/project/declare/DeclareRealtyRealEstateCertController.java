@@ -1,10 +1,12 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCert;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCert;
 import com.copower.pmcc.assess.dto.input.project.declare.DeclareRealtyRealEstateCertDto;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyRealEstateCertService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -78,12 +80,16 @@ public class DeclareRealtyRealEstateCertController {
 
     @ResponseBody
     @RequestMapping(value = "/deleteDeclareRealtyRealEstateCertById", method = {RequestMethod.POST}, name = "删除不动产维护")
-    public HttpResult delete(Integer id) {
+    public HttpResult delete(String ids) {
         try {
-            if (id != null) {
-                DeclareRealtyRealEstateCert declareRealtyRealEstateCert = new DeclareRealtyRealEstateCert();
-                declareRealtyRealEstateCert.setId(id);
-                declareRealtyRealEstateCertService.removeDeclareRealtyRealEstateCert(declareRealtyRealEstateCert);
+            if (org.apache.commons.lang3.StringUtils.isNotBlank(ids)) {
+                for (String id:ids.split(",")){
+                    if (NumberUtils.isNumber(id)){
+                        DeclareRealtyRealEstateCert declareRealtyRealEstateCert = new DeclareRealtyRealEstateCert();
+                        declareRealtyRealEstateCert.setId(Integer.parseInt(id));
+                        declareRealtyRealEstateCertService.removeDeclareRealtyRealEstateCert(declareRealtyRealEstateCert);
+                    }
+                }
                 return HttpResult.newCorrectResult();
             }
         } catch (Exception e1) {

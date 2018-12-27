@@ -177,6 +177,9 @@ public class DeclareRealtyRealEstateCertService {
     }
 
     public DeclareRealtyRealEstateCertVo getDeclareRealtyRealEstateCertVo(DeclareRealtyRealEstateCert declareRealtyRealEstateCert) {
+        if (declareRealtyRealEstateCert == null){
+            return  null;
+        }
         DeclareRealtyRealEstateCertVo vo = new DeclareRealtyRealEstateCertVo();
         BeanUtils.copyProperties(declareRealtyRealEstateCert, vo);
         if (StringUtils.isNotBlank(declareRealtyRealEstateCert.getProvince())) {

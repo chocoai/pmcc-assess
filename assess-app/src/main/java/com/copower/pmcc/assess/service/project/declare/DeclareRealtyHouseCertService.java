@@ -461,56 +461,6 @@ public class DeclareRealtyHouseCertService {
         }
     }
 
-    /**
-     * 解析从erp 传回的 json 字段 然后组合为DeclareRealtyHouseCert
-     * @param sysOcrRecordId
-     * @return
-     * @throws Exception
-     */
-    public DeclareRealtyHouseCert parseRealtyHouseCert(Integer sysOcrRecordId)throws Exception{
-        OcrBaseVo ocrBaseVo = erpOcrService.getOcrJson(sysOcrRecordId);
-        if (ocrBaseVo != null){
-            JSONObject jsonObject = JSON.parseObject(ocrBaseVo.getDataJson());
-            if (jsonObject != null){
-                DeclareRealtyHouseCert declareRealtyHouseCert = new DeclareRealtyHouseCert();
-                try {
-                    Double area = jsonObject.getDouble("area");
-                    String commonSituation = jsonObject.getString("commonSituation");
-                    String used = jsonObject.getString("used");
-                    String located = jsonObject.getString("located");
-                    Integer number = jsonObject.getInteger("number");
-                    String obligee = jsonObject.getString("obligee");
-                    String registrationstr = jsonObject.getString("registration");
-                    Date registration = DateUtils.parse(registrationstr);
-                    if (area != null){
-                        declareRealtyHouseCert.setFloorArea(area.toString());
-                    }
-                    if (number != null){
-                        declareRealtyHouseCert.setNumber(number.toString());
-                    }
-                    if (StringUtils.isNotEmpty(obligee)){
-                        declareRealtyHouseCert.setOwnership(obligee);
-                    }
-                    if (StringUtils.isNotEmpty(commonSituation)){
-                        declareRealtyHouseCert.setPublicSituation(commonSituation);
-                    }
-                    if (StringUtils.isNotEmpty(located)){
-                        declareRealtyHouseCert.setBeLocated(located);
-                    }
-                    if (registration != null){
-                        declareRealtyHouseCert.setRegistrationDate(registration);
-                    }
-                    if (StringUtils.isNotEmpty(used)){
-                        declareRealtyHouseCert.setPlanningUse(used);
-                    }
-                } catch (Exception e1) {
-                    logger.error(e1.getMessage(),e1);
-                }
-                return declareRealtyHouseCert;
-            }
-        }
-        return null;
-    }
 
 
 }

@@ -38,6 +38,12 @@ public class DeclareRealtyLandCertDao {
         declareRealtyLandCertMapper.deleteByExample(example);
     }
 
+    public void remove(List<Integer> ids){
+        DeclareRealtyLandCertExample example = new DeclareRealtyLandCertExample();
+        example.createCriteria().andIdIn(ids);
+        declareRealtyLandCertMapper.deleteByExample(example);
+    }
+
     public List<DeclareRealtyLandCert> getDeclareRealtyLandCertList(DeclareRealtyLandCert declareRealtyLandCert){
         DeclareRealtyLandCertExample example = new DeclareRealtyLandCertExample();
         MybatisUtils.convertObj2Example(declareRealtyLandCert, example);

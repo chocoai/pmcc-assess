@@ -292,17 +292,17 @@
     //提交
     function submit() {
         //检查是否填写了申报数据
-        var rows = $("#" + declareRealtyHouseCertConfig.table).bootstrapTable('getData');
+        var rows = $("#" + assessCommonHouse.config.table).bootstrapTable('getData');
         if (rows && rows.length > 0) {
             submitForm();
             return false;
         }
-        rows = $("#" + declareRealtyLandCertConfig.table).bootstrapTable('getData');
+        rows = $("#" + assessCommonLand.config.table).bootstrapTable('getData');
         if (rows && rows.length > 0) {
             submitForm();
             return false;
         }
-        rows = $("#" + declareRealtyRealEstateCertConfig.table).bootstrapTable('getData');
+        rows = $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('getData');
         if (rows && rows.length > 0) {
             submitForm();
             return false;

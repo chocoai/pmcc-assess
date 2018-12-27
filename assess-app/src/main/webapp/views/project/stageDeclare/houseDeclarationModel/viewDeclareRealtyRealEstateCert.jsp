@@ -14,8 +14,9 @@
                     <button type="button" class="btn btn-success" onclick="declareRealtyRealEstateCert.showAddModel()"
                             data-toggle="modal"> 新增
                     </button>
+                    <div type="button" class="btn btn-primary" onclick="declareRealtyRealEstateCert.editData()"> 编辑</div>
+                    <div type="button" class="btn btn-primary" onclick="declareRealtyRealEstateCert.deleteData()"> 删除</div>
                 </div>
-                &nbsp;&nbsp;&nbsp;&nbsp;
 
                 <div class="btn-group">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">批量导入数据
