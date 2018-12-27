@@ -1305,33 +1305,32 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            通信网络名称<span class="symbol required"></span>
+                                            供应商名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="name"
-                                                   placeholder="通信网络名称" required="required">
+                                            <select class="form-control search-select select2 supplier"
+                                                    name="supplier" required></select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            服务内容<span class="symbol required"></span>
+                                            服务内容
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="serviceContent"
-                                                   placeholder="服务内容" required="required">
+                                            <select class="form-control search-select select2 supplier"
+                                                    name="serviceContent" ></select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            通信网络指标参数<span class="symbol required"></span>
+                                            服务内容描述
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="indexParameter"
-                                                   placeholder="通信网络指标参数" required="required">
+                                            <textarea class="form-control" name="remark"  placeholder="服务内容描述"></textarea>
                                         </div>
                                     </div>
                                 </div>

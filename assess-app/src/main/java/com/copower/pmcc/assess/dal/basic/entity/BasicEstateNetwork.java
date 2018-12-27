@@ -7,11 +7,11 @@ public class BasicEstateNetwork {
 
     private Integer estateId;
 
-    private String name;
+    private Integer supplier;
 
-    private String serviceContent;
+    private Integer serviceContent;
 
-    private String indexParameter;
+    private String reamrk;
 
     private String creator;
 
@@ -35,28 +35,28 @@ public class BasicEstateNetwork {
         this.estateId = estateId;
     }
 
-    public String getName() {
-        return name;
+    public Integer getSupplier() {
+        return supplier;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setSupplier(Integer supplier) {
+        this.supplier = supplier;
     }
 
-    public String getServiceContent() {
+    public Integer getServiceContent() {
         return serviceContent;
     }
 
-    public void setServiceContent(String serviceContent) {
-        this.serviceContent = serviceContent == null ? null : serviceContent.trim();
+    public void setServiceContent(Integer serviceContent) {
+        this.serviceContent = serviceContent;
     }
 
-    public String getIndexParameter() {
-        return indexParameter;
+    public String getReamrk() {
+        return reamrk;
     }
 
-    public void setIndexParameter(String indexParameter) {
-        this.indexParameter = indexParameter == null ? null : indexParameter.trim();
+    public void setReamrk(String reamrk) {
+        this.reamrk = reamrk == null ? null : reamrk.trim();
     }
 
     public String getCreator() {

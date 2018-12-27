@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -49,9 +48,6 @@ public class CaseEstateNetworkController {
         BootstrapTableVo vo = null;
         try {
             CaseEstateNetwork caseEstateNetwork = new CaseEstateNetwork();
-            if (!StringUtils.isEmpty(name)) {
-                caseEstateNetwork.setName(name);
-            }
             if (estateId != null) {
                 caseEstateNetwork.setEstateId(estateId);
             }
@@ -61,20 +57,6 @@ public class CaseEstateNetworkController {
             return null;
         }
         return vo;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/deleteCaseEstateNetworkById", method = {RequestMethod.POST}, name = "删除通信网络")
-    public HttpResult delete(Integer id) {
-        try {
-            if (id != null) {
-                return HttpResult.newCorrectResult(caseEstateNetworkService.deleteEstateNetwork(id));
-            }
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-        return null;
     }
 
     @ResponseBody

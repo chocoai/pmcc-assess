@@ -2388,7 +2388,15 @@ var estateNetwork;
         },
         init: function (item) {
             $("#" + estateNetwork.prototype.config().frm).clearAll();
-            $("#" + estateNetwork.prototype.config().frm).initForm(item);
+            $("#" + estateNetwork.prototype.config().frm).initForm(item,function () {
+                AssessCommon.loadDataDicByKey(AssessDicKey.estate_network_supplier, item.supplier, function (html, data) {
+                    $("#" + estateParking.prototype.config().frm).find("select.supplier").empty().html(html).trigger('change');
+                });
+
+                AssessCommon.loadDataDicByKey(AssessDicKey.estate_network_service_content, item.serviceContent, function (html, data) {
+                    $("#" + estateParking.prototype.config().frm).find("select.serviceContent").empty().html(html).trigger('change');
+                });
+            });
         }
     }
 

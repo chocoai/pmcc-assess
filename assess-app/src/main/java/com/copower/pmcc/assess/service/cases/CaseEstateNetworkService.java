@@ -2,15 +2,18 @@ package com.copower.pmcc.assess.service.cases;
 
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateNetworkDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateNetwork;
+import com.copower.pmcc.assess.dto.output.cases.CaseEstateNetworkVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +30,9 @@ public class CaseEstateNetworkService {
     @Autowired
     private CaseEstateNetworkDao caseEstateNetworkDao;
     @Autowired
-    private CommonService commonService;
+    private BaseDataDicService baseDataDicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
+
     /**
      * 功能描述:
      *
@@ -42,7 +46,6 @@ public class CaseEstateNetworkService {
     }
 
     /**
-     *
      * 功能描述:
      *
      * @param: examineEstateNetwork
@@ -50,14 +53,23 @@ public class CaseEstateNetworkService {
      * @auther: zch
      * @date: 2018/7/18 15:02
      */
-    public BootstrapTableVo getCaseEstateNetworkList(CaseEstateNetwork examineEstateNetwork){
+    public BootstrapTableVo getCaseEstateNetworkList(CaseEstateNetwork examineEstateNetwork) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CaseEstateNetwork> vos = getEstateNetworkLists(examineEstateNetwork);
+        List<CaseEstateNetwork> list = getEstateNetworkLists(examineEstateNetwork);
+        List<CaseEstateNetworkVo> vos = LangUtils.transform(list, o -> getBasicEstateNetworkVo(o));
         vo.setTotal(page.getTotal());
-        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(vos) ? new ArrayList<CaseEstateNetwork>() : vos);
+        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(vos) ? new ArrayList<CaseEstateNetworkVo>() : vos);
         return vo;
+    }
+
+    public CaseEstateNetworkVo getBasicEstateNetworkVo(CaseEstateNetwork caseEstateNetwork) {
+        CaseEstateNetworkVo caseEstateNetworkVo = new CaseEstateNetworkVo();
+        BeanUtils.copyProperties(caseEstateNetwork, caseEstateNetworkVo);
+        caseEstateNetworkVo.setSupplierName(baseDataDicService.getNameById(caseEstateNetwork.getSupplier()));
+        caseEstateNetworkVo.setServiceContentName(baseDataDicService.getNameById(caseEstateNetwork.getServiceContent()));
+        return caseEstateNetworkVo;
     }
 
     /**
@@ -110,10 +122,11 @@ public class CaseEstateNetworkService {
 
     /**
      * 根据查询条件判断是否有数据
+     *
      * @param esteteId
      * @return
      */
-    public boolean hasEstateNetworkData(Integer esteteId){
-        return caseEstateNetworkDao.countByEstateId(esteteId)>0;
+    public boolean hasEstateNetworkData(Integer esteteId) {
+        return caseEstateNetworkDao.countByEstateId(esteteId) > 0;
     }
 }
