@@ -98,6 +98,8 @@ AssessDicKey.estateShape_state = "estate.shape_state";//土地形状
 AssessDicKey.estateTopographic_terrain = "estate.topographic_terrain";//地势
 AssessDicKey.estateSupplySituation = "estate.supply.situation";//供应情况
 
+AssessDicKey.estate_network_supplier = "estate.network.supplier";//	通信网络-供应商名称
+AssessDicKey.estate_network_service_content = "estate.network.service.content";//通信网络-服务内容
 AssessDicKey.estate_distance = "estate.distance";//交通距离
 AssessDicKey.estate_car_location = "estate.car.location";//车位位置
 AssessDicKey.estate_car_type = "estate.car.type";//车位类型

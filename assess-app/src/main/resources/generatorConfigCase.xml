@@ -39,8 +39,7 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_case_house_damaged_degree"  domainObjectName="CaseHouseDamagedDegree"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_case_house_damaged_degree_detail"  domainObjectName="CaseHouseDamagedDegreeDetail"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <table tableName="tb_case_estate_network"  domainObjectName="CaseEstateNetwork"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
     </context>
 
 </generatorConfiguration>

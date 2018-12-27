@@ -5,9 +5,9 @@ var commonColumn = {};
 //楼盘-通信网络信息
 commonColumn.estateNetworkColumn = function () {
     var cols = [];
-    cols.push({field: 'name', title: '通讯名称'});
-    cols.push({field: 'serviceContent', title: '服务内容'});
-    cols.push({field: 'indexParameter', title: '通信网络指标参数'});
+    cols.push({field: 'supplierName', title: '供应商名称'});
+    cols.push({field: 'serviceContentName', title: '服务内容'});
+    cols.push({field: 'remark', title: '服务内容描述'});
     return cols;
 }
 
@@ -127,7 +127,7 @@ commonColumn.matchingMainRoadColumn = function () {
     return cols;
 }
 
-//楼盘-主要转换信息
+//楼盘-主要转换互通桥信息
 commonColumn.matchingMainConversionColumn = function () {
     var cols = [];
     cols.push({field: 'name', title: '名称'});

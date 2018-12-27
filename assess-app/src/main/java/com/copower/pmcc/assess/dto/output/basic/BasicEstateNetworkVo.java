@@ -1,13 +1,11 @@
-package com.copower.pmcc.assess.dto.output.cases;
+package com.copower.pmcc.assess.dto.output.basic;
 
-import com.copower.pmcc.assess.dal.cases.entity.CaseEstateNetwork;
+import com.copower.pmcc.assess.dal.basic.entity.BasicEstateNetwork;
 
 /**
- * @Auther: zch
- * @Date: 2018/9/17 11:04
- * @Description:
+ * Created by kings on 2018-12-27.
  */
-public class CaseEstateNetworkVo extends CaseEstateNetwork {
+public class BasicEstateNetworkVo extends BasicEstateNetwork {
     private String supplierName;
     private String serviceContentName;
 

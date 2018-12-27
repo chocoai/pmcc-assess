@@ -117,7 +117,7 @@ public class NetLandTransactionService {
                     netLandTransaction.setDetailLink(link);
                     String content = item.select("a").get(0).childNodes().get(0).toString();
                     netLandTransaction.setContent(content.replaceAll("\n", ""));
-                    List<NetLandTransaction> list = netLandTransactionDao.getNetLandTransactionList(netLandTransaction);
+                    List<NetLandTransaction> list = netLandTransactionDao.getObjectList(netLandTransaction);
                     if (CollectionUtils.isNotEmpty(list)) {
                         continue;
                     }
@@ -160,7 +160,7 @@ public class NetLandTransactionService {
 
     //结果公告
     private void result(Elements trs, Integer mainId) {
-        Integer a = trs.get(0).select("th").size();
+        Integer a = trs.get(1).select("td").size();
         //移除首行字段名
         trs.remove(0);
         if (a == 7) {

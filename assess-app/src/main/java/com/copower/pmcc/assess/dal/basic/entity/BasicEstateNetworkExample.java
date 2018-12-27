@@ -225,73 +225,63 @@ public class BasicEstateNetworkExample {
             return (Criteria) this;
         }
 
-        public Criteria andNameIsNull() {
-            addCriterion("name is null");
+        public Criteria andSupplierIsNull() {
+            addCriterion("supplier is null");
             return (Criteria) this;
         }
 
-        public Criteria andNameIsNotNull() {
-            addCriterion("name is not null");
+        public Criteria andSupplierIsNotNull() {
+            addCriterion("supplier is not null");
             return (Criteria) this;
         }
 
-        public Criteria andNameEqualTo(String value) {
-            addCriterion("name =", value, "name");
+        public Criteria andSupplierEqualTo(Integer value) {
+            addCriterion("supplier =", value, "supplier");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotEqualTo(String value) {
-            addCriterion("name <>", value, "name");
+        public Criteria andSupplierNotEqualTo(Integer value) {
+            addCriterion("supplier <>", value, "supplier");
             return (Criteria) this;
         }
 
-        public Criteria andNameGreaterThan(String value) {
-            addCriterion("name >", value, "name");
+        public Criteria andSupplierGreaterThan(Integer value) {
+            addCriterion("supplier >", value, "supplier");
             return (Criteria) this;
         }
 
-        public Criteria andNameGreaterThanOrEqualTo(String value) {
-            addCriterion("name >=", value, "name");
+        public Criteria andSupplierGreaterThanOrEqualTo(Integer value) {
+            addCriterion("supplier >=", value, "supplier");
             return (Criteria) this;
         }
 
-        public Criteria andNameLessThan(String value) {
-            addCriterion("name <", value, "name");
+        public Criteria andSupplierLessThan(Integer value) {
+            addCriterion("supplier <", value, "supplier");
             return (Criteria) this;
         }
 
-        public Criteria andNameLessThanOrEqualTo(String value) {
-            addCriterion("name <=", value, "name");
+        public Criteria andSupplierLessThanOrEqualTo(Integer value) {
+            addCriterion("supplier <=", value, "supplier");
             return (Criteria) this;
         }
 
-        public Criteria andNameLike(String value) {
-            addCriterion("name like", value, "name");
+        public Criteria andSupplierIn(List<Integer> values) {
+            addCriterion("supplier in", values, "supplier");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotLike(String value) {
-            addCriterion("name not like", value, "name");
+        public Criteria andSupplierNotIn(List<Integer> values) {
+            addCriterion("supplier not in", values, "supplier");
             return (Criteria) this;
         }
 
-        public Criteria andNameIn(List<String> values) {
-            addCriterion("name in", values, "name");
+        public Criteria andSupplierBetween(Integer value1, Integer value2) {
+            addCriterion("supplier between", value1, value2, "supplier");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotIn(List<String> values) {
-            addCriterion("name not in", values, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameBetween(String value1, String value2) {
-            addCriterion("name between", value1, value2, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameNotBetween(String value1, String value2) {
-            addCriterion("name not between", value1, value2, "name");
+        public Criteria andSupplierNotBetween(Integer value1, Integer value2) {
+            addCriterion("supplier not between", value1, value2, "supplier");
             return (Criteria) this;
         }
 
@@ -305,133 +295,123 @@ public class BasicEstateNetworkExample {
             return (Criteria) this;
         }
 
-        public Criteria andServiceContentEqualTo(String value) {
+        public Criteria andServiceContentEqualTo(Integer value) {
             addCriterion("service_content =", value, "serviceContent");
             return (Criteria) this;
         }
 
-        public Criteria andServiceContentNotEqualTo(String value) {
+        public Criteria andServiceContentNotEqualTo(Integer value) {
             addCriterion("service_content <>", value, "serviceContent");
             return (Criteria) this;
         }
 
-        public Criteria andServiceContentGreaterThan(String value) {
+        public Criteria andServiceContentGreaterThan(Integer value) {
             addCriterion("service_content >", value, "serviceContent");
             return (Criteria) this;
         }
 
-        public Criteria andServiceContentGreaterThanOrEqualTo(String value) {
+        public Criteria andServiceContentGreaterThanOrEqualTo(Integer value) {
             addCriterion("service_content >=", value, "serviceContent");
             return (Criteria) this;
         }
 
-        public Criteria andServiceContentLessThan(String value) {
+        public Criteria andServiceContentLessThan(Integer value) {
             addCriterion("service_content <", value, "serviceContent");
             return (Criteria) this;
         }
 
-        public Criteria andServiceContentLessThanOrEqualTo(String value) {
+        public Criteria andServiceContentLessThanOrEqualTo(Integer value) {
             addCriterion("service_content <=", value, "serviceContent");
             return (Criteria) this;
         }
 
-        public Criteria andServiceContentLike(String value) {
-            addCriterion("service_content like", value, "serviceContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceContentNotLike(String value) {
-            addCriterion("service_content not like", value, "serviceContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceContentIn(List<String> values) {
+        public Criteria andServiceContentIn(List<Integer> values) {
             addCriterion("service_content in", values, "serviceContent");
             return (Criteria) this;
         }
 
-        public Criteria andServiceContentNotIn(List<String> values) {
+        public Criteria andServiceContentNotIn(List<Integer> values) {
             addCriterion("service_content not in", values, "serviceContent");
             return (Criteria) this;
         }
 
-        public Criteria andServiceContentBetween(String value1, String value2) {
+        public Criteria andServiceContentBetween(Integer value1, Integer value2) {
             addCriterion("service_content between", value1, value2, "serviceContent");
             return (Criteria) this;
         }
 
-        public Criteria andServiceContentNotBetween(String value1, String value2) {
+        public Criteria andServiceContentNotBetween(Integer value1, Integer value2) {
             addCriterion("service_content not between", value1, value2, "serviceContent");
             return (Criteria) this;
         }
 
-        public Criteria andIndexParameterIsNull() {
-            addCriterion("index_parameter is null");
+        public Criteria andRemarkIsNull() {
+            addCriterion("remark is null");
             return (Criteria) this;
         }
 
-        public Criteria andIndexParameterIsNotNull() {
-            addCriterion("index_parameter is not null");
+        public Criteria andRemarkIsNotNull() {
+            addCriterion("remark is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIndexParameterEqualTo(String value) {
-            addCriterion("index_parameter =", value, "indexParameter");
+        public Criteria andRemarkEqualTo(String value) {
+            addCriterion("remark =", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andIndexParameterNotEqualTo(String value) {
-            addCriterion("index_parameter <>", value, "indexParameter");
+        public Criteria andRemarkNotEqualTo(String value) {
+            addCriterion("remark <>", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andIndexParameterGreaterThan(String value) {
-            addCriterion("index_parameter >", value, "indexParameter");
+        public Criteria andRemarkGreaterThan(String value) {
+            addCriterion("remark >", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andIndexParameterGreaterThanOrEqualTo(String value) {
-            addCriterion("index_parameter >=", value, "indexParameter");
+        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("remark >=", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andIndexParameterLessThan(String value) {
-            addCriterion("index_parameter <", value, "indexParameter");
+        public Criteria andRemarkLessThan(String value) {
+            addCriterion("remark <", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andIndexParameterLessThanOrEqualTo(String value) {
-            addCriterion("index_parameter <=", value, "indexParameter");
+        public Criteria andRemarkLessThanOrEqualTo(String value) {
+            addCriterion("remark <=", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andIndexParameterLike(String value) {
-            addCriterion("index_parameter like", value, "indexParameter");
+        public Criteria andRemarkLike(String value) {
+            addCriterion("remark like", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andIndexParameterNotLike(String value) {
-            addCriterion("index_parameter not like", value, "indexParameter");
+        public Criteria andRemarkNotLike(String value) {
+            addCriterion("remark not like", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andIndexParameterIn(List<String> values) {
-            addCriterion("index_parameter in", values, "indexParameter");
+        public Criteria andRemarkIn(List<String> values) {
+            addCriterion("remark in", values, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andIndexParameterNotIn(List<String> values) {
-            addCriterion("index_parameter not in", values, "indexParameter");
+        public Criteria andRemarkNotIn(List<String> values) {
+            addCriterion("remark not in", values, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andIndexParameterBetween(String value1, String value2) {
-            addCriterion("index_parameter between", value1, value2, "indexParameter");
+        public Criteria andRemarkBetween(String value1, String value2) {
+            addCriterion("remark between", value1, value2, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andIndexParameterNotBetween(String value1, String value2) {
-            addCriterion("index_parameter not between", value1, value2, "indexParameter");
+        public Criteria andRemarkNotBetween(String value1, String value2) {
+            addCriterion("remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
 

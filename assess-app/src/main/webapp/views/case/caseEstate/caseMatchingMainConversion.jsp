@@ -8,7 +8,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>主要转换信息</h4>
+        <h4>主要转换互通桥信息</h4>
         <div class="clearfix"></div>
     </div>
     <div class="x_content collapse">

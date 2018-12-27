@@ -1551,14 +1551,18 @@ damagedDegree.loadDamagedDegreeList = function () {
                         if (item.type == group) {
                             var trHtml = $("#damagedDegreeTabTrHtml").html();
                             trHtml = trHtml.replace(/{id}/g, item.id).replace(/{category}/g, AssessCommon.toString(item.category)).replace(/{categoryName}/g, AssessCommon.toString(item.categoryName));
-                            trHtml = trHtml.replace(/{standardScore}/g, AssessCommon.toString(item.standardScore)).replace(/{intact}/g, AssessCommon.toString(item.intact));
+                            trHtml = trHtml.replace(/{intact}/g, AssessCommon.toString(item.intact));
                             trHtml = trHtml.replace(/{basicallyIntact}/g, AssessCommon.toString(item.basicallyIntact)).replace(/{generalDamage}/g, AssessCommon.toString(item.generalDamage));
                             trHtml = trHtml.replace(/{seriousDamage}/g, AssessCommon.toString(item.seriousDamage)).replace(/{isShow}/g, item.hasChildren ? '' : 'style="display: none"');
                             $("#damagedDegreeTabContent").find('.tab-pane:last').find('tbody').append(trHtml);
                             var trElement = $("#damagedDegreeTabContent").find('.tab-pane:last').find('tbody').find('tr:last');
-                            trElement.find('[name=entityCondition]').val(item.entityCondition);
-                            trElement.find('[name=entityConditionContent]').val(item.entityConditionContent);
-                            trElement.find('[name=score]').val(item.score);
+                            if (!item.entityCondition && item.hasChildren) {
+                                trElement.find('[name=entityCondition]').hide();
+                                trElement.find('[name=entityConditionContent]').hide();
+                            } else {
+                                trElement.find('[name=entityCondition]').val(item.entityCondition);
+                                trElement.find('[name=entityConditionContent]').val(item.entityConditionContent);
+                            }
                         }
                     })
                 })
@@ -1571,7 +1575,7 @@ damagedDegree.loadDamagedDegreeList = function () {
 //现状change
 damagedDegree.entityConditionChange = function (_this) {
     var group = $(_this).closest('.group');
-    group.find('[name=entityConditionContent]').val($(_this).attr('data-' + $(_this).val()));
+    group.find('[data-name=entityConditionContent]').text($(_this).attr('data-' + $(_this).val()));
 };
 
 //显示modal
@@ -1586,10 +1590,8 @@ damagedDegree.damagedDegreeDetailModalShow = function (damagedDegreeId, category
 damagedDegree.loadDamagedDegreeDetailList = function () {
     var cols = [];
     cols.push({field: 'typeName', title: '类型', width: '10%'});
-    cols.push({field: 'standardScore', title: '标准分', width: '10%'});
     cols.push({field: 'entityConditionName', title: '实体状况', width: '10%'});
     cols.push({field: 'entityConditionContent', title: '状况内容', width: '40%'});
-    cols.push({field: 'score', title: '得分', width: '10%'});
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {
             var str = '<div class="btn-margin">';
@@ -1606,22 +1608,34 @@ damagedDegree.loadDamagedDegreeDetailList = function () {
         showColumns: false,
         showRefresh: false,
         search: false,
-        onLoadSuccess: function () {
+        onLoadSuccess: function (data) {
             $('.tooltips').tooltip();
+            var damagedDegreeId = $("#damagedDegreeId").val();
+            var currTr = $("#damagedDegreeTabContent").find('[name=id][value=' + damagedDegreeId + ']').closest('tr');
+            var entityConditionEle = currTr.find('[name=entityCondition]');
+            var entityConditionContentEle = currTr.find('[name=entityConditionContent]');
+            if (data.total && data.total > 0) {
+                entityConditionEle.show();
+                entityConditionContentEle.show();
+            } else {
+                currTr.find('[data-name=entityConditionContent]').text('');
+                entityConditionEle.val('').hide();
+                entityConditionContentEle.val('').hide();
+            }
         }
     });
 };
 
 //新增
 damagedDegree.addDamagedDegreeDetail = function () {
-    $("#damagedDegreeDetailForm").clearAll();
+    $("#damagedDegreeDetailForm").clearAll().find('[data-name=entityConditionContent]').text('');
     $("#damagedDegreeDetailModal").modal();
 };
 
 //编辑
 damagedDegree.editDamagedDegreeDetail = function (index) {
     var row = $("#damagedDegreeDetailList").bootstrapTable('getData')[index];
-    $("#damagedDegreeDetailForm").clearAll().initForm(row);
+    $("#damagedDegreeDetailForm").clearAll().initForm(row).find('[data-name=entityConditionContent]').text('');
     $("#damagedDegreeDetailModal").modal();
 };
 
@@ -1681,9 +1695,6 @@ damagedDegree.initDamagedDegreeDetailType = function (damagedDegreeId) {
                     optionHtml += 'data-generalDamage="' + item.generalDamage + '" ';
                     optionHtml += 'data-seriousDamage="' + item.seriousDamage + '" ';
                     optionHtml += '>' + item.name;
-                    if (item.standardScore) {
-                        optionHtml += '(' + item.standardScore + '分)';
-                    }
                     optionHtml += '</option>';
                     typeElement.append(optionHtml);
                 })
@@ -1697,7 +1708,7 @@ damagedDegree.autoFillEntityConditionContent = function () {
     var option = $("#damagedDegreeDetailForm").find('[name=type]').find("option:selected");
     var entityCondition = $("#damagedDegreeDetailForm").find('[name=entityCondition]').val();
     if (option && entityCondition) {
-        $("#damagedDegreeDetailForm").find('[name=entityConditionContent]').val($(option).attr('data-' + entityCondition));
+        $("#damagedDegreeDetailForm").find('[data-name=entityConditionContent]').text($(option).attr('data-' + entityCondition));
     }
 }
 
@@ -1709,7 +1720,6 @@ damagedDegree.getFormData = function () {
         data.id = $(this).find('[name=id]').val();
         data.entityCondition = $(this).find('[name=entityCondition]').val();
         data.entityConditionContent = $(this).find('[name=entityConditionContent]').val();
-        data.score = $(this).find('[name=score]').val();
         dataArray.push(data);
     })
     return dataArray;
