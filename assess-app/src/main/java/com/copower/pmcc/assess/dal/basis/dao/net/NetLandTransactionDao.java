@@ -26,12 +26,20 @@ public class NetLandTransactionDao {
         return netLandTransactionMapper.selectByPrimaryKey(id);
     }
 
-    public List<NetLandTransaction> getNetLandTransactionList(NetLandTransaction netLandTransaction) {
+    public List<NetLandTransaction> getNetLandTransactionList(String content) {
         NetLandTransactionExample example = new NetLandTransactionExample();
-        MybatisUtils.convertObj2Example(netLandTransaction, example);
-        example.setOrderByClause(" id desc");
+        NetLandTransactionExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(content)) {
+            criteria.andContentLike("%" + content + "%");
+        }
         List<NetLandTransaction> netLandTransactions = netLandTransactionMapper.selectByExample(example);
         return netLandTransactions;
+    }
+
+    public List<NetLandTransaction> getObjectList(NetLandTransaction netLandTransaction) {
+        NetLandTransactionExample example = new NetLandTransactionExample();
+        MybatisUtils.convertObj2Example(netLandTransaction, example);
+        return netLandTransactionMapper.selectByExample(example);
     }
 
     public boolean addNetLandTransaction(NetLandTransaction netLandTransaction) {
