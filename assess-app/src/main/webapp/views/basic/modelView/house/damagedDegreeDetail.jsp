@@ -50,11 +50,8 @@
             <thead>
             <tr>
                 <th width="10%">名称</th>
-                <th width="5%">标准分</th>
                 <th width="10%">实例状况</th>
                 <th width="60%">状况内容</th>
-                <th width="5%">得分</th>
-                <th width="10%">操作</th>
             </tr>
             </thead>
             <tbody>
@@ -67,21 +64,15 @@
         <td>
             <input type="hidden" name="id" value="{id}">
             {categoryName}
+            <div class="btn btn-xs btn-primary pull-right" {isShow}
+                 onclick="damagedDegree.damagedDegreeDetailModalShow('{id}')">明细项
+            </div>
         </td>
-        <td>{standardScore}</td>
         <td>
             {entityConditionName}
         </td>
         <td>
             {entityConditionContent}
-        </td>
-        <td>
-            {score}
-        </td>
-        <td>
-            <div class="btn btn-xs btn-primary" {isShow}
-                 onclick="damagedDegree.damagedDegreeDetailModalShow('{id}')">明细内容
-            </div>
         </td>
     </tr>
 </script>
@@ -119,10 +110,9 @@
                             if (item.type == group) {
                                 var trHtml = $("#damagedDegreeTabTrHtml").html();
                                 trHtml = trHtml.replace(/{id}/g, item.id).replace(/{categoryName}/g, AssessCommon.toString(item.categoryName));
-                                trHtml = trHtml.replace(/{standardScore}/g, AssessCommon.toString(item.standardScore));
                                 trHtml = trHtml.replace(/{entityConditionName}/g, AssessCommon.toString(item.entityConditionName));
                                 trHtml = trHtml.replace(/{entityConditionContent}/g, AssessCommon.toString(item.entityConditionContent));
-                                trHtml = trHtml.replace(/{score}/g, AssessCommon.toString(item.score)).replace(/{isShow}/g, item.hasChildren ? '' : 'style="display: none"');
+                                trHtml = trHtml.replace(/{isShow}/g, item.hasChildren ? '' : 'style="display: none"');
                                 $("#damagedDegreeTabContent").find('.tab-pane:last').find('tbody').append(trHtml);
                             }
                         })
@@ -142,11 +132,9 @@
     //加载明细项数据列表
     damagedDegree.loadDamagedDegreeDetailList = function (damagedDegreeId) {
         var cols = [];
-        cols.push({field: 'typeName', title: '类型', width: '10%'});
-        cols.push({field: 'standardScore', title: '标准分', width: '10%'});
-        cols.push({field: 'entityConditionName', title: '实体状况', width: '10%'});
-        cols.push({field: 'entityConditionContent', title: '状况内容', width: '40%'});
-        cols.push({field: 'score', title: '得分', width: '10%'});
+        cols.push({field: 'typeName', title: '类型', width: '15%'});
+        cols.push({field: 'entityConditionName', title: '实体状况', width: '15%'});
+        cols.push({field: 'entityConditionContent', title: '状况内容', width: '60%'});
         $("#damagedDegreeDetailList").bootstrapTable('destroy');
         TableInit("damagedDegreeDetailList", getContextPath() + "/basicHouseDamagedDegree/getDamagedDegreeDetailList", cols, {
             damagedDegreeId: damagedDegreeId

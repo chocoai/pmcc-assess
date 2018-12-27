@@ -96,18 +96,9 @@
                                             状况内容
                                         </label>
                                         <div class="col-sm-10">
+                                            <span data-name="entityConditionContent" style="color: red;"></span>
                                             <textarea placeholder="状况内容" name="entityConditionContent"
                                                       class="form-control"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            得分
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="score" class="form-control" placeholder="得分">
                                         </div>
                                     </div>
                                 </div>
@@ -134,11 +125,8 @@
             <thead>
             <tr>
                 <th width="10%">名称</th>
-                <th width="5%">标准分</th>
                 <th width="10%">实例状况</th>
                 <th width="60%">状况内容</th>
-                <th width="5%">得分</th>
-                <th width="10%">操作</th>
             </tr>
             </thead>
             <tbody>
@@ -151,8 +139,10 @@
         <td>
             <input type="hidden" name="id" value="{id}">
             {categoryName}
+            <div class="btn btn-xs btn-primary pull-right" {isShow}
+                 onclick="damagedDegree.damagedDegreeDetailModalShow('{id}','{category}')">明细内容
+            </div>
         </td>
-        <td>{standardScore}</td>
         <td>
             <select class="form-control" name="entityCondition" onchange="damagedDegree.entityConditionChange(this);"
                     data-intact="{intact}" data-basicallyIntact="{basicallyIntact}"
@@ -165,15 +155,8 @@
             </select>
         </td>
         <td>
+            <span data-name="entityConditionContent" style="color: red;"></span>
             <textarea class="form-control" name="entityConditionContent"></textarea>
-        </td>
-        <td>
-            <input type="text" name="score" class="form-control">
-        </td>
-        <td>
-            <div class="btn btn-xs btn-primary" {isShow}
-                 onclick="damagedDegree.damagedDegreeDetailModalShow('{id}','{category}')">明细内容
-            </div>
         </td>
     </tr>
 </script>
