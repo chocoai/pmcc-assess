@@ -39,7 +39,38 @@
             id: "declareModelRealEstateCert",
             handleId: "declareModelHandleRealEstateCert",
             name: "不动产证"
+        },
+        civilEngineering: {
+            id: "declareModelCivilEngineeringCommon",
+            handleId: "declareModelHandleCivilEngineeringCommon",
+            name: "土建"
+        },
+        equipmentInstallation: {
+            id: "declareModelequipmentInstallationCommon",
+            handleId: "declareModelHandleEquipmentInstallationCommon",
+            name: "设备安装"
+        },
+        buildingConstructionPermit: {
+            id: "buildingConstructionPermitCommon",
+            handleId: "declareModelHandleBuildingConstructionPermitCommon",
+            name: "建筑工程施工许可证"
+        },
+        preSalePermit: {
+            id: "preSalePermitCommon",
+            handleId: "declareModelHandlePreSalePermitCommon",
+            name: "商品房预售许可证"
+        },
+        landUsePermit: {
+            id: "landUsePermitCommon",
+            handleId: "declareModelHandleLandUsePermitCommon",
+            name: "建设用地规划许可证"
+        },
+        buildingPermit: {
+            id: "buildingPermitCommon",
+            handleId: "declareModelHandleBuildingPermitCommon",
+            name: "建设工程规划许可证"
         }
+
     };
 
     /**
@@ -330,9 +361,470 @@
 
     };
 
+    /**
+     * 土建
+     * @type {{getHtml: commonDeclareApplyModel.civilEngineering.getHtml}}
+     */
+    commonDeclareApplyModel.civilEngineering = {
+        getHtml: function () {
+            return $("#" + commonDeclareApplyModel.config.civilEngineering.id).html();
+        }
+    };
+
+    /**
+     * 设备安装
+     * @type {{getHtml: commonDeclareApplyModel.equipmentInstallation.getHtml}}
+     */
+    commonDeclareApplyModel.equipmentInstallation = {
+        getHtml: function () {
+            return $("#" + commonDeclareApplyModel.config.equipmentInstallation.id).html();
+        }
+    };
+
+    /**
+     * 建筑工程施工许可证
+     * @type {{getHtml: commonDeclareApplyModel.buildingConstructionPermit.getHtml}}
+     */
+    commonDeclareApplyModel.buildingConstructionPermit = {
+        getHtml: function () {
+            return $("#" + commonDeclareApplyModel.config.buildingConstructionPermit.id).html();
+        }
+    };
+
+    /**
+     * 商品房预售许可证
+     * @type {{getHtml: commonDeclareApplyModel.preSalePermit.getHtml}}
+     */
+    commonDeclareApplyModel.preSalePermit = {
+        getHtml: function () {
+            return $("#" + commonDeclareApplyModel.config.preSalePermit.id).html();
+        }
+    };
+
+    /**
+     * 建设用地规划许可证
+     * @type {{getHtml: commonDeclareApplyModel.landUsePermit.getHtml}}
+     */
+    commonDeclareApplyModel.landUsePermit = {
+        getHtml: function () {
+            return $("#" + commonDeclareApplyModel.config.landUsePermit.id).html();
+        }
+    };
+
+    /**
+     * 建设工程规划许可证
+     * @type {{getHtml: commonDeclareApplyModel.buildingPermit.getHtml}}
+     */
+    commonDeclareApplyModel.buildingPermit = {
+        getHtml: function () {
+            return $("#" + commonDeclareApplyModel.config.buildingPermit.id).html();
+        }
+    };
+
 
 </script>
 <!-- 由于以后申报信息可能经常改变因此对房产证，不动产证,土地证,建设工程规划许可证,建设用地规划许可证,建设工程施工许可证,商品房预售许可证,经济规划指标 -->
+
+<script type="text/html" id="declareModelCivilEngineeringCommon" data-title="土建">
+    <div id="declareModelHandleCivilEngineeringCommon">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">省
+                    <span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select name="province"
+                            class="form-control search-select select2 province"
+                            required="required">
+                        <option value="" name="province">-请选择-</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">市<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select name="city"
+                            class="form-control search-select select2 city"
+                            required="required">
+                    </select>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">县<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select name="district"
+                            class="form-control search-select select2 district">
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">占有单位<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="占有单位" name="occupancyUnit" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">项目名称<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="项目名称" name="name" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">坐落<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="坐落" name="beLocated" class="form-control"
+                           required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">结构<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="结构" name="structure" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label" title="评估面积">建筑面积<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="评估面积(数字)" name="buildArea" class="form-control"
+                           data-rule-maxlength="100" data-rule-number='true'
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">开工日期<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input placeholder="开工日期"
+                           name="startDate" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime" required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">预期完成日期<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input placeholder="预期完成日期"
+                           name="expectedCompletionDate" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime" required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">形象进度<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="形象进度" name="speedProgress" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">付款比例<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="付款比例" name="paymentRatio" class="form-control"
+                           required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">账面价值<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="账面价值" name="bookValue" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">帐面净值<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="帐面净值" name="bookNetValue" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">申报人<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="申报人" name="declarer" class="form-control"
+                           required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">申报日期<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input placeholder="申报日期"
+                           name="declarationDate" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime" required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">备注<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-11">
+                    <textarea class="form-control" name="remark" required="required"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="declareModelequipmentInstallationCommon" data-title="设备安装">
+    <div id="declareModelHandleEquipmentInstallationCommon">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">省
+                    <span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select name="province"
+                            class="form-control search-select select2"
+                            required="required">
+                        <option value="" name="province">-请选择-</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">市<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select name="city"
+                            class="form-control search-select select2"
+                            required="required">
+                    </select>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">县<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select name="district"
+                            class="form-control search-select select2 district">
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">占有单位<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="占有单位" name="occupancyUnit" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">项目名称<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="项目名称" name="name" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">坐落<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="坐落" name="beLocated" class="form-control"
+                           required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">规格型号<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="规格型号" name="specificationModel" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">生产厂家<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="生产厂家" name="manufacturer" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">计量单位<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="计量单位" name="measurementUnit" class="form-control"
+                           required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">数量<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text" data-rule-maxlength="100" data-rule-number='true'
+                           placeholder="数量(数字)" name="number" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">开工日期<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input placeholder="开工日期"
+                           name="startDate" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime" required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">预期完成日期<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input placeholder="预期完成日期"
+                           name="expectedCompletionDate" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime" required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">账面设备费<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="账面设备费" name="bookEquipmentFee" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">账面资金成本<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="账面资金成本" name="bookCapitalCost" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">账面安装费<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="账面安装费" name="bookInstallationFee" class="form-control"
+                           required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">其它<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="其它" name="other" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">申报人<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="申报人" name="declarer" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">申报日期<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input placeholder="申报日期"
+                           name="declarationDate" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime" required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">备注<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-11">
+                    <textarea class="form-control" name="remark" required="required"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="buildingConstructionPermitCommon" data-title="建筑工程施工许可证">
+    <div id="declareModelHandleBuildingConstructionPermitCommon">
+
+    </div>
+</script>
+
+<script type="text/html" id="preSalePermitCommon" data-title="商品房预售许可证">
+    <div id="declareModelHandlePreSalePermitCommon">
+
+    </div>
+</script>
+
+<script type="text/html" id="landUsePermitCommon" data-title="建设用地规划许可证">
+    <div id="declareModelHandleLandUsePermitCommon">
+
+    </div>
+</script>
+
+<script type="text/html" id="buildingPermitCommon" data-title="建设工程规划许可证">
+    <div id="declareModelHandleBuildingPermitCommon">
+
+    </div>
+</script>
 
 <script type="text/html" id="declareModelRealEstateCert" data-title="不动产证">
     <div id="declareModelHandleRealEstateCert">
@@ -366,7 +858,8 @@
                 </label>
                 <div class="col-sm-3">
                     <select name="district"
-                            class="form-control search-select select2 district" onchange="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
+                            class="form-control search-select select2 district"
+                            onchange="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
                     </select>
                 </div>
             </div>
@@ -468,7 +961,8 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="附号(数字)" name="attachedNumber" class="form-control"
-                           data-rule-maxlength="100" data-rule-number='true' onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
+                           data-rule-maxlength="100" data-rule-number='true'
+                           onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
                 </div>
             </div>
             <div class="x-valid">
@@ -476,7 +970,8 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="栋号(数字)" name="buildingNumber" class="form-control"
-                           data-rule-maxlength="100" data-rule-number='true' onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
+                           data-rule-maxlength="100" data-rule-number='true'
+                           onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
                 </div>
             </div>
         </div>
@@ -487,7 +982,8 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="单元(数字)" name="unit" class="form-control"
-                           data-rule-maxlength="100" data-rule-number='true' onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
+                           data-rule-maxlength="100" data-rule-number='true'
+                           onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
                 </div>
             </div>
             <div class="x-valid">
@@ -495,7 +991,8 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="楼层(数字)" name="floor" class="form-control"
-                           data-rule-maxlength="100" data-rule-number='true' onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
+                           data-rule-maxlength="100" data-rule-number='true'
+                           onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
                 </div>
             </div>
             <div class="x-valid">
