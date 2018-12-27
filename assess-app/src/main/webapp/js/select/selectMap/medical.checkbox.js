@@ -1,7 +1,7 @@
 //医疗 高德地图抓取周边医疗数据
 
 (function ($) {
-    var AssessMetro = function () {
+    var AssessMedical = function () {
 
     };
 
@@ -9,7 +9,7 @@
      * 获取要查询的参数如:经纬度以及抓取数据后为选择做必要的处理
      * @param that
      */
-    AssessMetro.prototype.select = function (that) {
+    AssessMedical.prototype.select = function (that) {
         $.ajax({
             url: getContextPath() + '/basicEstateTagging/getEstateTaggingList',
             data: {
@@ -22,11 +22,11 @@
                         var data = result.data[0];
                         if (data) {
                             var options = {
-                                distance: $(that).parent().prev().val(),
+                                distance: $(that).closest('form').find('[name=distance]').val(),
                                 lng: data.lng,
                                 lat: data.lat
                             };
-                            AssessMetro.prototype.appendHtml(options);
+                            AssessMedical.prototype.appendHtml(options);
                         }
                     } else {
                         Alert("无标记");
@@ -40,7 +40,7 @@
      * append html
      * @param options
      */
-    AssessMetro.prototype.appendHtml = function (options) {
+    AssessMedical.prototype.appendHtml = function (options) {
         var target = $("#select_Medical_modal");
         if (target.length > 0) {
             $("#select_Medical_modal").remove();
@@ -71,7 +71,7 @@
                 html += "<div class='row'>";
                 html += "<div class='col-md-12'>";
                 html += "<div class='panel-body'>";
-                html += AssessMetro.prototype.write(data);
+                html += AssessMedical.prototype.write(data);
                 html += '</div>';
                 html += '</div>';
                 html += '</div>';
@@ -93,14 +93,12 @@
      * 保存选中的
      * @param this_
      */
-    AssessMetro.prototype.onSelected = function (this_) {
-        var item = $(this_).parent().parent();
-        var theLine = item.find("label.theLine").html();
-        var str = theLine.split(";").join(',');
+    AssessMedical.prototype.onSelected = function (this_) {
+        var item = $(this_).closest('.form-group');
         var data = {
             organizationName: item.find("input[name='name']").val(),
             distance: item.find("input[name='distance']").val(),
-            theLine: str,
+            theLine: item.find("label.address").text(),
             estateId: estateCommon.getEstateId()
         };
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_distance, null, function (html, n) {
@@ -110,7 +108,7 @@
             var a2000 = {};
             var a2000Max = {};
             $.each(n, function (i, v) {
-                var number = AssessMetro.prototype.getNumber(v.name);
+                var number = AssessMedical.prototype.getNumber(v.name);
                 number = Number(number);
                 if (v.name == '小于等于500m') {
                     a500.number = number;
@@ -166,33 +164,32 @@
         });
     };
 
-    AssessMetro.prototype.save = function (that) {
+    AssessMedical.prototype.save = function (that) {
         var form = $(that).parent().parent().next();
         form.find(":checkbox").each(function (i, n) {
             if ($(this).prop("checked")) {
-                AssessMetro.prototype.onSelected(this);
+                AssessMedical.prototype.onSelected(this);
             }
         });
     };
 
-    AssessMetro.prototype.write = function (data) {
+    AssessMedical.prototype.write = function (data) {
         var retHtml = "";
         $.each(data.poiList.pois, function (i, item) {
             retHtml += "<div class='form-group'>";
-
+            retHtml += "<div class='col-sm-3'><span class='checkbox-inline'>";
+            retHtml += "<input type='checkbox' id='matchingMedical" + i + "' name='name' readonly='readonly' value='" + item.name + "' onclick=''" + ">";
+            retHtml += "<label for='matchingMedical" + i + "'>" + item.name + "</label>";
+            retHtml += '</span></div>';
             retHtml += "<label class='col-sm-1 control-label'>距离</label>";
             retHtml += "<div class='col-sm-2'>";
             retHtml += "<input type='text' class='form-control' name='distance' readonly='readonly' value='" + item.distance + "'" + ">";
             retHtml += "</div>";
 
-            retHtml += "<label class='col-sm-1 control-label'>线路</label>";
+            retHtml += "<label class='col-sm-1 control-label'>位置</label>";
             retHtml += "<div class='col-sm-5'>";
-            retHtml += "<label class='form-control theLine'>" + item.address + "</label>";
+            retHtml += "<label class='form-control address'>" + item.address + "</label>";
             retHtml += "</div>";
-
-            retHtml += "<div class='col-sm-3'>";
-            retHtml += item.name + "<input type='checkbox' name='name' readonly='readonly' value='" + item.name + "' onclick=''" + ">";
-            retHtml += '</div>';
 
             retHtml += '</div>';
         });
@@ -202,7 +199,7 @@
     /**
      * 截图字符串中的数字
      */
-    AssessMetro.prototype.getNumber = function (str) {
+    AssessMedical.prototype.getNumber = function (str) {
         var reg = /[1-9][0-9]*/g;
         return str.match(reg)[0];
     };
@@ -212,7 +209,7 @@
      * @param that
      * @param flag true 表示全选或者全不选,否则表示反选
      */
-    AssessMetro.prototype.checkedFun = function (that, flag) {
+    AssessMedical.prototype.checkedFun = function (that, flag) {
         var form = $(that).parent().parent().next();
         if (flag) {//全选或者全不选
             var number = 1;
@@ -250,5 +247,5 @@
     };
 
 
-    window.assessMatchingMedical = new AssessMetro();
+    window.assessMatchingMedical = new AssessMedical();
 })(jQuery);

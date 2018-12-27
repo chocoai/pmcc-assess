@@ -11,7 +11,7 @@ public class BasicEstateNetwork {
 
     private Integer serviceContent;
 
-    private String reamrk;
+    private String remark;
 
     private String creator;
 
@@ -51,12 +51,12 @@ public class BasicEstateNetwork {
         this.serviceContent = serviceContent;
     }
 
-    public String getReamrk() {
-        return reamrk;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setReamrk(String reamrk) {
-        this.reamrk = reamrk == null ? null : reamrk.trim();
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
     public String getCreator() {

@@ -345,73 +345,73 @@ public class BasicEstateNetworkExample {
             return (Criteria) this;
         }
 
-        public Criteria andReamrkIsNull() {
-            addCriterion("reamrk is null");
+        public Criteria andRemarkIsNull() {
+            addCriterion("remark is null");
             return (Criteria) this;
         }
 
-        public Criteria andReamrkIsNotNull() {
-            addCriterion("reamrk is not null");
+        public Criteria andRemarkIsNotNull() {
+            addCriterion("remark is not null");
             return (Criteria) this;
         }
 
-        public Criteria andReamrkEqualTo(String value) {
-            addCriterion("reamrk =", value, "reamrk");
+        public Criteria andRemarkEqualTo(String value) {
+            addCriterion("remark =", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andReamrkNotEqualTo(String value) {
-            addCriterion("reamrk <>", value, "reamrk");
+        public Criteria andRemarkNotEqualTo(String value) {
+            addCriterion("remark <>", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andReamrkGreaterThan(String value) {
-            addCriterion("reamrk >", value, "reamrk");
+        public Criteria andRemarkGreaterThan(String value) {
+            addCriterion("remark >", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andReamrkGreaterThanOrEqualTo(String value) {
-            addCriterion("reamrk >=", value, "reamrk");
+        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("remark >=", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andReamrkLessThan(String value) {
-            addCriterion("reamrk <", value, "reamrk");
+        public Criteria andRemarkLessThan(String value) {
+            addCriterion("remark <", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andReamrkLessThanOrEqualTo(String value) {
-            addCriterion("reamrk <=", value, "reamrk");
+        public Criteria andRemarkLessThanOrEqualTo(String value) {
+            addCriterion("remark <=", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andReamrkLike(String value) {
-            addCriterion("reamrk like", value, "reamrk");
+        public Criteria andRemarkLike(String value) {
+            addCriterion("remark like", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andReamrkNotLike(String value) {
-            addCriterion("reamrk not like", value, "reamrk");
+        public Criteria andRemarkNotLike(String value) {
+            addCriterion("remark not like", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andReamrkIn(List<String> values) {
-            addCriterion("reamrk in", values, "reamrk");
+        public Criteria andRemarkIn(List<String> values) {
+            addCriterion("remark in", values, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andReamrkNotIn(List<String> values) {
-            addCriterion("reamrk not in", values, "reamrk");
+        public Criteria andRemarkNotIn(List<String> values) {
+            addCriterion("remark not in", values, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andReamrkBetween(String value1, String value2) {
-            addCriterion("reamrk between", value1, value2, "reamrk");
+        public Criteria andRemarkBetween(String value1, String value2) {
+            addCriterion("remark between", value1, value2, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andReamrkNotBetween(String value1, String value2) {
-            addCriterion("reamrk not between", value1, value2, "reamrk");
+        public Criteria andRemarkNotBetween(String value1, String value2) {
+            addCriterion("remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
 

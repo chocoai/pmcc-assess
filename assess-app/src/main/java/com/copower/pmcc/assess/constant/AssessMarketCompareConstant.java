@@ -25,7 +25,7 @@ public class AssessMarketCompareConstant {
     public static final String OFFICE_CONCENTRATION = "office.concentration";  //办公集聚度 ps:多条交通枢信息 （名称+距离）相组合显示
     public static final String FLOOR = "floor";  //楼层 ps:房屋-所在层数
     public static final String ORIENTATION = "orientation";  //朝向 ps:房屋-朝向
-    public static final String TRAFFIC_CONDITIONS = "traffic.conditions";  //交通条件 ps:地铁、公交、主干道、主要转换信息的所有数据叠加
+    public static final String TRAFFIC_CONDITIONS = "traffic.conditions";  //交通条件 ps:地铁、公交、主干道、主要转换互通桥信息的所有数据叠加
     public static final String URBAN_INFRASTRUCTURE = "urban.infrastructure";  //城市基础设施 ps:道路、网络、供水、排水、供电、供气、供热信息，显示有无信息。工业仓储类型（则取所有信息显示）
     public static final String PUBLIC_SERVICE_FACILITIES = "public.service.facilities";  //公共服务设施 ps:教育、购物、医养、金融、休闲娱乐所有信息显示
     //周边环境

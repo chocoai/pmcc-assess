@@ -127,7 +127,7 @@ commonColumn.matchingMainRoadColumn = function () {
     return cols;
 }
 
-//楼盘-主要转换信息
+//楼盘-主要转换互通桥信息
 commonColumn.matchingMainConversionColumn = function () {
     var cols = [];
     cols.push({field: 'name', title: '名称'});

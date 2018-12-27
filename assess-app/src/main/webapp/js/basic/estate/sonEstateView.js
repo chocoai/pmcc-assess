@@ -287,9 +287,6 @@ var matchingMetro;
         },
         loadDataDicList: function () {
             var cols = commonColumn.matchingMetroColumn();
-            cols.unshift({
-                checkbox: true
-            });
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -310,7 +307,7 @@ var matchingMetro;
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
                 }
-            });
+            },true);
         },
         removeData: function (id) {
             $.ajax({
@@ -350,13 +347,13 @@ var matchingMetro;
                     data: {ids: ids},
                     success: function (result) {
                         if (result.ret) {
-                            toastr.success('清空所选项成功!');
+                            toastr.success('删除成功!');
                             matchingMetro.prototype.loadDataDicList();
                         }
                     }
                 })
             }else {
-                Alert("至少选择一个!") ;
+                Alert("至少选择一条数据!") ;
             }
         },
         showModel: function () {
@@ -494,9 +491,6 @@ var matchingTrafficHub;//交通枢纽信息
         },
         loadDataDicList: function () {
             var cols = commonColumn.matchingTrafficHubColumn();
-            cols.unshift({
-                checkbox: true
-            });
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -517,7 +511,7 @@ var matchingTrafficHub;//交通枢纽信息
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
                 }
-            });
+            },true);
         },
         removeData: function (id) {
             $.ajax({
@@ -557,13 +551,13 @@ var matchingTrafficHub;//交通枢纽信息
                     data: {ids: ids},
                     success: function (result) {
                         if (result.ret) {
-                            toastr.success('清空所选项成功!');
+                            toastr.success('删除成功!');
                             matchingTrafficHub.prototype.loadDataDicList();
                         }
                     }
                 })
             }else {
-                Alert("至少选择一个!") ;
+                Alert("至少选择一条数据!") ;
             }
         },
         showModel: function () {
@@ -659,9 +653,6 @@ var matchingTransit;
         },
         loadDataDicList: function () {
             var cols = commonColumn.matchingTransitColumn();
-            cols.unshift({
-                checkbox: true
-            });
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -682,7 +673,7 @@ var matchingTransit;
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
                 }
-            });
+            },true);
         },
         removeData: function (id) {
             $.ajax({
@@ -722,13 +713,13 @@ var matchingTransit;
                     data: {ids: ids},
                     success: function (result) {
                         if (result.ret) {
-                            toastr.success('清空所选项成功!');
+                            toastr.success('删除成功!');
                             matchingTransit.prototype.loadDataDicList();
                         }
                     }
                 })
             }else {
-                Alert("至少选择一个!") ;
+                Alert("至少选择一条数据!") ;
             }
         },
         showModel: function () {
@@ -867,9 +858,6 @@ var matchingMedical;//医疗
         },
         loadDataDicList: function () {
             var cols = commonColumn.matchingMedicalColumn();
-            cols.unshift({
-                checkbox: true
-            });
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -889,7 +877,7 @@ var matchingMedical;//医疗
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
                 }
-            });
+            },true);
         },
         removeData: function (id) {
             $.ajax({
@@ -929,13 +917,13 @@ var matchingMedical;//医疗
                     data: {ids: ids},
                     success: function (result) {
                         if (result.ret) {
-                            toastr.success('清空所选项成功!');
+                            toastr.success('删除成功!');
                             matchingMedical.prototype.loadDataDicList();
                         }
                     }
                 });
             }else {
-                Alert("至少选择一个!") ;
+                Alert("至少选择一条数据!") ;
             }
         },
         showModel: function () {
@@ -1168,9 +1156,6 @@ var matchingMarket; //商场
         },
         loadDataDicList: function () {
             var cols = commonColumn.matchingMarketColumn();
-            cols.unshift({
-                checkbox: true
-            });
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -1191,7 +1176,7 @@ var matchingMarket; //商场
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
                 }
-            });
+            },true);
         },
         removeData: function (id) {
             $.ajax({
@@ -1231,13 +1216,13 @@ var matchingMarket; //商场
                     data: {ids: ids},
                     success: function (result) {
                         if (result.ret) {
-                            toastr.success('清空所选项成功!');
+                            toastr.success('删除成功!');
                             matchingMarket.prototype.loadDataDicList();
                         }
                     }
                 });
             }else {
-                Alert("至少选择一个!") ;
+                Alert("至少选择一条数据!") ;
             }
         },
         showModel: function () {
@@ -1386,9 +1371,6 @@ var matchingRestaurant;//餐饮
         },
         loadDataDicList: function () {
             var cols = commonColumn.matchingRestaurantColumn();
-            cols.unshift({
-                checkbox: true
-            });
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -1409,7 +1391,7 @@ var matchingRestaurant;//餐饮
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
                 }
-            });
+            },true);
         },
         removeData: function (id) {
             $.ajax({
@@ -1449,13 +1431,13 @@ var matchingRestaurant;//餐饮
                     data: {ids: ids},
                     success: function (result) {
                         if (result.ret) {
-                            toastr.success('清空所选项成功!');
+                            toastr.success('删除成功!');
                             matchingRestaurant.prototype.loadDataDicList();
                         }
                     }
                 });
             }else {
-                Alert("至少选择一个!") ;
+                Alert("至少选择一条数据!") ;
             }
         },
         showModel: function () {
@@ -1604,9 +1586,6 @@ var matchingRecreation;//娱乐
         },
         loadDataDicList: function () {
             var cols = commonColumn.matchingRecreationColumn();
-            cols.unshift({
-                checkbox: true
-            });
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -1627,7 +1606,7 @@ var matchingRecreation;//娱乐
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
                 }
-            });
+            },true);
         },
         removeData: function (id) {
             $.ajax({
@@ -1667,13 +1646,13 @@ var matchingRecreation;//娱乐
                     data: {ids: ids},
                     success: function (result) {
                         if (result.ret) {
-                            toastr.success('清空所选项成功!');
+                            toastr.success('删除成功!');
                             matchingRecreation.prototype.loadDataDicList();
                         }
                     }
                 });
             }else {
-                Alert("至少选择一个!") ;
+                Alert("至少选择一条数据!") ;
             }
         },
         showModel: function () {
@@ -1819,9 +1798,6 @@ var matchingFinance;
         },
         loadDataDicList: function () {
             var cols = commonColumn.matchingFinanceColumn();
-            cols.unshift({
-                checkbox: true
-            });
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -1841,7 +1817,7 @@ var matchingFinance;
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
                 }
-            });
+            },true);
         },
         removeData: function (id) {
             $.ajax({
@@ -1881,13 +1857,13 @@ var matchingFinance;
                     data: {ids: ids},
                     success: function (result) {
                         if (result.ret) {
-                            toastr.success('清空所选项成功!');
+                            toastr.success('删除成功!');
                             matchingFinance.prototype.loadDataDicList();
                         }
                     }
                 })
             }else {
-                Alert("至少选择一个!") ;
+                Alert("至少选择一条数据!") ;
             }
         },
         showModel: function () {
@@ -2127,9 +2103,6 @@ var matchingEducation;
         },
         loadDataDicList: function () {
             var cols = commonColumn.matchingEducationColumn();
-            cols.unshift({
-                checkbox: true
-            });
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -2149,7 +2122,7 @@ var matchingEducation;
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
                 }
-            });
+            },true);
         },
         removeData: function (id) {
             $.ajax({
@@ -2189,13 +2162,13 @@ var matchingEducation;
                     data: {ids: ids},
                     success: function (result) {
                         if (result.ret) {
-                            toastr.success('清空所选项成功!');
+                            toastr.success('删除成功!');
                             matchingEducation.prototype.loadDataDicList();
                         }
                     }
                 });
             }else {
-                Alert("至少选择一个!") ;
+                Alert("至少选择一条数据!") ;
             }
         },
         showModel: function () {
@@ -2390,11 +2363,11 @@ var estateNetwork;
             $("#" + estateNetwork.prototype.config().frm).clearAll();
             $("#" + estateNetwork.prototype.config().frm).initForm(item,function () {
                 AssessCommon.loadDataDicByKey(AssessDicKey.estate_network_supplier, item.supplier, function (html, data) {
-                    $("#" + estateParking.prototype.config().frm).find("select.supplier").empty().html(html).trigger('change');
+                    $("#" + estateNetwork.prototype.config().frm).find("select.supplier").empty().html(html).trigger('change');
                 });
 
                 AssessCommon.loadDataDicByKey(AssessDicKey.estate_network_service_content, item.serviceContent, function (html, data) {
-                    $("#" + estateParking.prototype.config().frm).find("select.serviceContent").empty().html(html).trigger('change');
+                    $("#" + estateNetwork.prototype.config().frm).find("select.serviceContent").empty().html(html).trigger('change');
                 });
             });
         }

@@ -106,7 +106,7 @@
      * @param this_
      */
     AssessMatchingFinance.prototype.onSelected = function (this_) {
-        var item = $(this_).parent().parent();
+        var item = $(this_).closest('.form-group');
         var data = {
             name: item.find("input[name='name']").val(),
             estateId: estateCommon.getEstateId(),

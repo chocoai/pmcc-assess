@@ -22,7 +22,7 @@
                         var data = result.data[0];
                         if (data) {
                             var options = {
-                                distance: $(that).parent().prev().val(),
+                                distance: $(that).closest('form').find('[name=distance]').val(),
                                 lng: data.lng,
                                 lat: data.lat
                             };
@@ -94,7 +94,7 @@
      * @param this_
      */
     AssessTrafficHub.prototype.onSelected = function (this_) {
-        var item = $(this_).parent().parent();
+        var item = $(this_).closest('.form-group');
         var theLine = item.find("label.theLine").html();
         var str = theLine.split(";").join(',');
         var data = {
@@ -180,7 +180,10 @@
         var retHtml = "";
         $.each(data.poiList.pois, function (i, item) {
             retHtml += "<div class='form-group'>";
-
+            retHtml += "<div class='col-sm-3'><span class='checkbox-inline'>";
+            retHtml += "<input type='checkbox' id='matchingTrafficHub" + i + "' name='name' readonly='readonly' value='" + item.name + "' onclick=''" + ">";
+            retHtml += "<label for='matchingTrafficHub" + i + "'>" + item.name + "</label>";
+            retHtml += '</span></div>';
             retHtml += "<label class='col-sm-1 control-label'>距离</label>";
             retHtml += "<div class='col-sm-2'>";
             retHtml += "<input type='text' class='form-control' name='distance' readonly='readonly' value='" + item.distance + "'" + ">";
@@ -190,11 +193,6 @@
             retHtml += "<div class='col-sm-5'>";
             retHtml += "<label class='form-control theLine'>" + item.address + "</label>";
             retHtml += "</div>";
-
-            retHtml += "<div class='col-sm-3'>";
-            retHtml += item.name + "<input type='checkbox' name='name' readonly='readonly' value='" + item.name + "' onclick=''" + ">";
-            retHtml += '</div>';
-
             retHtml += '</div>';
         });
         return retHtml;
