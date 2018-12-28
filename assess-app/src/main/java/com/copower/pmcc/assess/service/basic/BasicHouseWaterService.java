@@ -130,5 +130,29 @@ public class BasicHouseWaterService {
         vo.setFireWaterSupplyName(baseDataDicService.getNameById(basicHouseWater.getFireWaterSupply()));
         return vo;
     }
-    
+
+    /**
+     * 根据查询条件判断是否有数据
+     *
+     * @param houseId
+     * @return
+     */
+    public boolean hasHouseWaterData(Integer houseId) {
+        return basicHouseWaterDao.countByHouseId(houseId) > 0;
+    }
+
+    public BootstrapTableVo getBootstrapTableVo(Integer houseId) throws Exception {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        requestBaseParam.setLimit(100);
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        BasicHouseWater basicHouseWater = new BasicHouseWater();
+        basicHouseWater.setHouseId(houseId);
+        List<BasicHouseWater> basicHouseWaterList = basicHouseWaterDao.basicHouseWaterList(basicHouseWater);
+        List<BasicHouseWaterVo> vos = Lists.newArrayList();
+        basicHouseWaterList.forEach(oo -> vos.add(getBasicHouseWaterVo(oo)));
+        vo.setTotal(page.getTotal());
+        vo.setRows(ObjectUtils.isEmpty(vos) ? new ArrayList<BasicHouseWaterVo>(10) : vos);
+        return vo;
+    }
 }

@@ -137,4 +137,28 @@ public class BasicHouseRoomService {
         return vo;
     }
 
+    /**
+     * 根据查询条件判断是否有数据
+     * @param houseId
+     * @return
+     */
+    public boolean hasHouseRoomData(Integer houseId){
+        return basicHouseRoomDao.countByHouseId(houseId)>0;
+    }
+
+
+    public BootstrapTableVo getBootstrapTableVo(Integer houseId) throws Exception {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        requestBaseParam.setLimit(100);
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        BasicHouseRoom basicHouseRoom = new BasicHouseRoom();
+        basicHouseRoom.setHouseId(houseId);
+        List<BasicHouseRoom> basicHouseRoomList = basicHouseRoomDao.basicHouseRoomList(basicHouseRoom);
+        List<BasicHouseRoomVo> vos = Lists.newArrayList();
+        basicHouseRoomList.forEach(oo -> vos.add(getBasicHouseRoomVo(oo)));
+        vo.setTotal(page.getTotal());
+        vo.setRows(ObjectUtils.isEmpty(vos) ? new ArrayList<BasicHouseRoomVo>(10) : vos);
+        return vo;
+    }
 }

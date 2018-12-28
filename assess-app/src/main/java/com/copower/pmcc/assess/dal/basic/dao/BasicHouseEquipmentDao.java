@@ -50,4 +50,15 @@ public class BasicHouseEquipmentDao {
         return basicHouseEquipmentMapper.selectByExample(example);
     }
 
+    /**
+     * 获取数据条数
+     * @param houseId
+     * @return
+     */
+    public int countByHouseId(Integer houseId,String type){
+        BasicHouseEquipmentExample example = new BasicHouseEquipmentExample();
+        example.createCriteria().andHouseIdEqualTo(houseId).andTypeEqualTo(type);
+        return basicHouseEquipmentMapper.countByExample(example);
+    }
+
 }
