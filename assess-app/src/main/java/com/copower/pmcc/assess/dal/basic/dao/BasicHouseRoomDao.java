@@ -43,4 +43,15 @@ public class BasicHouseRoomDao {
         MybatisUtils.convertObj2Example(basicHouseRoom, example);
         return basicHouseRoomMapper.selectByExample(example);
     }
+
+    /**
+     * 获取数据条数
+     * @param houseId
+     * @return
+     */
+    public int countByHouseId(Integer houseId){
+        BasicHouseRoomExample example = new BasicHouseRoomExample();
+        example.createCriteria().andHouseIdEqualTo(houseId);
+        return basicHouseRoomMapper.countByExample(example);
+    }
 }

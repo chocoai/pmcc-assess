@@ -50,4 +50,14 @@ public class BasicHouseIntelligentDao {
         return basicHouseIntelligentMapper.selectByExample(example);
     }
 
+    /**
+     * 获取数据条数
+     * @param houseId
+     * @return
+     */
+    public int countByHouseId(Integer houseId){
+        BasicHouseIntelligentExample example = new BasicHouseIntelligentExample();
+        example.createCriteria().andHouseIdEqualTo(houseId);
+        return basicHouseIntelligentMapper.countByExample(example);
+    }
 }

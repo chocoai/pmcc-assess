@@ -49,4 +49,30 @@ public class BasicHouseDamagedDegreeDao {
         MybatisUtils.convertObj2Example(basicHouseDamagedDegree, example);
         return basicHouseDamagedDegreeMapper.selectByExample(example);
     }
+
+
+    /**
+     * 获取数据条数
+     * @param houseId
+     * @return
+     */
+    public int countByHouseId(Integer houseId,Integer type){
+        BasicHouseDamagedDegreeExample example = new BasicHouseDamagedDegreeExample();
+        BasicHouseDamagedDegreeExample.Criteria criteria = example.createCriteria();
+        criteria.andHouseIdEqualTo(houseId);
+        criteria.andTypeEqualTo(type);
+        criteria.andEntityConditionContentNotEqualTo("");
+        criteria.andEntityConditionNotEqualTo("");
+        return basicHouseDamagedDegreeMapper.countByExample(example);
+    }
+
+    public List<BasicHouseDamagedDegree> getValueDamagedDegreeList(Integer houseId,Integer type) {
+        BasicHouseDamagedDegreeExample example = new BasicHouseDamagedDegreeExample();
+        BasicHouseDamagedDegreeExample.Criteria criteria = example.createCriteria();
+        criteria.andHouseIdEqualTo(houseId);
+        criteria.andTypeEqualTo(type);
+        criteria.andEntityConditionContentNotEqualTo("");
+        criteria.andEntityConditionNotEqualTo("");
+        return basicHouseDamagedDegreeMapper.selectByExample(example);
+    }
 }

@@ -50,4 +50,14 @@ public class BasicHouseFaceStreetDao {
         return basicHouseFaceStreetMapper.selectByExample(example);
     }
 
+    /**
+     * 获取数据条数
+     * @param houseId
+     * @return
+     */
+    public int countByHouseId(Integer houseId){
+        BasicHouseFaceStreetExample example = new BasicHouseFaceStreetExample();
+        example.createCriteria().andHouseIdEqualTo(houseId);
+        return basicHouseFaceStreetMapper.countByExample(example);
+    }
 }
