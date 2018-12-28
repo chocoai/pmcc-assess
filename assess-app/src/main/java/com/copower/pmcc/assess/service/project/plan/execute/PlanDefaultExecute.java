@@ -15,6 +15,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -56,6 +57,10 @@ public class PlanDefaultExecute implements ProjectPlanExecuteInterface {
                 projectPlanDetails.setBisEnable(true);
                 projectPlanDetails.setSorting(projectPhase.getPhaseSort());
                 projectPlanDetails.setProcessInsId("0");
+                projectPlanDetails.setBisLastLayer(true);
+                projectPlanDetails.setPlanStartDate(new Date());
+                projectPlanDetails.setPlanEndDate(new Date());
+                projectPlanDetails.setPlanHours(projectPhase.getPhaseTime());
                 projectPlanDetails.setStatus(ProjectStatusEnum.RUNING.getKey());
                 projectPlanDetails.setCreator(commonService.thisUserAccount());
                 projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);
@@ -63,7 +68,7 @@ public class PlanDefaultExecute implements ProjectPlanExecuteInterface {
                 projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
             }
         }
-        projectPlan.setProjectStatus(ProjectStatusEnum.FINISH.getName());
+        projectPlan.setProjectStatus(ProjectStatusEnum.TASK.getName());
         projectPlanService.updateProjectPlan(projectPlan);
     }
 
