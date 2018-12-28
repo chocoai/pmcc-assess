@@ -25,13 +25,7 @@
     <result column="declarer" property="declarer" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="enable" property="enable" jdbcType="VARCHAR" />
-    <result column="building_construction_permit_id" property="buildingConstructionPermitId" jdbcType="INTEGER" />
-    <result column="building_permit_id" property="buildingPermitId" jdbcType="INTEGER" />
-    <result column="land_use_permit_id" property="landUsePermitId" jdbcType="INTEGER" />
-    <result column="pre_sale_permit_id" property="preSalePermitId" jdbcType="INTEGER" />
-    <result column="land_id" property="landId" jdbcType="INTEGER" />
     <result column="declare_type" property="declareType" jdbcType="VARCHAR" />
-    <result column="real_estate_id" property="realEstateId" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -98,9 +92,7 @@
     id, pid, plan_details_id, province, city, district, occupancy_unit, name, be_located, 
     specification_model, manufacturer, measurement_unit, number, expected_completion_date, 
     start_date, book_equipment_fee, book_capital_cost, book_installation_fee, other, 
-    declaration_date, declarer, remark, enable, building_construction_permit_id, building_permit_id, 
-    land_use_permit_id, pre_sale_permit_id, land_id, declare_type, real_estate_id, creator, 
-    gmt_created, gmt_modified
+    declaration_date, declarer, remark, enable, declare_type, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstallExample" >
     select
@@ -143,9 +135,7 @@
       expected_completion_date, start_date, 
       book_equipment_fee, book_capital_cost, book_installation_fee, 
       other, declaration_date, declarer, 
-      remark, enable, building_construction_permit_id, 
-      building_permit_id, land_use_permit_id, pre_sale_permit_id, 
-      land_id, declare_type, real_estate_id, 
+      remark, enable, declare_type, 
       creator, gmt_created, gmt_modified
       )
     values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
@@ -155,9 +145,7 @@
       #{expectedCompletionDate,jdbcType=TIMESTAMP}, #{startDate,jdbcType=TIMESTAMP}, 
       #{bookEquipmentFee,jdbcType=VARCHAR}, #{bookCapitalCost,jdbcType=VARCHAR}, #{bookInstallationFee,jdbcType=VARCHAR}, 
       #{other,jdbcType=VARCHAR}, #{declarationDate,jdbcType=TIMESTAMP}, #{declarer,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR}, #{enable,jdbcType=VARCHAR}, #{buildingConstructionPermitId,jdbcType=INTEGER}, 
-      #{buildingPermitId,jdbcType=INTEGER}, #{landUsePermitId,jdbcType=INTEGER}, #{preSalePermitId,jdbcType=INTEGER}, 
-      #{landId,jdbcType=INTEGER}, #{declareType,jdbcType=VARCHAR}, #{realEstateId,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR}, #{enable,jdbcType=VARCHAR}, #{declareType,jdbcType=VARCHAR}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -233,26 +221,8 @@
       <if test="enable != null" >
         enable,
       </if>
-      <if test="buildingConstructionPermitId != null" >
-        building_construction_permit_id,
-      </if>
-      <if test="buildingPermitId != null" >
-        building_permit_id,
-      </if>
-      <if test="landUsePermitId != null" >
-        land_use_permit_id,
-      </if>
-      <if test="preSalePermitId != null" >
-        pre_sale_permit_id,
-      </if>
-      <if test="landId != null" >
-        land_id,
-      </if>
       <if test="declareType != null" >
         declare_type,
-      </if>
-      <if test="realEstateId != null" >
-        real_estate_id,
       </if>
       <if test="creator != null" >
         creator,
@@ -331,26 +301,8 @@
       <if test="enable != null" >
         #{enable,jdbcType=VARCHAR},
       </if>
-      <if test="buildingConstructionPermitId != null" >
-        #{buildingConstructionPermitId,jdbcType=INTEGER},
-      </if>
-      <if test="buildingPermitId != null" >
-        #{buildingPermitId,jdbcType=INTEGER},
-      </if>
-      <if test="landUsePermitId != null" >
-        #{landUsePermitId,jdbcType=INTEGER},
-      </if>
-      <if test="preSalePermitId != null" >
-        #{preSalePermitId,jdbcType=INTEGER},
-      </if>
-      <if test="landId != null" >
-        #{landId,jdbcType=INTEGER},
-      </if>
       <if test="declareType != null" >
         #{declareType,jdbcType=VARCHAR},
-      </if>
-      <if test="realEstateId != null" >
-        #{realEstateId,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -441,26 +393,8 @@
       <if test="record.enable != null" >
         enable = #{record.enable,jdbcType=VARCHAR},
       </if>
-      <if test="record.buildingConstructionPermitId != null" >
-        building_construction_permit_id = #{record.buildingConstructionPermitId,jdbcType=INTEGER},
-      </if>
-      <if test="record.buildingPermitId != null" >
-        building_permit_id = #{record.buildingPermitId,jdbcType=INTEGER},
-      </if>
-      <if test="record.landUsePermitId != null" >
-        land_use_permit_id = #{record.landUsePermitId,jdbcType=INTEGER},
-      </if>
-      <if test="record.preSalePermitId != null" >
-        pre_sale_permit_id = #{record.preSalePermitId,jdbcType=INTEGER},
-      </if>
-      <if test="record.landId != null" >
-        land_id = #{record.landId,jdbcType=INTEGER},
-      </if>
       <if test="record.declareType != null" >
         declare_type = #{record.declareType,jdbcType=VARCHAR},
-      </if>
-      <if test="record.realEstateId != null" >
-        real_estate_id = #{record.realEstateId,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -501,13 +435,7 @@
       declarer = #{record.declarer,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
       enable = #{record.enable,jdbcType=VARCHAR},
-      building_construction_permit_id = #{record.buildingConstructionPermitId,jdbcType=INTEGER},
-      building_permit_id = #{record.buildingPermitId,jdbcType=INTEGER},
-      land_use_permit_id = #{record.landUsePermitId,jdbcType=INTEGER},
-      pre_sale_permit_id = #{record.preSalePermitId,jdbcType=INTEGER},
-      land_id = #{record.landId,jdbcType=INTEGER},
       declare_type = #{record.declareType,jdbcType=VARCHAR},
-      real_estate_id = #{record.realEstateId,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -584,26 +512,8 @@
       <if test="enable != null" >
         enable = #{enable,jdbcType=VARCHAR},
       </if>
-      <if test="buildingConstructionPermitId != null" >
-        building_construction_permit_id = #{buildingConstructionPermitId,jdbcType=INTEGER},
-      </if>
-      <if test="buildingPermitId != null" >
-        building_permit_id = #{buildingPermitId,jdbcType=INTEGER},
-      </if>
-      <if test="landUsePermitId != null" >
-        land_use_permit_id = #{landUsePermitId,jdbcType=INTEGER},
-      </if>
-      <if test="preSalePermitId != null" >
-        pre_sale_permit_id = #{preSalePermitId,jdbcType=INTEGER},
-      </if>
-      <if test="landId != null" >
-        land_id = #{landId,jdbcType=INTEGER},
-      </if>
       <if test="declareType != null" >
         declare_type = #{declareType,jdbcType=VARCHAR},
-      </if>
-      <if test="realEstateId != null" >
-        real_estate_id = #{realEstateId,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -641,13 +551,7 @@
       declarer = #{declarer,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       enable = #{enable,jdbcType=VARCHAR},
-      building_construction_permit_id = #{buildingConstructionPermitId,jdbcType=INTEGER},
-      building_permit_id = #{buildingPermitId,jdbcType=INTEGER},
-      land_use_permit_id = #{landUsePermitId,jdbcType=INTEGER},
-      pre_sale_permit_id = #{preSalePermitId,jdbcType=INTEGER},
-      land_id = #{landId,jdbcType=INTEGER},
       declare_type = #{declareType,jdbcType=VARCHAR},
-      real_estate_id = #{realEstateId,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

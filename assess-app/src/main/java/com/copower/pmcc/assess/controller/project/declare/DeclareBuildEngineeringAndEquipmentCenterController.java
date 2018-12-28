@@ -6,10 +6,10 @@ import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 
 /**
@@ -18,14 +18,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @Description:在建工程中间表
  */
 @RequestMapping(value = "/declareBuildEngineeringAndEquipmentCenter")
-@Controller
+@RestController
 public class DeclareBuildEngineeringAndEquipmentCenterController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
 
-    @ResponseBody
     @RequestMapping(value = "/getDeclareBuildEngineeringAndEquipmentCenterById", method = {RequestMethod.GET}, name = "获取在建工程中间表")
     public HttpResult getById(Integer id) {
         DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter = null;
@@ -40,7 +39,6 @@ public class DeclareBuildEngineeringAndEquipmentCenterController {
         return HttpResult.newCorrectResult(declareBuildEngineeringAndEquipmentCenter);
     }
 
-    @ResponseBody
     @RequestMapping(value = "/saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter", method = {RequestMethod.POST}, name = "更新在建工程中间表")
     public HttpResult saveAndUpdate(DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter) {
         try {
@@ -52,7 +50,6 @@ public class DeclareBuildEngineeringAndEquipmentCenterController {
         }
     }
 
-    @ResponseBody
     @RequestMapping(value = "/listDeclareBuildEngineeringAndEquipmentCenter", method = {RequestMethod.GET}, name = "在建工程中间表 list")
     public HttpResult list(DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter) {
         try {
@@ -67,11 +64,21 @@ public class DeclareBuildEngineeringAndEquipmentCenterController {
         }
     }
 
-    @ResponseBody
     @RequestMapping(value = "/copyDeclareBuildEngineeringAndEquipmentCenter", method = {RequestMethod.POST}, name = "在建工程中间表 copy")
     public HttpResult copy(Integer copyId,String type,String ids){
         try {
             declareBuildEngineeringAndEquipmentCenterService.copy(ids,copyId,type);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("异常");
+        }
+    }
+
+    @PostMapping(value = "/deleteByType",name = "根据type删除子项id")
+    public HttpResult deleteByType(String type,Integer dataId){
+        try {
+            declareBuildEngineeringAndEquipmentCenterService.deleteByType(type, dataId);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);

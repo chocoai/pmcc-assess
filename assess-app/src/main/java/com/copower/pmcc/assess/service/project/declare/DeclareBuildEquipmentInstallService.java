@@ -193,6 +193,7 @@ public class DeclareBuildEquipmentInstallService {
             for (DeclareBuildEngineeringAndEquipmentCenter oo:declareBuildEngineeringAndEquipmentCenterList){
                 if (oo.getBuildEquipmentId().equals(declareBuildEquipmentInstall.getId())){
                     vo.setCenterId(oo.getId());
+                    vo.setDeclareBuildEngineeringAndEquipmentCenter(oo);
                 }
             }
         }

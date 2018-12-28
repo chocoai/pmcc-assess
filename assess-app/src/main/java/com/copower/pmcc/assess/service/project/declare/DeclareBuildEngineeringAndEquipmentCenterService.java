@@ -1,20 +1,10 @@
 package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareBuildEngineeringAndEquipmentCenterDao;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEconomicIndicators;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineering;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineeringAndEquipmentCenter;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstall;
-import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
-import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
-import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.google.common.base.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -34,13 +24,12 @@ import java.util.List;
  */
 @Service
 public class DeclareBuildEngineeringAndEquipmentCenterService {
-
+    @Autowired
+    private DeclareBuildEconomicIndicatorsCenterService declareBuildEconomicIndicatorsCenterService;
     @Autowired
     private DeclareBuildEngineeringAndEquipmentCenterDao declareBuildEngineeringAndEquipmentCenterDao;
     @Autowired
     private CommonService commonService;
-    @Autowired
-    private ErpAreaService erpAreaService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
@@ -63,15 +52,6 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
         }
     }
 
-    public BootstrapTableVo getDeclareBuildEngineeringAndEquipmentCenterListVos(DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter) {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DeclareBuildEngineeringAndEquipmentCenter> vos = declareBuildEngineeringAndEquipmentCenterList(declareBuildEngineeringAndEquipmentCenter);
-        vo.setTotal(page.getTotal());
-        vo.setRows(vos);
-        return vo;
-    }
 
     public List<DeclareBuildEconomicIndicators> getDeclareBuildEconomicIndicatorsList(String type,Integer buildEngineeringId,Integer buildEquipmentId){
         List<DeclareBuildEngineeringAndEquipmentCenter> declareBuildEngineeringAndEquipmentCenterList = declareBuildEngineeringAndEquipmentCenterDao.getDeclareBuildEngineeringAndEquipmentCenterList(type, buildEngineeringId, buildEquipmentId);
@@ -145,6 +125,37 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
                 }
             }
         }
+    }
+
+    public boolean deleteByType(String type,Integer dataId)throws Exception{
+        if (dataId == null || StringUtils.isEmpty(type)){
+            throw new Exception("null 参数");
+        }
+        DeclareBuildEngineeringAndEquipmentCenter center = getDeclareBuildEngineeringAndEquipmentCenterById(dataId) ;
+        if (center == null){
+            return false;
+        }
+        //经济指标
+        if (DeclareBuildEconomicIndicatorsCenter.class.getSimpleName().equals(type)){
+            Integer id = center.getIndicatorId();
+            if (id != null){
+                DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+                query.setIndicatorId(id);
+                List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterList(query) ;
+                if (!ObjectUtils.isEmpty(centerList)){
+                    //当只存在一个的时候，把中间表包含经济指标的id设为null,并且删除其原表的数据
+                    //当有多个关联关系的时候则把中间表包含经济指标的id设为null
+                    if (centerList.size() == 1){
+                        DeclareBuildEconomicIndicatorsCenter deleteIndicatorsCenter = new DeclareBuildEconomicIndicatorsCenter() ;
+                        deleteIndicatorsCenter.setId(id);
+                        declareBuildEconomicIndicatorsCenterService.removeDeclareBuildEconomicIndicatorsCenter(deleteIndicatorsCenter);
+                    }
+                    center.setIndicatorId(null);
+                    saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(center) ;
+                }
+            }
+        }
+        return true;
     }
 
 }
