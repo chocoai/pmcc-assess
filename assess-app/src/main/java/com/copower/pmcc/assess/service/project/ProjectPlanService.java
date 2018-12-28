@@ -4,13 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.ProjectPlanSetEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
-import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.ProjectPlanDetailsDto;
 import com.copower.pmcc.assess.dto.input.project.ProjectPlanDto;
 import com.copower.pmcc.assess.dto.input.project.ProjectPlanSetDto;
+import com.copower.pmcc.assess.proxy.face.ProjectPlanExecuteInterface;
+import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.event.project.ProjectPlanApprovalEvent;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
@@ -38,6 +40,7 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
@@ -89,6 +92,8 @@ public class ProjectPlanService {
     private ProjectInfoDao projectInfoDao;
     @Autowired
     private ApplicationConstant applicationConstant;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
 
     public ProjectPlan getProjectplanByProcessInsId(String processInsId) {
         return projectPlanDao.getProjectPlanByProcessInsId(processInsId);
@@ -346,7 +351,7 @@ public class ProjectPlanService {
         if (sb.length() > 0) {
             throw new BusinessException(sb.toString());
         }
-        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(),projectPlan.getId());
+        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(), projectPlan.getId());
         //====验证结束
         if (StringUtils.isNotBlank(projectWorkStage.getBoxName())) {
             //发起计划复核流程
@@ -388,7 +393,7 @@ public class ProjectPlanService {
         if (StringUtils.isNotBlank(detailsSoring)) {
             updateDetailsSorting(detailsSoring);
         }
-        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(),projectPlan.getId());//删除待提交任务
+        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(), projectPlan.getId());//删除待提交任务
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
 
         if (projectPlanDto.getDetailsPlan() != null && projectPlanDto.getDetailsPlan().equals("1"))//指定了下级细分人员，则写入任务对应表中
@@ -667,7 +672,8 @@ public class ProjectPlanService {
      *
      * @param planId 当前阶段所处的总计划
      */
-    public void updatePlanStatus(Integer planId) throws BusinessException {
+    @Transactional(rollbackFor = Exception.class)
+    public void updatePlanStatus(Integer planId) throws Exception {
         ProjectPlan projectPlan = projectPlanDao.getProjectplanById(planId);
         projectPlan.setProjectStatus(ProjectStatusEnum.FINISH.getName());
         projectPlan.setFinishDate(new Date());
@@ -677,13 +683,12 @@ public class ProjectPlanService {
             projectPlan.setProjectPlanEnd(new Date());
         }
         projectPlanDao.updateProjectPlan(projectPlan);
-        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(),planId);
+        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(), planId);
         /**
          * 处理过程
          * 1、判断当前同等级执行阶段是否都已执行完成，如果都完成则将下个阶段的状态设置为wait
          * 2、如果 没有完成，则不执行相应操作
          */
-
         ProjectPlan projectPlanWhere = new ProjectPlan();
         projectPlanWhere.setProjectId(projectPlan.getProjectId());
         projectPlanWhere.setBisRestart(false);
@@ -692,33 +697,32 @@ public class ProjectPlanService {
         //取当前同级
 
         List<ProjectPlan> filter = LangUtils.filter(projectPlans, o -> {
-            return (o.getStageSort().equals(currStageSort) && !o.getProjectStatus().equals(ProjectStatusEnum.FINISH.getName()) && !o.getProjectStatus().equals(ProjectStatusEnum.CLOSE
-                    .getName()));
+            return (o.getStageSort().equals(currStageSort) && !o.getProjectStatus().equals(ProjectStatusEnum.FINISH.getName()) && !o.getProjectStatus().equals(ProjectStatusEnum.CLOSE.getName()));
         });
-        if (CollectionUtils.isEmpty(filter))//当前同级阶段都完成任务，则进入下一阶段
-        {
+        if (CollectionUtils.isEmpty(filter)) {//当前同级阶段都完成任务，则进入下一阶段
             List<ProjectPlan> nextProjectPlans = getNextProjectPlans(currStageSort, projectPlans);
             if (CollectionUtils.isNotEmpty(nextProjectPlans)) {
-                for (ProjectPlan item : nextProjectPlans) {
-                    item.setProjectStatus(ProjectStatusEnum.PLAN.getName());
-                    projectPlanDao.updateProjectPlan(item);
-                    //取相应计划的责任人，并分配计划任务
-                    ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(item.getWorkStageId());
-                    String userAccounts = projectWorkStageService.getWorkStageUserAccounts(item.getWorkStageId(), item.getProjectId());
-                    if (StringUtils.isNotBlank(userAccounts)) {
-                        List<String> strings = FormatUtils.transformString2List(userAccounts);
-                        for (String s : strings) {
-                            saveProjectPlanResponsibility(item, s, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.NEWPLAN);
+                for (ProjectPlan plan : nextProjectPlans) {
+                    ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(plan.getWorkStageId());
+                    if (projectWorkStage.getStageForm().endsWith("Execute")) {//后台自动执行计划内容
+                        ProjectPlanExecuteInterface bean = (ProjectPlanExecuteInterface) SpringContextUtils.getBean(projectWorkStage.getStageForm());
+                        bean.execute(plan,projectWorkStage);
+                    } else {//页面实施计划编制
+                        String userAccounts = projectWorkStageService.getWorkStageUserAccounts(plan.getWorkStageId(), plan.getProjectId());
+                        if (StringUtils.isNotBlank(userAccounts)) {
+                            List<String> strings = FormatUtils.transformString2List(userAccounts);
+                            for (String s : strings) {
+                                saveProjectPlanResponsibility(plan, s, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.NEWPLAN);
+                            }
+                        } else {
+                            throw new BusinessException(projectWorkStage.getWorkStageName() + "阶段没有配置相应的责任人");
                         }
-                    } else {
-                        throw new BusinessException(projectWorkStage.getWorkStageName() + "阶段没有配置相应的责任人");
+                        plan.setProjectStatus(ProjectStatusEnum.PLAN.getName());
+                        projectPlanDao.updateProjectPlan(plan);
                     }
-
                 }
-            } else //如果没有相应的阶段，则说明项目已经结束
-            {
+            } else { //如果没有相应的阶段，则说明项目已经结束
                 //处理更新项目状态的相关事项
-
                 projectInfo.setStatus(ProcessStatusEnum.FINISH.getValue());
                 projectInfo.setProjectStatus(ProjectStatusEnum.FINISH.getName());
                 projectInfoDao.updateProjectInfo(projectInfo);

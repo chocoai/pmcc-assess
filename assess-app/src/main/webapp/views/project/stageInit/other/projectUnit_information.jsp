@@ -107,9 +107,7 @@
         <div class="x_title">
             <h3> 联系人
                 <small>
-                    <button class="btn btn-primary btn-lg" data-toggle="modal" onclick="objProject.commonContacts.findCRMContactShow()">
-                        查询更多<i class="fa fa-search"></i>
-                    </button>
+
                 </small>
             </h3>
             <div class="clearfix">
@@ -119,7 +117,9 @@
             <button class="btn btn-success" data-toggle="modal"
                     onclick="objProject.unit_information.showContactModel()">新增联系人
             </button>
-
+            <button class="btn btn-primary" data-toggle="modal" onclick="objProject.commonContacts.findCRMContactShow()">
+                查询更多<i class="fa fa-search"></i>
+            </button>
             <table class="table table-bordered" id="tb_ListUNIT_INFORMATION">
                 <!-- cerare document add ajax data-->
             </table>

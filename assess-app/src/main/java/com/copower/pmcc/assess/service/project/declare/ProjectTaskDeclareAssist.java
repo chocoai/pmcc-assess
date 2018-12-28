@@ -10,6 +10,7 @@ import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -76,7 +77,11 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
         declareApply.setPlanDetailsId(projectPlanDetails.getId());
         declareApply.setProcessInsId(processInsId);
         declareApplyService.saveDeclareApply(declareApply);
-        bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, DeclareRealtyEstateCertEvent.class.getSimpleName());//修改监听器
+        if(StringUtils.isBlank(processInsId)){
+            declareApplyService.writeToDeclareRecord(declareApply);
+        }else{
+            bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, DeclareRealtyEstateCertEvent.class.getSimpleName());//修改监听器
+        }
     }
 
     @Override

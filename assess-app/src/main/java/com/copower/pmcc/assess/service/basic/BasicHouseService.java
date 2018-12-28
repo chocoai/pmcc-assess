@@ -189,6 +189,9 @@ public class BasicHouseService {
         if (basicHouse.getPracticalUse() != null) {
             vo.setPracticalUseName(baseDataDicService.getNameById(basicHouse.getPracticalUse()));
         }
+        if (basicHouse.getOrientation() != null) {
+            vo.setOrientationName(baseDataDicService.getNameById(basicHouse.getOrientation()));
+        }
         return vo;
     }
 

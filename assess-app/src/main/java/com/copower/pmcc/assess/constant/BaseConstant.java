@@ -16,6 +16,7 @@ public class BaseConstant {
     public static final String DATABASE_PMCC_ASSESS_CASE = "pmcc_assess_case";//pmcc_assess_case
 
     public static final String ASSESS_BASE_ASSIST_STAGE = "stage";//阶段信息表单分组
+    public static final String ASSESS_BASE_ASSIST_STAGE_AUTO = "stage_auto";//阶段后台处理
     public static final String ASSESS_BASE_ASSIST_MATTER = "matter";//工作事项表单分组信息
 
     public static final String PMCC_ASSESS_BASE_ASSIST = "pmcc:assess:base:assist";

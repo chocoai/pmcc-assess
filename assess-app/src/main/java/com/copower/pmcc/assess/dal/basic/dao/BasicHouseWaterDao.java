@@ -50,4 +50,14 @@ public class BasicHouseWaterDao {
         return basicHouseWaterMapper.selectByExample(example);
     }
 
+    /**
+     * 获取数据条数
+     * @param houseId
+     * @return
+     */
+    public int countByHouseId(Integer houseId){
+        BasicHouseWaterExample example = new BasicHouseWaterExample();
+        example.createCriteria().andHouseIdEqualTo(houseId);
+        return basicHouseWaterMapper.countByExample(example);
+    }
 }

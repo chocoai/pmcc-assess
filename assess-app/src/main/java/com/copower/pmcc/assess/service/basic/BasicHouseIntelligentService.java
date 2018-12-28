@@ -133,4 +133,28 @@ public class BasicHouseIntelligentService {
         return vo;
     }
 
+    /**
+     * 根据查询条件判断是否有数据
+     *
+     * @param houseId
+     * @return
+     */
+    public boolean hasHouseIntelligentData(Integer houseId) {
+        return basicHouseIntelligentDao.countByHouseId(houseId) > 0;
+    }
+
+    public BootstrapTableVo getBootstrapTableVo(Integer houseId) throws Exception {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        requestBaseParam.setLimit(100);
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        BasicHouseIntelligent basicHouseIntelligent = new BasicHouseIntelligent();
+        basicHouseIntelligent.setHouseId(houseId);
+        List<BasicHouseIntelligent> basicHouseIntelligentList = basicHouseIntelligentDao.basicHouseIntelligentList(basicHouseIntelligent);
+        List<BasicHouseIntelligentVo> vos = Lists.newArrayList();
+        basicHouseIntelligentList.forEach(oo -> vos.add(getBasicHouseIntelligentVo(oo)));
+        vo.setTotal(page.getTotal());
+        vo.setRows(ObjectUtils.isEmpty(vos) ? new ArrayList<BasicHouseIntelligentVo>(10) : vos);
+        return vo;
+    }
 }

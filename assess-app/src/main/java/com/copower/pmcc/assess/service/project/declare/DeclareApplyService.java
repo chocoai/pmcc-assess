@@ -17,6 +17,16 @@ public class DeclareApplyService {
     private DeclareApplyDao declareApplyDao;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private DeclareBuildEngineeringService declareBuildEngineeringService;
+    @Autowired
+    private DeclareBuildEquipmentInstallService declareBuildEquipmentInstallService;
+    @Autowired
+    private DeclareRealtyHouseCertService declareRealtyHouseCertService;
+    @Autowired
+    private DeclareRealtyRealEstateCertService declareRealtyRealEstateCertService;
+    @Autowired
+    private DeclareRealtyLandCertService declareRealtyLandCertService;
 
     /**
      * 获取申报信息by processInsId
@@ -41,6 +51,18 @@ public class DeclareApplyService {
             declareApply.setCreator(commonService.thisUserAccount());
             declareApplyDao.addDeclareApply(declareApply);
         }
+    }
+
+    /**
+     * 数据写入到申报记录表中
+     * @param declareApply
+     */
+    public void writeToDeclareRecord(DeclareApply declareApply){
+        declareBuildEngineeringService.eventWriteDeclareApply(declareApply);
+        declareBuildEquipmentInstallService.eventWriteDeclareApply(declareApply);
+        declareRealtyHouseCertService.eventWriteDeclareApply(declareApply);
+        declareRealtyRealEstateCertService.eventWriteDeclareApply(declareApply);
+        declareRealtyLandCertService.eventWriteDeclareApply(declareApply);
     }
 
 }

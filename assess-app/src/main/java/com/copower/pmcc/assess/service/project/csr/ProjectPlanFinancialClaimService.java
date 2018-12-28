@@ -344,7 +344,7 @@ public class ProjectPlanFinancialClaimService {
         }
     }
 
-    public void submitTask(String projectDetailsIds, Integer projectDetailsId) throws BusinessException {
+    public void submitTask(String projectDetailsIds, Integer projectDetailsId) throws Exception {
         /**
          * 处理步聚
          * 1、根据配置查询是否需 要进行模型审批，如果不审批则完成相应的工作成果提交

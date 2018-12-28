@@ -13,6 +13,7 @@ public class BasicHouseVo extends BasicHouse {
     private String practicalUseName;
     private String huxingName;
     private String newsHuxingName;
+    private String OrientationName;
 
     public String getUseEnvironmentName() {
         return useEnvironmentName;
@@ -52,5 +53,13 @@ public class BasicHouseVo extends BasicHouse {
 
     public void setNewsHuxingName(String newsHuxingName) {
         this.newsHuxingName = newsHuxingName;
+    }
+
+    public String getOrientationName() {
+        return OrientationName;
+    }
+
+    public void setOrientationName(String orientationName) {
+        OrientationName = orientationName;
     }
 }

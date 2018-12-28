@@ -84,6 +84,20 @@ public class BasicHouseDamagedDegreeService {
         return list;
     }
 
+    public List<BasicHouseDamagedDegree> getDamagedDegreeList(Integer houseId, Integer type) {
+        BasicHouseDamagedDegree basicHouseDamagedDegree = new BasicHouseDamagedDegree();
+        basicHouseDamagedDegree.setHouseId(houseId);
+        basicHouseDamagedDegree.setType(type);
+        List<BasicHouseDamagedDegree> list = basicHouseDamagedDegreeDao.getValueDamagedDegreeList(houseId,type);
+        return list;
+    }
+
+    public List<BasicHouseDamagedDegreeVo> getDamagedDegreeVoList(Integer houseId, Integer type) {
+        List<BasicHouseDamagedDegree> list = getDamagedDegreeList(houseId, type);
+        List<BasicHouseDamagedDegreeVo> vos = LangUtils.transform(list, o -> getBasicHouseDamagedDegreeVo(o));
+        return vos;
+    }
+
     /**
      * @param houseId
      * @return
@@ -201,5 +215,25 @@ public class BasicHouseDamagedDegreeService {
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(vos) ? Lists.newArrayList() : vos);
         return vo;
+    }
+
+    /**
+     * 根据查询条件判断是否有数据
+     *
+     * @param houseId
+     * @return
+     */
+    public boolean hasHouseDamagedDegreeData(Integer houseId, String type) {
+        DataDamagedDegree degree = dataDamagedDegreeService.getCacheDamagedDegreeByFieldName(type);
+        return basicHouseDamagedDegreeDao.countByHouseId(houseId, degree.getId()) > 0;
+    }
+
+
+    public boolean hasOppositeDetail(Integer houseId,Integer index) {
+        List<BasicHouseDamagedDegree> list = getDamagedDegreeList(houseId);
+        if(StringUtils.isEmpty(list.get(index).getEntityCondition())){
+            return false;
+        }
+        return true;
     }
 }

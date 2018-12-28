@@ -51,4 +51,14 @@ public class BasicHouseWaterDrainDao {
         return basicHouseWaterDrainMapper.selectByExample(example);
     }
 
+    /**
+     * 获取数据条数
+     * @param houseId
+     * @return
+     */
+    public int countByHouseId(Integer houseId){
+        BasicHouseWaterDrainExample example = new BasicHouseWaterDrainExample();
+        example.createCriteria().andHouseIdEqualTo(houseId);
+        return basicHouseWaterDrainMapper.countByExample(example);
+    }
 }
