@@ -171,7 +171,6 @@
                 projectId: undefined,
                 planId: undefined
             }
-            alert(123);
             var defaults = $.extend({}, defaults, options);
             $('#plan_item_list_' + defaults.planId).treegrid({
                 url: "${pageContext.request.contextPath}/projectInfo/getPlanDetailListByPlanId",
