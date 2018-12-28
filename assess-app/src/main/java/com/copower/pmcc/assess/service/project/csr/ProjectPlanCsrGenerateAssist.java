@@ -32,7 +32,7 @@ public class ProjectPlanCsrGenerateAssist implements ProjectPlanInterface {
 
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/csr/planGenerateIndex", "", 0, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/planExecute/csr/planGenerateIndex", "", 0, "-1", "");
 
         List<CsrBorrowerVo> borrowerList = csrBorrowerService.getCsrBorrowerByProjectId(projectPlan.getProjectId());
         modelAndView.addObject("borrowerList",borrowerList);
@@ -41,19 +41,19 @@ public class ProjectPlanCsrGenerateAssist implements ProjectPlanInterface {
 
     @Override
     public ModelAndView approvalView(ProjectPlan projectPlan, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/csr/planGenerateApproval", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/planExecute/csr/planGenerateApproval", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalEdit(ProjectPlan projectPlan, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/csr/planGenerateIndex", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/planExecute/csr/planGenerateIndex", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
         return modelAndView;
     }
 
     @Override
     public ModelAndView detailsView(ProjectPlan projectPlan, Integer boxId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/csr/planGenerateApproval", projectPlan.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/planExecute/csr/planGenerateApproval", projectPlan.getProcessInsId(), boxId, "-1", "");
         return modelAndView;
     }
 

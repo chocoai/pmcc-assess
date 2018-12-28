@@ -1,11 +1,13 @@
 package com.copower.pmcc.assess.service.project;
 
+import com.alibaba.dubbo.remoting.p2p.exchange.ExchangePeer;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanTaskAllDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.ProjectTaskAllBackDto;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.project.ProjectPlanTaskAllEvent;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
@@ -41,7 +43,7 @@ import java.util.List;
  * @time: 16:32
  */
 @Service
-public class ProjectTaskAllService {
+public class ProjectTaskAllService extends BaseService {
     @Autowired
     private ProjectPlanService projectPlanService;
     @Autowired
@@ -233,7 +235,7 @@ public class ProjectTaskAllService {
         return projectPlanTaskAllDao.getObjectById(id);
     }
 
-    public void startTaskAllApproval(Integer planId) {
+    public void startTaskAllApproval(Integer planId) throws Exception {
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
 
@@ -252,8 +254,9 @@ public class ProjectTaskAllService {
             //将下阶段设置为可编辑计划
             try {
                 projectPlanService.updatePlanStatus(planId);
-            } catch (BusinessException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                log.error("更新阶段状态异常"+e.getMessage(),e);
+                throw e;
             }
         }
     }

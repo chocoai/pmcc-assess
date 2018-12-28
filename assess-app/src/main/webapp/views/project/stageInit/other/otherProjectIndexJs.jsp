@@ -247,7 +247,7 @@
                 $('#divBoxCRMContacts').modal("show");
                 objProject.commonContacts.findCRMContacts($("#divBoxCRMContacts").find("input[name='name']")[0]);
             } else {
-                Alert("未选择单元");
+                Alert("还未选择报告使用单位");
             }
         },
         copyContacts: function (data, callback) {

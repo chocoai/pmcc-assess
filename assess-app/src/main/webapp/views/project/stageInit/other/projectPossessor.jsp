@@ -6,11 +6,11 @@
             <div class="x-valid">
                 <div class="col-sm-3 col-sm-offset-1">
                                 <span class="radio-inline">
-                                    <input type="radio" required name="pType"
+                                    <input type="radio" required name="pType" id="pType1"
                                            value="1" ${projectInfo.possessorVo.pType == 1?'checked="checked"':''}  >
                                     <label for="pType1">法人</label></span>
                     <span class="radio-inline">
-                                    <input type="radio" name="pType"
+                                    <input type="radio" name="pType" id="pType0"
                                            value="0" ${projectInfo.possessorVo.pType == 0?'checked="checked"':''}  >
                                     <label for="pType0">自然人</label></span>
                 </div>

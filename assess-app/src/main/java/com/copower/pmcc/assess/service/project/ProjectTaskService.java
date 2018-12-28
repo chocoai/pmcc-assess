@@ -68,7 +68,7 @@ public class ProjectTaskService {
     private ProjectInfoService projectInfoService;
 
     @Transactional(rollbackFor = Exception.class)
-    public void submitTask(String formData, String taskRemarks, String actualHours, Integer projectDetailsId, String nextApproval, Integer responsibilityId) throws BusinessException {
+    public void submitTask(String formData, String taskRemarks, String actualHours, Integer projectDetailsId, String nextApproval, Integer responsibilityId) throws Exception {
         /**
          * 处理步聚
          * 1、根据配置查询是否需 要进行模型审批，如果不审批则完成相应的工作成果提交
@@ -122,7 +122,25 @@ public class ProjectTaskService {
             projectPlanDetails.setActualHours(new BigDecimal(actualHours));
             projectPlanDetails.setTaskRemarks(taskRemarks);
             projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
-        } else {
+        }
+
+
+        //保存业务数据
+        String viewUrl = "projectTaskAssist";
+        if (StringUtils.isNotBlank(projectPhase.getPhaseForm())) {
+            viewUrl = projectPhase.getPhaseForm();
+        }
+        ProjectTaskInterface bean = (ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
+        try {
+            bean.applyCommit(projectPlanDetails, processUserDto.getProcessInsId(), formData);
+        } catch (Exception e) {
+            if (StringUtils.isNotBlank(processUserDto.getProcessInsId())) {
+                bpmRpcActivitiProcessManageService.closeProcess(processUserDto.getProcessInsId());
+            }
+            throw new BusinessException(e.getMessage());
+        }
+        //更新任务状态
+        if(StringUtils.isBlank(boxName)){
             projectPlanDetails.setStatus(ProcessStatusEnum.FINISH.getValue());
             projectPlanDetails.setBisStart(true);
             projectPlanDetails.setActualHours(new BigDecimal(actualHours));
@@ -140,24 +158,8 @@ public class ProjectTaskService {
                 projectTaskAllService.startTaskAllApproval(projectPlanDetails.getPlanId());
             }
         }
-        //保存业务数据
-
-        String viewUrl = "projectTaskAssist";
-        if (StringUtils.isNotBlank(projectPhase.getPhaseForm())) {
-            viewUrl = projectPhase.getPhaseForm();
-        }
-        ProjectTaskInterface bean = (ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
-        try {
-            bean.applyCommit(projectPlanDetails, processUserDto.getProcessInsId(), formData);
-        } catch (Exception e) {
-            if (StringUtils.isNotBlank(processUserDto.getProcessInsId())) {
-                bpmRpcActivitiProcessManageService.closeProcess(processUserDto.getProcessInsId());
-            }
-            throw new BusinessException(e.getMessage());
-        }
-
-        //更新任务状态
         bpmRpcProjectTaskService.deleteProjectTask(responsibilityId);
+
         //更新当前数据为最新
         if (projectPlanDetails.getReturnDetailsId() > 0) {
             ProjectPlanDetails projectPlanDetailsById = projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getReturnDetailsId());

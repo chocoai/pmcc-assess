@@ -68,7 +68,9 @@ public class ProjectPhaseController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/stage/ProjectPhase");
         //取工作内容具体项的关系表单信息
         List<BaseAssist> sysBaseFormListStage = baseAssistService.getBaseAssist(BaseConstant.ASSESS_BASE_ASSIST_STAGE, "");
+        List<BaseAssist> sysBaseFormListStageAuto = baseAssistService.getBaseAssist(BaseConstant.ASSESS_BASE_ASSIST_STAGE_AUTO, "");
         modelAndView.addObject("sysBaseFormListStage", sysBaseFormListStage);
+        modelAndView.addObject("sysBaseFormListStageAuto", sysBaseFormListStageAuto);
         List<BaseAssist> sysBaseFormListMatter = baseAssistService.getBaseAssist(BaseConstant.ASSESS_BASE_ASSIST_MATTER, "");
         modelAndView.addObject("sysBaseFormListMatter", sysBaseFormListMatter);
         List<PublicRole> publicRoleConfig = bpmRpcBoxRoleUserService.getPublicRoleConfig();

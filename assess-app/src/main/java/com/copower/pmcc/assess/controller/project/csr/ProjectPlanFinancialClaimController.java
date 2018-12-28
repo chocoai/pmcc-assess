@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.project.csr;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.input.project.ProjectPlanFinancialClaimFastDto;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerVo;
@@ -26,7 +27,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "/planFinancialClaim", name = "债权计划控制类")
-public class ProjectPlanFinancialClaimController {
+public class ProjectPlanFinancialClaimController extends BaseController {
     @Autowired
     private ProjectPlanFinancialClaimService projectPlanFinancialClaimService;
     @Autowired
@@ -93,17 +94,18 @@ public class ProjectPlanFinancialClaimController {
     public HttpResult submitTask(String projectDetailsIds, Integer projectDetailsId) {
         try {
             projectPlanFinancialClaimService.submitTask(projectDetailsIds, projectDetailsId);
-        } catch (BusinessException e) {
-            return HttpResult.newErrorResult(e.getMessage());
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("提交工作成果异常");
         }
-        return HttpResult.newCorrectResult();
     }
 
     @ResponseBody
     @RequestMapping(value = "/stopDetails", name = "停用某项任务", method = RequestMethod.POST)
     public HttpResult stopDetails(Integer id) {
         try {
-            projectPlanFinancialClaimService.updateProjectPlanDetails(id,0);
+            projectPlanFinancialClaimService.updateProjectPlanDetails(id, 0);
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -114,7 +116,7 @@ public class ProjectPlanFinancialClaimController {
     @RequestMapping(value = "/startDetails", name = "启用某项任务", method = RequestMethod.POST)
     public HttpResult startDetails(Integer id) {
         try {
-            projectPlanFinancialClaimService.updateProjectPlanDetails(id,1);
+            projectPlanFinancialClaimService.updateProjectPlanDetails(id, 1);
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
         }

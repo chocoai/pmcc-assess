@@ -52,6 +52,10 @@
                                                 <c:forEach var="item" items="${sysBaseFormListStage}">
                                                     <option value="${item.assistName}">${item.name}</option>
                                                 </c:forEach>
+
+                                                <c:forEach var="item" items="${sysBaseFormListStageAuto}">
+                                                    <option value="${item.assistName}">${item.name}</option>
+                                                </c:forEach>
                                             </select>
                                         </div>
                                     </div>

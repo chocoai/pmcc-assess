@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.project;
 
+import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
@@ -38,7 +39,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "/ProjectTask")
-public class ProjectTaskController {
+public class ProjectTaskController extends BaseController {
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
@@ -102,8 +103,9 @@ public class ProjectTaskController {
     public HttpResult submitTask(String formData, String taskRemarks, String actualHours, Integer projectDetailsId, Integer responsibilityId, String nextApproval) {
         try {
             projectTaskService.submitTask(formData, taskRemarks, actualHours, projectDetailsId, nextApproval, responsibilityId);
-        } catch (BusinessException e) {
-            return HttpResult.newErrorResult(e.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+            return HttpResult.newErrorResult("提交工作成果数据异常");
         }
         return HttpResult.newCorrectResult();
     }

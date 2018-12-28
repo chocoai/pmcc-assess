@@ -8,12 +8,12 @@
             <div class="x-valid">
                 <div class="col-sm-3 col-sm-offset-1">
                     <span class="radio-inline">
-                        <input type="radio" required name="csType"
+                        <input type="radio" required name="csType" id="csType0"
                                value="1" ${projectInfo.consignorVo.csType == 1?'checked="checked"':''}  >
                         <label for="csType0">法人</label>
                     </span>
                     <span class="radio-inline">
-                        <input type="radio" name="csType"
+                        <input type="radio" name="csType" id="csType1"
                                value="0" ${projectInfo.consignorVo.csType == 0?'checked="checked"':''}  >
                         <label for="csType1">自然人</label>
                     </span>

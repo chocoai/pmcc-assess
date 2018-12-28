@@ -62,7 +62,7 @@ public class AssessCacheConstant {
     public static final String DETAILS_PROJECT_SUSPEND = "details:project:suspend";//项目暂停流程模型
     public static final String DETAILS_PROJECT_STOP = "details:project:stop";//项目终止流程模型
     public static final String DETAILS_PROJECT_RESTART = "details:project:restart";//阶段重启流程模型
-    public static final String DETAILS_PROJECT_PLAN = "details:project:plan";//总计划变更流程
+    public static final String DETAILS_PROJECT_PLAN = "details:project:planExecute";//总计划变更流程
     public static final String PHASE_RESTART_EXECUTION_RULE = "phase:restart:execution:rule";//阶段重启执行规则
 
     //工作事项模板文件

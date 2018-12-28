@@ -257,8 +257,8 @@ public class ProjectInfoService {
      *
      * @param projectInfo
      */
-    @Transactional
-    public void initProjectInfo(ProjectInfo projectInfo) throws BusinessException {
+    @Transactional(rollbackFor = Exception.class)
+    public void initProjectInfo(ProjectInfo projectInfo) throws Exception {
         Integer projectTypeId = projectInfo.getProjectTypeId();//项目类别id
         Integer projectCategoryId = projectInfo.getProjectCategoryId();//项目范围id
         List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectTypeId, true);

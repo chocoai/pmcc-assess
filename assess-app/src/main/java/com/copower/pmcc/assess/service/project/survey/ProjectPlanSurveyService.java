@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.project.survey;
 
-import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPhaseDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
@@ -8,8 +7,8 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +22,6 @@ public class ProjectPlanSurveyService {
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
-    private ProjectPhaseDao projectPhaseDao;
-    @Autowired
     private ProjectPlanDetailsDao projectPlanDetailsDao;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
@@ -36,7 +33,7 @@ public class ProjectPlanSurveyService {
      *
      * @param projectPlan
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void initPlanDetails(ProjectPlan projectPlan) {
         //判断该阶段是否已有任务
         List<ProjectPlanDetailsVo> planDetailsVoList = projectPlanDetailsService.getProjectPlanDetailsByPlanApply(projectPlan.getId());

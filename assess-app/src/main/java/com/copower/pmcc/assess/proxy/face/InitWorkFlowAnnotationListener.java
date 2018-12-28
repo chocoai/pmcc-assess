@@ -41,12 +41,17 @@ public class InitWorkFlowAnnotationListener implements ApplicationListener<Conte
             try {
                 List<WorkFlowAnnotationEntity> planInterfaceBens = WorkFlowAnnotationBeanFactory.workFlow(applicationContext, applicationConstant.getAppKey(), ProjectPlanInterface.class);
                 List<WorkFlowAnnotationEntity> taskInterfaceBens = WorkFlowAnnotationBeanFactory.workFlow(applicationContext, applicationConstant.getAppKey(), ProjectTaskInterface.class);
+                List<WorkFlowAnnotationEntity> planExecuteInterfaceBens = WorkFlowAnnotationBeanFactory.workFlow(applicationContext, applicationConstant.getAppKey(), ProjectPlanExecuteInterface.class);
                 if (CollectionUtils.isNotEmpty(planInterfaceBens)) {
                     baseAssistService.initBaseAssist(planInterfaceBens, BaseConstant.ASSESS_BASE_ASSIST_STAGE);
                 }
 
                 if (CollectionUtils.isNotEmpty(taskInterfaceBens)) {
                     baseAssistService.initBaseAssist(taskInterfaceBens, BaseConstant.ASSESS_BASE_ASSIST_MATTER);
+                }
+
+                if (CollectionUtils.isNotEmpty(planExecuteInterfaceBens)) {
+                    baseAssistService.initBaseAssist(planExecuteInterfaceBens, BaseConstant.ASSESS_BASE_ASSIST_STAGE_AUTO);
                 }
 
             } catch (Exception e) {
