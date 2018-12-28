@@ -223,8 +223,9 @@ public class BasicHouseDamagedDegreeService {
      * @param houseId
      * @return
      */
-    public boolean hasHouseDamagedDegreeData(Integer houseId, Integer type) {
-        return basicHouseDamagedDegreeDao.countByHouseId(houseId, type) > 0;
+    public boolean hasHouseDamagedDegreeData(Integer houseId, String type) {
+        DataDamagedDegree degree = dataDamagedDegreeService.getCacheDamagedDegreeByFieldName(type);
+        return basicHouseDamagedDegreeDao.countByHouseId(houseId, degree.getId()) > 0;
     }
 
 

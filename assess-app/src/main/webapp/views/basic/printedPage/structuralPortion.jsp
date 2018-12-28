@@ -36,7 +36,7 @@
             config: function () {
                 var data = {};
                 data.table = "StructuralPortionList";
-                data.type = 1695;//结构部分
+                data.type = "structural.part";//结构部分
                 return data;
             },
             loadDataDicList: function () {

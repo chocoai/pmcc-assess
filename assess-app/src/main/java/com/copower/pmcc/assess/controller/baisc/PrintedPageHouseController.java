@@ -8,10 +8,12 @@ import com.copower.pmcc.assess.dal.basic.dao.BasicHouseDamagedDegreeDetailDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouseDamagedDegree;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouseDamagedDegreeDetail;
+import com.copower.pmcc.assess.dal.basis.entity.DataDamagedDegree;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeDetailVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseWaterDrainVo;
 import com.copower.pmcc.assess.service.basic.*;
+import com.copower.pmcc.assess.service.data.DataDamagedDegreeService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -47,7 +49,8 @@ public class PrintedPageHouseController {
 
     @Autowired
     private BasicHouseService basicHouseService;
-
+    @Autowired
+    private DataDamagedDegreeService dataDamagedDegreeService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -83,10 +86,10 @@ public class PrintedPageHouseController {
         modelAndView.addObject("hasHouseEquipmentAirConditioner", basicHouseEquipmentService.hasHouseEquipmentData(id, ExamineHouseEquipmentTypeEnum.houseAirConditioner.getKey()));
         modelAndView.addObject("hasHouseEquipmentHeating", basicHouseEquipmentService.hasHouseEquipmentData(id, ExamineHouseEquipmentTypeEnum.houseHeating.getKey()));
         modelAndView.addObject("hasHouseEquipmentNewWind", basicHouseEquipmentService.hasHouseEquipmentData(id, ExamineHouseEquipmentTypeEnum.houseNewWind.getKey()));
-        modelAndView.addObject("hasStructuralPortion", basicHouseDamagedDegreeService.hasHouseDamagedDegreeData(id, 1695));
-        modelAndView.addObject("hasFitmentPortion", basicHouseDamagedDegreeService.hasHouseDamagedDegreeData(id, 1696));
-        modelAndView.addObject("hasEquipmentPortion", basicHouseDamagedDegreeService.hasHouseDamagedDegreeData(id, 1697));
-        modelAndView.addObject("hasOtherPortion", basicHouseDamagedDegreeService.hasHouseDamagedDegreeData(id, 1698));
+        modelAndView.addObject("hasStructuralPortion", basicHouseDamagedDegreeService.hasHouseDamagedDegreeData(id, "structural.part"));
+        modelAndView.addObject("hasFitmentPortion", basicHouseDamagedDegreeService.hasHouseDamagedDegreeData(id, "decoration.part"));
+        modelAndView.addObject("hasEquipmentPortion", basicHouseDamagedDegreeService.hasHouseDamagedDegreeData(id, "equipment.part"));
+        modelAndView.addObject("hasOtherPortion", basicHouseDamagedDegreeService.hasHouseDamagedDegreeData(id, "other"));
 
         modelAndView.addObject("hasStructuralElementDetail", basicHouseDamagedDegreeService.hasOppositeDetail(id,1));
         modelAndView.addObject("hasNonbearingWallDetail", basicHouseDamagedDegreeService.hasOppositeDetail(id,2));
@@ -160,13 +163,13 @@ public class PrintedPageHouseController {
 
     @ResponseBody
     @RequestMapping(value = "/getHouseDamagedDegreeList", name = "房屋完损度部分", method = RequestMethod.GET)
-    public BootstrapTableVo getHouseDamagedDegreeList(Integer houseId, Integer type) throws Exception {
-        //type = 1695;
+    public BootstrapTableVo getHouseDamagedDegreeList(Integer houseId, String type) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         requestBaseParam.setLimit(100);
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BasicHouseDamagedDegreeVo> list = basicHouseDamagedDegreeService.getDamagedDegreeVoList(houseId, type);
+        DataDamagedDegree degree = dataDamagedDegreeService.getCacheDamagedDegreeByFieldName(type);
+        List<BasicHouseDamagedDegreeVo> list = basicHouseDamagedDegreeService.getDamagedDegreeVoList(houseId, degree.getId());
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(list) ? new ArrayList<BasicHouseWaterDrainVo>(10) : list);
         return vo;

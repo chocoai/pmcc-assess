@@ -36,7 +36,7 @@
             config: function () {
                 var data = {};
                 data.table = "EquipmentPortionList";
-                data.type = 1697;//设备部分
+                data.type = "equipment.part";//设备部分
                 return data;
             },
             loadDataDicList: function () {
