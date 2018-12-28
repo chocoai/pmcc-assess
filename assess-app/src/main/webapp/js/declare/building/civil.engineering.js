@@ -1,12 +1,9 @@
 /**
  * Created by kings on 2018-12-20.
  */
-/**
- * @author:  zch
- * 描述:配置一些必须的参数
- * @date:2018-09-27
- **/
-var civilEngineeringConfig = {
+var civilEngineering = {};
+
+civilEngineering.config = {
     name: "土建",
     frm: "civilEngineeringFrm",
     table: "civilEngineeringTableList",
@@ -57,15 +54,7 @@ var civilEngineeringConfig = {
     }
 };
 
-var civilEngineering = new Object();
-
-//处理标识符的地方-------start
-civilEngineering.civilEngineeringFlag = true;
-civilEngineering.declareRealtyLandCertFlag = true;
-civilEngineering.declareRealtyRealEstateCertFlag = true;
-//----------------------end
-
-civilEngineering.isEmpty = function (item) {
+civilEngineering.isNotBlank = function (item) {
     if (item) {
         return true;
     }
@@ -73,7 +62,7 @@ civilEngineering.isEmpty = function (item) {
 };
 
 civilEngineering.objectWriteSelectData = function (frm, data, name) {
-    if (civilEngineering.isEmpty(data)) {
+    if (civilEngineering.isNotBlank(data)) {
         $("#" + frm + " ." + name).val(data).trigger("change");
     } else {
         $("#" + frm + " ." + name).val(null).trigger("change");
@@ -110,15 +99,36 @@ civilEngineering.fileUpload = function (target, tableName, id) {
     });
 };
 
-civilEngineering.init = function () {
+/**
+ * 土地建设 初始化并且赋值
+ * @param item
+ */
+civilEngineering.init = function (item) {
+    $("#" + civilEngineering.config.frm).clearAll();
+    $("#" + civilEngineering.config.frm).initForm(item);
+    civilEngineering.showFile(civilEngineering.config.fileId, AssessDBKey.DeclareBuildEngineering, civilEngineering.isNotBlank(item.id) ? item.id : "0");
+    civilEngineering.fileUpload(civilEngineering.config.fileId, AssessDBKey.DeclareBuildEngineering, civilEngineering.isNotBlank(item.id) ? item.id : "0");
+    $("#" + civilEngineering.config.frm + " input[name='terminationDate']").val(formatDate(item.terminationDate));
+    $("#" + civilEngineering.config.frm + " input[name='registrationDate']").val(formatDate(item.registrationDate));
     AssessCommon.initAreaInfo({
-        provinceTarget: $("#" + civilEngineeringConfig.frm + "province"),
-        cityTarget: $("#" + civilEngineeringConfig.frm + "city"),
-        districtTarget: $("#" + civilEngineeringConfig.frm + "district"),
-        provinceValue: '',
-        cityValue: '',
-        districtValue: ''
+        provinceTarget: $("#" + civilEngineering.config.frm).find("select[name='province']"),
+        cityTarget: $("#" + civilEngineering.config.frm).find("select[name='city']"),
+        districtTarget: $("#" + civilEngineering.config.frm).find("select[name='district']"),
+        provinceValue: item.province,
+        cityValue: item.city,
+        districtValue: item.district
     });
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, item.type, function (html, data) {
+        $("#" + civilEngineering.config.frm).find('select.type').empty().html(html).trigger('change');
+    });
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, item.useRightType, function (html, data) {
+        $("#" + civilEngineering.config.frm).find('select.useRightType').empty().html(html).trigger('change');
+    });
+    AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, item.purpose, function (html, data) {
+        $("#" + civilEngineering.config.frm).find('select.purpose').empty().html(html).trigger('change');
+    });
+    //使校验生效
+    $("#" + civilEngineering.config.frm).validate();
 };
 
 /**
@@ -127,16 +137,18 @@ civilEngineering.init = function () {
  * @date:2018-09-27
  **/
 civilEngineering.showAddModel = function () {
-    $("#" + civilEngineeringConfig.frm).clearAll();
-    if (civilEngineering.civilEngineeringFlag) {
-        civilEngineering.init();
-        civilEngineering.civilEngineeringFlag = false;
+    $('#' + civilEngineering.config.box).modal("show");
+    $('#' + civilEngineering.config.box).find("#" + commonDeclareApplyModel.config.civilEngineering.handleId).remove();
+    $('#' + civilEngineering.config.box).find(".panel-body").prepend(commonDeclareApplyModel.civilEngineering.getHtml());
+    civilEngineering.init({});
+    try {
+        //由于是填充的hmtl所以需要手动初始化select2
+        DatepickerUtils.parse();
+        $('#' + civilEngineering.config.box).find(".select2").each(function () {
+            $(this).select2();
+        });
+    } catch (e) {
     }
-    civilEngineering.showFile(civilEngineeringConfig.fileId, AssessDBKey.DeclareBuildEngineering, 0);
-    civilEngineering.fileUpload(civilEngineeringConfig.fileId, AssessDBKey.DeclareBuildEngineering, 0);
-    //使校验生效
-    $("#" + civilEngineeringConfig.frm).validate();
-    $('#' + civilEngineeringConfig.box).modal("show");
 };
 
 /**
@@ -146,7 +158,7 @@ civilEngineering.showAddModel = function () {
  **/
 civilEngineering.deleteData = function () {
 
-    var rows = $("#" + civilEngineeringConfig.table).bootstrapTable('getSelections');
+    var rows = $("#" + civilEngineering.config.table).bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
         toastr.info("请选择要删除的数据");
     } else {
@@ -154,7 +166,7 @@ civilEngineering.deleteData = function () {
             var idArray = [];
             $.each(rows, function (i, item) {
                 idArray.push(item.id);
-            })
+            });
             $.ajax({
                 type: "post",
                 url: getContextPath() + "/declareBuildEngineering/deleteDeclareBuildEngineeringById",
@@ -180,15 +192,11 @@ civilEngineering.deleteData = function () {
  * @date:2018-09-27
  **/
 civilEngineering.editData = function () {
-    var rows = $("#" + civilEngineeringConfig.table).bootstrapTable('getSelections');
+    var rows = $("#" + civilEngineering.config.table).bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
         toastr.info("请选择要编辑的数据");
     } else if (rows.length == 1) {
-        $("#" + civilEngineeringConfig.frm).clearAll();
-        if (civilEngineering.civilEngineeringFlag) {
-            civilEngineering.init();
-            civilEngineering.civilEngineeringFlag = false;
-        }
+        civilEngineering.showAddModel();
         $.ajax({
             url: getContextPath() + "/declareBuildEngineering/getDeclareBuildEngineeringById",
             type: "get",
@@ -196,22 +204,8 @@ civilEngineering.editData = function () {
             data: {id: rows[0].id},
             success: function (result) {
                 if (result.ret) {
-                    var data = result.data;
-                    if (civilEngineering.isEmpty(data)) {
-                        $("#" + civilEngineeringConfig.frm).initForm(result.data);
-                        civilEngineering.showFile(civilEngineeringConfig.fileId, AssessDBKey.DeclareBuildEngineering, data.id);
-                        civilEngineering.fileUpload(civilEngineeringConfig.fileId, AssessDBKey.DeclareBuildEngineering, data.id);
-                        $("#" + civilEngineeringConfig.frm + " input[name='declarationDate']").val(formatDate(data.declarationDate));
-                        $("#" + civilEngineeringConfig.frm + " input[name='expectedCompletionDate']").val(formatDate(data.expectedCompletionDate));
-                        $("#" + civilEngineeringConfig.frm + " input[name='startDate']").val(formatDate(data.startDate));
-                        AssessCommon.initAreaInfo({
-                            provinceTarget: $("#" + civilEngineeringConfig.frm + "province"),
-                            cityTarget: $("#" + civilEngineeringConfig.frm + "city"),
-                            districtTarget: $("#" + civilEngineeringConfig.frm + "district"),
-                            provinceValue: result.data.province,
-                            cityValue: result.data.city,
-                            districtValue: result.data.district
-                        });
+                    if (civilEngineering.isNotBlank(result.data)) {
+                        civilEngineering.init(result.data);
                     }
                 }
             },
@@ -219,9 +213,6 @@ civilEngineering.editData = function () {
                 Alert("调用服务端方法失败，失败原因:" + result);
             }
         });
-        //使校验生效
-        $("#" + civilEngineeringConfig.frm).validate();
-        $('#' + civilEngineeringConfig.box).modal("show");
     } else {
         toastr.info("只能选择一行数据进行编辑");
     }
@@ -233,10 +224,10 @@ civilEngineering.editData = function () {
  * @date:2018-09-27
  **/
 civilEngineering.saveAndUpdateData = function () {
-    if (!$("#" + civilEngineeringConfig.frm).valid()) {
+    if (!$("#" + civilEngineering.config.frm).valid()) {
         return false;
     }
-    var data = formParams(civilEngineeringConfig.frm);
+    var data = formParams(civilEngineering.config.frm);
     data.planDetailsId = declareCommon.getPlanDetailsId();
     data.declareType = declareFunObj.getDeclareType("土建");
     $.ajax({
@@ -247,7 +238,7 @@ civilEngineering.saveAndUpdateData = function () {
             if (result.ret) {
                 civilEngineering.loadList();
                 toastr.success('成功!');
-                $('#' + civilEngineeringConfig.box).modal("hide");
+                $('#' + civilEngineering.config.box).modal("hide");
             } else {
                 Alert("保存失败:" + result.errmsg);
             }
@@ -283,183 +274,54 @@ civilEngineering.handleFather = function (item) {
 
 /**
  * @author:  zch
- * 描述:不动产
+ * 描述:不动产 初始化并且赋值
  * @date:2018-09-28
  **/
-civilEngineering.declareRealtyRealEstateCertRoleBeLocated = {
-    init: function () {
-        $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='unit']").blur(function () {
-            if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='unit']").val())) {
-                civilEngineering.declareRealtyRealEstateCertRoleBeLocated.write();
-            }
-        });
-        $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='floor']").blur(function () {
-            if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='floor']").val())) {
-                civilEngineering.declareRealtyRealEstateCertRoleBeLocated.write();
-            }
-        });
-        $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='roomNumber']").blur(function () {
-            if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='roomNumber']").val())) {
-                civilEngineering.declareRealtyRealEstateCertRoleBeLocated.write();
-            }
-        });
-        $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='streetNumber']").blur(function () {
-            if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='streetNumber']").val())) {
-                civilEngineering.declareRealtyRealEstateCertRoleBeLocated.write();
-            }
-        });
-        $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='attachedNumber']").blur(function () {
-            if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='attachedNumber']").val())) {
-                civilEngineering.declareRealtyRealEstateCertRoleBeLocated.write();
-            }
-        });
-        $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='buildingNumber']").blur(function () {
-            if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='buildingNumber']").val())) {
-                civilEngineering.declareRealtyRealEstateCertRoleBeLocated.write();
-            }
-        });
-        $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " .district").change(function () {
-            /**
-             * 这 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
-             **/
-            var id = $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " .district").eq(1).val();
-            if (civilEngineering.isEmpty(id)) {
-                civilEngineering.declareRealtyRealEstateCertRoleBeLocated.write();
-            }
-        });
-    },
-    write: function () {
-        var temp = "";
-        var district = $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " .district").eq(1).val();
-        var unit = $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='unit']").val();
-        var floor = $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='floor']").val();
-        var roomNumber = $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='roomNumber']").val();
-        var streetNumber = $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='streetNumber']").val();
-        var attachedNumber = $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='attachedNumber']").val();
-        var buildingNumber = $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='buildingNumber']").val();
-        if (!civilEngineering.isEmpty(unit)) {
-            unit = "";
-        } else {
-            unit = unit + "单元";
-        }
-        if (!civilEngineering.isEmpty(floor)) {
-            floor = "";
-        } else {
-            floor = floor + "楼";
-        }
-        if (!civilEngineering.isEmpty(roomNumber)) {
-            roomNumber = "";
-        } else {
-            roomNumber = roomNumber + "号";
-        }
-        if (!civilEngineering.isEmpty(streetNumber)) {
-            streetNumber = "";
-        }
-        if (!civilEngineering.isEmpty(attachedNumber)) {
-            attachedNumber = "";
-        } else {
-            attachedNumber = "附" + attachedNumber;
-        }
-        if (!civilEngineering.isEmpty(buildingNumber)) {
-            buildingNumber = "";
-        } else {
-            buildingNumber = buildingNumber + "栋";
-        }
-        if (civilEngineering.isEmpty(district)) {
-            AssessCommon.getAreaById(district, function (data) {
-                if (!civilEngineering.isEmpty(data)) {
-                    district = "";
-                } else {
-                    district = data.name;
-                }
-                temp = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='beLocated']").val(temp);
-            });
-        } else {
-            district = "";
-            temp = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-            $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='beLocated']").val(temp);
-        }
-    }
-};
-civilEngineering.declareRealtyRealEstateCertRoleCertName = {
-    init: function () {
-        $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='location']").blur(function () {
-            if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='location']").val())) {
-                civilEngineering.declareRealtyRealEstateCertRoleCertName.write();
-            }
-        });
-        $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='number']").blur(function () {
-            if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='number']").val())) {
-                civilEngineering.declareRealtyRealEstateCertRoleCertName.write();
-            }
-        });
-        $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " .type").change(function () {
-            /**
-             * 这 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
-             **/
-            var id = $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " .type").eq(1).val();
-            if (civilEngineering.isEmpty(id)) {
-                civilEngineering.declareRealtyRealEstateCertRoleCertName.write();
-            }
-        });
-    },
-    write: function () {
-        var location = $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='location']").val();
-        var number = $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='number']").val();
-        var id = $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " .type").eq(1).val();
-        if (!civilEngineering.isEmpty(location)) {
-            location = "";
-        }
-        if (!civilEngineering.isEmpty(number)) {
-            number = "";
-        }
-        if (!civilEngineering.isEmpty(id)) {
-            id = "";
-        }
-        if (civilEngineering.isEmpty(id)) {
-            AssessCommon.getDataDicInfo(id, function (data) {
-                if (civilEngineering.isEmpty(data)) {
-                    var temp = location + "房权证" + data.name + "字地" + number + "号";
-                    $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='certName']").val(temp);
-                }
-            });
-        } else {
-            var temp = location + "房权证" + id + "字地" + number + "号";
-            $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='certName']").val(temp);
-        }
-    }
-};
-civilEngineering.declareRealtyRealEstateCertInit = function () {
+civilEngineering.declareRealtyRealEstateCertInit = function (item) {
+    $("#" + civilEngineering.config.declareRealtyRealEstateCert.frm).clearAll();
+    $("#" + civilEngineering.config.declareRealtyRealEstateCert.frm).initForm(item);
+    $("#" + civilEngineering.config.declareRealtyRealEstateCert.frm + " input[name='terminationDate']").val(formatDate(item.terminationDate));
+    $("#" + civilEngineering.config.declareRealtyRealEstateCert.frm + " input[name='useEndDate']").val(formatDate(item.useEndDate));
+    $("#" + civilEngineering.config.declareRealtyRealEstateCert.frm + " input[name='useStartDate']").val(formatDate(item.useStartDate));
+    $("#" + civilEngineering.config.declareRealtyRealEstateCert.frm + " input[name='registrationTime']").val(formatDate(item.registrationTime));
+    $("#" + civilEngineering.config.declareRealtyRealEstateCert.frm + " input[name='registrationDate']").val(formatDate(item.registrationDate));
+    civilEngineering.showFile(civilEngineering.config.declareRealtyRealEstateCert.fileId, AssessDBKey.DeclareRealtyRealEstateCert, civilEngineering.isNotBlank(item.id) ? item.id : "0");
+    civilEngineering.fileUpload(civilEngineering.config.declareRealtyRealEstateCert.fileId, AssessDBKey.DeclareRealtyRealEstateCert, civilEngineering.isNotBlank(item.id) ? item.id : "0");
     AssessCommon.initAreaInfo({
-        provinceTarget: $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + "province"),
-        cityTarget: $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + "city"),
-        districtTarget: $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + "district"),
-        provinceValue: '',
-        cityValue: '',
-        districtValue: ''
+        provinceTarget: $("#" + civilEngineering.config.declareRealtyRealEstateCert.frm).find("select[name='province']"),
+        cityTarget: $("#" + civilEngineering.config.declareRealtyRealEstateCert.frm).find("select[name='city']"),
+        districtTarget: $("#" + civilEngineering.config.declareRealtyRealEstateCert.frm).find("select[name='district']"),
+        provinceValue: item.province,
+        cityValue: item.city,
+        districtValue: item.district
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, '', function (html, data) {
-        $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm).find('select.type').empty().html(html).trigger('change');
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, item.type, function (html, data) {
+        $("#" + civilEngineering.config.declareRealtyRealEstateCert.frm).find('select.type').empty().html(html).trigger('change');
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "", function (html, data) {
-        $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm).find('select.purpose').empty().html(html).trigger('change');
+    AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, item.purpose, function (html, data) {
+        $("#" + civilEngineering.config.declareRealtyRealEstateCert.frm).find('select.purpose').empty().html(html).trigger('change');
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, '', function (html, data) {
-        $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm).find('select.useRightType').empty().html(html).trigger('change');
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, item.useRightType, function (html, data) {
+        $("#" + civilEngineering.config.declareRealtyRealEstateCert.frm).find('select.useRightType').empty().html(html).trigger('change');
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, "", function (html, data) {
-        $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm).find('select.publicSituation').empty().html(html).trigger('change');
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, item.publicSituation, function (html, data) {
+        $("#" + civilEngineering.config.declareRealtyRealEstateCert.frm).find('select.publicSituation').empty().html(html).trigger('change');
     });
-
-    civilEngineering.declareRealtyRealEstateCertRoleCertName.init();
-    civilEngineering.declareRealtyRealEstateCertRoleBeLocated.init();
 };
+/**
+ * @author:  zch
+ * 描述:不动产 视图
+ * @date:2018-09-28
+ **/
 civilEngineering.declareRealtyRealEstateCertView = function (id) {
-    if (civilEngineering.declareRealtyRealEstateCertFlag) {
-        civilEngineering.declareRealtyRealEstateCertInit();
-        civilEngineering.declareRealtyRealEstateCertFlag = false;
-    }
+    $('#' + civilEngineering.config.declareRealtyRealEstateCert.box).find("#" + commonDeclareApplyModel.config.realEstateCert.handleId).remove();
+    $('#' + civilEngineering.config.declareRealtyRealEstateCert.box).find(".panel-body").append(commonDeclareApplyModel.realEstateCert.getHtml());
+    civilEngineering.declareRealtyRealEstateCertInit({});
+    DatepickerUtils.parse();
+    $('#' + civilEngineering.config.declareRealtyRealEstateCert.box).find(".select2").each(function () {
+        $(this).select2();
+    });
+    $('#' + civilEngineering.config.declareRealtyRealEstateCert.box).modal("show");
     $.ajax({
         type: "get",
         url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
@@ -468,8 +330,7 @@ civilEngineering.declareRealtyRealEstateCertView = function (id) {
             if (result.ret) {
                 var data = result.data;
                 var realEstateId = data.realEstateId;
-                $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm).clearAll();
-                if (civilEngineering.isEmpty(realEstateId)) {
+                if (civilEngineering.isNotBlank(realEstateId)) {
                     $.ajax({
                         url: getContextPath() + "/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertById",
                         type: "get",
@@ -477,28 +338,8 @@ civilEngineering.declareRealtyRealEstateCertView = function (id) {
                         data: {id: realEstateId},
                         success: function (result) {
                             if (result.ret) {
-                                var data = result.data;
-                                if (civilEngineering.isEmpty(data)) {
-                                    data.pidC = id;
-                                    $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm).initForm(data);
-                                    civilEngineering.objectWriteSelectData(civilEngineeringConfig.declareRealtyRealEstateCert.frm, data.purpose, "purpose");
-                                    civilEngineering.objectWriteSelectData(civilEngineeringConfig.declareRealtyRealEstateCert.frm, data.type, "type");
-                                    civilEngineering.objectWriteSelectData(civilEngineeringConfig.declareRealtyRealEstateCert.frm, data.useRightType, "useRightType");
-                                    $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='terminationDate']").val(formatDate(data.terminationDate));
-                                    $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='useEndDate']").val(formatDate(data.useEndDate));
-                                    $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='useStartDate']").val(formatDate(data.useStartDate));
-                                    $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='registrationTime']").val(formatDate(data.registrationTime));
-                                    $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='registrationDate']").val(formatDate(data.registrationDate));
-                                    civilEngineering.showFile(civilEngineeringConfig.declareRealtyRealEstateCert.fileId, AssessDBKey.DeclareRealtyRealEstateCert, data.id);
-                                    civilEngineering.fileUpload(civilEngineeringConfig.declareRealtyRealEstateCert.fileId, AssessDBKey.DeclareRealtyRealEstateCert, data.id);
-                                    AssessCommon.initAreaInfo({
-                                        provinceTarget: $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + "province"),
-                                        cityTarget: $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + "city"),
-                                        districtTarget: $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + "district"),
-                                        provinceValue: data.province,
-                                        cityValue: data.city,
-                                        districtValue: data.district
-                                    });
+                                if (civilEngineering.isNotBlank(result.data)) {
+                                    civilEngineering.declareRealtyRealEstateCertInit(result.data);
                                 }
                             }
                         },
@@ -507,11 +348,8 @@ civilEngineering.declareRealtyRealEstateCertView = function (id) {
                         }
                     });
                 } else {
-                    $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm).initForm({pidC: id});
-                    civilEngineering.showFile(civilEngineeringConfig.declareRealtyRealEstateCert.fileId, AssessDBKey.DeclareRealtyRealEstateCert, 0);
-                    civilEngineering.fileUpload(civilEngineeringConfig.declareRealtyRealEstateCert.fileId, AssessDBKey.DeclareRealtyRealEstateCert, 0);
+                    civilEngineering.declareRealtyRealEstateCertInit({pidC: id});
                 }
-                $('#' + civilEngineeringConfig.declareRealtyRealEstateCert.box).modal("show");
             } else {
                 Alert("保存失败:" + result.errmsg);
             }
@@ -522,19 +360,19 @@ civilEngineering.declareRealtyRealEstateCertView = function (id) {
     });
 };
 civilEngineering.declareRealtyRealEstateCertSaveAndUpdate = function () {
-    if (!$("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm).valid()) {
+    if (!$("#" + civilEngineering.config.declareRealtyRealEstateCert.frm).valid()) {
         return false;
     }
-    var data = formParams(civilEngineeringConfig.declareRealtyRealEstateCert.frm);
+    var data = formParams(civilEngineering.config.declareRealtyRealEstateCert.frm);
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyRealEstateCert/saveAndUpdateDeclareRealtyRealEstateCert",
         data: data,
         success: function (result) {
             if (result.ret) {
-                $('#' + civilEngineeringConfig.declareRealtyRealEstateCert.box).modal("hide");
+                $('#' + civilEngineering.config.declareRealtyRealEstateCert.box).modal("hide");
                 var item = result.data;
-                if (civilEngineering.isEmpty(item)) {
+                if (civilEngineering.isNotBlank(item)) {
                     //把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)  久
                     //把新增的子类关联道中间表
                     var pidC = data.pidC;
@@ -559,175 +397,41 @@ civilEngineering.declareRealtyRealEstateCertSaveAndUpdate = function () {
  * 描述:土地证
  * @date:2018-09-28
  **/
-civilEngineering.declareRealtyLandCertCertRoleBeLocated = {
-    init: function () {
-        $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='unit']").blur(function () {
-            if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='unit']").val())) {
-                civilEngineering.declareRealtyLandCertCertRoleBeLocated.write();
-            }
-        });
-        $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='floor']").blur(function () {
-            if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='floor']").val())) {
-                civilEngineering.declareRealtyLandCertCertRoleBeLocated.write();
-            }
-        });
-        $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='roomNumber']").blur(function () {
-            if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='roomNumber']").val())) {
-                civilEngineering.declareRealtyLandCertCertRoleBeLocated.write();
-            }
-        });
-        $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='streetNumber']").blur(function () {
-            if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='streetNumber']").val())) {
-                civilEngineering.declareRealtyLandCertCertRoleBeLocated.write();
-            }
-        });
-        $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='attachedNumber']").blur(function () {
-            if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='attachedNumber']").val())) {
-                civilEngineering.declareRealtyLandCertCertRoleBeLocated.write();
-            }
-        });
-        $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='buildingNumber']").blur(function () {
-            if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='buildingNumber']").val())) {
-                civilEngineering.declareRealtyLandCertCertRoleBeLocated.write();
-            }
-        });
-        $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " .district").change(function () {
-            /**
-             * 这 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
-             **/
-            var id = $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " .district").eq(1).val();
-            if (civilEngineering.isEmpty(id)) {
-                civilEngineering.declareRealtyLandCertCertRoleBeLocated.write();
-            }
-        });
-    },
-    write: function () {
-        var temp = null;
-        var district = $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " .district").eq(1).val();
-        var unit = $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='unit']").val();
-        var floor = $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='floor']").val();
-        var roomNumber = $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='roomNumber']").val();
-        var streetNumber = $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='streetNumber']").val();
-        var attachedNumber = $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='attachedNumber']").val();
-        var buildingNumber = $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='buildingNumber']").val();
-        if (!civilEngineering.isEmpty(unit)) {
-            unit = "";
-        } else {
-            unit = unit + "单元";
-        }
-        if (!civilEngineering.isEmpty(floor)) {
-            floor = "";
-        } else {
-            floor = floor + "楼";
-        }
-        if (!civilEngineering.isEmpty(roomNumber)) {
-            roomNumber = "";
-        } else {
-            roomNumber = roomNumber + "号";
-        }
-        if (!civilEngineering.isEmpty(streetNumber)) {
-            streetNumber = "";
-        }
-        if (!civilEngineering.isEmpty(attachedNumber)) {
-            attachedNumber = "";
-        } else {
-            attachedNumber = "附" + attachedNumber;
-        }
-        if (!civilEngineering.isEmpty(buildingNumber)) {
-            buildingNumber = "";
-        } else {
-            buildingNumber = buildingNumber + "栋";
-        }
-        if (civilEngineering.isEmpty(district)) {
-            AssessCommon.getAreaById(district, function (data) {
-                if (!civilEngineering.isEmpty(data)) {
-                    district = "";
-                } else {
-                    district = data.name;
-                }
-                temp = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='beLocated']").val(temp);
-            });
-        } else {
-            district = "";
-            temp = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-            $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='beLocated']").val(temp);
-        }
-    }
-};
-civilEngineering.declareRealtyLandCertCertRoleCertName = {
-    init: function () {
-        $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='location']").blur(function () {
-            if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='location']").val())) {
-                civilEngineering.declareRealtyLandCertCertRoleCertName.write();
-            }
-        });
-        $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='year']").blur(function () {
-            if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='year']").val())) {
-                civilEngineering.declareRealtyLandCertCertRoleCertName.write();
-            }
-        });
-        $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='number']").blur(function () {
-            if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='number']").val())) {
-                civilEngineering.declareRealtyLandCertCertRoleCertName.write();
-            }
-        });
-        $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " .type").change(function () {
-            /**
-             * 这 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
-             **/
-            var id = $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " .type").eq(1).val();
-            if (civilEngineering.isEmpty(id)) {
-                civilEngineering.declareRealtyLandCertCertRoleCertName.write();
-            }
-        });
-    },
-    write: function () {
-        var temp = "";
-        var id = $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " .type").eq(1).val();
-        var location = $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='location']").val();
-        var year = $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='year']").val();
-        var number = $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='number']").val();
-        if (civilEngineering.isEmpty(id)) {
-            AssessCommon.getDataDicInfo(id, function (data) {
-                if (civilEngineering.isEmpty(data)) {
-                    var temp = location + data.name + year + "第" + number + "号";
-                    $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='landCertName']").val(temp);
-                }
-            });
-        } else {
-            var temp = location + year + "第" + number + "号";
-            $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='landCertName']").val(temp);
-        }
-    }
-};
-civilEngineering.declareRealtyLandCertInit = function () {
+civilEngineering.declareRealtyLandCertInit = function (item) {
+    $("#" + civilEngineering.config.declareRealtyLandCert.frm).clearAll();
+    $("#" + civilEngineering.config.declareRealtyLandCert.frm).initForm(item);
+    civilEngineering.showFile(civilEngineering.config.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, civilEngineering.isNotBlank(item.id) ? item.id : "0");
+    civilEngineering.fileUpload(civilEngineering.config.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, civilEngineering.isNotBlank(item.id) ? item.id : "0");
+    $("#" + civilEngineering.config.declareRealtyLandCert.frm + " input[name='terminationDate']").val(formatDate(item.terminationDate));
+    $("#" + civilEngineering.config.declareRealtyLandCert.frm + " input[name='registrationDate']").val(formatDate(item.registrationDate));
     AssessCommon.initAreaInfo({
-        provinceTarget: $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + "province"),
-        cityTarget: $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + "city"),
-        districtTarget: $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + "district"),
-        provinceValue: '',
-        cityValue: '',
-        districtValue: ''
+        provinceTarget: $("#" + civilEngineering.config.declareRealtyLandCert.frm).find("select[name='province']"),
+        cityTarget: $("#" + civilEngineering.config.declareRealtyLandCert.frm).find("select[name='city']"),
+        districtTarget: $("#" + civilEngineering.config.declareRealtyLandCert.frm).find("select[name='district']"),
+        provinceValue: item.province,
+        cityValue: item.city,
+        districtValue: item.district
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, '', function (html, data) {
-        $("#" + civilEngineeringConfig.declareRealtyLandCert.frm).find('select.type').empty().html(html).trigger('change');
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, item.type, function (html, data) {
+        $("#" + civilEngineering.config.declareRealtyLandCert.frm).find('select.type').empty().html(html).trigger('change');
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "", function (html, data) {
-        $("#" + civilEngineeringConfig.declareRealtyLandCert.frm).find('select.purpose').empty().html(html).trigger('change');
+    AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, item.purpose, function (html, data) {
+        $("#" + civilEngineering.config.declareRealtyLandCert.frm).find('select.purpose').empty().html(html).trigger('change');
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, "", function (html, data) {
-        $("#" + civilEngineeringConfig.declareRealtyLandCert.frm).find('select.useRightType').empty().html(html).trigger('change');
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, item.useRightType, function (html, data) {
+        $("#" + civilEngineering.config.declareRealtyLandCert.frm).find('select.useRightType').empty().html(html).trigger('change');
     });
-    civilEngineering.declareRealtyLandCertCertRoleCertName.init();
-    civilEngineering.declareRealtyLandCertCertRoleBeLocated.init();
+
 };
 civilEngineering.declareRealtyLandCertView = function (id) {
-    if (civilEngineering.declareRealtyLandCertFlag) {
-        civilEngineering.declareRealtyLandCertInit();
-        civilEngineering.declareRealtyLandCertFlag = false;
-    }
-    $("#" + civilEngineeringConfig.declareRealtyLandCert.frm).clearAll();
+    $('#' + civilEngineering.config.declareRealtyLandCert.box).find("#" + commonDeclareApplyModel.config.land.handleId).remove();
+    $('#' + civilEngineering.config.declareRealtyLandCert.box).find(".panel-body").append(commonDeclareApplyModel.land.getHtml());
+    DatepickerUtils.parse();
+    $('#' + civilEngineering.config.declareRealtyLandCert.box).find(".select2").each(function () {
+        $(this).select2();
+    });
+    civilEngineering.declareRealtyLandCertInit({});
+    $('#' + civilEngineering.config.declareRealtyLandCert.box).modal("show");
     $.ajax({
         type: "get",
         url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
@@ -736,7 +440,7 @@ civilEngineering.declareRealtyLandCertView = function (id) {
             if (result.ret) {
                 var data = result.data;
                 var landId = data.landId;
-                if (civilEngineering.isEmpty(landId)) {
+                if (civilEngineering.isNotBlank(landId)) {
                     $.ajax({
                         url: getContextPath() + "/declareRealtyLandCert/getDeclareRealtyLandCertById",
                         type: "get",
@@ -744,25 +448,8 @@ civilEngineering.declareRealtyLandCertView = function (id) {
                         data: {id: landId},
                         success: function (result) {
                             if (result.ret) {
-                                var data = result.data;
-                                if (civilEngineering.isEmpty(data)) {
-                                    data.pidC = id;
-                                    $("#" + civilEngineeringConfig.declareRealtyLandCert.frm).initForm(data);
-                                    civilEngineering.objectWriteSelectData(civilEngineeringConfig.declareRealtyLandCert.frm, data.purpose, "purpose");
-                                    civilEngineering.objectWriteSelectData(civilEngineeringConfig.declareRealtyLandCert.frm, data.type, "type");
-                                    civilEngineering.objectWriteSelectData(civilEngineeringConfig.declareRealtyLandCert.frm, data.useRightType, "useRightType");
-                                    $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='terminationDate']").val(formatDate(data.terminationDate));
-                                    $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='registrationDate']").val(formatDate(data.registrationDate));
-                                    civilEngineering.showFile(civilEngineeringConfig.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, data.id);
-                                    civilEngineering.fileUpload(civilEngineeringConfig.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, data.id);
-                                    AssessCommon.initAreaInfo({
-                                        provinceTarget: $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + "province"),
-                                        cityTarget: $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + "city"),
-                                        districtTarget: $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + "district"),
-                                        provinceValue: data.province,
-                                        cityValue: data.city,
-                                        districtValue: data.district
-                                    });
+                                if (civilEngineering.isNotBlank(result.data)) {
+                                    civilEngineering.declareRealtyLandCertInit(result.data);
                                 }
                             }
                         },
@@ -771,11 +458,8 @@ civilEngineering.declareRealtyLandCertView = function (id) {
                         }
                     });
                 } else {
-                    $("#" + civilEngineeringConfig.declareRealtyLandCert.frm).initForm({pidC: id});
-                    civilEngineering.showFile(civilEngineeringConfig.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, 0);
-                    civilEngineering.fileUpload(civilEngineeringConfig.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, 0);
+                    civilEngineering.declareRealtyLandCertInit({pidC: id});
                 }
-                $('#' + civilEngineeringConfig.declareRealtyLandCert.box).modal("show");
             } else {
                 Alert("保存失败:" + result.errmsg);
             }
@@ -786,19 +470,19 @@ civilEngineering.declareRealtyLandCertView = function (id) {
     });
 };
 civilEngineering.declareRealtyLandCertSaveAndUpdate = function () {
-    if (!$("#" + civilEngineeringConfig.declareRealtyLandCert.frm).valid()) {
+    if (!$("#" + civilEngineering.config.declareRealtyLandCert.frm).valid()) {
         return false;
     }
-    var data = formParams(civilEngineeringConfig.declareRealtyLandCert.frm);
+    var data = formParams(civilEngineering.config.declareRealtyLandCert.frm);
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyLandCert/saveAndUpdateDeclareRealtyLandCert",
         data: data,
         success: function (result) {
             if (result.ret) {
-                $('#' + civilEngineeringConfig.declareRealtyLandCert.box).modal("hide");
+                $('#' + civilEngineering.config.declareRealtyLandCert.box).modal("hide");
                 var item = result.data;
-                if (civilEngineering.isEmpty(item)) {//把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)
+                if (civilEngineering.isNotBlank(item)) {//把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)
                     var fData = {};
                     fData.landId = item;
                     fData.id = data.pidC
@@ -821,7 +505,11 @@ civilEngineering.declareRealtyLandCertSaveAndUpdate = function () {
  * @date:2018-09-28
  **/
 civilEngineering.declareBuildingPermitView = function (id) {
-    $("#" + civilEngineeringConfig.declareBuildingPermit.frm).clearAll();
+    $('#' + civilEngineering.config.declareBuildingPermit.box).find("#" + commonDeclareApplyModel.config.buildingPermit.handleId).remove();
+    $('#' + civilEngineering.config.declareBuildingPermit.box).find(".panel-body").append(commonDeclareApplyModel.buildingPermit.getHtml());
+    DatepickerUtils.parse();
+    $("#" + civilEngineering.config.declareBuildingPermit.frm).clearAll();
+    $('#' + civilEngineering.config.declareBuildingPermit.box).modal("show");
     $.ajax({
         type: "get",
         url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
@@ -829,7 +517,7 @@ civilEngineering.declareBuildingPermitView = function (id) {
         success: function (result) {
             if (result.ret) {
                 var buildingPermitId = result.data.buildingPermitId;
-                if (civilEngineering.isEmpty(buildingPermitId)) {
+                if (civilEngineering.isNotBlank(buildingPermitId)) {
                     $.ajax({
                         url: getContextPath() + "/declareBuildingPermit/getDeclareBuildingPermitById",
                         type: "get",
@@ -838,12 +526,12 @@ civilEngineering.declareBuildingPermitView = function (id) {
                         success: function (result) {
                             if (result.ret) {
                                 var data = result.data;
-                                if (civilEngineering.isEmpty(data)) {
+                                if (civilEngineering.isNotBlank(data)) {
                                     data.pid = id;
-                                    $("#" + civilEngineeringConfig.declareBuildingPermit.frm).initForm(data);
-                                    $("#" + civilEngineeringConfig.declareBuildingPermit.frm + " input[name='date']").val(formatDate(data.date));
-                                    civilEngineering.showFile(civilEngineeringConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, data.id);
-                                    civilEngineering.fileUpload(civilEngineeringConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, data.id);
+                                    $("#" + civilEngineering.config.declareBuildingPermit.frm).initForm(data);
+                                    $("#" + civilEngineering.config.declareBuildingPermit.frm + " input[name='date']").val(formatDate(data.date));
+                                    civilEngineering.showFile(civilEngineering.config.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, data.id);
+                                    civilEngineering.fileUpload(civilEngineering.config.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, data.id);
                                 }
                             }
                         },
@@ -852,11 +540,10 @@ civilEngineering.declareBuildingPermitView = function (id) {
                         }
                     });
                 } else {
-                    $("#" + civilEngineeringConfig.declareBuildingPermit.frm).initForm({pid: id});
-                    civilEngineering.showFile(civilEngineeringConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, 0);
-                    civilEngineering.fileUpload(civilEngineeringConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, 0);
+                    $("#" + civilEngineering.config.declareBuildingPermit.frm).initForm({pid: id});
+                    civilEngineering.showFile(civilEngineering.config.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, 0);
+                    civilEngineering.fileUpload(civilEngineering.config.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, 0);
                 }
-                $('#' + civilEngineeringConfig.declareBuildingPermit.box).modal("show");
             } else {
                 Alert("保存失败:" + result.errmsg);
             }
@@ -873,19 +560,19 @@ civilEngineering.declareBuildingPermitView = function (id) {
  * @date:2018-09-28
  **/
 civilEngineering.declareBuildingPermitSaveAndUpdate = function () {
-    if (!$("#" + civilEngineeringConfig.declareBuildingPermit.frm).valid()) {
+    if (!$("#" + civilEngineering.config.declareBuildingPermit.frm).valid()) {
         return false;
     }
-    var data = formParams(civilEngineeringConfig.declareBuildingPermit.frm);
+    var data = formParams(civilEngineering.config.declareBuildingPermit.frm);
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareBuildingPermit/saveAndUpdateDeclareBuildingPermit",
         data: data,
         success: function (result) {
             if (result.ret) {
-                $('#' + civilEngineeringConfig.declareBuildingPermit.box).modal("hide");
+                $('#' + civilEngineering.config.declareBuildingPermit.box).modal("hide");
                 var item = result.data;
-                if (civilEngineering.isEmpty(item)) {//把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)
+                if (civilEngineering.isNotBlank(item)) {//把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)
                     var fData = {};
                     fData.buildingPermitId = item;
                     fData.id = data.pid
@@ -908,7 +595,11 @@ civilEngineering.declareBuildingPermitSaveAndUpdate = function () {
  * @date:2018-09-28
  **/
 civilEngineering.declareLandUsePermitView = function (id) {
-    $("#" + civilEngineeringConfig.declareLandUsePermit.frm).clearAll();
+    $('#' + civilEngineering.config.declareLandUsePermit.box).find("#" + commonDeclareApplyModel.config.landUsePermit.handleId).remove();
+    $('#' + civilEngineering.config.declareLandUsePermit.box).find(".panel-body").append(commonDeclareApplyModel.landUsePermit.getHtml());
+    DatepickerUtils.parse();
+    $('#' + civilEngineering.config.declareLandUsePermit.box).modal("show");
+    $("#" + civilEngineering.config.declareLandUsePermit.frm).clearAll();
     $.ajax({
         type: "get",
         url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
@@ -916,7 +607,7 @@ civilEngineering.declareLandUsePermitView = function (id) {
         success: function (result) {
             if (result.ret) {
                 var landUsePermitId = result.data.landUsePermitId;
-                if (civilEngineering.isEmpty(landUsePermitId)) {
+                if (civilEngineering.isNotBlank(landUsePermitId)) {
                     $.ajax({
                         url: getContextPath() + "/declareLandUsePermit/getDeclareLandUsePermitById",
                         type: "get",
@@ -925,12 +616,12 @@ civilEngineering.declareLandUsePermitView = function (id) {
                         success: function (result) {
                             if (result.ret) {
                                 var data = result.data;
-                                if (civilEngineering.isEmpty(data)) {
+                                if (civilEngineering.isNotBlank(data)) {
                                     data.pid = id;
-                                    $("#" + civilEngineeringConfig.declareLandUsePermit.frm).initForm(data);
-                                    $("#" + civilEngineeringConfig.declareLandUsePermit.frm + " input[name='date']").val(formatDate(data.date));
-                                    civilEngineering.showFile(civilEngineeringConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, data.id);
-                                    civilEngineering.fileUpload(civilEngineeringConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, data.id);
+                                    $("#" + civilEngineering.config.declareLandUsePermit.frm).initForm(data);
+                                    $("#" + civilEngineering.config.declareLandUsePermit.frm + " input[name='date']").val(formatDate(data.date));
+                                    civilEngineering.showFile(civilEngineering.config.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, data.id);
+                                    civilEngineering.fileUpload(civilEngineering.config.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, data.id);
                                 }
                             }
                         },
@@ -939,11 +630,10 @@ civilEngineering.declareLandUsePermitView = function (id) {
                         }
                     });
                 } else {
-                    $("#" + civilEngineeringConfig.declareLandUsePermit.frm).initForm({pid: id});
-                    civilEngineering.showFile(civilEngineeringConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, 0);
-                    civilEngineering.fileUpload(civilEngineeringConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, 0);
+                    $("#" + civilEngineering.config.declareLandUsePermit.frm).initForm({pid: id});
+                    civilEngineering.showFile(civilEngineering.config.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, 0);
+                    civilEngineering.fileUpload(civilEngineering.config.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, 0);
                 }
-                $('#' + civilEngineeringConfig.declareLandUsePermit.box).modal("show");
             } else {
                 Alert("保存失败:" + result.errmsg);
             }
@@ -961,19 +651,19 @@ civilEngineering.declareLandUsePermitView = function (id) {
  * @date:2018-09-28
  **/
 civilEngineering.declareLandUsePermitSaveAndUpdate = function () {
-    if (!$("#" + civilEngineeringConfig.declareLandUsePermit.frm).valid()) {
+    if (!$("#" + civilEngineering.config.declareLandUsePermit.frm).valid()) {
         return false;
     }
-    var data = formParams(civilEngineeringConfig.declareLandUsePermit.frm);
+    var data = formParams(civilEngineering.config.declareLandUsePermit.frm);
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareLandUsePermit/saveAndUpdateDeclareLandUsePermit",
         data: data,
         success: function (result) {
             if (result.ret) {
-                $('#' + civilEngineeringConfig.declareLandUsePermit.box).modal("hide");
+                $('#' + civilEngineering.config.declareLandUsePermit.box).modal("hide");
                 var item = result.data;
-                if (civilEngineering.isEmpty(item)) {//把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)
+                if (civilEngineering.isNotBlank(item)) {//把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)
                     var pid = data.pid;
                     var fData = {};
                     fData.landUsePermitId = item;
@@ -997,7 +687,11 @@ civilEngineering.declareLandUsePermitSaveAndUpdate = function () {
  * @date:2018-09-28
  **/
 civilEngineering.declarePreSalePermitView = function (id) {
-    $("#" + civilEngineeringConfig.declarePreSalePermit.frm).clearAll();
+    $('#' + civilEngineering.config.declarePreSalePermit.box).find("#" + commonDeclareApplyModel.config.preSalePermit.handleId).remove();
+    $('#' + civilEngineering.config.declarePreSalePermit.box).find(".panel-body").append(commonDeclareApplyModel.preSalePermit.getHtml());
+    DatepickerUtils.parse();
+    $('#' + civilEngineering.config.declarePreSalePermit.box).modal("show");
+    $("#" + civilEngineering.config.declarePreSalePermit.frm).clearAll();
     $.ajax({
         type: "get",
         url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
@@ -1005,7 +699,7 @@ civilEngineering.declarePreSalePermitView = function (id) {
         success: function (result) {
             if (result.ret) {
                 var preSalePermitId = result.data.preSalePermitId;
-                if (civilEngineering.isEmpty(preSalePermitId)) {
+                if (civilEngineering.isNotBlank(preSalePermitId)) {
                     $.ajax({
                         url: getContextPath() + "/declarePreSalePermit/getDeclarePreSalePermitById",
                         type: "get",
@@ -1014,12 +708,12 @@ civilEngineering.declarePreSalePermitView = function (id) {
                         success: function (result) {
                             if (result.ret) {
                                 var data = result.data;
-                                if (civilEngineering.isEmpty(data)) {
+                                if (civilEngineering.isNotBlank(data)) {
                                     data.pid = id;
-                                    $("#" + civilEngineeringConfig.declarePreSalePermit.frm).initForm(data);
-                                    $("#" + civilEngineeringConfig.declarePreSalePermit.frm + " input[name='date']").val(formatDate(data.date));
-                                    civilEngineering.showFile(civilEngineeringConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, data.id);
-                                    civilEngineering.fileUpload(civilEngineeringConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, data.id);
+                                    $("#" + civilEngineering.config.declarePreSalePermit.frm).initForm(data);
+                                    $("#" + civilEngineering.config.declarePreSalePermit.frm + " input[name='date']").val(formatDate(data.date));
+                                    civilEngineering.showFile(civilEngineering.config.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, data.id);
+                                    civilEngineering.fileUpload(civilEngineering.config.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, data.id);
                                 }
                             }
                         },
@@ -1028,11 +722,10 @@ civilEngineering.declarePreSalePermitView = function (id) {
                         }
                     });
                 } else {
-                    $("#" + civilEngineeringConfig.declarePreSalePermit.frm).initForm({pid: id});
-                    civilEngineering.showFile(civilEngineeringConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, 0);
-                    civilEngineering.fileUpload(civilEngineeringConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, 0);
+                    $("#" + civilEngineering.config.declarePreSalePermit.frm).initForm({pid: id});
+                    civilEngineering.showFile(civilEngineering.config.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, 0);
+                    civilEngineering.fileUpload(civilEngineering.config.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, 0);
                 }
-                $('#' + civilEngineeringConfig.declarePreSalePermit.box).modal("show");
             } else {
                 Alert("保存失败:" + result.errmsg);
             }
@@ -1050,19 +743,19 @@ civilEngineering.declarePreSalePermitView = function (id) {
  * @date:2018-09-28
  **/
 civilEngineering.declarePreSalePermitSaveAndUpdate = function () {
-    if (!$("#" + civilEngineeringConfig.declarePreSalePermit.frm).valid()) {
+    if (!$("#" + civilEngineering.config.declarePreSalePermit.frm).valid()) {
         return false;
     }
-    var data = formParams(civilEngineeringConfig.declarePreSalePermit.frm);
+    var data = formParams(civilEngineering.config.declarePreSalePermit.frm);
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declarePreSalePermit/saveAndUpdateDeclarePreSalePermit",
         data: data,
         success: function (result) {
             if (result.ret) {
-                $('#' + civilEngineeringConfig.declarePreSalePermit.box).modal("hide");
+                $('#' + civilEngineering.config.declarePreSalePermit.box).modal("hide");
                 var item = result.data;
-                if (civilEngineering.isEmpty(item)) {//把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)
+                if (civilEngineering.isNotBlank(item)) {//把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)
                     var fData = {};
                     fData.preSalePermitId = item;
                     fData.id = data.pid;
@@ -1085,7 +778,11 @@ civilEngineering.declarePreSalePermitSaveAndUpdate = function () {
  * @date:2018-09-28
  **/
 civilEngineering.declareBuildingConstructionPermitView = function (id) {
-    $("#" + civilEngineeringConfig.declareBuildingConstructionPermit.frm).clearAll();
+    $('#' + civilEngineering.config.declareBuildingConstructionPermit.box).find("#" + commonDeclareApplyModel.config.buildingConstructionPermit.handleId).remove();
+    $('#' + civilEngineering.config.declareBuildingConstructionPermit.box).find(".panel-body").append(commonDeclareApplyModel.buildingConstructionPermit.getHtml());
+    DatepickerUtils.parse();
+    $('#' + civilEngineering.config.declareBuildingConstructionPermit.box).modal("show");
+    $("#" + civilEngineering.config.declareBuildingConstructionPermit.frm).clearAll();
     $.ajax({
         type: "get",
         url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
@@ -1093,7 +790,7 @@ civilEngineering.declareBuildingConstructionPermitView = function (id) {
         success: function (result) {
             if (result.ret) {
                 var buildingConstructionPermitId = result.data.buildingConstructionPermitId;
-                if (civilEngineering.isEmpty(buildingConstructionPermitId)) {
+                if (civilEngineering.isNotBlank(buildingConstructionPermitId)) {
                     $.ajax({
                         url: getContextPath() + "/declareBuildingConstructionPermit/getDeclareBuildingConstructionPermitById",
                         type: "get",
@@ -1102,13 +799,13 @@ civilEngineering.declareBuildingConstructionPermitView = function (id) {
                         success: function (result) {
                             if (result.ret) {
                                 var data = result.data;
-                                if (civilEngineering.isEmpty(data)) {
+                                if (civilEngineering.isNotBlank(data)) {
                                     data.pid = id;
-                                    $("#" + civilEngineeringConfig.declareBuildingConstructionPermit.frm).initForm(data);
-                                    $("#" + civilEngineeringConfig.declareBuildingConstructionPermit.frm + " input[name='contractPeriod']").val(formatDate(data.contractPeriod));
-                                    $("#" + civilEngineeringConfig.declareBuildingConstructionPermit.frm + " input[name='date']").val(formatDate(data.date));
-                                    civilEngineering.showFile(civilEngineeringConfig.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, data.id);
-                                    civilEngineering.fileUpload(civilEngineeringConfig.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, data.id);
+                                    $("#" + civilEngineering.config.declareBuildingConstructionPermit.frm).initForm(data);
+                                    $("#" + civilEngineering.config.declareBuildingConstructionPermit.frm + " input[name='contractPeriod']").val(formatDate(data.contractPeriod));
+                                    $("#" + civilEngineering.config.declareBuildingConstructionPermit.frm + " input[name='date']").val(formatDate(data.date));
+                                    civilEngineering.showFile(civilEngineering.config.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, data.id);
+                                    civilEngineering.fileUpload(civilEngineering.config.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, data.id);
                                 }
                             }
                         },
@@ -1117,11 +814,10 @@ civilEngineering.declareBuildingConstructionPermitView = function (id) {
                         }
                     });
                 } else {
-                    $("#" + civilEngineeringConfig.declareBuildingConstructionPermit.frm).initForm({pid: id});
-                    civilEngineering.showFile(civilEngineeringConfig.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, 0);
-                    civilEngineering.fileUpload(civilEngineeringConfig.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, 0);
+                    $("#" + civilEngineering.config.declareBuildingConstructionPermit.frm).initForm({pid: id});
+                    civilEngineering.showFile(civilEngineering.config.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, 0);
+                    civilEngineering.fileUpload(civilEngineering.config.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, 0);
                 }
-                $('#' + civilEngineeringConfig.declareBuildingConstructionPermit.box).modal("show");
             } else {
                 Alert("保存失败:" + result.errmsg);
             }
@@ -1140,19 +836,19 @@ civilEngineering.declareBuildingConstructionPermitView = function (id) {
  * @date:2018-09-28
  **/
 civilEngineering.declareBuildingConstructionPermitSaveAndUpdate = function () {
-    if (!$("#" + civilEngineeringConfig.declareBuildingConstructionPermit.frm).valid()) {
+    if (!$("#" + civilEngineering.config.declareBuildingConstructionPermit.frm).valid()) {
         return false;
     }
-    var data = formParams(civilEngineeringConfig.declareBuildingConstructionPermit.frm);
+    var data = formParams(civilEngineering.config.declareBuildingConstructionPermit.frm);
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareBuildingConstructionPermit/saveAndUpdateDeclareBuildingConstructionPermit",
         data: data,
         success: function (result) {
             if (result.ret) {
-                $('#' + civilEngineeringConfig.declareBuildingConstructionPermit.box).modal("hide");
+                $('#' + civilEngineering.config.declareBuildingConstructionPermit.box).modal("hide");
                 var item = result.data;
-                if (civilEngineering.isEmpty(item)) {//把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)
+                if (civilEngineering.isNotBlank(item)) {//把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)
                     var pid = data.pid;
                     var fData = {};
                     fData.buildingConstructionPermitId = item;
@@ -1182,13 +878,13 @@ civilEngineering.declareEconomicIndicatorsView = function (pid) {
         success: function (result) {
             if (result.ret) {
                 var indicatorId = result.data.indicatorId;
-                if (civilEngineering.isEmpty(indicatorId)) {
-                    $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).clearAll();
-                    $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('[name=pid]').val(indicatorId);
-                    $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('[name=planDetailsId]').val('${projectPlanDetails.id}');
-                    $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('.dynamic').remove();
+                if (civilEngineering.isNotBlank(indicatorId)) {
+                    $("#" + civilEngineering.config.declareEconomicIndicators.frm).clearAll();
+                    $("#" + civilEngineering.config.declareEconomicIndicators.frm).find('[name=pid]').val(indicatorId);
+                    $("#" + civilEngineering.config.declareEconomicIndicators.frm).find('[name=planDetailsId]').val('${projectPlanDetails.id}');
+                    $("#" + civilEngineering.config.declareEconomicIndicators.frm).find('.dynamic').remove();
                     economicIndicators.initForm(indicatorId, function () {
-                        $('#' + civilEngineeringConfig.declareEconomicIndicators.box).modal("show");
+                        $('#' + civilEngineering.config.declareEconomicIndicators.box).modal("show");
                     });
                 } else {
                     $.ajax({
@@ -1202,12 +898,12 @@ civilEngineering.declareEconomicIndicatorsView = function (pid) {
                                 fData.indicatorId = id;
                                 fData.id = pid;
                                 civilEngineering.handleFather(fData);
-                                $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).clearAll();
-                                $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('[name=pid]').val(id);
-                                $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('[name=planDetailsId]').val('${projectPlanDetails.id}');
-                                $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('.dynamic').remove();
+                                $("#" + civilEngineering.config.declareEconomicIndicators.frm).clearAll();
+                                $("#" + civilEngineering.config.declareEconomicIndicators.frm).find('[name=pid]').val(id);
+                                $("#" + civilEngineering.config.declareEconomicIndicators.frm).find('[name=planDetailsId]').val('${projectPlanDetails.id}');
+                                $("#" + civilEngineering.config.declareEconomicIndicators.frm).find('.dynamic').remove();
                                 economicIndicators.initForm(id, function () {
-                                    $('#' + civilEngineeringConfig.declareEconomicIndicators.box).modal("show");
+                                    $('#' + civilEngineering.config.declareEconomicIndicators.box).modal("show");
                                 });
                             } else {
                                 console.log(result.errmsg);
@@ -1231,7 +927,7 @@ civilEngineering.declareEconomicIndicatorsView = function (pid) {
 civilEngineering.copyId = undefined;
 //复制子数据
 civilEngineering.copyData = function (id, centerId) {
-    var item = $("#" + civilEngineeringConfig.table).bootstrapTable('getData');
+    var item = $("#" + civilEngineering.config.table).bootstrapTable('getData');
     $.each(item, function (i, data) {
         $("#civilEngineeringCancel" + data.id).parent().hide();
         $("#civilEngineeringCopy" + data.id).parent().hide();
@@ -1249,7 +945,7 @@ civilEngineering.copyData = function (id, centerId) {
 civilEngineering.pasteData = function (id, centerId) {
     Alert("确认粘贴", 2,
         function () {//放弃操作后的函数
-            $.each($("#" + civilEngineeringConfig.table).bootstrapTable('getData'), function (i, data) {
+            $.each($("#" + civilEngineering.config.table).bootstrapTable('getData'), function (i, data) {
                 $("#civilEngineeringCancel" + data.id).parent().hide();
                 $("#civilEngineeringPaste" + data.id).parent().hide();
                 $("#civilEngineeringCopy" + data.id).parent().show();
@@ -1281,9 +977,9 @@ civilEngineering.pasteData = function (id, centerId) {
 
 //把复制的从表粘贴到所有的列中
 civilEngineering.pasteAll = function () {
-    var item = $("#" + civilEngineeringConfig.table).bootstrapTable('getSelections');
-    if (this.isEmpty(civilEngineering.copyId)) {
-        if (this.isEmpty(item)) {
+    var item = $("#" + civilEngineering.config.table).bootstrapTable('getSelections');
+    if (this.isNotBlank(civilEngineering.copyId)) {
+        if (this.isNotBlank(item)) {
             if (item.length >= 1) {
                 var copyId = civilEngineering.copyId;
                 var ids = "";
@@ -1325,7 +1021,7 @@ civilEngineering.pasteAll = function () {
 //放弃复制
 civilEngineering.cancelData = function (id, centerId) {
     $("#civilEngineeringCancel" + id).parent().hide();
-    $.each($("#" + civilEngineeringConfig.table).bootstrapTable('getData'), function (i, data) {
+    $.each($("#" + civilEngineering.config.table).bootstrapTable('getData'), function (i, data) {
         $("#civilEngineeringPaste" + data.id).parent().hide();
         $("#civilEngineeringCopy" + data.id).parent().show();
     });
@@ -1347,13 +1043,52 @@ civilEngineering.loadList = function () {
     cols.push({field: 'centerId', title: '中间表id', visible: false});
     cols.push({field: 'fileViewName', title: '附件'});
     cols.push({
-        field: 'id', title: '操作', formatter: function (value, row, index) {
-            var html = $("#civilEngineeringHtml").html();
-            return html.replace(/paramCenterId/g, row.centerId);
+        field: 'id', title: '关联信息', formatter: function (value, row, index) {
+            var str = '<div class="dropdown">';
+            str += "<button class='btn btn-primary dropdown-toggle' data-toggle='dropdown'>" + "关联信息" + "<span class='caret'>" + "</span>" + "</button>";
+            str += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>";
+            if (row.landId) {
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyLandCertView(" + row.centerId + ")'" + ">" + "土地证" + "<i class='fa fa-check'></i>" +"</a>" + "</li>";
+            } else {
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyLandCertView(" + row.centerId + ")'" + ">" + "土地证" + "<i class='fa fa-remove'></i>" +"</a>" + "</li>";
+            }
+            if (row.realEstateId) {
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyRealEstateCertView(" + row.centerId + ")'" + ">" + "不动产" + "<i class='fa fa-check'></i>" +"</a>" + "</li>";
+            } else {
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyRealEstateCertView(" + row.centerId + ")'" + ">" + "不动产" + "<i class='fa fa-remove'></i>" +"</a>" + "</li>";
+            }
+            if (row.buildingPermitId) {
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingPermitView(" + row.centerId + ")'" + ">" + "建设工程规划许可证" + "<i class='fa fa-check'></i>" +"</a>" + "</li>";
+            } else {
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingPermitView(" + row.centerId + ")'" + ">" + "建设工程规划许可证" + "<i class='fa fa-remove'></i>" +"</a>" + "</li>";
+            }
+            if (row.landUsePermitId) {
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareLandUsePermitView(" + row.centerId + ")'" + ">" + "建设用地规划许可证" + "<i class='fa fa-check'></i>" +"</a>" + "</li>";
+            } else {
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareLandUsePermitView(" + row.centerId + ")'" + ">" + "建设用地规划许可证" + "<i class='fa fa-remove'></i>" +"</a>" + "</li>";
+            }
+            if (row.buildingConstructionPermitId) {
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingConstructionPermitView(" + row.centerId + ")'" + ">" + "建筑工程施工许可证" + "<i class='fa fa-check'></i>" +"</a>" + "</li>";
+            } else {
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingConstructionPermitView(" + row.centerId + ")'" + ">" + "建筑工程施工许可证" + "<i class='fa fa-remove'></i>" +"</a>" + "</li>";
+            }
+            if (row.preSalePermitId) {
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declarePreSalePermitView(" + row.centerId + ")'" + ">" + "商品房预售许可证" + "<i class='fa fa-check'></i>" +"</a>" + "</li>";
+            } else {
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declarePreSalePermitView(" + row.centerId + ")'" + ">" + "商品房预售许可证" + "<i class='fa fa-remove'></i>" +"</a>" + "</li>";
+            }
+            if (row.indicatorId) {
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareEconomicIndicatorsView(" + row.centerId + ")'" + ">" + "经济规划指标" + "<i class='fa fa-check'></i>" +"</a>" + "</li>";
+            } else {
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareEconomicIndicatorsView(" + row.centerId + ")'" + ">" + "经济规划指标" + "<i class='fa fa-remove'></i>" +"</a>" + "</li>";
+            }
+            str += "</ul>";
+            str += "</div>";
+            return str;
         }
     });
-    $("#" + civilEngineeringConfig.table).bootstrapTable('destroy');
-    TableInit(civilEngineeringConfig.table, getContextPath() + "/declareBuildEngineering/getDeclareBuildEngineeringList", cols, {
+    $("#" + civilEngineering.config.table).bootstrapTable('destroy');
+    TableInit(civilEngineering.config.table, getContextPath() + "/declareBuildEngineering/getDeclareBuildEngineeringList", cols, {
         planDetailsId: declareCommon.getPlanDetailsId()
     }, {
         method: "get",
@@ -1381,7 +1116,7 @@ civilEngineering.inputFile = function () {
             planDetailsId: declareCommon.getPlanDetailsId()
         },//要传到后台的参数，没有可以不写
         secureuri: false,//是否启用安全提交，默认为false
-        fileElementId: civilEngineeringConfig.excelUpload,//文件选择框的id属性
+        fileElementId: civilEngineering.config.excelUpload,//文件选择框的id属性
         dataType: 'json',//服务器返回的格式
         async: false,
         success: function (result) {

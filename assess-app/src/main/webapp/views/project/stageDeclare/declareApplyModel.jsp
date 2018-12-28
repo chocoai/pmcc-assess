@@ -804,25 +804,492 @@
 
 <script type="text/html" id="buildingConstructionPermitCommon" data-title="建筑工程施工许可证">
     <div id="declareModelHandleBuildingConstructionPermitCommon">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">证书编号<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="证书编号" name="certificateNumber" class="form-control"
+                           required="required">
+                </div>
+            </div>
+        </div>
 
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">发证机关<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="发证机关" name="issuingOrgan" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">日期<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input placeholder="日期"
+                           name="date" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime" required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建设单位（个人）<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="建设单位（个人）" name="buildUnit" class="form-control"
+                           required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建设项目名称<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="建设项目名称" name="name" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建设地址<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="建设地址" name="buildAddress" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建设规模<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="建设规模" name="scaleConstruction" class="form-control"
+                           required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">勘察单位<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="勘察单位" name="reconnaissanceUnit" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">设计单位<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="设计单位" name="designUnit" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">施工单位<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="施工单位" name="constructionUnit" class="form-control"
+                           required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">监理单位<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="监理单位" name="constructionControlUnit"
+                           class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">勘察单位项目负责人<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="勘察单位项目负责人" name="reconnaissanceUnitPerson"
+                           class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">设计单位项目负责人<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="设计单位项目负责人" name="designUnitPerson" class="form-control"
+                           required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">施工单位项目负责人<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="施工单位项目负责人" name="constructionUnitPerson"
+                           class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">总监理工程师<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="总监理工程师" name="chiefEngineerConstructionInspection"
+                           class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">合同工期<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input placeholder="合同工期"
+                           name="contractPeriod" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime" required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">备注<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-11">
+                    <textarea name="remark" placeholder="备注" class="form-control"></textarea>
+                </div>
+            </div>
+        </div>
     </div>
 </script>
 
 <script type="text/html" id="preSalePermitCommon" data-title="商品房预售许可证">
     <div id="declareModelHandlePreSalePermitCommon">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">证书编号<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="证书编号" name="certificateNumber" class="form-control"
+                           required="required">
+                </div>
+            </div>
+        </div>
 
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">售房单位<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="售房单位" name="salesUnit" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">法定代表人<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="法定代表人" name="legalRepresentative" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">项目坐落<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="项目坐落" name="beLocated" class="form-control"
+                           required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">项目名称<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="项目名称" name="name" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">预售范围<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="预售范围" name="preSaleScope" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">预售面积<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="预售面积(数字)" data-rule-maxlength="100"
+                           data-rule-number='true' name="preSaleArea" class="form-control"
+                           required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">房屋用途<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="房屋用途" name="housingUse" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建筑结构<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="建筑结构" name="buildingStructure" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">预售款监管信息<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="预售款监管信息" name="preSaleSupervisionInformation"
+                           class="form-control"
+                           required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">发证机关<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="发证机关" name="issuingOrgan"
+                           class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">日期<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input placeholder="日期"
+                           name="date" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime" required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">在建工程抵押情况<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="在建工程抵押情况" name="mortgageSituation" class="form-control"
+                           required="required">
+                </div>
+            </div>
+        </div>
     </div>
 </script>
 
 <script type="text/html" id="landUsePermitCommon" data-title="建设用地规划许可证">
     <div id="declareModelHandleLandUsePermitCommon">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">证书编号<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="证书编号" name="certificateNumber" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">发证机关<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="发证机关" name="issuingOrgan" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">日期<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input placeholder="日期"
+                           name="date" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime" required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">用地单位<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="用地单位" name="unit" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">用地项目名称<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="用地项目名称" name="name" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">用地位置<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="用地位置" name="location" class="form-control"
+                           required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">用地性质<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="用地性质" name="nature" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">用地面积<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="用地面积" data-rule-maxlength="100" data-rule-number='true'
+                           name="area" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建设规模<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="建设规模" name="scaleConstruction" class="form-control"
+                           required="required">
+                </div>
+            </div>
+        </div>
 
     </div>
 </script>
 
 <script type="text/html" id="buildingPermitCommon" data-title="建设工程规划许可证">
     <div id="declareModelHandleBuildingPermitCommon">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">证书编号<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="证书编号" name="certificateNumber" class="form-control"
+                           required="required">
+                </div>
+            </div>
+        </div>
 
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">发证机关<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="发证机关" name="issuingOrgan" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">日期<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input placeholder="日期"
+                           name="date" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime" required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建设单位（个人）<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="建设单位（个人）" name="unit" class="form-control"
+                           required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建设项目名称<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="建设项目名称" name="name" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建设位置<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="建设位置" name="location" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建设规模<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="建设规模" name="scaleConstruction" class="form-control"
+                           required="required">
+                </div>
+            </div>
+        </div>
     </div>
 </script>
 

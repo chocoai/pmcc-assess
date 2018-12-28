@@ -16,7 +16,8 @@
                 <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
                 <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
             </form>
-
+            <!-- 申报各种类型的html视图 -->
+            <%@include file="/views/project/stageDeclare/declareApplyModel.jsp" %>
             <!-- 土建 -->
             <div id="viewCivilEngineering">
                 <%@include file="/views/project/stageDeclare/buildingDeclareModel/viewCivilEngineering.jsp" %>
@@ -50,7 +51,10 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
 <script>
-    var config = {
+
+    var declareFunObj = {} ;
+
+    declareFunObj.config = {
         declare: {
             frm: "declareApplyForm"
         },
@@ -62,9 +66,7 @@
             name: "设备安装",
             view: "viewEquipmentInstallation"
         }
-    };
-
-    var declareFunObj = new Object();
+    } ;
 
     declareFunObj.isEmpty = function (item) {
         if (item) {
@@ -80,7 +82,7 @@
      **/
     declareFunObj.getDeclareType = function (name) {
         var declareType = null;
-        $("#" + config.declare.frm + " :checkbox").each(function (j, oo) {
+        $("#" + declareFunObj.config.declare.frm + " :checkbox").each(function (j, oo) {
             AssessCommon.getProjectClassifyInfoAsync($(oo).val(), function (data) {
                 if (declareFunObj.isEmpty(data)) {
                     if (data.name == name) {
@@ -90,73 +92,6 @@
             })
         });
         return declareType;
-    };
-
-    declareFunObj.updateInit = function () {
-        AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleDeclareBuildingCertificateType, function (html, data) {
-            $.each(data, function (i, n) {
-                if (config.civilEngineering.name == n.name) {
-                    $.ajax({
-                        type: "get",
-                        url: "${pageContext.request.contextPath}/declareBuildEngineering/listDeclareBuildEngineering",
-                        data: {
-                            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}',
-                            declareType: n.id
-                        },
-                        success: function (result) {
-                            if (result.ret) {
-                                if (declareFunObj.isEmpty(result.data)) {
-                                    if (result.data.length >= 1) {
-                                        declareFunObj.civilEngineering.toggle();//view 显示
-                                        $("#" + config.declare.frm + " :checkbox").each(function (j, oo) {
-                                            if ($(oo).val() == n.id) {
-                                                $(this).prop("checked", true);//单选框 选中
-                                            }
-                                        });
-                                    }
-                                }
-                            } else {
-                                Alert("失败:" + result.errmsg);
-                            }
-                        },
-                        error: function (e) {
-                            Alert("调用服务端方法失败，失败原因:" + e);
-                        }
-                    });
-                }
-            });
-            $.each(data, function (i, n) {
-                if (config.equipmentInstallation.name == n.name) {
-                    $.ajax({
-                        type: "get",
-                        url: "${pageContext.request.contextPath}/declareBuildEquipmentInstall/listDeclareBuildEquipmentInstall",
-                        data: {
-                            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}',
-                            declareType: n.id
-                        },
-                        success: function (result) {
-                            if (result.ret) {
-                                if (declareFunObj.isEmpty(result.data)) {
-                                    if (result.data.length >= 1) {
-                                        declareFunObj.equipmentInstallation.toggle();//view 显示
-                                        $("#" + config.declare.frm + " :checkbox").each(function (j, oo) {
-                                            if ($(oo).val() == n.id) {
-                                                $(this).prop("checked", true);//单选框 选中
-                                            }
-                                        });
-                                    }
-                                }
-                            } else {
-                                Alert("失败:" + result.errmsg);
-                            }
-                        },
-                        error: function (e) {
-                            Alert("调用服务端方法失败，失败原因:" + e);
-                        }
-                    });
-                }
-            });
-        });
     };
 
     declareFunObj.declare = {
@@ -185,55 +120,22 @@
                     resetHtml += "</div>";
                 }
                 //HTML
-                $("#" + config.declare.frm + "HTML").append(resetHtml);
-                declareFunObj.updateInit();
-                declareFunObj.declare.monitor();
-            });
-        },
-        monitor: function () {
-            $.each($("#" + config.declare.frm + " :checkbox"), function (i, n) {
-                $(n).click(function () {
-                    AssessCommon.getProjectClassifyInfo($(n).val(), function (data) {
-                        if (declareFunObj.isEmpty(data)) {
-                            if (data.name == config.civilEngineering.name) {
-                                declareFunObj.civilEngineering.toggle();
-                            }
-                            if (data.name == config.equipmentInstallation.name) {
-                                declareFunObj.equipmentInstallation.toggle();
-                            }
-                        }
-                    })
-                });
+                $("#" + declareFunObj.config.declare.frm + "HTML").append(resetHtml);
             });
         }
     };
 
-    declareFunObj.civilEngineering = {
-        toggle: function () {
-            $("#" + config.civilEngineering.view).toggle();
-        }
-    };
-
-    declareFunObj.equipmentInstallation = {
-        toggle: function () {
-            $("#" + config.equipmentInstallation.view).toggle();
-        }
-    };
-
-    $(function () {
-        //declareFunObj.declare.init();
-    });
 </script>
 <script type="application/javascript">
     //提交
     function submit() {
         //检查是否填写了申报数据
-        var rows = $("#" + civilEngineeringConfig.table).bootstrapTable('getData');
+        var rows = $("#" + civilEngineering.config.table).bootstrapTable('getData');
         if (rows && rows.length > 0) {
             submitForm();
             return false;
         }
-        rows = $("#" + equipmentInstallationConfig.table).bootstrapTable('getData');
+        rows = $("#" + equipmentInstallation.config.table).bootstrapTable('getData');
         if (rows && rows.length > 0) {
             submitForm();
             return false;

@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dto.input.project.declare.DeclareBuildEquipmentIn
 import com.copower.pmcc.assess.service.project.declare.DeclareBuildEquipmentInstallService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @Auther: zch
@@ -79,12 +81,15 @@ public class DeclareBuildEquipmentInstallController {
 
     @ResponseBody
     @RequestMapping(value = "/deleteDeclareBuildEquipmentInstallById", method = {RequestMethod.POST}, name = "删除设备安装维护")
-    public HttpResult delete(Integer id) {
+    public HttpResult delete(String ids) {
         try {
-            if (id != null) {
-                DeclareBuildEquipmentInstall declareBuildEquipmentInstall = new DeclareBuildEquipmentInstall();
-                declareBuildEquipmentInstall.setId(id);
-                declareBuildEquipmentInstallService.removeDeclareBuildEquipmentInstall(declareBuildEquipmentInstall);
+            if (org.apache.commons.lang3.StringUtils.isNotBlank(ids)) {
+                List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+                for (Integer id : integers) {
+                    DeclareBuildEquipmentInstall declareBuildEquipmentInstall = new DeclareBuildEquipmentInstall();
+                    declareBuildEquipmentInstall.setId(id);
+                    declareBuildEquipmentInstallService.removeDeclareBuildEquipmentInstall(declareBuildEquipmentInstall);
+                }
                 return HttpResult.newCorrectResult();
             }
         } catch (Exception e1) {

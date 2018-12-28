@@ -73,7 +73,7 @@
         }
     };
 
-    var declareFunObj = new Object();
+    var declareFunObj = {} ;
 
     declareFunObj.isEmpty = function (item) {
         if (item) {
@@ -101,102 +101,7 @@
         return declareType;
     };
 
-    //返回修改时 显示申报证书
-    declareFunObj.updateInit = function () {
-        AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleHousePropertyCertificateType, function (html, data) {
-            $.each(data, function (i, n) {
-                if (config.declareRealtyLandCert.name == n.name) {
-                    $.ajax({
-                        type: "get",
-                        url: "${pageContext.request.contextPath}/declareRealtyLandCert/listDeclareRealtyLandCert",
-                        data: {
-                            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}',
-                            declareType: n.id,
-                            enable: "yes"
-                        },
-                        success: function (result) {
-                            if (result.ret) {
-                                if (declareFunObj.isEmpty(result.data)) {
-                                    if (result.data.length >= 1) {
-                                        declareFunObj.declareRealtyLandCert.toggle();//view 显示
-                                        $("#" + config.declare.frm + " :checkbox").each(function (j, oo) {
-                                            if ($(oo).val() == n.id) {
-                                                $(this).prop("checked", true);//单选框 选中
-                                            }
-                                        });
-                                    }
-                                }
-                            } else {
-                                Alert("失败:" + result.errmsg);
-                            }
-                        },
-                        error: function (e) {
-                            Alert("调用服务端方法失败，失败原因:" + e);
-                        }
-                    });
-                }
-                if (config.declareRealtyHouseCert.name == n.name) {
-                    $.ajax({
-                        type: "get",
-                        url: "${pageContext.request.contextPath}/declareRealtyHouseCert/listDeclareRealtyHouseCert",
-                        data: {
-                            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}',
-                            declareType: n.id,
-                            enable: "yes"
-                        },
-                        success: function (result) {
-                            if (result.ret) {
-                                if (declareFunObj.isEmpty(result.data)) {
-                                    if (result.data.length >= 1) {
-                                        declareFunObj.declareRealtyHouseCert.toggle();//view 显示
-                                        $("#" + config.declare.frm + " :checkbox").each(function (j, oo) {
-                                            if ($(oo).val() == n.id) {
-                                                $(this).prop("checked", true);//单选框 选中
-                                            }
-                                        });
-                                    }
-                                }
-                            } else {
-                                Alert("失败:" + result.errmsg);
-                            }
-                        },
-                        error: function (e) {
-                            Alert("调用服务端方法失败，失败原因:" + e);
-                        }
-                    });
-                }
-                if (config.declareRealtyRealEstateCert.name == n.name) {
-                    $.ajax({
-                        type: "get",
-                        url: "${pageContext.request.contextPath}/declareRealtyRealEstateCert/listDeclareRealtyRealEstateCert",
-                        data: {
-                            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}',
-                            declareType: n.id
-                        },
-                        success: function (result) {
-                            if (result.ret) {
-                                if (declareFunObj.isEmpty(result.data)) {
-                                    if (result.data.length >= 1) {
-                                        declareFunObj.declareRealtyRealEstateCert.toggle();//view 显示
-                                        $("#" + config.declare.frm + " :checkbox").each(function (j, oo) {
-                                            if ($(oo).val() == n.id) {
-                                                $(this).prop("checked", true);//单选框 选中
-                                            }
-                                        });
-                                    }
-                                }
-                            } else {
-                                Alert("失败:" + result.errmsg);
-                            }
-                        },
-                        error: function (e) {
-                            Alert("调用服务端方法失败，失败原因:" + e);
-                        }
-                    });
-                }
-            });
-        });
-    };
+
 
     declareFunObj.declare = {
         init: function () {
@@ -225,68 +130,9 @@
                 }
                 //HTML
                 $("#" + config.declare.frm + "HTML").append(resetHtml);
-                declareFunObj.updateInit();
-                declareFunObj.declare.monitor();
-            });
-        },
-        monitor: function () {
-            $.each($("#" + config.declare.frm + " :checkbox"), function (i, n) {
-                $(n).click(function () {
-                    AssessCommon.getProjectClassifyInfo($(n).val(), function (data) {
-                        if (declareFunObj.isEmpty(data)) {
-                            if (data.name == config.declareRealtyHouseCert.name) {
-                                declareFunObj.declareRealtyHouseCert.toggle();
-                            }
-                            if (data.name == config.declareRealtyLandCert.name) {
-                                declareFunObj.declareRealtyLandCert.toggle();
-                            }
-                            if (data.name == config.declareRealtyRealEstateCert.name) {
-                                declareFunObj.declareRealtyRealEstateCert.toggle();
-                            }
-                        }
-                    })
-                });
             });
         }
     };
-
-    /**
-     * @author:  zch
-     * 描述:房产证
-     * @date:2018-09-19
-     **/
-    declareFunObj.declareRealtyHouseCert = {
-        toggle: function () {
-            $("#" + config.declareRealtyHouseCert.view).toggle();
-        }
-    };
-
-    /**
-     * @author:  zch
-     * 描述:土地证
-     * @date:2018-09-19
-     **/
-    declareFunObj.declareRealtyLandCert = {
-        toggle: function () {
-            $("#" + config.declareRealtyLandCert.view).toggle();
-        },
-    };
-
-    /**
-     * @author:  zch
-     * 描述:不动产证
-     * @date:2018-09-19
-     **/
-    declareFunObj.declareRealtyRealEstateCert = {
-        toggle: function () {
-            $("#" + config.declareRealtyRealEstateCert.view).toggle();
-        }
-    };
-
-
-    $(function () {
-        //declareFunObj.declare.init();
-    });
 </script>
 <script type="application/javascript">
     //提交
