@@ -113,7 +113,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button" data-dismiss="modal" class="btn btn-warning">
+                <button type="button" class="btn btn-warning" onclick="civilEngineering.declareBuildingPermitRemove()">
                     删除
                 </button>
                 <button type="button" class="btn btn-primary"
@@ -168,7 +168,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button" data-dismiss="modal" class="btn btn-warning">
+                <button type="button" class="btn btn-warning" onclick="civilEngineering.declareLandUsePermitRemove()">
                     删除
                 </button>
                 <button type="button" class="btn btn-primary"
@@ -223,7 +223,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button" data-dismiss="modal" class="btn btn-warning">
+                <button type="button" class="btn btn-warning" onclick="civilEngineering.declarePreSalePermitRemove()">
                     删除
                 </button>
                 <button type="button" class="btn btn-primary"
@@ -279,7 +279,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button" data-dismiss="modal" class="btn btn-warning">
+                <button type="button" class="btn btn-warning" onclick="civilEngineering.declareBuildingConstructionPermitRemove()">
                     删除
                 </button>
                 <button type="button" class="btn btn-primary"
@@ -380,7 +380,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" data-dismiss="modal" class="btn btn-warning">
+                    <button type="button" class="btn btn-warning" onclick="civilEngineering.declareRealtyLandCertRemove();">
                         删除
                     </button>
                     <button type="button" class="btn btn-primary"
@@ -434,7 +434,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" data-dismiss="modal" class="btn btn-warning">
+                    <button type="button" class="btn btn-warning" onclick="civilEngineering.declareRealtyRealEstateCertRemove()">
                         删除
                     </button>
                     <label class="btn btn-primary"

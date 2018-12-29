@@ -76,9 +76,9 @@ public class DeclareBuildEngineeringAndEquipmentCenterController {
     }
 
     @PostMapping(value = "/deleteByType",name = "根据type删除子项id")
-    public HttpResult deleteByType(String type,Integer dataId){
+    public HttpResult deleteByType(String type,Integer dataId,Integer centerId){
         try {
-            declareBuildEngineeringAndEquipmentCenterService.deleteByType(type, dataId);
+            declareBuildEngineeringAndEquipmentCenterService.deleteByType(type, dataId,centerId);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
