@@ -243,6 +243,7 @@ public class DeclareRealtyRealEstateCertService {
             declareRecord.setFloorArea(oo.getEvidenceArea());
             declareRecord.setLandUseEndDate(oo.getUseEndDate());
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
+            declareRecord.setCreator(declareApply.getCreator());
             BaseDataDic baseDataDic = null;
             if (oo.getPurpose() != null){
                 if (NumberUtils.isNumber(oo.getPurpose())){

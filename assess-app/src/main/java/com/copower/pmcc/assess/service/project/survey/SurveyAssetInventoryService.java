@@ -1,12 +1,14 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryDao;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory;
-import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryContent;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyAssetCommonDataDto;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -25,8 +27,11 @@ import java.util.List;
  */
 
 @Service
-public class SurveyAssetInventoryService {
-
+public class SurveyAssetInventoryService extends BaseService {
+    @Autowired
+    private DeclareRecordService declareRecordService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -90,4 +95,30 @@ public class SurveyAssetInventoryService {
         return surveyAssetInventoryDao.getDataByPlanDetailsId(planDetailsId);
     }
 
+    /**
+     * 反写申报记录数据的证载用途与实际用途
+     * @param surveyAssetInventory
+     */
+    public void writeBackDeclareRecord(SurveyAssetInventory surveyAssetInventory){
+        if (surveyAssetInventory != null) {
+            List<SurveyAssetInventoryContent> contentList = surveyAssetInventoryContentService.getContentListByPlanDetailsId(surveyAssetInventory.getPlanDetailId());
+            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_USE);
+            if (CollectionUtils.isNotEmpty(contentList) && baseDataDic != null) {
+                for (SurveyAssetInventoryContent content : contentList) {
+                    if (content.getInventoryContent().equals(baseDataDic.getId())) {
+                        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(surveyAssetInventory.getDeclareRecordId());
+                        if (declareRecord != null) {
+                            declareRecord.setCertUse(content.getRegistration());
+                            declareRecord.setPracticalUse(content.getActual());
+                            try {
+                                declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+                            } catch (BusinessException e) {
+                                log.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

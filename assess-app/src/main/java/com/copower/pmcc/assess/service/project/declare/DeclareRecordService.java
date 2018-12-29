@@ -1,12 +1,13 @@
 package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.event.project.DeclareRealtyEstateCertEvent;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.bpm.api.exception.BpmException;
+import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.google.common.collect.Lists;
@@ -38,12 +39,12 @@ public class DeclareRecordService {
     @Autowired
     private ErpAreaService erpAreaService;
 
+
     public Integer saveAndUpdateDeclareRecord(DeclareRecord declareRecord) throws BusinessException {
         if (declareRecord == null) {
             throw new BusinessException("null point");
         }
         if (declareRecord.getId() == null || declareRecord.getId().intValue() == 0) {
-            declareRecord.setCreator(commonService.thisUserAccount());
             return declareRecordDao.saveReturnId(declareRecord);
         } else {
             declareRecordDao.updateDeclareRecord(declareRecord);
@@ -163,5 +164,6 @@ public class DeclareRecordService {
     public DeclareRecord getDeclareRecordById(Integer id) {
         return declareRecordDao.getDeclareRecordById(id);
     }
+
 
 }

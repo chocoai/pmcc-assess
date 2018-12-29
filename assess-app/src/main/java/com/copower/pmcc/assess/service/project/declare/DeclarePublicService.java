@@ -6,6 +6,10 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.event.project.DeclareRealtyEstateCertEvent;
+import com.copower.pmcc.bpm.api.exception.BpmException;
+import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.google.common.base.Objects;
 import org.apache.commons.lang.StringUtils;
@@ -30,6 +34,10 @@ public class DeclarePublicService {
     private ErpAreaService erpAreaService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private DeclareApplyService declareApplyService;
+    @Autowired
+    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
 
     /**
      * 不动产
@@ -537,4 +545,24 @@ public class DeclarePublicService {
         return true;
     }
 
+
+    /**
+     * 提交申报任务
+     * @param projectPlanDetails
+     * @param processInsId
+     * @throws BusinessException
+     * @throws BpmException
+     */
+    public void applyCommitTask(ProjectPlanDetails projectPlanDetails, String processInsId) throws BusinessException, BpmException {
+        DeclareApply declareApply = new DeclareApply();
+        declareApply.setProjectId(projectPlanDetails.getProjectId());
+        declareApply.setPlanDetailsId(projectPlanDetails.getId());
+        declareApply.setProcessInsId(processInsId);
+        declareApplyService.saveDeclareApply(declareApply);
+        if(org.apache.commons.lang3.StringUtils.isBlank(processInsId)){
+            declareApplyService.writeToDeclareRecord(declareApply);
+        }else{
+            bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, DeclareRealtyEstateCertEvent.class.getSimpleName());//修改监听器
+        }
+    }
 }

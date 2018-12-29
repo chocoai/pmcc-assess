@@ -4,11 +4,10 @@ import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanExecuteInterface;
-import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.assess.service.project.ProjectPlanService;
+import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
+import com.copower.pmcc.erp.api.dto.SysUserDto;
+import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.apache.commons.collections.CollectionUtils;
@@ -34,14 +33,16 @@ public class PlanDefaultExecute implements ProjectPlanExecuteInterface {
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
-    private CommonService commonService;
-
+    private ProjectMemberService projectMemberService;
+    @Autowired
+    private ErpRpcUserService erpRpcUserService;
 
     @Override
     public void execute(ProjectPlan projectPlan,ProjectWorkStage projectWorkStage) throws BusinessException {
         //自动执行
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
         List<ProjectPhase> phaseList = projectPhaseService.getCacheProjectPhaseByCategoryId(projectInfo.getProjectCategoryId(), projectPlan.getWorkStageId());
+        String projectManager = projectMemberService.getProjectManager(projectInfo.getId());
         if (CollectionUtils.isNotEmpty(phaseList)) {
             for (ProjectPhase projectPhase : phaseList) {
                 //1.写入projectPlanDetails表 2.写入bpm任务表
@@ -52,8 +53,11 @@ public class PlanDefaultExecute implements ProjectPlanExecuteInterface {
                 projectPlanDetails.setPlanId(projectPlan.getId());
                 projectPlanDetails.setProjectWorkStageId(projectWorkStage.getId());
                 projectPlanDetails.setProjectPhaseId(projectPhase.getId());
-                projectPlanDetails.setExecuteUserAccount(commonService.thisUserAccount());
-                projectPlanDetails.setExecuteDepartmentId(commonService.thisUser().getDepartmentId());
+                projectPlanDetails.setExecuteUserAccount(projectManager);
+                SysUserDto sysUser = erpRpcUserService.getSysUser(projectManager);
+                if (sysUser != null) {
+                    projectPlanDetails.setExecuteDepartmentId(sysUser.getDepartmentId());
+                }
                 projectPlanDetails.setBisEnable(true);
                 projectPlanDetails.setSorting(projectPhase.getPhaseSort());
                 projectPlanDetails.setProcessInsId("0");
@@ -62,7 +66,7 @@ public class PlanDefaultExecute implements ProjectPlanExecuteInterface {
                 projectPlanDetails.setPlanEndDate(new Date());
                 projectPlanDetails.setPlanHours(projectPhase.getPhaseTime());
                 projectPlanDetails.setStatus(ProjectStatusEnum.RUNING.getKey());
-                projectPlanDetails.setCreator(commonService.thisUserAccount());
+                projectPlanDetails.setCreator(projectManager);
                 projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);
 
                 projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);

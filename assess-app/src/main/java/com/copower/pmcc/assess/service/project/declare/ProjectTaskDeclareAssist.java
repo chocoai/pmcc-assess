@@ -1,16 +1,12 @@
 package com.copower.pmcc.assess.service.project.declare;
 
-import com.copower.pmcc.assess.dal.basis.entity.DeclareApply;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.ErpAreaService;
-import com.copower.pmcc.assess.service.event.project.DeclareRealtyEstateCertEvent;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
-import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,9 +24,7 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private DeclareApplyService declareApplyService;
-    @Autowired
-    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+    private DeclarePublicService declarePublicService;
     @Autowired
     private ErpAreaService erpAreaService;
     @Override
@@ -72,16 +66,7 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
-        DeclareApply declareApply = new DeclareApply();
-        declareApply.setProjectId(projectPlanDetails.getProjectId());
-        declareApply.setPlanDetailsId(projectPlanDetails.getId());
-        declareApply.setProcessInsId(processInsId);
-        declareApplyService.saveDeclareApply(declareApply);
-        if(StringUtils.isBlank(processInsId)){
-            declareApplyService.writeToDeclareRecord(declareApply);
-        }else{
-            bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, DeclareRealtyEstateCertEvent.class.getSimpleName());//修改监听器
-        }
+        declarePublicService.applyCommitTask(projectPlanDetails, processInsId);
     }
 
     @Override

@@ -20,7 +20,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${declareRecord.name}</h2>
+                    <h3>${declareRecord.name}</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -285,11 +285,6 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
-                </button>
-            </div>
         </div>
     </div>
 </div>
@@ -305,7 +300,7 @@
                 fieldsName: "checkOriginal",
                 tableId: '${surveyAssetInventory.id}'
             },
-            deleteFlag: true
+            deleteFlag: false
         })
 
         FileUtils.getFileShows({
@@ -315,7 +310,7 @@
                 fieldsName: "specialCase",
                 tableId: '${surveyAssetInventory.id}'
             },
-            deleteFlag: true
+            deleteFlag: false
         })
     })
 

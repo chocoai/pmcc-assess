@@ -453,6 +453,7 @@ public class DeclareRealtyHouseCertService {
             declareRecord.setFloorArea(oo.getEvidenceArea());
             declareRecord.setHouseUseEndDate(oo.getUseEndDate());
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
+            declareRecord.setCreator(declareApply.getCreator());
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
             } catch (Exception e1) {

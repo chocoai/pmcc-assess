@@ -256,6 +256,7 @@ public class DeclareBuildEquipmentInstallService {
             declareRecord.setDataTableId(oo.getId());
             declareRecord.setFloorArea(new BigDecimal("0"));
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
+            declareRecord.setCreator(declareApply.getCreator());
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
             } catch (Exception e1) {
