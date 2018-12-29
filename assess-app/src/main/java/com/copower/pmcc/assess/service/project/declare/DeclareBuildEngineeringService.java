@@ -184,6 +184,9 @@ public class DeclareBuildEngineeringService {
     }
 
     public DeclareBuildEngineeringVo getDeclareBuildEngineeringVo(DeclareBuildEngineering declareBuildEngineering) {
+        if (declareBuildEngineering == null){
+            return null;
+        }
         DeclareBuildEngineeringVo vo = new DeclareBuildEngineeringVo();
         BeanUtils.copyProperties(declareBuildEngineering, vo);
         DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
@@ -193,6 +196,7 @@ public class DeclareBuildEngineeringService {
             for (DeclareBuildEngineeringAndEquipmentCenter oo:declareBuildEngineeringAndEquipmentCenterList){
                 if (oo.getBuildEngineeringId().equals(declareBuildEngineering.getId())){
                     vo.setCenterId(oo.getId());
+                    vo.setDeclareBuildEngineeringAndEquipmentCenter(oo);
                 }
             }
         }

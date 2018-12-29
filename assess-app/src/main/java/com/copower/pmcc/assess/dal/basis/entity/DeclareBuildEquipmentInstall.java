@@ -49,19 +49,7 @@ public class DeclareBuildEquipmentInstall {
 
     private String enable;
 
-    private Integer buildingConstructionPermitId;
-
-    private Integer buildingPermitId;
-
-    private Integer landUsePermitId;
-
-    private Integer preSalePermitId;
-
-    private Integer landId;
-
     private String declareType;
-
-    private Integer realEstateId;
 
     private String creator;
 
@@ -253,60 +241,12 @@ public class DeclareBuildEquipmentInstall {
         this.enable = enable == null ? null : enable.trim();
     }
 
-    public Integer getBuildingConstructionPermitId() {
-        return buildingConstructionPermitId;
-    }
-
-    public void setBuildingConstructionPermitId(Integer buildingConstructionPermitId) {
-        this.buildingConstructionPermitId = buildingConstructionPermitId;
-    }
-
-    public Integer getBuildingPermitId() {
-        return buildingPermitId;
-    }
-
-    public void setBuildingPermitId(Integer buildingPermitId) {
-        this.buildingPermitId = buildingPermitId;
-    }
-
-    public Integer getLandUsePermitId() {
-        return landUsePermitId;
-    }
-
-    public void setLandUsePermitId(Integer landUsePermitId) {
-        this.landUsePermitId = landUsePermitId;
-    }
-
-    public Integer getPreSalePermitId() {
-        return preSalePermitId;
-    }
-
-    public void setPreSalePermitId(Integer preSalePermitId) {
-        this.preSalePermitId = preSalePermitId;
-    }
-
-    public Integer getLandId() {
-        return landId;
-    }
-
-    public void setLandId(Integer landId) {
-        this.landId = landId;
-    }
-
     public String getDeclareType() {
         return declareType;
     }
 
     public void setDeclareType(String declareType) {
         this.declareType = declareType == null ? null : declareType.trim();
-    }
-
-    public Integer getRealEstateId() {
-        return realEstateId;
-    }
-
-    public void setRealEstateId(Integer realEstateId) {
-        this.realEstateId = realEstateId;
     }
 
     public String getCreator() {

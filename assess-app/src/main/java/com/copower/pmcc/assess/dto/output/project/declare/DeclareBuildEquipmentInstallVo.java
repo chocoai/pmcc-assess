@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dto.output.project.declare;
 
+import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineeringAndEquipmentCenter;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstall;
 
 /**
@@ -13,6 +14,7 @@ public class DeclareBuildEquipmentInstallVo extends DeclareBuildEquipmentInstall
     private String districtName;
     private String fileViewName;
     private Integer centerId;
+    private DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter;
 
     public Integer getCenterId() {
         return centerId;
@@ -52,5 +54,13 @@ public class DeclareBuildEquipmentInstallVo extends DeclareBuildEquipmentInstall
 
     public void setFileViewName(String fileViewName) {
         this.fileViewName = fileViewName;
+    }
+
+    public DeclareBuildEngineeringAndEquipmentCenter getDeclareBuildEngineeringAndEquipmentCenter() {
+        return declareBuildEngineeringAndEquipmentCenter;
+    }
+
+    public void setDeclareBuildEngineeringAndEquipmentCenter(DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter) {
+        this.declareBuildEngineeringAndEquipmentCenter = declareBuildEngineeringAndEquipmentCenter;
     }
 }

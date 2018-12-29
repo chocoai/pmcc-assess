@@ -20,6 +20,36 @@
             id: "declareModelRealEstateCert",
             handleId: "declareModelHandleRealEstateCert",
             name: "不动产证"
+        },
+        civilEngineering: {
+            id: "declareModelCivilEngineeringCommon",
+            handleId: "declareModelHandleCivilEngineeringCommon",
+            name: "土建"
+        },
+        equipmentInstallation: {
+            id: "declareModelequipmentInstallationCommon",
+            handleId: "declareModelHandleEquipmentInstallationCommon",
+            name: "设备安装"
+        },
+        buildingConstructionPermit: {
+            id: "buildingConstructionPermitCommon",
+            handleId: "declareModelHandleBuildingConstructionPermitCommon",
+            name: "建筑工程施工许可证"
+        },
+        preSalePermit: {
+            id: "preSalePermitCommon",
+            handleId: "declareModelHandlePreSalePermitCommon",
+            name: "商品房预售许可证"
+        },
+        landUsePermit: {
+            id: "landUsePermitCommon",
+            handleId: "declareModelHandleLandUsePermitCommon",
+            name: "建设用地规划许可证"
+        },
+        buildingPermit: {
+            id: "buildingPermitCommon",
+            handleId: "declareModelHandleBuildingPermitCommon",
+            name: "建设工程规划许可证"
         }
     };
 
@@ -50,6 +80,66 @@
     commonDeclareApprovalModel.land = {
         getHtml: function () {
             return $("#" + commonDeclareApprovalModel.config.land.id).html();
+        }
+    };
+
+    /**
+     * 土建
+     * @type {{getHtml: commonDeclareApprovalModel.civilEngineering.getHtml}}
+     */
+    commonDeclareApprovalModel.civilEngineering = {
+        getHtml: function () {
+            return $("#" + commonDeclareApprovalModel.config.civilEngineering.id).html();
+        }
+    };
+
+    /**
+     * 设备安装
+     * @type {{getHtml: commonDeclareApprovalModel.equipmentInstallation.getHtml}}
+     */
+    commonDeclareApprovalModel.equipmentInstallation = {
+        getHtml: function () {
+            return $("#" + commonDeclareApprovalModel.config.equipmentInstallation.id).html();
+        }
+    };
+
+    /**
+     * 建筑工程施工许可证
+     * @type {{getHtml: commonDeclareApprovalModel.buildingConstructionPermit.getHtml}}
+     */
+    commonDeclareApprovalModel.buildingConstructionPermit = {
+        getHtml: function () {
+            return $("#" + commonDeclareApprovalModel.config.buildingConstructionPermit.id).html();
+        }
+    };
+
+    /**
+     * 商品房预售许可证
+     * @type {{getHtml: commonDeclareApprovalModel.preSalePermit.getHtml}}
+     */
+    commonDeclareApprovalModel.preSalePermit = {
+        getHtml: function () {
+            return $("#" + commonDeclareApprovalModel.config.preSalePermit.id).html();
+        }
+    };
+
+    /**
+     * 建设用地规划许可证
+     * @type {{getHtml: commonDeclareApprovalModel.landUsePermit.getHtml}}
+     */
+    commonDeclareApprovalModel.landUsePermit = {
+        getHtml: function () {
+            return $("#" + commonDeclareApprovalModel.config.landUsePermit.id).html();
+        }
+    };
+
+    /**
+     * 建设工程规划许可证
+     * @type {{getHtml: commonDeclareApprovalModel.buildingPermit.getHtml}}
+     */
+    commonDeclareApprovalModel.buildingPermit = {
+        getHtml: function () {
+            return $("#" + commonDeclareApprovalModel.config.buildingPermit.id).html();
         }
     };
 </script>
@@ -900,6 +990,702 @@
                         class="symbol required"></span></label>
                 <div class="col-sm-11">
                     <label class="form-control" name="realEstateUnitNumber"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="declareModelCivilEngineeringCommon" type="text/html" data-title="土建">
+    <div id="declareModelHandleCivilEngineeringCommon">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    省<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="provinceName"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    市<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="cityName"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    县(区)
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="districtName"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">占有单位<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="occupancyUnit"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">项目名称<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="name"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">坐落<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="beLocated"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">结构<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="structure"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label" title="评估面积">建筑面积<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="buildArea"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">开工日期<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="startDate"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">预期完成日期<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="expectedCompletionDate"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">形象进度<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="speedProgress"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">付款比例<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="paymentRatio"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">账面价值<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="bookValue"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">帐面净值<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="bookNetValue"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">申报人<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="declarer"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">申报日期<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="declarationDate"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">备注<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-11">
+                    <label class="form-control" name="remark"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="declareModelequipmentInstallationCommon" type="text/html" data-title="设备安装">
+    <div id="declareModelHandleEquipmentInstallationCommon">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    省<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="provinceName"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    市<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="cityName"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    县(区)
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="districtName"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">占有单位<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="occupancyUnit"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">项目名称<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="项目名称" name="name" class="form-control"
+                           required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">坐落<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="beLocated"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">规格型号<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="specificationModel"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">生产厂家<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="manufacturer"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">计量单位<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="measurementUnit"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">数量<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="number"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">开工日期<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="startDate"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">预期完成日期<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="expectedCompletionDate"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">账面设备费<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="bookEquipmentFee"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">账面资金成本<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="bookCapitalCost"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">账面安装费<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="bookInstallationFee"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">其它<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="other"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">申报人<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="declarer"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">申报日期<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="declarationDate"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">备注<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-11">
+                    <label class="form-control" name="remark"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="buildingConstructionPermitCommon" type="text/html" data-title="建筑工程施工许可证">
+    <div id="declareModelHandleBuildingConstructionPermitCommon">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">证书编号<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="certificateNumber" class="form-control"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">发证机关<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="issuingOrgan" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">日期<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="date" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建设单位（个人）<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="buildUnit" class="form-control"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建设项目名称<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="name" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建设地址<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="buildAddress" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建设规模<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="scaleConstruction" class="form-control"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">勘察单位<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="reconnaissanceUnit" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">设计单位<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="designUnit" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">施工单位<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="constructionUnit" class="form-control"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">监理单位<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="constructionControlUnit" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">勘察单位项目负责人<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="reconnaissanceUnitPerson" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">设计单位项目负责人<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="designUnitPerson" class="form-control"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">施工单位项目负责人<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="constructionUnitPerson" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">总监理工程师<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="chiefEngineerConstructionInspection" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">合同工期<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="contractPeriod" class="form-control"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">备注<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-11">
+                    <label name="remark" class="form-control"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="preSalePermitCommon" type="text/html" data-title="商品房预售许可证">
+    <div id="declareModelHandlePreSalePermitCommon">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">证书编号<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="certificateNumber" class="form-control"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">售房单位<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="salesUnit" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">法定代表人<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="legalRepresentative" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">项目坐落<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="beLocated" class="form-control"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">项目名称<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="name" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">预售范围<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="preSaleScope" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">预售面积<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="preSaleArea" class="form-control"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">房屋用途<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="housingUse" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建筑结构<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="buildingStructure" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">预售款监管信息<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="preSaleSupervisionInformation" class="form-control"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">发证机关<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="issuingOrgan" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">日期<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="date" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">在建工程抵押情况<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="mortgageSituation" class="form-control"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="landUsePermitCommon" type="text/html" data-title="建设用地规划许可证">
+    <div id="declareModelHandleLandUsePermitCommon">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">证书编号<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="certificateNumber" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">发证机关<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="issuingOrgan" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">日期<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="date" class="form-control"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">用地单位<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="unit" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">用地项目名称<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="name" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">用地位置<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="location" class="form-control"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">用地性质<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="nature" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">用地面积<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="area" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建设规模<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="scaleConstruction" class="form-control"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="buildingPermitCommon" type="text/html" data-title="建设工程规划许可证">
+    <div id="declareModelHandleBuildingPermitCommon">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">证书编号<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="certificateNumber" class="form-control"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">发证机关<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="issuingOrgan" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">日期<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="date" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建设单位（个人）<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="unit" class="form-control"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建设项目名称<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="name" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建设位置<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="location" class="form-control"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">建设规模<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label name="scaleConstruction" class="form-control"></label>
                 </div>
             </div>
         </div>

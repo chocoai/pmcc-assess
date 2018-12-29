@@ -9,22 +9,53 @@
     <div class="x_content collapse">
         <form class="form-horizontal">
             <div class="form-group">
-                <div class="btn-group">
-                    <div class="btn btn-success" onclick="civilEngineering.showAddModel();" data-toggle="modal"> 新增
-                    </div>
-                    <div class="btn btn-primary" onclick="civilEngineering.editData();"> 编辑</div>
-                    <div class="btn btn-primary" onclick="civilEngineering.deleteData();"> 删除</div>
-                    <div class="btn btn-primary" onclick="civilEngineering.pasteAll();"> 复制</div>
-                    <div class="btn btn-primary" onclick="civilEngineering.pasteAll();"> 粘贴</div>
+                <div class="col-sm-3">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入数据
-                            <span class="caret"></span>
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                            土地建设<i class="fa fa-user-circle-o" aria-hidden="true"> <span class="caret"></span> </i>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftDeclareBuildEngineering)"><span>下载模板</span></a>
+                            <li>
+                                <a onclick="civilEngineering.showAddModel();"><i class="fa fa-floppy-o" aria-hidden="true"></i><span class="badge">新增</span></a>
                             </li>
-                            <li><a onclick="$('#civilEngineeringUpload').val('').trigger('click')"><span>导入</span></a></li>
+                            <li><a onclick="civilEngineering.editData();"><i class="fa fa-pencil-square-o" aria-hidden="true"></i><span class="badge">编辑</span></a>
+                            </li>
+                            <li><a onclick="civilEngineering.deleteData();"><i class="fa fa-times" aria-hidden="true"></i><span class="badge">删除</span></a>
+                            </li>
                         </ul>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                            excel<i class="fa fa-file-excel-o" aria-hidden="true"> <span class="caret"></span> </i>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftDeclareBuildEngineering)"><i class="fa fa-download" aria-hidden="true"></i><span class="badge">下载模板</span></a>
+                            </li>
+                            <li><a onclick="$('#civilEngineeringUpload').val('').trigger('click')"><i class="fa fa-upload" aria-hidden="true"></i><span class="badge">导入</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="btn-group">
+                        <div class="btn btn-primary" onclick="civilEngineering.copyData();"> <i class="fa fa-files-o" aria-hidden="true"></i> 复制</div>
+                        <div class="btn btn-primary" onclick="civilEngineering.pasteAll();"> <i class="fa fa-clipboard" aria-hidden="true"></i>粘贴</div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="input-group" id="civilEngineeringInputGroup">
+                        <input type="hidden" name="id">
+                        <input type="text" readonly="readonly" name="name" class="form-control" placeholder="暂无复制数据">
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                data-toggle="tooltip" data-original-title="清除">
+                        <i class="fa fa-trash-o"></i>
+                        </button>
+					    </span>
                     </div>
                 </div>
             </div>
@@ -82,7 +113,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button" data-dismiss="modal" class="btn btn-warning">
+                <button type="button" class="btn btn-warning" onclick="civilEngineering.declareBuildingPermitRemove()">
                     删除
                 </button>
                 <button type="button" class="btn btn-primary"
@@ -137,7 +168,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button" data-dismiss="modal" class="btn btn-warning">
+                <button type="button" class="btn btn-warning" onclick="civilEngineering.declareLandUsePermitRemove()">
                     删除
                 </button>
                 <button type="button" class="btn btn-primary"
@@ -192,7 +223,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button" data-dismiss="modal" class="btn btn-warning">
+                <button type="button" class="btn btn-warning" onclick="civilEngineering.declarePreSalePermitRemove()">
                     删除
                 </button>
                 <button type="button" class="btn btn-primary"
@@ -248,7 +279,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button" data-dismiss="modal" class="btn btn-warning">
+                <button type="button" class="btn btn-warning" onclick="civilEngineering.declareBuildingConstructionPermitRemove()">
                     删除
                 </button>
                 <button type="button" class="btn btn-primary"
@@ -349,7 +380,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" data-dismiss="modal" class="btn btn-warning">
+                    <button type="button" class="btn btn-warning" onclick="civilEngineering.declareRealtyLandCertRemove();">
                         删除
                     </button>
                     <button type="button" class="btn btn-primary"
@@ -403,7 +434,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" data-dismiss="modal" class="btn btn-warning">
+                    <button type="button" class="btn btn-warning" onclick="civilEngineering.declareRealtyRealEstateCertRemove()">
                         删除
                     </button>
                     <label class="btn btn-primary"

@@ -286,7 +286,7 @@
                 var number = engine.find("input[name='number']").val();
                 if (commonDeclareApplyModel.isNotBlank(id)) {
                     AssessCommon.getDataDicInfo(id, function (data) {
-                        if (declareRealtyLandCert.isEmpty(data)) {
+                        if (commonDeclareApplyModel.isNotBlank(data)) {
                             text = location + data.name + year + "第" + number + "号";
                             engine.find("input[name='landCertName']").val(text);
                         }
