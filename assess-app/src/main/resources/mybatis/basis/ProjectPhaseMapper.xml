@@ -3,6 +3,7 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ProjectPhaseMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectPhase" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
     <result column="project_class_id" property="projectClassId" jdbcType="INTEGER" />
     <result column="project_type_id" property="projectTypeId" jdbcType="INTEGER" />
     <result column="project_category_id" property="projectCategoryId" jdbcType="INTEGER" />
@@ -11,12 +12,13 @@
     <result column="phase_time" property="phaseTime" jdbcType="DECIMAL" />
     <result column="phase_form" property="phaseForm" jdbcType="VARCHAR" />
     <result column="box_name" property="boxName" jdbcType="VARCHAR" />
+    <result column="phase_key" property="phaseKey" jdbcType="VARCHAR" />
     <result column="phase_sort" property="phaseSort" jdbcType="INTEGER" />
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
+    <result column="bis_use_box" property="bisUseBox" jdbcType="BIT" />
+    <result column="bis_can_return" property="bisCanReturn" jdbcType="BIT" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="phase_key" property="phaseKey" jdbcType="VARCHAR" />
-    <result column="pid" property="pid" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -77,9 +79,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_class_id, project_type_id, project_category_id, work_stage_id, project_phase_name, 
-    phase_time, phase_form, box_name, phase_sort, bis_enable, gmt_created, gmt_modified, 
-    phase_key, pid
+    id, pid, project_class_id, project_type_id, project_category_id, work_stage_id, project_phase_name, 
+    phase_time, phase_form, box_name, phase_key, phase_sort, bis_enable, bis_use_box, 
+    bis_can_return, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhaseExample" >
     select
@@ -115,16 +117,18 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_project_phase (project_class_id, project_type_id, project_category_id, 
-      work_stage_id, project_phase_name, phase_time, 
-      phase_form, box_name, phase_sort, 
-      bis_enable, gmt_created, gmt_modified, 
-      phase_key, pid)
-    values (#{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, #{projectCategoryId,jdbcType=INTEGER}, 
-      #{workStageId,jdbcType=INTEGER}, #{projectPhaseName,jdbcType=VARCHAR}, #{phaseTime,jdbcType=DECIMAL}, 
-      #{phaseForm,jdbcType=VARCHAR}, #{boxName,jdbcType=VARCHAR}, #{phaseSort,jdbcType=INTEGER}, 
-      #{bisEnable,jdbcType=BIT}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{phaseKey,jdbcType=VARCHAR}, #{pid,jdbcType=INTEGER})
+    insert into tb_project_phase (pid, project_class_id, project_type_id, 
+      project_category_id, work_stage_id, project_phase_name, 
+      phase_time, phase_form, box_name, 
+      phase_key, phase_sort, bis_enable, 
+      bis_use_box, bis_can_return, gmt_created, 
+      gmt_modified)
+    values (#{pid,jdbcType=INTEGER}, #{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, 
+      #{projectCategoryId,jdbcType=INTEGER}, #{workStageId,jdbcType=INTEGER}, #{projectPhaseName,jdbcType=VARCHAR}, 
+      #{phaseTime,jdbcType=DECIMAL}, #{phaseForm,jdbcType=VARCHAR}, #{boxName,jdbcType=VARCHAR}, 
+      #{phaseKey,jdbcType=VARCHAR}, #{phaseSort,jdbcType=INTEGER}, #{bisEnable,jdbcType=BIT}, 
+      #{bisUseBox,jdbcType=BIT}, #{bisCanReturn,jdbcType=BIT}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhase" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -132,6 +136,9 @@
     </selectKey>
     insert into tb_project_phase
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
       <if test="projectClassId != null" >
         project_class_id,
       </if>
@@ -156,11 +163,20 @@
       <if test="boxName != null" >
         box_name,
       </if>
+      <if test="phaseKey != null" >
+        phase_key,
+      </if>
       <if test="phaseSort != null" >
         phase_sort,
       </if>
       <if test="bisEnable != null" >
         bis_enable,
+      </if>
+      <if test="bisUseBox != null" >
+        bis_use_box,
+      </if>
+      <if test="bisCanReturn != null" >
+        bis_can_return,
       </if>
       <if test="gmtCreated != null" >
         gmt_created,
@@ -168,14 +184,11 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="phaseKey != null" >
-        phase_key,
-      </if>
-      <if test="pid != null" >
-        pid,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
       <if test="projectClassId != null" >
         #{projectClassId,jdbcType=INTEGER},
       </if>
@@ -200,23 +213,26 @@
       <if test="boxName != null" >
         #{boxName,jdbcType=VARCHAR},
       </if>
+      <if test="phaseKey != null" >
+        #{phaseKey,jdbcType=VARCHAR},
+      </if>
       <if test="phaseSort != null" >
         #{phaseSort,jdbcType=INTEGER},
       </if>
       <if test="bisEnable != null" >
         #{bisEnable,jdbcType=BIT},
       </if>
+      <if test="bisUseBox != null" >
+        #{bisUseBox,jdbcType=BIT},
+      </if>
+      <if test="bisCanReturn != null" >
+        #{bisCanReturn,jdbcType=BIT},
+      </if>
       <if test="gmtCreated != null" >
         #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="phaseKey != null" >
-        #{phaseKey,jdbcType=VARCHAR},
-      </if>
-      <if test="pid != null" >
-        #{pid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -231,6 +247,9 @@
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.pid != null" >
+        pid = #{record.pid,jdbcType=INTEGER},
       </if>
       <if test="record.projectClassId != null" >
         project_class_id = #{record.projectClassId,jdbcType=INTEGER},
@@ -256,23 +275,26 @@
       <if test="record.boxName != null" >
         box_name = #{record.boxName,jdbcType=VARCHAR},
       </if>
+      <if test="record.phaseKey != null" >
+        phase_key = #{record.phaseKey,jdbcType=VARCHAR},
+      </if>
       <if test="record.phaseSort != null" >
         phase_sort = #{record.phaseSort,jdbcType=INTEGER},
       </if>
       <if test="record.bisEnable != null" >
         bis_enable = #{record.bisEnable,jdbcType=BIT},
       </if>
+      <if test="record.bisUseBox != null" >
+        bis_use_box = #{record.bisUseBox,jdbcType=BIT},
+      </if>
+      <if test="record.bisCanReturn != null" >
+        bis_can_return = #{record.bisCanReturn,jdbcType=BIT},
+      </if>
       <if test="record.gmtCreated != null" >
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       </if>
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.phaseKey != null" >
-        phase_key = #{record.phaseKey,jdbcType=VARCHAR},
-      </if>
-      <if test="record.pid != null" >
-        pid = #{record.pid,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -282,6 +304,7 @@
   <update id="updateByExample" parameterType="map" >
     update tb_project_phase
     set id = #{record.id,jdbcType=INTEGER},
+      pid = #{record.pid,jdbcType=INTEGER},
       project_class_id = #{record.projectClassId,jdbcType=INTEGER},
       project_type_id = #{record.projectTypeId,jdbcType=INTEGER},
       project_category_id = #{record.projectCategoryId,jdbcType=INTEGER},
@@ -290,12 +313,13 @@
       phase_time = #{record.phaseTime,jdbcType=DECIMAL},
       phase_form = #{record.phaseForm,jdbcType=VARCHAR},
       box_name = #{record.boxName,jdbcType=VARCHAR},
+      phase_key = #{record.phaseKey,jdbcType=VARCHAR},
       phase_sort = #{record.phaseSort,jdbcType=INTEGER},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
+      bis_use_box = #{record.bisUseBox,jdbcType=BIT},
+      bis_can_return = #{record.bisCanReturn,jdbcType=BIT},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      phase_key = #{record.phaseKey,jdbcType=VARCHAR},
-      pid = #{record.pid,jdbcType=INTEGER}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -303,6 +327,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhase" >
     update tb_project_phase
     <set >
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
       <if test="projectClassId != null" >
         project_class_id = #{projectClassId,jdbcType=INTEGER},
       </if>
@@ -327,11 +354,20 @@
       <if test="boxName != null" >
         box_name = #{boxName,jdbcType=VARCHAR},
       </if>
+      <if test="phaseKey != null" >
+        phase_key = #{phaseKey,jdbcType=VARCHAR},
+      </if>
       <if test="phaseSort != null" >
         phase_sort = #{phaseSort,jdbcType=INTEGER},
       </if>
       <if test="bisEnable != null" >
         bis_enable = #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="bisUseBox != null" >
+        bis_use_box = #{bisUseBox,jdbcType=BIT},
+      </if>
+      <if test="bisCanReturn != null" >
+        bis_can_return = #{bisCanReturn,jdbcType=BIT},
       </if>
       <if test="gmtCreated != null" >
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
@@ -339,18 +375,13 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="phaseKey != null" >
-        phase_key = #{phaseKey,jdbcType=VARCHAR},
-      </if>
-      <if test="pid != null" >
-        pid = #{pid,jdbcType=INTEGER},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhase" >
     update tb_project_phase
-    set project_class_id = #{projectClassId,jdbcType=INTEGER},
+    set pid = #{pid,jdbcType=INTEGER},
+      project_class_id = #{projectClassId,jdbcType=INTEGER},
       project_type_id = #{projectTypeId,jdbcType=INTEGER},
       project_category_id = #{projectCategoryId,jdbcType=INTEGER},
       work_stage_id = #{workStageId,jdbcType=INTEGER},
@@ -358,12 +389,13 @@
       phase_time = #{phaseTime,jdbcType=DECIMAL},
       phase_form = #{phaseForm,jdbcType=VARCHAR},
       box_name = #{boxName,jdbcType=VARCHAR},
+      phase_key = #{phaseKey,jdbcType=VARCHAR},
       phase_sort = #{phaseSort,jdbcType=INTEGER},
       bis_enable = #{bisEnable,jdbcType=BIT},
+      bis_use_box = #{bisUseBox,jdbcType=BIT},
+      bis_can_return = #{bisCanReturn,jdbcType=BIT},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      phase_key = #{phaseKey,jdbcType=VARCHAR},
-      pid = #{pid,jdbcType=INTEGER}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

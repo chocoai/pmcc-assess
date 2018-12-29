@@ -166,6 +166,66 @@ public class ProjectPhaseExample {
             return (Criteria) this;
         }
 
+        public Criteria andPidIsNull() {
+            addCriterion("pid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidIsNotNull() {
+            addCriterion("pid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidEqualTo(Integer value) {
+            addCriterion("pid =", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidNotEqualTo(Integer value) {
+            addCriterion("pid <>", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidGreaterThan(Integer value) {
+            addCriterion("pid >", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("pid >=", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidLessThan(Integer value) {
+            addCriterion("pid <", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidLessThanOrEqualTo(Integer value) {
+            addCriterion("pid <=", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidIn(List<Integer> values) {
+            addCriterion("pid in", values, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidNotIn(List<Integer> values) {
+            addCriterion("pid not in", values, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidBetween(Integer value1, Integer value2) {
+            addCriterion("pid between", value1, value2, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidNotBetween(Integer value1, Integer value2) {
+            addCriterion("pid not between", value1, value2, "pid");
+            return (Criteria) this;
+        }
+
         public Criteria andProjectClassIdIsNull() {
             addCriterion("project_class_id is null");
             return (Criteria) this;
@@ -676,6 +736,76 @@ public class ProjectPhaseExample {
             return (Criteria) this;
         }
 
+        public Criteria andPhaseKeyIsNull() {
+            addCriterion("phase_key is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhaseKeyIsNotNull() {
+            addCriterion("phase_key is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhaseKeyEqualTo(String value) {
+            addCriterion("phase_key =", value, "phaseKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhaseKeyNotEqualTo(String value) {
+            addCriterion("phase_key <>", value, "phaseKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhaseKeyGreaterThan(String value) {
+            addCriterion("phase_key >", value, "phaseKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhaseKeyGreaterThanOrEqualTo(String value) {
+            addCriterion("phase_key >=", value, "phaseKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhaseKeyLessThan(String value) {
+            addCriterion("phase_key <", value, "phaseKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhaseKeyLessThanOrEqualTo(String value) {
+            addCriterion("phase_key <=", value, "phaseKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhaseKeyLike(String value) {
+            addCriterion("phase_key like", value, "phaseKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhaseKeyNotLike(String value) {
+            addCriterion("phase_key not like", value, "phaseKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhaseKeyIn(List<String> values) {
+            addCriterion("phase_key in", values, "phaseKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhaseKeyNotIn(List<String> values) {
+            addCriterion("phase_key not in", values, "phaseKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhaseKeyBetween(String value1, String value2) {
+            addCriterion("phase_key between", value1, value2, "phaseKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhaseKeyNotBetween(String value1, String value2) {
+            addCriterion("phase_key not between", value1, value2, "phaseKey");
+            return (Criteria) this;
+        }
+
         public Criteria andPhaseSortIsNull() {
             addCriterion("phase_sort is null");
             return (Criteria) this;
@@ -796,6 +926,126 @@ public class ProjectPhaseExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisUseBoxIsNull() {
+            addCriterion("bis_use_box is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUseBoxIsNotNull() {
+            addCriterion("bis_use_box is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUseBoxEqualTo(Boolean value) {
+            addCriterion("bis_use_box =", value, "bisUseBox");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUseBoxNotEqualTo(Boolean value) {
+            addCriterion("bis_use_box <>", value, "bisUseBox");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUseBoxGreaterThan(Boolean value) {
+            addCriterion("bis_use_box >", value, "bisUseBox");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUseBoxGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_use_box >=", value, "bisUseBox");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUseBoxLessThan(Boolean value) {
+            addCriterion("bis_use_box <", value, "bisUseBox");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUseBoxLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_use_box <=", value, "bisUseBox");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUseBoxIn(List<Boolean> values) {
+            addCriterion("bis_use_box in", values, "bisUseBox");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUseBoxNotIn(List<Boolean> values) {
+            addCriterion("bis_use_box not in", values, "bisUseBox");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUseBoxBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_use_box between", value1, value2, "bisUseBox");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUseBoxNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_use_box not between", value1, value2, "bisUseBox");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCanReturnIsNull() {
+            addCriterion("bis_can_return is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCanReturnIsNotNull() {
+            addCriterion("bis_can_return is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCanReturnEqualTo(Boolean value) {
+            addCriterion("bis_can_return =", value, "bisCanReturn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCanReturnNotEqualTo(Boolean value) {
+            addCriterion("bis_can_return <>", value, "bisCanReturn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCanReturnGreaterThan(Boolean value) {
+            addCriterion("bis_can_return >", value, "bisCanReturn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCanReturnGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_can_return >=", value, "bisCanReturn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCanReturnLessThan(Boolean value) {
+            addCriterion("bis_can_return <", value, "bisCanReturn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCanReturnLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_can_return <=", value, "bisCanReturn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCanReturnIn(List<Boolean> values) {
+            addCriterion("bis_can_return in", values, "bisCanReturn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCanReturnNotIn(List<Boolean> values) {
+            addCriterion("bis_can_return not in", values, "bisCanReturn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCanReturnBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_can_return between", value1, value2, "bisCanReturn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCanReturnNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_can_return not between", value1, value2, "bisCanReturn");
+            return (Criteria) this;
+        }
+
         public Criteria andGmtCreatedIsNull() {
             addCriterion("gmt_created is null");
             return (Criteria) this;
@@ -913,136 +1163,6 @@ public class ProjectPhaseExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andPhaseKeyIsNull() {
-            addCriterion("phase_key is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPhaseKeyIsNotNull() {
-            addCriterion("phase_key is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPhaseKeyEqualTo(String value) {
-            addCriterion("phase_key =", value, "phaseKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andPhaseKeyNotEqualTo(String value) {
-            addCriterion("phase_key <>", value, "phaseKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andPhaseKeyGreaterThan(String value) {
-            addCriterion("phase_key >", value, "phaseKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andPhaseKeyGreaterThanOrEqualTo(String value) {
-            addCriterion("phase_key >=", value, "phaseKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andPhaseKeyLessThan(String value) {
-            addCriterion("phase_key <", value, "phaseKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andPhaseKeyLessThanOrEqualTo(String value) {
-            addCriterion("phase_key <=", value, "phaseKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andPhaseKeyLike(String value) {
-            addCriterion("phase_key like", value, "phaseKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andPhaseKeyNotLike(String value) {
-            addCriterion("phase_key not like", value, "phaseKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andPhaseKeyIn(List<String> values) {
-            addCriterion("phase_key in", values, "phaseKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andPhaseKeyNotIn(List<String> values) {
-            addCriterion("phase_key not in", values, "phaseKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andPhaseKeyBetween(String value1, String value2) {
-            addCriterion("phase_key between", value1, value2, "phaseKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andPhaseKeyNotBetween(String value1, String value2) {
-            addCriterion("phase_key not between", value1, value2, "phaseKey");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidIsNull() {
-            addCriterion("pid is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidIsNotNull() {
-            addCriterion("pid is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidEqualTo(Integer value) {
-            addCriterion("pid =", value, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidNotEqualTo(Integer value) {
-            addCriterion("pid <>", value, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidGreaterThan(Integer value) {
-            addCriterion("pid >", value, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("pid >=", value, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidLessThan(Integer value) {
-            addCriterion("pid <", value, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidLessThanOrEqualTo(Integer value) {
-            addCriterion("pid <=", value, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidIn(List<Integer> values) {
-            addCriterion("pid in", values, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidNotIn(List<Integer> values) {
-            addCriterion("pid not in", values, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidBetween(Integer value1, Integer value2) {
-            addCriterion("pid between", value1, value2, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidNotBetween(Integer value1, Integer value2) {
-            addCriterion("pid not between", value1, value2, "pid");
             return (Criteria) this;
         }
     }

@@ -27,7 +27,6 @@
     <result column="actual_hours" property="actualHours" jdbcType="DECIMAL" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="return_details_id" property="returnDetailsId" jdbcType="INTEGER" />
-    <result column="return_process_ins_id" property="returnProcessInsId" jdbcType="VARCHAR" />
     <result column="return_details_reason" property="returnDetailsReason" jdbcType="VARCHAR" />
     <result column="bis_new" property="bisNew" jdbcType="BIT" />
     <result column="bis_last_layer" property="bisLastLayer" jdbcType="BIT" />
@@ -100,8 +99,8 @@
     project_phase_details_id, plan_start_date, plan_end_date, plan_hours, plan_remarks, 
     execute_user_account, execute_department_id, bis_enable, proportion, sorting, first_pid, 
     bis_start, process_ins_id, task_submit_time, task_remarks, actual_hours, status, 
-    return_details_id, return_process_ins_id, return_details_reason, bis_new, bis_last_layer, 
-    declare_record_id, judge_object_id, creator, gmt_created, gmt_modified
+    return_details_id, return_details_reason, bis_new, bis_last_layer, declare_record_id, 
+    judge_object_id, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetailsExample" >
     select
@@ -145,10 +144,10 @@
       bis_enable, proportion, sorting, 
       first_pid, bis_start, process_ins_id, 
       task_submit_time, task_remarks, actual_hours, 
-      status, return_details_id, return_process_ins_id, 
-      return_details_reason, bis_new, bis_last_layer, 
-      declare_record_id, judge_object_id, creator, 
-      gmt_created, gmt_modified)
+      status, return_details_id, return_details_reason, 
+      bis_new, bis_last_layer, declare_record_id, 
+      judge_object_id, creator, gmt_created, 
+      gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{projectPhaseName,jdbcType=VARCHAR}, #{projectId,jdbcType=INTEGER}, 
       #{planId,jdbcType=INTEGER}, #{projectWorkStageId,jdbcType=INTEGER}, #{projectPhaseId,jdbcType=INTEGER}, 
       #{projectPhaseDetailsId,jdbcType=INTEGER}, #{planStartDate,jdbcType=TIMESTAMP}, 
@@ -157,10 +156,10 @@
       #{bisEnable,jdbcType=BIT}, #{proportion,jdbcType=DECIMAL}, #{sorting,jdbcType=INTEGER}, 
       #{firstPid,jdbcType=INTEGER}, #{bisStart,jdbcType=BIT}, #{processInsId,jdbcType=VARCHAR}, 
       #{taskSubmitTime,jdbcType=TIMESTAMP}, #{taskRemarks,jdbcType=VARCHAR}, #{actualHours,jdbcType=DECIMAL}, 
-      #{status,jdbcType=VARCHAR}, #{returnDetailsId,jdbcType=INTEGER}, #{returnProcessInsId,jdbcType=VARCHAR}, 
-      #{returnDetailsReason,jdbcType=VARCHAR}, #{bisNew,jdbcType=BIT}, #{bisLastLayer,jdbcType=BIT}, 
-      #{declareRecordId,jdbcType=INTEGER}, #{judgeObjectId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{status,jdbcType=VARCHAR}, #{returnDetailsId,jdbcType=INTEGER}, #{returnDetailsReason,jdbcType=VARCHAR}, 
+      #{bisNew,jdbcType=BIT}, #{bisLastLayer,jdbcType=BIT}, #{declareRecordId,jdbcType=INTEGER}, 
+      #{judgeObjectId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -239,9 +238,6 @@
       </if>
       <if test="returnDetailsId != null" >
         return_details_id,
-      </if>
-      <if test="returnProcessInsId != null" >
-        return_process_ins_id,
       </if>
       <if test="returnDetailsReason != null" >
         return_details_reason,
@@ -340,9 +336,6 @@
       </if>
       <if test="returnDetailsId != null" >
         #{returnDetailsId,jdbcType=INTEGER},
-      </if>
-      <if test="returnProcessInsId != null" >
-        #{returnProcessInsId,jdbcType=VARCHAR},
       </if>
       <if test="returnDetailsReason != null" >
         #{returnDetailsReason,jdbcType=VARCHAR},
@@ -454,9 +447,6 @@
       <if test="record.returnDetailsId != null" >
         return_details_id = #{record.returnDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="record.returnProcessInsId != null" >
-        return_process_ins_id = #{record.returnProcessInsId,jdbcType=VARCHAR},
-      </if>
       <if test="record.returnDetailsReason != null" >
         return_details_reason = #{record.returnDetailsReason,jdbcType=VARCHAR},
       </if>
@@ -513,7 +503,6 @@
       actual_hours = #{record.actualHours,jdbcType=DECIMAL},
       status = #{record.status,jdbcType=VARCHAR},
       return_details_id = #{record.returnDetailsId,jdbcType=INTEGER},
-      return_process_ins_id = #{record.returnProcessInsId,jdbcType=VARCHAR},
       return_details_reason = #{record.returnDetailsReason,jdbcType=VARCHAR},
       bis_new = #{record.bisNew,jdbcType=BIT},
       bis_last_layer = #{record.bisLastLayer,jdbcType=BIT},
@@ -601,9 +590,6 @@
       <if test="returnDetailsId != null" >
         return_details_id = #{returnDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="returnProcessInsId != null" >
-        return_process_ins_id = #{returnProcessInsId,jdbcType=VARCHAR},
-      </if>
       <if test="returnDetailsReason != null" >
         return_details_reason = #{returnDetailsReason,jdbcType=VARCHAR},
       </if>
@@ -657,7 +643,6 @@
       actual_hours = #{actualHours,jdbcType=DECIMAL},
       status = #{status,jdbcType=VARCHAR},
       return_details_id = #{returnDetailsId,jdbcType=INTEGER},
-      return_process_ins_id = #{returnProcessInsId,jdbcType=VARCHAR},
       return_details_reason = #{returnDetailsReason,jdbcType=VARCHAR},
       bis_new = #{bisNew,jdbcType=BIT},
       bis_last_layer = #{bisLastLayer,jdbcType=BIT},

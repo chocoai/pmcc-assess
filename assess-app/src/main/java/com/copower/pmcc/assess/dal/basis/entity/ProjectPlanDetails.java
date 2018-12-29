@@ -54,8 +54,6 @@ public class ProjectPlanDetails {
 
     private Integer returnDetailsId;
 
-    private String returnProcessInsId;
-
     private String returnDetailsReason;
 
     private Boolean bisNew;
@@ -270,14 +268,6 @@ public class ProjectPlanDetails {
 
     public void setReturnDetailsId(Integer returnDetailsId) {
         this.returnDetailsId = returnDetailsId;
-    }
-
-    public String getReturnProcessInsId() {
-        return returnProcessInsId;
-    }
-
-    public void setReturnProcessInsId(String returnProcessInsId) {
-        this.returnProcessInsId = returnProcessInsId == null ? null : returnProcessInsId.trim();
     }
 
     public String getReturnDetailsReason() {

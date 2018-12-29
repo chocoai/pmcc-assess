@@ -40,9 +40,7 @@
                                             <input class="form-control" id="projectPhaseName" name="projectPhaseName"
                                                    required
                                                    data-rule-maxlength="255" placeholder="工作事项名称">
-
                                         </div>
-
                                         <div class="x-valid">
                                             <label class="col-sm-2 control-label" for="phaseForm">
                                                 自定义服务
@@ -105,6 +103,29 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label" for="phaseTime">
+                                            默认使用流程
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" id="bisUseBox" name="bisUseBox" value="true">
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label" for="phaseSort">
+                                            允许退回
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" id="bisCanReturn" name="bisCanReturn"
+                                                       value="true">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div class="form-group">
                                     <div class="x-valid">
@@ -116,10 +137,8 @@
                                                    multiple="false">
                                             <div id="_workTemplate_file"></div>
                                         </div>
-
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label" for="workProcessTemplate">
@@ -253,7 +272,8 @@
                         if (row.bisAssessment) {
                             $('#bisAssessment').prop("checked", true);
                         }
-
+                        $('#bisUseBox').prop("checked", row.bisUseBox);
+                        $('#bisCanReturn').prop("checked", row.bisCanReturn);
                         //初始化文件组件
                         workPhaseObj.fileComponentInit(row.id);
                         //编辑页面回显文件
@@ -345,6 +365,8 @@
             $('#projectCategoryId').val(categoryId);
             $('#phaseTime').val(1); //默认给一个工时
             $('#bisAssessment').prop("checked", true);
+            $('#bisUseBox').prop("checked", false);
+            $('#bisCanReturn').prop("checked", false);
 
             //文件组件
             workPhaseObj.fileComponentInit(0);
@@ -399,7 +421,8 @@
             Alert("没有需要保存的数据");
             return;
         }
-
+        data.bisUseBox = $('#bisUseBox').prop('checked');
+        data.bisCanReturn = $('#bisCanReturn').prop('checked');
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/ProjectPhase/saveProjectPhase",

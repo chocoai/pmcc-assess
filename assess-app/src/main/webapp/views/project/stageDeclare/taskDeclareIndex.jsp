@@ -39,9 +39,21 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-                        <button id="btn_submit" class="btn btn-success" onclick="submit();">
-                            提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                        </button>
+                        <c:choose>
+                            <c:when test="${not empty projectPhase.phaseForm and projectPhase.bisUseBox eq false}">
+                                <button id="btn_submit" class="btn btn-success" onclick="submit();">
+                                    直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                </button>
+                                <button id="btn_submit" class="btn btn-primary" onclick="submit();">
+                                    提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                </button>
+                            </c:when>
+                            <c:otherwise>
+                                <button id="btn_submit" class="btn btn-success" onclick="submit();">
+                                    提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                </button>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
             </div>
@@ -73,7 +85,7 @@
         }
     };
 
-    var declareFunObj = {} ;
+    var declareFunObj = {};
 
     declareFunObj.isEmpty = function (item) {
         if (item) {
@@ -100,7 +112,6 @@
         });
         return declareType;
     };
-
 
 
     declareFunObj.declare = {

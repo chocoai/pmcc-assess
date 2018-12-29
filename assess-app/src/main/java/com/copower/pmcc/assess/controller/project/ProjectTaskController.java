@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.project;
 import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dto.input.project.ProjectTaskDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.PublicService;
@@ -78,6 +79,7 @@ public class ProjectTaskController extends BaseController {
         modelAndView.addObject("projectPhaseProcessTemplate", projectPhaseProcessTemplate);
         List<SysAttachmentDto> projectPhaseWorkTemplate = baseAttachmentService.getProjectPhaseWorkTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseWorkTemplate", projectPhaseWorkTemplate);
+        modelAndView.addObject("projectPhase", projectPhase);
         //显示数据
         Object boxCnName = modelAndView.getModel().get("boxCnName");
         if (boxCnName == null) {
@@ -100,9 +102,9 @@ public class ProjectTaskController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/submitTask", name = "提交工作成果数据", method = RequestMethod.POST)
-    public HttpResult submitTask(String formData, String taskRemarks, String actualHours, Integer projectDetailsId, Integer responsibilityId, String nextApproval) {
+    public HttpResult submitTask(ProjectTaskDto projectTaskDto) {
         try {
-            projectTaskService.submitTask(formData, taskRemarks, actualHours, projectDetailsId, nextApproval, responsibilityId);
+            projectTaskService.submitTask(projectTaskDto);
         } catch (Exception e) {
             log.error(e.getMessage(),e);
             return HttpResult.newErrorResult("提交工作成果数据异常");

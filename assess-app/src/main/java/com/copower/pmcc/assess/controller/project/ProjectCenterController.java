@@ -1,12 +1,10 @@
 package com.copower.pmcc.assess.controller.project;
 
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectCenterService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,36 +31,31 @@ public class ProjectCenterController {
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
 
-    @RequestMapping(value = "/index", name = "项目中心")
-    public ModelAndView index() {
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectCenter");
-
-        Integer weekTaskCount = projectCenterService.getTheWeekTaskCount();
-        Integer todayTaskCount = projectCenterService.getTodayTaskCount();
-        Integer userJoinProjectCount = projectCenterService.getUserJoinProjectCount();
-        modelAndView.addObject("weekTaskCount", weekTaskCount);
-        modelAndView.addObject("todayTaskCount", todayTaskCount);
-        modelAndView.addObject("userJoinProjectCount", userJoinProjectCount);
+    @RequestMapping(value = "/projectNew", name = "新建项目")
+    public ModelAndView projectNew() {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectNew");
+        //获取到类型 类别 范围
+        List<KeyValueDto> keyValueDtoList = baseProjectClassifyService.getProjectInitClassify();
+        modelAndView.addObject("keyValueDtoList",keyValueDtoList);
         return modelAndView;
     }
 
-
-    @RequestMapping(value = "/projectProgress", name = "项目进度查看")
-    public ModelAndView projectProgress() {
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectProgress");
+    @RequestMapping(value = "/myProject", name = "我的立项")
+    public ModelAndView myProject() {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/myProject");
         return modelAndView;
     }
 
-    @RequestMapping(value = "/projectCalendar", name = "项目日历")
-    public ModelAndView projectCalendar() {
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectCalendar");
+    @RequestMapping(value = "/myParticipation", name = "我的参与")
+    public ModelAndView myParticipation() {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/myParticipation");
         return modelAndView;
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/getProjectProgress", name = "取得项目进度", method = RequestMethod.GET)
-    public BootstrapTableVo getProjectProgress() {
-       return projectCenterService.getProjectProgressVo();
+    @RequestMapping(value = "/projectList", name = "所有项目")
+    public ModelAndView projectList() {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectList");
+        return modelAndView;
     }
 
     @ResponseBody
@@ -77,32 +70,15 @@ public class ProjectCenterController {
         return projectCenterService.csrProjectInfoList(name);
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/getProjectListByMonth", name = "得指定月份完成的项目列表", method = RequestMethod.GET)
-    public HttpResult getProjectListByMonth(String dates, String datee) {
-        List<ProjectInfo> projectListByMonth = projectCenterService.getProjectListByMonth(dates, datee);
-        return HttpResult.newCorrectResult(projectListByMonth);
-    }
 
-    @RequestMapping(value = "/projectList", name = "项目列表")
-    public ModelAndView projectList() {
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectList");
-        return modelAndView;
-    }
 
-    @RequestMapping(value = "/projectCsrList", name = "项目 债权列表")
+
+    @RequestMapping(value = "/projectCsrList", name = "债权项目列表")
     public ModelAndView projectCsrList() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/csr/projectCsrList");
         return modelAndView;
     }
 
-    @RequestMapping(value = "/projectNew", name = "新建项目")
-    public ModelAndView projectNew() {
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectNew");
-        //获取到类型 类别 范围
-        List<KeyValueDto> keyValueDtoList = baseProjectClassifyService.getProjectInitClassify();
-        modelAndView.addObject("keyValueDtoList",keyValueDtoList);
-        return modelAndView;
-    }
+
 
 }

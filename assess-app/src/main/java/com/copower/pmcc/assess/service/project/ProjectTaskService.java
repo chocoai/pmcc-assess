@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
+import com.copower.pmcc.assess.dto.input.project.ProjectTaskDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.event.project.ProjectTaskEvent;
@@ -68,22 +69,20 @@ public class ProjectTaskService {
     private ProjectInfoService projectInfoService;
 
     @Transactional(rollbackFor = Exception.class)
-    public void submitTask(String formData, String taskRemarks, String actualHours, Integer projectDetailsId, String nextApproval, Integer responsibilityId) throws Exception {
-        /**
-         * 处理步聚
-         * 1、根据配置查询是否需 要进行模型审批，如果不审批则完成相应的工作成果提交
-         * 2、保存相应的业务数据
-         *          */
+    public void submitTask(ProjectTaskDto projectTaskDto) throws Exception {
 
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(projectDetailsId);
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(projectTaskDto.getProjectDetailsId());
         projectPlanDetails.setTaskSubmitTime(new Date());
+        projectPlanDetails.setBisStart(true);
+        projectPlanDetails.setActualHours(projectTaskDto.getActualHours());
+        projectPlanDetails.setTaskRemarks(projectTaskDto.getTaskRemarks());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
         ProcessUserDto processUserDto = new ProcessUserDto();
         ProcessInfo processInfo = new ProcessInfo();
         String boxName = projectPhase.getBoxName();
-        if (StringUtils.isNotBlank(boxName)) {
+        if (projectPhase.getBisUseBox() || projectTaskDto.getMustUseBox()) {
             //发起相应的流程
             String folio = projectPlanDetails.getProjectPhaseName() + "【成果提交】" + projectInfo.getProjectName();
             Integer boxIdByBoxName = bpmRpcBoxService.getBoxIdByBoxName(boxName);
@@ -100,7 +99,7 @@ public class ProjectTaskService {
             processInfo.setWorkStageId(projectWorkStage.getId());
 
             try {
-                processUserDto = processControllerComponent.processStart(processInfo, nextApproval, false);
+                processUserDto = processControllerComponent.processStart(processInfo, projectTaskDto.getNextApproval(), false);
 
             } catch (BpmException e) {
                 throw new BusinessException(e.getMessage());
@@ -111,16 +110,13 @@ public class ProjectTaskService {
             sysAttachment.setProcessInsId("0");
             sysAttachment.setCreater(processControllerComponent.getThisUser());
             sysAttachment.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPlanDetails.class));
-            sysAttachment.setTableId(projectDetailsId);
+            sysAttachment.setTableId(projectTaskDto.getProjectDetailsId());
             SysAttachmentDto sysAttachmentNew = new SysAttachmentDto();
             sysAttachmentNew.setProcessInsId(processUserDto.getProcessInsId());
             baseAttachmentService.updateAttachementByExample(sysAttachment, sysAttachmentNew);
             //更新业务
             projectPlanDetails.setProcessInsId(processUserDto.getProcessInsId());
             projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
-            projectPlanDetails.setBisStart(true);
-            projectPlanDetails.setActualHours(new BigDecimal(actualHours));
-            projectPlanDetails.setTaskRemarks(taskRemarks);
             projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
         }
 
@@ -132,20 +128,17 @@ public class ProjectTaskService {
         }
         ProjectTaskInterface bean = (ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
         try {
-            bean.applyCommit(projectPlanDetails, processUserDto.getProcessInsId(), formData);
+            bean.applyCommit(projectPlanDetails, processUserDto.getProcessInsId(), projectTaskDto.getFormData());
         } catch (Exception e) {
             if (StringUtils.isNotBlank(processUserDto.getProcessInsId())) {
                 bpmRpcActivitiProcessManageService.closeProcess(processUserDto.getProcessInsId());
             }
             throw new BusinessException(e.getMessage());
         }
-        //更新任务状态
-        if(StringUtils.isBlank(boxName)){
+
+        //不走流程时更新任务状态
+        if (!projectPhase.getBisUseBox() && !projectTaskDto.getMustUseBox()) {
             projectPlanDetails.setStatus(ProcessStatusEnum.FINISH.getValue());
-            projectPlanDetails.setBisStart(true);
-            projectPlanDetails.setActualHours(new BigDecimal(actualHours));
-            projectPlanDetails.setTaskRemarks(taskRemarks);
-            projectPlanDetails.setReturnDetailsReason("");
             projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
 
             ProjectPlanDetails projectPlanDetailsWhere = new ProjectPlanDetails();
@@ -158,7 +151,7 @@ public class ProjectTaskService {
                 projectTaskAllService.startTaskAllApproval(projectPlanDetails.getPlanId());
             }
         }
-        bpmRpcProjectTaskService.deleteProjectTask(responsibilityId);
+        bpmRpcProjectTaskService.deleteProjectTask(projectTaskDto.getResponsibilityId());
 
         //更新当前数据为最新
         if (projectPlanDetails.getReturnDetailsId() > 0) {

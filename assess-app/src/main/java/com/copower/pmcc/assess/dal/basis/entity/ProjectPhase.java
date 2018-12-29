@@ -6,6 +6,8 @@ import java.util.Date;
 public class ProjectPhase {
     private Integer id;
 
+    private Integer pid;
+
     private Integer projectClassId;
 
     private Integer projectTypeId;
@@ -22,17 +24,19 @@ public class ProjectPhase {
 
     private String boxName;
 
+    private String phaseKey;
+
     private Integer phaseSort;
 
     private Boolean bisEnable;
 
+    private Boolean bisUseBox;
+
+    private Boolean bisCanReturn;
+
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String phaseKey;
-
-    private Integer pid;
 
     public Integer getId() {
         return id;
@@ -40,6 +44,14 @@ public class ProjectPhase {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
     }
 
     public Integer getProjectClassId() {
@@ -106,6 +118,14 @@ public class ProjectPhase {
         this.boxName = boxName == null ? null : boxName.trim();
     }
 
+    public String getPhaseKey() {
+        return phaseKey;
+    }
+
+    public void setPhaseKey(String phaseKey) {
+        this.phaseKey = phaseKey == null ? null : phaseKey.trim();
+    }
+
     public Integer getPhaseSort() {
         return phaseSort;
     }
@@ -122,6 +142,22 @@ public class ProjectPhase {
         this.bisEnable = bisEnable;
     }
 
+    public Boolean getBisUseBox() {
+        return bisUseBox;
+    }
+
+    public void setBisUseBox(Boolean bisUseBox) {
+        this.bisUseBox = bisUseBox;
+    }
+
+    public Boolean getBisCanReturn() {
+        return bisCanReturn;
+    }
+
+    public void setBisCanReturn(Boolean bisCanReturn) {
+        this.bisCanReturn = bisCanReturn;
+    }
+
     public Date getGmtCreated() {
         return gmtCreated;
     }
@@ -136,21 +172,5 @@ public class ProjectPhase {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getPhaseKey() {
-        return phaseKey;
-    }
-
-    public void setPhaseKey(String phaseKey) {
-        this.phaseKey = phaseKey == null ? null : phaseKey.trim();
-    }
-
-    public Integer getPid() {
-        return pid;
-    }
-
-    public void setPid(Integer pid) {
-        this.pid = pid;
     }
 }
