@@ -4,12 +4,10 @@ import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.SurveyExamineInfo;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.data.DataExamineTaskService;
 import com.copower.pmcc.assess.service.event.project.SurveyExamineTaskEvent;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -24,6 +22,7 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -32,7 +31,7 @@ import java.util.Map;
 /**
  * 描述:
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2018/1/30
  * @time: 14:15
  */
@@ -57,6 +56,8 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private DataExamineTaskService dataExamineTaskService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -88,7 +89,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     }
 
     @Override
-    public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails,Integer boxId){
+    public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineInfoApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails, modelAndView);
         return modelAndView;
@@ -98,11 +99,11 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
         surveyExamineTaskService.saveExamineDataInfo(formData);
         ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid());
-        if(StringUtils.isBlank(processInsId)){
+        if (StringUtils.isBlank(processInsId)) {
             //更新各项表单任务状态
             surveyCommonService.updateExamineTaskStatus(projectPlanDetails.getPid(), commonService.thisUserAccount(), ProjectStatusEnum.FINISH);
             planDetails.setStatus(ProcessStatusEnum.FINISH.getValue());
-        }else {
+        } else {
             bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveyExamineTaskEvent.class.getSimpleName());//修改监听器
             planDetails.setStatus(ProcessStatusEnum.RUN.getValue());
         }
@@ -122,6 +123,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
 
     /**
      * 设置视图参数
+     *
      * @param userAccount
      * @param projectPlanDetails
      * @param modelAndView
@@ -141,7 +143,36 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         modelAndView.addObject("buildingTaskList", mapTaskList.get(AssessExamineTaskConstant.BUILDING));
         modelAndView.addObject("unitTaskList", mapTaskList.get(AssessExamineTaskConstant.UNIT));
         modelAndView.addObject("houseTaskList", mapTaskList.get(AssessExamineTaskConstant.HOUSE));
-        modelAndView.addObject("surveyExamineDataInfoVo",surveyCommonService.getExamineDataInfoVo(declareRecord.getId(),projectPlanDetails.getPid(), examineTypeEnum));
+        modelAndView.addObject("surveyExamineDataInfoVo", surveyCommonService.getExamineDataInfoVo(declareRecord.getId(), projectPlanDetails.getPid(), examineTypeEnum));
+        this.industry(projectPlanDetails, modelAndView);
+    }
+
+    /**
+     * 区分是否是非工业
+     *
+     * @param projectPlanDetails
+     * @param modelAndView
+     */
+    private void industry(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
+        if (projectPlanDetails == null){
+            return;
+        }
+        SurveyExamineTask query = new SurveyExamineTask();
+        query.setPlanDetailsId(projectPlanDetails.getPid());
+        //工业与非工业楼盘是不同的因此查询出楼盘的DataExamineTask可以区分是否是工业与非工业
+        query.setName("楼盘");
+        List<SurveyExamineTask> surveyExamineTaskList = surveyExamineTaskService.getSurveyExamineTaskList(query);
+        if (!ObjectUtils.isEmpty(surveyExamineTaskList)) {
+            SurveyExamineTask surveyExamineTask = surveyExamineTaskList.get(0);
+            Integer id = surveyExamineTask.getDataTaskId();
+            DataExamineTask dataExamineTask = dataExamineTaskService.getCacheDataExamineTaskById(id);
+            if (dataExamineTask != null) {
+                DataExamineTask examineTask = dataExamineTaskService.getCacheDataExamineTaskById(dataExamineTask.getPid());
+                if (examineTask != null) {
+                    modelAndView.addObject("dataExamineTask", examineTask);
+                }
+            }
+        }
     }
 
 }
