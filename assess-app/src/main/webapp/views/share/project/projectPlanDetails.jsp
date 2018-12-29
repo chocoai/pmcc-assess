@@ -92,7 +92,7 @@
 <script type="application/javascript">
 
     //提交标识，业务数据JSON串，提交成果描述，实际工时,工作成果选择复核人
-    function submitToServer(data) {
+    function submitToServer(data, mustUseBox) {
         var nextApproval = "";
         if ($("#nextApproval").length > 0) {
             nextApproval = $("#nextApproval").val();
@@ -105,7 +105,8 @@
                 responsibilityId: "${responsibilityId}",
                 actualHours: mainObj.getDiffHours(),
                 projectDetailsId:${projectPlanDetails.id},
-                nextApproval: nextApproval
+                nextApproval: nextApproval,
+                mustUseBox: mustUseBox == undefined ? false : mustUseBox
             },
             type: "post",
             dataType: "json",

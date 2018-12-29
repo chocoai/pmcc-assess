@@ -12,6 +12,7 @@ public class AssessCacheConstant {
     public static final String PMCC_ASSESS_PROJECT_CLASSIFY = "pmcc:assess:project:classify";
     public static final String PMCC_ASSESS_PROJECT_CLASSIFY_ID = "pmcc:assess:project:classify:id";
     public static final String PMCC_ASSESS_PROJECT_CLASSIFY_PID = "pmcc:assess:project:classify:pid";
+    public static final String PMCC_ASSESS_PROJECT_CLASSIFY_PID_ENABLE = "pmcc:assess:project:classify:pid:enable";
     public static final String PMCC_ASSESS_PROJECT_CLASSIFY_FIELD = "pmcc:assess:project:classify:field";
 
     //调查任务

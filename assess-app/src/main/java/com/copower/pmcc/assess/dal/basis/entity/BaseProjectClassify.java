@@ -25,11 +25,11 @@ public class BaseProjectClassify {
 
     private Integer sorting;
 
-    private Date created;
-
-    private Date mdified;
-
     private String creator;
+
+    private Date gmtCreated;
+
+    private Date gmtModified;
 
     public Integer getId() {
         return id;
@@ -119,27 +119,27 @@ public class BaseProjectClassify {
         this.sorting = sorting;
     }
 
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public Date getMdified() {
-        return mdified;
-    }
-
-    public void setMdified(Date mdified) {
-        this.mdified = mdified;
-    }
-
     public String getCreator() {
         return creator;
     }
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
     }
 }

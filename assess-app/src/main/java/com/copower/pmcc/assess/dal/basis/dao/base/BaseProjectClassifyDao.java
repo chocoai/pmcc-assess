@@ -74,6 +74,10 @@ public class BaseProjectClassifyDao {
         List<BaseProjectClassify> list = baseProjectClassifyMapper.selectByExample(example);
         return list;
     }
+
+    public List<BaseProjectClassify> getListByPid(Integer pid) {
+        return getListByPid(pid,null);
+    }
     //endregion
 
     //region 获取可用数据根据pid
@@ -85,10 +89,8 @@ public class BaseProjectClassifyDao {
      */
     public List<BaseProjectClassify> getEnableListByPid(Integer pid) {
         BaseProjectClassifyExample example = new BaseProjectClassifyExample();
-        example.createCriteria()
-                .andBisEnableEqualTo(true)
-                .andPidEqualTo(pid)
-                .andBisDeleteEqualTo(false);
+        BaseProjectClassifyExample.Criteria criteria = example.createCriteria();
+        criteria.andBisEnableEqualTo(true).andPidEqualTo(pid).andBisDeleteEqualTo(false);
         example.setOrderByClause("sorting");
         List<BaseProjectClassify> list = baseProjectClassifyMapper.selectByExample(example);
         return list;

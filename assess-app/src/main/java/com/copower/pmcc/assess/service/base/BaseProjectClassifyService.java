@@ -224,7 +224,21 @@ public class BaseProjectClassifyService {
      */
     public List<BaseProjectClassify> getCacheProjectClassifyListByPid(Integer pid) {
         String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_PROJECT_CLASSIFY_PID, String.valueOf(pid));
+        try {
+            List<BaseProjectClassify> sysProjectClassifys = LangUtils.listCache(rdsKey, pid, BaseProjectClassify.class, input -> baseProjectClassifyDao.getEnableListByPid(input));
+            return sysProjectClassifys;
+        } catch (Exception e) {
+            return baseProjectClassifyDao.getListByPid(pid);
+        }
+    }
 
+    /**
+     * 获取缓存中的项目分类数据
+     *
+     * @return
+     */
+    public List<BaseProjectClassify> getCacheEnableListByPid(Integer pid) {
+        String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_PROJECT_CLASSIFY_PID_ENABLE, String.valueOf(pid));
         try {
             List<BaseProjectClassify> sysProjectClassifys = LangUtils.listCache(rdsKey, pid, BaseProjectClassify.class, input -> baseProjectClassifyDao.getEnableListByPid(input));
             return sysProjectClassifys;
@@ -274,7 +288,7 @@ public class BaseProjectClassifyService {
      */
     public List<KeyValueDto> getProjectInitClassify() {
         List<KeyValueDto> keyValueDtoList = Lists.newArrayList();
-        List<BaseProjectClassify> classList = getCacheProjectClassifyListByPid(0);//获取到类型数据
+        List<BaseProjectClassify> classList = getCacheEnableListByPid(0);//获取到类型数据
         if (CollectionUtils.isNotEmpty(classList)) {
             KeyValueDto keyValueDto = null;
             for (BaseProjectClassify baseProjectClassify : classList) {
@@ -282,7 +296,7 @@ public class BaseProjectClassifyService {
                 keyValueDto.setKey(String.valueOf(baseProjectClassify.getId()));
                 keyValueDto.setValue(baseProjectClassify.getName());
                 //找对应的类别
-                List<BaseProjectClassify> typeList = getCacheProjectClassifyListByPid(baseProjectClassify.getId());
+                List<BaseProjectClassify> typeList = getCacheEnableListByPid(baseProjectClassify.getId());
                 if (CollectionUtils.isNotEmpty(typeList)) {
                     List<KeyValueDto> projectClassifyDtoList = Lists.newArrayList();
                     for (BaseProjectClassify projectClassify : typeList) {
@@ -291,7 +305,7 @@ public class BaseProjectClassifyService {
                         projectClassifyDto.setValue(projectClassify.getName());
                         projectClassifyDto.setExplain(projectClassify.getApplyUrl());
                         //找出对应的范围
-                        List<BaseProjectClassify> categoryList = getCacheProjectClassifyListByPid(projectClassify.getId());
+                        List<BaseProjectClassify> categoryList = getCacheEnableListByPid(projectClassify.getId());
                         if (CollectionUtils.isNotEmpty(categoryList)) {
                             List<KeyValueDto> classifyDtoList = Lists.newArrayList();
                             for (BaseProjectClassify classify : categoryList) {

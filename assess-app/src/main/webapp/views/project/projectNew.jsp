@@ -21,7 +21,7 @@
                     <div class="x_content">
                         <c:forEach var="classItem" items="${keyValueDtoList}">
                             <div class="x_title">
-                                <h3>${classItem.value}</h3>
+                                    ${classItem.value}
                             </div>
                             <c:forEach var="typeItem" items="${classItem.keyValueDtos}">
                                 <div class="btn-group">

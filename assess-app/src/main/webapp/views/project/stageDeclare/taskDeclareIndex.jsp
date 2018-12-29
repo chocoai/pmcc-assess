@@ -40,11 +40,11 @@
                             取消
                         </button>
                         <c:choose>
-                            <c:when test="${not empty projectPhase.phaseForm and projectPhase.bisUseBox eq false}">
-                                <button id="btn_submit" class="btn btn-success" onclick="submit();">
+                            <c:when test="${projectPhase.bisUseBox eq false}">
+                                <button id="btn_submit" class="btn btn-success" onclick="submit(false);">
                                     直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                                 </button>
-                                <button id="btn_submit" class="btn btn-primary" onclick="submit();">
+                                <button id="btn_submit" class="btn btn-primary" onclick="submit(true);">
                                     提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                                 </button>
                             </c:when>
@@ -147,21 +147,21 @@
 </script>
 <script type="application/javascript">
     //提交
-    function submit() {
+    function submit(mustUseBox) {
         //检查是否填写了申报数据
         var rows = $("#" + assessCommonHouse.config.table).bootstrapTable('getData');
         if (rows && rows.length > 0) {
-            submitForm();
+            submitForm(mustUseBox);
             return false;
         }
         rows = $("#" + assessCommonLand.config.table).bootstrapTable('getData');
         if (rows && rows.length > 0) {
-            submitForm();
+            submitForm(mustUseBox);
             return false;
         }
         rows = $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('getData');
         if (rows && rows.length > 0) {
-            submitForm();
+            submitForm(mustUseBox);
             return false;
         }
 
@@ -170,12 +170,12 @@
     }
 
     //提交表单
-    function submitForm() {
+    function submitForm(mustUseBox) {
         if ("${processInsId}" != "0") {
             submitEditToServer("");
         }
         else {
-            submitToServer("");
+            submitToServer("", mustUseBox);
         }
     }
 

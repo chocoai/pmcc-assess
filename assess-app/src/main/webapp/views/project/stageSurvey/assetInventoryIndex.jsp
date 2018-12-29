@@ -143,7 +143,8 @@
                                     <td>
                                         <div class="x-valid">
                                             <input type="text" data-rule-maxlength="50" placeholder="实际" required
-                                                   id="actual${item.id}" onkeyup="isAgreement(this);" name="actual${item.id}"
+                                                   id="actual${item.id}" onkeyup="isAgreement(this);"
+                                                   name="actual${item.id}"
                                                    class="form-control " value="${item.actual}">
                                         </div>
                                     </td>
@@ -151,34 +152,40 @@
                                         <label data-name="areConsistent">${item.areConsistent}</label>
                                     </td>
                                     <td>
-                                        <div class="x-valid show-hide" style="display: ${item.areConsistent eq '一致'?'none':'block'}">
+                                        <div class="x-valid show-hide"
+                                             style="display: ${item.areConsistent eq '一致'?'none':'block'}">
                                             <input type="text" data-rule-maxlength="50" placeholder="差异原因" required
                                                    id="differenceReason${item.id}" name="differenceReason${item.id}"
                                                    class="form-control" value="${item.differenceReason}">
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="x-valid show-hide" style="display: ${item.areConsistent eq '一致'?'none':'block'}">
+                                        <div class="x-valid show-hide"
+                                             style="display: ${item.areConsistent eq '一致'?'none':'block'}">
                                             <input type="text" data-rule-maxlength="50" placeholder="证明文件" required
                                                    id="credential${item.id}" name="credential"
                                                    class="form-control" value="${item.credential}">
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="show-hide" style="display: ${item.areConsistent eq '一致'?'none':'block'}">
-                                            <input id="credentialAccessory${item.id}" name="credentialAccessory${item.id}" type="file" multiple="false" >
+                                        <div class="show-hide"
+                                             style="display: ${item.areConsistent eq '一致'?'none':'block'}">
+                                            <input id="credentialAccessory${item.id}"
+                                                   name="credentialAccessory${item.id}" type="file" multiple="false">
                                             <div id="_credentialAccessory${item.id}"></div>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="x-valid show-hide" style="display: ${item.areConsistent eq '一致'?'none':'block'}">
+                                        <div class="x-valid show-hide"
+                                             style="display: ${item.areConsistent eq '一致'?'none':'block'}">
                                             <input type="text" data-rule-maxlength="50" placeholder="证明人" required
                                                    id="voucher${item.id}" name="voucher${item.id}"
                                                    class="form-control" value="${item.voucher}">
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="x-valid show-hide" style="display: ${item.areConsistent eq '一致'?'none':'block'}">
+                                        <div class="x-valid show-hide"
+                                             style="display: ${item.areConsistent eq '一致'?'none':'block'}">
                                             <input placeholder="调查时间" id="surveyTime${item.id}"
                                                    name="surveyTime${item.id}" required
                                                    data-date-format="yyyy-mm-dd"
@@ -261,10 +268,21 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-
-                        <button id="btn_submit" class="btn btn-success" onclick="submit();">
-                            提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                        </button>
+                        <c:choose>
+                            <c:when test="${projectPhase.bisUseBox eq false}">
+                                <button id="btn_submit" class="btn btn-success" onclick="submit(false);">
+                                    直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                </button>
+                                <button id="btn_submit" class="btn btn-primary" onclick="submit(true);">
+                                    提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                </button>
+                            </c:when>
+                            <c:otherwise>
+                                <button id="btn_submit" class="btn btn-success" onclick="submit();">
+                                    提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                </button>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
             </div>
@@ -633,7 +651,7 @@
         return data;
     }
 
-    function submit() {
+    function submit(mustUseBox) {
         if (!$("#frm_asset").valid()) {
             return false;
         }
@@ -646,7 +664,7 @@
             submitEditToServer(formData);
         }
         else {
-            submitToServer(formData);
+            submitToServer(formData, mustUseBox);
         }
     }
 
