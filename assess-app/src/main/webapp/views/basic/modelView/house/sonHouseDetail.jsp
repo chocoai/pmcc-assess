@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="x_panel">
@@ -135,8 +134,23 @@
     </div>
 </div>
 <%@include file="/views/basic/modelView/house/damagedDegreeDetail.jsp" %>
-<script type="text/javascript">
 
+<div class="x_content">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    其它附件
+                </label>
+                <div class="col-sm-11">
+                    <div id="_otherFile"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
     var houseRoom;
     (function () {
         houseRoom = function () {
@@ -173,8 +187,8 @@
                 });
                 $("#" + houseRoom.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseRoom.prototype.config().table, "${pageContext.request.contextPath}/basicHouseRoom/getBootstrapTableVo", cols, {
-                    houseId:'${empty basicHouse.id?0:basicHouse.id}',
-                    approval:true
+                    houseId: '${empty basicHouse.id?0:basicHouse.id}',
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -196,7 +210,7 @@
                 $("#" + houseRoom.prototype.config().tableSubclass).bootstrapTable('destroy');
                 TableInit(houseRoom.prototype.config().tableSubclass, "${pageContext.request.contextPath}/basicHouseRoom/getRoomDecorateBootstrapTableVo", cols, {
                     roomId: id,
-                    approval:true
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -231,15 +245,15 @@
                 data.table = "HouseCorollaryEquipmentList";
                 data.box = "divBoxHouseCorollaryEquipment";
                 data.frm = "frmHouseCorollaryEquipment";
-                data.FileID = "positionDiagramFileID" ;// ExamineFileUpLoadTwoFieldEnum
+                data.FileID = "positionDiagramFileID";// ExamineFileUpLoadTwoFieldEnum
                 return data;
             },
             loadDataDicList: function () {
                 var cols = commonColumn.houseCorollaryEquipmentColumn();
                 $("#" + houseCorollaryEquipment.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseCorollaryEquipment.prototype.config().table, "${pageContext.request.contextPath}/basicHouseCorollaryEquipment/getBootstrapTableVo", cols, {
-                    houseId:'${empty basicHouse.id?0:basicHouse.id}',
-                    approval:true
+                    houseId: '${empty basicHouse.id?0:basicHouse.id}',
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -279,8 +293,8 @@
                 var cols = commonColumn.houseFaceStreetColumn();
                 $("#" + houseFaceStreet.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseFaceStreet.prototype.config().table, "${pageContext.request.contextPath}/basicHouseFaceStreet/getBootstrapTableVo", cols, {
-                    houseId:'${empty basicHouse.id?0:basicHouse.id}',
-                    approval:true
+                    houseId: '${empty basicHouse.id?0:basicHouse.id}',
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -322,8 +336,8 @@
                 var cols = commonColumn.houseIntelligentColumn();
                 $("#" + houseIntelligent.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseIntelligent.prototype.config().table, "${pageContext.request.contextPath}/basicHouseIntelligent/getBootstrapTableVo", cols, {
-                    houseId:'${empty basicHouse.id?0:basicHouse.id}',
-                    approval:true
+                    houseId: '${empty basicHouse.id?0:basicHouse.id}',
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -365,8 +379,8 @@
                 var cols = commonColumn.houseWaterColumn();
                 $("#" + houseWater.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseWater.prototype.config().table, "${pageContext.request.contextPath}/basicHouseWater/getBootstrapTableVo", cols, {
-                    houseId:'${empty basicHouse.id?0:basicHouse.id}',
-                    approval:true
+                    houseId: '${empty basicHouse.id?0:basicHouse.id}',
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -401,8 +415,8 @@
         var cols = commonColumn.houseWaterDrainColumn();
         $("#" + this.config.table).bootstrapTable('destroy');
         TableInit(this.config.table, getContextPath() + "/basicHouseWaterDrain/getBootstrapTableVo", cols, {
-            houseId:'${empty basicHouse.id?0:basicHouse.id}',
-            approval:true
+            houseId: '${empty basicHouse.id?0:basicHouse.id}',
+            approval: true
         }, {
             showColumns: false,
             showRefresh: false,
@@ -444,8 +458,8 @@
                 $("#" + houseHeating.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseHeating.prototype.config().table, "${pageContext.request.contextPath}/basicHouseEquipment/getBootstrapTableVo", cols, {
                     type: houseHeating.prototype.config().type,
-                    houseId:'${empty basicHouse.id?0:basicHouse.id}',
-                    approval:true
+                    houseId: '${empty basicHouse.id?0:basicHouse.id}',
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -488,8 +502,8 @@
                 $("#" + houseAirConditioner.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseAirConditioner.prototype.config().table, "${pageContext.request.contextPath}/basicHouseEquipment/getBootstrapTableVo", cols, {
                     type: houseAirConditioner.prototype.config().type,
-                    houseId:'${empty basicHouse.id?0:basicHouse.id}',
-                    approval:true
+                    houseId: '${empty basicHouse.id?0:basicHouse.id}',
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -532,8 +546,8 @@
                 $("#" + houseNewWind.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseNewWind.prototype.config().table, "${pageContext.request.contextPath}/basicHouseEquipment/getBootstrapTableVo", cols, {
                     type: houseNewWind.prototype.config().type,
-                    houseId:'${empty basicHouse.id?0:basicHouse.id}',
-                    approval:true
+                    houseId: '${empty basicHouse.id?0:basicHouse.id}',
+                    approval: true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -550,6 +564,18 @@
             houseNewWind.prototype.loadDataDicList();
         })
     })();
+
+    $(function () {
+        FileUtils.getFileShows({
+            target: "otherFile",
+            formData: {
+                tableName: AssessDBKey.BasicHouse,
+                fieldsName: "otherFile",
+                tableId: houseCommon.getHouseId()
+            },
+            deleteFlag: false
+        });
+    })
 </script>
 
 <div id="SubclassDivBoxHouseRoom" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"

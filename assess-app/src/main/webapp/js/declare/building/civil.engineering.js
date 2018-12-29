@@ -100,6 +100,25 @@ civilEngineering.fileUpload = function (target, tableName, id) {
     });
 };
 
+//从表数据删除
+civilEngineering.deleteByType = function (data, callback) {
+    $.ajax({
+        type: "post",
+        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/deleteByType",
+        data: data,
+        success: function (result) {
+            if (result.ret) {
+                callback(result);
+            } else {
+                Alert("保存失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+
 /**
  * 土地建设 初始化并且赋值
  * @param item
@@ -196,7 +215,6 @@ civilEngineering.getData = function (id, callback) {
         success: function (result) {
             if (result.ret) {
                 if (result.data) {
-                    console.log("get") ;
                     callback(result.data);
                 }
             }
@@ -324,7 +342,6 @@ civilEngineering.declareRealtyRealEstateCertInit = function (item) {
 civilEngineering.declareRealtyRealEstateCertView = function (id) {
     $('#' + civilEngineering.config.declareRealtyRealEstateCert.box).find("#" + commonDeclareApplyModel.config.realEstateCert.handleId).remove();
     $('#' + civilEngineering.config.declareRealtyRealEstateCert.box).find(".panel-body").append(commonDeclareApplyModel.realEstateCert.getHtml());
-    civilEngineering.declareRealtyRealEstateCertInit({});
     DatepickerUtils.parse();
     $('#' + civilEngineering.config.declareRealtyRealEstateCert.box).find(".select2").each(function () {
         $(this).select2();
@@ -347,7 +364,9 @@ civilEngineering.declareRealtyRealEstateCertView = function (id) {
                         success: function (result) {
                             if (result.ret) {
                                 if (civilEngineering.isNotBlank(result.data)) {
-                                    civilEngineering.declareRealtyRealEstateCertInit(result.data);
+                                    var item = result.data;
+                                    item.pidC = id;
+                                    civilEngineering.declareRealtyRealEstateCertInit(item);
                                 }
                             }
                         },
@@ -356,8 +375,13 @@ civilEngineering.declareRealtyRealEstateCertView = function (id) {
                         }
                     });
                 } else {
-                    civilEngineering.getData(id, function (data) {
-                        civilEngineering.declareRealtyRealEstateCertInit({pidC: id,province:data.province,city:data.city,district:data.district});
+                    civilEngineering.getData(data.buildEngineeringId, function (data) {
+                        civilEngineering.declareRealtyRealEstateCertInit({
+                            pidC: id,
+                            province: data.province,
+                            city: data.city,
+                            district: data.district
+                        });
                     });
                 }
             } else {
@@ -401,6 +425,19 @@ civilEngineering.declareRealtyRealEstateCertSaveAndUpdate = function () {
         }
     });
 };
+civilEngineering.declareRealtyRealEstateCertRemove = function () {
+    var data = formParams(civilEngineering.config.declareRealtyRealEstateCert.frm);
+    if (data.id) {
+        var item = {dataId: data.id, centerId: data.pidC, type: "DeclareRealtyRealEstateCert"};
+        civilEngineering.deleteByType(item,function () {
+            $('#' + civilEngineering.config.declareRealtyRealEstateCert.box).modal("hide");
+            civilEngineering.loadList();
+            toastr.success('成功!');
+        });
+    } else {
+        toastr.success('无删除数据!');
+    }
+};
 
 /**
  * @author:  zch
@@ -440,7 +477,6 @@ civilEngineering.declareRealtyLandCertView = function (id) {
     $('#' + civilEngineering.config.declareRealtyLandCert.box).find(".select2").each(function () {
         $(this).select2();
     });
-    // civilEngineering.declareRealtyLandCertInit({});
     $('#' + civilEngineering.config.declareRealtyLandCert.box).modal("show");
     $.ajax({
         type: "get",
@@ -451,7 +487,6 @@ civilEngineering.declareRealtyLandCertView = function (id) {
                 var data = result.data;
                 var landId = data.landId;
                 if (civilEngineering.isNotBlank(landId)) {
-                    console.log("436364433") ;
                     $.ajax({
                         url: getContextPath() + "/declareRealtyLandCert/getDeclareRealtyLandCertById",
                         type: "get",
@@ -460,23 +495,24 @@ civilEngineering.declareRealtyLandCertView = function (id) {
                         success: function (result) {
                             if (result.ret) {
                                 if (civilEngineering.isNotBlank(result.data)) {
-                                    civilEngineering.declareRealtyLandCertInit(result.data);
+                                    var item = result.data;
+                                    item.pidC = id;
+                                    civilEngineering.declareRealtyLandCertInit(item);
                                 }
                             }
-                            console.log("235253532") ;
                         },
                         error: function (result) {
                             Alert("调用服务端方法失败，失败原因:" + result);
                         }
                     });
                 } else {
-                    console.log(222) ;
-                    console.log(id) ;
-                    civilEngineering.declareRealtyLandCertInit({pidC: id});
-                    civilEngineering.getData(id, function (data) {
-                        console.log("afsssaf") ;
-                        console.log(data);
-                        civilEngineering.declareRealtyLandCertInit({pidC: id,province:data.province,city:data.city,district:data.district});
+                    civilEngineering.getData(data.buildEngineeringId, function (item) {
+                        civilEngineering.declareRealtyLandCertInit({
+                            pidC: id,
+                            province: item.province,
+                            city: item.city,
+                            district: item.district
+                        });
                     });
                 }
             } else {
@@ -504,7 +540,7 @@ civilEngineering.declareRealtyLandCertSaveAndUpdate = function () {
                 if (civilEngineering.isNotBlank(item)) {//把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)
                     var fData = {};
                     fData.landId = item;
-                    fData.id = data.pidC
+                    fData.id = data.pidC;
                     civilEngineering.handleFather(fData);
                     toastr.success('成功!');
                 }
@@ -516,6 +552,19 @@ civilEngineering.declareRealtyLandCertSaveAndUpdate = function () {
             Alert("调用服务端方法失败，失败原因:" + e);
         }
     });
+};
+civilEngineering.declareRealtyLandCertRemove = function () {
+    var data = formParams(civilEngineering.config.declareRealtyLandCert.frm);
+    if (data.id) {
+        var item = {dataId: data.id, centerId: data.pidC, type: "DeclareRealtyLandCert"};
+        civilEngineering.deleteByType(item,function () {
+            $('#' + civilEngineering.config.declareRealtyLandCert.box).modal("hide");
+            civilEngineering.loadList();
+            toastr.success('成功!');
+        });
+    } else {
+        toastr.success('无删除数据!');
+    }
 };
 
 /**
@@ -606,6 +655,25 @@ civilEngineering.declareBuildingPermitSaveAndUpdate = function () {
             Alert("调用服务端方法失败，失败原因:" + e);
         }
     });
+};
+
+/**
+ * @author:  zch
+ * 描述:建设工程规划许可证 删除
+ * @date:2018-09-28
+ **/
+civilEngineering.declareBuildingPermitRemove = function () {
+    var data = formParams(civilEngineering.config.declareBuildingPermit.frm);
+    if (data.id){
+        var item = {dataId: data.id, centerId: data.pid, type: "DeclareBuildingPermit"};
+        civilEngineering.deleteByType(item,function () {
+            $('#' + civilEngineering.config.declareBuildingPermit.box).modal("hide");
+            civilEngineering.loadList();
+            toastr.success('成功!');
+        });
+    }else {
+        toastr.success('无数据!');
+    }
 };
 
 /**
@@ -701,6 +769,23 @@ civilEngineering.declareLandUsePermitSaveAndUpdate = function () {
 };
 
 /**
+ * 建设用地规划许可证 删除
+ */
+civilEngineering.declareLandUsePermitRemove = function () {
+    var data = formParams(civilEngineering.config.declareLandUsePermit.frm);
+    if (data.id){
+        var item = {dataId: data.id, centerId: data.pid, type: "DeclareLandUsePermit"};
+        civilEngineering.deleteByType(item,function () {
+            $('#' + civilEngineering.config.declareLandUsePermit.box).modal("hide");
+            civilEngineering.loadList();
+            toastr.success('成功!');
+        });
+    }else {
+        toastr.success('无数据!');
+    }
+};
+
+/**
  * @author:  zch
  * 描述:商品房预售许可证 view
  * @date:2018-09-28
@@ -789,6 +874,21 @@ civilEngineering.declarePreSalePermitSaveAndUpdate = function () {
             Alert("调用服务端方法失败，失败原因:" + e);
         }
     });
+};
+
+//商品房预售许可证删除
+civilEngineering.declarePreSalePermitRemove = function () {
+    var data = formParams(civilEngineering.config.declarePreSalePermit.frm);
+    if (data.id){
+        var item = {dataId: data.id, centerId: data.pid, type: "DeclarePreSalePermit"};
+        civilEngineering.deleteByType(item,function () {
+            $('#' + civilEngineering.config.declarePreSalePermit.box).modal("hide");
+            civilEngineering.loadList();
+            toastr.success('成功!');
+        });
+    }else {
+        toastr.success('无数据!');
+    }
 };
 
 /**
@@ -886,6 +986,21 @@ civilEngineering.declareBuildingConstructionPermitSaveAndUpdate = function () {
     });
 };
 
+//建筑工程施工许可证 删除
+civilEngineering.declareBuildingConstructionPermitRemove = function () {
+    var data = formParams(civilEngineering.config.declareBuildingConstructionPermit.frm);
+    if (data.id){
+        var item = {dataId: data.id, centerId: data.pid, type: "DeclareBuildingConstructionPermit"};
+        civilEngineering.deleteByType(item,function () {
+            $('#' + civilEngineering.config.declareBuildingConstructionPermit.box).modal("hide");
+            civilEngineering.loadList();
+            toastr.success('成功!');
+        });
+    }else {
+        toastr.success('无数据!');
+    }
+};
+
 /**
  * 经济指标
  */
@@ -939,6 +1054,10 @@ civilEngineering.declareEconomicIndicatorsView = function (pid) {
             Alert("调用服务端方法失败，失败原因:" + e);
         }
     });
+};
+
+civilEngineering.declareEconomicIndicatorsRemove = function () {
+
 };
 
 
@@ -1049,51 +1168,51 @@ civilEngineering.loadList = function () {
             str += "<button class='btn btn-primary dropdown-toggle' data-toggle='dropdown'>" + "<i class='fa fa-users'>" + "</i>" + "关联信息" + "<span class='caret'>" + "</span>" + "</button>";
             str += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>";
             if (row.declareBuildEngineeringAndEquipmentCenter) {
-                if (row.declareBuildEngineeringAndEquipmentCenter.landId){
+                if (row.declareBuildEngineeringAndEquipmentCenter.landId) {
                     str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyLandCertView(" + row.centerId + ")'" + ">" + "土地证" + "<i class='fa fa-check'></i>" + "</a>" + "</li>";
-                }else {
+                } else {
                     str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyLandCertView(" + row.centerId + ")'" + ">" + "土地证" + "<i class='fa fa-remove'></i>" + "</a>" + "</li>";
                 }
             }
             if (row.declareBuildEngineeringAndEquipmentCenter) {
                 if (row.declareBuildEngineeringAndEquipmentCenter.realEstateId) {
                     str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyRealEstateCertView(" + row.centerId + ")'" + ">" + "不动产" + "<i class='fa fa-check'></i>" + "</a>" + "</li>";
-                }else {
+                } else {
                     str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyRealEstateCertView(" + row.centerId + ")'" + ">" + "不动产" + "<i class='fa fa-remove'></i>" + "</a>" + "</li>";
                 }
             }
             if (row.declareBuildEngineeringAndEquipmentCenter) {
                 if (row.declareBuildEngineeringAndEquipmentCenter.buildingPermitId) {
                     str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingPermitView(" + row.centerId + ")'" + ">" + "建设工程规划许可证" + "<i class='fa fa-check'></i>" + "</a>" + "</li>";
-                }else {
+                } else {
                     str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingPermitView(" + row.centerId + ")'" + ">" + "建设工程规划许可证" + "<i class='fa fa-remove'></i>" + "</a>" + "</li>";
                 }
             }
             if (row.declareBuildEngineeringAndEquipmentCenter) {
                 if (row.declareBuildEngineeringAndEquipmentCenter.landUsePermitId) {
                     str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareLandUsePermitView(" + row.centerId + ")'" + ">" + "建设用地规划许可证" + "<i class='fa fa-check'></i>" + "</a>" + "</li>";
-                }else {
+                } else {
                     str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareLandUsePermitView(" + row.centerId + ")'" + ">" + "建设用地规划许可证" + "<i class='fa fa-remove'></i>" + "</a>" + "</li>";
                 }
             }
             if (row.declareBuildEngineeringAndEquipmentCenter) {
                 if (row.declareBuildEngineeringAndEquipmentCenter.buildingConstructionPermitId) {
                     str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingConstructionPermitView(" + row.centerId + ")'" + ">" + "建筑工程施工许可证" + "<i class='fa fa-check'></i>" + "</a>" + "</li>";
-                }else {
+                } else {
                     str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingConstructionPermitView(" + row.centerId + ")'" + ">" + "建筑工程施工许可证" + "<i class='fa fa-remove'></i>" + "</a>" + "</li>";
                 }
             }
             if (row.declareBuildEngineeringAndEquipmentCenter) {
                 if (row.declareBuildEngineeringAndEquipmentCenter.preSalePermitId) {
                     str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declarePreSalePermitView(" + row.centerId + ")'" + ">" + "商品房预售许可证" + "<i class='fa fa-check'></i>" + "</a>" + "</li>";
-                }else {
+                } else {
                     str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declarePreSalePermitView(" + row.centerId + ")'" + ">" + "商品房预售许可证" + "<i class='fa fa-remove'></i>" + "</a>" + "</li>";
                 }
             }
             if (row.declareBuildEngineeringAndEquipmentCenter) {
                 if (row.declareBuildEngineeringAndEquipmentCenter.indicatorId) {
                     str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareEconomicIndicatorsView(" + row.centerId + ")'" + ">" + "经济规划指标" + "<i class='fa fa-check'></i>" + "</a>" + "</li>";
-                }else {
+                } else {
                     str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareEconomicIndicatorsView(" + row.centerId + ")'" + ">" + "经济规划指标" + "<i class='fa fa-remove'></i>" + "</a>" + "</li>";
                 }
             }
@@ -1150,3 +1269,4 @@ civilEngineering.inputFile = function () {
 $(function () {
     civilEngineering.loadList();
 });
+

@@ -484,26 +484,41 @@
 
     $(function () {
         basicApplyIndex.startApply();
-
-        //定位成功回调方法
-        try {
-            mapPosition.complete(function (data) {
-                var province = data.addressComponent.province;
-                var city = data.addressComponent.city;
-                if (province && city) {
-                    AssessCommon.initAreaInfo({
-                        provinceTarget: basicCommon.basicApplyForm.find('[name=province]'),
-                        cityTarget: basicCommon.basicApplyForm.find('[name=city]'),
-                        provinceDefaultText: province.replace('省', ''),
-                        cityDefaultText: city.replace('市', '')
-                    });
-                }
-            })
-        } catch (e) {
+        console.log(readCookie("province"));
+        console.log(readCookie("city"));
+        var provinceCookie = readCookie("province");
+        var cityCookie = readCookie("city");
+        if (readCookie("province") && readCookie("city")) {
             AssessCommon.initAreaInfo({
                 provinceTarget: basicCommon.basicApplyForm.find('[name=province]'),
-                cityTarget: basicCommon.basicApplyForm.find('[name=city]')
+                cityTarget: basicCommon.basicApplyForm.find('[name=city]'),
+                provinceDefaultText: provinceCookie.replace('省', ''),
+                cityDefaultText: cityCookie.replace('市', '')
             });
+        } else {
+            //定位成功回调方法
+            try {
+                mapPosition.complete(function (data) {
+                    var province = data.addressComponent.province;
+                    var city = data.addressComponent.city;
+                    if (province && city) {
+                        AssessCommon.initAreaInfo({
+                            provinceTarget: basicCommon.basicApplyForm.find('[name=province]'),
+                            cityTarget: basicCommon.basicApplyForm.find('[name=city]'),
+                            provinceDefaultText: province.replace('省', ''),
+                            cityDefaultText: city.replace('市', '')
+                        });
+                        //存COOKIE
+                        writeCookie("province",province,24);
+                        writeCookie("city",city,24);
+                    }
+                })
+            } catch (e) {
+                AssessCommon.initAreaInfo({
+                    provinceTarget: basicCommon.basicApplyForm.find('[name=province]'),
+                    cityTarget: basicCommon.basicApplyForm.find('[name=city]')
+                });
+            }
         }
     });
 
@@ -591,6 +606,33 @@
                 Alert("调用服务端方法失败，失败原因:" + result);
             }
         })
+    }
+
+    //Cookie取值
+    function readCookie(name) {
+        var cookieValue = "";
+        var search = name + "=";
+        if (document.cookie.length > 0) {
+            offset = document.cookie.indexOf(search);
+            if (offset != -1) {
+                offset += search.length;
+                end = document.cookie.indexOf(";", offset);
+                if (end == -1)
+                    end = document.cookie.length;
+                cookieValue = unescape(document.cookie.substring(offset, end))
+            }
+        }
+        return cookieValue;
+    }
+
+    //Cookie设置值
+    function writeCookie(name, value, hours) {
+        var expire = "";
+        if (hours != null) {
+            expire = new Date((new Date()).getTime() + hours * 3600000);
+            expire = "; expires=" + expire.toGMTString();
+        }
+        document.cookie = name + "=" + escape(value) + expire;
     }
 
 </script>
