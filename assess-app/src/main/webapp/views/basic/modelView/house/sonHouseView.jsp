@@ -163,6 +163,22 @@
 
 <%@include file="/views/basic/modelView/house/damagedDegreeView.jsp" %>
 
+<div class="x_content">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    其它附件
+                </label>
+                <div class="col-sm-11">
+                    <input id="otherFile" type="file" multiple="false">
+                    <div id="_otherFile"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
 <script src="${pageContext.request.contextPath}/js/basic/house/sonHouseView.js"></script>
 
 <div id="divBoxHouseRoom" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
@@ -678,17 +694,17 @@
                                             <label class="col-sm-2 control-label">
                                                 智能系统
                                             </label>
-                                            <div class="col-sm-3" >
+                                            <div class="col-sm-3">
                                                 <select required="required" name="intelligentSystem1"
                                                         class="form-control search-select select2 intelligentSystem1">
                                                 </select>
                                             </div>
-                                            <div class="col-sm-3" >
+                                            <div class="col-sm-3">
                                                 <select required="required" name="layingMethod1"
                                                         class="form-control search-select select2 layingMethod1">
                                                 </select>
                                             </div>
-                                            <div class="col-sm-4" >
+                                            <div class="col-sm-4">
                                                 <input type="button" class="btn btn-warning" value="X"
                                                        onclick="houseIntelligent.prototype.cleanHTMLData(this)">
                                             </div>
@@ -701,7 +717,7 @@
                                             描述
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea  name="remark" class="form-control"></textarea>
+                                            <textarea name="remark" class="form-control"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -1141,3 +1157,37 @@
         </div>
     </div>
 </div>
+
+<script type="application/javascript">
+
+    $(function () {
+
+        FileUtils.uploadFiles({
+            target: "otherFile",
+            onUpload: function (file) {//上传之前触发
+                var formData = {
+                    tableName: AssessDBKey.BasicHouse,
+                    fieldsName: "otherFile",
+                    tableId: houseCommon.getHouseId()
+                };
+                return formData;
+            },
+            onUploadComplete: function () {
+                loadFile();
+            }
+        });
+    })
+
+    //附件
+    function loadFile() {
+        FileUtils.getFileShows({
+            target: "otherFile",
+            formData: {
+                tableName: AssessDBKey.BasicHouse,
+                fieldsName: "otherFile",
+                tableId: houseCommon.getHouseId()
+            },
+            deleteFlag: true
+        });
+    }
+</script>

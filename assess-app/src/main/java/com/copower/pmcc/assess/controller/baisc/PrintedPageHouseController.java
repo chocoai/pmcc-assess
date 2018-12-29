@@ -77,6 +77,9 @@ public class PrintedPageHouseController {
         BasicHouse basicHouse = null;
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         basicHouse = basicHouseService.getBasicHouseById(id);
+        if (id == null) {
+            return modelAndView;
+        }
         modelAndView.addObject("caseHouse", basicHouseService.getBasicHouseVo(basicHouse));
         modelAndView.addObject("hasHouseFaceStreetData", basicHouseFaceStreetService.hasHouseFaceStreetData(id));
         modelAndView.addObject("hasHouseIntelligentData", basicHouseIntelligentService.hasHouseIntelligentData(id));
@@ -91,10 +94,10 @@ public class PrintedPageHouseController {
         modelAndView.addObject("hasEquipmentPortion", basicHouseDamagedDegreeService.hasHouseDamagedDegreeData(id, "equipment.part"));
         modelAndView.addObject("hasOtherPortion", basicHouseDamagedDegreeService.hasHouseDamagedDegreeData(id, "other"));
 
-        modelAndView.addObject("hasStructuralElementDetail", basicHouseDamagedDegreeService.hasOppositeDetail(id,1));
-        modelAndView.addObject("hasNonbearingWallDetail", basicHouseDamagedDegreeService.hasOppositeDetail(id,2));
-        modelAndView.addObject("hasRoofDetail", basicHouseDamagedDegreeService.hasOppositeDetail(id,3));
-        modelAndView.addObject("hasFlooringDetail", basicHouseDamagedDegreeService.hasOppositeDetail(id,4));
+        modelAndView.addObject("hasStructuralElementDetail", basicHouseDamagedDegreeService.hasOppositeDetail(id, 1));
+        modelAndView.addObject("hasNonbearingWallDetail", basicHouseDamagedDegreeService.hasOppositeDetail(id, 2));
+        modelAndView.addObject("hasRoofDetail", basicHouseDamagedDegreeService.hasOppositeDetail(id, 3));
+        modelAndView.addObject("hasFlooringDetail", basicHouseDamagedDegreeService.hasOppositeDetail(id, 4));
         return modelAndView;
     }
 
@@ -175,15 +178,15 @@ public class PrintedPageHouseController {
         return vo;
     }
 
-   @ResponseBody
+    @ResponseBody
     @RequestMapping(value = "/getHouseDamagedDegreeDetailList", name = "结构明细部分", method = RequestMethod.GET)
     public BootstrapTableVo getHouseDamagedDegreeDetailList(Integer houseId, Integer index) throws Exception {
-       List<BasicHouseDamagedDegree> damagedDegreeList = basicHouseDamagedDegreeService.getDamagedDegreeList(houseId);
-       Integer id = damagedDegreeList.get(index).getId();
+        List<BasicHouseDamagedDegree> damagedDegreeList = basicHouseDamagedDegreeService.getDamagedDegreeList(houseId);
+        Integer id = damagedDegreeList.get(index).getId();
         return getHouseDamagedDegreeDetailList(id);
     }
 
-   public BootstrapTableVo getHouseDamagedDegreeDetailList(Integer damagedDegreeId) throws Exception {
+    public BootstrapTableVo getHouseDamagedDegreeDetailList(Integer damagedDegreeId) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         requestBaseParam.setLimit(100);
