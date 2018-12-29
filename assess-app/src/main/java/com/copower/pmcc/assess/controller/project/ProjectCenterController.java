@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.project;
 
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectCenterService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -17,7 +18,7 @@ import java.util.List;
 /**
  * 描述:
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2017/9/19
  * @time: 11:57
  */
@@ -36,13 +37,15 @@ public class ProjectCenterController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectNew");
         //获取到类型 类别 范围
         List<KeyValueDto> keyValueDtoList = baseProjectClassifyService.getProjectInitClassify();
-        modelAndView.addObject("keyValueDtoList",keyValueDtoList);
+        modelAndView.addObject("keyValueDtoList", keyValueDtoList);
         return modelAndView;
     }
 
     @RequestMapping(value = "/myProject", name = "我的立项")
     public ModelAndView myProject() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/myProject");
+        List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList();
+        modelAndView.addObject("statusEnumList", statusEnumList);
         return modelAndView;
     }
 
@@ -71,14 +74,16 @@ public class ProjectCenterController {
     }
 
 
-
-
     @RequestMapping(value = "/projectCsrList", name = "债权项目列表")
     public ModelAndView projectCsrList() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/csr/projectCsrList");
         return modelAndView;
     }
 
-
+    @ResponseBody
+    @RequestMapping(value = "/getMyProjectList", name = "取得我的立项", method = RequestMethod.GET)
+    public BootstrapTableVo getMyProjectList(String queryName, String projectStatus) {
+        return projectCenterService.getMyProjectList(queryName, projectStatus);
+    }
 
 }

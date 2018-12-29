@@ -36,6 +36,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -346,4 +348,26 @@ public class ProjectCenterService {
         return csrProjectInfoService.csrProjectInfoList(name);
     }
 
+
+    /**
+     * 获取我的项目
+     * @return
+     */
+    public BootstrapTableVo getMyProjectList(String queryName, String projectStatus) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        ProjectInfo projectInfo=new ProjectInfo();
+        projectInfo.setCreator(processControllerComponent.getThisUser());
+        projectInfo.setProjectName(queryName);
+        if("--请选择--".equals(projectStatus)){
+            projectStatus = ProjectStatusEnum.NORMAL.getName();
+        }
+        projectInfo.setProjectStatus(projectStatus);
+        List<ProjectInfo> myProjectList = projectInfoDao.getMyProjectList(projectInfo);
+        List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(myProjectList);
+        vo.setTotal(page.getTotal());
+        vo.setRows(ObjectUtils.isEmpty(projectInfoVos) ? new ArrayList<ProjectInfoVo>(10) : projectInfoVos);
+        return vo;
+    }
 }

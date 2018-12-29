@@ -1,5 +1,10 @@
 package com.copower.pmcc.assess.common.enums;
 
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 描述:
  *
@@ -47,6 +52,16 @@ public enum ProjectStatusEnum {
         return null;
     }
 
+    public static List<KeyValueDto> getProjectStatusEnumList() {
+        List<KeyValueDto> keyValueDtos = new ArrayList<>();
+        for (ProjectStatusEnum e : ProjectStatusEnum.values()) {
+            KeyValueDto keyValueDto = new KeyValueDto();
+            keyValueDto.setKey(String.valueOf(e.getKey()));
+            keyValueDto.setValue(e.getName());
+            keyValueDtos.add(keyValueDto);
+        }
+        return keyValueDtos;
+    }
 
     public String getName() {
         return name;
