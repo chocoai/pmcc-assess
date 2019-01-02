@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Created by zly on 2018/5/15.
+ * 现场查勘主表
  */
 @Service
 public class SurveySceneExploreService {

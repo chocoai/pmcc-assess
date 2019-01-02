@@ -41,8 +41,12 @@
 
         <!-- 具体表 -->
 
-        <table tableName="tb_basic_house_intelligent" domainObjectName="BasicHouseIntelligent">
+        <table tableName="tb_basic_apply" domainObjectName="BasicApply">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+
+
+        <!--<table tableName="tb_basic_house_intelligent" domainObjectName="BasicHouseIntelligent">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
 
         <!--<table tableName="tb_basic_estate_tagging" domainObjectName="BasicEstateTagging"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
 

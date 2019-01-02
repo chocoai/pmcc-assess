@@ -165,6 +165,66 @@ public class BasicApplyExample {
             return (Criteria) this;
         }
 
+        public Criteria andPlanDetailsIdIsNull() {
+            addCriterion("plan_details_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIsNotNull() {
+            addCriterion("plan_details_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdEqualTo(Integer value) {
+            addCriterion("plan_details_id =", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotEqualTo(Integer value) {
+            addCriterion("plan_details_id <>", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdGreaterThan(Integer value) {
+            addCriterion("plan_details_id >", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id >=", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdLessThan(Integer value) {
+            addCriterion("plan_details_id <", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdLessThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id <=", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIn(List<Integer> values) {
+            addCriterion("plan_details_id in", values, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotIn(List<Integer> values) {
+            addCriterion("plan_details_id not in", values, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id between", value1, value2, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id not between", value1, value2, "planDetailsId");
+            return (Criteria) this;
+        }
+
         public Criteria andProcessInsIdIsNull() {
             addCriterion("process_ins_id is null");
             return (Criteria) this;

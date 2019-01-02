@@ -161,7 +161,6 @@ public class SurveyCommonService {
      */
     public Map<String, List<SurveyExamineTaskVo>> getExamineTaskByUserAccount(Integer planDetailsId, String userAccount) {
         Map<String, List<SurveyExamineTaskVo>> map = Maps.newHashMap();
-        List<SurveyExamineTaskVo> blockTaskList = Lists.newArrayList();
         List<SurveyExamineTaskVo> estateTaskList = Lists.newArrayList();
         List<SurveyExamineTaskVo> buildingTaskList = Lists.newArrayList();
         List<SurveyExamineTaskVo> unitTaskList = Lists.newArrayList();
@@ -175,8 +174,6 @@ public class SurveyCommonService {
         if (CollectionUtils.isNotEmpty(examineTaskVos)) {
             for (SurveyExamineTaskVo examineTaskVo : examineTaskVos) {
                 if (StringUtils.isNotBlank(examineTaskVo.getApplyUrl())) {
-                    if (examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.BLOCK))
-                        blockTaskList.add(examineTaskVo);
                     if (examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.ESTATE))
                         estateTaskList.add(examineTaskVo);
                     if (examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.BUILDING))
@@ -188,7 +185,6 @@ public class SurveyCommonService {
                 }
             }
         }
-        map.put(AssessExamineTaskConstant.BLOCK, blockTaskList);
         map.put(AssessExamineTaskConstant.ESTATE, estateTaskList);
         map.put(AssessExamineTaskConstant.BUILDING, buildingTaskList);
         map.put(AssessExamineTaskConstant.UNIT, unitTaskList);

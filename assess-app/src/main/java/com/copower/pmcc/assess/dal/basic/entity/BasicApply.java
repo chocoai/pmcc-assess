@@ -5,6 +5,8 @@ import java.util.Date;
 public class BasicApply {
     private Integer id;
 
+    private Integer planDetailsId;
+
     private String processInsId;
 
     private String province;
@@ -55,6 +57,14 @@ public class BasicApply {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
     }
 
     public String getProcessInsId() {
