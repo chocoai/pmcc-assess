@@ -165,7 +165,6 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
             logger.error("设置数据异常!",e1);
         }
         Map<String, List<SurveyExamineTaskVo>> mapTaskList = surveyCommonService.getExamineTaskByUserAccount(projectPlanDetails.getPid(), userAccount);
-        modelAndView.addObject("blockTaskList", mapTaskList.get(AssessExamineTaskConstant.BLOCK));
         modelAndView.addObject("estateTaskList", mapTaskList.get(AssessExamineTaskConstant.ESTATE));
         modelAndView.addObject("buildingTaskList", mapTaskList.get(AssessExamineTaskConstant.BUILDING));
         modelAndView.addObject("unitTaskList", mapTaskList.get(AssessExamineTaskConstant.UNIT));
@@ -216,21 +215,27 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         List<BasicBuilding> basicBuildingList = null;
         BasicUnit basicUnit = null;
         BasicHouse basicHouse = null;
-        //申请楼栋 entity
-        basicApply = basicApplyService.getBasicApplyByPlanDetailsId(projectPlanDetails.getId());
-        //案例 entity
-        surveyCaseStudy = surveyCaseStudyService.getSurveyCaseStudy(projectPlanDetails.getId());
-        //查勘 entity
-        surveySceneExplore = surveySceneExploreService.getSurveySceneExplore(projectPlanDetails.getId());
-        basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-        basicBuildingMain = basicBuildingMainService.getBasicBuildingMainByApplyId(basicApply.getId());
-        basicUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
-        basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
-        if (basicBuildingMain != null) {
-            basicBuildingList = basicBuildingService.getBasicBuildingListByMainId(basicBuildingMain.getId());
-            if (CollectionUtils.isNotEmpty(basicBuildingList)){
-                basicBuilding = basicBuildingList.get(0);
+        try {
+            //申请楼栋 entity
+            basicApply = basicApplyService.getBasicApplyByPlanDetailsId(projectPlanDetails.getId());
+            if (basicApply != null){
+                //案例 entity
+                surveyCaseStudy = surveyCaseStudyService.getSurveyCaseStudy(projectPlanDetails.getId());
+                //查勘 entity
+                surveySceneExplore = surveySceneExploreService.getSurveySceneExplore(projectPlanDetails.getId());
+                basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+                basicBuildingMain = basicBuildingMainService.getBasicBuildingMainByApplyId(basicApply.getId());
+                basicUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
+                basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
+                if (basicBuildingMain != null) {
+                    basicBuildingList = basicBuildingService.getBasicBuildingListByMainId(basicBuildingMain.getId());
+                    if (CollectionUtils.isNotEmpty(basicBuildingList)){
+                        basicBuilding = basicBuildingList.get(0);
+                    }
+                }
             }
+        } catch (Exception e) {
+            //允许异常
         }
         //申请时
         if (apply) {

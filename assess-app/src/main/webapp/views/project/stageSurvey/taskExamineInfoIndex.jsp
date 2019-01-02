@@ -143,6 +143,18 @@
 <script src="${pageContext.request.contextPath}/js/examine/examine.unit.js"></script>
 <script src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
 
+<!-- 高德抓取周边数据 -->
+<script src="${pageContext.request.contextPath}/js/select/selectMap/transit.checkbox.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/metro.checkbox.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/finance.checkbox.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/education.checkbox.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/recreation.checkbox.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/restaurant.checkbox.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/market.checkbox.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/medical.checkbox.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/trafficHub.checkbox.js"></script>
+<script src="${pageContext.request.contextPath}/js/map.placeSearch.js"></script>
+
 
 <script type="text/javascript">
     $(function () {

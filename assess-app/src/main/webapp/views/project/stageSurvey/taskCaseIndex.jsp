@@ -95,7 +95,29 @@
                                         </div>
                                     </div>
                                 </div>
-                                <%--这部分功能暂不开放--%>
+
+                                <div class="form-group">
+
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            工业仓储类型
+                                        </label>
+                                    </div>
+
+                                    <div class="x-valid">
+                                        <c:choose>
+                                            <c:when test="${empty surveyExamineInfo}">
+                                                <c:forEach var="item" items="${examineFormTypeList}">
+                                                    <span class="col-sm-2">
+                                                        <input type="radio" name="examineFormType" data-value="${item.key}">
+                                                        <label for="examineFormType_${item.key}">&nbsp;${item.value}</label>
+                                                    </span>
+                                                </c:forEach>
+                                            </c:when>
+                                        </c:choose>
+                                    </div>
+                                </div>
+                                <%--这部分功能暂不开放 1--%>
                                 <div style="display:none;">
                                     <div class="form-group">
                                         <div class="x-valid">
@@ -170,6 +192,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- . -->
                             </form>
                         </div>
                     </div>
@@ -290,7 +313,7 @@
                 ]]
             }
         );
-    }
+    };
 
     //获取案例任务可操作权限
     taskCaseIndex.getOperationHtml = function (status, id) {
@@ -313,7 +336,7 @@
                 break
         }
         return resultHtml;
-    }
+    };
 
     //新增案例任务
     taskCaseIndex.addCaseTask = function (pid) {
@@ -329,7 +352,7 @@
         $("#planHours").val(node.planHours);
         $("#proportion").val(node.proportion);
         $("#plan_details_modal").modal('show');
-    }
+    };
 
     //编辑案例任务
     taskCaseIndex.editCaseTask = function (id) {
@@ -339,7 +362,7 @@
         $("#planStartDate").val(formatDate(node.planStartDate, false));
         $("#planEndDate").val(formatDate(node.planEndDate, false));
         $("#plan_details_modal").modal('show');
-    }
+    };
 
     //保存案例任务
     taskCaseIndex.saveCaseTask = function (id) {
@@ -349,7 +372,8 @@
             url: "${pageContext.request.contextPath}/surveyCaseStudy/saveCaseTask",
             data: {
                 planDetailsId: "${projectPlanDetails.id}",
-                formData: JSON.stringify(data)
+                formData: JSON.stringify(data),
+                examineFormType:data.examineFormType
             },
             type: "post",
             dataType: "json",
@@ -368,7 +392,9 @@
                 Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         });
-    }
+    };
+
+
 
     //删除案例任务
     taskCaseIndex.deleteCaseTask = function (id) {
@@ -395,7 +421,7 @@
                 }
             });
         })
-    }
+    };
 
     //选择责任人
     taskCaseIndex.selectEmployee = function () {
@@ -415,7 +441,7 @@
                 }
             }
         });
-    }
+    };
 
     //选择责任部门
     taskCaseIndex.selectDepartment = function () {
@@ -426,14 +452,14 @@
                 $("#executeDepartmentName").val(node[0].text);
             }
         });
-    }
+    };
 
     //打开提交任务链接
     taskCaseIndex.openTaskUrl = function (url) {
         openWin(url, function () {
             taskCaseIndex.getCaseTaskList();
         })
-    }
+    };
 
     //任务分派
     taskCaseIndex.assignment = function (id) {
@@ -441,7 +467,7 @@
         openWin(url, function () {
             taskCaseIndex.getCaseTaskList();
         })
-    }
+    };
 
     //所有任务完成
     taskCaseIndex.isAllFinish = function () {
@@ -459,7 +485,7 @@
             }
         })
         return isFinish;
-    }
+    };
 
     //加载申报权证
     taskCaseIndex.loadDeclareCert = function () {
@@ -478,7 +504,7 @@
             })
             $('#declareCertContent').append(html);
         }
-    }
+    };
 
     //获取申报权证数据
     taskCaseIndex.getDeclareCertData = function () {
@@ -491,7 +517,7 @@
             keyValueArray.push(keyValue);
         })
         return JSON.stringify(keyValueArray);
-    }
+    };
 
     //复制案例
     taskCaseIndex.copyCaseStudy = function (id) {
@@ -510,16 +536,16 @@
                 }
             }
         })
-    }
+    };
 
     //全选
     taskCaseIndex.selectAll = function () {
         $('#declareCertContent').find(':checkbox').prop('checked', true);
-    }
+    };
     //全不选
     taskCaseIndex.unSelectAll = function () {
         $('#declareCertContent').find(':checkbox').prop('checked', false);
-    }
+    };
     //反选
     taskCaseIndex.invertSelect = function () {
         $('#declareCertContent').find(':checkbox').each(function () {
