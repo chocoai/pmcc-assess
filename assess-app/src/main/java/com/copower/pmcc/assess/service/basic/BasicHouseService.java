@@ -312,6 +312,20 @@ public class BasicHouseService {
         return objectMap;
     }
 
+    public BasicHouse getHouseByApplyId(Integer applyId) throws Exception {
+        BasicHouse where = new BasicHouse();
+        where.setApplyId(applyId);
+        if (applyId == null || applyId == 0) {
+            where.setCreator(commonService.thisUserAccount());
+        }
+        List<BasicHouse> basicHouses = basicHouseDao.basicHouseList(where);
+        if (CollectionUtils.isEmpty(basicHouses)) {
+            return null;
+        }
+        BasicHouse basicHouse = basicHouses.get(0);
+        return basicHouse;
+    }
+
     /**
      * 添加房屋及交易情况
      *

@@ -1,6 +1,34 @@
+var examineCommon = {};
 
+/**
+ * 获取案例或者查勘 entity json
+ * @returns {*|jQuery}
+ */
+examineCommon.getSurveyJson = function () {
+    var surveySceneExploreJson = $("#surveySceneExploreJson").val();
+    var surveyCaseStudyJson = $("#surveyCaseStudyJson").val();
+    if (surveySceneExploreJson) {
+        return JSON.parse(surveySceneExploreJson);
+    }
+    if (surveyCaseStudyJson) {
+        return JSON.parse(surveyCaseStudyJson);
+    }
+};
 
-var examineCommon = {} ;
+examineCommon.getApplyId = function () {
+    var data = this.getSurveyJson();
+    return data.basicApplyId;
+};
+
+examineCommon.getPlanDetailsId = function () {
+    var data = this.getSurveyJson();
+    return data.planDetailsId;
+};
+
+examineCommon.getProjectId = function () {
+    var data = this.getSurveyJson();
+    return data.projectId;
+};
 
 //开发商选择
 examineCommon.developerSelect = function (this_) {

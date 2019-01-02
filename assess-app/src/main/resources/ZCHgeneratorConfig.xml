@@ -49,13 +49,13 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_declare_build_engineering" domainObjectName="DeclareBuildEngineering">
+        <table tableName="tb_survey_scene_explore" domainObjectName="SurveySceneExplore">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="tb_declare_build_equipment_install" domainObjectName="DeclareBuildEquipmentInstall">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_declare_build_equipment_install" domainObjectName="DeclareBuildEquipmentInstall">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_declare_realty_house_cert" domainObjectName="DeclareRealtyHouseCert">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->

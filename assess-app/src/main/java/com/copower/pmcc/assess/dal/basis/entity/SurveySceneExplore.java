@@ -13,6 +13,8 @@ public class SurveySceneExplore {
 
     private Integer declareId;
 
+    private Integer basicApplyId;
+
     private String jsonContent;
 
     private String location;
@@ -61,6 +63,14 @@ public class SurveySceneExplore {
 
     public void setDeclareId(Integer declareId) {
         this.declareId = declareId;
+    }
+
+    public Integer getBasicApplyId() {
+        return basicApplyId;
+    }
+
+    public void setBasicApplyId(Integer basicApplyId) {
+        this.basicApplyId = basicApplyId;
     }
 
     public String getJsonContent() {

@@ -84,6 +84,17 @@ public class BasicApplyService {
         }
     }
 
+    public BasicApply getBasicApplyByPlanDetailsId(Integer planDetailsId){
+        BasicApply basicApply = new BasicApply();
+        basicApply.setPlanDetailsId(planDetailsId);
+        List<BasicApply> basicApplies = basicApplyDao.getBasicApplyList(basicApply);
+        if (!ObjectUtils.isEmpty(basicApplies)) {
+            return basicApplies.get(0);
+        } else {
+            return null;
+        }
+    }
+
     public Integer saveBasicApply(BasicApply basicApply) {
         if (basicApply.getId() == null || basicApply.getId() == 0) {
             basicApply.setCreator(commonService.thisUserAccount());

@@ -21,17 +21,16 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
-            <!--填写表单-->
-            <input type="hidden" id="declareId" name="declareId" value="${declareRecord.id}">
-            <input type="hidden" id="planDetailsId" name="planDetailsId" value="${projectPlanDetails.pid}">
-            <input type="hidden" id="examineType" name="examineType" value="${examineType}">
+            <!--案例或者查勘 entity json-->
+            <input type="hidden" id="surveySceneExploreJson" value='${surveySceneExploreJson}'>
+            <input type="hidden" id="surveyCaseStudyJson" value='${surveyCaseStudyJson}'>
 
             <div class="x_panel examine">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${declareRecord.name}-调查信息-${dataExamineTask.name}</h2>
+                    <h2>${declareRecord.name}-调查信息-${dataExamineTask.name} ${empty surveySceneExploreJson?'查勘':''} ${empty surveyCaseStudyJson?'案例':''}</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content examine_content">
@@ -257,8 +256,25 @@
     };
 
     $(document).ready(function () {
-        assessEstate.initForm({estate:{},land:{}}) ;
-        buildingCommon.initForm({}) ;
+
+        //初始化方法和值
+        assessEstate.detail(examineCommon.getApplyId(),function (data) {
+            assessEstate.initForm({estate:data.basicEstate,land:data.basicEstateLandState}) ;
+        });
+
+        buildingCommon.detail(examineCommon.getApplyId(),function (data) {
+            buildingCommon.initForm({main:data,build:{}}) ;
+        });
+
+        unitCommon.detail(examineCommon.getApplyId(),function (data) {
+            unitCommon.initForm(data);
+        });
+
+        houseCommon.detail(examineCommon.getApplyId(),function (data) {
+            houseCommon.initForm(data) ;
+        });
+
+        //楼盘自动填充插件
         assessEstate.autocompleteStart() ;
     });
 </script>

@@ -6,11 +6,13 @@
 
 <div class="x_content">
     <div class="x_title">
-        <h3>房屋交易信息 </h3>
+        <h3>
+            房屋交易信息
+        </h3>
         <div class="clearfix"></div>
     </div>
-    <form id="frm_houseTrading" class="form-horizontal">
-        <input type="hidden" name="id" value="${surveyExamineDataInfoVo.examineHouseTradingVo.id}">
+    <form class="form-horizontal" id="basicTradingFrm">
+        <input type="hidden" name="id" value="${basicHouseTrading.id}">
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">交易情况</label>
@@ -200,21 +202,14 @@
                     </select>
                 </div>
             </div>
-            <div class="x-valid infomationTypeOpen" style="display: none;">
-                <label class="col-sm-1 control-label">信息来源类别</label>
-                <div class="col-sm-3">
-                    <select class="form-control search-select select2 informationCategory" name="informationCategory">
-                    </select>
-                </div>
-            </div>
-            <div class="x-valid infomationTypeOther" style="display: none;">
+            <div class="x-valid">
                 <label class="col-sm-1 control-label">姓名</label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="姓名" class="form-control" name="name"
                            value="${basicHouseTrading.name}">
                 </div>
             </div>
-            <div class="x-valid infomationTypeOther" style="display: none;">
+            <div class="x-valid">
                 <label class="col-sm-1 control-label">电话</label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="电话" class="form-control" name="phone"
@@ -225,15 +220,7 @@
     </form>
 </div>
 
-
-
-<script type="text/javascript">
-
-
-
-</script>
-
-<div id="divBoxExamineHouseTradingLeaseAndSell" class="modal fade bs-example-modal-lg" data-backdrop="static"
+<div id="divBoxTradingLeaseAndSell" class="modal fade bs-example-modal-lg" data-backdrop="static"
      tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -244,7 +231,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title"></h3>
             </div>
-            <form id="frm_ExamineHouseTradingLeaseAndSell" class="form-horizontal">
+            <form id="frmTradingLeaseAndSell" class="form-horizontal">
                 <input type="hidden" name="id">
                 <input type="hidden" name="type" class="type">
                 <div class="modal-body">
@@ -335,7 +322,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="examineHouseTrading.prototype.subSave()">
+                    <button type="button" class="btn btn-primary" onclick="houseCommon.saveTradingSellAndLease()">
                         保存
                     </button>
                 </div>

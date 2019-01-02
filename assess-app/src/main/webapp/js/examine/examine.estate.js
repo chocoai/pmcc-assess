@@ -74,11 +74,30 @@
         })
     };
 
+    assessEstate.detail = function (id,callback) {
+        $.ajax({
+            url: getContextPath() + '/basicEstate/getBasicEstateByApplyId',
+            type: 'get',
+            data: {applyId: id},
+            success: function (result) {
+                if (result.ret) {
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    };
+
     /**
      * 楼盘信息 赋值
      * @param data
      */
     assessEstate.initForm = function (data) {
+        assessEstate.estateForm.clearAll();
+        assessEstate.estateLandStateForm.clearAll();
+        assessEstate.estateForm.initForm(data.estate);
+        assessEstate.estateLandStateForm.initForm(data.land);
         AssessCommon.initAreaInfo({
             provinceTarget: assessEstate.estateForm.find("select[name='province']"),
             cityTarget: assessEstate.estateForm.find("select[name='city']"),

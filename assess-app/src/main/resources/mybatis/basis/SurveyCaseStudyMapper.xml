@@ -7,6 +7,7 @@
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
     <result column="declare_id" property="declareId" jdbcType="INTEGER" />
+    <result column="basic_apply_id" property="basicApplyId" jdbcType="INTEGER" />
     <result column="json_content" property="jsonContent" jdbcType="CHAR" />
     <result column="location" property="location" jdbcType="CHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -72,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, plan_details_id, process_ins_id, declare_id, json_content, location, 
-    creator, gmt_created, gmt_modified
+    id, project_id, plan_details_id, process_ins_id, declare_id, basic_apply_id, json_content, 
+    location, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudyExample" >
     select
@@ -110,13 +111,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_survey_case_study (project_id, plan_details_id, process_ins_id, 
-      declare_id, json_content, location, 
-      creator, gmt_created, gmt_modified
-      )
+      declare_id, basic_apply_id, json_content, 
+      location, creator, gmt_created, 
+      gmt_modified)
     values (#{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
-      #{declareId,jdbcType=INTEGER}, #{jsonContent,jdbcType=CHAR}, #{location,jdbcType=CHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{declareId,jdbcType=INTEGER}, #{basicApplyId,jdbcType=INTEGER}, #{jsonContent,jdbcType=CHAR}, 
+      #{location,jdbcType=CHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudy" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -135,6 +136,9 @@
       </if>
       <if test="declareId != null" >
         declare_id,
+      </if>
+      <if test="basicApplyId != null" >
+        basic_apply_id,
       </if>
       <if test="jsonContent != null" >
         json_content,
@@ -164,6 +168,9 @@
       </if>
       <if test="declareId != null" >
         #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="basicApplyId != null" >
+        #{basicApplyId,jdbcType=INTEGER},
       </if>
       <if test="jsonContent != null" >
         #{jsonContent,jdbcType=CHAR},
@@ -206,6 +213,9 @@
       <if test="record.declareId != null" >
         declare_id = #{record.declareId,jdbcType=INTEGER},
       </if>
+      <if test="record.basicApplyId != null" >
+        basic_apply_id = #{record.basicApplyId,jdbcType=INTEGER},
+      </if>
       <if test="record.jsonContent != null" >
         json_content = #{record.jsonContent,jdbcType=CHAR},
       </if>
@@ -233,6 +243,7 @@
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       declare_id = #{record.declareId,jdbcType=INTEGER},
+      basic_apply_id = #{record.basicApplyId,jdbcType=INTEGER},
       json_content = #{record.jsonContent,jdbcType=CHAR},
       location = #{record.location,jdbcType=CHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -256,6 +267,9 @@
       </if>
       <if test="declareId != null" >
         declare_id = #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="basicApplyId != null" >
+        basic_apply_id = #{basicApplyId,jdbcType=INTEGER},
       </if>
       <if test="jsonContent != null" >
         json_content = #{jsonContent,jdbcType=CHAR},
@@ -281,6 +295,7 @@
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
       declare_id = #{declareId,jdbcType=INTEGER},
+      basic_apply_id = #{basicApplyId,jdbcType=INTEGER},
       json_content = #{jsonContent,jdbcType=CHAR},
       location = #{location,jdbcType=CHAR},
       creator = #{creator,jdbcType=VARCHAR},
