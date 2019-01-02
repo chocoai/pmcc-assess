@@ -86,4 +86,9 @@ public class ProjectCenterController {
         return projectCenterService.getMyProjectList(queryName, projectStatus);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/getParticipationProject", name = "取得参与项目", method = RequestMethod.GET)
+    public BootstrapTableVo getParticipationProject(String queryName, String projectStatus) {
+        return projectCenterService.getParticipationProject();
+    }
 }

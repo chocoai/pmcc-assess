@@ -37,7 +37,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,7 +45,7 @@ import java.util.List;
 /**
  * 描述:
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2017/9/19
  * @time: 11:57
  */
@@ -78,6 +77,7 @@ public class ProjectCenterService {
     private ProjectMemberService projectMemberService;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+
 
     public Integer getTodayTaskCount() {
         Date date = new Date();
@@ -192,17 +192,18 @@ public class ProjectCenterService {
 
     /**
      * 获取项目列表
+     *
      * @return
      */
     public BootstrapTableVo getProjectList() {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        ProjectInfo queryParam=new ProjectInfo();
+        ProjectInfo queryParam = new ProjectInfo();
         queryParam.setProjectName(requestBaseParam.getSearch());
         List<ProjectInfo> projectInfoList = Lists.newArrayList();
         //如果是超级管理员，跳过权限过滤
-        if(!processControllerComponent.userIsAdmin(processControllerComponent.getThisUser())){
+        if (!processControllerComponent.userIsAdmin(processControllerComponent.getThisUser())) {
             //获取当前登陆人的角色
             KeyValueDto keyValueDto = bpmRpcToolsService.getUserAccountDataRole(processControllerComponent.getThisUser());
             ErpUserDataRoleEnum erpUserDataRoleEnum = ErpUserDataRoleEnum.create(keyValueDto.getKey());
@@ -213,8 +214,8 @@ public class ProjectCenterService {
                     projectMember.setUserAccountMember(processControllerComponent.getThisUser());
                     List<ProjectMember> projectMembers = projectMemberDao.getProjectMemberList(projectMember);
                     List<Integer> projectIds = new ArrayList<Integer>();
-                    if(CollectionUtils.isNotEmpty(projectMembers)){
-                        for(ProjectMember obj : projectMembers){
+                    if (CollectionUtils.isNotEmpty(projectMembers)) {
+                        for (ProjectMember obj : projectMembers) {
                             projectIds.add(obj.getProjectId());
                         }
                     }
@@ -235,8 +236,8 @@ public class ProjectCenterService {
                             }
                         }
                     }
-                    if(CollectionUtils.isNotEmpty(departmentIds)){
-                        for (String item : departmentIds){
+                    if (CollectionUtils.isNotEmpty(departmentIds)) {
+                        for (String item : departmentIds) {
                             conditions.add(Integer.valueOf(item));
                         }
                     }
@@ -249,8 +250,8 @@ public class ProjectCenterService {
                     projectMember.setUserAccountMember(processControllerComponent.getThisUser());
                     List<ProjectMember> projectMembers = projectMemberDao.getProjectMemberList(projectMember);
                     List<Integer> projectIds = new ArrayList<Integer>();
-                    if(CollectionUtils.isNotEmpty(projectMembers)){
-                        for(ProjectMember obj : projectMembers){
+                    if (CollectionUtils.isNotEmpty(projectMembers)) {
+                        for (ProjectMember obj : projectMembers) {
                             projectIds.add(obj.getProjectId());
                         }
                     }
@@ -259,8 +260,8 @@ public class ProjectCenterService {
                     break;
                 }
             }
-        }else{
-            projectInfoList = projectInfoDao.getProjectInfoList(queryParam,null);
+        } else {
+            projectInfoList = projectInfoDao.getProjectInfoList(queryParam, null);
         }
         List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(projectInfoList);
         bootstrapTableVo.setTotal(page.getTotal());
@@ -338,7 +339,6 @@ public class ProjectCenterService {
     }
 
 
-
     public List<ProjectInfo> getProjectListByMonth(String dates, String datee) {
         List<ProjectInfo> projectInfos = projectInfoDao.getProjectInfoListByCompleteDatePlan(DateUtils.parse(dates), DateUtils.parse(datee), "");
         return projectInfos;
@@ -350,22 +350,48 @@ public class ProjectCenterService {
 
 
     /**
-     * 获取我的项目
+     * 获取我的立项
+     *
      * @return
      */
     public BootstrapTableVo getMyProjectList(String queryName, String projectStatus) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        ProjectInfo projectInfo=new ProjectInfo();
+        ProjectInfo projectInfo = new ProjectInfo();
         projectInfo.setCreator(processControllerComponent.getThisUser());
         projectInfo.setProjectName(queryName);
-        if("--请选择--".equals(projectStatus)){
+        if ("--请选择--".equals(projectStatus)) {
             projectStatus = ProjectStatusEnum.NORMAL.getName();
         }
         projectInfo.setProjectStatus(projectStatus);
         List<ProjectInfo> myProjectList = projectInfoDao.getMyProjectList(projectInfo);
         List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(myProjectList);
+        vo.setTotal(page.getTotal());
+        vo.setRows(ObjectUtils.isEmpty(projectInfoVos) ? new ArrayList<ProjectInfoVo>(10) : projectInfoVos);
+        return vo;
+    }
+
+    /**
+     * 获取当前登录人参与项目
+     *
+     * @return
+     */
+    public List<ProjectInfo> getProjectByUser() {
+        List<ProjectInfo> projectInfoList = new ArrayList<>();
+        List<ProjectMember> list = projectMemberService.projectIdByUser();
+        for (ProjectMember item : list) {
+            projectInfoList.add(projectInfoService.getProjectInfoById(item.getProjectId()));
+        }
+        return projectInfoList;
+    }
+
+    public BootstrapTableVo getParticipationProject() {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<ProjectInfo> list = getProjectByUser();
+        List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(list);
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(projectInfoVos) ? new ArrayList<ProjectInfoVo>(10) : projectInfoVos);
         return vo;

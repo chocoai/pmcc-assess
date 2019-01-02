@@ -219,4 +219,10 @@ public class ProjectMemberService {
 
         return vo;
     }
+
+
+    List<ProjectMember> projectIdByUser(){
+        String user = processControllerComponent.getThisUser();
+        return projectMemberDao.projectIdByUser(user);
+    };
 }
