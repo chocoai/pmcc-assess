@@ -446,7 +446,7 @@ public class ProjectPlanService {
                     projectPlanDetailsDao.updateProjectPlanDetails(item);
                 }
             }
-            projectPlan.setProjectStatus(ProjectStatusEnum.PLAN.getName());
+            projectPlan.setProjectStatus(ProjectStatusEnum.PLAN.getKey());
             projectPlanDao.updateProjectPlan(projectPlan);
             if (bisAllUser) {
                 if (StringUtils.isNotBlank(projectWorkStage.getBoxName())) {
@@ -465,7 +465,7 @@ public class ProjectPlanService {
                     ddlMySqlAssist.customTableDdl(sql);//更新数据
 
                     //如果项目所有的计划都已完成，则更新当前阶段计划完成
-                    projectPlan.setProjectStatus(ProjectStatusEnum.TASK.getName());
+                    projectPlan.setProjectStatus(ProjectStatusEnum.TASK.getKey());
                     projectPlanDao.updateProjectPlan(projectPlan);
 
                 }
@@ -675,7 +675,7 @@ public class ProjectPlanService {
     @Transactional(rollbackFor = Exception.class)
     public void updatePlanStatus(Integer planId) throws Exception {
         ProjectPlan projectPlan = projectPlanDao.getProjectplanById(planId);
-        projectPlan.setProjectStatus(ProjectStatusEnum.FINISH.getName());
+        projectPlan.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
         projectPlan.setFinishDate(new Date());
         int currStageSort = projectPlan.getStageSort().intValue();
         if (currStageSort == 1) {
@@ -717,14 +717,14 @@ public class ProjectPlanService {
                         } else {
                             throw new BusinessException(projectWorkStage.getWorkStageName() + "阶段没有配置相应的责任人");
                         }
-                        plan.setProjectStatus(ProjectStatusEnum.PLAN.getName());
+                        plan.setProjectStatus(ProjectStatusEnum.PLAN.getKey());
                         projectPlanDao.updateProjectPlan(plan);
                     }
                 }
             } else { //如果没有相应的阶段，则说明项目已经结束
                 //处理更新项目状态的相关事项
                 projectInfo.setStatus(ProcessStatusEnum.FINISH.getValue());
-                projectInfo.setProjectStatus(ProjectStatusEnum.FINISH.getName());
+                projectInfo.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
                 projectInfoDao.updateProjectInfo(projectInfo);
                 SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(projectInfo.getId(), applicationConstant.getAppKey());
                 if (sysProjectDto.getId() > 0) {

@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
@@ -283,6 +284,10 @@ public class ProjectPlanDetailsService {
             //设置查看url
             if (StringUtils.isNotBlank(projectPlanDetailsVo.getExecuteUserAccount()) && projectPlanDetailsVo.getBisStart()) {
                 projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));
+                ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetailsVo.getProjectPhaseId());
+                if (projectPhase != null) {
+                    projectPlanDetailsVo.setCanReplay(projectPhase.getBisCanReturn());
+                }
             }
         }
         return projectPlanDetailsVos;
@@ -464,13 +469,17 @@ public class ProjectPlanDetailsService {
      * @param reason
      */
     @Transactional(rollbackFor = Exception.class)
-    public void replyProjectPlanDetails(Integer planDetailsId, String reason) {
+    public void replyProjectPlanDetails(Integer planDetailsId, String reason) throws BusinessException {
         //1.更新任务状态 记录重启原因 2.添加新的待提交任务
         ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(planDetailsId);
         if (projectPlanDetails == null) return;
+        if (!StringUtils.equals(projectPlanDetails.getStatus(), ProcessStatusEnum.FINISH.getValue()))
+            throw new BusinessException("已完成的任务才允许重启");
+
         projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
         projectPlanDetails.setReturnDetailsReason(reason);
         projectPlanDetails.setTaskSubmitTime(null);
+        projectPlanDetails.setBisStart(false);
         projectPlanDetails.setProcessInsId("0");
         projectPlanDetails.setActualHours(null);
         projectPlanDetailsDao.updateProjectPlanDetailsAndNull(projectPlanDetails);
@@ -479,5 +488,35 @@ public class ProjectPlanDetailsService {
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
         projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
 
+    }
+
+    /**
+     * 调整任务责任人
+     *
+     * @param planDetailsId
+     * @param newExecuteUser
+     */
+    public void updateExecuteUser(Integer planDetailsId, String newExecuteUser) throws BusinessException {
+        ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(planDetailsId);
+        if (projectPlanDetails == null) return;
+        if (StringUtils.isBlank(newExecuteUser))
+            throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+        if (projectPlanDetails.getBisStart())
+            throw new BusinessException("只允许未提交的数据变更责任人");
+        projectPlanDetails.setExecuteUserAccount(newExecuteUser);
+        SysUserDto sysUser = erpRpcUserService.getSysUser(newExecuteUser);
+        projectPlanDetails.setExecuteDepartmentId(sysUser.getDepartmentId());
+        projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
+
+        ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
+        projectResponsibilityDto.setAppKey(applicationConstant.getAppKey());
+        projectResponsibilityDto.setProjectId(projectPlanDetails.getProjectId());
+        projectResponsibilityDto.setPlanId(projectPlanDetails.getPlanId());
+        projectResponsibilityDto.setPlanDetailsId(projectPlanDetails.getId());
+        ProjectResponsibilityDto projectTask = bpmRpcProjectTaskService.getProjectTask(projectResponsibilityDto);
+        if (projectTask != null) {
+            projectTask.setUserAccount(newExecuteUser);
+            bpmRpcProjectTaskService.updateProjectTask(projectTask);
+        }
     }
 }

@@ -9,10 +9,10 @@ import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
-import com.copower.pmcc.assess.service.project.change.ProjectFollowService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.change.ProjectFollowService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -216,6 +216,8 @@ public class ProjectInfoController {
         //判断当前人员是否关注项目
         ProjectFollow projectFollow = projectFollowService.getProjectFollowByUser(projectInfo.getId());
         modelAndView.addObject("projectFollowFlog", projectFollow == null ? 0 : 1);
+        //判断当前人是否为项目经理
+        modelAndView.addObject("isPM", StringUtils.equals(projectMemberVo.getUserAccountManager(), processControllerComponent.getThisUser()));
         return modelAndView;
     }
 

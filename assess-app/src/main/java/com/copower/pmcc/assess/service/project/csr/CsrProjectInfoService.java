@@ -220,7 +220,7 @@ public class CsrProjectInfoService {
         if (csrProjectInfo.getId() != null && csrProjectInfo.getId() > 0) {
             csrProjectInfoDao.updateCsrProjectInfo(csrProjectInfo);
         } else {
-            csrProjectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getName());
+            csrProjectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getKey());
             csrProjectInfo.setCreator(commonService.thisUserAccount());
             csrProjectInfoDao.addCsrProjectInfo(csrProjectInfo);
         }

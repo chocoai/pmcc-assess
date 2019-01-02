@@ -84,7 +84,7 @@ public class ProjectPauseService {
         }
 
         ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(projectId);
-        projectInfo.setProjectStatus(ProjectStatusEnum.PAUSEAPPLY.getName());
+        projectInfo.setProjectStatus(ProjectStatusEnum.PAUSEAPPLY.getKey());
         if (!projectInfoDao.updateProjectInfo(projectInfo)) {
             throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
         }
@@ -139,7 +139,7 @@ public class ProjectPauseService {
             projectSuspend.setSuspendUserAccount(processControllerComponent.getThisUser());
             projectSuspend.setSupendDate(new Date());
             projectSuspendDao.editSuspend(projectSuspend);
-            projectInfo.setProjectStatus(ProjectStatusEnum.PAUSE.getName());
+            projectInfo.setProjectStatus(ProjectStatusEnum.PAUSE.getKey());
             projectInfoDao.updateProjectInfo(projectInfo);
 
         }
@@ -191,7 +191,7 @@ public class ProjectPauseService {
         }
 
         ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(projectId);
-        projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getName());
+        projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getKey());
         if (!projectInfoDao.updateProjectInfo(projectInfo)) {
             throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
         }
@@ -199,7 +199,7 @@ public class ProjectPauseService {
         List<ProjectPlan> projectPlans = projectPlanDao.getProjectPlanByStatus(Lists.newArrayList(projectId), ProjectStatusEnum.PAUSE.getName());
         if (CollectionUtils.isNotEmpty(projectPlans)) {
             for (ProjectPlan item : projectPlans) {
-                item.setProjectStatus(ProjectStatusEnum.PLAN.getName());
+                item.setProjectStatus(ProjectStatusEnum.PLAN.getKey());
                 projectPlanDao.updateProjectPlan(item);
             }
         }
@@ -269,7 +269,7 @@ public class ProjectPauseService {
         List<ProjectPlan> projectPlans = projectPlanDao.getProjectPlanByStatus(Lists.newArrayList(projectId), ProjectStatusEnum.PLAN.getName());
         if (CollectionUtils.isNotEmpty(projectPlans)) {
             for (ProjectPlan item : projectPlans) {
-                item.setProjectStatus(ProjectStatusEnum.PAUSE.getName());
+                item.setProjectStatus(ProjectStatusEnum.PAUSE.getKey());
                 projectPlanDao.updateProjectPlan(item);
             }
         }

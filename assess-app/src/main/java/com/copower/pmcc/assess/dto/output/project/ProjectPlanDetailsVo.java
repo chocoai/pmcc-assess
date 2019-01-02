@@ -27,6 +27,8 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
 
     private Boolean canAssignment;
 
+    private Boolean canReplay;//是否允许重启
+
     private List<KeyValueDto> tasks;
 
     public String get_parentId() {
@@ -83,6 +85,14 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
 
     public void setCanAssignment(Boolean canAssignment) {
         this.canAssignment = canAssignment;
+    }
+
+    public Boolean getCanReplay() {
+        return canReplay;
+    }
+
+    public void setCanReplay(Boolean canReplay) {
+        this.canReplay = canReplay;
     }
 
     public List<KeyValueDto> getTasks() {

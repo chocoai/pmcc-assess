@@ -5,7 +5,6 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectMemberExample;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectMemberHistory;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectMemberHistoryMapper;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectMemberMapper;
-import com.copower.pmcc.assess.dal.basis.mapper.ProjectMemberReplenishMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +23,6 @@ import java.util.List;
 public class ProjectMemberDao {
     @Autowired
     private ProjectMemberMapper projectMemberMapper;
-    @Autowired
-    private ProjectMemberReplenishMapper projectMemberReplenishMapper;
     @Autowired
     private ProjectMemberHistoryMapper projectMemberHistoryMapper;
 
@@ -90,7 +87,4 @@ public class ProjectMemberDao {
         return i == 1;
     }
 
-    public List<ProjectMember> projectIdByUser(String user) {
-        return projectMemberReplenishMapper.projectIdByUser(user);
-    }
 }

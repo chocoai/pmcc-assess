@@ -79,6 +79,8 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
             }
             list = surveyAssetInventoryContentDao.getSurveyAssetInventoryContent(projectPlanDetails.getId());
         }
+        SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByPlanDetailsId(projectPlanDetails.getId());
+        modelAndView.addObject("surveyAssetInventory", surveyAssetInventory);
         List<SurveyAssetInventoryContentVo> surveyAssetInventoryContentVos = surveyAssetInventoryContentService.getVoList(list);
         SysUserDto thisUserInfo = processControllerComponent.getThisUserInfo();
         modelAndView.addObject("inventoryRightTypeList", inventoryRightTypeList); //数据字典

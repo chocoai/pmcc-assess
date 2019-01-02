@@ -53,7 +53,7 @@ public class ProjectCloseEvent extends BaseProcessEvent {
             //如果取消终止，则恢复相应的计划或工作任务
             if (CollectionUtils.isNotEmpty(projectPlans)) {
                 for (ProjectPlan item : projectPlans) {
-                    item.setProjectStatus(ProjectStatusEnum.PLAN.getName());
+                    item.setProjectStatus(ProjectStatusEnum.PLAN.getKey());
                     projectPlanDao.updateProjectPlan(item);
                 }
             }

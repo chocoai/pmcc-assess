@@ -44,17 +44,30 @@ public class ProjectCenterController {
     @RequestMapping(value = "/myProject", name = "我的立项")
     public ModelAndView myProject() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/myProject");
-        List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList();
+        List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList(ProjectStatusEnum.RUNING.getKey(),
+                ProjectStatusEnum.FINISH.getKey(),ProjectStatusEnum.CLOSE.getKey());
         modelAndView.addObject("statusEnumList", statusEnumList);
         return modelAndView;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/getMyProjectList", name = "取得我的立项", method = RequestMethod.GET)
+    public BootstrapTableVo getMyProjectList(String queryName, String projectStatus) {
+        return projectCenterService.getMyProjectList(queryName, projectStatus);
     }
 
     @RequestMapping(value = "/myParticipation", name = "我的参与")
     public ModelAndView myParticipation() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/myParticipation");
-        List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList();
+        List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList(ProjectStatusEnum.RUNING.getKey(),
+                ProjectStatusEnum.FINISH.getKey(),ProjectStatusEnum.CLOSE.getKey());
         modelAndView.addObject("statusEnumList", statusEnumList);
         return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getParticipationProject", name = "取得参与项目", method = RequestMethod.GET)
+    public BootstrapTableVo getParticipationProject(String queryName, String projectStatus) {
+        return projectCenterService.getParticipationProject(queryName, projectStatus);
     }
 
     @RequestMapping(value = "/projectList", name = "所有项目")
@@ -84,15 +97,5 @@ public class ProjectCenterController {
         return modelAndView;
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/getMyProjectList", name = "取得我的立项", method = RequestMethod.GET)
-    public BootstrapTableVo getMyProjectList(String queryName, String projectStatus) {
-        return projectCenterService.getMyProjectList(queryName, projectStatus);
-    }
 
-    @ResponseBody
-    @RequestMapping(value = "/getParticipationProject", name = "取得参与项目", method = RequestMethod.GET)
-    public BootstrapTableVo getParticipationProject(String queryName, String projectStatus) {
-        return projectCenterService.getParticipationProject(queryName, projectStatus);
-    }
 }

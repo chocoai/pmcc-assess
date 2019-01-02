@@ -30,4 +30,28 @@ public class ProjectPlanDetailsController {
             return HttpResult.newErrorResult("是否所有计划任务已完成异常");
         }
     }
+
+    @ResponseBody
+    @PostMapping(name = "重启任务", value = "/replyProjectPlanDetails")
+    public HttpResult replyProjectPlanDetails(Integer planDetailsId, String reason) {
+        try {
+            projectPlanDetailsService.replyProjectPlanDetails(planDetailsId, reason);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error("重启任务", e);
+            return HttpResult.newErrorResult("重启任务异常");
+        }
+    }
+
+    @ResponseBody
+    @PostMapping(name = "调整责任人", value = "/updateExecuteUser")
+    public HttpResult updateExecuteUser(Integer planDetailsId, String newExecuteUser) {
+        try {
+            projectPlanDetailsService.updateExecuteUser(planDetailsId, newExecuteUser);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error("调整责任人", e);
+            return HttpResult.newErrorResult("调整责任人异常");
+        }
+    }
 }

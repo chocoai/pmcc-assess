@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.dao.project;
 
+import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomProjectInfoMapper;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfoExample;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectInfoMapper;
@@ -23,6 +24,8 @@ import java.util.List;
 public class ProjectInfoDao {
     @Autowired
     private ProjectInfoMapper projectInfoMapper;
+    @Autowired
+    private CustomProjectInfoMapper customProjectInfoMapper;
 
     public Boolean saveProjectInfo(ProjectInfo projectInfo)
     {
@@ -150,22 +153,9 @@ public class ProjectInfoDao {
         return projectInfoMapper.selectByExample(example);
     }
 
-    public ProjectInfo getMyProjectListById(ProjectInfo projectInfo) {
-        ProjectInfoExample example = new ProjectInfoExample();
-        ProjectInfoExample.Criteria criteria = example.createCriteria();
-        criteria.andIdEqualTo(projectInfo.getId());
-        //项目名称模糊查询
-        if(StringUtils.isNotEmpty(projectInfo.getProjectName())){
-            criteria.andProjectNameLike(String.format("%%%s%%",projectInfo.getProjectName()));
-        }
-        //项目状态查询
-        if(StringUtils.isNotEmpty(projectInfo.getProjectStatus())){
-            criteria.andProjectStatusEqualTo(projectInfo.getProjectStatus());
-        }
-        example.setOrderByClause("id desc");
-        if(CollectionUtils.isNotEmpty(projectInfoMapper.selectByExample(example))){
-            return projectInfoMapper.selectByExample(example).get(0);
-        }
-        return null;
+    public List<ProjectInfo> getProjectListByUserAccount(String userAccount,String projectName,String projectStatus) {
+        return customProjectInfoMapper.getProjectListByUserAccount(userAccount,projectName,projectStatus);
     }
+
+
 }

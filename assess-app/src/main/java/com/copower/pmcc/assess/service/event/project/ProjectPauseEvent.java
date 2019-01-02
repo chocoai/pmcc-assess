@@ -49,18 +49,18 @@ public class ProjectPauseEvent extends BaseProcessEvent {
           //  projectSuspend.setSuspendUserAccount(processControllerComponent.getThisUser());
             projectSuspend.setSupendDate(new Date());
             projectSuspendDao.editSuspend(projectSuspend);
-            projectInfo.setProjectStatus(ProjectStatusEnum.PAUSE.getName());
+            projectInfo.setProjectStatus(ProjectStatusEnum.PAUSE.getKey());
             projectInfoDao.updateProjectInfo(projectInfo);
 
         }
         if (processExecution.getProcessStatus().equals(ProcessStatusEnum.CLOSE)) {
             List<ProjectPlan> projectPlans = projectPlanDao.getProjectPlanByStatus(Lists.newArrayList(projectInfo.getId()), ProjectStatusEnum.PAUSE.getName());
-            projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getName());
+            projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getKey());
             projectInfoDao.updateProjectInfo(projectInfo);
             //如果取消终止，则恢复相应的计划或工作任务
             if (CollectionUtils.isNotEmpty(projectPlans)) {
                 for (ProjectPlan item : projectPlans) {
-                    item.setProjectStatus(ProjectStatusEnum.PLAN.getName());
+                    item.setProjectStatus(ProjectStatusEnum.PLAN.getKey());
                     projectPlanDao.updateProjectPlan(item);
                 }
             }

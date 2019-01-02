@@ -42,8 +42,8 @@ public class ProjectInfoEvent extends BaseProcessEvent {
             if (projectInfo != null){
                 initiateContactsService.writeCrmCustomerDto(projectInfo.getId(),InitiateContactsEnum.UNIT_INFORMATION.getId()) ;
             }
-            //更新流程状态
-            projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getName());
+            //更新项目状态
+            projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getKey());
             projectInfoService.updateProjectInfo(projectInfo);
             List<ProjectPlan> projectPlans = projectPlanService.getProjectplanByProjectId(projectInfo.getId(), "");
             projectPlanService.updatePlanStatus(projectPlans.get(0).getId());
