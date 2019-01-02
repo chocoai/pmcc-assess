@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ProjectMemberReplenishMapper">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.custom.mapper.CustomProjectInfoMapper">
     <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectInfo">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="project_class_id" property="projectClassId" jdbcType="INTEGER"/>
@@ -35,7 +35,7 @@
     <select id="getProjectListByUserAccount" parameterType="map" resultMap="BaseResultMap">
         SELECT tb_project_info.* FROM tb_project_info A LEFT JOIN tb_project_member B on A.id=B.project_id WHERE 1=1
         <if test="userAccount!=null and userAccount!=''">
-            AND (A.user_account_manager = #{userAccount} OR B.user_account_member LIKE
+            AND (B.user_account_manager = #{userAccount} OR B.user_account_member LIKE
             CONCAT(CONCAT('%',#{userAccount}), '%'))
         </if>
         <if test="projectName!=null and projectName!=''">
@@ -45,6 +45,5 @@
             AND A.project_status = #{projectStatus}
         </if>
         ORDER BY A.id DESC
-        WHERE
     </select>
 </mapper>
