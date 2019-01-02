@@ -76,10 +76,10 @@
                     <label class="form-control">${projectPlanDetails.planRemarks}</label>
                 </div>
             </div>
-            <c:if test="${projectPlanDetails.returnDetailsId>0}">
+            <c:if test="${not empty projectPlanDetails.returnDetailsReason}">
                 <div class="form-group">
                     <label class="col-sm-1 control-label">
-                        退回原因
+                        重启原因
                     </label>
                     <div class="col-sm-11">
                         <label class="form-control">${projectPlanDetails.returnDetailsReason}</label>

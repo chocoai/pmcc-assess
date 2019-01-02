@@ -246,14 +246,19 @@
                         width: '20%',
                         formatter: function (value, row) {
                             var s = "";
+                            if (!row.bisStart && row.bisLastLayer && '${isPM}' == 'true') {
+                                s += " <a onclick='projectDetails.updateExecuteUser(\"" + row.id + "\")' href='javascript://' data-placement='top' data-original-title='调整责任人' class='btn btn-xs btn-primary tooltips' ><i class='fa fa-user fa-white'></i></a>";
+                            }
                             if (row.excuteUrl) {
                                 var btnClass = 'btn-success';
                                 if (/processInsId/.test(row.excuteUrl)) {
                                     btnClass = 'btn-primary';
                                 }
-                                s += " <a target='_blank' onclick='projectDetails.taskOpenWin(\"" + row.excuteUrl + "\")' href='javascript://' data-placement='top' data-original-title='处理' class='btn btn-xs " + btnClass + " tooltips' ><i class='fa fa-arrow-right fa-white'></i></a>";
+                                s += " <a onclick='projectDetails.taskOpenWin(\"" + row.excuteUrl + "\")' href='javascript://' data-placement='top' data-original-title='处理' class='btn btn-xs " + btnClass + " tooltips' ><i class='fa fa-arrow-right fa-white'></i></a>";
                             } else if (row.displayUrl) {
-                                s += " <a href='javascript://' onclick='projectDetails.replyTask(" + row.id + ")' data-placement='top' data-original-title='任务打回' class='btn btn-xs btn-primary tooltips' ><i class='fa fa-reply fa-white'></i></a>";
+                                if (row.canReplay) {
+                                    s += " <a href='javascript://' onclick='projectDetails.replyTask(" + row.id + ")' data-placement='top' data-original-title='任务打回' class='btn btn-xs btn-primary tooltips' ><i class='fa fa-reply fa-white'></i></a>";
+                                }
                                 s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
                             }
                             return s;
@@ -402,16 +407,61 @@
         //打开任务页面的回调
         taskOpenWin: function (url) {
             openWin(url, function () {
-                projectDetails.loadPlanTabInfo($('.plan_tab').find('i:first').closest('li').find('a'));
+                projectDetails.reloadPlanDetailsList();
             })
+        },
+
+        //重新加载
+        reloadPlanDetailsList: function () {
+            projectDetails.loadPlanTabInfo($('.plan_tab').find('i:first').closest('li').find('a'));
         },
 
         //重启任务
         replyTask: function (planDetailsId) {
             layer.prompt({title: '输入重启任务的原因', formType: 2}, function (val, index) {
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/projectPlanDetails/replyProjectPlanDetails',
+                    data: {
+                        planDetailsId: planDetailsId,
+                        reason: val
+                    },
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('任务重启成功');
+                            projectDetails.reloadPlanDetailsList();
+                            layer.close(index);
+                        } else {
+                            Alert(result.errmsg);
+                        }
+                    }
+                })
+            });
+        },
 
-
-                layer.close(index);
+        //调整责任人
+        updateExecuteUser: function (planDetailsId) {
+            erpEmployee.select({
+                onSelected: function (data) {
+                    if (data && data.account) {
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/projectPlanDetails/updateExecuteUser',
+                            data: {
+                                planDetailsId: planDetailsId,
+                                newExecuteUser: data.account
+                            },
+                            success: function (result) {
+                                if (result.ret) {
+                                    toastr.success('责任人调整成功');
+                                    projectDetails.reloadPlanDetailsList();
+                                } else {
+                                    Alert(result.errmsg);
+                                }
+                            }
+                        });
+                    } else {
+                        Alert("还未选择任何人员");
+                    }
+                }
             });
         }
     };
