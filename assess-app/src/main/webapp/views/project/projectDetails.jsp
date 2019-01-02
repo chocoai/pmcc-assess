@@ -261,6 +261,8 @@
                                 }
                                 s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
                             }
+                            //如果项目结束并且任务为现场查勘或案例调查，可申请将数据写入到案例库中
+
                             return s;
                         }
                     }

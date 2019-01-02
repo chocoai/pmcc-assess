@@ -33,7 +33,7 @@
     </resultMap>
 
     <select id="getProjectListByUserAccount" parameterType="map" resultMap="BaseResultMap">
-        SELECT tb_project_info.* FROM tb_project_info A LEFT JOIN tb_project_member B on A.id=B.project_id WHERE 1=1
+        SELECT A.* FROM tb_project_info A LEFT JOIN tb_project_member B on A.id=B.project_id WHERE 1=1
         <if test="userAccount!=null and userAccount!=''">
             AND (B.user_account_manager = #{userAccount} OR B.user_account_member LIKE
             CONCAT(CONCAT('%',#{userAccount}), '%'))
