@@ -195,12 +195,16 @@ public class ProjectCenterService {
      *
      * @return
      */
-    public BootstrapTableVo getProjectList() {
+    public BootstrapTableVo getProjectList(String queryName, String projectStatus) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        ProjectInfo queryParam = new ProjectInfo();
-        queryParam.setProjectName(requestBaseParam.getSearch());
+        ProjectInfo query = new ProjectInfo();
+        query.setProjectName(queryName);
+        if ("--请选择--".equals(projectStatus)) {
+            projectStatus = ProjectStatusEnum.NORMAL.getName();
+        }
+        query.setProjectStatus(projectStatus);
         List<ProjectInfo> projectInfoList = Lists.newArrayList();
         //如果是超级管理员，跳过权限过滤
         if (!processControllerComponent.userIsAdmin(processControllerComponent.getThisUser())) {
@@ -220,7 +224,7 @@ public class ProjectCenterService {
                         }
                     }
                     //2、再根据项目id获取项目信息列表
-                    projectInfoList = projectInfoDao.getProjectInfoList(queryParam, projectIds);
+                    projectInfoList = projectInfoDao.getProjectInfoList(query, projectIds);
                     break;
                 }
                 case DEPARTMENT: { //表示部门领导
@@ -241,7 +245,7 @@ public class ProjectCenterService {
                             conditions.add(Integer.valueOf(item));
                         }
                     }
-                    projectInfoList = projectInfoDao.getProjectInfoList(queryParam, conditions);
+                    projectInfoList = projectInfoDao.getProjectInfoList(query, conditions);
                     break;
                 }
                 case USERACCOUNTS: {
@@ -256,12 +260,12 @@ public class ProjectCenterService {
                         }
                     }
                     //2、再根据项目id获取项目信息列表
-                    projectInfoList = projectInfoDao.getProjectInfoList(queryParam, projectIds);
+                    projectInfoList = projectInfoDao.getProjectInfoList(query, projectIds);
                     break;
                 }
             }
         } else {
-            projectInfoList = projectInfoDao.getProjectInfoList(queryParam, null);
+            projectInfoList = projectInfoDao.getProjectInfoList(query, null);
         }
         List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(projectInfoList);
         bootstrapTableVo.setTotal(page.getTotal());

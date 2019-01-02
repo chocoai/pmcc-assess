@@ -126,6 +126,10 @@ public class ProjectInfoDao {
         if(StringUtils.isNotEmpty(projectInfo.getProjectName())){
             criteria.andProjectNameLike(String.format("%%%s%%",projectInfo.getProjectName()));
         }
+        //项目状态查询
+        if(StringUtils.isNotEmpty(projectInfo.getProjectStatus())){
+            criteria.andProjectStatusEqualTo(projectInfo.getProjectStatus());
+        }
         example.setOrderByClause("id desc");
         return projectInfoMapper.selectByExample(example);
     }

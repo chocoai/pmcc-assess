@@ -20,6 +20,41 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
+                            <form id="frmQuery" class="form-horizontal">
+                                <div class="form-group ">
+                                    <div>
+                                        <label class="col-sm-1 control-label">
+                                            项目名
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <input type="text" data-rule-maxlength="50"
+                                                   placeholder="项目名" id="queryName" name="queryName"
+                                                   class="form-control">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="col-sm-1 control-label">
+                                            状态
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <select id="status" class="form-control">
+                                                <option value="">--请选择--</option>
+                                                <c:forEach var="item" items="${statusEnumList}">
+                                                    <option value="${item.key}">${item.value}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <button type="button" class="btn btn-primary"
+                                                onclick="loadProjectList()">
+                                            查询
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </form>
                             <table id="tb_projectList" class="table table-bordered">
                             </table>
                         </div>
@@ -89,7 +124,13 @@
             }
         });
         $("#tb_projectList").bootstrapTable('destroy');
-        TableInit("tb_projectList", "${pageContext.request.contextPath}/projectCenter/getProjectList", cols, {}, {
+        TableInit("tb_projectList", "${pageContext.request.contextPath}/projectCenter/getProjectList", cols, {
+            queryName: $("#queryName").val(),
+            projectStatus:$("#status").find("option:selected").text()
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             }
