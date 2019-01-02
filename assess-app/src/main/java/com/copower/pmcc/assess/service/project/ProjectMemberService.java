@@ -25,13 +25,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
  * 描述:项目成员信息
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2017/8/31
  * @time: 16:06
  */
@@ -71,30 +72,30 @@ public class ProjectMemberService {
     }
 
     @Transactional
-    public boolean updateProjectMember(ProjectMember projectMember){
+    public boolean updateProjectMember(ProjectMember projectMember) {
         return projectMemberDao.updateProjectMember(projectMember);
     }
 
-    public ProjectMember get(Integer id){
+    public ProjectMember get(Integer id) {
         return projectMemberDao.getProjectMemberItem(id);
     }
 
-    public ProjectMember getById(Integer id){
+    public ProjectMember getById(Integer id) {
         return projectMemberDao.get(id);
     }
 
-    public void save(ProjectMemberDto dto)throws BusinessException {
-        if (dto==null)throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+    public void save(ProjectMemberDto dto) throws BusinessException {
+        if (dto == null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         saveProjectMemeber(change(dto));
     }
 
-    public int saveReturnId(ProjectMemberDto dto)throws BusinessException{
-        if (dto==null)throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+    public int saveReturnId(ProjectMemberDto dto) throws BusinessException {
+        if (dto == null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         return projectMemberDao.saveProjectMemeberID(change(dto));
     }
 
     private void upateProjectMemeberToErp(Integer projectId, String projectManager, String projectMember) {
-        SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(projectId,applicationConstant.getAppKey());
+        SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(projectId, applicationConstant.getAppKey());
         if (sysProjectDto.getId() > 0) {
             sysProjectDto.setProjectManager(projectManager);
             sysProjectDto.setProjectMember(projectMember);
@@ -167,9 +168,9 @@ public class ProjectMemberService {
         return projectMemberVo;
     }
 
-    public ProjectMember change(ProjectMemberDto dto){
+    public ProjectMember change(ProjectMemberDto dto) {
         ProjectMember projectMember = new ProjectMember();
-        BeanUtils.copyProperties(dto,projectMember);
+        BeanUtils.copyProperties(dto, projectMember);
         return projectMember;
     }
 
@@ -201,12 +202,14 @@ public class ProjectMemberService {
             //封装用户名,格式:用户姓名_账号
             if (CollectionUtils.isNotEmpty(sysUserList)) {
                 Map<String, SysUserDto> relationUserMap = relationUserMap(sysUserList);
-
                 List<String> memberNames = Lists.newArrayList();
+                List<String> members = Lists.newArrayList();
+                if (relationUserMap.get(projectMember.getUserAccountManager()) != null) {
 
-                vo.setUserAccountManagerName(String.format("%s_%s", relationUserMap.get(projectMember.getUserAccountManager()).getUserName(), projectMember.getUserAccountManager()));
+                    vo.setUserAccountManagerName(String.format("%s_%s", relationUserMap.get(projectMember.getUserAccountManager()).getUserName(), projectMember.getUserAccountManager()));
 
-                List<String> members = FormatUtils.transformString2List(projectMember.getUserAccountMember());
+                    members = FormatUtils.transformString2List(projectMember.getUserAccountMember());
+                }
                 if (CollectionUtils.isNotEmpty(members)) {
                     for (String member : members) {
                         memberNames.add(String.format("%s_%s", relationUserMap.get(member).getUserName(), member));
@@ -221,8 +224,10 @@ public class ProjectMemberService {
     }
 
 
-    List<ProjectMember> projectIdByUser(){
+    List<ProjectMember> projectIdByUser(String queryName, String projectStatus) {
         String user = processControllerComponent.getThisUser();
         return projectMemberDao.projectIdByUser(user);
-    };
+    }
+
+    ;
 }

@@ -52,6 +52,8 @@ public class ProjectCenterController {
     @RequestMapping(value = "/myParticipation", name = "我的参与")
     public ModelAndView myParticipation() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/myParticipation");
+        List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList();
+        modelAndView.addObject("statusEnumList", statusEnumList);
         return modelAndView;
     }
 
@@ -89,6 +91,6 @@ public class ProjectCenterController {
     @ResponseBody
     @RequestMapping(value = "/getParticipationProject", name = "取得参与项目", method = RequestMethod.GET)
     public BootstrapTableVo getParticipationProject(String queryName, String projectStatus) {
-        return projectCenterService.getParticipationProject();
+        return projectCenterService.getParticipationProject(queryName, projectStatus);
     }
 }

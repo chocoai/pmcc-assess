@@ -146,4 +146,22 @@ public class ProjectInfoDao {
         return projectInfoMapper.selectByExample(example);
     }
 
+    public ProjectInfo getMyProjectListById(ProjectInfo projectInfo) {
+        ProjectInfoExample example = new ProjectInfoExample();
+        ProjectInfoExample.Criteria criteria = example.createCriteria();
+        criteria.andIdEqualTo(projectInfo.getId());
+        //项目名称模糊查询
+        if(StringUtils.isNotEmpty(projectInfo.getProjectName())){
+            criteria.andProjectNameLike(String.format("%%%s%%",projectInfo.getProjectName()));
+        }
+        //项目状态查询
+        if(StringUtils.isNotEmpty(projectInfo.getProjectStatus())){
+            criteria.andProjectStatusEqualTo(projectInfo.getProjectStatus());
+        }
+        example.setOrderByClause("id desc");
+        if(CollectionUtils.isNotEmpty(projectInfoMapper.selectByExample(example))){
+            return projectInfoMapper.selectByExample(example).get(0);
+        }
+        return null;
+    }
 }
