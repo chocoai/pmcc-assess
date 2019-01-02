@@ -1,14 +1,13 @@
 package com.copower.pmcc.assess.service.project;
 
+import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
-import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
-import com.copower.pmcc.assess.service.project.ProjectPhaseService;
+import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
@@ -39,6 +38,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +75,12 @@ public class ProjectPlanDetailsService {
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
+    @Autowired
+    private ProjectPlanService projectPlanService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
+    @Autowired
+    private ProjectWorkStageService projectWorkStageService;
 
     public ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
         return projectPlanDetailsDao.getProjectPlanDetailsById(id);
@@ -93,7 +99,7 @@ public class ProjectPlanDetailsService {
         return projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
     }
 
-    public List<ProjectPlanDetails> getProjectPlanDetails(Integer declareId,Integer projectPhaseId){
+    public List<ProjectPlanDetails> getProjectPlanDetails(Integer declareId, Integer projectPhaseId) {
         ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
         projectPlanDetails.setDeclareRecordId(declareId);
         projectPlanDetails.setProjectPhaseId(projectPhaseId);
@@ -103,6 +109,7 @@ public class ProjectPlanDetailsService {
 
     /**
      * 获取权证下的调查信息内容
+     *
      * @param declareId
      * @return
      */
@@ -448,5 +455,29 @@ public class ProjectPlanDetailsService {
      */
     public void deletePlanDetailsByPlanId(Integer planId) {
         projectPlanDetailsDao.deletePlanDetailsByPlanId(planId);
+    }
+
+    /**
+     * 重启任务
+     *
+     * @param planDetailsId
+     * @param reason
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void replyProjectPlanDetails(Integer planDetailsId, String reason) {
+        //1.更新任务状态 记录重启原因 2.添加新的待提交任务
+        ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(planDetailsId);
+        if (projectPlanDetails == null) return;
+        projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
+        projectPlanDetails.setReturnDetailsReason(reason);
+        projectPlanDetails.setTaskSubmitTime(null);
+        projectPlanDetails.setProcessInsId("0");
+        projectPlanDetails.setActualHours(null);
+        projectPlanDetailsDao.updateProjectPlanDetailsAndNull(projectPlanDetails);
+
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
+        projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
+
     }
 }

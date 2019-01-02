@@ -8,16 +8,20 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanExecuteInterface;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectMemberService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.survey.ProjectPlanSurveyService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
+import com.copower.pmcc.erp.api.dto.SysUserDto;
+import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,21 +41,31 @@ public class PlanSurveyExecute implements ProjectPlanExecuteInterface {
     private CommonService commonService;
     @Autowired
     private ProjectPlanSurveyService projectPlanSurveyService;
+    @Autowired
+    private ProjectMemberService projectMemberService;
+    @Autowired
+    private ErpRpcUserService erpRpcUserService;
 
 
     @Override
-    public void execute(ProjectPlan projectPlan,ProjectWorkStage projectWorkStage) throws BusinessException {
+    public void execute(ProjectPlan projectPlan, ProjectWorkStage projectWorkStage) throws BusinessException {
         //1.根据申报数据生成任务数据
         projectPlanSurveyService.initPlanDetails(projectPlan);
-        ProjectPlanDetails where=new ProjectPlanDetails();
+        ProjectPlanDetails where = new ProjectPlanDetails();
         where.setBisLastLayer(true);
         where.setPlanId(projectPlan.getId());
         List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectDetails(where);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
-        if(CollectionUtils.isNotEmpty(planDetailsList)){
+        String projectManager = projectMemberService.getProjectManager(projectInfo.getId());
+        if (CollectionUtils.isNotEmpty(planDetailsList)) {
             for (ProjectPlanDetails projectPlanDetails : planDetailsList) {
-                projectPlanDetails.setExecuteUserAccount(commonService.thisUserAccount());
-                projectPlanDetails.setExecuteDepartmentId(commonService.thisUser().getDepartmentId());
+                projectPlanDetails.setExecuteUserAccount(projectManager);
+                SysUserDto sysUser = erpRpcUserService.getSysUser(projectManager);
+                if (sysUser != null) {
+                    projectPlanDetails.setExecuteDepartmentId(sysUser.getDepartmentId());
+                }
+                projectPlanDetails.setPlanStartDate(new Date());
+                projectPlanDetails.setPlanEndDate(new Date());
                 projectPlanDetails.setBisEnable(true);
                 projectPlanDetails.setProcessInsId("0");
                 projectPlanDetails.setStatus(ProjectStatusEnum.RUNING.getKey());
@@ -60,7 +74,7 @@ public class PlanSurveyExecute implements ProjectPlanExecuteInterface {
                 projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
             }
         }
-        projectPlan.setProjectStatus(ProjectStatusEnum.FINISH.getName());
+        projectPlan.setProjectStatus(ProjectStatusEnum.TASK.getName());
         projectPlanService.updateProjectPlan(projectPlan);
     }
 

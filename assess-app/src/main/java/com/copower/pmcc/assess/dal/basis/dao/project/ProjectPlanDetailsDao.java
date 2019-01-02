@@ -107,6 +107,11 @@ public class ProjectPlanDetailsDao {
         return i == 1;
     }
 
+    public Boolean updateProjectPlanDetailsAndNull(ProjectPlanDetails projectPlanDetails) {
+        int i = projectPlanDetailsMapper.updateByPrimaryKey(projectPlanDetails);
+        return i == 1;
+    }
+
     //项目中心使用的方法
     public Integer getProjectDetailsCount(String userAccount, Date dates, Date datee) {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();

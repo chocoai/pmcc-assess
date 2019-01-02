@@ -9,7 +9,6 @@
           href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
-
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.css">
 </head>
@@ -17,19 +16,22 @@
 <div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
+
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+
             <!--填写表单-->
             <input type="hidden" id="declareId" name="declareId" value="${declareRecord.id}">
             <input type="hidden" id="planDetailsId" name="planDetailsId" value="${projectPlanDetails.pid}">
             <input type="hidden" id="examineType" name="examineType" value="${examineType}">
+
             <div class="x_panel examine">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${declareRecord.name}-调查信息</h2>
+                    <h2>${declareRecord.name}-调查信息-${dataExamineTask.name}</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content examine_content">
@@ -96,6 +98,7 @@
                     <div class="clearfix"></div>
                 </div>
             </div>
+
             <div class="x_panel">
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
@@ -111,7 +114,9 @@
                     </div>
                 </div>
             </div>
+
             <%@include file="/views/share/form_log.jsp" %>
+
         </div>
     </div>
 </div>
@@ -119,34 +124,40 @@
 </body>
 
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine-fieldsName.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.js"></script>
+<!-- 控件js -->
+<script src="${pageContext.request.contextPath}/js/autocomplete/developer.js"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/builder.js"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/property.js"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/new.wind.brand.js"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/heating.brand.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/land.level.select.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/block.select.js"></script>
+
+<script src='${pageContext.request.contextPath}/js/autocomplete/estate.case.js'></script>
+<script src='${pageContext.request.contextPath}/js/common.column.js'></script>
+
+<!-- 表单js -->
+<script src="${pageContext.request.contextPath}/js/examine/examine.common.js"></script>
+<script src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
+<script src="${pageContext.request.contextPath}/js/examine/examine.build.js"></script>
+<script src="${pageContext.request.contextPath}/js/examine/examine.unit.js"></script>
+<script src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
+
+
 <script type="text/javascript">
     $(function () {
         //tab注册事件
         $('.task_examine_item_tab').find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-            var dataName = $(this).attr('data-name');
-            if ($.inArray(dataName, ContainerFunForInitRecord) < 0) {
-                for (var i = 0; i < ContainerFunForInit[dataName].length; i++) {
-                    ContainerFunForInit[dataName][i]();
-                }
-                ContainerFunForInitRecord.push(dataName);
-            }
         });
-
         //选中第一个tab
         taskExamineItemIndex.selectFirstTab();
-
-    })
+    });
 
 
 
     //任务提交
     function submit() {
-//        $(".examine_content [data-required]").removeAttr('data-required').attr('required', 'required');
-//        if (!taskExamineItemIndex.valid()) {
-//            return false;
-//        }
         var formData = taskExamineItemIndex.getFormData();
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
@@ -159,15 +170,9 @@
     //保存
     function save() {
         taskExamineItemIndex.save();
-        //处理楼栋 保存后数据丢失问题
-        examineBuilding_.prototype.specialTreatment();
     }
 </script>
 <script type="text/javascript">
-    var ContainerFunForValid = [];//数据验证方法容器
-    var ContainerFunForGetData = [];//获取数据方法容器
-    var ContainerFunForInit = {"block": [], "estate": [], "building": [], "unit": [], "house": []};//数据初始化方法容器
-    var ContainerFunForInitRecord = [];//数据初始化记录
 
     var taskExamineItemIndex = {
         //选择第一个tab
@@ -177,35 +182,12 @@
 
         //验证
         valid: function () {
-            if (ContainerFunForValid.length > 0) {
-                for (var i = 0; i < ContainerFunForValid.length; i++) {
-                    if (!ContainerFunForValid[i]()) {
-                        return false;
-                    }
-                }
-            }
             return true;
         },
 
         //获取表单数据
         getFormData: function () {
-            //读取到各个子表单提供的数据
-            if (ContainerFunForGetData.length <= 0) {
-                return [];
-            }
-            var formDataArray = [];
-            $.each(ContainerFunForGetData, function (i, fn) {
-                var data = fn();
-                if (!data) return true;
-                if (Array.isArray(data)) {
-                    $.each(data, function (k, info) {
-                        formDataArray.push(info);
-                    })
-                } else {
-                    formDataArray.push(data);
-                }
-            })
-            return formDataArray;
+            return "" ;
         },
 
         //保存
@@ -226,7 +208,6 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        console.info(taskExamineItemIndex.getFormData());
                         //保存完后其他动作
                         toastr.success("保存成功");
                     } else {
@@ -241,10 +222,6 @@
 
         //提交
         submit: function () {
-//            $(".examine_content [data-required]").removeAttr('data-required').attr('required','required');
-//            if (!taskExamineItemIndex.valid()) {
-//                return false;
-//            }
             var formData = taskExamineItemIndex.getFormData();
             var data = {};
             var url = '${pageContext.request.contextPath}/surveyExamineItem/submitExamineDataInfo';
@@ -278,6 +255,12 @@
             });
         }
     };
+
+    $(document).ready(function () {
+        assessEstate.initForm({estate:{},land:{}}) ;
+        buildingCommon.initForm({}) ;
+        assessEstate.autocompleteStart() ;
+    });
 </script>
 </html>
 

@@ -67,6 +67,7 @@ public class ProjectPlanSurveyService {
                 projectPlanDetail.setProjectId(projectId);
                 projectPlanDetail.setProjectPhaseName(projectPhase.getProjectPhaseName());
                 projectPlanDetail.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+                projectPlanDetail.setPlanHours(projectPhase.getPhaseTime());
                 projectPlanDetail.setPid(projectPlanDetails.getId());
                 projectPlanDetail.setDeclareRecordId(declareRecord.getId());
                 projectPlanDetail.setFirstPid(projectPlanDetails.getId());

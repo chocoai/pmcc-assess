@@ -31,9 +31,7 @@ public class BaseProjectClassifyDao {
      */
     public List<BaseProjectClassify> getListObject(String name, String fieldName, Integer pid) {
         BaseProjectClassifyExample example = new BaseProjectClassifyExample();
-        BaseProjectClassifyExample.Criteria criteria = example.createCriteria()
-                .andBisEnableEqualTo(true)
-                .andBisDeleteEqualTo(false);
+        BaseProjectClassifyExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
         if (StringUtils.isNotBlank(fieldName)) {
             criteria.andFieldNameLike(MessageFormat.format("%{0}%", fieldName));
         }

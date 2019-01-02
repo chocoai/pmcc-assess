@@ -6,8 +6,8 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetInventoryContentVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.event.project.DeclareRealtyEstateCertEvent;
 import com.copower.pmcc.assess.service.event.project.SurveyAssetInventoryEvent;
-import com.copower.pmcc.assess.service.event.project.SurveyExamineTaskEvent;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
@@ -16,6 +16,9 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,6 +31,7 @@ import java.util.List;
 @Component
 @WorkFlowAnnotation(desc = "资产清查成果")
 public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -125,13 +129,14 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
     }
 
     @Override
-    public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        try {
-            bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveyAssetInventoryEvent.class.getSimpleName());//修改监听器
-        } catch (BpmException e) {
-            e.printStackTrace();
-        }
+    public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
         surveyAssetInventoryService.save(projectPlanDetails, processInsId, surveyAssetInventoryService.format(formData));
+        if (StringUtils.isBlank(processInsId)) {
+            SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByPlanDetailsId(projectPlanDetails.getId());
+            surveyAssetInventoryService.writeBackDeclareRecord(surveyAssetInventory);
+        } else {
+            bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, DeclareRealtyEstateCertEvent.class.getSimpleName());//修改监听器
+        }
     }
 
     @Override

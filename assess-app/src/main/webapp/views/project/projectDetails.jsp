@@ -29,23 +29,30 @@
                 </div>
                 <div class="title_right">
                     <div class="col-md-12 col-sm-12 col-xs-12 pull-right" style="margin: 0px">
-                        <div class="btn-group" >
-                            <a id="btn_followProject" class="btn btn-warning" style="display: ${projectFollowFlog ne '0'?'none':''}"
-                               href="javascript://" onclick="projectDetails.followProject()"><i class="fa fa-eye">&nbsp;</i>关注</a>
-                            <a id="btn_cancelFollowProject" class="btn btn-warning" style="display: ${projectFollowFlog ne '1'?'none':''}"
-                               href="javascript://" onclick="projectDetails.cancelFollowProject()"><i class="fa fa-eye-slash">&nbsp;</i>取消关注</a>
+                        <div class="btn-group">
+                            <a id="btn_followProject" class="btn btn-warning"
+                               style="display: ${projectFollowFlog ne '0'?'none':''}"
+                               href="javascript://" onclick="projectDetails.followProject()"><i
+                                    class="fa fa-eye">&nbsp;</i>关注</a>
+                            <a id="btn_cancelFollowProject" class="btn btn-warning"
+                               style="display: ${projectFollowFlog ne '1'?'none':''}"
+                               href="javascript://" onclick="projectDetails.cancelFollowProject()"><i
+                                    class="fa fa-eye-slash">&nbsp;</i>取消关注</a>
 
                             <c:if test="${projectStatusEnum ne 'pause' and projectStatusEnum ne 'close' and projectStatusEnum ne 'finish'}">
-                                <a class="btn btn-primary" href="javascript://" onclick="projectDetails.pauseProject()"><i class="fa fa-pause">&nbsp;</i>暂停</a>
+                                <a class="btn btn-primary" href="javascript://" onclick="projectDetails.pauseProject()"><i
+                                        class="fa fa-pause">&nbsp;</i>暂停</a>
                             </c:if>
 
                             <c:if test="${projectStatusEnum=='pause'}">
-                                <a class="btn btn-success" href="javascript://" onclick="projectDetails.restartProject()"><i class="fa fa-reply">&nbsp;</i>重启</a>
+                                <a class="btn btn-success" href="javascript://"
+                                   onclick="projectDetails.restartProject()"><i class="fa fa-reply">&nbsp;</i>重启</a>
                             </c:if>
                             <c:if test="${projectStatusEnum ne 'close' and projectStatusEnum ne 'finish'}">
-                                <a class="btn btn-primary" href="javascript://" onclick="projectDetails.stopProject()"><i class="fa fa-stop">&nbsp;</i>终止</a>
+                                <a class="btn btn-primary" href="javascript://"
+                                   onclick="projectDetails.stopProject()"><i class="fa fa-stop">&nbsp;</i>终止</a>
                             </c:if>
-                            <div class="btn-group" >
+                            <div class="btn-group">
                                 <button type="button" class="btn btn-danger">
                                     项目变更
                                 </button>
@@ -97,7 +104,7 @@
                                 <div class="tab-pane fade " id="tab_plan_${plan.id}">
                                     <c:if test="${not empty plan.planDisplayUrl}">
                                         <div class="col-md-3 col-sm-3 col-xs-3 col-sm-offset-1">
-                                            <div class="btn-group">
+                                            <div class="btn-group" style="display:none;">
                                                 <c:if test="${empty plan.planExecutUrl}">
                                                     <button class="btn btn-sm btn-primary" type="button">
                                                         计划编制
@@ -120,7 +127,8 @@
                                                         <button class="btn btn-sm btn-success" type="button"
                                                                 data-placement="top" data-toggle="tooltip"
                                                                 onclick="projectDetails.taskOpenWin('${plan.planExecutUrl}')"
-                                                                data-original-title="处理"><i class="fa fa-arrow-right"></i>
+                                                                data-original-title="处理"><i
+                                                                class="fa fa-arrow-right"></i>
                                                         </button>
                                                     </c:if>
                                                 </c:if>
@@ -245,6 +253,7 @@
                                 }
                                 s += " <a target='_blank' onclick='projectDetails.taskOpenWin(\"" + row.excuteUrl + "\")' href='javascript://' data-placement='top' data-original-title='处理' class='btn btn-xs " + btnClass + " tooltips' ><i class='fa fa-arrow-right fa-white'></i></a>";
                             } else if (row.displayUrl) {
+                                s += " <a href='javascript://' onclick='projectDetails.replyTask(" + row.id + ")' data-placement='top' data-original-title='任务打回' class='btn btn-xs btn-primary tooltips' ><i class='fa fa-reply fa-white'></i></a>";
                                 s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
                             }
                             return s;
@@ -322,7 +331,7 @@
                 success: function (result) {
                     if (result.ret) {
                         var url = "${pageContext.request.contextPath}/projectPause/apply?projectId=" + ${projectInfo.id};
-                        window.open(url,'_blank');
+                        window.open(url, '_blank');
                     }
                     else {
                         Alert("变更失败，失败原因：" + result.errmsg, 1, null, null);
@@ -336,7 +345,7 @@
         },
 
         //重启
-        restartProject:function () {
+        restartProject: function () {
             $.ajax({
                 url: "${pageContext.request.contextPath}/projectRestart/isChanging",
                 data: {
@@ -347,7 +356,7 @@
                 success: function (result) {
                     if (result.ret) {
                         var url = "${pageContext.request.contextPath}/projectRestart/apply?projectId=" + ${projectInfo.id};
-                        window.open(url,'_blank');
+                        window.open(url, '_blank');
                     }
                     else {
                         Alert("变更失败，失败原因：" + result.errmsg, 1, null, null);
@@ -361,7 +370,7 @@
         },
 
         //终止
-        stopProject:function () {
+        stopProject: function () {
             $.ajax({
                 url: "${pageContext.request.contextPath}/projectStop/isChanging",
                 data: {
@@ -372,7 +381,7 @@
                 success: function (result) {
                     if (result.ret) {
                         var url = "${pageContext.request.contextPath}/projectStop/apply?projectId=" + ${projectInfo.id};
-                        window.open(url,'_blank');
+                        window.open(url, '_blank');
                     }
                     else {
                         Alert("变更失败，失败原因：" + result.errmsg, 1, null, null);
@@ -395,6 +404,15 @@
             openWin(url, function () {
                 projectDetails.loadPlanTabInfo($('.plan_tab').find('i:first').closest('li').find('a'));
             })
+        },
+
+        //重启任务
+        replyTask: function (planDetailsId) {
+            layer.prompt({title: '输入重启任务的原因', formType: 2}, function (val, index) {
+
+
+                layer.close(index);
+            });
         }
     };
 
