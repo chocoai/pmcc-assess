@@ -28,7 +28,7 @@ public class ProjectRestartChangeEvent extends BaseProcessEvent {
         data.setStatus(ProcessStatusEnum.FINISH.getValue());
         projectChangeLogDao.modifyProjectChangeLog(data);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(data.getProjectId());
-        projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getName());
+        projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getKey());
         projectInfoService.saveProjectInfo(projectInfo);
     }
 }

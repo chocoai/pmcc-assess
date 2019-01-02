@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ProjectMemberReplenishMapper">
+    <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectInfo">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="project_class_id" property="projectClassId" jdbcType="INTEGER"/>
+        <result column="project_type_id" property="projectTypeId" jdbcType="INTEGER"/>
+        <result column="project_category_id" property="projectCategoryId" jdbcType="INTEGER"/>
+        <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
+        <result column="urgency" property="urgency" jdbcType="INTEGER"/>
+        <result column="province" property="province" jdbcType="VARCHAR"/>
+        <result column="city" property="city" jdbcType="VARCHAR"/>
+        <result column="district" property="district" jdbcType="VARCHAR"/>
+        <result column="valuation_date" property="valuationDate" jdbcType="TIMESTAMP"/>
+        <result column="entrust_purpose" property="entrustPurpose" jdbcType="INTEGER"/>
+        <result column="value_type" property="valueType" jdbcType="INTEGER"/>
+        <result column="department_id" property="departmentId" jdbcType="INTEGER"/>
+        <result column="remarks" property="remarks" jdbcType="VARCHAR"/>
+        <result column="complete_date_plan" property="completeDatePlan" jdbcType="TIMESTAMP"/>
+        <result column="complete_date_actual" property="completeDateActual" jdbcType="TIMESTAMP"/>
+        <result column="complete_date_start" property="completeDateStart" jdbcType="TIMESTAMP"/>
+        <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="project_status" property="projectStatus" jdbcType="VARCHAR"/>
+        <result column="public_project_id" property="publicProjectId" jdbcType="INTEGER"/>
+        <result column="remark_entrust_purpose" property="remarkEntrustPurpose" jdbcType="VARCHAR"/>
+        <result column="remark_value_type" property="remarkValueType" jdbcType="VARCHAR"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP"/>
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+        <result column="assign_process_ins_id" property="assignProcessInsId" jdbcType="VARCHAR"/>
+        <result column="assign_status" property="assignStatus" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getProjectListByUserAccount" parameterType="map" resultMap="BaseResultMap">
+        SELECT tb_project_info.* FROM tb_project_info A LEFT JOIN tb_project_member B on A.id=B.project_id WHERE 1=1
+        <if test="userAccount!=null and userAccount!=''">
+            AND (A.user_account_manager = #{userAccount} OR B.user_account_member LIKE
+            CONCAT(CONCAT('%',#{userAccount}), '%'))
+        </if>
+        <if test="projectName!=null and projectName!=''">
+            AND A.project_name LIKE CONCAT(CONCAT('%', #{projectName}), '%')
+        </if>
+        <if test="projectStatus!=null and projectStatus!=''">
+            AND A.project_status = #{projectStatus}
+        </if>
+        ORDER BY A.id DESC
+        WHERE
+    </select>
+</mapper>

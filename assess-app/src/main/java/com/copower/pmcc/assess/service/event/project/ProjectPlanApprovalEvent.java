@@ -42,7 +42,7 @@ public class ProjectPlanApprovalEvent extends BaseProcessEvent {
         super.processFinishExecute(processExecution);
 
         ProjectPlan projectPlan = projectPlanService.getProjectplanByProcessInsId(processExecution.getProcessInstanceId());
-        projectPlan.setProjectStatus(ProjectStatusEnum.TASK.getName());
+        projectPlan.setProjectStatus(ProjectStatusEnum.TASK.getKey());
         projectPlanService.updateProjectPlan(projectPlan);
         List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsLastLayer(projectPlan.getId(), ProcessStatusEnum.NOPROCESS.getValue());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());

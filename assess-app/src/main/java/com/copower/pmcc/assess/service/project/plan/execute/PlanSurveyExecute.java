@@ -74,7 +74,7 @@ public class PlanSurveyExecute implements ProjectPlanExecuteInterface {
                 projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
             }
         }
-        projectPlan.setProjectStatus(ProjectStatusEnum.TASK.getName());
+        projectPlan.setProjectStatus(ProjectStatusEnum.TASK.getKey());
         projectPlanService.updateProjectPlan(projectPlan);
     }
 

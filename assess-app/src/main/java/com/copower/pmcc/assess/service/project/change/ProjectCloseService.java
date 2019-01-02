@@ -178,7 +178,7 @@ public class ProjectCloseService {
         //关闭工作计划
         if (CollectionUtils.isNotEmpty(projectPlans)) {
             for (ProjectPlan item : projectPlans) {
-                item.setProjectStatus(ProjectStatusEnum.CLOSE.getName());
+                item.setProjectStatus(ProjectStatusEnum.CLOSE.getKey());
                 projectPlanDao.updateProjectPlan(item);
             }
         }
@@ -192,7 +192,7 @@ public class ProjectCloseService {
                 bpmRpcActivitiProcessManageService.closeProcess(projectInfo.getProcessInsId());
             }
         } else {
-            projectInfo.setProjectStatus(ProjectStatusEnum.CLOSE.getName());
+            projectInfo.setProjectStatus(ProjectStatusEnum.CLOSE.getKey());
             projectInfo.setStatus(ProcessStatusEnum.CLOSE.getValue());
             projectInfoService.updateProjectInfo(projectInfo);
         }

@@ -126,7 +126,7 @@
         $("#tb_myParticipation").bootstrapTable('destroy');
         TableInit("tb_myParticipation", "${pageContext.request.contextPath}/projectCenter/getParticipationProject", cols, {
             queryName: $("#queryName").val(),
-            projectStatus:$("#status").find("option:selected").text()
+            projectStatus:$("#status").val()
         }, {
             showColumns: false,
             showRefresh: false,

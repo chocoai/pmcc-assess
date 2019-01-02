@@ -52,6 +52,15 @@ public enum ProjectStatusEnum {
         return null;
     }
 
+    public static ProjectStatusEnum getEnumByKey(String key) {
+        for (ProjectStatusEnum e : ProjectStatusEnum.values()) {
+            if (e.getKey().equals(key)) {
+                return e;
+            }
+        }
+        return null;
+    }
+
     public static List<KeyValueDto> getProjectStatusEnumList() {
         List<KeyValueDto> keyValueDtos = new ArrayList<>();
         for (ProjectStatusEnum e : ProjectStatusEnum.values()) {
@@ -59,6 +68,20 @@ public enum ProjectStatusEnum {
             keyValueDto.setKey(String.valueOf(e.getKey()));
             keyValueDto.setValue(e.getName());
             keyValueDtos.add(keyValueDto);
+        }
+        return keyValueDtos;
+    }
+
+    public static List<KeyValueDto> getProjectStatusEnumList(String... keys) {
+        List<KeyValueDto> keyValueDtos = new ArrayList<>();
+        for (String key : keys) {
+            ProjectStatusEnum anEnum = getEnumByKey(key);
+            if (anEnum != null) {
+                KeyValueDto keyValueDto = new KeyValueDto();
+                keyValueDto.setKey(String.valueOf(anEnum.getKey()));
+                keyValueDto.setValue(anEnum.getName());
+                keyValueDtos.add(keyValueDto);
+            }
         }
         return keyValueDtos;
     }

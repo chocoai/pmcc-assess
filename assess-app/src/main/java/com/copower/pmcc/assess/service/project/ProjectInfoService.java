@@ -298,7 +298,7 @@ public class ProjectInfoService {
             projectPlan.setCreator(processControllerComponent.getThisUser());
             projectPlan.setCreated(new Date());
             projectPlan.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-            projectPlan.setProjectStatus(ProjectStatusEnum.WAIT.getName());
+            projectPlan.setProjectStatus(ProjectStatusEnum.WAIT.getKey());
             projectPlan.setBisRestart(false);
             projectPlan.setStageSort(i);
             projectPlanDao.addProjectPlan(projectPlan);
@@ -314,7 +314,7 @@ public class ProjectInfoService {
             projectInfo.setStatus(ProcessStatusEnum.RUN.getValue());
             projectInfoDao.updateProjectInfo(projectInfo);
         } else {//直接进入下一阶段
-            projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getName());//更新流程状态
+            projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getKey());//更新项目状态
             updateProjectInfo(projectInfo);
             List<ProjectPlan> projectPlans = projectPlanService.getProjectplanByProjectId(projectInfo.getId(), "");
             projectPlanService.updatePlanStatus(projectPlans.get(0).getId());

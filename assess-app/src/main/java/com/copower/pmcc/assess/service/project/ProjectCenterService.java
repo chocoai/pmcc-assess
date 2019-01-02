@@ -139,7 +139,7 @@ public class ProjectCenterService {
             projectProgressVo.setProjectName(item.getProjectName());
             projectProgressVo.setProcessInsId(item.getProcessInsId());
             projectProgressVo.setProjectStatus(item.getProjectStatus());
-            projectProgressVo.setProjectStatusFlog(item.getProjectStatus().equals(ProjectStatusEnum.NORMAL.getName()) ? "1" : "0");
+            projectProgressVo.setProjectStatusFlog(item.getProjectStatus().equals(ProjectStatusEnum.NORMAL.getKey()) ? "1" : "0");
 
             List<ProjectPlan> planFilter = LangUtils.filter(projectPlans, input -> {
                 if (input.getProjectId().equals(item.getId()) && input.getBisRestart() == false) {
@@ -201,9 +201,6 @@ public class ProjectCenterService {
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         ProjectInfo query = new ProjectInfo();
         query.setProjectName(queryName);
-        if ("--请选择--".equals(projectStatus)) {
-            projectStatus = ProjectStatusEnum.NORMAL.getName();
-        }
         query.setProjectStatus(projectStatus);
         List<ProjectInfo> projectInfoList = Lists.newArrayList();
         //如果是超级管理员，跳过权限过滤
@@ -342,12 +339,6 @@ public class ProjectCenterService {
         return projectInfoVos;
     }
 
-
-    public List<ProjectInfo> getProjectListByMonth(String dates, String datee) {
-        List<ProjectInfo> projectInfos = projectInfoDao.getProjectInfoListByCompleteDatePlan(DateUtils.parse(dates), DateUtils.parse(datee), "");
-        return projectInfos;
-    }
-
     public BootstrapTableVo csrProjectInfoList(String name) {
         return csrProjectInfoService.csrProjectInfoList(name);
     }
@@ -365,9 +356,6 @@ public class ProjectCenterService {
         ProjectInfo projectInfo = new ProjectInfo();
         projectInfo.setCreator(processControllerComponent.getThisUser());
         projectInfo.setProjectName(queryName);
-        if ("--请选择--".equals(projectStatus)) {
-            projectStatus = ProjectStatusEnum.NORMAL.getName();
-        }
         projectInfo.setProjectStatus(projectStatus);
         List<ProjectInfo> myProjectList = projectInfoDao.getMyProjectList(projectInfo);
         List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(myProjectList);
@@ -381,35 +369,14 @@ public class ProjectCenterService {
      *
      * @return
      */
-    public List<ProjectInfo> getProjectByUser(String queryName, String projectStatus) {
-        List<ProjectInfo> projectInfoList = new ArrayList<>();
-        List<ProjectMember> list = projectMemberService.projectIdByUser(queryName, projectStatus);
-        ProjectInfo projectInfo = new ProjectInfo();
-        for (ProjectMember item : list) {
-            projectInfo.setId(item.getProjectId());
-            projectInfo.setProjectName(queryName);
-            if ("--请选择--".equals(projectStatus)) {
-                projectStatus = ProjectStatusEnum.NORMAL.getName();
-            }
-            projectInfo.setProjectStatus(projectStatus);
-            if (projectInfoDao.getMyProjectListById(projectInfo) != null) {
-                projectInfoList.add(projectInfoDao.getMyProjectListById(projectInfo));
-            } else {
-                continue;
-            }
-
-        }
-        return projectInfoList;
-    }
-
-    public BootstrapTableVo getParticipationProject(String queryName, String projectStatus) {
+    public BootstrapTableVo getParticipationProject(String projectName, String projectStatus) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<ProjectInfo> list = getProjectByUser(queryName, projectStatus);
+        List<ProjectInfo> list = projectInfoDao.getProjectListByUserAccount(processControllerComponent.getThisUser(), projectName, projectStatus);
         List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(list);
         vo.setTotal(page.getTotal());
-        vo.setRows(ObjectUtils.isEmpty(projectInfoVos) ? new ArrayList<ProjectInfoVo>(10) : projectInfoVos);
+        vo.setRows(ObjectUtils.isEmpty(projectInfoVos) ? Lists.newArrayList() : projectInfoVos);
         return vo;
     }
 }
