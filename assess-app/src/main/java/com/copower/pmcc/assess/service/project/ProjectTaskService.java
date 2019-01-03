@@ -147,7 +147,7 @@ public class ProjectTaskService {
             projectPlanDetailsWhere.setBisLastLayer(true);
             List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
             if (CollectionUtils.isEmpty(projectPlanDetailsList)) {
-                projectPlanService.updatePlanStatus(projectPlanDetails.getPlanId()); //结束当前阶段进入下一阶段
+                projectPlanService.enterNextStage(projectPlanDetails.getPlanId()); //结束当前阶段进入下一阶段
             }
         }
         bpmRpcProjectTaskService.deleteProjectTask(projectTaskDto.getResponsibilityId());

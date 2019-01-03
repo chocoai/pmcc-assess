@@ -668,12 +668,12 @@ public class ProjectPlanService {
     }
 
     /**
-     * 更新项目总计划状态
+     * 进入下个阶段
      *
      * @param planId 当前阶段所处的总计划
      */
     @Transactional(rollbackFor = Exception.class)
-    public void updatePlanStatus(Integer planId) throws Exception {
+    public void enterNextStage(Integer planId) throws Exception {
         //1.将当前阶段设置结束，并清理所有任务
         ProjectPlan projectPlan = projectPlanDao.getProjectplanById(planId);
         projectPlan.setProjectStatus(ProjectStatusEnum.FINISH.getKey());

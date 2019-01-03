@@ -324,7 +324,7 @@ public class ProjectInfoService {
             projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getKey());//更新项目状态
             updateProjectInfo(projectInfo);
             List<ProjectPlan> projectPlans = projectPlanService.getProjectplanByProjectId(projectInfo.getId(), "");
-            projectPlanService.updatePlanStatus(projectPlans.get(0).getId());
+            projectPlanService.enterNextStage(projectPlans.get(0).getId());
         }
     }
 
