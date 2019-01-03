@@ -326,7 +326,7 @@ public class BasicBuildingService {
             caseEstateTagging.setDataId(caseMainBuildingId);
             caseEstateTagging.setType(EstateTaggingTypeEnum.BUILDING.getKey());
             List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-            basicEstateService.copyTaggingFromCase(caseEstateTaggings);
+            basicEstateService.copyTaggingFromCase(caseEstateTaggings,applyId);
         }
 
 

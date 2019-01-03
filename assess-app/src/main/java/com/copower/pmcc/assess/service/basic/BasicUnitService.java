@@ -260,7 +260,7 @@ public class BasicUnitService {
      * @throws Exception
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
-    public BasicUnit appWriteUnit(Integer caseUnitId,String unitPartInMode) throws Exception {
+    public BasicUnit appWriteUnit(Integer caseUnitId,String unitPartInMode,Integer applyId) throws Exception {
         this.clearInvalidData(0);
         if (caseUnitId == null) {
             throw new Exception("null point");
@@ -283,7 +283,7 @@ public class BasicUnitService {
             caseEstateTagging.setDataId(caseUnitId);
             caseEstateTagging.setType(EstateTaggingTypeEnum.UNIT.getKey());
             List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-            basicEstateService.copyTaggingFromCase(caseEstateTaggings);
+            basicEstateService.copyTaggingFromCase(caseEstateTaggings,applyId);
         }
 
 

@@ -107,9 +107,9 @@ public class BasicUnitController {
 
     @ResponseBody
     @RequestMapping(value = "/appWriteUnit", name = "过程数据转移", method = {RequestMethod.POST})
-    public HttpResult appWriteUnit(Integer caseUnitId, String unitPartInMode) {
+    public HttpResult appWriteUnit(Integer caseUnitId, String unitPartInMode,Integer applyId) {
         try {
-            return HttpResult.newCorrectResult(200, basicUnitService.appWriteUnit(caseUnitId, unitPartInMode));
+            return HttpResult.newCorrectResult(200, basicUnitService.appWriteUnit(caseUnitId, unitPartInMode,applyId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());

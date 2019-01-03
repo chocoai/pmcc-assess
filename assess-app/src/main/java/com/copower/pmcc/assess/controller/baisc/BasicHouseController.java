@@ -106,9 +106,9 @@ public class BasicHouseController {
 
     @ResponseBody
     @RequestMapping(value = "/appWriteHouse", name = "过程数据", method = {RequestMethod.POST})
-    public HttpResult appWriteHouse(Integer caseHouseId, String housePartInMode) {
+    public HttpResult appWriteHouse(Integer caseHouseId, String housePartInMode,Integer applyId) {
         try {
-            return HttpResult.newCorrectResult(200, basicHouseService.appWriteHouse(caseHouseId, housePartInMode));
+            return HttpResult.newCorrectResult(200, basicHouseService.appWriteHouse(caseHouseId, housePartInMode,applyId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());

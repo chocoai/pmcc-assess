@@ -754,7 +754,7 @@ public class BasicEstateService {
                 public void run() {
                     try {
                         List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-                        copyTaggingFromCase(caseEstateTaggings);
+                        copyTaggingFromCase(caseEstateTaggings,applyId);
                     } catch (Exception e1) {
                         logger.error("", e1);
                     }
@@ -771,12 +771,12 @@ public class BasicEstateService {
      * @param caseEstateTaggings
      * @throws Exception
      */
-    public void copyTaggingFromCase(List<CaseEstateTagging> caseEstateTaggings) throws Exception {
+    public void copyTaggingFromCase(List<CaseEstateTagging> caseEstateTaggings, Integer applyId) throws Exception {
         if (!ObjectUtils.isEmpty(caseEstateTaggings)) {
             for (CaseEstateTagging caseEstateTagging : caseEstateTaggings) {
                 BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
                 BeanCopyHelp.copyPropertiesIgnoreNull(caseEstateTagging, basicEstateTagging);
-                basicEstateTagging.setApplyId(0);
+                basicEstateTagging.setApplyId(applyId == null ? 0 : applyId);
                 basicEstateTagging.setId(null);
                 basicEstateTagging.setGmtCreated(null);
                 basicEstateTagging.setGmtModified(null);

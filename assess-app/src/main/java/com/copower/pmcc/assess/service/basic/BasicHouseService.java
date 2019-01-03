@@ -383,7 +383,7 @@ public class BasicHouseService {
      * @throws Exception
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
-    public Map<String, Object> appWriteHouse(Integer caseHouseId, String housePartInMode) throws Exception {
+    public Map<String, Object> appWriteHouse(Integer caseHouseId, String housePartInMode,Integer applyId) throws Exception {
         if (caseHouseId == null) {
             throw new Exception("null ponit");
         }
@@ -408,7 +408,7 @@ public class BasicHouseService {
             caseEstateTagging.setDataId(caseHouseId);
             caseEstateTagging.setType(EstateTaggingTypeEnum.HOUSE.getKey());
             List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-            basicEstateService.copyTaggingFromCase(caseEstateTaggings);
+            basicEstateService.copyTaggingFromCase(caseEstateTaggings,applyId);
         }
 
 
