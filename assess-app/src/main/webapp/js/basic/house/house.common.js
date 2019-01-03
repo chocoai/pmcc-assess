@@ -23,7 +23,7 @@
     houseCommon.houseFileControlIdArray = [
         'house_huxing_plan',
         'house_new_huxing_plan',
-        'house_img_plan'];
+        'house_img_plan', 'otherFile'];
 
     houseCommon.getHouseId = function () {
         return houseCommon.houseForm.find('[name=id]').val();

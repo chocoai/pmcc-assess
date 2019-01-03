@@ -130,11 +130,11 @@
 <script src="${pageContext.request.contextPath}/js/autocomplete/property.js"></script>
 <script src="${pageContext.request.contextPath}/js/autocomplete/new.wind.brand.js"></script>
 <script src="${pageContext.request.contextPath}/js/autocomplete/heating.brand.js"></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/estate.case.js'></script>
+
 <script src="${pageContext.request.contextPath}/js/select/land.level.select.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/block.select.js"></script>
-
-<script src='${pageContext.request.contextPath}/js/autocomplete/estate.case.js'></script>
-<script src='${pageContext.request.contextPath}/js/common.column.js'></script>
+<script src="${pageContext.request.contextPath}/js/basic/huxing.select.js"></script>
 
 <!-- 表单js -->
 <script src="${pageContext.request.contextPath}/js/examine/examine.common.js"></script>
@@ -142,6 +142,13 @@
 <script src="${pageContext.request.contextPath}/js/examine/examine.build.js"></script>
 <script src="${pageContext.request.contextPath}/js/examine/examine.unit.js"></script>
 <script src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
+
+<!-- 从表 -->
+<script src='${pageContext.request.contextPath}/js/common.column.js'></script>
+<script src="${pageContext.request.contextPath}/js/basic/estate/sonEstateView.js"></script>
+<script src="${pageContext.request.contextPath}/js/basic/building/sonBuildView.js"></script>
+<script src="${pageContext.request.contextPath}/js/basic/unit/sonUnitView.js"></script>
+<script src="${pageContext.request.contextPath}/js/basic/house/sonHouseView.js"></script>
 
 <!-- 高德抓取周边数据 -->
 <script src="${pageContext.request.contextPath}/js/select/selectMap/transit.checkbox.js"></script>
@@ -270,24 +277,25 @@
     $(document).ready(function () {
 
         //初始化方法和值
-        assessEstate.detail(examineCommon.getApplyId(),function (data) {
-            assessEstate.initForm({estate:data.basicEstate,land:data.basicEstateLandState}) ;
+        estateCommon.detail(basicCommon.getApplyId(),function (data) {
+            estateCommon.initForm({estate:data.basicEstate,land:data.basicEstateLandState}) ;
         });
 
-        buildingCommon.detail(examineCommon.getApplyId(),function (data) {
+        buildingCommon.detail(basicCommon.getApplyId(),function (data) {
             buildingCommon.initForm({main:data,build:{}}) ;
         });
 
-        unitCommon.detail(examineCommon.getApplyId(),function (data) {
+        unitCommon.detail(basicCommon.getApplyId(),function (data) {
             unitCommon.initForm(data);
         });
 
-        houseCommon.detail(examineCommon.getApplyId(),function (data) {
+        houseCommon.detail(basicCommon.getApplyId(),function (data) {
             houseCommon.initForm(data) ;
         });
 
         //楼盘自动填充插件
-        assessEstate.autocompleteStart() ;
+        estateCommon.autocompleteStart() ;
+
     });
 </script>
 </html>

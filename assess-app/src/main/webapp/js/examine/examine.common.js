@@ -1,10 +1,10 @@
-var examineCommon = {};
+var basicCommon = {};
 
 /**
  * 获取案例或者查勘 entity json
  * @returns {*|jQuery}
  */
-examineCommon.getSurveyJson = function () {
+basicCommon.getSurveyJson = function () {
     var surveySceneExploreJson = $("#surveySceneExploreJson").val();
     var surveyCaseStudyJson = $("#surveyCaseStudyJson").val();
     if (surveySceneExploreJson) {
@@ -15,23 +15,23 @@ examineCommon.getSurveyJson = function () {
     }
 };
 
-examineCommon.getApplyId = function () {
+basicCommon.getApplyId = function () {
     var data = this.getSurveyJson();
     return data.basicApplyId;
 };
 
-examineCommon.getPlanDetailsId = function () {
+basicCommon.getPlanDetailsId = function () {
     var data = this.getSurveyJson();
     return data.planDetailsId;
 };
 
-examineCommon.getProjectId = function () {
+basicCommon.getProjectId = function () {
     var data = this.getSurveyJson();
     return data.projectId;
 };
 
 //开发商选择
-examineCommon.developerSelect = function (this_) {
+basicCommon.developerSelect = function (this_) {
     assessDeveloper.select(function (row) {
         $(this_).parent().prev().val(row.name);
         $(this_).parent().prev().prev().val(row.id);
@@ -39,7 +39,7 @@ examineCommon.developerSelect = function (this_) {
 };
 
 //土地级别选择
-examineCommon.landLevelSelect = function (this_) {
+basicCommon.landLevelSelect = function (this_) {
     var $form = $(this_).closest('form');
     assessLandLevel.select({
         province: $form.find('[name=province]').val(),
@@ -51,21 +51,21 @@ examineCommon.landLevelSelect = function (this_) {
     })
 };
 //物业选择
-examineCommon.propertySelect = function (this_) {
+basicCommon.propertySelect = function (this_) {
     assessProperty.select(function (row) {
         $(this_).parent().prev().val(row.name);
         $(this_).parent().prev().prev().val(row.id);
     });
 };
 //建造商选择
-examineCommon.builderSelect = function (this_) {
+basicCommon.builderSelect = function (this_) {
     assessBuilder.select(function (row) {
         $(this_).parent().prev().val(row.name);
         $(this_).parent().prev().prev().val(row.id);
     });
 };
 //板块选择
-examineCommon.blockSelect = function (this_) {
+basicCommon.blockSelect = function (this_) {
     var $form = $(this_).closest('form');
     assessBlock.select({
         province: $form.find('[name=province]').val(),

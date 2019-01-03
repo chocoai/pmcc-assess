@@ -274,10 +274,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
                 basicHouse.setUnitId(basicUnit.getId());
                 basicHouse.setApplyId(basicApply.getId());
                 basicHouseService.saveAndUpdateBasicHouse(basicHouse);
-                BasicHouseTrading houseTrading = new BasicHouseTrading();
-                houseTrading.setHouseId(basicHouse.getId());
-                houseTrading.setApplyId(basicApply.getId());
-                basicHouseTradingService.saveAndUpdateBasicHouseTrading(houseTrading);
+                basicHouseService.addHouseAndTrading(null,basicApply.getId());
             }
             //案例
             if (examineTypeEnum.getId().equals(ExamineTypeEnum.CASE.getId())) {

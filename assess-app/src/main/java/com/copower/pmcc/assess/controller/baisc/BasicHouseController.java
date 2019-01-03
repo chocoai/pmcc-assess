@@ -95,9 +95,9 @@ public class BasicHouseController {
 
     @ResponseBody
     @RequestMapping(value = "/addHouseAndTrading", name = "添加房屋及交易信息", method = {RequestMethod.POST})
-    public HttpResult addHouseAndTrading(String houseNumber) {
+    public HttpResult addHouseAndTrading(String houseNumber,Integer applyId) {
         try {
-            return HttpResult.newCorrectResult(basicHouseService.addHouseAndTrading(houseNumber));
+            return HttpResult.newCorrectResult(basicHouseService.addHouseAndTrading(houseNumber,applyId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult("添加房屋及交易信息异常");
