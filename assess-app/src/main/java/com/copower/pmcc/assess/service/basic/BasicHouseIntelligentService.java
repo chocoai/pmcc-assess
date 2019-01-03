@@ -11,6 +11,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -114,6 +115,12 @@ public class BasicHouseIntelligentService {
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(vos) ? new ArrayList<BasicHouseIntelligentVo>(10) : vos);
         return vo;
+    }
+
+    public List<BasicHouseIntelligentVo> getBasicHouseIntelligentVos(Integer houseId) {
+        BasicHouseIntelligent where=new BasicHouseIntelligent();
+        where.setHouseId(houseId);
+        return LangUtils.transform(basicHouseIntelligentDao.basicHouseIntelligentList(where),o->getBasicHouseIntelligentVo(o));
     }
 
     public BasicHouseIntelligentVo getBasicHouseIntelligentVo(BasicHouseIntelligent basicHouseIntelligent) {

@@ -44,7 +44,7 @@ public class BasicHouseIntelligentDao {
         return basicHouseIntelligentMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicHouseIntelligent> basicHouseIntelligentList(BasicHouseIntelligent basicHouseIntelligent) throws SQLException {
+    public List<BasicHouseIntelligent> basicHouseIntelligentList(BasicHouseIntelligent basicHouseIntelligent) {
         BasicHouseIntelligentExample example = new BasicHouseIntelligentExample();
         MybatisUtils.convertObj2Example(basicHouseIntelligent, example);
         return basicHouseIntelligentMapper.selectByExample(example);

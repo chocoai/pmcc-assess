@@ -21,33 +21,33 @@ public class BasicEstateSupplyDao {
     @Autowired
     private BasicEstateSupplyMapper basicEstateSupplyMapper;
 
-    public BasicEstateSupply getBasicEstateSupplyById(Integer id)throws SQLException {
+    public BasicEstateSupply getBasicEstateSupplyById(Integer id) throws SQLException {
         return basicEstateSupplyMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicEstateSupply(BasicEstateSupply basicEstateSupply)throws SQLException{
+    public Integer saveBasicEstateSupply(BasicEstateSupply basicEstateSupply) throws SQLException {
         basicEstateSupplyMapper.insertSelective(basicEstateSupply);
         return basicEstateSupply.getId();
     }
 
-    public boolean updateBasicEstateSupply(BasicEstateSupply basicEstateSupply)throws SQLException{
-        return basicEstateSupplyMapper.updateByPrimaryKeySelective(basicEstateSupply)==1;
+    public boolean updateBasicEstateSupply(BasicEstateSupply basicEstateSupply) throws SQLException {
+        return basicEstateSupplyMapper.updateByPrimaryKeySelective(basicEstateSupply) == 1;
     }
 
-    public void removeBasicEstateSupply(BasicEstateSupply basicEstateSupply)throws SQLException{
+    public void removeBasicEstateSupply(BasicEstateSupply basicEstateSupply) throws SQLException {
         BasicEstateSupplyExample example = new BasicEstateSupplyExample();
         MybatisUtils.convertObj2Example(basicEstateSupply, example);
         basicEstateSupplyMapper.deleteByExample(example);
     }
 
-    public boolean deleteBasicEstateSupply(Integer id)throws SQLException{
-        return  basicEstateSupplyMapper.deleteByPrimaryKey(id)==1;
+    public boolean deleteBasicEstateSupply(Integer id) throws SQLException {
+        return basicEstateSupplyMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicEstateSupply> basicEstateSupplyList(BasicEstateSupply basicEstateSupply)throws SQLException{
+    public List<BasicEstateSupply> basicEstateSupplyList(BasicEstateSupply basicEstateSupply) {
         BasicEstateSupplyExample example = new BasicEstateSupplyExample();
         MybatisUtils.convertObj2Example(basicEstateSupply, example);
         return basicEstateSupplyMapper.selectByExample(example);
     }
-    
+
 }

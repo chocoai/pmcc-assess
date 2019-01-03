@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicMatchingEducationDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicMatchingEducation;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basic.entity.BasicMatchingEnvironment;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingEducationVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicMatchingEnvironmentVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -11,6 +12,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -113,6 +115,12 @@ public class BasicMatchingEducationService {
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(vos) ? new ArrayList<BasicMatchingEducationVo>(10) : vos);
         return vo;
+    }
+
+    public List<BasicMatchingEducationVo> getBasicMatchingEducationVos(Integer estateId){
+        BasicMatchingEducation where=new BasicMatchingEducation();
+        where.setEstateId(estateId);
+        return LangUtils.transform(basicMatchingEducationDao.basicMatchingEducationList(where), o->getBasicMatchingEducationVo(o));
     }
 
     public BasicMatchingEducationVo getBasicMatchingEducationVo(BasicMatchingEducation basicMatchingEducation){

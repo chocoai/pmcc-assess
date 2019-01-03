@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicEstateSupplyDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicEstateSupply;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateSupplyVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -11,12 +10,11 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -101,6 +99,12 @@ public class BasicEstateSupplyService {
 
     public void removeBasicEstateSupply(BasicEstateSupply basicEstateSupply)throws Exception{
         basicEstateSupplyDao.removeBasicEstateSupply(basicEstateSupply);
+    }
+
+    public List<BasicEstateSupplyVo> getBasicEstateSupplyVos(Integer estateId){
+        BasicEstateSupply where=new BasicEstateSupply();
+        where.setEstateId(estateId);
+        return LangUtils.transform(basicEstateSupplyDao.basicEstateSupplyList(where),o->getBasicEstateSupplyVo(o));
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicEstateSupply basicEstateSupply) throws Exception {

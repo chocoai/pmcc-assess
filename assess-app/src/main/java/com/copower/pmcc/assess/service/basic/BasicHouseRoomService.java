@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.dal.basic.dao.BasicHouseRoomDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoom;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoomDecorate;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseRoomVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -12,6 +11,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -122,18 +122,20 @@ public class BasicHouseRoomService {
         return vo;
     }
 
+    public List<BasicHouseRoomVo> getBasicHouseRoomVos(Integer houseId){
+        BasicHouseRoom basicHouseRoom = new BasicHouseRoom();
+        basicHouseRoom.setHouseId(houseId);
+        List<BasicHouseRoom> basicHouseRoomList = basicHouseRoomDao.basicHouseRoomList(basicHouseRoom);
+        return LangUtils.transform(basicHouseRoomList,o->getBasicHouseRoomVo(o));
+    }
+
     public BasicHouseRoomVo getBasicHouseRoomVo(BasicHouseRoom basicHouseRoom){
         if (basicHouseRoom==null){
             return null;
         }
         BasicHouseRoomVo vo = new BasicHouseRoomVo();
         BeanUtils.copyProperties(basicHouseRoom,vo);
-        BaseDataDic dataDic = null;
-        if (basicHouseRoom.getRoomType() != null){
-            dataDic = baseDataDicService.getDataDicById(basicHouseRoom.getRoomType());
-            vo.setRoomTypeName(dataDic.getName());
-            dataDic = null;
-        }
+        vo.setRoomTypeName(baseDataDicService.getNameById(basicHouseRoom.getRoomType()));
         return vo;
     }
 

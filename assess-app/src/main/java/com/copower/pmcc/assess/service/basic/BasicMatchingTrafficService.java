@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicMatchingTrafficDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicMatchingTraffic;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingTrafficVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -11,6 +10,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -21,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.NumberUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -115,13 +114,18 @@ public class BasicMatchingTrafficService {
         return vo;
     }
 
+    public List<BasicMatchingTrafficVo> getBasicMatchingTrafficVos(Integer estateId){
+        BasicMatchingTraffic where=new BasicMatchingTraffic();
+        where.setEstateId(estateId);
+        return LangUtils.transform(basicMatchingTrafficDao.basicMatchingTrafficList(where),o->getBasicMatchingTrafficVo(o));
+    }
+
     public BasicMatchingTrafficVo getBasicMatchingTrafficVo(BasicMatchingTraffic basicMatchingTraffic){
         if (basicMatchingTraffic==null){
             return null;
         }
         BasicMatchingTrafficVo vo = new BasicMatchingTrafficVo();
         BeanUtils.copyProperties(basicMatchingTraffic,vo);
-        BaseDataDic dataDic = null;
         vo.setDistanceName(baseDataDicService.getNameById(basicMatchingTraffic.getDistance()));
         vo.setNatureName(baseDataDicService.getNameById(basicMatchingTraffic.getNature()));
         return vo;

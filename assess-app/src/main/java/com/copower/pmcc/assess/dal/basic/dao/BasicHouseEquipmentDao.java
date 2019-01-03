@@ -44,7 +44,7 @@ public class BasicHouseEquipmentDao {
         return basicHouseEquipmentMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicHouseEquipment> basicHouseEquipmentList(BasicHouseEquipment basicHouseEquipment) throws SQLException {
+    public List<BasicHouseEquipment> basicHouseEquipmentList(BasicHouseEquipment basicHouseEquipment) {
         BasicHouseEquipmentExample example = new BasicHouseEquipmentExample();
         MybatisUtils.convertObj2Example(basicHouseEquipment, example);
         return basicHouseEquipmentMapper.selectByExample(example);
