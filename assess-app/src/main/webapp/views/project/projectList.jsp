@@ -24,11 +24,11 @@
                                 <div class="form-group ">
                                     <div>
                                         <label class="col-sm-1 control-label">
-                                            项目名
+                                            项目名称
                                         </label>
                                         <div class="col-sm-2">
                                             <input type="text" data-rule-maxlength="50"
-                                                   placeholder="项目名" id="queryName" name="queryName"
+                                                   placeholder="项目名称" id="queryName" name="queryName"
                                                    class="form-control">
                                         </div>
                                     </div>
@@ -126,7 +126,7 @@
         $("#tb_projectList").bootstrapTable('destroy');
         TableInit("tb_projectList", "${pageContext.request.contextPath}/projectCenter/getProjectList", cols, {
             queryName: $("#queryName").val(),
-            projectStatus:$("#status").find("option:selected").text()
+            projectStatus:$("#status").val()
         }, {
             showColumns: false,
             showRefresh: false,

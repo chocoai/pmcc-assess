@@ -635,14 +635,8 @@
 
     //项目成员
     objProject.selectUserAccountMember = function (this_) {
-        var info = formParams(this.config.info.frm);
-        if (!this.isNotBlank(info.userAccountManager)) {
-            Alert("先选择项目经理");
-            return false;
-        }
         erpEmployee.select({
             multi: true,
-            value: info.userAccountManager,
             onSelected: function (data) {
                 $(this_).parent().prev().val(data.name);
                 $(this_).parent().prev().prev().val(data.account);

@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.controller.project.change;
 
 import com.copower.pmcc.assess.service.project.change.ProjectFollowService;
-import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ProjectFollowController {
     @Autowired
     private ProjectFollowService projectFollowService;
-
-    @ResponseBody
-    @RequestMapping(value = "/getFollowProjectProgress", name = "取得关注的项目进度", method = RequestMethod.GET)
-    public BootstrapTableVo getFollowProjectProgress() {
-        return projectFollowService.getProjectProgressVO();
-    }
 
     @ResponseBody
     @RequestMapping(value = "/followProject", name = "关注项目", method = RequestMethod.POST)

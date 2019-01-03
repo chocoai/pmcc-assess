@@ -73,13 +73,14 @@ public class ProjectCenterController {
     @RequestMapping(value = "/projectList", name = "所有项目")
     public ModelAndView projectList() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectList");
-        List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList();
+        List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList(ProjectStatusEnum.RUNING.getKey(),
+                ProjectStatusEnum.FINISH.getKey(),ProjectStatusEnum.CLOSE.getKey());
         modelAndView.addObject("statusEnumList", statusEnumList);
         return modelAndView;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getProjectList", name = "取得项目列表", method = RequestMethod.GET)
+    @RequestMapping(value = "/getProjectList", name = "取得所有项目列表", method = RequestMethod.GET)
     public BootstrapTableVo getProjectList(String queryName, String projectStatus) {
         return projectCenterService.getProjectList(queryName, projectStatus);
     }

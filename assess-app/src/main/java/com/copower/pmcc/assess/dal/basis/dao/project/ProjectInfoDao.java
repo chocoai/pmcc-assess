@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.basis.mapper.ProjectInfoMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.aspectj.apache.bcel.generic.RET;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -27,111 +28,66 @@ public class ProjectInfoDao {
     @Autowired
     private CustomProjectInfoMapper customProjectInfoMapper;
 
-    public Boolean saveProjectInfo(ProjectInfo projectInfo)
-    {
-        int i = projectInfoMapper.insertSelective(projectInfo);
-        if(i>0)
-        {
-            return true;
-        }
-        return false;
+    public Boolean addProjectInfo(ProjectInfo projectInfo) {
+        return projectInfoMapper.insertSelective(projectInfo) > 0;
     }
 
-    public int saveProjectInfo_returnID(ProjectInfo projectInfo){
+    public int saveProjectInfo_returnID(ProjectInfo projectInfo) {
         projectInfoMapper.insertSelective(projectInfo);
-        return  projectInfo.getId();
+        return projectInfo.getId();
     }
 
-    public Boolean updateProjectInfo(ProjectInfo projectInfo)
-    {
-        int i = projectInfoMapper.updateByPrimaryKeySelective(projectInfo);
-        if(i>0)
-        {
-            return true;
-        }
-        return false;
+    public Boolean updateProjectInfo(ProjectInfo projectInfo) {
+        return projectInfoMapper.updateByPrimaryKeySelective(projectInfo) > 0;
     }
-    public List<ProjectInfo> getProjectInfoList(ProjectInfo projectInfo)
-    {
-        ProjectInfoExample example=new ProjectInfoExample();
-        MybatisUtils.convertObj2Example(projectInfo,example);
+
+    public List<ProjectInfo> getProjectInfoList(ProjectInfo projectInfo) {
+        ProjectInfoExample example = new ProjectInfoExample();
+        MybatisUtils.convertObj2Example(projectInfo, example);
+        example.setOrderByClause("id desc");
         return projectInfoMapper.selectByExample(example);
     }
-    public List<ProjectInfo> getProjectInfoByProjectIds(List<Integer> integers)
-    {
-        ProjectInfoExample example=new ProjectInfoExample();
+
+    public List<ProjectInfo> getProjectInfoByProjectIds(List<Integer> integers) {
+        ProjectInfoExample example = new ProjectInfoExample();
         example.createCriteria().andIdIn(integers);
+        example.setOrderByClause("id desc");
         return projectInfoMapper.selectByExample(example);
     }
 
-    public ProjectInfo getProjectInfoById(Integer id)
-    {
+    public ProjectInfo getProjectInfoById(Integer id) {
         return projectInfoMapper.selectByPrimaryKey(id);
     }
 
-    public ProjectInfo getProjectInfoByProcessInsId(String processInsId)
-    {
-        ProjectInfoExample example=new ProjectInfoExample();
+    public ProjectInfo getProjectInfoByProcessInsId(String processInsId) {
+        ProjectInfoExample example = new ProjectInfoExample();
         example.createCriteria().andProcessInsIdEqualTo(processInsId);
         List<ProjectInfo> projectInfos = projectInfoMapper.selectByExample(example);
-        if(CollectionUtils.isNotEmpty(projectInfos))
-        {
+        if (CollectionUtils.isNotEmpty(projectInfos)) {
             return projectInfos.get(0);
         }
         return null;
 
     }
 
-    public List<ProjectInfo> getProjectInfoList(String status, String projectName)
-    {
-        ProjectInfoExample example=new ProjectInfoExample();
-        ProjectInfoExample.Criteria criteria = example.createCriteria();
-        if(StringUtils.isNotBlank(projectName))
-        {
-            criteria.andProjectNameLike(String.format("%%%s%%",projectName));
-        }
-        if(StringUtils.isNotBlank(status))
-        {
-            criteria.andStatusEqualTo(status);
-        }
-        example.setOrderByClause("id desc");
-        return projectInfoMapper.selectByExample(example);
-    }
-
-    public List<ProjectInfo> getProjectInfoListByCompleteDatePlan(Date dates,Date datee,String projectName)
-    {
-        ProjectInfoExample example=new ProjectInfoExample();
-        ProjectInfoExample.Criteria criteria = example.createCriteria().
-                andCompleteDatePlanGreaterThanOrEqualTo(dates).
-                andCompleteDatePlanLessThanOrEqualTo(datee);
-        if(StringUtils.isNotBlank(projectName))
-        {
-            criteria.andProjectNameLike(String.format("%%%s%%",projectName));
-        }
-        return projectInfoMapper.selectByExample(example);
-    }
-
     /**
-     * 根据项目id集合和组合条件查询项目信息
-     * @param projectInfo 组合查询条件
-     * @param projectIds 项目id
+     * 根据部门id查询项目数据
+     * @param orgIds
+     * @param projectName
+     * @param projectStatus
      * @return
      */
-    public List<ProjectInfo> getProjectInfoList(ProjectInfo projectInfo, List<Integer> projectIds) {
+    public List<ProjectInfo> getProjectListByOrgIds(List<Integer> orgIds,String projectName,String projectStatus) {
         ProjectInfoExample example = new ProjectInfoExample();
         ProjectInfoExample.Criteria criteria = example.createCriteria();
-        //角色权限过滤
-        if(CollectionUtils.isNotEmpty(projectIds)){
-            criteria.andIdIn(projectIds);
+        if (CollectionUtils.isNotEmpty(orgIds)) {
+            criteria.andDepartmentIdIn(orgIds);
         }
-       
-        //项目名称模糊查询
-        if(StringUtils.isNotEmpty(projectInfo.getProjectName())){
-            criteria.andProjectNameLike(String.format("%%%s%%",projectInfo.getProjectName()));
+        if (StringUtils.isNotEmpty(projectName)) {
+            criteria.andProjectNameLike(String.format("%%%s%%", projectName));
         }
-        //项目状态查询
-        if(StringUtils.isNotEmpty(projectInfo.getProjectStatus())){
-            criteria.andProjectStatusEqualTo(projectInfo.getProjectStatus());
+        if (StringUtils.isNotEmpty(projectStatus)) {
+            criteria.andProjectStatusEqualTo(projectStatus);
         }
         example.setOrderByClause("id desc");
         return projectInfoMapper.selectByExample(example);
@@ -142,19 +98,19 @@ public class ProjectInfoDao {
         ProjectInfoExample.Criteria criteria = example.createCriteria();
         criteria.andCreatorEqualTo(projectInfo.getCreator());
         //项目名称模糊查询
-        if(StringUtils.isNotEmpty(projectInfo.getProjectName())){
-            criteria.andProjectNameLike(String.format("%%%s%%",projectInfo.getProjectName()));
+        if (StringUtils.isNotEmpty(projectInfo.getProjectName())) {
+            criteria.andProjectNameLike(String.format("%%%s%%", projectInfo.getProjectName()));
         }
         //项目状态查询
-        if(StringUtils.isNotEmpty(projectInfo.getProjectStatus())){
+        if (StringUtils.isNotEmpty(projectInfo.getProjectStatus())) {
             criteria.andProjectStatusEqualTo(projectInfo.getProjectStatus());
         }
         example.setOrderByClause("id desc");
         return projectInfoMapper.selectByExample(example);
     }
 
-    public List<ProjectInfo> getProjectListByUserAccount(String userAccount,String projectName,String projectStatus) {
-        return customProjectInfoMapper.getProjectListByUserAccount(userAccount,projectName,projectStatus);
+    public List<ProjectInfo> getProjectListByUserAccount(String userAccount, String projectName, String projectStatus) {
+        return customProjectInfoMapper.getProjectListByUserAccount(userAccount, projectName, projectStatus);
     }
 
 
