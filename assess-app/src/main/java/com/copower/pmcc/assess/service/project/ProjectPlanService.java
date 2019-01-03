@@ -674,32 +674,26 @@ public class ProjectPlanService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void updatePlanStatus(Integer planId) throws Exception {
+        //1.将当前阶段设置结束，并清理所有任务
         ProjectPlan projectPlan = projectPlanDao.getProjectplanById(planId);
         projectPlan.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
         projectPlan.setFinishDate(new Date());
         int currStageSort = projectPlan.getStageSort().intValue();
-        if (currStageSort == 1) {
-            projectPlan.setProjectPlanStart(new Date());
-            projectPlan.setProjectPlanEnd(new Date());
-        }
         projectPlanDao.updateProjectPlan(projectPlan);
         bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(), planId);
-        /**
-         * 处理过程
-         * 1、判断当前同等级执行阶段是否都已执行完成，如果都完成则将下个阶段的状态设置为wait
-         * 2、如果 没有完成，则不执行相应操作
-         */
+
+        //2.检查是否存在同级别的阶段
         ProjectPlan projectPlanWhere = new ProjectPlan();
         projectPlanWhere.setProjectId(projectPlan.getProjectId());
         projectPlanWhere.setBisRestart(false);
         List<ProjectPlan> projectPlans = projectPlanDao.getProjectPlan(projectPlanWhere);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
-        //取当前同级
-
         List<ProjectPlan> filter = LangUtils.filter(projectPlans, o -> {
-            return (o.getStageSort().equals(currStageSort) && !o.getProjectStatus().equals(ProjectStatusEnum.FINISH.getName()) && !o.getProjectStatus().equals(ProjectStatusEnum.CLOSE.getName()));
+            return (o.getStageSort().equals(currStageSort) && !o.getProjectStatus().equals(ProjectStatusEnum.FINISH.getKey()) && !o.getProjectStatus().equals(ProjectStatusEnum.CLOSE.getKey()));
         });
-        if (CollectionUtils.isEmpty(filter)) {//当前同级阶段都完成任务，则进入下一阶段
+
+        //3.当前同级阶段都完成任务，则进入下一阶段
+        if (CollectionUtils.isEmpty(filter)) {
             List<ProjectPlan> nextProjectPlans = getNextProjectPlans(currStageSort, projectPlans);
             if (CollectionUtils.isNotEmpty(nextProjectPlans)) {
                 for (ProjectPlan plan : nextProjectPlans) {
@@ -721,8 +715,7 @@ public class ProjectPlanService {
                         projectPlanDao.updateProjectPlan(plan);
                     }
                 }
-            } else { //如果没有相应的阶段，则说明项目已经结束
-                //处理更新项目状态的相关事项
+            } else { //如果没有相应的阶段，则说明项目已经结束，处理更新项目状态的相关事项
                 projectInfo.setStatus(ProcessStatusEnum.FINISH.getValue());
                 projectInfo.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
                 projectInfoDao.updateProjectInfo(projectInfo);

@@ -2,8 +2,8 @@ package com.copower.pmcc.assess.service.event.project;
 
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
-import com.copower.pmcc.assess.service.project.ProjectTaskAllService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ public class ProjectTaskEvent extends BaseProcessEvent {
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
-    private ProjectTaskAllService projectTaskAllService;
+    private ProjectPlanService projectPlanService;
 
 
     @Override
@@ -29,8 +29,7 @@ public class ProjectTaskEvent extends BaseProcessEvent {
         String processInstanceId = processExecution.getProcessInstanceId();
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(processInstanceId);
         if (projectPlanDetailsService.isAllPlanDetailsFinish(projectPlanDetails.getPlanId())) {
-            //任务都执行则发起相应的整体复核流程
-            projectTaskAllService.startTaskAllApproval(projectPlanDetails.getPlanId());
+            projectPlanService.updatePlanStatus(projectPlanDetails.getPlanId()); //结束当前阶段进入下一阶段
         }
     }
 }

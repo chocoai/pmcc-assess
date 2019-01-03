@@ -75,8 +75,6 @@ public class ProjectPlanFinancialClaimService {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private ProjectTaskAllService projectTaskAllService;
-    @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
     private DdlMySqlAssist ddlMySqlAssist;
@@ -436,8 +434,7 @@ public class ProjectPlanFinancialClaimService {
         projectPlanDetailsWhere.setBisLastLayer(true);
         List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
         if (CollectionUtils.isEmpty(projectPlanDetailsList)) {
-            //任务都执行则发起相应的整体复核流程
-            projectTaskAllService.startTaskAllApproval(projectPlanDetails.getPlanId());
+            projectPlanService.updatePlanStatus(projectPlanDetails.getPlanId()); //结束当前阶段进入下一阶段
         }
 
     }

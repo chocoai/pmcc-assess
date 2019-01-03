@@ -6,7 +6,6 @@ import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.manage.ProjectCloseDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
-import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanTaskAllDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectClose;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
@@ -75,8 +74,6 @@ public class ProjectCloseService {
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
-    @Autowired
-    private ProjectPlanTaskAllDao projectPlanTaskAllDao;
     @Autowired
     private ProjectPlanDao projectPlanDao;
     @Autowired
@@ -204,22 +201,6 @@ public class ProjectCloseService {
             });
             if (CollectionUtils.isNotEmpty(filter)) {
                 for (ProjectPlanDetailsVo item : filter) {
-                    if (!bpmRpcActivitiProcessManageService.isEnded(item.getProcessInsId())) {
-                        bpmRpcActivitiProcessManageService.closeProcess(item.getProcessInsId());
-                    }
-
-                }
-            }
-        }
-        //关闭正在审批的整体提交审批的工作成果
-        List<ProjectPlanTaskAll> projectPlanTaskAlls = projectPlanTaskAllDao.getObjectByProjectid(projectInfo.getId());
-        if(CollectionUtils.isNotEmpty(projectPlanTaskAlls)){
-            List<ProjectPlanTaskAll> filter1 = LangUtils.filter(projectPlanTaskAlls, o -> {
-                return ProcessStatusEnum.RUN.getValue().equals(o.getStatus());
-            });
-
-            if (CollectionUtils.isNotEmpty(filter1)) {
-                for (ProjectPlanTaskAll item : filter1) {
                     if (!bpmRpcActivitiProcessManageService.isEnded(item.getProcessInsId())) {
                         bpmRpcActivitiProcessManageService.closeProcess(item.getProcessInsId());
                     }

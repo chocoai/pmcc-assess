@@ -168,7 +168,6 @@ public class ProjectInfoService {
             projectMemberService.saveReturnId(projectMember);
             //如果没有设置项目经理，则由部门领导分派项目经理
             if (StringUtils.isBlank(projectMember.getUserAccountManager())) {
-                //发起流程
                 allocateProjectManager(projectMember, projectInfo);
             } else {
                 //初始化项目信息

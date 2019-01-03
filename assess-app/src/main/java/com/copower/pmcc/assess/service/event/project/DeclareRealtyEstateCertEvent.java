@@ -26,5 +26,6 @@ public class DeclareRealtyEstateCertEvent extends ProjectTaskEvent {
             return;
         }
         declareApplyService.writeToDeclareRecord(declareApply);
+
     }
 }

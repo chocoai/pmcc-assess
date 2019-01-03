@@ -64,9 +64,9 @@ public class ProjectTaskService {
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
-    private ProjectTaskAllService projectTaskAllService;
-    @Autowired
     private ProjectInfoService projectInfoService;
+    @Autowired
+    private ProjectPlanService projectPlanService;
 
     @Transactional(rollbackFor = Exception.class)
     public void submitTask(ProjectTaskDto projectTaskDto) throws Exception {
@@ -147,8 +147,7 @@ public class ProjectTaskService {
             projectPlanDetailsWhere.setBisLastLayer(true);
             List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
             if (CollectionUtils.isEmpty(projectPlanDetailsList)) {
-                //任务都执行则发起相应的整体复核流程
-                projectTaskAllService.startTaskAllApproval(projectPlanDetails.getPlanId());
+                projectPlanService.updatePlanStatus(projectPlanDetails.getPlanId()); //结束当前阶段进入下一阶段
             }
         }
         bpmRpcProjectTaskService.deleteProjectTask(projectTaskDto.getResponsibilityId());
