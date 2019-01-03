@@ -13,6 +13,7 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -82,11 +83,15 @@ public class ProjectTaskExploreAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
-        bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveySceneExploreEvent.class.getSimpleName());//修改监听器
         SurveySceneExplore surveySceneExplore= JSON.parseObject(formData,SurveySceneExplore.class);
         surveySceneExplore.setProcessInsId(processInsId);
         surveySceneExploreService.saveSurveySceneExplore(surveySceneExplore);
         surveySceneExploreService.updateDeclareInfo(projectPlanDetails.getId());//更新申报记录相关信息
+        if(StringUtils.isBlank(processInsId)){//同步数据到其它相关证书
+
+        }else{
+            bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveySceneExploreEvent.class.getSimpleName());//修改监听器
+        }
     }
 
     @Override

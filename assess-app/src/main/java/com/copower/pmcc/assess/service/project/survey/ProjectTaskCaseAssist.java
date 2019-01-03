@@ -120,10 +120,14 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
-        bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveyCaseStudyEvent.class.getSimpleName());//修改监听器
         SurveyCaseStudy surveyCaseStudy= JSON.parseObject(formData,SurveyCaseStudy.class);
         surveyCaseStudy.setProcessInsId(processInsId);
         surveyCaseStudyService.saveSurveyCaseStudy(surveyCaseStudy);
+        if(StringUtils.isBlank(processInsId)){//同步数据到其它相关证书
+
+        }else{
+            bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveyCaseStudyEvent.class.getSimpleName());//修改监听器
+        }
     }
 
     @Override
