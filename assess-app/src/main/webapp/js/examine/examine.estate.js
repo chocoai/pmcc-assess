@@ -4,13 +4,13 @@
      * @author zch
      * @type {{}}
      */
-    var assessEstate = {};
+    var estateCommon = {};
 
-    assessEstate.estateForm = $('#frm_estate');
-    assessEstate.estateLandStateForm = $('#frm_estateLandState');
+    estateCommon.estateForm = $('#frm_estate');
+    estateCommon.estateLandStateForm = $('#frm_estateLandState');
 
     //附件上传控件id数组
-    assessEstate.estateFileControlIdArray = [
+    estateCommon.estateFileControlIdArray = [
         'estate_floor_total_plan',
         'estate_floor_Appearance_figure',
         'water_supply_plan',
@@ -24,57 +24,61 @@
      * @param item
      * @returns {boolean}
      */
-    assessEstate.isNotBlank = function (item) {
+    estateCommon.isNotBlank = function (item) {
         if (item) {
             return true;
         }
         return false;
     };
 
-    assessEstate.isNotBlankObject = function (obj) {
+    estateCommon.isNotBlankObject = function (obj) {
         for (var key in obj) {
             return true;
         }
         return false
     };
 
-    assessEstate.getEstateId = function () {
-        var id = assessEstate.estateForm.find('[name=id]').val();
+    estateCommon.getEstateId = function () {
+        var id = estateCommon.estateForm.find('[name=id]').val();
         if (id) {
             return id;
         }
         return 0;
     };
 
+    estateCommon.getEstateName = function () {
+        return estateCommon.estateForm.find('[name=name]').val() ;
+    };
+
 
     //附件上传
-    assessEstate.fileUpload = function (fieldsName, tableName, id) {
+    estateCommon.fileUpload = function (fieldsName, tableName, id) {
         FileUtils.uploadFiles({
             target: fieldsName,
             disabledTarget: "btn_submit",
             formData: {
                 fieldsName: fieldsName,
                 tableName: tableName,
-                tableId: assessEstate.getEstateId()
+                tableId: estateCommon.getEstateId()
             },
             deleteFlag: true
         });
     };
 
     //附件显示
-    assessEstate.fileShow = function (fieldsName, tableName, id) {
+    estateCommon.fileShow = function (fieldsName, tableName, id) {
         FileUtils.getFileShows({
             target: fieldsName,
             formData: {
                 fieldsName: fieldsName,
                 tableName: tableName,
-                tableId: assessEstate.getEstateId()
+                tableId: estateCommon.getEstateId()
             },
             deleteFlag: true
         })
     };
 
-    assessEstate.detail = function (id,callback) {
+    estateCommon.detail = function (id,callback) {
         $.ajax({
             url: getContextPath() + '/basicEstate/getBasicEstateByApplyId',
             type: 'get',
@@ -93,62 +97,62 @@
      * 楼盘信息 赋值
      * @param data
      */
-    assessEstate.initForm = function (data) {
-        assessEstate.estateForm.clearAll();
-        assessEstate.estateLandStateForm.clearAll();
-        assessEstate.estateForm.initForm(data.estate);
-        assessEstate.estateLandStateForm.initForm(data.land);
+    estateCommon.initForm = function (data) {
+        estateCommon.estateForm.clearAll();
+        estateCommon.estateLandStateForm.clearAll();
+        estateCommon.estateForm.initForm(data.estate);
+        estateCommon.estateLandStateForm.initForm(data.land);
         AssessCommon.initAreaInfo({
-            provinceTarget: assessEstate.estateForm.find("select[name='province']"),
-            cityTarget: assessEstate.estateForm.find("select[name='city']"),
-            districtTarget: assessEstate.estateForm.find("select[name='district']"),
+            provinceTarget: estateCommon.estateForm.find("select[name='province']"),
+            cityTarget: estateCommon.estateForm.find("select[name='city']"),
+            districtTarget: estateCommon.estateForm.find("select[name='district']"),
             provinceValue: data.estate.province,
             cityValue: data.estate.city,
             districtValue: data.estate.district
         });
         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_position, data.estate.position, function (html, data) {
-            assessEstate.estateForm.find('select.position').empty().html(html).trigger('change');
+            estateCommon.estateForm.find('select.position').empty().html(html).trigger('change');
         }, true);
         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateSupplySituation, data.estate.supplyGas, function (html, data) {
-            assessEstate.estateForm.find('select.supplyGas').empty().html(html).trigger('change');
+            estateCommon.estateForm.find('select.supplyGas').empty().html(html).trigger('change');
         }, true);
         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateSupplySituation, data.estate.supplyPower, function (html, data) {
-            assessEstate.estateForm.find('select.supplyPower').empty().html(html).trigger('change');
+            estateCommon.estateForm.find('select.supplyPower').empty().html(html).trigger('change');
         }, true);
         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateSupplySituation, data.estate.supplyWater, function (html, data) {
-            assessEstate.estateForm.find('select.supplyWater').empty().html(html).trigger('change');
+            estateCommon.estateForm.find('select.supplyWater').empty().html(html).trigger('change');
         }, true);
         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateSupplySituation, data.estate.drainWater, function (html, data) {
-            assessEstate.estateForm.find('select.drainWater').empty().html(html).trigger('change');
+            estateCommon.estateForm.find('select.drainWater').empty().html(html).trigger('change');
         }, true);
         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateSupplySituation, data.estate.supplyHeating, function (html, data) {
-            assessEstate.estateForm.find('select.supplyHeating').empty().html(html).trigger('change');
+            estateCommon.estateForm.find('select.supplyHeating').empty().html(html).trigger('change');
         }, true);
 
-        $.each(assessEstate.estateFileControlIdArray, function (i, n) {
-            assessEstate.fileUpload(n, AssessDBKey.ExamineEstate, data.estate.id);
-            assessEstate.fileShow(n, AssessDBKey.ExamineEstate, data.estate.id);
+        $.each(estateCommon.estateFileControlIdArray, function (i, n) {
+            estateCommon.fileUpload(n, AssessDBKey.ExamineEstate, data.estate.id);
+            estateCommon.fileShow(n, AssessDBKey.ExamineEstate, data.estate.id);
         });
 
         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_total_land_use, data.land.landUseType, function (html, data) {
-            assessEstate.estateLandStateForm.find('select.landUseType').empty().html(html).trigger('change');
+            estateCommon.estateLandStateForm.find('select.landUseType').empty().html(html).trigger('change');
         }, true);
         AssessCommon.loadDataDicByKey(AssessDicKey.estatePlaneness, data.land.planeness, function (html, data) {
-            assessEstate.estateLandStateForm.find('select.planeness').empty().html(html).trigger('change');
+            estateCommon.estateLandStateForm.find('select.planeness').empty().html(html).trigger('change');
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.estateDevelopment_degree, data.land.developmentDegree, function (html, data) {
-            assessEstate.estateLandStateForm.find('select.developmentDegree').empty().html(html).trigger('change');
+            estateCommon.estateLandStateForm.find('select.developmentDegree').empty().html(html).trigger('change');
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.estateShape_state, data.land.shapeState, function (html, data) {
-            assessEstate.estateLandStateForm.find('select.shapeState').empty().html(html).trigger('change');
+            estateCommon.estateLandStateForm.find('select.shapeState').empty().html(html).trigger('change');
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.estateTopographic_terrain, data.land.topographicTerrain, function (html, data) {
-            assessEstate.estateLandStateForm.find('select.topographicTerrain').empty().html(html).trigger('change');
+            estateCommon.estateLandStateForm.find('select.topographicTerrain').empty().html(html).trigger('change');
         });
         //绑定变更事件
-        assessEstate.estateLandStateForm.find("select.landUseType").off('change').on('change', function () {
+        estateCommon.estateLandStateForm.find("select.landUseType").off('change').on('change', function () {
             AssessCommon.loadDataDicByPid($(this).val(), data.land.landUseCategory, function (html, data) {
-                assessEstate.estateLandStateForm.find('select.landUseCategory').empty().html(html).trigger('change');
+                estateCommon.estateLandStateForm.find('select.landUseCategory').empty().html(html).trigger('change');
             });
         });
     };
@@ -157,20 +161,78 @@
      * 选择案例的楼盘后处理方法
      * @param id
      */
-    assessEstate.onSelect = function (id) {
+    estateCommon.onSelect = function (id) {
 
     };
 
     /**
      * 启用自动填充,需要引入
      */
-    assessEstate.autocompleteStart = function () {
+    estateCommon.autocompleteStart = function () {
         $("#txt_estate_search").apEstate({
             onSelect: function (id, name) {
-                assessEstate.onSelect(id);
+                estateCommon.onSelect(id);
             }
         });
     };
 
-    window.assessEstate = assessEstate;
+    //楼盘标注
+    estateCommon.mapMarker = function (readonly) {
+        var contentUrl = getContextPath() + '/map/mapMarkerEstate?estateName=' + estateCommon.getEstateName();
+        if (readonly != true) {
+            contentUrl += '&click=estateCommon.addMarker';
+        }
+        layer.open({
+            type: 2,
+            title: '楼盘标注',
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: contentUrl,
+            success: function (layero) {
+                estateCommon.estateMapiframe = window[layero.find('iframe')[0]['name']];
+                estateCommon.loadMarkerList();
+            }
+        });
+    };
+
+    //添加标注
+    estateCommon.addMarker = function (lng, lat) {
+        $.ajax({
+            url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
+            data: {
+                applyId: basicCommon.getApplyId(),
+                type: 'estate',
+                lng: lng,
+                lat: lat,
+                name: estateCommon.getEstateName()
+            },
+            success: function (result) {
+                if (result.ret) {//标注成功后，刷新地图上的标注
+                    estateCommon.loadMarkerList();
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    };
+
+    //加载标注
+    estateCommon.loadMarkerList = function () {
+        $.ajax({
+            url: getContextPath() + '/basicEstateTagging/getEstateTaggingList',
+            data: {
+                applyId: basicCommon.getApplyId(),
+                type: 'estate'
+            },
+            success: function (result) {
+                if (result.ret && estateCommon.estateMapiframe) {//标注成功后，刷新地图上的标注
+                    estateCommon.estateMapiframe.loadMarkerList(result.data);
+                }
+            }
+        })
+    };
+
+    window.estateCommon = estateCommon;
 })(jQuery);

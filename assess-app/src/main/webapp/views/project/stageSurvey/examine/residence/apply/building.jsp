@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
  楼栋基础信息
 --%>
@@ -16,6 +17,10 @@
                     <div class="input-group">
                         <input type="text" data-rule-maxlength="100" placeholder="楼栋号" required="required"
                                name="buildingNumber" class="form-control" onblur="$(this).val($(this).val().replace('栋',''));">
+                        <span class="input-group-btn">
+                            <div onclick="buildingCommon.mapMarker();" class="btn btn-info"><i
+                                    class="fa fa-map-marker"></i> 标注</div>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -257,6 +262,19 @@
         </div>
     </form>
 </div>
+
+<c:if test="${dataExamineTask.fieldName == 'fc.residence'}">
+    <%@include file="./buildingOutfit.jsp" %>
+    <%@include file="./buildingFunction.jsp" %>
+</c:if>
+
+<c:if test="${dataExamineTask.fieldName == 'fc.industry'}">
+    <%@include file="./buildingOutfit.jsp" %>
+    <%@include file="./buildingFunction.jsp" %>
+    <%@include file="../../industry/apply/buildingMaintenance.jsp" %>
+    <%@include file="../../industry/apply/buildingSurface.jsp" %>
+</c:if>
+
 
 </html>
 
