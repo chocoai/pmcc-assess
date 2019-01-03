@@ -9,7 +9,6 @@ import com.copower.pmcc.assess.dal.basis.dao.project.ProjectMemberDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
-import com.copower.pmcc.assess.dto.input.project.ProjectMemberDto;
 import com.copower.pmcc.assess.dto.input.project.initiate.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
@@ -143,11 +142,11 @@ public class ProjectInfoService {
         projectMember.setUserAccountManager(projectDto.getProjectInfo().getUserAccountManager());
         projectMember.setUserAccountMember(projectDto.getProjectInfo().getUserAccountMember());
         projectMember.setBisEnable(true);
-        return projectApplyChange(projectDto.getConsignor(), projectDto.getUnitinformation(), projectDto.getPossessor(), change(projectMember), projectDto.getProjectInfo(), bisNextUser);
+        return projectApplyChange(projectDto.getConsignor(), projectDto.getUnitinformation(), projectDto.getPossessor(),projectMember, projectDto.getProjectInfo(), bisNextUser);
     }
 
     @Transactional(rollbackFor = {Exception.class})
-    public boolean projectApplyChange(InitiateConsignor consignor, InitiateUnitInformation unitInformation, InitiatePossessor possessor, ProjectMemberDto projectMemberDto,
+    public boolean projectApplyChange(InitiateConsignor consignor, InitiateUnitInformation unitInformation, InitiatePossessor possessor, ProjectMember projectMember,
                                       ProjectInfoDto projectInfoDto, Boolean bisNextUser) {
         boolean flag = true;
         try {
@@ -164,46 +163,13 @@ public class ProjectInfoService {
             unitInformationService.saveAndUpdate(unitInformation);
             possessorService.saveAndUpdate(possessor);
             //保存项目成员
-            projectMemberDto.setProjectId(projectId);
-            projectMemberDto.setCreator(commonService.thisUserAccount());
-            projectMemberService.saveReturnId(projectMemberDto);
+            projectMember.setProjectId(projectId);
+            projectMember.setCreator(commonService.thisUserAccount());
+            projectMemberService.saveReturnId(projectMember);
             //如果没有设置项目经理，则由部门领导分派项目经理
-            if (StringUtils.isBlank(projectMemberDto.getUserAccountManager())) {
+            if (StringUtils.isBlank(projectMember.getUserAccountManager())) {
                 //发起流程
-                List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectInfo.getProjectTypeId(), true);
-                String boxName = baseParameterServcie.getParameterValues(BaseParameterEnum.PROJECT_APPLY_ASSIGN_PROCESS_KEY.getParameterKey());
-                Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
-                BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
-                ProcessInfo processInfo = new ProcessInfo();
-                processInfo.setProjectId(projectInfo.getId());
-                processInfo.setProcessName(boxReDto.getProcessName());
-                processInfo.setGroupName(boxReDto.getGroupName());
-                //流程描述
-                processInfo.setFolio(projectInfo.getProjectName());
-                processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
-                processInfo.setBoxId(boxReDto.getId());
-                processInfo.setStartUser(commonService.thisUserAccount());
-                processInfo.setWorkStage(projectWorkStages.get(0).getWorkStageName());
-                processInfo.setWorkStageId(projectWorkStages.get(0).getId());
-                processInfo.setProcessEventExecutorName(ProjectAssignEvent.class.getSimpleName());
-                processInfo.setTableId(projectInfo.getId());
-                //取审批人
-                if (StringUtils.isNotEmpty(projectMemberDto.getUserAccountManager())) {
-                    processInfo.setNextUser(Lists.newArrayList(projectMemberDto.getUserAccountManager()));
-                } else {
-                    Integer departmentId = projectInfo.getDepartmentId();
-                    //取部门领导
-                    List<String> departmentCE = bpmRpcBoxRoleUserService.getDepartmentBmfzr(departmentId);
-                    processInfo.setNextUser(departmentCE);
-                }
-                try {
-                    String processInsId = processControllerComponent.processStartPending(processInfo);
-                    projectInfo.setAssignStatus(ProcessStatusEnum.RUN.getValue());
-                    projectInfo.setAssignProcessInsId(processInsId);
-                    projectInfoDao.updateProjectInfo(projectInfo);
-                } catch (Exception e) {
-                    logger.error(e.getMessage(), e);
-                }
+                allocateProjectManager(projectMember, projectInfo);
             } else {
                 //初始化项目信息
                 initProjectInfo(projectInfo);
@@ -213,6 +179,48 @@ public class ProjectInfoService {
             logger.error("exception!" + e.getMessage());
         }
         return flag;
+    }
+
+    /**
+     * 分派项目经理
+     * @param projectMember
+     * @param projectInfo
+     */
+    private void allocateProjectManager(ProjectMember projectMember, ProjectInfo projectInfo) {
+        List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectInfo.getProjectTypeId(), true);
+        String boxName = baseParameterServcie.getParameterValues(BaseParameterEnum.PROJECT_APPLY_ASSIGN_PROCESS_KEY.getParameterKey());
+        Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
+        BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
+        ProcessInfo processInfo = new ProcessInfo();
+        processInfo.setProjectId(projectInfo.getId());
+        processInfo.setProcessName(boxReDto.getProcessName());
+        processInfo.setGroupName(boxReDto.getGroupName());
+        //流程描述
+        processInfo.setFolio(projectInfo.getProjectName());
+        processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
+        processInfo.setBoxId(boxReDto.getId());
+        processInfo.setStartUser(commonService.thisUserAccount());
+        processInfo.setWorkStage(projectWorkStages.get(0).getWorkStageName());
+        processInfo.setWorkStageId(projectWorkStages.get(0).getId());
+        processInfo.setProcessEventExecutorName(ProjectAssignEvent.class.getSimpleName());
+        processInfo.setTableId(projectInfo.getId());
+        //取审批人
+        if (StringUtils.isNotEmpty(projectMember.getUserAccountManager())) {
+            processInfo.setNextUser(Lists.newArrayList(projectMember.getUserAccountManager()));
+        } else {
+            Integer departmentId = projectInfo.getDepartmentId();
+            //取部门领导
+            List<String> departmentCE = bpmRpcBoxRoleUserService.getDepartmentBmfzr(departmentId);
+            processInfo.setNextUser(departmentCE);
+        }
+        try {
+            String processInsId = processControllerComponent.processStartPending(processInfo);
+            projectInfo.setAssignStatus(ProcessStatusEnum.RUN.getValue());
+            projectInfo.setAssignProcessInsId(processInsId);
+            projectInfoDao.updateProjectInfo(projectInfo);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
     }
 
     /**
@@ -595,11 +603,6 @@ public class ProjectInfoService {
         return projectInfo;
     }
 
-    public ProjectMemberDto change(ProjectMember projectMember) {
-        ProjectMemberDto dto = new ProjectMemberDto();
-        BeanUtils.copyProperties(projectMember, dto);
-        return dto;
-    }
 
     public InitiateProjectDto format(String val) {
         InitiateProjectDto dto = null;

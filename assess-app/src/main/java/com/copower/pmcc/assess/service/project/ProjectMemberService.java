@@ -4,7 +4,6 @@ package com.copower.pmcc.assess.service.project;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectMemberDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectMember;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectMemberHistory;
-import com.copower.pmcc.assess.dto.input.project.ProjectMemberDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -18,14 +17,12 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -84,14 +81,14 @@ public class ProjectMemberService {
         return projectMemberDao.get(id);
     }
 
-    public void save(ProjectMemberDto dto) throws BusinessException {
-        if (dto == null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-        saveProjectMemeber(change(dto));
+    public void save(ProjectMember projectMember) throws BusinessException {
+        if (projectMember == null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+        saveProjectMemeber(projectMember);
     }
 
-    public int saveReturnId(ProjectMemberDto dto) throws BusinessException {
-        if (dto == null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-        return projectMemberDao.saveProjectMemeberID(change(dto));
+    public int saveReturnId(ProjectMember projectMember) throws BusinessException {
+        if (projectMember == null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+        return projectMemberDao.saveProjectMemeberID(projectMember);
     }
 
     private void upateProjectMemeberToErp(Integer projectId, String projectManager, String projectMember) {
@@ -168,12 +165,6 @@ public class ProjectMemberService {
         return projectMemberVo;
     }
 
-    public ProjectMember change(ProjectMemberDto dto) {
-        ProjectMember projectMember = new ProjectMember();
-        BeanUtils.copyProperties(dto, projectMember);
-        return projectMember;
-    }
-
 
     /**
      * 获取项目成员数据
@@ -196,28 +187,6 @@ public class ProjectMemberService {
                 userAccounts.add(projectMember.getUserAccountManager());
             }
 
-            //批量获取用户信息
-            List<SysUserDto> sysUserList = erpRpcUserService.getSysUserList(userAccounts);
-
-            //封装用户名,格式:用户姓名_账号
-            if (CollectionUtils.isNotEmpty(sysUserList)) {
-                Map<String, SysUserDto> relationUserMap = relationUserMap(sysUserList);
-                List<String> memberNames = Lists.newArrayList();
-                List<String> members = Lists.newArrayList();
-                if (relationUserMap.get(projectMember.getUserAccountManager()) != null) {
-
-                    vo.setUserAccountManagerName(String.format("%s_%s", relationUserMap.get(projectMember.getUserAccountManager()).getUserName(), projectMember.getUserAccountManager()));
-
-                    members = FormatUtils.transformString2List(projectMember.getUserAccountMember());
-                }
-                if (CollectionUtils.isNotEmpty(members)) {
-                    for (String member : members) {
-                        memberNames.add(String.format("%s_%s", relationUserMap.get(member).getUserName(), member));
-                    }
-
-                    vo.setUserAccountMemberName(FormatUtils.transformListString(memberNames));
-                }
-            }
         }
 
         return vo;

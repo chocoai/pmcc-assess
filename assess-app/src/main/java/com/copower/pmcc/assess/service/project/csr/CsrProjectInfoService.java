@@ -16,7 +16,6 @@ import com.copower.pmcc.assess.dal.basis.dao.csr.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.DataReplaceDto;
 import com.copower.pmcc.assess.dto.input.base.BaseReportTemplateFilesDto;
-import com.copower.pmcc.assess.dto.input.project.ProjectMemberDto;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrImportBorrowerDto;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrImportColumnDto;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoGroupVo;
@@ -386,12 +385,12 @@ public class CsrProjectInfoService {
                     int projectId = projectInfoService.saveProjectInfo(projectInfo);
 
                     //保存项目成员
-                    ProjectMemberDto projectMemberDto = new ProjectMemberDto();
-                    projectMemberDto.setProjectId(projectId);
-                    projectMemberDto.setCreator(csrProjectInfo.getCreator());
-                    projectMemberDto.setUserAccountManager(infoGroup.getProjectManager());
-                    projectMemberDto.setUserAccountMember(infoGroup.getProjectMember());
-                    int k = projectMemberService.saveReturnId(projectMemberDto);
+                    ProjectMember projectMember = new ProjectMember();
+                    projectMember.setProjectId(projectId);
+                    projectMember.setCreator(csrProjectInfo.getCreator());
+                    projectMember.setUserAccountManager(infoGroup.getProjectManager());
+                    projectMember.setUserAccountMember(infoGroup.getProjectMember());
+                    int k = projectMemberService.saveReturnId(projectMember);
 
                     //回写借款人的项目id
                     List<CsrBorrower> csrBorrowers = csrBorrowerService.getCsrBorrowerListByCsrProjectID(csrProjectInfo.getId(), infoGroup.getId());
@@ -400,8 +399,8 @@ public class CsrProjectInfoService {
                         csrBorrowerService.update(csrBorrower);
                     }
                     projectInfoService.updateProjectInfo(projectInfo);
-                    projectMemberDto.setProjectId(projectId);
-                    projectMemberService.updateProjectMember(projectMemberDto);
+                    projectMember.setProjectId(projectId);
+                    projectMemberService.updateProjectMember(projectMember);
                     //项目立项
                     projectInfoService.initProjectInfo(projectInfo);
                 } catch (Exception e) {
