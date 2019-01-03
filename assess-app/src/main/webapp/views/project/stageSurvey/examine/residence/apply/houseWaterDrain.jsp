@@ -1,5 +1,5 @@
 <%--
-  车位信息
+  排水情况
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -9,29 +9,29 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>车位</h4>
-        <div class="clearfix"></div>
+        <h4>排水情况</h4>
     </div>
     <div class="x_content collapse">
-        <button type="button" class="btn btn-success" onclick="estateParking.prototype.showModel()"
+        <button type="button" class="btn btn-success" onclick="houseWaterDrain.showModel()"
                 data-toggle="modal" href="#divBox"> 新增
         </button>
-        <table class="table table-bordered" id="estateParkingList">
+        <table class="table table-bordered" id="HouseWaterDrainList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
 
-<div id="divBoxEstateParking" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="divBoxHouseWaterDrain" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">车位</h3>
+                <h3 class="modal-title">排水情况</h3>
             </div>
-            <form id="frmEstateParking" class="form-horizontal">
+            <form id="frmHouseWaterDrain" class="form-horizontal">
                 <input type="hidden" name="id">
                 <div class="modal-body">
                     <div class="row">
@@ -40,11 +40,11 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            车位位置<span class="symbol required"></span>
+                                            排水系统<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select class="form-control search-select select2 location"
-                                                    name="location" required>
+                                            <select required name="drainSystem"
+                                                    class="form-control search-select select2 drainSystem">
                                             </select>
                                         </div>
                                     </div>
@@ -52,11 +52,11 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            车位类型<span class="symbol required"></span>
+                                            类别<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select class="form-control search-select select2 parkingType"
-                                                    name="parkingType" required>
+                                            <select required name="type"
+                                                    class="form-control search-select select2 type">
                                             </select>
                                         </div>
                                     </div>
@@ -64,24 +64,12 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            车位数量
+                                            排水处理方式<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="number"
-                                                   placeholder="车位数量">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            平面图
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input id="house_estateParking" name="house_estateParking"
-                                                   placeholder="上传附件" class="form-control"
-                                                   type="file">
-                                            <div id="_house_estateParking"></div>
+                                            <select required="required" name="processingMode"
+                                                    class="form-control search-select select2 processingMode">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -93,7 +81,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="estateParking.prototype.saveData()">
+                    <button type="button" class="btn btn-primary" onclick="houseWaterDrain.saveData()">
                         保存
                     </button>
                 </div>

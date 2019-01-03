@@ -46,8 +46,14 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">楼盘名称<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" id="txt_estate_search" placeholder="楼盘名称" required="required"
-                           name="name" class="form-control" value="${basicEstate.name}">
+                    <div class="input-group">
+                        <input type="text" data-rule-maxlength="100" placeholder="楼盘名称" required="required"
+                               name="name" class="form-control" value="${basicEstate.name}">
+                        <span class="input-group-btn">
+                            <div onclick="estateCommon.mapMarker();" class="btn btn-info"><i
+                                    class="fa fa-map-marker"></i> 标注</div>
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="x-valid">

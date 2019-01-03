@@ -1,353 +1,25 @@
 <%--
  电力通讯网络
 --%>
-<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <div class="x_panel">
-    <div class="x_title collapse-link" onclick="houseIntelligent.prototype.viewInit()">
+    <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h3>电力通讯网络
-        </h3>
-        <div class="clearfix"></div>
+        <h4>电力通讯网络</h4>
     </div>
-
-    <div class="x_content" style="display: none;">
-        <div>
-            <button type="button" class="btn btn-success" onclick="houseIntelligent.prototype.showModel()"
-                    data-toggle="modal" href="#divBox"> 新增
-            </button>
-        </div>
-        <form class="form-horizontal">
-            <div class="form-group">
-                <div class="x-valid">
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <table class="table table-bordered" id="HouseIntelligentList">
-                        <!-- cerare document add ajax data-->
-                    </table>
-                </div>
-            </div>
-        </form>
+    <div class="x_content collapse">
+        <button type="button" class="btn btn-success" onclick="houseIntelligent.prototype.showModel()"
+                data-toggle="modal" href="#divBox"> 新增
+        </button>
+        <table class="table table-bordered" id="HouseIntelligentList">
+            <!-- cerare document add ajax data-->
+        </table>
     </div>
 </div>
-
-<script type="application/javascript">
-
-    var houseIntelligent;
-    (function () {
-        var flag = true;
-        houseIntelligent = function () {
-
-        };
-        houseIntelligent.prototype = {
-            setFlag: function (flag_) {
-                flag = flag_;
-            },
-            getFlag: function () {
-                return flag;
-            },
-            viewInit: function () {
-                houseIntelligent.prototype.loadDataDicList();
-                if (houseIntelligent.prototype.getFlag()) {
-                    houseIntelligent.prototype.setFlag(false);
-                    houseIntelligent.prototype.init();
-                }
-            },
-            config: function () {
-                var data = {};
-                data.table = "HouseIntelligentList";
-                data.box = "divBoxHouseIntelligent";
-                data.frm = "frmHouseIntelligent";
-                data.type = "null";//
-                return data;
-            },
-            loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'wireErectionName', title: '电线架设方式'});
-                cols.push({field: 'wireMaterialName', title: '电线材质'});
-                cols.push({field: 'switchCircuitName', title: '开关回路'});
-                cols.push({field: 'lampsLanternsName', title: '灯具'});
-                cols.push({field: 'internalCommunicationName', title: '屋内通讯'});
-                cols.push({field: 'monitoringSystemName', title: '监控系统'});
-                cols.push({field: 'intelligentSystemName', title: '智能系统'});
-                cols.push({
-                    field: 'id', title: '操作', formatter: function (value, row, index) {
-                        var str = '<div class="btn-margin">';
-                        str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseIntelligent.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                        str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseIntelligent.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                        str += '</div>';
-                        return str;
-                    }
-                });
-                $("#" + houseIntelligent.prototype.config().table).bootstrapTable('destroy');
-                TableInit(houseIntelligent.prototype.config().table, "${pageContext.request.contextPath}/examineHouseIntelligent/getExamineHouseIntelligentList", cols, {
-                    type: houseIntelligent.prototype.config().type,
-                    declareId : $("#declareId").val(),
-                    planDetailsId : $("#planDetailsId").val(),
-                    examineType : $("#examineType").val()
-                }, {
-                    showColumns: false,
-                    showRefresh: false,
-                    search: false,
-                    onLoadSuccess: function () {
-                        $('.tooltips').tooltip();
-                    }
-                });
-            },
-            removeData: function (id) {
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseIntelligent/deleteExamineHouseIntelligentById",
-                    type: "post",
-                    dataType: "json",
-                    data: {id: id},
-                    success: function (result) {
-                        if (result.ret) {
-                            toastr.success('删除成功');
-                            houseIntelligent.prototype.loadDataDicList();
-                        }
-                        else {
-                            Alert("保存数据失败，失败原因:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-            },
-            showModel: function () {
-                $("#" + houseIntelligent.prototype.config().frm).clearAll();
-                $("#" + houseIntelligent.prototype.config().frm + " .type").val(houseIntelligent.prototype.config().type);
-                $('#' + houseIntelligent.prototype.config().box).modal("show");
-            },
-            saveData: function () {
-                if (!$("#" + houseIntelligent.prototype.config().frm).valid()) {
-                    return false;
-                }
-                var data = formParams(houseIntelligent.prototype.config().frm);
-                if ($("#declareId").size() > 0) {
-                    data.declareId = $("#declareId").val();
-                }
-                if ($("#planDetailsId").size() > 0) {
-                    data.planDetailsId = $("#planDetailsId").val();
-                }
-                if ($("#examineType").size() > 0) {
-                    data.examineType = $("#examineType").val();
-                }
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseIntelligent/saveAndUpdateExamineHouseIntelligent",
-                    type: "post",
-                    dataType: "json",
-                    data: data,
-                    success: function (result) {
-                        if (result.ret) {
-                            toastr.success('保存成功');
-                            $('#' + houseIntelligent.prototype.config().box).modal('hide');
-                            houseIntelligent.prototype.loadDataDicList();
-                        }
-                        else {
-                            Alert("保存数据失败，失败原因:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-            },
-            getAndInit: function (id) {
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseIntelligent/getExamineHouseIntelligentById",
-                    type: "get",
-                    dataType: "json",
-                    data: {id: id},
-                    success: function (result) {
-                        if (result.ret) {
-                            $("#" + houseIntelligent.prototype.config().frm).clearAll();
-                            $("#" + houseIntelligent.prototype.config().frm).initForm(result.data);
-                            if (result.data.internalCommunication == null || result.data.internalCommunication == '') {
-                                $("#" + houseIntelligent.prototype.config().frm + " .internalCommunication").val(null).trigger("change");
-                            } else {
-                                $("#" + houseIntelligent.prototype.config().frm + " .internalCommunication").val(result.data.internalCommunication).trigger("change");
-                            }
-                            if (result.data.lampsLanterns == null || result.data.lampsLanterns == '') {
-                                $("#" + houseIntelligent.prototype.config().frm + " .lampsLanterns").val(null).trigger("change");
-                            } else {
-                                $("#" + houseIntelligent.prototype.config().frm + " .lampsLanterns").val(result.data.lampsLanterns).trigger("change");
-                            }
-                            if (result.data.switchCircuit == null || result.data.switchCircuit == '') {
-                                $("#" + houseIntelligent.prototype.config().frm + " .switchCircuit").val(null).trigger("change");
-                            } else {
-                                $("#" + houseIntelligent.prototype.config().frm + " .switchCircuit").val(result.data.switchCircuit).trigger("change");
-                            }
-                            if (result.data.monitoringSystem == null || result.data.monitoringSystem == '') {
-                                $("#" + houseIntelligent.prototype.config().frm + " .monitoringSystem").val(null).trigger("change");
-                            } else {
-                                $("#" + houseIntelligent.prototype.config().frm + " .monitoringSystem").val(result.data.monitoringSystem).trigger("change");
-                            }
-                            if (result.data.intelligentSystem == null || result.data.intelligentSystem == '') {
-                                $("#" + houseIntelligent.prototype.config().frm + " .intelligentSystem").val(null).trigger("change");
-                            } else {
-                                $("#" + houseIntelligent.prototype.config().frm + " .intelligentSystem").val(result.data.intelligentSystem).trigger("change");
-                            }
-                            if (result.data.wireMaterial == null || result.data.wireMaterial == '') {
-                                $("#" + houseIntelligent.prototype.config().frm + " .wireMaterial").val(null).trigger("change");
-                            } else {
-                                $("#" + houseIntelligent.prototype.config().frm + " .wireMaterial").val(result.data.wireMaterial).trigger("change");
-                            }
-                            if (result.data.wireErection == null || result.data.wireErection == '') {
-                                $("#" + houseIntelligent.prototype.config().frm + " .wireErection").val(null).trigger("change");
-                            } else {
-                                $("#" + houseIntelligent.prototype.config().frm + " .wireErection").val(result.data.wireErection).trigger("change");
-                            }
-                            $('#' + houseIntelligent.prototype.config().box).modal("show");//
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-            },
-            init: function () {
-                AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseIntelligent_wireMaterial, "", function (html, data) {
-                    $("#" +houseIntelligent.prototype.config().frm ).find("select.wireMaterial").html(html).trigger('change');
-                });
-
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseIntelligent/examine_house_intelligent_system",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + houseIntelligent.prototype.config().frm ).find("select.intelligentSystem").html(option);
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseIntelligent/examine_house_monitoring_system",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + houseIntelligent.prototype.config().frm ).find("select.monitoringSystem").html(option);
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseIntelligent/examine_house_internal_communication",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + houseIntelligent.prototype.config().frm ).find("select.internalCommunication").html(option);
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseIntelligent/examine_house_lamps_lanterns",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + houseIntelligent.prototype.config().frm ).find("select.lampsLanterns").html(option);
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseIntelligent/examine_house_switch_circuit",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + houseIntelligent.prototype.config().frm ).find("select.switchCircuit").html(option);
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseIntelligent/examine_house_wire_erection_method",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + houseIntelligent.prototype.config().frm ).find("select.wireErection").html(option);
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-
-            }
-        }
-    })();
-
-</script>
 
 <div id="divBoxHouseIntelligent" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -368,47 +40,34 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            电线架设方式
+                                            开关回路<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select  name="wireErection"
-                                                    class="form-control search-select select2 wireErection">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            电线材质
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select name="wireMaterial"
-                                                    class="form-control search-select select2 wireMaterial">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            开关回路
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select name="switchCircuit"
+                                            <select required="required" name="switchCircuit"
                                                     class="form-control search-select select2 switchCircuit">
                                             </select>
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            铺设方式<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="layingMethod"
+                                                    class="form-control search-select select2 layingMethod">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             灯具
                                         </label>
                                         <div class="col-sm-10">
-                                            <select name="lampsLanterns"
+                                            <select name="lampsLanterns" multiple="multiple"
                                                     class="form-control search-select select2 lampsLanterns">
                                             </select>
                                         </div>
@@ -417,36 +76,45 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            屋内通讯
+                                            智能系统<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select name="internalCommunication"
-                                                    class="form-control search-select select2 internalCommunication">
-                                            </select>
+                                            <button class="btn btn-xs btn-success"
+                                                    onclick="houseIntelligent.prototype.appendHTML('',this)"><i
+                                                    class="fa fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 8px;" class="system">
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                智能系统
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <select required="required" name="intelligentSystem1"
+                                                        class="form-control search-select select2 intelligentSystem1">
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <select required="required" name="layingMethod1"
+                                                        class="form-control search-select select2 layingMethod1">
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="button" class="btn btn-warning" value="X"
+                                                       onclick="houseIntelligent.prototype.cleanHTMLData(this)">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            监控系统
+                                            描述
                                         </label>
                                         <div class="col-sm-10">
-                                            <select name="monitoringSystem"
-                                                    class="form-control search-select select2 monitoringSystem">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            智能系统
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select name="intelligentSystem"
-                                                    class="form-control search-select select2 intelligentSystem">
-                                            </select>
+                                            <textarea name="remark" class="form-control"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -466,9 +134,3 @@
         </div>
     </div>
 </div>
-
-</html>
-
-
-
-

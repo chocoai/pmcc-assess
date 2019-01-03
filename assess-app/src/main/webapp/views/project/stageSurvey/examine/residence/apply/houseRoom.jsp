@@ -1,431 +1,24 @@
 <%--
  房间
 --%>
-<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="x_panel">
-    <div class="x_title collapse-link" onclick="houseRoom.prototype.viewInit()">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-        </ul>
-        <h3> 房间
-        </h3>
-        <div class="clearfix"></div>
-    </div>
 
-    <div class="x_content" style="display: none">
-        <div>
-            <button type="button" class="btn btn-success" onclick="houseRoom.prototype.showModel()"
-                    data-toggle="modal" href="#divBox"> 新增
-            </button>
-        </div>
-        <form class="form-horizontal">
-            <div class="form-group">
-                <div class="x-valid">
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <table class="table table-bordered" id="HouseRoomList">
-                        <!-- cerare document add ajax data-->
-                    </table>
-                </div>
-            </div>
-        </form>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>房间</h4>
+    </div>
+    <div class="x_content collapse">
+        <button type="button" class="btn btn-success" data-toggle="modal"
+                onclick="houseRoom.prototype.showModel()"> 新增
+        </button>
+        <table class="table table-bordered" id="HouseRoomList">
+        </table>
     </div>
 </div>
-
-<script type="application/javascript">
-
-    var houseRoom;
-    (function () {
-        var flag = true;
-        var sonFlag = true;
-        houseRoom = function () {
-
-        };
-        houseRoom.prototype = {
-            isEmpty: function (item) {
-                if (item) {
-                    return true;
-                }
-                return false;
-            },
-            setFlag: function (flag_) {
-                flag = flag_;
-            },
-            getFlag: function () {
-                return flag;
-            },
-            setSonFlag: function (sonFlag_) {
-                sonFlag = sonFlag_;
-            },
-            getSonFlag: function () {
-                return sonFlag;
-            },
-            viewInit: function () {
-                houseRoom.prototype.loadDataDicList();
-                if (houseRoom.prototype.getFlag()) {
-                    houseRoom.prototype.init();
-                    houseRoom.prototype.setFlag(false);
-                }
-            },
-            config: function () {
-                var data = {};
-                data.table = "HouseRoomList";
-                data.box = "divBoxHouseRoom";
-                data.frm = "frmHouseRoom";
-                data.tableSubclass = "SubclassHouseRoomList";
-                data.boxSubclass = "SubclassDivBoxHouseRoom";
-                data.boxSubclassSaveView = "boxSubclassSaveViewHouseRoom";
-                data.frmSubclass = "SubclassFrmHouseRoom";
-                data.type = "null";//
-                return data;
-            },
-            loadDataDicList: function () {
-                var cols = [];
-                cols.push({field: 'name', title: '房间名称'});
-                cols.push({field: 'roomTypeName', title: '房间类型'});
-                cols.push({field: 'area', title: '面积'});
-                cols.push({field: 'sunshine', title: '日照'});
-                cols.push({field: 'lighting', title: '采光'});
-                cols.push({field: 'layerHeight', title: '层高'});
-                cols.push({field: 'opening', title: '开间'});
-                cols.push({field: 'depth', title: '进深'});
-                cols.push({field: 'aeration', title: '通风'});
-                cols.push({
-                    field: 'id', title: '操作', formatter: function (value, row, index) {
-                        var str = '<div class="btn-margin">';
-                        str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoom.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                        str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoom.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                        str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看" onclick="houseRoom.prototype.showModelSubclass(' + row.id + ',\'tb_List\')"><i class="fa fa-search-minus fa-white"></i></a>';
-                        str += '</div>';
-                        return str;
-                    }
-                });
-                $("#" + houseRoom.prototype.config().table).bootstrapTable('destroy');
-                TableInit(houseRoom.prototype.config().table, "${pageContext.request.contextPath}/examineHouseRoom/getExamineHouseRoomList", cols, {
-                    type: houseRoom.prototype.config().type,
-                    declareId: $("#declareId").val(),
-                    planDetailsId: $("#planDetailsId").val(),
-                    examineType: $("#examineType").val()
-                }, {
-                    showColumns: false,
-                    showRefresh: false,
-                    search: false,
-                    onLoadSuccess: function () {
-                        $('.tooltips').tooltip();
-                    }
-                });
-            },
-            removeData: function (id) {
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseRoom/deleteExamineHouseRoomById",
-                    type: "post",
-                    dataType: "json",
-                    data: {id: id},
-                    success: function (result) {
-                        if (result.ret) {
-                            toastr.success('删除成功');
-                            houseRoom.prototype.loadDataDicList();
-                        }
-                        else {
-                            Alert("保存数据失败，失败原因:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-            },
-            showModel: function () {
-                $("#" + houseRoom.prototype.config().frm).clearAll();
-                $("#" + houseRoom.prototype.config().frm + " .type").val(houseRoom.prototype.config().type);
-                $('#' + houseRoom.prototype.config().box).modal("show");
-            },
-            showModelSubclassSaveView: function () {
-                if (houseRoom.prototype.getSonFlag()) {
-                    houseRoom.prototype.subclassInit();
-                    houseRoom.prototype.setSonFlag(false);
-                }
-                if ($('#' + houseRoom.prototype.config().boxSubclass + " .roomId").size() > 0) {
-                    var roomId = $('#' + houseRoom.prototype.config().boxSubclass + " .roomId").val();
-                    $("#" + houseRoom.prototype.config().frmSubclass).clearAll();
-                    $("#" + houseRoom.prototype.config().frmSubclass + " .roomId").val(roomId);
-                } else {
-                    $("#" + houseRoom.prototype.config().frmSubclass).clearAll();
-                }
-                $('#' + houseRoom.prototype.config().boxSubclassSaveView).modal("show");
-            },
-            showModelSubclass: function (id) {
-                houseRoom.prototype.subclassLoadList(id);
-                if ($('#' + houseRoom.prototype.config().boxSubclass + " .roomId").size() > 0) {
-                    $('#' + houseRoom.prototype.config().boxSubclass + " .roomId").val(id);
-                }
-                $('#' + houseRoom.prototype.config().boxSubclass).modal("show");
-            },
-            subclassSave: function () {
-                if (!$("#" + houseRoom.prototype.config().frmSubclass).valid()) {
-                    return false;
-                }
-                var data = formParams(houseRoom.prototype.config().frmSubclass);
-                if ($("#declareId").size() > 0) {
-                    data.declareId = $("#declareId").val();
-                }
-                if ($("#planDetailsId").size() > 0) {
-                    data.planDetailsId = $("#planDetailsId").val();
-                }
-                if ($("#examineType").size() > 0) {
-                    data.examineType = $("#examineType").val();
-                }
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseRoom/saveAndUpdateExamineHouseRoomDecorate",
-                    type: "post",
-                    dataType: "json",
-                    data: data,
-                    success: function (result) {
-                        if (result.ret) {
-                            toastr.success('保存成功');
-                            $('#' + houseRoom.prototype.config().boxSubclassSaveView).modal('hide');
-                            var item = result.data;
-                            if (houseRoom.prototype.isEmpty(item)) {
-                                houseRoom.prototype.subclassLoadList(item.roomId);
-                            }
-                        }
-                        else {
-                            Alert("保存数据失败，失败原因:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-            },
-            subclassRemoveData: function (id) {
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseRoom/deleteExamineHouseRoomDecorateById",
-                    type: "post",
-                    dataType: "json",
-                    data: {id: id},
-                    success: function (result) {
-                        if (result.ret) {
-                            toastr.success('删除成功');
-                            houseRoom.prototype.subclassLoadList($('#' + houseRoom.prototype.config().boxSubclass + " .roomId").val());
-                        }
-                        else {
-                            Alert("保存数据失败，失败原因:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-            },
-            subclassInit: function () {
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseRoom/examine_building_decorating_material",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + houseRoom.prototype.config().frmSubclass).find("select.material").html(option);
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                });
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseRoom/examine_building_material_price",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + houseRoom.prototype.config().frmSubclass).find("select.materialPrice").html(option);
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                });
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseRoom/examine_building_construction_technology",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + houseRoom.prototype.config().frmSubclass).find("select.constructionTechnology").html(option);
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                });
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseRoom/examine_building_decoration_part",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + houseRoom.prototype.config().frmSubclass).find("select.part").html(option);
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                });
-            },
-            subclassLoadList: function (id) {
-                var cols = [];
-                var temp = id;
-                if (houseRoom.prototype.isEmpty(temp)) {
-                    temp = $('#' + houseRoom.prototype.config().boxSubclass + " .roomId").val();
-                }
-                cols.push({field: 'materialName', title: '装修材料'});
-                cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
-                cols.push({field: 'partName', title: '房间装修部位'});
-                cols.push({field: 'materialPriceName', title: '装修材料价格区间'});
-                cols.push({
-                    field: 'id', title: '操作', formatter: function (value, row, index) {
-                        var str = '<div class="btn-margin">';
-                        str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoom.prototype.subclassRemoveData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                        str += '</div>';
-                        return str;
-                    }
-                });
-                $("#" + houseRoom.prototype.config().tableSubclass).bootstrapTable('destroy');
-                TableInit(houseRoom.prototype.config().tableSubclass, "${pageContext.request.contextPath}/examineHouseRoom/getExamineHouseRoomDecorateLists", cols, {
-                    roomId: temp,
-                    declareId: $("#declareId").val(),
-                    examineType: $("#examineType").val(),
-                    planDetailsId: $("#planDetailsId").val()
-                }, {
-                    showColumns: false,
-                    showRefresh: false,
-                    search: false,
-                    onLoadSuccess: function () {
-                        $('.tooltips').tooltip();
-                    }
-                });
-            },
-            saveData: function () {
-                if (!$("#" + houseRoom.prototype.config().frm).valid()) {
-                    return false;
-                }
-                var data = formParams(houseRoom.prototype.config().frm);
-                if ($("#declareId").size() > 0) {
-                    data.declareId = $("#declareId").val();
-                }
-                if ($("#examineType").size() > 0) {
-                    data.examineType = $("#examineType").val();
-                }
-                if ($("#planDetailsId").size() > 0) {
-                    data.planDetailsId = $("#planDetailsId").val();
-                }
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseRoom/saveAndUpdateExamineHouseRoom",
-                    type: "post",
-                    dataType: "json",
-                    data: data,
-                    success: function (result) {
-                        if (result.ret) {
-                            toastr.success('保存成功');
-                            $('#' + houseRoom.prototype.config().box).modal('hide');
-                            houseRoom.prototype.loadDataDicList();
-                        }
-                        else {
-                            Alert("保存数据失败，失败原因:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-            },
-            getAndInit: function (id) {
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseRoom/getExamineHouseRoomById",
-                    type: "get",
-                    dataType: "json",
-                    data: {id: id},
-                    success: function (result) {
-                        if (result.ret) {
-                            $("#" + houseRoom.prototype.config().frm).clearAll();
-                            $("#" + houseRoom.prototype.config().frm).initForm(result.data);
-                            if (result.data.roomType == null || result.data.roomType == '') {
-                                $("#" + houseRoom.prototype.config().frm + " .roomType").val(null).trigger("change");
-                            } else {
-                                $("#" + houseRoom.prototype.config().frm + " .roomType").val(result.data.roomType).trigger("change");
-                            }
-                            $('#' + houseRoom.prototype.config().box).modal("show");
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-            },
-            init: function () {
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseRoom/examine_unit_house_type",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + houseRoom.prototype.config().frm).find("select.roomType").html(option);
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-
-
-            }
-        }
-    })();
-
-</script>
 
 <div id="divBoxHouseRoom" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
@@ -445,11 +38,12 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            房间名称
+                                            房间类型
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="房间名称" name="name" class="form-control"
-                                                   required="required">
+                                            <select required="required" name="roomType"
+                                                    class="form-control search-select select2 roomType">
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -462,7 +56,51 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label"
+                                               title="层高通常指下层地板面或楼板面到上层楼板面之间的距离。层高减去楼板的厚度或结构层的高度的差,叫做净高。出于降低成本、节约建材和节约土地等考虑,一般住宅层高都在28米左右">
+                                            层高(m)
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" data-rule-number="true" placeholder="层高(m)"
+                                                   name="layerHeight" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label"
+                                               title="层高通常指下层地板面或楼板面到上层楼板面之间的距离。层高减去楼板的厚度或结构层的高度的差,叫做净高。出于降低成本、节约建材和节约土地等考虑,一般住宅层高都在28米左右">
+                                            净高(m)
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" data-rule-number="true" placeholder="净高(m)"
+                                                   name="clearHeight"
+                                                   class="form-control"
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            开间/宽(m)
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" data-rule-number="true" placeholder="开间/宽(m)"
+                                                   name="opening" class="form-control"
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            进深/长(m)
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" data-rule-number="true" placeholder="进深/长(m)"
+                                                   name="depth" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
@@ -483,7 +121,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
@@ -496,53 +133,11 @@
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            层高
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" placeholder="层高" name="layerHeight" class="form-control"
-                                            >
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            开间
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" placeholder="开间" name="opening" class="form-control"
-                                            >
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            进深
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" placeholder="进深" name="depth" class="form-control"
-                                            >
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
                                             隔音
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" placeholder="隔音" name="soundInsulation"
                                                    class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            房间类型
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <select required="required" name="roomType"
-                                                    class="form-control search-select select2 roomType">
-                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -588,6 +183,7 @@
     </div>
 </div>
 
+
 <div id="boxSubclassSaveViewHouseRoom" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -608,11 +204,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            装修部位
+                                            装修部位<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="part"
-                                                    class="form-control search-select select2 part">
+                                            <select required="required" name="part" class="form-control  part">
                                             </select>
                                         </div>
                                     </div>
@@ -620,11 +215,20 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            装修材料
+                                            部位描述
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="material"
-                                                    class="form-control search-select select2 material">
+                                            <textarea name="remark" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            装修材料<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="material" class="form-control  material">
                                             </select>
                                         </div>
                                     </div>
@@ -632,27 +236,28 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            装修材料价格区间
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="materialPrice"
-                                                    class="form-control search-select select2 materialPrice">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            施工工艺
+                                            施工工艺<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="constructionTechnology"
-                                                    class="form-control search-select select2 constructionTechnology">
+                                                    class="form-control constructionTechnology">
                                             </select>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            装修材料价格区间<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="materialPrice"
+                                                    class="form-control materialPrice">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -669,6 +274,3 @@
         </div>
     </div>
 </div>
-
-</html>
-

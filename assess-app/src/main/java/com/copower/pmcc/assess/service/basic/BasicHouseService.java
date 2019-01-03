@@ -333,15 +333,21 @@ public class BasicHouseService {
      * @throws Exception
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
-    public Map<String, Object> addHouseAndTrading(String houseNumber) throws Exception {
+    public Map<String, Object> addHouseAndTrading(String houseNumber, Integer applyId) throws Exception {
         this.clearInvalidData(0);
         Map<String, Object> objectMap = Maps.newHashMap();
 
-        BasicHouse basicHouse = new BasicHouse();
-        basicHouse.setHouseNumber(houseNumber);
-        basicHouse.setApplyId(0);
-        basicHouse.setCreator(commonService.thisUserAccount());
-        basicHouseDao.addBasicHouse(basicHouse);
+        BasicHouse basicHouse = null;
+        if (applyId == null || applyId.equals(0)){
+            basicHouse = new BasicHouse();
+            basicHouse.setHouseNumber(houseNumber);
+
+            basicHouse.setApplyId(0);
+            basicHouse.setCreator(commonService.thisUserAccount());
+            basicHouseDao.addBasicHouse(basicHouse);
+        }else {
+            basicHouse = getHouseByApplyId(applyId);
+        }
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()), getBasicHouseVo(basicHouse));
 
         BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
