@@ -9,7 +9,6 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessMarketCompareConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
-import com.copower.pmcc.assess.dal.basic.dao.BasicHouseRoomDecorateDao;
 import com.copower.pmcc.assess.dal.basic.entity.*;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataPropertyDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.examine.*;
@@ -62,12 +61,6 @@ public class MdMarketCompareFieldService {
     private ExamineUnitDao examineUnitDao;
     @Autowired
     private ExamineUnitDecorateDao examineUnitDecorateDao;
-    @Autowired
-    private BasicHouseRoomDecorateDao examineHouseRoomDecorateDao;
-    @Autowired
-    private ExamineHouseEquipmentDao examineHouseEquipmentDao;
-    @Autowired
-    private ExamineHouseIntelligentDao examineHouseIntelligentDao;
     @Autowired
     private ExamineHouseWaterDao examineHouseWaterDao;
     @Autowired
