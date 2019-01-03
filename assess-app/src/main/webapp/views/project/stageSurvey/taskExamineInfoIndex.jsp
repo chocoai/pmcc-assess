@@ -21,9 +21,17 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
-            <!--案例或者查勘 entity json-->
-            <input type="hidden" id="surveySceneExploreJson" value='${surveySceneExploreJson}'>
-            <input type="hidden" id="surveyCaseStudyJson" value='${surveyCaseStudyJson}'>
+            <form id="basicApplyFrm">
+                <!--案例或者查勘 entity json-->
+                <input type="hidden" id="surveySceneExploreJson" value='${surveySceneExploreJson}'>
+                <input type="hidden" id="surveyCaseStudyJson" value='${surveyCaseStudyJson}'>
+
+                <input type="hidden" name="caseEstateId" value="${basicApply.caseEstateId}">
+                <input type="hidden" name="caseBuildingMainId" value="${basicApply.caseBuildingMainId}">
+                <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
+                <input type="hidden" name="caseHouseId" value="${basicApply.caseHouseId}">
+            </form>
+
 
             <div class="x_panel examine">
                 <div class="x_title collapse-link">
@@ -131,6 +139,7 @@
 <script src="${pageContext.request.contextPath}/js/autocomplete/new.wind.brand.js"></script>
 <script src="${pageContext.request.contextPath}/js/autocomplete/heating.brand.js"></script>
 <script src='${pageContext.request.contextPath}/js/autocomplete/estate.case.js'></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/building.case.js'></script>
 
 <script src="${pageContext.request.contextPath}/js/select/land.level.select.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/block.select.js"></script>
@@ -295,6 +304,9 @@
 
         //楼盘自动填充插件
         estateCommon.autocompleteStart() ;
+
+        //楼栋自动填充插件
+        buildingCommon.autocompleteStart() ;
 
     });
 </script>

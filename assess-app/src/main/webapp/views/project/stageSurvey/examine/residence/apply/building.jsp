@@ -15,7 +15,7 @@
                 </label>
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <input type="text" data-rule-maxlength="100" placeholder="楼栋号" required="required"
+                        <input type="text" id="txt_building_search" data-rule-maxlength="100" placeholder="楼栋号" required="required"
                                name="buildingNumber" class="form-control" onblur="$(this).val($(this).val().replace('栋',''));">
                         <span class="input-group-btn">
                             <div onclick="buildingCommon.mapMarker();" class="btn btn-info"><i

@@ -11,7 +11,7 @@
 
     buildingCommon.getBuildingId = function () {
         var id = buildingCommon.buildingForm.find('[name=id]').val();
-        if (id){
+        if (id) {
             return id;
         }
         return 0;
@@ -21,7 +21,7 @@
         return buildingCommon.buildingMainForm.find('[name=buildingNumber]').val();
     };
 
-    buildingCommon.detail = function (id,callback) {
+    buildingCommon.detail = function (id, callback) {
         $.ajax({
             url: getContextPath() + '/basicBuilding/getBasicBuildingMainByApplyId',
             type: 'get',
@@ -69,7 +69,7 @@
         $.each(buildingCommon.buildingFileControlIdArray, function (i, item) {
             buildingCommon.fileShow(item);
         });
-        buildingModelView.prototype.viewInit() ;
+        buildingModelView.prototype.viewInit();
     };
 
     //楼栋标注
@@ -156,6 +156,24 @@
             },
             deleteFlag: true
         })
+    };
+
+    buildingCommon.onSelect = function (id) {
+        console.log("caseBuildId:"+id) ;
+    };
+
+    buildingCommon.autocompleteStart = function () {
+        var caseEstateId = basicCommon.getCaseEstateId();
+        if (caseEstateId) {
+            $("#txt_building_search").apBuilding({
+                caseEstateId: caseEstateId,
+                onSelect: function (id, name) {
+                    buildingCommon.onSelect(id);
+                }
+            });
+        } else {
+            Alert("请先引用楼盘");
+        }
     };
 
 

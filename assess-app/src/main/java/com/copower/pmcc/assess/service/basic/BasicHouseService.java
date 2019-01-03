@@ -352,6 +352,7 @@ public class BasicHouseService {
 
         BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
         basicHouseTrading.setHouseId(basicHouse.getId());
+        basicHouseTrading.setApplyId(applyId==null?0:applyId);
         basicHouseTrading.setCreator(commonService.thisUserAccount());
         basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));

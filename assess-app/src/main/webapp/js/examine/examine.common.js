@@ -1,5 +1,7 @@
 var basicCommon = {};
 
+basicCommon.basicApplyForm = $('#basicApplyFrm');
+
 /**
  * 获取案例或者查勘 entity json
  * @returns {*|jQuery}
@@ -15,6 +17,27 @@ basicCommon.getSurveyJson = function () {
     }
 };
 
+/**
+ * 更新申报数据
+ * @param data
+ * @param callback
+ */
+basicCommon.update = function (data,callback) {
+    $.ajax({
+        url: getContextPath() + '/basicApply/saveAndUpdate',
+        data:data,
+        type: 'post',
+        success: function (result) {
+            if (result.ret) {
+                callback(result.data);
+            } else {
+                console.log(result.errmsg);
+                Alert(result.errmsg);
+            }
+        }
+    })
+};
+
 basicCommon.getApplyId = function () {
     var data = this.getSurveyJson();
     return data.basicApplyId;
@@ -28,6 +51,10 @@ basicCommon.getPlanDetailsId = function () {
 basicCommon.getProjectId = function () {
     var data = this.getSurveyJson();
     return data.projectId;
+};
+
+basicCommon.getCaseEstateId = function () {
+    return basicCommon.basicApplyForm.find("input[name='caseEstateId']").val() ;
 };
 
 //开发商选择

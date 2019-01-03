@@ -429,17 +429,26 @@ public class BasicEstateService {
      * @throws Exception
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
-    public Map<String, Object> appWriteEstate(Integer caseEstateId, String estatePartInMode) throws Exception {
+    public Map<String, Object> appWriteEstate(Integer caseEstateId, String estatePartInMode, Integer applyId) throws Exception {
         this.clearInvalidData(0);
+        //清空此申请id下所有的楼盘数据
+        if (applyId != null) {
+            this.clearInvalidData(applyId);
+        }
         if (caseEstateId == null) {
             throw new BusinessException("null point");
         }
         Map<String, Object> objectMap = new HashMap<String, Object>(2);
+
         CaseEstate caseEstate = caseEstateService.getCaseEstateById(caseEstateId);
-        if (caseEstate == null) return objectMap;
+        if (caseEstate == null) {
+            return objectMap;
+        }
+
+
         BasicEstate basicEstate = new BasicEstate();
         BeanUtils.copyProperties(caseEstate, basicEstate);
-        basicEstate.setApplyId(0);
+        basicEstate.setApplyId(applyId == null ? 0 : applyId);
         basicEstate.setCreator(commonService.thisUserAccount());
         basicEstate.setGmtCreated(null);
         basicEstate.setGmtModified(null);
@@ -447,6 +456,7 @@ public class BasicEstateService {
             basicEstate.setName(null);
         }
         basicEstateDao.addBasicEstate(basicEstate);
+
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstate.class.getSimpleName()), getBasicEstateVo(basicEstate));
 
         //附件拷贝
@@ -472,6 +482,7 @@ public class BasicEstateService {
             BeanUtils.copyProperties(caseEstateLandStateList.get(0), basicEstateLandState);
             basicEstateLandState.setEstateId(basicEstate.getId());
             basicEstateLandState.setCreator(commonService.thisUserAccount());
+            basicEstateLandState.setApplyId(applyId == null ? 0 : applyId);
             basicEstateLandState.setGmtCreated(null);
             basicEstateLandState.setGmtModified(null);
             basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);

@@ -1544,27 +1544,30 @@ damagedDegree.loadDamagedDegreeList = function () {
                 })
 
                 $.each(groupArray, function (i, group) {//循环分组
-                    var contentHtml = $('#damagedDegreeTabContentHtml').html().replace(/{type}/g, group);
-                    $("#damagedDegreeTabContent").append(contentHtml);
-                    var tbodyContentHtml = '';
-                    $.each(result.data, function (i, item) {
-                        if (item.type == group) {
-                            var trHtml = $("#damagedDegreeTabTrHtml").html();
-                            trHtml = trHtml.replace(/{id}/g, item.id).replace(/{category}/g, AssessCommon.toString(item.category)).replace(/{categoryName}/g, AssessCommon.toString(item.categoryName));
-                            trHtml = trHtml.replace(/{intact}/g, AssessCommon.toString(item.intact));
-                            trHtml = trHtml.replace(/{basicallyIntact}/g, AssessCommon.toString(item.basicallyIntact)).replace(/{generalDamage}/g, AssessCommon.toString(item.generalDamage));
-                            trHtml = trHtml.replace(/{seriousDamage}/g, AssessCommon.toString(item.seriousDamage)).replace(/{isShow}/g, item.hasChildren ? '' : 'style="display: none"');
-                            $("#damagedDegreeTabContent").find('.tab-pane:last').find('tbody').append(trHtml);
-                            var trElement = $("#damagedDegreeTabContent").find('.tab-pane:last').find('tbody').find('tr:last');
-                            if (!item.entityCondition && item.hasChildren) {
-                                trElement.find('[name=entityCondition]').hide();
-                                trElement.find('[name=entityConditionContent]').hide();
-                            } else {
-                                trElement.find('[name=entityCondition]').val(item.entityCondition);
-                                trElement.find('[name=entityConditionContent]').val(item.entityConditionContent);
+                    var contentHtmlT = $('#damagedDegreeTabContentHtml').html() ;
+                    if (contentHtmlT){
+                        var contentHtml = $('#damagedDegreeTabContentHtml').html().replace(/{type}/g, group);
+                        $("#damagedDegreeTabContent").append(contentHtml);
+                        var tbodyContentHtml = '';
+                        $.each(result.data, function (i, item) {
+                            if (item.type == group) {
+                                var trHtml = $("#damagedDegreeTabTrHtml").html();
+                                trHtml = trHtml.replace(/{id}/g, item.id).replace(/{category}/g, AssessCommon.toString(item.category)).replace(/{categoryName}/g, AssessCommon.toString(item.categoryName));
+                                trHtml = trHtml.replace(/{intact}/g, AssessCommon.toString(item.intact));
+                                trHtml = trHtml.replace(/{basicallyIntact}/g, AssessCommon.toString(item.basicallyIntact)).replace(/{generalDamage}/g, AssessCommon.toString(item.generalDamage));
+                                trHtml = trHtml.replace(/{seriousDamage}/g, AssessCommon.toString(item.seriousDamage)).replace(/{isShow}/g, item.hasChildren ? '' : 'style="display: none"');
+                                $("#damagedDegreeTabContent").find('.tab-pane:last').find('tbody').append(trHtml);
+                                var trElement = $("#damagedDegreeTabContent").find('.tab-pane:last').find('tbody').find('tr:last');
+                                if (!item.entityCondition && item.hasChildren) {
+                                    trElement.find('[name=entityCondition]').hide();
+                                    trElement.find('[name=entityConditionContent]').hide();
+                                } else {
+                                    trElement.find('[name=entityCondition]').val(item.entityCondition);
+                                    trElement.find('[name=entityConditionContent]').val(item.entityConditionContent);
+                                }
                             }
-                        }
-                    })
+                        })
+                    }
                 })
                 $('#damagedDegreeTab a').eq(0).tab('show');
             }

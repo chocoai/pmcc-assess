@@ -90,8 +90,6 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonOrientation, data.basicHouse.orientation, function (html, data) {
                 houseCommon.houseForm.find("select.orientation").empty().html(html).trigger('change');
             });
-            //完损度数据加载
-            // damagedDegree.loadDamagedDegreeList();
 
             //初始化上传控件
             $.each(houseCommon.houseFileControlIdArray, function (i, item) {
@@ -130,7 +128,10 @@
         });
 
         //完损度数据加载
-        damagedDegree.loadDamagedDegreeList();
+        try {
+            damagedDegree.loadDamagedDegreeList();
+        } catch (e) {
+        }
     };
 
 

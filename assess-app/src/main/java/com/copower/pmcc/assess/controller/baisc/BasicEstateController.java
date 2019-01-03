@@ -107,9 +107,9 @@ public class BasicEstateController {
 
     @ResponseBody
     @RequestMapping(value = "/appWriteEstate", name = "过程数据转移", method = {RequestMethod.POST})
-    public HttpResult appWriteEstate(Integer caseEstateId, String estatePartInMode) {
+    public HttpResult appWriteEstate(Integer caseEstateId, String estatePartInMode,Integer applyId) {
         try {
-            return HttpResult.newCorrectResult(basicEstateService.appWriteEstate(caseEstateId, estatePartInMode));
+            return HttpResult.newCorrectResult(basicEstateService.appWriteEstate(caseEstateId, estatePartInMode,applyId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());

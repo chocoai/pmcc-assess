@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -295,16 +296,22 @@ public class BasicBuildingService {
      * @throws Exception
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
-    public BasicBuildingMain appWriteBuilding(Integer caseMainBuildingId, String buildingPartInMode) throws Exception {
+    public BasicBuildingMain appWriteBuilding(Integer caseMainBuildingId, String buildingPartInMode, Integer applyId) throws Exception {
         if (caseMainBuildingId == null) {
             throw new Exception("null point");
         }
-        this.clearInvalidData(0);//清理数据
+        //清理数据
+        this.clearInvalidData(0);
+        if (applyId != null) {
+            this.clearInvalidData(applyId);
+        }
         CaseBuildingMain caseBuildingMain = caseBuildingMainService.getCaseBuildingMainById(caseMainBuildingId);
-        if (caseBuildingMain == null) return null;
+        if (caseBuildingMain == null) {
+            return null;
+        }
         BasicBuildingMain basicBuildingMain = new BasicBuildingMain();
         BeanUtils.copyProperties(caseBuildingMain, basicBuildingMain);
-        basicBuildingMain.setApplyId(0);
+        basicBuildingMain.setApplyId(applyId == null ? 0 : applyId);
         basicBuildingMain.setCreator(commonService.thisUserAccount());
         basicBuildingMain.setGmtCreated(null);
         basicBuildingMain.setGmtModified(null);
@@ -326,7 +333,9 @@ public class BasicBuildingService {
         CaseBuilding where = new CaseBuilding();
         where.setCaseBuildingMainId(caseMainBuildingId);
         List<CaseBuilding> caseBuildingList = caseBuildingService.getCaseBuildingList(where);
-        if (CollectionUtils.isEmpty(caseBuildingList)) return null;
+        if (CollectionUtils.isEmpty(caseBuildingList)) {
+            return null;
+        }
         List<CaseBuildingOutfit> buildingOutfitList = null;
         List<CaseBuildingMaintenance> maintenanceList = null;
         List<CaseBuildingSurface> surfaceList = null;

@@ -162,7 +162,30 @@
      * @param id
      */
     estateCommon.onSelect = function (id) {
+        $.ajax({
+            url: getContextPath() + '/basicEstate/appWriteEstate',
+            data: {
+                applyId: basicCommon.getApplyId(),
+                caseEstateId:id
+            },
+            type: 'post',
+            success: function (result) {
+                if (result.ret) {
+                    estateCommon.detail(basicCommon.getApplyId(),function (data) {
 
+                        basicCommon.update({caseEstateId:id,id:basicCommon.getApplyId()},function () {
+                            estateCommon.initForm({estate:data.basicEstate,land:data.basicEstateLandState}) ;
+                            basicCommon.basicApplyForm.find("input[name='caseEstateId']").val(id) ;
+                            toastr.success('成功');
+                        });
+
+                    });
+                }else {
+                    console.log(result.errmsg);
+                    Alert("转移失败!") ;
+                }
+            }
+        })
     };
 
     /**

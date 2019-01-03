@@ -287,4 +287,28 @@ public class BasicApplyController extends BaseController {
     public BootstrapTableVo getBasicAppDraftList(String estateName) {
         return basicApplyService.getBootstrapTableVo(estateName, true);
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveAndUpdate", name = "单纯的就是修改或者添加", method = RequestMethod.POST)
+    public HttpResult saveAndUpdate(BasicApply basicApply) {
+        try {
+            if (basicApply.getId() == null || basicApply.getId().equals(0)){
+                basicApplyService.saveBasicApply(basicApply);
+            }else {
+                basicApplyService.updateBasicApply(basicApply);
+            }
+            return HttpResult.newCorrectResult(basicApply);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("单纯的就是修改或者添加异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getBasicApplyById", name = "根据id获取", method = RequestMethod.GET)
+    public HttpResult getBasicApplyById(Integer id){
+        BasicApply basicApply = basicApplyService.getByBasicApplyId(id);
+        return HttpResult.newCorrectResult(basicApply);
+    }
+
 }

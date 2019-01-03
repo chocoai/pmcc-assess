@@ -9,7 +9,7 @@ var AssessDefault = {};
 AssessDefault.autocomplete = function () {
     var defaults={
         autoFocus: true,
-        minLength: 2,
+        minLength: 1,
         response: function (event, ui) {
             if ((ui.content.length == 1) && (event.target.value === ui.content[0].label)) {//输入完整自动补全
                 ui.item = ui.content[0];

@@ -328,5 +328,8 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         if (basicHouse != null) {
             modelAndView.addObject("basicHouse", basicHouseService.getBasicHouseVo(basicHouse));
         }
+        if (basicApply != null){
+            modelAndView.addObject("basicApply",basicApply);
+        }
     }
 }
