@@ -44,7 +44,7 @@ public class BasicMatchingEducationDao {
         return  basicMatchingEducationMapper.deleteByPrimaryKey(id)==1;
     }
 
-    public List<BasicMatchingEducation> basicMatchingEducationList(BasicMatchingEducation basicMatchingEducation)throws SQLException{
+    public List<BasicMatchingEducation> basicMatchingEducationList(BasicMatchingEducation basicMatchingEducation){
         BasicMatchingEducationExample example = new BasicMatchingEducationExample();
         MybatisUtils.convertObj2Example(basicMatchingEducation, example);
         return basicMatchingEducationMapper.selectByExample(example);

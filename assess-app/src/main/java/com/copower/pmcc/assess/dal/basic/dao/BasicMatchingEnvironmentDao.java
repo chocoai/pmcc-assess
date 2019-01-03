@@ -44,7 +44,7 @@ public class BasicMatchingEnvironmentDao {
         return  basicMatchingEnvironmentMapper.deleteByPrimaryKey(id)==1;
     }
 
-    public List<BasicMatchingEnvironment> basicMatchingEnvironmentList(BasicMatchingEnvironment basicMatchingEnvironment)throws SQLException{
+    public List<BasicMatchingEnvironment> basicMatchingEnvironmentList(BasicMatchingEnvironment basicMatchingEnvironment){
         BasicMatchingEnvironmentExample example = new BasicMatchingEnvironmentExample();
         MybatisUtils.convertObj2Example(basicMatchingEnvironment, example);
         return basicMatchingEnvironmentMapper.selectByExample(example);

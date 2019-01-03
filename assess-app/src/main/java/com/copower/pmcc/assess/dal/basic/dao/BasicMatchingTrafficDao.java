@@ -44,7 +44,7 @@ public class BasicMatchingTrafficDao {
         return  basicMatchingTrafficMapper.deleteByPrimaryKey(id)==1;
     }
 
-    public List<BasicMatchingTraffic> basicMatchingTrafficList(BasicMatchingTraffic basicMatchingTraffic)throws SQLException{
+    public List<BasicMatchingTraffic> basicMatchingTrafficList(BasicMatchingTraffic basicMatchingTraffic){
         BasicMatchingTrafficExample example = new BasicMatchingTrafficExample();
         MybatisUtils.convertObj2Example(basicMatchingTraffic, example);
         return basicMatchingTrafficMapper.selectByExample(example);

@@ -1,13 +1,9 @@
 package com.copower.pmcc.assess.service.event.project;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.SurveySceneExplore;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
@@ -49,19 +45,19 @@ public class SurveySceneExploreEvent extends ProjectTaskEvent {
         //1.循环各数据，检查该数据下是否已填写相关信息，如果已填写则不做任何处理
         //2.如果没有填写数据则依次处理相关数据
 
-        SurveySceneExplore surveySceneExplore = surveySceneExploreService.getSurveySceneExplore(processExecution.getProcessInstanceId());
-        String jsonContent = surveySceneExplore.getJsonContent();
-        JSONArray jsonArray = JSON.parseArray(jsonContent);
-        for (int i = 0; i < jsonArray.size(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            if (Boolean.TRUE.equals(jsonObject.getBoolean("isChecked"))) {
-                try {
-                    synchronize(surveySceneExplore.getProjectId(),surveySceneExplore.getPlanDetailsId(), jsonObject.getInteger("key"));
-                } catch (BusinessException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+//        SurveySceneExplore surveySceneExplore = surveySceneExploreService.getSurveySceneExplore(processExecution.getProcessInstanceId());
+//        String jsonContent = surveySceneExplore.getJsonContent();
+//        JSONArray jsonArray = JSON.parseArray(jsonContent);
+//        for (int i = 0; i < jsonArray.size(); i++) {
+//            JSONObject jsonObject = jsonArray.getJSONObject(i);
+//            if (Boolean.TRUE.equals(jsonObject.getBoolean("isChecked"))) {
+//                try {
+//                    synchronize(surveySceneExplore.getProjectId(),surveySceneExplore.getPlanDetailsId(), jsonObject.getInteger("key"));
+//                } catch (BusinessException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
     }
 
     /**

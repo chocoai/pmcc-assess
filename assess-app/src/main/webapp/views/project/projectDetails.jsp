@@ -91,7 +91,7 @@
                                 <li class="plan_tab_li" plan-id="${plan.id}">
                                     <a href="#tab_plan_${plan.id}" data-toggle="tab"
                                        aria-expanded="true">${plan.planName}
-                                        <c:if test="${plan.projectStatus eq '安排计划' or plan.projectStatus eq '提交成果'}">
+                                        <c:if test="${plan.projectStatus eq 'plan' or plan.projectStatus eq 'task'}">
                                             <i class="fa fa-ellipsis-h"></i>
                                         </c:if>
                                     </a>

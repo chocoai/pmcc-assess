@@ -10,6 +10,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -97,6 +98,12 @@ public class BasicBuildingFunctionService {
 
     public void removeBasicBuildingFunction(BasicBuildingFunction basicBuildingFunction)throws Exception{
         basicBuildingFunctionDao.removeBasicBuildingFunction(basicBuildingFunction);
+    }
+
+    public List<BasicBuildingFunctionVo> getBasicBuildingFunctionVos(Integer buildingId){
+        BasicBuildingFunction where=new BasicBuildingFunction();
+        where.setBuildingId(buildingId);
+        return LangUtils.transform(basicBuildingFunctionDao.basicBuildingFunctionList(where),o->getBasicBuildingFunctionVo(o));
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicBuildingFunction basicBuildingFunction) throws Exception {

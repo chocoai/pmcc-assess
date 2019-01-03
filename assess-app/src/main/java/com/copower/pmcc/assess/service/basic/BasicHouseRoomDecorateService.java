@@ -95,6 +95,12 @@ public class BasicHouseRoomDecorateService {
         return basicHouseRoomDecorateDao.basicHouseRoomDecorateList(basicHouseRoomDecorate);
     }
 
+    public List<BasicHouseRoomDecorate> getHouseRoomDecorateList(Integer roomId) throws Exception {
+        BasicHouseRoomDecorate basicHouseRoomDecorate =new BasicHouseRoomDecorate();
+        basicHouseRoomDecorate.setRoomId(roomId);
+        return basicHouseRoomDecorateDao.basicHouseRoomDecorateList(basicHouseRoomDecorate);
+    }
+
 
     public BootstrapTableVo getBootstrapTableVo(BasicHouseRoomDecorate basicHouseRoomDecorate) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();

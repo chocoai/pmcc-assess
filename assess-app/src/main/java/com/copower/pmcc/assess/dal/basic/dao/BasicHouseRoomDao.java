@@ -38,7 +38,7 @@ public class BasicHouseRoomDao {
     }
 
 
-    public List<BasicHouseRoom> basicHouseRoomList(BasicHouseRoom basicHouseRoom) throws SQLException {
+    public List<BasicHouseRoom> basicHouseRoomList(BasicHouseRoom basicHouseRoom) {
         BasicHouseRoomExample example = new BasicHouseRoomExample();
         MybatisUtils.convertObj2Example(basicHouseRoom, example);
         return basicHouseRoomMapper.selectByExample(example);

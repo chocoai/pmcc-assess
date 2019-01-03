@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicHouseEquipmentDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouseEquipment;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseEquipmentVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -12,6 +11,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -102,6 +102,12 @@ public class BasicHouseEquipmentService {
         return basicHouseEquipmentDao.basicHouseEquipmentList(basicHouseEquipment);
     }
 
+    public List<BasicHouseEquipmentVo> getBasicHouseEquipmentVos(Integer houseId){
+        BasicHouseEquipment where=new BasicHouseEquipment();
+        where.setHouseId(houseId);
+        return LangUtils.transform(basicHouseEquipmentDao.basicHouseEquipmentList(where),o->getBasicHouseEquipmentVo(o));
+    }
+
     public BootstrapTableVo getBootstrapTableVo(BasicHouseEquipment basicHouseEquipment) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
@@ -120,7 +126,6 @@ public class BasicHouseEquipmentService {
         }
         BasicHouseEquipmentVo vo = new BasicHouseEquipmentVo();
         BeanUtils.copyProperties(basicHouseEquipment, vo);
-        BaseDataDic dataDic = null;
         vo.setCategoryName(baseDataDicService.getNameById(basicHouseEquipment.getCategory()));
         vo.setEquipmentPriceName(baseDataDicService.getNameById(basicHouseEquipment.getEquipmentPrice()));
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicHouseEquipment.getId(), null, FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));

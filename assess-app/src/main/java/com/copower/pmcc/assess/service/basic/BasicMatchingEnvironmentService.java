@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicMatchingEnvironmentDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicMatchingEnvironment;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingEnvironmentVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -11,6 +10,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -114,13 +114,18 @@ public class BasicMatchingEnvironmentService {
         return vo;
     }
 
+    public List<BasicMatchingEnvironmentVo> getBasicMatchingEnvironmentVos(Integer estateId){
+        BasicMatchingEnvironment where=new BasicMatchingEnvironment();
+        where.setEstateId(estateId);
+        return LangUtils.transform(basicMatchingEnvironmentDao.basicMatchingEnvironmentList(where), o->getBasicMatchingEnvironmentVo(o));
+    }
+
     public BasicMatchingEnvironmentVo getBasicMatchingEnvironmentVo(BasicMatchingEnvironment basicMatchingEnvironment) {
         if (basicMatchingEnvironment == null) {
             return null;
         }
         BasicMatchingEnvironmentVo vo = new BasicMatchingEnvironmentVo();
         BeanUtils.copyProperties(basicMatchingEnvironment, vo);
-        BaseDataDic dataDic = null;
         vo.setTypeName(baseDataDicService.getNameById(NumberUtils.isNumber(basicMatchingEnvironment.getType()) ? Integer.parseInt(basicMatchingEnvironment.getType()) : null));
         vo.setCategoryName(baseDataDicService.getNameById(basicMatchingEnvironment.getCategory()));
         vo.setInfluenceDegreeName(baseDataDicService.getNameById(basicMatchingEnvironment.getInfluenceDegree()));
