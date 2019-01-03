@@ -145,26 +145,21 @@ public class ProjectMemberService {
         return "";
     }
 
-    public ProjectMemberVo loadProjectMemberList(Integer projectId) {
-        ProjectMember projectMember = projectMemberDao.getProjectMemberItem(projectId);
-        if (projectMember == null) {
-            return new ProjectMemberVo();
-        }
-        ProjectMemberVo projectMemberVo = new ProjectMemberVo();
-        BeanUtils.copyProperties(projectMember, projectMemberVo);
-        if (StringUtils.isNotBlank(projectMember.getUserAccountMember())) {
-            projectMemberVo.setUserAccountMemberName(publicService.getUserNameByAccount(projectMember.getUserAccountMember()));
-        }
-
+    public ProjectMemberVo getProjectMemberVo(ProjectMember projectMember) {
+        if (projectMember == null) return null;
+        ProjectMemberVo vo = new ProjectMemberVo();
+        BeanUtils.copyProperties(projectMember, vo);
         if (StringUtils.isNotBlank(projectMember.getUserAccountManager())) {
-            projectMemberVo.setUserAccountManagerName(publicService.getUserNameByAccount(projectMember.getUserAccountManager()));
+            vo.setUserAccountManagerName(publicService.getUserNameByAccount(projectMember.getUserAccountManager()));
+        }
+        if (StringUtils.isNotBlank(projectMember.getUserAccountMember())) {
+            vo.setUserAccountMemberName(publicService.getUserNameByAccount(projectMember.getUserAccountMember()));
         }
         if (StringUtils.isNotBlank(projectMember.getUserAccountQuality())) {
-            projectMemberVo.setUserAccountQualityName(publicService.getUserNameByAccount(projectMember.getUserAccountQuality()));
+            vo.setUserAccountQualityName(publicService.getUserNameByAccount(projectMember.getUserAccountQuality()));
         }
-        return projectMemberVo;
+        return vo;
     }
-
 
     /**
      * 获取项目成员数据
@@ -173,22 +168,7 @@ public class ProjectMemberService {
      * @return
      */
     public ProjectMemberVo getProjectMember(Integer projectId) {
-        ProjectMemberVo vo = new ProjectMemberVo();
         ProjectMember projectMember = projectMemberDao.getProjectMemberItem(projectId);
-        if (projectMember != null) {
-            BeanUtils.copyProperties(projectMember, vo);
-
-            //获取项目成员及项目经理的账号
-            List<String> userAccounts = Lists.newArrayList();
-            if (StringUtils.isNotBlank(projectMember.getUserAccountMember())) {
-                userAccounts = FormatUtils.transformString2List(projectMember.getUserAccountMember());
-            }
-            if (StringUtils.isNotBlank(projectMember.getUserAccountManager())) {
-                userAccounts.add(projectMember.getUserAccountManager());
-            }
-
-        }
-
-        return vo;
+        return getProjectMemberVo(projectMember);
     }
 }

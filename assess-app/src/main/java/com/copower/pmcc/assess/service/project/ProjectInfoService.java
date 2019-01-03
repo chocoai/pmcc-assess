@@ -242,7 +242,7 @@ public class ProjectInfoService {
     @Transactional(rollbackFor = {Exception.class})
     public void projectUpdate(InitiateProjectDto initiateProjectDto, Integer projectInfoId) throws Exception {
         ProjectInfoDto projectInfo = initiateProjectDto.getProjectInfo();
-        ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfoId);
+        ProjectMemberVo projectMemberVo = projectMemberService.getProjectMember(projectInfoId);
         projectInfo.setId(projectInfoId);
         String userAccountManager = projectInfo.getUserAccountManager();
         String userAccountMember = projectInfo.getUserAccountMember();
@@ -576,7 +576,7 @@ public class ProjectInfoService {
             }
         }
         if (projectInfo.getId() != null && projectInfo.getId().intValue() > 0) {
-            ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfo.getId());
+            ProjectMemberVo projectMemberVo = projectMemberService.getProjectMember(projectInfo.getId());
             if (projectMemberVo != null) {
                 projectInfoVo.setProjectMemberVo(projectMemberVo);
             }

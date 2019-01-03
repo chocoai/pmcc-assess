@@ -210,7 +210,7 @@ public class ProjectInfoController {
         modelAndView.addObject("projectFlog", "1");
         modelAndView.addObject("projectId", projectInfo.getId());
         //取项目成员
-        ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfo.getId());
+        ProjectMemberVo projectMemberVo = projectMemberService.getProjectMember(projectInfo.getId());
         modelAndView.addObject("projectMemberVo", projectMemberVo);
 
         //判断当前人员是否关注项目
@@ -235,7 +235,7 @@ public class ProjectInfoController {
         modelAndView.addObject("projectFlog", "1");
         modelAndView.addObject("projectId", projectInfo.getId());
         //取项目成员
-        ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfo.getId());
+        ProjectMemberVo projectMemberVo = projectMemberService.getProjectMember(projectInfo.getId());
         modelAndView.addObject("projectMemberVo", projectMemberVo);
         //判断当前人员是否关注项目
         ProjectFollow projectFollow = projectFollowService.getProjectFollowByUser(projectInfo.getId());
