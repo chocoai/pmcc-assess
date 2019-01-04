@@ -484,7 +484,7 @@
     $(function () {
         basicApplyIndex.startApply();
         //定位成功回调方法
-        mapPosition.getCurrentCity(function (province,city) {
+        mapPosition.getCurrentCity(function (province, city) {
             AssessCommon.initAreaInfo({
                 provinceTarget: basicCommon.basicApplyForm.find('[name=province]'),
                 cityTarget: basicCommon.basicApplyForm.find('[name=city]'),
@@ -552,6 +552,7 @@
 
     //打印页
     function printedPage() {
+        var applyForm = formSerializeArray(basicCommon.basicApplyForm);
         if (!applyForm.housePartInMode) {
             Alert("房屋信息未参与到申请中不允许打印");
             return false;
