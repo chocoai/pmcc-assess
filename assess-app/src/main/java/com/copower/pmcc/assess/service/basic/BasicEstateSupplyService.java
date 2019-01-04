@@ -10,7 +10,6 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -101,10 +100,10 @@ public class BasicEstateSupplyService {
         basicEstateSupplyDao.removeBasicEstateSupply(basicEstateSupply);
     }
 
-    public List<BasicEstateSupplyVo> getBasicEstateSupplyVos(Integer estateId){
+    public List<BasicEstateSupply> getBasicEstateSupplyList(Integer estateId){
         BasicEstateSupply where=new BasicEstateSupply();
         where.setEstateId(estateId);
-        return LangUtils.transform(basicEstateSupplyDao.basicEstateSupplyList(where),o->getBasicEstateSupplyVo(o));
+        return basicEstateSupplyDao.basicEstateSupplyList(where);
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicEstateSupply basicEstateSupply) throws Exception {

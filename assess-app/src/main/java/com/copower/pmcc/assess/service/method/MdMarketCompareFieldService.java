@@ -1,10 +1,7 @@
 package com.copower.pmcc.assess.service.method;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.common.enums.ExamineEstateSupplyEnumType;
-import com.copower.pmcc.assess.common.enums.ExamineHouseEquipmentTypeEnum;
-import com.copower.pmcc.assess.common.enums.ExamineMatchingTrafficTypeEnum;
-import com.copower.pmcc.assess.common.enums.MethodCompareFieldEnum;
+import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessMarketCompareConstant;
@@ -16,6 +13,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventory
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareItemDto;
 import com.copower.pmcc.assess.dto.output.basic.*;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.data.DataBlockService;
@@ -35,7 +33,7 @@ import java.util.List;
  * Created by kings on 2018-7-23.
  */
 @Service
-public class MdMarketCompareFieldService {
+public class MdMarketCompareFieldService extends BaseService {
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
@@ -100,6 +98,8 @@ public class MdMarketCompareFieldService {
     private BasicUnitService basicUnitService;
     @Autowired
     private BasicUnitDecorateService basicUnitDecorateService;
+    @Autowired
+    private BasicHouseWaterDrainService basicHouseWaterDrainService;
 
     /**
      * 获取市场比较法各个字段对应值
@@ -125,8 +125,8 @@ public class MdMarketCompareFieldService {
             BasicUnit examineUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
             examineUnit = examineUnit == null ? new BasicUnit() : examineUnit;
             //取得房屋信息
-            BasicHouseVo examineHouse = basicHouseService.getBasicHouseVo(basicHouseService.getHouseByApplyId(basicApply.getId()));
-            examineHouse = examineHouse == null ? new BasicHouseVo() : examineHouse;
+            BasicHouse examineHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
+            examineHouse = examineHouse == null ? new BasicHouse() : examineHouse;
             //取得版块信息
             DataBlock block = dataBlockService.getDataBlockById(examineEstate.getBlockId());
             block = block == null ? new DataBlock() : block;
@@ -149,15 +149,14 @@ public class MdMarketCompareFieldService {
             BasicEstateLandState landState = basicEstateLandStateService.getLandStateByEstateId(examineEstate.getId());
             landState = landState == null ? new BasicEstateLandState() : landState;
             //取得房间信息
-            List<BasicHouseRoomVo> roomList = basicHouseRoomService.getBasicHouseRoomVos(examineHouse.getId());
+            List<BasicHouseRoom> roomList = basicHouseRoomService.getBasicHouseRoomList(examineHouse.getId());
             //取得建筑功能
-            List<BasicBuildingFunctionVo> buildingFunctions = basicBuildingFunctionService.getBasicBuildingFunctionVos(examineBuilding.getId());
+            List<BasicBuildingFunction> buildingFunctions = basicBuildingFunctionService.getBasicBuildingFunctionList(examineBuilding.getId());
             //取得楼盘供应信息（供水、供电、供热、供气）
-            List<BasicEstateSupplyVo> estateSupplyList = basicEstateSupplyService.getBasicEstateSupplyVos(examineEstate.getId());
+            List<BasicEstateSupply> estateSupplyList = basicEstateSupplyService.getBasicEstateSupplyList(examineEstate.getId());
             //取得房间供应信息(供暖、空调、新风)
-            List<BasicHouseEquipmentVo> equipmentList = basicHouseEquipmentService.getBasicHouseEquipmentVos(examineHouse.getId());
-            //取得房间电力通信网络
-            List<BasicHouseIntelligentVo> intelligentList = basicHouseIntelligentService.getBasicHouseIntelligentVos(examineHouse.getId());
+            List<BasicHouseEquipment> equipmentList = basicHouseEquipmentService.getBasicHouseEquipmentList(examineHouse.getId());
+
 
             StringBuilder stringBuilder = null;
             BaseDataDic baseDataDic = null;
@@ -170,22 +169,26 @@ public class MdMarketCompareFieldService {
                         list.add(getMarketCompareItemDto(AssessMarketCompareConstant.ESTATE_NAME, examineEstate.getName()));
                         break;
                     case SCOPE_PROPERTY://财产范围
-                        // list.add(getMarketCompareItemDto(AssessMarketCompareConstant.SCOPE_PROPERTY, houseTrading.getScopeProperty()));
+                        list.add(getMarketCompareItemDto(AssessMarketCompareConstant.SCOPE_PROPERTY, baseDataDicService.getNameById(houseTrading.getScopeProperty())));
                         break;
                     case FINANCING_CONDITIONS://融资条件
-                        // list.add(getMarketCompareItemDto(AssessMarketCompareConstant.FINANCING_CONDITIONS, houseTrading.getFinancingConditions()));
+                        stringBuilder = new StringBuilder();
+                        stringBuilder.append(StringUtils.isBlank(houseTrading.getDownPaymentRatio()) ? "" : String.format("首付款比例:%s、", houseTrading.getDownPaymentRatio()));
+                        stringBuilder.append(houseTrading.getLendingRate() == null ? "" : String.format("贷款利率:%s、", houseTrading.getLendingRate()));
+                        stringBuilder.append(houseTrading.getLoanPeriod() == null ? "" : String.format("贷款期限:%s、", houseTrading.getLoanPeriod()));
+                        list.add(getMarketCompareItemDto(AssessMarketCompareConstant.FINANCING_CONDITIONS, stringBuilder.toString()));
                         break;
                     case TAX_BURDEN://税费负担
-//                        if (StringUtils.isNotEmpty(houseTrading.getTaxBurden()))
-//                            list.add(getMarketCompareItemDto(AssessMarketCompareConstant.TAX_BURDEN, baseDataDicService.getNameById(Integer.valueOf(houseTrading.getTaxBurden()))));
+                        if (houseTrading.getTaxBurden() != null)
+                            list.add(getMarketCompareItemDto(AssessMarketCompareConstant.TAX_BURDEN, baseDataDicService.getNameById(houseTrading.getTaxBurden())));
                         break;
                     case PAYMENT_METHOD://付款方式
-//                        if (StringUtils.isNotEmpty(houseTrading.getPaymentMethod()))
-//                            list.add(getMarketCompareItemDto(AssessMarketCompareConstant.PAYMENT_METHOD, baseDataDicService.getNameById(Integer.valueOf(houseTrading.getPaymentMethod()))));
+                        if (houseTrading.getPaymentMethod() == null)
+                            list.add(getMarketCompareItemDto(AssessMarketCompareConstant.PAYMENT_METHOD, baseDataDicService.getNameById(houseTrading.getPaymentMethod())));
                         break;
                     case TRADING_PRICE://交易价格
-//                        if (houseTrading.getTradingPrice() != null)
-//                            list.add(getMarketCompareItemDto(AssessMarketCompareConstant.TRADING_PRICE, String.valueOf(houseTrading.getTradingPrice())));
+                        if (houseTrading.getTradingUnitPrice() != null)
+                            list.add(getMarketCompareItemDto(AssessMarketCompareConstant.TRADING_PRICE, String.valueOf(houseTrading.getTradingUnitPrice())));
                         break;
                     case LOCATION://房地产坐落及方位
                         stringBuilder = new StringBuilder();
@@ -195,8 +198,8 @@ public class MdMarketCompareFieldService {
                         if (StringUtils.isNotBlank(block.getPosition()))
                             stringBuilder.append(block.getPosition()).append("、");
 
-//                        if (StringUtils.isNotBlank(examineEstate.getPosition()))
-//                            stringBuilder.append(examineEstate.getPosition()).append("、");
+                        if (examineEstate.getPosition() == null)
+                            stringBuilder.append(baseDataDicService.getNameById(examineEstate.getPosition())).append("、");
                         list.add(getMarketCompareItemDto(AssessMarketCompareConstant.LOCATION, stringBuilder.toString()));
                         break;
                     case OFFICE_CONCENTRATION://办公集聚度
@@ -218,8 +221,8 @@ public class MdMarketCompareFieldService {
                             list.add(getMarketCompareItemDto(AssessMarketCompareConstant.FLOOR, String.valueOf(examineHouse.getFloor())));
                         break;
                     case ORIENTATION://朝向
-                        if (StringUtils.isNotBlank(examineHouse.getOrientationName()))
-                            list.add(getMarketCompareItemDto(AssessMarketCompareConstant.ORIENTATION, examineHouse.getOrientationName()));
+                        if (examineHouse.getOrientation() != null)
+                            list.add(getMarketCompareItemDto(AssessMarketCompareConstant.ORIENTATION, baseDataDicService.getNameById(examineHouse.getOrientation())));
                         break;
                     case TRAFFIC_CONDITIONS://交通条件
                         if (CollectionUtils.isNotEmpty(trafficList)) {
@@ -236,42 +239,62 @@ public class MdMarketCompareFieldService {
                         break;
                     case URBAN_INFRASTRUCTURE://城市基础设施
                         stringBuilder = new StringBuilder();
-                        //楼盘下供电
-                        if (CollectionUtils.isNotEmpty(estateSupplyList)) {
-                            for (BasicEstateSupply supply : estateSupplyList) {
-                                if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getName())) {
-                                    getCommonSupply(stringBuilder, supply);
+                        BasicApplyTypeEnum basicApplyTypeEnum = BasicApplyTypeEnum.getEnumByKey(basicApply.getType());
+                        switch (basicApplyTypeEnum) {
+                            case INDUSTRY:
+                                //楼盘下供电
+                                if (CollectionUtils.isNotEmpty(estateSupplyList)) {
+                                    for (BasicEstateSupply supply : estateSupplyList) {
+                                        if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getName())) {
+                                            getCommonSupply(stringBuilder, supply);
+                                        }
+                                    }
                                 }
-                            }
-                        }
 
-                        //楼盘下供排水
-                        if (CollectionUtils.isNotEmpty(estateSupplyList)) {
-                            for (BasicEstateSupply supply : estateSupplyList) {
-                                if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_WATER.getName())) {
-                                    getCommonSupply(stringBuilder, supply);
+                                //楼盘下供水
+                                if (CollectionUtils.isNotEmpty(estateSupplyList)) {
+                                    for (BasicEstateSupply supply : estateSupplyList) {
+                                        if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_WATER.getName())) {
+                                            getCommonSupply(stringBuilder, supply);
+                                        }
+                                    }
                                 }
-                            }
-                        }
 
-                        //楼盘下采暖供热
-                        if (CollectionUtils.isNotEmpty(estateSupplyList)) {
-                            for (BasicEstateSupply supply : estateSupplyList) {
-                                if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_HEATING.getName())) {
-                                    getCommonSupply(stringBuilder, supply);
+                                //楼盘下排水
+                                if (CollectionUtils.isNotEmpty(estateSupplyList)) {
+                                    for (BasicEstateSupply supply : estateSupplyList) {
+                                        if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_DRAIN_WATER.getName())) {
+                                            getCommonSupply(stringBuilder, supply);
+                                        }
+                                    }
                                 }
-                            }
-                        }
 
-                        //楼盘下供气
-                        if (CollectionUtils.isNotEmpty(estateSupplyList)) {
-                            for (BasicEstateSupply supply : estateSupplyList) {
-                                if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_GAS.getName())) {
-                                    getCommonSupply(stringBuilder, supply);
+                                //楼盘下采暖供热
+                                if (CollectionUtils.isNotEmpty(estateSupplyList)) {
+                                    for (BasicEstateSupply supply : estateSupplyList) {
+                                        if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_HEATING.getName())) {
+                                            getCommonSupply(stringBuilder, supply);
+                                        }
+                                    }
                                 }
-                            }
-                        }
 
+                                //楼盘下供气
+                                if (CollectionUtils.isNotEmpty(estateSupplyList)) {
+                                    for (BasicEstateSupply supply : estateSupplyList) {
+                                        if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_GAS.getName())) {
+                                            getCommonSupply(stringBuilder, supply);
+                                        }
+                                    }
+                                }
+                                break;
+                            case NON_INDUSTRY:
+                                stringBuilder.append(examineEstate.getSupplyGas() == null ? "" : String.format("供气:%s、", baseDataDicService.getNameById(examineEstate.getSupplyGas())));
+                                stringBuilder.append(examineEstate.getSupplyPower() == null ? "" : String.format("供电:%s、", baseDataDicService.getNameById(examineEstate.getSupplyPower())));
+                                stringBuilder.append(examineEstate.getSupplyWater() == null ? "" : String.format("供水:%s、", baseDataDicService.getNameById(examineEstate.getSupplyWater())));
+                                stringBuilder.append(examineEstate.getDrainWater() == null ? "" : String.format("排水:%s、", baseDataDicService.getNameById(examineEstate.getDrainWater())));
+                                stringBuilder.append(examineEstate.getSupplyHeating() == null ? "" : String.format("供热:%s、", baseDataDicService.getNameById(examineEstate.getSupplyHeating())));
+                                break;
+                        }
                         //楼盘下通信网络
                         List<BasicEstateNetwork> networkList = basicEstateNetworkService.getBasicEstateNetworkList(examineEstate.getId());
                         if (CollectionUtils.isNotEmpty(networkList)) {
@@ -360,9 +383,7 @@ public class MdMarketCompareFieldService {
                     case LAND_CONTROL_SITUATION://土地管制情况
                         stringBuilder = new StringBuilder();
                         if (examineHouse.getCertUse() != null) {//证载用途
-                            baseDataDic = baseDataDicService.getDataDicById(examineHouse.getCertUse());
-                            if (baseDataDic != null)
-                                stringBuilder.append(String.format("证载用途:%s、", baseDataDic.getName()));
+                            stringBuilder.append(String.format("证载用途:%s、", baseDataDicService.getNameById(examineHouse.getCertUse())));
                         }
                         if (examineEstate.getFloorArea() != null) {
                             stringBuilder.append(String.format("建筑面积:%s、", examineEstate.getFloorArea()));
@@ -412,11 +433,7 @@ public class MdMarketCompareFieldService {
                     case PROPERTY_MANAGEMENT://物业管理情况
                         if (examineBuilding.getPropertyType() != null) {
                             stringBuilder = new StringBuilder();
-                            DataProperty property = dataPropertyDao.getByDataPropertyId(examineBuilding.getPropertyType());
-                            if (property != null) {
-                                stringBuilder.append(String.format("物业公司名称:%s、", property.getName()));
-                                stringBuilder.append(String.format("公司信誉:%s、", property.getCompanyNature()));
-                            }
+                            stringBuilder.append(StringUtils.isBlank(examineBuilding.getProperty()) ? "" : examineBuilding.getProperty()).append("、");
                             stringBuilder.append(String.format("物业费:%s、", examineBuilding.getPropertyFee()));
                             list.add(getMarketCompareItemDto(AssessMarketCompareConstant.PROPERTY_MANAGEMENT, stringBuilder.toString()));
                         }
@@ -438,12 +455,23 @@ public class MdMarketCompareFieldService {
                         stringBuilder.append(StringUtils.isEmpty(landState.getWestTo()) ? "" : String.format("西至:%s、", landState.getWestTo()));
                         stringBuilder.append(StringUtils.isEmpty(landState.getNorthTo()) ? "" : String.format("北至:%s、", landState.getNorthTo()));
                         stringBuilder.append(landState.getShapeState() == null ? "" : String.format("土地形状:%s、", landState.getShapeState()));
-                        stringBuilder.append(landState.getPlaneness() == null ? "" : String.format("地形:%s、", landState.getPlaneness()));
-                        stringBuilder.append(landState.getDevelopmentDegree() == null ? "" : String.format("土地开发程度:%s、", landState.getDevelopmentDegree()));
-                        //stringBuilder.append(StringUtils.isEmpty(landState.getRestrictiveCondition()) ? "" : String.format("开发限制条件:%s、", landState.getRestrictiveCondition()));
-                        //stringBuilder.append(StringUtils.isEmpty(landState.getSoil()) ? "" : String.format("土壤:%s、", landState.getSoil()));
-                        stringBuilder.append(landState.getTopographicTerrain() == null ? "" : String.format("地势:%s、", landState.getTopographicTerrain()));
                         stringBuilder.append(StringUtils.isEmpty(landState.getLandArea()) ? "" : String.format("土地面积:%s、", landState.getLandArea()));
+                        stringBuilder.append(landState.getPlaneness() == null ? "" : String.format("地形:%s、", baseDataDicService.getNameById(landState.getPlaneness())));
+                        stringBuilder.append(landState.getTopographicTerrain() == null ? "" : String.format("地势:%s、", baseDataDicService.getNameById(landState.getTopographicTerrain())));
+                        stringBuilder.append(landState.getDevelopmentDegree() == null ? "" : String.format("土地开发程度:%s、", baseDataDicService.getNameById(landState.getDevelopmentDegree())));
+
+                        String restrictiveCondition = String.format("%s%s%s%s",
+                                StringUtils.isBlank(landState.getPlotRatio()) ? "" : String.format("容积率:%s、", landState.getPlotRatio()),
+                                StringUtils.isBlank(landState.getBuildingDensity()) ? "" : String.format("建筑密度:%s、", landState.getBuildingDensity()),
+                                StringUtils.isBlank(landState.getGreenSpaceRate()) ? "" : String.format("绿地率:%s、", landState.getGreenSpaceRate()),
+                                StringUtils.isBlank(landState.getCompatibleRatio()) ? "" : String.format("兼容比例:%s、", landState.getCompatibleRatio()));
+                        stringBuilder.append(StringUtils.isEmpty(restrictiveCondition) ? "" : String.format("开发限制条件:(%s)、", restrictiveCondition));
+
+                        String soil = String.format("%s%s%s",
+                                StringUtils.isBlank(landState.getBearingCapacity()) ? "" : String.format("承载力:%s、", landState.getBearingCapacity()),
+                                StringUtils.isBlank(landState.getContaminated()) ? "" : String.format("污染:%s、", landState.getContaminated()),
+                                StringUtils.isBlank(landState.getPh()) ? "" : String.format("酸碱度:%s、", landState.getPh()));
+                        stringBuilder.append(StringUtils.isEmpty(soil) ? "" : String.format("土壤:(%s)、", soil));
                         list.add(getMarketCompareItemDto(AssessMarketCompareConstant.LAND_ENTITY_STATUS, stringBuilder.toString()));
                         break;
                     case BUILDING_SCALE://建筑规模
@@ -453,7 +481,7 @@ public class MdMarketCompareFieldService {
                         list.add(getMarketCompareItemDto(AssessMarketCompareConstant.BUILDING_AREA, String.valueOf(examineEstate.getFloorArea() == null ? "" : examineEstate.getFloorArea())));
                         break;
                     case FLOOR_COUNT://层数
-                        //list.add(getMarketCompareItemDto(AssessMarketCompareConstant.FLOOR_COUNT, String.valueOf(examineBuilding.getf() == null ? "" : examineBuilding.getFloorCount())));
+                        list.add(getMarketCompareItemDto(AssessMarketCompareConstant.FLOOR_COUNT, String.valueOf(examineBuildingMain.getFloorCount() == null ? "" : examineBuildingMain.getFloorCount())));
                         break;
                     case FLOOR_HEIGHT://层高
                         list.add(getMarketCompareItemDto(AssessMarketCompareConstant.FLOOR_HEIGHT, String.valueOf(examineBuilding.getFloorHeight() == null ? "" : examineBuilding.getFloorHeight())));
@@ -484,7 +512,7 @@ public class MdMarketCompareFieldService {
                         if (CollectionUtils.isNotEmpty(roomList)) {
                             stringBuilder = new StringBuilder();
                             for (BasicHouseRoom room : roomList) {
-                                stringBuilder.append(StringUtils.isEmpty(room.getAeration()) ? "" : String.format("%s:%s、", room.getName(), room.getAeration()));
+                                stringBuilder.append(StringUtils.isEmpty(room.getAeration()) ? "" : String.format("%s:%s、", baseDataDicService.getNameById(room.getRoomType()), room.getAeration()));
                             }
                             list.add(getMarketCompareItemDto(AssessMarketCompareConstant.AERATION, stringBuilder.toString()));
                         }
@@ -493,7 +521,7 @@ public class MdMarketCompareFieldService {
                         if (CollectionUtils.isNotEmpty(roomList)) {
                             stringBuilder = new StringBuilder();
                             for (BasicHouseRoom room : roomList) {
-                                stringBuilder.append(StringUtils.isEmpty(room.getLighting()) ? "" : String.format("%s:%s、", room.getName(), room.getLighting()));
+                                stringBuilder.append(StringUtils.isEmpty(room.getLighting()) ? "" : String.format("%s:%s、", baseDataDicService.getNameById(room.getRoomType()), room.getLighting()));
                             }
                             list.add(getMarketCompareItemDto(AssessMarketCompareConstant.LIGHTING, stringBuilder.toString()));
                         }
@@ -502,7 +530,7 @@ public class MdMarketCompareFieldService {
                         if (CollectionUtils.isNotEmpty(roomList)) {
                             stringBuilder = new StringBuilder();
                             for (BasicHouseRoom room : roomList) {
-                                stringBuilder.append(StringUtils.isEmpty(room.getSunshine()) ? "" : String.format("%s:%s、", room.getName(), room.getSunshine()));
+                                stringBuilder.append(StringUtils.isEmpty(room.getSunshine()) ? "" : String.format("%s:%s、", baseDataDicService.getNameById(room.getRoomType()), room.getSunshine()));
                             }
                             list.add(getMarketCompareItemDto(AssessMarketCompareConstant.SUNSHINE, stringBuilder.toString()));
                         }
@@ -511,7 +539,7 @@ public class MdMarketCompareFieldService {
                         if (CollectionUtils.isNotEmpty(roomList)) {
                             stringBuilder = new StringBuilder();
                             for (BasicHouseRoom room : roomList) {
-                                stringBuilder.append(StringUtils.isEmpty(room.getSoundInsulation()) ? "" : String.format("%s:%s、", room.getName(), room.getSoundInsulation()));
+                                stringBuilder.append(StringUtils.isEmpty(room.getSoundInsulation()) ? "" : String.format("%s:%s、", baseDataDicService.getNameById(room.getRoomType()), room.getSoundInsulation()));
                             }
                             list.add(getMarketCompareItemDto(AssessMarketCompareConstant.SOUND_INSULATION, stringBuilder.toString()));
                         }
@@ -540,11 +568,12 @@ public class MdMarketCompareFieldService {
                             list.add(getMarketCompareItemDto(AssessMarketCompareConstant.WATERPROOF, stringBuilder.toString()));
                         }
                         break;
-                    case INTELLIGENT_LEVEL://设施设备及智能化程度(新风情况)
+                    case INTELLIGENT_LEVEL://设施设备及智能化程度(空调与新风情况)
                         if (CollectionUtils.isNotEmpty(equipmentList)) {
                             stringBuilder = new StringBuilder();
                             for (BasicHouseEquipment examineHouseEquipment : equipmentList) {
-                                if (StringUtils.equals(examineHouseEquipment.getType(), ExamineHouseEquipmentTypeEnum.houseNewWind.getKey())) {
+                                if (StringUtils.equals(examineHouseEquipment.getType(), ExamineHouseEquipmentTypeEnum.houseNewWind.getKey()) ||
+                                        StringUtils.equals(examineHouseEquipment.getType(), ExamineHouseEquipmentTypeEnum.houseAirConditioner.getKey())) {
                                     stringBuilder.append(baseDataDicService.getNameById(examineHouseEquipment.getCategory()));
                                     stringBuilder.append(examineHouseEquipment.getEquipment()).append(examineHouseEquipment.getEquipmentPrice()).append("、");
                                 }
@@ -552,27 +581,29 @@ public class MdMarketCompareFieldService {
                             list.add(getMarketCompareItemDto(AssessMarketCompareConstant.INTELLIGENT_LEVEL, stringBuilder.toString()));
                         }
                         break;
-                    case POWER_SUPPLY_MODE://供电方式
-                        if (CollectionUtils.isNotEmpty(intelligentList)) {
-                            stringBuilder = new StringBuilder();
-                            for (BasicHouseIntelligent intelligent : intelligentList) {
-//                                stringBuilder.append(intelligent.getWireErection() == null ? "" : String.format("电线架设方式:%s、", baseDataDicService.getNameById(intelligent.getWireErection())));
-//                                stringBuilder.append(intelligent.getWireMaterial() == null ? "" : String.format("电线材质:%s、", baseDataDicService.getNameById(intelligent.getWireMaterial())));
-                                stringBuilder.append(intelligent.getSwitchCircuit() == null ? "" : String.format("开关回路:%s、", baseDataDicService.getNameById(intelligent.getSwitchCircuit())));
-                            }
-                            list.add(getMarketCompareItemDto(AssessMarketCompareConstant.POWER_SUPPLY_MODE, stringBuilder.toString()));
-                        }
-                        break;
                     case WATER_SUPPLY_DRAINAGE_MODE://供（排）水方式
+                        stringBuilder = new StringBuilder();
                         List<BasicHouseWater> waterList = basicHouseWaterService.getBasicHouseWaterList(examineHouse.getId());
                         if (CollectionUtils.isNotEmpty(waterList)) {
-                            stringBuilder = new StringBuilder();
                             for (BasicHouseWater houseWater : waterList) {
-
+                                stringBuilder.append(houseWater.getSupplyMode() == null ? "" : String.format("给水方式:%s、", baseDataDicService.getNameById(houseWater.getSupplyMode())));
+                                stringBuilder.append(houseWater.getPipingLayout() == null ? "" : String.format("给水管道布置:%s、", baseDataDicService.getNameById(houseWater.getPipingLayout())));
+                                stringBuilder.append(houseWater.getPipeMaterial() == null ? "" : String.format("给水管材料:%s、", baseDataDicService.getNameById(houseWater.getPipeMaterial())));
+                                stringBuilder.append(houseWater.getBoosterEquipment() == null ? "" : String.format("给水升压设备:%s、", baseDataDicService.getNameById(houseWater.getBoosterEquipment())));
+                                stringBuilder.append(houseWater.getPretreatedWater() == null ? "" : String.format("前置净水:%s、", baseDataDicService.getNameById(houseWater.getPretreatedWater())));
+                                stringBuilder.append(houseWater.getPurificationEquipmentPrice() == null ? "" : String.format("净水设备价格:%s、", baseDataDicService.getNameById(houseWater.getPurificationEquipmentPrice())));
+                                stringBuilder.append(houseWater.getFireWaterSupply() == null ? "" : String.format("消防给水:%s、", baseDataDicService.getNameById(houseWater.getFireWaterSupply())));
                             }
-                            list.add(getMarketCompareItemDto(AssessMarketCompareConstant.WATER_SUPPLY_DRAINAGE_MODE, stringBuilder.toString()));
                         }
-                        //还需添加排水的情况
+                        List<BasicHouseWaterDrain> drainList = basicHouseWaterDrainService.getBasicHouseWaterDrainList(examineHouse.getId());
+                        if (CollectionUtils.isNotEmpty(drainList)) {
+                            for (BasicHouseWaterDrain houseWaterDrain : drainList) {
+                                stringBuilder.append(houseWaterDrain.getDrainSystem() == null ? "" : String.format("排水系统:%s、", baseDataDicService.getNameById(houseWaterDrain.getDrainSystem())));
+                                stringBuilder.append(houseWaterDrain.getType() == null ? "" : String.format("类别:%s、", baseDataDicService.getNameById(houseWaterDrain.getType())));
+                                stringBuilder.append(houseWaterDrain.getProcessingMode() == null ? "" : String.format("排水处理方式:%s、", baseDataDicService.getNameById(houseWaterDrain.getProcessingMode())));
+                            }
+                        }
+                        list.add(getMarketCompareItemDto(AssessMarketCompareConstant.WATER_SUPPLY_DRAINAGE_MODE, stringBuilder.toString()));
                         break;
                     case HEATING_MODE://采暖供热方式
                         if (CollectionUtils.isNotEmpty(equipmentList)) {
@@ -586,11 +617,15 @@ public class MdMarketCompareFieldService {
                             list.add(getMarketCompareItemDto(AssessMarketCompareConstant.HEATING_MODE, stringBuilder.toString()));
                         }
                         break;
-                    case NETWORK://通讯网络
+                    case NETWORK://房间电力通信网络
+                        List<BasicHouseIntelligentVo> intelligentList = basicHouseIntelligentService.getBasicHouseIntelligentVos(examineHouse.getId());
                         if (CollectionUtils.isNotEmpty(intelligentList)) {
                             stringBuilder = new StringBuilder();
-                            for (BasicHouseIntelligent intelligent : intelligentList) {
-                                //stringBuilder.append(intelligent.getInternalCommunication() == null ? "" : String.format("%s、", baseDataDicService.getNameById(intelligent.getInternalCommunication())));
+                            for (BasicHouseIntelligentVo intelligent : intelligentList) {
+                                stringBuilder.append(StringUtils.isBlank(intelligent.getSwitchCircuitName()) ? "" : String.format("开关回路:%s、", intelligent.getSwitchCircuitName()));
+                                stringBuilder.append(StringUtils.isBlank(intelligent.getLayingMethodName())  ? "" : String.format("铺设方式:%s、", intelligent.getLayingMethodName()));
+                                stringBuilder.append(StringUtils.isBlank(intelligent.getLampsLanternsName()) ? "" : String.format("灯具:%s、", intelligent.getLampsLanternsName()));
+                                stringBuilder.append(StringUtils.isBlank(intelligent.getIntelligentSystemName()) ? "" : String.format("智能系统:%s、", intelligent.getIntelligentSystemName()));
                             }
                             list.add(getMarketCompareItemDto(AssessMarketCompareConstant.NETWORK, stringBuilder.toString()));
                         }
@@ -610,14 +645,18 @@ public class MdMarketCompareFieldService {
                             }
                         }
                         if (CollectionUtils.isNotEmpty(roomList)) {//房间内装
-                            for (BasicHouseRoomVo roomVo : roomList) {
-                                List<BasicHouseRoomDecorate> roomDecorateList = basicHouseRoomDecorateService.getHouseRoomDecorateList(roomVo.getId());
+                            for (BasicHouseRoom room : roomList) {
+                                List<BasicHouseRoomDecorate> roomDecorateList = basicHouseRoomDecorateService.getHouseRoomDecorateList(room.getId());
                                 if (CollectionUtils.isNotEmpty(roomDecorateList)) {
+                                    StringBuilder decorate = new StringBuilder();
                                     for (BasicHouseRoomDecorate roomDecorate : roomDecorateList) {
-                                        stringBuilder.append(roomDecorate.getPart() == null ? "" : String.format("装修部位:%s、", baseDataDicService.getNameById(roomDecorate.getPart())));
-                                        stringBuilder.append(roomDecorate.getMaterial() == null ? "" : String.format("装修材料:%s、", baseDataDicService.getNameById(roomDecorate.getMaterial())));
-                                        stringBuilder.append(roomDecorate.getMaterialPrice() == null ? "" : String.format("材料价格区间:%s、", baseDataDicService.getNameById(Integer.valueOf(roomDecorate.getMaterialPrice()))));
-                                        stringBuilder.append(roomDecorate.getConstructionTechnology() == null ? "" : String.format("施工工艺:%s、", baseDataDicService.getNameById(Integer.valueOf(roomDecorate.getConstructionTechnology()))));
+                                        decorate.append(roomDecorate.getPart() == null ? "" : String.format("装修部位:%s、", baseDataDicService.getNameById(roomDecorate.getPart())));
+                                        decorate.append(roomDecorate.getMaterial() == null ? "" : String.format("装修材料:%s、", baseDataDicService.getNameById(roomDecorate.getMaterial())));
+                                        decorate.append(roomDecorate.getMaterialPrice() == null ? "" : String.format("材料价格区间:%s、", baseDataDicService.getNameById(Integer.valueOf(roomDecorate.getMaterialPrice()))));
+                                        decorate.append(roomDecorate.getConstructionTechnology() == null ? "" : String.format("施工工艺:%s、", baseDataDicService.getNameById(Integer.valueOf(roomDecorate.getConstructionTechnology()))));
+                                    }
+                                    if (decorate.length() > 0) {
+                                        stringBuilder.append(String.format("%s(%s)、", baseDataDicService.getNameById(room.getRoomType()), declareId));
                                     }
                                 }
                             }
@@ -640,38 +679,34 @@ public class MdMarketCompareFieldService {
             }
             return JSON.toJSONString(list);
         } catch (Exception e) {
+            log.error("市场比较法生成比较数据异常", e);
             return "";
         }
     }
 
     private void getCommonSupply(StringBuilder stringBuilder, BasicEstateSupply supply) {
         stringBuilder.append(StringUtils.isEmpty(supply.getName()) ? "" : String.format("供应商名称:%s、", supply.getName()));
-        stringBuilder.append(supply.getReputation() == null ? "" : String.format("供应商信誉:%s、", supply.getReputation()));
-        stringBuilder.append(supply.getGrade() == null ? "" : String.format("供应商等级:%s、", baseDataDicService.getNameById(Integer.valueOf(supply.getGrade()))));
-        stringBuilder.append(supply.getLineGrade() == null ? "" : String.format("供应保障等级:%s、", baseDataDicService.getNameById(Integer.valueOf(supply.getLineGrade()))));
+        stringBuilder.append(supply.getLineGrade() == null ? "" : String.format("供应保障等级:%s、", baseDataDicService.getNameById(supply.getLineGrade())));
+        stringBuilder.append(supply.getReputation() == null ? "" : String.format("供应商信誉:%s、", baseDataDicService.getNameById(supply.getReputation())));
+        stringBuilder.append(supply.getGrade() == null ? "" : String.format("供应商等级:%s、", baseDataDicService.getNameById(supply.getGrade())));
         stringBuilder.append(StringUtils.isEmpty(supply.getPower()) ? "" : String.format("供应量或功率:%s、", supply.getPower()));
     }
 
-    private void getCommonBuildingFunction(List<BasicBuildingFunctionVo> buildingFunctions, StringBuilder stringBuilder, BaseDataDic heatPreservationDic) {
-        for (BasicBuildingFunctionVo buildingFunction : buildingFunctions) {
+    private void getCommonBuildingFunction(List<BasicBuildingFunction> buildingFunctions, StringBuilder stringBuilder, BaseDataDic heatPreservationDic) {
+        for (BasicBuildingFunction buildingFunction : buildingFunctions) {
             if (buildingFunction.getType() != null && buildingFunction.getType().equals(heatPreservationDic.getId())) {
                 stringBuilder.append(buildingFunction.getDecorationPart() == null ? "" : String.format("装修部位:%s、", baseDataDicService.getNameById(buildingFunction.getDecorationPart())));
                 stringBuilder.append(buildingFunction.getDecoratingMaterial() == null ? "" : String.format("装修材料:%s、", baseDataDicService.getNameById(buildingFunction.getDecoratingMaterial())));
-                stringBuilder.append(buildingFunction.getMaterialPrice() == null ? "" : String.format("材料价格区间:%s、", baseDataDicService.getNameById(buildingFunction.getMaterialPrice())));
                 stringBuilder.append(buildingFunction.getConstructionTechnology() == null ? "" : String.format("施工工艺:%s、", baseDataDicService.getNameById(buildingFunction.getConstructionTechnology())));
+                stringBuilder.append(buildingFunction.getMaterialPrice() == null ? "" : String.format("材料价格区间:%s、", baseDataDicService.getNameById(buildingFunction.getMaterialPrice())));
             }
         }
     }
 
     private void getEnvironmentString(StringBuilder stringBuilder, BaseDataDic sceneryDic, BasicMatchingEnvironment examineMatchingEnvironment) {
-        BaseDataDic baseDataDic;
         if (StringUtils.equals(String.valueOf(sceneryDic.getId()), examineMatchingEnvironment.getType())) {
-            baseDataDic = baseDataDicService.getDataDicById(examineMatchingEnvironment.getCategory());
-            if (baseDataDic != null)
-                stringBuilder.append(baseDataDic.getName());
-            baseDataDic = baseDataDicService.getDataDicById(examineMatchingEnvironment.getInfluenceDegree());
-            if (baseDataDic != null)
-                stringBuilder.append(baseDataDic.getName());
+            stringBuilder.append(baseDataDicService.getNameById(examineMatchingEnvironment.getCategory()));
+            stringBuilder.append(baseDataDicService.getNameById(examineMatchingEnvironment.getInfluenceDegree()));
             stringBuilder.append("、");
         }
     }
@@ -681,7 +716,7 @@ public class MdMarketCompareFieldService {
         marketCompareItemDto.setName(name);
         marketCompareItemDto.setScore(100);
         marketCompareItemDto.setRatio(new BigDecimal("1"));
-        marketCompareItemDto.setValue(StringUtils.isBlank(value) ? "" : value);
+        marketCompareItemDto.setValue(StringUtils.isBlank(value) ? "无" : StringUtils.strip(value, "、"));
         return marketCompareItemDto;
     }
 
