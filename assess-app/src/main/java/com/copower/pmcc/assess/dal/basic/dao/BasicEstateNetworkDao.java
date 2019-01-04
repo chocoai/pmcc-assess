@@ -43,7 +43,7 @@ public class BasicEstateNetworkDao {
         return  basicEstateNetworkMapper.deleteByPrimaryKey(id)==1;
     }
 
-    public List<BasicEstateNetwork> basicEstateNetworkList(BasicEstateNetwork basicEstateNetwork)throws SQLException{
+    public List<BasicEstateNetwork> basicEstateNetworkList(BasicEstateNetwork basicEstateNetwork){
         BasicEstateNetworkExample example = new BasicEstateNetworkExample();
         MybatisUtils.convertObj2Example(basicEstateNetwork, example);
         return basicEstateNetworkMapper.selectByExample(example);

@@ -111,6 +111,13 @@ public class BasicEstateNetworkService {
         return vo;
     }
 
+    public List<BasicEstateNetwork> getBasicEstateNetworkList(Integer estateId) {
+        BasicEstateNetwork where = new BasicEstateNetwork();
+        where.setEstateId(estateId);
+        List<BasicEstateNetwork> basicEstateNetworkList = basicEstateNetworkDao.basicEstateNetworkList(where);
+        return basicEstateNetworkList;
+    }
+
 
     public BasicEstateNetworkVo getBasicEstateNetworkVo(BasicEstateNetwork basicEstateNetwork) {
         BasicEstateNetworkVo basicEstateNetworkVo = new BasicEstateNetworkVo();

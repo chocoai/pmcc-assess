@@ -21,39 +21,39 @@ public class BasicMatchingLeisurePlaceDao {
     @Autowired
     private BasicMatchingLeisurePlaceMapper basicMatchingLeisurePlaceMapper;
 
-    public BasicMatchingLeisurePlace getBasicMatchingLeisurePlaceById(Integer id)throws SQLException {
+    public BasicMatchingLeisurePlace getBasicMatchingLeisurePlaceById(Integer id) throws SQLException {
         return basicMatchingLeisurePlaceMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicMatchingLeisurePlace(BasicMatchingLeisurePlace basicMatchingLeisurePlace)throws SQLException{
+    public Integer saveBasicMatchingLeisurePlace(BasicMatchingLeisurePlace basicMatchingLeisurePlace) throws SQLException {
         basicMatchingLeisurePlaceMapper.insertSelective(basicMatchingLeisurePlace);
         return basicMatchingLeisurePlace.getId();
     }
 
-    public boolean updateBasicMatchingLeisurePlace(BasicMatchingLeisurePlace basicMatchingLeisurePlace)throws SQLException{
-        return basicMatchingLeisurePlaceMapper.updateByPrimaryKeySelective(basicMatchingLeisurePlace)==1;
+    public boolean updateBasicMatchingLeisurePlace(BasicMatchingLeisurePlace basicMatchingLeisurePlace) throws SQLException {
+        return basicMatchingLeisurePlaceMapper.updateByPrimaryKeySelective(basicMatchingLeisurePlace) == 1;
     }
 
-    public void removeBasicMatchingLeisurePlace(BasicMatchingLeisurePlace basicMatchingLeisurePlace)throws SQLException{
+    public void removeBasicMatchingLeisurePlace(BasicMatchingLeisurePlace basicMatchingLeisurePlace) throws SQLException {
         BasicMatchingLeisurePlaceExample example = new BasicMatchingLeisurePlaceExample();
         MybatisUtils.convertObj2Example(basicMatchingLeisurePlace, example);
         basicMatchingLeisurePlaceMapper.deleteByExample(example);
     }
 
-    public boolean deleteBasicMatchingLeisurePlace(Integer id)throws SQLException{
-        return  basicMatchingLeisurePlaceMapper.deleteByPrimaryKey(id)==1;
+    public boolean deleteBasicMatchingLeisurePlace(Integer id) throws SQLException {
+        return basicMatchingLeisurePlaceMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList(BasicMatchingLeisurePlace basicMatchingLeisurePlace)throws SQLException{
+    public List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList(BasicMatchingLeisurePlace basicMatchingLeisurePlace) {
         BasicMatchingLeisurePlaceExample example = new BasicMatchingLeisurePlaceExample();
         MybatisUtils.convertObj2Example(basicMatchingLeisurePlace, example);
         return basicMatchingLeisurePlaceMapper.selectByExample(example);
     }
 
-    public void removeIds(List<Integer> ids){
+    public void removeIds(List<Integer> ids) {
         BasicMatchingLeisurePlaceExample example = new BasicMatchingLeisurePlaceExample();
-        example.createCriteria().andIdIn(ids) ;
+        example.createCriteria().andIdIn(ids);
         basicMatchingLeisurePlaceMapper.deleteByExample(example);
     }
-    
+
 }

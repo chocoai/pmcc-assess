@@ -114,6 +114,13 @@ public class BasicMatchingMedicalService {
         return vo;
     }
 
+    public List<BasicMatchingMedical> getBasicMatchingMedicalList(Integer estateId){
+        BasicMatchingMedical where=new BasicMatchingMedical();
+        where.setEstateId(estateId);
+        List<BasicMatchingMedical> basicMatchingMedicalList = basicMatchingMedicalDao.basicMatchingMedicalList(where);
+        return basicMatchingMedicalList;
+    }
+
     public BasicMatchingMedicalVo getBasicMatchingMedicalVo(BasicMatchingMedical basicMatchingMedical){
         if (basicMatchingMedical==null){
             return null;

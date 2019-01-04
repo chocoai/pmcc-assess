@@ -112,6 +112,13 @@ public class BasicBuildingOutfitService {
         return vo;
     }
 
+    public List<BasicBuildingOutfit> getBasicBuildingOutfitVos(Integer buildingId){
+        BasicBuildingOutfit where=new BasicBuildingOutfit();
+        where.setBuildingId(buildingId);
+        List<BasicBuildingOutfit> basicBuildingOutfitList = basicBuildingOutfitDao.basicBuildingOutfitList(where);
+        return basicBuildingOutfitList;
+    }
+
     public BasicBuildingOutfitVo getBasicBuildingOutfitVo(BasicBuildingOutfit basicBuildingOutfit){
         if (basicBuildingOutfit==null){
             return null;

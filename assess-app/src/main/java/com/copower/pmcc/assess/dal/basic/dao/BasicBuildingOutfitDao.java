@@ -44,7 +44,7 @@ public class BasicBuildingOutfitDao {
         return  basicBuildingOutfitMapper.deleteByPrimaryKey(id)==1;
     }
 
-    public List<BasicBuildingOutfit> basicBuildingOutfitList(BasicBuildingOutfit basicBuildingOutfit)throws SQLException{
+    public List<BasicBuildingOutfit> basicBuildingOutfitList(BasicBuildingOutfit basicBuildingOutfit){
         BasicBuildingOutfitExample example = new BasicBuildingOutfitExample();
         MybatisUtils.convertObj2Example(basicBuildingOutfit, example);
         return basicBuildingOutfitMapper.selectByExample(example);
