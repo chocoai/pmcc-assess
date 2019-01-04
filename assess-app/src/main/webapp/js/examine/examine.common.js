@@ -22,10 +22,10 @@ basicCommon.getSurveyJson = function () {
  * @param data
  * @param callback
  */
-basicCommon.update = function (data,callback) {
+basicCommon.update = function (data, callback) {
     $.ajax({
         url: getContextPath() + '/basicApply/saveAndUpdate',
-        data:data,
+        data: data,
         type: 'post',
         success: function (result) {
             if (result.ret) {
@@ -54,7 +54,15 @@ basicCommon.getProjectId = function () {
 };
 
 basicCommon.getCaseEstateId = function () {
-    return basicCommon.basicApplyForm.find("input[name='caseEstateId']").val() ;
+    return basicCommon.basicApplyForm.find("input[name='caseEstateId']").val();
+};
+
+basicCommon.getCaseBuildingMainId = function () {
+    return basicCommon.basicApplyForm.find("input[name='caseBuildingMainId']").val();
+};
+
+basicCommon.getCaseUnitId = function () {
+    return basicCommon.basicApplyForm.find("input[name='caseUnitId']").val();
 };
 
 //开发商选择
@@ -102,5 +110,52 @@ basicCommon.blockSelect = function (this_) {
             $(this_).parent().prev().prev().val(row.id);
         }
     })
+};
+
+basicCommon.valid = function () {
+    if (!estateCommon.estateForm.valid()) {
+        toastr.success('楼盘数据不完整');
+        return false;
+    }
+    if (!estateCommon.estateLandStateForm.valid()) {
+        toastr.success('楼盘数据不完整');
+        return false;
+    }
+    if (!buildingCommon.buildingMainForm.valid()) {
+        toastr.success('楼栋数据不完整');
+        return false;
+    }
+    if (!buildingCommon.buildingForm.valid()) {
+        toastr.success('楼栋数据不完整');
+        return false;
+    }
+    if (!unitCommon.unitForm.valid()) {
+        toastr.success('单元数据不完整');
+        return false;
+    }
+    if (!houseCommon.houseForm.valid()) {
+        toastr.success('房屋数据不完整');
+        return false;
+    }
+    if (!houseCommon.houseTradingForm.valid()) {
+        toastr.success('房屋数据不完整');
+        return false;
+    }
+    return true;
+};
+
+basicCommon.getFormData = function () {
+    var item = {};
+    item.basicApply = formSerializeArray(basicCommon.basicApplyForm);
+    item.basicEstate = formSerializeArray(estateCommon.estateForm);
+    item.basicEstateLandState = formSerializeArray(estateCommon.estateLandStateForm);
+    item.basicBuildingMain = formSerializeArray(buildingCommon.buildingMainForm);
+    item.basicBuilding = formSerializeArray(buildingCommon.buildingForm);
+    item.basicUnit = formSerializeArray(unitCommon.unitForm);
+    item.basicHouse = formSerializeArray(houseCommon.houseForm);
+    item.basicTrading = formSerializeArray(houseCommon.houseTradingForm);
+    item.basicDamagedDegree = damagedDegree.getFormData();
+    item.survey = basicCommon.getSurveyJson();
+    return item;
 };
 

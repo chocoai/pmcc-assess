@@ -16,14 +16,14 @@
 
 
     //单元明细
-    unitCommon.detail = function (applyId,callback) {
+    unitCommon.detail = function (applyId, callback) {
         $.ajax({
             url: getContextPath() + '/basicUnit/getBasicUnitByApplyId',
             type: 'get',
             data: {applyId: applyId},
             success: function (result) {
                 if (result.ret) {
-                    callback(result.data) ;
+                    callback(result.data);
                 }
             }
         })
@@ -90,6 +90,44 @@
                 }
             }
         })
+    };
+
+    unitCommon.onSelect = function (id) {
+        $.ajax({
+            url: getContextPath() + '/basicUnit/appWriteUnit',
+            data: {
+                applyId: basicCommon.getApplyId(),
+                caseUnitId: id
+            },
+            type: 'post',
+            success: function (result) {
+                if (result.ret) {
+                    basicCommon.update({caseUnitId: id, id: basicCommon.getApplyId()}, function () {
+                        unitCommon.detail(basicCommon.getApplyId(), function (data) {
+                            unitCommon.initForm(data);
+                        });
+                        basicCommon.basicApplyForm.find("input[name='caseUnitId']").val(id);
+                    });
+                } else {
+                    console.log(result.errmsg);
+                    Alert("转移失败!");
+                }
+            }
+        })
+    };
+
+    unitCommon.autocompleteStart = function () {
+        var caseBuildingMainId = basicCommon.getCaseBuildingMainId();
+        if (caseBuildingMainId) {
+            $("#txt_Unit_search").apUnit({
+                caseBuildingMainId: caseBuildingMainId,
+                onSelect: function (id, name) {
+                    unitCommon.onSelect(id);
+                }
+            });
+        } else {
+            Alert("请先引用楼栋");
+        }
     };
 
 
