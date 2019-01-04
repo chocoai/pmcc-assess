@@ -62,50 +62,18 @@
                            placeholder="价值类型备注" value="${projectInfo.remarkValueType}"/>
                 </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">省<span class="symbol required"></span></label>
-                <div class="col-sm-3">
-                    <select name="province" id="province" class="form-control search-select select2"
-                            required="required">
-                    </select>
-                </div>
-            </div>
-
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">市<span class="symbol required"></span></label>
-                <div class="col-sm-3">
-                    <select name="city" id="city" class="form-control search-select select2"
-                            required="required">
-
-                    </select>
-                </div>
-            </div>
-
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">县</label>
-                <div class="col-sm-3">
-                    <select name="district" id="district" class="form-control search-select select2">
-
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">执业部门<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <div class="input-group">
                         <input type="hidden" name="departmentId"
                                value="${projectInfo.departmentId}">
-                        <input class='form-control' name="departmentName"
-                               readonly="readonly"
+                        <input class='form-control' name="departmentName" required
+                               readonly="readonly" onclick="objProject.selectDepartment(this);"
                                value="${projectInfo.departmentName}">
                         <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
-                                onclick="objProject.selectDepartment(this)"
+                                onclick="objProject.selectDepartment(this);"
                                 data-toggle="tooltip"
                                 data-original-title="选择">
                             <i class="fa fa-search"></i>
@@ -119,19 +87,22 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
+
             <div class="x-valid">
-                <label class="col-sm-1 control-label">项目经理</label>
+                <label class="col-sm-1 control-label">项目经理<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <div class="input-group">
                         <input type="hidden" name="userAccountManager"
                                value="${projectInfo.projectMemberVo.userAccountManager}">
                         <input type="text" class="form-control" readonly="readonly" name="userAccountManagerName"
-                               value="${projectInfo.projectMemberVo.userAccountManagerName}">
+                            required onclick="objProject.selectUserAccountManager(this);"  value="${projectInfo.projectMemberVo.userAccountManagerName}">
                         <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
-                                onclick="objProject.selectUserAccountManager(this)">
+                                onclick="objProject.selectUserAccountManager(this);">
                         <i class="fa fa-search"></i>
                         </button>
                         <button type="button" class="btn btn-default docs-tooltip"
@@ -150,12 +121,12 @@
                         <input type="hidden" name="userAccountMember"
                                value="${projectInfo.projectMemberVo.userAccountMember}">
                         <input type="text" class="form-control" readonly="readonly" name="userAccountMemberName"
-                               value="${projectInfo.projectMemberVo.userAccountMemberName}">
+                              onclick="objProject.selectUserAccountMember(this);" value="${projectInfo.projectMemberVo.userAccountMemberName}">
                         <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
-                                onclick="objProject.selectUserAccountMember(this)">
+                                onclick="objProject.selectUserAccountMember(this);">
                         <i class="fa fa-search"></i>
                         </button>
                         <button type="button" class="btn btn-default docs-tooltip"
