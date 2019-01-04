@@ -11,7 +11,6 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -102,10 +101,10 @@ public class BasicHouseEquipmentService {
         return basicHouseEquipmentDao.basicHouseEquipmentList(basicHouseEquipment);
     }
 
-    public List<BasicHouseEquipmentVo> getBasicHouseEquipmentVos(Integer houseId){
+    public List<BasicHouseEquipment> getBasicHouseEquipmentList(Integer houseId){
         BasicHouseEquipment where=new BasicHouseEquipment();
         where.setHouseId(houseId);
-        return LangUtils.transform(basicHouseEquipmentDao.basicHouseEquipmentList(where),o->getBasicHouseEquipmentVo(o));
+        return basicHouseEquipmentDao.basicHouseEquipmentList(where);
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicHouseEquipment basicHouseEquipment) throws Exception {

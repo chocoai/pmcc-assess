@@ -44,7 +44,7 @@ public class BasicMatchingMedicalDao {
         return  basicMatchingMedicalMapper.deleteByPrimaryKey(id)==1;
     }
 
-    public List<BasicMatchingMedical> basicMatchingMedicalList(BasicMatchingMedical basicMatchingMedical)throws SQLException{
+    public List<BasicMatchingMedical> basicMatchingMedicalList(BasicMatchingMedical basicMatchingMedical){
         BasicMatchingMedicalExample example = new BasicMatchingMedicalExample();
         MybatisUtils.convertObj2Example(basicMatchingMedical, example);
         return basicMatchingMedicalMapper.selectByExample(example);

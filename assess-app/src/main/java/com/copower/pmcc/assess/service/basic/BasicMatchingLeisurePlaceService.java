@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicMatchingLeisurePlaceDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicMatchingLeisurePlace;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingLeisurePlaceVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -115,13 +114,19 @@ public class BasicMatchingLeisurePlaceService {
         return vo;
     }
 
+    public List<BasicMatchingLeisurePlace> getBasicMatchingLeisurePlaceList(Integer estateId){
+        BasicMatchingLeisurePlace where=new BasicMatchingLeisurePlace();
+        where.setEstateId(estateId);
+        List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList = basicMatchingLeisurePlaceDao.basicMatchingLeisurePlaceList(where);
+        return basicMatchingLeisurePlaceList;
+    }
+
     public BasicMatchingLeisurePlaceVo getBasicMatchingLeisurePlaceVo(BasicMatchingLeisurePlace basicMatchingLeisurePlace){
         if (basicMatchingLeisurePlace==null){
             return null;
         }
         BasicMatchingLeisurePlaceVo vo = new BasicMatchingLeisurePlaceVo();
         BeanUtils.copyProperties(basicMatchingLeisurePlace,vo);
-        BaseDataDic dataDic = null;
         vo.setCategoryName(baseDataDicService.getNameById(basicMatchingLeisurePlace.getCategory()));
         vo.setDistanceName(baseDataDicService.getNameById(basicMatchingLeisurePlace.getDistance()));
         vo.setGradeName(baseDataDicService.getNameById(basicMatchingLeisurePlace.getGrade()));

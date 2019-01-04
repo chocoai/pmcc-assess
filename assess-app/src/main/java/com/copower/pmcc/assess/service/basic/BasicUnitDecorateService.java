@@ -95,6 +95,12 @@ public class BasicUnitDecorateService {
         return basicUnitDecorateDao.basicUnitDecorateList(basicUnitDecorate);
     }
 
+    public List<BasicUnitDecorate> getBasicUnitDecorateList(Integer unitId) throws Exception {
+        BasicUnitDecorate where=new BasicUnitDecorate();
+        where.setUnitId(unitId);
+        return basicUnitDecorateDao.basicUnitDecorateList(where);
+    }
+
     public void removeBasicUnitDecorate(BasicUnitDecorate basicUnitDecorate)throws Exception{
         basicUnitDecorateDao.removeBasicUnitDecorate(basicUnitDecorate);
     }

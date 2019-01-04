@@ -120,7 +120,7 @@ public class BasicHouseIntelligentService {
     public List<BasicHouseIntelligentVo> getBasicHouseIntelligentVos(Integer houseId) {
         BasicHouseIntelligent where=new BasicHouseIntelligent();
         where.setHouseId(houseId);
-        return LangUtils.transform(basicHouseIntelligentDao.basicHouseIntelligentList(where),o->getBasicHouseIntelligentVo(o));
+        return LangUtils.transform(basicHouseIntelligentDao.basicHouseIntelligentList(where),o->getBasicHouseIntelligentVo(o)) ;
     }
 
     public BasicHouseIntelligentVo getBasicHouseIntelligentVo(BasicHouseIntelligent basicHouseIntelligent) {

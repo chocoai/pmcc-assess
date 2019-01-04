@@ -11,7 +11,6 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -122,11 +121,11 @@ public class BasicHouseRoomService {
         return vo;
     }
 
-    public List<BasicHouseRoomVo> getBasicHouseRoomVos(Integer houseId){
+    public List<BasicHouseRoom> getBasicHouseRoomList(Integer houseId){
         BasicHouseRoom basicHouseRoom = new BasicHouseRoom();
         basicHouseRoom.setHouseId(houseId);
         List<BasicHouseRoom> basicHouseRoomList = basicHouseRoomDao.basicHouseRoomList(basicHouseRoom);
-        return LangUtils.transform(basicHouseRoomList,o->getBasicHouseRoomVo(o));
+        return basicHouseRoomList;
     }
 
     public BasicHouseRoomVo getBasicHouseRoomVo(BasicHouseRoom basicHouseRoom){

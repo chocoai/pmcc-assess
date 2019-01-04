@@ -115,6 +115,13 @@ public class BasicMatchingFinanceService {
         return vo;
     }
 
+    public List<BasicMatchingFinance> getBasicMatchingFinanceList(Integer estateId){
+        BasicMatchingFinance where=new BasicMatchingFinance();
+        where.setEstateId(estateId);
+        List<BasicMatchingFinance> basicMatchingFinanceList = basicMatchingFinanceDao.basicMatchingFinanceList(where);
+        return basicMatchingFinanceList;
+    }
+
     public BasicMatchingFinanceVo getBasicMatchingFinanceVo(BasicMatchingFinance basicMatchingFinance) {
         if (basicMatchingFinance == null) {
             return null;

@@ -56,7 +56,6 @@ public enum MethodCompareFieldEnum {
     WATERPROOF("waterproof", "防水"),//ps:楼栋下的建筑功能信息中类型为防水的字段组合
 
     INTELLIGENT_LEVEL("intelligent.level", "设施设备及智能化程度"),//ps:设施设备及智能化程度
-    POWER_SUPPLY_MODE("power.supply.mode", "供电方式"),//ps:供电方式所有字段信息组合
     WATER_SUPPLY_DRAINAGE_MODE("water.supply.drainage.mode", "供（排）水方式"),//ps:供水和排水所有字段信息组合
     HEATING_MODE("heating.mode", "采暖供热方式"),//ps:采暖和供热所有字段信息组合
     GAS_SUPPLY_MODE("gas.supply.mode", "供气方式"),//ps:供气方式所有字段信息组合

@@ -100,10 +100,10 @@ public class BasicBuildingFunctionService {
         basicBuildingFunctionDao.removeBasicBuildingFunction(basicBuildingFunction);
     }
 
-    public List<BasicBuildingFunctionVo> getBasicBuildingFunctionVos(Integer buildingId){
+    public List<BasicBuildingFunction> getBasicBuildingFunctionList(Integer buildingId){
         BasicBuildingFunction where=new BasicBuildingFunction();
         where.setBuildingId(buildingId);
-        return LangUtils.transform(basicBuildingFunctionDao.basicBuildingFunctionList(where),o->getBasicBuildingFunctionVo(o));
+        return basicBuildingFunctionDao.basicBuildingFunctionList(where);
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicBuildingFunction basicBuildingFunction) throws Exception {

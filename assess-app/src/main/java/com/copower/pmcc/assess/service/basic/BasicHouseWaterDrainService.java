@@ -96,6 +96,12 @@ public class BasicHouseWaterDrainService {
         return basicHouseWaterDrainDao.basicHouseWaterDrainList(basicHouseWaterDrain);
     }
 
+    public List<BasicHouseWaterDrain> getBasicHouseWaterDrainList(Integer houseId) throws Exception {
+        BasicHouseWaterDrain where=new BasicHouseWaterDrain();
+        where.setHouseId(houseId);
+        return basicHouseWaterDrainDao.basicHouseWaterDrainList(where);
+    }
+
     public boolean deleteBasicHouseWaterDrain(BasicHouseWaterDrain basicHouseWaterDrain)throws Exception{
          return basicHouseWaterDrainDao.deleteBasicHouseWaterDrain(basicHouseWaterDrain);
     }
