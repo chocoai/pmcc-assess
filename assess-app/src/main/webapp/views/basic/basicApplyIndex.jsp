@@ -189,8 +189,8 @@
                         <button id="btn_submit" class="btn btn-success" onclick="submit();">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
-                        <button class="btn btn-default" onclick="printedPage();">
-                            打印页<i class="fa fa-print"></i>
+                        <button class="btn btn-succcess" onclick="printedPage();">
+                            打印<i class="fa fa-print"></i>
                         </button>
                     </div>
 
@@ -584,9 +584,6 @@
         var data = {};
         data.basicHouse = formSerializeArray(houseCommon.houseForm);
         data.basicDamagedDegree = damagedDegree.getFormData();
-        var id = data.basicHouse.id;
-        console.log(id);
-        console.log(data);
         $.ajax({
             url: "${pageContext.request.contextPath}/print/saveData",
             type: "post",

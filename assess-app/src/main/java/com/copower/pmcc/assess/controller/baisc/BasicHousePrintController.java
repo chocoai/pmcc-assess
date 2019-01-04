@@ -42,9 +42,9 @@ import java.util.List;
  * @Date: 2018/9/11 18:16
  * @Description:
  */
-@RequestMapping(value = "/print")
+@RequestMapping(value = "/basicHousePrint")
 @Controller
-public class PrintedPageHouseController {
+public class BasicHousePrintController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
