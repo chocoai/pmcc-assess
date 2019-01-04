@@ -1207,11 +1207,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            学校性质<span class="symbol required"></span>
+                                            学校性质
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="schoolNature"
-                                                    class="form-control search-select select2 schoolNature">
+                                            <select name="schoolNature" class="form-control search-select select2 schoolNature">
                                             </select>
                                         </div>
                                     </div>
@@ -1219,11 +1218,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            学校级次<span class="symbol required"></span>
+                                            学校级次
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="schoolGradation"
-                                                    class="form-control search-select select2 schoolGradation">
+                                            <select  name="schoolGradation" class="form-control search-select select2 schoolGradation">
                                             </select>
                                         </div>
                                     </div>
@@ -1231,11 +1229,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            学校等级<span class="symbol required"></span>
+                                            学校等级
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="schoolLevel"
-                                                    class="form-control search-select select2 schoolLevel">
+                                            <select  name="schoolLevel" class="form-control search-select select2 schoolLevel">
                                             </select>
                                         </div>
                                     </div>
@@ -1246,8 +1243,7 @@
                                             距离<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="distance"
-                                                    class="form-control search-select select2 distance">
+                                            <select  name="distance" class="form-control search-select select2 distance">
                                             </select>
                                         </div>
                                     </div>

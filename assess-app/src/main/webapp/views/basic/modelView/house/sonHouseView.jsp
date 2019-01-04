@@ -199,11 +199,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            房间类型
+                                            房间类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <select required="required" name="roomType"
-                                                    class="form-control search-select select2 roomType">
+                                            <select  name="roomType" class="form-control search-select select2 roomType" required>
                                             </select>
                                         </div>
                                     </div>
@@ -213,7 +212,7 @@
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" placeholder="面积" name="area" data-rule-number='true'
-                                                   class="form-control" required="required">
+                                                   class="form-control" >
                                         </div>
                                     </div>
                                 </div>
@@ -268,8 +267,7 @@
                                             通风
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="通风" name="aeration" class="form-control"
-                                                   required="required">
+                                            <input type="text" placeholder="通风" name="aeration" class="form-control">
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -277,8 +275,7 @@
                                             日照
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="日照" name="sunshine" class="form-control"
-                                                   required="required">
+                                            <input type="text" placeholder="日照" name="sunshine" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -288,8 +285,7 @@
                                             采光
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="采光" name="lighting" class="form-control"
-                                                   required="required">
+                                            <input type="text" placeholder="采光" name="lighting" class="form-control">
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -297,8 +293,7 @@
                                             隔音
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="隔音" name="soundInsulation"
-                                                   class="form-control" required="required">
+                                            <input type="text" placeholder="隔音" name="soundInsulation" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -456,7 +451,7 @@
                                             给水方式<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select name="supplyMode"
+                                            <select name="supplyMode" required
                                                     class="form-control search-select select2 supplyMode">
 
                                             </select>
@@ -469,7 +464,7 @@
                                             给水管道布置<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select name="pipingLayout"
+                                            <select name="pipingLayout" required
                                                     class="form-control search-select select2 pipingLayout">
 
                                             </select>
@@ -482,7 +477,7 @@
                                             给水管材料<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select name="pipeMaterial"
+                                            <select name="pipeMaterial" required
                                                     class="form-control search-select select2 pipeMaterial">
 
                                             </select>
@@ -492,11 +487,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            给水升压设备<span class="symbol required"></span>
+                                            给水升压设备
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="boosterEquipment"
-                                                    class="form-control search-select select2 boosterEquipment">
+                                            <select  name="boosterEquipment" class="form-control search-select select2 boosterEquipment">
                                             </select>
                                         </div>
                                     </div>
@@ -504,11 +498,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            前置净水<span class="symbol required"></span>
+                                            前置净水
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="pretreatedWater"
-                                                    class="form-control search-select select2 pretreatedWater">
+                                            <select  name="pretreatedWater" class="form-control search-select select2 pretreatedWater">
                                             </select>
                                         </div>
                                     </div>
@@ -516,11 +509,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            前置净水设备价格区间<span class="symbol required"></span>
+                                            前置净水设备价格区间
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="purificationEquipmentPrice"
-                                                    class="form-control search-select select2 purificationEquipmentPrice">
+                                            <select name="purificationEquipmentPrice" class="form-control search-select select2 purificationEquipmentPrice">
                                             </select>
                                         </div>
                                     </div>
@@ -528,11 +520,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            消防给水<span class="symbol required"></span>
+                                            消防给水
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="fireWaterSupply"
-                                                    class="form-control search-select select2 fireWaterSupply">
+                                            <select name="fireWaterSupply" class="form-control search-select select2 fireWaterSupply">
                                             </select>
                                         </div>
                                     </div>
@@ -695,13 +686,11 @@
                                                 智能系统
                                             </label>
                                             <div class="col-sm-3">
-                                                <select required="required" name="intelligentSystem1"
-                                                        class="form-control search-select select2 intelligentSystem1">
+                                                <select  name="intelligentSystem1" class="form-control search-select select2 intelligentSystem1">
                                                 </select>
                                             </div>
                                             <div class="col-sm-3">
-                                                <select required="required" name="layingMethod1"
-                                                        class="form-control search-select select2 layingMethod1">
+                                                <select  name="layingMethod1" class="form-control search-select select2 layingMethod1">
                                                 </select>
                                             </div>
                                             <div class="col-sm-4">

@@ -279,7 +279,7 @@
                                 朝向<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-3">
-                                <select name="orientation" class="form-control search-select select2 orientation">
+                                <select name="orientation" class="form-control search-select select2 orientation" required>
                                 </select>
                             </div>
                         </div>
