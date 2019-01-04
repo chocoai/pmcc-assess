@@ -133,18 +133,4 @@ public class BasicHouseFaceStreetService {
         return basicHouseFaceStreetDao.countByHouseId(houseId)>0;
     }
 
-    public BootstrapTableVo getBootstrapTableVo(Integer houseId) throws Exception {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        requestBaseParam.setLimit(100);
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        BasicHouseFaceStreet basicHouseFaceStreet = new BasicHouseFaceStreet();
-        basicHouseFaceStreet.setHouseId(houseId);
-        List<BasicHouseFaceStreet> basicHouseFaceStreetList = basicHouseFaceStreetDao.basicHouseFaceStreetList(basicHouseFaceStreet);
-        List<BasicHouseFaceStreetVo> vos = Lists.newArrayList();
-        basicHouseFaceStreetList.forEach(oo -> vos.add(getBasicHouseFaceStreetVo(oo)));
-        vo.setTotal(page.getTotal());
-        vo.setRows(ObjectUtils.isEmpty(vos) ? new ArrayList<BasicHouseFaceStreetVo>(10) : vos);
-        return vo;
-    }
 }

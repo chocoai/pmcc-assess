@@ -47,7 +47,7 @@
                 $("#" + equipmentPortion.prototype.config().table).bootstrapTable('destroy');
                 TableInit(equipmentPortion.prototype.config().table, "${pageContext.request.contextPath}/print/getHouseDamagedDegreeList", cols, {
                     type: equipmentPortion.prototype.config().type,
-                    houseId: '${empty caseHouse.id?0:caseHouse.id}'
+                    houseId: '${empty basicHouse.id?0:basicHouse.id}'
                 }, {
                     showColumns: false,
                     showRefresh: false,

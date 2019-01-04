@@ -5,7 +5,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="x_title">
-    <h4> 其他完损部分
+    <h4> 结构完损部分
     </h4>
     <div class="clearfix"></div>
 </div>
@@ -16,7 +16,7 @@
     </div>
     <div class="form-group">
         <div class="x-valid">
-            <table class="table table-bordered" id="OtherPortionList">
+            <table class="table table-bordered" id="StructuralPortionList">
                 <!-- cerare document add ajax data-->
             </table>
         </div>
@@ -26,17 +26,17 @@
 
 <script type="application/javascript">
     $(function () {
-        otherPortion.prototype.loadDataDicList();
+        structuralPortion.prototype.loadDataDicList();
     })
-    var otherPortion;
+    var structuralPortion;
     (function () {
-        otherPortion = function () {
+        structuralPortion = function () {
         };
-        otherPortion.prototype = {
+        structuralPortion.prototype = {
             config: function () {
                 var data = {};
-                data.table = "OtherPortionList";
-                data.type = "other";//设备部分
+                data.table = "StructuralPortionList";
+                data.type = "structural.part";//结构部分
                 return data;
             },
             loadDataDicList: function () {
@@ -44,10 +44,10 @@
                 cols.push({field: 'categoryName', title: '类型', width: '15%'});
                 cols.push({field: 'entityConditionName', title: '实体状况', width: '15%'});
                 cols.push({field: 'entityConditionContent', title: '状况内容', width: '60%'});
-                $("#" + otherPortion.prototype.config().table).bootstrapTable('destroy');
-                TableInit(otherPortion.prototype.config().table, "${pageContext.request.contextPath}/print/getHouseDamagedDegreeList", cols, {
-                    type: otherPortion.prototype.config().type,
-                    houseId: '${empty caseHouse.id?0:caseHouse.id}'
+                $("#" + structuralPortion.prototype.config().table).bootstrapTable('destroy');
+                TableInit(structuralPortion.prototype.config().table, "${pageContext.request.contextPath}/print/getHouseDamagedDegreeList", cols, {
+                    type: structuralPortion.prototype.config().type,
+                    houseId: '${empty basicHouse.id?0:basicHouse.id}'
                 }, {
                     showColumns: false,
                     showRefresh: false,

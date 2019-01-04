@@ -11,6 +11,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -68,7 +69,7 @@ public class BasicHouseRoomService {
             Integer id = basicHouseRoomDao.saveBasicHouseRoom(basicHouseRoom);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicHouseRoom.class), id);
             basicHouseRoom.setId(id);
-            return  id ;
+            return id;
         } else {
             BasicHouseRoom oo = basicHouseRoomDao.getBasicHouseRoomById(basicHouseRoom.getId());
             basicHouseRoomDao.updateBasicHouseRoom(basicHouseRoom);
@@ -89,8 +90,8 @@ public class BasicHouseRoomService {
         BasicHouseRoomDecorate query = new BasicHouseRoomDecorate();
         query.setRoomId(id);
         basicHouseRoomDecorateList = basicHouseRoomDecorateService.basicHouseRoomDecorateList(query);
-        if (!ObjectUtils.isEmpty(basicHouseRoomDecorateList)){
-            for (BasicHouseRoomDecorate houseRoomDecorate:basicHouseRoomDecorateList){
+        if (!ObjectUtils.isEmpty(basicHouseRoomDecorateList)) {
+            for (BasicHouseRoomDecorate houseRoomDecorate : basicHouseRoomDecorateList) {
                 basicHouseRoomDecorateService.deleteBasicHouseRoomDecorate(houseRoomDecorate.getId());
             }
         }
@@ -121,45 +122,36 @@ public class BasicHouseRoomService {
         return vo;
     }
 
-    public List<BasicHouseRoom> getBasicHouseRoomList(Integer houseId){
+    public List<BasicHouseRoom> getBasicHouseRoomList(Integer houseId) {
         BasicHouseRoom basicHouseRoom = new BasicHouseRoom();
         basicHouseRoom.setHouseId(houseId);
         List<BasicHouseRoom> basicHouseRoomList = basicHouseRoomDao.basicHouseRoomList(basicHouseRoom);
         return basicHouseRoomList;
     }
 
-    public BasicHouseRoomVo getBasicHouseRoomVo(BasicHouseRoom basicHouseRoom){
-        if (basicHouseRoom==null){
+    public List<BasicHouseRoomVo> getBasicHouseRoomVoList(Integer houseId) {
+        return LangUtils.transform(getBasicHouseRoomList(houseId), o -> getBasicHouseRoomVo(o));
+    }
+
+    public BasicHouseRoomVo getBasicHouseRoomVo(BasicHouseRoom basicHouseRoom) {
+        if (basicHouseRoom == null) {
             return null;
         }
         BasicHouseRoomVo vo = new BasicHouseRoomVo();
-        BeanUtils.copyProperties(basicHouseRoom,vo);
+        BeanUtils.copyProperties(basicHouseRoom, vo);
         vo.setRoomTypeName(baseDataDicService.getNameById(basicHouseRoom.getRoomType()));
         return vo;
     }
 
     /**
      * 根据查询条件判断是否有数据
+     *
      * @param houseId
      * @return
      */
-    public boolean hasHouseRoomData(Integer houseId){
-        return basicHouseRoomDao.countByHouseId(houseId)>0;
+    public boolean hasHouseRoomData(Integer houseId) {
+        return basicHouseRoomDao.countByHouseId(houseId) > 0;
     }
 
 
-    public BootstrapTableVo getBootstrapTableVo(Integer houseId) throws Exception {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        requestBaseParam.setLimit(100);
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        BasicHouseRoom basicHouseRoom = new BasicHouseRoom();
-        basicHouseRoom.setHouseId(houseId);
-        List<BasicHouseRoom> basicHouseRoomList = basicHouseRoomDao.basicHouseRoomList(basicHouseRoom);
-        List<BasicHouseRoomVo> vos = Lists.newArrayList();
-        basicHouseRoomList.forEach(oo -> vos.add(getBasicHouseRoomVo(oo)));
-        vo.setTotal(page.getTotal());
-        vo.setRows(ObjectUtils.isEmpty(vos) ? new ArrayList<BasicHouseRoomVo>(10) : vos);
-        return vo;
-    }
 }

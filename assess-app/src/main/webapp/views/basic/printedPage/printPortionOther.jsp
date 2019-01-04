@@ -5,7 +5,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="x_title">
-    <h4> 房间
+    <h4> 其他完损部分
     </h4>
     <div class="clearfix"></div>
 </div>
@@ -16,7 +16,7 @@
     </div>
     <div class="form-group">
         <div class="x-valid">
-            <table class="table table-bordered" id="HouseRoomList">
+            <table class="table table-bordered" id="OtherPortionList">
                 <!-- cerare document add ajax data-->
             </table>
         </div>
@@ -26,24 +26,28 @@
 
 <script type="application/javascript">
     $(function () {
-        houseRoom.prototype.loadDataDicList();
+        otherPortion.prototype.loadDataDicList();
     })
-    var houseRoom;
+    var otherPortion;
     (function () {
-        houseRoom = function () {
+        otherPortion = function () {
         };
-        houseRoom.prototype = {
+        otherPortion.prototype = {
             config: function () {
                 var data = {};
-                data.table = "HouseRoomList";
-                data.type = "null";//
+                data.table = "OtherPortionList";
+                data.type = "other";//设备部分
                 return data;
             },
             loadDataDicList: function () {
-                var cols = commonColumn.houseRoomColumn();
-                $("#" + houseRoom.prototype.config().table).bootstrapTable('destroy');
-                TableInit(houseRoom.prototype.config().table, "${pageContext.request.contextPath}/print/getBasicHouseRoomByHouseId", cols, {
-                    houseId: '${empty caseHouse.id?0:caseHouse.id}'
+                var cols = [];
+                cols.push({field: 'categoryName', title: '类型', width: '15%'});
+                cols.push({field: 'entityConditionName', title: '实体状况', width: '15%'});
+                cols.push({field: 'entityConditionContent', title: '状况内容', width: '60%'});
+                $("#" + otherPortion.prototype.config().table).bootstrapTable('destroy');
+                TableInit(otherPortion.prototype.config().table, "${pageContext.request.contextPath}/print/getHouseDamagedDegreeList", cols, {
+                    type: otherPortion.prototype.config().type,
+                    houseId: '${empty basicHouse.id?0:basicHouse.id}'
                 }, {
                     showColumns: false,
                     showRefresh: false,

@@ -183,17 +183,16 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
+                        <button class="btn btn-success" onclick="printedPage();">
+                            打印<i style="margin-left: 10px" class="fa fa-print"></i>
+                        </button>
                         <button class="btn btn-warning" onclick="saveDraft();">
                             保存<i style="margin-left: 10px" class="fa fa-save"></i>
                         </button>
                         <button id="btn_submit" class="btn btn-success" onclick="submit();">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
-                        <button class="btn btn-succcess" onclick="printedPage();">
-                            打印<i class="fa fa-print"></i>
-                        </button>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -509,8 +508,8 @@
                             cityDefaultText: city.replace('市', '')
                         });
                         //存COOKIE
-                        writeCookie("province",province,24);
-                        writeCookie("city",city,24);
+                        writeCookie("province", province, 24);
+                        writeCookie("city", city, 24);
                     }
                 })
             } catch (e) {
@@ -585,14 +584,14 @@
         data.basicHouse = formSerializeArray(houseCommon.houseForm);
         data.basicDamagedDegree = damagedDegree.getFormData();
         $.ajax({
-            url: "${pageContext.request.contextPath}/print/saveData",
+            url: "${pageContext.request.contextPath}/basicHousePrint/saveData",
             type: "post",
             dataType: "json",
             data: {formData: JSON.stringify(data)},
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    window.open('${pageContext.request.contextPath}/print/printedPage?id=' + id);
+                    window.open('${pageContext.request.contextPath}/basicHousePrint/printedPage?basicApplyId=' + basicCommon.getApplyId() + "&houseId=" + houseCommon.getHouseId());
                 }
                 else {
                     Alert("操作失败，失败原因:" + result.errmsg);

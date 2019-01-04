@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.BasicApplyFormNameEnum;
 import com.copower.pmcc.assess.common.enums.ExamineHouseEquipmentTypeEnum;
 import com.copower.pmcc.assess.dal.basic.dao.BasicHouseDamagedDegreeDetailDao;
+import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouseDamagedDegree;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouseDamagedDegreeDetail;
@@ -24,6 +25,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,74 +71,43 @@ public class BasicHousePrintController {
     private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
     @Autowired
     private BasicHouseDamagedDegreeDetailDao basicHouseDamagedDegreeDetailDao;
+    @Autowired
+    private BasicApplyService basicApplyService;
 
 
     @RequestMapping(value = "/printedPage", name = "转到详情页面 ", method = RequestMethod.GET)
-    public ModelAndView detailView(Integer id) throws Exception {
-        String view = "/basic/printedPage/houseDetail";
+    public ModelAndView detailView(Integer basicApplyId,Integer houseId) throws Exception {
+        String view = "/basic/printedPage/printHouseDetail";
         BasicHouse basicHouse = null;
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        basicHouse = basicHouseService.getBasicHouseById(id);
-        if (id == null) {
+        basicHouse = basicHouseService.getBasicHouseById(houseId);
+        if (houseId == null) {
             return modelAndView;
         }
-        modelAndView.addObject("caseHouse", basicHouseService.getBasicHouseVo(basicHouse));
-        modelAndView.addObject("hasHouseFaceStreetData", basicHouseFaceStreetService.hasHouseFaceStreetData(id));
-        modelAndView.addObject("hasHouseIntelligentData", basicHouseIntelligentService.hasHouseIntelligentData(id));
-        modelAndView.addObject("hasHouseRoomData", basicHouseRoomService.hasHouseRoomData(id));
-        modelAndView.addObject("hasHouseWaterData", basicHouseWaterService.hasHouseWaterData(id));
-        modelAndView.addObject("hasHouseWaterDrainData", basicHouseWaterDrainService.hasHouseWaterDrainData(id));
-        modelAndView.addObject("hasHouseEquipmentAirConditioner", basicHouseEquipmentService.hasHouseEquipmentData(id, ExamineHouseEquipmentTypeEnum.houseAirConditioner.getKey()));
-        modelAndView.addObject("hasHouseEquipmentHeating", basicHouseEquipmentService.hasHouseEquipmentData(id, ExamineHouseEquipmentTypeEnum.houseHeating.getKey()));
-        modelAndView.addObject("hasHouseEquipmentNewWind", basicHouseEquipmentService.hasHouseEquipmentData(id, ExamineHouseEquipmentTypeEnum.houseNewWind.getKey()));
-        modelAndView.addObject("hasStructuralPortion", basicHouseDamagedDegreeService.hasHouseDamagedDegreeData(id, "structural.part"));
-        modelAndView.addObject("hasFitmentPortion", basicHouseDamagedDegreeService.hasHouseDamagedDegreeData(id, "decoration.part"));
-        modelAndView.addObject("hasEquipmentPortion", basicHouseDamagedDegreeService.hasHouseDamagedDegreeData(id, "equipment.part"));
-        modelAndView.addObject("hasOtherPortion", basicHouseDamagedDegreeService.hasHouseDamagedDegreeData(id, "other"));
+        BasicApply basicApply = basicApplyService.getByBasicApplyId(basicApplyId);
+        modelAndView.addObject("fullName", basicApplyService.getFullName(basicApply.getEstateName(),basicApply.getBuildingNumber(),basicApply.getUnitNumber(),basicApply.getHouseNumber()));
+        modelAndView.addObject("basicHouse", basicHouseService.getBasicHouseVo(basicHouse));
+        modelAndView.addObject("houseRoomVos",  basicHouseRoomService.getBasicHouseRoomVoList(houseId));
 
-        modelAndView.addObject("hasStructuralElementDetail", basicHouseDamagedDegreeService.hasOppositeDetail(id, 1));
-        modelAndView.addObject("hasNonbearingWallDetail", basicHouseDamagedDegreeService.hasOppositeDetail(id, 2));
-        modelAndView.addObject("hasRoofDetail", basicHouseDamagedDegreeService.hasOppositeDetail(id, 3));
-        modelAndView.addObject("hasFlooringDetail", basicHouseDamagedDegreeService.hasOppositeDetail(id, 4));
+        modelAndView.addObject("hasHouseRoomData", basicHouseRoomService.hasHouseRoomData(houseId));
+        modelAndView.addObject("hasHouseFaceStreetData", basicHouseFaceStreetService.hasHouseFaceStreetData(houseId));
+        modelAndView.addObject("hasHouseIntelligentData", basicHouseIntelligentService.hasHouseIntelligentData(houseId));
+
+        modelAndView.addObject("hasHouseWaterData", basicHouseWaterService.hasHouseWaterData(houseId));
+        modelAndView.addObject("hasHouseWaterDrainData", basicHouseWaterDrainService.hasHouseWaterDrainData(houseId));
+        modelAndView.addObject("hasHouseEquipmentAirConditioner", basicHouseEquipmentService.hasHouseEquipmentData(houseId, ExamineHouseEquipmentTypeEnum.houseAirConditioner.getKey()));
+        modelAndView.addObject("hasHouseEquipmentHeating", basicHouseEquipmentService.hasHouseEquipmentData(houseId, ExamineHouseEquipmentTypeEnum.houseHeating.getKey()));
+        modelAndView.addObject("hasHouseEquipmentNewWind", basicHouseEquipmentService.hasHouseEquipmentData(houseId, ExamineHouseEquipmentTypeEnum.houseNewWind.getKey()));
+        modelAndView.addObject("hasStructuralPortion", basicHouseDamagedDegreeService.hasHouseDamagedDegreeData(houseId, "structural.part"));
+        modelAndView.addObject("hasFitmentPortion", basicHouseDamagedDegreeService.hasHouseDamagedDegreeData(houseId, "decoration.part"));
+        modelAndView.addObject("hasEquipmentPortion", basicHouseDamagedDegreeService.hasHouseDamagedDegreeData(houseId, "equipment.part"));
+        modelAndView.addObject("hasOtherPortion", basicHouseDamagedDegreeService.hasHouseDamagedDegreeData(houseId, "other"));
+
+        modelAndView.addObject("hasStructuralElementDetail", basicHouseDamagedDegreeService.hasOppositeDetail(houseId, 1));
+        modelAndView.addObject("hasNonbearingWallDetail", basicHouseDamagedDegreeService.hasOppositeDetail(houseId, 2));
+        modelAndView.addObject("hasRoofDetail", basicHouseDamagedDegreeService.hasOppositeDetail(houseId, 3));
+        modelAndView.addObject("hasFlooringDetail", basicHouseDamagedDegreeService.hasOppositeDetail(houseId, 4));
         return modelAndView;
-    }
-
-
-    @ResponseBody
-    @RequestMapping(value = "/getBasicHouseFaceStreetByHouseId", name = "结果临街信息列表", method = RequestMethod.GET)
-    public BootstrapTableVo getBasicHouseFaceStreetByHouseId(Integer houseId) throws Exception {
-        return basicHouseFaceStreetService.getBootstrapTableVo(houseId);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/getBasicHouseIntelligentByHouseId", name = "电力通讯网络信息列表", method = RequestMethod.GET)
-    public BootstrapTableVo getBasicHouseIntelligentByHouseId(Integer houseId) throws Exception {
-        return basicHouseIntelligentService.getBootstrapTableVo(houseId);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/getBasicHouseRoomByHouseId", name = "房间信息列表", method = RequestMethod.GET)
-    public BootstrapTableVo getBasicHouseRoomByHouseId(Integer houseId) throws Exception {
-        return basicHouseRoomService.getBootstrapTableVo(houseId);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/getBasicHouseWaterByHouseId", name = "供水情况信息列表", method = RequestMethod.GET)
-    public BootstrapTableVo getBasicHouseWaterByHouseId(Integer houseId) throws Exception {
-        return basicHouseWaterService.getBootstrapTableVo(houseId);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/getBasicHouseEquipmentByHouseId", name = "空调情况信息列表", method = RequestMethod.GET)
-    public BootstrapTableVo getBasicHouseEquipmentByHouseId(Integer houseId, String type) throws Exception {
-        return basicHouseEquipmentService.getBootstrapTableVo(houseId, type);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/getBasicHouseWaterDrainByHouseId", name = "排水情况信息列表", method = RequestMethod.GET)
-    public BootstrapTableVo getBasicHouseWaterDrainByHouseId(Integer houseId) throws Exception {
-        return basicHouseWaterDrainService.getBootstrapTableVo(houseId);
-
     }
 
     @ResponseBody
@@ -150,7 +121,7 @@ public class BasicHousePrintController {
                 basicHouseService.saveAndUpdateBasicHouse(basicHouse);
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_DAMAGED_DEGREE.getVar());
                 List<BasicHouseDamagedDegree> damagedDegreeList = JSONObject.parseArray(jsonContent, BasicHouseDamagedDegree.class);
-                if (!org.springframework.util.CollectionUtils.isEmpty(damagedDegreeList)) {
+                if (!CollectionUtils.isEmpty(damagedDegreeList)) {
                     for (BasicHouseDamagedDegree degree : damagedDegreeList) {
                         basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(degree);
                     }

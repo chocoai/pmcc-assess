@@ -153,20 +153,4 @@ public class BasicHouseEquipmentService {
         return basicHouseEquipmentDao.countByHouseId(houseId, type) > 0;
     }
 
-
-    public BootstrapTableVo getBootstrapTableVo(Integer houseId, String type) throws Exception {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        requestBaseParam.setLimit(100);
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        BasicHouseEquipment basicHouseEquipment = new BasicHouseEquipment();
-        basicHouseEquipment.setHouseId(houseId);
-        basicHouseEquipment.setType(type);
-        List<BasicHouseEquipment> basicHouseEquipmentList = basicHouseEquipmentDao.basicHouseEquipmentList(basicHouseEquipment);
-        List<BasicHouseEquipmentVo> vos = Lists.newArrayList();
-        basicHouseEquipmentList.forEach(oo -> vos.add(getBasicHouseEquipmentVo(oo)));
-        vo.setTotal(page.getTotal());
-        vo.setRows(ObjectUtils.isEmpty(vos) ? new ArrayList<BasicHouseEquipmentVo>(10) : vos);
-        return vo;
-    }
 }

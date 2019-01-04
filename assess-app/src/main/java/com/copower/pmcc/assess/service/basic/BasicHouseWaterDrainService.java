@@ -139,19 +139,4 @@ public class BasicHouseWaterDrainService {
     public boolean hasHouseWaterDrainData(Integer houseId) {
         return basicHouseWaterDrainDao.countByHouseId(houseId) > 0;
     }
-
-    public BootstrapTableVo getBootstrapTableVo(Integer houseId) throws Exception {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        requestBaseParam.setLimit(100);
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        BasicHouseWaterDrain basicHouseWaterDrain = new BasicHouseWaterDrain();
-        basicHouseWaterDrain.setHouseId(houseId);
-        List<BasicHouseWaterDrain> basicHouseWaterDrainList = basicHouseWaterDrainDao.basicHouseWaterDrainList(basicHouseWaterDrain);
-        List<BasicHouseWaterDrainVo> vos = Lists.newArrayList();
-        basicHouseWaterDrainList.forEach(oo -> vos.add(getBasicHouseWaterDrainVo(oo)));
-        vo.setTotal(page.getTotal());
-        vo.setRows(ObjectUtils.isEmpty(vos) ? new ArrayList<BasicHouseWaterDrainVo>(10) : vos);
-        return vo;
-    }
 }

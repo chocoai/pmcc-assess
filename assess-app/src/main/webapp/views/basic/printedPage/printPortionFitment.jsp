@@ -47,7 +47,7 @@
                 $("#" + fitmentPortion.prototype.config().table).bootstrapTable('destroy');
                 TableInit(fitmentPortion.prototype.config().table, "${pageContext.request.contextPath}/print/getHouseDamagedDegreeList", cols, {
                     type: fitmentPortion.prototype.config().type,
-                    houseId: '${empty caseHouse.id?0:caseHouse.id}'
+                    houseId: '${empty basicHouse.id?0:basicHouse.id}'
                 }, {
                     showColumns: false,
                     showRefresh: false,
