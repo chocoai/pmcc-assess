@@ -505,6 +505,44 @@
         })
     };
 
+    houseCommon.onSelect = function (id) {
+        $.ajax({
+            url: getContextPath() + '/basicHouse/appWriteHouse',
+            data: {
+                applyId: basicCommon.getApplyId(),
+                caseHouseId: id
+            },
+            type: 'post',
+            success: function (result) {
+                if (result.ret) {
+                    basicCommon.update({caseHouseId: id, id: basicCommon.getApplyId()}, function () {
+                        houseCommon.detail(basicCommon.getApplyId(),function (data) {
+                            houseCommon.initForm(data) ;
+                        });
+                        basicCommon.basicApplyForm.find("input[name='caseHouseId']").val(id);
+                    });
+                } else {
+                    console.log(result.errmsg);
+                    Alert("转移失败!");
+                }
+            }
+        })
+    };
+
+    houseCommon.autocompleteStart = function () {
+        var caseUnitId = basicCommon.getCaseUnitId();
+        if (caseUnitId) {
+            $("#txt_House_search").apHouse({
+                caseUnitId: caseUnitId,
+                onSelect: function (id, name) {
+                    houseCommon.onSelect(id);
+                }
+            });
+        } else {
+            Alert("请先引用单元");
+        }
+    };
+
 
     window.houseCommon = houseCommon;
 })(jQuery);

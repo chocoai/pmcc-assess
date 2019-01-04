@@ -55,6 +55,13 @@ public class SurveySceneExploreService {
         }
     }
 
+    public boolean updateSurveySceneExplore(SurveySceneExplore surveySceneExplore){
+        if (surveySceneExplore== null){
+            return false;
+        }
+        return surveySceneExploreDao.updateSurveySceneExplore(surveySceneExplore);
+    }
+
     /**
      * 更新申报相关信息
      *

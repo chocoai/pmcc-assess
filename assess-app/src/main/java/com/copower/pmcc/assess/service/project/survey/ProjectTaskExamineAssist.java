@@ -81,8 +81,6 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     @Autowired
     private BasicHouseService basicHouseService;
     @Autowired
-    private BasicHouseTradingService basicHouseTradingService;
-    @Autowired
     private BasicEstateLandStateService basicEstateLandStateService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -91,14 +89,14 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineInfoIndex", "", 0, "0", "");
         SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("surveyExamineInfo", surveyExamineInfo);
-        setViewParam(commonService.thisUserAccount(), projectPlanDetails, true, modelAndView);
+        setViewParam(commonService.thisUserAccount(), projectPlanDetails,  modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineInfoApproval", processInsId, boxId, taskId, agentUserAccount);
-        setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails, false, modelAndView);
+        setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails,  modelAndView);
         return modelAndView;
     }
 
@@ -106,7 +104,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineInfoIndex", processInsId, boxId, taskId, agentUserAccount);
-        setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails, false, modelAndView);
+        setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails,  modelAndView);
         return modelAndView;
     }
 
@@ -118,14 +116,19 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineInfoApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-        setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails, false, modelAndView);
+        setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails,  modelAndView);
         return modelAndView;
     }
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
-        surveyExamineTaskService.saveExamineDataInfo(formData);
         ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid());
+        try {
+            surveyExamineTaskService.saveExamineDataInfo(formData,projectPlanDetails);
+        } catch (Exception e1) {
+            logger.error("",e1);
+        }
+
         if (StringUtils.isBlank(processInsId)) {
             //更新各项表单任务状态
             surveyCommonService.updateExamineTaskStatus(projectPlanDetails.getPid(), commonService.thisUserAccount(), ProjectStatusEnum.FINISH);
@@ -146,7 +149,11 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        surveyExamineTaskService.saveExamineDataInfo(formData);
+        try {
+            surveyExamineTaskService.saveExamineDataInfo(formData,projectPlanDetails);
+        } catch (Exception e1) {
+            logger.error("",e1);
+        }
     }
 
     /**
@@ -156,11 +163,11 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
      * @param projectPlanDetails
      * @param modelAndView
      */
-    private void setViewParam(String userAccount, ProjectPlanDetails projectPlanDetails, boolean apply, ModelAndView modelAndView) {
+    private void setViewParam(String userAccount, ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
         try {
-            setSurveyCaseStudyOrSurveySceneExploreValue(apply, projectPlanDetails, modelAndView);
+            setSurveyCaseStudyOrSurveySceneExploreValue(projectPlanDetails, modelAndView);
         } catch (Exception e1) {
             logger.error("设置数据异常!",e1);
         }
@@ -200,7 +207,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         }
     }
 
-    private void setSurveyCaseStudyOrSurveySceneExploreValue(boolean apply, ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) throws Exception {
+    private void setSurveyCaseStudyOrSurveySceneExploreValue(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) throws Exception {
         ExamineTypeEnum examineTypeEnum = ExamineTypeEnum.EXPLORE;
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
         if (StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.CASE_STUDY_EXAMINE)) {
@@ -237,73 +244,66 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         } catch (Exception e) {
             //允许异常
         }
-        //申请时
-        if (apply) {
-            if (basicApply == null) {
-                basicApply = new BasicApply();
-                basicApply.setProcessInsId(projectPlanDetails.getProcessInsId());
-                basicApply.setPlanDetailsId(projectPlanDetails.getId());
-                basicApplyService.saveBasicApply(basicApply);
-            }
-            if (basicEstate == null) {
-                basicEstate = new BasicEstate();
-                basicEstate.setApplyId(basicApply.getId());
-                basicEstateService.saveAndUpdateBasicEstate(basicEstate);
-                BasicEstateLandState landState = new BasicEstateLandState();
-                landState.setEstateId(basicEstate.getId());
-                landState.setApplyId(basicApply.getId());
-                basicEstateLandStateService.saveAndUpdateBasicEstateLandState(landState);
-            }
-            if (basicBuildingMain == null) {
-                basicBuildingMain = new BasicBuildingMain();
-                basicBuildingMain.setEstateId(basicEstate.getId());
-                basicBuildingMain.setApplyId(basicApply.getId());
-                basicBuildingMainService.saveAndUpdateBasicBuildingMain(basicBuildingMain);
-                basicBuilding = new BasicBuilding();
-                basicBuilding.setBasicBuildingMainId(basicBuildingMain.getId());
-                basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding);
-            }
-            if (basicUnit == null) {
-                basicUnit = new BasicUnit();
-                basicUnit.setApplyId(basicApply.getId());
-                basicUnit.setBuildingMainId(basicBuildingMain.getId());
-                basicUnitService.saveAndUpdateBasicUnit(basicUnit);
-            }
-            if (basicHouse == null) {
-                basicHouse = new BasicHouse();
-                basicHouse.setUnitId(basicUnit.getId());
-                basicHouse.setApplyId(basicApply.getId());
-                basicHouseService.saveAndUpdateBasicHouse(basicHouse);
-                basicHouseService.addHouseAndTrading(null,basicApply.getId());
-            }
-            //案例
-            if (examineTypeEnum.getId().equals(ExamineTypeEnum.CASE.getId())) {
-                if (surveyCaseStudy == null) {
-                    surveyCaseStudy = new SurveyCaseStudy();
-                    surveyCaseStudy.setPlanDetailsId(projectPlanDetails.getId());
-                    surveyCaseStudy.setProjectId(projectPlanDetails.getProjectId());
-                    surveyCaseStudy.setDeclareId(projectPlanDetails.getDeclareRecordId());
-                    surveyCaseStudy.setBasicApplyId(basicApply.getId());
-                    surveyCaseStudy.setProcessInsId(projectPlanDetails.getProcessInsId());
-                    surveyCaseStudyService.saveSurveyCaseStudy(surveyCaseStudy);
-                }
-            }
-            //查勘
-            if (examineTypeEnum.getId().equals(ExamineTypeEnum.EXPLORE.getId())) {
-                if (surveySceneExplore == null) {
-                    surveySceneExplore = new SurveySceneExplore();
-                    surveySceneExplore.setPlanDetailsId(projectPlanDetails.getId());
-                    surveySceneExplore.setProjectId(projectPlanDetails.getProjectId());
-                    surveySceneExplore.setDeclareId(projectPlanDetails.getDeclareRecordId());
-                    surveySceneExplore.setBasicApplyId(basicApply.getId());
-                    surveySceneExplore.setProcessInsId(projectPlanDetails.getProcessInsId());
-                    surveySceneExploreService.saveSurveySceneExplore(surveySceneExplore);
-                }
+        if (basicApply == null) {
+            basicApply = new BasicApply();
+            basicApply.setProcessInsId(projectPlanDetails.getProcessInsId());
+            basicApply.setPlanDetailsId(projectPlanDetails.getId());
+            basicApplyService.saveBasicApply(basicApply);
+        }
+        if (basicEstate == null) {
+            basicEstate = new BasicEstate();
+            basicEstate.setApplyId(basicApply.getId());
+            basicEstateService.saveAndUpdateBasicEstate(basicEstate);
+            BasicEstateLandState landState = new BasicEstateLandState();
+            landState.setEstateId(basicEstate.getId());
+            landState.setApplyId(basicApply.getId());
+            basicEstateLandStateService.saveAndUpdateBasicEstateLandState(landState);
+        }
+        if (basicBuildingMain == null) {
+            basicBuildingMain = new BasicBuildingMain();
+            basicBuildingMain.setEstateId(basicEstate.getId());
+            basicBuildingMain.setApplyId(basicApply.getId());
+            basicBuildingMainService.saveAndUpdateBasicBuildingMain(basicBuildingMain);
+            basicBuilding = new BasicBuilding();
+            basicBuilding.setBasicBuildingMainId(basicBuildingMain.getId());
+            basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding);
+        }
+        if (basicUnit == null) {
+            basicUnit = new BasicUnit();
+            basicUnit.setApplyId(basicApply.getId());
+            basicUnit.setBuildingMainId(basicBuildingMain.getId());
+            basicUnitService.saveAndUpdateBasicUnit(basicUnit);
+        }
+        if (basicHouse == null) {
+            basicHouse = new BasicHouse();
+            basicHouse.setUnitId(basicUnit.getId());
+            basicHouse.setApplyId(basicApply.getId());
+            basicHouseService.saveAndUpdateBasicHouse(basicHouse);
+            basicHouseService.addHouseAndTrading(null,basicApply.getId());
+        }
+        //案例
+        if (examineTypeEnum.getId().equals(ExamineTypeEnum.CASE.getId())) {
+            if (surveyCaseStudy == null) {
+                surveyCaseStudy = new SurveyCaseStudy();
+                surveyCaseStudy.setPlanDetailsId(projectPlanDetails.getId());
+                surveyCaseStudy.setProjectId(projectPlanDetails.getProjectId());
+                surveyCaseStudy.setDeclareId(projectPlanDetails.getDeclareRecordId());
+                surveyCaseStudy.setBasicApplyId(basicApply.getId());
+                surveyCaseStudy.setProcessInsId(projectPlanDetails.getProcessInsId());
+                surveyCaseStudyService.saveSurveyCaseStudy(surveyCaseStudy);
             }
         }
-        //非申请时
-        if (!apply) {
-            //暂时不做处理
+        //查勘
+        if (examineTypeEnum.getId().equals(ExamineTypeEnum.EXPLORE.getId())) {
+            if (surveySceneExplore == null) {
+                surveySceneExplore = new SurveySceneExplore();
+                surveySceneExplore.setPlanDetailsId(projectPlanDetails.getId());
+                surveySceneExplore.setProjectId(projectPlanDetails.getProjectId());
+                surveySceneExplore.setDeclareId(projectPlanDetails.getDeclareRecordId());
+                surveySceneExplore.setBasicApplyId(basicApply.getId());
+                surveySceneExplore.setProcessInsId(projectPlanDetails.getProcessInsId());
+                surveySceneExploreService.saveSurveySceneExplore(surveySceneExplore);
+            }
         }
         if (surveySceneExplore != null) {
             modelAndView.addObject("surveySceneExplore", surveySceneExplore);

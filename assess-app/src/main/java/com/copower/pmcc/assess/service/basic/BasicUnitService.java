@@ -260,16 +260,21 @@ public class BasicUnitService {
      * @throws Exception
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
-    public BasicUnit appWriteUnit(Integer caseUnitId,String unitPartInMode,Integer applyId) throws Exception {
+    public BasicUnit appWriteUnit(Integer caseUnitId, String unitPartInMode, Integer applyId) throws Exception {
         this.clearInvalidData(0);
         if (caseUnitId == null) {
             throw new Exception("null point");
         }
+        if (applyId != null) {
+            this.clearInvalidData(applyId);
+        }
         CaseUnit caseUnit = caseUnitService.getCaseUnitById(caseUnitId);
-        if (caseUnit == null) return null;
+        if (caseUnit == null) {
+            return null;
+        }
         BasicUnit basicUnit = new BasicUnit();
         BeanUtils.copyProperties(caseUnit, basicUnit);
-        basicUnit.setApplyId(0);
+        basicUnit.setApplyId(applyId == null ? 0 : applyId);
         basicUnit.setCreator(commonService.thisUserAccount());
         basicUnit.setGmtCreated(null);
         basicUnit.setGmtModified(null);
@@ -283,7 +288,7 @@ public class BasicUnitService {
             caseEstateTagging.setDataId(caseUnitId);
             caseEstateTagging.setType(EstateTaggingTypeEnum.UNIT.getKey());
             List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-            basicEstateService.copyTaggingFromCase(caseEstateTaggings,applyId);
+            basicEstateService.copyTaggingFromCase(caseEstateTaggings, applyId);
         }
 
 

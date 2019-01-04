@@ -15,7 +15,7 @@
                 <div class="col-sm-3">
                     <div class="input-group">
                         <input type="text" data-rule-maxlength="100" placeholder="单元编号" required="required"
-                               name="unitNumber" class="form-control" value="${basicUnit.unitNumber}">
+                               name="unitNumber" class="form-control" value="${basicUnit.unitNumber}" id="txt_Unit_search">
                         <span class="input-group-btn">
                             <div onclick="unitCommon.mapMarker();" class="btn btn-info"><i
                                     class="fa fa-map-marker"></i> 标注</div>

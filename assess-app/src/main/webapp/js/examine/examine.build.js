@@ -21,19 +21,36 @@
         return buildingCommon.buildingMainForm.find('[name=buildingNumber]').val();
     };
 
-    buildingCommon.detail = function (id, callback) {
+    buildingCommon.detail = function (id) {
         $.ajax({
             url: getContextPath() + '/basicBuilding/getBasicBuildingMainByApplyId',
             type: 'get',
             data: {applyId: id},
             success: function (result) {
                 if (result.ret) {
-                    if (callback) {
-                        callback(result.data);
-                    }
+                    buildingCommon.getBuildingList(result.data.id, function (data) {
+                        if (data.length >= 1) {
+                            var item = {main: result.data, build: data[0]};
+                            buildingCommon.initForm(item);
+                        }
+                    });
                 }
             }
         })
+    };
+
+    //获取楼栋下所有部分
+    buildingCommon.getBuildingList = function (mainId, callback) {
+        $.ajax({
+            url: getContextPath() + '/basicBuilding/getBasicBuildingListByMainId',
+            type: 'get',
+            data: {basicBuildingMainId: mainId},
+            success: function (result) {
+                if (result.ret) {
+                    callback(result.data);
+                }
+            }
+        });
     };
 
 
@@ -159,7 +176,25 @@
     };
 
     buildingCommon.onSelect = function (id) {
-        console.log("caseBuildId:"+id) ;
+        $.ajax({
+            url: getContextPath() + '/basicBuilding/appWriteBuilding',
+            data: {
+                applyId: basicCommon.getApplyId(),
+                caseMainBuildingId: id
+            },
+            type: 'post',
+            success: function (result) {
+                if (result.ret) {
+                    basicCommon.update({caseBuildingMainId: id, id: basicCommon.getApplyId()}, function () {
+                        basicCommon.basicApplyForm.find("input[name='caseBuildingMainId']").val(id);
+                        buildingCommon.detail(basicCommon.getApplyId());
+                    });
+                } else {
+                    console.log(result.errmsg);
+                    Alert("转移失败!");
+                }
+            }
+        })
     };
 
     buildingCommon.autocompleteStart = function () {

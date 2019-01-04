@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -110,6 +111,8 @@ public class BasicHouseService {
     private DataDamagedDegreeService dataDamagedDegreeService;
     @Autowired
     private CaseHouseDamagedDegreeService caseHouseDamagedDegreeService;
+    @Autowired
+    private ThreadPoolTaskExecutor taskExecutor;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -205,10 +208,13 @@ public class BasicHouseService {
     public void clearInvalidData(Integer applyId) throws Exception {
         BasicHouse where = new BasicHouse();
         where.setApplyId(applyId);
-        if (applyId == 0)
+        if (applyId == 0) {
             where.setCreator(commonService.thisUserAccount());
+        }
         List<BasicHouse> houseList = basicHouseDao.basicHouseList(where);
-        if (CollectionUtils.isEmpty(houseList)) return;
+        if (CollectionUtils.isEmpty(houseList)) {
+            return;
+        }
         BasicHouse house = houseList.get(0);
         BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(house.getId());
 
@@ -283,9 +289,11 @@ public class BasicHouseService {
         }
 
         if (houseTrading != null) {
-            basicHouseTradingService.deleteBasicHouseTrading(houseTrading.getId());//删除交易信息
+            //删除交易信息
+            basicHouseTradingService.deleteBasicHouseTrading(houseTrading.getId());
         }
-        basicHouseDao.deleteBasicHouse(house.getId());//删除房屋信息
+        //删除房屋信息
+        basicHouseDao.deleteBasicHouse(house.getId());
     }
 
     /**
@@ -303,7 +311,9 @@ public class BasicHouseService {
             where.setCreator(commonService.thisUserAccount());
         }
         List<BasicHouse> basicHouses = basicHouseDao.basicHouseList(where);
-        if (CollectionUtils.isEmpty(basicHouses)) return null;
+        if (CollectionUtils.isEmpty(basicHouses)) {
+            return null;
+        }
         BasicHouse basicHouse = basicHouses.get(0);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()), getBasicHouseVo(basicHouse));
 
@@ -338,21 +348,21 @@ public class BasicHouseService {
         Map<String, Object> objectMap = Maps.newHashMap();
 
         BasicHouse basicHouse = null;
-        if (applyId == null || applyId.equals(0)){
+        if (applyId == null || applyId.equals(0)) {
             basicHouse = new BasicHouse();
             basicHouse.setHouseNumber(houseNumber);
 
             basicHouse.setApplyId(0);
             basicHouse.setCreator(commonService.thisUserAccount());
             basicHouseDao.addBasicHouse(basicHouse);
-        }else {
+        } else {
             basicHouse = getHouseByApplyId(applyId);
         }
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()), getBasicHouseVo(basicHouse));
 
         BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
         basicHouseTrading.setHouseId(basicHouse.getId());
-        basicHouseTrading.setApplyId(applyId==null?0:applyId);
+        basicHouseTrading.setApplyId(applyId == null ? 0 : applyId);
         basicHouseTrading.setCreator(commonService.thisUserAccount());
         basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));
@@ -383,16 +393,22 @@ public class BasicHouseService {
      * @throws Exception
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
-    public Map<String, Object> appWriteHouse(Integer caseHouseId, String housePartInMode,Integer applyId) throws Exception {
+    public Map<String, Object> appWriteHouse(Integer caseHouseId, String housePartInMode, Integer applyId) throws Exception {
         if (caseHouseId == null) {
             throw new Exception("null ponit");
         }
+        this.clearInvalidData(0);
+        if (applyId != null) {
+            this.clearInvalidData(applyId);
+        }
         Map<String, Object> objectMap = new HashMap<String, Object>(2);
         CaseHouse caseHouse = caseHouseService.getCaseHouseById(caseHouseId);
-        if (caseHouse == null) return objectMap;
+        if (caseHouse == null) {
+            return objectMap;
+        }
         BasicHouse basicHouse = new BasicHouse();
         BeanUtils.copyProperties(caseHouse, basicHouse);
-        basicHouse.setApplyId(0);
+        basicHouse.setApplyId(applyId == null ? 0 : applyId);
         basicHouse.setCreator(commonService.thisUserAccount());
         basicHouse.setId(null);
         basicHouse.setGmtCreated(null);
@@ -408,39 +424,57 @@ public class BasicHouseService {
             caseEstateTagging.setDataId(caseHouseId);
             caseEstateTagging.setType(EstateTaggingTypeEnum.HOUSE.getKey());
             List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-            basicEstateService.copyTaggingFromCase(caseEstateTaggings,applyId);
+            basicEstateService.copyTaggingFromCase(caseEstateTaggings, applyId);
         }
 
 
-        //附件拷贝
-        SysAttachmentDto queryFile = new SysAttachmentDto();
-        queryFile.setTableId(caseHouseId);
-        queryFile.setTableName(FormatUtils.entityNameConvertToTableName(CaseHouse.class));
-        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(queryFile);
-        if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
-            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                SysAttachmentDto attachmentDto = new SysAttachmentDto();
-                attachmentDto.setTableId(basicHouse.getId());
-                attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
-                baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                //附件拷贝
+                SysAttachmentDto queryFile = new SysAttachmentDto();
+                queryFile.setTableId(caseHouseId);
+                queryFile.setTableName(FormatUtils.entityNameConvertToTableName(CaseHouse.class));
+                try {
+                    List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(queryFile);
+                    if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
+                        for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
+                            SysAttachmentDto attachmentDto = new SysAttachmentDto();
+                            attachmentDto.setTableId(basicHouse.getId());
+                            attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
+                            baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
+                        }
+                    }
+                } catch (Exception e1) {
+
+                }
             }
-        }
+        });
 
-        CaseHouseTrading queryTrading = new CaseHouseTrading();
-        queryTrading.setHouseId(caseHouseId);
-        List<CaseHouseTrading> caseHouseTradings = caseHouseTradingService.caseHouseTradingList(queryTrading);
-        if (!ObjectUtils.isEmpty(caseHouseTradings)) {
-            BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
-            BeanUtils.copyProperties(caseHouseTradings.get(0), basicHouseTrading);
-            basicHouseTrading.setApplyId(0);
-            basicHouseTrading.setHouseId(basicHouse.getId());
-            basicHouseTrading.setCreator(commonService.thisUserAccount());
-            basicHouseTrading.setId(null);
-            basicHouseTrading.setGmtCreated(null);
-            basicHouseTrading.setGmtModified(null);
-            basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
-            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));
-        }
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    CaseHouseTrading queryTrading = new CaseHouseTrading();
+                    queryTrading.setHouseId(caseHouseId);
+                    List<CaseHouseTrading> caseHouseTradings = caseHouseTradingService.caseHouseTradingList(queryTrading);
+                    if (!ObjectUtils.isEmpty(caseHouseTradings)) {
+                        BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
+                        BeanUtils.copyProperties(caseHouseTradings.get(0), basicHouseTrading);
+                        basicHouseTrading.setApplyId(applyId == null ? 0 : applyId);
+                        basicHouseTrading.setHouseId(basicHouse.getId());
+                        basicHouseTrading.setCreator(commonService.thisUserAccount());
+                        basicHouseTrading.setId(null);
+                        basicHouseTrading.setGmtCreated(null);
+                        basicHouseTrading.setGmtModified(null);
+                        basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
+                        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));
+                    }
+                } catch (Exception e1) {
+
+                }
+            }
+        });
 
 
         CaseHouseTradingLease caseHouseTradingLease = new CaseHouseTradingLease();
@@ -475,169 +509,265 @@ public class BasicHouseService {
         List<CaseHouseDamagedDegree> damagedDegreeList = caseHouseDamagedDegreeService.getDamagedDegreeListByHouseId(caseHouseId);
 
         if (!ObjectUtils.isEmpty(caseHouseTradingSellVos)) {
-            for (CaseHouseTradingSellVo oo : caseHouseTradingSellVos) {
-                BasicHouseTradingSell sell = new BasicHouseTradingSell();
-                BeanUtils.copyProperties(oo, sell);
-                sell.setId(null);
-                sell.setHouseId(basicHouse.getId());
-                sell.setCreator(commonService.thisUserAccount());
-                sell.setGmtCreated(null);
-                sell.setGmtModified(null);
-                basicHouseTradingSellService.saveAndUpdateBasicHouseTradingSell(sell);
-            }
-        }
-        if (!ObjectUtils.isEmpty(caseHouseTradingLeaseVos)) {
-            for (CaseHouseTradingLeaseVo oo : caseHouseTradingLeaseVos) {
-                BasicHouseTradingLease lease = new BasicHouseTradingLease();
-                BeanUtils.copyProperties(oo, lease);
-                lease.setId(null);
-                lease.setHouseId(basicHouse.getId());
-                lease.setCreator(commonService.thisUserAccount());
-                lease.setGmtCreated(null);
-                lease.setGmtModified(null);
-                basicHouseTradingLeaseService.saveAndUpdateBasicHouseTradingLease(lease);
-            }
-        }
-        if (!ObjectUtils.isEmpty(caseHouseRooms)) {
-            for (CaseHouseRoom oo : caseHouseRooms) {
-                BasicHouseRoom room = new BasicHouseRoom();
-                BeanUtils.copyProperties(oo, room);
-                room.setId(null);
-                room.setHouseId(basicHouse.getId());
-                room.setCreator(commonService.thisUserAccount());
-                room.setGmtCreated(null);
-                room.setGmtModified(null);
-                basicHouseRoomService.saveAndUpdateBasicHouseRoom(room);
-                CaseHouseRoomDecorate caseHouseRoomDecorate = new CaseHouseRoomDecorate();
-                caseHouseRoomDecorate.setRoomId(oo.getId());
-                List<CaseHouseRoomDecorate> caseHouseRoomDecorateList = caseHouseRoomDecorateService.getCaseHouseRoomDecorateList(caseHouseRoomDecorate);
-                if (!ObjectUtils.isEmpty(caseHouseRoomDecorateList)) {
-                    for (CaseHouseRoomDecorate po : caseHouseRoomDecorateList) {
-                        BasicHouseRoomDecorate basicHouseRoomDecorate = new BasicHouseRoomDecorate();
-                        BeanUtils.copyProperties(po, basicHouseRoomDecorate);
-                        basicHouseRoomDecorate.setRoomId(room.getId());
-                        basicHouseRoomDecorate.setCreator(commonService.thisUserAccount());
-                        basicHouseRoomDecorate.setGmtCreated(null);
-                        basicHouseRoomDecorate.setGmtModified(null);
-                        basicHouseRoomDecorate.setId(null);
-                        basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate);
+            taskExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        for (CaseHouseTradingSellVo oo : caseHouseTradingSellVos) {
+                            BasicHouseTradingSell sell = new BasicHouseTradingSell();
+                            BeanUtils.copyProperties(oo, sell);
+                            sell.setId(null);
+                            sell.setHouseId(basicHouse.getId());
+                            sell.setCreator(commonService.thisUserAccount());
+                            sell.setGmtCreated(null);
+                            sell.setGmtModified(null);
+                            basicHouseTradingSellService.saveAndUpdateBasicHouseTradingSell(sell);
+                        }
+                    } catch (Exception e1) {
+
                     }
-                }
-            }
-        }
-        if (!ObjectUtils.isEmpty(caseHouseEquipments)) {
-            for (CaseHouseEquipment oo : caseHouseEquipments) {
-                BasicHouseEquipment po = new BasicHouseEquipment();
-                BeanUtils.copyProperties(oo, po);
-                po.setId(null);
-                po.setHouseId(basicHouse.getId());
-                po.setCreator(commonService.thisUserAccount());
-                po.setGmtCreated(null);
-                po.setGmtModified(null);
-                basicHouseEquipmentService.saveAndUpdateBasicHouseEquipment(po);
-            }
-        }
-        if (!ObjectUtils.isEmpty(caseHouseFaceStreets)) {
-            for (CaseHouseFaceStreet oo : caseHouseFaceStreets) {
-                BasicHouseFaceStreet po = new BasicHouseFaceStreet();
-                BeanUtils.copyProperties(oo, po);
-                po.setId(null);
-                po.setHouseId(basicHouse.getId());
-                po.setCreator(commonService.thisUserAccount());
-                po.setGmtCreated(null);
-                po.setGmtModified(null);
-                basicHouseFaceStreetService.saveAndUpdateBasicHouseFaceStreet(po);
-            }
-        }
-        if (!ObjectUtils.isEmpty(caseHouseIntelligents)) {
-            for (CaseHouseIntelligent oo : caseHouseIntelligents) {
-                BasicHouseIntelligent po = new BasicHouseIntelligent();
-                BeanUtils.copyProperties(oo, po);
-                po.setId(null);
-                po.setHouseId(basicHouse.getId());
-                po.setCreator(commonService.thisUserAccount());
-                po.setGmtCreated(null);
-                po.setGmtModified(null);
-                basicHouseIntelligentService.saveAndUpdateBasicHouseIntelligent(po);
-            }
-        }
-        if (!ObjectUtils.isEmpty(caseHouseWaters)) {
-            for (CaseHouseWater oo : caseHouseWaters) {
-                BasicHouseWater po = new BasicHouseWater();
-                BeanUtils.copyProperties(oo, po);
-                po.setId(null);
-                po.setHouseId(basicHouse.getId());
-                po.setCreator(commonService.thisUserAccount());
-                po.setGmtCreated(null);
-                po.setGmtModified(null);
-                basicHouseWaterService.saveAndUpdateBasicHouseWater(po);
-            }
-        }
-        if (!ObjectUtils.isEmpty(caseHouseCorollaryEquipments)) {
-            for (CaseHouseCorollaryEquipment oo : caseHouseCorollaryEquipments) {
-                SysAttachmentDto query = new SysAttachmentDto();
-                query.setTableId(oo.getId());
-                query.setTableName(FormatUtils.entityNameConvertToTableName(CaseHouseCorollaryEquipment.class));
-                List<SysAttachmentDto> sysAttachmentDtoList1 = baseAttachmentService.getAttachmentList(query);
-                BasicHouseCorollaryEquipment po = new BasicHouseCorollaryEquipment();
-                BeanUtils.copyProperties(oo, po);
-                po.setId(null);
-                po.setHouseId(basicHouse.getId());
-                po.setCreator(commonService.thisUserAccount());
-                po.setGmtCreated(null);
-                po.setGmtModified(null);
-                Integer id = basicHouseCorollaryEquipmentService.saveAndUpdateBasicHouseCorollaryEquipment(po);
-                if (!ObjectUtils.isEmpty(sysAttachmentDtoList1)) {
-                    for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList1) {
-                        SysAttachmentDto attachmentDto = new SysAttachmentDto();
-                        attachmentDto.setTableId(id);
-                        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class));
-                        baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
-                    }
-                }
-            }
-        }
-        if (!ObjectUtils.isEmpty(caseHouseWaterDrainList)) {
-            caseHouseWaterDrainList.parallelStream().forEach(oo -> {
-                try {
-                    BasicHouseWaterDrain basicHouseWaterDrain = new BasicHouseWaterDrain();
-                    BeanUtils.copyProperties(oo, basicHouseWaterDrain);
-                    basicHouseWaterDrain.setId(null);
-                    basicHouseWaterDrain.setHouseId(basicHouse.getId());
-                    basicHouseWaterDrain.setCreator(commonService.thisUserAccount());
-                    basicHouseWaterDrain.setGmtCreated(null);
-                    basicHouseWaterDrain.setGmtModified(null);
-                    basicHouseWaterDrainService.saveAndUpdateBasicHouseWaterDrain(basicHouseWaterDrain);
-                } catch (Exception e1) {
-                    logger.error("", e1);
                 }
             });
+
         }
-        if (CollectionUtils.isNotEmpty(damagedDegreeList)) {
-            for (CaseHouseDamagedDegree caseHouseDamagedDegree : damagedDegreeList) {
-                BasicHouseDamagedDegree basicHouseDamagedDegree = new BasicHouseDamagedDegree();
-                BeanUtils.copyProperties(caseHouseDamagedDegree, basicHouseDamagedDegree);
-                basicHouseDamagedDegree.setId(null);
-                basicHouseDamagedDegree.setHouseId(basicHouse.getId());
-                basicHouseDamagedDegree.setCreator(commonService.thisUserAccount());
-                basicHouseDamagedDegree.setGmtCreated(null);
-                basicHouseDamagedDegree.setGmtModified(null);
-                basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(basicHouseDamagedDegree);
-                List<CaseHouseDamagedDegreeDetail> damagedDegreeDetailList = caseHouseDamagedDegreeService.getDamagedDegreeDetails(caseHouseDamagedDegree.getId());
-                if (CollectionUtils.isNotEmpty(damagedDegreeDetailList)) {
-                    for (CaseHouseDamagedDegreeDetail caseHouseDamagedDegreeDetail : damagedDegreeDetailList) {
-                        BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail = new BasicHouseDamagedDegreeDetail();
-                        BeanUtils.copyProperties(caseHouseDamagedDegreeDetail, basicHouseDamagedDegreeDetail);
-                        basicHouseDamagedDegreeDetail.setDamagedDegreeId(basicHouseDamagedDegree.getId());
-                        basicHouseDamagedDegreeDetail.setId(null);
-                        basicHouseDamagedDegreeDetail.setHouseId(basicHouse.getId());
-                        basicHouseDamagedDegreeDetail.setCreator(commonService.thisUserAccount());
-                        basicHouseDamagedDegreeDetail.setGmtCreated(null);
-                        basicHouseDamagedDegreeDetail.setGmtModified(null);
-                        basicHouseDamagedDegreeService.saveAndUpdateDamagedDegreeDetail(basicHouseDamagedDegreeDetail);
+        if (!ObjectUtils.isEmpty(caseHouseTradingLeaseVos)) {
+            taskExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        for (CaseHouseTradingLeaseVo oo : caseHouseTradingLeaseVos) {
+                            BasicHouseTradingLease lease = new BasicHouseTradingLease();
+                            BeanUtils.copyProperties(oo, lease);
+                            lease.setId(null);
+                            lease.setHouseId(basicHouse.getId());
+                            lease.setCreator(commonService.thisUserAccount());
+                            lease.setGmtCreated(null);
+                            lease.setGmtModified(null);
+                            basicHouseTradingLeaseService.saveAndUpdateBasicHouseTradingLease(lease);
+                        }
+                    } catch (Exception e1) {
+
                     }
                 }
-            }
+            });
+
+        }
+        if (!ObjectUtils.isEmpty(caseHouseRooms)) {
+            taskExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        for (CaseHouseRoom oo : caseHouseRooms) {
+                            BasicHouseRoom room = new BasicHouseRoom();
+                            BeanUtils.copyProperties(oo, room);
+                            room.setId(null);
+                            room.setHouseId(basicHouse.getId());
+                            room.setCreator(commonService.thisUserAccount());
+                            room.setGmtCreated(null);
+                            room.setGmtModified(null);
+                            basicHouseRoomService.saveAndUpdateBasicHouseRoom(room);
+                            CaseHouseRoomDecorate caseHouseRoomDecorate = new CaseHouseRoomDecorate();
+                            caseHouseRoomDecorate.setRoomId(oo.getId());
+                            List<CaseHouseRoomDecorate> caseHouseRoomDecorateList = caseHouseRoomDecorateService.getCaseHouseRoomDecorateList(caseHouseRoomDecorate);
+                            if (!ObjectUtils.isEmpty(caseHouseRoomDecorateList)) {
+                                for (CaseHouseRoomDecorate po : caseHouseRoomDecorateList) {
+                                    BasicHouseRoomDecorate basicHouseRoomDecorate = new BasicHouseRoomDecorate();
+                                    BeanUtils.copyProperties(po, basicHouseRoomDecorate);
+                                    basicHouseRoomDecorate.setRoomId(room.getId());
+                                    basicHouseRoomDecorate.setCreator(commonService.thisUserAccount());
+                                    basicHouseRoomDecorate.setGmtCreated(null);
+                                    basicHouseRoomDecorate.setGmtModified(null);
+                                    basicHouseRoomDecorate.setId(null);
+                                    basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate);
+                                }
+                            }
+                        }
+                    } catch (Exception e1) {
+
+                    }
+                }
+            });
+
+        }
+        if (!ObjectUtils.isEmpty(caseHouseEquipments)) {
+            taskExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        for (CaseHouseEquipment oo : caseHouseEquipments) {
+                            BasicHouseEquipment po = new BasicHouseEquipment();
+                            BeanUtils.copyProperties(oo, po);
+                            po.setId(null);
+                            po.setHouseId(basicHouse.getId());
+                            po.setCreator(commonService.thisUserAccount());
+                            po.setGmtCreated(null);
+                            po.setGmtModified(null);
+                            basicHouseEquipmentService.saveAndUpdateBasicHouseEquipment(po);
+                        }
+                    } catch (Exception e1) {
+
+                    }
+                }
+            });
+
+        }
+        if (!ObjectUtils.isEmpty(caseHouseFaceStreets)) {
+            taskExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        for (CaseHouseFaceStreet oo : caseHouseFaceStreets) {
+                            BasicHouseFaceStreet po = new BasicHouseFaceStreet();
+                            BeanUtils.copyProperties(oo, po);
+                            po.setId(null);
+                            po.setHouseId(basicHouse.getId());
+                            po.setCreator(commonService.thisUserAccount());
+                            po.setGmtCreated(null);
+                            po.setGmtModified(null);
+                            basicHouseFaceStreetService.saveAndUpdateBasicHouseFaceStreet(po);
+                        }
+                    } catch (Exception e1) {
+
+                    }
+                }
+            });
+
+        }
+        if (!ObjectUtils.isEmpty(caseHouseIntelligents)) {
+            taskExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        for (CaseHouseIntelligent oo : caseHouseIntelligents) {
+                            BasicHouseIntelligent po = new BasicHouseIntelligent();
+                            BeanUtils.copyProperties(oo, po);
+                            po.setId(null);
+                            po.setHouseId(basicHouse.getId());
+                            po.setCreator(commonService.thisUserAccount());
+                            po.setGmtCreated(null);
+                            po.setGmtModified(null);
+                            basicHouseIntelligentService.saveAndUpdateBasicHouseIntelligent(po);
+                        }
+                    } catch (Exception e1) {
+
+                    }
+                }
+            });
+
+        }
+        if (!ObjectUtils.isEmpty(caseHouseWaters)) {
+            taskExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        for (CaseHouseWater oo : caseHouseWaters) {
+                            BasicHouseWater po = new BasicHouseWater();
+                            BeanUtils.copyProperties(oo, po);
+                            po.setId(null);
+                            po.setHouseId(basicHouse.getId());
+                            po.setCreator(commonService.thisUserAccount());
+                            po.setGmtCreated(null);
+                            po.setGmtModified(null);
+                            basicHouseWaterService.saveAndUpdateBasicHouseWater(po);
+                        }
+                    } catch (Exception e1) {
+
+                    }
+                }
+            });
+
+        }
+        if (!ObjectUtils.isEmpty(caseHouseCorollaryEquipments)) {
+            taskExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        for (CaseHouseCorollaryEquipment oo : caseHouseCorollaryEquipments) {
+                            SysAttachmentDto query = new SysAttachmentDto();
+                            query.setTableId(oo.getId());
+                            query.setTableName(FormatUtils.entityNameConvertToTableName(CaseHouseCorollaryEquipment.class));
+                            List<SysAttachmentDto> sysAttachmentDtoList1 = baseAttachmentService.getAttachmentList(query);
+                            BasicHouseCorollaryEquipment po = new BasicHouseCorollaryEquipment();
+                            BeanUtils.copyProperties(oo, po);
+                            po.setId(null);
+                            po.setHouseId(basicHouse.getId());
+                            po.setCreator(commonService.thisUserAccount());
+                            po.setGmtCreated(null);
+                            po.setGmtModified(null);
+                            Integer id = basicHouseCorollaryEquipmentService.saveAndUpdateBasicHouseCorollaryEquipment(po);
+                            if (!ObjectUtils.isEmpty(sysAttachmentDtoList1)) {
+                                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList1) {
+                                    SysAttachmentDto attachmentDto = new SysAttachmentDto();
+                                    attachmentDto.setTableId(id);
+                                    attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class));
+                                    baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
+                                }
+                            }
+                        }
+                    } catch (Exception e1) {
+
+                    }
+                }
+            });
+
+        }
+        if (!ObjectUtils.isEmpty(caseHouseWaterDrainList)) {
+            taskExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    caseHouseWaterDrainList.parallelStream().forEach(oo -> {
+                        try {
+                            BasicHouseWaterDrain basicHouseWaterDrain = new BasicHouseWaterDrain();
+                            BeanUtils.copyProperties(oo, basicHouseWaterDrain);
+                            basicHouseWaterDrain.setId(null);
+                            basicHouseWaterDrain.setHouseId(basicHouse.getId());
+                            basicHouseWaterDrain.setCreator(commonService.thisUserAccount());
+                            basicHouseWaterDrain.setGmtCreated(null);
+                            basicHouseWaterDrain.setGmtModified(null);
+                            basicHouseWaterDrainService.saveAndUpdateBasicHouseWaterDrain(basicHouseWaterDrain);
+                        } catch (Exception e1) {
+                            logger.error("", e1);
+                        }
+                    });
+                }
+            });
+
+        }
+        if (CollectionUtils.isNotEmpty(damagedDegreeList)) {
+            taskExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        for (CaseHouseDamagedDegree caseHouseDamagedDegree : damagedDegreeList) {
+                            BasicHouseDamagedDegree basicHouseDamagedDegree = new BasicHouseDamagedDegree();
+                            BeanUtils.copyProperties(caseHouseDamagedDegree, basicHouseDamagedDegree);
+                            basicHouseDamagedDegree.setId(null);
+                            basicHouseDamagedDegree.setHouseId(basicHouse.getId());
+                            basicHouseDamagedDegree.setCreator(commonService.thisUserAccount());
+                            basicHouseDamagedDegree.setGmtCreated(null);
+                            basicHouseDamagedDegree.setGmtModified(null);
+                            basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(basicHouseDamagedDegree);
+                            List<CaseHouseDamagedDegreeDetail> damagedDegreeDetailList = caseHouseDamagedDegreeService.getDamagedDegreeDetails(caseHouseDamagedDegree.getId());
+                            if (CollectionUtils.isNotEmpty(damagedDegreeDetailList)) {
+                                for (CaseHouseDamagedDegreeDetail caseHouseDamagedDegreeDetail : damagedDegreeDetailList) {
+                                    BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail = new BasicHouseDamagedDegreeDetail();
+                                    BeanUtils.copyProperties(caseHouseDamagedDegreeDetail, basicHouseDamagedDegreeDetail);
+                                    basicHouseDamagedDegreeDetail.setDamagedDegreeId(basicHouseDamagedDegree.getId());
+                                    basicHouseDamagedDegreeDetail.setId(null);
+                                    basicHouseDamagedDegreeDetail.setHouseId(basicHouse.getId());
+                                    basicHouseDamagedDegreeDetail.setCreator(commonService.thisUserAccount());
+                                    basicHouseDamagedDegreeDetail.setGmtCreated(null);
+                                    basicHouseDamagedDegreeDetail.setGmtModified(null);
+                                    basicHouseDamagedDegreeService.saveAndUpdateDamagedDegreeDetail(basicHouseDamagedDegreeDetail);
+                                }
+                            }
+                        }
+                    } catch (Exception e1) {
+
+                    }
+                }
+            });
+
         }
         return objectMap;
     }
@@ -663,7 +793,9 @@ public class BasicHouseService {
         where.setTableId(sourceTableId);
         where.setTableName(sourceTableName);
         List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(where);
-        if (CollectionUtils.isEmpty(attachmentList)) return;
+        if (CollectionUtils.isEmpty(attachmentList)) {
+            return;
+        }
         for (SysAttachmentDto sysAttachmentDto : attachmentList) {
             baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
         }

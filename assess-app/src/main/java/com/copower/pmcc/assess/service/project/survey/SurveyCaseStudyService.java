@@ -57,6 +57,13 @@ public class SurveyCaseStudyService {
         }
     }
 
+    public boolean updateSurveyCaseStudy(SurveyCaseStudy surveyCaseStudy){
+        if (surveyCaseStudy== null){
+            return false;
+        }
+        return  surveyCaseStudyDao.updateSurveyCaseStudy(surveyCaseStudy);
+    }
+
     /**
      * 删除数据
      *

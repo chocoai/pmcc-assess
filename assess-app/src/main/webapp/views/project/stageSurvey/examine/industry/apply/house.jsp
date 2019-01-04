@@ -16,7 +16,7 @@
                 <label class="col-sm-1 control-label">房号<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <input type="text" required placeholder="房号" name="houseNumber"
-                           class="form-control" value="${basicHouse.houseNumber}">
+                           class="form-control" value="${basicHouse.houseNumber}" id="txt_House_search">
                 </div>
             </div>
             <div class="x-valid">

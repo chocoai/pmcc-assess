@@ -30,6 +30,7 @@
                 <input type="hidden" name="caseBuildingMainId" value="${basicApply.caseBuildingMainId}">
                 <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
                 <input type="hidden" name="caseHouseId" value="${basicApply.caseHouseId}">
+                <input type="hidden" name="id" value="${basicApply.id}">
             </form>
 
 
@@ -112,9 +113,6 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-                        <button id="btn_save" class="btn btn-warning" onclick="save();">
-                            保存<i style="margin-left: 10px" class="fa fa-save"></i>
-                        </button>
                         <button id="btn_submit" class="btn btn-success" onclick="submit();">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
@@ -140,6 +138,8 @@
 <script src="${pageContext.request.contextPath}/js/autocomplete/heating.brand.js"></script>
 <script src='${pageContext.request.contextPath}/js/autocomplete/estate.case.js'></script>
 <script src='${pageContext.request.contextPath}/js/autocomplete/building.case.js'></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/unit.case.js'></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/house.case.js'></script>
 
 <script src="${pageContext.request.contextPath}/js/select/land.level.select.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/block.select.js"></script>
@@ -173,19 +173,14 @@
 
 
 <script type="text/javascript">
-    $(function () {
-        //tab注册事件
-        $('.task_examine_item_tab').find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        });
-        //选中第一个tab
-        taskExamineItemIndex.selectFirstTab();
-    });
-
-
-
     //任务提交
     function submit() {
-        var formData = taskExamineItemIndex.getFormData();
+        //数据校验
+        // if (!basicCommon.valid()){
+        //     return false;
+        // }
+        var formData = basicCommon.getFormData();
+        console.log(formData);
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
         }
@@ -194,119 +189,73 @@
         }
     }
 
-    //保存
-    function save() {
-        taskExamineItemIndex.save();
-    }
 </script>
 <script type="text/javascript">
 
-    var taskExamineItemIndex = {
-        //选择第一个tab
-        selectFirstTab: function () {
-            $(".task_examine_item_tab").find('a:first').tab('show');
-        },
-
-        //验证
-        valid: function () {
-            return true;
-        },
-
-        //获取表单数据
-        getFormData: function () {
-            return "" ;
-        },
-
-        //保存
-        save: function () {
-            //保存只验证填写的数据合法性
-            $(".examine_content [required]").removeAttr('required').attr('data-required', 'true');
-            if (!taskExamineItemIndex.valid()) {
-                return false;
-            }
-            Loading.progressShow();
-            $.ajax({
-                url: "${pageContext.request.contextPath}/surveyExamine/saveExamineDataInfo",
-                data: {
-                    formData: JSON.stringify(taskExamineItemIndex.getFormData())
-                },
-                type: "post",
-                dataType: "json",
-                success: function (result) {
-                    Loading.progressHide();
-                    if (result.ret) {
-                        //保存完后其他动作
-                        toastr.success("保存成功");
-                    } else {
-                        Alert("保存失败:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-                }
-            });
-        },
-
-        //提交
-        submit: function () {
-            var formData = taskExamineItemIndex.getFormData();
-            var data = {};
-            var url = '${pageContext.request.contextPath}/surveyExamineItem/submitExamineDataInfo';
-            if ("${processInsId}" != "0") {//返回修改
-                data = formApproval.getFormData();
-                url = '${pageContext.request.contextPath}/surveyExamineItem/submitEditExamineDataInfo';
-            }
-            data.formData = JSON.stringify(formData);
-            data.planDetailsId = "${projectPlanDetails.id}";
-            data.responsibilityId = "${responsibilityId}";
-            Loading.progressShow();
-            $.ajax({
-                url: url,
-                data: data,
-                type: "post",
-                dataType: "json",
-                success: function (result) {
-                    Loading.progressHide();
-                    if (result.ret) {
-                        //保存完后其他动作
-                        Alert("提交成功", 1, null, function () {
-                            window.close();
-                        });
-                    } else {
-                        Alert("保存失败:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-                }
-            });
-        }
-    };
+   function save() {
+       var formData = basicCommon.getFormData();
+       var data = {};
+       var url = '${pageContext.request.contextPath}/surveyExamineItem/submitExamineDataInfo';
+       if ("${processInsId}" != "0") {//返回修改
+           data = formApproval.getFormData();
+           url = '${pageContext.request.contextPath}/surveyExamineItem/submitEditExamineDataInfo';
+       }
+       data.formData = JSON.stringify(formData);
+       data.planDetailsId = "${projectPlanDetails.id}";
+       data.responsibilityId = "${responsibilityId}";
+       Loading.progressShow();
+       $.ajax({
+           url: url,
+           data: data,
+           type: "post",
+           dataType: "json",
+           success: function (result) {
+               Loading.progressHide();
+               if (result.ret) {
+                   //保存完后其他动作
+                   Alert("提交成功", 1, null, function () {
+                       window.close();
+                   });
+               } else {
+                   Alert("保存失败:" + result.errmsg);
+               }
+           },
+           error: function (result) {
+               Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+           }
+       });
+   }
 
     $(document).ready(function () {
-
+        $(".task_examine_item_tab").find('a:first').tab('show');
         //初始化方法和值
-        estateCommon.detail(basicCommon.getApplyId(),function (data) {
-            estateCommon.initForm({estate:data.basicEstate,land:data.basicEstateLandState}) ;
+        estateCommon.detail(basicCommon.getApplyId(), function (data) {
+            estateCommon.initForm({estate: data.basicEstate, land: data.basicEstateLandState});
         });
 
-        buildingCommon.detail(basicCommon.getApplyId(),function (data) {
-            buildingCommon.initForm({main:data,build:{}}) ;
-        });
+        buildingCommon.detail(basicCommon.getApplyId());
 
-        unitCommon.detail(basicCommon.getApplyId(),function (data) {
+        unitCommon.detail(basicCommon.getApplyId(), function (data) {
             unitCommon.initForm(data);
         });
 
-        houseCommon.detail(basicCommon.getApplyId(),function (data) {
-            houseCommon.initForm(data) ;
+        houseCommon.detail(basicCommon.getApplyId(), function (data) {
+            houseCommon.initForm(data);
         });
 
+        //启动自动填充控件
+
         //楼盘自动填充插件
-        estateCommon.autocompleteStart() ;
+        estateCommon.autocompleteStart();
 
         //楼栋自动填充插件
-        buildingCommon.autocompleteStart() ;
+        buildingCommon.autocompleteStart();
+
+        //单元自动填充插件
+        unitCommon.autocompleteStart();
+
+        //房屋自动填充插件
+        houseCommon.autocompleteStart();
 
     });
 </script>

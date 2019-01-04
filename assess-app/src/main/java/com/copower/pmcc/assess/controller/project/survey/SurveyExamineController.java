@@ -192,9 +192,9 @@ public class SurveyExamineController {
 
     @ResponseBody
     @PostMapping(name = "保存调查信息", value = "/saveExamineDataInfo")
-    public HttpResult saveExamineDataInfo(String formData) {
+    public HttpResult saveExamineDataInfo(String formData,ProjectPlanDetails projectPlanDetails) {
         try {
-            surveyExamineTaskService.saveExamineDataInfo(formData);
+            surveyExamineTaskService.saveExamineDataInfo(formData,projectPlanDetails);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("保存调查信息", e);
