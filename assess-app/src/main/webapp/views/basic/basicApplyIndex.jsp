@@ -183,7 +183,7 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-                        <button class="btn btn-success" onclick="printedPage();">
+                        <button class="btn btn-warning" onclick="printedPage();">
                             打印<i style="margin-left: 10px" class="fa fa-print"></i>
                         </button>
                         <button class="btn btn-warning" onclick="saveDraft();">
@@ -483,42 +483,15 @@
 
     $(function () {
         basicApplyIndex.startApply();
-        console.log(readCookie("province"));
-        console.log(readCookie("city"));
-        var provinceCookie = readCookie("province");
-        var cityCookie = readCookie("city");
-        if (readCookie("province") && readCookie("city")) {
+        //定位成功回调方法
+        mapPosition.getCurrentCity(function (province,city) {
             AssessCommon.initAreaInfo({
                 provinceTarget: basicCommon.basicApplyForm.find('[name=province]'),
                 cityTarget: basicCommon.basicApplyForm.find('[name=city]'),
-                provinceDefaultText: provinceCookie.replace('省', ''),
-                cityDefaultText: cityCookie.replace('市', '')
+                provinceDefaultText: province,
+                cityDefaultText: city
             });
-        } else {
-            //定位成功回调方法
-            try {
-                mapPosition.complete(function (data) {
-                    var province = data.addressComponent.province;
-                    var city = data.addressComponent.city;
-                    if (province && city) {
-                        AssessCommon.initAreaInfo({
-                            provinceTarget: basicCommon.basicApplyForm.find('[name=province]'),
-                            cityTarget: basicCommon.basicApplyForm.find('[name=city]'),
-                            provinceDefaultText: province.replace('省', ''),
-                            cityDefaultText: city.replace('市', '')
-                        });
-                        //存COOKIE
-                        writeCookie("province", province, 24);
-                        writeCookie("city", city, 24);
-                    }
-                })
-            } catch (e) {
-                AssessCommon.initAreaInfo({
-                    provinceTarget: basicCommon.basicApplyForm.find('[name=province]'),
-                    cityTarget: basicCommon.basicApplyForm.find('[name=city]')
-                });
-            }
-        }
+        });
     });
 
 </script>
@@ -579,6 +552,10 @@
 
     //打印页
     function printedPage() {
+        if (!applyForm.housePartInMode) {
+            Alert("房屋信息未参与到申请中不允许打印");
+            return false;
+        }
         Loading.progressShow();
         var data = {};
         data.basicHouse = formSerializeArray(houseCommon.houseForm);
@@ -602,33 +579,6 @@
                 Alert("调用服务端方法失败，失败原因:" + result);
             }
         })
-    }
-
-    //Cookie取值
-    function readCookie(name) {
-        var cookieValue = "";
-        var search = name + "=";
-        if (document.cookie.length > 0) {
-            offset = document.cookie.indexOf(search);
-            if (offset != -1) {
-                offset += search.length;
-                end = document.cookie.indexOf(";", offset);
-                if (end == -1)
-                    end = document.cookie.length;
-                cookieValue = unescape(document.cookie.substring(offset, end))
-            }
-        }
-        return cookieValue;
-    }
-
-    //Cookie设置值
-    function writeCookie(name, value, hours) {
-        var expire = "";
-        if (hours != null) {
-            expire = new Date((new Date()).getTime() + hours * 3600000);
-            expire = "; expires=" + expire.toGMTString();
-        }
-        document.cookie = name + "=" + escape(value) + expire;
     }
 
 </script>

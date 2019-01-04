@@ -1,13 +1,68 @@
 /**
  * Created by kings on 2018-11-29.
  */
-document.write('<script type="text/javascript" src="//webapi.amap.com/maps?v=1.4.6&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.ToolBar"></script>');
-document.write('<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>');
-document.write('<div id="containerMap" style="display: none;" tabindex="0"></div>');
 
-var mapPosition={};
+var mapPosition = {};
 
-mapPosition.complete=function (callback) {
+//获取当前所在城市
+mapPosition.getCurrentCity = function (callback) {
+    var province, city;
+    //1.先到cookie中读取，如果存在则直接返回，不存在则通过地图定位处理
+    province = mapPosition.readCookie("province");
+    city = mapPosition.readCookie("city");
+    if (province && city) {
+        province = province.replace('省', '');
+        city = city.replace('市', '');
+    } else {
+        mapPosition.complete(function (data) {
+            try {
+                var province = data.addressComponent.province;
+                var city = data.addressComponent.city;
+                province = province.replace('省', '');
+                city = city.replace('市', '');
+                if (province && city) {
+                    mapPosition.writeCookie("province", province, 24);
+                    mapPosition.writeCookie("city", city, 24);
+                }
+            } catch (e) {
+            }
+        })
+    }
+    if (callback) {
+        callback(province, city);
+    }
+}
+
+mapPosition.readCookie = function (name) {
+    var cookieValue = "";
+    var search = name + "=";
+    if (document.cookie.length > 0) {
+        offset = document.cookie.indexOf(search);
+        if (offset != -1) {
+            offset += search.length;
+            end = document.cookie.indexOf(";", offset);
+            if (end == -1)
+                end = document.cookie.length;
+            cookieValue = unescape(document.cookie.substring(offset, end))
+        }
+    }
+    return cookieValue;
+}
+
+mapPosition.writeCookie = function (name, value, hours) {
+    var expire = "";
+    if (hours != null) {
+        expire = new Date((new Date()).getTime() + hours * 3600000);
+        expire = "; expires=" + expire.toGMTString();
+    }
+    document.cookie = name + "=" + escape(value) + expire;
+}
+
+
+mapPosition.complete = function (callback) {
+    document.write('<script type="text/javascript" src="//webapi.amap.com/maps?v=1.4.6&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.ToolBar"></script>');
+    document.write('<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>');
+    document.write('<div id="containerMap" style="display: none;" tabindex="0"></div>');
     //高德地图接入定位
     AMapUI.loadUI(['misc/PositionPicker'], function (PositionPicker) {
         var map, geolocation;
@@ -28,7 +83,8 @@ mapPosition.complete=function (callback) {
             map.addControl(geolocation);
             geolocation.getCurrentPosition();
             AMap.event.addListener(geolocation, 'complete', callback);//返回定位信息
-            AMap.event.addListener(geolocation, 'error', function () {});      //返回定位出错信息
+            AMap.event.addListener(geolocation, 'error', function () {
+            });      //返回定位出错信息
         });
     });
 }
