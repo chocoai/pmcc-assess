@@ -8,7 +8,7 @@
             var defaults = {
                 offset: 0,
                 limit: 10,
-                caseBuildingMainId:null,
+                caseBuildingId:null,
                 onSelect: function (id, name) {
 
                 }
@@ -25,7 +25,7 @@
                         offset: defaults.offset,
                         limit: defaults.limit,
                         unitNumber: $(that).val(),
-                        caseBuildingMainId:defaults.caseBuildingMainId
+                        caseBuildingId:defaults.caseBuildingId
                     },
                     success: function (result) {
                         if (result.ret) {

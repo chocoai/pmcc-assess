@@ -3,6 +3,10 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicApplyMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicApply" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="case_estate_id" property="caseEstateId" jdbcType="INTEGER" />
+    <result column="case_building_id" property="caseBuildingId" jdbcType="INTEGER" />
+    <result column="case_unit_id" property="caseUnitId" jdbcType="INTEGER" />
+    <result column="case_house_id" property="caseHouseId" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
     <result column="province" property="province" jdbcType="VARCHAR" />
@@ -14,10 +18,6 @@
     <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="draft_flag" property="draftFlag" jdbcType="BIT" />
-    <result column="case_estate_id" property="caseEstateId" jdbcType="INTEGER" />
-    <result column="case_building_main_id" property="caseBuildingMainId" jdbcType="INTEGER" />
-    <result column="case_unit_id" property="caseUnitId" jdbcType="INTEGER" />
-    <result column="case_house_id" property="caseHouseId" jdbcType="INTEGER" />
     <result column="estate_part_in_mode" property="estatePartInMode" jdbcType="VARCHAR" />
     <result column="building_part_in_mode" property="buildingPartInMode" jdbcType="VARCHAR" />
     <result column="unit_part_in_mode" property="unitPartInMode" jdbcType="VARCHAR" />
@@ -86,9 +86,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, plan_details_id, process_ins_id, province, city, type, estate_name, building_number, 
-    unit_number, house_number, status, draft_flag, case_estate_id, case_building_main_id, 
-    case_unit_id, case_house_id, estate_part_in_mode, building_part_in_mode, unit_part_in_mode, 
+    id, case_estate_id, case_building_id, case_unit_id, case_house_id, plan_details_id, 
+    process_ins_id, province, city, type, estate_name, building_number, unit_number, 
+    house_number, status, draft_flag, estate_part_in_mode, building_part_in_mode, unit_part_in_mode, 
     house_part_in_mode, write_back_block_flag, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicApplyExample" >
@@ -125,19 +125,19 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_apply (plan_details_id, process_ins_id, province, 
-      city, type, estate_name, 
-      building_number, unit_number, house_number, 
-      status, draft_flag, case_estate_id, 
-      case_building_main_id, case_unit_id, case_house_id, 
+    insert into tb_basic_apply (case_estate_id, case_building_id, case_unit_id, 
+      case_house_id, plan_details_id, process_ins_id, 
+      province, city, type, 
+      estate_name, building_number, unit_number, 
+      house_number, status, draft_flag, 
       estate_part_in_mode, building_part_in_mode, unit_part_in_mode, 
       house_part_in_mode, write_back_block_flag, creator, 
       gmt_created, gmt_modified)
-    values (#{planDetailsId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
-      #{city,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{estateName,jdbcType=VARCHAR}, 
-      #{buildingNumber,jdbcType=VARCHAR}, #{unitNumber,jdbcType=VARCHAR}, #{houseNumber,jdbcType=VARCHAR}, 
-      #{status,jdbcType=VARCHAR}, #{draftFlag,jdbcType=BIT}, #{caseEstateId,jdbcType=INTEGER}, 
-      #{caseBuildingMainId,jdbcType=INTEGER}, #{caseUnitId,jdbcType=INTEGER}, #{caseHouseId,jdbcType=INTEGER}, 
+    values (#{caseEstateId,jdbcType=INTEGER}, #{caseBuildingId,jdbcType=INTEGER}, #{caseUnitId,jdbcType=INTEGER}, 
+      #{caseHouseId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
+      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{estateName,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=VARCHAR}, #{unitNumber,jdbcType=VARCHAR}, 
+      #{houseNumber,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{draftFlag,jdbcType=BIT}, 
       #{estatePartInMode,jdbcType=VARCHAR}, #{buildingPartInMode,jdbcType=VARCHAR}, #{unitPartInMode,jdbcType=VARCHAR}, 
       #{housePartInMode,jdbcType=VARCHAR}, #{writeBackBlockFlag,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
@@ -148,6 +148,18 @@
     </selectKey>
     insert into tb_basic_apply
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caseEstateId != null" >
+        case_estate_id,
+      </if>
+      <if test="caseBuildingId != null" >
+        case_building_id,
+      </if>
+      <if test="caseUnitId != null" >
+        case_unit_id,
+      </if>
+      <if test="caseHouseId != null" >
+        case_house_id,
+      </if>
       <if test="planDetailsId != null" >
         plan_details_id,
       </if>
@@ -181,18 +193,6 @@
       <if test="draftFlag != null" >
         draft_flag,
       </if>
-      <if test="caseEstateId != null" >
-        case_estate_id,
-      </if>
-      <if test="caseBuildingMainId != null" >
-        case_building_main_id,
-      </if>
-      <if test="caseUnitId != null" >
-        case_unit_id,
-      </if>
-      <if test="caseHouseId != null" >
-        case_house_id,
-      </if>
       <if test="estatePartInMode != null" >
         estate_part_in_mode,
       </if>
@@ -219,6 +219,18 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caseEstateId != null" >
+        #{caseEstateId,jdbcType=INTEGER},
+      </if>
+      <if test="caseBuildingId != null" >
+        #{caseBuildingId,jdbcType=INTEGER},
+      </if>
+      <if test="caseUnitId != null" >
+        #{caseUnitId,jdbcType=INTEGER},
+      </if>
+      <if test="caseHouseId != null" >
+        #{caseHouseId,jdbcType=INTEGER},
+      </if>
       <if test="planDetailsId != null" >
         #{planDetailsId,jdbcType=INTEGER},
       </if>
@@ -251,18 +263,6 @@
       </if>
       <if test="draftFlag != null" >
         #{draftFlag,jdbcType=BIT},
-      </if>
-      <if test="caseEstateId != null" >
-        #{caseEstateId,jdbcType=INTEGER},
-      </if>
-      <if test="caseBuildingMainId != null" >
-        #{caseBuildingMainId,jdbcType=INTEGER},
-      </if>
-      <if test="caseUnitId != null" >
-        #{caseUnitId,jdbcType=INTEGER},
-      </if>
-      <if test="caseHouseId != null" >
-        #{caseHouseId,jdbcType=INTEGER},
       </if>
       <if test="estatePartInMode != null" >
         #{estatePartInMode,jdbcType=VARCHAR},
@@ -302,6 +302,18 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.caseEstateId != null" >
+        case_estate_id = #{record.caseEstateId,jdbcType=INTEGER},
+      </if>
+      <if test="record.caseBuildingId != null" >
+        case_building_id = #{record.caseBuildingId,jdbcType=INTEGER},
+      </if>
+      <if test="record.caseUnitId != null" >
+        case_unit_id = #{record.caseUnitId,jdbcType=INTEGER},
+      </if>
+      <if test="record.caseHouseId != null" >
+        case_house_id = #{record.caseHouseId,jdbcType=INTEGER},
+      </if>
       <if test="record.planDetailsId != null" >
         plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
@@ -335,18 +347,6 @@
       <if test="record.draftFlag != null" >
         draft_flag = #{record.draftFlag,jdbcType=BIT},
       </if>
-      <if test="record.caseEstateId != null" >
-        case_estate_id = #{record.caseEstateId,jdbcType=INTEGER},
-      </if>
-      <if test="record.caseBuildingMainId != null" >
-        case_building_main_id = #{record.caseBuildingMainId,jdbcType=INTEGER},
-      </if>
-      <if test="record.caseUnitId != null" >
-        case_unit_id = #{record.caseUnitId,jdbcType=INTEGER},
-      </if>
-      <if test="record.caseHouseId != null" >
-        case_house_id = #{record.caseHouseId,jdbcType=INTEGER},
-      </if>
       <if test="record.estatePartInMode != null" >
         estate_part_in_mode = #{record.estatePartInMode,jdbcType=VARCHAR},
       </if>
@@ -379,6 +379,10 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_apply
     set id = #{record.id,jdbcType=INTEGER},
+      case_estate_id = #{record.caseEstateId,jdbcType=INTEGER},
+      case_building_id = #{record.caseBuildingId,jdbcType=INTEGER},
+      case_unit_id = #{record.caseUnitId,jdbcType=INTEGER},
+      case_house_id = #{record.caseHouseId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       province = #{record.province,jdbcType=VARCHAR},
@@ -390,10 +394,6 @@
       house_number = #{record.houseNumber,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
       draft_flag = #{record.draftFlag,jdbcType=BIT},
-      case_estate_id = #{record.caseEstateId,jdbcType=INTEGER},
-      case_building_main_id = #{record.caseBuildingMainId,jdbcType=INTEGER},
-      case_unit_id = #{record.caseUnitId,jdbcType=INTEGER},
-      case_house_id = #{record.caseHouseId,jdbcType=INTEGER},
       estate_part_in_mode = #{record.estatePartInMode,jdbcType=VARCHAR},
       building_part_in_mode = #{record.buildingPartInMode,jdbcType=VARCHAR},
       unit_part_in_mode = #{record.unitPartInMode,jdbcType=VARCHAR},
@@ -409,6 +409,18 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicApply" >
     update tb_basic_apply
     <set >
+      <if test="caseEstateId != null" >
+        case_estate_id = #{caseEstateId,jdbcType=INTEGER},
+      </if>
+      <if test="caseBuildingId != null" >
+        case_building_id = #{caseBuildingId,jdbcType=INTEGER},
+      </if>
+      <if test="caseUnitId != null" >
+        case_unit_id = #{caseUnitId,jdbcType=INTEGER},
+      </if>
+      <if test="caseHouseId != null" >
+        case_house_id = #{caseHouseId,jdbcType=INTEGER},
+      </if>
       <if test="planDetailsId != null" >
         plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       </if>
@@ -442,18 +454,6 @@
       <if test="draftFlag != null" >
         draft_flag = #{draftFlag,jdbcType=BIT},
       </if>
-      <if test="caseEstateId != null" >
-        case_estate_id = #{caseEstateId,jdbcType=INTEGER},
-      </if>
-      <if test="caseBuildingMainId != null" >
-        case_building_main_id = #{caseBuildingMainId,jdbcType=INTEGER},
-      </if>
-      <if test="caseUnitId != null" >
-        case_unit_id = #{caseUnitId,jdbcType=INTEGER},
-      </if>
-      <if test="caseHouseId != null" >
-        case_house_id = #{caseHouseId,jdbcType=INTEGER},
-      </if>
       <if test="estatePartInMode != null" >
         estate_part_in_mode = #{estatePartInMode,jdbcType=VARCHAR},
       </if>
@@ -483,7 +483,11 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicApply" >
     update tb_basic_apply
-    set plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+    set case_estate_id = #{caseEstateId,jdbcType=INTEGER},
+      case_building_id = #{caseBuildingId,jdbcType=INTEGER},
+      case_unit_id = #{caseUnitId,jdbcType=INTEGER},
+      case_house_id = #{caseHouseId,jdbcType=INTEGER},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
@@ -494,10 +498,6 @@
       house_number = #{houseNumber,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       draft_flag = #{draftFlag,jdbcType=BIT},
-      case_estate_id = #{caseEstateId,jdbcType=INTEGER},
-      case_building_main_id = #{caseBuildingMainId,jdbcType=INTEGER},
-      case_unit_id = #{caseUnitId,jdbcType=INTEGER},
-      case_house_id = #{caseHouseId,jdbcType=INTEGER},
       estate_part_in_mode = #{estatePartInMode,jdbcType=VARCHAR},
       building_part_in_mode = #{buildingPartInMode,jdbcType=VARCHAR},
       unit_part_in_mode = #{unitPartInMode,jdbcType=VARCHAR},

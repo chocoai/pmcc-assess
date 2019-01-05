@@ -52,8 +52,8 @@ public class BasicUnitDao {
         if (org.apache.commons.lang3.StringUtils.isNotBlank(basicUnit.getElevatorHouseholdRatio())){
             criteria.andElevatorHouseholdRatioEqualTo(basicUnit.getElevatorHouseholdRatio()) ;
         }
-        if (basicUnit.getBuildingMainId() != null){
-            criteria.andBuildingMainIdEqualTo(basicUnit.getBuildingMainId());
+        if (basicUnit.getBuildingId() != null){
+            criteria.andBuildingIdEqualTo(basicUnit.getBuildingId());
         }
         if (org.apache.commons.lang3.StringUtils.isNotBlank(basicUnit.getCreator())){
             criteria.andCreatorEqualTo(basicUnit.getCreator()) ;

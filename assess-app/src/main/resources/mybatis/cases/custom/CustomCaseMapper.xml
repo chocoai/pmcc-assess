@@ -25,9 +25,9 @@
         GROUP BY `name` ORDER BY version DESC,NAME
     </select>
 
-    <select id="getCaseBuildingMainList" parameterType="map" resultMap="BaseResultMap">
+    <select id="getCaseBuildingList" parameterType="map" resultMap="BaseResultMap">
         SELECT id,building_number AS `name`,`type`,version FROM (
-        SELECT DISTINCT id,building_number,`type`,version FROM tb_case_building_main WHERE 1=1
+        SELECT DISTINCT id,building_number,`type`,version FROM tb_case_building WHERE 1=1
         <if test="buildingNumber!=null and buildingNumber!=''">
             AND building_number LIKE CONCAT(CONCAT('%', #{buildingNumber}), '%')
         </if>
@@ -45,7 +45,7 @@
             AND unit_number LIKE CONCAT(CONCAT('%', #{unitNumber}), '%')
         </if>
         <if test="buildingMainId!=null">
-            AND building_main_id=#{buildingMainId}
+            AND building_id=#{buildingId}
         </if>
         ORDER BY version DESC) AS T
         GROUP BY unit_number ORDER BY version DESC,unit_number
@@ -115,18 +115,18 @@
         </where>
     </select>
 
-    <sql id="Base_Column_ListCaseBuildingMain">
+    <sql id="Base_Column_ListCaseBuilding">
         id, estate_id, type, building_number, building_name, floor_count, location, version,
         multipart_flag, creator, gmt_created, gmt_modified
     </sql>
     <select id="screenBuildList" parameterType="map"
-            resultMap="com.copower.pmcc.assess.dal.cases.mapper.CaseBuildingMainMapper.BaseResultMap">
+            resultMap="com.copower.pmcc.assess.dal.cases.mapper.CaseBuildingMapper.BaseResultMap">
         SELECT
-        <include refid="Base_Column_ListCaseBuildingMain"/>
+        <include refid="Base_Column_ListCaseBuilding"/>
         FROM
         ( SELECT DISTINCT
-        <include refid="Base_Column_ListCaseBuildingMain"/>
-        FROM tb_case_building_main WHERE 1 = 1 AND estate_id = #{estateId} ORDER BY version DESC ) AS T
+        <include refid="Base_Column_ListCaseBuilding"/>
+        FROM tb_case_building WHERE 1 = 1 AND estate_id = #{estateId} ORDER BY version DESC ) AS T
         GROUP BY
         building_number
         ORDER BY

@@ -103,8 +103,6 @@ public class PublicBasicService {
     @Autowired
     private BasicApplyService basicApplyService;
     @Autowired
-    private BasicBuildingMainService basicBuildingMainService;
-    @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private BasicBuildingOutfitService basicBuildingOutfitService;
@@ -156,8 +154,6 @@ public class PublicBasicService {
     private CaseHouseTradingService caseHouseTradingService;
     @Autowired
     private CaseEstateLandStateService caseEstateLandStateService;
-    @Autowired
-    private CaseBuildingMainService caseBuildingMainService;
     @Autowired
     private CaseEstateService caseEstateService;
     @Autowired
@@ -493,30 +489,30 @@ public class PublicBasicService {
     /**
      * 主楼栋 回写
      *
-     * @param basicBuildingMain
+     * @param basicBuilding
      * @param estateId
      * @return
      * @throws Exception
      */
-    private CaseBuildingMain flowWriteCaseBuildingMain(BasicApply basicApply, BasicBuildingMain basicBuildingMain, Integer estateId) throws Exception {
-        CaseBuildingMain caseBuildingMain = new CaseBuildingMain();
-        if (basicBuildingMain != null) {
-            BeanUtils.copyProperties(basicBuildingMain, caseBuildingMain);
-            caseBuildingMain.setEstateId(estateId);
-            caseBuildingMain.setType(basicApply.getType());
+    private CaseBuilding flowWriteCaseBuildingMain(BasicApply basicApply, BasicBuilding basicBuilding, Integer estateId) throws Exception {
+        CaseBuilding caseBuilding = new CaseBuilding();
+        if (basicBuilding != null) {
+            BeanUtils.copyProperties(basicBuilding, caseBuilding);
+            caseBuilding.setEstateId(estateId);
+           // caseBuilding.setType(basicApply.getType());
             if (BasicApplyPartInModeEnum.UPGRADE.getKey().equals(basicApply.getBuildingPartInMode())) {
-                caseBuildingMain.setVersion(caseBuildingMainService.getVersion(basicApply.getCaseBuildingMainId()) + 1);
+               // caseBuilding.setVersion(caseBuildingMainService.getVersion(basicApply.getcaseBuildingId()) + 1);
             } else {
-                caseBuildingMain.setVersion(1);
+               // caseBuilding.setVersion(1);
             }
-            caseBuildingMain.setId(null);
-            caseBuildingMain.setGmtCreated(null);
-            caseBuildingMain.setGmtModified(null);
-            caseBuildingMainService.saveAndUpdate(caseBuildingMain);
+            caseBuilding.setId(null);
+            caseBuilding.setGmtCreated(null);
+            caseBuilding.setGmtModified(null);
+            caseBuildingService.saveAndUpdateCaseBuilding(caseBuilding);
 
-            flowWriteCaseBuilding(basicBuildingMain, caseBuildingMain);
+            flowWriteCaseBuilding(basicBuilding, caseBuilding);
         }
-        return caseBuildingMain;
+        return caseBuilding;
     }
 
     /**
@@ -526,59 +522,45 @@ public class PublicBasicService {
      * @param caseBuildingMain
      * @throws Exception
      */
-    private void flowWriteCaseBuilding(BasicBuildingMain basicBuildingMain, CaseBuildingMain caseBuildingMain) throws Exception {
-        BasicBuilding basicBuildingQuery = new BasicBuilding();
-        basicBuildingQuery.setBasicBuildingMainId(basicBuildingMain.getId());
-        List<BasicBuilding> basicBuildingList = basicBuildingService.basicBuildingList(basicBuildingQuery);
-        if (!ObjectUtils.isEmpty(basicBuildingList)) {
-            for (BasicBuilding basicBuilding : basicBuildingList) {
-                List<SysAttachmentDto> sysAttachmentDtoList = null;
-                List<BasicBuildingOutfit> outfitList = null;
-                List<BasicBuildingSurface> surfaceList = null;
-                List<BasicBuildingMaintenance> maintenanceList = null;
-                List<BasicBuildingFunction> functionList = null;
-                //-----------------------------||---------------------------
-                BasicBuildingOutfit queryOutfit = new BasicBuildingOutfit();
-                BasicBuildingSurface querySurface = new BasicBuildingSurface();
-                BasicBuildingMaintenance queryMaintenance = new BasicBuildingMaintenance();
-                BasicBuildingFunction queryFunction = new BasicBuildingFunction();
-                SysAttachmentDto queryFile = new SysAttachmentDto();
+    private void flowWriteCaseBuilding(BasicBuilding basicBuilding, CaseBuilding caseBuilding) throws Exception {
+        List<SysAttachmentDto> sysAttachmentDtoList = null;
+        List<BasicBuildingOutfit> outfitList = null;
+        List<BasicBuildingSurface> surfaceList = null;
+        List<BasicBuildingMaintenance> maintenanceList = null;
+        List<BasicBuildingFunction> functionList = null;
+        //-----------------------------||---------------------------
+        BasicBuildingOutfit queryOutfit = new BasicBuildingOutfit();
+        BasicBuildingSurface querySurface = new BasicBuildingSurface();
+        BasicBuildingMaintenance queryMaintenance = new BasicBuildingMaintenance();
+        BasicBuildingFunction queryFunction = new BasicBuildingFunction();
+        SysAttachmentDto queryFile = new SysAttachmentDto();
 
-                queryFunction.setBuildingId(basicBuilding.getId());
-                queryMaintenance.setBuildingId(basicBuilding.getId());
-                querySurface.setBuildingId(basicBuilding.getId());
-                queryOutfit.setBuildingId(basicBuilding.getId());
-                queryFile.setTableId(basicBuilding.getId());
-                queryFile.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+        queryFunction.setBuildingId(basicBuilding.getId());
+        queryMaintenance.setBuildingId(basicBuilding.getId());
+        querySurface.setBuildingId(basicBuilding.getId());
+        queryOutfit.setBuildingId(basicBuilding.getId());
+        queryFile.setTableId(basicBuilding.getId());
+        queryFile.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
 
-                sysAttachmentDtoList = baseAttachmentService.getAttachmentList(queryFile);
-                outfitList = basicBuildingOutfitService.basicBuildingOutfitList(queryOutfit);
-                surfaceList = basicBuildingSurfaceService.basicBuildingSurfaceList(querySurface);
-                maintenanceList = basicBuildingMaintenanceService.basicBuildingMaintenanceList(queryMaintenance);
-                functionList = basicBuildingFunctionService.basicBuildingFunctionList(queryFunction);
+        sysAttachmentDtoList = baseAttachmentService.getAttachmentList(queryFile);
+        outfitList = basicBuildingOutfitService.basicBuildingOutfitList(queryOutfit);
+        surfaceList = basicBuildingSurfaceService.basicBuildingSurfaceList(querySurface);
+        maintenanceList = basicBuildingMaintenanceService.basicBuildingMaintenanceList(queryMaintenance);
+        functionList = basicBuildingFunctionService.basicBuildingFunctionList(queryFunction);
 
-                CaseBuilding caseBuilding = new CaseBuilding();
-                BeanUtils.copyProperties(basicBuilding, caseBuilding);
-                caseBuilding.setCaseBuildingMainId(caseBuildingMain.getId());
-                caseBuilding.setId(null);
-                caseBuilding.setGmtCreated(null);
-                caseBuilding.setGmtModified(null);
-                caseBuildingService.saveAndUpdateCaseBuilding(caseBuilding);
-                if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
-                    for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                        SysAttachmentDto attachmentDto = new SysAttachmentDto();
-                        attachmentDto.setTableId(caseBuilding.getId());
-                        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class));
-                        baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
-                    }
-                }
-
-                this.flowWriteCaseBuildingOutfit(outfitList, caseBuilding);
-                this.flowWriteCaseBuildingMaintenance(maintenanceList, caseBuilding);
-                this.flowWriteCaseBuildingSurface(surfaceList, caseBuilding);
-                this.flowWriteCaseBuildingFunction(functionList, caseBuilding);
+        if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
+            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
+                SysAttachmentDto attachmentDto = new SysAttachmentDto();
+                attachmentDto.setTableId(caseBuilding.getId());
+                attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class));
+                baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
             }
         }
+
+        this.flowWriteCaseBuildingOutfit(outfitList, caseBuilding);
+        this.flowWriteCaseBuildingMaintenance(maintenanceList, caseBuilding);
+        this.flowWriteCaseBuildingSurface(surfaceList, caseBuilding);
+        this.flowWriteCaseBuildingFunction(functionList, caseBuilding);
     }
 
     private void flowWriteCaseBuildingOutfit(List<BasicBuildingOutfit> list, CaseBuilding caseBuilding) throws Exception {
@@ -641,15 +623,15 @@ public class PublicBasicService {
      * 单元 回写
      *
      * @param basicUnit
-     * @param caseBuildingMainId
+     * @param caseBuildingId
      * @return
      * @throws Exception
      */
-    private CaseUnit flowWriteCaseUnit(BasicApply basicApply, BasicUnit basicUnit, Integer caseBuildingMainId) throws Exception {
+    private CaseUnit flowWriteCaseUnit(BasicApply basicApply, BasicUnit basicUnit, Integer caseBuildingId) throws Exception {
         CaseUnit caseUnit = new CaseUnit();
         if (basicUnit != null) {
             BeanUtils.copyProperties(basicUnit, caseUnit);
-            caseUnit.setBuildingMainId(caseBuildingMainId);
+            caseUnit.setBuildingId(caseBuildingId);
             caseUnit.setType(basicApply.getType());
             if (BasicApplyPartInModeEnum.UPGRADE.getKey().equals(basicApply.getUnitPartInMode())) {
                 caseUnit.setVersion(caseUnitService.getVersion(basicApply.getCaseUnitId()) + 1);
@@ -856,9 +838,9 @@ public class PublicBasicService {
     private void flowWriteCaseBaseHouse(BasicApply basicApply, CaseHouse caseHouse, CaseHouseTrading caseHouseTrading) {
         //根据房屋信息逐步找到对应楼盘的信息
         CaseUnit caseUnit = caseUnitService.getCaseUnitById(caseHouse.getUnitId());
-        CaseBuildingMain buildingMain = caseBuildingMainService.getCaseBuildingMainById(caseUnit.getBuildingMainId());
-        CaseEstate caseEstate = caseEstateService.getCaseEstateById(buildingMain.getEstateId());
-        String fullName = String.format("%s%s栋%s单元%s号", caseEstate.getName(), buildingMain.getBuildingNumber(), caseUnit.getUnitNumber(), caseHouse.getHouseNumber());
+        CaseBuilding caseBuilding = caseBuildingService.getCaseBuildingById(caseUnit.getBuildingId());
+        CaseEstate caseEstate = caseEstateService.getCaseEstateById(caseBuilding.getEstateId());
+        String fullName = String.format("%s%s栋%s单元%s号", caseEstate.getName(), caseBuilding.getBuildingNumber(), caseUnit.getUnitNumber(), caseHouse.getHouseNumber());
         if (BasicApplyPartInModeEnum.UPGRADE.getKey().equals(basicApply.getHousePartInMode())) {
             //清除上个版本对应的数据
             CaseBaseHouse where = new CaseBaseHouse();
@@ -1106,7 +1088,7 @@ public class PublicBasicService {
         if (basicApply != null) {
             BasicEstate basicEstate = this.getBasicEstateByAppId(basicApply.getId());
             BasicEstateLandState basicEstateLandState = this.getEstateLandStateByAppId(basicApply.getId());
-            BasicBuildingMain basicBuildingMain = this.getBasicBuildingMainByAppId(basicApply.getId());
+            BasicBuilding basicBuilding = this.getBasicBuildingByAppId(basicApply.getId());
             BasicUnit basicUnit = this.getBasicUnitByAppId(basicApply.getId());
             BasicHouse basicHouse = this.getBasicHouseVoByAppId(basicApply.getId());
             BasicHouseTrading basicTrading = this.getBasicHouseTradingByAppId(basicApply.getId());
@@ -1114,7 +1096,7 @@ public class PublicBasicService {
             //1.如果楼盘升级，则新增一条楼盘数据，并将与该楼盘相关关联的楼栋数据关联id更新为新添加的楼盘数据id
             //2.楼栋与单元处理方式与楼盘一致
             Integer estateId = basicApply.getCaseEstateId();
-            Integer buildingMainId = basicApply.getCaseBuildingMainId();
+            Integer buildingMainId = basicApply.getCaseBuildingId();
             Integer unitId = basicApply.getCaseUnitId();
 
 
@@ -1123,7 +1105,7 @@ public class PublicBasicService {
                 CaseEstate caseEstate = this.flowWriteCaseEstate(basicApply, basicEstate, basicEstateLandState);
                 if (BasicApplyPartInModeEnum.UPGRADE.getKey().equals(basicApply.getEstatePartInMode()) && estateId != null && estateId > 0) {
                     //更新楼栋关联id
-                    caseBuildingMainService.updateEstateId(estateId, caseEstate.getId());
+                    caseBuildingService.updateEstateId(estateId, caseEstate.getId());
                 }
                 estateId = caseEstate.getId();
                 //回写版块到基础数据中
@@ -1140,11 +1122,11 @@ public class PublicBasicService {
             }
 
             //处理楼栋
-            if (StringUtils.isNotBlank(basicApply.getBuildingPartInMode()) && basicBuildingMain != null) {
-                CaseBuildingMain caseBuildingMain = this.flowWriteCaseBuildingMain(basicApply, basicBuildingMain, estateId);
+            if (StringUtils.isNotBlank(basicApply.getBuildingPartInMode()) && basicBuilding != null) {
+                CaseBuilding caseBuildingMain = this.flowWriteCaseBuildingMain(basicApply, basicBuilding, estateId);
                 if (BasicApplyPartInModeEnum.UPGRADE.getKey().equals(basicApply.getBuildingPartInMode()) && buildingMainId != null && buildingMainId > 0) {
                     //更新单元关联id
-                    caseUnitService.updateBuildingMainId(buildingMainId, caseBuildingMain.getId());
+                    caseUnitService.updateBuildingId(buildingMainId, caseBuildingMain.getId());
                 }
                 buildingMainId = caseBuildingMain.getId();
                 this.flowWriteCaseTagging(EstateTaggingTypeEnum.BUILDING, basicApply.getId(), buildingMainId);
@@ -1239,32 +1221,25 @@ public class PublicBasicService {
             }
         }
 
-        BasicBuildingMain basicBuildingMain = null;
+        BasicBuilding basicBuilding = null;
         if (StringUtils.isNotBlank(basicApply.getBuildingPartInMode())) {
             //楼栋主数据
-            jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_BUILDING_MAIN.getVar());
+            jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_BUILDING.getVar());
             if (StringUtils.isNotBlank(jsonContent)) {
-                basicBuildingMain = JSONObject.parseObject(jsonContent, BasicBuildingMain.class);
-                if (basicBuildingMain != null) {
+                basicBuilding = JSONObject.parseObject(jsonContent, BasicBuilding.class);
+                if (basicBuilding != null) {
                     modeEnum = BasicApplyPartInModeEnum.getEnumByKey(basicApply.getBuildingPartInMode());
                     switch (modeEnum) {
                         case ADD:
                         case REFERENCE:
                             //案例库中验证
-                            if (basicApply.getCaseEstateId() != null && caseBuildingMainService.hasBuildingMain(basicBuildingMain.getBuildingNumber(), basicApply.getCaseEstateId())) {
+                            if (basicApply.getCaseEstateId() != null && caseBuildingService.hasBuilding(basicBuilding.getBuildingNumber(), basicApply.getCaseEstateId())) {
                                 throw new BusinessException("案例中已存在相同编号的楼栋");
                             }
-                            basicApply.setBuildingNumber(basicBuildingMain.getBuildingNumber());
+                            basicApply.setBuildingNumber(basicBuilding.getBuildingNumber());
                             break;
                     }
-                    basicBuildingMain.setApplyId(basicApply.getId());
-                    basicBuildingMainService.saveAndUpdateBasicBuildingMain(basicBuildingMain);
-                }
-
-                //楼栋部分数据
-                jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_BUILDING.getVar());
-                BasicBuilding basicBuilding = JSONObject.parseObject(jsonContent, BasicBuilding.class);
-                if (basicBuilding != null) {
+                    basicBuilding.setApplyId(basicApply.getId());
                     basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding);
                 }
             }
@@ -1282,7 +1257,7 @@ public class PublicBasicService {
                         case ADD:
                         case REFERENCE:
                             //案例库中验证
-                            if (basicApply.getCaseBuildingMainId() != null && caseUnitService.hasUnit(basicUnit.getUnitNumber(), basicApply.getCaseBuildingMainId())) {
+                            if (basicApply.getCaseBuildingId() != null && caseUnitService.hasUnit(basicUnit.getUnitNumber(), basicApply.getCaseBuildingId())) {
                                 throw new BusinessException("案例中已存在相同编号的单元");
                             }
                             basicApply.setUnitNumber(basicUnit.getUnitNumber());
@@ -1349,9 +1324,9 @@ public class PublicBasicService {
                     }
                 }
                 if (Objects.equal(tagging.getType(), EstateTaggingTypeEnum.BUILDING.getKey())) {
-                    if (basicBuildingMain != null) {
-                        if (org.apache.commons.lang3.StringUtils.isNotBlank(basicBuildingMain.getBuildingNumber())) {
-                            tagging.setName(basicBuildingMain.getBuildingNumber());
+                    if (basicBuilding != null) {
+                        if (org.apache.commons.lang3.StringUtils.isNotBlank(basicBuilding.getBuildingNumber())) {
+                            tagging.setName(basicBuilding.getBuildingNumber());
                         }
                     }
                 }
@@ -1430,10 +1405,10 @@ public class PublicBasicService {
         }
     }
 
-    public BasicBuildingMain getBasicBuildingMainByAppId(Integer appId) throws Exception {
-        BasicBuildingMain basicBuildingMain = new BasicBuildingMain();
-        basicBuildingMain.setApplyId(appId);
-        List<BasicBuildingMain> basicBuildingMains = basicBuildingMainService.basicBuildingMainList(basicBuildingMain);
+    public BasicBuilding getBasicBuildingByAppId(Integer appId) throws Exception {
+        BasicBuilding basicBuilding = new BasicBuilding();
+        basicBuilding.setApplyId(appId);
+        List<BasicBuilding> basicBuildingMains = basicBuildingService.basicBuildingList(basicBuilding);
         if (!ObjectUtils.isEmpty(basicBuildingMains)) {
             return basicBuildingMains.get(0);
         } else {
@@ -1473,12 +1448,6 @@ public class PublicBasicService {
         } else {
             return null;
         }
-    }
-
-    public List<BasicBuilding> getMainById(BasicBuildingMain buildingMain) throws Exception {
-        BasicBuilding basicBuilding = new BasicBuilding();
-        basicBuilding.setBasicBuildingMainId(buildingMain.getId());
-        return basicBuildingService.basicBuildingList(basicBuilding);
     }
 
 

@@ -211,10 +211,6 @@ basicCommon.isComplete = function (applyForm, isDraft) {
     if (applyForm.buildingPartInMode) {
         basicCommon.showBuildingTab();
         options.msg = '请检查楼栋信息';
-        if (!buildingCommon.buildingMainForm.valid(options.msg)) {
-            return false;
-        }
-        options.msg = '请检查楼栋信息';
         if (!buildingCommon.buildingForm.valid(options.msg)) {
             return false;
         }
@@ -264,7 +260,7 @@ basicCommon.isRelation = function (applyForm) {
                 return false;
             }
         } else {//如果是新增，楼栋也必须为新增或者选择了案例中的数据
-            if (!applyForm.buildingPartInMode && !applyForm.caseBuildingMainId) {
+            if (!applyForm.buildingPartInMode && !applyForm.caseBuildingId) {
                 toastr.info('单元信息未关联到所属楼栋中');
                 return false;
             }
@@ -272,8 +268,8 @@ basicCommon.isRelation = function (applyForm) {
     }
 
     if (applyForm.buildingPartInMode) {
-        if (applyForm.buildingPartInMode == 'upgrade') {//如果是升级，则必须有caseBuildingMainId
-            if (!applyForm.caseBuildingMainId) {
+        if (applyForm.buildingPartInMode == 'upgrade') {//如果是升级，则必须有caseBuildingId
+            if (!applyForm.caseBuildingId) {
                 toastr.info('未找到楼栋升级的源案例信息');
                 return false;
             }
@@ -307,7 +303,6 @@ basicCommon.getFormData = function () {
         item.basicEstateLandState = formSerializeArray(estateCommon.estateLandStateForm);
     }
     if (basicApply.buildingPartInMode) {
-        item.basicBuildingMain = formSerializeArray(buildingCommon.buildingMainForm);
         item.basicBuilding = formSerializeArray(buildingCommon.buildingForm);
     }
     if (basicApply.unitPartInMode) {

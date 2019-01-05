@@ -23,7 +23,7 @@
 
     buildingCommon.detail = function (id) {
         $.ajax({
-            url: getContextPath() + '/basicBuilding/getBasicBuildingMainByApplyId',
+            url: getContextPath() + '/basicBuilding/getBasicBuildingByApplyId',
             type: 'get',
             data: {applyId: id},
             success: function (result) {
@@ -180,13 +180,13 @@
             url: getContextPath() + '/basicBuilding/appWriteBuilding',
             data: {
                 applyId: basicCommon.getApplyId(),
-                caseMainBuildingId: id
+                caseBuildingId: id
             },
             type: 'post',
             success: function (result) {
                 if (result.ret) {
-                    basicCommon.update({caseBuildingMainId: id, id: basicCommon.getApplyId()}, function () {
-                        basicCommon.basicApplyForm.find("input[name='caseBuildingMainId']").val(id);
+                    basicCommon.update({caseBuildingId: id, id: basicCommon.getApplyId()}, function () {
+                        basicCommon.basicApplyForm.find("input[name='caseBuildingId']").val(id);
                         buildingCommon.detail(basicCommon.getApplyId());
                     });
                 } else {

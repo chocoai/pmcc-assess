@@ -388,7 +388,7 @@
             });
             $("#" + baseFun.config.father.caseUnit.table()).bootstrapTable('destroy');
             TableInit(baseFun.config.father.caseUnit.table(), "${pageContext.request.contextPath}/caseUnit/getCaseUnitList", cols, {
-                caseBuildingMainId: buildingId
+                caseBuildingId: buildingId
             }, {
                 showColumns: false,
                 showRefresh: false,

@@ -37,32 +37,6 @@ public class CaseEstateService {
     @Autowired
     private ErpAreaService erpAreaService;
     @Autowired
-    private CaseEstateParkingService caseEstateParkingService;
-    @Autowired
-    private CaseEstateSupplyService caseEstateSupplyService;
-    @Autowired
-    private CaseEstateNetworkService caseEstateNetworkService;
-    @Autowired
-    private CaseMatchingTrafficService caseMatchingTrafficService;
-    @Autowired
-    private CaseMatchingMedicalService caseMatchingMedicalService;
-    @Autowired
-    private CaseMatchingLeisurePlaceService caseMatchingLeisurePlaceService;
-    @Autowired
-    private CaseMatchingMaterialService caseMatchingMaterialService;
-    @Autowired
-    private CaseMatchingFinanceService caseMatchingFinanceService;
-    @Autowired
-    private CaseMatchingEnvironmentService caseMatchingEnvironmentService;
-    @Autowired
-    private CaseMatchingEducationService caseMatchingEducationService;
-    @Autowired
-    private CaseEstateLandStateService caseEstateLandStateService;
-    @Autowired
-    private CaseBuildingMainService caseBuildingMainService;
-    @Autowired
-    private DataDeveloperService dataDeveloperService;
-    @Autowired
     private DataBlockService dataBlockService;
     @Autowired
     private BaseDataDicService baseDataDicService;

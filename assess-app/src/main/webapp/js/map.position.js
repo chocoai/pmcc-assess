@@ -1,7 +1,9 @@
 /**
  * Created by kings on 2018-11-29.
  */
-
+document.write('<script type="text/javascript" src="//webapi.amap.com/maps?v=1.4.6&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.ToolBar"></script>');
+document.write('<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>');
+document.write('<div id="containerMap" style="display: none;" tabindex="0"></div>');
 var mapPosition = {};
 
 //获取当前所在城市
@@ -60,9 +62,7 @@ mapPosition.writeCookie = function (name, value, hours) {
 
 
 mapPosition.complete = function (callback) {
-    document.write('<script type="text/javascript" src="//webapi.amap.com/maps?v=1.4.6&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.ToolBar"></script>');
-    document.write('<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>');
-    document.write('<div id="containerMap" style="display: none;" tabindex="0"></div>');
+
     //高德地图接入定位
     AMapUI.loadUI(['misc/PositionPicker'], function (PositionPicker) {
         var map, geolocation;

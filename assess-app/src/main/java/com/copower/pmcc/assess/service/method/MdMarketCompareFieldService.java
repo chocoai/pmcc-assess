@@ -55,8 +55,6 @@ public class MdMarketCompareFieldService extends BaseService {
     @Autowired
     private BasicEstateService basicEstateService;
     @Autowired
-    private BasicBuildingMainService basicBuildingMainService;
-    @Autowired
     private BasicBuildingService basicBuildingService;
     @Autowired
     private BasicHouseService basicHouseService;
@@ -117,9 +115,7 @@ public class MdMarketCompareFieldService extends BaseService {
             BasicEstate examineEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
             examineEstate = examineEstate == null ? new BasicEstate() : examineEstate;
             //取得楼栋信息
-            BasicBuildingMain examineBuildingMain = basicBuildingMainService.getBasicBuildingMainByApplyId(basicApply.getId());
-            List<BasicBuilding> buildings = basicBuildingService.getBasicBuildingListByMainId(examineBuildingMain.getId());
-            BasicBuilding examineBuilding = buildings.get(0);
+            BasicBuilding examineBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
             examineBuilding = examineBuilding == null ? new BasicBuilding() : examineBuilding;
             //取得单元信息
             BasicUnit examineUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
@@ -481,7 +477,7 @@ public class MdMarketCompareFieldService extends BaseService {
                         list.add(getMarketCompareItemDto(AssessMarketCompareConstant.BUILDING_AREA, String.valueOf(examineEstate.getFloorArea() == null ? "" : examineEstate.getFloorArea())));
                         break;
                     case FLOOR_COUNT://层数
-                        list.add(getMarketCompareItemDto(AssessMarketCompareConstant.FLOOR_COUNT, String.valueOf(examineBuildingMain.getFloorCount() == null ? "" : examineBuildingMain.getFloorCount())));
+                        list.add(getMarketCompareItemDto(AssessMarketCompareConstant.FLOOR_COUNT, String.valueOf(examineBuilding.getFloorCount() == null ? "" : examineBuilding.getFloorCount())));
                         break;
                     case FLOOR_HEIGHT://层高
                         list.add(getMarketCompareItemDto(AssessMarketCompareConstant.FLOOR_HEIGHT, String.valueOf(examineBuilding.getFloorHeight() == null ? "" : examineBuilding.getFloorHeight())));

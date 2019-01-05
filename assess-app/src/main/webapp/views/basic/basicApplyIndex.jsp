@@ -96,8 +96,8 @@
                                     楼栋编号
                                 </label>
                                 <div class="col-sm-4">
-                                    <input type="hidden" name="caseBuildingMainId"
-                                           value="${basicApply.caseBuildingMainId}">
+                                    <input type="hidden" name="caseBuildingId"
+                                           value="${basicApply.caseBuildingId}">
                                     <input type="text" class="form-control" name="buildingNumber" placeholder="楼栋编号"
                                            value="${basicApply.buildingNumber}">
                                 </div>
@@ -268,7 +268,7 @@
         var group = $(that).closest('.form-group');
         var defaults = AssessDefault.autocomplete();
         defaults.source = function (request, response) {
-            group.find('[name=caseBuildingMainId]').val('');
+            group.find('[name=caseBuildingId]').val('');
             group.find('.btn-reference,.btn-upgrade').hide();
             basicApplyIndex.clearUnit();
             basicApplyIndex.clearHouse();
@@ -303,7 +303,7 @@
             });
         }
         defaults.select = function (event, ele) {
-            group.find('[name=caseBuildingMainId]').val(ele.item.id);
+            group.find('[name=caseBuildingId]').val(ele.item.id);
             group.find('.btn-reference,.btn-upgrade').show();
 
             //处理auto相同值不触发问题
@@ -325,7 +325,7 @@
             group.find('[name=caseUnitId]').val('');
             group.find('.btn-reference,.btn-upgrade').hide();
             basicApplyIndex.clearHouse();
-            var buildingId = basicCommon.basicApplyForm.find("input[name='caseBuildingMainId']").val();
+            var buildingId = basicCommon.basicApplyForm.find("input[name='caseBuildingId']").val();
             if (!buildingId) return;
             var itemVal = $(that).val();
             $.ajax({
@@ -336,7 +336,7 @@
                     offset: 1,
                     limit: 10,
                     unitNumber: itemVal,
-                    caseBuildingMainId: buildingId
+                    caseBuildingId: buildingId
                 },
                 success: function (result) {
                     if (result.ret) {
@@ -427,7 +427,7 @@
     //清空楼栋查询数据
     basicApplyIndex.clearBuilding = function () {
         basicCommon.basicApplyForm.find('[name=buildingPartInMode]').val('');
-        basicCommon.basicApplyForm.find('[name=caseBuildingMainId]').val('');
+        basicCommon.basicApplyForm.find('[name=caseBuildingId]').val('');
         var buildingNumber = basicCommon.basicApplyForm.find('[name=buildingNumber]');
         buildingNumber.val('');
         buildingNumber.closest('.form-group').find('.btn-reference,.btn-upgrade').hide();

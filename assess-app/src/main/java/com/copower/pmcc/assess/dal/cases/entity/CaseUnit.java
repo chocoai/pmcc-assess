@@ -5,11 +5,9 @@ import java.util.Date;
 public class CaseUnit {
     private Integer id;
 
-    private Integer buildingMainId;
+    private Integer buildingId;
 
     private Integer type;
-
-    private Integer buildingId;
 
     private String unitNumber;
 
@@ -31,12 +29,12 @@ public class CaseUnit {
         this.id = id;
     }
 
-    public Integer getBuildingMainId() {
-        return buildingMainId;
+    public Integer getBuildingId() {
+        return buildingId;
     }
 
-    public void setBuildingMainId(Integer buildingMainId) {
-        this.buildingMainId = buildingMainId;
+    public void setBuildingId(Integer buildingId) {
+        this.buildingId = buildingId;
     }
 
     public Integer getType() {
@@ -45,14 +43,6 @@ public class CaseUnit {
 
     public void setType(Integer type) {
         this.type = type;
-    }
-
-    public Integer getBuildingId() {
-        return buildingId;
-    }
-
-    public void setBuildingId(Integer buildingId) {
-        this.buildingId = buildingId;
     }
 
     public String getUnitNumber() {

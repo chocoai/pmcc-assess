@@ -5,6 +5,14 @@ import java.util.Date;
 public class BasicApply {
     private Integer id;
 
+    private Integer caseEstateId;
+
+    private Integer caseBuildingId;
+
+    private Integer caseUnitId;
+
+    private Integer caseHouseId;
+
     private Integer planDetailsId;
 
     private String processInsId;
@@ -26,14 +34,6 @@ public class BasicApply {
     private String status;
 
     private Boolean draftFlag;
-
-    private Integer caseEstateId;
-
-    private Integer caseBuildingMainId;
-
-    private Integer caseUnitId;
-
-    private Integer caseHouseId;
 
     private String estatePartInMode;
 
@@ -57,6 +57,38 @@ public class BasicApply {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getCaseEstateId() {
+        return caseEstateId;
+    }
+
+    public void setCaseEstateId(Integer caseEstateId) {
+        this.caseEstateId = caseEstateId;
+    }
+
+    public Integer getCaseBuildingId() {
+        return caseBuildingId;
+    }
+
+    public void setCaseBuildingId(Integer caseBuildingId) {
+        this.caseBuildingId = caseBuildingId;
+    }
+
+    public Integer getCaseUnitId() {
+        return caseUnitId;
+    }
+
+    public void setCaseUnitId(Integer caseUnitId) {
+        this.caseUnitId = caseUnitId;
+    }
+
+    public Integer getCaseHouseId() {
+        return caseHouseId;
+    }
+
+    public void setCaseHouseId(Integer caseHouseId) {
+        this.caseHouseId = caseHouseId;
     }
 
     public Integer getPlanDetailsId() {
@@ -145,38 +177,6 @@ public class BasicApply {
 
     public void setDraftFlag(Boolean draftFlag) {
         this.draftFlag = draftFlag;
-    }
-
-    public Integer getCaseEstateId() {
-        return caseEstateId;
-    }
-
-    public void setCaseEstateId(Integer caseEstateId) {
-        this.caseEstateId = caseEstateId;
-    }
-
-    public Integer getCaseBuildingMainId() {
-        return caseBuildingMainId;
-    }
-
-    public void setCaseBuildingMainId(Integer caseBuildingMainId) {
-        this.caseBuildingMainId = caseBuildingMainId;
-    }
-
-    public Integer getCaseUnitId() {
-        return caseUnitId;
-    }
-
-    public void setCaseUnitId(Integer caseUnitId) {
-        this.caseUnitId = caseUnitId;
-    }
-
-    public Integer getCaseHouseId() {
-        return caseHouseId;
-    }
-
-    public void setCaseHouseId(Integer caseHouseId) {
-        this.caseHouseId = caseHouseId;
     }
 
     public String getEstatePartInMode() {

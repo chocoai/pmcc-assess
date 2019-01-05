@@ -60,9 +60,9 @@ public class CaseHouseController {
     @Autowired
     private CaseHouseEquipmentService caseHouseEquipmentService;
     @Autowired
-    private CaseBuildingMainService caseBuildingMainService;
-    @Autowired
     private CaseEstateService caseEstateService;
+    @Autowired
+    private CaseBuildingService caseBuildingService;
     @Autowired
     private CaseUnitService caseUnitService;
     @Autowired
@@ -102,10 +102,10 @@ public class CaseHouseController {
         modelAndView.addObject("hasHouseDamagedDegreeData", caseHouseDamagedDegreeService.hasHouseDamagedDegreeData(id));
         setHouseElementRender(caseHouseTradingVo,modelAndView);
         CaseUnit caseUnit = caseUnitService.getCaseUnitById(caseHouse.getUnitId());
-        CaseBuildingMain caseBuildingMain = caseBuildingMainService.getCaseBuildingMainById(caseUnit.getBuildingMainId());
-        CaseEstate caseEstate = caseEstateService.getCaseEstateById(caseBuildingMain.getEstateId());
+        CaseBuilding caseBuilding = caseBuildingService.getCaseBuildingById(caseUnit.getBuildingId());
+        CaseEstate caseEstate = caseEstateService.getCaseEstateById(caseBuilding.getEstateId());
         modelAndView.addObject("caseUnit", caseUnit);
-        modelAndView.addObject("caseBuildingMain", caseBuildingMain);
+        modelAndView.addObject("caseBuilding", caseBuilding);
         modelAndView.addObject("caseEstate", caseEstate);
         modelAndView.addObject("caseEstateTagging",   caseEstateTaggingService.getCaseEstateTagging(id, EstateTaggingTypeEnum.HOUSE.getKey()));
         return modelAndView;

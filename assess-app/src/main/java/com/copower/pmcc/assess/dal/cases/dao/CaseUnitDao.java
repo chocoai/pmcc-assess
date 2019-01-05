@@ -70,12 +70,12 @@ public class CaseUnitDao {
         return caseUnitMapper.updateByPrimaryKeySelective(caseUnit) > 0;
     }
 
-    public int updateBuildingMainId(Integer oldBuildingMainId, Integer newBuildingMainId) {
+    public int updateBuildingMainId(Integer oldBuildingId, Integer newBuildingId) {
         CaseUnitExample example = new CaseUnitExample();
-        example.createCriteria().andBuildingMainIdEqualTo(oldBuildingMainId);
+        example.createCriteria().andBuildingIdEqualTo(oldBuildingId);
 
         CaseUnit caseUnit = new CaseUnit();
-        caseUnit.setBuildingMainId(newBuildingMainId);
+        caseUnit.setBuildingId(newBuildingId);
         return caseUnitMapper.updateByExampleSelective(caseUnit, example);
     }
 
@@ -99,28 +99,28 @@ public class CaseUnitDao {
         return caseUnitMapper.deleteByPrimaryKey(id) > 0;
     }
 
-    public List<CaseUnit> autoCompleteCaseUnit(String unitNumber, Integer caseBuildingMainId) {
+    public List<CaseUnit> autoCompleteCaseUnit(String unitNumber, Integer caseBuildingId) {
         CaseUnitExample example = new CaseUnitExample();
         CaseUnitExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
         if (StringUtils.isNotEmpty(unitNumber)) {
             criteria.andUnitNumberLike(String.format("%s%s%s", "%", unitNumber, "%"));
         }
-        if (caseBuildingMainId != null) {
-            criteria.andBuildingMainIdEqualTo(caseBuildingMainId);
+        if (caseBuildingId != null) {
+            criteria.andBuildingIdEqualTo(caseBuildingId);
         }
         return caseUnitMapper.selectByExample(example);
     }
 
 
-    public int getUnitCount(String unitNumber, Integer caseBuildingMainId) {
+    public int getUnitCount(String unitNumber, Integer caseBuildingId) {
         CaseUnitExample example = new CaseUnitExample();
         CaseUnitExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotEmpty(unitNumber)) {
             criteria.andUnitNumberEqualTo(unitNumber);
         }
-        if (caseBuildingMainId != null) {
-            criteria.andBuildingMainIdEqualTo(caseBuildingMainId);
+        if (caseBuildingId != null) {
+            criteria.andBuildingIdEqualTo(caseBuildingId);
         }
         return caseUnitMapper.countByExample(example);
     }

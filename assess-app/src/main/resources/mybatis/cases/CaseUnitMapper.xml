@@ -3,9 +3,8 @@
 <mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseUnitMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseUnit" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="building_main_id" property="buildingMainId" jdbcType="INTEGER" />
-    <result column="type" property="type" jdbcType="INTEGER" />
     <result column="building_id" property="buildingId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
     <result column="unit_number" property="unitNumber" jdbcType="VARCHAR" />
     <result column="elevator_household_ratio" property="elevatorHouseholdRatio" jdbcType="VARCHAR" />
     <result column="version" property="version" jdbcType="INTEGER" />
@@ -72,8 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, building_main_id, type, building_id, unit_number, elevator_household_ratio, version, 
-    creator, gmt_created, gmt_modified
+    id, building_id, type, unit_number, elevator_household_ratio, version, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseUnitExample" >
     select
@@ -109,14 +108,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_unit (building_main_id, type, building_id, 
-      unit_number, elevator_household_ratio, version, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{buildingMainId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{buildingId,jdbcType=INTEGER}, 
-      #{unitNumber,jdbcType=VARCHAR}, #{elevatorHouseholdRatio,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_case_unit (building_id, type, unit_number, 
+      elevator_household_ratio, version, creator, 
+      gmt_created, gmt_modified)
+    values (#{buildingId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{unitNumber,jdbcType=VARCHAR}, 
+      #{elevatorHouseholdRatio,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseUnit" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -124,14 +121,11 @@
     </selectKey>
     insert into tb_case_unit
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="buildingMainId != null" >
-        building_main_id,
+      <if test="buildingId != null" >
+        building_id,
       </if>
       <if test="type != null" >
         type,
-      </if>
-      <if test="buildingId != null" >
-        building_id,
       </if>
       <if test="unitNumber != null" >
         unit_number,
@@ -153,14 +147,11 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="buildingMainId != null" >
-        #{buildingMainId,jdbcType=INTEGER},
+      <if test="buildingId != null" >
+        #{buildingId,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
         #{type,jdbcType=INTEGER},
-      </if>
-      <if test="buildingId != null" >
-        #{buildingId,jdbcType=INTEGER},
       </if>
       <if test="unitNumber != null" >
         #{unitNumber,jdbcType=VARCHAR},
@@ -194,14 +185,11 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.buildingMainId != null" >
-        building_main_id = #{record.buildingMainId,jdbcType=INTEGER},
+      <if test="record.buildingId != null" >
+        building_id = #{record.buildingId,jdbcType=INTEGER},
       </if>
       <if test="record.type != null" >
         type = #{record.type,jdbcType=INTEGER},
-      </if>
-      <if test="record.buildingId != null" >
-        building_id = #{record.buildingId,jdbcType=INTEGER},
       </if>
       <if test="record.unitNumber != null" >
         unit_number = #{record.unitNumber,jdbcType=VARCHAR},
@@ -229,9 +217,8 @@
   <update id="updateByExample" parameterType="map" >
     update tb_case_unit
     set id = #{record.id,jdbcType=INTEGER},
-      building_main_id = #{record.buildingMainId,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=INTEGER},
       building_id = #{record.buildingId,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
       unit_number = #{record.unitNumber,jdbcType=VARCHAR},
       elevator_household_ratio = #{record.elevatorHouseholdRatio,jdbcType=VARCHAR},
       version = #{record.version,jdbcType=INTEGER},
@@ -245,14 +232,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseUnit" >
     update tb_case_unit
     <set >
-      <if test="buildingMainId != null" >
-        building_main_id = #{buildingMainId,jdbcType=INTEGER},
+      <if test="buildingId != null" >
+        building_id = #{buildingId,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=INTEGER},
-      </if>
-      <if test="buildingId != null" >
-        building_id = #{buildingId,jdbcType=INTEGER},
       </if>
       <if test="unitNumber != null" >
         unit_number = #{unitNumber,jdbcType=VARCHAR},
@@ -277,9 +261,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseUnit" >
     update tb_case_unit
-    set building_main_id = #{buildingMainId,jdbcType=INTEGER},
+    set building_id = #{buildingId,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
-      building_id = #{buildingId,jdbcType=INTEGER},
       unit_number = #{unitNumber,jdbcType=VARCHAR},
       elevator_household_ratio = #{elevatorHouseholdRatio,jdbcType=VARCHAR},
       version = #{version,jdbcType=INTEGER},

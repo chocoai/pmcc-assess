@@ -14,7 +14,7 @@
         return buildingCommon.buildingForm.find('[name=id]').val();
     }
     buildingCommon.getBuildingNumber = function () {
-        return buildingCommon.buildingMainForm.find('[name=buildingNumber]').val();
+        return buildingCommon.buildingForm.find('[name=buildingNumber]').val();
     }
 
     //添加楼栋
@@ -25,17 +25,13 @@
             return false;
         }
         $.ajax({
-            url: getContextPath() + '/basicBuilding/addBuildingMainAndBuilding',
+            url: getContextPath() + '/basicBuilding/addBuilding',
             data: {
                 buildingNumber: buildingNumber
             },
             success: function (result) {
                 if (result.ret) {
-                    buildingCommon.buildingMainForm.initForm(result.data);
-                    var buildings = buildingCommon.getBuildingList(result.data.id);
-                    if (buildings && buildings.length > 0) {
-                        buildingCommon.showBuildingView(buildings[0].id);
-                    }
+                    buildingCommon.showBuildingView(result.data);
                     if (callback) {
                         callback($(_this).attr('data-mode'));
                     }
@@ -46,25 +42,21 @@
 
     //升级楼栋
     buildingCommon.upgrade = function (_this, callback) {
-        var caseBuildingMainId = $(_this).closest('form').find("input[name='caseBuildingMainId']").val();
+        var caseBuildingId = $(_this).closest('form').find("input[name='caseBuildingId']").val();
         var buildingPartInMode = $(_this).attr('data-mode');
-        if (!caseBuildingMainId) {
+        if (!caseBuildingId) {
             toastr.info('请选择系统中已存在的楼栋信息！');
             return false;
         }
         $.ajax({
             url: getContextPath() + '/basicBuilding/appWriteBuilding',
             data: {
-                caseMainBuildingId: caseBuildingMainId,
+                caseBuildingId: caseBuildingId,
                 buildingPartInMode: buildingPartInMode
             },
             success: function (result) {
                 if (result.ret) {
-                    buildingCommon.buildingMainForm.initForm(result.data);
-                    var buildings = buildingCommon.getBuildingList(result.data.id);
-                    if (buildings && buildings.length > 0) {
-                        buildingCommon.showBuildingView(buildings[0].id);
-                    }
+                    buildingCommon.showBuildingView(result.data);
                     if (callback) {
                         callback($(_this).attr('data-mode'));
                     }
@@ -76,16 +68,12 @@
     //楼栋初始化by applyId
     buildingCommon.init = function (applyId, callback) {
         $.ajax({
-            url: getContextPath() + '/basicBuilding/getBasicBuildingMainByApplyId',
+            url: getContextPath() + '/basicBuilding/getBasicBuildingByApplyId',
             type: 'get',
             data: {applyId: applyId},
             success: function (result) {
                 if (result.ret) {
-                    buildingCommon.buildingMainForm.initForm(result.data);
-                    var buildings = buildingCommon.getBuildingList(result.data.id);
-                    if (buildings && buildings.length > 0) {
-                        buildingCommon.showBuildingView(buildings[0].id);
-                    }
+                    buildingCommon.showBuildingView(result.data);
                     if (callback) {
                         callback();
                     }
@@ -97,82 +85,52 @@
     //楼栋明细
     buildingCommon.detail = function (applyId) {
         $.ajax({
-            url: getContextPath() + '/basicBuilding/getBasicBuildingMainByApplyId',
+            url: getContextPath() + '/basicBuilding/getBasicBuildingByApplyId',
             type: 'get',
             data: {applyId: applyId},
             success: function (result) {
                 if (result.ret) {
-                    buildingCommon.buildingMainForm.initForm(result.data);
-                    var buildings = buildingCommon.getBuildingList(result.data.id);
-                    if (buildings && buildings.length > 0) {
-                        buildingCommon.showBuildingDetail(buildings[0].id);
-                    }
+                    buildingCommon.showBuildingView(result.data);
                 }
             }
         })
     }
 
-    //获取楼栋下所有部分
-    buildingCommon.getBuildingList = function (mainId) {
-        var buildings = undefined;
-        $.ajax({
-            url: getContextPath() + '/basicBuilding/getBasicBuildingListByMainId',
-            type: 'get',
-            async: false,
-            data: {basicBuildingMainId: mainId},
-            success: function (result) {
-                if (result.ret) {
-                    buildings = result.data;
-                }
-            }
-        })
-        return buildings;
-    }
 
     //显示楼栋对应部分信息
-    buildingCommon.showBuildingView = function (id) {
-        $.ajax({
-            url: getContextPath() + '/basicBuilding/getBasicBuildingById',
-            type: 'get',
-            async: false,
-            data: {id: id},
-            success: function (result) {
-                if (result.ret) {
-                    buildingCommon.buildingForm.initForm(result.data, function () {
-                        //1.初始化下拉框；2.初始化上传控件；3.显示已上传的附件信息；4.加载从表数据
-                        buildingCommon.buildingForm.find("select.buildingStructureType").off('change').on('change', function () {
-                            AssessCommon.loadDataDicByPid($(this).val(), result.data.buildingStructureCategory, function (html, data) {
-                                buildingCommon.buildingForm.find("select.buildingStructureCategory").empty().html(html).trigger('change');
-                            });
-                            result.data.buildingStructureCategory = null;
-                        });
-                        buildingCommon.buildingForm.find('select.propertyType').off('change').on('change', function () {
-                            AssessCommon.loadDataDicByPid($(this).val(), result.data.propertyCategory, function (html, data) {
-                                buildingCommon.buildingForm.find('select.propertyCategory').empty().html(html).trigger('change');
-                            });
-                            result.data.propertyCategory = null;
-                        });
-                        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_type, result.data.propertyType, function (html, data) {
-                            buildingCommon.buildingForm.find('select.propertyType').empty().html(html).trigger('change');
-                        });
-                        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_structure, result.data.buildingStructureType, function (html, data) {
-                            buildingCommon.buildingForm.find('select.buildingStructureType').empty().html(html).trigger('change');
-                        });
+    buildingCommon.showBuildingView = function (data) {
+        buildingCommon.buildingForm.initForm(data, function () {
+            //1.初始化下拉框；2.初始化上传控件；3.显示已上传的附件信息；4.加载从表数据
+            buildingCommon.buildingForm.find("select.buildingStructureType").off('change').on('change', function () {
+                AssessCommon.loadDataDicByPid($(this).val(), data.buildingStructureCategory, function (html, data) {
+                    buildingCommon.buildingForm.find("select.buildingStructureCategory").empty().html(html).trigger('change');
+                });
+                buildingStructureCategory = null;
+            });
+            buildingCommon.buildingForm.find('select.propertyType').off('change').on('change', function () {
+                AssessCommon.loadDataDicByPid($(this).val(), propertyCategory, function (html, data) {
+                    buildingCommon.buildingForm.find('select.propertyCategory').empty().html(html).trigger('change');
+                });
+                propertyCategory = null;
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_type, data.propertyType, function (html, data) {
+                buildingCommon.buildingForm.find('select.propertyType').empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_structure, data.buildingStructureType, function (html, data) {
+                buildingCommon.buildingForm.find('select.buildingStructureType').empty().html(html).trigger('change');
+            });
 
-                        //初始化上传控件
-                        $.each(buildingCommon.buildingFileControlIdArray, function (i, item) {
-                            buildingCommon.fileUpload(item);
-                        })
+            //初始化上传控件
+            $.each(buildingCommon.buildingFileControlIdArray, function (i, item) {
+                buildingCommon.fileUpload(item);
+            })
 
-                        //附件显示
-                        $.each(buildingCommon.buildingFileControlIdArray, function (i, item) {
-                            buildingCommon.fileShow(item);
-                        })
-                        buildingModelView.prototype.viewInit(); //加载从表数据
-                    });
-                }
-            }
-        })
+            //附件显示
+            $.each(buildingCommon.buildingFileControlIdArray, function (i, item) {
+                buildingCommon.fileShow(item);
+            })
+            buildingModelView.prototype.viewInit(); //加载从表数据
+        });
     }
 
     //显示楼栋对应部分信息

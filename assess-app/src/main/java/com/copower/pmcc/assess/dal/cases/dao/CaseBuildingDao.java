@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.dal.cases.dao;
 
+import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
+import com.copower.pmcc.assess.dal.cases.custom.mapper.CustomCaseMapper;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseBuildingMapper;
@@ -21,7 +23,8 @@ import java.util.List;
 @Repository
 public class CaseBuildingDao {
 
-
+    @Autowired
+    private CustomCaseMapper customCaseMapper;
     @Autowired
     private CaseBuildingMapper caseBuildingMapper;
 
@@ -56,6 +59,15 @@ public class CaseBuildingDao {
         return caseBuilding.getId();
     }
 
+    public int updateEstateId(Integer oldEstateId, Integer newEstateId) {
+        CaseBuildingExample example = new CaseBuildingExample();
+        example.createCriteria().andEstateIdEqualTo(oldEstateId);
+
+        CaseBuilding caseBuilding = new CaseBuilding();
+        caseBuilding.setEstateId(newEstateId);
+        return caseBuildingMapper.updateByExampleSelective(caseBuilding, example);
+    }
+
     /**
      * 编辑
      * @param caseBuilding
@@ -74,4 +86,26 @@ public class CaseBuildingDao {
         return caseBuildingMapper.deleteByPrimaryKey(id) > 0;
     }
 
+
+    /**
+     * 获取最新版本楼栋主信息
+     *
+     * @param estateId
+     * @return
+     */
+    public List<CustomCaseEntity> getLatestVersionBuildingList(String buildingNumber, Integer estateId) {
+        return customCaseMapper.getCaseBuildingList(buildingNumber, estateId);
+    }
+
+    public int getBuildingCount(String buildingNumber, Integer estateId) {
+        CaseBuildingExample example = new CaseBuildingExample();
+        CaseBuildingExample.Criteria criteria = example.createCriteria();
+        if (!org.springframework.util.StringUtils.isEmpty(buildingNumber)) {
+            criteria.andBuildingNumberLike(String.format("%s%s%s", "%", buildingNumber, "%"));
+        }
+        if (estateId != null) {
+            criteria.andEstateIdEqualTo(estateId);
+        }
+        return caseBuildingMapper.countByExample(example);
+    }
 }

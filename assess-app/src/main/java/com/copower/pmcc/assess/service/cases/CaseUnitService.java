@@ -147,14 +147,14 @@ public class CaseUnitService {
         }
     }
 
-    public int updateBuildingMainId(Integer oldBuildingMainId, Integer newBuildingMainId){
-        return caseUnitDao.updateBuildingMainId(oldBuildingMainId, newBuildingMainId);
+    public int updateBuildingId(Integer oldBuildingId, Integer newBuildingId){
+        return caseUnitDao.updateBuildingMainId(oldBuildingId, newBuildingId);
     }
 
-    public List<CustomCaseEntity> autoCompleteCaseUnit(String unitNumber, Integer caseBuildingMainId){
+    public List<CustomCaseEntity> autoCompleteCaseUnit(String unitNumber, Integer caseBuildingId){
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CustomCaseEntity> caseEntityList = caseUnitDao.getLatestVersionUnitList(unitNumber, caseBuildingMainId);
+        List<CustomCaseEntity> caseEntityList = caseUnitDao.getLatestVersionUnitList(unitNumber, caseBuildingId);
         return caseEntityList;
     }
 
@@ -166,11 +166,11 @@ public class CaseUnitService {
     /**
      * 是否有单元
      * @param unitNumber
-     * @param caseBuildingMainId
+     * @param caseBuildingId
      * @return
      */
-    public boolean hasUnit(String unitNumber, Integer caseBuildingMainId){
-        return caseUnitDao.getUnitCount(unitNumber, caseBuildingMainId) > 0;
+    public boolean hasUnit(String unitNumber, Integer caseBuildingId){
+        return caseUnitDao.getUnitCount(unitNumber, caseBuildingId) > 0;
     }
 
     public CaseEstateTagging getCaseEstateTaggingByUnitId(Integer unitId)throws Exception{

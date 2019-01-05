@@ -40,9 +40,9 @@ public class CaseEstateTaggingService {
     public List<CaseEstateTaggingDto> queryCaseEstateTagging(Integer dataId, String type) throws Exception {
         List<CaseEstateTaggingDto> caseEstateTaggingDtos = new ArrayList<CaseEstateTaggingDto>(10);
         if (Objects.equal(type, EstateTaggingTypeEnum.ESTATE.getKey())) {
-            List<CaseBuildingMain> caseBuildingMainList = customCaseMapper.screenBuildList(dataId);
-            if (!ObjectUtils.isEmpty(caseBuildingMainList)) {
-                for (CaseBuildingMain main : caseBuildingMainList) {
+            List<CaseBuilding> caseBuildingList = customCaseMapper.screenBuildList(dataId);
+            if (!ObjectUtils.isEmpty(caseBuildingList)) {
+                for (CaseBuilding main : caseBuildingList) {
                     CaseEstateTaggingDto dto = getCaseEstateTagging(main.getId(), EstateTaggingTypeEnum.BUILDING.getKey());
                     if (dto != null) {
                         caseEstateTaggingDtos.add(dto);

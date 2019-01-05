@@ -26,7 +26,7 @@ public class BasicBuildingDao {
         return basicBuildingMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicBuilding(BasicBuilding basicBuilding)throws SQLException{
+    public Integer addBasicBuilding(BasicBuilding basicBuilding)throws SQLException{
         basicBuildingMapper.insertSelective(basicBuilding);
         return basicBuilding.getId();
     }
@@ -39,7 +39,7 @@ public class BasicBuildingDao {
         return  basicBuildingMapper.deleteByPrimaryKey(id)==1;
     }
 
-    public List<BasicBuilding> basicBuildingList(BasicBuilding basicBuilding){
+    public List<BasicBuilding> getBasicBuildingList(BasicBuilding basicBuilding){
         BasicBuildingExample example = new BasicBuildingExample();
         MybatisUtils.convertObj2Example(basicBuilding, example);
         return basicBuildingMapper.selectByExample(example);

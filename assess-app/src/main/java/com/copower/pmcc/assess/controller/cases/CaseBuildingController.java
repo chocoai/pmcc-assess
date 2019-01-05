@@ -1,139 +1,70 @@
 package com.copower.pmcc.assess.controller.cases;
 
+import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
-import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
-import com.copower.pmcc.assess.dto.input.cases.CaseBuildingDto;
+import com.copower.pmcc.assess.dto.output.cases.CaseBuildingVo;
 import com.copower.pmcc.assess.service.cases.CaseBuildingService;
-import com.copower.pmcc.assess.service.cases.CaseUnitService;
+import com.copower.pmcc.assess.service.cases.CaseEstateService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: zch
- * @Date: 2018/9/11 18:02
+ * @Date: 2018/10/28 14:29
  * @Description:
  */
-@RequestMapping(value = "/caseBuilding")
+@RequestMapping(value = "/caseBuildingMain")
 @Controller
 public class CaseBuildingController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
-    private CaseUnitService caseUnitService;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private CaseBuildingService caseBuildingService;
+    @Autowired
+    private CaseEstateService caseEstateService;
 
-
-
-    @ResponseBody
-    @RequestMapping(value = "/getCaseBuildingById", method = {RequestMethod.GET}, name = "获取案例 楼栋")
-    public HttpResult getCaseBuildingById(Integer id) {
-        CaseBuilding caseBuilding = null;
-        try {
-            if (id != null) {
-                caseBuilding = caseBuildingService.getCaseBuildingById(id);
-            }
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-        return HttpResult.newCorrectResult(caseBuilding);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/listCaseBuilding", method = {RequestMethod.GET}, name = "获取案例 楼栋")
-    public HttpResult list(Integer caseBuildingMainId,Integer estateId) {
-        CaseBuilding caseBuilding = new CaseBuilding();
-        try {
-            if (caseBuildingMainId != null) {
-                caseBuilding.setCaseBuildingMainId(caseBuildingMainId);
-            }
-            if (estateId != null){
-                caseBuilding.setEstateId(estateId);
-            }
-            List<CaseBuilding> caseBuildingList = caseBuildingService.getCaseBuildingList(caseBuilding);
-            return HttpResult.newCorrectResult(caseBuildingList);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
+    @RequestMapping(value = "/detailView", name = "详情页面 ", method = RequestMethod.GET)
+    public ModelAndView detailView(Integer id) {
+        String view = "/case/caseBuild/caseBuildingView";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        CaseBuilding caseBuilding = caseBuildingService.getCaseBuildingById(id);
+        modelAndView.addObject("caseBuilding", caseBuilding);
+        modelAndView.addObject("caseEstate", caseEstateService.getCaseEstateById(caseBuilding.getEstateId()));
+        return modelAndView;
     }
 
 
-    @ResponseBody
-    @RequestMapping(value = "/getCaseBuildingList", method = {RequestMethod.GET}, name = "获取案例 楼栋列表")
-    public BootstrapTableVo getCaseBuildingList(Integer estateId) {
-        CaseBuilding caseBuilding = new CaseBuilding();
-        BootstrapTableVo vo = new BootstrapTableVo();
-        try {
-            if (estateId != null) {
-                caseBuilding.setEstateId(estateId);
-                vo = caseBuildingService.getCaseBuildingListVos(caseBuilding);
-            }
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s", e1.getMessage()), e1);
-            return null;
-        }
-        return vo;
-    }
+//    @ResponseBody
+//    @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET}, name = "楼栋--列表")
+//    public BootstrapTableVo getBootstrapTableVo(CaseBuildingMain caseBuildingMain) {
+//        BootstrapTableVo vo = caseBuildingMainService.getBootstrapTableVo(caseBuildingMain);
+//        return vo;
+//    }
 
     @ResponseBody
-    @RequestMapping(value = "/deleteCaseBuildingById", method = {RequestMethod.POST}, name = "删除案例 楼栋")
-    public HttpResult deleteCaseBuildingById(Integer id) {
-        List<CaseUnit> caseUnitList = null;
-        CaseUnit caseUnit = new CaseUnit();
+    @RequestMapping(value = "/autoCompleteCaseBuilding", method = {RequestMethod.GET}, name = "楼栋-- 信息自动补全")
+    public HttpResult autoCompleteCaseEstate(String buildingNumber, Integer estateId) {
         try {
-            if (id != null) {
-                caseUnit.setBuildingId(id);
-                caseUnitList = caseUnitService.getCaseUnitList(caseUnit);
-                if (caseUnitList.size() >= 1){
-                    return HttpResult.newErrorResult("请删除此楼栋下的单元之后在删除此楼栋! remove fail");
-                }
-                Integer estateId = null;
-                estateId = caseBuildingService.getCaseBuildingById(id).getEstateId();
-                caseBuildingService.deleteCaseBuilding(id);
-                return HttpResult.newCorrectResult(estateId);
-            }
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-        return null;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/saveAndUpdateCaseBuilding", method = {RequestMethod.POST}, name = "更新案例 楼栋")
-    public HttpResult saveAndUpdateCaseBuilding(CaseBuildingDto caseBuildingDto) {
-        CaseBuilding caseBuilding = new CaseBuilding();
-        BeanUtils.copyProperties(caseBuildingDto,caseBuilding);
-        try {
-            caseBuildingService.saveAndUpdateCaseBuilding(caseBuilding);
-            return HttpResult.newCorrectResult("保存 success!");
-        } catch (Exception e) {
-            logger.error(String.format("exception: %s", e.getMessage()), e);
-            return HttpResult.newErrorResult("保存异常");
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/initAndUpdateSon", method = {RequestMethod.POST}, name = "初始化子类")
-    public HttpResult initAndUpdateSon() {
-        try {
-            caseBuildingService.initAndUpdateSon(0,null);
-            return HttpResult.newCorrectResult();
+            List<CustomCaseEntity> caseEntities = caseBuildingService.autoCompleteCaseBuilding(buildingNumber, estateId);
+            return HttpResult.newCorrectResult(caseEntities);
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");
         }
     }
-
-
 }

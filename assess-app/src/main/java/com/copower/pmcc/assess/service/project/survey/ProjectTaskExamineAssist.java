@@ -73,8 +73,6 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     @Autowired
     private BasicEstateService basicEstateService;
     @Autowired
-    private BasicBuildingMainService basicBuildingMainService;
-    @Autowired
     private BasicBuildingService basicBuildingService;
     @Autowired
     private BasicUnitService basicUnitService;
@@ -217,7 +215,6 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         SurveyCaseStudy surveyCaseStudy = null;
         SurveySceneExplore surveySceneExplore = null;
         BasicEstate basicEstate = null;
-        BasicBuildingMain basicBuildingMain = null;
         BasicBuilding basicBuilding = null;
         List<BasicBuilding> basicBuildingList = null;
         BasicUnit basicUnit = null;
@@ -231,15 +228,9 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
                 //查勘 entity
                 surveySceneExplore = surveySceneExploreService.getSurveySceneExplore(projectPlanDetails.getId());
                 basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-                basicBuildingMain = basicBuildingMainService.getBasicBuildingMainByApplyId(basicApply.getId());
+                basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
                 basicUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
                 basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
-                if (basicBuildingMain != null) {
-                    basicBuildingList = basicBuildingService.getBasicBuildingListByMainId(basicBuildingMain.getId());
-                    if (CollectionUtils.isNotEmpty(basicBuildingList)){
-                        basicBuilding = basicBuildingList.get(0);
-                    }
-                }
             }
         } catch (Exception e) {
             //允许异常
@@ -259,19 +250,16 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
             landState.setApplyId(basicApply.getId());
             basicEstateLandStateService.saveAndUpdateBasicEstateLandState(landState);
         }
-        if (basicBuildingMain == null) {
-            basicBuildingMain = new BasicBuildingMain();
-            basicBuildingMain.setEstateId(basicEstate.getId());
-            basicBuildingMain.setApplyId(basicApply.getId());
-            basicBuildingMainService.saveAndUpdateBasicBuildingMain(basicBuildingMain);
+        if (basicBuilding == null) {
             basicBuilding = new BasicBuilding();
-            basicBuilding.setBasicBuildingMainId(basicBuildingMain.getId());
+            basicBuilding.setEstateId(basicEstate.getId());
+            basicBuilding.setApplyId(basicApply.getId());
             basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding);
         }
         if (basicUnit == null) {
             basicUnit = new BasicUnit();
             basicUnit.setApplyId(basicApply.getId());
-            basicUnit.setBuildingMainId(basicBuildingMain.getId());
+            basicUnit.setBuildingId(basicBuilding.getId());
             basicUnitService.saveAndUpdateBasicUnit(basicUnit);
         }
         if (basicHouse == null) {
@@ -315,9 +303,6 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         }
         if (basicEstate != null) {
             modelAndView.addObject("basicEstate", basicEstateService.getBasicEstateVo(basicEstate));
-        }
-        if (basicBuildingMain != null) {
-            modelAndView.addObject("basicBuildingMain", basicBuildingMain);
         }
         if (basicBuilding != null) {
             modelAndView.addObject("basicBuilding", basicBuildingService.getBasicBuildingVo(basicBuilding));

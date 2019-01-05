@@ -117,10 +117,10 @@
     };
 
     unitCommon.autocompleteStart = function () {
-        var caseBuildingMainId = basicCommon.getCaseBuildingMainId();
-        if (caseBuildingMainId) {
+        var caseBuildingId = basicCommon.getcaseBuildingId();
+        if (caseBuildingId) {
             $("#txt_Unit_search").apUnit({
-                caseBuildingMainId: caseBuildingMainId,
+                caseBuildingId: caseBuildingId,
                 onSelect: function (id, name) {
                     unitCommon.onSelect(id);
                 }

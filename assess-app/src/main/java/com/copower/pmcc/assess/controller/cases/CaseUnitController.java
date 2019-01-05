@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.controller.cases;
 
 import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
-import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMain;
+import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouse;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
@@ -42,7 +42,7 @@ public class CaseUnitController {
     @Autowired
     private CaseUnitHuxingService caseUnitHuxingService;
     @Autowired
-    private CaseBuildingMainService caseBuildingMainService;
+    private CaseBuildingService caseBuildingService;
     @Autowired
     private CaseEstateService caseEstateService;
 
@@ -57,9 +57,9 @@ public class CaseUnitController {
         modelAndView.addObject("hasUnitDecorateData",caseUnitDecorateService.hasUnitDecorateData(id));
         modelAndView.addObject("hasUnitElevatorData",caseUnitElevatorService.hasUnitElevatorData(id));
         modelAndView.addObject("hasUnitHuxingData",caseUnitHuxingService.hasUnitHuxingData(id));
-        CaseBuildingMain caseBuildingMain = caseBuildingMainService.getCaseBuildingMainById(caseUnit.getBuildingMainId());
-        CaseEstate caseEstate = caseEstateService.getCaseEstateById(caseBuildingMain.getEstateId());
-        modelAndView.addObject("caseBuildingMain", caseBuildingMain);
+        CaseBuilding caseBuilding = caseBuildingService.getCaseBuildingById(caseUnit.getBuildingId());
+        CaseEstate caseEstate = caseEstateService.getCaseEstateById(caseBuilding.getEstateId());
+        modelAndView.addObject("caseBuilding", caseBuilding);
         modelAndView.addObject("caseEstate", caseEstate);
         return modelAndView;
     }
@@ -81,12 +81,12 @@ public class CaseUnitController {
 
     @ResponseBody
     @RequestMapping(value = "/getCaseUnitList", method = {RequestMethod.GET}, name = "获取案例 单元列表")
-    public BootstrapTableVo getCaseUnitList(Integer caseBuildingMainId) {
+    public BootstrapTableVo getCaseUnitList(Integer caseBuildingId) {
         CaseUnit caseUnit = new CaseUnit();
         BootstrapTableVo vo = new BootstrapTableVo();
         try {
-            if (caseBuildingMainId != null) {
-                caseUnit.setBuildingMainId(caseBuildingMainId);
+            if (caseBuildingId != null) {
+                caseUnit.setBuildingId(caseBuildingId);
                 vo = caseUnitService.getCaseUnitListVos(caseUnit);
             }
         } catch (Exception e1) {
@@ -145,9 +145,9 @@ public class CaseUnitController {
 
     @ResponseBody
     @RequestMapping(value = "/autoCompleteCaseUnit", method = {RequestMethod.GET}, name = "单元-- 信息自动补全")
-    public HttpResult autoCompleteCaseEstate(String unitNumber, Integer caseBuildingMainId) {
+    public HttpResult autoCompleteCaseEstate(String unitNumber, Integer caseBuildingId) {
         try {
-            List<CustomCaseEntity> caseEntities = caseUnitService.autoCompleteCaseUnit(unitNumber, caseBuildingMainId);
+            List<CustomCaseEntity> caseEntities = caseUnitService.autoCompleteCaseUnit(unitNumber, caseBuildingId);
             return HttpResult.newCorrectResult(caseEntities);
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");

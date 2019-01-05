@@ -34,15 +34,15 @@ public interface CustomCaseMapper {
      * @param estateId
      * @return
      */
-    public List<CustomCaseEntity> getCaseBuildingMainList(@Param("buildingNumber") String buildingNumber, @Param("estateId") Integer estateId);
+    public List<CustomCaseEntity> getCaseBuildingList(@Param("buildingNumber") String buildingNumber, @Param("estateId") Integer estateId);
 
     /**
      * 根据楼栋id获取单元信息
      *
-     * @param buildingMainId
+     * @param buildingId
      * @return
      */
-    public List<CustomCaseEntity> getCaseUnitList(@Param("unitNumber") String unitNumber, @Param("buildingMainId") Integer buildingMainId);
+    public List<CustomCaseEntity> getCaseUnitList(@Param("unitNumber") String unitNumber, @Param("buildingId") Integer buildingId);
 
     /**
      * 根据单元id获取房屋信息
@@ -72,7 +72,7 @@ public interface CustomCaseMapper {
      * @return List<CaseBuildingMain>
      * @throws Exception
      */
-    public List<CaseBuildingMain> screenBuildList(@Param("estateId") Integer estateId) throws Exception;
+    public List<CaseBuilding> screenBuildList(@Param("estateId") Integer estateId) throws Exception;
 
     /**
      * 筛选版本最新并且筛选版本不重复的单元号码

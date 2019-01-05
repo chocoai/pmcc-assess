@@ -4,7 +4,6 @@ import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basic.dao.BasicBuildingDao;
-import com.copower.pmcc.assess.dal.basic.dao.BasicBuildingMainDao;
 import com.copower.pmcc.assess.dal.basic.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
@@ -26,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -47,8 +45,6 @@ public class BasicBuildingService {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private BasicBuildingDao basicBuildingDao;
-    @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private BasicBuildingFunctionService basicBuildingFunctionService;
@@ -59,13 +55,11 @@ public class BasicBuildingService {
     @Autowired
     private BasicBuildingSurfaceService basicBuildingSurfaceService;
     @Autowired
-    private BasicBuildingMainDao basicBuildingMainDao;
+    private BasicBuildingDao basicBuildingDao;
     @Autowired
     private BasicEstateService basicEstateService;
     @Autowired
     private CaseBuildingService caseBuildingService;
-    @Autowired
-    private CaseBuildingMainService caseBuildingMainService;
     @Autowired
     private CaseBuildingOutfitService caseBuildingOutfitService;
     @Autowired
@@ -121,7 +115,7 @@ public class BasicBuildingService {
     public Integer saveAndUpdateBasicBuilding(BasicBuilding basicBuilding) throws Exception {
         if (basicBuilding.getId() == null || basicBuilding.getId().intValue() == 0) {
             basicBuilding.setCreator(commonService.thisUserAccount());
-            Integer id = basicBuildingDao.saveBasicBuilding(basicBuilding);
+            Integer id = basicBuildingDao.addBasicBuilding(basicBuilding);
             this.updateSysAttachmentDto(basicBuilding, id);
             return id;
         } else {
@@ -149,14 +143,32 @@ public class BasicBuildingService {
      * @throws Exception
      */
     public List<BasicBuilding> basicBuildingList(BasicBuilding basicBuilding) throws Exception {
-        return basicBuildingDao.basicBuildingList(basicBuilding);
+        return basicBuildingDao.getBasicBuildingList(basicBuilding);
+    }
+
+    /**
+     * 获取数据
+     *
+     * @param applyId
+     * @return
+     * @throws Exception
+     */
+    public BasicBuilding getBasicBuildingByApplyId(Integer applyId) throws Exception {
+        BasicBuilding where = new BasicBuilding();
+        where.setApplyId(applyId);
+        if (applyId == null || applyId == 0) {
+            where.setCreator(commonService.thisUserAccount());
+        }
+        List<BasicBuilding> basicBuildings = basicBuildingDao.getBasicBuildingList(where);
+        if (CollectionUtils.isEmpty(basicBuildings)) return null;
+        return basicBuildings.get(0);
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicBuilding basicBuilding) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BasicBuilding> basicBuildingList = basicBuildingDao.basicBuildingList(basicBuilding);
+        List<BasicBuilding> basicBuildingList = basicBuildingDao.getBasicBuildingList(basicBuilding);
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(basicBuildingList) ? new ArrayList<BasicBuilding>(10) : basicBuildingList);
         return vo;
@@ -192,34 +204,16 @@ public class BasicBuildingService {
      * @throws Exception
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
-    public BasicBuildingMain addBuildingMainAndBuilding(String buildingNumber) throws Exception {
+    public BasicBuilding addBuilding(String buildingNumber) throws Exception {
         this.clearInvalidData(0);
 
-        BasicBuildingMain basicBuildingMain = new BasicBuildingMain();
-        basicBuildingMain.setBuildingNumber(buildingNumber);
-        basicBuildingMain.setBuildingName(buildingNumber + '栋');
-        basicBuildingMain.setApplyId(0);
-        basicBuildingMain.setCreator(commonService.thisUserAccount());
-        basicBuildingMainDao.addBasicBuildingMain(basicBuildingMain);
-
         BasicBuilding basicBuilding = new BasicBuilding();
-        basicBuilding.setBasicBuildingMainId(basicBuildingMain.getId());
+        basicBuilding.setBuildingNumber(buildingNumber);
+        basicBuilding.setBuildingName(buildingNumber + '栋');
+        basicBuilding.setApplyId(0);
         basicBuilding.setCreator(commonService.thisUserAccount());
-        basicBuildingDao.saveBasicBuilding(basicBuilding);
-        return basicBuildingMain;
-    }
-
-    /**
-     * 根据主表id获取所有楼栋部分信息
-     *
-     * @param basicBuildingMainId
-     * @return
-     */
-    public List<BasicBuilding> getBasicBuildingListByMainId(Integer basicBuildingMainId) {
-        BasicBuilding basicBuildingWhere = new BasicBuilding();
-        basicBuildingWhere.setBasicBuildingMainId(basicBuildingMainId);
-        List<BasicBuilding> buildingList = basicBuildingDao.basicBuildingList(basicBuildingWhere);
-        return buildingList;
+        basicBuildingDao.addBasicBuilding(basicBuilding);
+        return basicBuilding;
     }
 
     /**
@@ -229,75 +223,68 @@ public class BasicBuildingService {
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
     public void clearInvalidData(Integer applyId) throws Exception {
-        BasicBuildingMain where = new BasicBuildingMain();
+        BasicBuilding where = new BasicBuilding();
         where.setApplyId(applyId);
         if (applyId.equals(0))
             where.setCreator(commonService.thisUserAccount());
-        List<BasicBuildingMain> buildingMainList = basicBuildingMainDao.basicBuildingMainList(where);
-        BasicBuildingMain basicBuildingMain = null;
-        if (CollectionUtils.isEmpty(buildingMainList)) return;
-        basicBuildingMain = buildingMainList.get(0);
+        List<BasicBuilding> basicBuildingList = basicBuildingDao.getBasicBuildingList(where);
+        BasicBuilding basicBuilding = null;
+        if (CollectionUtils.isEmpty(basicBuildingList)) return;
+        basicBuilding = basicBuildingList.get(0);
 
-        BasicBuilding basicBuildingWhere = new BasicBuilding();
-        basicBuildingWhere.setBasicBuildingMainId(basicBuildingMain.getId());
-        List<BasicBuilding> buildingList = basicBuildingDao.basicBuildingList(basicBuildingWhere);
-        if (CollectionUtils.isEmpty(buildingList)) return;
-        for (BasicBuilding basicBuilding : buildingList) {
-            List<BasicBuildingFunction> basicBuildingFunctionList = null;
-            List<BasicBuildingMaintenance> basicBuildingMaintenanceList = null;
-            List<BasicBuildingOutfit> basicBuildingOutfitList = null;
-            List<BasicBuildingSurface> basicBuildingSurfaceList = null;
-            BasicBuildingSurface querySurface = new BasicBuildingSurface();
-            BasicBuildingFunction queryFunction = new BasicBuildingFunction();
-            BasicBuildingOutfit queryOutfit = new BasicBuildingOutfit();
-            BasicBuildingMaintenance queryMaintenance = new BasicBuildingMaintenance();
-            querySurface.setBuildingId(basicBuilding.getId());
-            queryFunction.setBuildingId(basicBuilding.getId());
-            queryOutfit.setBuildingId(basicBuilding.getId());
-            queryMaintenance.setBuildingId(basicBuilding.getId());
+        List<BasicBuildingFunction> basicBuildingFunctionList = null;
+        List<BasicBuildingMaintenance> basicBuildingMaintenanceList = null;
+        List<BasicBuildingOutfit> basicBuildingOutfitList = null;
+        List<BasicBuildingSurface> basicBuildingSurfaceList = null;
+        BasicBuildingSurface querySurface = new BasicBuildingSurface();
+        BasicBuildingFunction queryFunction = new BasicBuildingFunction();
+        BasicBuildingOutfit queryOutfit = new BasicBuildingOutfit();
+        BasicBuildingMaintenance queryMaintenance = new BasicBuildingMaintenance();
+        querySurface.setBuildingId(basicBuilding.getId());
+        queryFunction.setBuildingId(basicBuilding.getId());
+        queryOutfit.setBuildingId(basicBuilding.getId());
+        queryMaintenance.setBuildingId(basicBuilding.getId());
 
-            basicBuildingSurfaceList = basicBuildingSurfaceService.basicBuildingSurfaceList(querySurface);
-            basicBuildingFunctionList = basicBuildingFunctionService.basicBuildingFunctionList(queryFunction);
-            basicBuildingOutfitList = basicBuildingOutfitService.basicBuildingOutfitList(queryOutfit);
-            basicBuildingMaintenanceList = basicBuildingMaintenanceService.basicBuildingMaintenanceList(queryMaintenance);
-            for (BasicBuildingSurface oo : basicBuildingSurfaceList) {
-                basicBuildingSurfaceService.removeBasicBuildingSurface(oo);
-            }
-            for (BasicBuildingFunction oo : basicBuildingFunctionList) {
-                basicBuildingFunctionService.removeBasicBuildingFunction(oo);
-            }
-            for (BasicBuildingOutfit oo : basicBuildingOutfitList) {
-                basicBuildingOutfitService.removeBasicBuildingOutfit(oo);
-            }
-            for (BasicBuildingMaintenance oo : basicBuildingMaintenanceList) {
-                basicBuildingMaintenanceService.removeBasicBuildingMaintenance(oo);
-            }
-
-            //清理附件
-            SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-            sysAttachmentDto.setTableId(0);
-            sysAttachmentDto.setCreater(commonService.thisUserAccount());
-            sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-            List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getAttachmentList(sysAttachmentDto);
-            if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
-                for (SysAttachmentDto oo : sysAttachmentDtos) {
-                    baseAttachmentService.deleteAttachment(oo.getId());
-                }
-            }
-            basicBuildingDao.deleteBasicBuilding(basicBuilding.getId());
+        basicBuildingSurfaceList = basicBuildingSurfaceService.basicBuildingSurfaceList(querySurface);
+        basicBuildingFunctionList = basicBuildingFunctionService.basicBuildingFunctionList(queryFunction);
+        basicBuildingOutfitList = basicBuildingOutfitService.basicBuildingOutfitList(queryOutfit);
+        basicBuildingMaintenanceList = basicBuildingMaintenanceService.basicBuildingMaintenanceList(queryMaintenance);
+        for (BasicBuildingSurface oo : basicBuildingSurfaceList) {
+            basicBuildingSurfaceService.removeBasicBuildingSurface(oo);
         }
-        basicBuildingMainDao.deleteBasicBuildingMain(basicBuildingMain.getId());
+        for (BasicBuildingFunction oo : basicBuildingFunctionList) {
+            basicBuildingFunctionService.removeBasicBuildingFunction(oo);
+        }
+        for (BasicBuildingOutfit oo : basicBuildingOutfitList) {
+            basicBuildingOutfitService.removeBasicBuildingOutfit(oo);
+        }
+        for (BasicBuildingMaintenance oo : basicBuildingMaintenanceList) {
+            basicBuildingMaintenanceService.removeBasicBuildingMaintenance(oo);
+        }
+
+        //清理附件
+        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+        sysAttachmentDto.setTableId(0);
+        sysAttachmentDto.setCreater(commonService.thisUserAccount());
+        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getAttachmentList(sysAttachmentDto);
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
+            for (SysAttachmentDto oo : sysAttachmentDtos) {
+                baseAttachmentService.deleteAttachment(oo.getId());
+            }
+        }
+        basicBuildingDao.deleteBasicBuilding(basicBuilding.getId());
     }
 
     /**
      * 将CaseBuilding下的子类 转移到 BasicBuilding下的子类中去 (用做过程数据)
      *
-     * @param caseMainBuildingId
+     * @param caseBuildingId
      * @throws Exception
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
-    public BasicBuildingMain appWriteBuilding(Integer caseMainBuildingId, String buildingPartInMode, Integer applyId) throws Exception {
-        if (caseMainBuildingId == null) {
+    public BasicBuilding appWriteBuilding(Integer caseBuildingId, String buildingPartInMode, Integer applyId) throws Exception {
+        if (caseBuildingId == null) {
             throw new Exception("null point");
         }
         //清理数据
@@ -305,131 +292,111 @@ public class BasicBuildingService {
         if (applyId != null) {
             this.clearInvalidData(applyId);
         }
-        CaseBuildingMain caseBuildingMain = caseBuildingMainService.getCaseBuildingMainById(caseMainBuildingId);
-        if (caseBuildingMain == null) {
+        CaseBuilding caseBuilding = caseBuildingService.getCaseBuildingById(caseBuildingId);
+        if (caseBuilding == null) {
             return null;
         }
-        BasicBuildingMain basicBuildingMain = new BasicBuildingMain();
-        BeanUtils.copyProperties(caseBuildingMain, basicBuildingMain);
-        basicBuildingMain.setApplyId(applyId == null ? 0 : applyId);
-        basicBuildingMain.setCreator(commonService.thisUserAccount());
-        basicBuildingMain.setGmtCreated(null);
-        basicBuildingMain.setGmtModified(null);
+        BasicBuilding basicBuilding = new BasicBuilding();
+        BeanUtils.copyProperties(caseBuilding, basicBuilding);
+        basicBuilding.setApplyId(applyId == null ? 0 : applyId);
+        basicBuilding.setCreator(commonService.thisUserAccount());
+        basicBuilding.setGmtCreated(null);
+        basicBuilding.setGmtModified(null);
         if (StringUtils.equals(buildingPartInMode, BasicApplyPartInModeEnum.REFERENCE.getKey())) {
-            basicBuildingMain.setBuildingNumber(null);
-            basicBuildingMain.setBuildingName(null);
+            basicBuilding.setBuildingNumber(null);
+            basicBuilding.setBuildingName(null);
         }
-        basicBuildingMainDao.addBasicBuildingMain(basicBuildingMain);
+        basicBuildingDao.addBasicBuilding(basicBuilding);
 
         if (StringUtils.equals(buildingPartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
             CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
-            caseEstateTagging.setDataId(caseMainBuildingId);
+            caseEstateTagging.setDataId(caseBuildingId);
             caseEstateTagging.setType(EstateTaggingTypeEnum.BUILDING.getKey());
             List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
             basicEstateService.copyTaggingFromCase(caseEstateTaggings,applyId);
         }
 
-
-        CaseBuilding where = new CaseBuilding();
-        where.setCaseBuildingMainId(caseMainBuildingId);
-        List<CaseBuilding> caseBuildingList = caseBuildingService.getCaseBuildingList(where);
-        if (CollectionUtils.isEmpty(caseBuildingList)) {
-            return null;
-        }
-        List<CaseBuildingOutfit> buildingOutfitList = null;
-        List<CaseBuildingMaintenance> maintenanceList = null;
-        List<CaseBuildingSurface> surfaceList = null;
-        List<CaseBuildingFunction> functionList = null;
-        for (CaseBuilding caseBuilding : caseBuildingList) {
-            BasicBuilding basicBuilding = new BasicBuilding();
-            BeanUtils.copyProperties(caseBuilding, basicBuilding);
-            basicBuilding.setBasicBuildingMainId(basicBuildingMain.getId());
-            basicBuilding.setCreator(commonService.thisUserAccount());
-            basicBuilding.setGmtCreated(null);
-            basicBuilding.setGmtModified(null);
-            basicBuildingDao.saveBasicBuilding(basicBuilding);
-
-            List<SysAttachmentDto> sysAttachmentDtoList = null;
-            SysAttachmentDto queryFile = new SysAttachmentDto();
-            queryFile.setTableId(caseBuilding.getId());
-            queryFile.setTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class));
-            sysAttachmentDtoList = baseAttachmentService.getAttachmentList(queryFile);
-            //复制 临时附件
-            if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
-                for (SysAttachmentDto attachmentDto : sysAttachmentDtoList) {
-                    SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-                    sysAttachmentDto.setTableId(basicBuilding.getId());
-                    sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-                    baseAttachmentService.copyFtpAttachment(attachmentDto.getId(), sysAttachmentDto);
-                }
+        List<SysAttachmentDto> sysAttachmentDtoList = null;
+        SysAttachmentDto queryFile = new SysAttachmentDto();
+        queryFile.setTableId(caseBuilding.getId());
+        queryFile.setTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class));
+        sysAttachmentDtoList = baseAttachmentService.getAttachmentList(queryFile);
+        //复制 临时附件
+        if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
+            for (SysAttachmentDto attachmentDto : sysAttachmentDtoList) {
+                SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+                sysAttachmentDto.setTableId(basicBuilding.getId());
+                sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+                baseAttachmentService.copyFtpAttachment(attachmentDto.getId(), sysAttachmentDto);
             }
+        }
 
-            CaseBuildingOutfit queryOutfit = new CaseBuildingOutfit();
-            CaseBuildingMaintenance queryMaintenance = new CaseBuildingMaintenance();
-            CaseBuildingSurface querySurface = new CaseBuildingSurface();
-            CaseBuildingFunction queryFunction = new CaseBuildingFunction();
+        CaseBuildingOutfit queryOutfit = new CaseBuildingOutfit();
+        CaseBuildingMaintenance queryMaintenance = new CaseBuildingMaintenance();
+        CaseBuildingSurface querySurface = new CaseBuildingSurface();
+        CaseBuildingFunction queryFunction = new CaseBuildingFunction();
 
-            queryOutfit.setBuildingId(caseBuilding.getId());
-            queryMaintenance.setBuildingId(caseBuilding.getId());
-            querySurface.setBuildingId(caseBuilding.getId());
-            queryFunction.setBuildingId(caseBuilding.getId());
+        queryOutfit.setBuildingId(caseBuilding.getId());
+        queryMaintenance.setBuildingId(caseBuilding.getId());
+        querySurface.setBuildingId(caseBuilding.getId());
+        queryFunction.setBuildingId(caseBuilding.getId());
 
 
-            buildingOutfitList = caseBuildingOutfitService.getCaseBuildingOutfitList(queryOutfit);
-            maintenanceList = caseBuildingMaintenanceService.getCaseBuildingMaintenanceList(queryMaintenance);
-            surfaceList = caseBuildingSurfaceService.getCaseBuildingSurfaceList(querySurface);
-            functionList = caseBuildingFunctionService.getCaseBuildingFunctionListO(queryFunction);
+        List<CaseBuildingOutfit> buildingOutfitList = caseBuildingOutfitService.getCaseBuildingOutfitList(queryOutfit);
+        List<CaseBuildingMaintenance> maintenanceList = caseBuildingMaintenanceService.getCaseBuildingMaintenanceList(queryMaintenance);
+        List<CaseBuildingSurface> surfaceList = caseBuildingSurfaceService.getCaseBuildingSurfaceList(querySurface);
+        List<CaseBuildingFunction> functionList = caseBuildingFunctionService.getCaseBuildingFunctionListO(queryFunction);
 
-            if (!ObjectUtils.isEmpty(buildingOutfitList)) {
+
+        if (!ObjectUtils.isEmpty(buildingOutfitList)) {
+            for (CaseBuildingOutfit oo : buildingOutfitList) {
                 BasicBuildingOutfit basicBuildingOutfit = new BasicBuildingOutfit();
-                for (CaseBuildingOutfit oo : buildingOutfitList) {
-                    BeanCopyHelp.copyPropertiesIgnoreNull(oo, basicBuildingOutfit);
-                    basicBuildingOutfit.setBuildingId(basicBuilding.getId());
-                    basicBuildingOutfit.setId(null);
-                    basicBuildingOutfit.setCreator(commonService.thisUserAccount());
-                    basicBuildingOutfit.setGmtCreated(null);
-                    basicBuildingOutfit.setGmtModified(null);
-                    basicBuildingOutfitService.saveAndUpdateBasicBuildingOutfit(basicBuildingOutfit);
-                }
-            }
-            if (!ObjectUtils.isEmpty(maintenanceList)) {
-                BasicBuildingMaintenance basicBuildingMaintenance = new BasicBuildingMaintenance();
-                for (CaseBuildingMaintenance oo : maintenanceList) {
-                    BeanCopyHelp.copyPropertiesIgnoreNull(oo, basicBuildingMaintenance);
-                    basicBuildingMaintenance.setBuildingId(basicBuilding.getId());
-                    basicBuildingMaintenance.setId(null);
-                    basicBuildingMaintenance.setCreator(commonService.thisUserAccount());
-                    basicBuildingMaintenance.setGmtCreated(null);
-                    basicBuildingMaintenance.setGmtModified(null);
-                    basicBuildingMaintenanceService.saveAndUpdateBasicBuildingMaintenance(basicBuildingMaintenance);
-                }
-            }
-            if (!ObjectUtils.isEmpty(surfaceList)) {
-                BasicBuildingSurface basicBuildingSurface = new BasicBuildingSurface();
-                for (CaseBuildingSurface oo : surfaceList) {
-                    BeanCopyHelp.copyPropertiesIgnoreNull(oo, basicBuildingSurface);
-                    basicBuildingSurface.setBuildingId(basicBuilding.getId());
-                    basicBuildingSurface.setId(null);
-                    basicBuildingSurface.setCreator(commonService.thisUserAccount());
-                    basicBuildingSurface.setGmtCreated(null);
-                    basicBuildingSurface.setGmtModified(null);
-                    basicBuildingSurfaceService.saveAndUpdateBasicBuildingSurface(basicBuildingSurface);
-                }
-            }
-            if (!ObjectUtils.isEmpty(functionList)) {
-                BasicBuildingFunction basicBuildingFunction = new BasicBuildingFunction();
-                for (CaseBuildingFunction oo : functionList) {
-                    BeanCopyHelp.copyPropertiesIgnoreNull(oo, basicBuildingFunction);
-                    basicBuildingFunction.setBuildingId(basicBuilding.getId());
-                    basicBuildingFunction.setId(null);
-                    basicBuildingFunction.setCreator(commonService.thisUserAccount());
-                    basicBuildingFunction.setGmtCreated(null);
-                    basicBuildingFunction.setGmtModified(null);
-                    basicBuildingFunctionService.saveAndUpdateBasicBuildingFunction(basicBuildingFunction);
-                }
+                BeanCopyHelp.copyPropertiesIgnoreNull(oo, basicBuildingOutfit);
+                basicBuildingOutfit.setBuildingId(basicBuilding.getId());
+                basicBuildingOutfit.setId(null);
+                basicBuildingOutfit.setCreator(commonService.thisUserAccount());
+                basicBuildingOutfit.setGmtCreated(null);
+                basicBuildingOutfit.setGmtModified(null);
+                basicBuildingOutfitService.saveAndUpdateBasicBuildingOutfit(basicBuildingOutfit);
             }
         }
-        return basicBuildingMain;
+        if (!ObjectUtils.isEmpty(maintenanceList)) {
+            for (CaseBuildingMaintenance oo : maintenanceList) {
+                BasicBuildingMaintenance basicBuildingMaintenance = new BasicBuildingMaintenance();
+                BeanCopyHelp.copyPropertiesIgnoreNull(oo, basicBuildingMaintenance);
+                basicBuildingMaintenance.setBuildingId(basicBuilding.getId());
+                basicBuildingMaintenance.setId(null);
+                basicBuildingMaintenance.setCreator(commonService.thisUserAccount());
+                basicBuildingMaintenance.setGmtCreated(null);
+                basicBuildingMaintenance.setGmtModified(null);
+                basicBuildingMaintenanceService.saveAndUpdateBasicBuildingMaintenance(basicBuildingMaintenance);
+            }
+        }
+        if (!ObjectUtils.isEmpty(surfaceList)) {
+            for (CaseBuildingSurface oo : surfaceList) {
+                BasicBuildingSurface basicBuildingSurface = new BasicBuildingSurface();
+                BeanCopyHelp.copyPropertiesIgnoreNull(oo, basicBuildingSurface);
+                basicBuildingSurface.setBuildingId(basicBuilding.getId());
+                basicBuildingSurface.setId(null);
+                basicBuildingSurface.setCreator(commonService.thisUserAccount());
+                basicBuildingSurface.setGmtCreated(null);
+                basicBuildingSurface.setGmtModified(null);
+                basicBuildingSurfaceService.saveAndUpdateBasicBuildingSurface(basicBuildingSurface);
+            }
+        }
+        if (!ObjectUtils.isEmpty(functionList)) {
+            for (CaseBuildingFunction oo : functionList) {
+                BasicBuildingFunction basicBuildingFunction = new BasicBuildingFunction();
+                BeanCopyHelp.copyPropertiesIgnoreNull(oo, basicBuildingFunction);
+                basicBuildingFunction.setBuildingId(basicBuilding.getId());
+                basicBuildingFunction.setId(null);
+                basicBuildingFunction.setCreator(commonService.thisUserAccount());
+                basicBuildingFunction.setGmtCreated(null);
+                basicBuildingFunction.setGmtModified(null);
+                basicBuildingFunctionService.saveAndUpdateBasicBuildingFunction(basicBuildingFunction);
+            }
+        }
+        return basicBuilding;
     }
 
 

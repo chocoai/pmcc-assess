@@ -6,7 +6,17 @@ import java.util.Date;
 public class BasicBuilding {
     private Integer id;
 
-    private Integer basicBuildingMainId;
+    private Integer applyId;
+
+    private Integer estateId;
+
+    private String buildingNumber;
+
+    private String buildingName;
+
+    private Integer floorCount;
+
+    private String location;
 
     private String builder;
 
@@ -17,10 +27,6 @@ public class BasicBuilding {
     private BigDecimal propertyFee;
 
     private BigDecimal facilitiesUseFee;
-
-    private Integer floorStart;
-
-    private Integer floorEnd;
 
     private BigDecimal buildingHeight;
 
@@ -64,12 +70,52 @@ public class BasicBuilding {
         this.id = id;
     }
 
-    public Integer getBasicBuildingMainId() {
-        return basicBuildingMainId;
+    public Integer getApplyId() {
+        return applyId;
     }
 
-    public void setBasicBuildingMainId(Integer basicBuildingMainId) {
-        this.basicBuildingMainId = basicBuildingMainId;
+    public void setApplyId(Integer applyId) {
+        this.applyId = applyId;
+    }
+
+    public Integer getEstateId() {
+        return estateId;
+    }
+
+    public void setEstateId(Integer estateId) {
+        this.estateId = estateId;
+    }
+
+    public String getBuildingNumber() {
+        return buildingNumber;
+    }
+
+    public void setBuildingNumber(String buildingNumber) {
+        this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
+    }
+
+    public String getBuildingName() {
+        return buildingName;
+    }
+
+    public void setBuildingName(String buildingName) {
+        this.buildingName = buildingName == null ? null : buildingName.trim();
+    }
+
+    public Integer getFloorCount() {
+        return floorCount;
+    }
+
+    public void setFloorCount(Integer floorCount) {
+        this.floorCount = floorCount;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location == null ? null : location.trim();
     }
 
     public String getBuilder() {
@@ -110,22 +156,6 @@ public class BasicBuilding {
 
     public void setFacilitiesUseFee(BigDecimal facilitiesUseFee) {
         this.facilitiesUseFee = facilitiesUseFee;
-    }
-
-    public Integer getFloorStart() {
-        return floorStart;
-    }
-
-    public void setFloorStart(Integer floorStart) {
-        this.floorStart = floorStart;
-    }
-
-    public Integer getFloorEnd() {
-        return floorEnd;
-    }
-
-    public void setFloorEnd(Integer floorEnd) {
-        this.floorEnd = floorEnd;
     }
 
     public BigDecimal getBuildingHeight() {

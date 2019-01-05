@@ -8,7 +8,15 @@ public class CaseBuilding {
 
     private Integer estateId;
 
-    private Integer caseBuildingMainId;
+    private Integer type;
+
+    private String buildingNumber;
+
+    private String buildingName;
+
+    private Integer floorCount;
+
+    private String location;
 
     private String builder;
 
@@ -19,10 +27,6 @@ public class CaseBuilding {
     private BigDecimal propertyFee;
 
     private BigDecimal facilitiesUseFee;
-
-    private Integer floorStart;
-
-    private Integer floorEnd;
 
     private BigDecimal buildingHeight;
 
@@ -52,6 +56,8 @@ public class CaseBuilding {
 
     private Integer buildingStructureCategory;
 
+    private Integer version;
+
     private String creator;
 
     private Date gmtCreated;
@@ -74,12 +80,44 @@ public class CaseBuilding {
         this.estateId = estateId;
     }
 
-    public Integer getCaseBuildingMainId() {
-        return caseBuildingMainId;
+    public Integer getType() {
+        return type;
     }
 
-    public void setCaseBuildingMainId(Integer caseBuildingMainId) {
-        this.caseBuildingMainId = caseBuildingMainId;
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getBuildingNumber() {
+        return buildingNumber;
+    }
+
+    public void setBuildingNumber(String buildingNumber) {
+        this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
+    }
+
+    public String getBuildingName() {
+        return buildingName;
+    }
+
+    public void setBuildingName(String buildingName) {
+        this.buildingName = buildingName == null ? null : buildingName.trim();
+    }
+
+    public Integer getFloorCount() {
+        return floorCount;
+    }
+
+    public void setFloorCount(Integer floorCount) {
+        this.floorCount = floorCount;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location == null ? null : location.trim();
     }
 
     public String getBuilder() {
@@ -120,22 +158,6 @@ public class CaseBuilding {
 
     public void setFacilitiesUseFee(BigDecimal facilitiesUseFee) {
         this.facilitiesUseFee = facilitiesUseFee;
-    }
-
-    public Integer getFloorStart() {
-        return floorStart;
-    }
-
-    public void setFloorStart(Integer floorStart) {
-        this.floorStart = floorStart;
-    }
-
-    public Integer getFloorEnd() {
-        return floorEnd;
-    }
-
-    public void setFloorEnd(Integer floorEnd) {
-        this.floorEnd = floorEnd;
     }
 
     public BigDecimal getBuildingHeight() {
@@ -248,6 +270,14 @@ public class CaseBuilding {
 
     public void setBuildingStructureCategory(Integer buildingStructureCategory) {
         this.buildingStructureCategory = buildingStructureCategory;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     public String getCreator() {

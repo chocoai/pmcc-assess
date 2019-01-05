@@ -4,7 +4,6 @@ import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basic.entity.BasicBuilding;
-import com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMain;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnit;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
@@ -163,22 +162,17 @@ public class BasicApplyController extends BaseController {
         BasicEstateLandStateVo basicEstateLandStateVo = publicBasicService.getEstateLandStateByAppId(basicApply.getId());
         BasicHouseTradingVo basicHouseTradingVo = publicBasicService.getBasicHouseTradingByAppId(basicApply.getId());
         BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoByAppId(basicApply.getId());
-        BasicBuildingMain buildingMain = publicBasicService.getBasicBuildingMainByAppId(basicApply.getId());
+        BasicBuilding basicBuilding = publicBasicService.getBasicBuildingByAppId(basicApply.getId());
         if (basicApply != null) {
             modelAndView.addObject("basicApply", basicApplyService.getBasicApplyVo(basicApply));
         }
         modelAndView.addObject("basicEstate", basicEstateVo);
         modelAndView.addObject("basicEstateLandState", basicEstateLandStateVo);
-        modelAndView.addObject("basicBuildingMain", buildingMain);
+        modelAndView.addObject("basicBuilding", basicBuilding);
         modelAndView.addObject("basicUnit", basicUnit);
         modelAndView.addObject("basicHouse", basicHouseVo);
         modelAndView.addObject("basicHouseTrading", basicHouseTradingVo);
         setHouseElementRender(basicHouseTradingVo, modelAndView);
-        List<BasicBuilding> basicBuildingList = null;
-        if (buildingMain != null) {
-            basicBuildingList = publicBasicService.getMainById(buildingMain);
-            modelAndView.addObject("basicBuildingList", basicBuildingList);
-        }
     }
 
     /**

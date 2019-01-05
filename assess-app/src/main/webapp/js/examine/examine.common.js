@@ -57,8 +57,8 @@ basicCommon.getCaseEstateId = function () {
     return basicCommon.basicApplyForm.find("input[name='caseEstateId']").val();
 };
 
-basicCommon.getCaseBuildingMainId = function () {
-    return basicCommon.basicApplyForm.find("input[name='caseBuildingMainId']").val();
+basicCommon.getcaseBuildingId = function () {
+    return basicCommon.basicApplyForm.find("input[name='caseBuildingId']").val();
 };
 
 basicCommon.getCaseUnitId = function () {

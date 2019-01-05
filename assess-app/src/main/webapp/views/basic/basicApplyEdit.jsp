@@ -17,7 +17,7 @@
                 <input type="hidden" name="unitPartInMode" value="${basicApply.unitPartInMode}">
                 <input type="hidden" name="housePartInMode" value="${basicApply.housePartInMode}">
                 <input type="hidden" name="caseEstateId" value="${basicApply.caseEstateId}">
-                <input type="hidden" name="caseBuildingMainId" value="${basicApply.caseBuildingMainId}">
+                <input type="hidden" name="caseBuildingId" value="${basicApply.caseBuildingId}">
                 <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
                 <input type="hidden" name="caseHouseId" value="${basicApply.caseHouseId}">
             </form>

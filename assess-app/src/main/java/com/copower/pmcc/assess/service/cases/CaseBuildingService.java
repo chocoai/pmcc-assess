@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
+import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.dao.CaseBuildingDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.cases.CaseBuildingFunctionVo;
@@ -134,22 +135,17 @@ public class CaseBuildingService {
         return caseBuildingDao.getBuildingList(caseBuilding);
     }
 
-    public List<CaseBuildingVo> getCaseBuildingListByMainId(Integer mainId) {
-        CaseBuilding where =new CaseBuilding();
-        where.setCaseBuildingMainId(mainId);
-        return caseBuildingVoList(where);
+    public Integer getVersion(Integer id) {
+        if (id == null) return 0;
+        CaseBuilding caseBuildingMain = caseBuildingDao.getBuildingById(id);
+        if (caseBuildingMain == null) return 0;
+        return caseBuildingMain.getVersion();
     }
 
-    public List<CaseBuildingVo> caseBuildingVoList(CaseBuilding caseBuilding){
-        List<CaseBuilding> caseBuildingList =  caseBuildingDao.getBuildingList(caseBuilding);
-        List<CaseBuildingVo> vos = new ArrayList<CaseBuildingVo>(10);
-        if (!ObjectUtils.isEmpty(caseBuildingList)){
-            for (CaseBuilding building:caseBuildingList){
-                vos.add(getCaseBuildingVo(building));
-            }
-        }
-        return vos;
+    public int updateEstateId(Integer oldEstateId, Integer newEstateId){
+        return caseBuildingDao.updateEstateId(oldEstateId, newEstateId);
     }
+
 
     public CaseBuilding getCaseBuildingById(Integer id) {
         return caseBuildingDao.getBuildingById(id);
@@ -183,5 +179,16 @@ public class CaseBuildingService {
         vo.setBuildingStructureTypeName(baseDataDicService.getNameById(caseBuilding.getBuildingStructureType()));
         vo.setBuildingStructureCategoryName(baseDataDicService.getNameById(caseBuilding.getBuildingStructureCategory()));
         return vo;
+    }
+
+    public List<CustomCaseEntity> autoCompleteCaseBuilding(String buildingNumber, Integer estateId) {
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<CustomCaseEntity> mainList = caseBuildingDao.getLatestVersionBuildingList(buildingNumber, estateId);
+        return mainList;
+    }
+
+    public Boolean hasBuilding(String buildingNumber, Integer estateId){
+        return caseBuildingDao.getBuildingCount(buildingNumber, estateId) > 0;
     }
 }

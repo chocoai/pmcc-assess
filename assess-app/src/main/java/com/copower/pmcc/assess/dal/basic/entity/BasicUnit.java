@@ -7,7 +7,7 @@ public class BasicUnit {
 
     private Integer applyId;
 
-    private Integer buildingMainId;
+    private Integer buildingId;
 
     private String unitNumber;
 
@@ -35,12 +35,12 @@ public class BasicUnit {
         this.applyId = applyId;
     }
 
-    public Integer getBuildingMainId() {
-        return buildingMainId;
+    public Integer getBuildingId() {
+        return buildingId;
     }
 
-    public void setBuildingMainId(Integer buildingMainId) {
-        this.buildingMainId = buildingMainId;
+    public void setBuildingId(Integer buildingId) {
+        this.buildingId = buildingId;
     }
 
     public String getUnitNumber() {

@@ -81,8 +81,6 @@ public class SurveyExamineTaskService {
     @Autowired
     private BasicEstateService basicEstateService;
     @Autowired
-    private BasicBuildingMainService basicBuildingMainService;
-    @Autowired
     private BasicBuildingService basicBuildingService;
     @Autowired
     private BasicUnitService basicUnitService;
@@ -533,7 +531,6 @@ public class SurveyExamineTaskService {
         BasicApply basicApply = null;
         BasicEstate basicEstate = null;
         BasicEstateLandState basicEstateLandState = null;
-        BasicBuildingMain basicBuildingMain = null;
         BasicBuilding basicBuilding = null;
         BasicUnit basicUnit = null;
         BasicHouse basicHouse = null;
@@ -551,12 +548,6 @@ public class SurveyExamineTaskService {
             basicEstateLandState = JSONObject.parseObject(jsonObject.getString("basicEstateLandState"), BasicEstateLandState.class);
             if (basicEstateLandState != null) {
                 basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState);
-            }
-        }
-        if (StringUtils.isNotBlank(jsonObject.getString("basicBuildingMain"))) {
-            basicBuildingMain = JSONObject.parseObject(jsonObject.getString("basicBuildingMain"), BasicBuildingMain.class);
-            if (basicBuildingMain != null) {
-                basicBuildingMainService.saveAndUpdateBasicBuildingMain(basicBuildingMain);
             }
         }
         if (StringUtils.isNotBlank(jsonObject.getString("basicBuilding"))) {
