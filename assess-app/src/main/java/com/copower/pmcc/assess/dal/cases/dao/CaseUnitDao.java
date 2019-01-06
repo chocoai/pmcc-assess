@@ -82,11 +82,11 @@ public class CaseUnitDao {
     /**
      * 获取最新半单元信息
      *
-     * @param buildingMainId
+     * @param buildingId
      * @return
      */
-    public List<CustomCaseEntity> getLatestVersionUnitList(String unitNumber, Integer buildingMainId) {
-        return customCaseMapper.getCaseUnitList(unitNumber, buildingMainId);
+    public List<CustomCaseEntity> getLatestVersionUnitList(String unitNumber, Integer buildingId) {
+        return customCaseMapper.getCaseUnitList(unitNumber, buildingId);
     }
 
     /**

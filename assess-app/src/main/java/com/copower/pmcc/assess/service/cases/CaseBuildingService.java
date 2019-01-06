@@ -137,9 +137,9 @@ public class CaseBuildingService {
 
     public Integer getVersion(Integer id) {
         if (id == null) return 0;
-        CaseBuilding caseBuildingMain = caseBuildingDao.getBuildingById(id);
-        if (caseBuildingMain == null) return 0;
-        return caseBuildingMain.getVersion();
+        CaseBuilding caseBuilding = caseBuildingDao.getBuildingById(id);
+        if (caseBuilding == null) return 0;
+        return caseBuilding.getVersion();
     }
 
     public int updateEstateId(Integer oldEstateId, Integer newEstateId){

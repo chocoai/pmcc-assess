@@ -276,7 +276,7 @@
             if (!estateId) return;
             var itemVal = $(that).val();
             $.ajax({
-                url: "${pageContext.request.contextPath}/caseBuildingMain/autoCompleteCaseBuilding",
+                url: "${pageContext.request.contextPath}/caseBuilding/autoCompleteCaseBuilding",
                 type: "get",
                 dataType: "json",
                 data: {

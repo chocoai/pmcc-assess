@@ -11,12 +11,12 @@
             <div class="page-title" style="margin: 0px">
                 <div class="title_left">
                     <h2>
-                        ${caseEstate.name}${caseBuildingMain.buildingName}${caseUnit.unitNumber}单元${caseHouse.houseNumber}号
+                        ${caseEstate.name}${caseBuilding.buildingName}${caseUnit.unitNumber}单元${caseHouse.houseNumber}号
                         <small>
                             <a class="btn btn-xs btn-success" target="_blank"
                                href="${pageContext.request.contextPath}/caseEstate/detailView?id=${caseEstate.id}">楼盘信息</a>
                             <a class="btn btn-xs btn-success" target="_blank"
-                               href="${pageContext.request.contextPath}/caseBuildingMain/detailView?id=${caseBuildingMain.id}">楼栋信息</a>
+                               href="${pageContext.request.contextPath}/caseBuilding/detailView?id=${caseBuilding.id}">楼栋信息</a>
                             <a class="btn btn-xs btn-success" target="_blank"
                                href="${pageContext.request.contextPath}/caseUnit/detailView?id=${caseUnit.id}">单元信息</a>
                         </small>

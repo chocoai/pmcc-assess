@@ -494,74 +494,64 @@ public class PublicBasicService {
      * @return
      * @throws Exception
      */
-    private CaseBuilding flowWriteCaseBuildingMain(BasicApply basicApply, BasicBuilding basicBuilding, Integer estateId) throws Exception {
+    private CaseBuilding flowWriteCaseBuilding(BasicApply basicApply, BasicBuilding basicBuilding, Integer estateId) throws Exception {
         CaseBuilding caseBuilding = new CaseBuilding();
         if (basicBuilding != null) {
             BeanUtils.copyProperties(basicBuilding, caseBuilding);
             caseBuilding.setEstateId(estateId);
-           // caseBuilding.setType(basicApply.getType());
+            caseBuilding.setType(basicApply.getType());
             if (BasicApplyPartInModeEnum.UPGRADE.getKey().equals(basicApply.getBuildingPartInMode())) {
-               // caseBuilding.setVersion(caseBuildingMainService.getVersion(basicApply.getcaseBuildingId()) + 1);
+               caseBuilding.setVersion(caseBuildingService.getVersion(basicApply.getCaseBuildingId()) + 1);
             } else {
-               // caseBuilding.setVersion(1);
+               caseBuilding.setVersion(1);
             }
             caseBuilding.setId(null);
             caseBuilding.setGmtCreated(null);
             caseBuilding.setGmtModified(null);
             caseBuildingService.saveAndUpdateCaseBuilding(caseBuilding);
 
-            flowWriteCaseBuilding(basicBuilding, caseBuilding);
+            List<SysAttachmentDto> sysAttachmentDtoList = null;
+            List<BasicBuildingOutfit> outfitList = null;
+            List<BasicBuildingSurface> surfaceList = null;
+            List<BasicBuildingMaintenance> maintenanceList = null;
+            List<BasicBuildingFunction> functionList = null;
+            //-----------------------------||---------------------------
+            BasicBuildingOutfit queryOutfit = new BasicBuildingOutfit();
+            BasicBuildingSurface querySurface = new BasicBuildingSurface();
+            BasicBuildingMaintenance queryMaintenance = new BasicBuildingMaintenance();
+            BasicBuildingFunction queryFunction = new BasicBuildingFunction();
+            SysAttachmentDto queryFile = new SysAttachmentDto();
+
+            queryFunction.setBuildingId(basicBuilding.getId());
+            queryMaintenance.setBuildingId(basicBuilding.getId());
+            querySurface.setBuildingId(basicBuilding.getId());
+            queryOutfit.setBuildingId(basicBuilding.getId());
+            queryFile.setTableId(basicBuilding.getId());
+            queryFile.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+
+            sysAttachmentDtoList = baseAttachmentService.getAttachmentList(queryFile);
+            outfitList = basicBuildingOutfitService.basicBuildingOutfitList(queryOutfit);
+            surfaceList = basicBuildingSurfaceService.basicBuildingSurfaceList(querySurface);
+            maintenanceList = basicBuildingMaintenanceService.basicBuildingMaintenanceList(queryMaintenance);
+            functionList = basicBuildingFunctionService.basicBuildingFunctionList(queryFunction);
+
+            if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
+                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
+                    SysAttachmentDto attachmentDto = new SysAttachmentDto();
+                    attachmentDto.setTableId(caseBuilding.getId());
+                    attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class));
+                    baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
+                }
+            }
+
+            this.flowWriteCaseBuildingOutfit(outfitList, caseBuilding);
+            this.flowWriteCaseBuildingMaintenance(maintenanceList, caseBuilding);
+            this.flowWriteCaseBuildingSurface(surfaceList, caseBuilding);
+            this.flowWriteCaseBuildingFunction(functionList, caseBuilding);
         }
         return caseBuilding;
     }
 
-    /**
-     * 楼栋 回写
-     *
-     * @param basicBuildingMain
-     * @param caseBuildingMain
-     * @throws Exception
-     */
-    private void flowWriteCaseBuilding(BasicBuilding basicBuilding, CaseBuilding caseBuilding) throws Exception {
-        List<SysAttachmentDto> sysAttachmentDtoList = null;
-        List<BasicBuildingOutfit> outfitList = null;
-        List<BasicBuildingSurface> surfaceList = null;
-        List<BasicBuildingMaintenance> maintenanceList = null;
-        List<BasicBuildingFunction> functionList = null;
-        //-----------------------------||---------------------------
-        BasicBuildingOutfit queryOutfit = new BasicBuildingOutfit();
-        BasicBuildingSurface querySurface = new BasicBuildingSurface();
-        BasicBuildingMaintenance queryMaintenance = new BasicBuildingMaintenance();
-        BasicBuildingFunction queryFunction = new BasicBuildingFunction();
-        SysAttachmentDto queryFile = new SysAttachmentDto();
-
-        queryFunction.setBuildingId(basicBuilding.getId());
-        queryMaintenance.setBuildingId(basicBuilding.getId());
-        querySurface.setBuildingId(basicBuilding.getId());
-        queryOutfit.setBuildingId(basicBuilding.getId());
-        queryFile.setTableId(basicBuilding.getId());
-        queryFile.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-
-        sysAttachmentDtoList = baseAttachmentService.getAttachmentList(queryFile);
-        outfitList = basicBuildingOutfitService.basicBuildingOutfitList(queryOutfit);
-        surfaceList = basicBuildingSurfaceService.basicBuildingSurfaceList(querySurface);
-        maintenanceList = basicBuildingMaintenanceService.basicBuildingMaintenanceList(queryMaintenance);
-        functionList = basicBuildingFunctionService.basicBuildingFunctionList(queryFunction);
-
-        if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
-            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                SysAttachmentDto attachmentDto = new SysAttachmentDto();
-                attachmentDto.setTableId(caseBuilding.getId());
-                attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class));
-                baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
-            }
-        }
-
-        this.flowWriteCaseBuildingOutfit(outfitList, caseBuilding);
-        this.flowWriteCaseBuildingMaintenance(maintenanceList, caseBuilding);
-        this.flowWriteCaseBuildingSurface(surfaceList, caseBuilding);
-        this.flowWriteCaseBuildingFunction(functionList, caseBuilding);
-    }
 
     private void flowWriteCaseBuildingOutfit(List<BasicBuildingOutfit> list, CaseBuilding caseBuilding) throws Exception {
         if (!ObjectUtils.isEmpty(list)) {
@@ -1123,12 +1113,12 @@ public class PublicBasicService {
 
             //处理楼栋
             if (StringUtils.isNotBlank(basicApply.getBuildingPartInMode()) && basicBuilding != null) {
-                CaseBuilding caseBuildingMain = this.flowWriteCaseBuildingMain(basicApply, basicBuilding, estateId);
+                CaseBuilding caseBuilding = this.flowWriteCaseBuilding(basicApply, basicBuilding, estateId);
                 if (BasicApplyPartInModeEnum.UPGRADE.getKey().equals(basicApply.getBuildingPartInMode()) && buildingMainId != null && buildingMainId > 0) {
                     //更新单元关联id
-                    caseUnitService.updateBuildingId(buildingMainId, caseBuildingMain.getId());
+                    caseUnitService.updateBuildingId(buildingMainId, caseBuilding.getId());
                 }
-                buildingMainId = caseBuildingMain.getId();
+                buildingMainId = caseBuilding.getId();
                 this.flowWriteCaseTagging(EstateTaggingTypeEnum.BUILDING, basicApply.getId(), buildingMainId);
             }
 

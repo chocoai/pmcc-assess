@@ -4,7 +4,6 @@
 
 ;(function ($) {
     var buildingCommon = {};
-    buildingCommon.buildingMainForm = $('#basicBuildingMainFrm');
     buildingCommon.buildingForm = $('#basicBuildingFrm');
     buildingCommon.buildingMapiframe = undefined;
     //附件上传控件id数组
@@ -90,7 +89,7 @@
             data: {applyId: applyId},
             success: function (result) {
                 if (result.ret) {
-                    buildingCommon.showBuildingView(result.data);
+                    buildingCommon.showBuildingDetail(result.data.id);
                 }
             }
         })
@@ -105,13 +104,13 @@
                 AssessCommon.loadDataDicByPid($(this).val(), data.buildingStructureCategory, function (html, data) {
                     buildingCommon.buildingForm.find("select.buildingStructureCategory").empty().html(html).trigger('change');
                 });
-                buildingStructureCategory = null;
+                data.buildingStructureCategory = null;
             });
             buildingCommon.buildingForm.find('select.propertyType').off('change').on('change', function () {
-                AssessCommon.loadDataDicByPid($(this).val(), propertyCategory, function (html, data) {
+                AssessCommon.loadDataDicByPid($(this).val(), data.propertyCategory, function (html, data) {
                     buildingCommon.buildingForm.find('select.propertyCategory').empty().html(html).trigger('change');
                 });
-                propertyCategory = null;
+                data.propertyCategory = null;
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_type, data.propertyType, function (html, data) {
                 buildingCommon.buildingForm.find('select.propertyType').empty().html(html).trigger('change');

@@ -11,7 +11,7 @@
             <div class="page-title" style="margin: 0px">
                 <div class="title_left">
                     <h2>
-                        ${caseEstate.name}${caseBuildingMain.buildingName}
+                        ${caseEstate.name}${caseBuilding.buildingName}
                         <small>
                             <a class="btn btn-xs btn-success" target="_blank"
                                href="${pageContext.request.contextPath}/caseEstate/detailView?id=${caseEstate.id}">楼盘信息</a>

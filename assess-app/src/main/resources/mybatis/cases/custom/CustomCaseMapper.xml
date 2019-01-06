@@ -44,7 +44,7 @@
         <if test="unitNumber!=null and unitNumber!=''">
             AND unit_number LIKE CONCAT(CONCAT('%', #{unitNumber}), '%')
         </if>
-        <if test="buildingMainId!=null">
+        <if test="buildingId!=null">
             AND building_id=#{buildingId}
         </if>
         ORDER BY version DESC) AS T
@@ -117,7 +117,7 @@
 
     <sql id="Base_Column_ListCaseBuilding">
         id, estate_id, type, building_number, building_name, floor_count, location, version,
-        multipart_flag, creator, gmt_created, gmt_modified
+         creator, gmt_created, gmt_modified
     </sql>
     <select id="screenBuildList" parameterType="map"
             resultMap="com.copower.pmcc.assess.dal.cases.mapper.CaseBuildingMapper.BaseResultMap">

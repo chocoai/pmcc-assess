@@ -73,7 +73,7 @@
                 return false;
             },
             getBuildingId: function () {
-                return buildingCommon.buildingMainForm.find('[name=id]').val();
+                return buildingCommon.buildingForm.find('[name=id]').val();
             },
             /**
              * @author:  zch

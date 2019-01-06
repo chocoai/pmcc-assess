@@ -20,7 +20,7 @@
     </div>
 </div>
 
-<c:if test="${caseBuildingMain.type eq 1}">
+<c:if test="${caseBuilding.type eq 1}">
     <div class="x_panel">
         <div class="x_title collapse-link">
             <ul class="nav navbar-right panel_toolbox">

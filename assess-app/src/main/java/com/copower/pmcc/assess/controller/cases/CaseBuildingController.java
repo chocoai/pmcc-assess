@@ -28,7 +28,7 @@ import java.util.Map;
  * @Date: 2018/10/28 14:29
  * @Description:
  */
-@RequestMapping(value = "/caseBuildingMain")
+@RequestMapping(value = "/caseBuilding")
 @Controller
 public class CaseBuildingController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -44,18 +44,18 @@ public class CaseBuildingController {
         String view = "/case/caseBuild/caseBuildingView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         CaseBuilding caseBuilding = caseBuildingService.getCaseBuildingById(id);
-        modelAndView.addObject("caseBuilding", caseBuilding);
+        modelAndView.addObject("caseBuilding", caseBuildingService.getCaseBuildingVo(caseBuilding));
         modelAndView.addObject("caseEstate", caseEstateService.getCaseEstateById(caseBuilding.getEstateId()));
         return modelAndView;
     }
 
 
-//    @ResponseBody
-//    @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET}, name = "楼栋--列表")
-//    public BootstrapTableVo getBootstrapTableVo(CaseBuildingMain caseBuildingMain) {
-//        BootstrapTableVo vo = caseBuildingMainService.getBootstrapTableVo(caseBuildingMain);
-//        return vo;
-//    }
+    @ResponseBody
+    @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET}, name = "楼栋--列表")
+    public BootstrapTableVo getBootstrapTableVo(CaseBuilding caseBuilding) {
+        BootstrapTableVo vo = caseBuildingService.getCaseBuildingListVos(caseBuilding);
+        return vo;
+    }
 
     @ResponseBody
     @RequestMapping(value = "/autoCompleteCaseBuilding", method = {RequestMethod.GET}, name = "楼栋-- 信息自动补全")

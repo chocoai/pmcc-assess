@@ -5,7 +5,7 @@
             <h3>楼栋基本信息 </h3>
             <div class="clearfix"></div>
         </div>
-        <form class="form-horizontal" id="basicBuildingMainFrm">
+        <form class="form-horizontal" id="basicBuildingFrm">
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
@@ -13,9 +13,9 @@
                     </label>
                     <div class="col-sm-3">
                         <div class="input-group">
-                            <label class="form-control" name="buildingNumber">${caseBuildingMain.buildingNumber}</label>
+                            <label class="form-control" name="buildingNumber">${caseBuilding.buildingNumber}</label>
                             <span class="input-group-btn">
-                            <div onclick="caseCommon.viewMapMarker('${caseBuildingMain.id}','building','');" class="btn btn-info"><i
+                            <div onclick="caseCommon.viewMapMarker('${caseBuilding.id}','building','');" class="btn btn-info"><i
                                     class="fa fa-map-marker"></i> 标注</div>
                             </span>
                         </div>
@@ -26,7 +26,7 @@
                         楼栋名称
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control" name="buildingName">${caseBuildingMain.buildingName}</label>
+                        <label class="form-control" name="buildingName">${caseBuilding.buildingName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
@@ -34,7 +34,7 @@
                         总层数
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control" name="floorCount">${caseBuildingMain.floorCount}</label>
+                        <label class="form-control" name="floorCount">${caseBuilding.floorCount}</label>
                     </div>
                 </div>
             </div>
@@ -44,32 +44,11 @@
                         所在位置
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control" name="location">${caseBuildingMain.location}</label>
+                        <label class="form-control" name="location">${caseBuilding.location}</label>
                     </div>
                 </div>
             </div>
-        </form>
-        <div class="x_title"></div>
-        <form class="form-horizontal" id="basicBuildingFrm">
             <input type="hidden" name="id" value="${caseBuilding.id}">
-            <div class="form-group" style="display: none;">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        楼层起
-                    </label>
-                    <div class="col-sm-3">
-                        <label class="form-control" name="floorStart"></label>
-                    </div>
-                </div>
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        楼层止
-                    </label>
-                    <div class="col-sm-3">
-                        <label class="form-control" name="floorEnd"></label>
-                    </div>
-                </div>
-            </div>
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">

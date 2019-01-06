@@ -17,7 +17,7 @@
             var params = AssessDefault.autocomplete();
             params.source = function (request, response) {
                 $.ajax({
-                    url: getContextPath() + "/caseBuildingMain/autoCompleteCaseBuilding",
+                    url: getContextPath() + "/caseBuilding/autoCompleteCaseBuilding",
                     type: "get",
                     dataType: "json",
                     data: {

@@ -230,17 +230,8 @@
     }
 
     BaseViewFun.prototype.event = {
-        selectInit: function () {
-
-        }
     };
     var baseFun = new BaseViewFun();
-
-    baseFun.caseBlock = {
-        init: function () {
-
-        }
-    };
 
     baseFun.caseEstate = {
         /**
@@ -299,14 +290,6 @@
         },
         /**
          * @author:  zch
-         * 描述:自动填充 (使用插件)
-         * @date:2018-09-13
-         **/
-        searchInput: function () {
-
-        },
-        /**
-         * @author:  zch
          * 描述:详情数据
          * @date:2018-09-13
          **/
@@ -326,7 +309,7 @@
 
     baseFun.caseBuild = {
         findData: function (id) {
-            var href = "${pageContext.request.contextPath}/caseBuildingMain/detailView";
+            var href = "${pageContext.request.contextPath}/caseBuilding/detailView";
             href += "?id=" + id;
             window.open(href, "");
         },
@@ -348,7 +331,7 @@
                 }
             });
             $("#" + baseFun.config.father.caseBuild.table()).bootstrapTable('destroy');
-            TableInit(baseFun.config.father.caseBuild.table(), "${pageContext.request.contextPath}/caseBuildingMain/getBootstrapTableVo", cols, {
+            TableInit(baseFun.config.father.caseBuild.table(), "${pageContext.request.contextPath}/caseBuilding/getBootstrapTableVo", cols, {
                 estateId: id
             }, {
                 showColumns: false,
@@ -441,7 +424,11 @@
 
 
     $(function () {
-        baseFun.event.selectInit();
+        AssessCommon.initAreaInfo({
+            provinceTarget: $("#" + baseFun.config.father.caseEstate.frm()).find('[name=province]'),
+            cityTarget: $("#" + baseFun.config.father.caseEstate.frm()).find('[name=city]')
+        });
+        baseFun.caseEstate.loadDataList();
         baseFun.caseBuild.loadDataList(null);
         baseFun.caseUnit.loadDataList(null);
         baseFun.caseHouse.loadDataList(null);
@@ -450,25 +437,5 @@
                 $("#" + baseFun.config.father.caseEstate.frm() + " input[name='search']").val(name) ;
             }
         });
-        //定位成功回调方法
-        try {
-            mapPosition.complete(function (data) {
-                var province = data.addressComponent.province;
-                var city = data.addressComponent.city;
-                if (province && city) {
-                    AssessCommon.initAreaInfo({
-                        provinceTarget: $("#" + baseFun.config.father.caseEstate.frm()).find('[name=province]'),
-                        cityTarget: $("#" + baseFun.config.father.caseEstate.frm()).find('[name=city]'),
-                        provinceDefaultText: province.replace('省', ''),
-                        cityDefaultText: city.replace('市', ''),
-                        success: function () {
-                            baseFun.caseEstate.loadDataList(true);
-                        }
-                    });
-                }
-            })
-        } catch (e) {
-            baseFun.caseEstate.loadDataList();
-        }
     });
 </script>

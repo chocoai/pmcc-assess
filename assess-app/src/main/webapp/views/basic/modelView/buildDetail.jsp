@@ -4,7 +4,8 @@
         <h3>楼栋基本信息</h3>
         <div class="clearfix"></div>
     </div>
-    <form class="form-horizontal" id="basicBuildingMainFrm">
+    <form class="form-horizontal" id="basicBuildingFrm">
+        <input type="hidden" name="id">
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
@@ -47,10 +48,6 @@
                 </div>
             </div>
         </div>
-    </form>
-    <div style="margin-bottom: 10px; border-bottom:2px solid #E6E9ED;"></div>
-    <form class="form-horizontal" id="basicBuildingFrm">
-        <input type="hidden" name="id">
         <div class="form-group" style="display: none;">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
