@@ -261,17 +261,10 @@
     </form>
 </div>
 
-<c:if test="${dataExamineTask.fieldName == 'fc.residence'}">
-    <%@include file="./buildingOutfit.jsp" %>
-    <%@include file="./buildingFunction.jsp" %>
-</c:if>
+<%@include file="./buildingOutfit.jsp" %>
+<%@include file="./buildingFunction.jsp" %>
 
-<c:if test="${dataExamineTask.fieldName == 'fc.industry'}">
-    <%@include file="./buildingOutfit.jsp" %>
-    <%@include file="./buildingFunction.jsp" %>
-    <%@include file="../../industry/apply/buildingMaintenance.jsp" %>
-    <%@include file="../../industry/apply/buildingSurface.jsp" %>
-</c:if>
+
 
 
 </html>

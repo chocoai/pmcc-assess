@@ -43,14 +43,6 @@ public class SurveyCaseStudyController {
     private SurveyCommonService surveyCommonService;
     @Autowired
     private SurveyCaseStudyService surveyCaseStudyService;
-    @Autowired
-    private DataExamineTaskService dataExamineTaskService;
-    @Autowired
-    private SurveyExamineTaskService surveyExamineTaskService;
-    @Autowired
-    private ProjectPlanDetailsService projectPlanDetailsService;
-    @Autowired
-    private CommonService commonService;
 
 
     @ResponseBody
@@ -68,49 +60,7 @@ public class SurveyCaseStudyController {
     public HttpResult saveCaseTask(String formData, Integer planDetailsId, String examineFormType) {
         try {
             ProjectPlanDetails projectPlanDetails = JSON.parseObject(formData, ProjectPlanDetails.class);
-            surveyCaseStudyService.saveCaseTask(projectPlanDetails, planDetailsId);
-            //com.copower.pmcc.assess.service.project.survey.SurveyExamineTaskService.confirmAssignment()
-            ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-            if (StringUtils.isNotBlank(examineFormType)) {
-                DataExamineTask dataExamineTask = null;
-                if (Objects.equal(AssessExamineTaskConstant.FC_RESIDENCE, examineFormType)) {
-                    dataExamineTask = dataExamineTaskService.getCacheDataExamineTaskByFieldName(AssessExamineTaskConstant.FC_RESIDENCE);
-                }
-                if (Objects.equal(AssessExamineTaskConstant.FC_INDUSTRY, examineFormType)) {
-                    dataExamineTask = dataExamineTaskService.getCacheDataExamineTaskByFieldName(AssessExamineTaskConstant.FC_INDUSTRY);
-                }
-                List<DataExamineTask> dataExamineTaskList = null;
-                List<DataExamineTask> examineTaskList = new ArrayList<DataExamineTask>(10);
-                if (dataExamineTask != null) {
-                    dataExamineTaskList = dataExamineTaskService.getCacheDataExamineTaskListByKey(dataExamineTask.getFieldName());
-                }
-                if (CollectionUtils.isNotEmpty(dataExamineTaskList)) {
-                    for (DataExamineTask examineTask:dataExamineTaskList){
-                        List<DataExamineTask> dataExamineTasks =  dataExamineTaskService.getCacheDataExamineTaskListByKey(examineTask.getFieldName());
-                        if (CollectionUtils.isNotEmpty(dataExamineTasks)){
-                            examineTaskList.addAll(dataExamineTasks);
-                        }
-                    }
-                }
-                if (CollectionUtils.isNotEmpty(examineTaskList)){
-                    for (DataExamineTask examineTask:examineTaskList){
-                        SurveyExamineTask surveyExamineTask = new SurveyExamineTask();
-                        surveyExamineTask.setPid(planDetails.getPid());
-                        surveyExamineTask.setUserAccount(planDetails.getExecuteUserAccount());
-                        surveyExamineTask.setBisMust(examineTask.getBisMust());
-                        surveyExamineTask.setPlanDetailsId(planDetails.getId());
-                        surveyExamineTask.setName(examineTask.getName());
-                        surveyExamineTask.setSorting(examineTask.getSorting());
-                        surveyExamineTask.setExamineType(ExamineTypeEnum.CASE.getId());
-                        surveyExamineTask.setDeclareId(planDetails.getDeclareRecordId());
-                        surveyExamineTask.setPlanDetailsId(planDetails.getId());
-                        surveyExamineTask.setDataTaskId(examineTask.getId());
-                        surveyExamineTask.setTaskStatus(ProjectStatusEnum.WAIT.getKey());
-                        surveyExamineTask.setCreator(commonService.thisUserAccount());
-                        surveyExamineTaskService.saveSurveyExamineTask(surveyExamineTask);
-                    }
-                }
-            }
+            surveyCaseStudyService.saveCaseTask(projectPlanDetails, planDetailsId,examineFormType);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("保存案例任务", e);

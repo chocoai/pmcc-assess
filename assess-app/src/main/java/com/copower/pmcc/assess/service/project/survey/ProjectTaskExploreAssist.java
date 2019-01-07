@@ -38,6 +38,8 @@ public class ProjectTaskExploreAssist implements ProjectTaskInterface {
     private SurveySceneExploreService surveySceneExploreService;
     @Autowired
     private DeclareRecordService declareRecordService;
+    @Autowired
+    private SurveyCommonService surveyCommonService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -45,7 +47,9 @@ public class ProjectTaskExploreAssist implements ProjectTaskInterface {
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
         SurveySceneExplore surveySceneExplore = surveySceneExploreService.initSceneExplore(projectPlanDetails.getProjectId(), projectPlanDetails.getId(), projectPlanDetails.getDeclareRecordId());
+        modelAndView.addObject("projectPlanDetails", projectPlanDetails);
         modelAndView.addObject("surveySceneExplore", surveySceneExplore);
+        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
         return modelAndView;
     }
 

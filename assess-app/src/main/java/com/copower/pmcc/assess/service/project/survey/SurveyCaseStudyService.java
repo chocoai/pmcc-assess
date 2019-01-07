@@ -1,20 +1,38 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
+import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyCaseStudyDao;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudy;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.service.PublicService;
+import com.copower.pmcc.assess.service.data.DataExamineTaskService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.ProjectPlanService;
+import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
+import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
+import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
+import com.google.common.base.Objects;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +55,24 @@ public class SurveyCaseStudyService {
     @Autowired
     private SurveyExamineInfoService surveyExamineInfoService;
     @Autowired
+    private ErpRpcUserService erpRpcUserService;
+    @Autowired
+    private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+    @Autowired
+    private DataExamineTaskService dataExamineTaskService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
+    @Autowired
+    private PublicService publicService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
+    @Autowired
+    private ProjectPlanService projectPlanService;
+    @Autowired
+    private ProjectWorkStageService projectWorkStageService;
+    @Autowired
+    private ApplicationConstant applicationConstant;
+    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     /**
@@ -57,11 +93,11 @@ public class SurveyCaseStudyService {
         }
     }
 
-    public boolean updateSurveyCaseStudy(SurveyCaseStudy surveyCaseStudy){
-        if (surveyCaseStudy== null){
+    public boolean updateSurveyCaseStudy(SurveyCaseStudy surveyCaseStudy) {
+        if (surveyCaseStudy == null) {
             return false;
         }
-        return  surveyCaseStudyDao.updateSurveyCaseStudy(surveyCaseStudy);
+        return surveyCaseStudyDao.updateSurveyCaseStudy(surveyCaseStudy);
     }
 
     /**
@@ -89,15 +125,15 @@ public class SurveyCaseStudyService {
     }
 
 
-
     /**
      * 保存案例任务
      *
      * @param projectPlanDetails
      */
-    public void saveCaseTask(ProjectPlanDetails projectPlanDetails, Integer planDetailsId) throws BusinessException {
+    public void saveCaseTask(ProjectPlanDetails projectPlanDetails, Integer planDetailsId, String examineFormType) throws BusinessException {
         if (projectPlanDetails.getId() != null && projectPlanDetails.getId() > 0) {
             projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);
+            this.confirmAssignment(projectPlanDetails, examineFormType);
         } else {
             ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
             planDetails.setId(0);
@@ -111,6 +147,125 @@ public class SurveyCaseStudyService {
             planDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
             planDetails.setCreator(commonService.thisUserAccount());
             projectPlanDetailsService.saveProjectPlanDetails(planDetails);
+            //分派
+            this.confirmAssignment(planDetails, examineFormType);
+        }
+    }
+
+    /**
+     * 分派
+     * @param planDetails
+     * @param examineFormType
+     * @throws BusinessException
+     */
+    private void confirmAssignment(ProjectPlanDetails planDetails, String examineFormType) throws BusinessException {
+        //清除还为运行的计划任务,同时查询待提交任务，一同清除
+        //根据现有任务分派情况，确定子计划任务及待提交任务
+        ProjectPlanDetails where = new ProjectPlanDetails();
+        where.setPid(planDetails.getId());
+        where.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+        List<ProjectPlanDetails> projectDetails = projectPlanDetailsService.getProjectDetails(where);
+        if (CollectionUtils.isNotEmpty(projectDetails)) {
+//            deletePlanDetailsAndTask(projectDetails);
+        }
+        String userAccount = commonService.thisUserAccount();
+        ProjectWorkStage workStage = projectWorkStageService.cacheProjectWorkStage(planDetails.getProjectWorkStageId());
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());
+        String phaseKey = AssessPhaseKeyConstant.SCENE_EXPLORE_EXAMINE;
+        if (ExamineTypeEnum.CASE.getId().equals(examineFormType)) {
+            phaseKey = AssessPhaseKeyConstant.CASE_STUDY_EXAMINE;
+        }
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(phaseKey, projectInfo.getProjectCategoryId());
+        //添加计划任务子项及待提交任务
+        ProjectPlanDetails taskPlanDetails = new ProjectPlanDetails();
+        if (true) {
+            SurveyExamineInfo surveyExamineInfo = new SurveyExamineInfo();
+            surveyExamineInfo.setExamineType(ExamineTypeEnum.CASE.getId());
+            surveyExamineInfo.setProjectId(planDetails.getProjectId());
+            surveyExamineInfo.setPlanDetailsId(planDetails.getId());
+            surveyExamineInfo.setExamineFormType(examineFormType);
+            surveyExamineInfo.setDeclareRecordId(planDetails.getDeclareRecordId());
+            surveyExamineInfo.setBisAssignment(true);
+            surveyExamineInfo.setCreator(commonService.thisUserAccount());
+            surveyExamineInfoService.save(surveyExamineInfo);
+        }
+        BeanUtils.copyProperties(planDetails, taskPlanDetails);
+        taskPlanDetails.setId(0);
+        taskPlanDetails.setPid(planDetails.getId());
+        SysUserDto sysUser = erpRpcUserService.getSysUser(userAccount);
+        taskPlanDetails.setProjectPhaseId(projectPhase.getId());
+        taskPlanDetails.setExecuteUserAccount(userAccount);
+        taskPlanDetails.setExecuteDepartmentId(sysUser.getDepartmentId());
+        taskPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+        taskPlanDetails.setCreator(commonService.thisUserAccount());
+        taskPlanDetails.setProjectPhaseName(String.format("%s-%s", planDetails.getProjectPhaseName(), publicService.getUserNameByAccount(userAccount)));
+        projectPlanDetailsService.saveProjectPlanDetails(taskPlanDetails);
+        //save 保存查勘内容(工业与非工业)
+        this.saveSurveyExamineTask(planDetails, examineFormType);
+        //添加任务
+        ProjectResponsibilityDto projectTask = new ProjectResponsibilityDto();
+        projectTask.setProjectId(planDetails.getProjectId());
+        projectTask.setProjectName(projectInfo.getProjectName());
+        projectTask.setPlanEndTime(planDetails.getPlanEndDate());
+        projectTask.setPlanId(planDetails.getPlanId());
+        projectTask.setPlanDetailsId(taskPlanDetails.getId());
+        projectTask.setModel(ResponsibileModelEnum.TASK.getId());
+        projectTask.setConclusion(ResponsibileModelEnum.TASK.getName());
+        projectTask.setUserAccount(userAccount);
+        projectTask.setBisEnable(true);
+        projectTask.setAppKey(applicationConstant.getAppKey());
+        projectTask.setPlanDetailsName(String.format("%s[%s]", workStage.getWorkStageName(), taskPlanDetails.getProjectPhaseName()));
+        projectPlanService.updateProjectTaskUrl(ResponsibileModelEnum.TASK, projectTask);
+        projectTask.setCreator(commonService.thisUserAccount());
+        bpmRpcProjectTaskService.saveProjectTask(projectTask);
+    }
+
+    /**
+     * 保存查勘内容(工业与非工业)
+     * @param planDetails
+     * @param examineFormType
+     * @throws BusinessException
+     */
+    private void saveSurveyExamineTask(ProjectPlanDetails planDetails, String examineFormType) throws BusinessException {
+        if (StringUtils.isNotBlank(examineFormType)) {
+            DataExamineTask dataExamineTask = null;
+            if (Objects.equal(AssessExamineTaskConstant.FC_RESIDENCE, examineFormType)) {
+                dataExamineTask = dataExamineTaskService.getCacheDataExamineTaskByFieldName(AssessExamineTaskConstant.FC_RESIDENCE);
+            }
+            if (Objects.equal(AssessExamineTaskConstant.FC_INDUSTRY, examineFormType)) {
+                dataExamineTask = dataExamineTaskService.getCacheDataExamineTaskByFieldName(AssessExamineTaskConstant.FC_INDUSTRY);
+            }
+            List<DataExamineTask> dataExamineTaskList = null;
+            List<DataExamineTask> examineTaskList = new ArrayList<DataExamineTask>(10);
+            if (dataExamineTask != null) {
+                dataExamineTaskList = dataExamineTaskService.getCacheDataExamineTaskListByKey(dataExamineTask.getFieldName());
+            }
+            if (CollectionUtils.isNotEmpty(dataExamineTaskList)) {
+                for (DataExamineTask examineTask : dataExamineTaskList) {
+                    List<DataExamineTask> dataExamineTasks = dataExamineTaskService.getCacheDataExamineTaskListByKey(examineTask.getFieldName());
+                    if (CollectionUtils.isNotEmpty(dataExamineTasks)) {
+                        examineTaskList.addAll(dataExamineTasks);
+                    }
+                }
+            }
+            if (CollectionUtils.isNotEmpty(examineTaskList)) {
+                for (DataExamineTask examineTask : examineTaskList) {
+                    SurveyExamineTask surveyExamineTask = new SurveyExamineTask();
+                    surveyExamineTask.setPid(planDetails.getPid());
+                    surveyExamineTask.setUserAccount(planDetails.getExecuteUserAccount());
+                    surveyExamineTask.setBisMust(examineTask.getBisMust());
+                    surveyExamineTask.setPlanDetailsId(planDetails.getId());
+                    surveyExamineTask.setName(examineTask.getName());
+                    surveyExamineTask.setSorting(examineTask.getSorting());
+                    surveyExamineTask.setExamineType(ExamineTypeEnum.CASE.getId());
+                    surveyExamineTask.setDeclareId(planDetails.getDeclareRecordId());
+                    surveyExamineTask.setPlanDetailsId(planDetails.getId());
+                    surveyExamineTask.setDataTaskId(examineTask.getId());
+                    surveyExamineTask.setTaskStatus(ProjectStatusEnum.WAIT.getKey());
+                    surveyExamineTask.setCreator(commonService.thisUserAccount());
+                    surveyExamineTaskService.saveSurveyExamineTask(surveyExamineTask);
+                }
+            }
         }
     }
 
@@ -123,7 +278,7 @@ public class SurveyCaseStudyService {
     public void deleteCaseTask(Integer planDetailsId) throws BusinessException {
         //先验证是否满足删除条件
         //需删除该计划任务下的子项任务，项目待提交的任务
-        List<ProjectPlanDetails> list = projectPlanDetailsService.getPlanDetailsListRecursion(planDetailsId,true);
+        List<ProjectPlanDetails> list = projectPlanDetailsService.getPlanDetailsListRecursion(planDetailsId, true);
         if (CollectionUtils.isNotEmpty(list)) {
             //检查任务是否允许删除
             for (ProjectPlanDetails projectPlanDetails : list) {
@@ -159,7 +314,7 @@ public class SurveyCaseStudyService {
         surveyCaseStudy.setProjectId(projectId);
         surveyCaseStudy.setPlanDetailsId(planDetailsId);
         surveyCaseStudy.setDeclareId(declareId);
-        surveyCaseStudy.setJsonContent(surveyCommonService.getDeclareCertJson(projectId,declareId));
+        surveyCaseStudy.setJsonContent(surveyCommonService.getDeclareCertJson(projectId, declareId));
         surveyCaseStudy.setCreator(commonService.thisUserAccount());
         surveyCaseStudyDao.addSurveyCaseStudy(surveyCaseStudy);
         return surveyCaseStudy;
@@ -167,6 +322,7 @@ public class SurveyCaseStudyService {
 
     /**
      * 复制案例
+     *
      * @param planDetailsId
      */
     @Transactional
@@ -175,8 +331,8 @@ public class SurveyCaseStudyService {
         //分派等相关任务还需手动操作
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         projectPlanDetails.setId(null);
-        projectPlanDetails.setProjectPhaseName(String.format("%s-复制",projectPlanDetails.getProjectPhaseName()));
-        projectPlanDetails.setSorting(projectPlanDetails.getSorting()+100);
+        projectPlanDetails.setProjectPhaseName(String.format("%s-复制", projectPlanDetails.getProjectPhaseName()));
+        projectPlanDetails.setSorting(projectPlanDetails.getSorting() + 100);
         projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
         projectPlanDetails.setCreator(commonService.thisUserAccount());
         projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);

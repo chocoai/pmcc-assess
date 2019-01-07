@@ -81,118 +81,7 @@
                     <div class="col-md-12">
                         <div class="panel-body">
                             <form id="frm_planDetails" class="form-horizontal">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            案例名称
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="hidden" id="planDetailsId" name="id"/>
-                                            <input type="hidden" id="pid" name="pid"/>
-                                            <input type="text" placeholder="案例名称" required maxlength="50"
-                                                   id="projectPhaseName" name="projectPhaseName"
-                                                   class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div class="form-group">
-
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            工业仓储类型
-                                        </label>
-                                    </div>
-
-                                    <div class="x-valid">
-                                        <c:choose>
-                                            <c:when test="${empty surveyExamineInfo}">
-                                                <c:forEach var="item" items="${examineFormTypeList}">
-                                                    <span class="col-sm-2">
-                                                        <input type="radio" name="examineFormType" data-value="${item.key}">
-                                                        <label for="examineFormType_${item.key}">&nbsp;${item.value}</label>
-                                                    </span>
-                                                </c:forEach>
-                                            </c:when>
-                                        </c:choose>
-                                    </div>
-                                </div>
-                                <%--这部分功能暂不开放 1--%>
-                                <div style="display:none;">
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <label class="col-sm-2 control-label">
-                                                开始时间
-                                            </label>
-                                            <div class="col-sm-4">
-                                                <input type="text" placeholder="开始时间" data-date-format='yyyy-mm-dd'
-                                                       id="planStartDate" name="planStartDate"
-                                                       class="form-control dbdate">
-                                            </div>
-                                        </div>
-                                        <div class="x-valid">
-                                            <label class="col-sm-2 control-label">
-                                                结束时间
-                                            </label>
-                                            <div class="col-sm-4">
-                                                <input type="text" placeholder="结束时间" data-date-format='yyyy-mm-dd'
-                                                       id="planEndDate" name="planEndDate"
-                                                       class="form-control dbdate">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">
-                                            责任人
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="hidden" placeholder="责任人" maxlength="50"
-                                                   id="executeUserAccount"
-                                                   name="executeUserAccount" class="form-control">
-                                            <input type="text" placeholder="责任人" maxlength="50" id="executeUserName"
-                                                   name="executeUserName" class="form-control" readonly="readonly"
-                                                   onclick="taskCaseIndex.selectEmployee()">
-                                        </div>
-                                        <label class="col-sm-2 control-label">
-                                            责任部门
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="hidden" placeholder="责任部门" maxlength="50"
-                                                   id="executeDepartmentId"
-                                                   name="executeDepartmentId" class="form-control">
-                                            <input type="text" placeholder="责任部门" maxlength="50"
-                                                   id="executeDepartmentName"
-                                                   name="executeDepartmentName" class="form-control"
-                                                   onclick="taskCaseIndex.selectDepartment()"
-                                                   readonly="readonly">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <label class="col-sm-2 control-label">
-                                                计划工时
-                                            </label>
-                                            <div class="col-sm-4">
-                                                <input type="text" placeholder="计划工时" data-rule-number='true'
-                                                       maxlength="5"
-                                                       id="planHours" name="planHours"
-                                                       class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="x-valid">
-                                            <label class="col-sm-2 control-label">
-                                                权重占比
-                                            </label>
-                                            <div class="col-sm-4">
-                                                <input type="text" placeholder="权重占比" data-rule-number='true'
-                                                       maxlength="5"
-                                                       id="proportion" name="proportion"
-                                                       class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- . -->
                             </form>
                         </div>
                     </div>
@@ -291,24 +180,24 @@
                     },
                     {
                         field: 'workStages', title: '操作', width: '10%', formatter: function (value, row) {
-                        if (row.bisEnable) {
-                            var s = "";
-                            if (row.id == '${projectPlanDetails.id}') {
-                                s += "<a  data-placement='top' data-original-title='新增' class='btn btn-xs btn-success tooltips' target='_blank' onclick='taskCaseIndex.addCaseTask(" + row.id + ")'   ><i class='fa fa-plus fa-white'></i></a>";
-                            } else if (row.pid == '${projectPlanDetails.id}') {
-                                s += taskCaseIndex.getOperationHtml(row.status, row.id);
-                            } else {
-                                //只用于处理任务
-                                if (row.excuteUrl) {
-                                    s += "<a  data-placement='top' data-original-title='提交' class='btn btn-xs btn-success tooltips' target='_blank' onclick='taskCaseIndex.openTaskUrl(\"" + row.excuteUrl + "\")'   ><i class='fa fa-arrow-right fa-white'></i></a>";
-                                } else if (row.displayUrl) {
-                                    s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                            if (row.bisEnable) {
+                                var s = "";
+                                if (row.id == '${projectPlanDetails.id}') {
+                                    s += "<a  data-placement='top' data-original-title='新增' class='btn btn-xs btn-success tooltips' target='_blank' onclick='taskCaseIndex.addCaseTask(" + row.id + ")'   ><i class='fa fa-plus fa-white'></i></a>";
+                                } else if (row.pid == '${projectPlanDetails.id}') {
+                                    s += taskCaseIndex.getOperationHtml(row.status, row.id);
+                                } else {
+                                    //只用于处理任务
+                                    if (row.excuteUrl) {
+                                        s += "<a  data-placement='top' data-original-title='提交' class='btn btn-xs btn-success tooltips' target='_blank' onclick='taskCaseIndex.openTaskUrl(\"" + row.excuteUrl + "\")'   ><i class='fa fa-arrow-right fa-white'></i></a>";
+                                    } else if (row.displayUrl) {
+                                        s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                                    }
                                 }
+                                return s;
                             }
-                            return s;
-                        }
 
-                    }
+                        }
                     }
                 ]]
             }
@@ -321,7 +210,9 @@
         var editHtml = "<a  data-placement='top' data-original-title='编辑' class='btn btn-xs btn-primary tooltips' target='_blank' onclick='taskCaseIndex.editCaseTask(" + id + ")'  ><i class='fa fa-edit fa-white'></i></a>";
         var deleteHtml = "<a  data-placement='top' data-original-title='删除' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskCaseIndex.deleteCaseTask(" + id + ")'><i class='fa fa-minus fa-white'></i></a>";
         var assignmentHtml = "<a  data-placement='top' data-original-title='分派' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskCaseIndex.assignment(" + id + ")'><i class='fa fa-arrows-alt fa-white'></i></a>";
+        assignmentHtml = "" ;
         var copyHtml = " <a href='javascript://;' onclick='taskCaseIndex.copyCaseStudy(" + id + ")' data-placement='top' data-original-title='复制案例' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-copy fa-white'></i></a>";
+        copyHtml = "" ;
         var viewHtml = "";
         var resultHtml = "";
         switch (status) {
@@ -340,7 +231,9 @@
 
     //新增案例任务
     taskCaseIndex.addCaseTask = function (pid) {
-        $("#frm_planDetails").clearAll();
+        $("#frm_planDetails").empty();
+        $("#frm_planDetails").append($("#plan_details_modal_html").html());
+        $("#examineFormTypeList").show() ;
         var node = $("#case_list").treegrid('find', pid);
         $("#pid").val(node.id);
         $("#planStartDate").val(formatDate(node.planStartDate, false));
@@ -356,7 +249,9 @@
 
     //编辑案例任务
     taskCaseIndex.editCaseTask = function (id) {
-        $("#frm_planDetails").clearAll();
+        $("#frm_planDetails").empty();
+        $("#frm_planDetails").append($("#plan_details_modal_html").html());
+        $("#examineFormTypeList").hide() ;
         var node = $("#case_list").treegrid('find', id);
         $("#frm_planDetails").initForm(node);
         $("#planStartDate").val(formatDate(node.planStartDate, false));
@@ -373,7 +268,7 @@
             data: {
                 planDetailsId: "${projectPlanDetails.id}",
                 formData: JSON.stringify(data),
-                examineFormType:data.examineFormType
+                examineFormType: data.examineFormType
             },
             type: "post",
             dataType: "json",
@@ -393,7 +288,6 @@
             }
         });
     };
-
 
 
     //删除案例任务
@@ -553,6 +447,117 @@
         })
     }
 
+</script>
+
+<script type="text/html" id="plan_details_modal_html">
+    <div class="form-group">
+        <div class="x-valid">
+            <label class="col-sm-2 control-label">
+                案例名称
+            </label>
+            <div class="col-sm-10">
+                <input type="hidden" id="planDetailsId" name="id"/>
+                <input type="hidden" id="pid" name="pid"/>
+                <input type="text" placeholder="案例名称" required maxlength="50"
+                       id="projectPhaseName" name="projectPhaseName"
+                       class="form-control">
+            </div>
+        </div>
+    </div>
+    <div class="form-group" id="examineFormTypeList" style="display: none">
+
+        <div class="x-valid">
+            <label class="col-sm-2 control-label">
+                工业仓储类型
+            </label>
+        </div>
+
+        <div class="x-valid">
+            <c:forEach var="item" items="${examineFormTypeList}">
+        <span class="col-sm-2">
+        <input type="radio" name="examineFormType" value='${item.key}'>
+        <label for="examineFormType_${item.key}">&nbsp;${item.value}</label>
+    </span>
+            </c:forEach>
+        </div>
+    </div>
+
+    <%--这部分功能暂不开放 1--%>
+    <div style="display:none;">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-2 control-label">
+                    开始时间
+                </label>
+                <div class="col-sm-4">
+                    <input type="text" placeholder="开始时间" data-date-format='yyyy-mm-dd'
+                           id="planStartDate" name="planStartDate"
+                           class="form-control dbdate">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-2 control-label">
+                    结束时间
+                </label>
+                <div class="col-sm-4">
+                    <input type="text" placeholder="结束时间" data-date-format='yyyy-mm-dd'
+                           id="planEndDate" name="planEndDate"
+                           class="form-control dbdate">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">
+                责任人
+            </label>
+            <div class="col-sm-4">
+                <input type="hidden" placeholder="责任人" maxlength="50"
+                       id="executeUserAccount"
+                       name="executeUserAccount" class="form-control">
+                <input type="text" placeholder="责任人" maxlength="50" id="executeUserName"
+                       name="executeUserName" class="form-control" readonly="readonly"
+                       onclick="taskCaseIndex.selectEmployee()">
+            </div>
+            <label class="col-sm-2 control-label">
+                责任部门
+            </label>
+            <div class="col-sm-4">
+                <input type="hidden" placeholder="责任部门" maxlength="50"
+                       id="executeDepartmentId"
+                       name="executeDepartmentId" class="form-control">
+                <input type="text" placeholder="责任部门" maxlength="50"
+                       id="executeDepartmentName"
+                       name="executeDepartmentName" class="form-control"
+                       onclick="taskCaseIndex.selectDepartment()"
+                       readonly="readonly">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-2 control-label">
+                    计划工时
+                </label>
+                <div class="col-sm-4">
+                    <input type="text" placeholder="计划工时" data-rule-number='true'
+                           maxlength="5"
+                           id="planHours" name="planHours"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-2 control-label">
+                    权重占比
+                </label>
+                <div class="col-sm-4">
+                    <input type="text" placeholder="权重占比" data-rule-number='true'
+                           maxlength="5"
+                           id="proportion" name="proportion"
+                           class="form-control">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- . -->
 </script>
 
 </html>
