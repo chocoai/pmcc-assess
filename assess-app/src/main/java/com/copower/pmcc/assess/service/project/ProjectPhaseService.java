@@ -144,13 +144,12 @@ public class ProjectPhaseService {
     public List<ProjectPhase> getCacheProjectPhaseByCategoryId(Integer categoryId, Integer workStageId) {
         //1.先取得自身工作事项 2.如果有引用则取得引用的工作事项 3.融合事项
         List<ProjectPhase> projectPhaseList = getCacheProjectPhaseByCategoryId(categoryId);
-        List<ProjectPhase> selfPhases = LangUtils.filter(projectPhaseList, o -> {
-            return o.getWorkStageId().equals(workStageId);
-        });
+        List<ProjectPhase> selfPhases = LangUtils.filter(projectPhaseList, o -> o.getWorkStageId().equals(workStageId));
         Integer referenceId = baseProjectClassifyService.getReferenceId(categoryId);
         if (referenceId.equals(categoryId)) return selfPhases;
         List<ProjectPhase> referencePhaseList = getCacheProjectPhaseByCategoryId(referenceId);
         if (CollectionUtils.isEmpty(referencePhaseList)) return selfPhases;
+        referencePhaseList = LangUtils.filter(referencePhaseList, o -> o.getWorkStageId().equals(workStageId));
         HashSet<String> keys = Sets.newHashSet();
         selfPhases.forEach(o -> keys.add(o.getPhaseKey()));
         List<ProjectPhase> resultPhaseList = Lists.newArrayList();
