@@ -171,7 +171,7 @@
                         if (row.bisEnable) {
                             var s = "";
                             if (row.id == '${projectPlanDetails.id}') {
-                                s += taskExploreIndex.getOperationHtml(row.status, row.id);
+                                s += taskExploreIndex.getExamineFormTypeHtml(row.status, row.id);
                             } else {
                                 //只用于处理任务
                                 if (row.excuteUrl) {
@@ -207,7 +207,46 @@
                 break
         }
         return resultHtml;
-    }
+    };
+
+    taskExploreIndex.getExamineFormTypeHtml = function (status, id) {
+        var html = "<a  data-placement='top' data-original-title='工业与非工业选择' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskExploreIndex.showModel(" + id + ")'>选择<i class='fa'></i></a>";
+        return html;
+    };
+
+    taskExploreIndex.showModel = function (pid) {
+        var node = $("#explore_list").treegrid('find', pid);
+        $("#pid").val(node.id);
+        $('#plan_details_modal').modal('show');
+    };
+
+    taskExploreIndex.assignmentTask = function () {
+        var data = formParams('frm_planDetails');
+        console.log(data) ;
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/surveyExamine/examineTaskAssignment",
+            data: {
+                planDetailsId: "${projectPlanDetails.id}",
+                formData: JSON.stringify(data),
+                examineFormType:data.examineFormType
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success("成功");
+                    $('#plan_details_modal').modal('hide');
+                } else {
+                    Alert("失败:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    };
 
     //打开提交任务链接
     taskExploreIndex.openTaskUrl = function (url) {
@@ -291,6 +330,56 @@
 
 </script>
 
+<div id="plan_details_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">工业和非工业选择</h3>
+
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel-body">
+                            <form id="frm_planDetails" class="form-horizontal">
+                                <input type="hidden" id="pid" name="pid"/>
+                                <div class="form-group">
+
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            工业仓储类型
+                                        </label>
+                                    </div>
+
+                                    <div class="x-valid">
+                                        <c:forEach var="item" items="${examineFormTypeList}">
+                                            <span class="col-sm-2">
+                                            <input type="radio" name="examineFormType" value='${item.key}'>
+                                            <label for="examineFormType_${item.key}">&nbsp;${item.value}</label>
+                                            </span>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary" onclick="taskExploreIndex.assignmentTask()">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </html>
 

@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.project.survey;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyExamineTask;
@@ -163,6 +164,19 @@ public class SurveyExamineController {
         } catch (Exception e) {
             logger.error("保存选择的调查任务", e);
             return HttpResult.newErrorResult("保存选择的调查任务异常");
+        }
+    }
+
+    @ResponseBody
+    @PostMapping(name = "分派(选择工业和非工业之后直接分派)", value = "/examineTaskAssignment")
+    public HttpResult examineTaskAssignment(String formData, Integer planDetailsId, String examineFormType) {
+        try {
+            ProjectPlanDetails projectPlanDetails = JSON.parseObject(formData, ProjectPlanDetails.class);
+            surveyExamineTaskService.examineTaskAssignment(planDetailsId,examineFormType);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error("确认分派", e);
+            return HttpResult.newErrorResult("确认分派异常");
         }
     }
 
