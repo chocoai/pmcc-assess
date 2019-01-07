@@ -10,7 +10,7 @@
     </div>
 
     <form id="frm_estateLandState" class="form-horizontal">
-        <input type="hidden" name="id" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.id}">
+        <input type="hidden" name="id" value="${basicEstateLandState.id}">
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地名称</label>
@@ -50,7 +50,7 @@
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
-                                onclick="examineCommon.landLevelSelect(this);">
+                                onclick="basicCommon.landLevelSelect(this);">
                         <i class="fa fa-search"></i>
                         </button>
                         <button type="button" class="btn btn-default docs-tooltip"

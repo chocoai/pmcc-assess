@@ -47,7 +47,7 @@
                         </tr>
                         <tr class="treegrid-2-1-1 treegrid-parent-2-1" data-key="houseBuildingArea">
                             <td>1、住宅建筑面积
-                                </td>
+                            </td>
                             <th>户型</th>
                             <th>户型面积</th>
                             <th>户数</th>

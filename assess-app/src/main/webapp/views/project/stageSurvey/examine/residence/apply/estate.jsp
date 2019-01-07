@@ -3,7 +3,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <form id="frm_estate" class="form-horizontal">
-    <input type="hidden" name="id" value="${surveyExamineDataInfoVo.examineEstateVo.id}">
+    <input type="hidden" name="id" value="${basicEstate.id}">
 
     <div class="x_content">
         <div class="x_title">
@@ -75,7 +75,7 @@
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
-                                onclick="examineCommon.blockSelect(this)">
+                                onclick="basicCommon.blockSelect(this)">
                         <i class="fa fa-search"></i>
                         </button>
                         <button type="button" class="btn btn-default docs-tooltip"

@@ -104,6 +104,24 @@ equipmentInstallation.fileUpload = function (target, tableName, id) {
     });
 };
 
+equipmentInstallation.deleteByType = function (data,callback) {
+    $.ajax({
+        type: "post",
+        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/deleteByType",
+        data: data,
+        success: function (result) {
+            if (result.ret) {
+                callback(result);
+            } else {
+                Alert("保存失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+
 /**
  * 设备安装 初始化并赋值
  * @param item
@@ -175,7 +193,7 @@ equipmentInstallation.saveAndUpdateData = function () {
     });
 };
 
-equipmentInstallation.getData = function (id,callback) {
+equipmentInstallation.getData = function (id, callback) {
     $.ajax({
         url: getContextPath() + "/declareBuildEquipmentInstall/getDeclareBuildEquipmentInstallById",
         type: "get",
@@ -183,8 +201,8 @@ equipmentInstallation.getData = function (id,callback) {
         data: {id: id},
         success: function (result) {
             if (result.ret) {
-                if(result.data){
-                    callback(result.data) ;
+                if (result.data) {
+                    callback(result.data);
                 }
             }
         },
@@ -205,7 +223,7 @@ equipmentInstallation.editData = function () {
         toastr.info("请选择要编辑的数据");
     } else if (rows.length == 1) {
         equipmentInstallation.showAddModel();
-        equipmentInstallation.getData(rows[0].id,function (data) {
+        equipmentInstallation.getData(rows[0].id, function (data) {
             equipmentInstallation.init(data);
         });
         $('#' + equipmentInstallation.config.box).modal("show");
@@ -355,6 +373,19 @@ equipmentInstallation.declareBuildingPermitSaveAndUpdate = function () {
         }
     });
 };
+equipmentInstallation.declareBuildingPermitRemove = function () {
+    var data = formParams(equipmentInstallation.config.declareBuildingPermit.frm);
+    if (data.id) {
+        var item = {dataId: data.id, centerId: data.pid, type: "DeclareBuildingPermit"};
+        equipmentInstallation.deleteByType(item, function () {
+            $('#' + equipmentInstallation.config.declareBuildingPermit.box).modal("hide");
+            equipmentInstallation.loadList();
+            toastr.success('成功!');
+        });
+    } else {
+        toastr.success('无删除数据!');
+    }
+};
 
 /**
  * @author:  zch
@@ -446,6 +477,19 @@ equipmentInstallation.declareLandUsePermitSaveAndUpdate = function () {
         }
     });
 };
+equipmentInstallation.declareLandUsePermitRemove = function () {
+    var data = formParams(equipmentInstallation.config.declareLandUsePermit.frm);
+    if (data.id) {
+        var item = {dataId: data.id, centerId: data.pid, type: "DeclareLandUsePermit"};
+        equipmentInstallation.deleteByType(item, function () {
+            $('#' + equipmentInstallation.config.declareLandUsePermit.box).modal("hide");
+            equipmentInstallation.loadList();
+            toastr.success('成功!');
+        });
+    } else {
+        toastr.success('无删除数据!');
+    }
+};
 
 /**
  * @author:  zch
@@ -536,6 +580,19 @@ equipmentInstallation.declarePreSalePermitSaveAndUpdate = function () {
             Alert("调用服务端方法失败，失败原因:" + e);
         }
     });
+};
+equipmentInstallation.declarePreSalePermitRemove = function () {
+    var data = formParams(equipmentInstallation.config.declarePreSalePermit.frm);
+    if (data.id) {
+        var item = {dataId: data.id, centerId: data.pid, type: "DeclarePreSalePermit"};
+        equipmentInstallation.deleteByType(item, function () {
+            $('#' + equipmentInstallation.config.declarePreSalePermit.box).modal("hide");
+            equipmentInstallation.loadList();
+            toastr.success('成功!');
+        });
+    } else {
+        toastr.success('无删除数据!');
+    }
 };
 
 /**
@@ -630,6 +687,19 @@ equipmentInstallation.declareBuildingConstructionPermitSaveAndUpdate = function 
         }
     });
 };
+equipmentInstallation.declareBuildingConstructionPermitRemove = function () {
+    var data = formParams(equipmentInstallation.config.declareBuildingConstructionPermit.frm);
+    if (data.id) {
+        var item = {dataId: data.id, centerId: data.pid, type: "DeclareBuildingConstructionPermit"};
+        equipmentInstallation.deleteByType(item, function () {
+            $('#' + equipmentInstallation.config.declareBuildingConstructionPermit.box).modal("hide");
+            equipmentInstallation.loadList();
+            toastr.success('成功!');
+        });
+    } else {
+        toastr.success('无删除数据!');
+    }
+};
 
 /**
  * @author:  zch
@@ -691,6 +761,7 @@ equipmentInstallation.declareRealtyLandCertView = function (id) {
                             if (result.ret) {
                                 var data = result.data;
                                 if (equipmentInstallation.isNotBlank(data)) {
+                                    data.pidC = id ;
                                     equipmentInstallation.declareRealtyLandCertInit(data);
                                 }
                             }
@@ -700,7 +771,13 @@ equipmentInstallation.declareRealtyLandCertView = function (id) {
                         }
                     });
                 } else {
-                    equipmentInstallation.declareRealtyLandCertInit({pidC: id});
+                    equipmentInstallation.getData(result.data.buildEquipmentId, function (item) {
+                        equipmentInstallation.declareRealtyLandCertInit({
+                            pidC: id, province: item.province,
+                            city: item.city,
+                            district: item.district
+                        });
+                    });
                 }
             } else {
                 Alert("保存失败:" + result.errmsg);
@@ -745,6 +822,19 @@ equipmentInstallation.declareRealtyLandCertSaveAndUpdate = function () {
             Alert("调用服务端方法失败，失败原因:" + e);
         }
     });
+};
+equipmentInstallation.declareRealtyLandCertRemove = function () {
+    var data = formParams(equipmentInstallation.config.declareRealtyLandCert.frm);
+    if (data.id) {
+        var item = {dataId: data.id, centerId: data.pidC, type: "DeclareRealtyLandCert"};
+        equipmentInstallation.deleteByType(item, function () {
+            $('#' + equipmentInstallation.config.declareRealtyLandCert.box).modal("hide");
+            equipmentInstallation.loadList();
+            toastr.success('成功!');
+        });
+    } else {
+        toastr.success('无删除数据!');
+    }
 };
 
 
@@ -808,7 +898,9 @@ equipmentInstallation.declareRealtyRealEstateCertView = function (id) {
                         success: function (result) {
                             if (result.ret) {
                                 if (equipmentInstallation.isNotBlank(result.data)) {
-                                    equipmentInstallation.declareRealtyRealEstateCertInit(result.data);
+                                    var item = result.data ;
+                                    item.pidC = id;
+                                    equipmentInstallation.declareRealtyRealEstateCertInit(item);
                                 }
                             }
                         },
@@ -817,7 +909,13 @@ equipmentInstallation.declareRealtyRealEstateCertView = function (id) {
                         }
                     });
                 } else {
-                    equipmentInstallation.declareRealtyRealEstateCertInit({pidC: id});
+                    equipmentInstallation.getData(result.data.buildEquipmentId, function (item) {
+                        equipmentInstallation.declareRealtyRealEstateCertInit({
+                            pidC: id, province: item.province,
+                            city: item.city,
+                            district: item.district
+                        });
+                    });
                 }
             } else {
                 Alert("保存失败:" + result.errmsg);
@@ -856,6 +954,19 @@ equipmentInstallation.declareRealtyRealEstateCertSaveAndUpdate = function () {
             Alert("调用服务端方法失败，失败原因:" + e);
         }
     });
+};
+equipmentInstallation.declareRealtyRealEstateCertRemove = function () {
+    var data = formParams(equipmentInstallation.config.declareRealtyRealEstateCert.frm);
+    if (data.id) {
+        var item = {dataId: data.id, centerId: data.pidC, type: "DeclareRealtyRealEstateCert"};
+        equipmentInstallation.deleteByType(item, function () {
+            $('#' + equipmentInstallation.config.declareRealtyRealEstateCert.box).modal("hide");
+            equipmentInstallation.loadList();
+            toastr.success('成功!');
+        });
+    } else {
+        toastr.success('无删除数据!');
+    }
 };
 
 /**
@@ -969,7 +1080,7 @@ equipmentInstallation.pasteAll = function () {
             toastr.info("自己复制自己,这样情况是不被允许的");
             return false;
         }
-        if (select){
+        if (select) {
             $.ajax({
                 type: "post",
                 url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/copyDeclareBuildEngineeringAndEquipmentCenter",
@@ -979,7 +1090,7 @@ equipmentInstallation.pasteAll = function () {
                         toastr.success('成功');
                         equipmentInstallation.loadList();
                         $("#" + equipmentInstallation.config.copy).find("input").each(function () {
-                            $(this).val('') ;
+                            $(this).val('');
                         });
                     } else {
                         Alert("失败:" + result.errmsg);
@@ -1066,10 +1177,8 @@ equipmentInstallation.loadList = function () {
             } else {
                 str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declarePreSalePermitView(" + row.centerId + ")'" + ">" + "商品房预售许可证" + "<i class='fa fa-remove'></i>" + "</a>" + "</li>";
             }
-            if (row.declareBuildEngineeringAndEquipmentCenter.indicatorId) {
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareEconomicIndicatorsView(" + row.centerId + ")'" + ">" + "经济规划指标" + "<i class='fa fa-check'></i>" + "</a>" + "</li>";
-            } else {
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareEconomicIndicatorsView(" + row.centerId + ")'" + ">" + "经济规划指标" + "<i class='fa fa-remove'></i>" + "</a>" + "</li>";
+            if (row.declareBuildEngineeringAndEquipmentCenter) {
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareEconomicIndicatorsView(" + row.centerId + ")'" + ">" + "经济规划指标" + "<i class='fa fa-adjust'></i>" + "</a>" + "</li>";
             }
             str += "</ul>";
             str += "</div>";

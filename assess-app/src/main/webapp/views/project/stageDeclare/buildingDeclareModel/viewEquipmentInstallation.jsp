@@ -124,7 +124,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button"  class="btn btn-warning">
+                <button type="button"  class="btn btn-warning" onclick="equipmentInstallation.declareBuildingPermitRemove()">
                     删除
                 </button>
                 <button type="button" class="btn btn-primary"
@@ -179,7 +179,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button"  class="btn btn-warning">
+                <button type="button"  class="btn btn-warning" onclick="equipmentInstallation.declareLandUsePermitRemove()">
                     删除
                 </button>
                 <button type="button" class="btn btn-primary"
@@ -234,7 +234,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button"  class="btn btn-warning">
+                <button type="button"  class="btn btn-warning" onclick="equipmentInstallation.declarePreSalePermitRemove()">
                     删除
                 </button>
                 <button type="button" class="btn btn-primary"
@@ -288,7 +288,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button"  class="btn btn-warning">
+                <button type="button"  class="btn btn-warning" onclick="equipmentInstallation.declareBuildingConstructionPermitRemove()">
                     删除
                 </button>
                 <button type="button" class="btn btn-primary"
@@ -340,9 +340,6 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button"  class="btn btn-warning">
-                    删除
-                </button>
                 <button type="button" class="btn btn-primary"
                         onclick="equipmentInstallation.saveAndUpdateData();">
                     保存
@@ -391,7 +388,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button"  class="btn btn-warning">
+                    <button type="button"  class="btn btn-warning" onclick="equipmentInstallation.declareRealtyLandCertRemove()">
                         删除
                     </button>
                     <button type="button" class="btn btn-primary"
@@ -444,7 +441,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button"  class="btn btn-warning">
+                    <button type="button"  class="btn btn-warning" onclick="equipmentInstallation.declareRealtyRealEstateCertRemove()">
                         删除
                     </button>
                     <label class="btn btn-primary"

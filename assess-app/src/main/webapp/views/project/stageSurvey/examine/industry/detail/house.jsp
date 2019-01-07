@@ -2,216 +2,123 @@
   房屋基本新信息
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<form id="frm_house" class="form-horizontal">
-    <input type="hidden" data-name="fieldName" value="<%=request.getParameter("fieldName")%>">
-    <input type="hidden" name="id" value="${surveyExamineDataInfoVo.examineHouseVo.id}">
-
-    <div class="form-group">
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">房号<span class="symbol required"></span></label>
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly" placeholder="房号" required="required"
-                       value="${surveyExamineDataInfoVo.examineHouseVo.houseNumber}" name="houseNumber"
-                       class="form-control">
-            </div>
-        </div>
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">所在楼层<span class="symbol required"></span></label>
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly" placeholder="所在楼层(请输入数字)"
-                       value="${surveyExamineDataInfoVo.examineHouseVo.houseNumber}" name="floor"
-                       class="form-control">
-            </div>
-        </div>
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">使用环境<span class="symbol required"></span></label>
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly" placeholder="使用环境"
-                       value="${surveyExamineDataInfoVo.examineHouseVo.useEnvironmentName}" name="useEnvironmentName"
-                       class="form-control">
-            </div>
-        </div>
-
+<div class="x_content">
+    <div class="x_title">
+        <h3>
+            房屋基本信息
+        </h3>
+        <div class="clearfix"></div>
     </div>
-
-    <div class="form-group">
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">户型选择<span class="symbol required"></span></label>
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"  placeholder="户型选择"
-                       value="${surveyExamineDataInfoVo.examineHouseVo.huxingName}" name="huxingId"
-                       class="form-control">
+    <form class="form-horizontal" id="basicHouseFrm">
+        <input type="hidden" name="id" value="${basicHouse.id}">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">房号<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouse.houseNumber}</label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">所在楼层<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouse.floor}</label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">使用环境</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouse.useEnvironmentName}</label>
+                </div>
             </div>
         </div>
 
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">户型图<span class="symbol required"></span></label>
-            <div class="col-sm-3">
-                <div class="house_latest_family_plan"></div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">户型</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouse.huxingName}</label>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">户型图</label>
+                <div class="col-sm-3">
+                    <div id="_house_huxing_plan"></div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">新户型</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouse.newHuxingName}</label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">新户型图</label>
+                <div class="col-sm-3">
+                    <div id="_house_new_huxing_plan"></div>
+                </div>
+            </div>
+            <div class="x-valid">
+                <div class="col-sm-3 col-sm-offset-1">
+                    <div class="btn btn-success" onclick="houseCommon.orientationFun(true);">户型地图朝向</div>
+                </div>
             </div>
         </div>
-
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">朝向<span class="symbol required"></span></label>
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"  placeholder="朝向"
-                       value="${surveyExamineDataInfoVo.examineHouseVo.orientation}" name="orientation"
-                       class="form-control">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">朝向<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouse.orientation}</label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">面积<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouse.area}</label>
+                </div>
             </div>
         </div>
-    </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">证载用途<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouse.certUseName}</label>
+                </div>
+            </div>
 
-    <div class="form-group">
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">证载用途<span class="symbol required"></span></label>
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"  placeholder="证载用途"
-                       value="${surveyExamineDataInfoVo.examineHouseVo.certUseName}" name="certUse"
-                       class="form-control">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">实际用途<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouse.practicalUseName}</label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">权益限制</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouse.rightInterestsRestriction}</label>
+                </div>
             </div>
         </div>
-
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">实际用途<span class="symbol required"></span></label>
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"  placeholder="实际用途"
-                       value="${surveyExamineDataInfoVo.examineHouseVo.practicalUseName}" name="practicalUse"
-                       class="form-control">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">房屋出租占用情况描述</label>
+                <div class="col-sm-11">
+                    <label class="form-control">${basicHouse.description}</label>
+                </div>
             </div>
         </div>
-
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">权益限制<span class="symbol required"></span></label>
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly" placeholder="权益限制" required="required"
-                       value="${surveyExamineDataInfoVo.examineHouseVo.rightInterestsRestriction}"
-                       name="rightInterestsRestriction"
-                       class="form-control">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">房屋平面图</label>
+                <div class="col-sm-3">
+                    <div id="_house_img_plan"></div>
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class="form-group">
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">房屋出租占用情况途描述<span class="symbol required"></span></label>
-            <div class="col-sm-11">
-                <textarea class="form-control" name="description" readonly="readonly">${surveyExamineDataInfoVo.examineHouseVo.description}</textarea>
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">最新户型<span class="symbol required"></span></label>
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"  placeholder="最新户型"
-                       value="${surveyExamineDataInfoVo.examineHouseVo.newsHuxingName}" name="newsHuxing"
-                       class="form-control">
-            </div>
-        </div>
-
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">最新户型图<span class="symbol required"></span></label>
-            <div class="col-sm-5">
-                <div id="_house_new_latest_family_plan"></div>
-            </div>
-        </div>
-    </div>
-
-
-
-    <div class="form-group">
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">房屋平面图<span class="symbol required"></span></label>
-            <div class="col-sm-5">
-                <div id="_house_house_plan"></div>
-            </div>
-        </div>
-    </div>
-</form>
-
-<script>
-    var house_config ;
-    (function () {
-        var frm = "frm_house" ;
-        //下面根据字段 ExamineFileUpLoadFieldEnum 配置而来 (假如修改必须在此中更新)
-        var houseNewLatestFamilyPlan = "house_new_latest_family_plan" ;//最新户型图id和字段
-        var houseHousePlan = "house_house_plan" ;//房屋平面图id和字段
-        var dataBaseName = AssessDBKey.ExamineHouse;
-        house_config = {
-            getFrm:function () {
-                return frm;
-            },
-            getDataBaseName:function () {
-                return dataBaseName;
-            },
-            getHouseHousePlan:function () {
-                return houseHousePlan;
-            },
-            getHouseNewLatestFamilyPlan:function () {
-                return houseNewLatestFamilyPlan;
-            }
-        }
-    })();
-    var house = Object.create(house_config);
-    house.init = function () {
-        house.showFiles();
-        var id = "${surveyExamineDataInfoVo.examineHouseVo.huxingId}";
-        if (house.isEmpty(id)){
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineUnitHuxing/getExamineUnitHuxingById",
-                dataType: "JSON",
-                data: {'id': id},
-                type: "GET",
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        if (house.isEmpty(data)){
-                            $("#" + house.getFrm() + " .house_latest_family_plan").html(data.fileViewName);
-                        }
-                    }
-                },
-                error: function (e) {
-                    Alert("调用服务端方法失败，失败原因:" + e);
-                }
-            });
-        }
-    };
-    house.isEmpty = function (data) {
-        if (data) {
-            return true;
-        }
-        return false;
-    };
-    house.showFiles = function () {
-        //最新户型图
-        FileUtils.getFileShows({
-            target: house.getHouseNewLatestFamilyPlan(),
-            formData: {
-                fieldsName: house.getHouseNewLatestFamilyPlan(),
-                tableName: house.getDataBaseName(),
-                tableId: ${empty surveyExamineDataInfoVo.examineHouseVo?0:surveyExamineDataInfoVo.examineHouseVo.id},
-                projectId: 0,
-                creater: "${currUserAccount}"
-            },
-            deleteFlag: false
-        });
-        //房屋平面图
-        FileUtils.getFileShows({
-            target: house.getHouseHousePlan(),
-            formData: {
-                fieldsName: house.getHouseHousePlan(),
-                tableName: house.getDataBaseName(),
-                tableId: ${empty surveyExamineDataInfoVo.examineHouseVo?0:surveyExamineDataInfoVo.examineHouseVo.id},
-                projectId: 0,
-                creater: "${currUserAccount}"
-            },
-            deleteFlag: false
-        });
-    };
-
-    $(function () {
-       house.init();
-    });
-</script>
+    </form>
+</div>
 
