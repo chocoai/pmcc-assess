@@ -242,7 +242,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button" data-dismiss="modal" class="btn btn-warning">
+                <button type="button" class="btn btn-warning" onclick="civilEngineering.declareEconomicIndicatorsRemove()">
                     删除
                 </button>
                 <button type="button" class="btn btn-primary" onclick="economicIndicators.saveData();">

@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-
-
 <body class="nav-md footer_fixed">
 <div class="container body">
     <div class="main_container">
@@ -13,16 +12,26 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+            <form id="basicApplyFrm">
+                <!--案例或者查勘 entity json-->
+                <input type="hidden" id="surveySceneExploreJson" value='${surveySceneExploreJson}'>
+                <input type="hidden" id="surveyCaseStudyJson" value='${surveyCaseStudyJson}'>
+
+                <input type="hidden" name="caseEstateId" value="${basicApply.caseEstateId}">
+                <input type="hidden" name="caseBuildingMainId" value="${basicApply.caseBuildingMainId}">
+                <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
+                <input type="hidden" name="caseHouseId" value="${basicApply.caseHouseId}">
+                <input type="hidden" name="id" value="${basicApply.id}">
+                <input type="hidden" id="declareId" name="declareId" value="${declareRecord.id}">
+            </form>
             <!--填写表单-->
-            <input type="hidden" id="declareId" name="declareId" value="${declareRecord.id}">
             <input type="hidden" id="planDetailsId" name="planDetailsId" value="${projectPlanDetails.pid}">
-            <input type="hidden" id="examineType" name="examineType" value="${examineType}">
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${declareRecord.name}-${projectPlanDetails.projectPhaseName}</h2>
+                    <h2>${declareRecord.name}-${projectPlanDetails.projectPhaseName}-${dataExamineTask.name} ${empty surveySceneExploreJson?'查勘':''} ${empty surveyCaseStudyJson?'案例':''}</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content examine">
@@ -98,32 +107,40 @@
 </body>
 
 <%@include file="/views/share/main_footer.jsp" %>
+
+<!-- 从表 -->
+<script src='${pageContext.request.contextPath}/js/common.column.js'></script>
+
+<!-- 表单js -->
+<script src="${pageContext.request.contextPath}/js/examine/examine.common.js"></script>
+<script src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
+<script src="${pageContext.request.contextPath}/js/examine/examine.build.js"></script>
+<script src="${pageContext.request.contextPath}/js/examine/examine.unit.js"></script>
+<script src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
+
 <script type="text/javascript">
-    $(function () {
-        //tab注册事件
-        $('.task_examine_item_tab').find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-            var dataName = $(this).attr('data-name');
-            if ($.inArray(dataName, ContainerFunForInitRecord) < 0) {
-                for (var i = 0; i < ContainerFunForInit[dataName].length; i++) {
-                    ContainerFunForInit[dataName][i]();
-                }
-                ContainerFunForInitRecord.push(dataName);
-            }
+
+
+
+    $(document).ready(function () {
+        $(".task_examine_item_tab").find('a:first').tab('show');
+
+        //附件显示
+        $.each(buildingCommon.buildingFileControlIdArray, function (i, item) {
+            buildingCommon.fileShow(item);
         });
 
-        taskExamineItemApproval.selectFirstTab();
-    })
-</script>
-<script type="text/javascript">
-    var ContainerFunForInit = {"block": [], "estate": [], "building": [], "unit": [], "house": []};//数据初始化方法容器
-    var ContainerFunForInitRecord = [];//数据初始化记录
+        $.each(estateCommon.estateFileControlIdArray, function (i, n) {
+            estateCommon.fileUpload(n, AssessDBKey.ExamineEstate, estateCommon.getEstateId());
+            estateCommon.fileShow(n, AssessDBKey.ExamineEstate,estateCommon.getEstateId());
+        });
 
-    var taskExamineItemApproval = {
-        //选择第一个tab
-        selectFirstTab:function () {
-            $(".task_examine_item_tab").find('a:first').tab('show');
-        }
-    };
+        //初始化上传控件
+        $.each(houseCommon.houseFileControlIdArray, function (i, item) {
+            houseCommon.fileUpload(item);
+            houseCommon.fileShow(item);
+        });
+    });
 
     //审批提交
     function saveform() {

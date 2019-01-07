@@ -27,7 +27,7 @@
                 <input type="hidden" id="surveyCaseStudyJson" value='${surveyCaseStudyJson}'>
 
                 <input type="hidden" name="caseEstateId" value="${basicApply.caseEstateId}">
-                <input type="hidden" name="caseBuildingId" value="${basicApply.caseBuildingId}">
+                <input type="hidden" name="caseBuildingMainId" value="${basicApply.caseBuildingMainId}">
                 <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
                 <input type="hidden" name="caseHouseId" value="${basicApply.caseHouseId}">
                 <input type="hidden" name="id" value="${basicApply.id}">
@@ -176,11 +176,10 @@
     //任务提交
     function submit() {
         //数据校验
-        // if (!basicCommon.valid()){
-        //     return false;
-        // }
+        if (!basicCommon.valid()){
+            return false;
+        }
         var formData = basicCommon.getFormData();
-        console.log(formData);
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
         }
@@ -191,41 +190,6 @@
 
 </script>
 <script type="text/javascript">
-
-   function save() {
-       var formData = basicCommon.getFormData();
-       var data = {};
-       var url = '${pageContext.request.contextPath}/surveyExamineItem/submitExamineDataInfo';
-       if ("${processInsId}" != "0") {//返回修改
-           data = formApproval.getFormData();
-           url = '${pageContext.request.contextPath}/surveyExamineItem/submitEditExamineDataInfo';
-       }
-       data.formData = JSON.stringify(formData);
-       data.planDetailsId = "${projectPlanDetails.id}";
-       data.responsibilityId = "${responsibilityId}";
-       Loading.progressShow();
-       $.ajax({
-           url: url,
-           data: data,
-           type: "post",
-           dataType: "json",
-           success: function (result) {
-               Loading.progressHide();
-               if (result.ret) {
-                   //保存完后其他动作
-                   Alert("提交成功", 1, null, function () {
-                       window.close();
-                   });
-               } else {
-                   Alert("保存失败:" + result.errmsg);
-               }
-           },
-           error: function (result) {
-               Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-           }
-       });
-   }
-
     $(document).ready(function () {
         $(".task_examine_item_tab").find('a:first').tab('show');
         //初始化方法和值
