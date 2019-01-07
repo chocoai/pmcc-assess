@@ -749,18 +749,19 @@ public class BasicEstateService {
         });
 
         if (org.apache.commons.lang3.StringUtils.equals(estatePartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
-            taskExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-                        copyTaggingFromCase(caseEstateTaggings,applyId);
-                    } catch (Exception e1) {
-                        logger.error("", e1);
-                    }
-                }
-            });
+
         }
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
+                    copyTaggingFromCase(caseEstateTaggings,applyId);
+                } catch (Exception e1) {
+                    logger.error("", e1);
+                }
+            }
+        });
         return objectMap;
     }
 

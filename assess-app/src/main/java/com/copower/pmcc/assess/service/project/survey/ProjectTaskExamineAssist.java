@@ -80,6 +80,8 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     private BasicHouseService basicHouseService;
     @Autowired
     private BasicEstateLandStateService basicEstateLandStateService;
+    @Autowired
+    private BasicHouseTradingService basicHouseTradingService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
@@ -87,14 +89,14 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineInfoIndex", "", 0, "0", "");
         SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("surveyExamineInfo", surveyExamineInfo);
-        setViewParam(commonService.thisUserAccount(), projectPlanDetails,  modelAndView);
+        setViewParam(commonService.thisUserAccount(), projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineInfoApproval", processInsId, boxId, taskId, agentUserAccount);
-        setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails,  modelAndView);
+        setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -102,7 +104,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineInfoIndex", processInsId, boxId, taskId, agentUserAccount);
-        setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails,  modelAndView);
+        setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -114,7 +116,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineInfoApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-        setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails,  modelAndView);
+        setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -122,9 +124,9 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
         ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid());
         try {
-            surveyExamineTaskService.saveExamineDataInfo(formData,projectPlanDetails);
+            surveyExamineTaskService.saveExamineDataInfo(formData, projectPlanDetails);
         } catch (Exception e1) {
-            logger.error("",e1);
+            logger.error("", e1);
         }
 
         if (StringUtils.isBlank(processInsId)) {
@@ -148,9 +150,9 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         try {
-            surveyExamineTaskService.saveExamineDataInfo(formData,projectPlanDetails);
+            surveyExamineTaskService.saveExamineDataInfo(formData, projectPlanDetails);
         } catch (Exception e1) {
-            logger.error("",e1);
+            logger.error("", e1);
         }
     }
 
@@ -167,7 +169,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         try {
             setSurveyCaseStudyOrSurveySceneExploreValue(projectPlanDetails, modelAndView);
         } catch (Exception e1) {
-            logger.error("设置数据异常!",e1);
+            logger.error("设置数据异常!", e1);
         }
         Map<String, List<SurveyExamineTaskVo>> mapTaskList = surveyCommonService.getExamineTaskByUserAccount(projectPlanDetails.getPid(), userAccount);
         modelAndView.addObject("estateTaskList", mapTaskList.get(AssessExamineTaskConstant.ESTATE));
@@ -219,18 +221,26 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         List<BasicBuilding> basicBuildingList = null;
         BasicUnit basicUnit = null;
         BasicHouse basicHouse = null;
+        BasicEstateLandState landState = null;
+        BasicHouseTrading basicHouseTrading = null;
         try {
             //申请楼栋 entity
             basicApply = basicApplyService.getBasicApplyByPlanDetailsId(projectPlanDetails.getId());
-            if (basicApply != null){
+            if (basicApply != null) {
                 //案例 entity
                 surveyCaseStudy = surveyCaseStudyService.getSurveyCaseStudy(projectPlanDetails.getId());
                 //查勘 entity
                 surveySceneExplore = surveySceneExploreService.getSurveySceneExplore(projectPlanDetails.getId());
                 basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+                if (basicEstate != null) {
+                    landState = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
+                }
                 basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
                 basicUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
                 basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
+                if (basicHouse != null){
+                    basicHouseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
+                }
             }
         } catch (Exception e) {
             //允许异常
@@ -245,7 +255,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
             basicEstate = new BasicEstate();
             basicEstate.setApplyId(basicApply.getId());
             basicEstateService.saveAndUpdateBasicEstate(basicEstate);
-            BasicEstateLandState landState = new BasicEstateLandState();
+            landState = new BasicEstateLandState();
             landState.setEstateId(basicEstate.getId());
             landState.setApplyId(basicApply.getId());
             basicEstateLandStateService.saveAndUpdateBasicEstateLandState(landState);
@@ -267,7 +277,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
             basicHouse.setUnitId(basicUnit.getId());
             basicHouse.setApplyId(basicApply.getId());
             basicHouseService.saveAndUpdateBasicHouse(basicHouse);
-            basicHouseService.addHouseAndTrading(null,basicApply.getId());
+            basicHouseService.addHouseAndTrading(null, basicApply.getId());
         }
         //案例
         if (examineTypeEnum.getId().equals(ExamineTypeEnum.CASE.getId())) {
@@ -304,6 +314,9 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         if (basicEstate != null) {
             modelAndView.addObject("basicEstate", basicEstateService.getBasicEstateVo(basicEstate));
         }
+        if (landState != null){
+            modelAndView.addObject("basicEstateLandState", basicEstateLandStateService.getBasicEstateLandStateVo(landState));
+        }
         if (basicBuilding != null) {
             modelAndView.addObject("basicBuilding", basicBuildingService.getBasicBuildingVo(basicBuilding));
         }
@@ -313,8 +326,11 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         if (basicHouse != null) {
             modelAndView.addObject("basicHouse", basicHouseService.getBasicHouseVo(basicHouse));
         }
-        if (basicApply != null){
-            modelAndView.addObject("basicApply",basicApply);
+        if (basicHouseTrading != null){
+            modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));
+        }
+        if (basicApply != null) {
+            modelAndView.addObject("basicApply", basicApply);
         }
     }
 }

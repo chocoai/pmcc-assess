@@ -6,7 +6,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_content">
 
-    <form class="form-horizontal" id="basicBuildingMainFrm">
+
+    <div style="margin-bottom: 10px; border-bottom:2px solid #E6E9ED;"></div>
+    <form class="form-horizontal" id="basicBuildingFrm">
         <input type="hidden" name="id">
         <div class="form-group">
             <div class="x-valid">
@@ -53,10 +55,6 @@
                 </div>
             </div>
         </div>
-    </form>
-    <div style="margin-bottom: 10px; border-bottom:2px solid #E6E9ED;"></div>
-    <form class="form-horizontal" id="basicBuildingFrm">
-        <input type="hidden" name="id">
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
