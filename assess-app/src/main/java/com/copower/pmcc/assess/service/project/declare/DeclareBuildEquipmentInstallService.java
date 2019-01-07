@@ -65,7 +65,7 @@ public class DeclareBuildEquipmentInstallService {
 
     public String importData(DeclareBuildEquipmentInstall declareBuildEquipmentInstall, MultipartFile multipartFile) throws Exception {
         String declareType = null;
-        List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLE_DECLARE_BUILDING_CERTIFICATE_TYPE);
+        List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLE_HOUSE_BUILDING_CERTIFICATE_TYPE);
         if (!ObjectUtils.isEmpty(baseProjectClassifies)){
             for (BaseProjectClassify baseProjectClassify:baseProjectClassifies){
                 if (Objects.equal(baseProjectClassify.getName(), DeclareTypeEnum.DeclareBuildEquipmentInstall.getKey())){

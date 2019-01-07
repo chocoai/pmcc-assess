@@ -69,7 +69,7 @@ AssessProjectClassifyKey.singleCsr = "single.csr";//不良债权评估
 AssessProjectClassifyKey.comprehensive = "comprehensive";//综合资产
 
 AssessProjectClassifyKey.singleHousePropertyCertificateType = "single.house.property.certificate.type";//房产证书类型
-AssessProjectClassifyKey.singleDeclareBuildingCertificateType = "single.declare.building.certificate.type";//在建工程
+AssessProjectClassifyKey.singleHouseBuildingCertificateType = "single.house.building.certificate.type";//在建工程
 
 /**
  * 数据字典key

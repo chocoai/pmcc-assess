@@ -97,7 +97,7 @@
     declareFunObj.declare = {
         init: function () {
             var num = 6;
-            AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleDeclareBuildingCertificateType, function (html, data) {
+            AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleHouseBuildingCertificateType, function (html, data) {
                 var resetHtml = "";
                 var k = 0;
                 $.each(data, function (i, n) {
