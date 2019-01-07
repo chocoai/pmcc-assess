@@ -309,12 +309,13 @@ public class BasicBuildingService {
         basicBuildingDao.addBasicBuilding(basicBuilding);
 
         if (StringUtils.equals(buildingPartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
-            CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
-            caseEstateTagging.setDataId(caseBuildingId);
-            caseEstateTagging.setType(EstateTaggingTypeEnum.BUILDING.getKey());
-            List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-            basicEstateService.copyTaggingFromCase(caseEstateTaggings,applyId);
+
         }
+        CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
+        caseEstateTagging.setDataId(caseBuildingId);
+        caseEstateTagging.setType(EstateTaggingTypeEnum.BUILDING.getKey());
+        List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
+        basicEstateService.copyTaggingFromCase(caseEstateTaggings,applyId);
 
         List<SysAttachmentDto> sysAttachmentDtoList = null;
         SysAttachmentDto queryFile = new SysAttachmentDto();

@@ -284,12 +284,22 @@ public class BasicUnitService {
         basicUnitDao.addBasicUnit(basicUnit);
 
         if (StringUtils.equals(unitPartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
-            CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
-            caseEstateTagging.setDataId(caseUnitId);
-            caseEstateTagging.setType(EstateTaggingTypeEnum.UNIT.getKey());
-            List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-            basicEstateService.copyTaggingFromCase(caseEstateTaggings, applyId);
+
         }
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
+                    caseEstateTagging.setDataId(caseUnitId);
+                    caseEstateTagging.setType(EstateTaggingTypeEnum.UNIT.getKey());
+                    List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
+                    basicEstateService.copyTaggingFromCase(caseEstateTaggings, applyId);
+                } catch (Exception e1) {
+                    logger.info("", e1);
+                }
+            }
+        });
 
 
         taskExecutor.execute(new Runnable() {

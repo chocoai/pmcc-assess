@@ -121,10 +121,6 @@ basicCommon.valid = function () {
         toastr.success('楼盘数据不完整');
         return false;
     }
-    if (!buildingCommon.buildingMainForm.valid()) {
-        toastr.success('楼栋数据不完整');
-        return false;
-    }
     if (!buildingCommon.buildingForm.valid()) {
         toastr.success('楼栋数据不完整');
         return false;
@@ -149,7 +145,6 @@ basicCommon.getFormData = function () {
     item.basicApply = formSerializeArray(basicCommon.basicApplyForm);
     item.basicEstate = formSerializeArray(estateCommon.estateForm);
     item.basicEstateLandState = formSerializeArray(estateCommon.estateLandStateForm);
-    item.basicBuildingMain = formSerializeArray(buildingCommon.buildingMainForm);
     item.basicBuilding = formSerializeArray(buildingCommon.buildingForm);
     item.basicUnit = formSerializeArray(unitCommon.unitForm);
     item.basicHouse = formSerializeArray(houseCommon.houseForm);

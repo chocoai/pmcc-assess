@@ -125,8 +125,6 @@
                     unitCommon.onSelect(id);
                 }
             });
-        } else {
-            Alert("请先引用楼栋");
         }
     };
 

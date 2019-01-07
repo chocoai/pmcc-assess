@@ -27,7 +27,7 @@
                 <input type="hidden" id="surveyCaseStudyJson" value='${surveyCaseStudyJson}'>
 
                 <input type="hidden" name="caseEstateId" value="${basicApply.caseEstateId}">
-                <input type="hidden" name="caseBuildingMainId" value="${basicApply.caseBuildingMainId}">
+                <input type="hidden" name="caseBuildingId" value="${basicApply.caseBuildingId}">
                 <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
                 <input type="hidden" name="caseHouseId" value="${basicApply.caseHouseId}">
                 <input type="hidden" name="id" value="${basicApply.id}">

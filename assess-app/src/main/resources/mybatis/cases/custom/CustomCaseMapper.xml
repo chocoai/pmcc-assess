@@ -139,8 +139,8 @@
     <select id="screenUnitList" parameterType="map"
             resultMap="com.copower.pmcc.assess.dal.cases.mapper.CaseUnitMapper.BaseResultMap">
        select * from
-        (SELECT DISTINCT id, building_main_id ,version,unit_number FROM tb_case_unit WHERE 1 = 1 AND
-         building_main_id = #{buildingMainId} ORDER BY version DESC )
+        (SELECT DISTINCT id, building_id ,version,unit_number FROM tb_case_unit WHERE 1 = 1 AND
+         building_id = #{buildingId} ORDER BY version DESC )
          AS T GROUP BY unit_number ORDER BY version DESC,unit_number
     </select>
 

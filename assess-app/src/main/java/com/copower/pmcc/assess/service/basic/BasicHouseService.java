@@ -420,12 +420,22 @@ public class BasicHouseService {
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()), getBasicHouseVo(basicHouse));
 
         if (StringUtils.equals(housePartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
-            CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
-            caseEstateTagging.setDataId(caseHouseId);
-            caseEstateTagging.setType(EstateTaggingTypeEnum.HOUSE.getKey());
-            List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-            basicEstateService.copyTaggingFromCase(caseEstateTaggings, applyId);
+
         }
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
+                    caseEstateTagging.setDataId(caseHouseId);
+                    caseEstateTagging.setType(EstateTaggingTypeEnum.HOUSE.getKey());
+                    List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
+                    basicEstateService.copyTaggingFromCase(caseEstateTaggings, applyId);
+                } catch (Exception e1) {
+                    logger.info("", e1);
+                }
+            }
+        });
 
 
         taskExecutor.execute(new Runnable() {

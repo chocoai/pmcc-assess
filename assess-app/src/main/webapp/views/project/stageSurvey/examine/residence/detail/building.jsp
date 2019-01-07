@@ -10,6 +10,11 @@
 
     <form class="form-horizontal" id="basicBuildingMainFrm">
         <input type="hidden" name="id">
+
+    </form>
+    <div style="margin-bottom: 10px; border-bottom:2px solid #E6E9ED;"></div>
+    <form class="form-horizontal" id="basicBuildingFrm">
+        <input type="hidden" name="id" value="${basicBuilding.id}">
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
@@ -17,7 +22,7 @@
                 </label>
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <label class="form-control" name="buildingNumber">${basicBuildingMain.buildingNumber}</label>
+                        <label class="form-control" name="buildingNumber">${basicBuilding.buildingNumber}</label>
                         <span class="input-group-btn">
                             <div onclick="buildingCommon.mapMarker(true);" class="btn btn-info"><i
                                     class="fa fa-map-marker"></i> 标注</div>
@@ -30,7 +35,7 @@
                     楼栋名称
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="buildingName">${basicBuildingMain.buildingName}</label>
+                    <label class="form-control" name="buildingName">${basicBuilding.buildingName}</label>
                 </div>
             </div>
             <div class="x-valid">
@@ -38,7 +43,7 @@
                     总层数
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="floorCount">${basicBuildingMain.floorCount}</label>
+                    <label class="form-control" name="floorCount">${basicBuilding.floorCount}</label>
                 </div>
             </div>
         </div>
@@ -48,29 +53,7 @@
                     所在位置
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="location">${basicBuildingMain.location}</label>
-                </div>
-            </div>
-        </div>
-    </form>
-    <div style="margin-bottom: 10px; border-bottom:2px solid #E6E9ED;"></div>
-    <form class="form-horizontal" id="basicBuildingFrm">
-        <input type="hidden" name="id">
-        <div class="form-group" style="display: none;">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    楼层起
-                </label>
-                <div class="col-sm-3">
-                    <label class="form-control" name="floorStart">${basicBuilding.floorStart}</label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    楼层止
-                </label>
-                <div class="col-sm-3">
-                    <label class="form-control" name="floorEnd">${basicBuilding.floorEnd}</label>
+                    <label class="form-control" name="location">${basicBuilding.location}</label>
                 </div>
             </div>
         </div>

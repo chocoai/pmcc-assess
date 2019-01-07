@@ -4,7 +4,6 @@
 
 ;(function ($) {
     var buildingCommon = {};
-    buildingCommon.buildingMainForm = $('#basicBuildingMainFrm');
     buildingCommon.buildingForm = $('#basicBuildingFrm');
     //附件上传控件id数组
     buildingCommon.buildingFileControlIdArray = ['building_floor_plan', 'building_figure_outside', 'building_floor_Appearance_figure'];
@@ -18,7 +17,7 @@
     };
 
     buildingCommon.getBuildingNumber = function () {
-        return buildingCommon.buildingMainForm.find('[name=buildingNumber]').val();
+        return buildingCommon.buildingForm.find('[name=buildingNumber]').val();
     };
 
     buildingCommon.detail = function (id) {
@@ -28,52 +27,33 @@
             data: {applyId: id},
             success: function (result) {
                 if (result.ret) {
-                    buildingCommon.getBuildingList(result.data.id, function (data) {
-                        if (data.length >= 1) {
-                            var item = {main: result.data, build: data[0]};
-                            buildingCommon.initForm(item);
-                        }
-                    });
+                    if (result.data) {
+                        buildingCommon.initForm(result.data);
+                    }
                 }
             }
         })
     };
 
-    //获取楼栋下所有部分
-    buildingCommon.getBuildingList = function (mainId, callback) {
-        $.ajax({
-            url: getContextPath() + '/basicBuilding/getBasicBuildingListByMainId',
-            type: 'get',
-            data: {basicBuildingMainId: mainId},
-            success: function (result) {
-                if (result.ret) {
-                    callback(result.data);
-                }
-            }
-        });
-    };
-
 
     buildingCommon.initForm = function (data) {
-        buildingCommon.buildingMainForm.clearAll();
         buildingCommon.buildingForm.clearAll();
-        buildingCommon.buildingMainForm.initForm(data.main);
-        buildingCommon.buildingForm.initForm(data.build);
+        buildingCommon.buildingForm.initForm(data);
         //1.初始化下拉框；2.初始化上传控件；3.显示已上传的附件信息；4.加载从表数据
         buildingCommon.buildingForm.find("select.buildingStructureType").off('change').on('change', function () {
-            AssessCommon.loadDataDicByPid($(this).val(), data.build.buildingStructureCategory, function (html, data) {
+            AssessCommon.loadDataDicByPid($(this).val(), data.buildingStructureCategory, function (html, data) {
                 buildingCommon.buildingForm.find("select.buildingStructureCategory").empty().html(html).trigger('change');
             });
         });
         buildingCommon.buildingForm.find('select.propertyType').off('change').on('change', function () {
-            AssessCommon.loadDataDicByPid($(this).val(), data.build.propertyCategory, function (html, data) {
+            AssessCommon.loadDataDicByPid($(this).val(), data.propertyCategory, function (html, data) {
                 buildingCommon.buildingForm.find('select.propertyCategory').empty().html(html).trigger('change');
             });
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_type, data.build.propertyType, function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_type, data.propertyType, function (html, data) {
             buildingCommon.buildingForm.find('select.propertyType').empty().html(html).trigger('change');
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_structure, data.build.buildingStructureType, function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_structure, data.buildingStructureType, function (html, data) {
             buildingCommon.buildingForm.find('select.buildingStructureType').empty().html(html).trigger('change');
         });
 
@@ -206,8 +186,6 @@
                     buildingCommon.onSelect(id);
                 }
             });
-        } else {
-            Alert("请先引用楼盘");
         }
     };
 

@@ -77,11 +77,11 @@ public interface CustomCaseMapper {
     /**
      * 筛选版本最新并且筛选版本不重复的单元号码
      *
-     * @param buildingMainId
+     * @param buildingId
      * @return CaseEstateTagging
      * @throws SQLException
      */
-    public List<CaseUnit> screenUnitList(@Param("buildingMainId") Integer buildingMainId) throws SQLException;
+    public List<CaseUnit> screenUnitList(@Param("buildingId") Integer buildingId) throws SQLException;
 
     /**
      * 筛选版本最新并且筛选版本不重复的房屋号码
