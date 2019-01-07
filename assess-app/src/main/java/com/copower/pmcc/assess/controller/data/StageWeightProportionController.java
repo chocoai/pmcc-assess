@@ -2,9 +2,7 @@ package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.DataStageWeightProportion;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.input.data.StageWeightProportionDto;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
@@ -44,10 +42,10 @@ public class StageWeightProportionController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/stageWeightProportion");
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
 
-        BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getDefaultType();
-        List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(baseProjectClassify.getId(), true);
-        modelAndView.addObject("entrustmentPurposeList",baseDataDics);
-        modelAndView.addObject("stageList",projectWorkStages);
+//        BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getDefaultType();
+//        List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(baseProjectClassify.getId(), true);
+//        modelAndView.addObject("entrustmentPurposeList",baseDataDics);
+//        modelAndView.addObject("stageList",projectWorkStages);
         return modelAndView;
     }
 

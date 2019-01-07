@@ -3,9 +3,7 @@ package com.copower.pmcc.assess.service.data;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.StageWeightProportionDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.DataStageWeightProportion;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.input.data.StageWeightProportionDto;
 import com.copower.pmcc.assess.dto.output.data.ProportionTempVo;
 import com.copower.pmcc.assess.dto.output.data.StageWeightProportionVo;
@@ -88,16 +86,16 @@ public class StageWeightProportionService {
                 stageWeightProportionDao.update(stageWeightProportions.get(i));
             }
         } else {
-            BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getDefaultType();
-            List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(baseProjectClassify.getId(), true);
-            for(int i = 0;i<projectWorkStages.size();i++){
-                StageWeightProportionDto stageWeightProportionDto1 = new StageWeightProportionDto();
-                stageWeightProportionDto1.setEntrustPurpose(stageWeightProportionDto.getEntrustPurpose());
-                stageWeightProportionDto1.setStage(projectWorkStages.get(i).getId());
-                stageWeightProportionDto1.setProportion(Integer.valueOf(strings[i]));
-                stageWeightProportionDto1.setCreator(processControllerComponent.getThisUser());
-                stageWeightProportionDao.save(stageWeightProportionDto1);
-            }
+//            BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getDefaultType();
+//            List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(baseProjectClassify.getId(), true);
+//            for(int i = 0;i<projectWorkStages.size();i++){
+//                StageWeightProportionDto stageWeightProportionDto1 = new StageWeightProportionDto();
+//                stageWeightProportionDto1.setEntrustPurpose(stageWeightProportionDto.getEntrustPurpose());
+//                stageWeightProportionDto1.setStage(projectWorkStages.get(i).getId());
+//                stageWeightProportionDto1.setProportion(Integer.valueOf(strings[i]));
+//                stageWeightProportionDto1.setCreator(processControllerComponent.getThisUser());
+//                stageWeightProportionDao.save(stageWeightProportionDto1);
+//            }
         }
     }
 

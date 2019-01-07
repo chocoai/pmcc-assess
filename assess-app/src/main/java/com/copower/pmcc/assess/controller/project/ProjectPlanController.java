@@ -293,8 +293,6 @@ public class ProjectPlanController {
                 return o.getWorkStageId() == projectPlan.getWorkStageId();
             });
         } else {
-            //获取该类别的默认事项
-            projectPhases = projectPhaseService.getDefaultProjectPhaseByTypeId(projectInfo.getProjectTypeId());
             projectPhases = CollectionUtils.isEmpty(projectPhases) ? new ArrayList<>() : projectPhases;
         }
         return projectPhases;

@@ -67,7 +67,8 @@
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
-<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -157,7 +158,8 @@
 </div>
 
 <!--子项管理-->
-<div id="divSubProjectClassify" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="divSubProjectClassify" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true" data-height="350">
     <div class="modal-dialog modal-lg" style="width: 1200px">
         <div class="modal-content">
@@ -196,10 +198,10 @@
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div>
-                                        <label class="col-sm-3 control-label">
+                                        <label class="col-sm-2 control-label">
                                             名称<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-10">
                                             <input type="text" required data-rule-maxlength="50" placeholder="名称"
                                                    id="subName" name="name" class="form-control">
                                         </div>
@@ -209,32 +211,40 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
+                                        <label class="col-sm-2 control-label">
                                             字段名称
                                         </label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-4">
                                             <input type="text" data-rule-maxlength="100" placeholder="字段名称"
                                                    id="subFieldName" name="fieldName" class="form-control">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            申请url
+                                        <label class="col-sm-2 control-label">
+                                            引用字段名称
                                         </label>
-                                        <div class="col-sm-8">
-                                            <input type="text" data-rule-maxlength="100" placeholder="申请url"
-                                                   id="applyUrl" name="applyUrl" class="form-control">
+                                        <div class="col-sm-4">
+                                            <input type="text" data-rule-maxlength="100" placeholder="字段名称"
+                                                   id="subUseSameFieldName" name="useSameFieldName"
+                                                   class="form-control">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
+                                        <label class="col-sm-2 control-label">
+                                            申请url
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" data-rule-maxlength="100" placeholder="申请url"
+                                                   id="applyUrl" name="applyUrl" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             详情url
                                         </label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-4">
                                             <input type="text" data-rule-maxlength="100" placeholder="详情url"
                                                    id="detailUrl" name="detailUrl" class="form-control">
                                         </div>
@@ -242,42 +252,36 @@
                                 </div>
                                 <div class="form-group">
                                     <div>
-                                        <label class="col-sm-3 control-label">
+                                        <label class="col-sm-2 control-label">
                                             是否启用<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-4">
                                             <label class="radio-inline">
                                                 <input type="checkbox" id="subBisEnable" name="bisEnable" value="true"
                                                        checked="checked">
                                             </label>
                                         </div>
-                                        <div class="col-sm-1">
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
+                                        <label class="col-sm-2 control-label">
                                             排序
                                         </label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-10">
                                             <input type="text" data-rule-digits="true" placeholder="排序"
                                                    id="subSorting" name="sorting" class="form-control">
                                         </div>
-                                        <div class="col-sm-1">
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
+                                        <label class="col-sm-2 control-label">
                                             备注
                                         </label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-10">
                                     <textarea placeholder="备注" id="subRemark" name="remark"
                                               class="form-control"></textarea>
-                                        </div>
-                                        <div class="col-sm-1">
                                         </div>
                                     </div>
                                 </div>
@@ -448,6 +452,7 @@
         var cols = [];
         cols.push({field: 'name', title: '名称'});
         cols.push({field: 'fieldName', title: '字段名称'});
+        cols.push({field: 'useSameFieldName', title: '引用字段名称'});
         cols.push({
             field: 'bisEnable', title: '是否启用', formatter: function (value) {
                 return getBoolChs(value);

@@ -327,58 +327,6 @@ public class BaseProjectClassifyService {
         return keyValueDtoList;
     }
 
-    /**
-     * 获取默认类型
-     *
-     * @return
-     */
-    public BaseProjectClassify getDefaultClass() {
-        BaseProjectClassify queryParam = new BaseProjectClassify();
-        queryParam.setBisDefault(true);
-        queryParam.setPid(0);
-        List<BaseProjectClassify> classList = baseProjectClassifyDao.getProjectClassifyList(queryParam);
-        if (CollectionUtils.isEmpty(classList)) return null;
-        return classList.get(0);
-    }
-
-    /**
-     * 获取默认类别
-     *
-     * @return
-     */
-    public BaseProjectClassify getDefaultType() {
-        BaseProjectClassify defaultClass = getDefaultClass();
-        if (defaultClass == null) return null;
-        BaseProjectClassify queryParam = new BaseProjectClassify();
-        queryParam.setBisDefault(true);
-        queryParam.setPid(defaultClass.getId());
-        List<BaseProjectClassify> typeList = baseProjectClassifyDao.getProjectClassifyList(queryParam);
-        if (CollectionUtils.isEmpty(typeList)) return null;
-        return typeList.get(0);
-    }
-
-    /**
-     * 获取默认范围
-     *
-     * @return
-     */
-    public BaseProjectClassify getDefaultCategory(Integer typeId) {
-        List<BaseProjectClassify> categoryList = null;
-        BaseProjectClassify queryParam = new BaseProjectClassify();
-        queryParam.setBisDefault(true);
-        if (typeId != null && typeId > 0) {
-            queryParam.setPid(typeId);
-            categoryList = baseProjectClassifyDao.getProjectClassifyList(queryParam);
-            if (CollectionUtils.isNotEmpty(categoryList))
-                return categoryList.get(0);
-        }
-        BaseProjectClassify defaultType = getDefaultType();
-        if (defaultType == null) return null;
-        queryParam.setPid(defaultType.getId());
-        categoryList = baseProjectClassifyDao.getProjectClassifyList(queryParam);
-        if (CollectionUtils.isEmpty(categoryList)) return null;
-        return categoryList.get(0);
-    }
 
     /**
      * 获取项目分类的数据层次
@@ -539,5 +487,18 @@ public class BaseProjectClassifyService {
     public BaseProjectClassify getDataById(Integer id) {
         BaseProjectClassify baseProjectClassify = baseProjectClassifyDao.getSingleObject(id);
         return baseProjectClassify;
+    }
+
+    /**
+     * 获取数据引用id
+     * @param id
+     * @return
+     */
+    public Integer getReferenceId(Integer id) {
+        BaseProjectClassify projectClassify = this.getCacheProjectClassifyById(id);
+        if (projectClassify == null) return id;
+        if (StringUtils.isBlank(projectClassify.getUseSameFieldName())) return id;
+        projectClassify = this.getCacheProjectClassifyByFieldName(projectClassify.getUseSameFieldName());
+        return projectClassify == null ? id : projectClassify.getId();
     }
 }

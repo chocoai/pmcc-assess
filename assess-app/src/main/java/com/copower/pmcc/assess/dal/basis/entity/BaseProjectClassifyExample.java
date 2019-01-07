@@ -365,6 +365,76 @@ public class BaseProjectClassifyExample {
             return (Criteria) this;
         }
 
+        public Criteria andUseSameFieldNameIsNull() {
+            addCriterion("use_same_field_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseSameFieldNameIsNotNull() {
+            addCriterion("use_same_field_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseSameFieldNameEqualTo(String value) {
+            addCriterion("use_same_field_name =", value, "useSameFieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseSameFieldNameNotEqualTo(String value) {
+            addCriterion("use_same_field_name <>", value, "useSameFieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseSameFieldNameGreaterThan(String value) {
+            addCriterion("use_same_field_name >", value, "useSameFieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseSameFieldNameGreaterThanOrEqualTo(String value) {
+            addCriterion("use_same_field_name >=", value, "useSameFieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseSameFieldNameLessThan(String value) {
+            addCriterion("use_same_field_name <", value, "useSameFieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseSameFieldNameLessThanOrEqualTo(String value) {
+            addCriterion("use_same_field_name <=", value, "useSameFieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseSameFieldNameLike(String value) {
+            addCriterion("use_same_field_name like", value, "useSameFieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseSameFieldNameNotLike(String value) {
+            addCriterion("use_same_field_name not like", value, "useSameFieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseSameFieldNameIn(List<String> values) {
+            addCriterion("use_same_field_name in", values, "useSameFieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseSameFieldNameNotIn(List<String> values) {
+            addCriterion("use_same_field_name not in", values, "useSameFieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseSameFieldNameBetween(String value1, String value2) {
+            addCriterion("use_same_field_name between", value1, value2, "useSameFieldName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseSameFieldNameNotBetween(String value1, String value2) {
+            addCriterion("use_same_field_name not between", value1, value2, "useSameFieldName");
+            return (Criteria) this;
+        }
+
         public Criteria andApplyUrlIsNull() {
             addCriterion("apply_url is null");
             return (Criteria) this;
@@ -502,66 +572,6 @@ public class BaseProjectClassifyExample {
 
         public Criteria andDetailUrlNotBetween(String value1, String value2) {
             addCriterion("detail_url not between", value1, value2, "detailUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDefaultIsNull() {
-            addCriterion("bis_default is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDefaultIsNotNull() {
-            addCriterion("bis_default is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDefaultEqualTo(Boolean value) {
-            addCriterion("bis_default =", value, "bisDefault");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDefaultNotEqualTo(Boolean value) {
-            addCriterion("bis_default <>", value, "bisDefault");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDefaultGreaterThan(Boolean value) {
-            addCriterion("bis_default >", value, "bisDefault");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDefaultGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("bis_default >=", value, "bisDefault");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDefaultLessThan(Boolean value) {
-            addCriterion("bis_default <", value, "bisDefault");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDefaultLessThanOrEqualTo(Boolean value) {
-            addCriterion("bis_default <=", value, "bisDefault");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDefaultIn(List<Boolean> values) {
-            addCriterion("bis_default in", values, "bisDefault");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDefaultNotIn(List<Boolean> values) {
-            addCriterion("bis_default not in", values, "bisDefault");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDefaultBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_default between", value1, value2, "bisDefault");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDefaultNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_default not between", value1, value2, "bisDefault");
             return (Criteria) this;
         }
 

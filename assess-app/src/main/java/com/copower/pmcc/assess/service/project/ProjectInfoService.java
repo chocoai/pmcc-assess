@@ -270,28 +270,6 @@ public class ProjectInfoService {
         Integer projectCategoryId = projectInfo.getProjectCategoryId();//项目范围id
         List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectTypeId, true);
 
-        if (CollectionUtils.isEmpty(projectWorkStages)) {
-            BaseProjectClassify defaultType = baseProjectClassifyService.getDefaultType();
-            if (defaultType != null) {
-                projectTypeId = defaultType.getId();
-            }
-            projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectTypeId, true);
-        }
-
-        List<ProjectPhase> projectPhaseList = null;
-        if (projectCategoryId != null && projectCategoryId > 0) {
-            //取一次事项
-            projectPhaseList = projectPhaseService.getCacheProjectPhaseByCategoryId(projectCategoryId);
-        }
-
-        if (projectCategoryId == null || projectCategoryId <= 0 || CollectionUtils.isEmpty(projectPhaseList)) {
-            //取得默认项目范围
-            BaseProjectClassify defaultCategory = baseProjectClassifyService.getDefaultCategory(projectTypeId);
-            if (defaultCategory != null) {
-                projectCategoryId = defaultCategory.getId();
-            }
-        }
-
         if (CollectionUtils.isEmpty(projectWorkStages))
             throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
         int i = 1;

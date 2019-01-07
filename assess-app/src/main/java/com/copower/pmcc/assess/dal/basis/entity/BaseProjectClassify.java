@@ -11,11 +11,11 @@ public class BaseProjectClassify {
 
     private String fieldName;
 
+    private String useSameFieldName;
+
     private String applyUrl;
 
     private String detailUrl;
-
-    private Boolean bisDefault;
 
     private Boolean bisEnable;
 
@@ -63,6 +63,14 @@ public class BaseProjectClassify {
         this.fieldName = fieldName == null ? null : fieldName.trim();
     }
 
+    public String getUseSameFieldName() {
+        return useSameFieldName;
+    }
+
+    public void setUseSameFieldName(String useSameFieldName) {
+        this.useSameFieldName = useSameFieldName == null ? null : useSameFieldName.trim();
+    }
+
     public String getApplyUrl() {
         return applyUrl;
     }
@@ -77,14 +85,6 @@ public class BaseProjectClassify {
 
     public void setDetailUrl(String detailUrl) {
         this.detailUrl = detailUrl == null ? null : detailUrl.trim();
-    }
-
-    public Boolean getBisDefault() {
-        return bisDefault;
-    }
-
-    public void setBisDefault(Boolean bisDefault) {
-        this.bisDefault = bisDefault;
     }
 
     public Boolean getBisEnable() {

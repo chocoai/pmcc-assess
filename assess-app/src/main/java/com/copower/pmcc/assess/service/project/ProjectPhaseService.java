@@ -4,7 +4,6 @@ package com.copower.pmcc.assess.service.project;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPhaseDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
@@ -13,6 +12,9 @@ import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -112,11 +115,11 @@ public class ProjectPhaseService {
         String fullKey = String.format("%s:%s", key, categoryId);
         String cacheKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_WORK_PHASE_KEY, fullKey);
         try {
-            ProjectPhase projectPhase = LangUtils.singleCache(cacheKey, key, ProjectPhase.class, input -> projectPhaseDao.getProjectPhaseByKey(input,categoryId));
+            ProjectPhase projectPhase = LangUtils.singleCache(cacheKey, key, ProjectPhase.class, input -> projectPhaseDao.getProjectPhaseByKey(input, categoryId));
             return projectPhase;
         } catch (Exception e) {
             logger.error("getCacheProjectPhaseByKey error", e);
-            return projectPhaseDao.getProjectPhaseByKey(key,categoryId);
+            return projectPhaseDao.getProjectPhaseByKey(key, categoryId);
         }
     }
 
@@ -131,23 +134,38 @@ public class ProjectPhaseService {
         }
     }
 
-    public List<ProjectPhase> getCacheProjectPhaseByCategoryId(Integer categoryId, Integer workStageId) {
-        List<ProjectPhase> projectPhaseList = getCacheProjectPhaseByCategoryId(categoryId);
-        return LangUtils.filter(projectPhaseList, o -> {
-            return o.getWorkStageId().equals(workStageId);
-        });
-    }
-
     /**
-     * 获取类别下的默认事项
+     * 缓存中获取工作事项
      *
-     * @param typeId
+     * @param categoryId
+     * @param workStageId
      * @return
      */
-    public List<ProjectPhase> getDefaultProjectPhaseByTypeId(Integer typeId) {
-        BaseProjectClassify defaultCategory = baseProjectClassifyService.getDefaultCategory(typeId);
-        if (defaultCategory == null) return null;
-        return getCacheProjectPhaseByCategoryId(defaultCategory.getId());
+    public List<ProjectPhase> getCacheProjectPhaseByCategoryId(Integer categoryId, Integer workStageId) {
+        //1.先取得自身工作事项 2.如果有引用则取得引用的工作事项 3.融合事项
+        List<ProjectPhase> projectPhaseList = getCacheProjectPhaseByCategoryId(categoryId);
+        List<ProjectPhase> selfPhases = LangUtils.filter(projectPhaseList, o -> {
+            return o.getWorkStageId().equals(workStageId);
+        });
+        Integer referenceId = baseProjectClassifyService.getReferenceId(categoryId);
+        if (referenceId.equals(categoryId)) return selfPhases;
+        List<ProjectPhase> referencePhaseList = getCacheProjectPhaseByCategoryId(referenceId);
+        if (CollectionUtils.isEmpty(referencePhaseList)) return selfPhases;
+        HashSet<String> keys = Sets.newHashSet();
+        selfPhases.forEach(o -> keys.add(o.getPhaseKey()));
+        List<ProjectPhase> resultPhaseList = Lists.newArrayList();
+        for (ProjectPhase projectPhase : referencePhaseList) {
+            if (StringUtils.isNotBlank(projectPhase.getPhaseKey()) && keys.contains(projectPhase.getPhaseKey())) {
+                for (ProjectPhase selfPhase : selfPhases) {
+                    if (StringUtils.equals(projectPhase.getPhaseKey(), selfPhase.getPhaseKey())) {
+                        resultPhaseList.add(selfPhase);
+                    }
+                }
+            } else {
+                resultPhaseList.add(projectPhase);
+            }
+        }
+        return resultPhaseList;
     }
 
     /**

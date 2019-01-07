@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanExecuteInterface;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
@@ -36,6 +37,8 @@ public class PlanDefaultExecute implements ProjectPlanExecuteInterface {
     private ProjectMemberService projectMemberService;
     @Autowired
     private ErpRpcUserService erpRpcUserService;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     @Override
     public void execute(ProjectPlan projectPlan,ProjectWorkStage projectWorkStage) throws BusinessException {
