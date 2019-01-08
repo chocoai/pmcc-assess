@@ -24,12 +24,12 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${declareRecord.name}-${projectPlanDetails.projectPhaseName}</h2>
+                    <h3>${declareRecord.name}-${projectPlanDetails.projectPhaseName}</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
                     <table id="explore_list" class="table table-bordered" style="max-height: auto;"></table>
-                    <form id="frm_explore" class="form-horizontal">
+                    <form id="frm_explore" class="form-horizontal" style="display: none;">
                         <fieldset>
                             <legend>同步数据到其它权证</legend>
                             <input type="button" class="btn btn-primary" onclick="taskExploreIndex.selectAll();"
@@ -80,7 +80,6 @@
 
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
-<span style="display: none;"><%@include file="/views/base/mapPositionPicker.jsp" %></span>
 <script type="application/javascript">
 
     $(function () {
@@ -98,13 +97,11 @@
         var formData = {};
         formData.id = "${surveySceneExplore.id}";
         formData.jsonContent = taskExploreIndex.getDeclareCertData();
-        if (gaoDeMap.location)
-            formData.location = gaoDeMap.location;
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
         }
         else {
-            submitToServer(JSON.stringify(formData),mustUseBox);
+            submitToServer(JSON.stringify(formData), mustUseBox);
         }
     }
 
@@ -234,14 +231,14 @@
 
     taskExploreIndex.assignmentTask = function () {
         var data = formParams('frm_planDetails');
-        console.log(data) ;
+        console.log(data);
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/surveyExamine/examineTaskAssignment",
             data: {
                 planDetailsId: "${projectPlanDetails.id}",
                 formData: JSON.stringify(data),
-                examineFormType:data.examineFormType
+                examineFormType: data.examineFormType
             },
             type: "post",
             dataType: "json",
@@ -350,8 +347,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">工业和非工业选择</h3>
-
+                <h3 class="modal-title">类型选择</h3>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -360,17 +356,11 @@
                             <form id="frm_planDetails" class="form-horizontal">
                                 <input type="hidden" id="pid" name="pid"/>
                                 <div class="form-group">
-
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            工业仓储类型
-                                        </label>
-                                    </div>
-
                                     <div class="x-valid">
                                         <c:forEach var="item" items="${examineFormTypeList}">
-                                            <span class="col-sm-2">
-                                            <input type="radio" name="examineFormType" value='${item.key}'>
+                                            <span class="col-sm-4">
+                                            <input type="radio" id="examineFormType_${item.key}" name="examineFormType"
+                                                   value='${item.key}'>
                                             <label for="examineFormType_${item.key}">&nbsp;${item.value}</label>
                                             </span>
                                         </c:forEach>

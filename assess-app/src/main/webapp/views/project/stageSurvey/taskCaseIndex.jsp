@@ -24,12 +24,12 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${declareRecord.name}-${projectPlanDetails.projectPhaseName}</h2>
+                    <h3>${declareRecord.name}-${projectPlanDetails.projectPhaseName}</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
                     <table id="case_list" class="table table-bordered" style="max-height: auto;"></table>
-                    <form id="frm_case" class="form-horizontal">
+                    <form id="frm_case" class="form-horizontal" style="display: none;">
                         <fieldset>
                             <legend>同步数据到其它权证</legend>
                             <input type="button" class="btn btn-primary" onclick="taskCaseIndex.selectAll();"
@@ -114,7 +114,6 @@
 
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
-<span style="display: none;"><%@include file="/views/base/mapPositionPicker.jsp" %></span>
 <script type="application/javascript">
 
     $(function () {
@@ -131,13 +130,11 @@
         var formData = {};
         formData.id = "${surveyCaseStudy.id}";
         formData.jsonContent = taskCaseIndex.getDeclareCertData();
-        if (gaoDeMap.location)
-            formData.location = gaoDeMap.location;
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
         }
         else {
-            submitToServer(JSON.stringify(formData),mustUseBox);
+            submitToServer(JSON.stringify(formData), mustUseBox);
         }
     }
 
@@ -192,24 +189,24 @@
                     },
                     {
                         field: 'workStages', title: '操作', width: '10%', formatter: function (value, row) {
-                            if (row.bisEnable) {
-                                var s = "";
-                                if (row.id == '${projectPlanDetails.id}') {
-                                    s += "<a  data-placement='top' data-original-title='新增' class='btn btn-xs btn-success tooltips' target='_blank' onclick='taskCaseIndex.addCaseTask(" + row.id + ")'   ><i class='fa fa-plus fa-white'></i></a>";
-                                } else if (row.pid == '${projectPlanDetails.id}') {
-                                    s += taskCaseIndex.getOperationHtml(row.status, row.id);
-                                } else {
-                                    //只用于处理任务
-                                    if (row.excuteUrl) {
-                                        s += "<a  data-placement='top' data-original-title='提交' class='btn btn-xs btn-success tooltips' target='_blank' onclick='taskCaseIndex.openTaskUrl(\"" + row.excuteUrl + "\")'   ><i class='fa fa-arrow-right fa-white'></i></a>";
-                                    } else if (row.displayUrl) {
-                                        s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
-                                    }
+                        if (row.bisEnable) {
+                            var s = "";
+                            if (row.id == '${projectPlanDetails.id}') {
+                                s += "<a  data-placement='top' data-original-title='新增' class='btn btn-xs btn-success tooltips' target='_blank' onclick='taskCaseIndex.addCaseTask(" + row.id + ")'   ><i class='fa fa-plus fa-white'></i></a>";
+                            } else if (row.pid == '${projectPlanDetails.id}') {
+                                s += taskCaseIndex.getOperationHtml(row.status, row.id);
+                            } else {
+                                //只用于处理任务
+                                if (row.excuteUrl) {
+                                    s += "<a  data-placement='top' data-original-title='提交' class='btn btn-xs btn-success tooltips' target='_blank' onclick='taskCaseIndex.openTaskUrl(\"" + row.excuteUrl + "\")'   ><i class='fa fa-arrow-right fa-white'></i></a>";
+                                } else if (row.displayUrl) {
+                                    s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
                                 }
-                                return s;
                             }
-
+                            return s;
                         }
+
+                    }
                     }
                 ]]
             }
@@ -222,9 +219,9 @@
         var editHtml = "<a  data-placement='top' data-original-title='编辑' class='btn btn-xs btn-primary tooltips' target='_blank' onclick='taskCaseIndex.editCaseTask(" + id + ")'  ><i class='fa fa-edit fa-white'></i></a>";
         var deleteHtml = "<a  data-placement='top' data-original-title='删除' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskCaseIndex.deleteCaseTask(" + id + ")'><i class='fa fa-minus fa-white'></i></a>";
         var assignmentHtml = "<a  data-placement='top' data-original-title='分派' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskCaseIndex.assignment(" + id + ")'><i class='fa fa-arrows-alt fa-white'></i></a>";
-        assignmentHtml = "" ;
+        assignmentHtml = "";
         var copyHtml = " <a href='javascript://;' onclick='taskCaseIndex.copyCaseStudy(" + id + ")' data-placement='top' data-original-title='复制案例' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-copy fa-white'></i></a>";
-        copyHtml = "" ;
+        copyHtml = "";
         var viewHtml = "";
         var resultHtml = "";
         switch (status) {
@@ -245,7 +242,7 @@
     taskCaseIndex.addCaseTask = function (pid) {
         $("#frm_planDetails").empty();
         $("#frm_planDetails").append($("#plan_details_modal_html").html());
-        $("#examineFormTypeList").show() ;
+        $("#examineFormTypeList").show();
         var node = $("#case_list").treegrid('find', pid);
         $("#pid").val(node.id);
         $("#planStartDate").val(formatDate(node.planStartDate, false));
@@ -263,7 +260,7 @@
     taskCaseIndex.editCaseTask = function (id) {
         $("#frm_planDetails").empty();
         $("#frm_planDetails").append($("#plan_details_modal_html").html());
-        $("#examineFormTypeList").hide() ;
+        $("#examineFormTypeList").hide();
         var node = $("#case_list").treegrid('find', id);
         $("#frm_planDetails").initForm(node);
         $("#planStartDate").val(formatDate(node.planStartDate, false));
@@ -472,24 +469,18 @@
                 <input type="hidden" id="pid" name="pid"/>
                 <input type="text" placeholder="案例名称" required maxlength="50"
                        id="projectPhaseName" name="projectPhaseName"
-                       class="form-control">
+                       class="form-control" >
             </div>
         </div>
     </div>
     <div class="form-group" id="examineFormTypeList" style="display: none">
-
-        <div class="x-valid">
-            <label class="col-sm-2 control-label">
-                工业仓储类型
-            </label>
-        </div>
-
+        <label class="col-sm-2 control-label"></label>
         <div class="x-valid">
             <c:forEach var="item" items="${examineFormTypeList}">
-        <span class="col-sm-2">
-        <input type="radio" name="examineFormType" value='${item.key}'>
-        <label for="examineFormType_${item.key}">&nbsp;${item.value}</label>
-    </span>
+            <span class="col-sm-4">
+            <input type="radio" id="examineFormType_${item.key}" name="examineFormType" value='${item.key}' required>
+            <label for="examineFormType_${item.key}">&nbsp;${item.value}</label>
+            </span>
             </c:forEach>
         </div>
     </div>
