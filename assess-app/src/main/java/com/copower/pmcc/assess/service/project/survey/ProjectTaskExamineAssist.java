@@ -210,7 +210,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     private void setSurveyCaseStudyOrSurveySceneExploreValue(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) throws Exception {
         ExamineTypeEnum examineTypeEnum = ExamineTypeEnum.EXPLORE;
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
-        if (StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.CASE_STUDY_EXAMINE)) {
+        if (StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE)) {
             examineTypeEnum = ExamineTypeEnum.CASE;
         }
         BasicApply basicApply = null;

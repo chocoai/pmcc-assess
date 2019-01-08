@@ -171,9 +171,9 @@ public class SurveyCaseStudyService {
         String userAccount = commonService.thisUserAccount();
         ProjectWorkStage workStage = projectWorkStageService.cacheProjectWorkStage(planDetails.getProjectWorkStageId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());
-        String phaseKey = AssessPhaseKeyConstant.SCENE_EXPLORE_EXAMINE;
+        String phaseKey = AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE;
         if (ExamineTypeEnum.CASE.getId().equals(examineFormType)) {
-            phaseKey = AssessPhaseKeyConstant.CASE_STUDY_EXAMINE;
+            phaseKey = AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE;
         }
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(phaseKey, projectInfo.getProjectCategoryId());
         //添加计划任务子项及待提交任务

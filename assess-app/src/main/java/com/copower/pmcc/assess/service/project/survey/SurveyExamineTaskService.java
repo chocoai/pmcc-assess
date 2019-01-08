@@ -385,7 +385,7 @@ public class SurveyExamineTaskService {
         String userAccount = commonService.thisUserAccount();
         ProjectWorkStage workStage = projectWorkStageService.cacheProjectWorkStage(planDetails.getProjectWorkStageId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());
-        String phaseKey = AssessPhaseKeyConstant.SCENE_EXPLORE_EXAMINE;
+        String phaseKey = AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE;
 //        if (ExamineTypeEnum.EXPLORE.getId().equals(examineFormType)) {
 //            phaseKey = AssessPhaseKeyConstant.SCENE_EXPLORE_EXAMINE;
 //        }
@@ -521,11 +521,11 @@ public class SurveyExamineTaskService {
             if (!hashSet.isEmpty()) {
                 ProjectWorkStage workStage = projectWorkStageService.cacheProjectWorkStage(planDetails.getProjectWorkStageId());
                 ProjectInfo projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());
-                String phaseKey = AssessPhaseKeyConstant.SCENE_EXPLORE_EXAMINE;
+                String phaseKey = AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE;
                 if (ExamineTypeEnum.CASE.getId().equals(surveyExamineTaskDto.getExamineType())) {
-                    phaseKey = AssessPhaseKeyConstant.CASE_STUDY_EXAMINE;
+                    phaseKey = AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE;
                 }
-                ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(phaseKey, projectInfo.getProjectCategoryId());
+                ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(phaseKey);
                 for (String userAccount : hashSet) {
                     //添加计划任务子项及待提交任务
                     ProjectPlanDetails taskPlanDetails = new ProjectPlanDetails();
@@ -610,7 +610,7 @@ public class SurveyExamineTaskService {
         SurveyCaseStudy surveyCaseStudy = null;
         SurveySceneExplore surveySceneExplore = null;
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
-        if (StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.CASE_STUDY_EXAMINE)) {
+        if (StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE)) {
             examineTypeEnum = ExamineTypeEnum.CASE;
         }
         JSONObject jsonObject = JSONObject.parseObject(formData);
