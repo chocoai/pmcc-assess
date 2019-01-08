@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: kings
-  Date: 2018-4-17
-  Time: 17:21
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html lang="en" class="no-js">
@@ -130,14 +124,7 @@
                                     委托单位
                                 </label>
                                 <div class="col-sm-3">
-                                    <c:choose>
-                                        <c:when test="${projectInfo.consignorVo.csEntrustmentUnitName != null}">
-                                            <label class="form-control">${projectInfo.consignorVo.csEntrustmentUnitName}</label>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <label class="form-control">${projectInfo.consignorVo.csEntrustmentUnit}</label>
-                                        </c:otherwise>
-                                    </c:choose>
+                                    <label class="form-control">${projectInfo.consignorVo.csEntrustmentUnit}</label>
                                 </div>
                             </div>
 
@@ -253,14 +240,7 @@
                                     占有单位
                                 </label>
                                 <div class="col-sm-3">
-                                    <c:choose>
-                                        <c:when test="${projectInfo.possessorVo.pEntrustmentUnitName != null}">
-                                            <label class="form-control">${projectInfo.possessorVo.pEntrustmentUnitName}</label>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <label class="form-control">${projectInfo.possessorVo.pEntrustmentUnit}</label>
-                                        </c:otherwise>
-                                    </c:choose>
+                                    <label class="form-control">${projectInfo.possessorVo.pEntrustmentUnit}</label>
                                 </div>
                             </div>
 
@@ -498,7 +478,8 @@
         cols.push({field: 'cPhone', title: '部门'});
         TableInit(tb_List, "${pageContext.request.contextPath}/initiateContacts/getBootstrapTableVo", cols, {
             cPid: cPid,
-            cType: cType
+            cType: cType,
+            approval:true
         }, {
             showColumns: false,
             showRefresh: false,

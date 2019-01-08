@@ -4,6 +4,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_content">
     <form id="frm_consignor" class="form-horizontal" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="${projectInfo.consignorVo.id}">
         <div class="form-group">
             <div class="x-valid">
                 <div class="col-sm-3 col-sm-offset-1">
