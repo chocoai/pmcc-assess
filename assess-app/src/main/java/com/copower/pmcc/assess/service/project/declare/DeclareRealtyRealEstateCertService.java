@@ -118,6 +118,7 @@ public class DeclareRealtyRealEstateCertService {
                 oo = new DeclareRealtyRealEstateCert();
                 oo.setDeclareType(declareType);
                 oo.setPlanDetailsId(declareRealtyRealEstateCert.getPlanDetailsId());
+                oo.setEnable(DeclareTypeEnum.Enable.getKey());
                 //excel处理
                 if (!declarePoiHelp.realEstateCert(oo,builder,row,i,land_uses)){
                     continue;

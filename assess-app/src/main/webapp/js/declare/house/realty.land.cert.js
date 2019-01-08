@@ -224,7 +224,7 @@ assessCommonLand.deleteLand = function () {
                     data: {ids: ids},
                     success: function (result) {
                         if (result.ret) {
-                            declareRealtyLandCert.loadList();
+                            assessCommonLand.loadList();
                             toastr.success('成功!');
                         } else {
                             Alert("保存失败:" + result.errmsg);
@@ -487,7 +487,7 @@ assessCommonLand.inputFileHouse = function () {
         async: false,
         success: function (result) {
             if (result.ret) {
-                declareRealtyLandCert.loadList();
+                assessCommonLand.loadList();
                 Alert(result.data);
             }
         },
@@ -516,11 +516,12 @@ assessCommonLand.inputFile = function () {
         async: false,
         success: function (result) {
             if (result.ret) {
-                declareRealtyLandCert.loadList();
+                assessCommonLand.loadList();
                 Alert(result.data);
             }
         },
         error: function (result, status, e) {
+            console.log(result) ;
             Loading.progressHide();
             Alert("调用服务端方法失败，失败原因:" + result);
         }

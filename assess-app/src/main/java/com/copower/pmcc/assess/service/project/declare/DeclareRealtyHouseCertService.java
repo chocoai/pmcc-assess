@@ -83,7 +83,7 @@ public class DeclareRealtyHouseCertService {
      * @auther: zch
      * @date: 2018/9/25 17:58
      */
-    public String importLandAndHouse(MultipartFile multipartFile,Integer planDetailsId) throws Exception {
+    public String importLandAndHouse(MultipartFile multipartFile, Integer planDetailsId) throws Exception {
         Workbook workbook = null;
         Row row = null;
         StringBuilder builder = new StringBuilder();
@@ -290,73 +290,13 @@ public class DeclareRealtyHouseCertService {
         return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, builder.toString());
     }
 
-    /**
-     * 处理关联数据
-     *
-     * @param declareRealtyHouseCert
-     */
-    private void relation(DeclareRealtyHouseCert declareRealtyHouseCert) {
-        DeclareRealtyLandCert declareRealtyLandCert = declareRealtyLandCertDao.getDeclareRealtyLandCertById(declareRealtyHouseCert.getPid());
-        if (declareRealtyLandCert != null) {
-            if (!org.springframework.util.StringUtils.isEmpty(declareRealtyLandCert.getCity())) {
-                declareRealtyHouseCert.setCity(declareRealtyLandCert.getCity());
-            }
-            if (!org.springframework.util.StringUtils.isEmpty(declareRealtyLandCert.getDistrict())) {
-                declareRealtyHouseCert.setDistrict(declareRealtyLandCert.getDistrict());
-            }
-            if (!org.springframework.util.StringUtils.isEmpty(declareRealtyLandCert.getProvince())) {
-                declareRealtyHouseCert.setProvince(declareRealtyLandCert.getProvince());
-            }
-            if (!org.springframework.util.StringUtils.isEmpty(declareRealtyLandCert.getFloor())) {
-                declareRealtyHouseCert.setFloor(declareRealtyLandCert.getFloor());
-            }
-            if (!org.springframework.util.StringUtils.isEmpty(declareRealtyLandCert.getRoomNumber())) {
-                declareRealtyHouseCert.setRoomNumber(declareRealtyLandCert.getRoomNumber());
-            }
-            if (!org.springframework.util.StringUtils.isEmpty(declareRealtyLandCert.getUnit())) {
-                declareRealtyHouseCert.setUnit(declareRealtyLandCert.getUnit());
-            }
-            if (!org.springframework.util.StringUtils.isEmpty(declareRealtyLandCert.getBuildingNumber())) {
-                declareRealtyHouseCert.setBuildingNumber(declareRealtyLandCert.getBuildingNumber());
-            }
-            if (!org.springframework.util.StringUtils.isEmpty(declareRealtyLandCert.getAttachedNumber())) {
-                declareRealtyHouseCert.setAttachedNumber(declareRealtyLandCert.getAttachedNumber());
-            }
-            if (!org.springframework.util.StringUtils.isEmpty(declareRealtyLandCert.getStreetNumber())) {
-                declareRealtyHouseCert.setStreetNumber(declareRealtyLandCert.getStreetNumber());
-            }
-            if (!org.springframework.util.StringUtils.isEmpty(declareRealtyLandCert.getBeLocated())) {
-                declareRealtyHouseCert.setBeLocated(declareRealtyLandCert.getBeLocated());
-            }
-            if (!org.springframework.util.StringUtils.isEmpty(declareRealtyLandCert.getLandCertName())) {
-                declareRealtyHouseCert.setCertName(declareRealtyLandCert.getLandCertName());
-            }
-            declareRealtyLandCert.setPid(declareRealtyHouseCert.getId());
-            declareRealtyLandCertDao.updateDeclareRealtyLandCert(declareRealtyLandCert);
-            declareRealtyHouseCertDao.updateDeclareRealtyHouseCert(declareRealtyHouseCert);
-        }
-    }
+
 
     public Integer saveAndUpdateDeclareRealtyHouseCert(DeclareRealtyHouseCert declareRealtyHouseCert) {
         if (declareRealtyHouseCert.getId() == null) {
             declareRealtyHouseCert.setCreator(commonService.thisUserAccount());
             Integer id = null;
-//            Integer pid = declareRealtyHouseCert.getPid();
-//            //被关联数据
-//            if (pid != null && pid.intValue() > 0) {
-//                declareRealtyHouseCert.setEnable(DeclareTypeEnum.EnableNo.getKey());
-//                //处理从表数据写入 tb_declare_record 表问题
-//                if (declareRealtyHouseCert.getPlanDetailsId() != null) {
-//                    declareRealtyHouseCert.setPlanDetailsId(0);
-//                }
-//                id = declareRealtyHouseCertDao.addDeclareRealtyHouseCert(declareRealtyHouseCert);
-//                declareRealtyHouseCert.setId(id);
-//                this.relation(declareRealtyHouseCert);
-//            } else {
-//                //非关联数据
-//                declareRealtyHouseCert.setEnable(DeclareTypeEnum.Enable.getKey());
-//                id = declareRealtyHouseCertDao.addDeclareRealtyHouseCert(declareRealtyHouseCert);
-//            }
+            id = declareRealtyHouseCertDao.addDeclareRealtyHouseCert(declareRealtyHouseCert);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), id);
             return id;
         } else {
