@@ -52,7 +52,7 @@ public class DeclareRealtyHouseCertController {
 
     @ResponseBody
     @RequestMapping(value = "/getDeclareRealtyHouseCertList", method = {RequestMethod.GET}, name = "获取房产证维护列表")
-    public BootstrapTableVo getExamineEstateNetworkList(Integer planDetailsId, String province, String city, String district, Integer pid) {
+    public BootstrapTableVo getExamineEstateNetworkList(Integer planDetailsId, String province, String city, String district, Integer pid,String enable) {
         DeclareRealtyHouseCert declareRealtyHouseCert = new DeclareRealtyHouseCert();
         BootstrapTableVo vo = null;
         try {
@@ -71,7 +71,9 @@ public class DeclareRealtyHouseCertController {
             if (pid != null) {
                 declareRealtyHouseCert.setPid(pid);
             }
-            declareRealtyHouseCert.setEnable(DeclareTypeEnum.Enable.getKey());
+            if (org.apache.commons.lang3.StringUtils.isNotBlank(enable)){
+                declareRealtyHouseCert.setEnable(enable);
+            }
             vo = declareRealtyHouseCertService.getDeclareRealtyHouseCertListVos(declareRealtyHouseCert);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);
@@ -169,7 +171,7 @@ public class DeclareRealtyHouseCertController {
 
     @ResponseBody
     @RequestMapping(value = "/importDataLand", name = "导入土地证并且关联房产证", method = RequestMethod.POST)
-    public HttpResult importDataLand(HttpServletRequest request) {
+    public HttpResult importDataLand(HttpServletRequest request,Integer planDetailsId) {
         try {
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
             Iterator<String> fileNames = multipartRequest.getFileNames();
@@ -177,7 +179,7 @@ public class DeclareRealtyHouseCertController {
             if (multipartFile.isEmpty()) {
                 return HttpResult.newErrorResult("上传的文件不能为空");
             }
-            String str = declareRealtyHouseCertService.importLandAndHouse(multipartFile);
+            String str = declareRealtyHouseCertService.importLandAndHouse(multipartFile,planDetailsId);
             return HttpResult.newCorrectResult(str);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());

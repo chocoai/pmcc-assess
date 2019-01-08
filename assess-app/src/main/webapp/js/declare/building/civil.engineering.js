@@ -160,7 +160,9 @@ civilEngineering.showAddModel = function () {
     $('#' + civilEngineering.config.box).modal("show");
     $('#' + civilEngineering.config.box).find("#" + commonDeclareApplyModel.config.civilEngineering.handleId).remove();
     $('#' + civilEngineering.config.box).find(".panel-body").prepend(commonDeclareApplyModel.civilEngineering.getHtml());
-    civilEngineering.init({});
+    mapPosition.getCurrentCityByArea(function (area) {
+        civilEngineering.init(area);
+    });
     try {
         //由于是填充的hmtl所以需要手动初始化select2
         DatepickerUtils.parse();
@@ -398,6 +400,12 @@ civilEngineering.declareRealtyRealEstateCertSaveAndUpdate = function () {
         return false;
     }
     var data = formParams(civilEngineering.config.declareRealtyRealEstateCert.frm);
+    if (data.id){
+
+    }else {
+        data.planDetailsId = declareCommon.getPlanDetailsId();
+        data.enable = "no";
+    }
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyRealEstateCert/saveAndUpdateDeclareRealtyRealEstateCert",
@@ -529,6 +537,12 @@ civilEngineering.declareRealtyLandCertSaveAndUpdate = function () {
         return false;
     }
     var data = formParams(civilEngineering.config.declareRealtyLandCert.frm);
+    if (data.id){
+
+    }else {
+        data.planDetailsId = declareCommon.getPlanDetailsId();
+        data.enable = "no";
+    }
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyLandCert/saveAndUpdateDeclareRealtyLandCert",

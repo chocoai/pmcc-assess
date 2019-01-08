@@ -223,7 +223,7 @@ declareRealtyRealEstateCert.loadList = function () {
     });
     $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('destroy');
     TableInit(declareRealtyRealEstateCert.config.table, getContextPath() + "/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertList", cols, {
-        planDetailsId: declareCommon.getPlanDetailsId()
+        planDetailsId: declareCommon.getPlanDetailsId(),enable:'yes'
     }, {
         showColumns: false,
         showRefresh: false,
@@ -282,6 +282,7 @@ declareRealtyRealEstateCert.saveAndUpdateData = function () {
     if (!declareRealtyRealEstateCert.isNotBlank(data.id)) {
         data.planDetailsId = declareCommon.getPlanDetailsId();
         data.declareType = declareFunObj.getDeclareType("不动产证");
+        data.enable = "yes";
     }
     $.ajax({
         type: "POST",

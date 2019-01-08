@@ -159,7 +159,9 @@ equipmentInstallation.showAddModel = function () {
     //使校验生效
     $("#" + equipmentInstallation.config.frm).validate();
     $('#' + equipmentInstallation.config.box).modal("show");
-    equipmentInstallation.init({});
+    mapPosition.getCurrentCityByArea(function (area) {
+        equipmentInstallation.init(area);
+    });
 };
 
 /**
@@ -799,6 +801,12 @@ equipmentInstallation.declareRealtyLandCertSaveAndUpdate = function () {
         return false;
     }
     var data = formParams(equipmentInstallation.config.declareRealtyLandCert.frm);
+    if (data.id){
+
+    }else {
+        data.planDetailsId = declareCommon.getPlanDetailsId();
+        data.enable = "no";
+    }
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyLandCert/saveAndUpdateDeclareRealtyLandCert",
@@ -931,6 +939,12 @@ equipmentInstallation.declareRealtyRealEstateCertSaveAndUpdate = function () {
         return false;
     }
     var data = formParams(equipmentInstallation.config.declareRealtyRealEstateCert.frm);
+    if (data.id){
+
+    }else {
+        data.planDetailsId = declareCommon.getPlanDetailsId();
+        data.enable = "no";
+    }
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyRealEstateCert/saveAndUpdateDeclareRealtyRealEstateCert",
