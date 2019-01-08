@@ -339,6 +339,18 @@
                 objProject.showFile(n, AssessDBKey.InitiateConsignor, objProject.isNotBlank(item.id) ? item.id : "0");
                 objProject.uploadFile(n, AssessDBKey.InitiateConsignor, objProject.isNotBlank(item.id) ? item.id : "0");
             });
+            if (item.id){
+                if (item.csType == 1){
+                    $("#" + objProject.config.consignor.frm).find("input[type='radio'][name='csType'][value='1']").attr("checked", true);
+                    $("#consignor_tab").hide();
+                    $("#consignor_tab_unit").show();
+                }
+                if (item.csType == 0){
+                    $("#" + objProject.config.consignor.frm).find("input[type='radio'][name='csType'][value='0']").attr("checked", true);
+                    $("#consignor_tab").show();
+                    $("#consignor_tab_unit").hide();
+                }
+            }
             objProject.consignor.loadContactList();
         },
         //使添加联系人按钮显示
@@ -420,12 +432,24 @@
                     $("#possessor_tab_unit").hide();
                 }
                 //拷贝数据
-                objProject.possessor.copyConsignor();
+                objProject.possessor.copyConsignor($(this).val());
             });
             $.each(objProject.config.possessor.files, function (i, n) {
                 objProject.showFile(n, AssessDBKey.InitiatePossessor, objProject.isNotBlank(item.id) ? item.id : "0");
                 objProject.uploadFile(n, AssessDBKey.InitiatePossessor, objProject.isNotBlank(item.id) ? item.id : "0");
             });
+            if (item.id){
+                if (item.pType == 1){
+                    $("#possessor_tab").hide();
+                    $("#possessor_tab_unit").show();
+                    $("#" + objProject.config.possessor.frm).find("input[type='radio'][name='pType'][value='1']").attr("checked", true);
+                }
+                if (item.pType == 0){
+                    $("#possessor_tab").show();
+                    $("#possessor_tab_unit").hide();
+                    $("#" + objProject.config.possessor.frm).find("input[type='radio'][name='pType'][value='0']").attr("checked", true);
+                }
+            }
             objProject.possessor.loadContactList();
         },
         showContactModel: function () {
@@ -480,21 +504,31 @@
             $("#" + objProject.config.possessor.table).parent().parent().show();
         },
         //copy 委托人信息
-        copyConsignor: function () {
-            var consignor = formParams(objProject.config.consignor.frm); //委托人信息
-            var data = {
-                pEntrustmentUnit: consignor.csEntrustmentUnit,
-                pLegalRepresentative: consignor.csLegalRepresentative,
-                pSociologyCode: consignor.csSociologyCode,
-                pAddress: consignor.csAddress,
-                pScopeOperation: consignor.csScopeOperation,
-                pUnitProperties: consignor.csUnitProperties
-            };
-            $("#" + objProject.config.possessor.frm).initForm(data);
+        copyConsignor: function (pType) {
             var select = $('#' + objProject.config.possessor.table).bootstrapTable('getData');
             //当委托人已经有联系人则默认为拷贝过占有人数据了
             if (select.length >= 1){
                 return false;
+            }
+            var consignor = $("#"+objProject.config.consignor.frm); //委托人信息
+            if (pType == 1){
+                var data = {
+                    pEntrustmentUnit: consignor.find("#consignor_tab_unit").find("input[name='csEntrustmentUnit']").val(),
+                    pLegalRepresentative: consignor.find("#consignor_tab_unit").find("input[name='csLegalRepresentative']").val(),
+                    pSociologyCode: consignor.find("#consignor_tab_unit").find("input[name='csSociologyCode']").val(),
+                    pAddress: consignor.find("#consignor_tab_unit").find("input[name='csAddress']").val(),
+                    pScopeOperation: consignor.find("#consignor_tab_unit").find("input[name='csScopeOperation']").val(),
+                    pUnitProperties: consignor.find("#consignor_tab_unit").find("select[name='csUnitProperties']").find(":selected").val()
+                };
+                $("#" + objProject.config.possessor.frm).find("#possessor_tab_unit").initForm(data);
+            }
+            if (pType == 0){
+                var data = {
+                    pName: consignor.find("#consignor_tab").find("input[name='csName']").val(),
+                    pIdcard: consignor.find("#consignor_tab").find("input[name='csIdcard']").val(),
+                    pAddress: consignor.find("#consignor_tab").find("input[name='csAddress']").val()
+                };
+                $("#" + objProject.config.possessor.frm).find("#possessor_tab").initForm(data);
             }
             //检测
             var item = $('#' + objProject.config.consignor.table).bootstrapTable('getData');
@@ -613,8 +647,8 @@
     objProject.selectDepartment = function (this_) {
         var options = {
             onSelected: function (nodes) {
-                $(this_).parent().prev().val(nodes[0].text);
-                $(this_).parent().prev().prev().val(nodes[0].id);
+                $(this_).closest('.input-group').find("input[name='departmentId']").val(nodes[0].id);
+                $(this_).closest('.input-group').find("input[name='departmentName']").val(nodes[0].text);
             }
         };
         if ("${departmentAssess.id}".length > 0) {
@@ -627,8 +661,8 @@
     objProject.selectUserAccountManager = function (this_) {
         erpEmployee.select({
             onSelected: function (data) {
-                $(this_).parent().prev().val(data.name);
-                $(this_).parent().prev().prev().val(data.account);
+                $(this_).closest('.input-group').find("input[name='userAccountManager']").val(data.account);
+                $(this_).closest('.input-group').find("input[name='userAccountManagerName']").val(data.name);
             }
         });
     };
@@ -638,8 +672,8 @@
         erpEmployee.select({
             multi: true,
             onSelected: function (data) {
-                $(this_).parent().prev().val(data.name);
-                $(this_).parent().prev().prev().val(data.account);
+                $(this_).closest('.input-group').find("input[name='userAccountMember']").val(data.account);
+                $(this_).closest('.input-group').find("input[name='userAccountMemberName']").val(data.name);
             }
         });
     };
@@ -649,8 +683,8 @@
         crmCustomer.select({
             multi: false,//是否允许多选
             onSelected: function (nodes) {
-                $(this_).parent().prev().val(nodes[0].name);
-                $(this_).parent().prev().prev().val(nodes[0].id);
+                $(this_).closest('.input-group').find("input[name='uUseUnit']").val(nodes[0].id);
+                $(this_).closest('.input-group').find("input[name='uUseUnitName']").val(nodes[0].name);
                 $.ajax({
                     type: "get",
                     url: "${pageContext.request.contextPath}/initiateCrmCustomer/getCrmCustomerDto",
@@ -750,23 +784,29 @@
 
     objProject.loadInit = function () {
         $(function () {
+
             objProject.consignor.contactsShow();
             objProject.possessor.contactsShow();
             objProject.unit_information.contactsShow();
 
-            var info = {
+            objProject.info.loadInit({
                 province: objProject.isNotBlank("${projectInfo.province}") ? "${projectInfo.province}" : null,
                 city: objProject.isNotBlank("${projectInfo.city}") ? "${projectInfo.city}" : null,
                 district: objProject.isNotBlank("${projectInfo.district}") ? "${projectInfo.district}" : null,
                 valueType: objProject.isNotBlank("${projectInfo.valueType}") ? "${projectInfo.valueType}" : null,
                 entrustPurpose: objProject.isNotBlank("${projectInfo.entrustPurpose}") ? "${projectInfo.entrustPurpose}" : null,
                 urgency: objProject.isNotBlank("${projectInfo.urgency}") ? "${projectInfo.urgency}" : null,
-            };
-
-            objProject.info.loadInit(info);
-            objProject.consignor.loadInit({});
-            objProject.possessor.loadInit({});
-            objProject.unit_information.loadInit({});
+                id: objProject.isNotBlank("${projectInfo.id}") ? "${projectInfo.id}" : null
+            });
+            objProject.consignor.loadInit({
+                id: objProject.isNotBlank("${projectInfo.consignorVo.id}") ? "${projectInfo.consignorVo.id}" : null ,
+                csType: objProject.isNotBlank("${projectInfo.consignorVo.csType}") ? "${projectInfo.consignorVo.csType}" : null ,
+            });
+            objProject.possessor.loadInit({
+                id: objProject.isNotBlank("${projectInfo.possessorVo.id}") ? "${projectInfo.possessorVo.id}" : null,
+                pType: objProject.isNotBlank("${projectInfo.possessorVo.pType}") ? "${projectInfo.possessorVo.pType}" : null
+            });
+            objProject.unit_information.loadInit({id: objProject.isNotBlank("${projectInfo.unitInformationVo.id}") ? "${projectInfo.unitInformationVo.id}" : null});
         });
     };
 

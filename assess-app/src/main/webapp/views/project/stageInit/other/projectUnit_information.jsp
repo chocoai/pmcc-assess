@@ -3,6 +3,7 @@
 <div class="x_content">
     <form name="frm_unitinformation" id="frm_unitinformation" class="form-horizontal"
           enctype="multipart/form-data">
+        <input type="hidden" name="id" value="${projectInfo.unitInformationVo.id}">
         <div>
             <div class="form-group">
                 <div class="x-valid">
@@ -15,7 +16,7 @@
                                    value="${projectInfo.unitInformationVo.uUseUnit}">
                             <input type="text" readonly="readonly" required="required"
                                    placeholder="单位" class="form-control" name="uUseUnitName"
-                                   value="${projectInfo.unitInformationVo.uUseUnitName}">
+                                   value="${projectInfo.unitInformationVo.uUseUnitName}" onclick="objProject.selectCustomer(this)">
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default docs-tooltip"
                                         data-toggle="tooltip"
