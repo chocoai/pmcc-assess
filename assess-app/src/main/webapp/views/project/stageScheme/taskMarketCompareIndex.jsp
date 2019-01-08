@@ -56,13 +56,14 @@
             evaluation: JSON.parse($("#evaluationJSON").val()),
             casesAll: JSON.parse($("#casesAllJSON").val()),
             mcId: '${mcId}',
-            setUse: '${setUse}',
-            cases: JSON.parse($("#casesJSON").val())
+
+            cases: JSON.parse($("#casesJSON").val()),
+            setUse: '${setUse}'
         });
 
         //支撑信息初始化
         supportInfoModule.init({
-            supportInfo: JSON.parse($("#supportInfosJSON").val())
+            //supportInfo: JSON.parse($("#supportInfosJSON").val())
         });
     })
 </script>

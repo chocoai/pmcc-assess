@@ -5,8 +5,12 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_content">
-
-
+    <div class="x_title">
+        <h3>
+            楼栋基本信息
+        </h3>
+        <div class="clearfix"></div>
+    </div>
     <div style="margin-bottom: 10px; border-bottom:2px solid #E6E9ED;"></div>
     <form class="form-horizontal" id="basicBuildingFrm">
         <input type="hidden" name="id">

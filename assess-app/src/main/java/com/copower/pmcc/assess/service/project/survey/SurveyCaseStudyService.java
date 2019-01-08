@@ -130,6 +130,7 @@ public class SurveyCaseStudyService {
      *
      * @param projectPlanDetails
      */
+    @Transactional(rollbackFor = Exception.class)
     public void saveCaseTask(ProjectPlanDetails projectPlanDetails, Integer planDetailsId, String examineFormType) throws BusinessException {
         if (projectPlanDetails.getId() != null && projectPlanDetails.getId() > 0) {
             projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);
@@ -154,6 +155,7 @@ public class SurveyCaseStudyService {
 
     /**
      * 分派
+     *
      * @param planDetails
      * @param examineFormType
      * @throws BusinessException
@@ -161,21 +163,16 @@ public class SurveyCaseStudyService {
     private void confirmAssignment(ProjectPlanDetails planDetails, String examineFormType) throws BusinessException {
         //清除还为运行的计划任务,同时查询待提交任务，一同清除
         //根据现有任务分派情况，确定子计划任务及待提交任务
-        ProjectPlanDetails where = new ProjectPlanDetails();
-        where.setPid(planDetails.getId());
-        where.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-        List<ProjectPlanDetails> projectDetails = projectPlanDetailsService.getProjectDetails(where);
-        if (CollectionUtils.isNotEmpty(projectDetails)) {
-//            deletePlanDetailsAndTask(projectDetails);
-        }
         String userAccount = commonService.thisUserAccount();
         ProjectWorkStage workStage = projectWorkStageService.cacheProjectWorkStage(planDetails.getProjectWorkStageId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());
-        String phaseKey = AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE;
-        if (ExamineTypeEnum.CASE.getId().equals(examineFormType)) {
+        ProjectPhase phase = projectPhaseService.getCacheProjectPhaseById(planDetails.getProjectPhaseId());
+        String phaseKey = null;
+        if (AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE.contains(phase.getPhaseKey()))
+            phaseKey = AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE;
+        if (AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE.contains(phase.getPhaseKey()))
             phaseKey = AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE;
-        }
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(phaseKey, projectInfo.getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(phaseKey);
         //添加计划任务子项及待提交任务
         ProjectPlanDetails taskPlanDetails = new ProjectPlanDetails();
         if (true) {
@@ -192,10 +189,9 @@ public class SurveyCaseStudyService {
         BeanUtils.copyProperties(planDetails, taskPlanDetails);
         taskPlanDetails.setId(0);
         taskPlanDetails.setPid(planDetails.getId());
-        SysUserDto sysUser = erpRpcUserService.getSysUser(userAccount);
         taskPlanDetails.setProjectPhaseId(projectPhase.getId());
         taskPlanDetails.setExecuteUserAccount(userAccount);
-        taskPlanDetails.setExecuteDepartmentId(sysUser.getDepartmentId());
+        taskPlanDetails.setExecuteDepartmentId(commonService.thisUser().getDepartmentId());
         taskPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
         taskPlanDetails.setCreator(commonService.thisUserAccount());
         taskPlanDetails.setProjectPhaseName(String.format("%s-%s", planDetails.getProjectPhaseName(), publicService.getUserNameByAccount(userAccount)));
@@ -222,6 +218,7 @@ public class SurveyCaseStudyService {
 
     /**
      * 保存查勘内容(工业与非工业)
+     *
      * @param planDetails
      * @param examineFormType
      * @throws BusinessException

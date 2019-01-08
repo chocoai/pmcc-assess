@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.enums.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
@@ -82,6 +83,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     private BasicEstateLandStateService basicEstateLandStateService;
     @Autowired
     private BasicHouseTradingService basicHouseTradingService;
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
@@ -218,7 +220,6 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         SurveySceneExplore surveySceneExplore = null;
         BasicEstate basicEstate = null;
         BasicBuilding basicBuilding = null;
-        List<BasicBuilding> basicBuildingList = null;
         BasicUnit basicUnit = null;
         BasicHouse basicHouse = null;
         BasicEstateLandState landState = null;
@@ -247,8 +248,10 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         }
         if (basicApply == null) {
             basicApply = new BasicApply();
+            SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(projectPlanDetails.getId());
+            basicApply.setType(BasicApplyTypeEnum.getEnumByKey(surveyExamineInfo.getExamineFormType()).getId());
             basicApply.setProcessInsId(projectPlanDetails.getProcessInsId());
-            basicApply.setPlanDetailsId(projectPlanDetails.getId());
+            basicApply.setPlanDetailsId(projectPlanDetails.getPid());
             basicApplyService.saveBasicApply(basicApply);
         }
         if (basicEstate == null) {

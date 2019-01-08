@@ -86,7 +86,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">案例管理</h3>
-
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -270,6 +269,9 @@
 
     //保存案例任务
     taskCaseIndex.saveCaseTask = function (id) {
+        if(!$("#frm_planDetails").valid()){
+            return false;
+        }
         var data = formParams('frm_planDetails');
         Loading.progressShow();
         $.ajax({

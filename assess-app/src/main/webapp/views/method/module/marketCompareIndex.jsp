@@ -323,20 +323,15 @@
                 Alert("委估对象为空！");
                 return;
             }
-            if (!defaluts.cases) {
-                Alert("案例为空！");
-                return;
-            }
-            marketCompare.initHead(defaluts);
-            marketCompare.initBody(defaluts);
-            marketCompare.initResult(defaluts);
+//            if (!defaluts.cases) {
+//                Alert("案例为空！");
+//                return;
+//            }
 
             marketCompare.mcId = defaluts.mcId;
             marketCompare.setUse = defaluts.setUse;
-
             if (!defaluts.readonly) {
                 setElementEditable();
-
                 //选择案例
                 if (defaluts.casesAll) {
                     $.each(defaluts.casesAll, function (i, item) {
@@ -347,6 +342,10 @@
             } else {
                 $("#small_select_case").hide();
             }
+
+            marketCompare.initHead(defaluts);
+            marketCompare.initBody(defaluts);
+            marketCompare.initResult(defaluts);
         }
 
         //初始头部
@@ -355,12 +354,14 @@
             var headHtml = '<thead> <tr>';
             headHtml += '<th width="10%">项目</th>';
             headHtml += '<th width="20%" data-type="evaluation" data-item-id="' + defaluts.evaluation.id + '">估价对象</th>';
-            for (var i = 1; i <= defaluts.cases.length; i++) {
-                headHtml += '<th width="20%" data-type="case" data-item-id="' + defaluts.cases[i - 1].id + '">';
-                headHtml += '<input type="hidden" name="initialPrice" value="' + defaluts.cases[i - 1].initialPrice + '">';
-                headHtml += '<input type="hidden" name="mustAdjustPrice" value="' + defaluts.cases[i - 1].mustAdjustPrice + '">';
-                headHtml += defaluts.cases[i - 1].name;
-                headHtml += '</th>';
+            if(defaluts.cases&&defaluts.cases.length>0){
+                for (var i = 1; i <= defaluts.cases.length; i++) {
+                    headHtml += '<th width="20%" data-type="case" data-item-id="' + defaluts.cases[i - 1].id + '">';
+                    headHtml += '<input type="hidden" name="initialPrice" value="' + defaluts.cases[i - 1].initialPrice + '">';
+                    headHtml += '<input type="hidden" name="mustAdjustPrice" value="' + defaluts.cases[i - 1].mustAdjustPrice + '">';
+                    headHtml += defaluts.cases[i - 1].name;
+                    headHtml += '</th>';
+                }
             }
             headHtml += '</tr> </thead>';
             $("#tb_md_mc_item_list").append(headHtml);
@@ -375,7 +376,10 @@
                 evaluationItem = evaluationItem == undefined ? {} : evaluationItem;
                 if (item.bisOnlyView) {//只用于显示的字段
                     if (!item.fieldName) {
-                        var colspan = 2 + defaluts.cases.length;
+                        var colspan = 2;
+                        if(defaluts.cases&&defaluts.cases.length>0){
+                            colspan += defaluts.cases.length;
+                        }
                         var text = item.name;
                         if (item.remark) {
                             text += '<span style="font-size: 12px;color: red;font-weight: normal;">(' + item.remark + ')<span>';
@@ -390,10 +394,12 @@
                         if (evaluationItem) {
                             trHtml += ' <td data-item-id="' + toString(defaluts.evaluation.id) + '">' + toString(evaluationItem.value) + '</td>';
                         }
-                        for (var j = 0; j < defaluts.cases.length; j++) {
-                            var caseItem = getItemByName(JSON.parse(defaluts.cases[j].jsonContent), item.fieldName);
-                            caseItem = caseItem == undefined ? {} : caseItem;
-                            trHtml += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(caseItem.value) + '</td>';
+                        if(defaluts.cases&&defaluts.cases.length>0){
+                            for (var j = 0; j < defaluts.cases.length; j++) {
+                                var caseItem = getItemByName(JSON.parse(defaluts.cases[j].jsonContent), item.fieldName);
+                                caseItem = caseItem == undefined ? {} : caseItem;
+                                trHtml += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(caseItem.value) + '</td>';
+                            }
                         }
                         trHtml += ' </tr>';
                         bodyHtml += trHtml;
@@ -407,14 +413,16 @@
                     rowHtml = rowHtml.replace(/{bisPrice}/g, toString(item.bisPrice)).replace(/{bisPrimaryKey}/g, toString(item.bisPrimaryKey));
                     //取到案例相关
                     var caseText, caseScore, caseRatio;
-                    for (var j = 0; j < defaluts.cases.length; j++) {
-                        var caseItem = getItemByName(JSON.parse(defaluts.cases[j].jsonContent), item.fieldName);
-                        var pTextHtml = getTempHtml("pTextTemp", defaluts.readonly);
-                        var pScoreHtml = getTempHtml("pScoreTemp", defaluts.readonly);
-                        caseItem = caseItem == undefined ? {} : caseItem;
-                        caseText += pTextHtml.replace(/{fieldValue}/g, toString(item.name)).replace(/{value}/g, toString(caseItem.value)).replace(/{itemId}/g, toString(defaluts.cases[j].id));
-                        caseScore += pScoreHtml.replace(/{fieldValue}/g, toString(item.name)).replace(/{score}/g, toString(caseItem.score)).replace(/{itemId}/g, toString(defaluts.cases[j].id));
-                        caseRatio += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(caseItem.ratio) + '</td>';
+                    if(defaluts.cases&&defaluts.cases.length>0){
+                        for (var j = 0; j < defaluts.cases.length; j++) {
+                            var caseItem = getItemByName(JSON.parse(defaluts.cases[j].jsonContent), item.fieldName);
+                            var pTextHtml = getTempHtml("pTextTemp", defaluts.readonly);
+                            var pScoreHtml = getTempHtml("pScoreTemp", defaluts.readonly);
+                            caseItem = caseItem == undefined ? {} : caseItem;
+                            caseText += pTextHtml.replace(/{fieldValue}/g, toString(item.name)).replace(/{value}/g, toString(caseItem.value)).replace(/{itemId}/g, toString(defaluts.cases[j].id));
+                            caseScore += pScoreHtml.replace(/{fieldValue}/g, toString(item.name)).replace(/{score}/g, toString(caseItem.score)).replace(/{itemId}/g, toString(defaluts.cases[j].id));
+                            caseRatio += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(caseItem.ratio) + '</td>';
+                        }
                     }
                     rowHtml = rowHtml.replace(/{caseText}/g, toString(caseText)).replace(/{caseScore}/g, toString(caseScore)).replace(/{caseRatio}/g, toString(caseRatio));
                     bodyHtml += rowHtml;

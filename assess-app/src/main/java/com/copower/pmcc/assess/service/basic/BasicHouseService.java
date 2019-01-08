@@ -419,9 +419,22 @@ public class BasicHouseService {
         basicHouseDao.addBasicHouse(basicHouse);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()), getBasicHouseVo(basicHouse));
 
-        if (StringUtils.equals(housePartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
-
+        CaseHouseTrading queryTrading = new CaseHouseTrading();
+        queryTrading.setHouseId(caseHouseId);
+        List<CaseHouseTrading> caseHouseTradings = caseHouseTradingService.caseHouseTradingList(queryTrading);
+        if (!ObjectUtils.isEmpty(caseHouseTradings)) {
+            BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
+            BeanUtils.copyProperties(caseHouseTradings.get(0), basicHouseTrading);
+            basicHouseTrading.setApplyId(applyId == null ? 0 : applyId);
+            basicHouseTrading.setHouseId(basicHouse.getId());
+            basicHouseTrading.setCreator(commonService.thisUserAccount());
+            basicHouseTrading.setId(null);
+            basicHouseTrading.setGmtCreated(null);
+            basicHouseTrading.setGmtModified(null);
+            basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
+            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));
         }
+
         taskExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -436,7 +449,6 @@ public class BasicHouseService {
                 }
             }
         });
-
 
         taskExecutor.execute(new Runnable() {
             @Override
@@ -456,32 +468,7 @@ public class BasicHouseService {
                         }
                     }
                 } catch (Exception e1) {
-
-                }
-            }
-        });
-
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    CaseHouseTrading queryTrading = new CaseHouseTrading();
-                    queryTrading.setHouseId(caseHouseId);
-                    List<CaseHouseTrading> caseHouseTradings = caseHouseTradingService.caseHouseTradingList(queryTrading);
-                    if (!ObjectUtils.isEmpty(caseHouseTradings)) {
-                        BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
-                        BeanUtils.copyProperties(caseHouseTradings.get(0), basicHouseTrading);
-                        basicHouseTrading.setApplyId(applyId == null ? 0 : applyId);
-                        basicHouseTrading.setHouseId(basicHouse.getId());
-                        basicHouseTrading.setCreator(commonService.thisUserAccount());
-                        basicHouseTrading.setId(null);
-                        basicHouseTrading.setGmtCreated(null);
-                        basicHouseTrading.setGmtModified(null);
-                        basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
-                        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));
-                    }
-                } catch (Exception e1) {
-
+                    logger.error(e1.getMessage(),e1);
                 }
             }
         });

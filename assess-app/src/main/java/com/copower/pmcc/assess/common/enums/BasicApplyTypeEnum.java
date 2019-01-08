@@ -8,19 +8,30 @@ package com.copower.pmcc.assess.common.enums;
  * @time: 15:46
  */
 public enum BasicApplyTypeEnum {
-    NON_INDUSTRY(0, "添加"), INDUSTRY(1, "升版本");
+    RESIDENCE(0, "fc.residence", "非工业仓储"), INDUSTRY(1, "fc.industry", "工业仓储");
 
     private Integer id;
+    private String key;
     private String name;
 
-    private BasicApplyTypeEnum(Integer id, String name) {
+    private BasicApplyTypeEnum(Integer id, String key, String name) {
         this.id = id;
+        this.key = key;
         this.name = name;
     }
 
-    public static BasicApplyTypeEnum getEnumByKey(Integer id) {
+    public static BasicApplyTypeEnum getEnumById(Integer id) {
         for (BasicApplyTypeEnum e : BasicApplyTypeEnum.values()) {
             if (e.getId().equals(id)) {
+                return e;
+            }
+        }
+        return null;
+    }
+
+    public static BasicApplyTypeEnum getEnumByKey(String key) {
+        for (BasicApplyTypeEnum e : BasicApplyTypeEnum.values()) {
+            if (e.getKey().equals(key)) {
                 return e;
             }
         }
@@ -34,6 +45,14 @@ public enum BasicApplyTypeEnum {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getName() {
