@@ -65,6 +65,7 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js"></script>
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;">
 <script type="text/javascript">
     var config = {

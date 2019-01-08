@@ -90,11 +90,11 @@
                                             <div id="_declareRealtyHouseCertFileId"></div>
                                         </div>
                                     </div>
-                                    <div class="x-valid">
-                                        <div class="col-sm-5">
-                                            <label class="btn-primary btn" onclick="assessCommonHouse.distinguish()">房产证识别<i class="fa-info fa"></i></label>
-                                        </div>
-                                    </div>
+                                    <%--<div class="x-valid">--%>
+                                        <%--<div class="col-sm-5">--%>
+                                            <%--<label class="btn-primary btn" onclick="assessCommonHouse.distinguish()">房产证识别<i class="fa-info fa"></i></label>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
                                 </div>
                             </div>
                         </div>

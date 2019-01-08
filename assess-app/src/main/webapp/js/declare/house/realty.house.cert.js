@@ -202,9 +202,11 @@ assessCommonHouse.editHouse = function () {
 assessCommonHouse.showAddModelHouse = function () {
     //使校验生效
     $('#' + assessCommonHouse.config.box).find("#" + commonDeclareApplyModel.config.house.handleId).remove();
-    $('#' + assessCommonHouse.config.box).find(".panel-body").append(commonDeclareApplyModel.house.getHtml());
+    $('#' + assessCommonHouse.config.box).find(".panel-body").prepend(commonDeclareApplyModel.house.getHtml());
     $("#" + assessCommonHouse.config.frm).validate();
-    assessCommonHouse.init({});
+    mapPosition.getCurrentCityByArea(function (area) {
+        assessCommonHouse.init(area);
+    });
     //由于是填充的hmtl所以需要手动初始化select2
     DatepickerUtils.parse();
     $('#' + assessCommonHouse.config.box).find(".select2").each(function () {
