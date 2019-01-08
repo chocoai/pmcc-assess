@@ -51,7 +51,7 @@ public class DeclareRealtyRealEstateCertController {
 
     @ResponseBody
     @RequestMapping(value = "/getDeclareRealtyRealEstateCertList", method = {RequestMethod.GET}, name = "获取不动产维护列表")
-    public BootstrapTableVo getExamineEstateNetworkList(Integer pid, Integer planDetailsId, String province, String city, String district) {
+    public BootstrapTableVo getExamineEstateNetworkList(Integer pid, Integer planDetailsId, String province, String city, String district,String enable) {
         DeclareRealtyRealEstateCert declareRealtyRealEstateCert = new DeclareRealtyRealEstateCert();
         BootstrapTableVo vo = null;
         try {
@@ -69,6 +69,9 @@ public class DeclareRealtyRealEstateCertController {
             }
             if (pid != null) {
                 declareRealtyRealEstateCert.setPid(pid);
+            }
+            if (org.apache.commons.lang3.StringUtils.isNotBlank(enable)){
+                declareRealtyRealEstateCert.setEnable(enable);
             }
             vo = declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertListVos(declareRealtyRealEstateCert);
         } catch (Exception e1) {

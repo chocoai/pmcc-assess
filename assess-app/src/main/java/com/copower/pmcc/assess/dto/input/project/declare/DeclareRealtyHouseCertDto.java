@@ -24,6 +24,7 @@ public class DeclareRealtyHouseCertDto {
     private String city;
 
     private String district;
+
     private String type;
 
     private String number;
@@ -45,8 +46,7 @@ public class DeclareRealtyHouseCertDto {
     private String floor;
 
     private String roomNumber;
-
-    @DateTimeFormat( pattern = "yyyy-MM-dd" )
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date registrationTime;
 
     private String nature;
@@ -68,23 +68,26 @@ public class DeclareRealtyHouseCertDto {
     private String landNumber;
 
     private String landAcquisition;
-
-    @DateTimeFormat( pattern = "yyyy-MM-dd" )
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date useStartDate;
-
-    @DateTimeFormat( pattern = "yyyy-MM-dd" )
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date useEndDate;
-    @DateTimeFormat( pattern = "yyyy-MM-dd" )
-    private Date landRegistrationDate;
+
     private BigDecimal publicArea;
 
     private String otherNote;
 
     private String registrationAuthority;
-
-    @DateTimeFormat( pattern = "yyyy-MM-dd" )
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date landRegistrationDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date registrationDate;
+
     private String declareType;
+
+    private String enable;
+
+    private String creator;
 
     public Integer getId() {
         return id;
@@ -381,5 +384,21 @@ public class DeclareRealtyHouseCertDto {
 
     public void setDeclareType(String declareType) {
         this.declareType = declareType;
+    }
+
+    public String getEnable() {
+        return enable;
+    }
+
+    public void setEnable(String enable) {
+        this.enable = enable;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 }

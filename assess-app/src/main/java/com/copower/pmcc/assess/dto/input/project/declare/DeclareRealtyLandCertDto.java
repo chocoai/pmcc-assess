@@ -73,10 +73,11 @@ public class DeclareRealtyLandCertDto {
     @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date registrationDate;
 
+    private String declareType;
+
     private String enable;
 
     private String creator;
-    private String declareType;
 
     public Integer getId() {
         return id;

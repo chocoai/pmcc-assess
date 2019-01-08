@@ -104,6 +104,7 @@ public class DeclareRealtyRealEstateCertDto {
 
     private String realEstateUnitNumber;
     private String declareType;
+    private String enable;
 
     public Integer getId() {
         return id;
@@ -479,5 +480,13 @@ public class DeclareRealtyRealEstateCertDto {
 
     public void setDeclareType(String declareType) {
         this.declareType = declareType;
+    }
+
+    public String getEnable() {
+        return enable;
+    }
+
+    public void setEnable(String enable) {
+        this.enable = enable;
     }
 }

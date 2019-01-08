@@ -94,6 +94,8 @@ public class DeclareRealtyRealEstateCert {
 
     private BigDecimal useRightArea;
 
+    private String enable;
+
     private String declareType;
 
     private String realEstateUnitNumber;
@@ -462,6 +464,14 @@ public class DeclareRealtyRealEstateCert {
 
     public void setUseRightArea(BigDecimal useRightArea) {
         this.useRightArea = useRightArea;
+    }
+
+    public String getEnable() {
+        return enable;
+    }
+
+    public void setEnable(String enable) {
+        this.enable = enable == null ? null : enable.trim();
     }
 
     public String getDeclareType() {

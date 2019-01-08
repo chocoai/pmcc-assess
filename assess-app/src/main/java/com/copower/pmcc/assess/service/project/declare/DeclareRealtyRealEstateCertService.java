@@ -229,6 +229,7 @@ public class DeclareRealtyRealEstateCertService {
         }
         DeclareRealtyRealEstateCert query = new DeclareRealtyRealEstateCert();
         query.setPlanDetailsId(declareApply.getPlanDetailsId());
+        query.setEnable(DeclareTypeEnum.Enable.getKey());
         List<DeclareRealtyRealEstateCert> lists = declareRealtyRealEstateCertDao.getDeclareRealtyRealEstateCertList(query);
         for (DeclareRealtyRealEstateCert oo : lists) {
             declareRecord = new DeclareRecord();

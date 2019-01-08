@@ -49,6 +49,7 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
 <script>
 

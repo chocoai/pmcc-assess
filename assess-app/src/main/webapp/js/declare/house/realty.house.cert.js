@@ -103,6 +103,7 @@ assessCommonHouse.saveAndUpdateHouse = function () {
     if (!assessCommonHouse.isNotBlank(data.id)) {
         data.planDetailsId = declareCommon.getPlanDetailsId();
         data.pid = "0";
+        data.enable = "yes";
         data.declareType = declareFunObj.getDeclareType("房产证");
     }
     $.ajax({
@@ -323,6 +324,8 @@ assessCommonHouse.saveAndUpdateLand = function () {
         return false;
     }
     var data = formParams(assessCommonHouse.config.son.declareRealtyLandCert.frm);
+    data.planDetailsId = declareCommon.getPlanDetailsId();
+    data.enable = "no";
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyLandCert/saveAndUpdateDeclareRealtyLandCert",
@@ -575,7 +578,8 @@ assessCommonHouse.loadList = function () {
     });
     $("#" + assessCommonHouse.config.table).bootstrapTable('destroy');
     TableInit(assessCommonHouse.config.table, getContextPath() + "/declareRealtyHouseCert/getDeclareRealtyHouseCertList", cols, {
-        planDetailsId: declareCommon.getPlanDetailsId()
+        planDetailsId: declareCommon.getPlanDetailsId(),
+        enable:'yes'
     }, {
         showColumns: false,
         showRefresh: false,
