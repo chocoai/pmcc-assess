@@ -1931,10 +1931,13 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">房屋性质</label>
+                <label class="col-sm-1 control-label">
+                    登记日期<span class="symbol required"></span>
+                </label>
                 <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="房屋性质" name="nature" class="form-control">
+                    <input placeholder="登记日期"
+                           name="registrationDate" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime" required="required">
                 </div>
             </div>
             <div class="x-valid">
@@ -2052,13 +2055,10 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    登记日期<span class="symbol required"></span>
-                </label>
+                <label class="col-sm-1 control-label">房屋性质</label>
                 <div class="col-sm-3">
-                    <input placeholder="登记日期"
-                           name="registrationDate" data-date-format="yyyy-mm-dd"
-                           class="form-control date-picker dbdate roomTime" required="required">
+                    <input type="text"
+                           placeholder="房屋性质" name="nature" class="form-control">
                 </div>
             </div>
         </div>
@@ -2121,6 +2121,16 @@
                 <div class="col-sm-3">
                     <input type="text" name="ownership" required="required" class="form-control"
                            placeholder="土地使用权人">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    登记日期<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <input placeholder="登记日期"
+                           name="registrationDate" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime" required="required">
                 </div>
             </div>
         </div>
@@ -2366,16 +2376,6 @@
                     <input type="text"
                            placeholder="登记机关" name="registrationAuthority" class="form-control"
                            required="required">
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    登记日期<span class="symbol required"></span>
-                </label>
-                <div class="col-sm-3">
-                    <input placeholder="登记日期"
-                           name="registrationDate" data-date-format="yyyy-mm-dd"
-                           class="form-control date-picker dbdate roomTime" required="required">
                 </div>
             </div>
         </div>

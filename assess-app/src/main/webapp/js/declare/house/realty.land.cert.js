@@ -192,7 +192,9 @@ assessCommonLand.showAddModelLand = function () {
     $('#' + assessCommonLand.config.box).modal("show");
     $("#" + assessCommonLand.config.frm).clearAll();
     $("#" + assessCommonLand.config.frm).validate();
-    assessCommonLand.init({});
+    mapPosition.getCurrentCityByArea(function (area) {
+        assessCommonLand.init(area);
+    });
     try {
         //由于是填充的hmtl所以需要手动初始化select2
         DatepickerUtils.parse();
