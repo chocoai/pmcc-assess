@@ -12,7 +12,7 @@
             <div class="x_panel" style="border: 0px;">
                 <div class="x_content">
                     <div class="col-sm-12" style="text-align: center;"><h2>${fullName}</h2></div>
-                    <form class="form-horizontal" id="basicHouseFrm">
+                  <%--  <form class="form-horizontal" id="basicHouseFrm">
                         <input type="hidden" value="${basicHouse.id}">
                         <div class="form-group">
                             <div class="x-valid">
@@ -50,7 +50,7 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">面积</label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${basicHouse.area}</label>
+                                    <label class="form-control">${basicHouse.areaarea}</label>
                                 </div>
                             </div>
                         </div>
@@ -87,7 +87,44 @@
                             </div>
                         </div>
 
-                    </form>
+                    </form>--%>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th colspan="10" style="font-size: 14px;">房屋基本信息</th>
+                        </tr>
+                        <tr>
+                            <td width="10%">所在楼层</td>
+                            <td width="10%">户型</td>
+                            <td width="10%">新户型</td>
+                            <td width="10%">朝向</td>
+                            <td width="10%">面积</td>
+                            <td width="10%">证载用途</td>
+                            <td width="10%">实际用途</td>
+                            <td width="10%">权益限制</td>
+
+                        </tr>
+                        </thead>
+                        <tr>
+                            <td width="10%">${basicHouse.floor}</td>
+                            <td width="10%">${basicHouse.huxingName}</td>
+                            <td width="10%">${basicHouse.newHuxingName}</td>
+                            <td width="10%">${basicHouse.orientationName}</td>
+                            <td width="10%">${basicHouse.area}</td>
+                            <td width="10%">${basicHouse.certUseName}</td>
+                            <td width="10%">${basicHouse.practicalUseName}</td>
+                            <td width="10%">${basicHouse.rightInterestsRestriction}</td>
+                        </tr>
+                        <tr>
+                            <td width="10%">房屋出租占用情况描述:</td>
+                            <td colspan="7">${basicHouse.description}</td>
+                        </tr>
+                        <tr>
+
+                        </tr>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="x_content">
                     <!-- 房间 -->

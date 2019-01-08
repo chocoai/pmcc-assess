@@ -3,39 +3,33 @@
 --%>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<div>
-    空调情况
-    <table class="table table-bordered" id="HouseAirConditionerList">
-    </table>
-</div>
-
-<script type="application/javascript">
-    $(function () {
-        houseAirConditioner.loadDataDicList();
-    })
-    var houseAirConditioner = {};
-    houseAirConditioner.loadDataDicList = function () {
-        var cols = commonColumn.houseAirConditionerColumn();
-        $("#HouseAirConditionerList").bootstrapTable('destroy');
-        TableInit("HouseAirConditionerList", "${pageContext.request.contextPath}/basicHouseEquipment/getBootstrapTableVo", cols, {
-            type: "houseAirConditioner",
-            houseId: '${empty basicHouse.id?0:basicHouse.id}'
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            pagination: false,
-            pageSize: 100,
-            onLoadSuccess: function () {
-                $('.tooltips').tooltip();
-            }
-        });
-    }
-
-</script>
+<c:if test="${not empty houseEquipmentAirConditionerVos}">
+    <div>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th colspan="3" style="font-size: 14px;">空调情况</th>
+            </tr>
+            <tr>
+                <td width="10%">设备品牌</td>
+                <td width="10%">类别</td>
+                <td width="10%">设备价格区间</td>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="item" items="${houseEquipmentAirConditionerVos}">
+                <tr>
+                    <td>${item.equipment}</td>
+                    <td>${item.categoryName}</td>
+                    <td>${item.equipmentPriceName}</td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+    </div>
+</c:if>
 
 
-</html>
+
 
 

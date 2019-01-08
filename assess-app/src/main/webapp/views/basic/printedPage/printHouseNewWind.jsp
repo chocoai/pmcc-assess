@@ -3,39 +3,32 @@
 --%>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div>
-    新风情况
-    <table class="table table-bordered" id="HouseNewWindList">
-    </table>
-</div>
+<c:if test="${not empty houseEquipmentNewWindVos}">
+    <div>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th colspan="3" style="font-size: 14px;">新风情况</th>
+            </tr>
+            <tr>
+                <td width="10%">设备品牌</td>
+                <td width="10%">类别</td>
+                <td width="10%">设备价格区间</td>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="item" items="${houseEquipmentNewWindVos}">
+                <tr>
+                    <td>${item.equipment}</td>
+                    <td>${item.categoryName}</td>
+                    <td>${item.equipmentPriceName}</td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+    </div>
+</c:if>
 
-
-<script type="application/javascript">
-    $(function () {
-        houseNewWind.loadDataDicList();
-    })
-    var houseNewWind={};
-    houseNewWind.loadDataDicList=function () {
-        var cols = commonColumn.houseNewWindColumn();
-        $("#HouseNewWindList").bootstrapTable('destroy');
-        TableInit("HouseNewWindList", "${pageContext.request.contextPath}/basicHouseEquipment/getBootstrapTableVo", cols, {
-            type: "houseNewWind",
-            houseId: '${empty basicHouse.id?0:basicHouse.id}'
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            pagination: false,
-            pageSize: 100,
-            onLoadSuccess: function () {
-                $('.tooltips').tooltip();
-            }
-        });
-    }
-</script>
-
-
-</html>
 
 
 
