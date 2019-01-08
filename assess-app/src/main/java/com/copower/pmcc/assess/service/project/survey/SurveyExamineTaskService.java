@@ -386,9 +386,9 @@ public class SurveyExamineTaskService {
         ProjectWorkStage workStage = projectWorkStageService.cacheProjectWorkStage(planDetails.getProjectWorkStageId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());
         String phaseKey = AssessPhaseKeyConstant.SCENE_EXPLORE_EXAMINE;
-        if (ExamineTypeEnum.EXPLORE.getId().equals(examineFormType)) {
-            phaseKey = AssessPhaseKeyConstant.CASE_STUDY_EXAMINE;
-        }
+//        if (ExamineTypeEnum.EXPLORE.getId().equals(examineFormType)) {
+//            phaseKey = AssessPhaseKeyConstant.SCENE_EXPLORE_EXAMINE;
+//        }
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(phaseKey, projectInfo.getProjectCategoryId());
         //添加计划任务子项及待提交任务
         ProjectPlanDetails taskPlanDetails = new ProjectPlanDetails();
