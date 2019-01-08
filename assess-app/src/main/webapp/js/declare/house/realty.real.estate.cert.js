@@ -91,8 +91,10 @@ declareRealtyRealEstateCert.init = function (item) {
 
 declareRealtyRealEstateCert.showAddModel = function () {
     $('#' + declareRealtyRealEstateCert.config.box).find("#" + commonDeclareApplyModel.config.realEstateCert.handleId).remove();
-    $('#' + declareRealtyRealEstateCert.config.box).find(".panel-body").append(commonDeclareApplyModel.realEstateCert.getHtml());
-    declareRealtyRealEstateCert.init({});
+    $('#' + declareRealtyRealEstateCert.config.box).find(".panel-body").prepend(commonDeclareApplyModel.realEstateCert.getHtml());
+    mapPosition.getCurrentCityByArea(function (area) {
+        declareRealtyRealEstateCert.init(area);
+    });
     try { //由于是填充的hmtl所以需要手动初始化select2
         DatepickerUtils.parse();
         $('#' + declareRealtyRealEstateCert.config.box).find(".select2").each(function () {

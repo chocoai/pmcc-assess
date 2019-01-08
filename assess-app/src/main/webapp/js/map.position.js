@@ -8,11 +8,12 @@ var mapPosition = {};
 
 //获取当前所在城市
 mapPosition.getCurrentCity = function (callback) {
-    var province, city;
+    var province, city, district;
     //1.先到cookie中读取，如果存在则直接返回，不存在则通过地图定位处理
     province = mapPosition.readCookie("province");
     city = mapPosition.readCookie("city");
-    if (province && city) {
+    district = mapPosition.readCookie("district");
+    if (province && city && district) {
         province = province.replace('省', '');
         city = city.replace('市', '');
     } else {
@@ -20,20 +21,93 @@ mapPosition.getCurrentCity = function (callback) {
             try {
                 var province = data.addressComponent.province;
                 var city = data.addressComponent.city;
+                var district = data.addressComponent.district;
                 province = province.replace('省', '');
                 city = city.replace('市', '');
-                if (province && city) {
+                if (province && city && district) {
                     mapPosition.writeCookie("province", province, 24);
                     mapPosition.writeCookie("city", city, 24);
+                    mapPosition.writeCookie("district", district, 24);
+
                 }
             } catch (e) {
             }
         })
     }
     if (callback) {
-        callback(province, city);
+        callback(province, city, district);
     }
-}
+};
+
+
+/**
+ * 根据定位获取区域在数据库中的id
+ * @param callback
+ */
+mapPosition.getCurrentCityByArea = function (callback) {
+    var areaJson = mapPosition.readCookie("areaJson");
+    if (areaJson){
+        callback(JSON.parse(areaJson));
+    }else {
+        mapPosition.complete(function (data) {
+            try {
+                var province = data.addressComponent.province;
+                var city = data.addressComponent.city;
+                var district = data.addressComponent.district;
+                province = province.replace('省', '');
+                city = city.replace('市', '');
+                //县以及区不用处理
+                //获取省数据
+                $.ajax({
+                    url: getContextPath() + "/area/getProvinceList",
+                    type: "post",
+                    dataType: "json",
+                    async: true,
+                    data: {},
+                    success: function (result) {
+                        if (result.ret && result.data) {
+                            //获取省的区域id
+                            var provinceId = 0;
+                            var cityId = 0;
+                            var districtId = undefined;
+                            for (var i = 0; i < result.data.length; i++) {
+                                if (result.data[i].name == province){
+                                    provinceId = result.data[i].areaId ;
+                                    break;
+                                }
+                            }
+                            //继续获取市的区域id
+                            AssessCommon.loadAreaAsyncInfoByPid(provinceId,function (htmls,cityS) {
+                                for (var i = 0; i < cityS.length; i++) {
+                                    if (cityS[i].name == city){
+                                        cityId = cityS[i].areaId ;
+                                        break;
+                                    }
+                                }
+                                //继续获取县或者区的id
+                                AssessCommon.loadAreaAsyncInfoByPid(cityId,function (htmls,districts) {
+                                    for (var i = 0; i < districts.length; i++) {
+                                        if (districts[i].name == district){
+                                            districtId = districts[i].areaId ;
+                                            break;
+                                        }
+                                    }
+                                    callback({province:provinceId,city:cityId,district:districtId});
+                                    mapPosition.writeCookie("areaJson", JSON.stringify({province:provinceId,city:cityId,district:districtId}), 24);
+                                },true);
+                            },true);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            } catch (e) {
+                console.error(e);
+            }
+        })
+    }
+};
 
 mapPosition.readCookie = function (name) {
     var cookieValue = "";
