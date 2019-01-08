@@ -330,6 +330,12 @@
 
             marketCompare.mcId = defaluts.mcId;
             marketCompare.setUse = defaluts.setUse;
+
+
+            marketCompare.initHead(defaluts);
+            marketCompare.initBody(defaluts);
+            marketCompare.initResult(defaluts);
+
             if (!defaluts.readonly) {
                 setElementEditable();
                 //选择案例
@@ -342,10 +348,6 @@
             } else {
                 $("#small_select_case").hide();
             }
-
-            marketCompare.initHead(defaluts);
-            marketCompare.initBody(defaluts);
-            marketCompare.initResult(defaluts);
         }
 
         //初始头部
