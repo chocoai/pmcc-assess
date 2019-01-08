@@ -10,6 +10,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -145,4 +146,8 @@ public class BasicHouseWaterService {
         return basicHouseWaterDao.countByHouseId(houseId) > 0;
     }
 
+
+    public List<BasicHouseWaterVo> getBasicHouseWaterVoList(Integer houseId)  throws Exception{
+        return LangUtils.transform(getBasicHouseWaterList(houseId), o -> getBasicHouseWaterVo(o));
+    }
 }

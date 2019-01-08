@@ -249,6 +249,7 @@
                 Loading.progressHide();
                 if (result.ret) {
                     toastr.success("成功");
+                    taskExploreIndex.getExploreTaskList();
                     $('#plan_details_modal').modal('hide');
                 } else {
                     Alert("失败:" + result.errmsg);

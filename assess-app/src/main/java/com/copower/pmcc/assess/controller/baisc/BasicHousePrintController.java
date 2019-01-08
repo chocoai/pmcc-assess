@@ -88,6 +88,15 @@ public class BasicHousePrintController {
         modelAndView.addObject("fullName", basicApplyService.getFullName(basicApply.getEstateName(),basicApply.getBuildingNumber(),basicApply.getUnitNumber(),basicApply.getHouseNumber()));
         modelAndView.addObject("basicHouse", basicHouseService.getBasicHouseVo(basicHouse));
         modelAndView.addObject("houseRoomVos",  basicHouseRoomService.getBasicHouseRoomVoList(houseId));
+        modelAndView.addObject("houseFaceStreetVos",  basicHouseFaceStreetService.getBasicHouseFaceStreetVoList(houseId));
+        modelAndView.addObject("houseIntelligentVos", basicHouseIntelligentService.getBasicHouseIntelligentVos(houseId));
+        modelAndView.addObject("houseWaterVos", basicHouseWaterService.getBasicHouseWaterVoList(houseId));
+        modelAndView.addObject("houseWaterDrainVos", basicHouseWaterDrainService.getBasicHouseWaterDrainVoList(houseId));
+        modelAndView.addObject("houseEquipmentAirConditionerVos", basicHouseEquipmentService.getBasicHouseEquipmentVos(houseId, ExamineHouseEquipmentTypeEnum.houseAirConditioner.getKey()));
+        modelAndView.addObject("houseEquipmentHeatingVos", basicHouseEquipmentService.getBasicHouseEquipmentVos(houseId, ExamineHouseEquipmentTypeEnum.houseHeating.getKey()));
+        modelAndView.addObject("houseEquipmentNewWindVos", basicHouseEquipmentService.getBasicHouseEquipmentVos(houseId, ExamineHouseEquipmentTypeEnum.houseNewWind.getKey()));
+
+
 
         modelAndView.addObject("hasHouseRoomData", basicHouseRoomService.hasHouseRoomData(houseId));
         modelAndView.addObject("hasHouseFaceStreetData", basicHouseFaceStreetService.hasHouseFaceStreetData(houseId));

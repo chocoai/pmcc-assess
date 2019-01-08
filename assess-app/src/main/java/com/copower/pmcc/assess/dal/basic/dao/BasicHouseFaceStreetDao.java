@@ -44,7 +44,7 @@ public class BasicHouseFaceStreetDao {
         return basicHouseFaceStreetMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicHouseFaceStreet> basicHouseFaceStreetList(BasicHouseFaceStreet basicHouseFaceStreet) throws SQLException {
+    public List<BasicHouseFaceStreet> basicHouseFaceStreetList(BasicHouseFaceStreet basicHouseFaceStreet) {
         BasicHouseFaceStreetExample example = new BasicHouseFaceStreetExample();
         MybatisUtils.convertObj2Example(basicHouseFaceStreet, example);
         return basicHouseFaceStreetMapper.selectByExample(example);

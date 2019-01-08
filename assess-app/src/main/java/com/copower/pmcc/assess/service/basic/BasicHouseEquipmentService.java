@@ -11,6 +11,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -101,8 +102,8 @@ public class BasicHouseEquipmentService {
         return basicHouseEquipmentDao.basicHouseEquipmentList(basicHouseEquipment);
     }
 
-    public List<BasicHouseEquipment> getBasicHouseEquipmentList(Integer houseId){
-        BasicHouseEquipment where=new BasicHouseEquipment();
+    public List<BasicHouseEquipment> getBasicHouseEquipmentList(Integer houseId) {
+        BasicHouseEquipment where = new BasicHouseEquipment();
         where.setHouseId(houseId);
         return basicHouseEquipmentDao.basicHouseEquipmentList(where);
     }
@@ -153,4 +154,16 @@ public class BasicHouseEquipmentService {
         return basicHouseEquipmentDao.countByHouseId(houseId, type) > 0;
     }
 
+
+    public List<BasicHouseEquipment> getBasicHouseEquipmentList(Integer houseId, String type) {
+        BasicHouseEquipment basicHouseEquipment = new BasicHouseEquipment();
+        basicHouseEquipment.setHouseId(houseId);
+        basicHouseEquipment.setType(type);
+        List<BasicHouseEquipment> basicHouseEquipmentList = basicHouseEquipmentDao.basicHouseEquipmentList(basicHouseEquipment);
+        return basicHouseEquipmentList;
+    }
+
+    public List<BasicHouseEquipmentVo> getBasicHouseEquipmentVos(Integer houseId, String type) {
+        return LangUtils.transform(getBasicHouseEquipmentList(houseId, type), o -> getBasicHouseEquipmentVo(o));
+    }
 }
