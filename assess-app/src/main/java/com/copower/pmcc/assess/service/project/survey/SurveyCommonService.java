@@ -354,14 +354,6 @@ public class SurveyCommonService {
     }
 
     /**
-     * 复制调查任务及信息
-     * @param planDetailsId
-     */
-    public void copyExamineTaskAndInfo(Integer planDetailsId) throws BusinessException {
-
-    }
-
-    /**
      * 获取调查信息相关表
      * @return
      */

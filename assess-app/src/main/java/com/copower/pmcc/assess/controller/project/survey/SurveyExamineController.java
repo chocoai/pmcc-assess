@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.controller.project.survey;
 
-import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyExamineTask;
@@ -10,8 +9,8 @@ import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.assess.service.project.survey.SurveyExamineInfoService;
 import com.copower.pmcc.assess.service.project.survey.SurveyExamineTaskService;
@@ -169,9 +168,8 @@ public class SurveyExamineController {
 
     @ResponseBody
     @PostMapping(name = "分派(选择工业和非工业之后直接分派)", value = "/examineTaskAssignment")
-    public HttpResult examineTaskAssignment(String formData, Integer planDetailsId, String examineFormType) {
+    public HttpResult examineTaskAssignment(Integer planDetailsId, String examineFormType) {
         try {
-            ProjectPlanDetails projectPlanDetails = JSON.parseObject(formData, ProjectPlanDetails.class);
             surveyExamineTaskService.examineTaskAssignment(planDetailsId,examineFormType);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {

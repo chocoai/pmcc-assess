@@ -380,29 +380,37 @@ public class SurveyExamineTaskService {
         }
     }
 
-    public void examineTaskAssignment(Integer planDetailsId, String examineFormType)throws BusinessException{
+    /**
+     * 调查任务项分派
+     * @param planDetailsId
+     * @param examineFormType
+     * @throws BusinessException
+     */
+    public void examineTaskAssignment(Integer planDetailsId, String examineFormType) throws BusinessException {
         ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         String userAccount = commonService.thisUserAccount();
         ProjectWorkStage workStage = projectWorkStageService.cacheProjectWorkStage(planDetails.getProjectWorkStageId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());
-        String phaseKey = AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE;
-//        if (ExamineTypeEnum.EXPLORE.getId().equals(examineFormType)) {
-//            phaseKey = AssessPhaseKeyConstant.SCENE_EXPLORE_EXAMINE;
-//        }
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(phaseKey, projectInfo.getProjectCategoryId());
+        ProjectPhase phase = projectPhaseService.getCacheProjectPhaseById(planDetails.getProjectPhaseId());
+        String phaseKey = null;
+        if (AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE.contains(phase.getPhaseKey()))
+            phaseKey = AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE;
+        if (AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE.contains(phase.getPhaseKey()))
+            phaseKey = AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE;
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(phaseKey);
         //添加计划任务子项及待提交任务
+
+        SurveyExamineInfo surveyExamineInfo = new SurveyExamineInfo();
+        surveyExamineInfo.setExamineType(ExamineTypeEnum.EXPLORE.getId());
+        surveyExamineInfo.setProjectId(planDetails.getProjectId());
+        surveyExamineInfo.setPlanDetailsId(planDetails.getId());
+        surveyExamineInfo.setExamineFormType(examineFormType);
+        surveyExamineInfo.setDeclareRecordId(planDetails.getDeclareRecordId());
+        surveyExamineInfo.setBisAssignment(true);
+        surveyExamineInfo.setCreator(commonService.thisUserAccount());
+        surveyExamineInfoService.save(surveyExamineInfo);
+
         ProjectPlanDetails taskPlanDetails = new ProjectPlanDetails();
-        if (true) {
-            SurveyExamineInfo surveyExamineInfo = new SurveyExamineInfo();
-            surveyExamineInfo.setExamineType(ExamineTypeEnum.EXPLORE.getId());
-            surveyExamineInfo.setProjectId(planDetails.getProjectId());
-            surveyExamineInfo.setPlanDetailsId(planDetails.getId());
-            surveyExamineInfo.setExamineFormType(examineFormType);
-            surveyExamineInfo.setDeclareRecordId(planDetails.getDeclareRecordId());
-            surveyExamineInfo.setBisAssignment(true);
-            surveyExamineInfo.setCreator(commonService.thisUserAccount());
-            surveyExamineInfoService.save(surveyExamineInfo);
-        }
         BeanUtils.copyProperties(planDetails, taskPlanDetails);
         taskPlanDetails.setId(0);
         taskPlanDetails.setPid(planDetails.getId());
@@ -434,7 +442,7 @@ public class SurveyExamineTaskService {
         bpmRpcProjectTaskService.saveProjectTask(projectTask);
     }
 
-    private void saveSurveyExamineTask(ProjectPlanDetails planDetails, String examineFormType)throws BusinessException{
+    private void saveSurveyExamineTask(ProjectPlanDetails planDetails, String examineFormType) throws BusinessException {
         if (StringUtils.isNotBlank(examineFormType)) {
             DataExamineTask dataExamineTask = null;
             if (Objects.equal(AssessExamineTaskConstant.FC_RESIDENCE, examineFormType)) {
