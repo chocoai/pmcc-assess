@@ -58,6 +58,32 @@
                     <input type="text" placeholder="所在位置" name="location" class="form-control">
                 </div>
             </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    建筑使用年限
+                </label>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <input type="hidden" name="residenceUseYear" value="${basicBuilding.residenceUseYear}">
+                        <input type="hidden" name="industryUseYear" value="${basicBuilding.industryUseYear}">
+                        <input type="text"
+                               placeholder="建筑使用年限" class="form-control">
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="选择"
+                                onclick="assessBuildingUseYear.onSelected('${basicApply.type}',this)">
+                        <i class="fa fa-search"></i>
+                        </button>
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                data-toggle="tooltip" data-original-title="清除">
+                        <i class="fa fa-trash-o"></i>
+                        </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="form-group">
             <div class="x-valid">

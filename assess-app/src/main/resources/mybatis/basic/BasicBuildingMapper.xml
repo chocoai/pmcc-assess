@@ -5,6 +5,8 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="apply_id" property="applyId" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
+    <result column="residence_use_year" property="residenceUseYear" jdbcType="INTEGER" />
+    <result column="industry_use_year" property="industryUseYear" jdbcType="INTEGER" />
     <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
     <result column="building_name" property="buildingName" jdbcType="VARCHAR" />
     <result column="floor_count" property="floorCount" jdbcType="INTEGER" />
@@ -91,11 +93,12 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, apply_id, estate_id, building_number, building_name, floor_count, location, builder, 
-    property, unit_interval, property_fee, facilities_use_fee, building_height, building_area, 
-    cover_an_area, property_type, property_category, open_time, room_time, be_completed_time, 
-    floor_height, diameter_depth, land_use_year, net_height, building_structure_type, 
-    building_structure_category, creator, gmt_created, gmt_modified
+    id, apply_id, estate_id, residence_use_year, industry_use_year, building_number, 
+    building_name, floor_count, location, builder, property, unit_interval, property_fee, 
+    facilities_use_fee, building_height, building_area, cover_an_area, property_type, 
+    property_category, open_time, room_time, be_completed_time, floor_height, diameter_depth, 
+    land_use_year, net_height, building_structure_type, building_structure_category, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingExample" >
     select
@@ -131,26 +134,28 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_building (apply_id, estate_id, building_number, 
-      building_name, floor_count, location, 
-      builder, property, unit_interval, 
-      property_fee, facilities_use_fee, building_height, 
-      building_area, cover_an_area, property_type, 
-      property_category, open_time, room_time, 
-      be_completed_time, floor_height, diameter_depth, 
-      land_use_year, net_height, building_structure_type, 
-      building_structure_category, creator, gmt_created, 
-      gmt_modified)
-    values (#{applyId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, 
-      #{buildingName,jdbcType=VARCHAR}, #{floorCount,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, 
-      #{builder,jdbcType=VARCHAR}, #{property,jdbcType=VARCHAR}, #{unitInterval,jdbcType=VARCHAR}, 
-      #{propertyFee,jdbcType=DECIMAL}, #{facilitiesUseFee,jdbcType=DECIMAL}, #{buildingHeight,jdbcType=DECIMAL}, 
-      #{buildingArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, #{propertyType,jdbcType=INTEGER}, 
-      #{propertyCategory,jdbcType=INTEGER}, #{openTime,jdbcType=TIMESTAMP}, #{roomTime,jdbcType=TIMESTAMP}, 
-      #{beCompletedTime,jdbcType=TIMESTAMP}, #{floorHeight,jdbcType=DECIMAL}, #{diameterDepth,jdbcType=DECIMAL}, 
-      #{landUseYear,jdbcType=INTEGER}, #{netHeight,jdbcType=DECIMAL}, #{buildingStructureType,jdbcType=INTEGER}, 
-      #{buildingStructureCategory,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_basic_building (apply_id, estate_id, residence_use_year, 
+      industry_use_year, building_number, building_name, 
+      floor_count, location, builder, 
+      property, unit_interval, property_fee, 
+      facilities_use_fee, building_height, building_area, 
+      cover_an_area, property_type, property_category, 
+      open_time, room_time, be_completed_time, 
+      floor_height, diameter_depth, land_use_year, 
+      net_height, building_structure_type, building_structure_category, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{applyId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{residenceUseYear,jdbcType=INTEGER}, 
+      #{industryUseYear,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, #{buildingName,jdbcType=VARCHAR}, 
+      #{floorCount,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, #{builder,jdbcType=VARCHAR}, 
+      #{property,jdbcType=VARCHAR}, #{unitInterval,jdbcType=VARCHAR}, #{propertyFee,jdbcType=DECIMAL}, 
+      #{facilitiesUseFee,jdbcType=DECIMAL}, #{buildingHeight,jdbcType=DECIMAL}, #{buildingArea,jdbcType=DECIMAL}, 
+      #{coverAnArea,jdbcType=DECIMAL}, #{propertyType,jdbcType=INTEGER}, #{propertyCategory,jdbcType=INTEGER}, 
+      #{openTime,jdbcType=TIMESTAMP}, #{roomTime,jdbcType=TIMESTAMP}, #{beCompletedTime,jdbcType=TIMESTAMP}, 
+      #{floorHeight,jdbcType=DECIMAL}, #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=INTEGER}, 
+      #{netHeight,jdbcType=DECIMAL}, #{buildingStructureType,jdbcType=INTEGER}, #{buildingStructureCategory,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuilding" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -163,6 +168,12 @@
       </if>
       <if test="estateId != null" >
         estate_id,
+      </if>
+      <if test="residenceUseYear != null" >
+        residence_use_year,
+      </if>
+      <if test="industryUseYear != null" >
+        industry_use_year,
       </if>
       <if test="buildingNumber != null" >
         building_number,
@@ -249,6 +260,12 @@
       </if>
       <if test="estateId != null" >
         #{estateId,jdbcType=INTEGER},
+      </if>
+      <if test="residenceUseYear != null" >
+        #{residenceUseYear,jdbcType=INTEGER},
+      </if>
+      <if test="industryUseYear != null" >
+        #{industryUseYear,jdbcType=INTEGER},
       </if>
       <if test="buildingNumber != null" >
         #{buildingNumber,jdbcType=VARCHAR},
@@ -348,6 +365,12 @@
       <if test="record.estateId != null" >
         estate_id = #{record.estateId,jdbcType=INTEGER},
       </if>
+      <if test="record.residenceUseYear != null" >
+        residence_use_year = #{record.residenceUseYear,jdbcType=INTEGER},
+      </if>
+      <if test="record.industryUseYear != null" >
+        industry_use_year = #{record.industryUseYear,jdbcType=INTEGER},
+      </if>
       <if test="record.buildingNumber != null" >
         building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       </if>
@@ -436,6 +459,8 @@
     set id = #{record.id,jdbcType=INTEGER},
       apply_id = #{record.applyId,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
+      residence_use_year = #{record.residenceUseYear,jdbcType=INTEGER},
+      industry_use_year = #{record.industryUseYear,jdbcType=INTEGER},
       building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       building_name = #{record.buildingName,jdbcType=VARCHAR},
       floor_count = #{record.floorCount,jdbcType=INTEGER},
@@ -474,6 +499,12 @@
       </if>
       <if test="estateId != null" >
         estate_id = #{estateId,jdbcType=INTEGER},
+      </if>
+      <if test="residenceUseYear != null" >
+        residence_use_year = #{residenceUseYear,jdbcType=INTEGER},
+      </if>
+      <if test="industryUseYear != null" >
+        industry_use_year = #{industryUseYear,jdbcType=INTEGER},
       </if>
       <if test="buildingNumber != null" >
         building_number = #{buildingNumber,jdbcType=VARCHAR},
@@ -560,6 +591,8 @@
     update tb_basic_building
     set apply_id = #{applyId,jdbcType=INTEGER},
       estate_id = #{estateId,jdbcType=INTEGER},
+      residence_use_year = #{residenceUseYear,jdbcType=INTEGER},
+      industry_use_year = #{industryUseYear,jdbcType=INTEGER},
       building_number = #{buildingNumber,jdbcType=VARCHAR},
       building_name = #{buildingName,jdbcType=VARCHAR},
       floor_count = #{floorCount,jdbcType=INTEGER},

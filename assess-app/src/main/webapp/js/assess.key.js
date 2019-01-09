@@ -130,6 +130,7 @@ AssessDicKey.estate_examinematchingmedical_bedNumber = "estate.examineMatchingMe
 AssessDicKey.estate_examinematchingmedical_distance = "estate.examineMatchingMedical.distance";//医养机构距离
 
 //楼栋
+AssessDicKey.examine_building_residence_data = "examine.building.residence.data";//非工业仓储(建筑使用寿命)
 AssessDicKey.examine_building_property_type = "building.property_type";//物业类型
 AssessDicKey.examine_building_property_structure = "building.building_structure";//建筑结构
 AssessDicKey.examine_building_property_category = "building.building_category";//建筑类别

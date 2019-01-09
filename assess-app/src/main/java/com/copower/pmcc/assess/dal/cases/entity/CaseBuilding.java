@@ -8,6 +8,10 @@ public class CaseBuilding {
 
     private Integer estateId;
 
+    private Integer residenceUseYear;
+
+    private Integer industryUseYear;
+
     private Integer type;
 
     private String buildingNumber;
@@ -78,6 +82,22 @@ public class CaseBuilding {
 
     public void setEstateId(Integer estateId) {
         this.estateId = estateId;
+    }
+
+    public Integer getResidenceUseYear() {
+        return residenceUseYear;
+    }
+
+    public void setResidenceUseYear(Integer residenceUseYear) {
+        this.residenceUseYear = residenceUseYear;
+    }
+
+    public Integer getIndustryUseYear() {
+        return industryUseYear;
+    }
+
+    public void setIndustryUseYear(Integer industryUseYear) {
+        this.industryUseYear = industryUseYear;
     }
 
     public Integer getType() {

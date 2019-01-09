@@ -286,6 +286,126 @@ public class BasicBuildingExample {
             return (Criteria) this;
         }
 
+        public Criteria andResidenceUseYearIsNull() {
+            addCriterion("residence_use_year is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidenceUseYearIsNotNull() {
+            addCriterion("residence_use_year is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidenceUseYearEqualTo(Integer value) {
+            addCriterion("residence_use_year =", value, "residenceUseYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidenceUseYearNotEqualTo(Integer value) {
+            addCriterion("residence_use_year <>", value, "residenceUseYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidenceUseYearGreaterThan(Integer value) {
+            addCriterion("residence_use_year >", value, "residenceUseYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidenceUseYearGreaterThanOrEqualTo(Integer value) {
+            addCriterion("residence_use_year >=", value, "residenceUseYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidenceUseYearLessThan(Integer value) {
+            addCriterion("residence_use_year <", value, "residenceUseYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidenceUseYearLessThanOrEqualTo(Integer value) {
+            addCriterion("residence_use_year <=", value, "residenceUseYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidenceUseYearIn(List<Integer> values) {
+            addCriterion("residence_use_year in", values, "residenceUseYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidenceUseYearNotIn(List<Integer> values) {
+            addCriterion("residence_use_year not in", values, "residenceUseYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidenceUseYearBetween(Integer value1, Integer value2) {
+            addCriterion("residence_use_year between", value1, value2, "residenceUseYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidenceUseYearNotBetween(Integer value1, Integer value2) {
+            addCriterion("residence_use_year not between", value1, value2, "residenceUseYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndustryUseYearIsNull() {
+            addCriterion("industry_use_year is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndustryUseYearIsNotNull() {
+            addCriterion("industry_use_year is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndustryUseYearEqualTo(Integer value) {
+            addCriterion("industry_use_year =", value, "industryUseYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndustryUseYearNotEqualTo(Integer value) {
+            addCriterion("industry_use_year <>", value, "industryUseYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndustryUseYearGreaterThan(Integer value) {
+            addCriterion("industry_use_year >", value, "industryUseYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndustryUseYearGreaterThanOrEqualTo(Integer value) {
+            addCriterion("industry_use_year >=", value, "industryUseYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndustryUseYearLessThan(Integer value) {
+            addCriterion("industry_use_year <", value, "industryUseYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndustryUseYearLessThanOrEqualTo(Integer value) {
+            addCriterion("industry_use_year <=", value, "industryUseYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndustryUseYearIn(List<Integer> values) {
+            addCriterion("industry_use_year in", values, "industryUseYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndustryUseYearNotIn(List<Integer> values) {
+            addCriterion("industry_use_year not in", values, "industryUseYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndustryUseYearBetween(Integer value1, Integer value2) {
+            addCriterion("industry_use_year between", value1, value2, "industryUseYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndustryUseYearNotBetween(Integer value1, Integer value2) {
+            addCriterion("industry_use_year not between", value1, value2, "industryUseYear");
+            return (Criteria) this;
+        }
+
         public Criteria andBuildingNumberIsNull() {
             addCriterion("building_number is null");
             return (Criteria) this;

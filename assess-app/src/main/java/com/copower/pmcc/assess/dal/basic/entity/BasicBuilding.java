@@ -10,6 +10,10 @@ public class BasicBuilding {
 
     private Integer estateId;
 
+    private Integer residenceUseYear;
+
+    private Integer industryUseYear;
+
     private String buildingNumber;
 
     private String buildingName;
@@ -84,6 +88,22 @@ public class BasicBuilding {
 
     public void setEstateId(Integer estateId) {
         this.estateId = estateId;
+    }
+
+    public Integer getResidenceUseYear() {
+        return residenceUseYear;
+    }
+
+    public void setResidenceUseYear(Integer residenceUseYear) {
+        this.residenceUseYear = residenceUseYear;
+    }
+
+    public Integer getIndustryUseYear() {
+        return industryUseYear;
+    }
+
+    public void setIndustryUseYear(Integer industryUseYear) {
+        this.industryUseYear = industryUseYear;
     }
 
     public String getBuildingNumber() {

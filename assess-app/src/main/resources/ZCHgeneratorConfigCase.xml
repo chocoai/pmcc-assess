@@ -44,17 +44,17 @@
 
         <!-- 具体表 -->
 
-        <table tableName="tb_case_house_intelligent" domainObjectName="CaseHouseIntelligent">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_case_house_intelligent" domainObjectName="CaseHouseIntelligent">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_case_building_main" domainObjectName="CaseBuildingMain">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_case_building" domainObjectName="CaseBuilding">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_case_building" domainObjectName="CaseBuilding">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <!--<table tableName="tb_case_building_outfit" domainObjectName="CaseBuildingOutfit">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
