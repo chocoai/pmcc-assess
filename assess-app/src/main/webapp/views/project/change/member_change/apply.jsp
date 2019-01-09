@@ -323,6 +323,9 @@
 
 
     memberChangeObj.replaceManage = function (oldManager) {
+        var src =  oldManager;
+        var oldManagerAccount = src.split("_").pop();
+        console.log(oldManagerAccount);
         erpEmployee.select({
             multi:false,
             currOrgId:'${projectInfo.departmentId}',
@@ -338,6 +341,7 @@
                         data: {
                             projectId: memberChangeObj.projectId,
                             processInsId: memberChangeObj.processInsId,
+                            oldManager:oldManagerAccount,
                             newManage: selectUser
                         },
                         type: "post",
