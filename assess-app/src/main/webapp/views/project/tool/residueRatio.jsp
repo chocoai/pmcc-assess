@@ -73,18 +73,7 @@
 
                 <div class="col-md-12">
                     <div class="x_title">观察法</div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-1 control-label">
-                                成新率
-                            </label>
-                            <div class="col-sm-5">
-                                <input type="text" class="form-control x-percent" name="newRate"
-                                       data-rule-number='true' required="required"
-                                       placeholder="成新率" onblur="build.newRateModel.handle();">
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
