@@ -14,6 +14,9 @@
             <form class="form-horizontal" id="declareApplyForm">
                 <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
                 <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
+                <div id="declareApplyFormHTML">
+
+                </div>
             </form>
             <!-- 申报各种类型的html视图 -->
             <%@include file="/views/project/stageDeclare/declareApplyModel.jsp" %>
@@ -145,6 +148,9 @@
             });
         }
     };
+    $(document).ready(function () {
+        declareFunObj.declare.init();
+    });
 </script>
 <script type="application/javascript">
     //提交

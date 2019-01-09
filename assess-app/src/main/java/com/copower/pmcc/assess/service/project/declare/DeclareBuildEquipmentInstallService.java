@@ -119,7 +119,7 @@ public class DeclareBuildEquipmentInstallService {
             }
             if (flag) {
                 oo.setCreator(commonService.thisUserAccount());
-                declareBuildEquipmentInstallDao.addDeclareBuildEquipmentInstall(oo);
+                this.saveAndUpdateDeclareBuildEquipmentInstall(oo);
                 successCount++;
             }
         }

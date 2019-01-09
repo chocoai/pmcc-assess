@@ -51,9 +51,9 @@ equipmentInstallation.config = {
         name: "不动产"
     },
     declareEconomicIndicators: {
-        box: "declareEconomicIndicatorsBox",
-        frm: "declareEconomicIndicatorsFrm",
-        fileId: "declareEconomicIndicatorsFileId",
+        box: "declareEconomicIndicatorsBoxE",
+        frm: "declareEconomicIndicatorsFrmE",
+        fileId: "declareEconomicIndicatorsFileIdE",
         name: "经济指标"
     }
 };
@@ -995,10 +995,13 @@ equipmentInstallation.declareEconomicIndicatorsView = function (pid) {
             if (result.ret) {
                 var indicatorId = result.data.indicatorId;
                 if (equipmentInstallation.isNotBlank(indicatorId)) {
+                    $('#' + equipmentInstallation.config.declareEconomicIndicators.frm).find("#" + commonDeclareApplyModel.config.economicIndicators.handleId).remove();
+                    $('#' + equipmentInstallation.config.declareEconomicIndicators.frm).find(".panel-body").append(commonDeclareApplyModel.economicIndicators.getHtml());
+                    DatepickerUtils.parse();
                     $("#" + equipmentInstallation.config.declareEconomicIndicators.frm).clearAll();
                     $("#" + equipmentInstallation.config.declareEconomicIndicators.frm).find('[name=pid]').val(indicatorId);
                     $("#" + equipmentInstallation.config.declareEconomicIndicators.frm).find('.dynamic').remove();
-                    economicIndicators.initForm(indicatorId, function () {
+                    commonDeclareApplyModel.economicIndicators.initForm(indicatorId,function () {
                         $('#' + equipmentInstallation.config.declareEconomicIndicators.box).modal("show");
                     });
                 } else {
@@ -1013,11 +1016,13 @@ equipmentInstallation.declareEconomicIndicatorsView = function (pid) {
                                 fData.indicatorId = id;
                                 fData.id = pid;
                                 equipmentInstallation.handleFather(fData);
+                                $('#' + equipmentInstallation.config.declareEconomicIndicators.frm).find("#" + commonDeclareApplyModel.config.economicIndicators.handleId).remove();
+                                $('#' + equipmentInstallation.config.declareEconomicIndicators.frm).find(".panel-body").append(commonDeclareApplyModel.economicIndicators.getHtml());
+                                DatepickerUtils.parse();
                                 $("#" + equipmentInstallation.config.declareEconomicIndicators.frm).clearAll();
                                 $("#" + equipmentInstallation.config.declareEconomicIndicators.frm).find('[name=pid]').val(id);
-                                $("#" + equipmentInstallation.config.declareEconomicIndicators.frm).find('[name=planDetailsId]').val(declareCommon.getPlanDetailsId());
                                 $("#" + equipmentInstallation.config.declareEconomicIndicators.frm).find('.dynamic').remove();
-                                economicIndicators.initForm(id, function () {
+                                commonDeclareApplyModel.economicIndicators.initForm(id,function () {
                                     $('#' + equipmentInstallation.config.declareEconomicIndicators.box).modal("show");
                                 });
                             } else {
@@ -1035,6 +1040,89 @@ equipmentInstallation.declareEconomicIndicatorsView = function (pid) {
             Alert("调用服务端方法失败，失败原因:" + e);
         }
     });
+};
+equipmentInstallation.declareEconomicIndicatorsRemove = function () {
+    var pid = formParams(equipmentInstallation.config.declareEconomicIndicators.frm).pid;
+    function get(id, callback) {
+        $.ajax({
+            type: "get",
+            url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/listDeclareBuildEngineeringAndEquipmentCenter",
+            data: {planDetailsId: declareCommon.getPlanDetailsId(), indicatorId: id},
+            success: function (result) {
+                if (result.ret) {
+                    if (result.data) {
+                        callback(result.data[0]);
+                    }
+                } else {
+                    Alert("失败:" + result.errmsg);
+                }
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+    }
+    $.ajax({
+        type: "POST",
+        url: getContextPath() + "/economicIndicators/getEntityListByPid",
+        data: {pid: pid},
+        success: function (result) {
+            if (result.ret) {
+                if (result.data.length >= 1) {
+                    get(pid, function (data) {
+                        var item = {dataId: pid, centerId: data.id, type: "DeclareBuildEconomicIndicatorsCenter"};
+                        equipmentInstallation.deleteByType(item, function () {
+                            $('#' + equipmentInstallation.config.declareEconomicIndicators.box).modal("hide");
+                            equipmentInstallation.loadList();
+                            toastr.success('成功!');
+                        });
+                    });
+                } else {
+                    toastr.success('无数据!');
+                }
+            } else {
+                Alert("失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+equipmentInstallation.declareEconomicIndicatorsSaveAndUpdate = function () {
+    if (!$('#'+equipmentInstallation.config.declareEconomicIndicators.frm).valid()) {
+        return false;
+    }
+    try {
+        var item = formParams(equipmentInstallation.config.declareEconomicIndicators.frm) ;
+        var formData = commonDeclareApplyModel.economicIndicators.getFormData();
+        var data = {
+            formData: JSON.stringify(formData),
+            pid:item.pid
+        };
+        $.ajax({
+            beforeSend: function () {
+                Loading.progressShow();
+            },
+            url: getContextPath()+"/economicIndicators/saveEconomicIndicatorsList",
+            type: 'post',
+            data: data,
+            dataType: 'json',
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success('保存成功');
+                    equipmentInstallation.loadList();
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        });
+    } catch (e) {
+        toastr.success('保存失败');
+        console.error(e);
+    }
+    $('#' + equipmentInstallation.config.declareEconomicIndicators.box).modal("hide");
 };
 
 
@@ -1224,7 +1312,8 @@ equipmentInstallation.inputFile = function () {
         type: "POST",
         url: getContextPath() + "/declareBuildEquipmentInstall/importData",
         data: {
-            planDetailsId: declareCommon.getPlanDetailsId()
+            planDetailsId: declareCommon.getPlanDetailsId(),
+            declareType : declareFunObj.getDeclareType("设备安装")
         },//要传到后台的参数，没有可以不写
         secureuri: false,//是否启用安全提交，默认为false
         fileElementId: equipmentInstallation.config.excelUpload,//文件选择框的id属性

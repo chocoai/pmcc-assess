@@ -1016,7 +1016,7 @@ civilEngineering.declareBuildingConstructionPermitRemove = function () {
 };
 
 /**
- * 经济指标
+ * 经济指标 show
  */
 civilEngineering.declareEconomicIndicatorsView = function (pid) {
     $.ajax({
@@ -1027,10 +1027,13 @@ civilEngineering.declareEconomicIndicatorsView = function (pid) {
             if (result.ret) {
                 var indicatorId = result.data.indicatorId;
                 if (civilEngineering.isNotBlank(indicatorId)) {
+                    $('#' + civilEngineering.config.declareEconomicIndicators.frm).find("#" + commonDeclareApplyModel.config.economicIndicators.handleId).remove();
+                    $('#' + civilEngineering.config.declareEconomicIndicators.frm).find(".panel-body").append(commonDeclareApplyModel.economicIndicators.getHtml());
+                    DatepickerUtils.parse();
                     $("#" + civilEngineering.config.declareEconomicIndicators.frm).clearAll();
                     $("#" + civilEngineering.config.declareEconomicIndicators.frm).find('[name=pid]').val(indicatorId);
                     $("#" + civilEngineering.config.declareEconomicIndicators.frm).find('.dynamic').remove();
-                    economicIndicators.initForm(indicatorId, function () {
+                    commonDeclareApplyModel.economicIndicators.initForm(indicatorId,function () {
                         $('#' + civilEngineering.config.declareEconomicIndicators.box).modal("show");
                     });
                 } else {
@@ -1045,15 +1048,16 @@ civilEngineering.declareEconomicIndicatorsView = function (pid) {
                                 fData.indicatorId = id;
                                 fData.id = pid;
                                 civilEngineering.handleFather(fData);
+                                $('#' + civilEngineering.config.declareEconomicIndicators.frm).find("#" + commonDeclareApplyModel.config.economicIndicators.handleId).remove();
+                                $('#' + civilEngineering.config.declareEconomicIndicators.frm).find(".panel-body").append(commonDeclareApplyModel.economicIndicators.getHtml());
+                                DatepickerUtils.parse();
                                 $("#" + civilEngineering.config.declareEconomicIndicators.frm).clearAll();
                                 $("#" + civilEngineering.config.declareEconomicIndicators.frm).find('[name=pid]').val(id);
-                                $("#" + civilEngineering.config.declareEconomicIndicators.frm).find('[name=planDetailsId]').val('${projectPlanDetails.id}');
                                 $("#" + civilEngineering.config.declareEconomicIndicators.frm).find('.dynamic').remove();
-                                economicIndicators.initForm(id, function () {
+                                commonDeclareApplyModel.economicIndicators.initForm(id,function () {
                                     $('#' + civilEngineering.config.declareEconomicIndicators.box).modal("show");
                                 });
                             } else {
-                                console.log(result.errmsg);
                                 Alert("保存失败:" + result.errmsg);
                             }
                         },
@@ -1069,10 +1073,50 @@ civilEngineering.declareEconomicIndicatorsView = function (pid) {
         }
     });
 };
-
+/**
+ * 经济指标 保存
+ * @returns {boolean}
+ */
+civilEngineering.declareEconomicIndicatorsSaveAndUpdate = function () {
+    if (!$('#'+civilEngineering.config.declareEconomicIndicators.frm).valid()) {
+        return false;
+    }
+    try {
+        var item = formParams(civilEngineering.config.declareEconomicIndicators.frm) ;
+        var formData = commonDeclareApplyModel.economicIndicators.getFormData();
+        var data = {
+            formData: JSON.stringify(formData),
+            pid:item.pid
+        };
+        $.ajax({
+            beforeSend: function () {
+                Loading.progressShow();
+            },
+            url: getContextPath()+"/economicIndicators/saveEconomicIndicatorsList",
+            type: 'post',
+            data: data,
+            dataType: 'json',
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success('保存成功');
+                    civilEngineering.loadList();
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        });
+    } catch (e) {
+        toastr.success('保存失败');
+        console.error(e);
+    }
+    $('#' + civilEngineering.config.declareEconomicIndicators.box).modal("hide");
+};
+/**
+ * 经济指标删除
+ */
 civilEngineering.declareEconomicIndicatorsRemove = function () {
     var pid = formParams(civilEngineering.config.declareEconomicIndicators.frm).pid;
-
     function get(id, callback) {
         $.ajax({
             type: "get",
@@ -1092,7 +1136,6 @@ civilEngineering.declareEconomicIndicatorsRemove = function () {
             }
         });
     }
-
     $.ajax({
         type: "POST",
         url: getContextPath() + "/economicIndicators/getEntityListByPid",
@@ -1106,7 +1149,6 @@ civilEngineering.declareEconomicIndicatorsRemove = function () {
                             $('#' + civilEngineering.config.declareEconomicIndicators.box).modal("hide");
                             civilEngineering.loadList();
                             toastr.success('成功!');
-                            window.location.reload();
                         });
                     });
                 } else {
@@ -1305,7 +1347,8 @@ civilEngineering.inputFile = function () {
         type: "POST",
         url: getContextPath() + "/declareBuildEngineering/importData",
         data: {
-            planDetailsId: declareCommon.getPlanDetailsId()
+            planDetailsId: declareCommon.getPlanDetailsId(),
+            declareType:declareFunObj.getDeclareType("土建")
         },//要传到后台的参数，没有可以不写
         secureuri: false,//是否启用安全提交，默认为false
         fileElementId: civilEngineering.config.excelUpload,//文件选择框的id属性

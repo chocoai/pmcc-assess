@@ -289,7 +289,8 @@
                     登记时间<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="registrationTime"></label>
+                    <%--<label class="form-control" name="registrationTime"></label>--%>
+                    <input type="text" name="registrationTime" class="form-control" readonly="readonly">
                 </div>
             </div>
             <div class="x-valid">
@@ -355,7 +356,8 @@
                     土地使用年限起<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="useStartDate"></label>
+                    <%--<label class="form-control" name="useStartDate"></label>--%>
+                    <input type="text" name="useStartDate" class="form-control" readonly="readonly">
                 </div>
             </div>
             <div class="x-valid">
@@ -363,7 +365,8 @@
                     土地使用年限止<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="useEndDate"></label>
+                    <%--<label class="form-control" name="useEndDate"></label>--%>
+                    <input type="text" name="useEndDate" class="form-control" readonly="readonly">
                 </div>
             </div>
             <div class="x-valid">
@@ -392,7 +395,8 @@
                     登记日期<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="registrationDate"></label>
+                    <%--<label class="form-control" name="registrationDate"></label>--%>
+                    <input type="text" name="registrationDate" class="form-control" readonly="readonly">
                 </div>
             </div>
         </div>
@@ -588,7 +592,8 @@
                     终止日期<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="terminationDate"></label>
+                    <%--<label class="form-control" name="terminationDate"></label>--%>
+                    <input type="text" name="terminationDate" class="form-control" readonly="readonly">
                 </div>
             </div>
         </div>
@@ -639,7 +644,8 @@
                     登记日期<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="registrationDate"></label>
+                    <%--<label class="form-control" name="registrationDate"></label>--%>
+                    <input type="text" name="registrationDate" class="form-control" readonly="readonly">
                 </div>
             </div>
         </div>
@@ -793,7 +799,8 @@
                     登记时间<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="registrationTime"></label>
+                    <%--<label class="form-control" name="registrationTime"></label>--%>
+                    <input type="text" name="registrationTime" class="form-control" readonly="readonly">
                 </div>
             </div>
             <div class="x-valid">
@@ -859,7 +866,8 @@
                     土地使用年限起<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="useStartDate"></label>
+                    <%--<label class="form-control" name="useStartDate"></label>--%>
+                    <input type="text" name="useStartDate" class="form-control" readonly="readonly">
                 </div>
             </div>
             <div class="x-valid">
@@ -867,7 +875,8 @@
                     土地使用年限止<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="useEndDate"></label>
+                    <%--<label class="form-control" name="useEndDate"></label>--%>
+                    <input type="text" name="useEndDate" class="form-control" readonly="readonly">
                 </div>
             </div>
             <div class="x-valid">
@@ -896,7 +905,7 @@
                     登记日期<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="registrationDate"></label>
+                    <input type="text" name="registrationDate" readonly="readonly" class="form-control">
                 </div>
             </div>
         </div>
@@ -947,7 +956,8 @@
                     终止日期<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="terminationDate"></label>
+                    <input type="text" name="terminationDate" class="form-control" readonly="readonly">
+                    <%--<label class="form-control" name="terminationDate"></label>--%>
                 </div>
             </div>
         </div>
@@ -1076,7 +1086,8 @@
                 <label class="col-sm-1 control-label">预期完成日期<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="expectedCompletionDate"></label>
+                    <input type="text" name="expectedCompletionDate" class="form-control" readonly="readonly">
+                    <%--<label class="form-control" name="expectedCompletionDate"></label>--%>
                 </div>
             </div>
             <div class="x-valid">
@@ -1123,7 +1134,8 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">申报日期<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="declarationDate"></label>
+                    <%--<label class="form-control" name="declarationDate"></label>--%>
+                    <input type="text" name="declarationDate" class="form-control" readonly="readonly">
                 </div>
             </div>
         </div>
@@ -1180,9 +1192,7 @@
                 <label class="col-sm-1 control-label">项目名称<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="项目名称" name="name" class="form-control"
-                           required="required">
+                    <label class="form-control" name="name"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -1229,14 +1239,14 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">开工日期<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="startDate"></label>
+                    <input type="text" name="startDate" class="form-control" readonly="readonly">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">预期完成日期<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="expectedCompletionDate"></label>
+                    <input type="text" name="expectedCompletionDate" class="form-control" readonly="readonly">
                 </div>
             </div>
         </div>
@@ -1283,7 +1293,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">申报日期<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="declarationDate"></label>
+                    <input type="text" name="declarationDate" class="form-control" readonly="readonly">
                 </div>
             </div>
         </div>
@@ -1324,7 +1334,8 @@
                 <label class="col-sm-1 control-label">日期<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <label name="date" class="form-control"></label>
+                    <input type="text" name="date" class="form-control" readonly="readonly">
+                    <%--<label name="date" class="form-control"></label>--%>
                 </div>
             </div>
             <div class="x-valid">
@@ -1427,7 +1438,8 @@
                 <label class="col-sm-1 control-label">合同工期<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <label name="contractPeriod" class="form-control"></label>
+                    <input type="text" name="contractPeriod" class="form-control" readonly="readonly">
+                    <%--<label name="contractPeriod" class="form-control"></label>--%>
                 </div>
             </div>
         </div>
@@ -1540,7 +1552,8 @@
                 <label class="col-sm-1 control-label">日期<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <label name="date" class="form-control"></label>
+                    <%--<label name="date" class="form-control"></label>--%>
+                    <input type="text" name="date" class="form-control" readonly="readonly">
                 </div>
             </div>
             <div class="x-valid">
@@ -1575,7 +1588,8 @@
                 <label class="col-sm-1 control-label">日期<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <label name="date" class="form-control"></label>
+                    <%--<label name="date" class="form-control"></label>--%>
+                    <input type="text" name="date" class="form-control" readonly="readonly">
                 </div>
             </div>
         </div>
@@ -1654,7 +1668,8 @@
                 <label class="col-sm-1 control-label">日期<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <label name="date" class="form-control"></label>
+                    <%--<label name="date" class="form-control"></label>--%>
+                    <input type="text" name="date" class="form-control" readonly="readonly">
                 </div>
             </div>
             <div class="x-valid">

@@ -119,7 +119,7 @@ public class DeclareBuildEngineeringService {
             }
             if (flag) {
                 oo.setCreator(commonService.thisUserAccount());
-                declareBuildEngineeringDao.addDeclareBuildEngineering(oo);
+                this.saveAndUpdateDeclareBuildEngineering(oo);
                 successCount++;
             }
         }

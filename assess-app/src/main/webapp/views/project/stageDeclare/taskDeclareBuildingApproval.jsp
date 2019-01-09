@@ -162,7 +162,7 @@
                 tableName: tableName,
                 tableId: id
             },
-            deleteFlag: true
+            deleteFlag: false
         });
     };
 
@@ -173,6 +173,9 @@
     equipmentInstallation.init = function (item) {
         $("#" + equipmentInstallation.config.frm).clearAll();
         $("#" + equipmentInstallation.config.frm).initForm(item);
+        $("#" + equipmentInstallation.config.frm).find("input[name='startDate']").val(formatDate(item.startDate));
+        $("#" + equipmentInstallation.config.frm).find("input[name='expectedCompletionDate']").val(formatDate(item.expectedCompletionDate));
+        $("#" + equipmentInstallation.config.frm).find("input[name='declarationDate']").val(formatDate(item.declarationDate));
         equipmentInstallation.showFile(equipmentInstallation.config.fileId, AssessDBKey.DeclareBuildEquipmentInstall, equipmentInstallation.isNotBlank(item.id) ? item.id : "0");
     };
 
@@ -452,6 +455,8 @@
                                     var data = result.data;
                                     if (equipmentInstallation.isNotBlank(data)) {
                                         $("#" + equipmentInstallation.config.declareRealtyLandCert.frm).initForm(data);
+                                        $("#" + equipmentInstallation.config.declareRealtyLandCert.frm).find("input[name='terminationDate']").val(formatDate(data.terminationDate));
+                                        $("#" + equipmentInstallation.config.declareRealtyLandCert.frm).find("input[name='registrationDate']").val(formatDate(data.registrationDate));
                                         equipmentInstallation.showFile(equipmentInstallation.config.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, data.id);
                                         $('#' + equipmentInstallation.config.declareRealtyLandCert.box).modal("show");
                                     }
@@ -494,6 +499,11 @@
                                     if (equipmentInstallation.isNotBlank(result.data)) {
                                         equipmentInstallation.showFile(equipmentInstallation.config.declareRealtyRealEstateCert.fileId, AssessDBKey.DeclareRealtyRealEstateCert, result.data.id);
                                         $("#" + equipmentInstallation.config.declareRealtyRealEstateCert.frm).initForm(result.data);
+                                        $("#" + equipmentInstallation.config.declareRealtyRealEstateCert.frm).find("input[name='registrationTime']").val(formatDate(result.data.registrationTime));
+                                        $("#" + equipmentInstallation.config.declareRealtyRealEstateCert.frm).find("input[name='useStartDate']").val(formatDate(result.data.useStartDate));
+                                        $("#" + equipmentInstallation.config.declareRealtyRealEstateCert.frm).find("input[name='useEndDate']").val(formatDate(result.data.useEndDate));
+                                        $("#" + equipmentInstallation.config.declareRealtyRealEstateCert.frm).find("input[name='registrationDate']").val(formatDate(result.data.registrationDate));
+                                        $("#" + equipmentInstallation.config.declareRealtyRealEstateCert.frm).find("input[name='terminationDate']").val(formatDate(result.data.terminationDate));
                                         $('#' + equipmentInstallation.config.declareRealtyRealEstateCert.box).modal("show");
                                     }
                                 }
@@ -600,9 +610,9 @@
                     str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declarePreSalePermitView(" + row.centerId + ")'" + ">" + "商品房预售许可证" + "<i class='fa fa-check'></i>" + "</a>" + "</li>";
                 }
                 if (row.declareBuildEngineeringAndEquipmentCenter.indicatorId) {
-                    str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareEconomicIndicatorsView(" + row.centerId + ")'" + ">" + "经济规划指标" + "<i class='fa fa-check'></i>" + "</a>" + "</li>";
+                    str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareEconomicIndicatorsView(" + row.centerId + ")'" + ">" + "经济规划指标" + "<i class='fa fa-adjust'></i>" + "</a>" + "</li>";
                 }
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.findData(" + row.id + ")'" + ">" + "设备安装" + "<i class='fa fa-check'></i>" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.findData(" + row.id + ")'" + ">" + "设备安装(主数据)" + "<i class='fa fa-check'></i>" + "</a>" + "</li>";
                 str += "</ul>";
                 str += "</div>";
                 return str;
@@ -707,7 +717,7 @@
                 tableName: tableName,
                 tableId: id
             },
-            deleteFlag: true
+            deleteFlag: false
         });
     };
 
@@ -719,8 +729,9 @@
         $("#" + civilEngineering.config.frm).clearAll();
         $("#" + civilEngineering.config.frm).initForm(item);
         civilEngineering.showFile(civilEngineering.config.fileId, AssessDBKey.DeclareBuildEngineering, civilEngineering.isNotBlank(item.id) ? item.id : "0");
-        $("#" + civilEngineering.config.frm + " input[name='terminationDate']").val(formatDate(item.terminationDate));
-        $("#" + civilEngineering.config.frm + " input[name='registrationDate']").val(formatDate(item.registrationDate));
+        $("#" + civilEngineering.config.frm).find("input[name='expectedCompletionDate']").val(formatDate(item.expectedCompletionDate));
+        $("#" + civilEngineering.config.frm).find("input[name='startDate']").val(formatDate(item.startDate));
+        $("#" + civilEngineering.config.frm).find("input[name='declarationDate']").val(formatDate(item.declarationDate));
     };
 
     /**
@@ -1150,9 +1161,9 @@
                     str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declarePreSalePermitView(" + row.centerId + ")'" + ">" + "商品房预售许可证" + "<i class='fa fa-check'></i>" + "</a>" + "</li>";
                 }
                 if (row.declareBuildEngineeringAndEquipmentCenter.indicatorId) {
-                    str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareEconomicIndicatorsView(" + row.centerId + ")'" + ">" + "经济规划指标" + "<i class='fa fa-check'></i>" + "</a>" + "</li>";
+                    str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareEconomicIndicatorsView(" + row.centerId + ")'" + ">" + "经济规划指标" + "<i class='fa fa-adjust'></i>" + "</a>" + "</li>";
                 }
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.findData(" + row.id + ")'" + ">" + "土建" + "<i class='fa fa-check'></i>" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.findData(" + row.id + ")'" + ">" + "土建(主数据)" + "<i class='fa fa-check'></i>" + "</a>" + "</li>";
                 str += "</ul>";
                 str += "</div>";
                 return str;
@@ -1171,36 +1182,6 @@
                 $('.tooltips').tooltip();
             }
         }, true);
-    };
-
-
-    /**
-     * @author:  zch
-     * 描述:导入
-     * @date:2018-09-28
-     **/
-    civilEngineering.inputFile = function () {
-        $.ajaxFileUpload({
-            type: "POST",
-            url: getContextPath() + "/declareBuildEngineering/importData",
-            data: {
-                planDetailsId: declareCommon.getPlanDetailsId()
-            },//要传到后台的参数，没有可以不写
-            secureuri: false,//是否启用安全提交，默认为false
-            fileElementId: civilEngineering.config.excelUpload,//文件选择框的id属性
-            dataType: 'json',//服务器返回的格式
-            async: false,
-            success: function (result) {
-                if (result.ret) {
-                    civilEngineering.loadList();
-                    Alert(result.data);
-                }
-            },
-            error: function (result, status, e) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
     };
 
     $(function () {

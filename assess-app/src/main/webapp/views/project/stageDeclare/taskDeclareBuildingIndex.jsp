@@ -15,6 +15,9 @@
             <form class="form-horizontal" id="declareApplyForm">
                 <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
                 <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
+                <div id="declareApplyFormHTML">
+
+                </div>
             </form>
             <!-- 申报各种类型的html视图 -->
             <%@include file="/views/project/stageDeclare/declareApplyModel.jsp" %>
@@ -45,7 +48,6 @@
     </div>
 </div>
 </body>
-<%@include file="/views/project/stageDeclare/buildingDeclareModel/viewEconomicIndicators.jsp" %>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
@@ -58,18 +60,10 @@
     declareFunObj.config = {
         declare: {
             frm: "declareApplyForm"
-        },
-        civilEngineering: {
-            name: "土建",
-            view: "viewCivilEngineering"
-        },
-        equipmentInstallation: {
-            name: "设备安装",
-            view: "viewEquipmentInstallation"
         }
     } ;
 
-    declareFunObj.isEmpty = function (item) {
+    declareFunObj.isNotBlank = function (item) {
         if (item) {
             return true;
         }
@@ -85,7 +79,7 @@
         var declareType = null;
         $("#" + declareFunObj.config.declare.frm + " :checkbox").each(function (j, oo) {
             AssessCommon.getProjectClassifyInfoAsync($(oo).val(), function (data) {
-                if (declareFunObj.isEmpty(data)) {
+                if (declareFunObj.isNotBlank(data)) {
                     if (data.name == name) {
                         declareType = data.id;
                     }
@@ -125,6 +119,11 @@
             });
         }
     };
+
+    $(document).ready(function () {
+        declareFunObj.declare.init();
+    });
+
 
 </script>
 <script type="application/javascript">

@@ -446,3 +446,38 @@
         </div>
     </div>
 </div>
+
+<div id="declareEconomicIndicatorsBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width: 1100px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title">规划指标</h3>
+            </div>
+            <div class="modal-body">
+                <form id="declareEconomicIndicatorsFrm" class="form-horizontal">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="panel-body">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" class="btn btn-warning" onclick="civilEngineering.declareEconomicIndicatorsRemove()">
+                    删除
+                </button>
+                <button type="button" class="btn btn-primary" onclick="civilEngineering.declareEconomicIndicatorsSaveAndUpdate()">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
