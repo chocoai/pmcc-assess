@@ -45,6 +45,7 @@
                                         onclick="dataObjFun.showModel();"
                                         data-toggle="modal" href="#divBox"> 新增
                                 </button>
+                                <div  class="btn btn-success" onclick="residueRatioTest();"> 成新率</div>
                             </div>
                         </div>
 
@@ -59,9 +60,20 @@
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
-
+<%@include file="/views/project/tool/residueRatio.jsp" %>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
+    function residueRatioTest() {
+        residueRatio.init({
+            usedYear: 10,
+            usableYear: 50,
+            houseId: 301,
+            success: function (id, resultValue) {
+                alert(resultValue);
+            }
+        });
+    }
+
     $(function () {
         dataObjFun.loadDataList();
     });

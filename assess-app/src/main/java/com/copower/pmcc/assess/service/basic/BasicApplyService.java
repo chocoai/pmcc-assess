@@ -196,14 +196,11 @@ public class BasicApplyService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyListByName(estateName, draftFlag);
+        List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyListByName(estateName,commonService.thisUserAccount(), draftFlag);
         List<BasicApplyVo> vos = Lists.newArrayList();
         if (!ObjectUtils.isEmpty(basicApplyList)) {
             for (BasicApply basicApply1 : basicApplyList) {
-                //过滤下 planDetailsId 属于案例和现场查勘的字段
-                if (basicApply1.getPlanDetailsId() == null){
-                    vos.add(getBasicApplyVo(basicApply1));
-                }
+                vos.add(getBasicApplyVo(basicApply1));
             }
         }
         vo.setTotal(page.getTotal());

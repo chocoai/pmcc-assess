@@ -13,13 +13,17 @@ import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.project.ProjectMemberChangeProcessEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
+import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
+import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
+import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
+import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
@@ -69,6 +73,10 @@ public class ProjectMemberChangeService {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
+    @Autowired
+    private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+    @Autowired
+    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
 
     private String buildUserName(String name, String account) {
         return String.format("%s_%s", name, account);
@@ -470,15 +478,26 @@ public class ProjectMemberChangeService {
      *
      * @throws BusinessException
      */
-    public void checkUserTask() throws BusinessException {
-        String currentUser = commonService.thisUserAccount();
+    public void checkUserTask(Integer projectId, String oldMember) throws Exception {
+        SysUserDto sysUser = erpRpcUserService.getSysUser(oldMember);
+        //被更改人在当前项目是否有未提交任务
+        ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
+        projectResponsibilityDto.setProjectId(projectId);
+        projectResponsibilityDto.setUserAccount(oldMember);
+        projectResponsibilityDto.setAppKey(applicationConstant.getAppKey());
+        List<ProjectResponsibilityDto> taskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
 
-        SysUserDto sysUser = erpRpcUserService.getSysUser(currentUser);
-
-        int taskCount = bpmRpcBoxService.countRunTaskForUser(currentUser, applicationConstant.getAppKey());
-
-        if (taskCount > 0) {
-            throw new BusinessException(String.format("成员【%s】还有%s个任务未处理，不能对其变更", sysUser.getUserName(), taskCount));
+        if (taskList.size() > 0) {
+            throw new BusinessException(String.format("成员【%s】还有%s个任务未处理，不能对其变更", sysUser.getUserName(), taskList.size()));
+        }
+        ProjectInfo info = projectInfoService.getProjectInfoById(projectId);
+        List<ActivitiTaskNodeDto> ActivitiTaskList= bpmRpcActivitiProcessManageService.queryProcessCurrentTask(info.getProcessInsId());
+        if(CollectionUtils.isNotEmpty(ActivitiTaskList)){
+            ActivitiTaskNodeDto activitiTaskNodeDto = ActivitiTaskList.get(0);
+            List<String> users = activitiTaskNodeDto.getUsers();
+            if(users.contains(oldMember)){
+                throw new BusinessException("成员存在未审批任务，不能对其变更");
+            }
         }
     }
 }

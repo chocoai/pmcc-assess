@@ -139,7 +139,7 @@ public class ProjectMemberChangeController extends BaseController {
     @ResponseBody
     public HttpResult removeMember(Integer projectId, String processInsId, String member) {
         try {
-            projectMemberChangeService.checkUserTask();
+            projectMemberChangeService.checkUserTask(projectId, member);
 
             if (StringUtils.isBlank(processInsId)) {
                 processInsId = "0";
@@ -157,7 +157,8 @@ public class ProjectMemberChangeController extends BaseController {
     @ResponseBody
     public HttpResult replaceMember(Integer projectId, String processInsId, String oldMember, String newMember) {
         try {
-            projectMemberChangeService.checkUserTask();
+            //被变更人是否有未提交任务
+            projectMemberChangeService.checkUserTask(projectId, oldMember);
 
             if (StringUtils.isBlank(processInsId)) {
                 processInsId = "0";
@@ -175,9 +176,9 @@ public class ProjectMemberChangeController extends BaseController {
 
     @PostMapping(value = "/replaceManage", name = "替换项目经理")
     @ResponseBody
-    public HttpResult replaceManage(Integer projectId, String processInsId, String newManage) {
+    public HttpResult replaceManage(Integer projectId, String processInsId, String newManage, String oldManager) {
         try {
-            projectMemberChangeService.checkUserTask();
+            projectMemberChangeService.checkUserTask(projectId, oldManager);
 
             if (StringUtils.isBlank(processInsId)) {
                 processInsId = "0";
