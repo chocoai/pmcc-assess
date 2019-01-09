@@ -226,7 +226,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         BasicHouseTrading basicHouseTrading = null;
         try {
             //申请楼栋 entity
-            basicApply = basicApplyService.getBasicApplyByPlanDetailsId(projectPlanDetails.getId());
+            basicApply = basicApplyService.getBasicApplyByPlanDetailsId(projectPlanDetails.getPid());
             if (basicApply != null) {
                 //案例 entity
                 surveyCaseStudy = surveyCaseStudyService.getSurveyCaseStudy(projectPlanDetails.getId());
@@ -239,7 +239,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
                 basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
                 basicUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
                 basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
-                if (basicHouse != null){
+                if (basicHouse != null) {
                     basicHouseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
                 }
             }
@@ -249,7 +249,9 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         if (basicApply == null) {
             basicApply = new BasicApply();
             SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(projectPlanDetails.getId());
-            basicApply.setType(BasicApplyTypeEnum.getEnumByKey(surveyExamineInfo.getExamineFormType()).getId());
+            if (surveyExamineInfo != null) {
+                basicApply.setType(BasicApplyTypeEnum.getEnumByKey(surveyExamineInfo.getExamineFormType()).getId());
+            }
             basicApply.setProcessInsId(projectPlanDetails.getProcessInsId());
             basicApply.setPlanDetailsId(projectPlanDetails.getPid());
             basicApplyService.saveBasicApply(basicApply);
@@ -317,7 +319,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         if (basicEstate != null) {
             modelAndView.addObject("basicEstate", basicEstateService.getBasicEstateVo(basicEstate));
         }
-        if (landState != null){
+        if (landState != null) {
             modelAndView.addObject("basicEstateLandState", basicEstateLandStateService.getBasicEstateLandStateVo(landState));
         }
         if (basicBuilding != null) {
@@ -329,7 +331,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         if (basicHouse != null) {
             modelAndView.addObject("basicHouse", basicHouseService.getBasicHouseVo(basicHouse));
         }
-        if (basicHouseTrading != null){
+        if (basicHouseTrading != null) {
             modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));
         }
         if (basicApply != null) {
