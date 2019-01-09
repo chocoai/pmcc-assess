@@ -93,6 +93,7 @@
     };
 
     unitCommon.onSelect = function (id) {
+        Loading.progressShow();
         $.ajax({
             url: getContextPath() + '/basicUnit/appWriteUnit',
             data: {
@@ -101,6 +102,7 @@
             },
             type: 'post',
             success: function (result) {
+                Loading.progressHide();
                 if (result.ret) {
                     basicCommon.update({caseUnitId: id, id: basicCommon.getApplyId()}, function () {
                         unitCommon.detail(basicCommon.getApplyId(), function (data) {
@@ -117,15 +119,14 @@
     };
 
     unitCommon.autocompleteStart = function () {
-        var caseBuildingId = basicCommon.getcaseBuildingId();
-        if (caseBuildingId) {
-            $("#txt_Unit_search").apUnit({
-                caseBuildingId: caseBuildingId,
-                onSelect: function (id, name) {
-                    unitCommon.onSelect(id);
-                }
-            });
-        }
+        $("#txt_Unit_search").apUnit({
+            caseBuildingId: function () {
+                return basicCommon.getcaseBuildingId();
+            },
+            onSelect: function (id, name) {
+                unitCommon.onSelect(id);
+            }
+        });
     };
 
 

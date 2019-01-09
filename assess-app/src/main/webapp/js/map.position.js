@@ -19,9 +19,15 @@ mapPosition.getCurrentCity = function (callback) {
     } else {
         mapPosition.complete(function (data) {
             try {
-                var province = data.addressComponent.province;
-                var city = data.addressComponent.city;
-                var district = data.addressComponent.district;
+                var province, city, district;
+                if (data && data.addressComponent) {
+                    province = data.addressComponent.province;
+                    city = data.addressComponent.city;
+                    district = data.addressComponent.district;
+                } else {
+                    province = "四川";
+                    city = "成都";
+                }
                 province = province.replace('省', '');
                 city = city.replace('市', '');
                 if (province && city && district) {
@@ -46,16 +52,20 @@ mapPosition.getCurrentCity = function (callback) {
  */
 mapPosition.getCurrentCityByArea = function (callback) {
     var areaJson = mapPosition.readCookie("areaJson");
-    if (areaJson){
+    if (areaJson) {
         callback(JSON.parse(areaJson));
-    }else {
+    } else {
         mapPosition.complete(function (data) {
             try {
-                var province = data.addressComponent.province;
-                var city = data.addressComponent.city;
-                var district = data.addressComponent.district;
-                province = province.replace('省', '');
-                city = city.replace('市', '');
+                var province, city, district;
+                if (data && data.addressComponent) {
+                    province = data.addressComponent.province;
+                    city = data.addressComponent.city;
+                    district = data.addressComponent.district;
+                } else {
+                    province = "四川";
+                    city = "成都";
+                }
                 //县以及区不用处理
                 //获取省数据
                 $.ajax({
@@ -71,31 +81,35 @@ mapPosition.getCurrentCityByArea = function (callback) {
                             var cityId = 0;
                             var districtId = undefined;
                             for (var i = 0; i < result.data.length; i++) {
-                                if (result.data[i].name == province){
-                                    provinceId = result.data[i].areaId ;
+                                if (result.data[i].name == province) {
+                                    provinceId = result.data[i].areaId;
                                     break;
                                 }
                             }
                             //继续获取市的区域id
-                            AssessCommon.loadAreaAsyncInfoByPid(provinceId,function (htmls,cityS) {
+                            AssessCommon.loadAreaAsyncInfoByPid(provinceId, function (htmls, cityS) {
                                 for (var i = 0; i < cityS.length; i++) {
-                                    if (cityS[i].name == city){
-                                        cityId = cityS[i].areaId ;
+                                    if (cityS[i].name == city) {
+                                        cityId = cityS[i].areaId;
                                         break;
                                     }
                                 }
                                 //继续获取县或者区的id
-                                AssessCommon.loadAreaAsyncInfoByPid(cityId,function (htmls,districts) {
+                                AssessCommon.loadAreaAsyncInfoByPid(cityId, function (htmls, districts) {
                                     for (var i = 0; i < districts.length; i++) {
-                                        if (districts[i].name == district){
-                                            districtId = districts[i].areaId ;
+                                        if (districts[i].name == district) {
+                                            districtId = districts[i].areaId;
                                             break;
                                         }
                                     }
-                                    callback({province:provinceId,city:cityId,district:districtId});
-                                    mapPosition.writeCookie("areaJson", JSON.stringify({province:provinceId,city:cityId,district:districtId}), 24);
-                                },true);
-                            },true);
+                                    callback({province: provinceId, city: cityId, district: districtId});
+                                    mapPosition.writeCookie("areaJson", JSON.stringify({
+                                        province: provinceId,
+                                        city: cityId,
+                                        district: districtId
+                                    }), 24);
+                                }, true);
+                            }, true);
                         }
                     },
                     error: function (result) {
@@ -157,8 +171,7 @@ mapPosition.complete = function (callback) {
             map.addControl(geolocation);
             geolocation.getCurrentPosition();
             AMap.event.addListener(geolocation, 'complete', callback);//返回定位信息
-            AMap.event.addListener(geolocation, 'error', function () {
-            });      //返回定位出错信息
+            AMap.event.addListener(geolocation, 'error', callback);      //返回定位出错信息
         });
     });
 }

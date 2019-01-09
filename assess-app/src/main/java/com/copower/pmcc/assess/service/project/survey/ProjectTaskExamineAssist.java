@@ -282,7 +282,6 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
             basicHouse.setUnitId(basicUnit.getId());
             basicHouse.setApplyId(basicApply.getId());
             basicHouseService.saveAndUpdateBasicHouse(basicHouse);
-            basicHouseService.addHouseAndTrading(null, basicApply.getId());
         }
         //案例
         if (examineTypeEnum.getId().equals(ExamineTypeEnum.CASE.getId())) {
@@ -295,6 +294,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
                 surveyCaseStudy.setProcessInsId(projectPlanDetails.getProcessInsId());
                 surveyCaseStudyService.saveSurveyCaseStudy(surveyCaseStudy);
             }
+            basicHouseService.addHouseAndTrading(null, basicApply.getId());
         }
         //查勘
         if (examineTypeEnum.getId().equals(ExamineTypeEnum.EXPLORE.getId())) {

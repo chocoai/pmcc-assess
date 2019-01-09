@@ -6,6 +6,7 @@
             var defaults = {
                 offset: 0,
                 limit: 10,
+                autoSelect: false,
                 onSelect: function (id, name) {
 
                 }
@@ -13,6 +14,9 @@
             defaults = $.extend({}, defaults, options);
             var that = this;
             var params = AssessDefault.autocomplete();
+            if (!defaults.autoSelect) {
+                params.response = null;
+            }
             params.source = function (request, response) {
                 $.ajax({
                     url: getContextPath() + "/caseEstate/autoCompleteCaseEstate",

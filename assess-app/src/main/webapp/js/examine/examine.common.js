@@ -133,7 +133,7 @@ basicCommon.valid = function () {
         toastr.success('房屋数据不完整');
         return false;
     }
-    if (!houseCommon.houseTradingForm.valid()) {
+    if (houseCommon.houseTradingForm.length > 0 && !houseCommon.houseTradingForm.valid()) {
         toastr.success('房屋数据不完整');
         return false;
     }

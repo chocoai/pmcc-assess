@@ -156,6 +156,7 @@
     };
 
     buildingCommon.onSelect = function (id) {
+        Loading.progressShow();
         $.ajax({
             url: getContextPath() + '/basicBuilding/appWriteBuilding',
             data: {
@@ -164,6 +165,7 @@
             },
             type: 'post',
             success: function (result) {
+                Loading.progressHide();
                 if (result.ret) {
                     basicCommon.update({caseBuildingId: id, id: basicCommon.getApplyId()}, function () {
                         basicCommon.basicApplyForm.find("input[name='caseBuildingId']").val(id);
@@ -178,15 +180,14 @@
     };
 
     buildingCommon.autocompleteStart = function () {
-        var caseEstateId = basicCommon.getCaseEstateId();
-        if (caseEstateId) {
-            $("#txt_building_search").apBuilding({
-                caseEstateId: caseEstateId,
-                onSelect: function (id, name) {
-                    buildingCommon.onSelect(id);
-                }
-            });
-        }
+        $("#txt_building_search").apBuilding({
+            caseEstateId: function () {
+                return basicCommon.getCaseEstateId();
+            },
+            onSelect: function (id, name) {
+                buildingCommon.onSelect(id);
+            }
+        });
     };
 
 

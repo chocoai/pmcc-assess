@@ -506,6 +506,7 @@
     };
 
     houseCommon.onSelect = function (id) {
+        Loading.progressShow();
         $.ajax({
             url: getContextPath() + '/basicHouse/appWriteHouse',
             data: {
@@ -514,6 +515,7 @@
             },
             type: 'post',
             success: function (result) {
+                Loading.progressHide();
                 if (result.ret) {
                     basicCommon.update({caseHouseId: id, id: basicCommon.getApplyId()}, function () {
                         houseCommon.detail(basicCommon.getApplyId(),function (data) {
@@ -530,17 +532,14 @@
     };
 
     houseCommon.autocompleteStart = function () {
-        var caseUnitId = basicCommon.getCaseUnitId();
-        if (caseUnitId) {
-            $("#txt_House_search").apHouse({
-                caseUnitId: caseUnitId,
-                onSelect: function (id, name) {
-                    houseCommon.onSelect(id);
-                }
-            });
-        } else {
-            // Alert("请先引用单元");
-        }
+        $("#txt_House_search").apHouse({
+            caseUnitId: function () {
+                return basicCommon.getCaseUnitId();
+            },
+            onSelect: function (id, name) {
+                houseCommon.onSelect(id);
+            }
+        });
     };
 
 

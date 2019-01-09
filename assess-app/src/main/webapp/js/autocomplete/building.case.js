@@ -1,4 +1,3 @@
-
 /*自动补全控件*/
 
 ;(function ($) {
@@ -7,7 +6,8 @@
             var defaults = {
                 offset: 0,
                 limit: 10,
-                caseEstateId:null,
+                caseEstateId: null,
+                autoSelect: false,
                 onSelect: function (id, name) {
 
                 }
@@ -15,7 +15,16 @@
             defaults = $.extend({}, defaults, options);
             var that = this;
             var params = AssessDefault.autocomplete();
+            if (!defaults.autoSelect) {
+                params.response = null;
+            }
             params.source = function (request, response) {
+                var estateId;
+                if (typeof defaults.caseEstateId == 'function') {
+                    estateId = defaults.caseEstateId();
+                } else {
+                    estateId = defaults.caseEstateId;
+                }
                 $.ajax({
                     url: getContextPath() + "/caseBuilding/autoCompleteCaseBuilding",
                     type: "get",
@@ -24,7 +33,7 @@
                         offset: defaults.offset,
                         limit: defaults.limit,
                         buildingNumber: $(that).val(),
-                        estateId:defaults.caseEstateId
+                        estateId: estateId
                     },
                     success: function (result) {
                         if (result.ret) {

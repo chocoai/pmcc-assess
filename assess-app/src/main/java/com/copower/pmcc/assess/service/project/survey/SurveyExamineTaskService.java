@@ -622,7 +622,13 @@ public class SurveyExamineTaskService {
             examineTypeEnum = ExamineTypeEnum.CASE;
         }
         JSONObject jsonObject = JSONObject.parseObject(formData);
-
+        BasicApply basicApply = null;
+        BasicEstate basicEstate = null;
+        BasicEstateLandState basicEstateLandState = null;
+        BasicBuilding basicBuilding = null;
+        BasicUnit basicUnit = null;
+        BasicHouse basicHouse = null;
+        BasicHouseTrading basicTrading = null;
         String survey = jsonObject.getString("survey");
         //案例
         if (examineTypeEnum.getId().equals(ExamineTypeEnum.CASE.getId())) {
@@ -630,6 +636,13 @@ public class SurveyExamineTaskService {
             surveyCaseStudy.setProcessInsId(projectPlanDetails.getProcessInsId());
             surveyCaseStudy.setJsonContent(formData);
             surveyCaseStudyService.updateSurveyCaseStudy(surveyCaseStudy);
+
+            if (StringUtils.isNotBlank(jsonObject.getString("basicTrading"))) {
+                basicTrading = JSONObject.parseObject(jsonObject.getString("basicTrading"), BasicHouseTrading.class);
+                if (basicTrading != null) {
+                    basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading);
+                }
+            }
         }
         //查勘
         if (examineTypeEnum.getId().equals(ExamineTypeEnum.EXPLORE.getId())) {
@@ -638,13 +651,7 @@ public class SurveyExamineTaskService {
             surveySceneExplore.setJsonContent(formData);
             surveySceneExploreService.updateSurveySceneExplore(surveySceneExplore);
         }
-        BasicApply basicApply = null;
-        BasicEstate basicEstate = null;
-        BasicEstateLandState basicEstateLandState = null;
-        BasicBuilding basicBuilding = null;
-        BasicUnit basicUnit = null;
-        BasicHouse basicHouse = null;
-        BasicHouseTrading basicTrading = null;
+
         if (StringUtils.isNotBlank(jsonObject.getString("basicApply"))) {
             basicApply = JSONObject.parseObject(jsonObject.getString("basicApply"), BasicApply.class);
         }
@@ -678,12 +685,7 @@ public class SurveyExamineTaskService {
                 basicHouseService.saveAndUpdateBasicHouse(basicHouse);
             }
         }
-        if (StringUtils.isNotBlank(jsonObject.getString("basicTrading"))) {
-            basicTrading = JSONObject.parseObject(jsonObject.getString("basicTrading"), BasicHouseTrading.class);
-            if (basicTrading != null) {
-                basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading);
-            }
-        }
+
         if (StringUtils.isNotBlank(jsonObject.getString("basicDamagedDegree"))) {
             List<BasicHouseDamagedDegree> damagedDegreeList = JSONObject.parseArray(jsonObject.getString("basicDamagedDegree"), BasicHouseDamagedDegree.class);
             if (!org.springframework.util.CollectionUtils.isEmpty(damagedDegreeList)) {

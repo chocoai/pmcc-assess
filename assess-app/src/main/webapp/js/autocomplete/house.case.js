@@ -9,6 +9,7 @@
                 offset: 0,
                 limit: 10,
                 caseUnitId:null,
+                autoSelect: false,
                 onSelect: function (id, name) {
 
                 }
@@ -16,7 +17,16 @@
             defaults = $.extend({}, defaults, options);
             var that = this;
             var params = AssessDefault.autocomplete();
+            if (!defaults.autoSelect) {
+                params.response = null;
+            }
             params.source = function (request, response) {
+                var unitId;
+                if (typeof defaults.caseUnitId == 'function') {
+                    unitId = defaults.caseUnitId();
+                } else {
+                    unitId = defaults.caseUnitId;
+                }
                 $.ajax({
                     url: getContextPath() + "/caseHouse/autoCompleteCaseHouse",
                     type: "get",
@@ -25,7 +35,7 @@
                         offset: defaults.offset,
                         limit: defaults.limit,
                         houseNumber: $(that).val(),
-                        unitId:defaults.caseUnitId
+                        unitId:unitId
                     },
                     success: function (result) {
                         if (result.ret) {
