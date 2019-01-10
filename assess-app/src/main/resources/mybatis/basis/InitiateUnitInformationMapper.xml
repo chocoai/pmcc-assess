@@ -13,7 +13,8 @@
     <result column="u_certificate_number" property="uCertificateNumber" jdbcType="VARCHAR" />
     <result column="u_legal_representative" property="uLegalRepresentative" jdbcType="VARCHAR" />
     <result column="u_use_unit" property="uUseUnit" jdbcType="VARCHAR" />
-    <result column="spare_field" property="spareField" jdbcType="VARCHAR" />
+    <result column="business_type" property="businessType" jdbcType="VARCHAR" />
+    <result column="assess_type" property="assessType" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,7 +76,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, creator, gmt_created, gmt_modified, project_id, u_unit_properties, u_scope_operation, 
-    u_address, u_certificate_number, u_legal_representative, u_use_unit, spare_field
+    u_address, u_certificate_number, u_legal_representative, u_use_unit, business_type, 
+    assess_type
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiateUnitInformationExample" >
     select
@@ -114,11 +116,13 @@
     insert into tb_initiate_unit_information (creator, gmt_created, gmt_modified, 
       project_id, u_unit_properties, u_scope_operation, 
       u_address, u_certificate_number, u_legal_representative, 
-      u_use_unit, spare_field)
+      u_use_unit, business_type, assess_type
+      )
     values (#{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{projectId,jdbcType=INTEGER}, #{uUnitProperties,jdbcType=VARCHAR}, #{uScopeOperation,jdbcType=VARCHAR}, 
       #{uAddress,jdbcType=VARCHAR}, #{uCertificateNumber,jdbcType=VARCHAR}, #{uLegalRepresentative,jdbcType=VARCHAR}, 
-      #{uUseUnit,jdbcType=VARCHAR}, #{spareField,jdbcType=VARCHAR})
+      #{uUseUnit,jdbcType=VARCHAR}, #{businessType,jdbcType=VARCHAR}, #{assessType,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiateUnitInformation" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -156,8 +160,11 @@
       <if test="uUseUnit != null" >
         u_use_unit,
       </if>
-      <if test="spareField != null" >
-        spare_field,
+      <if test="businessType != null" >
+        business_type,
+      </if>
+      <if test="assessType != null" >
+        assess_type,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -191,8 +198,11 @@
       <if test="uUseUnit != null" >
         #{uUseUnit,jdbcType=VARCHAR},
       </if>
-      <if test="spareField != null" >
-        #{spareField,jdbcType=VARCHAR},
+      <if test="businessType != null" >
+        #{businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="assessType != null" >
+        #{assessType,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -238,8 +248,11 @@
       <if test="record.uUseUnit != null" >
         u_use_unit = #{record.uUseUnit,jdbcType=VARCHAR},
       </if>
-      <if test="record.spareField != null" >
-        spare_field = #{record.spareField,jdbcType=VARCHAR},
+      <if test="record.businessType != null" >
+        business_type = #{record.businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.assessType != null" >
+        assess_type = #{record.assessType,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -259,7 +272,8 @@
       u_certificate_number = #{record.uCertificateNumber,jdbcType=VARCHAR},
       u_legal_representative = #{record.uLegalRepresentative,jdbcType=VARCHAR},
       u_use_unit = #{record.uUseUnit,jdbcType=VARCHAR},
-      spare_field = #{record.spareField,jdbcType=VARCHAR}
+      business_type = #{record.businessType,jdbcType=VARCHAR},
+      assess_type = #{record.assessType,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -297,8 +311,11 @@
       <if test="uUseUnit != null" >
         u_use_unit = #{uUseUnit,jdbcType=VARCHAR},
       </if>
-      <if test="spareField != null" >
-        spare_field = #{spareField,jdbcType=VARCHAR},
+      <if test="businessType != null" >
+        business_type = #{businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="assessType != null" >
+        assess_type = #{assessType,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -315,7 +332,8 @@
       u_certificate_number = #{uCertificateNumber,jdbcType=VARCHAR},
       u_legal_representative = #{uLegalRepresentative,jdbcType=VARCHAR},
       u_use_unit = #{uUseUnit,jdbcType=VARCHAR},
-      spare_field = #{spareField,jdbcType=VARCHAR}
+      business_type = #{businessType,jdbcType=VARCHAR},
+      assess_type = #{assessType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
