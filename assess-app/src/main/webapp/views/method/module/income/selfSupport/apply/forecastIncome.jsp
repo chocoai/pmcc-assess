@@ -8,8 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="x_title">
-    <h3>历史数据</h3>
-    <div class="clearfix"></div>
+    历史数据
 </div>
 <div class="x_content">
     <div class="form-horizontal">
@@ -17,18 +16,36 @@
             <label class="col-sm-1 control-label">
                 范围
             </label>
-            <div class="col-sm-2">
-                <select class="form-control" onchange="selfSupportForecast.loadHistoryList(0,$(this).val())">
+            <div class="col-sm-1">
+                <select class="form-control" name="bisForecast">
                     <option value="">全部</option>
                     <option value="1">预测</option>
                     <option value="0">非预测</option>
                 </select>
             </div>
-            <div class="col-sm-4">
+            <label class="col-sm-1 control-label">
+                年度
+            </label>
+            <div class="col-sm-1">
+               <input type="text" name="year" class="form-control">
+            </div>
+            <label class="col-sm-1 control-label">
+                二级编号
+            </label>
+            <div class="col-sm-1">
+                <input type="text" name="secondLevelNumber" class="form-control">
+            </div>
+            <div class="col-sm-6">
                 <div class="btn-group">
+                    <button class="btn btn-primary" onclick="selfSupportForecast.loadHistoryList(0,this);">
+                        查询
+                    </button>
                     <button class="btn btn-success" data-toggle="modal"
                             onclick="selfSupportForecast.addHistory(0);">
                         新增
+                    </button>
+                    <button class="btn btn-warning" onclick="selfSupportForecast.delHistoryBatch(0);">
+                        删除
                     </button>
                 </div>
                 <div class="btn-group">
@@ -75,8 +92,7 @@
     </table>
 </div>
 <div class="x_title">
-    <h3>预测分析数据</h3>
-    <div class="clearfix"></div>
+    预测分析数据
 </div>
 <div class="x_content">
     <table class="table table-bordered" id="tb_forecast_income_analyse_list">
@@ -296,7 +312,7 @@
     }
 
     //加载历史列表信息
-    selfSupportForecast.loadHistoryList = function (type, bisForecast) {
+    selfSupportForecast.loadHistoryList = function (type, _this) {
         var cols = [];
         cols.push({field: 'year', title: '年度'});
         cols.push({field: 'month', title: '月度'});
@@ -327,11 +343,11 @@
         var queryParam = {
             type: type,
             formType: incomeIndex.getFormType(),
-            incomeId: incomeIndex.getInComeId()
+            incomeId: incomeIndex.getInComeId(),
+            bisForecast:$(_this).closest('.form-horizontal').find('[name=bisForecast]').val(),
+            year:$(_this).closest('.form-horizontal').find('[name=year]').val(),
+            secondLevelNumber:$(_this).closest('.form-horizontal').find('[name=secondLevelNumber]').val()
         };
-        if (bisForecast) {
-            queryParam.bisForecast = bisForecast;
-        }
         TableInit(selfSupportForecast.getHistoryListId(type), "${pageContext.request.contextPath}/income/getHistoryList", cols, queryParam, {
             showColumns: false,
             showRefresh: false,
@@ -362,29 +378,43 @@
     }
 
     //删除历史信息
-    selfSupportForecast.delHistory = function (id, type) {
+    selfSupportForecast.delHistoryBatch = function (type) {
         Alert("确认要删除么？", 2, null, function () {
-            Loading.progressShow();
-            $.ajax({
-                url: "${pageContext.request.contextPath}/income/deleteHistory",
-                type: "post",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    Loading.progressHide();
-                    if (result.ret) {
-                        toastr.success('删除成功');
-                        selfSupportForecast.loadHistoryList(type);
-                    }
-                    else {
-                        Alert("删除数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result);
+            var rows = $("#" + selfSupportForecast.getHistoryListId(type)).bootstrapTable('getSelections');
+            if (rows && rows.length > 0) {
+                var arrayId = [];
+                $.each(rows,function (i,row) {
+                    arrayId.push(row.id);
+                })
+                selfSupportForecast.delHistory(arrayId.join(),type);
+            } else {
+                Alert("请选择需删除的数据");
+            }
+        })
+    }
+
+    //删除历史信息
+    selfSupportForecast.delHistory = function (ids, type) {
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/income/deleteHistory",
+            type: "post",
+            dataType: "json",
+            data: {ids: ids},
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success('删除成功');
+                    selfSupportForecast.loadHistoryList(type);
                 }
-            })
+                else {
+                    Alert("删除数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
         })
     }
 

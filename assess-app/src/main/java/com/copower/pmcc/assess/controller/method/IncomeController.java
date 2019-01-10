@@ -81,8 +81,8 @@ public class IncomeController {
 
     @ResponseBody
     @RequestMapping(value = "/getHistoryList", name = "显示列表", method = RequestMethod.GET)
-    public BootstrapTableVo getHistoryList(Integer incomeId, Integer type, Integer formType, Boolean bisForecast) {
-        return mdIncomeService.getHistoryList(incomeId, type, formType, bisForecast);
+    public BootstrapTableVo getHistoryList(MdIncomeHistory mdIncomeHistory) {
+        return mdIncomeService.getHistoryList(mdIncomeHistory);
     }
 
     @ResponseBody
@@ -140,12 +140,12 @@ public class IncomeController {
 
     @ResponseBody
     @RequestMapping(value = "/deleteHistory", name = "删除", method = RequestMethod.POST)
-    public HttpResult deleteHistory(@RequestParam(value = "id") Integer id) {
+    public HttpResult deleteHistory(@RequestParam(value = "ids") String ids) {
         try {
-            mdIncomeService.deleteHistory(id);
+            mdIncomeService.deleteHistory(ids);
         } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
+            logger.error(e.getMessage(),e);
+            return HttpResult.newErrorResult("删除历史数据异常");
         }
         return HttpResult.newCorrectResult();
     }

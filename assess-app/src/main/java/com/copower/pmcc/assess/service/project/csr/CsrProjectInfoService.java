@@ -14,7 +14,7 @@ import com.copower.pmcc.assess.constant.AssessFieldNameConstant;
 import com.copower.pmcc.assess.constant.AssessTableNameConstant;
 import com.copower.pmcc.assess.dal.basis.dao.csr.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dto.input.DataReplaceDto;
+import com.copower.pmcc.assess.dto.input.base.BaseReplaceContentDto;
 import com.copower.pmcc.assess.dto.input.base.BaseReportTemplateFilesDto;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrImportBorrowerDto;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrImportColumnDto;
@@ -733,7 +733,7 @@ public class CsrProjectInfoService {
                         }
                     }
 
-                    List<DataReplaceDto> dataReplaceDtoList = Lists.newArrayList();
+                    List<BaseReplaceContentDto> dataReplaceDtoList = Lists.newArrayList();
                     for (BaseReportTemplateVo baseReportTemplateVo : baseReportTemplateList) {
                         //循环所有书签 依次找到书签或文本对应的值
 
@@ -747,7 +747,7 @@ public class CsrProjectInfoService {
                         if (StringUtils.isEmpty(value))
                             continue;//空值不处理
 
-                        DataReplaceDto dataReplaceDto = new DataReplaceDto();
+                        BaseReplaceContentDto dataReplaceDto = new BaseReplaceContentDto();
                         dataReplaceDto.setKey(String.format("${%s}", baseReportTemplateVo.getBookmarkName()));
                         dataReplaceDto.setValue(value);
                         BaseReportMarkbookTypeEnum reportMarkbookTypeEnum = BaseReportMarkbookTypeEnum.getEnumByName(baseReportTemplateVo.getTemplateType());

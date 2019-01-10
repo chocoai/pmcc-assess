@@ -78,7 +78,9 @@
                                             装修部位<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input name="decorationPart" class="form-control" placeholder="装修部位" required="required">
+                                            <select required="required" name="decorationPart"
+                                                    class="form-control decorationPart">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

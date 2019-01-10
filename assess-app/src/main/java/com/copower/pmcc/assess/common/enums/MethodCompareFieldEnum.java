@@ -13,11 +13,12 @@ public enum MethodCompareFieldEnum {
     FINANCING_CONDITIONS("financing.conditions", "融资条件"),// ps:房屋-交易情况-融资条件
     TAX_BURDEN("tax.burden", "税费负担"),// ps:房屋-交易情况-税费负担
     PAYMENT_METHOD("payment.method", "付款方式"),//ps:房屋-交易情况-付款方式
+    TRADING_TRANSACTION_SITUATION("trading.transaction.situation", "交易情况"),//ps:房屋-交易情况-交易情况
     TRADING_PRICE("trading.price", "交易价格"),//ps:房屋-交易情况-交易价格
 
     //区位状况-----------------------------------------------------------------------------------------------区位状况
     LOCATION("location", "房地产坐落及方位"),//ps:权证的坐落、板块的方位、楼盘的方位字段组合
-    OFFICE_CONCENTRATION("office.concentration", "办公集聚度"),//ps:多条交通枢信息 （名称+距离）相组合显示
+    OFFICE_CONCENTRATION("office.concentration", "集聚度"),//ps:多条交通枢信息 （名称+距离）相组合显示
     FLOOR("floor", "楼层"),//ps:房屋-所在层数
     ORIENTATION("orientation", "朝向"),//ps:房屋-朝向
     TRAFFIC_CONDITIONS("traffic.conditions", "交通条件"),//ps:地铁、公交、主干道、主要转换互通桥信息的所有数据叠加
@@ -38,7 +39,6 @@ public enum MethodCompareFieldEnum {
 
     //实体状况------------------------------------------------------------------------------------------------
     LAND_ENTITY_STATUS("land.entity.status", "土地实体状况"),//ps:楼盘中土地实体状况所有字段信息
-    BUILDING_SCALE("building.scale", "建筑规模"),//ps:建筑规模
     BUILDING_AREA("building.area", "建筑面积"),//ps:楼盘-建筑面积
     FLOOR_COUNT("floor.count", "层数"),//ps:楼栋-总层数
     FLOOR_HEIGHT("floor.height", "层高"),//ps:楼栋-层高
@@ -62,10 +62,9 @@ public enum MethodCompareFieldEnum {
     NETWORK("network", "通讯网络"),//ps:通讯网络所有字段信息组合
     ELEVATOR_HOUSEHOLD_RATIO("elevator.household.ratio", "电梯梯户比"),//ps:单元-梯户比
     INTERNAL_ASSEMBLY("internal.assembly", "内装"),//ps:楼栋内装信息+房屋内的装修信息
-    PLANE_LAYOUT("plane.layout", "平面布局"),//ps:平面布局
+    PLANE_LAYOUT("plane.layout", "平面布局"),//ps:平面布局 实际用途为住宅取户型，其它用途时取户型与房间中的开间进深
     NEW_DEGREE("new.degree", "成新度"),//ps:成新度
-    MAINTENANCE_LOSS_STATUS("maintenance.loss.status", "维护保养和完损状况"),//ps:维护保养和完损状况
-    OTHER("other", "其它");//ps:其它
+    MAINTENANCE_LOSS_STATUS("maintenance.loss.status", "维护保养和完损状况");//ps:维护保养和完损状况
 
     private String key;
 

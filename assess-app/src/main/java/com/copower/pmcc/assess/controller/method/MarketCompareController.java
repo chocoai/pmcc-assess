@@ -37,9 +37,9 @@ public class MarketCompareController {
 
     @ResponseBody
     @RequestMapping(value = "/selectCase", name = "选择案例", method = RequestMethod.POST)
-    public HttpResult selectCase(Integer mcId, Integer setUse, String planDetailsIdString) {
+    public HttpResult selectCase(Integer mcId, String planDetailsIdString) {
         try {
-            mdMarketCompareService.selectCase(mcId,setUse,planDetailsIdString);
+            mdMarketCompareService.selectCase(mcId,planDetailsIdString);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             return HttpResult.newErrorResult("保存失败");

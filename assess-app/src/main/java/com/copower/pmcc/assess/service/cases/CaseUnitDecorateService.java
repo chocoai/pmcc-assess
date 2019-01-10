@@ -70,6 +70,7 @@ public class CaseUnitDecorateService {
     public CaseUnitDecorateVo getCaseUnitDecorateVo(CaseUnitDecorate caseUnitDecorate) {
         CaseUnitDecorateVo vo = new CaseUnitDecorateVo();
         BeanUtils.copyProperties(caseUnitDecorate, vo);
+        vo.setDecorationPartName(baseDataDicService.getNameById(caseUnitDecorate.getDecorationPart()));
         vo.setConstructionTechnologyName(baseDataDicService.getNameById(caseUnitDecorate.getConstructionTechnology()));
         vo.setMaterialPriceName(baseDataDicService.getNameById(caseUnitDecorate.getMaterialPriceRange()));
         vo.setDecoratingMaterialName(baseDataDicService.getNameById(caseUnitDecorate.getDecoratingMaterial()));

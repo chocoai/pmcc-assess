@@ -7,7 +7,6 @@ import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessMarketCompareConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basic.entity.*;
-import com.copower.pmcc.assess.dal.basis.dao.data.DataPropertyDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryRightDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -45,8 +44,6 @@ public class MdMarketCompareFieldService extends BaseService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private SurveyAssetInventoryRightDao surveyAssetInventoryRightDao;
-    @Autowired
-    private DataPropertyDao dataPropertyDao;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
@@ -109,7 +106,7 @@ public class MdMarketCompareFieldService extends BaseService {
      * @param setUseFieldList
      * @return
      */
-    public String getJsonContent(ProjectInfo projectInfo, Integer declareId, Integer planDetailsId, List<DataSetUseField> setUseFieldList) {
+    public String getCompareInfo(ProjectInfo projectInfo, Integer declareId, Integer planDetailsId, List<DataSetUseField> setUseFieldList) {
         try {
             if (CollectionUtils.isEmpty(setUseFieldList)) return null;
             BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetailsId);
@@ -473,9 +470,6 @@ public class MdMarketCompareFieldService extends BaseService {
                             stringBuilder.append(StringUtils.isEmpty(soil) ? "" : String.format("土壤:(%s)；", soil));
                             list.add(getMarketCompareItemDto(AssessMarketCompareConstant.LAND_ENTITY_STATUS, stringBuilder.toString()));
                             break;
-                        case BUILDING_SCALE://建筑规模
-
-                            break;
                         case BUILDING_AREA://建筑面积（㎡）
                             list.add(getMarketCompareItemDto(AssessMarketCompareConstant.BUILDING_AREA, String.valueOf(examineEstate.getFloorArea() == null ? "" : examineEstate.getFloorArea())));
                             break;
@@ -637,7 +631,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             List<BasicUnitDecorate> decorateList = basicUnitDecorateService.getBasicUnitDecorateList(examineUnit.getId());
                             if (CollectionUtils.isNotEmpty(decorateList)) {
                                 for (BasicUnitDecorate unitDecorate : decorateList) {
-                                    stringBuilder.append(StringUtils.isBlank(unitDecorate.getDecorationPart()) ? "" : String.format("装修部位:%s；", unitDecorate.getDecorationPart()));
+                                    stringBuilder.append(unitDecorate.getDecorationPart()==null ? "" : String.format("装修部位:%s；", baseDataDicService.getNameById(unitDecorate.getDecorationPart())));
                                     stringBuilder.append(unitDecorate.getDecoratingMaterial() == null ? "" : String.format("装修材料:%s；", baseDataDicService.getNameById(unitDecorate.getDecoratingMaterial())));
                                     stringBuilder.append(unitDecorate.getConstructionTechnology() == null ? "" : String.format("施工工艺:%s；", baseDataDicService.getNameById(unitDecorate.getConstructionTechnology())));
                                     stringBuilder.append(unitDecorate.getMaterialPriceRange() == null ? "" : String.format("材料价格区间:%s；", baseDataDicService.getNameById(unitDecorate.getMaterialPriceRange())));
@@ -669,9 +663,6 @@ public class MdMarketCompareFieldService extends BaseService {
 
                             break;
                         case MAINTENANCE_LOSS_STATUS://维护保养和完损状况
-
-                            break;
-                        case OTHER://其它
 
                             break;
                     }

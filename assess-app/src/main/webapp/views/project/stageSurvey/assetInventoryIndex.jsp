@@ -22,7 +22,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${declareRecord.name}-${projectPlanDetails.projectPhaseName}</h2>
+                    <h3>${declareRecord.name}-${projectPlanDetails.projectPhaseName}</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -458,7 +458,6 @@
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;" onchange="importRightData();">
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
-<span style="display: none;"><%@include file="/views/base/mapPositionPicker.jsp" %></span>
 <script type="application/javascript">
 
     $(function () {
@@ -644,8 +643,6 @@
         });
         var data = {};
         data.surveyAssetInventory = formParams("frm_asset");//评估人员 核对时间
-        if (gaoDeMap.location)//取得当前定位信息
-            data.surveyAssetInventory.location = gaoDeMap.location;
         data.assetInventoryContentList = dataItem;
         data.surveyAssetInventory.specialCase = $("#specialCase").val();
         return data;

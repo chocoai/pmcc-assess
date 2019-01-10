@@ -19,16 +19,16 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -152,26 +152,30 @@ public class MdIncomeService {
     /**
      * 删除数据
      *
-     * @param id
+     * @param ids
      * @return
      */
-    @Transactional
-    public void deleteHistory(Integer id) {
-        MdIncomeHistory history = mdIncomeHistoryDao.getHistoryById(id);
-        mdIncomeHistoryDao.deleteHistory(id);
-        //如果该年份下的预测分析数据没有关联的数据，则将该预测分析数据删除
-        MdIncomeHistory historyWhere = new MdIncomeHistory();
-        historyWhere.setIncomeId(history.getIncomeId());
-        historyWhere.setType(history.getType());
-        historyWhere.setYear(history.getYear());
-        if (mdIncomeHistoryDao.getHistoryCount(historyWhere) <= 0) {
-            MdIncomeForecastAnalyse whereForecastAnalyse = new MdIncomeForecastAnalyse();
-            whereForecastAnalyse.setIncomeId(history.getIncomeId());
-            whereForecastAnalyse.setType(history.getType());
-            whereForecastAnalyse.setYear(history.getYear());
-            List<MdIncomeForecastAnalyse> analyseList = mdIncomeForecastAnalyseDao.getForecastAnalyseList(whereForecastAnalyse);
-            if (CollectionUtils.isNotEmpty(analyseList)) {
-                analyseList.forEach(o -> mdIncomeForecastAnalyseDao.deleteForecastAnalyse(o.getId()));
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteHistory(String ids) {
+        List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+        if(CollectionUtils.isEmpty(integers)) return;
+        for (Integer id : integers) {
+            MdIncomeHistory history = mdIncomeHistoryDao.getHistoryById(id);
+            mdIncomeHistoryDao.deleteHistory(id);
+            //如果该年份下的预测分析数据没有关联的数据，则将该预测分析数据删除
+            MdIncomeHistory historyWhere = new MdIncomeHistory();
+            historyWhere.setIncomeId(history.getIncomeId());
+            historyWhere.setType(history.getType());
+            historyWhere.setYear(history.getYear());
+            if (mdIncomeHistoryDao.getHistoryCount(historyWhere) <= 0) {
+                MdIncomeForecastAnalyse whereForecastAnalyse = new MdIncomeForecastAnalyse();
+                whereForecastAnalyse.setIncomeId(history.getIncomeId());
+                whereForecastAnalyse.setType(history.getType());
+                whereForecastAnalyse.setYear(history.getYear());
+                List<MdIncomeForecastAnalyse> analyseList = mdIncomeForecastAnalyseDao.getForecastAnalyseList(whereForecastAnalyse);
+                if (CollectionUtils.isNotEmpty(analyseList)) {
+                    analyseList.forEach(o -> mdIncomeForecastAnalyseDao.deleteForecastAnalyse(o.getId()));
+                }
             }
         }
     }
@@ -312,14 +316,14 @@ public class MdIncomeService {
      * @throws BusinessException
      * @throws IOException
      */
-    public String importHistory(MdIncomeHistory history, MultipartFile multipartFile) throws BusinessException, IOException {
+    public String importHistory(MdIncomeHistory history, MultipartFile multipartFile) throws Exception {
         if (history == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         //1.保存文件
         String filePath = baseAttachmentService.saveUploadFile(multipartFile);
         //2.读取文件
         FileInputStream inputStream = new FileInputStream(filePath);
-        Workbook hssfWorkbook = PoiUtils.isExcel2003(filePath) ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
+        Workbook hssfWorkbook = WorkbookFactory.create(inputStream);
         Sheet sheet = hssfWorkbook.getSheetAt(0);//只取第一个sheet
         int startRowNumber = 1;//读取数据的起始行
         int rowCount = sheet.getLastRowNum() + 1 - startRowNumber;//数据总行数
@@ -338,15 +342,15 @@ public class MdIncomeService {
                         mdIncomeHistory.setFormType(history.getFormType());
                         mdIncomeHistory.setCreator(commonService.thisUserAccount());
                         mdIncomeHistory.setYear(Integer.valueOf(PoiUtils.getCellValue(row.getCell(1))));
-                        BaseDataDic subjectDic = baseDataDicService.getDataDicByName(subjectList, PoiUtils.getCellValue(row.getCell(2)));
+                        mdIncomeHistory.setMonth(Integer.valueOf(PoiUtils.getCellValue(row.getCell(2))));
+                        BaseDataDic subjectDic = baseDataDicService.getDataDicByName(subjectList, PoiUtils.getCellValue(row.getCell(3)));
                         if (subjectDic == null) {
                             errorMsg.append(String.format("\n第%s行异常：会计科目与系统配置的名称不一致", i + 1));
                             continue;
                         }
                         mdIncomeHistory.setAccountingSubject(subjectDic.getId());
-                        mdIncomeHistory.setFirstLevelNumber(PoiUtils.getCellValue(row.getCell(3)));
-                        mdIncomeHistory.setSecondLevelNumber(PoiUtils.getCellValue(row.getCell(4)));
-                        mdIncomeHistory.setMonth(Integer.valueOf(PoiUtils.getCellValue(row.getCell(5))));
+                        mdIncomeHistory.setFirstLevelNumber(PoiUtils.getCellValue(row.getCell(4)));
+                        mdIncomeHistory.setSecondLevelNumber(PoiUtils.getCellValue(row.getCell(5)));
                         mdIncomeHistory.setUnit(PoiUtils.getCellValue(row.getCell(6)));
                         mdIncomeHistory.setUnitPrice(new BigDecimal(PoiUtils.getCellValue(row.getCell(7))));
                         mdIncomeHistory.setNumber(Integer.valueOf(PoiUtils.getCellValue(row.getCell(8))));
@@ -407,25 +411,18 @@ public class MdIncomeService {
     /**
      * 获取数据列表
      *
-     * @param incomeId
+     * @param mdIncomeHistory
      * @return
      */
-    public BootstrapTableVo getHistoryList(Integer incomeId, Integer type, Integer formType, Boolean bisForecast) {
+    public BootstrapTableVo getHistoryList(MdIncomeHistory mdIncomeHistory) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        MdIncomeHistory where = new MdIncomeHistory();
-        where.setType(type);
-        where.setFormType(formType);
-        where.setBisForecast(bisForecast);
-        if (incomeId != null && incomeId > 0) {
-            where.setIncomeId(incomeId);
-        } else {
-            where.setIncomeId(0);
-            where.setCreator(commonService.thisUserAccount());
+        if (mdIncomeHistory.getIncomeId() == null || mdIncomeHistory.getIncomeId() <= 0) {
+            mdIncomeHistory.setIncomeId(0);
+            mdIncomeHistory.setCreator(commonService.thisUserAccount());
         }
-
-        List<MdIncomeHistory> historyList = mdIncomeHistoryDao.getHistoryList(where);
+        List<MdIncomeHistory> historyList = mdIncomeHistoryDao.getHistoryList(mdIncomeHistory);
         List<MdIncomeHistoryVo> vos = LangUtils.transform(historyList, p -> getHistoryVo(p));
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<DataEvaluationHypothesisVo>() : vos);
         vo.setTotal(page.getTotal());

@@ -1,15 +1,15 @@
-package com.copower.pmcc.assess.dto.input;
+package com.copower.pmcc.assess.dto.input.base;
 
 import com.copower.pmcc.assess.common.enums.word.DataReplaceTypeEnum;
 
 /**
  * Created by kings on 2018-6-15.
  */
-public class DataReplaceDto {
+public class BaseReplaceContentDto {
     private String key;
     private String value;
     private DataReplaceTypeEnum dataReplaceTypeEnum;
-    private Integer replaceRecordId;
+    private Integer childId;
 
     public String getKey() {
         return key;
@@ -35,12 +35,11 @@ public class DataReplaceDto {
         this.dataReplaceTypeEnum = dataReplaceTypeEnum;
     }
 
-
-    public Integer getReplaceRecordId() {
-        return replaceRecordId;
+    public Integer getChildId() {
+        return childId;
     }
 
-    public void setReplaceRecordId(Integer replaceRecordId) {
-        this.replaceRecordId = replaceRecordId;
+    public void setChildId(Integer childId) {
+        this.childId = childId;
     }
 }

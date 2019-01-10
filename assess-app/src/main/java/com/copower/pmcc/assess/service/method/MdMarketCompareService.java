@@ -2,13 +2,13 @@ package com.copower.pmcc.assess.service.method;
 
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareItemDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.examine.ExamineHouseTradingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareResultDto;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
@@ -51,8 +51,6 @@ public class MdMarketCompareService {
     @Autowired
     private ExamineHouseTradingDao examineHouseTradingDao;
     @Autowired
-    private BaseDataDicService baseDataDicService;
-    @Autowired
     private ProjectInfoService projectInfoService;
 
     public MdMarketCompare getMdMarketCompare(Integer id) {
@@ -63,14 +61,11 @@ public class MdMarketCompareService {
     /**
      * 根据设定用途类型获取配置的字段
      *
-     * @param setUse
      * @return
      */
-    public List<DataSetUseField> getFieldList(Integer setUse) {
-        DataSetUseField dataSetUseField = dataSetUseFieldService.getSetUseFieldById(setUse);
-        if (dataSetUseField == null) return null;
+    public List<DataSetUseField> getSetUseFieldList() {
         List<DataSetUseField> fieldList = Lists.newArrayList();
-        List<DataSetUseField> setUseFields = dataSetUseFieldService.getCacheSetUseFieldListByPid(dataSetUseField.getId());
+        List<DataSetUseField> setUseFields = dataSetUseFieldService.getCacheSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE);
         if (CollectionUtils.isNotEmpty(setUseFields)) {
             for (DataSetUseField setUseField : setUseFields) {
                 fieldList.add(setUseField);
@@ -96,7 +91,7 @@ public class MdMarketCompareService {
         if (judgeObject == null) return null;
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObject.getId());
         if (schemeJudgeObject == null) return null;
-        List<DataSetUseField> setUseFieldList = getFieldList(judgeObject.getSetUse());
+        List<DataSetUseField> setUseFieldList = getSetUseFieldList();
         if (CollectionUtils.isEmpty(setUseFieldList)) return null;
         MdMarketCompare mdMarketCompare = new MdMarketCompare();
         mdMarketCompare.setName(String.format("%s号委估对象", schemeJudgeObject.getNumber()));
@@ -112,7 +107,7 @@ public class MdMarketCompareService {
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
         List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectPlanDetails(schemeJudgeObject.getDeclareRecordId(), projectPhase.getId());
         ProjectPlanDetails planDetails = planDetailsList.get(0);
-        mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getJsonContent(projectInfo, schemeJudgeObject.getDeclareRecordId(), planDetails.getId(), setUseFieldList));
+        mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(projectInfo, schemeJudgeObject.getDeclareRecordId(), planDetails.getId(), setUseFieldList));
         mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
 
         return mdMarketCompare;
@@ -123,7 +118,7 @@ public class MdMarketCompareService {
      *
      * @param planDetailsIdString
      */
-    public void selectCase(Integer mcId, Integer setUse, String planDetailsIdString) {
+    public void selectCase(Integer mcId, String planDetailsIdString) {
         //清除原案例信息
         MdMarketCompareItem where = new MdMarketCompareItem();
         where.setMcId(mcId);
@@ -137,7 +132,7 @@ public class MdMarketCompareService {
         //添加选择后的案例信息
         List<Integer> planDetailsIdList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(planDetailsIdString));
         if (CollectionUtils.isNotEmpty(planDetailsIdList)) {
-            List<DataSetUseField> setUseFieldList = getFieldList(setUse);
+            List<DataSetUseField> setUseFieldList = getSetUseFieldList();
             ProjectInfo projectInfo = null;
             for (Integer planDetailsId : planDetailsIdList) {
                 ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
@@ -150,7 +145,7 @@ public class MdMarketCompareService {
                 mdMarketCompareItem.setMustAdjustPrice(mustAdjustPrice(planDetailsId));
                 if (projectInfo == null)
                     projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-                mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getJsonContent(projectInfo, projectPlanDetails.getDeclareRecordId(), projectPlanDetails.getId(), setUseFieldList));
+                mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(projectInfo, projectPlanDetails.getDeclareRecordId(), projectPlanDetails.getId(), setUseFieldList));
                 mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
             }
         }

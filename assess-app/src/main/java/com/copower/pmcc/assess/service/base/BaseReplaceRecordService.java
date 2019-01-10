@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.dal.basis.dao.base.BaseReplaceRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseReplaceRecord;
-import com.copower.pmcc.assess.dto.input.DataReplaceDto;
+import com.copower.pmcc.assess.dto.input.base.BaseReplaceContentDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.google.common.collect.Maps;
@@ -100,7 +100,7 @@ public class BaseReplaceRecordService {
         String localFullPath = baseAttachmentService.downloadFtpFileToLocal(attachmentId);
         String content = baseReplaceRecord.getContent();
         if (StringUtils.isNotBlank(content)) {
-            List<DataReplaceDto> dataReplaceDtoList = JSON.parseArray(content, DataReplaceDto.class);
+            List<BaseReplaceContentDto> dataReplaceDtoList = JSON.parseArray(content, BaseReplaceContentDto.class);
             //特殊处理
             //1.循环所有需要替换的内容，将只是文本分一组，将只是书签的分一组，将文件的分一组
             //2.如果是文件则找出文件，并检查需替换的内容，如果内容为空则只替换文件，如果不为空则循环替换，可能存在递归操作
@@ -108,10 +108,10 @@ public class BaseReplaceRecordService {
                 Map<String, String> textMap = Maps.newHashMap();
                 Map<String, String> bookmarkMap = Maps.newHashMap();
                 Map<String, String> fileMap = Maps.newHashMap();
-                for (DataReplaceDto dataReplaceDto : dataReplaceDtoList) {
+                for (BaseReplaceContentDto dataReplaceDto : dataReplaceDtoList) {
                     switch (dataReplaceDto.getDataReplaceTypeEnum()) {
                         case FILE:
-                            BaseReplaceRecord replaceRecord = getRecordById(dataReplaceDto.getReplaceRecordId());
+                            BaseReplaceRecord replaceRecord = getRecordById(dataReplaceDto.getChildId());
                             if (replaceRecord == null) continue;
                             if (StringUtils.isBlank(replaceRecord.getContent())) {
                                 fileMap.put(dataReplaceDto.getKey(), baseAttachmentService.downloadFtpFileToLocal(replaceRecord.getAttachmentId()));

@@ -7,8 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_title">
-    <h3>历史数据</h3>
-    <div class="clearfix"></div>
+    历史数据
 </div>
 <div class="x_content">
     <div class="form-horizontal">
@@ -16,15 +15,24 @@
             <label class="col-sm-1 control-label">
                 范围
             </label>
-            <div class="col-sm-2">
-                <select class="form-control" onchange="forecastRestaurant.loadHistoryList(0,$(this).val())">
+            <div class="col-sm-1">
+                <select class="form-control" name="bisForecast">
                     <option value="">全部</option>
                     <option value="1">预测</option>
                     <option value="0">非预测</option>
                 </select>
             </div>
-            <div class="col-sm-4">
+            <label class="col-sm-1 control-label">
+                二级编号
+            </label>
+            <div class="col-sm-1">
+                <input type="text" name="secondLevelNumber" class="form-control">
+            </div>
+            <div class="col-sm-6">
                 <div class="btn-group">
+                    <button class="btn btn-primary" onclick="forecastRestaurant.loadHistoryList(0,this);">
+                        查询
+                    </button>
                     <button class="btn btn-success" data-toggle="modal"
                             onclick="forecastRestaurant.addHistory(0);">
                         新增
@@ -74,8 +82,7 @@
     </table>
 </div>
 <div class="x_title">
-    <h3>预测分析数据</h3>
-    <div class="clearfix"></div>
+    预测分析数据
 </div>
 <div class="x_content">
     <table class="table table-bordered" id="tb_forecast_restaurant_income_analyse_list">
@@ -359,7 +366,7 @@
     }
 
     //加载历史列表信息
-    forecastRestaurant.loadHistoryList = function (type, bisForecast) {
+    forecastRestaurant.loadHistoryList = function (type, _this) {
         var cols = [];
         cols.push({
             field: 'beginDate', title: '开始时间', formatter: function (value, row, index) {
@@ -398,11 +405,10 @@
         var queryParam = {
             type: type,
             formType: incomeIndex.getFormType(),
-            incomeId: incomeIndex.getInComeId()
+            incomeId: incomeIndex.getInComeId(),
+            bisForecast:$(_this).closest('.form-horizontal').find('[name=bisForecast]').val(),
+            secondLevelNumber:$(_this).closest('.form-horizontal').find('[name=secondLevelNumber]').val()
         };
-        if (bisForecast) {
-            queryParam.bisForecast = bisForecast;
-        }
         $("#" + forecastRestaurant.getHistoryListId(type)).bootstrapTable('destroy');
         TableInit(forecastRestaurant.getHistoryListId(type), "${pageContext.request.contextPath}/income/getHistoryList", cols, queryParam, {
             showColumns: false,

@@ -88,14 +88,8 @@
                 <div class="x_content">
                     <form class="form-horizontal" id="frmCaseBuild">
                         <input type="hidden" name="estateId">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <div class="col-sm-12">
-                                    <table class="table table-bordered" id="caseBuildTable">
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                        <table class="table table-bordered" id="caseBuildTable">
+                        </table>
                     </form>
                 </div>
             </div>
@@ -114,14 +108,8 @@
                 <div class="x_content">
                     <form class="form-horizontal" id="frmCaseUnit">
                         <input type="hidden" name="buildingId">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <div class="col-sm-12">
-                                    <table class="table table-bordered" id="caseUnitTable">
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                        <table class="table table-bordered" id="caseUnitTable">
+                        </table>
                     </form>
                 </div>
             </div>
@@ -140,14 +128,8 @@
                 <div class="x_content">
                     <form class="form-horizontal" id="frmCaseHouse">
                         <input type="hidden" name="unitId">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <div class="col-sm-12">
-                                    <table class="table table-bordered" id="caseHouseTable">
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                        <table class="table table-bordered" id="caseHouseTable">
+                        </table>
                     </form>
                 </div>
             </div>
@@ -313,10 +295,7 @@
             href += "?id=" + id;
             window.open(href, "");
         },
-        loadDataList: function (id) {
-            if (!baseFun.isEmpty(id)) {
-                return false;
-            }
+        loadDataList: function (estateId) {
             var cols = [];
             cols.push({field: 'buildingNumber', title: '楼栋编号'});
             cols.push({field: 'buildingName', title: '楼栋名称'});
@@ -331,8 +310,8 @@
                 }
             });
             $("#" + baseFun.config.father.caseBuild.table()).bootstrapTable('destroy');
-            TableInit(baseFun.config.father.caseBuild.table(), "${pageContext.request.contextPath}/caseBuilding/getBootstrapTableVo", cols, {
-                estateId: id
+            TableInit(baseFun.config.father.caseBuild.table(), "${pageContext.request.contextPath}/caseBuilding/getBuildingList", cols, {
+                estateId: estateId
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -396,8 +375,8 @@
         },
         loadDataList: function (unitId) {
             var cols = [];
-            cols.push({field: 'floor', title: '所在楼层'});
             cols.push({field: 'houseNumber', title: '房号'});
+            cols.push({field: 'floor', title: '所在楼层'});
             cols.push({field: 'version', title: '版本'});
             cols.push({
                 field: 'id', title: '查询', formatter: function (value, row, index) {

@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.controller.cases;
 
 import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
-import com.copower.pmcc.assess.dto.output.cases.CaseBuildingVo;
 import com.copower.pmcc.assess.service.cases.CaseBuildingService;
 import com.copower.pmcc.assess.service.cases.CaseEstateService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -12,16 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Auther: zch
@@ -51,8 +46,11 @@ public class CaseBuildingController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET}, name = "楼栋--列表")
-    public BootstrapTableVo getBootstrapTableVo(CaseBuilding caseBuilding) {
+    @RequestMapping(value = "/getBuildingList", method = {RequestMethod.GET}, name = "楼栋--列表")
+    public BootstrapTableVo getBootstrapTableVo(Integer estateId) {
+        if (estateId == null) return null;
+        CaseBuilding caseBuilding = new CaseBuilding();
+        caseBuilding.setEstateId(estateId);
         BootstrapTableVo vo = caseBuildingService.getCaseBuildingListVos(caseBuilding);
         return vo;
     }

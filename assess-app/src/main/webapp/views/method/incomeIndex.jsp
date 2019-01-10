@@ -218,8 +218,8 @@
                     toastr.success('保存成功');
                     incomeIndex.loadDateSectionList(data.operationMode);
                     if (data.operationMode == 0) {
-                        selfSupportForecast.loadForecastList(0);
-                        selfSupportForecast.loadForecastList(1);
+                        selfSupport.loadForecastIncomeList();
+                        selfSupport.loadForecastCostList();
                         selfSupport.loadCalculationResult();
                     }
                     if (data.operationMode == 1) {
@@ -297,6 +297,7 @@
                         if (operationMode == 0) {
                             selfSupport.loadForecastIncomeList();
                             selfSupport.loadForecastCostList();
+                            selfSupport.loadCalculationResult();
                         }
 
                         if (operationMode == 1) {

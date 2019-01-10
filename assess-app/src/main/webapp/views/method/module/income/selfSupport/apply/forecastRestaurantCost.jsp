@@ -8,8 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="x_title">
-    <h3>历史数据</h3>
-    <div class="clearfix"></div>
+    历史数据
 </div>
 <div class="x_content">
     <div class="form-horizontal">
@@ -17,15 +16,24 @@
             <label class="col-sm-1 control-label">
                 范围
             </label>
-            <div class="col-sm-2">
-                <select class="form-control" onchange="forecastRestaurant.loadHistoryList(1,$(this).val())">
+            <div class="col-sm-1">
+                <select class="form-control" name="bisForecast">
                     <option value="">全部</option>
                     <option value="1">预测</option>
                     <option value="0">非预测</option>
                 </select>
             </div>
-            <div class="col-sm-4">
+            <label class="col-sm-1 control-label">
+                二级编号
+            </label>
+            <div class="col-sm-1">
+                <input type="text" name="secondLevelNumber" class="form-control">
+            </div>
+            <div class="col-sm-6">
                 <div class="btn-group">
+                    <button class="btn btn-primary" onclick="forecastRestaurant.loadHistoryList(1,this);">
+                        查询
+                    </button>
                     <button class="btn btn-success" data-toggle="modal" onclick="forecastRestaurant.addHistory(1);">
                         新增
                     </button>
@@ -78,8 +86,7 @@
 </div>
 
 <div class="x_title">
-    <h3>预测分析数据</h3>
-    <div class="clearfix"></div>
+    预测分析数据
 </div>
 <div class="x_content">
     <table class="table table-bordered" id="tb_forecast_restaurant_cost_analyse_list">

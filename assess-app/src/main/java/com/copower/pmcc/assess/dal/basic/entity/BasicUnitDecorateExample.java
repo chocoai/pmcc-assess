@@ -235,62 +235,52 @@ public class BasicUnitDecorateExample {
             return (Criteria) this;
         }
 
-        public Criteria andDecorationPartEqualTo(String value) {
+        public Criteria andDecorationPartEqualTo(Integer value) {
             addCriterion("decoration_part =", value, "decorationPart");
             return (Criteria) this;
         }
 
-        public Criteria andDecorationPartNotEqualTo(String value) {
+        public Criteria andDecorationPartNotEqualTo(Integer value) {
             addCriterion("decoration_part <>", value, "decorationPart");
             return (Criteria) this;
         }
 
-        public Criteria andDecorationPartGreaterThan(String value) {
+        public Criteria andDecorationPartGreaterThan(Integer value) {
             addCriterion("decoration_part >", value, "decorationPart");
             return (Criteria) this;
         }
 
-        public Criteria andDecorationPartGreaterThanOrEqualTo(String value) {
+        public Criteria andDecorationPartGreaterThanOrEqualTo(Integer value) {
             addCriterion("decoration_part >=", value, "decorationPart");
             return (Criteria) this;
         }
 
-        public Criteria andDecorationPartLessThan(String value) {
+        public Criteria andDecorationPartLessThan(Integer value) {
             addCriterion("decoration_part <", value, "decorationPart");
             return (Criteria) this;
         }
 
-        public Criteria andDecorationPartLessThanOrEqualTo(String value) {
+        public Criteria andDecorationPartLessThanOrEqualTo(Integer value) {
             addCriterion("decoration_part <=", value, "decorationPart");
             return (Criteria) this;
         }
 
-        public Criteria andDecorationPartLike(String value) {
-            addCriterion("decoration_part like", value, "decorationPart");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorationPartNotLike(String value) {
-            addCriterion("decoration_part not like", value, "decorationPart");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorationPartIn(List<String> values) {
+        public Criteria andDecorationPartIn(List<Integer> values) {
             addCriterion("decoration_part in", values, "decorationPart");
             return (Criteria) this;
         }
 
-        public Criteria andDecorationPartNotIn(List<String> values) {
+        public Criteria andDecorationPartNotIn(List<Integer> values) {
             addCriterion("decoration_part not in", values, "decorationPart");
             return (Criteria) this;
         }
 
-        public Criteria andDecorationPartBetween(String value1, String value2) {
+        public Criteria andDecorationPartBetween(Integer value1, Integer value2) {
             addCriterion("decoration_part between", value1, value2, "decorationPart");
             return (Criteria) this;
         }
 
-        public Criteria andDecorationPartNotBetween(String value1, String value2) {
+        public Criteria andDecorationPartNotBetween(Integer value1, Integer value2) {
             addCriterion("decoration_part not between", value1, value2, "decorationPart");
             return (Criteria) this;
         }

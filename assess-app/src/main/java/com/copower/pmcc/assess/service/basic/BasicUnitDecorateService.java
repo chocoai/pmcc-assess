@@ -123,6 +123,7 @@ public class BasicUnitDecorateService {
         }
         BasicUnitDecorateVo vo = new BasicUnitDecorateVo();
         BeanUtils.copyProperties(basicUnitDecorate,vo);
+        vo.setDecorationPartName(baseDataDicService.getNameById(basicUnitDecorate.getDecorationPart()));
         vo.setConstructionTechnologyName(baseDataDicService.getNameById(basicUnitDecorate.getConstructionTechnology()));
         vo.setMaterialPriceName(baseDataDicService.getNameById(basicUnitDecorate.getMaterialPriceRange()));
         vo.setDecoratingMaterialName(baseDataDicService.getNameById(basicUnitDecorate.getDecoratingMaterial()));

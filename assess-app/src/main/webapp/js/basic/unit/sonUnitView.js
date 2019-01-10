@@ -123,6 +123,9 @@ var unitDecorate;
                         $("#" + unitDecorate.prototype.config().frm).find('select.materialPriceRange').empty().html(html).trigger('change');
                     });
                 });
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitInteriorDecorationPart, item.decoratingPart, function (html, data) {
+                    $("#" + unitDecorate.prototype.config().frm).find('select.decoratingPart').empty().html(html).trigger('change');
+                });
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitInteriorDecorationMaterial, item.decoratingMaterial, function (html, data) {
                     $("#" + unitDecorate.prototype.config().frm).find('select.decoratingMaterial').empty().html(html).trigger('change');
                 });

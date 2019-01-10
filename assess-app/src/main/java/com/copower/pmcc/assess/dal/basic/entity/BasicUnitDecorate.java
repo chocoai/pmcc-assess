@@ -7,7 +7,7 @@ public class BasicUnitDecorate {
 
     private Integer unitId;
 
-    private String decorationPart;
+    private Integer decorationPart;
 
     private Integer decoratingMaterial;
 
@@ -37,12 +37,12 @@ public class BasicUnitDecorate {
         this.unitId = unitId;
     }
 
-    public String getDecorationPart() {
+    public Integer getDecorationPart() {
         return decorationPart;
     }
 
-    public void setDecorationPart(String decorationPart) {
-        this.decorationPart = decorationPart == null ? null : decorationPart.trim();
+    public void setDecorationPart(Integer decorationPart) {
+        this.decorationPart = decorationPart;
     }
 
     public Integer getDecoratingMaterial() {

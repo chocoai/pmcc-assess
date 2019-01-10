@@ -8,8 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="x_title">
-    <h3>历史数据</h3>
-    <div class="clearfix"></div>
+    历史数据
 </div>
 <div class="x_content">
     <div class="form-horizontal">
@@ -30,8 +29,7 @@
     </table>
 </div>
 <div class="x_title">
-    <h3>预测分析数据</h3>
-    <div class="clearfix"></div>
+    预测分析数据
 </div>
 <div class="x_content">
     <table class="table table-bordered" id="tb_forecast_income_analyse_list">

@@ -19,8 +19,7 @@
             </div>
 
             <div class="x_title">
-                <h3>预测结果数据</h3>
-                <div class="clearfix"></div>
+                预测结果数据
             </div>
             <div class="x_content">
                 <table class="table table-bordered" id="tb_forecast_income_list">
@@ -46,8 +45,7 @@
             </div>
 
             <div class="x_title">
-                <h3>预测结果数据</h3>
-                <div class="clearfix"></div>
+                预测结果数据
             </div>
             <div class="x_content">
                 <table class="table table-bordered" id="tb_forecast_cost_list">

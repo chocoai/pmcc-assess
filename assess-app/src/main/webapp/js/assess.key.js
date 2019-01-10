@@ -145,6 +145,7 @@ AssessDicKey.examine_building_materialquality = "examine.building.maintenance.ma
 AssessDicKey.examine_building_function_type = "building.function.type";//建筑功能类型
 
 //单元
+AssessDicKey.examineUnitInteriorDecorationPart = "unit.interior.decoration.part";//内装装修部位
 AssessDicKey.examineUnitInteriorDecorationMaterial = "unit.interior.decoration.material";//内装装修材料
 AssessDicKey.examineUnitElevatorMaintenance = "unit.elevator.maintenance";//电梯维护情况
 AssessDicKey.examineUnitElevatorType = "unit.elevator.type";//电梯类型
