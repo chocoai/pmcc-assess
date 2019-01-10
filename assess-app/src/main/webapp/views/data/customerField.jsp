@@ -34,7 +34,7 @@
                                                    class="form-control">
                                         </div>
                                     </div>
-                                    <div class="col-md-10 col-sm-10 col-xs-12 input-group">
+                                    <div class="col-sm-3">
                                         <button type="button" class="btn btn-primary"
                                                 onclick="loadCustomerFieldList()">
                                             查询
