@@ -156,7 +156,6 @@
 <script src="${pageContext.request.contextPath}/js/select/land.level.select.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/block.select.js"></script>
 <script src="${pageContext.request.contextPath}/js/basic/huxing.select.js"></script>
-<script src="${pageContext.request.contextPath}/js/select/building.useyear.select.js"></script>
 
 <!-- 表单js -->
 <script src="${pageContext.request.contextPath}/js/examine/examine.common.js"></script>

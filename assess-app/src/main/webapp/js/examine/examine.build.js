@@ -57,6 +57,29 @@
             buildingCommon.buildingForm.find('select.buildingStructureType').empty().html(html).trigger('change');
         });
 
+        //建筑使用寿命 ---
+        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_building_residence_data, data.residenceUseYear, function (html, data) {
+            buildingCommon.buildingForm.find('select.residenceUseYear').empty().html(html).trigger('change');
+        }, false);
+        $.ajax({
+            url: getContextPath() + '/architecture/dataBuildingNewRateList',
+            type: 'get',
+            success: function (result) {
+                if (result.ret) {
+                    var retHtml = '<option value="" selected>-请选择-</option>';
+                    $.each(result.data, function (i, item) {
+                        retHtml += '<option key="' + item.buildingStructure + '" title="' + item.buildingStructure + '" value="' + item.id + '"' ;
+                        if (item.id == data.industryUseYear) {
+                            retHtml += 'selected="selected"'
+                        }
+                        retHtml += '>' + item.buildingStructure + '</option>' ;
+                    });
+                    buildingCommon.buildingForm.find('select.industryUseYear').empty().html(retHtml).trigger('change');
+                }
+            }
+        });
+        //建筑使用寿命 ---
+
         //初始化上传控件
         $.each(buildingCommon.buildingFileControlIdArray, function (i, item) {
             buildingCommon.fileUpload(item);

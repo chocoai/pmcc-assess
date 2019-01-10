@@ -17,6 +17,10 @@ public class BasicBuildingVo extends BasicBuilding {
     private String propertyCategoryName;
     private String propertyTypeName;
 
+    private String residenceUseYearName;
+
+    private String industryUseYearName;
+
     public String getOpenTimeName() {
         return openTimeName;
     }
@@ -71,5 +75,21 @@ public class BasicBuildingVo extends BasicBuilding {
 
     public void setPropertyTypeName(String propertyTypeName) {
         this.propertyTypeName = propertyTypeName;
+    }
+
+    public String getResidenceUseYearName() {
+        return residenceUseYearName;
+    }
+
+    public void setResidenceUseYearName(String residenceUseYearName) {
+        this.residenceUseYearName = residenceUseYearName;
+    }
+
+    public String getIndustryUseYearName() {
+        return industryUseYearName;
+    }
+
+    public void setIndustryUseYearName(String industryUseYearName) {
+        this.industryUseYearName = industryUseYearName;
     }
 }

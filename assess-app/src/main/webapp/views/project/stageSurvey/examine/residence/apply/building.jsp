@@ -62,25 +62,14 @@
                     建筑使用年限
                 </label>
                 <div class="col-sm-3">
-                    <div class="input-group">
-                        <input type="hidden" name="residenceUseYear" value="${basicBuilding.residenceUseYear}">
-                        <input type="hidden" name="industryUseYear" value="${basicBuilding.industryUseYear}">
-                        <input type="text"
-                               placeholder="建筑使用年限" class="form-control">
-                        <span class="input-group-btn">
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                data-toggle="tooltip"
-                                data-original-title="选择"
-                                onclick="assessBuildingUseYear.onSelected('${basicApply.type}',this)">
-                        <i class="fa fa-search"></i>
-                        </button>
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                onclick="$(this).closest('.input-group').find('input').val('');"
-                                data-toggle="tooltip" data-original-title="清除">
-                        <i class="fa fa-trash-o"></i>
-                        </button>
-                        </span>
-                    </div>
+                    <c:if test="${basicApply.type == 0 || basicApply.type==null}">
+                        <select name="residenceUseYear" class="form-control residenceUseYear search-select select2">
+                        </select>
+                    </c:if>
+                    <c:if test="${basicApply.type == 1}">
+                        <select name="industryUseYear" class="form-control industryUseYear search-select select2">
+                        </select>
+                    </c:if>
                 </div>
             </div>
         </div>

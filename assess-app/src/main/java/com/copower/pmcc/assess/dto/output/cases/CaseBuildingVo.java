@@ -16,6 +16,9 @@ public class CaseBuildingVo extends CaseBuilding {
     private String propertyTypeName;
     private String propertyCategoryName;
 
+    private String residenceUseYearName;
+    private String industryUseYearName;
+
     public String getOpenTimeName() {
         return openTimeName;
     }
@@ -70,5 +73,21 @@ public class CaseBuildingVo extends CaseBuilding {
 
     public void setPropertyCategoryName(String propertyCategoryName) {
         this.propertyCategoryName = propertyCategoryName;
+    }
+
+    public String getResidenceUseYearName() {
+        return residenceUseYearName;
+    }
+
+    public void setResidenceUseYearName(String residenceUseYearName) {
+        this.residenceUseYearName = residenceUseYearName;
+    }
+
+    public String getIndustryUseYearName() {
+        return industryUseYearName;
+    }
+
+    public void setIndustryUseYearName(String industryUseYearName) {
+        this.industryUseYearName = industryUseYearName;
     }
 }

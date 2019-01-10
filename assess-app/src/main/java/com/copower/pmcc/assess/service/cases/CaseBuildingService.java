@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dto.output.cases.CaseBuildingVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBuilderService;
+import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
 import com.copower.pmcc.assess.service.data.DataPropertyService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -53,6 +54,8 @@ public class CaseBuildingService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private DataBuilderService dataBuilderService;
+    @Autowired
+    private DataBuildingNewRateService dataBuildingNewRateService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public BootstrapTableVo getCaseBuildingListVos(CaseBuilding caseBuilding) {
@@ -178,6 +181,12 @@ public class CaseBuildingService {
         vo.setPropertyCategoryName(baseDataDicService.getNameById(caseBuilding.getPropertyCategory()));
         vo.setBuildingStructureTypeName(baseDataDicService.getNameById(caseBuilding.getBuildingStructureType()));
         vo.setBuildingStructureCategoryName(baseDataDicService.getNameById(caseBuilding.getBuildingStructureCategory()));
+        vo.setResidenceUseYearName(baseDataDicService.getNameById(caseBuilding.getResidenceUseYear()));
+        if (caseBuilding.getIndustryUseYear() != null){
+            if (dataBuildingNewRateService.getByiDdataBuildingNewRate(caseBuilding.getIndustryUseYear()) != null){
+                vo.setIndustryUseYearName(dataBuildingNewRateService.getByiDdataBuildingNewRate(caseBuilding.getIndustryUseYear()).getBuildingStructure());
+            }
+        }
         return vo;
     }
 

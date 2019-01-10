@@ -47,6 +47,19 @@
                         <label class="form-control" name="location">${caseBuilding.location}</label>
                     </div>
                 </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        建筑使用年限
+                    </label>
+                    <div class="col-sm-3">
+                        <c:if test="${caseBuilding.residenceUseYear != null}">
+                            <label class="form-control" name="residenceUseYearName">${caseBuilding.residenceUseYearName}</label>
+                        </c:if>
+                        <c:if test="${caseBuilding.industryUseYear != null}">
+                            <label class="form-control" name="industryUseYearName">${caseBuilding.industryUseYearName}</label>
+                        </c:if>
+                    </div>
+                </div>
             </div>
             <input type="hidden" name="id" value="${caseBuilding.id}">
             <div class="form-group">

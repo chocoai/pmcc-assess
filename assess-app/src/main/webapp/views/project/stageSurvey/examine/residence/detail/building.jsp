@@ -56,6 +56,19 @@
                     <label class="form-control" name="location">${basicBuilding.location}</label>
                 </div>
             </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    建筑使用年限
+                </label>
+                <div class="col-sm-3">
+                    <c:if test="${basicApply.type == 0 || basicApply.type==null}">
+                        <label class="form-control" name="residenceUseYearName">${basicBuilding.residenceUseYearName}</label>
+                    </c:if>
+                    <c:if test="${basicApply.type == 1}">
+                        <label class="form-control" name="industryUseYearName">${basicBuilding.industryUseYearName}</label>
+                    </c:if>
+                </div>
+            </div>
         </div>
         <div class="form-group">
             <div class="x-valid">

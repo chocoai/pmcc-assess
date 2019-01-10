@@ -47,6 +47,19 @@
                     <label class="form-control" name="location"></label>
                 </div>
             </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    建筑使用年限
+                </label>
+                <div class="col-sm-3">
+                    <div id="residenceUseYearModel_A">
+                        <label class="form-control" name="residenceUseYearName"></label>
+                    </div>
+                    <div id="industryUseYearModel_A">
+                        <label class="form-control" name="industryUseYearName"></label>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="form-group" style="display: none;">
             <div class="x-valid">

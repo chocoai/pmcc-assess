@@ -19,6 +19,8 @@ industry.config = {
     build: {
         surface: "industrySurface",//屋面结构
         maintenance: "industryMaintenance",//围护结构
+        residenceUseYear: "residenceUseYearModel_A",//建筑使用年限
+        industryUseYear: "industryUseYearModel_A"//建筑使用年限
     },
     estate: {
         supplyGas: "industrySupplyGas",//供气信息
@@ -76,6 +78,8 @@ industry.industryOne = {
     build: function () {
         $("#" + industry.config.build.maintenance).hide();
         $("#" + industry.config.build.surface).hide();
+        $("#" + industry.config.build.residenceUseYear).show();
+        $("#" + industry.config.build.industryUseYear).hide();
     },
     estate: function () {
         $("#" + industry.config.estate.supplyGas).hide();
@@ -125,6 +129,8 @@ industry.industryTwo = {
     build: function () {
         $("#" + industry.config.build.maintenance).show();
         $("#" + industry.config.build.surface).show();
+        $("#" + industry.config.build.residenceUseYear).hide();
+        $("#" + industry.config.build.industryUseYear).show();
     },
     estate: function () {
         $("#" + industry.config.estate.supplyGas).show();
