@@ -419,6 +419,26 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <div class="x-valid" style="display: ${empty projectInfo.unitInformationVo.businessType?'none':'block'}">
+                        <label class="col-sm-1 control-label">
+                            业务类型<span class="symbol required"></span>
+                        </label>
+                        <div class="col-sm-3">
+                            <label class="form-control">${projectInfo.unitInformationVo.businessType}</label>
+                        </div>
+                    </div>
+
+                    <div class="x-valid" style="display: ${empty projectInfo.unitInformationVo.assessType?'none':'block'}">
+                        <label class="col-sm-1 control-label">
+                            评估类型<span class="symbol required"></span>
+                        </label>
+                        <div class="col-sm-3">
+                            <label class="form-control">${projectInfo.unitInformationVo.assessType}</label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </form>
         <div class="x_title">

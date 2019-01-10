@@ -88,4 +88,15 @@ public class DataCustomerFieldController {
             return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/getCustomerFieldList", name = "获取查询数据", method = {RequestMethod.GET})
+    public HttpResult getCustomerField(DataCustomerField dataCustomerField) {
+        try {
+            return HttpResult.newCorrectResult(200, dataCustomerFieldService.getCustomerField(dataCustomerField));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
 }
