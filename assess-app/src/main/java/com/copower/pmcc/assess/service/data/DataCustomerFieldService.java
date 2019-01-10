@@ -78,15 +78,8 @@ public class DataCustomerFieldService {
     }
 
 
-    public DataCustomerField getCustomerField(Integer customerId, String customerName) throws Exception {
-        DataCustomerField dataCustomerField = new DataCustomerField();
-        dataCustomerField.setCustomerId(customerId);
-        dataCustomerField.setCustomerName(customerName);
-        List<DataCustomerField> objectList = dataCustomerFieldDao.getObjectList(dataCustomerField);
-        if(CollectionUtils.isNotEmpty(objectList)){
-            return objectList.get(0);
-        }
-        return null;
+    public List<DataCustomerField> getCustomerField(DataCustomerField dataCustomerField) throws Exception {
+        return dataCustomerFieldDao.getObjectList(dataCustomerField);
     }
 
 }

@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_content">
     <form name="frm_unitinformation" id="frm_unitinformation" class="form-horizontal"
@@ -16,7 +15,8 @@
                                    value="${projectInfo.unitInformationVo.uUseUnit}">
                             <input type="text" readonly="readonly" required="required"
                                    placeholder="单位" class="form-control" name="uUseUnitName"
-                                   value="${projectInfo.unitInformationVo.uUseUnitName}" onclick="objProject.selectCustomer(this)">
+                                   value="${projectInfo.unitInformationVo.uUseUnitName}"
+                                   onclick="objProject.selectCustomer(this)">
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default docs-tooltip"
                                         data-toggle="tooltip"
@@ -102,6 +102,34 @@
                     </div>
                 </div>
             </div>
+
+            <div class="form-group">
+                <div class="x-valid" id="businessType" style="display: ${empty projectInfo.unitInformationVo.businessType?'none':'block'}">
+                    <label class="col-sm-1 control-label">
+                        业务类型<span class="symbol required"></span>
+                    </label>
+                    <div class="col-sm-3">
+                        <select name="businessType" required="required" class="form-control search-select select2 businessType">
+                            <c:if test="${projectInfo.unitInformationVo.businessType != null}">
+                                <option value="${projectInfo.unitInformationVo.businessType}" selected="selected">${projectInfo.unitInformationVo.businessType}</option>
+                            </c:if>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="x-valid" id="assessType" style="display: ${empty projectInfo.unitInformationVo.assessType?'none':'block'}">
+                    <label class="col-sm-1 control-label">
+                        评估类型<span class="symbol required"></span>
+                    </label>
+                    <div class="col-sm-3">
+                        <select name="assessType" required="required" class="form-control search-select select2 assessType">
+                            <c:if test="${projectInfo.unitInformationVo.assessType != null}">
+                                <option value="${projectInfo.unitInformationVo.assessType}" selected="selected">${projectInfo.unitInformationVo.assessType}</option>
+                            </c:if>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
     </form>
     <div style="display: none">
@@ -118,7 +146,8 @@
             <button class="btn btn-success" data-toggle="modal"
                     onclick="objProject.unit_information.showContactModel()">新增联系人
             </button>
-            <button class="btn btn-primary" data-toggle="modal" onclick="objProject.commonContacts.findCRMContactShow()">
+            <button class="btn btn-primary" data-toggle="modal"
+                    onclick="objProject.commonContacts.findCRMContactShow()">
                 查询更多<i class="fa fa-search"></i>
             </button>
             <table class="table table-bordered" id="tb_ListUNIT_INFORMATION">
