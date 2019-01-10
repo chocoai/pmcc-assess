@@ -72,6 +72,9 @@ declareRealtyRealEstateCert.init = function (item) {
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, item.useRightType, function (html, data) {
         $("#" + declareRealtyRealEstateCert.config.frm).find('select.useRightType').empty().html(html).trigger('change');
     });
+    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, item.planningUse, function (html, data) {
+        $("#" + declareRealtyRealEstateCert.config.frm).find('select.planningUse').empty().html(html).trigger('change');
+    });
     AssessCommon.initAreaInfo({
         provinceTarget: $("#" + declareRealtyRealEstateCert.config.frm).find("select[name='province']"),
         cityTarget: $("#" + declareRealtyRealEstateCert.config.frm).find("select[name='city']"),
@@ -283,6 +286,30 @@ declareRealtyRealEstateCert.saveAndUpdateData = function () {
         data.planDetailsId = declareCommon.getPlanDetailsId();
         data.declareType = declareFunObj.getDeclareType("不动产证");
         data.enable = "yes";
+    }
+    //当土地证填写后
+    if (data.landNumber){
+        var html = "<span class='help-block' for='for'>" +"该字段为必填项(土地证号需要的基本数据)"+"</span>" ;
+        if (!data.landAcquisition){
+            $("#" + declareRealtyRealEstateCert.config.frm).find("input[name='landAcquisition']").after(html.replace(/for/g,"landAcquisition"));
+            return false;
+        }
+        if (!data.registrationAuthority){
+            $("#" + declareRealtyRealEstateCert.config.frm).find("input[name='registrationAuthority']").after(html.replace(/for/g,"registrationAuthority"));
+            return false;
+        }
+        if (!data.useStartDate){
+            $("#" + declareRealtyRealEstateCert.config.frm).find("input[name='useStartDate']").after(html.replace(/for/g,"useStartDate"));
+            return false;
+        }
+        if (!data.useEndDate){
+            $("#" + declareRealtyRealEstateCert.config.frm).find("input[name='useEndDate']").after(html.replace(/for/g,"useEndDate"));
+            return false;
+        }
+        if (!data.publicArea){
+            $("#" + declareRealtyRealEstateCert.config.frm).find("input[name='publicArea']").after(html.replace(/for/g,"publicArea"));
+            return false;
+        }
     }
     $.ajax({
         type: "POST",

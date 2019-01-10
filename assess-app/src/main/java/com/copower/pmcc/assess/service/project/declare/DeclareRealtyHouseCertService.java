@@ -291,7 +291,6 @@ public class DeclareRealtyHouseCertService {
     }
 
 
-
     public Integer saveAndUpdateDeclareRealtyHouseCert(DeclareRealtyHouseCert declareRealtyHouseCert) {
         if (declareRealtyHouseCert.getId() == null) {
             declareRealtyHouseCert.setCreator(commonService.thisUserAccount());
@@ -348,6 +347,9 @@ public class DeclareRealtyHouseCertService {
         }
         DeclareRealtyHouseCertVo vo = new DeclareRealtyHouseCertVo();
         BeanUtils.copyProperties(declareRealtyHouseCert, vo);
+        if (NumberUtils.isNumber(declareRealtyHouseCert.getPlanningUse())) {
+            vo.setPlanningUseName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyHouseCert.getPlanningUse())));
+        }
         if (StringUtils.isNotBlank(declareRealtyHouseCert.getProvince())) {
             if (NumberUtils.isNumber(declareRealtyHouseCert.getProvince())) {
                 //省

@@ -220,6 +220,9 @@ public class DeclareRealtyRealEstateCertService {
             }
             vo.setFileViewName(builder.toString());
         }
+        if (NumberUtils.isNumber(declareRealtyRealEstateCert.getPlanningUse())) {
+            vo.setPlanningUseName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyRealEstateCert.getPlanningUse())));
+        }
         return vo;
     }
 

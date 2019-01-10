@@ -85,6 +85,9 @@ assessCommonHouse.init = function (item) {
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, item.publicSituation, function (html, data) {
         $("#" + assessCommonHouse.config.frm).find('select.publicSituation').empty().html(html).trigger('change');
     });
+    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, item.planningUse, function (html, data) {
+        $("#" + assessCommonHouse.config.frm).find('select.planningUse').empty().html(html).trigger('change');
+    });
     assessCommonHouse.fileUpload(assessCommonHouse.config.fileId, AssessDBKey.DeclareRealtyHouseCert, assessCommonHouse.isNotBlank(item.id) ? item.id : '0');
     assessCommonHouse.showFile(assessCommonHouse.config.fileId, AssessDBKey.DeclareRealtyHouseCert, assessCommonHouse.isNotBlank(item.id) ? item.id : '0');
 };
@@ -105,6 +108,30 @@ assessCommonHouse.saveAndUpdateHouse = function () {
         data.pid = "0";
         data.enable = "yes";
         data.declareType = declareFunObj.getDeclareType("房产证");
+    }
+    //当土地证填写后
+    if (data.landNumber){
+        var html = "<span class='help-block' for='for'>" +"该字段为必填项(土地证号需要的基本数据)"+"</span>" ;
+        if (!data.landAcquisition){
+            $("#" + assessCommonHouse.config.frm).find("input[name='landAcquisition']").after(html.replace(/for/g,"landAcquisition"));
+            return false;
+        }
+        if (!data.registrationAuthority){
+            $("#" + assessCommonHouse.config.frm).find("input[name='registrationAuthority']").after(html.replace(/for/g,"registrationAuthority"));
+            return false;
+        }
+        if (!data.useStartDate){
+            $("#" + assessCommonHouse.config.frm).find("input[name='useStartDate']").after(html.replace(/for/g,"useStartDate"));
+            return false;
+        }
+        if (!data.useEndDate){
+            $("#" + assessCommonHouse.config.frm).find("input[name='useEndDate']").after(html.replace(/for/g,"useEndDate"));
+            return false;
+        }
+        if (!data.publicArea){
+            $("#" + assessCommonHouse.config.frm).find("input[name='publicArea']").after(html.replace(/for/g,"publicArea"));
+            return false;
+        }
     }
     $.ajax({
         type: "POST",

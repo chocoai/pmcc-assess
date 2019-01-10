@@ -302,7 +302,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">规划用途<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="planningUse"></label>
+                    <label class="form-control" name="planningUseName"></label>
                 </div>
             </div>
         </div>
@@ -812,7 +812,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">规划用途</label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="planningUse"></label>
+                    <label class="form-control" name="planningUseName"></label>
                 </div>
             </div>
         </div>
