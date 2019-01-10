@@ -25,7 +25,9 @@ public class InitiateUnitInformation {
 
     private String uUseUnit;
 
-    private String spareField;
+    private String businessType;
+
+    private String assessType;
 
     public Integer getId() {
         return id;
@@ -115,11 +117,19 @@ public class InitiateUnitInformation {
         this.uUseUnit = uUseUnit == null ? null : uUseUnit.trim();
     }
 
-    public String getSpareField() {
-        return spareField;
+    public String getBusinessType() {
+        return businessType;
     }
 
-    public void setSpareField(String spareField) {
-        this.spareField = spareField == null ? null : spareField.trim();
+    public void setBusinessType(String businessType) {
+        this.businessType = businessType == null ? null : businessType.trim();
+    }
+
+    public String getAssessType() {
+        return assessType;
+    }
+
+    public void setAssessType(String assessType) {
+        this.assessType = assessType == null ? null : assessType.trim();
     }
 }

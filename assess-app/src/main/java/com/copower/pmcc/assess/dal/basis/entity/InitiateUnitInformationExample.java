@@ -835,73 +835,143 @@ public class InitiateUnitInformationExample {
             return (Criteria) this;
         }
 
-        public Criteria andSpareFieldIsNull() {
-            addCriterion("spare_field is null");
+        public Criteria andBusinessTypeIsNull() {
+            addCriterion("business_type is null");
             return (Criteria) this;
         }
 
-        public Criteria andSpareFieldIsNotNull() {
-            addCriterion("spare_field is not null");
+        public Criteria andBusinessTypeIsNotNull() {
+            addCriterion("business_type is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSpareFieldEqualTo(String value) {
-            addCriterion("spare_field =", value, "spareField");
+        public Criteria andBusinessTypeEqualTo(String value) {
+            addCriterion("business_type =", value, "businessType");
             return (Criteria) this;
         }
 
-        public Criteria andSpareFieldNotEqualTo(String value) {
-            addCriterion("spare_field <>", value, "spareField");
+        public Criteria andBusinessTypeNotEqualTo(String value) {
+            addCriterion("business_type <>", value, "businessType");
             return (Criteria) this;
         }
 
-        public Criteria andSpareFieldGreaterThan(String value) {
-            addCriterion("spare_field >", value, "spareField");
+        public Criteria andBusinessTypeGreaterThan(String value) {
+            addCriterion("business_type >", value, "businessType");
             return (Criteria) this;
         }
 
-        public Criteria andSpareFieldGreaterThanOrEqualTo(String value) {
-            addCriterion("spare_field >=", value, "spareField");
+        public Criteria andBusinessTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("business_type >=", value, "businessType");
             return (Criteria) this;
         }
 
-        public Criteria andSpareFieldLessThan(String value) {
-            addCriterion("spare_field <", value, "spareField");
+        public Criteria andBusinessTypeLessThan(String value) {
+            addCriterion("business_type <", value, "businessType");
             return (Criteria) this;
         }
 
-        public Criteria andSpareFieldLessThanOrEqualTo(String value) {
-            addCriterion("spare_field <=", value, "spareField");
+        public Criteria andBusinessTypeLessThanOrEqualTo(String value) {
+            addCriterion("business_type <=", value, "businessType");
             return (Criteria) this;
         }
 
-        public Criteria andSpareFieldLike(String value) {
-            addCriterion("spare_field like", value, "spareField");
+        public Criteria andBusinessTypeLike(String value) {
+            addCriterion("business_type like", value, "businessType");
             return (Criteria) this;
         }
 
-        public Criteria andSpareFieldNotLike(String value) {
-            addCriterion("spare_field not like", value, "spareField");
+        public Criteria andBusinessTypeNotLike(String value) {
+            addCriterion("business_type not like", value, "businessType");
             return (Criteria) this;
         }
 
-        public Criteria andSpareFieldIn(List<String> values) {
-            addCriterion("spare_field in", values, "spareField");
+        public Criteria andBusinessTypeIn(List<String> values) {
+            addCriterion("business_type in", values, "businessType");
             return (Criteria) this;
         }
 
-        public Criteria andSpareFieldNotIn(List<String> values) {
-            addCriterion("spare_field not in", values, "spareField");
+        public Criteria andBusinessTypeNotIn(List<String> values) {
+            addCriterion("business_type not in", values, "businessType");
             return (Criteria) this;
         }
 
-        public Criteria andSpareFieldBetween(String value1, String value2) {
-            addCriterion("spare_field between", value1, value2, "spareField");
+        public Criteria andBusinessTypeBetween(String value1, String value2) {
+            addCriterion("business_type between", value1, value2, "businessType");
             return (Criteria) this;
         }
 
-        public Criteria andSpareFieldNotBetween(String value1, String value2) {
-            addCriterion("spare_field not between", value1, value2, "spareField");
+        public Criteria andBusinessTypeNotBetween(String value1, String value2) {
+            addCriterion("business_type not between", value1, value2, "businessType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessTypeIsNull() {
+            addCriterion("assess_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessTypeIsNotNull() {
+            addCriterion("assess_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessTypeEqualTo(String value) {
+            addCriterion("assess_type =", value, "assessType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessTypeNotEqualTo(String value) {
+            addCriterion("assess_type <>", value, "assessType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessTypeGreaterThan(String value) {
+            addCriterion("assess_type >", value, "assessType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("assess_type >=", value, "assessType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessTypeLessThan(String value) {
+            addCriterion("assess_type <", value, "assessType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessTypeLessThanOrEqualTo(String value) {
+            addCriterion("assess_type <=", value, "assessType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessTypeLike(String value) {
+            addCriterion("assess_type like", value, "assessType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessTypeNotLike(String value) {
+            addCriterion("assess_type not like", value, "assessType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessTypeIn(List<String> values) {
+            addCriterion("assess_type in", values, "assessType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessTypeNotIn(List<String> values) {
+            addCriterion("assess_type not in", values, "assessType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessTypeBetween(String value1, String value2) {
+            addCriterion("assess_type between", value1, value2, "assessType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessTypeNotBetween(String value1, String value2) {
+            addCriterion("assess_type not between", value1, value2, "assessType");
             return (Criteria) this;
         }
     }
