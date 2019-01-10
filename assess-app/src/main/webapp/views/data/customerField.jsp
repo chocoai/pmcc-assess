@@ -34,7 +34,7 @@
                                                    class="form-control">
                                         </div>
                                     </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-md-10 col-sm-10 col-xs-12 input-group">
                                         <button type="button" class="btn btn-primary"
                                                 onclick="loadCustomerFieldList()">
                                             查询
@@ -81,8 +81,24 @@
                                         <label class="col-sm-2 control-label">
                                             客户名称<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-md-10 col-sm-10 col-xs-12 input-group">
+                                        <%--<div class="col-md-10 col-sm-10 col-xs-12 input-group">
                                             <input name='customerName' required class='form-control' required>
+                                        </div>--%>
+                                        <div class="col-md-10 col-sm-10 col-xs-12 input-group">
+                                            <div class="input-group">
+                                                <input type="hidden" name="customerId">
+                                                <input type="text" readonly="readonly" required="required"
+                                                       placeholder="单位" class="form-control" name="customerName"
+                                                       onclick="selectCustomer(this)">
+                                                <span class="input-group-btn">
+                                <button type="button" class="btn btn-default docs-tooltip"
+                                        data-toggle="tooltip"
+                                        data-original-title="选择"
+                                        onclick="selectCustomer(this)">
+                                <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -118,34 +134,34 @@
                                         </div>
                                     </div>
                                 </div>
-                                  <div class="form-group">
-                                      <div class="x-valid">
-                                          <label class="col-sm-2 control-label">
-                                              评估类型
-                                          </label>
-                                          <div class="col-md-10 col-sm-10 col-xs-12 input-group">
-                                              <button class="btn btn-xs btn-success"
-                                                      onclick="appendHTML('评估类型','assessType',this)"><i
-                                                      class="fa fa-plus"></i></button>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div style="margin-bottom: 8px;" class="assessType">
-                                      <div class="form-group" style=" margin-top: 8px;">
-                                          <div class="x-valid">
-                                              <label class="col-md-2 control-label">评估类型</label>
-                                              <div class="col-md-10 col-sm-10 col-xs-12 input-group ">
-                                                  <div class="input-group">
-                                                      <input class="form-control" name="assessType" required="required"
-                                                             type="text">
-                                                      <span class="input-group-btn">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            评估类型
+                                        </label>
+                                        <div class="col-md-10 col-sm-10 col-xs-12 input-group">
+                                            <button class="btn btn-xs btn-success"
+                                                    onclick="appendHTML('评估类型','assessType',this)"><i
+                                                    class="fa fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 8px;" class="assessType">
+                                    <div class="form-group" style=" margin-top: 8px;">
+                                        <div class="x-valid">
+                                            <label class="col-md-2 control-label">评估类型</label>
+                                            <div class="col-md-10 col-sm-10 col-xs-12 input-group ">
+                                                <div class="input-group">
+                                                    <input class="form-control" name="assessType" required="required"
+                                                           type="text">
+                                                    <span class="input-group-btn">
                                                            <input type="button" class="btn btn-warning" value="X"
                                                                   onclick="cleanHTMLData(this)"></span>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -160,6 +176,7 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>
 <script type="application/javascript">
     $(function () {
         loadCustomerFieldList();
@@ -289,7 +306,7 @@
 
         var a = "input[name=" + "'" + item + "'" + "]";
 
-        $("."+item).append(html);
+        $("." + item).append(html);
     }
 
     function cleanHTMLData(item) {
@@ -297,8 +314,8 @@
         $(item).parent().prev().parent().parent().empty();
     }
 
-    function writeHTMLData(str,name,item) {
-        $("."+item).empty();
+    function writeHTMLData(str, name, item) {
+        $("." + item).empty();
         var strs = str.split(",");
         var length = strs.length;
         var lableValue = name;
@@ -311,22 +328,22 @@
             html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
             html += "</div>";
             html += "</div>";
-            $("."+item).append(html);
+            $("." + item).append(html);
         }
     }
 
-     function init(item) {
+    function init(item) {
         $("#frm").clearAll();
         $("#frm").initForm(item);
         if (item.businessType) {
-            writeHTMLData(item.businessType,"业务类型","businessType");
+            writeHTMLData(item.businessType, "业务类型", "businessType");
         }
         if (item.assessType) {
-            writeHTMLData(item.assessType,"评估类型","assessType");
+            writeHTMLData(item.assessType, "评估类型", "assessType");
         }
     }
 
-     function getAndInit(id) {
+    function getAndInit(id) {
         $.ajax({
             url: getContextPath() + "/dataCustomerField/getCustomerFieldById",
             type: "get",
@@ -347,6 +364,25 @@
             }
         })
     }
+
+    function selectCustomer(this_) {
+        //选择客户
+        crmCustomer.select({
+            multi: false,//是否允许多选
+            onSelected: function (nodes) {
+                $(this_).closest('.input-group').find("input[name='customerId']").val(nodes[0].id);
+                $(this_).closest('.input-group').find("input[name='customerName']").val(nodes[0].name);
+                $.ajax({
+                    type: "get",
+                    url: "${pageContext.request.contextPath}/initiateCrmCustomer/getCrmCustomerDto",
+                    data: "crmId=" + nodes[0].id,
+                    success: function (msg) {
+
+                    }
+                });
+            }
+        });
+    };
 </script>
 
 </body>
