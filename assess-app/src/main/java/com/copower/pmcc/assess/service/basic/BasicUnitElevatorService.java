@@ -95,6 +95,12 @@ public class BasicUnitElevatorService {
         return basicUnitElevatorDao.basicUnitElevatorList(basicUnitElevator);
     }
 
+    public List<BasicUnitElevator> getBasicUnitElevatorList(Integer unitId){
+        BasicUnitElevator where=new BasicUnitElevator();
+        where.setUnitId(unitId);
+        return basicUnitElevatorDao.basicUnitElevatorList(where);
+    }
+
     public void removeBasicUnitElevator(BasicUnitElevator basicUnitElevator)throws Exception{
         basicUnitElevatorDao.removeBasicUnitElevator(basicUnitElevator);
     }

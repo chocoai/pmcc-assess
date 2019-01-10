@@ -20,30 +20,30 @@ public class BasicUnitElevatorDao {
     @Autowired
     private BasicUnitElevatorMapper basicUnitElevatorMapper;
 
-    public BasicUnitElevator getBasicUnitElevatorById(Integer id)throws SQLException {
+    public BasicUnitElevator getBasicUnitElevatorById(Integer id) throws SQLException {
         return basicUnitElevatorMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicUnitElevator(BasicUnitElevator basicUnitElevator)throws SQLException{
+    public Integer saveBasicUnitElevator(BasicUnitElevator basicUnitElevator) throws SQLException {
         basicUnitElevatorMapper.insertSelective(basicUnitElevator);
         return basicUnitElevator.getId();
     }
 
-    public boolean updateBasicUnitElevator(BasicUnitElevator basicUnitElevator)throws SQLException{
-        return basicUnitElevatorMapper.updateByPrimaryKeySelective(basicUnitElevator)==1;
+    public boolean updateBasicUnitElevator(BasicUnitElevator basicUnitElevator) throws SQLException {
+        return basicUnitElevatorMapper.updateByPrimaryKeySelective(basicUnitElevator) == 1;
     }
 
-    public void removeBasicUnitElevator(BasicUnitElevator basicUnitElevator)throws SQLException{
+    public void removeBasicUnitElevator(BasicUnitElevator basicUnitElevator) throws SQLException {
         BasicUnitElevatorExample example = new BasicUnitElevatorExample();
         MybatisUtils.convertObj2Example(basicUnitElevator, example);
         basicUnitElevatorMapper.deleteByExample(example);
     }
 
-    public boolean deleteBasicUnitElevator(Integer id)throws SQLException{
-        return  basicUnitElevatorMapper.deleteByPrimaryKey(id)==1;
+    public boolean deleteBasicUnitElevator(Integer id) throws SQLException {
+        return basicUnitElevatorMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicUnitElevator> basicUnitElevatorList(BasicUnitElevator basicUnitElevator)throws SQLException{
+    public List<BasicUnitElevator> basicUnitElevatorList(BasicUnitElevator basicUnitElevator) {
         BasicUnitElevatorExample example = new BasicUnitElevatorExample();
         MybatisUtils.convertObj2Example(basicUnitElevator, example);
         return basicUnitElevatorMapper.selectByExample(example);

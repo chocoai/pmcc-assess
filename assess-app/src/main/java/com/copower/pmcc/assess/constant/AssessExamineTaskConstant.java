@@ -100,6 +100,7 @@ public class AssessExamineTaskConstant {
     public static final String EXAMINE_HOUSE_WATER_DRAINAGE_CIRCUIT_COUNT = "examine.house.water.drainage_circuit_count";//排水回路数
     public static final String EXAMINE_HOUSE_LOAD_UTILITY = "examine.house.load.utility";//证载用途
     public static final String EXAMINE_HOUSE_PRACTICAL_USE = "examine.house.practical.use";//实际用途
+    public static final String EXAMINE_HOUSE_PRACTICAL_USE_HOUSE = "examine.house.practical.use.house";//实际用途-住宅
 
     public static final String EXAMINE_HOUSE_TRANSACTION_SITUATION = "examine.house.transaction.situation";//交易情况
     public static final String EXAMINE_HOUSE_TRANSACTION_SITUATION_ABNORMAL = "examine.house.transaction.situation.abnormal";//交易情况-非正常

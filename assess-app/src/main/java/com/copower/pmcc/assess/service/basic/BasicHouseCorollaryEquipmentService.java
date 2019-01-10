@@ -104,6 +104,12 @@ public class BasicHouseCorollaryEquipmentService {
         return basicHouseCorollaryEquipmentDao.basicHouseCorollaryEquipmentList(basicHouseCorollaryEquipment);
     }
 
+    public List<BasicHouseCorollaryEquipment> getBasicHouseCorollaryEquipmentList(Integer houseId){
+        BasicHouseCorollaryEquipment where=new BasicHouseCorollaryEquipment();
+        where.setHouseId(houseId);
+        return basicHouseCorollaryEquipmentDao.basicHouseCorollaryEquipmentList(where);
+    }
+
     public void removeBasicHouseCorollaryEquipment(BasicHouseCorollaryEquipment basicHouseCorollaryEquipment)throws Exception{
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicHouseCorollaryEquipment.getId(), null, FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class));
         if (!ObjectUtils.isEmpty(sysAttachmentDtos)){
@@ -133,13 +139,8 @@ public class BasicHouseCorollaryEquipmentService {
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicHouseCorollaryEquipment.getId(), null, FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class));
         StringBuilder builder = new StringBuilder();
         if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
-            if (sysAttachmentDtos.size() >= 1) {
-                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
-                    if (sysAttachmentDto != null) {
-                        builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto));
-                        builder.append(" ");
-                    }
-                }
+            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto)).append(" ");
             }
             vo.setFileViewName(builder.toString());
         }

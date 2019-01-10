@@ -66,6 +66,8 @@ mapPosition.getCurrentCityByArea = function (callback) {
                     province = "四川";
                     city = "成都";
                 }
+                province = province.replace('省', '');
+                city = city.replace('市', '');
                 //县以及区不用处理
                 //获取省数据
                 $.ajax({

@@ -15,6 +15,7 @@ public enum MethodCompareFieldEnum {
     PAYMENT_METHOD("payment.method", "付款方式"),//ps:房屋-交易情况-付款方式
     TRADING_TRANSACTION_SITUATION("trading.transaction.situation", "交易情况"),//ps:房屋-交易情况-交易情况
     TRADING_PRICE("trading.price", "交易价格"),//ps:房屋-交易情况-交易价格
+    TRADING_TIME("trading.time", "交易时间"),//ps:房屋-交易情况-交易时间
 
     //区位状况-----------------------------------------------------------------------------------------------区位状况
     LOCATION("location", "房地产坐落及方位"),//ps:权证的坐落、板块的方位、楼盘的方位字段组合
@@ -58,7 +59,6 @@ public enum MethodCompareFieldEnum {
     INTELLIGENT_LEVEL("intelligent.level", "设施设备及智能化程度"),//ps:设施设备及智能化程度
     WATER_SUPPLY_DRAINAGE_MODE("water.supply.drainage.mode", "供（排）水方式"),//ps:供水和排水所有字段信息组合
     HEATING_MODE("heating.mode", "采暖供热方式"),//ps:采暖和供热所有字段信息组合
-    GAS_SUPPLY_MODE("gas.supply.mode", "供气方式"),//ps:供气方式所有字段信息组合
     NETWORK("network", "通讯网络"),//ps:通讯网络所有字段信息组合
     ELEVATOR_HOUSEHOLD_RATIO("elevator.household.ratio", "电梯梯户比"),//ps:单元-梯户比
     INTERNAL_ASSEMBLY("internal.assembly", "内装"),//ps:楼栋内装信息+房屋内的装修信息

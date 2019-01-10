@@ -44,7 +44,7 @@ public class BasicHouseCorollaryEquipmentDao {
         return  basicHouseCorollaryEquipmentMapper.deleteByPrimaryKey(id)==1;
     }
 
-    public List<BasicHouseCorollaryEquipment> basicHouseCorollaryEquipmentList(BasicHouseCorollaryEquipment basicHouseCorollaryEquipment)throws SQLException{
+    public List<BasicHouseCorollaryEquipment> basicHouseCorollaryEquipmentList(BasicHouseCorollaryEquipment basicHouseCorollaryEquipment){
         BasicHouseCorollaryEquipmentExample example = new BasicHouseCorollaryEquipmentExample();
         MybatisUtils.convertObj2Example(basicHouseCorollaryEquipment, example);
         return basicHouseCorollaryEquipmentMapper.selectByExample(example);
