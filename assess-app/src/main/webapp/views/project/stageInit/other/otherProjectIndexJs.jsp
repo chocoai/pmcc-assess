@@ -749,6 +749,9 @@
                         $("#" + objProject.config.unit_information.frm).find("select.assessType").empty().html(retHtml).trigger('change');
                         $("#businessType").show();
                         $("#assessType").show();
+                    }else {
+                        $("#businessType").hide();
+                        $("#assessType").hide();
                     }
                 }
             }
