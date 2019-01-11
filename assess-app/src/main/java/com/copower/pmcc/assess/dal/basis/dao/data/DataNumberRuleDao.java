@@ -14,17 +14,13 @@ public class DataNumberRuleDao {
     @Autowired
     private DataNumberRuleMapper dataNumberRuleMapper;
 
-    public List<DataNumberRule> getDataNumberRule(Integer assessClass, Integer reportType) {
+    public List<DataNumberRule> getDataNumberRule(Integer reportType) {
         DataNumberRuleExample example = new DataNumberRuleExample();
         DataNumberRuleExample.Criteria criteria = example.createCriteria();
-
-        if (assessClass != null) {
-            criteria.andAssessClassEqualTo(assessClass);
-        }
         if (reportType != null) {
             criteria.andReportTypeEqualTo(reportType);
         }
-        example.setOrderByClause(" assess_class,report_type,same_report_type,recount ");
+        example.setOrderByClause("id desc");
         List<DataNumberRule> dataNumberRules = dataNumberRuleMapper.selectByExample(example);
 
         return dataNumberRules;

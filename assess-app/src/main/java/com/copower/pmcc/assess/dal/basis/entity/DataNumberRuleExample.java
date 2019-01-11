@@ -165,66 +165,6 @@ public class DataNumberRuleExample {
             return (Criteria) this;
         }
 
-        public Criteria andAssessClassIsNull() {
-            addCriterion("assess_class is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessClassIsNotNull() {
-            addCriterion("assess_class is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessClassEqualTo(Integer value) {
-            addCriterion("assess_class =", value, "assessClass");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessClassNotEqualTo(Integer value) {
-            addCriterion("assess_class <>", value, "assessClass");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessClassGreaterThan(Integer value) {
-            addCriterion("assess_class >", value, "assessClass");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessClassGreaterThanOrEqualTo(Integer value) {
-            addCriterion("assess_class >=", value, "assessClass");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessClassLessThan(Integer value) {
-            addCriterion("assess_class <", value, "assessClass");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessClassLessThanOrEqualTo(Integer value) {
-            addCriterion("assess_class <=", value, "assessClass");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessClassIn(List<Integer> values) {
-            addCriterion("assess_class in", values, "assessClass");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessClassNotIn(List<Integer> values) {
-            addCriterion("assess_class not in", values, "assessClass");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessClassBetween(Integer value1, Integer value2) {
-            addCriterion("assess_class between", value1, value2, "assessClass");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessClassNotBetween(Integer value1, Integer value2) {
-            addCriterion("assess_class not between", value1, value2, "assessClass");
-            return (Criteria) this;
-        }
-
         public Criteria andReportTypeIsNull() {
             addCriterion("report_type is null");
             return (Criteria) this;
@@ -355,73 +295,73 @@ public class DataNumberRuleExample {
             return (Criteria) this;
         }
 
-        public Criteria andDateRuleIsNull() {
-            addCriterion("date_rule is null");
+        public Criteria andNumberRuleIsNull() {
+            addCriterion("number_rule is null");
             return (Criteria) this;
         }
 
-        public Criteria andDateRuleIsNotNull() {
-            addCriterion("date_rule is not null");
+        public Criteria andNumberRuleIsNotNull() {
+            addCriterion("number_rule is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDateRuleEqualTo(String value) {
-            addCriterion("date_rule =", value, "dateRule");
+        public Criteria andNumberRuleEqualTo(String value) {
+            addCriterion("number_rule =", value, "numberRule");
             return (Criteria) this;
         }
 
-        public Criteria andDateRuleNotEqualTo(String value) {
-            addCriterion("date_rule <>", value, "dateRule");
+        public Criteria andNumberRuleNotEqualTo(String value) {
+            addCriterion("number_rule <>", value, "numberRule");
             return (Criteria) this;
         }
 
-        public Criteria andDateRuleGreaterThan(String value) {
-            addCriterion("date_rule >", value, "dateRule");
+        public Criteria andNumberRuleGreaterThan(String value) {
+            addCriterion("number_rule >", value, "numberRule");
             return (Criteria) this;
         }
 
-        public Criteria andDateRuleGreaterThanOrEqualTo(String value) {
-            addCriterion("date_rule >=", value, "dateRule");
+        public Criteria andNumberRuleGreaterThanOrEqualTo(String value) {
+            addCriterion("number_rule >=", value, "numberRule");
             return (Criteria) this;
         }
 
-        public Criteria andDateRuleLessThan(String value) {
-            addCriterion("date_rule <", value, "dateRule");
+        public Criteria andNumberRuleLessThan(String value) {
+            addCriterion("number_rule <", value, "numberRule");
             return (Criteria) this;
         }
 
-        public Criteria andDateRuleLessThanOrEqualTo(String value) {
-            addCriterion("date_rule <=", value, "dateRule");
+        public Criteria andNumberRuleLessThanOrEqualTo(String value) {
+            addCriterion("number_rule <=", value, "numberRule");
             return (Criteria) this;
         }
 
-        public Criteria andDateRuleLike(String value) {
-            addCriterion("date_rule like", value, "dateRule");
+        public Criteria andNumberRuleLike(String value) {
+            addCriterion("number_rule like", value, "numberRule");
             return (Criteria) this;
         }
 
-        public Criteria andDateRuleNotLike(String value) {
-            addCriterion("date_rule not like", value, "dateRule");
+        public Criteria andNumberRuleNotLike(String value) {
+            addCriterion("number_rule not like", value, "numberRule");
             return (Criteria) this;
         }
 
-        public Criteria andDateRuleIn(List<String> values) {
-            addCriterion("date_rule in", values, "dateRule");
+        public Criteria andNumberRuleIn(List<String> values) {
+            addCriterion("number_rule in", values, "numberRule");
             return (Criteria) this;
         }
 
-        public Criteria andDateRuleNotIn(List<String> values) {
-            addCriterion("date_rule not in", values, "dateRule");
+        public Criteria andNumberRuleNotIn(List<String> values) {
+            addCriterion("number_rule not in", values, "numberRule");
             return (Criteria) this;
         }
 
-        public Criteria andDateRuleBetween(String value1, String value2) {
-            addCriterion("date_rule between", value1, value2, "dateRule");
+        public Criteria andNumberRuleBetween(String value1, String value2) {
+            addCriterion("number_rule between", value1, value2, "numberRule");
             return (Criteria) this;
         }
 
-        public Criteria andDateRuleNotBetween(String value1, String value2) {
-            addCriterion("date_rule not between", value1, value2, "dateRule");
+        public Criteria andNumberRuleNotBetween(String value1, String value2) {
+            addCriterion("number_rule not between", value1, value2, "numberRule");
             return (Criteria) this;
         }
 
@@ -482,6 +422,66 @@ public class DataNumberRuleExample {
 
         public Criteria andFiguresNotBetween(Integer value1, Integer value2) {
             addCriterion("figures not between", value1, value2, "figures");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartYearIsNull() {
+            addCriterion("start_year is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartYearIsNotNull() {
+            addCriterion("start_year is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartYearEqualTo(Integer value) {
+            addCriterion("start_year =", value, "startYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartYearNotEqualTo(Integer value) {
+            addCriterion("start_year <>", value, "startYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartYearGreaterThan(Integer value) {
+            addCriterion("start_year >", value, "startYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartYearGreaterThanOrEqualTo(Integer value) {
+            addCriterion("start_year >=", value, "startYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartYearLessThan(Integer value) {
+            addCriterion("start_year <", value, "startYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartYearLessThanOrEqualTo(Integer value) {
+            addCriterion("start_year <=", value, "startYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartYearIn(List<Integer> values) {
+            addCriterion("start_year in", values, "startYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartYearNotIn(List<Integer> values) {
+            addCriterion("start_year not in", values, "startYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartYearBetween(Integer value1, Integer value2) {
+            addCriterion("start_year between", value1, value2, "startYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartYearNotBetween(Integer value1, Integer value2) {
+            addCriterion("start_year not between", value1, value2, "startYear");
             return (Criteria) this;
         }
 
@@ -602,66 +602,6 @@ public class DataNumberRuleExample {
 
         public Criteria andSameReportTypeNotBetween(Integer value1, Integer value2) {
             addCriterion("same_report_type not between", value1, value2, "sameReportType");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecountIsNull() {
-            addCriterion("recount is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecountIsNotNull() {
-            addCriterion("recount is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecountEqualTo(Integer value) {
-            addCriterion("recount =", value, "recount");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecountNotEqualTo(Integer value) {
-            addCriterion("recount <>", value, "recount");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecountGreaterThan(Integer value) {
-            addCriterion("recount >", value, "recount");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecountGreaterThanOrEqualTo(Integer value) {
-            addCriterion("recount >=", value, "recount");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecountLessThan(Integer value) {
-            addCriterion("recount <", value, "recount");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecountLessThanOrEqualTo(Integer value) {
-            addCriterion("recount <=", value, "recount");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecountIn(List<Integer> values) {
-            addCriterion("recount in", values, "recount");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecountNotIn(List<Integer> values) {
-            addCriterion("recount not in", values, "recount");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecountBetween(Integer value1, Integer value2) {
-            addCriterion("recount between", value1, value2, "recount");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecountNotBetween(Integer value1, Integer value2) {
-            addCriterion("recount not between", value1, value2, "recount");
             return (Criteria) this;
         }
 

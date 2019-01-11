@@ -68,8 +68,8 @@
                                 <thead>
                                 <tr>
                                     <th style="width: 5%">编号</th>
-                                    <th style="width: 10%">权证号</th>
-                                    <th style="width: 5%">所有权人</th>
+                                    <%--<th style="width: 10%">权证号</th>--%>
+                                    <%--<th style="width: 5%">所有权人</th>--%>
                                     <th style="width: 15%">坐落</th>
                                     <th style="width: 10%">证载用途</th>
                                     <th style="width: 10%">实际用途</th>
@@ -431,15 +431,15 @@
             <input type="hidden" data-name="declareId" value="{declareId}">
             <label class="form-control" data-name="mergeNumber">{mergeNumber}</label>
         </td>
-        <td>
-            <label class="form-control" data-name="name">
-                <span>{name}</span>
-                <a href="javascript://" onclick="programme.viewJudgeInfo(this);"
-                   class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>
-            </label>
+        <%--<td>--%>
+            <%--<label class="form-control" data-name="name">--%>
+                <%--<span>{name}</span>--%>
+                <%--<a href="javascript://" onclick="programme.viewJudgeInfo(this);"--%>
+                   <%--class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>--%>
+            <%--</label>--%>
 
-        </td>
-        <td><label class="form-control" data-name="ownership">{ownership}</label></td>
+        <%--</td>--%>
+        <%--<td><label class="form-control" data-name="ownership">{ownership}</label></td>--%>
         <td><label class="form-control" data-name="seat">{seat}</label></td>
         <td><label class="form-control" data-name="certUse">{certUse}</label></td>
         <td><label class="form-control" data-name="practicalUse">{practicalUse}</label></td>

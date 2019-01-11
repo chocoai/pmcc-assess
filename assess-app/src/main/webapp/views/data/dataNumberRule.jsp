@@ -29,20 +29,6 @@
                         <div class="form-group ">
                             <div>
                                 <label class="col-sm-1 control-label">
-                                    大类
-                                </label>
-                                <div class="col-sm-2">
-                                    <select class="form-control" id="queryAssessClass" name="queryAssessClass">
-                                        <option value="">-请选择-</option>
-                                        <c:forEach var="item" items="${assessClassList}">
-                                            <option value="${item.id}">${item.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="col-sm-1 control-label">
                                     报告类型
                                 </label>
                                 <div class="col-sm-2">
@@ -54,7 +40,6 @@
                                     </select>
                                 </div>
                             </div>
-
                             <div class="col-sm-3">
                                 <button type="button" class="btn btn-primary" onclick="loadDataDicList()">
                                     查询
@@ -90,28 +75,12 @@
                 <div class="modal-body">
                     <div class="col-md-12">
                         <div class="panel-body">
-
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-3 control-label">
-                                        大类<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <select class="form-control" required id="assessClass" name="assessClass">
-                                            <option value="">-请选择-</option>
-                                            <c:forEach var="item" items="${assessClassList}">
-                                                <option value="${item.id}">${item.name}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         报告类型<span class="symbol required"></span>
                                     </label>
-                                    <div class="col-sm-9">
+                                    <div class="col-sm-4">
                                         <select class="form-control" required id="reportType" name="reportType">
                                             <option value="">-请选择-</option>
                                             <c:forEach var="items" items="${reportTypeList}">
@@ -120,65 +89,65 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         前缀<span class="symbol required"></span>
                                     </label>
-                                    <div class="col-sm-9">
+                                    <div class="col-sm-4">
                                         <input type="text" required data-rule-maxlength="50" placeholder="前缀"
                                                id="prefix" name="prefix" class="form-control">
                                     </div>
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         文号规则<span class="symbol required"></span>
                                     </label>
-                                    <div class="col-sm-9">
-                                        <input type="text" required data-rule-digits="true" placeholder="文号规则"
-                                               id="dateRule" name="dateRule" class="form-control">
+                                    <div class="col-sm-4">
+                                        <input type="text" required placeholder="文号规则"
+                                                name="numberRule" value="" class="form-control">
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         位数<span class="symbol required"></span>
                                     </label>
-                                    <div class="col-sm-9">
+                                    <div class="col-sm-4">
                                         <input type="text" data-rule-digits="true" placeholder="位数"
                                                id="figures" name="figures" class="form-control">
                                     </div>
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-3 control-label">
-                                        起始编号<span class="symbol required"></span>
+                                    <label class="col-sm-2 control-label">
+                                        起始年份
                                     </label>
-                                    <div class="col-sm-9">
+                                    <div class="col-sm-4">
+                                        <input type="text" data-rule-digits="true" placeholder="起始年份"
+                                               id="startYear" name="startYear" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        起始编号
+                                    </label>
+                                    <div class="col-sm-4">
                                         <input type="text" data-rule-digits="true" placeholder="起始编号"
                                                id="startNumber" name="startNumber" class="form-control">
                                     </div>
                                 </div>
-                            </div>
 
+                            </div>
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-3 control-label">
-                                        同号的报告类型<span class="symbol required"></span>
+                                    <label class="col-sm-2 control-label">
+                                        同号的报告类型
                                     </label>
-                                    <div class="col-sm-9">
-                                        <select class="form-control" required id="sameReportType" name="sameReportType">
-                                            <option value="">-请选择-</option>
-                                            <option value="-1">新号</option>
+                                    <div class="col-sm-4">
+                                        <select class="form-control"  name="sameReportType">
+                                            <option value="0">-请选择-</option>
                                             <c:forEach var="items" items="${reportTypeList}">
                                                 <option value="${items.id}">${items.name}</option>
                                             </c:forEach>
@@ -186,22 +155,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-3 control-label">
-                                        文号重新计算方式<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <select class="form-control" required id="recount" name="recount">
-                                            <option value="">-请选择-</option>
-                                            <option value="0">一直连续</option>
-                                            <option value="1">按年分断</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
 
@@ -229,14 +182,13 @@
     //加载 文号规则 数据列表
     function loadDataDicList() {
         var cols = [];
-        cols.push({field: 'assessClassName', title: '所属大类'});
         cols.push({field: 'reportTypeName', title: '报告类型'});
         cols.push({field: 'prefix', title: '前缀'});
-        cols.push({field: 'dateRule', title: '日期规则'});
+        cols.push({field: 'numberRule', title: '文号规则'});
         cols.push({field: 'figures', title: '位数'});
+        cols.push({field: 'startYear', title: '起始年份'});
         cols.push({field: 'startNumber', title: '起始编号'});
         cols.push({field: 'sameReportTypeName', title: '同号的报告类型'});
-        cols.push({field: 'recountName', title: '文号重新计算方式'});
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -291,14 +243,12 @@
 
     //对新增 文号规则数据处理
     function addData() {
-        $("#frm").clearAll();
+        $("#frm").clearAll().find('[name=numberRule]').val('{prefix}（{year}）{number}号');
     }
     //新增 文号规则数据
     function saveData() {
-        var flag = false;
-        //var data = formParams("frm");
-        var data = $("#frm").serialize();
         if ($("#frm").valid()) {
+            var data = formParams("frm");
             $.ajax({
                 url: "${pageContext.request.contextPath}/numberRule/save",
                 type: "post",
@@ -320,54 +270,13 @@
             })
         }
     }
-    //-------------------------------------------------------------------------------------
-    //编辑字典数据
-    function editDataDic(id) {
-        $("#frm").clearAll();
-        Loading.progressShow();
-        $.ajax({
-            url: "${pageContext.request.contextPath}/numberRule/list",
-            type: "get",
-            dataType: "json",
-            data: {id: id},
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    $("#id").val(id);
-                    $("#name").val(result.data.name);
-                    $("#fieldName").val(result.data.fieldName);
-                    $("#bisEnable").prop("checked", result.data.bisEnable);
-                    $("#sorting").val(result.data.sorting);
-                    $("#remark").val(result.data.remark);
-                    $('#divBox').modal();
-                }
-                else {
-                    Alert("获取数据失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
-    }
+
 
     function editHrProfessional(index) {
         var row = $("#tb_List").bootstrapTable('getData')[index];
-        $("#frm").clearAll();
-        $("#frm").initForm(row);
+        $("#frm").clearAll().initForm(row);
         $('#divBox').modal();
     }
-
-    function isNot(val) {
-        if (val != null) {
-            if (val != '') {
-                return true;
-            }
-        }
-        return false;
-    }
-
 </script>
 
 

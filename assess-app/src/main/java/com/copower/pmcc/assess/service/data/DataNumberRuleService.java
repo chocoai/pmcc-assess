@@ -1,8 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.common.enums.NumberRuleEnum;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataNumberRuleDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataNumberRule;
 import com.copower.pmcc.assess.dto.output.data.DataNumberRuleVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -36,11 +34,11 @@ public class DataNumberRuleService {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
 
-    public BootstrapTableVo getList(Integer assessClass,Integer reportType) {
+    public BootstrapTableVo getList(Integer reportType) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataNumberRule> dataNumberRulesList = dataNumberRuleDao.getDataNumberRule(assessClass,reportType);
+        List<DataNumberRule> dataNumberRulesList = dataNumberRuleDao.getDataNumberRule(reportType);
         List<DataNumberRuleVo> dataNumberRuleVos = getVoList(dataNumberRulesList);
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(dataNumberRuleVos) ? new ArrayList<DataNumberRuleVo>() : dataNumberRuleVos);
@@ -52,34 +50,8 @@ public class DataNumberRuleService {
         return LangUtils.transform(list, p -> {
             DataNumberRuleVo dataNumberRuleVo = new DataNumberRuleVo();
             BeanUtils.copyProperties(p, dataNumberRuleVo);
-            if (p.getAssessClass() != null) {
-                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(p.getAssessClass());
-                if (baseDataDic != null)
-                    dataNumberRuleVo.setAssessClassName(baseDataDic.getName());
-            }
-            if(p.getReportType() != null){
-                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(p.getReportType());
-                if(baseDataDic != null){
-                    dataNumberRuleVo.setReportTypeName(baseDataDic.getName());
-                }
-            }
-            if(p.getSameReportType() != null){
-                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(p.getSameReportType());
-                if(baseDataDic != null){
-                    dataNumberRuleVo.setSameReportTypeName(baseDataDic.getName());
-                }else{
-                    String name = NumberRuleEnum.getName(p.getSameReportType());
-                    if(name!=null){
-                        dataNumberRuleVo.setSameReportTypeName(name);
-                    }
-                }
-            }
-            if(p.getRecount()!=null){
-                String name = NumberRuleEnum.getName(p.getRecount());
-                if(name !=null){
-                    dataNumberRuleVo.setRecountName(name);
-                }
-            }
+            dataNumberRuleVo.setReportTypeName(baseDataDicService.getNameById(p.getReportType()));
+            dataNumberRuleVo.setSameReportTypeName(baseDataDicService.getNameById(p.getSameReportType()));
             return dataNumberRuleVo;
         });
     }

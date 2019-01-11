@@ -3,14 +3,13 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataNumberRuleMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataNumberRule" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="assess_class" property="assessClass" jdbcType="INTEGER" />
     <result column="report_type" property="reportType" jdbcType="INTEGER" />
     <result column="prefix" property="prefix" jdbcType="VARCHAR" />
-    <result column="date_rule" property="dateRule" jdbcType="VARCHAR" />
+    <result column="number_rule" property="numberRule" jdbcType="VARCHAR" />
     <result column="figures" property="figures" jdbcType="INTEGER" />
+    <result column="start_year" property="startYear" jdbcType="INTEGER" />
     <result column="start_number" property="startNumber" jdbcType="INTEGER" />
     <result column="same_report_type" property="sameReportType" jdbcType="INTEGER" />
-    <result column="recount" property="recount" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -74,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, assess_class, report_type, prefix, date_rule, figures, start_number, same_report_type, 
-    recount, creator, gmt_created, gmt_modified
+    id, report_type, prefix, number_rule, figures, start_year, start_number, same_report_type, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataNumberRuleExample" >
     select
@@ -111,14 +110,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_number_rule (assess_class, report_type, prefix, 
-      date_rule, figures, start_number, 
-      same_report_type, recount, creator, 
-      gmt_created, gmt_modified)
-    values (#{assessClass,jdbcType=INTEGER}, #{reportType,jdbcType=INTEGER}, #{prefix,jdbcType=VARCHAR}, 
-      #{dateRule,jdbcType=VARCHAR}, #{figures,jdbcType=INTEGER}, #{startNumber,jdbcType=INTEGER}, 
-      #{sameReportType,jdbcType=INTEGER}, #{recount,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_data_number_rule (report_type, prefix, number_rule, 
+      figures, start_year, start_number, 
+      same_report_type, creator, gmt_created, 
+      gmt_modified)
+    values (#{reportType,jdbcType=INTEGER}, #{prefix,jdbcType=VARCHAR}, #{numberRule,jdbcType=VARCHAR}, 
+      #{figures,jdbcType=INTEGER}, #{startYear,jdbcType=INTEGER}, #{startNumber,jdbcType=INTEGER}, 
+      #{sameReportType,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataNumberRule" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -126,29 +125,26 @@
     </selectKey>
     insert into tb_data_number_rule
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="assessClass != null" >
-        assess_class,
-      </if>
       <if test="reportType != null" >
         report_type,
       </if>
       <if test="prefix != null" >
         prefix,
       </if>
-      <if test="dateRule != null" >
-        date_rule,
+      <if test="numberRule != null" >
+        number_rule,
       </if>
       <if test="figures != null" >
         figures,
+      </if>
+      <if test="startYear != null" >
+        start_year,
       </if>
       <if test="startNumber != null" >
         start_number,
       </if>
       <if test="sameReportType != null" >
         same_report_type,
-      </if>
-      <if test="recount != null" >
-        recount,
       </if>
       <if test="creator != null" >
         creator,
@@ -161,29 +157,26 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="assessClass != null" >
-        #{assessClass,jdbcType=INTEGER},
-      </if>
       <if test="reportType != null" >
         #{reportType,jdbcType=INTEGER},
       </if>
       <if test="prefix != null" >
         #{prefix,jdbcType=VARCHAR},
       </if>
-      <if test="dateRule != null" >
-        #{dateRule,jdbcType=VARCHAR},
+      <if test="numberRule != null" >
+        #{numberRule,jdbcType=VARCHAR},
       </if>
       <if test="figures != null" >
         #{figures,jdbcType=INTEGER},
+      </if>
+      <if test="startYear != null" >
+        #{startYear,jdbcType=INTEGER},
       </if>
       <if test="startNumber != null" >
         #{startNumber,jdbcType=INTEGER},
       </if>
       <if test="sameReportType != null" >
         #{sameReportType,jdbcType=INTEGER},
-      </if>
-      <if test="recount != null" >
-        #{recount,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -208,29 +201,26 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.assessClass != null" >
-        assess_class = #{record.assessClass,jdbcType=INTEGER},
-      </if>
       <if test="record.reportType != null" >
         report_type = #{record.reportType,jdbcType=INTEGER},
       </if>
       <if test="record.prefix != null" >
         prefix = #{record.prefix,jdbcType=VARCHAR},
       </if>
-      <if test="record.dateRule != null" >
-        date_rule = #{record.dateRule,jdbcType=VARCHAR},
+      <if test="record.numberRule != null" >
+        number_rule = #{record.numberRule,jdbcType=VARCHAR},
       </if>
       <if test="record.figures != null" >
         figures = #{record.figures,jdbcType=INTEGER},
+      </if>
+      <if test="record.startYear != null" >
+        start_year = #{record.startYear,jdbcType=INTEGER},
       </if>
       <if test="record.startNumber != null" >
         start_number = #{record.startNumber,jdbcType=INTEGER},
       </if>
       <if test="record.sameReportType != null" >
         same_report_type = #{record.sameReportType,jdbcType=INTEGER},
-      </if>
-      <if test="record.recount != null" >
-        recount = #{record.recount,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -249,14 +239,13 @@
   <update id="updateByExample" parameterType="map" >
     update tb_data_number_rule
     set id = #{record.id,jdbcType=INTEGER},
-      assess_class = #{record.assessClass,jdbcType=INTEGER},
       report_type = #{record.reportType,jdbcType=INTEGER},
       prefix = #{record.prefix,jdbcType=VARCHAR},
-      date_rule = #{record.dateRule,jdbcType=VARCHAR},
+      number_rule = #{record.numberRule,jdbcType=VARCHAR},
       figures = #{record.figures,jdbcType=INTEGER},
+      start_year = #{record.startYear,jdbcType=INTEGER},
       start_number = #{record.startNumber,jdbcType=INTEGER},
       same_report_type = #{record.sameReportType,jdbcType=INTEGER},
-      recount = #{record.recount,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -267,29 +256,26 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataNumberRule" >
     update tb_data_number_rule
     <set >
-      <if test="assessClass != null" >
-        assess_class = #{assessClass,jdbcType=INTEGER},
-      </if>
       <if test="reportType != null" >
         report_type = #{reportType,jdbcType=INTEGER},
       </if>
       <if test="prefix != null" >
         prefix = #{prefix,jdbcType=VARCHAR},
       </if>
-      <if test="dateRule != null" >
-        date_rule = #{dateRule,jdbcType=VARCHAR},
+      <if test="numberRule != null" >
+        number_rule = #{numberRule,jdbcType=VARCHAR},
       </if>
       <if test="figures != null" >
         figures = #{figures,jdbcType=INTEGER},
+      </if>
+      <if test="startYear != null" >
+        start_year = #{startYear,jdbcType=INTEGER},
       </if>
       <if test="startNumber != null" >
         start_number = #{startNumber,jdbcType=INTEGER},
       </if>
       <if test="sameReportType != null" >
         same_report_type = #{sameReportType,jdbcType=INTEGER},
-      </if>
-      <if test="recount != null" >
-        recount = #{recount,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -305,14 +291,13 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataNumberRule" >
     update tb_data_number_rule
-    set assess_class = #{assessClass,jdbcType=INTEGER},
-      report_type = #{reportType,jdbcType=INTEGER},
+    set report_type = #{reportType,jdbcType=INTEGER},
       prefix = #{prefix,jdbcType=VARCHAR},
-      date_rule = #{dateRule,jdbcType=VARCHAR},
+      number_rule = #{numberRule,jdbcType=VARCHAR},
       figures = #{figures,jdbcType=INTEGER},
+      start_year = #{startYear,jdbcType=INTEGER},
       start_number = #{startNumber,jdbcType=INTEGER},
       same_report_type = #{sameReportType,jdbcType=INTEGER},
-      recount = #{recount,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

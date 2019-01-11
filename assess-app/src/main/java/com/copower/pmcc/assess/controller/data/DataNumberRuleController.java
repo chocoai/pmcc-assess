@@ -45,8 +45,8 @@ public class DataNumberRuleController {
 
     @ResponseBody
     @RequestMapping(value = "/list", name = "取得文号规则", method = RequestMethod.GET)
-    public BootstrapTableVo list(Integer assessClass, Integer reportType) {
-        BootstrapTableVo vo = dataNumberRuleService.getList(assessClass, reportType);
+    public BootstrapTableVo list(Integer reportType) {
+        BootstrapTableVo vo = dataNumberRuleService.getList(reportType);
         return vo;
     }
 

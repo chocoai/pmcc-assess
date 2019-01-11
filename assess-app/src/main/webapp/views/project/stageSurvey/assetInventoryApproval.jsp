@@ -346,7 +346,7 @@
     function loadAssetOtherRightList() {
         var cols = [];
         cols.push({field: 'typeName', title: '类型'});
-        cols.push({field: 'categoryName', title: '类型'});
+        cols.push({field: 'categoryName', title: '类别'});
         cols.push({field: 'number', title: '他权证编号'});
         cols.push({field: 'obligor', title: '义务人'});
         cols.push({field: 'obligee', title: '权利人'});

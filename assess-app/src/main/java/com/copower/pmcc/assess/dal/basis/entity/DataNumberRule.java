@@ -5,21 +5,19 @@ import java.util.Date;
 public class DataNumberRule {
     private Integer id;
 
-    private Integer assessClass;
-
     private Integer reportType;
 
     private String prefix;
 
-    private String dateRule;
+    private String numberRule;
 
     private Integer figures;
+
+    private Integer startYear;
 
     private Integer startNumber;
 
     private Integer sameReportType;
-
-    private Integer recount;
 
     private String creator;
 
@@ -33,14 +31,6 @@ public class DataNumberRule {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getAssessClass() {
-        return assessClass;
-    }
-
-    public void setAssessClass(Integer assessClass) {
-        this.assessClass = assessClass;
     }
 
     public Integer getReportType() {
@@ -59,12 +49,12 @@ public class DataNumberRule {
         this.prefix = prefix == null ? null : prefix.trim();
     }
 
-    public String getDateRule() {
-        return dateRule;
+    public String getNumberRule() {
+        return numberRule;
     }
 
-    public void setDateRule(String dateRule) {
-        this.dateRule = dateRule == null ? null : dateRule.trim();
+    public void setNumberRule(String numberRule) {
+        this.numberRule = numberRule == null ? null : numberRule.trim();
     }
 
     public Integer getFigures() {
@@ -73,6 +63,14 @@ public class DataNumberRule {
 
     public void setFigures(Integer figures) {
         this.figures = figures;
+    }
+
+    public Integer getStartYear() {
+        return startYear;
+    }
+
+    public void setStartYear(Integer startYear) {
+        this.startYear = startYear;
     }
 
     public Integer getStartNumber() {
@@ -89,14 +87,6 @@ public class DataNumberRule {
 
     public void setSameReportType(Integer sameReportType) {
         this.sameReportType = sameReportType;
-    }
-
-    public Integer getRecount() {
-        return recount;
-    }
-
-    public void setRecount(Integer recount) {
-        this.recount = recount;
     }
 
     public String getCreator() {
