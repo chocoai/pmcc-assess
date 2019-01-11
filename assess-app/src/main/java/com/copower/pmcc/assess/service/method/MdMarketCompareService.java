@@ -6,7 +6,6 @@ import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareItemDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
-import com.copower.pmcc.assess.dal.basis.dao.project.examine.ExamineHouseTradingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareResultDto;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
@@ -48,8 +47,6 @@ public class MdMarketCompareService {
     private ProjectPhaseService projectPhaseService;
     @Autowired
     private ProjectPlanDetailsDao projectPlanDetailsDao;
-    @Autowired
-    private ExamineHouseTradingDao examineHouseTradingDao;
     @Autowired
     private ProjectInfoService projectInfoService;
 
@@ -141,7 +138,7 @@ public class MdMarketCompareService {
                 mdMarketCompareItem.setName(projectPlanDetails.getProjectPhaseName());
                 mdMarketCompareItem.setType(ExamineTypeEnum.CASE.getId());
                 mdMarketCompareItem.setCreator(commonService.thisUserAccount());
-                mdMarketCompareItem.setInitialPrice(getTradingPrice(planDetailsId));
+                mdMarketCompareItem.setInitialPrice(new BigDecimal("15000"));
                 mdMarketCompareItem.setMustAdjustPrice(mustAdjustPrice(planDetailsId));
                 if (projectInfo == null)
                     projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
@@ -151,17 +148,6 @@ public class MdMarketCompareService {
         }
     }
 
-    /**
-     * 获取成交价
-     *
-     * @param planDetailsId
-     * @return
-     */
-    public BigDecimal getTradingPrice(Integer planDetailsId) {
-        ExamineHouseTrading houseTrading = examineHouseTradingDao.getHouseTradingByPlanDetailsId(planDetailsId);
-        if (houseTrading == null) return null;
-        return houseTrading.getTradingPrice();
-    }
 
     /**
      * 是否必须调整成交价

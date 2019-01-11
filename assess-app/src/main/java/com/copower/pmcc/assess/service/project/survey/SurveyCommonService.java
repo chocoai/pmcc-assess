@@ -10,13 +10,10 @@ import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyExamineTask;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
-import com.copower.pmcc.assess.dto.output.project.survey.ExamineBuildingVo;
-import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineDataInfoVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.data.DataExamineTaskService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
-import com.copower.pmcc.assess.service.project.examine.*;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
@@ -25,7 +22,6 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
-import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FileUtils;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.copower.pmcc.erp.common.utils.LangUtils;
@@ -40,7 +36,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -70,20 +65,6 @@ public class SurveyCommonService {
     private SurveyExamineTaskService surveyExamineTaskService;
     @Autowired
     private ApplicationConstant applicationConstant;
-    @Autowired
-    private ExamineBlockService examineBlockService;
-    @Autowired
-    private ExamineEstateLandStateService examineEstateLandStateService;
-    @Autowired
-    private ExamineEstateService examineEstateService;
-    @Autowired
-    private ExamineHouseService examineHouseService;
-    @Autowired
-    private ExamineHouseTradingService examineHouseTradingService;
-    @Autowired
-    private ExamineUnitService examineUnitService;
-    @Autowired
-    private ExamineBuildingService examineBuildingService;
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
@@ -241,54 +222,6 @@ public class SurveyCommonService {
         where.setTaskStatus(ProjectStatusEnum.FINISH.getKey());
         int finishCount = surveyExamineTaskService.getSurveyExamineTaskCount(where);
         return allCount == finishCount;
-    }
-
-    /**
-     * 获取调查数据信息
-     *
-     * @param declareId
-     * @return
-     */
-    public SurveyExamineDataInfoVo getExamineDataInfoVo(Integer declareId, Integer planDetailsId, ExamineTypeEnum examineTypeEnum) {
-        SurveyExamineDataInfoVo surveyExamineDataInfoVo = new SurveyExamineDataInfoVo();
-
-        ExamineBlock examineBlock = examineBlockService.getBlockByDeclareId(declareId, planDetailsId, examineTypeEnum);
-        surveyExamineDataInfoVo.setExamineBlockVo(examineBlockService.getExamineBlockVo(examineBlock));
-
-        ExamineEstateLandState estateLandState = examineEstateLandStateService.getEstateLandStateByDeclareId(declareId, planDetailsId, examineTypeEnum);
-        surveyExamineDataInfoVo.setExamineEstateLandStateVo(examineEstateLandStateService.getExamineEstateLandStateVo(estateLandState));
-
-        ExamineEstate examineEstate = examineEstateService.getEstateByDeclareId(declareId, planDetailsId, examineTypeEnum);
-        surveyExamineDataInfoVo.setExamineEstateVo(examineEstateService.getExamineEstateVo(examineEstate));
-
-        ExamineUnit examineUnit = examineUnitService.getUnitByDeclareId(declareId, planDetailsId, examineTypeEnum);
-        surveyExamineDataInfoVo.setExamineUnitVo(examineUnitService.getExamineUnitVo(examineUnit));
-
-        ExamineHouse examineHouse = examineHouseService.getHouseByDeclareId(declareId, planDetailsId, examineTypeEnum);
-        surveyExamineDataInfoVo.setExamineHouseVo(examineHouseService.getExamineHouseVo(examineHouse));
-
-        ExamineHouseTrading examineHouseTrading = examineHouseTradingService.getHouseTradingByDeclareId(declareId, planDetailsId, examineTypeEnum);
-        surveyExamineDataInfoVo.setExamineHouseTradingVo(examineHouseTradingService.getExamineHouseTradingVo(examineHouseTrading));
-
-        List<ExamineBuilding> examineBuildings = examineBuildingService.getByDeclareIdAndExamineType(declareId, planDetailsId, examineTypeEnum.getId());
-        if (!ObjectUtils.isEmpty(examineBuildings)) {
-           List<ExamineBuildingVo> examineBuildingVos = Lists.newArrayList();
-            for (int i = 0; i < examineBuildings.size() ; i++) {
-                if (i == 0){
-                    surveyExamineDataInfoVo.getExamineBuildingVoMap().put("oneExamineBuilding",examineBuildingService.getExamineBuildingVo(examineBuildings.get(i)));
-                }
-                if (i == 1){
-                    surveyExamineDataInfoVo.getExamineBuildingVoMap().put("twoExamineBuilding",examineBuildingService.getExamineBuildingVo(examineBuildings.get(i)));
-                }
-                if (i == 2){
-                    surveyExamineDataInfoVo.getExamineBuildingVoMap().put("threeExamineBuilding",examineBuildingService.getExamineBuildingVo(examineBuildings.get(i)));
-                }
-                if (i == 4){
-                    surveyExamineDataInfoVo.getExamineBuildingVoMap().put("fourExamineBuilding",examineBuildingService.getExamineBuildingVo(examineBuildings.get(i)));
-                }
-            }
-        }
-        return surveyExamineDataInfoVo;
     }
 
     /**

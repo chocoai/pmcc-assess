@@ -1,13 +1,12 @@
 package com.copower.pmcc.assess.service.project.survey;
 
-import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveySceneExploreDao;
-import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.SurveySceneExplore;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
-import com.copower.pmcc.assess.service.project.examine.ExamineBuildingService;
-import com.copower.pmcc.assess.service.project.examine.ExamineHouseService;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -28,10 +27,6 @@ public class SurveySceneExploreService {
     private SurveyCommonService surveyCommonService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
-    @Autowired
-    private ExamineHouseService examineHouseService;
-    @Autowired
-    private ExamineBuildingService examineBuildingService;
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
@@ -73,17 +68,17 @@ public class SurveySceneExploreService {
         if (projectPlanDetails == null) return;
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         if (declareRecord == null) return;
-        ExamineHouse house = examineHouseService.getHouseByDeclareId(projectPlanDetails.getDeclareRecordId(), projectPlanDetails.getId(), ExamineTypeEnum.EXPLORE);
-        if (house != null) {
-            if (house.getCertUse() != null && house.getCertUse() > 0) {
-                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(house.getCertUse());
-                declareRecord.setCertUse(baseDataDic.getName());
-            }
-            if (house.getPracticalUse() != null && house.getPracticalUse() > 0) {
-                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(house.getPracticalUse());
-                declareRecord.setCertUse(baseDataDic.getName());
-            }
-        }
+//        ExamineHouse house = examineHouseService.getHouseByDeclareId(projectPlanDetails.getDeclareRecordId(), projectPlanDetails.getId(), ExamineTypeEnum.EXPLORE);
+//        if (house != null) {
+//            if (house.getCertUse() != null && house.getCertUse() > 0) {
+//                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(house.getCertUse());
+//                declareRecord.setCertUse(baseDataDic.getName());
+//            }
+//            if (house.getPracticalUse() != null && house.getPracticalUse() > 0) {
+//                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(house.getPracticalUse());
+//                declareRecord.setCertUse(baseDataDic.getName());
+//            }
+//        }
         try {
             declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
         } catch (Exception e) {
