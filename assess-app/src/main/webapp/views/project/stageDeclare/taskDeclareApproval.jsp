@@ -163,15 +163,7 @@
      * @date:2018-09-19
      **/
     declareRealtyHouseCert.loadList = function () {
-        var cols = [];
-        cols.push({
-            field: 'provinceName', title: '区域', formatter: function (value, row, index) {
-                return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
-            }
-        });
-        cols.push({field: 'floorArea', title: '建筑面积'});
-        cols.push({field: 'certName', title: '房屋权证号'});
-        cols.push({field: 'beLocated', title: '房屋坐落'});
+        var cols = commonDeclareApprovalModel.house.getHouseColumn();
         cols.push({field: 'fileViewName', title: '附件'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -349,12 +341,7 @@
     };
 
     declareRealtyLandCert.loadList = function () {
-        var cols = [];
-        cols.push({field: 'useRightType', title: '使用权类型'});
-        cols.push({field: 'apportionmentArea', title: '分摊面积'});
-        cols.push({field: 'useRightArea', title: '使用权面积'});
-        cols.push({field: 'landCertName', title: '土地权证号'});
-        cols.push({field: 'beLocated', title: '土地坐落'});
+        var cols = commonDeclareApprovalModel.land.getLandColumn();
         cols.push({field: 'fileViewName', title: '附件'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -449,12 +436,7 @@
     };
 
     declareRealtyRealEstateCert.loadList = function () {
-        var cols = [];
-        cols.push({field: 'useRightType', title: '使用权类型'});
-        cols.push({field: 'publicArea', title: '公摊面积'});
-        cols.push({field: 'evidenceArea', title: '证载面积'});
-        cols.push({field: 'certName', title: '权证号'});
-        cols.push({field: 'beLocated', title: '坐落'});
+        var cols = commonDeclareApprovalModel.realEstateCert.getRealEstateColumn() ;
         cols.push({field: 'fileViewName', title: '不动产附件'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {

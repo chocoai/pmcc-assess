@@ -579,15 +579,7 @@ assessCommonHouse.houseImportHandle = function () {
  * 房产证列表
  */
 assessCommonHouse.loadList = function () {
-    var cols = [];
-    cols.push({
-        field: 'provinceName', title: '区域', formatter: function (value, row, index) {
-            return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
-        }
-    });
-    cols.push({field: 'floorArea', title: '建筑面积'});
-    cols.push({field: 'certName', title: '房屋权证号'});
-    cols.push({field: 'beLocated', title: '房屋坐落'});
+    var cols = commonDeclareApplyModel.house.getHouseColumn();
     cols.push({field: 'fileViewName', title: '附件'});
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {

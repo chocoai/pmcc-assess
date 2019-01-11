@@ -209,12 +209,7 @@ declareRealtyRealEstateCert.inputFile = function () {
 
 
 declareRealtyRealEstateCert.loadList = function () {
-    var cols = [];
-    cols.push({field: 'useRightType', title: '使用权类型'});
-    cols.push({field: 'publicArea', title: '公摊面积'});
-    cols.push({field: 'evidenceArea', title: '证载面积'});
-    cols.push({field: 'certName', title: '权证号'});
-    cols.push({field: 'beLocated', title: '坐落'});
+    var cols = commonDeclareApplyModel.realEstateCert.getRealEstateColumn() ;
     cols.push({field: 'fileViewName', title: '不动产附件'});
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {

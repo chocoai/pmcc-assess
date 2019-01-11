@@ -278,12 +278,7 @@ assessCommonLand.editLand = function () {
  * 土地证列表
  */
 assessCommonLand.loadList = function () {
-    var cols = [];
-    cols.push({field: 'useRightType', title: '使用权类型'});
-    cols.push({field: 'apportionmentArea', title: '分摊面积'});
-    cols.push({field: 'useRightArea', title: '使用权面积'});
-    cols.push({field: 'landCertName', title: '土地权证号'});
-    cols.push({field: 'beLocated', title: '土地坐落'});
+    var cols = commonDeclareApplyModel.land.getLandColumn() ;
     cols.push({field: 'fileViewName', title: '附件'});
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {

@@ -728,6 +728,8 @@
             url: "${pageContext.request.contextPath}/dataCustomerField/getCustomerFieldList",
             data: {customerId: id, customerName: name},
             success: function (result) {
+                $("#" + objProject.config.unit_information.frm).find("select.assessType").empty();
+                $("#" + objProject.config.unit_information.frm).find("select.businessType").empty() ;
                 if (result.ret && result.data) {
                     if (result.data.length >= 1) {
                         var businessType = result.data[0].businessType;
