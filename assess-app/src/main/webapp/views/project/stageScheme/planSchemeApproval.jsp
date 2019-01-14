@@ -21,11 +21,11 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${projectPlan.planName}阶段工作计划
+                    <h3>${projectPlan.planName}阶段工作计划
                         <small>
                             <input type="button" class="btn btn-xs btn-success" onclick="viewProgramme();" value="查看方案"/>
                         </small>
-                    </h2>
+                    </h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">

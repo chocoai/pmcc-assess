@@ -22,7 +22,6 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <jsp:include page="/views/project/stageScheme/module/ftContentChangeModule.jsp"></jsp:include>
-            <jsp:include page="/views/project/stageScheme/module/supportInfoModule.jsp"></jsp:include>
             <!-- 引入成本法模块 -->
             <jsp:include page="/views/method/marketCostIndex.jsp"></jsp:include>
             <div class="x_panel">
@@ -59,40 +58,7 @@
 
     $(function () {
 
-        $("#frm_task").validate();
-
-        loadUploadFiles();
-        //上传附件
-        FileUtils.uploadFiles({
-            target: "apply_file",
-            showFileList: false,
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: AssessDBKey.ProjectPlanDetails,
-                tableId: ${projectPlanDetails.id},
-                fieldsName: "apply",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true,
-            onUploadComplete: function () {
-                loadUploadFiles();
-            }
-        });
     });
-
-    //显示附件
-    function loadUploadFiles() {
-        FileUtils.getFileShows({
-            target: "apply_file",
-            formData: {
-                tableName: AssessDBKey.ProjectPlanDetails,
-                tableId: ${projectPlanDetails.id},
-                fieldsName: "apply",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true
-        })
-    }
 
     //提交
     function submit() {
