@@ -7,7 +7,6 @@ import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -71,8 +70,6 @@ public class BasicHouseDamagedDegreeDao {
         BasicHouseDamagedDegreeExample.Criteria criteria = example.createCriteria();
         criteria.andHouseIdEqualTo(houseId);
         criteria.andTypeEqualTo(type);
-        criteria.andEntityConditionContentNotEqualTo("");
-        criteria.andEntityConditionNotEqualTo("");
         return basicHouseDamagedDegreeMapper.selectByExample(example);
     }
 }

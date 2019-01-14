@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
@@ -45,7 +44,7 @@
                                         onclick="dataObjFun.showModel();"
                                         data-toggle="modal" href="#divBox"> 新增
                                 </button>
-                                <div  class="btn btn-success" onclick="residueRatioTest();"> 成新率</div>
+                                <div class="btn btn-success" onclick="residueRatioTest();"> 成新率</div>
                             </div>
                         </div>
 
@@ -65,12 +64,13 @@
 <script type="text/javascript">
     function residueRatioTest() {
         residueRatio.init({
-            usedYear: 10,
-            usableYear: 50,
-            houseId: 301,
-            success: function (id, resultValue) {
-                alert(resultValue);
-            }
+            //usedYear: 10,
+            //usableYear: 50,
+            houseId: 591
+            /* ,
+             success: function (id, resultValue) {
+                 alert(5555);
+             }*/
         });
     }
 
@@ -157,26 +157,26 @@
      * @date:
      **/
     dataObjFun.deleteDataById = function (id) {
-       Alert("确认删除!",2,null,function () {
-           $.ajax({
-               url: "${pageContext.request.contextPath}/dataBlock/deleteDataBlockById",
-               type: "post",
-               dataType: "json",
-               data: {id: id},
-               success: function (result) {
-                   if (result.ret) {
-                       toastr.success('删除成功');
-                       dataObjFun.loadDataList();
-                   }
-                   else {
-                       Alert("保存数据失败，失败原因:" + result.errmsg);
-                   }
-               },
-               error: function (result) {
-                   Alert("调用服务端方法失败，失败原因:" + result);
-               }
-           })
-       });
+        Alert("确认删除!", 2, null, function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/dataBlock/deleteDataBlockById",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        dataObjFun.loadDataList();
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        });
     };
     /**
      * @author:  zch
@@ -315,7 +315,7 @@
                                             方位
                                         </label>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="position" placeholder="方位" >
+                                            <input type="text" class="form-control" name="position" placeholder="方位">
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -323,7 +323,8 @@
                                             区域性质
                                         </label>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="regionalNature" placeholder="区域性质" >
+                                            <input type="text" class="form-control" name="regionalNature"
+                                                   placeholder="区域性质">
                                         </div>
                                     </div>
                                 </div>

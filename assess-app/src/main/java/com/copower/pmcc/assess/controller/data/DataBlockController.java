@@ -2,18 +2,32 @@ package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
+import com.copower.pmcc.assess.dal.basis.entity.DataDamagedDegree;
+import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicHouseWaterDrainVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicHouseDamagedDegreeService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
+import com.copower.pmcc.assess.service.data.DataDamagedDegreeService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Auther: zch
@@ -31,6 +45,10 @@ public class DataBlockController extends BaseController {
     private DataBlockService dataBlockService;
     @Autowired
     private ErpAreaService erpAreaService;
+    @Autowired
+    private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
+    @Autowired
+    private DataDamagedDegreeService dataDamagedDegreeService;
 
     @RequestMapping(value = "/view", name = "转到index页面 ", method = {RequestMethod.GET})
     public ModelAndView index() {
@@ -58,11 +76,11 @@ public class DataBlockController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/getDataBlockList", method = {RequestMethod.GET}, name = "获取基础版块维护列表")
-    public BootstrapTableVo getDataBlockList(String province, String city, String district,String name) {
+    public BootstrapTableVo getDataBlockList(String province, String city, String district, String name) {
         DataBlock dataBlock = new DataBlock();
         BootstrapTableVo vo = null;
         try {
-            vo = dataBlockService.getDataBlockListVos(province, city, district,name);
+            vo = dataBlockService.getDataBlockListVos(province, city, district, name);
         } catch (Exception e1) {
             log.error(String.format("exception: %s", e1.getMessage()), e1);
             return null;
@@ -133,12 +151,38 @@ public class DataBlockController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/isExistBlock", method = {RequestMethod.GET}, name = "验证版块是否已存在")
-    public HttpResult isExistBlock(String province, String city, String district,String name) {
+    public HttpResult isExistBlock(String province, String city, String district, String name) {
         try {
-            return HttpResult.newCorrectResult(dataBlockService.isExistBlock(province, city, district,name));
+            return HttpResult.newCorrectResult(dataBlockService.isExistBlock(province, city, district, name));
         } catch (Exception e) {
             log.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("获取版块信息异常");
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/getObserveList", name = "观察法数据", method = RequestMethod.GET)
+    public BootstrapTableVo getHouseDamagedDegreeList(Integer houseId, String type) throws Exception {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        DataDamagedDegree degree = dataDamagedDegreeService.getCacheDamagedDegreeByFieldName(type);
+        List<BasicHouseDamagedDegreeVo> list = basicHouseDamagedDegreeService.getDamagedDegreeVoList(houseId, degree.getId());
+        vo.setTotal(page.getTotal());
+        vo.setRows(ObjectUtils.isEmpty(list) ? new ArrayList<BasicHouseWaterDrainVo>(10) : list);
+        return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveResidueRatio", method = {RequestMethod.POST}, name = "保存")
+    public HttpResult saveResidueRatio(String formData) {
+        try {
+            dataBlockService.saveResidueRatio(formData);
+            return HttpResult.newCorrectResult("保存 success!");
+        } catch (Exception e) {
+            log.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("保存异常");
+        }
+    }
+
 }

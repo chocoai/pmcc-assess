@@ -1,9 +1,16 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataBlockDao;
+import com.copower.pmcc.assess.dal.basis.dao.data.ToolResidueRatioDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
+import com.copower.pmcc.assess.dal.basis.entity.DataDamagedDegree;
+import com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatio;
+import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeVo;
 import com.copower.pmcc.assess.dto.output.data.DataBlockVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.basic.BasicHouseDamagedDegreeService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -20,6 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -35,6 +44,14 @@ public class DataBlockService {
     private CommonService commonService;
     @Autowired
     private ErpAreaService erpAreaService;
+    @Autowired
+    private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
+    @Autowired
+    private DataDamagedDegreeService dataDamagedDegreeService;
+    @Autowired
+    private ToolResidueRatioDao toolResidueRatioDao;
+
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public Integer saveAndUpdateDataBlock(DataBlock dataBlock) {
@@ -148,5 +165,55 @@ public class DataBlockService {
         dataBlock.setName(blockName);
         List<DataBlock> blockList = dataBlockDao.getDataBlockList(dataBlock);
         return blockList.size() > 0;
+    }
+
+    public void saveResidueRatio(String formData) throws Exception {
+        JSONObject jsonObject = JSON.parseObject(formData);
+        Integer houseId = Integer.valueOf(jsonObject.getString("houseId"));
+        //更改数据表分值
+        List<BasicHouseDamagedDegreeVo> list = basicHouseDamagedDegreeService.getDamagedDegreeVoList(houseId);
+        for (BasicHouseDamagedDegreeVo item : list) {
+            String scoreId = "scores" + item.getCategory();
+            String reallyScore = jsonObject.getString(scoreId);
+            BigDecimal score = new BigDecimal(reallyScore);
+            item.setScore(score);
+            basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(item);
+        }
+
+        BigDecimal scoreTotal = new BigDecimal("0");
+        //结构部分"structural.part"
+        BigDecimal scoreStructural = getScoreTotal(houseId, "structural.part");
+        //装修部分"decoration.part"
+        BigDecimal scoreDecoration = getScoreTotal(houseId, "decoration.part");
+        //设备部分"equipment.part"
+        BigDecimal scoreEquipment = getScoreTotal(houseId, "equipment.part");
+        //其他"other"
+        BigDecimal scoreOther = getScoreTotal(houseId, "other");
+        scoreTotal = scoreTotal.add(scoreStructural).add(scoreDecoration).add(scoreEquipment).add(scoreOther);
+        //保存
+        ToolResidueRatio toolResidueRatio = new ToolResidueRatio();
+        HashMap<String, String> parameterMap = new HashMap<>();
+        parameterMap.put("houseId",jsonObject.getString("houseId"));
+        parameterMap.put("usedYear",jsonObject.getString("usedYear"));
+        parameterMap.put("usableYear",jsonObject.getString("usableYear"));
+        parameterMap.put("ageRate",jsonObject.getString("ageRate"));
+        parameterMap.put("observeRate",jsonObject.getString("observeRate"));
+        String parameterValue = JSONObject.toJSON(parameterMap).toString();
+        toolResidueRatio.setParameterValue(parameterValue);
+        toolResidueRatio.setType(Integer.valueOf(jsonObject.getString("method")));
+        toolResidueRatio.setResultValue(scoreTotal+"%");
+        toolResidueRatio.setCreator(commonService.thisUserAccount());
+        toolResidueRatioDao.addToolResidueRatio(toolResidueRatio);
+    }
+
+    public BigDecimal getScoreTotal(Integer houseId, String type) {
+        DataDamagedDegree degree = dataDamagedDegreeService.getCacheDamagedDegreeByFieldName(type);
+        BigDecimal weight = degree.getWeight();
+        List<BasicHouseDamagedDegreeVo> structuralList = basicHouseDamagedDegreeService.getDamagedDegreeVoList(houseId, degree.getId());
+        BigDecimal scoreTotal = new BigDecimal("0");
+        for (BasicHouseDamagedDegreeVo item : structuralList) {
+            scoreTotal = scoreTotal.add(item.getScore());
+        }
+        return scoreTotal.multiply(weight);
     }
 }

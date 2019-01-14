@@ -88,7 +88,7 @@ public class BasicHouseDamagedDegreeService {
         BasicHouseDamagedDegree basicHouseDamagedDegree = new BasicHouseDamagedDegree();
         basicHouseDamagedDegree.setHouseId(houseId);
         basicHouseDamagedDegree.setType(type);
-        List<BasicHouseDamagedDegree> list = basicHouseDamagedDegreeDao.getValueDamagedDegreeList(houseId,type);
+        List<BasicHouseDamagedDegree> list = basicHouseDamagedDegreeDao.getValueDamagedDegreeList(houseId, type);
         return list;
     }
 
@@ -119,6 +119,7 @@ public class BasicHouseDamagedDegreeService {
     }
 
     public BasicHouseDamagedDegreeVo getBasicHouseDamagedDegreeVo(BasicHouseDamagedDegree basicHouseDamagedDegree) {
+        DataDamagedDegree degree = dataDamagedDegreeService.getDamagedDegreeById(basicHouseDamagedDegree.getType());
         BasicHouseDamagedDegreeVo basicHouseDamagedDegreeVo = new BasicHouseDamagedDegreeVo();
         BeanUtils.copyProperties(basicHouseDamagedDegree, basicHouseDamagedDegreeVo);
         basicHouseDamagedDegreeVo.setTypeName(dataDamagedDegreeService.getNameById(basicHouseDamagedDegree.getType()));
@@ -126,6 +127,7 @@ public class BasicHouseDamagedDegreeService {
         if (dataDamagedDegree != null) {
             basicHouseDamagedDegreeVo.setCategoryName(dataDamagedDegree.getName());
             basicHouseDamagedDegreeVo.setStandardScore(dataDamagedDegree.getStandardScore());
+            basicHouseDamagedDegreeVo.setWeight(degree.getWeight());
             basicHouseDamagedDegreeVo.setIntact(dataDamagedDegree.getIntact());
             basicHouseDamagedDegreeVo.setBasicallyIntact(dataDamagedDegree.getBasicallyIntact());
             basicHouseDamagedDegreeVo.setGeneralDamage(dataDamagedDegree.getGeneralDamage());
@@ -229,9 +231,9 @@ public class BasicHouseDamagedDegreeService {
     }
 
 
-    public boolean hasOppositeDetail(Integer houseId,Integer index) {
+    public boolean hasOppositeDetail(Integer houseId, Integer index) {
         List<BasicHouseDamagedDegree> list = getDamagedDegreeList(houseId);
-        if(StringUtils.isEmpty(list.get(index).getEntityCondition())){
+        if (StringUtils.isEmpty(list.get(index).getEntityCondition())) {
             return false;
         }
         return true;
