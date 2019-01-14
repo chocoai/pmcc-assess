@@ -9,6 +9,7 @@ AssessDBKey.HouseOcrkey = "houseCert";//房产证
 AssessDBKey.DataImgTwoDimensional = "tb_data_img_two_dimensional";
 AssessDBKey.DataLandLevel = "tb_data_land_level";
 
+AssessDBKey.BaseReportField = "tb_base_report_field";
 AssessDBKey.ReportTemplate = "tb_report_template";
 AssessDBKey.ProjectPlanDetails = "tb_project_plan_details";
 AssessDBKey.ProjectInfo = "tb_project_info";
