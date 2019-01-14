@@ -6,9 +6,27 @@ import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
  * Created by kings on 2018-10-9.
  */
 public class SchemeJudgeObjectVo extends SchemeJudgeObject {
+    private String certUseName;
+    private String practicalUseName;
     private String setUseName;
     private String bestUseName;
     private String coefficient;
+
+    public String getCertUseName() {
+        return certUseName;
+    }
+
+    public void setCertUseName(String certUseName) {
+        this.certUseName = certUseName;
+    }
+
+    public String getPracticalUseName() {
+        return practicalUseName;
+    }
+
+    public void setPracticalUseName(String practicalUseName) {
+        this.practicalUseName = practicalUseName;
+    }
 
     public String getSetUseName() {
         return setUseName;

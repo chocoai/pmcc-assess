@@ -56,6 +56,12 @@ public class DataNumberRuleService {
         });
     }
 
+    public DataNumberRule getDataNumberRule(Integer reportType){
+        List<DataNumberRule> dataNumberRulesList = dataNumberRuleDao.getDataNumberRule(reportType);
+        if(CollectionUtils.isEmpty(dataNumberRulesList)) return null;
+        return dataNumberRulesList.get(0);
+    }
+
     public boolean save(DataNumberRule dataNumberRule) throws BusinessException {
         if(dataNumberRule == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());

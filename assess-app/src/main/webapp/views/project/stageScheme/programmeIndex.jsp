@@ -75,12 +75,42 @@
                                                value="${item.timePointExplain}">
                                     </div>
                                 </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        价值定义<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <select name="valueDefinition" class="form-control" required>
+                                            <option value="">-请选择-</option>
+                                            <c:forEach items="${valueDefinitions}" var="valueDefinition">
+                                                <c:if test="${valueDefinition.id eq item.valueDefinition}">
+                                                    <option value="${valueDefinition.id}"
+                                                            selected="selected">${valueDefinition.name}</option>
+                                                </c:if>
+                                                <c:if test="${valueDefinition.id ne item.valueDefinition}">
+                                                    <option value="${valueDefinition.id}">${valueDefinition.name}</option>
+                                                </c:if>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        价值内涵
+                                    </label>
+                                    <div class="col-sm-11">
+                                        <textarea class="form-control" name="valueConnotation"
+                                                  placeholder="价值内涵">${item.valueConnotation}</textarea>
+                                    </div>
+                                </div>
                             </div>
                             <table class="table">
                                 <thead>
                                 <tr>
                                     <th style="width: 5%">编号</th>
-                                    <%--<th style="width: 10%">权证号</th>--%>
+                                        <%--<th style="width: 10%">权证号</th>--%>
                                     <th style="width: 5%">所有权人</th>
                                     <th style="width: 15%">坐落</th>
                                     <th style="width: 10%">证载用途</th>
@@ -170,7 +200,7 @@
                                                 </span>
 
                                                 <span class="radio-inline">
-                                                <input type="radio"  onclick="applicableChange(this,false)"
+                                                <input type="radio" onclick="applicableChange(this,false)"
                                                        name="bisApplicable" id="rdoNotApplicable${method.id}"
                                                        value="false">
                                                 <label for="rdoNotApplicable${method.id}">不适用</label>
@@ -224,7 +254,7 @@
                                                 </label>
                                                 <div class="x-valid">
                                                     <div class="col-sm-10">
-                                        <textarea required  placeholder="方法不适用原因" name="notApplicableReason"
+                                        <textarea required placeholder="方法不适用原因" name="notApplicableReason"
                                                   class="form-control"></textarea>
                                                     </div>
                                                 </div>
@@ -472,17 +502,20 @@
             <label class="form-control" data-name="mergeNumber">{mergeNumber}</label>
         </td>
         <%--<td>--%>
-            <%--<label class="form-control" data-name="name">--%>
-                <%--<span>{name}</span>--%>
-                <%--<a href="javascript://" onclick="programme.viewJudgeInfo(this);"--%>
-                   <%--class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>--%>
-            <%--</label>--%>
-
+        <%--<label class="form-control" data-name="name">--%>
+        <%--<span>{name}</span>--%>
+        <%--<a href="javascript://" onclick="programme.viewJudgeInfo(this);"--%>
+        <%--class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>--%>
+        <%--</label>--%>
         <%--</td>--%>
-        <td><label class="form-control" data-name="ownership">{ownership}</label></td>
-        <td><label class="form-control" data-name="seat">{seat}</label></td>
-        <td><label class="form-control" data-name="certUse">{certUse}</label></td>
-        <td><label class="form-control" data-name="practicalUse">{practicalUse}</label></td>
+        <td>
+            <label class="form-control" data-name="ownership">{ownership}
+                <a href="javascript://" onclick="programme.viewJudgeInfo(this);"
+                   class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>
+            </label></td>
+        <td><label class="form-control" data-name="seat"><span>{seat}</span></label></td>
+        <td><label class="form-control" data-name="certUseName">{certUseName}</label></td>
+        <td><label class="form-control" data-name="practicalUseName">{practicalUseName}</label></td>
         <td>
             <div class="x-valid">
                 <select class="form-control" required data-name="setUse" name="setUse{id}">
@@ -527,6 +560,169 @@
 </script>
 </body>
 </html>
+<div id="modal_inventory_right" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">他项权利</h3>
+            </div>
+            <div class="modal-body">
+                <form id="frm_inventory_right" class="form-horizontal">
+                    <input type="hidden" name="id" value="0">
+                    <div class="form-group border-bottom-line">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                附件
+                            </label>
+                            <div class="col-sm-10">
+                                <input id="inventoryRightFile" type="file" multiple="false">
+                                <div id="_inventoryRightFile"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                类型<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <select class="form-control" required id="type" name="type"
+                                        onchange="typeChange(this);">
+                                    <option value="">-请选择-</option>
+                                    <c:forEach var="items" items="${inventoryRightTypeList}">
+                                        <option value="${items.id}">${items.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                类别<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <select class="form-control" required id="category" name="category">
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                他权证编号<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="他权证编号" required
+                                       id="number" name="number"
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">登记日期<span class="symbol required"></span></label>
+                            <div class="col-sm-4">
+                                <input placeholder="登记日期" id="registerDate" name="registerDate"
+                                       data-date-format="yyyy-mm-dd" required
+                                       class="form-control date-picker dbdate" readonly="readonly">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                义务人<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="义务人" required
+                                       id="obligor" name="obligor"
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                权利人<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="权利人" required
+                                       id="obligee" name="obligee" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                登记金额
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="登记金额"
+                                       id="registerAmount" name="registerAmount" class="form-control">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                行权金额
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="行权金额"
+                                       id="actualAmount" name="actualAmount" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                登记面积
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="登记面积"
+                                       id="registerArea" name="registerArea" class="form-control">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                他权级次
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="他权级次"
+                                       id="rightRank" name="rightRank" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">开始日期</label>
+                            <div class="col-sm-4">
+                                <input placeholder="开始日期" id="beginDate"
+                                       name="beginDate" data-date-format="yyyy-mm-dd"
+                                       class="form-control date-picker dbdate" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">结束日期</label>
+                            <div class="col-sm-4">
+                                <input placeholder="结束日期" id="endDate"
+                                       name="endDate" data-date-format="yyyy-mm-dd"
+                                       class="form-control date-picker dbdate" readonly="readonly">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary" onclick="saveData()">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <%@include file="/views/share/main_footer.jsp" %>
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <script type="text/javascript">
@@ -546,6 +742,21 @@
             programme.areaMergeCancel($(this).closest('.area_panel').find('[name=areaGroupId]').val());
             e.stopPropagation();
         })
+
+        FileUtils.uploadFiles({
+            target: "inventoryRightFile",
+            showFileList: false,
+            onUpload: function (file) {//上传之前触发
+                var formData = {
+                    tableName: AssessDBKey.SurveyAssetInventoryRight,
+                    tableId: $("#frm_inventory_right").find('[name=id]').val()
+                };
+                return formData;
+            },
+            onUploadComplete: function () {
+                programme.loadInventoryRightFile($("#frm_inventory_right").find('[name=id]').val());
+            }
+        });
     })
 
     //方案
@@ -590,8 +801,8 @@
                         html = html.replace(/{declareId}/g, item.declareRecordId == undefined ? "" : item.declareRecordId);
                         html = html.replace(/{ownership}/g, item.ownership == undefined ? "" : item.ownership);
                         html = html.replace(/{seat}/g, item.seat == undefined ? "" : item.seat);
-                        html = html.replace(/{certUse}/g, item.certUse == undefined ? "" : item.certUse);
-                        html = html.replace(/{practicalUse}/g, item.practicalUse == undefined ? "" : item.practicalUse);
+                        html = html.replace(/{certUseName}/g, item.certUseName == undefined ? "" : item.certUseName);
+                        html = html.replace(/{practicalUseName}/g, item.practicalUseName == undefined ? "" : item.practicalUseName);
                         html = html.replace(/{floorArea}/g, item.floorArea == undefined ? "" : item.floorArea);
                         html = html.replace(/{evaluationArea}/g, item.evaluationArea == undefined ? "" : item.evaluationArea);
                         tbody.append(html);
@@ -773,7 +984,7 @@
     //委估对象合并
     programme.mergeJudge = function (_this) {
         programme.saveProgrammeArea($(_this).closest('.area_panel'));
-        var name = $(_this).closest('tr').find('[data-name="name"]').find('span').text();
+        var name = $(_this).closest('tr').find('[data-name="seat"]').find('span').text();
         var judgeId = $(_this).closest('tr').find('[data-name="id"]').val();
         var html = programme.config.judgeItemHtml;
         if (programme.config.judgePopIndex <= 0) {
@@ -872,6 +1083,8 @@
         data.areaGroupId = $(areaPanel).find('[name="areaGroupId"]').val();
         data.valueTimePoint = $(areaPanel).find('[name="valueTimePoint"]').val();
         data.timePointExplain = $(areaPanel).find('[name="timePointExplain"]').val();
+        data.valueDefinition = $(areaPanel).find('[name="valueDefinition"]').val();
+        data.valueConnotation = $(areaPanel).find('[name="valueConnotation"]').val();
         data.schemeJudgeObjects = [];
 
         var trs = $(areaPanel).find(".table").find("tbody").find('tr');
@@ -1107,6 +1320,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top"  onclick="programme.editInventoryRight(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top"  onclick="programme.viewInventoryRightInfo(' + index + ')"><i class="fa fa-search fa-white"></i></a>';
                 str += '</div>';
                 return str;
@@ -1124,6 +1338,61 @@
             }
         });
     };
+
+    //保存他权
+    programme.saveInventoryRight = function () {
+        var data = formParams("frm_inventory_right");
+        if ($("#frm_inventory_right").valid()) {
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/surveyAssetInventoryRight/save",
+                type: "post",
+                dataType: "json",
+                data: {formData: JSON.stringify(data)},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        programme.loadInventoryRightList();
+                        $('#modal_inventory_right').modal('hide');
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }
+    }
+
+    //编辑他权信息
+    programme.editInventoryRight = function (index) {
+        var row = $("#tb_inventory_right_list").bootstrapTable('getData')[index];
+        $("#frm_inventory_right").clearAll().initForm(row);
+        $("#registerDate").val(formatDate(row.registerDate, false));
+        $("#beginDate").val(formatDate(row.beginDate, false));
+        $("#endDate").val(formatDate(row.endDate, false));
+        AssessCommon.loadDataDicByPid(row.type, row.category, function (html) {
+            $("#category").html(html);
+        })
+
+        programme.loadInventoryRightFile(row.id);
+        $('#modal_inventory_right').modal();
+    }
+
+    //加载他权附件
+    programme.loadInventoryRightFile = function (tableId) {
+        FileUtils.getFileShows({
+            target: "inventoryRightFile",
+            formData: {
+                tableName: AssessDBKey.SurveyAssetInventoryRight,
+                tableId: tableId
+            },
+            deleteFlag: true
+        });
+    }
 
 </script>
 <script type="text/javascript">

@@ -29,6 +29,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -91,8 +92,9 @@ public class SchemeJudgeObjectService {
      * @param areaGroupId
      * @return
      */
-    public List<SchemeJudgeObject> getSchemeJudgeObjectList(Integer areaGroupId) {
-        return schemeJudgeObjectDao.getSchemeJudgeObjectList(areaGroupId);
+    public List<SchemeJudgeObjectVo> getSchemeJudgeObjectList(Integer areaGroupId) {
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectDao.getSchemeJudgeObjectList(areaGroupId);
+        return LangUtils.transform(schemeJudgeObjectList,o->getSchemeJudgeObjectVo(o));
     }
 
     public List<SchemeJudgeObject> getJudgeObjectListByProjectId(Integer projectId) {
@@ -205,16 +207,14 @@ public class SchemeJudgeObjectService {
     public SchemeJudgeObjectVo getSchemeJudgeObjectVo(SchemeJudgeObject schemeJudgeObject) {
         SchemeJudgeObjectVo schemeJudgeObjectVo = new SchemeJudgeObjectVo();
         BeanUtils.copyProperties(schemeJudgeObject, schemeJudgeObjectVo);
-        if (schemeJudgeObject.getSetUse() != null && schemeJudgeObject.getSetUse() > 0) {
-            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(schemeJudgeObject.getSetUse());
-            if (baseDataDic != null)
-                schemeJudgeObjectVo.setSetUseName(baseDataDic.getName());
+        if (StringUtils.isNotBlank(schemeJudgeObject.getCertUse())) {
+            schemeJudgeObjectVo.setCertUseName(baseDataDicService.getNameById(Integer.valueOf(schemeJudgeObject.getCertUse()) ));
         }
-        if (schemeJudgeObject.getBestUse() != null && schemeJudgeObject.getBestUse() > 0) {
-            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(schemeJudgeObject.getBestUse());
-            if (baseDataDic != null)
-                schemeJudgeObjectVo.setBestUseName(baseDataDic.getName());
+        if (StringUtils.isNotBlank(schemeJudgeObject.getPracticalUse())) {
+            schemeJudgeObjectVo.setPracticalUseName(baseDataDicService.getNameById(Integer.valueOf(schemeJudgeObject.getPracticalUse()) ));
         }
+        schemeJudgeObjectVo.setSetUseName(baseDataDicService.getNameById(schemeJudgeObject.getSetUse()));
+        schemeJudgeObjectVo.setBestUseName(baseDataDicService.getNameById(schemeJudgeObject.getBestUse()));
         return schemeJudgeObjectVo;
     }
 
@@ -359,6 +359,8 @@ public class SchemeJudgeObjectService {
         SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(schemeProgrammeDto.getAreaGroupId());
         schemeAreaGroup.setValueTimePoint(schemeProgrammeDto.getValueTimePoint());
         schemeAreaGroup.setTimePointExplain(schemeProgrammeDto.getTimePointExplain());
+        schemeAreaGroup.setValueDefinition(schemeProgrammeDto.getValueDefinition());
+        schemeAreaGroup.setValueConnotation(schemeProgrammeDto.getValueConnotation());
         schemeAreaGroupService.saveAreaGroup(schemeAreaGroup);
 
         List<SchemeJudgeObject> schemeJudgeObjects = schemeProgrammeDto.getSchemeJudgeObjects();
@@ -409,7 +411,8 @@ public class SchemeJudgeObjectService {
             ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
             ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
             ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SURE_PRICE, projectInfo.getProjectCategoryId());
-
+            ProjectPhase phaseLiquidationAnalysis = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.LIQUIDATION_ANALYSIS, projectInfo.getProjectCategoryId());
+            ProjectPhase phaseReimbursement = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.REIMBURSEMENT, projectInfo.getProjectCategoryId());
             int i = 0;
             Map<Integer, ProjectPhase> phaseMap = getProjectPhaseMap(projectInfo.getProjectCategoryId());
             for (SchemeAreaGroup schemeAreaGroup : areaGroupList) {
@@ -478,6 +481,38 @@ public class SchemeJudgeObjectService {
                             details.setBisLastLayer(true);
                             details.setSorting(100);
                             projectPlanDetailsDao.addProjectPlanDetails(details);
+                        }
+
+                        //如果是抵押评估还需添加事项，变现分析税费、法定优先受偿款
+                        if(projectInfo.getEntrustPurpose().equals(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE)){
+                            if(phaseLiquidationAnalysis!=null){
+                                ProjectPlanDetails details = new ProjectPlanDetails();
+                                details.setProjectWorkStageId(projectPlan.getWorkStageId());
+                                details.setPlanId(projectPlan.getId());
+                                details.setProjectId(projectPlan.getProjectId());
+                                details.setProjectPhaseName(phaseLiquidationAnalysis.getProjectPhaseName());
+                                details.setProjectPhaseId(phaseLiquidationAnalysis.getId());
+                                details.setJudgeObjectId(schemeJudgeObject.getId());
+                                details.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+                                details.setPid(planDetails.getId());
+                                details.setBisLastLayer(true);
+                                details.setSorting(101);
+                                projectPlanDetailsDao.addProjectPlanDetails(details);
+                            }
+                            if(phaseReimbursement!=null){
+                                ProjectPlanDetails details = new ProjectPlanDetails();
+                                details.setProjectWorkStageId(projectPlan.getWorkStageId());
+                                details.setPlanId(projectPlan.getId());
+                                details.setProjectId(projectPlan.getProjectId());
+                                details.setProjectPhaseName(phaseReimbursement.getProjectPhaseName());
+                                details.setProjectPhaseId(phaseReimbursement.getId());
+                                details.setJudgeObjectId(schemeJudgeObject.getId());
+                                details.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+                                details.setPid(planDetails.getId());
+                                details.setBisLastLayer(true);
+                                details.setSorting(102);
+                                projectPlanDetailsDao.addProjectPlanDetails(details);
+                            }
                         }
                     }
                 }

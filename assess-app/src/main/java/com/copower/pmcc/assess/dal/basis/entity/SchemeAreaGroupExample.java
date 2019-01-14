@@ -695,6 +695,136 @@ public class SchemeAreaGroupExample {
             return (Criteria) this;
         }
 
+        public Criteria andValueDefinitionIsNull() {
+            addCriterion("value_definition is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionIsNotNull() {
+            addCriterion("value_definition is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionEqualTo(Integer value) {
+            addCriterion("value_definition =", value, "valueDefinition");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionNotEqualTo(Integer value) {
+            addCriterion("value_definition <>", value, "valueDefinition");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionGreaterThan(Integer value) {
+            addCriterion("value_definition >", value, "valueDefinition");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionGreaterThanOrEqualTo(Integer value) {
+            addCriterion("value_definition >=", value, "valueDefinition");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionLessThan(Integer value) {
+            addCriterion("value_definition <", value, "valueDefinition");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionLessThanOrEqualTo(Integer value) {
+            addCriterion("value_definition <=", value, "valueDefinition");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionIn(List<Integer> values) {
+            addCriterion("value_definition in", values, "valueDefinition");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionNotIn(List<Integer> values) {
+            addCriterion("value_definition not in", values, "valueDefinition");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionBetween(Integer value1, Integer value2) {
+            addCriterion("value_definition between", value1, value2, "valueDefinition");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionNotBetween(Integer value1, Integer value2) {
+            addCriterion("value_definition not between", value1, value2, "valueDefinition");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationIsNull() {
+            addCriterion("value_connotation is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationIsNotNull() {
+            addCriterion("value_connotation is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationEqualTo(String value) {
+            addCriterion("value_connotation =", value, "valueConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationNotEqualTo(String value) {
+            addCriterion("value_connotation <>", value, "valueConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationGreaterThan(String value) {
+            addCriterion("value_connotation >", value, "valueConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationGreaterThanOrEqualTo(String value) {
+            addCriterion("value_connotation >=", value, "valueConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationLessThan(String value) {
+            addCriterion("value_connotation <", value, "valueConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationLessThanOrEqualTo(String value) {
+            addCriterion("value_connotation <=", value, "valueConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationLike(String value) {
+            addCriterion("value_connotation like", value, "valueConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationNotLike(String value) {
+            addCriterion("value_connotation not like", value, "valueConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationIn(List<String> values) {
+            addCriterion("value_connotation in", values, "valueConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationNotIn(List<String> values) {
+            addCriterion("value_connotation not in", values, "valueConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationBetween(String value1, String value2) {
+            addCriterion("value_connotation between", value1, value2, "valueConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationNotBetween(String value1, String value2) {
+            addCriterion("value_connotation not between", value1, value2, "valueConnotation");
+            return (Criteria) this;
+        }
+
         public Criteria andBisEnableIsNull() {
             addCriterion("bis_enable is null");
             return (Criteria) this;

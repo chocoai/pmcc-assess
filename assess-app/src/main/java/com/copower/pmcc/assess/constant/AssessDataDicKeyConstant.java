@@ -12,6 +12,7 @@ public class AssessDataDicKeyConstant {
      * 基础数据
      */
     public static final String DATA_ENTRUSTMENT_PURPOSE = "data.entrustment.purpose";//委托目的
+    public static final String DATA_ENTRUSTMENT_PURPOSE_MORTGAGE = "data.entrustment.purpose.mortgage";//委托目的-抵押评估
     public static final String DATA_EVALUATION_METHOD = "data.evaluation.method";//评估方法
     public static final String DATA_BUILDING_NEW_RATE_USE = "data.building.new.rate.use";//建筑成新率用途
     public static final String DATA_EARLYWARNING_TYPE = "data.earlywarning.type";  //预警类型
@@ -81,8 +82,11 @@ public class AssessDataDicKeyConstant {
     public static final String DATA_TAX_RATE_ALLOCATION_PROPERTY_TAX = "data.tax.rate.allocation.property.tax"; //房产税
     public static final String DATA_TAX_RATE_ALLOCATION_LAND_INCREMENT_TAX = "data.tax.rate.allocation.land.increment.tax"; //土地增值税
     public static final String DATA_TAX_RATE_ALLOCATION_LAND_REPLACEMENT_VALUE = "data.tax.rate.allocation.land.replacement.value"; //重置价格
+    public static final String DATA_TAX_RATE_ALLOCATION_TRANSACTION_CHARGES = "data.tax.rate.allocation.transaction.charges"; //交易手续费
+    public static final String DATA_TAX_RATE_ALLOCATION_OTHER_TAXES_FEE = "data.tax.rate.allocation.other.taxes.fee"; //其它税费
 
     /**
      * 工作方案
      */
+    public static final String PROGRAMME_VALUE_DEFINITION = "programme.value.definition"; //价值定义
 }

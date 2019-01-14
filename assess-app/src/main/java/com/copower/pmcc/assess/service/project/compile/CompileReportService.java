@@ -71,33 +71,6 @@ public class CompileReportService {
                 projectPlanDetails.setBisLastLayer(false);
                 projectPlanDetails.setSorting(i++);
                 projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
-
-                int j = 1;
-                Integer pid = 0;
-
-                List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getSchemeJudgeObjectList(schemeAreaGroup.getId());
-                //二级分类 评估对象
-                pid = projectPlanDetails.getId();
-
-                String name = "";
-                Integer projectPhaseId = 0;
-                if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-                    for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                        name = schemeJudgeObject.getName();
-                        projectPhaseId = schemeJudgeObject.getId();
-                        ProjectPlanDetails projectPlanDetailTwo = new ProjectPlanDetails();
-                        projectPlanDetailTwo.setProjectWorkStageId(workStageId);
-                        projectPlanDetailTwo.setPlanId(planId);
-                        projectPlanDetailTwo.setProjectId(projectId);
-                        projectPlanDetailTwo.setProjectPhaseName(name);
-                        projectPlanDetailTwo.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-                        projectPlanDetailTwo.setPid(pid);
-                        projectPlanDetailTwo.setFirstPid(pid);
-                        projectPlanDetailTwo.setProjectPhaseId(projectPhaseId);
-                        projectPlanDetailTwo.setSorting(j++);
-                        projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetailTwo);
-                    }
-                }
             }
         }
     }

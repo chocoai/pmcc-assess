@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.project.survey;
 
 
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryContentDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryContent;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetInventoryContentVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -57,11 +56,7 @@ public class SurveyAssetInventoryContentService {
         return LangUtils.transform(list, p -> {
             SurveyAssetInventoryContentVo surveyAssetInventoryContentVo = new SurveyAssetInventoryContentVo();
             BeanUtils.copyProperties(p, surveyAssetInventoryContentVo);
-            if (p.getInventoryContent() != null) {
-                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(Integer.valueOf(p.getInventoryContent()));
-                if (baseDataDic != null)
-                    surveyAssetInventoryContentVo.setInventoryContentName(baseDataDic.getName());
-            }
+            surveyAssetInventoryContentVo.setInventoryContentName(baseDataDicService.getNameById(p.getInventoryContent()));
             return surveyAssetInventoryContentVo;
         });
     }
