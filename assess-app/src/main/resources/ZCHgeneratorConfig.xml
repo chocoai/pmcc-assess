@@ -41,7 +41,7 @@
         <!-- 具体表 -->
 
 
-        <table tableName="tb_initiate_unit_information" domainObjectName="InitiateUnitInformation">
+        <table tableName="tb_base_report_field" domainObjectName="BaseReportField">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
