@@ -7,13 +7,11 @@ import com.copower.pmcc.assess.common.enums.CsrBorrowerEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessFieldNameConstant;
 import com.copower.pmcc.assess.constant.AssessTableNameConstant;
-import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.basis.dao.csr.CsrBorrowerDao;
 import com.copower.pmcc.assess.dal.basis.dao.csr.CsrBorrowerEnteringDao;
-import com.copower.pmcc.assess.dto.input.base.BaseReportTemplateFilesDto;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerEnteringVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerVo;
-import com.copower.pmcc.assess.dto.output.report.BaseReportTemplateVo;
 import com.copower.pmcc.assess.service.BaseReportService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -41,8 +39,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -109,8 +105,8 @@ public class CsrBorrowerService {
         return vo;
     }
 
-    public CsrBorrower getCsrBorrowerByID(Integer id){
-        id = Preconditions.checkNotNull(id,"不能为null");
+    public CsrBorrower getCsrBorrowerByID(Integer id) {
+        id = Preconditions.checkNotNull(id, "不能为null");
         return csrBorrowerDao.getCsrBorrowerByID(id);
     }
 
@@ -159,7 +155,7 @@ public class CsrBorrowerService {
     private ResponseEntity<byte[]> appleDownloadSysAttachmentDto(List<String> filePaths, String zipName, HttpServletRequest request) throws Exception {
         ResponseEntity<byte[]> responseEntity = null;
         String localDirPath = baseAttachmentService.createTempDirPath();
-        String zipPathAndName =  localDirPath + zipName;
+        String zipPathAndName = localDirPath + zipName;
         List<File> fileList = new ArrayList<>();
         for (int i = 0; i < filePaths.size(); i++) {
             fileList.add(new File(filePaths.get(i)));
@@ -184,7 +180,7 @@ public class CsrBorrowerService {
         List<SysAttachmentDto> baseAttachments = new ArrayList<>();
         for (int i = 0; i < ids.length; i++) {
             if (!org.springframework.util.StringUtils.isEmpty(ids[i])) {
-                List<SysAttachmentDto> baseAttachmentList = baseAttachmentService.getByField_tableId(Integer.parseInt(ids[i]), report,null);
+                List<SysAttachmentDto> baseAttachmentList = baseAttachmentService.getByField_tableId(Integer.parseInt(ids[i]), report, null);
                 baseAttachments.addAll(baseAttachmentList);
             }
         }
@@ -192,7 +188,7 @@ public class CsrBorrowerService {
             String localDirPath = request.getSession().getServletContext().getRealPath("/") + CsrBorrowerEnum.CSR_BORROWER_ENUM.getFilePath();
             String localFileName = UUID.randomUUID().toString().substring(0, 7) + CsrBorrowerEnum.ZIP_NAME.getFilePath() + "." + baseAttachment.getFileExtension();
             //临时下载
-            String s = readImportData(localDirPath, localFileName, baseAttachment,report);
+            String s = readImportData(localDirPath, localFileName, baseAttachment, report);
             //收集 临时目录地址
 //            filePaths.add(localDirPath + localFileName);
             filePaths.add(s);
@@ -202,19 +198,20 @@ public class CsrBorrowerService {
 
     /**
      * 查找附件 并且把附件下载到临时的目录下
+     *
      * @param tableID
      * @return
      */
-    private List<String> changeSysAttachmentDto(Integer tableID){
+    private List<String> changeSysAttachmentDto(Integer tableID) {
         List<String> filePaths = new ArrayList<>();
         String localDirPath = baseAttachmentService.createTempDirPath();
-        List<SysAttachmentDto> baseAttachmentList = baseAttachmentService.getByField_tableId(tableID,AssessFieldNameConstant.CSR_BORROWER_EXPORT, AssessTableNameConstant.CSR_REPORT_TEMPLATE_FILES);
-        for (SysAttachmentDto baseAttachment:baseAttachmentList){
-            if (!ObjectUtils.isEmpty(baseAttachment)){
+        List<SysAttachmentDto> baseAttachmentList = baseAttachmentService.getByField_tableId(tableID, AssessFieldNameConstant.CSR_BORROWER_EXPORT, AssessTableNameConstant.CSR_REPORT_TEMPLATE_FILES);
+        for (SysAttachmentDto baseAttachment : baseAttachmentList) {
+            if (!ObjectUtils.isEmpty(baseAttachment)) {
                 String fileSuffix = baseAttachment.getFileExtension();
-                String localFileName = UUID.randomUUID().toString().substring(0, 7)  + "." + fileSuffix;
+                String localFileName = UUID.randomUUID().toString().substring(0, 7) + "." + fileSuffix;
                 //临时下载
-                String ss = readImportData(localDirPath, localFileName, baseAttachment,AssessFieldNameConstant.CSR_BORROWER_REPORT);
+                String ss = readImportData(localDirPath, localFileName, baseAttachment, AssessFieldNameConstant.CSR_BORROWER_REPORT);
                 //必须保证 baseAttachmentList size==1 的情况下才能这样做 ,因为在当前情况是唯一
 //                filePaths.add(localDirPath +"/"+ localFileName);//第一个存入地址
                 filePaths.add(ss);//第一个存入地址
@@ -232,22 +229,22 @@ public class CsrBorrowerService {
      * @param localFileName
      * @param baseAttachment
      */
-    private String readImportData(String localDirPath, String localFileName, SysAttachmentDto baseAttachment,String fileName) {
+    private String readImportData(String localDirPath, String localFileName, SysAttachmentDto baseAttachment, String fileName) {
         try {
             String s = baseAttachmentService.downloadFtpFileToLocal(baseAttachment.getId());
-            if (!org.springframework.util.StringUtils.isEmpty(s)){
+            if (!org.springframework.util.StringUtils.isEmpty(s)) {
                 return s;
             }
         } catch (Exception e1) {
             e1.printStackTrace();
         }
-        List<SysAttachmentDto> attachmentList = baseAttachmentService.getByField_tableId(baseAttachment.getTableId(), fileName,null);
+        List<SysAttachmentDto> attachmentList = baseAttachmentService.getByField_tableId(baseAttachment.getTableId(), fileName, null);
         if (CollectionUtils.isNotEmpty(attachmentList)) {
             SysAttachmentDto sysAttachment = attachmentList.get(0);
             String fullPath = localDirPath + File.separator + localFileName;
             if (!com.copower.pmcc.erp.common.utils.FileUtils.checkFileExists(new File(fullPath))) {
                 try {
-//                    ftpUtilsExtense.downloadFileToLocal(sysAttachment.getFtpFilesName(), sysAttachment.getFilePath(), localFileName, localDirPath);
+//                    ftpUtilsExtense.downloadFileToLocal(sysAttachment.getFtpName(), sysAttachment.getFilePath(), localFileName, localDirPath);
                 } catch (Exception e) {
                     //拷贝失败
                     logger.error(e.getMessage(), e);
@@ -368,30 +365,30 @@ public class CsrBorrowerService {
         return csrBorrowerEnteringVo;
     }
 
-    public ResponseEntity<byte[]>  exportFormBorrowers(HttpServletRequest request, HttpServletResponse response,Integer csrProjectInfoID){
+    public ResponseEntity<byte[]> exportFormBorrowers(HttpServletRequest request, HttpServletResponse response, Integer csrProjectInfoID) {
         ResponseEntity<byte[]> responseEntity = null;
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
         CsrProjectInfo csrProjectInfo = csrProjectInfoService.getById(csrProjectInfoID);
-        BaseReportTemplateFilesDto baseReportTemplateFilesDto = null;
-        baseReportTemplateFilesDto = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(),baseDataDic.getId(),0,csrProjectInfo.getProjectTypeId(),csrProjectInfo.getProjectCategoryId());
-        responseEntity = toExportFormBorrowers(request,response,baseReportTemplateFilesDto,csrProjectInfoID);
-        return  responseEntity;
+        BaseReportTemplate baseReportTemplate = null;
+        baseReportTemplate = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(), baseDataDic.getId(), 0, csrProjectInfo.getProjectTypeId(), csrProjectInfo.getProjectCategoryId());
+        responseEntity = toExportFormBorrowers(request, response, baseReportTemplate, csrProjectInfoID);
+        return responseEntity;
     }
 
-    private ResponseEntity<byte[]> toExportFormBorrowers(HttpServletRequest request, HttpServletResponse response,BaseReportTemplateFilesDto templateFilesDto,Integer csrProjectInfoID){
+    private ResponseEntity<byte[]> toExportFormBorrowers(HttpServletRequest request, HttpServletResponse response, BaseReportTemplate templateDto, Integer csrProjectInfoID) {
         ResponseEntity<byte[]> responseEntity = null;
         CsrBorrowerMortgage csrBorrowerMortgage = null;
         Integer dataIndex = null;
         List<CsrBorrowerMortgage> csrBorrowerMortgages = csrBorrowerMortgageService.getCsrProjectMortgages(csrProjectInfoID);
         //获取下载到临时目录的模型报表文件 这里可能是word 也可能是 excel
-        List<String> filePaths = changeSysAttachmentDto(templateFilesDto.getBaseReportTemplateFiles().getId());
+        List<String> filePaths = changeSysAttachmentDto(null);
         Set<CsrBorrower> csrBorrowers = new HashSet<>();
-        if(!ObjectUtils.isEmpty(csrBorrowerMortgages)){
+        if (!ObjectUtils.isEmpty(csrBorrowerMortgages)) {
             for (int i = 0; i < csrBorrowerMortgages.size(); i++) {
                 csrBorrowerMortgage = csrBorrowerMortgages.get(i);
-                if (!ObjectUtils.isEmpty(csrBorrowerMortgage)){
+                if (!ObjectUtils.isEmpty(csrBorrowerMortgage)) {
                     CsrBorrower csrBorrower = getCsrBorrowerByID(Integer.parseInt(csrBorrowerMortgage.getBorrowerId()));
-                    if (!ObjectUtils.isEmpty(csrBorrower)){
+                    if (!ObjectUtils.isEmpty(csrBorrower)) {
                         csrBorrowers.add(csrBorrower);
                         dataIndex = csrBorrowerMortgage.getExcelRowIndex();
                     }
@@ -400,19 +397,19 @@ public class CsrBorrowerService {
         }
         //根据模型约定只会有一个模型文件
         String filePath = filePaths.get(0);
-        List<Map<String, Object>> mapList = getBookmarkContent(templateFilesDto.getBaseReportTemplateVoList(),csrBorrowers);
+        List<Map<String, Object>> mapList = null;
 //        responseEntity = writeCsrBorrowerModel(filePath,mapList);
         try {
-            if (ObjectUtils.isEmpty(dataIndex)){
+            if (ObjectUtils.isEmpty(dataIndex)) {
                 dataIndex = 6;
             }
-            exportReportExcel(filePath,dataIndex,mapList);
+            exportReportExcel(filePath, dataIndex, mapList);
             byte[] bytes = org.apache.commons.io.FileUtils.readFileToByteArray(new File(filePath));
             responseEntity = FileUtils.getFileUtils().createResponse(filePaths.get(1), bytes);
-        }catch (Exception e){
+        } catch (Exception e) {
             try {
                 throw e;
-            }catch (Exception e1){
+            } catch (Exception e1) {
 
             }
         }
@@ -420,87 +417,53 @@ public class CsrBorrowerService {
     }
 
     @Deprecated
-    private ResponseEntity<byte[]> writeCsrBorrowerModel(String filePath,List<Map<String, String>> mapList){
+    private ResponseEntity<byte[]> writeCsrBorrowerModel(String filePath, List<Map<String, String>> mapList) {
         ResponseEntity<byte[]> responseEntity = null;
         String localDirPath = baseAttachmentService.createTempDirPath();
         List<File> fileList = new ArrayList<>();
         //暂时先写死
-        String suffix = "doc" ;
-        String zipName = "数据回写"+UUID.randomUUID().toString().substring(0, 4) + ".zip" ;
-        String zipPath = localDirPath+"/"+zipName;
+        String suffix = "doc";
+        String zipName = "数据回写" + UUID.randomUUID().toString().substring(0, 4) + ".zip";
+        String zipPath = localDirPath + "/" + zipName;
         try {
-            for (Map<String, String> map:mapList){
-                String path = localDirPath+"/" +UUID.randomUUID().toString().substring(0,4)+"."+suffix;
-                org.apache.commons.io.FileUtils.copyFile(new File(filePath),new File(path));
-                if (!ObjectUtils.isEmpty(map)){
-                    AsposeUtils.replaceBookmark(path,map);
+            for (Map<String, String> map : mapList) {
+                String path = localDirPath + "/" + UUID.randomUUID().toString().substring(0, 4) + "." + suffix;
+                org.apache.commons.io.FileUtils.copyFile(new File(filePath), new File(path));
+                if (!ObjectUtils.isEmpty(map)) {
+                    AsposeUtils.replaceBookmark(path, map);
                     fileList.add(new File(path));
                 }
             }
             byte[] bytes = FileUtils.getZipFile(fileList, zipPath);
             responseEntity = FileUtils.getFileUtils().createResponse(zipName, bytes);
-        }catch (Exception e){
+        } catch (Exception e) {
             try {
                 throw e;
-            }catch (Exception e1){
+            } catch (Exception e1) {
 
             }
         }
         return responseEntity;
     }
 
-    private List<Map<String, Object>> getBookmarkContent(List<BaseReportTemplateVo> baseReportTemplateList, Set<CsrBorrower> csrBorrowers){
-        List<Map<String, Object>> mapList = new ArrayList<>();
-        Map<String, Object> stringMap = null;
-        final String tableName =  "tb_csr_borrower" ;
-        for (CsrBorrower csrBorrower:csrBorrowers){
-            if (!ObjectUtils.isEmpty(csrBorrower)){
-                stringMap = new HashMap<>();
-                for (BaseReportTemplateVo baseReportTemplate:baseReportTemplateList){
-                    if (!ObjectUtils.isEmpty(baseReportTemplate)){
-                        String key = baseReportTemplate.getBookmarkName();
-                        try {
-                            String keyValue = equalsCsrBorrowerFieldName(CsrBorrower.class,baseReportTemplate.getColumnName());
-                            if (!org.springframework.util.StringUtils.isEmpty(keyValue)){
-                                final BeanWrapper src = new BeanWrapperImpl(csrBorrower);
-                                Object srcValue = src.getPropertyValue(keyValue);
-                                if (!org.springframework.util.StringUtils.isEmpty(srcValue)){
-                                    stringMap.put(key,(String) srcValue);
-                                }
-                            }
-                        }catch (Exception e){
-                            try {
-                                logger.error("异常! --------> "+e.getMessage());
-                                throw e;
-                            }catch (Exception e1){
-
-                            }
-                        }
-                    }
-                }
-                mapList.add(stringMap);
-            }
-        }
-        return mapList;
-    }
-
     /**
      * 利用反射 获取成员变量 和 数据字段进行比较
+     *
      * @param csrBorrowerClass
      * @param fieldName
      * @return
      */
-    public String equalsCsrBorrowerFieldName(Class<CsrBorrower> csrBorrowerClass,String fieldName){
+    public String equalsCsrBorrowerFieldName(Class<CsrBorrower> csrBorrowerClass, String fieldName) {
         Field[] fields = csrBorrowerClass.getDeclaredFields();
-        String[] strings = fieldName.split("_") ;
+        String[] strings = fieldName.split("_");
         StringBuilder builder = new StringBuilder(1024);
-        for (String s:strings){
+        for (String s : strings) {
             builder.append(s);
         }
-        for (Field field:fields){
+        for (Field field : fields) {
             String name = field.getName();
-            if (!org.springframework.util.StringUtils.isEmpty(fieldName)){
-                if (name.equalsIgnoreCase(builder.toString())){
+            if (!org.springframework.util.StringUtils.isEmpty(fieldName)) {
+                if (name.equalsIgnoreCase(builder.toString())) {
                     return name;
                 }
 
@@ -509,16 +472,15 @@ public class CsrBorrowerService {
         return null;
     }
 
-    private String getDataBaseField(List<KeyValueDto>  keyValueDtos,String field){
-        String temp = "" ;
-        for (KeyValueDto keyValue:keyValueDtos){
-            if (Objects.equal(keyValue.getKey(),field)){
+    private String getDataBaseField(List<KeyValueDto> keyValueDtos, String field) {
+        String temp = "";
+        for (KeyValueDto keyValue : keyValueDtos) {
+            if (Objects.equal(keyValue.getKey(), field)) {
                 temp = keyValue.getKey();
             }
         }
         return temp;
     }
-
 
 
     /**
@@ -539,18 +501,18 @@ public class CsrBorrowerService {
                 throw new Exception("数据列表非法");
 //            Workbook workbook = PoiUtils.isExcel2003(filePath) ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
             Workbook workbook = null;
-            String suffix = filePath.substring(filePath.length()-4,filePath.length());
+            String suffix = filePath.substring(filePath.length() - 4, filePath.length());
             try {
-                if (Objects.equal("xlsx",suffix)){//07版
-                    workbook = new XSSFWorkbook(inputStream) ;
-                }else {
-                    workbook = new HSSFWorkbook(inputStream) ;
+                if (Objects.equal("xlsx", suffix)) {//07版
+                    workbook = new XSSFWorkbook(inputStream);
+                } else {
+                    workbook = new HSSFWorkbook(inputStream);
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 try {
-                    logger.error("----------->"+e.getMessage());
+                    logger.error("----------->" + e.getMessage());
                     throw e;
-                }catch (Exception e1){
+                } catch (Exception e1) {
 
                 }
             }
@@ -562,19 +524,19 @@ public class CsrBorrowerService {
             for (int i = dataIndex; i < size; i++) {
 //                row = sheet.getRow(i);//行
                 row = sheet.createRow(i);//行
-                if (!ObjectUtils.isEmpty(row)){
+                if (!ObjectUtils.isEmpty(row)) {
                     Map<String, Object> objectMap = mapList.get(i);
-                    if (!ObjectUtils.isEmpty(objectMap)){
+                    if (!ObjectUtils.isEmpty(objectMap)) {
                         for (Map.Entry<String, Object> objectEntry : objectMap.entrySet()) {
-                            if (!ObjectUtils.isEmpty(objectEntry)){
+                            if (!ObjectUtils.isEmpty(objectEntry)) {
                                 String key = objectEntry.getKey();
                                 Object value = objectEntry.getValue();
                                 Integer cellIndex = getReportExcelColumn(report, key);
-                                if (!ObjectUtils.isEmpty(cellIndex)){
+                                if (!ObjectUtils.isEmpty(cellIndex)) {
 //                                    cell = row.getCell(cellIndex);//列
                                     cell = row.createCell(cellIndex);//列
                                     if (cell != null) {
-                                        if (!ObjectUtils.isEmpty(value)){
+                                        if (!ObjectUtils.isEmpty(value)) {
 //                                            cell.setCellStyle(PoiUtils.getStyle(workbook));
                                             PoiUtils.setStyle(cellStyle);//设置边框
                                             cell.setCellStyle(cellStyle);
@@ -611,8 +573,8 @@ public class CsrBorrowerService {
                     temp = integerEntry.getValue();
                 }
             }
-        }catch (Exception e){
-            logger.error("exception:"+e.getMessage());
+        } catch (Exception e) {
+            logger.error("exception:" + e.getMessage());
         }
         return temp;
     }
@@ -631,18 +593,18 @@ public class CsrBorrowerService {
         Map<String, Integer> integerMap = new HashMap<>();
         File file = new File(filePath);
         FileInputStream inputStream = new FileInputStream(file);
-        if (file.isFile()){
+        if (file.isFile()) {
 //            logger.info("测试!  "  +"------------");
         }
-        if (file.exists()){
+        if (file.exists()) {
 //            logger.info("测试!  "  +"..............");
         }
 //        Workbook workbook = PoiUtils.isExcel2003(filePath) ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
 //        Workbook workbook = null;
-        String suffix = filePath.substring(filePath.length()-4,filePath.length());
+        String suffix = filePath.substring(filePath.length() - 4, filePath.length());
         try {
-            if (Objects.equal("xlsx",suffix)){//07版
-                XSSFWorkbook workbook = new XSSFWorkbook(inputStream) ;
+            if (Objects.equal("xlsx", suffix)) {//07版
+                XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
                 //暂时只取第一个工作表
                 Sheet sheet = workbook.getSheetAt(0);
                 //因为是第一行作为key所以只取第一行
@@ -661,8 +623,8 @@ public class CsrBorrowerService {
                         }
                     }
                 }
-            }else {
-                HSSFWorkbook  workbook = new HSSFWorkbook(inputStream) ;
+            } else {
+                HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
                 //暂时只取第一个工作表
                 Sheet sheet = workbook.getSheetAt(0);
                 //因为是第一行作为key所以只取第一行
@@ -682,11 +644,11 @@ public class CsrBorrowerService {
                     }
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             try {
-                logger.error("----------->"+e.getMessage());
+                logger.error("----------->" + e.getMessage());
                 throw e;
-            }catch (Exception e1){
+            } catch (Exception e1) {
 
             }
         }

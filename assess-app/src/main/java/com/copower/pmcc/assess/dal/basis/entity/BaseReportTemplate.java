@@ -5,19 +5,19 @@ import java.util.Date;
 public class BaseReportTemplate {
     private Integer id;
 
-    private String bookmarkName;
+    private String name;
 
-    private String bookmarkNameCn;
+    private Integer useUnit;
 
-    private Integer dataPoolType;
+    private Integer type;
 
-    private Integer dataPoolTableId;
+    private Integer category;
 
-    private Integer dataPoolColumnsId;
+    private Integer reportType;
 
-    private Integer dataPoolTemplateId;
+    private Integer entrustPurpose;
 
-    private Integer pid;
+    private Integer insertRowIndex;
 
     private Boolean bisEnable;
 
@@ -27,16 +27,6 @@ public class BaseReportTemplate {
 
     private Date gmtModified;
 
-    private Integer customerId;
-
-    private Integer entrustId;
-
-    private Integer reportTypeId;
-
-    private Integer csType;
-
-    private Integer templateType;
-
     public Integer getId() {
         return id;
     }
@@ -45,60 +35,60 @@ public class BaseReportTemplate {
         this.id = id;
     }
 
-    public String getBookmarkName() {
-        return bookmarkName;
+    public String getName() {
+        return name;
     }
 
-    public void setBookmarkName(String bookmarkName) {
-        this.bookmarkName = bookmarkName == null ? null : bookmarkName.trim();
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
-    public String getBookmarkNameCn() {
-        return bookmarkNameCn;
+    public Integer getUseUnit() {
+        return useUnit;
     }
 
-    public void setBookmarkNameCn(String bookmarkNameCn) {
-        this.bookmarkNameCn = bookmarkNameCn == null ? null : bookmarkNameCn.trim();
+    public void setUseUnit(Integer useUnit) {
+        this.useUnit = useUnit;
     }
 
-    public Integer getDataPoolType() {
-        return dataPoolType;
+    public Integer getType() {
+        return type;
     }
 
-    public void setDataPoolType(Integer dataPoolType) {
-        this.dataPoolType = dataPoolType;
+    public void setType(Integer type) {
+        this.type = type;
     }
 
-    public Integer getDataPoolTableId() {
-        return dataPoolTableId;
+    public Integer getCategory() {
+        return category;
     }
 
-    public void setDataPoolTableId(Integer dataPoolTableId) {
-        this.dataPoolTableId = dataPoolTableId;
+    public void setCategory(Integer category) {
+        this.category = category;
     }
 
-    public Integer getDataPoolColumnsId() {
-        return dataPoolColumnsId;
+    public Integer getReportType() {
+        return reportType;
     }
 
-    public void setDataPoolColumnsId(Integer dataPoolColumnsId) {
-        this.dataPoolColumnsId = dataPoolColumnsId;
+    public void setReportType(Integer reportType) {
+        this.reportType = reportType;
     }
 
-    public Integer getDataPoolTemplateId() {
-        return dataPoolTemplateId;
+    public Integer getEntrustPurpose() {
+        return entrustPurpose;
     }
 
-    public void setDataPoolTemplateId(Integer dataPoolTemplateId) {
-        this.dataPoolTemplateId = dataPoolTemplateId;
+    public void setEntrustPurpose(Integer entrustPurpose) {
+        this.entrustPurpose = entrustPurpose;
     }
 
-    public Integer getPid() {
-        return pid;
+    public Integer getInsertRowIndex() {
+        return insertRowIndex;
     }
 
-    public void setPid(Integer pid) {
-        this.pid = pid;
+    public void setInsertRowIndex(Integer insertRowIndex) {
+        this.insertRowIndex = insertRowIndex;
     }
 
     public Boolean getBisEnable() {
@@ -131,45 +121,5 @@ public class BaseReportTemplate {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
-    }
-
-    public Integer getEntrustId() {
-        return entrustId;
-    }
-
-    public void setEntrustId(Integer entrustId) {
-        this.entrustId = entrustId;
-    }
-
-    public Integer getReportTypeId() {
-        return reportTypeId;
-    }
-
-    public void setReportTypeId(Integer reportTypeId) {
-        this.reportTypeId = reportTypeId;
-    }
-
-    public Integer getCsType() {
-        return csType;
-    }
-
-    public void setCsType(Integer csType) {
-        this.csType = csType;
-    }
-
-    public Integer getTemplateType() {
-        return templateType;
-    }
-
-    public void setTemplateType(Integer templateType) {
-        this.templateType = templateType;
     }
 }

@@ -3,22 +3,17 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BaseReportTemplateMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BaseReportTemplate" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="bookmark_name" property="bookmarkName" jdbcType="VARCHAR" />
-    <result column="bookmark_name_cn" property="bookmarkNameCn" jdbcType="VARCHAR" />
-    <result column="data_pool_type" property="dataPoolType" jdbcType="INTEGER" />
-    <result column="data_pool_table_id" property="dataPoolTableId" jdbcType="INTEGER" />
-    <result column="data_pool_columns_id" property="dataPoolColumnsId" jdbcType="INTEGER" />
-    <result column="data_pool_template_id" property="dataPoolTemplateId" jdbcType="INTEGER" />
-    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="use_unit" property="useUnit" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="category" property="category" jdbcType="INTEGER" />
+    <result column="report_type" property="reportType" jdbcType="INTEGER" />
+    <result column="entrust_purpose" property="entrustPurpose" jdbcType="INTEGER" />
+    <result column="insert_row_index" property="insertRowIndex" jdbcType="INTEGER" />
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="customer_id" property="customerId" jdbcType="INTEGER" />
-    <result column="entrust_id" property="entrustId" jdbcType="INTEGER" />
-    <result column="report_type_id" property="reportTypeId" jdbcType="INTEGER" />
-    <result column="cs_type" property="csType" jdbcType="INTEGER" />
-    <result column="template_type" property="templateType" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -79,9 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, bookmark_name, bookmark_name_cn, data_pool_type, data_pool_table_id, data_pool_columns_id, 
-    data_pool_template_id, pid, bis_enable, creator, gmt_created, gmt_modified, customer_id, 
-    entrust_id, report_type_id, cs_type, template_type
+    id, name, use_unit, type, category, report_type, entrust_purpose, insert_row_index, 
+    bis_enable, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BaseReportTemplateExample" >
     select
@@ -117,18 +111,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_base_report_template (bookmark_name, bookmark_name_cn, data_pool_type, 
-      data_pool_table_id, data_pool_columns_id, data_pool_template_id, 
-      pid, bis_enable, creator, 
-      gmt_created, gmt_modified, customer_id, 
-      entrust_id, report_type_id, cs_type, 
-      template_type)
-    values (#{bookmarkName,jdbcType=VARCHAR}, #{bookmarkNameCn,jdbcType=VARCHAR}, #{dataPoolType,jdbcType=INTEGER}, 
-      #{dataPoolTableId,jdbcType=INTEGER}, #{dataPoolColumnsId,jdbcType=INTEGER}, #{dataPoolTemplateId,jdbcType=INTEGER}, 
-      #{pid,jdbcType=INTEGER}, #{bisEnable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{customerId,jdbcType=INTEGER}, 
-      #{entrustId,jdbcType=INTEGER}, #{reportTypeId,jdbcType=INTEGER}, #{csType,jdbcType=INTEGER}, 
-      #{templateType,jdbcType=INTEGER})
+    insert into tb_base_report_template (name, use_unit, type, 
+      category, report_type, entrust_purpose, 
+      insert_row_index, bis_enable, creator, 
+      gmt_created, gmt_modified)
+    values (#{name,jdbcType=VARCHAR}, #{useUnit,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+      #{category,jdbcType=INTEGER}, #{reportType,jdbcType=INTEGER}, #{entrustPurpose,jdbcType=INTEGER}, 
+      #{insertRowIndex,jdbcType=INTEGER}, #{bisEnable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BaseReportTemplate" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -136,26 +126,26 @@
     </selectKey>
     insert into tb_base_report_template
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="bookmarkName != null" >
-        bookmark_name,
+      <if test="name != null" >
+        name,
       </if>
-      <if test="bookmarkNameCn != null" >
-        bookmark_name_cn,
+      <if test="useUnit != null" >
+        use_unit,
       </if>
-      <if test="dataPoolType != null" >
-        data_pool_type,
+      <if test="type != null" >
+        type,
       </if>
-      <if test="dataPoolTableId != null" >
-        data_pool_table_id,
+      <if test="category != null" >
+        category,
       </if>
-      <if test="dataPoolColumnsId != null" >
-        data_pool_columns_id,
+      <if test="reportType != null" >
+        report_type,
       </if>
-      <if test="dataPoolTemplateId != null" >
-        data_pool_template_id,
+      <if test="entrustPurpose != null" >
+        entrust_purpose,
       </if>
-      <if test="pid != null" >
-        pid,
+      <if test="insertRowIndex != null" >
+        insert_row_index,
       </if>
       <if test="bisEnable != null" >
         bis_enable,
@@ -169,43 +159,28 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="customerId != null" >
-        customer_id,
-      </if>
-      <if test="entrustId != null" >
-        entrust_id,
-      </if>
-      <if test="reportTypeId != null" >
-        report_type_id,
-      </if>
-      <if test="csType != null" >
-        cs_type,
-      </if>
-      <if test="templateType != null" >
-        template_type,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="bookmarkName != null" >
-        #{bookmarkName,jdbcType=VARCHAR},
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
       </if>
-      <if test="bookmarkNameCn != null" >
-        #{bookmarkNameCn,jdbcType=VARCHAR},
+      <if test="useUnit != null" >
+        #{useUnit,jdbcType=INTEGER},
       </if>
-      <if test="dataPoolType != null" >
-        #{dataPoolType,jdbcType=INTEGER},
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
       </if>
-      <if test="dataPoolTableId != null" >
-        #{dataPoolTableId,jdbcType=INTEGER},
+      <if test="category != null" >
+        #{category,jdbcType=INTEGER},
       </if>
-      <if test="dataPoolColumnsId != null" >
-        #{dataPoolColumnsId,jdbcType=INTEGER},
+      <if test="reportType != null" >
+        #{reportType,jdbcType=INTEGER},
       </if>
-      <if test="dataPoolTemplateId != null" >
-        #{dataPoolTemplateId,jdbcType=INTEGER},
+      <if test="entrustPurpose != null" >
+        #{entrustPurpose,jdbcType=INTEGER},
       </if>
-      <if test="pid != null" >
-        #{pid,jdbcType=INTEGER},
+      <if test="insertRowIndex != null" >
+        #{insertRowIndex,jdbcType=INTEGER},
       </if>
       <if test="bisEnable != null" >
         #{bisEnable,jdbcType=BIT},
@@ -218,21 +193,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="customerId != null" >
-        #{customerId,jdbcType=INTEGER},
-      </if>
-      <if test="entrustId != null" >
-        #{entrustId,jdbcType=INTEGER},
-      </if>
-      <if test="reportTypeId != null" >
-        #{reportTypeId,jdbcType=INTEGER},
-      </if>
-      <if test="csType != null" >
-        #{csType,jdbcType=INTEGER},
-      </if>
-      <if test="templateType != null" >
-        #{templateType,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -248,26 +208,26 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.bookmarkName != null" >
-        bookmark_name = #{record.bookmarkName,jdbcType=VARCHAR},
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.bookmarkNameCn != null" >
-        bookmark_name_cn = #{record.bookmarkNameCn,jdbcType=VARCHAR},
+      <if test="record.useUnit != null" >
+        use_unit = #{record.useUnit,jdbcType=INTEGER},
       </if>
-      <if test="record.dataPoolType != null" >
-        data_pool_type = #{record.dataPoolType,jdbcType=INTEGER},
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
       </if>
-      <if test="record.dataPoolTableId != null" >
-        data_pool_table_id = #{record.dataPoolTableId,jdbcType=INTEGER},
+      <if test="record.category != null" >
+        category = #{record.category,jdbcType=INTEGER},
       </if>
-      <if test="record.dataPoolColumnsId != null" >
-        data_pool_columns_id = #{record.dataPoolColumnsId,jdbcType=INTEGER},
+      <if test="record.reportType != null" >
+        report_type = #{record.reportType,jdbcType=INTEGER},
       </if>
-      <if test="record.dataPoolTemplateId != null" >
-        data_pool_template_id = #{record.dataPoolTemplateId,jdbcType=INTEGER},
+      <if test="record.entrustPurpose != null" >
+        entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
       </if>
-      <if test="record.pid != null" >
-        pid = #{record.pid,jdbcType=INTEGER},
+      <if test="record.insertRowIndex != null" >
+        insert_row_index = #{record.insertRowIndex,jdbcType=INTEGER},
       </if>
       <if test="record.bisEnable != null" >
         bis_enable = #{record.bisEnable,jdbcType=BIT},
@@ -281,21 +241,6 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.customerId != null" >
-        customer_id = #{record.customerId,jdbcType=INTEGER},
-      </if>
-      <if test="record.entrustId != null" >
-        entrust_id = #{record.entrustId,jdbcType=INTEGER},
-      </if>
-      <if test="record.reportTypeId != null" >
-        report_type_id = #{record.reportTypeId,jdbcType=INTEGER},
-      </if>
-      <if test="record.csType != null" >
-        cs_type = #{record.csType,jdbcType=INTEGER},
-      </if>
-      <if test="record.templateType != null" >
-        template_type = #{record.templateType,jdbcType=INTEGER},
-      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -304,22 +249,17 @@
   <update id="updateByExample" parameterType="map" >
     update tb_base_report_template
     set id = #{record.id,jdbcType=INTEGER},
-      bookmark_name = #{record.bookmarkName,jdbcType=VARCHAR},
-      bookmark_name_cn = #{record.bookmarkNameCn,jdbcType=VARCHAR},
-      data_pool_type = #{record.dataPoolType,jdbcType=INTEGER},
-      data_pool_table_id = #{record.dataPoolTableId,jdbcType=INTEGER},
-      data_pool_columns_id = #{record.dataPoolColumnsId,jdbcType=INTEGER},
-      data_pool_template_id = #{record.dataPoolTemplateId,jdbcType=INTEGER},
-      pid = #{record.pid,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      use_unit = #{record.useUnit,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
+      category = #{record.category,jdbcType=INTEGER},
+      report_type = #{record.reportType,jdbcType=INTEGER},
+      entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
+      insert_row_index = #{record.insertRowIndex,jdbcType=INTEGER},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      customer_id = #{record.customerId,jdbcType=INTEGER},
-      entrust_id = #{record.entrustId,jdbcType=INTEGER},
-      report_type_id = #{record.reportTypeId,jdbcType=INTEGER},
-      cs_type = #{record.csType,jdbcType=INTEGER},
-      template_type = #{record.templateType,jdbcType=INTEGER}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -327,26 +267,26 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BaseReportTemplate" >
     update tb_base_report_template
     <set >
-      <if test="bookmarkName != null" >
-        bookmark_name = #{bookmarkName,jdbcType=VARCHAR},
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="bookmarkNameCn != null" >
-        bookmark_name_cn = #{bookmarkNameCn,jdbcType=VARCHAR},
+      <if test="useUnit != null" >
+        use_unit = #{useUnit,jdbcType=INTEGER},
       </if>
-      <if test="dataPoolType != null" >
-        data_pool_type = #{dataPoolType,jdbcType=INTEGER},
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
       </if>
-      <if test="dataPoolTableId != null" >
-        data_pool_table_id = #{dataPoolTableId,jdbcType=INTEGER},
+      <if test="category != null" >
+        category = #{category,jdbcType=INTEGER},
       </if>
-      <if test="dataPoolColumnsId != null" >
-        data_pool_columns_id = #{dataPoolColumnsId,jdbcType=INTEGER},
+      <if test="reportType != null" >
+        report_type = #{reportType,jdbcType=INTEGER},
       </if>
-      <if test="dataPoolTemplateId != null" >
-        data_pool_template_id = #{dataPoolTemplateId,jdbcType=INTEGER},
+      <if test="entrustPurpose != null" >
+        entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
       </if>
-      <if test="pid != null" >
-        pid = #{pid,jdbcType=INTEGER},
+      <if test="insertRowIndex != null" >
+        insert_row_index = #{insertRowIndex,jdbcType=INTEGER},
       </if>
       <if test="bisEnable != null" >
         bis_enable = #{bisEnable,jdbcType=BIT},
@@ -360,42 +300,22 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="customerId != null" >
-        customer_id = #{customerId,jdbcType=INTEGER},
-      </if>
-      <if test="entrustId != null" >
-        entrust_id = #{entrustId,jdbcType=INTEGER},
-      </if>
-      <if test="reportTypeId != null" >
-        report_type_id = #{reportTypeId,jdbcType=INTEGER},
-      </if>
-      <if test="csType != null" >
-        cs_type = #{csType,jdbcType=INTEGER},
-      </if>
-      <if test="templateType != null" >
-        template_type = #{templateType,jdbcType=INTEGER},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BaseReportTemplate" >
     update tb_base_report_template
-    set bookmark_name = #{bookmarkName,jdbcType=VARCHAR},
-      bookmark_name_cn = #{bookmarkNameCn,jdbcType=VARCHAR},
-      data_pool_type = #{dataPoolType,jdbcType=INTEGER},
-      data_pool_table_id = #{dataPoolTableId,jdbcType=INTEGER},
-      data_pool_columns_id = #{dataPoolColumnsId,jdbcType=INTEGER},
-      data_pool_template_id = #{dataPoolTemplateId,jdbcType=INTEGER},
-      pid = #{pid,jdbcType=INTEGER},
+    set name = #{name,jdbcType=VARCHAR},
+      use_unit = #{useUnit,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      category = #{category,jdbcType=INTEGER},
+      report_type = #{reportType,jdbcType=INTEGER},
+      entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
+      insert_row_index = #{insertRowIndex,jdbcType=INTEGER},
       bis_enable = #{bisEnable,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      customer_id = #{customerId,jdbcType=INTEGER},
-      entrust_id = #{entrustId,jdbcType=INTEGER},
-      report_type_id = #{reportTypeId,jdbcType=INTEGER},
-      cs_type = #{csType,jdbcType=INTEGER},
-      template_type = #{templateType,jdbcType=INTEGER}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

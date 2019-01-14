@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.dto.output.report;
 
 import com.copower.pmcc.assess.dal.basis.entity.BaseReportTemplate;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
 
 import java.util.List;
 
@@ -9,55 +8,27 @@ import java.util.List;
  * 描述:
  *
  * @author: Calvin(qiudong@copowercpa.com)
- * @data: 2018/5/22
- * @time: 9:53
+ * @data: 2018/6/7
+ * @time: 18:01
  */
 public class BaseReportTemplateVo extends BaseReportTemplate {
-    private String typeName;//数据类型名称
+    private String entrustPurposeName;
+    private List<String> report;
 
-    private String dataPoolTypename;//数据来源
-    private String tableName;
-    private String columnName;
-
-    private List<KeyValueDto> keyValueDtos;
-
-    public String getTypeName() {
-        return typeName;
+    public String getEntrustPurposeName() {
+        return entrustPurposeName;
     }
 
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
+    public void setEntrustPurposeName(String entrustPurposeName) {
+        this.entrustPurposeName = entrustPurposeName;
     }
 
-    public String getDataPoolTypename() {
-        return dataPoolTypename;
+    public List<String> getReport() {
+        return report;
     }
 
-    public void setDataPoolTypename(String dataPoolTypename) {
-        this.dataPoolTypename = dataPoolTypename;
+    public void setReport(List<String> report) {
+        this.report = report;
     }
 
-    public String getTableName() {
-        return tableName;
-    }
-
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
-    }
-
-    public String getColumnName() {
-        return columnName;
-    }
-
-    public void setColumnName(String columnName) {
-        this.columnName = columnName;
-    }
-
-    public List<KeyValueDto> getKeyValueDtos() {
-        return keyValueDtos;
-    }
-
-    public void setKeyValueDtos(List<KeyValueDto> keyValueDtos) {
-        this.keyValueDtos = keyValueDtos;
-    }
 }

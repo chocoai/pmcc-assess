@@ -15,12 +15,10 @@ import com.copower.pmcc.assess.constant.AssessTableNameConstant;
 import com.copower.pmcc.assess.dal.basis.dao.csr.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.base.BaseReplaceContentDto;
-import com.copower.pmcc.assess.dto.input.base.BaseReportTemplateFilesDto;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrImportBorrowerDto;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrImportColumnDto;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoGroupVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoVo;
-import com.copower.pmcc.assess.dto.output.report.BaseReportTemplateVo;
 import com.copower.pmcc.assess.service.BaseReportService;
 import com.copower.pmcc.assess.service.base.*;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
@@ -445,7 +443,6 @@ public class CsrProjectInfoService {
         Sheet sheet = hssfWorkbook.getSheetAt(0);//只取第一个sheet
         int coloumNum = sheet.getRow(0).getPhysicalNumberOfCells();//总列数
         int startRowNumber = csrProjectInfo.getStartRowNumber();//读取业务数据的起始行序号
-        List<BaseReportTemplateVo> reportTemplateList = getReportTemplateList(csrProjectInfo);
         List<CsrInvalidRule> ruleList = csrInvalidRuleService.getRuleList(csrProjectInfo.getId());//过滤规则数据
         HashMap<Integer, String> invalidRuleIndexMap = Maps.newHashMap();//需要参与过滤的列
         HashMap<Integer, CsrImportColumnDto> hashMap = Maps.newHashMap();
@@ -472,11 +469,7 @@ public class CsrProjectInfoService {
                     csrImportColumnDto.setColumnIndex(i);
                     csrImportColumnDto.setColumnName(value);
                     //待处理 设置书签对应的表与字段
-                    BaseReportTemplateVo baseReportTemplateVo = baseReportService.getBaseReportTemplate(reportTemplateList, value);
-                    if (baseReportTemplateVo != null) {
-                        csrImportColumnDto.setTableName(baseReportTemplateVo.getTableName());
-                        csrImportColumnDto.setFieldName(baseReportTemplateVo.getColumnName());
-                    }
+
                     hashMap.put(i, csrImportColumnDto);
 
                     //记录需要过滤行的 序号
@@ -624,19 +617,6 @@ public class CsrProjectInfoService {
     }
 
     /**
-     * 获取债权报告模板所有配置的书签
-     *
-     * @param csrProjectInfo
-     * @return
-     */
-    private List<BaseReportTemplateVo> getReportTemplateList(CsrProjectInfo csrProjectInfo) {
-        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
-        BaseReportTemplateFilesDto reportTemplateFileDto = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(), baseDataDic.getId(), csrProjectInfo.getCustomerType(),
-                csrProjectInfo.getProjectTypeId(), csrProjectInfo.getProjectCategoryId());
-        return reportTemplateFileDto.getBaseReportTemplateVoList();
-    }
-
-    /**
      * 数据库字段名转换成类字段名
      *
      * @param dbFieldName
@@ -663,20 +643,18 @@ public class CsrProjectInfoService {
         CsrProjectInfo csrProjectInfo = csrProjectInfoDao.getCsrProjectInfoById(csrProjectId);
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
 
-        BaseReportTemplateFilesDto reportTemplateFileDto = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(), baseDataDic.getId(), csrProjectInfo.getCustomerType(),
+        BaseReportTemplate reportTemplateFileDto = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(), baseDataDic.getId(), csrProjectInfo.getCustomerType(),
                 csrProjectInfo.getProjectTypeId(), csrProjectInfo.getProjectCategoryId());
         if (reportTemplateFileDto == null)
             throw new BusinessException("未找到对应的报告模板");
 
         SysAttachmentDto queryParam = new SysAttachmentDto();
-        queryParam.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplateFiles.class));
-        queryParam.setTableId(reportTemplateFileDto.getBaseReportTemplateFiles().getId());
+        queryParam.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplate.class));
         queryParam.setFieldsName(BaseReportTemplateTypeEnum.REPORT.getKey());
         List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(queryParam);
         if (CollectionUtils.isEmpty(attachmentList))
             throw new BusinessException("未找到对应的报告模板附件");
         SysAttachmentDto baseAttachment = attachmentList.get(0);//模板附件
-        List<BaseReportTemplateVo> baseReportTemplateList = reportTemplateFileDto.getBaseReportTemplateVoList();
         List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(borrowerIds));
         SysAttachmentDto attachment = new SysAttachmentDto();
         attachment.setTableName(FormatUtils.entityNameConvertToTableName(CsrBorrower.class));
@@ -687,19 +665,12 @@ public class CsrProjectInfoService {
                 attachment.setTableId(integer);
                 SysAttachmentDto ftpAttachment = baseAttachmentService.copyFtpAttachment(baseAttachment.getId(), attachment);
                 //获取数据
-                if (CollectionUtils.isNotEmpty(baseReportTemplateList)) {
+                if (false) {
                     //1.检查配置的书签有几张表
                     //2.先找到主表信息,再找从表数据
                     //3.循环书签
                     HashSet<String> tableSet = Sets.newHashSet();
-                    for (BaseReportTemplateVo reportTemplateVo : baseReportTemplateList) {
-                        BaseReportDataPoolTypeEnum dataPoolTypeEnum = BaseReportDataPoolTypeEnum.getEnumByName(reportTemplateVo.getDataPoolType());
-                        switch (dataPoolTypeEnum) {
-                            case COLUMNS:
-                                tableSet.add(reportTemplateVo.getTableName());
-                                break;
-                        }
-                    }
+
                     Map<String, Map<String, Object>> map = Maps.newHashMap();
                     Map<String, Object> objectMap = null;
                     CsrBorrower csrBorrower = csrBorrowerDao.getCsrBorrowerByID(integer);
@@ -734,38 +705,7 @@ public class CsrProjectInfoService {
                     }
 
                     List<BaseReplaceContentDto> dataReplaceDtoList = Lists.newArrayList();
-                    for (BaseReportTemplateVo baseReportTemplateVo : baseReportTemplateList) {
-                        //循环所有书签 依次找到书签或文本对应的值
 
-                        Map<String, Object> stringObjectMap = map.get(baseReportTemplateVo.getTableName());
-                        if (stringObjectMap == null)
-                            continue;//不处理
-                        Object o = stringObjectMap.get(baseReportTemplateVo.getColumnName());
-                        if (o == null)
-                            continue;//不处理
-                        String value = String.valueOf(o);
-                        if (StringUtils.isEmpty(value))
-                            continue;//空值不处理
-
-                        BaseReplaceContentDto dataReplaceDto = new BaseReplaceContentDto();
-                        dataReplaceDto.setKey(String.format("${%s}", baseReportTemplateVo.getBookmarkName()));
-                        dataReplaceDto.setValue(value);
-                        BaseReportMarkbookTypeEnum reportMarkbookTypeEnum = BaseReportMarkbookTypeEnum.getEnumByName(baseReportTemplateVo.getTemplateType());
-                        switch (reportMarkbookTypeEnum) {
-                            case TEXT:
-                                dataReplaceDto.setDataReplaceTypeEnum(DataReplaceTypeEnum.TEXT);
-                                break;
-                            case BOOKMARK:
-                                dataReplaceDto.setDataReplaceTypeEnum(DataReplaceTypeEnum.BOOKMARK);
-
-                                //也可能是文件的替换
-                                break;
-                            case TEMPLATE:
-                                //暂不做处理
-                                break;
-                        }
-                        dataReplaceDtoList.add(dataReplaceDto);
-                    }
                     //写入到替换数据表
                     BaseReplaceRecord baseReplaceRecord = new BaseReplaceRecord();
                     baseReplaceRecord.setAttachmentId(ftpAttachment.getId());
@@ -933,12 +873,12 @@ public class CsrProjectInfoService {
 
                 BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName("single.csr");
                 BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName("report.type.preaudit");
-                Integer templateId = baseReportService.getReportTemplateFiles(0, baseProjectClassify.getId(), baseDataDic.getId(), 0, 0);
+                Integer templateId = null;
 
                 SysAttachmentDto ftpAttachment = baseAttachmentService.copyFtpAttachment(templateId, attachment);
                 String localFullPath = baseAttachmentService.downloadFtpFileToLocal(ftpAttachment.getId());
 
-                List<KeyValueDto> valueDtoList = baseReportService.getReportTemplate(0, baseProjectClassify.getId(), baseDataDic.getId(), 0, 0);
+                List<KeyValueDto> valueDtoList = null;
                 int k = mapList.size();
                 for (Map<String, Object> map : mapList) {
                     for (KeyValueDto keyValueDto : valueDtoList) {
