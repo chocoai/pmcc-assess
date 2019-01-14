@@ -110,15 +110,6 @@ public class BaseReplaceRecordService {
                 Map<String, String> fileMap = Maps.newHashMap();
                 for (BaseReplaceContentDto dataReplaceDto : dataReplaceDtoList) {
                     switch (dataReplaceDto.getDataReplaceTypeEnum()) {
-                        case FILE:
-                            BaseReplaceRecord replaceRecord = getRecordById(dataReplaceDto.getChildId());
-                            if (replaceRecord == null) continue;
-                            if (StringUtils.isBlank(replaceRecord.getContent())) {
-                                fileMap.put(dataReplaceDto.getKey(), baseAttachmentService.downloadFtpFileToLocal(replaceRecord.getAttachmentId()));
-                            } else {
-                                fileMap.put(dataReplaceDto.getKey(), getReplaceFile(replaceRecord));
-                            }
-                            break;
                         case TEXT:
                             textMap.put(dataReplaceDto.getKey(), dataReplaceDto.getValue());
                             break;
