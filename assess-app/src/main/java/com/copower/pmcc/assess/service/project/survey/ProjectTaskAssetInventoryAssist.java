@@ -69,7 +69,9 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
                         surveyAssetInventoryContent.setRegistration(declareRecord.getSeat());
                         break;
                     case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_USE://登记用途与实际用途
-                        surveyAssetInventoryContent.setRegistration(declareRecord.getCertUse());
+                        if (StringUtils.isNotBlank(declareRecord.getCertUse())) {
+                            surveyAssetInventoryContent.setRegistration(baseDataDicService.getNameById(Integer.valueOf(declareRecord.getCertUse())));
+                        }
                         break;
                     case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_AREA://登记面积与实际面积
                         surveyAssetInventoryContent.setRegistration(String.valueOf(declareRecord.getFloorArea()));

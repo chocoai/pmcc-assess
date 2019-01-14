@@ -1,13 +1,12 @@
 package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
-import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.service.ErpAreaService;
-import com.copower.pmcc.assess.service.event.project.DeclareRealtyEstateCertEvent;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
-import com.copower.pmcc.bpm.api.exception.BpmException;
-import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.google.common.collect.Lists;
@@ -133,8 +132,8 @@ public class DeclareRecordService {
                         schemeJudgeObject.setFloorArea(declareRecord.getFloorArea());
                         schemeJudgeObject.setName(declareRecord.getName());
                         schemeJudgeObject.setOwnership(declareRecord.getOwnership());
-                        schemeJudgeObject.setSeat(declareRecord.getCity());
-                        schemeJudgeObject.setCertUse(declareRecord.getCertUse());
+                        schemeJudgeObject.setSeat(declareRecord.getSeat());
+                        schemeJudgeObject.setCertUse( declareRecord.getCertUse());
                         schemeJudgeObject.setPracticalUse(declareRecord.getPracticalUse());
                         schemeJudgeObject.setPid(0);
                         schemeJudgeObject.setBisSplit(false);

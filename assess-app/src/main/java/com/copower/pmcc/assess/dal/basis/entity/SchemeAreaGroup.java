@@ -21,6 +21,10 @@ public class SchemeAreaGroup {
 
     private String timePointExplain;
 
+    private Integer valueDefinition;
+
+    private String valueConnotation;
+
     private Boolean bisEnable;
 
     private Boolean bisMerge;
@@ -101,6 +105,22 @@ public class SchemeAreaGroup {
 
     public void setTimePointExplain(String timePointExplain) {
         this.timePointExplain = timePointExplain == null ? null : timePointExplain.trim();
+    }
+
+    public Integer getValueDefinition() {
+        return valueDefinition;
+    }
+
+    public void setValueDefinition(Integer valueDefinition) {
+        this.valueDefinition = valueDefinition;
+    }
+
+    public String getValueConnotation() {
+        return valueConnotation;
+    }
+
+    public void setValueConnotation(String valueConnotation) {
+        this.valueConnotation = valueConnotation == null ? null : valueConnotation.trim();
     }
 
     public Boolean getBisEnable() {
