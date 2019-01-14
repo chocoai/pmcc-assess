@@ -1,10 +1,12 @@
-package com.copower.pmcc.assess.service;
+package com.copower.pmcc.assess.service.base;
 
 import com.copower.pmcc.assess.dal.basis.dao.base.BaseReportDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseReportTemplate;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
 import com.copower.pmcc.assess.dto.output.report.BaseReportTemplateVo;
-import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.initiate.InitiateUnitInformationService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -40,6 +42,10 @@ public class BaseReportService {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
+    @Autowired
+    private InitiateUnitInformationService initiateUnitInformationService;
 
 
     //报告模板======================================================
@@ -71,12 +77,9 @@ public class BaseReportService {
         baseAttachmentService.updateAttachementByExample(baseAttachment, baseAttachmentNew);
     }
 
-    public BaseReportTemplate getBaseReportTemplate(BaseReportTemplate baseReportTemplate) {
+    public List<BaseReportTemplate> getBaseReportTemplate(BaseReportTemplate baseReportTemplate) {
         List<BaseReportTemplate> baseReportTemplates = baseReportDao.getBaseReportTemplateByExample(baseReportTemplate, "");
-        if (CollectionUtils.isNotEmpty(baseReportTemplates)) {
-            return baseReportTemplates.get(0);
-        }
-        return null;
+        return baseReportTemplates;
     }
 
     public BootstrapTableVo getBaseReportTemplateByExample(BaseReportTemplate baseReportTemplate) {
@@ -96,7 +99,7 @@ public class BaseReportService {
         BeanUtils.copyProperties(baseReportTemplate, baseReportTemplateVo);
         baseReportTemplateVo.setEntrustPurposeName(baseDataDicService.getNameById(baseReportTemplate.getEntrustPurpose()));
 
-        List<SysAttachmentDto> baseAttachments = baseAttachmentService.getByField_tableId(baseReportTemplate.getId(),null,FormatUtils.entityNameConvertToTableName(BaseReportTemplate.class));
+        List<SysAttachmentDto> baseAttachments = baseAttachmentService.getByField_tableId(baseReportTemplate.getId(), null, FormatUtils.entityNameConvertToTableName(BaseReportTemplate.class));
         if (CollectionUtils.isNotEmpty(baseAttachments)) {
             List<String> report = LangUtils.transform(baseAttachments, o -> baseAttachmentService.getViewHtml(o));
             baseReportTemplateVo.setReport(report);
@@ -104,36 +107,50 @@ public class BaseReportService {
         return baseReportTemplateVo;
     }
 
+    /**
+     * 根据条件查询报告模板
+     *
+     * @param projectId  项目id
+     * @param reportType 报告类型
+     * @return
+     */
+    public BaseReportTemplate getReportTemplate(Integer projectId, Integer reportType) {
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        if (projectInfo == null) return null;
+        InitiateUnitInformationVo unitInformationVo = initiateUnitInformationService.getDataByProjectId(projectInfo.getId());
+        if (unitInformationVo == null) return null;
+        List<BaseReportTemplate> reportTemplateList = getReportTemplate(Integer.valueOf(unitInformationVo.getuUseUnit()), projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), reportType);
+        if (CollectionUtils.isEmpty(reportTemplateList)) return null;
+        return reportTemplateList.get(0);
+    }
+
 
     /**
      * 根据条件查询报告模板
      *
-     * @param customerId        客户id
-     * @param reportTypeId      报告类型
-     * @param csTypeId          客户类型
-     * @param projectTypeId     项目类别
-     * @param projectCategoryId 项目范围
+     * @param useUnit           报告使用单位
+     * @param projectTypeId     项目类型
+     * @param projectCategoryId 项目类别
+     * @param reportType        报告类型
      * @return
      */
-    public BaseReportTemplate getReportTemplateFile(Integer customerId, Integer reportTypeId, Integer csTypeId, Integer projectTypeId, Integer projectCategoryId) {
+    public List<BaseReportTemplate> getReportTemplate(Integer useUnit, Integer projectTypeId, Integer projectCategoryId, Integer reportType) {
         //1.根据传递过来的参数获取模板
         //2.未找到对应的模板 先以范围为全部进行查询 如果依然未找到 则取公司下的模板
         BaseReportTemplate baseReportTemplateWhere = new BaseReportTemplate();
-        baseReportTemplateWhere.setReportType(reportTypeId);
-        baseReportTemplateWhere.setUseUnit(customerId);//客户单位
+        baseReportTemplateWhere.setReportType(reportType);
+        baseReportTemplateWhere.setUseUnit(useUnit);//客户单位
         baseReportTemplateWhere.setEntrustPurpose(projectTypeId);
         baseReportTemplateWhere.setCategory(projectCategoryId);
         baseReportTemplateWhere.setBisEnable(true);
-        BaseReportTemplate baseReportTemplate = getBaseReportTemplate(baseReportTemplateWhere);
+        List<BaseReportTemplate> reportTemplateList = getBaseReportTemplate(baseReportTemplateWhere);
 
-        if (baseReportTemplate == null) {
-            customerId = 0;//公司下的模板
-            baseReportTemplateWhere.setUseUnit(customerId);
-            baseReportTemplate = getBaseReportTemplate(baseReportTemplateWhere);
+        if (CollectionUtils.isEmpty(reportTemplateList)) {
+            useUnit = 0;//公司下的模板
+            baseReportTemplateWhere.setUseUnit(useUnit);
+            reportTemplateList = getBaseReportTemplate(baseReportTemplateWhere);
         }
-        if (baseReportTemplate == null)
-            return null;
-        return baseReportTemplate;
+        return reportTemplateList;
     }
 
 }

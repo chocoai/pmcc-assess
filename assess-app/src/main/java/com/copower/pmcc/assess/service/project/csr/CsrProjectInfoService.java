@@ -8,7 +8,6 @@ import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.CreateInsertHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.*;
-import com.copower.pmcc.assess.common.enums.word.DataReplaceTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessFieldNameConstant;
 import com.copower.pmcc.assess.constant.AssessTableNameConstant;
@@ -19,7 +18,7 @@ import com.copower.pmcc.assess.dto.input.project.csr.CsrImportBorrowerDto;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrImportColumnDto;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoGroupVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoVo;
-import com.copower.pmcc.assess.service.BaseReportService;
+import com.copower.pmcc.assess.service.base.BaseReportService;
 import com.copower.pmcc.assess.service.base.*;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -643,8 +642,8 @@ public class CsrProjectInfoService {
         CsrProjectInfo csrProjectInfo = csrProjectInfoDao.getCsrProjectInfoById(csrProjectId);
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
 
-        BaseReportTemplate reportTemplateFileDto = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(), baseDataDic.getId(), csrProjectInfo.getCustomerType(),
-                csrProjectInfo.getProjectTypeId(), csrProjectInfo.getProjectCategoryId());
+        List<BaseReportTemplate> templateList = baseReportService.getReportTemplate(csrProjectInfo.getEntrustmentUnitId(), csrProjectInfo.getProjectTypeId(), csrProjectInfo.getProjectCategoryId(), baseDataDic.getId());
+        BaseReportTemplate reportTemplateFileDto = templateList.get(0);
         if (reportTemplateFileDto == null)
             throw new BusinessException("未找到对应的报告模板");
 

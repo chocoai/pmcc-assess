@@ -12,7 +12,7 @@ import com.copower.pmcc.assess.dal.basis.dao.csr.CsrBorrowerEnteringDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerEnteringVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerVo;
-import com.copower.pmcc.assess.service.BaseReportService;
+import com.copower.pmcc.assess.service.base.BaseReportService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
@@ -370,7 +370,7 @@ public class CsrBorrowerService {
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
         CsrProjectInfo csrProjectInfo = csrProjectInfoService.getById(csrProjectInfoID);
         BaseReportTemplate baseReportTemplate = null;
-        baseReportTemplate = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(), baseDataDic.getId(), 0, csrProjectInfo.getProjectTypeId(), csrProjectInfo.getProjectCategoryId());
+        baseReportTemplate = baseReportService.getReportTemplate(csrProjectInfo.getEntrustmentUnitId(), csrProjectInfo.getProjectTypeId(), csrProjectInfo.getProjectCategoryId(), baseDataDic.getId()).get(0);
         responseEntity = toExportFormBorrowers(request, response, baseReportTemplate, csrProjectInfoID);
         return responseEntity;
     }

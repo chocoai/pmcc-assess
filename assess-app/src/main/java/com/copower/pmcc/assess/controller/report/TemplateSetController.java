@@ -5,7 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.BaseReportTemplate;
 import com.copower.pmcc.assess.dto.input.CrmTreeDto;
-import com.copower.pmcc.assess.service.BaseReportService;
+import com.copower.pmcc.assess.service.base.BaseReportService;
 import com.copower.pmcc.assess.service.TemplateSetService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
