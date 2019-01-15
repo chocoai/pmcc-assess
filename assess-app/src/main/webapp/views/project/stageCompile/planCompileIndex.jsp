@@ -20,7 +20,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${panelTitle}阶段工作计划</h2>
+                    <h3>${panelTitle}阶段工作计划</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -55,7 +55,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${panelTitle}阶段工作计划</h2>
+                    <h3>${panelTitle}阶段工作计划</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="treeGrid panel-body x_content" style="padding: 0px;">
@@ -63,12 +63,6 @@
                 </div>
             </div>
             <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <div class="clearfix"></div>
-                </div>
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
@@ -90,9 +84,6 @@
 
 <div id="tb" style="padding:5px;height:auto;display: none;">
     <div style=" margin-bottom:5px">
-        <button type="button" onclick="addfirst()" class="btn btn-success btn-xs">
-            <i class='fa fa-plus fa-white'></i> 新增第一级
-        </button>
         <button type="button" onclick="move('up')" class="btn btn-primary btn-xs">
             <i class='fa fa-arrow-up fa-white'></i> 上移
         </button>
@@ -109,7 +100,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="h4_modeTitle">计划编辑</h4>
+                <h3 class="modal-title" id="h4_modeTitle">计划编辑</h3>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -233,7 +224,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">快速设置</h4>
+                <h3 class="modal-title">快速设置</h3>
             </div>
             <div class="modal-body">
                 <div class="row">

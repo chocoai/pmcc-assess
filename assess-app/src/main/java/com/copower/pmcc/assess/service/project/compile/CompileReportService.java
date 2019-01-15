@@ -8,7 +8,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataReportAnalysisService;
-import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -40,22 +40,23 @@ public class CompileReportService {
     @Autowired
     private ProjectPlanDetailsDao projectPlanDetailsDao;
     @Autowired
-    private SchemeJudgeObjectService schemeJudgeObjectService;
+    private ProjectInfoService projectInfoService;
 
     /**
      * 初始化计划信息
+     *
      * @param projectPlan
      */
     public void initializePlan(ProjectPlan projectPlan) {
         Integer planId = projectPlan.getId();
         Integer projectId = projectPlan.getProjectId();
         Integer workStageId = projectPlan.getWorkStageId();
-        ProjectPlanDetails projectPlanDetailsWhere=new ProjectPlanDetails();
+        ProjectPlanDetails projectPlanDetailsWhere = new ProjectPlanDetails();
         projectPlanDetailsWhere.setProjectId(projectId);
         projectPlanDetailsWhere.setPlanId(planId);
         List<ProjectPlanDetails> planDetails = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
         if (CollectionUtils.isNotEmpty(planDetails)) {
-            return ;//避免重复初始化
+            return;//避免重复初始化
         }
         List<SchemeAreaGroup> schemeAreaGroups = schemeAreaGroupDao.getSchemeAreaGroupByProjectId(projectId);
         int i = 1;
@@ -68,6 +69,7 @@ public class CompileReportService {
                 projectPlanDetails.setProjectId(projectId);
                 projectPlanDetails.setProjectPhaseName(schemeAreaGroup.getAreaName());
                 projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+                projectPlanDetails.setAreaId(schemeAreaGroup.getId());
                 projectPlanDetails.setBisLastLayer(false);
                 projectPlanDetails.setSorting(i++);
                 projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
@@ -106,15 +108,19 @@ public class CompileReportService {
     /**
      * 初始化该任务所需要的分析信息
      *
-     * @param planDetailsId
+     * @param projectPlanDetails
+     * @param phaseKey
      */
     @Transactional(rollbackFor = Exception.class)
-    public void initReportDetail(Integer planDetailsId, String phaseKey) {
-        int count = compileReportDetailDao.getCountByPlanDetailsId(planDetailsId);
+    public void initReportDetail(ProjectPlanDetails projectPlanDetails, String phaseKey) {
+        int count = compileReportDetailDao.getCountByPlanDetailsId(projectPlanDetails.getId());
         if (count > 0) return;
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(phaseKey);
         if (baseDataDic == null) return;
-        List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisService.getReportAnalysisList(baseDataDic.getId());
+        ProjectPlanDetails areaPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(projectPlanDetails.getPid());
+        SchemeAreaGroup areaGroup = schemeAreaGroupDao.get(areaPlanDetails.getAreaId());
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+        List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisService.getDataReportAnalysisList(baseDataDic.getId(), projectInfo.getEntrustPurpose(), areaGroup.getProvince(), areaGroup.getCity());
         CompileReportDetail compileReportDetail = null;
         if (CollectionUtils.isNotEmpty(reportAnalysisList)) {
             for (DataReportAnalysis dataReportAnalysis : reportAnalysisList) {
@@ -122,14 +128,16 @@ public class CompileReportService {
                 compileReportDetail.setCreator(commonService.thisUserAccount());
                 compileReportDetail.setName(dataReportAnalysis.getName());
                 compileReportDetail.setTemplate(dataReportAnalysis.getTemplate());
+                if (dataReportAnalysis.getBisModifiable() == Boolean.FALSE) {
+                    compileReportDetail.setContent(dataReportAnalysis.getTemplate());
+                }
                 compileReportDetail.setReportAnalysisType(baseDataDic.getId());
                 compileReportDetail.setReportAnalysisName(baseDataDic.getName());
                 compileReportDetail.setJsonContent(publicService.extractField(dataReportAnalysis.getTemplate()));
-                compileReportDetail.setPlanDetailsId(planDetailsId);
+                compileReportDetail.setPlanDetailsId(projectPlanDetails.getId());
+                compileReportDetail.setBisModifiable(dataReportAnalysis.getBisModifiable());
                 compileReportDetailDao.addReportDetail(compileReportDetail);
             }
-
         }
-
     }
 }

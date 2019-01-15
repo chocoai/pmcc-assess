@@ -635,6 +635,66 @@ public class CompileReportDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisModifiableIsNull() {
+            addCriterion("bis_modifiable is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableIsNotNull() {
+            addCriterion("bis_modifiable is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableEqualTo(Boolean value) {
+            addCriterion("bis_modifiable =", value, "bisModifiable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableNotEqualTo(Boolean value) {
+            addCriterion("bis_modifiable <>", value, "bisModifiable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableGreaterThan(Boolean value) {
+            addCriterion("bis_modifiable >", value, "bisModifiable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_modifiable >=", value, "bisModifiable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableLessThan(Boolean value) {
+            addCriterion("bis_modifiable <", value, "bisModifiable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_modifiable <=", value, "bisModifiable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableIn(List<Boolean> values) {
+            addCriterion("bis_modifiable in", values, "bisModifiable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableNotIn(List<Boolean> values) {
+            addCriterion("bis_modifiable not in", values, "bisModifiable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_modifiable between", value1, value2, "bisModifiable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_modifiable not between", value1, value2, "bisModifiable");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

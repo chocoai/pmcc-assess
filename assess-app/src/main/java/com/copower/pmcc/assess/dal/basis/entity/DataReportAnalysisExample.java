@@ -375,62 +375,52 @@ public class DataReportAnalysisExample {
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentEqualTo(String value) {
+        public Criteria andEntrustmentEqualTo(Integer value) {
             addCriterion("entrustment =", value, "entrustment");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentNotEqualTo(String value) {
+        public Criteria andEntrustmentNotEqualTo(Integer value) {
             addCriterion("entrustment <>", value, "entrustment");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentGreaterThan(String value) {
+        public Criteria andEntrustmentGreaterThan(Integer value) {
             addCriterion("entrustment >", value, "entrustment");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentGreaterThanOrEqualTo(String value) {
+        public Criteria andEntrustmentGreaterThanOrEqualTo(Integer value) {
             addCriterion("entrustment >=", value, "entrustment");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentLessThan(String value) {
+        public Criteria andEntrustmentLessThan(Integer value) {
             addCriterion("entrustment <", value, "entrustment");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentLessThanOrEqualTo(String value) {
+        public Criteria andEntrustmentLessThanOrEqualTo(Integer value) {
             addCriterion("entrustment <=", value, "entrustment");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentLike(String value) {
-            addCriterion("entrustment like", value, "entrustment");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntrustmentNotLike(String value) {
-            addCriterion("entrustment not like", value, "entrustment");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntrustmentIn(List<String> values) {
+        public Criteria andEntrustmentIn(List<Integer> values) {
             addCriterion("entrustment in", values, "entrustment");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentNotIn(List<String> values) {
+        public Criteria andEntrustmentNotIn(List<Integer> values) {
             addCriterion("entrustment not in", values, "entrustment");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentBetween(String value1, String value2) {
+        public Criteria andEntrustmentBetween(Integer value1, Integer value2) {
             addCriterion("entrustment between", value1, value2, "entrustment");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentNotBetween(String value1, String value2) {
+        public Criteria andEntrustmentNotBetween(Integer value1, Integer value2) {
             addCriterion("entrustment not between", value1, value2, "entrustment");
             return (Criteria) this;
         }
@@ -445,62 +435,52 @@ public class DataReportAnalysisExample {
             return (Criteria) this;
         }
 
-        public Criteria andPurposeEqualTo(String value) {
+        public Criteria andPurposeEqualTo(Integer value) {
             addCriterion("purpose =", value, "purpose");
             return (Criteria) this;
         }
 
-        public Criteria andPurposeNotEqualTo(String value) {
+        public Criteria andPurposeNotEqualTo(Integer value) {
             addCriterion("purpose <>", value, "purpose");
             return (Criteria) this;
         }
 
-        public Criteria andPurposeGreaterThan(String value) {
+        public Criteria andPurposeGreaterThan(Integer value) {
             addCriterion("purpose >", value, "purpose");
             return (Criteria) this;
         }
 
-        public Criteria andPurposeGreaterThanOrEqualTo(String value) {
+        public Criteria andPurposeGreaterThanOrEqualTo(Integer value) {
             addCriterion("purpose >=", value, "purpose");
             return (Criteria) this;
         }
 
-        public Criteria andPurposeLessThan(String value) {
+        public Criteria andPurposeLessThan(Integer value) {
             addCriterion("purpose <", value, "purpose");
             return (Criteria) this;
         }
 
-        public Criteria andPurposeLessThanOrEqualTo(String value) {
+        public Criteria andPurposeLessThanOrEqualTo(Integer value) {
             addCriterion("purpose <=", value, "purpose");
             return (Criteria) this;
         }
 
-        public Criteria andPurposeLike(String value) {
-            addCriterion("purpose like", value, "purpose");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurposeNotLike(String value) {
-            addCriterion("purpose not like", value, "purpose");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurposeIn(List<String> values) {
+        public Criteria andPurposeIn(List<Integer> values) {
             addCriterion("purpose in", values, "purpose");
             return (Criteria) this;
         }
 
-        public Criteria andPurposeNotIn(List<String> values) {
+        public Criteria andPurposeNotIn(List<Integer> values) {
             addCriterion("purpose not in", values, "purpose");
             return (Criteria) this;
         }
 
-        public Criteria andPurposeBetween(String value1, String value2) {
+        public Criteria andPurposeBetween(Integer value1, Integer value2) {
             addCriterion("purpose between", value1, value2, "purpose");
             return (Criteria) this;
         }
 
-        public Criteria andPurposeNotBetween(String value1, String value2) {
+        public Criteria andPurposeNotBetween(Integer value1, Integer value2) {
             addCriterion("purpose not between", value1, value2, "purpose");
             return (Criteria) this;
         }

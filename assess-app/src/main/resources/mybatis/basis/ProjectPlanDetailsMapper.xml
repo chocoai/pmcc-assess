@@ -32,6 +32,7 @@
     <result column="bis_last_layer" property="bisLastLayer" jdbcType="BIT" />
     <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
     <result column="judge_object_id" property="judgeObjectId" jdbcType="INTEGER" />
+    <result column="area_id" property="areaId" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -100,7 +101,7 @@
     execute_user_account, execute_department_id, bis_enable, proportion, sorting, first_pid, 
     bis_start, process_ins_id, task_submit_time, task_remarks, actual_hours, status, 
     return_details_id, return_details_reason, bis_new, bis_last_layer, declare_record_id, 
-    judge_object_id, creator, gmt_created, gmt_modified
+    judge_object_id, area_id, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetailsExample" >
     select
@@ -146,8 +147,8 @@
       task_submit_time, task_remarks, actual_hours, 
       status, return_details_id, return_details_reason, 
       bis_new, bis_last_layer, declare_record_id, 
-      judge_object_id, creator, gmt_created, 
-      gmt_modified)
+      judge_object_id, area_id, creator, 
+      gmt_created, gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{projectPhaseName,jdbcType=VARCHAR}, #{projectId,jdbcType=INTEGER}, 
       #{planId,jdbcType=INTEGER}, #{projectWorkStageId,jdbcType=INTEGER}, #{projectPhaseId,jdbcType=INTEGER}, 
       #{projectPhaseDetailsId,jdbcType=INTEGER}, #{planStartDate,jdbcType=TIMESTAMP}, 
@@ -158,8 +159,8 @@
       #{taskSubmitTime,jdbcType=TIMESTAMP}, #{taskRemarks,jdbcType=VARCHAR}, #{actualHours,jdbcType=DECIMAL}, 
       #{status,jdbcType=VARCHAR}, #{returnDetailsId,jdbcType=INTEGER}, #{returnDetailsReason,jdbcType=VARCHAR}, 
       #{bisNew,jdbcType=BIT}, #{bisLastLayer,jdbcType=BIT}, #{declareRecordId,jdbcType=INTEGER}, 
-      #{judgeObjectId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{judgeObjectId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -253,6 +254,9 @@
       </if>
       <if test="judgeObjectId != null" >
         judge_object_id,
+      </if>
+      <if test="areaId != null" >
+        area_id,
       </if>
       <if test="creator != null" >
         creator,
@@ -351,6 +355,9 @@
       </if>
       <if test="judgeObjectId != null" >
         #{judgeObjectId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -462,6 +469,9 @@
       <if test="record.judgeObjectId != null" >
         judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
       </if>
+      <if test="record.areaId != null" >
+        area_id = #{record.areaId,jdbcType=INTEGER},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -508,6 +518,7 @@
       bis_last_layer = #{record.bisLastLayer,jdbcType=BIT},
       declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
+      area_id = #{record.areaId,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -605,6 +616,9 @@
       <if test="judgeObjectId != null" >
         judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
       </if>
+      <if test="areaId != null" >
+        area_id = #{areaId,jdbcType=INTEGER},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -648,6 +662,7 @@
       bis_last_layer = #{bisLastLayer,jdbcType=BIT},
       declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
+      area_id = #{areaId,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

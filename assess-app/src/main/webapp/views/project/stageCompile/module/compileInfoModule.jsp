@@ -22,7 +22,7 @@
                 }
 
                 var compileInfoWellHtml = '';
-                if (defaluts.readonly) {
+                if (defaluts.readonly || !item.bisModifiable) {
                     compileInfoWellHtml = $('#compileInfoWellView').html();
                     compileInfoWellHtml = compileInfoWellHtml.replace(/{name}/g, AssessCommon.toString(item.name)).replace(/{content}/g, AssessCommon.toString(item.content));
                 } else {
@@ -39,7 +39,6 @@
                                 wellFields += '</div><div class="form-group">';
                             }
                             var compileInfoFieldHtml = $("#compileInfoField").html();
-                            console.log(fieldArray[j]);
                             compileInfoFieldHtml = compileInfoFieldHtml.replace(/{key}/g, fieldArray[j].key).replace(/{value}/g, fieldArray[j].value);
                             wellFields += compileInfoFieldHtml;
                         }
@@ -101,11 +100,7 @@
 <script type="text/html" id="compileInfoPanel">
     <div class="x_panel">
         <div class="x_title collapse-link">
-            <h2>{reportAnalysisTypeName}</h2>
-            <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-            </ul>
-            <div class="clearfix"></div>
+            <h3>{reportAnalysisTypeName}</h3>
         </div>
         <form id="frm_compile_type_{reportAnalysisType}" class="form-horizontal">
             <div class="x_content">

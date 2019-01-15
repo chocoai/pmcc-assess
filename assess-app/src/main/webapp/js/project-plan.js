@@ -10,8 +10,10 @@ $(function () {
     if ($("#projectPhaseId").hasClass('select2')) {
         $("#projectPhaseId").select2();
         $("#projectPhaseId").on("change", function (e) {
-            if ($("#projectPhaseName").length > 0 && $("#projectPhaseName").val().length <= 0) {
-                $("#projectPhaseName").val($(this).find('option:selected').text());
+            if($(this).val()){
+                $("#projectPhaseName").val($("#projectPhaseId").find('option:selected').text());
+            }else{
+                $("#projectPhaseName").val('');
             }
         })
     }
