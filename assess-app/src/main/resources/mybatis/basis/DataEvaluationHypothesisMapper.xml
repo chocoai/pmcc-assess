@@ -7,11 +7,13 @@
     <result column="method" property="method" jdbcType="VARCHAR" />
     <result column="entrustment_purpose" property="entrustmentPurpose" jdbcType="VARCHAR" />
     <result column="template" property="template" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="category" property="category" jdbcType="INTEGER" />
+    <result column="pub_date" property="pubDate" jdbcType="TIMESTAMP" />
+    <result column="bis_modifiable" property="bisModifiable" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="category" property="category" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -72,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, method, entrustment_purpose, template, creator, gmt_created, gmt_modified, 
-    type, category
+    id, name, method, entrustment_purpose, template, type, category, pub_date, bis_modifiable, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationHypothesisExample" >
     select
@@ -110,13 +112,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_data_evaluation_hypothesis (name, method, entrustment_purpose, 
-      template, creator, gmt_created, 
-      gmt_modified, type, category
-      )
+      template, type, category, 
+      pub_date, bis_modifiable, creator, 
+      gmt_created, gmt_modified)
     values (#{name,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{entrustmentPurpose,jdbcType=VARCHAR}, 
-      #{template,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{type,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}
-      )
+      #{template,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}, 
+      #{pubDate,jdbcType=TIMESTAMP}, #{bisModifiable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationHypothesis" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -136,6 +138,18 @@
       <if test="template != null" >
         template,
       </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
+      <if test="pubDate != null" >
+        pub_date,
+      </if>
+      <if test="bisModifiable != null" >
+        bis_modifiable,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -144,12 +158,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified,
-      </if>
-      <if test="type != null" >
-        type,
-      </if>
-      <if test="category != null" >
-        category,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -165,6 +173,18 @@
       <if test="template != null" >
         #{template,jdbcType=VARCHAR},
       </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=INTEGER},
+      </if>
+      <if test="pubDate != null" >
+        #{pubDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bisModifiable != null" >
+        #{bisModifiable,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -173,12 +193,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="type != null" >
-        #{type,jdbcType=INTEGER},
-      </if>
-      <if test="category != null" >
-        #{category,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -206,6 +220,18 @@
       <if test="record.template != null" >
         template = #{record.template,jdbcType=VARCHAR},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.category != null" >
+        category = #{record.category,jdbcType=INTEGER},
+      </if>
+      <if test="record.pubDate != null" >
+        pub_date = #{record.pubDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.bisModifiable != null" >
+        bis_modifiable = #{record.bisModifiable,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -214,12 +240,6 @@
       </if>
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.type != null" >
-        type = #{record.type,jdbcType=INTEGER},
-      </if>
-      <if test="record.category != null" >
-        category = #{record.category,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -233,11 +253,13 @@
       method = #{record.method,jdbcType=VARCHAR},
       entrustment_purpose = #{record.entrustmentPurpose,jdbcType=VARCHAR},
       template = #{record.template,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
+      category = #{record.category,jdbcType=INTEGER},
+      pub_date = #{record.pubDate,jdbcType=TIMESTAMP},
+      bis_modifiable = #{record.bisModifiable,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      type = #{record.type,jdbcType=INTEGER},
-      category = #{record.category,jdbcType=INTEGER}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -257,6 +279,18 @@
       <if test="template != null" >
         template = #{template,jdbcType=VARCHAR},
       </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="category != null" >
+        category = #{category,jdbcType=INTEGER},
+      </if>
+      <if test="pubDate != null" >
+        pub_date = #{pubDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bisModifiable != null" >
+        bis_modifiable = #{bisModifiable,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -265,12 +299,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
-      </if>
-      <if test="category != null" >
-        category = #{category,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -281,11 +309,13 @@
       method = #{method,jdbcType=VARCHAR},
       entrustment_purpose = #{entrustmentPurpose,jdbcType=VARCHAR},
       template = #{template,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      category = #{category,jdbcType=INTEGER},
+      pub_date = #{pubDate,jdbcType=TIMESTAMP},
+      bis_modifiable = #{bisModifiable,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      type = #{type,jdbcType=INTEGER},
-      category = #{category,jdbcType=INTEGER}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

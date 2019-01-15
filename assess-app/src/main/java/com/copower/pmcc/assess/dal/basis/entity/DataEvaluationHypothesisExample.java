@@ -445,6 +445,246 @@ public class DataEvaluationHypothesisExample {
             return (Criteria) this;
         }
 
+        public Criteria andTypeIsNull() {
+            addCriterion("type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNotNull() {
+            addCriterion("type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeEqualTo(Integer value) {
+            addCriterion("type =", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotEqualTo(Integer value) {
+            addCriterion("type <>", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThan(Integer value) {
+            addCriterion("type >", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("type >=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThan(Integer value) {
+            addCriterion("type <", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("type <=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIn(List<Integer> values) {
+            addCriterion("type in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotIn(List<Integer> values) {
+            addCriterion("type not in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeBetween(Integer value1, Integer value2) {
+            addCriterion("type between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("type not between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIsNull() {
+            addCriterion("category is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIsNotNull() {
+            addCriterion("category is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryEqualTo(Integer value) {
+            addCriterion("category =", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryNotEqualTo(Integer value) {
+            addCriterion("category <>", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryGreaterThan(Integer value) {
+            addCriterion("category >", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryGreaterThanOrEqualTo(Integer value) {
+            addCriterion("category >=", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryLessThan(Integer value) {
+            addCriterion("category <", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryLessThanOrEqualTo(Integer value) {
+            addCriterion("category <=", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIn(List<Integer> values) {
+            addCriterion("category in", values, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryNotIn(List<Integer> values) {
+            addCriterion("category not in", values, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryBetween(Integer value1, Integer value2) {
+            addCriterion("category between", value1, value2, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryNotBetween(Integer value1, Integer value2) {
+            addCriterion("category not between", value1, value2, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubDateIsNull() {
+            addCriterion("pub_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubDateIsNotNull() {
+            addCriterion("pub_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubDateEqualTo(Date value) {
+            addCriterion("pub_date =", value, "pubDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubDateNotEqualTo(Date value) {
+            addCriterion("pub_date <>", value, "pubDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubDateGreaterThan(Date value) {
+            addCriterion("pub_date >", value, "pubDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("pub_date >=", value, "pubDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubDateLessThan(Date value) {
+            addCriterion("pub_date <", value, "pubDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubDateLessThanOrEqualTo(Date value) {
+            addCriterion("pub_date <=", value, "pubDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubDateIn(List<Date> values) {
+            addCriterion("pub_date in", values, "pubDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubDateNotIn(List<Date> values) {
+            addCriterion("pub_date not in", values, "pubDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubDateBetween(Date value1, Date value2) {
+            addCriterion("pub_date between", value1, value2, "pubDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubDateNotBetween(Date value1, Date value2) {
+            addCriterion("pub_date not between", value1, value2, "pubDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableIsNull() {
+            addCriterion("bis_modifiable is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableIsNotNull() {
+            addCriterion("bis_modifiable is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableEqualTo(Boolean value) {
+            addCriterion("bis_modifiable =", value, "bisModifiable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableNotEqualTo(Boolean value) {
+            addCriterion("bis_modifiable <>", value, "bisModifiable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableGreaterThan(Boolean value) {
+            addCriterion("bis_modifiable >", value, "bisModifiable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_modifiable >=", value, "bisModifiable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableLessThan(Boolean value) {
+            addCriterion("bis_modifiable <", value, "bisModifiable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_modifiable <=", value, "bisModifiable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableIn(List<Boolean> values) {
+            addCriterion("bis_modifiable in", values, "bisModifiable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableNotIn(List<Boolean> values) {
+            addCriterion("bis_modifiable not in", values, "bisModifiable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_modifiable between", value1, value2, "bisModifiable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiableNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_modifiable not between", value1, value2, "bisModifiable");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
@@ -632,126 +872,6 @@ public class DataEvaluationHypothesisExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIsNull() {
-            addCriterion("type is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIsNotNull() {
-            addCriterion("type is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeEqualTo(Integer value) {
-            addCriterion("type =", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotEqualTo(Integer value) {
-            addCriterion("type <>", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeGreaterThan(Integer value) {
-            addCriterion("type >", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("type >=", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeLessThan(Integer value) {
-            addCriterion("type <", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeLessThanOrEqualTo(Integer value) {
-            addCriterion("type <=", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIn(List<Integer> values) {
-            addCriterion("type in", values, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotIn(List<Integer> values) {
-            addCriterion("type not in", values, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeBetween(Integer value1, Integer value2) {
-            addCriterion("type between", value1, value2, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
-            addCriterion("type not between", value1, value2, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryIsNull() {
-            addCriterion("category is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryIsNotNull() {
-            addCriterion("category is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryEqualTo(Integer value) {
-            addCriterion("category =", value, "category");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryNotEqualTo(Integer value) {
-            addCriterion("category <>", value, "category");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryGreaterThan(Integer value) {
-            addCriterion("category >", value, "category");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryGreaterThanOrEqualTo(Integer value) {
-            addCriterion("category >=", value, "category");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryLessThan(Integer value) {
-            addCriterion("category <", value, "category");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryLessThanOrEqualTo(Integer value) {
-            addCriterion("category <=", value, "category");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryIn(List<Integer> values) {
-            addCriterion("category in", values, "category");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryNotIn(List<Integer> values) {
-            addCriterion("category not in", values, "category");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryBetween(Integer value1, Integer value2) {
-            addCriterion("category between", value1, value2, "category");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryNotBetween(Integer value1, Integer value2) {
-            addCriterion("category not between", value1, value2, "category");
             return (Criteria) this;
         }
     }

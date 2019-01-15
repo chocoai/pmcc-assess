@@ -120,7 +120,8 @@
                                         <div class="col-sm-10" id="entrustmentPurpose">
                                             <c:forEach items="${purposeDicList}" var="item">
                                                 <span class="checkbox-inline">
-                                                <input type="checkbox" id="entrustmentPurpose${item.id}" required name="entrustmentPurpose" value="${item.id}"
+                                                <input type="checkbox" id="entrustmentPurpose${item.id}" required
+                                                       name="entrustmentPurpose" value="${item.id}"
                                                        class="form-inline">
                                                 <label for="entrustmentPurpose${item.id}">${item.name}</label>
                                                 </span>
@@ -136,12 +137,36 @@
                                         <div class="col-sm-10" id="method">
                                             <c:forEach items="${methodDicList}" var="item">
                                                 <span class="checkbox-inline">
-                                                <input type="checkbox" id="method${item.id}" required name="method" value="${item.id}"
+                                                <input type="checkbox" id="method${item.id}" required name="method"
+                                                       value="${item.id}"
                                                        class="form-inline">
                                                 <label for="method${item.id}">${item.name}</label>
                                                 </span>
                                             </c:forEach>
 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            发布日期
+                                        </label>
+                                        <div class="col-sm-5">
+                                            <input type="text" data-date-format="yyyy-mm-dd"
+                                                   placeholder="发布日期" name="pubDate"
+                                                   class="form-control date-picker dbdate">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            是否修改
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="radio-inline">
+                                                <input type="checkbox" id="bisModifiable" name="bisModifiable" value="true"
+                                                       checked="checked">
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -167,7 +192,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default" >
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
                     <button type="button" class="btn btn-primary" onclick="saveHypothesis()">
@@ -201,6 +226,7 @@
             $('.template-field').append(html);
         }
     }
+
     //加载 评估假设 数据列表
     function loadHypothesisList() {
         var cols = [];
@@ -209,11 +235,11 @@
         cols.push({field: 'typeName', title: '类型'});
         cols.push({field: 'entrustmentPurposeStr', title: '委托目的'});
         cols.push({field: 'methodStr', title: '评估方法'});
-        cols.push({field: 'template', title: '模板',width:'50%'});
+        cols.push({field: 'template', title: '模板', width: '50%'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="editHypothesis(' + index+ ')"><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="editHypothesis(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="removeHypothesis(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
@@ -276,7 +302,9 @@
                 url: "${pageContext.request.contextPath}/evaluationHypothesis/save",
                 type: "post",
                 dataType: "json",
-                data: data,
+                data: {
+                    formData: JSON.stringify(data)
+                },
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
@@ -293,14 +321,15 @@
             })
         }
     }
+
     //评估假设 修改
     function editHypothesis(index) {
         var row = $("#tb_List").bootstrapTable('getData')[index];
         $("#frm").clearAll();
         $("#frm").initForm(row);
         objMethod.event.init();
-        AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='entrustmentPurpose']"),row.entrustmentPurpose.split(','));
-        AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='method']"),row.method.split(','));
+        AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='entrustmentPurpose']"), row.entrustmentPurpose.split(','));
+        AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='method']"), row.method.split(','));
         extractTemplateField();
         $('#divBox').modal();
     }
@@ -326,14 +355,14 @@
         }
     }
     objMethod.event = {
-        init:function () {
-            if (objMethod.flag){
+        init: function () {
+            if (objMethod.flag) {
                 objMethod.event.type();
                 objMethod.flag = false;
             }
         },
         //类型
-        type:function () {
+        type: function () {
             $.ajax({
                 url: "${pageContext.request.contextPath}/baseProjectClassify/getProjectClassifyListByFieldName",
                 type: "post",
@@ -363,11 +392,11 @@
                 }
             });
         },
-        change:function () {
+        change: function () {
             objMethod.event.category();
         },
         //类别
-        category:function () {
+        category: function () {
             //监听change 事件 并做出......
             $("#frm" + " .type").change(function () {
                 var pid = $("#frm" + " .type").eq(1).val();
@@ -408,7 +437,6 @@
             });
         }
     }
-
 
 
 </script>
