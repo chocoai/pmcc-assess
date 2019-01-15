@@ -366,53 +366,133 @@ public class BasicHouseExample {
             return (Criteria) this;
         }
 
-        public Criteria andFloorEqualTo(Integer value) {
+        public Criteria andFloorEqualTo(String value) {
             addCriterion("floor =", value, "floor");
             return (Criteria) this;
         }
 
-        public Criteria andFloorNotEqualTo(Integer value) {
+        public Criteria andFloorNotEqualTo(String value) {
             addCriterion("floor <>", value, "floor");
             return (Criteria) this;
         }
 
-        public Criteria andFloorGreaterThan(Integer value) {
+        public Criteria andFloorGreaterThan(String value) {
             addCriterion("floor >", value, "floor");
             return (Criteria) this;
         }
 
-        public Criteria andFloorGreaterThanOrEqualTo(Integer value) {
+        public Criteria andFloorGreaterThanOrEqualTo(String value) {
             addCriterion("floor >=", value, "floor");
             return (Criteria) this;
         }
 
-        public Criteria andFloorLessThan(Integer value) {
+        public Criteria andFloorLessThan(String value) {
             addCriterion("floor <", value, "floor");
             return (Criteria) this;
         }
 
-        public Criteria andFloorLessThanOrEqualTo(Integer value) {
+        public Criteria andFloorLessThanOrEqualTo(String value) {
             addCriterion("floor <=", value, "floor");
             return (Criteria) this;
         }
 
-        public Criteria andFloorIn(List<Integer> values) {
+        public Criteria andFloorLike(String value) {
+            addCriterion("floor like", value, "floor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorNotLike(String value) {
+            addCriterion("floor not like", value, "floor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorIn(List<String> values) {
             addCriterion("floor in", values, "floor");
             return (Criteria) this;
         }
 
-        public Criteria andFloorNotIn(List<Integer> values) {
+        public Criteria andFloorNotIn(List<String> values) {
             addCriterion("floor not in", values, "floor");
             return (Criteria) this;
         }
 
-        public Criteria andFloorBetween(Integer value1, Integer value2) {
+        public Criteria andFloorBetween(String value1, String value2) {
             addCriterion("floor between", value1, value2, "floor");
             return (Criteria) this;
         }
 
-        public Criteria andFloorNotBetween(Integer value1, Integer value2) {
+        public Criteria andFloorNotBetween(String value1, String value2) {
             addCriterion("floor not between", value1, value2, "floor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescIsNull() {
+            addCriterion("floor_desc is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescIsNotNull() {
+            addCriterion("floor_desc is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescEqualTo(String value) {
+            addCriterion("floor_desc =", value, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescNotEqualTo(String value) {
+            addCriterion("floor_desc <>", value, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescGreaterThan(String value) {
+            addCriterion("floor_desc >", value, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescGreaterThanOrEqualTo(String value) {
+            addCriterion("floor_desc >=", value, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescLessThan(String value) {
+            addCriterion("floor_desc <", value, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescLessThanOrEqualTo(String value) {
+            addCriterion("floor_desc <=", value, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescLike(String value) {
+            addCriterion("floor_desc like", value, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescNotLike(String value) {
+            addCriterion("floor_desc not like", value, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescIn(List<String> values) {
+            addCriterion("floor_desc in", values, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescNotIn(List<String> values) {
+            addCriterion("floor_desc not in", values, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescBetween(String value1, String value2) {
+            addCriterion("floor_desc between", value1, value2, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescNotBetween(String value1, String value2) {
+            addCriterion("floor_desc not between", value1, value2, "floorDesc");
             return (Criteria) this;
         }
 
