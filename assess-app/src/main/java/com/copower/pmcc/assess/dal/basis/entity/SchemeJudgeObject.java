@@ -44,6 +44,8 @@ public class SchemeJudgeObject {
 
     private BigDecimal originalPrice;
 
+    private String rentalPossessionDesc;
+
     private Boolean bisSplit;
 
     private Boolean bisMerge;
@@ -218,6 +220,14 @@ public class SchemeJudgeObject {
 
     public void setOriginalPrice(BigDecimal originalPrice) {
         this.originalPrice = originalPrice;
+    }
+
+    public String getRentalPossessionDesc() {
+        return rentalPossessionDesc;
+    }
+
+    public void setRentalPossessionDesc(String rentalPossessionDesc) {
+        this.rentalPossessionDesc = rentalPossessionDesc == null ? null : rentalPossessionDesc.trim();
     }
 
     public Boolean getBisSplit() {

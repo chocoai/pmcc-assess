@@ -102,8 +102,7 @@ public class MdMarketCompareService {
         mdMarketCompareItem.setCreator(commonService.thisUserAccount());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(judgeObject.getProjectId());
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
-        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectPlanDetails(schemeJudgeObject.getDeclareRecordId(), projectPhase.getId());
-        ProjectPlanDetails planDetails = planDetailsList.get(0);
+        ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetails(schemeJudgeObject.getDeclareRecordId(), projectPhase.getId());
         mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(projectInfo, schemeJudgeObject.getDeclareRecordId(), planDetails.getId(), setUseFieldList));
         mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
 

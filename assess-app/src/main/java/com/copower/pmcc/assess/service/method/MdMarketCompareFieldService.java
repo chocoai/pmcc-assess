@@ -141,8 +141,7 @@ public class MdMarketCompareFieldService extends BaseService {
             List<BasicMatchingEnvironmentVo> environmentList = basicMatchingEnvironmentService.getBasicMatchingEnvironmentVos(examineEstate.getId());
             //取得他项权利
             ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
-            List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectPlanDetails(declareId, projectPhase.getId());
-            ProjectPlanDetails inventoryPlanDetails = planDetailsList.get(0);
+            ProjectPlanDetails inventoryPlanDetails = projectPlanDetailsService.getProjectPlanDetails(declareId, projectPhase.getId());
             List<SurveyAssetInventoryRight> inventoryRights = surveyAssetInventoryRightDao.getListByPlanDetailsId(inventoryPlanDetails.getId());
             //取得土地实体情况
             BasicEstateLandState landState = basicEstateLandStateService.getLandStateByEstateId(examineEstate.getId());

@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.service.project.declare;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
@@ -17,11 +15,9 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.api.dto.ocr.aliyun.OcrBaseVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -44,7 +40,9 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * @Auther: zch
@@ -410,7 +408,7 @@ public class DeclareRealtyHouseCertService {
             declareRecord.setName(oo.getCertName());
             declareRecord.setOwnership(oo.getOwnership());
             declareRecord.setSeat(oo.getBeLocated());
-            declareRecord.setCertUse(oo.getPlanningUse());
+            declareRecord.setCertUse(baseDataDicService.getNameById(oo.getPlanningUse()));
             declareRecord.setFloorArea(oo.getEvidenceArea());
             declareRecord.setHouseUseEndDate(oo.getUseEndDate());
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);

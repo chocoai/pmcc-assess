@@ -134,7 +134,7 @@ public class ProjectPlanController {
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = projectPlanDetailsService.getProjectPlanDetailsByPlanApply(planId);
         if (CollectionUtils.isEmpty(projectPlanDetailsVos)) {
             try {
-                Boolean aBoolean = projectPlanService.InitProjectPlanDetails(planId);
+                Boolean aBoolean = projectPlanService.initProjectPlanDetails(planId);
                 if (aBoolean)//如果加载默认成功，则再添加详情
                 {
                     projectPlanDetailsVos = projectPlanDetailsService.getProjectPlanDetailsByPlanApply(planId);
@@ -159,7 +159,7 @@ public class ProjectPlanController {
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = projectPlanDetailsService.getProjectPlanDetailsByPlanId(planId);
         if (CollectionUtils.isEmpty(projectPlanDetailsVos)) {
             try {
-                Boolean aBoolean = projectPlanService.InitProjectPlanDetails(planId);
+                Boolean aBoolean = projectPlanService.initProjectPlanDetails(planId);
                 if (aBoolean)//如果加载默认成功，则再添加详情
                 {
                     projectPlanDetailsVos = projectPlanDetailsService.getProjectPlanDetailsByPlanId(planId);

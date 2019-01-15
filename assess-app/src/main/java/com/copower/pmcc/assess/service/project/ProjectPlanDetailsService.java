@@ -100,12 +100,13 @@ public class ProjectPlanDetailsService {
         return projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
     }
 
-    public List<ProjectPlanDetails> getProjectPlanDetails(Integer declareId, Integer projectPhaseId) {
+    public ProjectPlanDetails getProjectPlanDetails(Integer declareId, Integer projectPhaseId) {
         ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
         projectPlanDetails.setDeclareRecordId(declareId);
         projectPlanDetails.setProjectPhaseId(projectPhaseId);
         List<ProjectPlanDetails> planDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetails);
-        return planDetailsList;
+        if(CollectionUtils.isEmpty(planDetailsList)) return null;
+        return planDetailsList.get(0);
     }
 
     /**

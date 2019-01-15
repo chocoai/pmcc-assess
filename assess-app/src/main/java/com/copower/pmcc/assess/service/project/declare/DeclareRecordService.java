@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.declare;
 
+import com.copower.pmcc.assess.dal.basic.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
@@ -133,8 +134,13 @@ public class DeclareRecordService {
                         schemeJudgeObject.setName(declareRecord.getName());
                         schemeJudgeObject.setOwnership(declareRecord.getOwnership());
                         schemeJudgeObject.setSeat(declareRecord.getSeat());
-                        schemeJudgeObject.setCertUse( declareRecord.getCertUse());
+                        schemeJudgeObject.setCertUse(declareRecord.getCertUse());
                         schemeJudgeObject.setPracticalUse(declareRecord.getPracticalUse());
+                        //获取到房屋中的出租占用情况描述
+                        BasicHouse basicHouse = schemeJudgeObjectService.getBasicHouseByDeclareId(declareRecord.getId());
+                        if (basicHouse != null) {
+                            schemeJudgeObject.setRentalPossessionDesc(basicHouse.getDescription());
+                        }
                         schemeJudgeObject.setPid(0);
                         schemeJudgeObject.setBisSplit(false);
                         schemeJudgeObject.setSorting(i);

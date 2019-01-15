@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,8 +29,10 @@ public class ProjectTaskEvent extends BaseProcessEvent {
         super.processFinishExecute(processExecution);
         String processInstanceId = processExecution.getProcessInstanceId();
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(processInstanceId);
-        if (projectPlanDetailsService.isAllPlanDetailsFinish(projectPlanDetails.getPlanId())) {
-            projectPlanService.enterNextStage(projectPlanDetails.getPlanId()); //结束当前阶段进入下一阶段
+        if(StringUtils.isBlank(projectPlanDetails.getReturnDetailsReason())) {//非重启任务
+            if (projectPlanDetailsService.isAllPlanDetailsFinish(projectPlanDetails.getPlanId())) {
+                projectPlanService.enterNextStage(projectPlanDetails.getPlanId()); //结束当前阶段进入下一阶段
+            }
         }
     }
 }

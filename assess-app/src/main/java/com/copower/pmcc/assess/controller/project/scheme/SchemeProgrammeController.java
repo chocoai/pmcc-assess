@@ -282,4 +282,16 @@ public class SchemeProgrammeController {
         bootstrapTableVo.setTotal((long) caseTaskList.size());
         return bootstrapTableVo;
     }
+
+    @ResponseBody
+    @PostMapping(name = "更新出租占用情况", value = "/updateRentalPossessionDesc")
+    public HttpResult updateRentalPossessionDesc(Integer id,String rentalPossessionDesc) {
+        try {
+            schemeJudgeObjectService.updateRentalPossessionDesc(id,rentalPossessionDesc);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error("更新出租占用情况", e);
+            return HttpResult.newErrorResult("更新出租占用情况异常");
+        }
+    }
 }

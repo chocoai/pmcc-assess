@@ -108,7 +108,7 @@ public class ProjectPlanService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public Boolean InitProjectPlanDetails(Integer planId) throws BusinessException {
+    public Boolean initProjectPlanDetails(Integer planId) throws BusinessException {
         ProjectPlan projectPlan = projectPlanDao.getProjectplanById(planId);
 
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());

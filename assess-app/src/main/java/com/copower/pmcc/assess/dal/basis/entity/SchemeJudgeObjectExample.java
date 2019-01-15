@@ -1376,6 +1376,76 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
+        public Criteria andRentalPossessionDescIsNull() {
+            addCriterion("rental_possession_desc is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalPossessionDescIsNotNull() {
+            addCriterion("rental_possession_desc is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalPossessionDescEqualTo(String value) {
+            addCriterion("rental_possession_desc =", value, "rentalPossessionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalPossessionDescNotEqualTo(String value) {
+            addCriterion("rental_possession_desc <>", value, "rentalPossessionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalPossessionDescGreaterThan(String value) {
+            addCriterion("rental_possession_desc >", value, "rentalPossessionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalPossessionDescGreaterThanOrEqualTo(String value) {
+            addCriterion("rental_possession_desc >=", value, "rentalPossessionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalPossessionDescLessThan(String value) {
+            addCriterion("rental_possession_desc <", value, "rentalPossessionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalPossessionDescLessThanOrEqualTo(String value) {
+            addCriterion("rental_possession_desc <=", value, "rentalPossessionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalPossessionDescLike(String value) {
+            addCriterion("rental_possession_desc like", value, "rentalPossessionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalPossessionDescNotLike(String value) {
+            addCriterion("rental_possession_desc not like", value, "rentalPossessionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalPossessionDescIn(List<String> values) {
+            addCriterion("rental_possession_desc in", values, "rentalPossessionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalPossessionDescNotIn(List<String> values) {
+            addCriterion("rental_possession_desc not in", values, "rentalPossessionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalPossessionDescBetween(String value1, String value2) {
+            addCriterion("rental_possession_desc between", value1, value2, "rentalPossessionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalPossessionDescNotBetween(String value1, String value2) {
+            addCriterion("rental_possession_desc not between", value1, value2, "rentalPossessionDesc");
+            return (Criteria) this;
+        }
+
         public Criteria andBisSplitIsNull() {
             addCriterion("bis_split is null");
             return (Criteria) this;

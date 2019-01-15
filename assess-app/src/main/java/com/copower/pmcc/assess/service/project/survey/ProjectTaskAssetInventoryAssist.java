@@ -70,7 +70,7 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
                         break;
                     case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_USE://登记用途与实际用途
                         if (StringUtils.isNotBlank(declareRecord.getCertUse())) {
-                            surveyAssetInventoryContent.setRegistration(baseDataDicService.getNameById(Integer.valueOf(declareRecord.getCertUse())));
+                            surveyAssetInventoryContent.setRegistration(declareRecord.getCertUse());
                         }
                         break;
                     case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_AREA://登记面积与实际面积

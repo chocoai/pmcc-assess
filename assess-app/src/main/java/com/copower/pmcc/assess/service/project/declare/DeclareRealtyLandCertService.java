@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -380,6 +381,7 @@ public class DeclareRealtyLandCertService {
         return vo;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void eventWriteDeclareApply(DeclareApply declareApply) {
         DeclareRecord declareRecord = null;
         if (declareApply == null) {
@@ -399,19 +401,11 @@ public class DeclareRealtyLandCertService {
             declareRecord.setName(oo.getLandCertName());
             declareRecord.setOwnership(oo.getOwnership());
             declareRecord.setSeat(oo.getBeLocated());
+            declareRecord.setCertUse(baseDataDicService.getNameById(oo.getPurpose()));
             declareRecord.setFloorArea(oo.getUseRightArea());
             declareRecord.setLandUseEndDate(oo.getTerminationDate());
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
             declareRecord.setCreator(declareApply.getCreator());
-            BaseDataDic baseDataDic = null;
-            if (oo.getPurpose() != null) {
-                if (NumberUtils.isNumber(oo.getPurpose())) {
-                    baseDataDic = baseDataDicService.getDataDicById(Integer.parseInt(oo.getPurpose()));
-                    if (baseDataDic != null) {
-                        declareRecord.setCertUse(baseDataDic.getName());
-                    }
-                }
-            }
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
             } catch (Exception e1) {

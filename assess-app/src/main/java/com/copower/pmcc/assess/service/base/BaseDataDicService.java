@@ -337,6 +337,11 @@ public class BaseDataDicService {
         return baseDataDic.getName();
     }
 
+    public String getNameById(String id) {
+        if (StringUtils.isBlank(id) || !StringUtils.isNumeric(id)) return "";
+        return getNameById(Integer.valueOf(id));
+    }
+
     /**
      * 从现有集合中根据名称找出对应数据
      *

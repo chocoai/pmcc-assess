@@ -499,6 +499,7 @@
             <input type="hidden" data-name="number" value="{number}">
             <input type="hidden" data-name="splitNumber" value="{splitNumber}">
             <input type="hidden" data-name="declareId" value="{declareId}">
+            <input type="hidden" data-name="rentalPossessionDesc" value="{rentalPossessionDesc}">
             <label class="form-control" data-name="mergeNumber">{mergeNumber}</label>
         </td>
         <%--<td>--%>
@@ -514,8 +515,8 @@
                    class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>
             </label></td>
         <td><label class="form-control" data-name="seat"><span>{seat}</span></label></td>
-        <td><label class="form-control" data-name="certUseName">{certUseName}</label></td>
-        <td><label class="form-control" data-name="practicalUseName">{practicalUseName}</label></td>
+        <td><label class="form-control" data-name="certUse">{certUse}</label></td>
+        <td><label class="form-control" data-name="practicalUse">{practicalUse}</label></td>
         <td>
             <div class="x-valid">
                 <select class="form-control" required data-name="setUse" name="setUse{id}">
@@ -553,14 +554,17 @@
                class="btn btn-xs btn-warning judge-merge tooltips">合并</a>
             <a href="javascript://" onclick="programme.mergeJudgeCancel(this);"
                class="btn btn-xs btn-warning judge-merge-cancel tooltips">取消合并</a>
-            <a href="javascript://" onclick="setEvaluationMethod(this);"
-               class="btn btn-xs btn-success judge-method tooltips">评估方法</a>
+            <a href="javascript://" title="评估方法" onclick="setEvaluationMethod(this);"
+               class="btn btn-xs btn-success judge-method tooltips">方法</a>
+            <a href="javascript://" title="出租或占用情况描述" onclick="programme.updateRentalPossessionDesc(this);"
+               class="btn btn-xs btn-success judge-description tooltips">描述</a>
         </td>
     </tr>
 </script>
 </body>
 </html>
-<div id="modal_inventory_right" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="modal_inventory_right" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -716,7 +720,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button" class="btn btn-primary" onclick="saveData()">
+                <button type="button" class="btn btn-primary" onclick="programme.saveInventoryRight()">
                     保存
                 </button>
             </div>
@@ -792,6 +796,7 @@
                         html = html.replace(/{bisMerge}/g, item.bisMerge == undefined ? false : item.bisMerge);
                         html = html.replace(/{number}/g, item.number == undefined ? "" : item.number);
                         html = html.replace(/{splitNumber}/g, item.splitNumber == undefined ? "" : item.splitNumber);
+                        html = html.replace(/{rentalPossessionDesc}/g, item.rentalPossessionDesc == undefined ? "" : item.rentalPossessionDesc);
                         if (item.splitNumber) {
                             html = html.replace(/{mergeNumber}/g, item.number + "-" + item.splitNumber);
                         } else {
@@ -801,8 +806,8 @@
                         html = html.replace(/{declareId}/g, item.declareRecordId == undefined ? "" : item.declareRecordId);
                         html = html.replace(/{ownership}/g, item.ownership == undefined ? "" : item.ownership);
                         html = html.replace(/{seat}/g, item.seat == undefined ? "" : item.seat);
-                        html = html.replace(/{certUseName}/g, item.certUseName == undefined ? "" : item.certUseName);
-                        html = html.replace(/{practicalUseName}/g, item.practicalUseName == undefined ? "" : item.practicalUseName);
+                        html = html.replace(/{certUse}/g, item.certUse == undefined ? "" : item.certUse);
+                        html = html.replace(/{practicalUse}/g, item.practicalUse == undefined ? "" : item.practicalUse);
                         html = html.replace(/{floorArea}/g, item.floorArea == undefined ? "" : item.floorArea);
                         html = html.replace(/{evaluationArea}/g, item.evaluationArea == undefined ? "" : item.evaluationArea);
                         tbody.append(html);
@@ -1394,6 +1399,35 @@
         });
     }
 
+    //调整描述内容
+    programme.updateRentalPossessionDesc = function (_this) {
+        var tr = $(_this).closest('tr');
+        layer.prompt({
+            title: '出租占用情况描述',
+            formType: 2,
+            zIndex: 999, //重点1
+            value: tr.find('[data-name=rentalPossessionDesc]').val(),
+            area: ['800px', '350px']
+        }, function (val, index) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/schemeProgramme/updateRentalPossessionDesc',
+                data: {
+                    id: tr.find('[data-name="id"]').val(),
+                    rentalPossessionDesc: val
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        tr.find('[data-name=rentalPossessionDesc]').val(val);
+                        layer.close(index);
+                    } else {
+                        toastr.error(result.errmsg);
+                    }
+                }
+            })
+        });
+    }
+
 </script>
 <script type="text/javascript">
     /*
@@ -1648,6 +1682,7 @@
         }
         tabPane.find('.thinkingWell').show();
     }
+
 </script>
 
 
