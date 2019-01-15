@@ -94,7 +94,7 @@ public class SchemeJudgeObjectService {
      */
     public List<SchemeJudgeObjectVo> getSchemeJudgeObjectList(Integer areaGroupId) {
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectDao.getSchemeJudgeObjectList(areaGroupId);
-        return LangUtils.transform(schemeJudgeObjectList,o->getSchemeJudgeObjectVo(o));
+        return LangUtils.transform(schemeJudgeObjectList, o -> getSchemeJudgeObjectVo(o));
     }
 
     public List<SchemeJudgeObject> getJudgeObjectListByProjectId(Integer projectId) {
@@ -208,10 +208,10 @@ public class SchemeJudgeObjectService {
         SchemeJudgeObjectVo schemeJudgeObjectVo = new SchemeJudgeObjectVo();
         BeanUtils.copyProperties(schemeJudgeObject, schemeJudgeObjectVo);
         if (StringUtils.isNotBlank(schemeJudgeObject.getCertUse())) {
-            schemeJudgeObjectVo.setCertUseName(baseDataDicService.getNameById(Integer.valueOf(schemeJudgeObject.getCertUse()) ));
+            schemeJudgeObjectVo.setCertUseName(baseDataDicService.getNameById(Integer.valueOf(schemeJudgeObject.getCertUse())));
         }
         if (StringUtils.isNotBlank(schemeJudgeObject.getPracticalUse())) {
-            schemeJudgeObjectVo.setPracticalUseName(baseDataDicService.getNameById(Integer.valueOf(schemeJudgeObject.getPracticalUse()) ));
+            schemeJudgeObjectVo.setPracticalUseName(baseDataDicService.getNameById(Integer.valueOf(schemeJudgeObject.getPracticalUse())));
         }
         schemeJudgeObjectVo.setSetUseName(baseDataDicService.getNameById(schemeJudgeObject.getSetUse()));
         schemeJudgeObjectVo.setBestUseName(baseDataDicService.getNameById(schemeJudgeObject.getBestUse()));
@@ -413,6 +413,7 @@ public class SchemeJudgeObjectService {
             ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SURE_PRICE, projectInfo.getProjectCategoryId());
             ProjectPhase phaseLiquidationAnalysis = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.LIQUIDATION_ANALYSIS, projectInfo.getProjectCategoryId());
             ProjectPhase phaseReimbursement = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.REIMBURSEMENT, projectInfo.getProjectCategoryId());
+            String entrustPurposeKey = baseDataDicService.getCacheDataDicById(projectInfo.getEntrustPurpose()).getFieldName();
             int i = 0;
             Map<Integer, ProjectPhase> phaseMap = getProjectPhaseMap(projectInfo.getProjectCategoryId());
             for (SchemeAreaGroup schemeAreaGroup : areaGroupList) {
@@ -484,8 +485,8 @@ public class SchemeJudgeObjectService {
                         }
 
                         //如果是抵押评估还需添加事项，变现分析税费、法定优先受偿款
-                        if(projectInfo.getEntrustPurpose().equals(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE)){
-                            if(phaseLiquidationAnalysis!=null){
+                        if (entrustPurposeKey.equals(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE)) {
+                            if (phaseLiquidationAnalysis != null) {
                                 ProjectPlanDetails details = new ProjectPlanDetails();
                                 details.setProjectWorkStageId(projectPlan.getWorkStageId());
                                 details.setPlanId(projectPlan.getId());
@@ -499,7 +500,7 @@ public class SchemeJudgeObjectService {
                                 details.setSorting(101);
                                 projectPlanDetailsDao.addProjectPlanDetails(details);
                             }
-                            if(phaseReimbursement!=null){
+                            if (phaseReimbursement != null) {
                                 ProjectPlanDetails details = new ProjectPlanDetails();
                                 details.setProjectWorkStageId(projectPlan.getWorkStageId());
                                 details.setPlanId(projectPlan.getId());

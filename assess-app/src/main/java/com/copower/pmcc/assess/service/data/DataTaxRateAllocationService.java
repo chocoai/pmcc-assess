@@ -99,15 +99,18 @@ public class DataTaxRateAllocationService {
             where.setBisNationalUnity(false);
             where.setProvince(province);
             where.setCity(city);
-            where.setDistrict(district);
+            //当区县配置数据才获取否则取上级区域
+            if (StringUtils.isNotBlank(district) && dataTaxRateAllocationDao.hasDataTaxRate(baseDataDic.getId(), province, city, district)) {
+                where.setDistrict(district);
+            }
         }
         List<DataTaxRateAllocation> rateAllocations = dataTaxRateAllocationDao.getDataTaxRateAllocationList(where);
-        if(CollectionUtils.isEmpty(rateAllocations)) return null;
+        if (CollectionUtils.isEmpty(rateAllocations)) return null;
         return rateAllocations.get(0);
     }
 
-    public DataTaxRateAllocation getTaxRateByKey(String key){
-        return getTaxRateByKey(key,null,null,null);
+    public DataTaxRateAllocation getTaxRateByKey(String key) {
+        return getTaxRateByKey(key, null, null, null);
     }
 
     public DataTaxRateAllocationVo getDataTaxRateAllocationVo(DataTaxRateAllocation dataTaxRateAllocation) {
