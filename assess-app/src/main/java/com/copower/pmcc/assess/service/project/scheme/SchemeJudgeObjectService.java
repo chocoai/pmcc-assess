@@ -30,6 +30,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -94,7 +95,7 @@ public class SchemeJudgeObjectService {
      */
     public List<SchemeJudgeObjectVo> getSchemeJudgeObjectList(Integer areaGroupId) {
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectDao.getSchemeJudgeObjectList(areaGroupId);
-        return LangUtils.transform(schemeJudgeObjectList,o->getSchemeJudgeObjectVo(o));
+        return LangUtils.transform(schemeJudgeObjectList, o -> getSchemeJudgeObjectVo(o));
     }
 
     public List<SchemeJudgeObject> getJudgeObjectListByProjectId(Integer projectId) {
@@ -207,11 +208,11 @@ public class SchemeJudgeObjectService {
     public SchemeJudgeObjectVo getSchemeJudgeObjectVo(SchemeJudgeObject schemeJudgeObject) {
         SchemeJudgeObjectVo schemeJudgeObjectVo = new SchemeJudgeObjectVo();
         BeanUtils.copyProperties(schemeJudgeObject, schemeJudgeObjectVo);
-        if (StringUtils.isNotBlank(schemeJudgeObject.getCertUse())) {
-            schemeJudgeObjectVo.setCertUseName(baseDataDicService.getNameById(Integer.valueOf(schemeJudgeObject.getCertUse()) ));
+        if (NumberUtils.isNumber(schemeJudgeObject.getCertUse())) {
+            schemeJudgeObjectVo.setCertUseName(baseDataDicService.getNameById(Integer.valueOf(schemeJudgeObject.getCertUse())));
         }
-        if (StringUtils.isNotBlank(schemeJudgeObject.getPracticalUse())) {
-            schemeJudgeObjectVo.setPracticalUseName(baseDataDicService.getNameById(Integer.valueOf(schemeJudgeObject.getPracticalUse()) ));
+        if (NumberUtils.isNumber(schemeJudgeObject.getPracticalUse())) {
+            schemeJudgeObjectVo.setPracticalUseName(baseDataDicService.getNameById(Integer.valueOf(schemeJudgeObject.getPracticalUse())));
         }
         schemeJudgeObjectVo.setSetUseName(baseDataDicService.getNameById(schemeJudgeObject.getSetUse()));
         schemeJudgeObjectVo.setBestUseName(baseDataDicService.getNameById(schemeJudgeObject.getBestUse()));
@@ -484,8 +485,8 @@ public class SchemeJudgeObjectService {
                         }
 
                         //如果是抵押评估还需添加事项，变现分析税费、法定优先受偿款
-                        if(projectInfo.getEntrustPurpose().equals(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE)){
-                            if(phaseLiquidationAnalysis!=null){
+                        if (projectInfo.getEntrustPurpose().equals(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE)) {
+                            if (phaseLiquidationAnalysis != null) {
                                 ProjectPlanDetails details = new ProjectPlanDetails();
                                 details.setProjectWorkStageId(projectPlan.getWorkStageId());
                                 details.setPlanId(projectPlan.getId());
@@ -499,7 +500,7 @@ public class SchemeJudgeObjectService {
                                 details.setSorting(101);
                                 projectPlanDetailsDao.addProjectPlanDetails(details);
                             }
-                            if(phaseReimbursement!=null){
+                            if (phaseReimbursement != null) {
                                 ProjectPlanDetails details = new ProjectPlanDetails();
                                 details.setProjectWorkStageId(projectPlan.getWorkStageId());
                                 details.setPlanId(projectPlan.getId());

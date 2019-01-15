@@ -96,6 +96,15 @@ public class PublicController {
         }
     }
 
+    @RequestMapping(value = "/getSysAttachmentViewHtml", method = {RequestMethod.GET}, name = "获取附件的html")
+    public HttpResult getSysAttachmentViewHtml(Integer attachmentId) {
+        try {
+            return HttpResult.newCorrectResult(baseAttachmentService.getViewHtml(baseAttachmentService.getSysAttachmentDto(attachmentId)));
+        } catch (Exception e1) {
+            return HttpResult.newErrorResult("异常");
+        }
+    }
+
     @RequestMapping(value = "/saveAndUpdateSysAttachmentDto", method = {RequestMethod.POST}, name = "新增或者更新附件")
     public HttpResult saveAndUpdateSysAttachmentDto(SysAttachmentDto sysAttachmentDto) {
         if (sysAttachmentDto != null) {
