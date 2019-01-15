@@ -158,7 +158,7 @@
                                 <table class="table table-hover">
                                     <thead>
                                     <tr>
-                                        <td><input type="checkbox" name="checkboxAll" onclick="checkBoxAllClick(this);">
+                                        <td>
                                         </td>
                                         <th>序号</th>
                                         <th>名称</th>
@@ -175,8 +175,7 @@
                                     <tbody>
                                     <c:forEach items="${reportRecordList}" var="item" varStatus="i">
                                         <tr>
-                                            <td><input type="checkbox" name="checkboxItem"
-                                                       onclick="checkBoxItemClick(this);"></td>
+                                            <td></td>
                                             <th>${i.index+1}</th>
                                             <td>${item.name}</td>
                                             <td>${item.floorArea}</td>
@@ -338,6 +337,7 @@
             success: function (result) {
                 if (result.ret) {
                     AssessCommon.getSysAttachmentViewHtml(result.data, function (data) {
+                        $("#reportDownloadWord").empty();
                         $("#reportDownloadWord").append(data);
                     });
                 } else {
