@@ -33,7 +33,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -215,12 +214,6 @@ public class SchemeJudgeObjectService {
     public SchemeJudgeObjectVo getSchemeJudgeObjectVo(SchemeJudgeObject schemeJudgeObject) {
         SchemeJudgeObjectVo schemeJudgeObjectVo = new SchemeJudgeObjectVo();
         BeanUtils.copyProperties(schemeJudgeObject, schemeJudgeObjectVo);
-        if (NumberUtils.isNumber(schemeJudgeObject.getCertUse())) {
-            schemeJudgeObjectVo.setCertUseName(baseDataDicService.getNameById(Integer.valueOf(schemeJudgeObject.getCertUse())));
-        }
-        if (NumberUtils.isNumber(schemeJudgeObject.getPracticalUse())) {
-            schemeJudgeObjectVo.setPracticalUseName(baseDataDicService.getNameById(Integer.valueOf(schemeJudgeObject.getPracticalUse())));
-        }
         schemeJudgeObjectVo.setSetUseName(baseDataDicService.getNameById(schemeJudgeObject.getSetUse()));
         schemeJudgeObjectVo.setBestUseName(baseDataDicService.getNameById(schemeJudgeObject.getBestUse()));
         return schemeJudgeObjectVo;
