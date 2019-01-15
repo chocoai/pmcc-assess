@@ -15,6 +15,8 @@ public class SchemeProgrammeDto {
     @DateTimeFormat(pattern = "YYYY-MM-DD")
     private Date valueTimePoint;
     private String timePointExplain;
+    private Integer valueDefinition;
+    private String valueConnotation;
     List<SchemeJudgeObject> schemeJudgeObjects;
 
     public Integer getAreaGroupId() {
@@ -31,6 +33,22 @@ public class SchemeProgrammeDto {
 
     public void setValueTimePoint(Date valueTimePoint) {
         this.valueTimePoint = valueTimePoint;
+    }
+
+    public Integer getValueDefinition() {
+        return valueDefinition;
+    }
+
+    public void setValueDefinition(Integer valueDefinition) {
+        this.valueDefinition = valueDefinition;
+    }
+
+    public String getValueConnotation() {
+        return valueConnotation;
+    }
+
+    public void setValueConnotation(String valueConnotation) {
+        this.valueConnotation = valueConnotation;
     }
 
     public List<SchemeJudgeObject> getSchemeJudgeObjects() {

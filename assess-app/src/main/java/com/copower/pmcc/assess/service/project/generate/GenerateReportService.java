@@ -3,9 +3,11 @@ package com.copower.pmcc.assess.service.project.generate;
 import com.copower.pmcc.assess.dal.basis.dao.project.generate.GenerateReportDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.GenerateReportRecord;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.dto.input.project.generate.GenerateReportApplyDto;
 import com.copower.pmcc.assess.dto.output.project.generate.GenerateReportRecordVo;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
@@ -25,6 +27,12 @@ public class GenerateReportService {
     private GenerateReportDao generateReportDao;
     @Autowired
     private DeclareRecordService declareRecordService;
+    @Autowired
+    private SchemeAreaGroupService schemeAreaGroupService;
+
+    public List<SchemeAreaGroup> getAreaGroupList(Integer projectId){
+        return schemeAreaGroupService.getAreaGroupList(projectId);
+    }
 
     /**
      * 初始化用于生成报告记录信息

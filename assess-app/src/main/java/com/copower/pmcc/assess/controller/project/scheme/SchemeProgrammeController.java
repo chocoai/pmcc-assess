@@ -79,8 +79,10 @@ public class SchemeProgrammeController {
         modelAndView.addObject("bestUseList", dataBestUseDescriptionService.dataBestUseDescriptionList());
         modelAndView.addObject("setUseList", dataSetUseFieldService.getCacheSetUseFieldListByPid(0));
         modelAndView.addObject("dataDicMethodList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD));
+        modelAndView.addObject("valueDefinitions",baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROGRAMME_VALUE_DEFINITION));
         modelAndView.addObject("evaluationMethodMap", evaluationMethodService.getEvaluationMethodMap());
         modelAndView.addObject("evaluationThinkingMap", evaluationThinkingService.getEvaluationThinkingMap());
+        modelAndView.addObject("inventoryRightTypeList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE));
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("planId", planId);

@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project.generate;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.dto.output.project.generate.GenerateReportRecordVo;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -39,6 +40,8 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
         modelAndView.addObject("reportTypeList",reportTypeList);
         List<GenerateReportRecordVo> reportRecordList = generateReportService.getGenerateReportRecordList(projectPlan.getProjectId(), projectPlan.getId());
         modelAndView.addObject("reportRecordList",reportRecordList);
+        List<SchemeAreaGroup> schemeAreaGroupList = generateReportService.getAreaGroupList(projectPlan.getProjectId());
+        modelAndView.addObject("schemeAreaGroupList",schemeAreaGroupList);
         return modelAndView;
     }
 
