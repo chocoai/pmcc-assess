@@ -64,9 +64,9 @@ public class EvaluationBasisController {
 
     @ResponseBody
     @RequestMapping(value = "/save", method = {RequestMethod.POST}, name = "增加与修改")
-    public HttpResult save(DataEvaluationBasis evaluationBasis) {
+    public HttpResult save(String formData) {
         try {
-            evaluationBasisService.saveAndUpdate(evaluationBasis);
+            evaluationBasisService.saveAndUpdate(formData);
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
             return HttpResult.newErrorResult(e.getMessage());

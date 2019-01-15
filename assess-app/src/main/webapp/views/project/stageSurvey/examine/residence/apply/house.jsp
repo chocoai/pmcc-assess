@@ -22,12 +22,17 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">所在楼层<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" data-rule-maxlength="100" data-rule-number='true'
-                           placeholder="所在楼层(请输入数字)" name="floor" required
+                    <input type="text" placeholder="所在楼层" name="floor" required
                            class="form-control" value="${basicHouse.floor}">
                 </div>
             </div>
-
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">楼层描述<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="楼层描述" name="floorDesc" required
+                           class="form-control" value="${basicHouse.floorDesc}">
+                </div>
+            </div>
         </div>
 
         <div class="form-group">

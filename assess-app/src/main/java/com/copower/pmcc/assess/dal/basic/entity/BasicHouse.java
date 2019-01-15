@@ -12,7 +12,9 @@ public class BasicHouse {
 
     private String houseNumber;
 
-    private Integer floor;
+    private String floor;
+
+    private String floorDesc;
 
     private String huxingName;
 
@@ -72,12 +74,20 @@ public class BasicHouse {
         this.houseNumber = houseNumber == null ? null : houseNumber.trim();
     }
 
-    public Integer getFloor() {
+    public String getFloor() {
         return floor;
     }
 
-    public void setFloor(Integer floor) {
-        this.floor = floor;
+    public void setFloor(String floor) {
+        this.floor = floor == null ? null : floor.trim();
+    }
+
+    public String getFloorDesc() {
+        return floorDesc;
+    }
+
+    public void setFloorDesc(String floorDesc) {
+        this.floorDesc = floorDesc == null ? null : floorDesc.trim();
     }
 
     public String getHuxingName() {

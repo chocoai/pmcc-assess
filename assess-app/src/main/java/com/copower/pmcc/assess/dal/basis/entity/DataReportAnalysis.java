@@ -11,12 +11,6 @@ public class DataReportAnalysis {
 
     private String template;
 
-    private String creator;
-
-    private Date gmtCreated;
-
-    private Date gmtModified;
-
     private String entrustment;
 
     private String purpose;
@@ -26,6 +20,14 @@ public class DataReportAnalysis {
     private String city;
 
     private String district;
+
+    private Boolean bisModifiable;
+
+    private String creator;
+
+    private Date gmtCreated;
+
+    private Date gmtModified;
 
     public Integer getId() {
         return id;
@@ -57,30 +59,6 @@ public class DataReportAnalysis {
 
     public void setTemplate(String template) {
         this.template = template == null ? null : template.trim();
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    public Date getGmtCreated() {
-        return gmtCreated;
-    }
-
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
     }
 
     public String getEntrustment() {
@@ -121,5 +99,37 @@ public class DataReportAnalysis {
 
     public void setDistrict(String district) {
         this.district = district == null ? null : district.trim();
+    }
+
+    public Boolean getBisModifiable() {
+        return bisModifiable;
+    }
+
+    public void setBisModifiable(Boolean bisModifiable) {
+        this.bisModifiable = bisModifiable;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
     }
 }

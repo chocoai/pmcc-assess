@@ -13,15 +13,19 @@ public class DataEvaluationBasis {
 
     private String template;
 
+    private Integer type;
+
+    private Integer category;
+
+    private Date pubDate;
+
+    private Boolean bisModifiable;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Integer type;
-
-    private Integer category;
 
     public Integer getId() {
         return id;
@@ -63,6 +67,38 @@ public class DataEvaluationBasis {
         this.template = template == null ? null : template.trim();
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getCategory() {
+        return category;
+    }
+
+    public void setCategory(Integer category) {
+        this.category = category;
+    }
+
+    public Date getPubDate() {
+        return pubDate;
+    }
+
+    public void setPubDate(Date pubDate) {
+        this.pubDate = pubDate;
+    }
+
+    public Boolean getBisModifiable() {
+        return bisModifiable;
+    }
+
+    public void setBisModifiable(Boolean bisModifiable) {
+        this.bisModifiable = bisModifiable;
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -85,21 +121,5 @@ public class DataEvaluationBasis {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public Integer getCategory() {
-        return category;
-    }
-
-    public void setCategory(Integer category) {
-        this.category = category;
     }
 }

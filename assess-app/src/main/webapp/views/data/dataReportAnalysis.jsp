@@ -184,6 +184,19 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            是否可修改
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <label class="radio-inline">
+                                                <input type="checkbox" id="bisModifiable" name="bisModifiable" value="true"
+                                                       checked="checked">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
