@@ -172,15 +172,18 @@ public class DataBlockService {
         Integer houseId = Integer.valueOf(jsonObject.getString("houseId"));
         //更改数据表分值
         List<BasicHouseDamagedDegreeVo> list = basicHouseDamagedDegreeService.getDamagedDegreeVoList(houseId);
-        for (BasicHouseDamagedDegreeVo item : list) {
-            String scoreId = "scores" + item.getCategory();
-            String reallyScore = jsonObject.getString(scoreId);
-            BigDecimal score = new BigDecimal(reallyScore);
-            item.setScore(score);
-            basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(item);
+        String method = jsonObject.getString("method");
+        if(!method.equals("0")) {
+            for (BasicHouseDamagedDegreeVo item : list) {
+                String scoreId = "scores" + item.getCategory();
+                String reallyScore = jsonObject.getString(scoreId);
+                BigDecimal score = new BigDecimal(reallyScore);
+                item.setScore(score);
+                basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(item);
+            }
         }
 
-        BigDecimal scoreTotal = new BigDecimal("0");
+      /*  BigDecimal scoreTotal = new BigDecimal("0");
         //结构部分"structural.part"
         BigDecimal scoreStructural = getScoreTotal(houseId, "structural.part");
         //装修部分"decoration.part"
@@ -189,7 +192,7 @@ public class DataBlockService {
         BigDecimal scoreEquipment = getScoreTotal(houseId, "equipment.part");
         //其他"other"
         BigDecimal scoreOther = getScoreTotal(houseId, "other");
-        scoreTotal = scoreTotal.add(scoreStructural).add(scoreDecoration).add(scoreEquipment).add(scoreOther);
+        scoreTotal = scoreTotal.add(scoreStructural).add(scoreDecoration).add(scoreEquipment).add(scoreOther);*/
         //保存
         ToolResidueRatio toolResidueRatio = new ToolResidueRatio();
         HashMap<String, String> parameterMap = new HashMap<>();
@@ -200,8 +203,10 @@ public class DataBlockService {
         parameterMap.put("observeRate",jsonObject.getString("observeRate"));
         String parameterValue = JSONObject.toJSON(parameterMap).toString();
         toolResidueRatio.setParameterValue(parameterValue);
-        toolResidueRatio.setType(Integer.valueOf(jsonObject.getString("method")));
-        toolResidueRatio.setResultValue(scoreTotal+"%");
+        toolResidueRatio.setType(Integer.valueOf(method));
+        String resultValue = jsonObject.getString("resultValue");
+        toolResidueRatio.setResultValue(resultValue);
+
         toolResidueRatio.setCreator(commonService.thisUserAccount());
         toolResidueRatioDao.addToolResidueRatio(toolResidueRatio);
     }

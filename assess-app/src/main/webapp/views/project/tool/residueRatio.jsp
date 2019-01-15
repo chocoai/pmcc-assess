@@ -28,6 +28,7 @@
                                             <label for="residueRatioType2">综合法</label>
                                         </span>
                                 <span class="col-sm-2 radio-inline" id="cxl"></span>
+                                <input name="resultValue" id="resultValue" type="hidden">
                             </div>
                         </div>
                     </div>
@@ -81,8 +82,7 @@
                             </label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" id="observeRate" readonly
-                                       name="observeRate" data-rule-number='true' required="required"
-                                       placeholder="权重">
+                                       name="observeRate" data-rule-number='true' placeholder="权重">
                             </div>
                         </div>
                     </div>
@@ -213,6 +213,7 @@
         $('input:radio[name="method"]').change(function () {
             //清空成新率
             $("#cxl").text("");
+            $("#resultValue").val("")
             if ($("#residueRatioType0").is(":checked")) {
                 $("#part1").show();
                 $("#part2").hide();
@@ -311,6 +312,7 @@
                 var ageLimitCxl = 1 - (usedYear / usableYear);
                 if ($("#residueRatioType0").is(":checked")) {
                     $("#cxl").text(ageLimitCxl * 100 + "%");
+                    $("#resultValue").val(ageLimitCxl * 100 + "%")
                 }
                 return ageLimitCxl * 100;
             }
@@ -330,8 +332,8 @@
                 $("#decorationScore").attr("value") >= 0 &&
                 $("#equipmentScore").attr("value") >= 0 &&
                 $("#otherScore").attr("value") >= 0) {
-                if ($("#residueRatioType1").is(":checked")) {
-                    $("#cxl").text(observeCxl + "%");
+                if (!$("#residueRatioType0").is(":checked")) {
+                    observeCxl = getLevel(observeCxl);
                 }
                 return observeCxl;
             }
@@ -345,11 +347,29 @@
             var ageLimitCxl = getAgeLimitCxl();
             console.log(ageLimitCxl);
             var observeCxl = getObserveCxl();
+            console.log(observeCxl+"========----")
             var ageRate = $("#ageRate").val();
             var observeRate = $("#observeRate").val();
             if (observeCxl >= 0 && ageLimitCxl >= 0 && ageRate >= 0 && observeRate >= 0) {
                 $("#cxl").text(ageLimitCxl * ageRate + observeCxl * observeRate + "%");
+                $("#resultValue").val(ageLimitCxl * ageRate + observeCxl * observeRate + "%");
             }
         }
+    }
+
+    function getLevel(data){
+        var level = 50;
+        if(85<data &&data<=100){
+            level = 90;
+        }
+        if(65<data && data<=85){
+            level = 75;
+        }
+        if(50<data && data<=65){
+            level = 60;
+        }
+        $("#cxl").text(level+"%");
+        $("#resultValue").val(level+"%")
+        return level;
     }
 </script>
