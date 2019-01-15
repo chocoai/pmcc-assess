@@ -36,48 +36,7 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
 
-    $(function () {
-
-        $("#frm_task").validate();
-
-        loadUploadFiles();
-        //上传附件
-        FileUtils.uploadFiles({
-            target: "apply_file",
-            showFileList: false,
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: AssessDBKey.ProjectPlanDetails,
-                tableId: ${projectPlanDetails.id},
-                fieldsName: "apply",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true,
-            onUploadComplete: function () {
-                loadUploadFiles();
-            }
-        });
-    });
-    //显示附件
-    function loadUploadFiles() {
-        FileUtils.getFileShows({
-            target: "apply_file",
-            formData: {
-                tableName: AssessDBKey.ProjectPlanDetails,
-                tableId: ${projectPlanDetails.id},
-                fieldsName: "apply",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true
-        })
-    }
-
-
     function submit() {
-        if (!$("#frm_task").valid()) {
-            return false;
-        }
-
         if ("${processInsId}" != "0") {
             submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
         }
