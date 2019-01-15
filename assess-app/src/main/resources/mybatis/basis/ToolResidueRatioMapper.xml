@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataEvaluationHypothesisMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationHypothesis" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ToolResidueRatioMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatio" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="method" property="method" jdbcType="VARCHAR" />
-    <result column="entrustment_purpose" property="entrustmentPurpose" jdbcType="VARCHAR" />
-    <result column="template" property="template" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="category" property="category" jdbcType="INTEGER" />
-    <result column="pub_date" property="pubDate" jdbcType="TIMESTAMP" />
-    <result column="bis_modifiable" property="bisModifiable" jdbcType="BIT" />
+    <result column="parameter_value" property="parameterValue" jdbcType="CHAR" />
+    <result column="result_value" property="resultValue" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -74,16 +69,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, method, entrustment_purpose, template, type, category, pub_date, bis_modifiable, 
-    creator, gmt_created, gmt_modified
+    id, type, parameter_value, result_value, creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationHypothesisExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatioExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_data_evaluation_hypothesis
+    from tb_tool_residue_ratio
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -94,61 +88,44 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_data_evaluation_hypothesis
+    from tb_tool_residue_ratio
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_data_evaluation_hypothesis
+    delete from tb_tool_residue_ratio
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationHypothesisExample" >
-    delete from tb_data_evaluation_hypothesis
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatioExample" >
+    delete from tb_tool_residue_ratio
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationHypothesis" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatio" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_evaluation_hypothesis (name, method, entrustment_purpose, 
-      template, type, category, 
-      pub_date, bis_modifiable, creator, 
-      gmt_created, gmt_modified)
-    values (#{name,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{entrustmentPurpose,jdbcType=VARCHAR}, 
-      #{template,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}, 
-      #{pubDate,jdbcType=TIMESTAMP}, #{bisModifiable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_tool_residue_ratio (type, parameter_value, result_value, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{type,jdbcType=INTEGER}, #{parameterValue,jdbcType=CHAR}, #{resultValue,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationHypothesis" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatio" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_evaluation_hypothesis
+    insert into tb_tool_residue_ratio
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="name != null" >
-        name,
-      </if>
-      <if test="method != null" >
-        method,
-      </if>
-      <if test="entrustmentPurpose != null" >
-        entrustment_purpose,
-      </if>
-      <if test="template != null" >
-        template,
-      </if>
       <if test="type != null" >
         type,
       </if>
-      <if test="category != null" >
-        category,
+      <if test="parameterValue != null" >
+        parameter_value,
       </if>
-      <if test="pubDate != null" >
-        pub_date,
-      </if>
-      <if test="bisModifiable != null" >
-        bis_modifiable,
+      <if test="resultValue != null" >
+        result_value,
       </if>
       <if test="creator != null" >
         creator,
@@ -161,29 +138,14 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="method != null" >
-        #{method,jdbcType=VARCHAR},
-      </if>
-      <if test="entrustmentPurpose != null" >
-        #{entrustmentPurpose,jdbcType=VARCHAR},
-      </if>
-      <if test="template != null" >
-        #{template,jdbcType=VARCHAR},
-      </if>
       <if test="type != null" >
         #{type,jdbcType=INTEGER},
       </if>
-      <if test="category != null" >
-        #{category,jdbcType=INTEGER},
+      <if test="parameterValue != null" >
+        #{parameterValue,jdbcType=CHAR},
       </if>
-      <if test="pubDate != null" >
-        #{pubDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="bisModifiable != null" >
-        #{bisModifiable,jdbcType=BIT},
+      <if test="resultValue != null" >
+        #{resultValue,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -196,41 +158,26 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationHypothesisExample" resultType="java.lang.Integer" >
-    select count(*) from tb_data_evaluation_hypothesis
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatioExample" resultType="java.lang.Integer" >
+    select count(*) from tb_tool_residue_ratio
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_data_evaluation_hypothesis
+    update tb_tool_residue_ratio
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
-      </if>
-      <if test="record.method != null" >
-        method = #{record.method,jdbcType=VARCHAR},
-      </if>
-      <if test="record.entrustmentPurpose != null" >
-        entrustment_purpose = #{record.entrustmentPurpose,jdbcType=VARCHAR},
-      </if>
-      <if test="record.template != null" >
-        template = #{record.template,jdbcType=VARCHAR},
-      </if>
       <if test="record.type != null" >
         type = #{record.type,jdbcType=INTEGER},
       </if>
-      <if test="record.category != null" >
-        category = #{record.category,jdbcType=INTEGER},
+      <if test="record.parameterValue != null" >
+        parameter_value = #{record.parameterValue,jdbcType=CHAR},
       </if>
-      <if test="record.pubDate != null" >
-        pub_date = #{record.pubDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.bisModifiable != null" >
-        bis_modifiable = #{record.bisModifiable,jdbcType=BIT},
+      <if test="record.resultValue != null" >
+        result_value = #{record.resultValue,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -247,16 +194,11 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_data_evaluation_hypothesis
+    update tb_tool_residue_ratio
     set id = #{record.id,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
-      method = #{record.method,jdbcType=VARCHAR},
-      entrustment_purpose = #{record.entrustmentPurpose,jdbcType=VARCHAR},
-      template = #{record.template,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=INTEGER},
-      category = #{record.category,jdbcType=INTEGER},
-      pub_date = #{record.pubDate,jdbcType=TIMESTAMP},
-      bis_modifiable = #{record.bisModifiable,jdbcType=BIT},
+      parameter_value = #{record.parameterValue,jdbcType=CHAR},
+      result_value = #{record.resultValue,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -264,32 +206,17 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationHypothesis" >
-    update tb_data_evaluation_hypothesis
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatio" >
+    update tb_tool_residue_ratio
     <set >
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="method != null" >
-        method = #{method,jdbcType=VARCHAR},
-      </if>
-      <if test="entrustmentPurpose != null" >
-        entrustment_purpose = #{entrustmentPurpose,jdbcType=VARCHAR},
-      </if>
-      <if test="template != null" >
-        template = #{template,jdbcType=VARCHAR},
-      </if>
       <if test="type != null" >
         type = #{type,jdbcType=INTEGER},
       </if>
-      <if test="category != null" >
-        category = #{category,jdbcType=INTEGER},
+      <if test="parameterValue != null" >
+        parameter_value = #{parameterValue,jdbcType=CHAR},
       </if>
-      <if test="pubDate != null" >
-        pub_date = #{pubDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="bisModifiable != null" >
-        bis_modifiable = #{bisModifiable,jdbcType=BIT},
+      <if test="resultValue != null" >
+        result_value = #{resultValue,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -303,16 +230,11 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationHypothesis" >
-    update tb_data_evaluation_hypothesis
-    set name = #{name,jdbcType=VARCHAR},
-      method = #{method,jdbcType=VARCHAR},
-      entrustment_purpose = #{entrustmentPurpose,jdbcType=VARCHAR},
-      template = #{template,jdbcType=VARCHAR},
-      type = #{type,jdbcType=INTEGER},
-      category = #{category,jdbcType=INTEGER},
-      pub_date = #{pubDate,jdbcType=TIMESTAMP},
-      bis_modifiable = #{bisModifiable,jdbcType=BIT},
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatio" >
+    update tb_tool_residue_ratio
+    set type = #{type,jdbcType=INTEGER},
+      parameter_value = #{parameterValue,jdbcType=CHAR},
+      result_value = #{resultValue,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

@@ -64,9 +64,9 @@ public class EvaluationHypothesisController {
 
     @ResponseBody
     @RequestMapping(value = "/save", method = {RequestMethod.POST}, name = "增加与修改")
-    public HttpResult save(DataEvaluationHypothesis evaluationHypothesis) {
+    public HttpResult save(String formData) {
         try {
-            evaluationHypothesisService.saveAndUpdate(evaluationHypothesis);
+            evaluationHypothesisService.saveAndUpdate(formData);
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
             return HttpResult.newErrorResult(e.getMessage());

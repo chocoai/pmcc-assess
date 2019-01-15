@@ -11,6 +11,7 @@ public class BasicHouseDamagedDegreeVo extends BasicHouseDamagedDegree {
     private String typeName;
     private String categoryName;
     private BigDecimal standardScore;
+    private BigDecimal weight;
     private String entityConditionName;
     private String intact;
     private String basicallyIntact;
@@ -88,5 +89,13 @@ public class BasicHouseDamagedDegreeVo extends BasicHouseDamagedDegree {
 
     public void setHasChildren(Boolean hasChildren) {
         this.hasChildren = hasChildren;
+    }
+
+    public BigDecimal getWeight() {
+        return weight;
+    }
+
+    public void setWeight(BigDecimal weight) {
+        this.weight = weight;
     }
 }

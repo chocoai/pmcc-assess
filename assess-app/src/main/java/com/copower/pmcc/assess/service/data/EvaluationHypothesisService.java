@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationHypothesisDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -48,9 +49,10 @@ public class EvaluationHypothesisService {
     /**
      * 保存数据
      *
-     * @param evaluationHypothesis
+     * @param formData
      */
-    public void saveAndUpdate(DataEvaluationHypothesis evaluationHypothesis) {
+    public void saveAndUpdate(String formData) {
+        DataEvaluationHypothesis evaluationHypothesis = JSON.parseObject(formData, DataEvaluationHypothesis.class);
         if (evaluationHypothesis.getId() != null && evaluationHypothesis.getId() > 0) {
             evaluationHypothesisDao.updateHypothesis(evaluationHypothesis);
         } else {
