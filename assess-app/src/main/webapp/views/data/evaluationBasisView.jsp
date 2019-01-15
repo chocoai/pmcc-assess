@@ -148,6 +148,29 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            发布日期
+                                        </label>
+                                        <div class="col-sm-5">
+                                            <input type="text" data-date-format="yyyy-mm-dd"
+                                                   placeholder="发布日期" name="pubDate"
+                                                   class="form-control date-picker dbdate">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            是否修改
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="radio-inline">
+                                                <input type="checkbox" id="bisModifiable" name="bisModifiable" value="true"
+                                                       checked="checked">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             模板<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
@@ -275,7 +298,9 @@
                 url: "${pageContext.request.contextPath}/evaluationBasis/save",
                 type: "post",
                 dataType: "json",
-                data: data,
+                data: {
+                    formData: JSON.stringify(data)
+                },
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');

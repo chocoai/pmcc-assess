@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationBasisDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -46,9 +47,10 @@ public class EvaluationBasisService {
     /**
      * 保存数据
      *
-     * @param evaluationBasis
+     * @param formData
      */
-    public void saveAndUpdate(DataEvaluationBasis evaluationBasis) {
+    public void saveAndUpdate(String formData) {
+        DataEvaluationBasis evaluationBasis = JSON.parseObject(formData, DataEvaluationBasis.class);
         if (evaluationBasis.getId() != null && evaluationBasis.getId() > 0) {
             evaluationBasisDao.updateBasis(evaluationBasis);
         } else {
