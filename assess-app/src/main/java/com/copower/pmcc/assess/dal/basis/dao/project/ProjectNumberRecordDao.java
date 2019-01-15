@@ -28,11 +28,12 @@ public class ProjectNumberRecordDao {
 
     /**
      * 预评报告编号
+     *
      * @param year
      * @param reportType
      * @return
      */
-    public List<ProjectNumberRecord> getPreauditNumberList(Integer year,Integer reportType){
+    public List<ProjectNumberRecord> getPreauditNumberList(Integer year, Integer reportType) {
         ProjectNumberRecordExample example = new ProjectNumberRecordExample();
         ProjectNumberRecordExample.Criteria criteria = example.createCriteria();
         criteria.andYearEqualTo(year).andReportTypeEqualTo(reportType);
@@ -42,16 +43,27 @@ public class ProjectNumberRecordDao {
 
     /**
      * 非预评报告编号
+     *
      * @param year
      * @param reportType
      * @return
      */
-    public List<ProjectNumberRecord> getUnPreauditNumberList(Integer year,Integer reportType){
+    public List<ProjectNumberRecord> getUnPreauditNumberList(Integer year, Integer reportType) {
         ProjectNumberRecordExample example = new ProjectNumberRecordExample();
         ProjectNumberRecordExample.Criteria criteria = example.createCriteria();
         criteria.andYearEqualTo(year).andReportTypeNotEqualTo(reportType);
         example.setOrderByClause("number desc");
         return projectNumberRecordMapper.selectByExample(example);
+    }
+
+    public ProjectNumberRecord getProjectNumberRecord(Integer projectId, Integer areaId, Integer year, Integer reportType) {
+        ProjectNumberRecordExample example = new ProjectNumberRecordExample();
+        ProjectNumberRecordExample.Criteria criteria = example.createCriteria();
+        criteria.andProjectIdEqualTo(projectId).andAreaIdEqualTo(areaId).andYearEqualTo(year).andReportTypeNotEqualTo(reportType);
+        example.setOrderByClause("number desc");
+        List<ProjectNumberRecord> numberRecordList = projectNumberRecordMapper.selectByExample(example);
+        if (numberRecordList == null) return null;
+        return numberRecordList.get(0);
     }
 
     public boolean addProjectNumberRecord(ProjectNumberRecord projectNumberRecord) {
@@ -69,5 +81,5 @@ public class ProjectNumberRecordDao {
         return i > 0;
     }
 
-   
+
 }
