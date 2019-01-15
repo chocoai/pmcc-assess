@@ -52,4 +52,11 @@ public class DataTaxRateAllocationDao {
         MybatisUtils.convertObj2Example(dataHousePriceIndex, example);
         return dataHousePriceIndexMapper.selectByExample(example);
     }
+
+    public boolean hasDataTaxRate(Integer type, String province, String city, String district) {
+        DataTaxRateAllocationExample example = new DataTaxRateAllocationExample();
+        DataTaxRateAllocationExample.Criteria criteria = example.createCriteria();
+        criteria.andTypeEqualTo(type).andProvinceEqualTo(province).andCityEqualTo(city).andDistrictEqualTo(district);
+        return dataHousePriceIndexMapper.countByExample(example) > 0;
+    }
 }
