@@ -42,6 +42,7 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
         modelAndView.addObject("reportRecordList",reportRecordList);
         List<SchemeAreaGroup> schemeAreaGroupList = generateReportService.getAreaGroupList(projectPlan.getProjectId());
         modelAndView.addObject("schemeAreaGroupList",schemeAreaGroupList);
+        modelAndView.addObject("projectPlan",projectPlan);
         return modelAndView;
     }
 

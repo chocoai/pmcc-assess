@@ -611,6 +611,21 @@ $(function () {
                 }
             })
         },
+        getSysAttachmentViewHtml:function (item, callback) {
+            $.ajax({
+                url: getContextPath() + "/public/getSysAttachmentViewHtml",
+                type: "get",
+                data: {attachmentId: item},
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        if (callback) {
+                            callback(result.data);
+                        }
+                    }
+                }
+            })
+        },
         //下载ftp附件到本地
         downloadFtpFileToLocal: function (item, callback) {
             $.ajax({
