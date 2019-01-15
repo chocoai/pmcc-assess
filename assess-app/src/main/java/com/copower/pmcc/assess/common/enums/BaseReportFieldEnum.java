@@ -7,25 +7,25 @@ import java.util.List;
 
 /**
  * @Auther: zch
- * @Date: 2019/1/14 15:27
+ * @Date: 2019/1/15 14:30
  * @Description:
  */
-public enum BaseReportFieldReplaceEnum {
-    TEXT("word.text","文本"),
-    FILE("word.file","附件"),
-    OTHER("word.other","自定义"),//实际为书签
+public enum BaseReportFieldEnum {
+    GROUP("group","组合字段"),
+    REPORTNUMBER("","文号"),
+    PRINCIPAL("","委托人"),
     ;
     private String key;
 
     private String name;
 
-    private BaseReportFieldReplaceEnum(String key, String name) {
+    private BaseReportFieldEnum(String key, String name) {
         this.name = name;
         this.key = key;
     }
 
-    public static BaseReportFieldReplaceEnum getEnumByName(String id) {
-        for (BaseReportFieldReplaceEnum e : BaseReportFieldReplaceEnum.values()) {
+    public static BaseReportFieldEnum getEnumByName(String id) {
+        for (BaseReportFieldEnum e : BaseReportFieldEnum.values()) {
             if (e.getKey().equals(id)) {
                 return e;
             }
@@ -33,9 +33,9 @@ public enum BaseReportFieldReplaceEnum {
         return null;
     }
 
-    public static List<KeyValueDto> getBaseReportFieldReplaceEnumList() {
+    public static List<KeyValueDto> getBaseReportFieldEnumList() {
         List<KeyValueDto> keyValueDtos = new ArrayList<>();
-        for (BaseReportFieldReplaceEnum e : BaseReportFieldReplaceEnum.values()) {
+        for (BaseReportFieldEnum e : BaseReportFieldEnum.values()) {
             KeyValueDto keyValueDto = new KeyValueDto();
             keyValueDto.setKey(String.valueOf(e.getKey()));
             keyValueDto.setValue(e.getName());

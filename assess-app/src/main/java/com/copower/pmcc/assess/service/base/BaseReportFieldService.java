@@ -141,6 +141,10 @@ public class BaseReportFieldService {
         return baseReportFieldDao.getEnableList(fieldName);
     }
 
+    public List<BaseReportField> getListObject(String fieldName, String name){
+        return baseReportFieldDao.getListObject(fieldName, name);
+    }
+
     public BaseReportField getDataDicById(Integer id) {
         return baseReportFieldDao.getSingleObject(id);
     }

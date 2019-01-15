@@ -61,9 +61,8 @@
                                     <label class="col-sm-1 control-label">
                                         报告下载<span class="symbol required"></span>
                                     </label>
-                                    <div class="col-sm-4">
-                                        <a class="btn-primary btn disabled" id="reportDownloadWord"
-                                                onclick="downloadReport()"><i class="fa fa-download"></i></a>
+                                    <div class="col-sm-4" id="reportDownloadWord">
+
                                     </div>
                                 </div>
                             </div>
@@ -110,7 +109,8 @@
                                                     生成报告
                                                 </label>
                                                 <div class="col-sm-3">
-                                                    <a class="btn-primary btn active" onclick="generateReport(this)">生成报告<i
+                                                    <a class="btn-primary btn active"
+                                                       onclick="generateReport('${item.id}')">生成报告<i
                                                             class="fa fa-file-word-o"></i></a>
                                                 </div>
                                             </div>
@@ -309,41 +309,10 @@
         });
     }
 
-    //checkboxAll点击
-    function checkBoxAllClick(_this) {
-        $("#frm_content").find("[name=checkboxItem]").each(function () {
-            $(this).prop("checked", $(_this).prop("checked"));
-            checkBoxItemClick(this);
-        })
-    }
 
-    //checkbox点击
-    function checkBoxItemClick(_this) {
-        var isChecked = $(_this).prop("checked");
-        var tr = $(_this).closest("tr");
-        computeNumber();
-        if (isChecked) {
-            tr.find("[name=reportArea]").attr("required", "true");
-        } else {
-            tr.find("[name=reportArea]").removeAttr("required");
-        }
-    }
-
-    //计算份数
-    function computeNumber() {
-        var reportTypeLength = $("#frm_content").find("[name=reportType]:checked").length;
-        var checkboxItemLength = $("#frm_content").find("[name=checkboxItem]:checked").length;
-        if (reportTypeLength > 0 && checkboxItemLength > 0) {
-            $("#lbl_report_count").find("span").text(reportTypeLength * checkboxItemLength);
-            $("#lbl_report_count").show();
-        } else {
-            $("#lbl_report_count").find("span").text(0);
-            $("#lbl_report_count").hide();
-        }
-    }
 
     //生成报告
-    function generateReport(that) {
+    function generateReport(areaId) {
         var item = $("#frm_content").find("[name=reportType]:checked");
         var ids = '';
         if (item.size() < 1) {
@@ -357,14 +326,28 @@
                 ids += $(n).val() + ",";
             }
         });
-        console.log(ids);
-        $("#reportDownloadWord").removeClass();
-        $("#reportDownloadWord").addClass("btn-primary btn");
-    }
-
-    //下载报告
-    function downloadReport(that) {
-
+        $.ajax({
+            url: "${pageContext.request.contextPath}/createReport/createReportWord",
+            data: {
+                ids: ids,
+                projectPlanId: '${projectPlan.id}',
+                areaId: areaId
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+                    AssessCommon.getSysAttachmentViewHtml(result.data, function (data) {
+                        $("#reportDownloadWord").append(data);
+                    });
+                } else {
+                    Alert("异常");
+                }
+            },
+            error: function (result) {
+                alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
     }
 
     //提交
@@ -373,4 +356,5 @@
             return false;
         }
     }
+
 </script>

@@ -4,8 +4,6 @@ package com.copower.pmcc.assess.service.project.scheme;
 import com.copower.pmcc.assess.common.enums.ComputeDataTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
-import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeSurePriceFactorDao;
@@ -13,8 +11,6 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.basic.BasicApplyService;
-import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
@@ -33,7 +29,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -76,10 +73,6 @@ public class SchemeJudgeObjectService {
     private ProjectInfoService projectInfoService;
     @Autowired
     private SchemeSurePriceFactorDao schemeSurePriceFactorDao;
-    @Autowired
-    private BasicApplyService basicApplyService;
-    @Autowired
-    private BasicHouseService basicHouseService;
 
     public boolean addSchemeJudgeObject(SchemeJudgeObject schemeJudgeObject) {
         return schemeJudgeObjectDao.addSchemeJudgeObject(schemeJudgeObject);
@@ -215,6 +208,12 @@ public class SchemeJudgeObjectService {
     public SchemeJudgeObjectVo getSchemeJudgeObjectVo(SchemeJudgeObject schemeJudgeObject) {
         SchemeJudgeObjectVo schemeJudgeObjectVo = new SchemeJudgeObjectVo();
         BeanUtils.copyProperties(schemeJudgeObject, schemeJudgeObjectVo);
+        if (NumberUtils.isNumber(schemeJudgeObject.getCertUse())) {
+            schemeJudgeObjectVo.setCertUseName(baseDataDicService.getNameById(Integer.valueOf(schemeJudgeObject.getCertUse())));
+        }
+        if (NumberUtils.isNumber(schemeJudgeObject.getPracticalUse())) {
+            schemeJudgeObjectVo.setPracticalUseName(baseDataDicService.getNameById(Integer.valueOf(schemeJudgeObject.getPracticalUse())));
+        }
         schemeJudgeObjectVo.setSetUseName(baseDataDicService.getNameById(schemeJudgeObject.getSetUse()));
         schemeJudgeObjectVo.setBestUseName(baseDataDicService.getNameById(schemeJudgeObject.getBestUse()));
         return schemeJudgeObjectVo;
@@ -298,7 +297,6 @@ public class SchemeJudgeObjectService {
         StringBuilder numberBuilder = new StringBuilder();
         BigDecimal floorAreaTotal = new BigDecimal("0");
         BigDecimal evaluationAreaTotal = new BigDecimal("0");
-        StringBuilder stringBuilder = new StringBuilder();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             //委估对象编号合并
             numberBuilder.append(schemeJudgeObject.getNumber());
@@ -309,24 +307,23 @@ public class SchemeJudgeObjectService {
                 floorAreaTotal = floorAreaTotal.add(schemeJudgeObject.getFloorArea());
             if (schemeJudgeObject.getEvaluationArea() != null)
                 evaluationAreaTotal = evaluationAreaTotal.add(schemeJudgeObject.getEvaluationArea());
-            stringBuilder.append(schemeJudgeObject.getRentalPossessionDesc()).append("\r\n");
         }
         mergeJudgeObject.setId(null);
         mergeJudgeObject.setPid(0);
         mergeJudgeObject.setSplitNumber(null);
-        mergeJudgeObject.setNumber(StringUtils.strip(numberBuilder.toString(),","));
+        mergeJudgeObject.setNumber(numberBuilder.toString().replaceAll(",$", ""));
         mergeJudgeObject.setName("");
         mergeJudgeObject.setOwnership("");
         mergeJudgeObject.setSeat("");
         mergeJudgeObject.setFloorArea(floorAreaTotal);
         mergeJudgeObject.setEvaluationArea(evaluationAreaTotal);
-        mergeJudgeObject.setRentalPossessionDesc(stringBuilder.toString());
         mergeJudgeObject.setBisSplit(false);
         mergeJudgeObject.setBisEnable(true);
         mergeJudgeObject.setBisMerge(true);
         mergeJudgeObject.setBisSetFunction(false);
         mergeJudgeObject.setCreator(commonService.thisUserAccount());
         schemeJudgeObjectDao.addSchemeJudgeObject(mergeJudgeObject);
+
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             schemeJudgeObject.setPid(mergeJudgeObject.getId());
             schemeJudgeObject.setBisEnable(false);
@@ -417,7 +414,6 @@ public class SchemeJudgeObjectService {
             ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SURE_PRICE, projectInfo.getProjectCategoryId());
             ProjectPhase phaseLiquidationAnalysis = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.LIQUIDATION_ANALYSIS, projectInfo.getProjectCategoryId());
             ProjectPhase phaseReimbursement = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.REIMBURSEMENT, projectInfo.getProjectCategoryId());
-            String entrustPurposeKey = baseDataDicService.getCacheDataDicById(projectInfo.getEntrustPurpose()).getFieldName();
             int i = 0;
             Map<Integer, ProjectPhase> phaseMap = getProjectPhaseMap(projectInfo.getProjectCategoryId());
             for (SchemeAreaGroup schemeAreaGroup : areaGroupList) {
@@ -489,7 +485,7 @@ public class SchemeJudgeObjectService {
                         }
 
                         //如果是抵押评估还需添加事项，变现分析税费、法定优先受偿款
-                        if (entrustPurposeKey.equals(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE)) {
+                        if (projectInfo.getEntrustPurpose().equals(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE)) {
                             if (phaseLiquidationAnalysis != null) {
                                 ProjectPlanDetails details = new ProjectPlanDetails();
                                 details.setProjectWorkStageId(projectPlan.getWorkStageId());
@@ -539,36 +535,4 @@ public class SchemeJudgeObjectService {
         return map;
     }
 
-    /**
-     * 根据申报id获取查勘中房屋信息
-     *
-     * @param declareId
-     * @return
-     */
-    public BasicHouse getBasicHouseByDeclareId(Integer declareId) {
-        try {
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE);
-            ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetails(declareId, projectPhase.getId());
-            BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetails.getId());
-            BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
-            return basicHouse;
-        } catch (Exception e) {
-            logger.error("获取房屋信息异常", e);
-            return null;
-        }
-    }
-
-    /**
-     * 更新出租占用情况
-     *
-     * @param id
-     * @param rentalPossessionDesc
-     */
-    public void updateRentalPossessionDesc(Integer id, String rentalPossessionDesc) throws BusinessException {
-        SchemeJudgeObject judgeObject = this.getSchemeJudgeObject(id);
-        if (judgeObject == null)
-            throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
-        judgeObject.setRentalPossessionDesc(rentalPossessionDesc);
-        this.updateSchemeJudgeObject(judgeObject);
-    }
 }
