@@ -1,9 +1,12 @@
 package com.copower.pmcc.assess.common;
 
 import com.aspose.words.*;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -12,6 +15,35 @@ import java.util.regex.Pattern;
 public class AsposeUtils {
     //根据书签替换word 内容
 
+    //获取所有书签
+    public static BookmarkCollection  getBookmarks(Document doc){
+       BookmarkCollection collection = doc.getRange().getBookmarks();
+       return collection;
+    }
+
+    public static FieldCollection getFieldCollection(Document doc)throws Exception{
+        return doc.getRange().getFields();
+    }
+
+    /**
+     * 根据正则表达式 获取匹配的字符串集合
+     * example: input \$\{.*?\} ,output:${委托人}
+     * @param document
+     * @param pattern 可以为null,不过会采用默认的\$\{.*?\}
+     * @return
+     */
+    public static List<String> getRegexList(Document document,String pattern){
+        List<String>  stringList = Lists.newArrayList();
+        //获取所有段落
+        ParagraphCollection paragraphs = document.getFirstSection().getBody().getParagraphs();
+        for (int i = 0; i < paragraphs.toArray().length; i++) {
+            Matcher m = Pattern.compile(StringUtils.isNotBlank(pattern)?pattern:"\\$\\{.*?\\}").matcher(paragraphs.get(i).getText());
+            while (m.find()) {
+                stringList.add(m.group());
+            }
+        }
+        return stringList;
+    }
 
 
     /**

@@ -106,7 +106,6 @@
                                         <div class="col-sm-9">
                                             <select id="replaceType" name="replaceType" class="form-control"
                                                     required>
-                                                <option value="default" selected="selected">默认选择</option>
                                                 <c:forEach items="${replaceType}" var="item">
                                                     <option value="${item.key}">${item.value}</option>
                                                 </c:forEach>
@@ -117,10 +116,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
-                                            文本key<span class="symbol required"></span>
+                                            字段<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-9">
-                                            <input type="text" data-rule-maxlength="50" placeholder="文本key"
+                                            <input type="text" data-rule-maxlength="50" placeholder="字段"
                                                    id="fieldName" name="fieldName" class="form-control">
                                         </div>
                                     </div>
@@ -153,10 +152,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
-                                            书签key
+                                            备注
                                         </label>
                                         <div class="col-sm-9">
-                                    <textarea placeholder="书签key" id="remark" name="remark"
+                                    <textarea placeholder="备注" id="remark" name="remark"
                                               class="form-control"></textarea>
                                         </div>
                                     </div>
@@ -247,10 +246,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
-                                            文本key
+                                            字段
                                         </label>
                                         <div class="col-sm-8">
-                                            <input type="text" data-rule-maxlength="100" placeholder="文本key"
+                                            <input type="text" data-rule-maxlength="100" placeholder="字段"
                                                    id="subFieldName" name="fieldName" class="form-control">
                                         </div>
                                     </div>
@@ -286,10 +285,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
-                                            书签key
+                                            备注
                                         </label>
                                         <div class="col-sm-8">
-                                    <textarea placeholder="书签key" id="subRemark" name="remark"
+                                    <textarea placeholder="备注" id="subRemark" name="remark"
                                               class="form-control"></textarea>
                                         </div>
                                         <div class="col-sm-1">
@@ -374,28 +373,34 @@
     function saveDataDic() {
         if ($("#frm").valid()) {
             var data = formParams("frm");
-            Loading.progressShow();
-            $.ajax({
-                url: "${pageContext.request.contextPath}/baseReportField/saveBaseReportField",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    Loading.progressHide();
-                    if (result.ret) {
-                        toastr.success('保存成功');
-                        TableReload("tb_List");
-                        $('#divBox').modal('hide');
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result);
+            checkByOneName(data.name, function (item) {
+                if (item.length >= 1) {
+                    toastr.success('名称不能相同');
+                } else {
+                    Loading.progressShow();
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/baseReportField/saveBaseReportField",
+                        type: "post",
+                        dataType: "json",
+                        data: data,
+                        success: function (result) {
+                            Loading.progressHide();
+                            if (result.ret) {
+                                toastr.success('保存成功');
+                                TableReload("tb_List");
+                                $('#divBox').modal('hide');
+                            }
+                            else {
+                                Alert("保存数据失败，失败原因:" + result.errmsg);
+                            }
+                        },
+                        error: function (result) {
+                            Loading.progressHide();
+                            Alert("调用服务端方法失败，失败原因:" + result);
+                        }
+                    })
                 }
-            })
+            });
         }
     }
 
@@ -485,14 +490,14 @@
     function loadSubDataDicList(pid, fn) {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
-        cols.push({field: 'fieldName', title: '文本key'});
+        cols.push({field: 'fieldName', title: '字段'});
         cols.push({
             field: 'bisEnable', title: '是否启用', formatter: function (value) {
                 return getBoolChs(value);
             }
         });
         cols.push({field: 'sorting', title: '排序'});
-        cols.push({field: 'remark', title: '书签key'});
+        cols.push({field: 'remark', title: '备注'});
         cols.push({
             field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -540,42 +545,46 @@
 
     //保存子项
     function saveSubDataDic() {
-        if ($("#frmSub").valid()) {
-            var data = {};
-            data.id = $("#subId").val();
-            data.pid = $("#mainId").val();
-            data.name = $("#subName").val();
-            data.replaceType = $("#subReplaceType").val();
-            data.itemKey = $("#subItemKey").val();
-            data.sorting = $("#subSorting").val();
-            data.bisEnable = $("#subBisEnable").prop("checked");
-            data.remark = $("#subRemark").val();
-            if ($("#subFieldName").val()) {
-                data.fieldName = $("#subFieldName").val();
-            }
-            if (!validData('frmSub')) {
-                return false;
-            }
-            $.ajax({
-                url: "${pageContext.request.contextPath}/baseReportField/saveBaseReportField",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('保存成功');
-                        TableReload("tbDataDicList");
-                        $('#divSubDataDicManage').modal('hide');
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
+        var data = {};
+        data.id = $("#subId").val();
+        data.pid = $("#mainId").val();
+        data.name = $("#subName").val();
+        data.replaceType = $("#subReplaceType").val();
+        data.itemKey = $("#subItemKey").val();
+        data.sorting = $("#subSorting").val();
+        data.bisEnable = $("#subBisEnable").prop("checked");
+        data.remark = $("#subRemark").val();
+        if ($("#subFieldName").val()) {
+            data.fieldName = $("#subFieldName").val();
         }
+        if (!$("#frmSub").valid()) {
+            return false;
+        }
+        checkByOneName(data.name, function (item) {
+            if (item.length >= 1) {
+                toastr.success('名称不能相同');
+            } else {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/baseReportField/saveBaseReportField",
+                    type: "post",
+                    dataType: "json",
+                    data: data,
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('保存成功');
+                            TableReload("tbDataDicList");
+                            $('#divSubDataDicManage').modal('hide');
+                        }
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            }
+        });
     }
 
     var strLevelHtml = "";
@@ -615,71 +624,24 @@
         }
     }
 
-    /**
-     * 特殊校验
-     * @param frm
-     */
-    function validData(frm) {
-        if (frm) {
-            var $Frm = $("#" + frm);
-            var replaceType = $Frm.find("select[name='replaceType'] option:selected");
-            var fieldName = $Frm.find("input[name='fieldName']").val();
-            var remark = $Frm.find("textarea[name='remark']").val();
-            var html = "<span class='help-block' for='for'>" + "该字段为必填项" + "</span>";
-            if (replaceType) {
-                if (replaceType.text() == '文本') {
-                    if (fieldName) {
-                        if (remark){
-                            Alert("自定义不能填写");
-                            return false;
-                        }
-                        if($("#_baseReportField_id_File").children().size() >= 1){
-                            Alert("模板不能上传");
-                            return false;
-                        }
-                        return true;
-                    }else {
-                        $Frm.find("input[name='fieldName']").after(html.replace(/for/g, "fieldName"));
-                        return false;
-                    }
-                }
-                //---------------------------
-                if (replaceType.text() == '附件') {
-                    if($("#_baseReportField_id_File").children().size() >= 1){
-                        if (remark){
-                            Alert("自定义不能填写");
-                            return false;
-                        }
-                        return true;
-                    }else {
-                        Alert("当类型选择为附件时,模板必须上传");
-                        return false;
-                    }
-                }
-                //------------------------------
-                if (replaceType.text() == '自定义') {
-                   if (remark){
-                       if (fieldName){
-                           Alert("文本不能填写");
-                           return false;
-                       }
-                       if($("#_baseReportField_id_File").children().size() >= 1){
-                           Alert("模板不能上传");
-                           return false;
-                       }
-                       return true;
-                   }else {
-                       $Frm.find("textarea[name='remark']").after(html.replace(/for/g, "remark"));
-                       return false;
-                   }
-                }
+    function checkByOneName(name, callback) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/baseReportField/queryBaseReportFieldTree",
+            type: "post",
+            dataType: "json",
+            data: {name: name},
+            success: function (result) {
+                callback(result);
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
             }
-        }
-        return false;
+        })
     }
 
+
     function isNotBlank(item) {
-        if (item){
+        if (item) {
             return true;
         }
         return false;
@@ -692,7 +654,7 @@
             formData: {
                 fieldsName: 'baseReportField_id_File',
                 tableName: AssessDBKey.BaseReportField,
-                tableId: isNotBlank(id)?id:"0"
+                tableId: isNotBlank(id) ? id : "0"
             },
             deleteFlag: true
         });
@@ -701,7 +663,7 @@
             formData: {
                 fieldsName: 'baseReportField_id_File',
                 tableName: AssessDBKey.BaseReportField,
-                tableId: isNotBlank(id)?id:"0"
+                tableId: isNotBlank(id) ? id : "0"
             },
             deleteFlag: true
         });

@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.service.project.generate;
 
+import com.aspose.words.BookmarkCollection;
+import com.aspose.words.Document;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldEnum;
@@ -7,14 +9,11 @@ import com.copower.pmcc.assess.common.enums.BaseReportFieldReplaceEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.generate.GenerateReportDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.generate.GenerateReportRecordVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
 import com.copower.pmcc.assess.service.base.BaseReportService;
-import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
@@ -58,11 +57,7 @@ public class GenerateReportService {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private ProjectInfoService projectInfoService;
-    @Autowired
     private ProjectPlanService projectPlanService;
-    @Autowired
-    private ProjectNumberRecordService projectNumberRecordService;
     @Autowired
     private BaseReportFieldService baseReportFieldService;
     @Autowired
@@ -72,7 +67,7 @@ public class GenerateReportService {
     @Autowired
     private BaseReportService baseReportService;
 
-    public List<SchemeAreaGroup> getAreaGroupList(Integer projectId){
+    public List<SchemeAreaGroup> getAreaGroupList(Integer projectId) {
         return schemeAreaGroupService.getAreaGroupList(projectId);
     }
 
@@ -94,7 +89,7 @@ public class GenerateReportService {
             GenerateReportRecord generateReportRecord = null;
             for (DeclareRecord declareRecord : declareRecords) {
                 generateReportRecord = new GenerateReportRecord();
-                BeanUtils.copyProperties(declareRecord,generateReportRecord);
+                BeanUtils.copyProperties(declareRecord, generateReportRecord);
                 generateReportRecord.setProjectId(projectId);
                 generateReportRecord.setPlanId(planId);
                 generateReportDao.addGenerateReportRecord(generateReportRecord);
@@ -104,16 +99,17 @@ public class GenerateReportService {
 
     /**
      * 获取报告记录信息
+     *
      * @param projectId
      * @param planId
      * @return
      */
-    public List<GenerateReportRecordVo> getGenerateReportRecordList(Integer projectId, Integer planId){
+    public List<GenerateReportRecordVo> getGenerateReportRecordList(Integer projectId, Integer planId) {
         List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordByProjectId(projectId);
-        List<GenerateReportRecordVo> voList= Lists.newArrayList();
+        List<GenerateReportRecordVo> voList = Lists.newArrayList();
         return LangUtils.transform(declareRecords, p -> {
             GenerateReportRecordVo generateReportRecordVo = new GenerateReportRecordVo();
-            BeanUtils.copyProperties(p,generateReportRecordVo);
+            BeanUtils.copyProperties(p, generateReportRecordVo);
             return generateReportRecordVo;
         });
     }
@@ -136,23 +132,28 @@ public class GenerateReportService {
         if (projectPlan == null) {
             return null;
         }
-        ProjectInfoVo projectInfo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectPlan.getProjectId()));
-        if (projectInfo == null) {
-            return null;
-        }
         List<String> paths = Lists.newArrayList();
         for (String string : strings) {
             BaseDataDic baseDataDic = baseDataDicService.getDataDicById(Integer.parseInt(string));
             if (baseDataDic != null) {
+                //预评报告
                 if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT)) {
-                    BaseReportTemplate baseReportTemplate = baseReportService.getReportTemplate(projectInfo.getId(), baseDataDic.getId());
+                    BaseReportTemplate baseReportTemplate = baseReportService.getReportTemplate(projectPlan.getProjectId(), baseDataDic.getId());
                     if (baseReportTemplate != null) {
-                        //获取替换后得报告文件路径
-                        String path = this.fullReportPath(baseReportTemplate, areaId, projectInfo, projectPlan);
+                        //获取替换后得报告文件路径 ==>
+                        String path = this.fullReportPath(baseReportTemplate, areaId, projectPlan);
                         if (StringUtils.isNotBlank(path)) {
                             paths.add(path);
                         }
                     }
+                }
+                //技术报告
+                if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY)) {
+                    //暂时未提供模板
+                }
+                //结果报告
+                if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_RESULT)) {
+                    //暂时未提供模板
                 }
             }
         }
@@ -199,12 +200,11 @@ public class GenerateReportService {
      *
      * @param baseReportTemplate
      * @param areaId
-     * @param projectInfo
      * @param projectPlan
      * @return
      * @throws Exception
      */
-    private String fullReportPath(BaseReportTemplate baseReportTemplate, Integer areaId, ProjectInfoVo projectInfo, ProjectPlan projectPlan) throws Exception {
+    private String fullReportPath(BaseReportTemplate baseReportTemplate, Integer areaId, ProjectPlan projectPlan) throws Exception {
         String tempDir = "";
         if (baseReportTemplate == null) {
             return "";
@@ -215,24 +215,23 @@ public class GenerateReportService {
         List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
             tempDir = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDtoList.get(0).getId());
-
             //文本map
             Map<String, String> textMap = Maps.newHashMap();
             //书签map
             Map<String, String> bookmarkMap = Maps.newHashMap();
             //模板map(模板map中为erp中得附件id以及替换值)
             Map<Integer, Object> fileMap = Maps.newHashMap();
-            Set<Map<BaseReportField, Map<BaseReportFieldReplaceEnum, Object>>> mapSet = getReportMap(baseReportTemplate, areaId, projectInfo, projectPlan);
+            Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> mapSet = getReportMap(baseReportTemplate, areaId, projectPlan, new Document(tempDir));
             if (CollectionUtils.isNotEmpty(mapSet)) {
-                Iterator<Map<BaseReportField, Map<BaseReportFieldReplaceEnum, Object>>> iterator = mapSet.iterator();
+                Iterator<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> iterator = mapSet.iterator();
                 while (iterator.hasNext()) {
                     //这一层实际只有一个值
-                    Map<BaseReportField, Map<BaseReportFieldReplaceEnum, Object>> mapMap = iterator.next();
-                    Iterator<Map.Entry<BaseReportField, Map<BaseReportFieldReplaceEnum, Object>>> entryIterator = mapMap.entrySet().iterator();
+                    Map<String, Map<BaseReportFieldReplaceEnum, Object>> mapMap = iterator.next();
+                    Iterator<Map.Entry<String, Map<BaseReportFieldReplaceEnum, Object>>> entryIterator = mapMap.entrySet().iterator();
                     while (entryIterator.hasNext()) {
-                        Map.Entry<BaseReportField, Map<BaseReportFieldReplaceEnum, Object>> mapEntry = entryIterator.next();
+                        Map.Entry<String, Map<BaseReportFieldReplaceEnum, Object>> mapEntry = entryIterator.next();
                         Map<BaseReportFieldReplaceEnum, Object> baseReportFieldReplaceEnumObjectMap = mapEntry.getValue();
-                        BaseReportField baseReportField = mapEntry.getKey();
+                        String wordKey = mapEntry.getKey();
                         Iterator<Map.Entry<BaseReportFieldReplaceEnum, Object>> it = baseReportFieldReplaceEnumObjectMap.entrySet().iterator();
                         //最终要得这一层
                         while (it.hasNext()) {
@@ -241,15 +240,15 @@ public class GenerateReportService {
                             Object value = enumObjectEntry.getValue();
                             //文本(字符串)
                             if (com.google.common.base.Objects.equal(replaceEnum.getKey(), BaseReportFieldReplaceEnum.TEXT.getKey())) {
-                                textMap.put(baseReportField.getFieldName(), value.toString());
+                                textMap.put(wordKey, value.toString());
                             }
-                            //自定义(书签)
-                            if (com.google.common.base.Objects.equal(replaceEnum.getKey(), BaseReportFieldReplaceEnum.OTHER.getKey())) {
-                                bookmarkMap.put(baseReportField.getRemark(), value.toString());
+                            //(书签)
+                            if (com.google.common.base.Objects.equal(replaceEnum.getKey(), BaseReportFieldReplaceEnum.BOOKMARK.getKey())) {
+                                bookmarkMap.put(wordKey, value.toString());
                             }
                             //附件(子模板)
                             if (com.google.common.base.Objects.equal(replaceEnum.getKey(), BaseReportFieldReplaceEnum.FILE.getKey())) {
-                                //暂时不做处理
+                                template(wordKey,value);
                             }
                         }
                     }
@@ -261,34 +260,54 @@ public class GenerateReportService {
         return tempDir;
     }
 
+    private void template(String wordKey,Object value){
+        //暂时不做处理
+    }
+
     /**
      * 获取报告模板数据数据
      *
      * @param baseReportTemplate
      * @param areaId
-     * @param projectInfo
      * @param projectPlan
-     * @return 如:文号,<BaseReportFieldReplaceEnum,四川协和预评（2019）0001号>
+     * @param document
+     * @return 如:文号,<文号,四川协和预评（2019）0001号>
      * @throws Exception
      */
-    private Set<Map<BaseReportField, Map<BaseReportFieldReplaceEnum, Object>>> getReportMap(BaseReportTemplate baseReportTemplate, Integer areaId, ProjectInfoVo projectInfo, ProjectPlan projectPlan) throws Exception {
-        Set<Map<BaseReportField, Map<BaseReportFieldReplaceEnum, Object>>> mapSet = Sets.newHashSet();
-        GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectPlan.getProjectId(),areaId,baseReportTemplate.getId());
-        List<BaseReportField> fieldList = baseReportFieldService.getDataDicList(BaseReportFieldEnum.GROUP.getKey());
-        for (BaseReportField baseReportField : fieldList) {
-            if (com.google.common.base.Objects.equal(BaseReportFieldEnum.REPORTNUMBER.getName(), baseReportField.getName())) {
+    private Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> getReportMap(BaseReportTemplate baseReportTemplate, Integer areaId, ProjectPlan projectPlan, Document document) throws Exception {
+        Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> mapSet = Sets.newHashSet();
+        GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectPlan.getProjectId(), areaId, baseReportTemplate.getId());
+        List<BaseReportField> fieldList = baseReportFieldService.query(new BaseReportField());
+        //获取所有书签集合
+        BookmarkCollection bookmarkCollection = AsposeUtils.getBookmarks(document);
+        if (bookmarkCollection.getCount() >= 1) {
+            for (int i = 0; i < bookmarkCollection.getCount(); i++) {
                 //文号
-                mapSet.add(getBaseReportFieldReplaceEnumMap(
-                        BaseReportFieldReplaceEnum.getEnumByName(baseReportField.getReplaceType()),
-                        baseReportField,
-                        generateBaseDataService.getWordNumber()));
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.REPORTNUMBER.getName(), bookmarkCollection.get(i).getName())) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.REPORTNUMBER.getName());
+                    if (baseReportField != null) {
+                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                BaseReportFieldReplaceEnum.BOOKMARK,
+                                BaseReportFieldEnum.REPORTNUMBER.getName(),
+                                generateBaseDataService.getWordNumber()));
+                    }
+                }
             }
-            if (Objects.equal(BaseReportFieldEnum.PRINCIPAL.getName(), baseReportField.getName())) {
+        }
+        //获取待替换文本的集合
+        List<String> regexS = specialTreatment(AsposeUtils.getRegexList(document, null));
+        if (CollectionUtils.isNotEmpty(regexS)) {
+            for (String name : regexS) {
                 //委托人
-                mapSet.add(getBaseReportFieldReplaceEnumMap(
-                        BaseReportFieldReplaceEnum.getEnumByName(baseReportField.getReplaceType()),
-                        baseReportField,
-                        generateBaseDataService.getPrincipal()));
+                if (Objects.equal(BaseReportFieldEnum.PRINCIPAL.getName(), name)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.PRINCIPAL.getName());
+                    if (baseReportField != null) {
+                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                BaseReportFieldReplaceEnum.TEXT,
+                                String.format("${%s}", BaseReportFieldEnum.PRINCIPAL.getName()),
+                                generateBaseDataService.getPrincipal()));
+                    }
+                }
             }
         }
         return mapSet;
@@ -298,16 +317,39 @@ public class GenerateReportService {
      * 报告模板map组装值
      *
      * @param baseReportFieldReplaceEnum
-     * @param baseReportField
+     * @param wordKey
      * @param value
      * @return
      */
-    private Map<BaseReportField, Map<BaseReportFieldReplaceEnum, Object>> getBaseReportFieldReplaceEnumMap(BaseReportFieldReplaceEnum baseReportFieldReplaceEnum, BaseReportField baseReportField, Object value) {
-        Map<BaseReportField, Map<BaseReportFieldReplaceEnum, Object>> stringEntryMap = new HashMap<BaseReportField, Map<BaseReportFieldReplaceEnum, Object>>(1);
+    private Map<String, Map<BaseReportFieldReplaceEnum, Object>> getBaseReportFieldReplaceEnumMap(BaseReportFieldReplaceEnum baseReportFieldReplaceEnum, String wordKey, Object value) {
+        Map<String, Map<BaseReportFieldReplaceEnum, Object>> stringEntryMap = new HashMap<String, Map<BaseReportFieldReplaceEnum, Object>>(1);
         Map<BaseReportFieldReplaceEnum, Object> enumObjectMap = new HashMap<BaseReportFieldReplaceEnum, Object>(1);
         enumObjectMap.put(baseReportFieldReplaceEnum, value);
-        stringEntryMap.put(baseReportField, enumObjectMap);
+        stringEntryMap.put(wordKey, enumObjectMap);
         return stringEntryMap;
     }
+
+    private List<String> specialTreatment(List<String> strings) {
+        List<String> stringList = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(strings)) {
+            for (String s : strings) {
+                String temp = s.substring(2, s.length() - 1);
+                stringList.add(temp);
+            }
+        }
+        return stringList;
+    }
+
+    private BaseReportField whereBaseReportFieldByName(List<BaseReportField> baseReportFields, String name) {
+        if (CollectionUtils.isNotEmpty(baseReportFields)) {
+            for (BaseReportField baseReportField : baseReportFields) {
+                if (Objects.equal(name, baseReportField.getName())) {
+                    return baseReportField;
+                }
+            }
+        }
+        return null;
+    }
+
 
 }

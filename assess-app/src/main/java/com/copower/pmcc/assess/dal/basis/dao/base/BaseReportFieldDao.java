@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.basis.dao.base;
 import com.copower.pmcc.assess.dal.basis.entity.BaseReportField;
 import com.copower.pmcc.assess.dal.basis.entity.BaseReportFieldExample;
 import com.copower.pmcc.assess.dal.basis.mapper.BaseReportFieldMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,13 @@ public class BaseReportFieldDao {
 
     @Autowired
     private BaseReportFieldMapper sysDataDicMapper;
+
+    public List<BaseReportField> query(BaseReportField baseReportField){
+        BaseReportFieldExample example = new BaseReportFieldExample();
+        MybatisUtils.convertObj2Example(baseReportField, example);
+        example.setOrderByClause("sorting");
+        return sysDataDicMapper.selectByExample(example);
+    }
 
     //region 获取所有数据字典列表
 

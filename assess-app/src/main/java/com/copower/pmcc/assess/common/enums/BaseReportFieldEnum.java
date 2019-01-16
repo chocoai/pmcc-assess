@@ -11,17 +11,18 @@ import java.util.List;
  * @Description:
  */
 public enum BaseReportFieldEnum {
-    GROUP("group","组合字段"),
-    REPORTNUMBER("","文号"),
-    PRINCIPAL("","委托人"),
+    REPORTNUMBER("","文号",BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    PRINCIPAL("","委托人",BaseReportFieldReplaceEnum.TEXT.getKey()),
     ;
     private String key;
 
     private String name;
+    private String describe;
 
-    private BaseReportFieldEnum(String key, String name) {
+    private BaseReportFieldEnum(String key, String name,String describe) {
         this.name = name;
         this.key = key;
+        this.describe = describe;
     }
 
     public static BaseReportFieldEnum getEnumByName(String id) {
@@ -59,4 +60,5 @@ public enum BaseReportFieldEnum {
     public void setName(String name) {
         this.name = name;
     }
+
 }

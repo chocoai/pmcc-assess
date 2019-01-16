@@ -42,6 +42,10 @@ public class BaseReportFieldService {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
 
+    public List<BaseReportField> query(BaseReportField baseReportField){
+        return baseReportFieldDao.query(baseReportField);
+    }
+
     //region 获取数据字典列表
 
     /**
@@ -144,6 +148,7 @@ public class BaseReportFieldService {
     public List<BaseReportField> getListObject(String fieldName, String name){
         return baseReportFieldDao.getListObject(fieldName, name);
     }
+
 
     public BaseReportField getDataDicById(Integer id) {
         return baseReportFieldDao.getSingleObject(id);
