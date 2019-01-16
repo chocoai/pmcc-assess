@@ -127,12 +127,13 @@ public class BaseReportFieldService {
      * @param id
      */
     public void delDataDic(Integer id) throws BusinessException {
+        baseReportFieldDao.delete(id);
         BaseReportField baseReportField = baseReportFieldDao.getSingleObject(id);
         if (baseReportField != null) {
             baseReportField.setBisDelete(true);
-            if (!baseReportFieldDao.updateObject(baseReportField)) {
-                throw new BusinessException(HttpReturnEnum.DELETEFAIL.getName());
-            }
+//            if (!baseReportFieldDao.updateObject(baseReportField)) {
+//                throw new BusinessException(HttpReturnEnum.DELETEFAIL.getName());
+//            }
         }
     }
     //endregion
