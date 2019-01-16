@@ -646,10 +646,6 @@
                 //---------------------------
                 if (replaceType.text() == '附件') {
                     if($("#_baseReportField_id_File").children().size() >= 1){
-                        if (fieldName){
-                            Alert("文本不能填写");
-                            return false;
-                        }
                         if (remark){
                             Alert("自定义不能填写");
                             return false;

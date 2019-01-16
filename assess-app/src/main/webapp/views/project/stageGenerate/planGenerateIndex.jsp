@@ -4,7 +4,6 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-
 <body class="nav-md footer_fixed">
 <div class="container body">
     <div class="main_container">
@@ -164,11 +163,8 @@
                                         <th>名称</th>
                                         <th>证载面积</th>
                                         <th>评估面积</th>
-                                        <%--<th>评估单价</th>--%>
                                         <th>已出面积</th>
                                         <th>报告面积</th>
-                                        <%--<th>评估总价</th>--%>
-                                        <%--<th>报告总价</th>--%>
                                         <th>报告附件</th>
                                     </tr>
                                     </thead>
@@ -326,7 +322,7 @@
             }
         });
         $.ajax({
-            url: "${pageContext.request.contextPath}/createReport/createReportWord",
+            url: "${pageContext.request.contextPath}/generateReport/generate",
             data: {
                 ids: ids,
                 projectPlanId: '${projectPlan.id}',

@@ -1,35 +1,31 @@
 package com.copower.pmcc.assess.controller.project;
 
-import com.copower.pmcc.assess.dto.input.project.generate.GenerateReportApplyDto;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by kings on 2018-5-23.
  */
-@Controller
-@RequestMapping(value = "generateReport",name = "出具报告")
+@RestController
+@RequestMapping(value = "generateReport", name = "出具报告")
 public class ProjectReportController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private GenerateReportService generateReportService;
 
-    @ResponseBody
-    @RequestMapping(value = "/generate", name = "生成", method = RequestMethod.POST)
-    public HttpResult generate(GenerateReportApplyDto generateReportApplyDto) {
+    @PostMapping(value = "/generate", name = "生产报告模板并转为附件id返回")
+    public HttpResult generate(String ids, Integer projectPlanId, Integer areaId) {
+        //生成报告信息
         try {
-           //生成报告信息
-
-            return HttpResult.newCorrectResult();
+            Integer id = generateReportService.createReportWord(ids, projectPlanId, areaId);
+            return HttpResult.newCorrectResult(200, id);
         } catch (Exception e) {
-            return HttpResult.newErrorResult(e.getMessage());
+            logger.error("生产报告异常!", e);
+            return HttpResult.newErrorResult(500, e);
         }
     }
 }

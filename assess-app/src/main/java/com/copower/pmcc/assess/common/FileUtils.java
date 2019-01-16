@@ -52,6 +52,7 @@ public class FileUtils {
      * @return 返回一个压缩后的字节流
      * @throws IOException
      */
+    @Deprecated
     public static byte[] getZipFile(List<File> fileList, String zipPathAndName)throws IOException{
         File zipFile = new File(zipPathAndName);
         // 文件输出流
@@ -72,6 +73,29 @@ public class FileUtils {
         zipOutputStream.close();
         outputStream.close();
         return org.apache.commons.io.FileUtils.readFileToByteArray(zipFile);
+    }
+
+    /**
+     * 功能:压缩多个文件成一个zip文件
+     *
+     * @param srcFile：源文件列表
+     * @param zipFile：压缩后的文件
+     */
+    public static void zipFiles(File[] srcFile, File zipFile) throws Exception {
+        byte[] buf = new byte[1024];
+        //ZipOutputStream类：完成文件或文件夹的压缩
+        ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile));
+        for (int i = 0; i < srcFile.length; i++) {
+            FileInputStream in = new FileInputStream(srcFile[i]);
+            out.putNextEntry(new ZipEntry(srcFile[i].getName()));
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            out.closeEntry();
+            in.close();
+        }
+        out.close();
     }
 
     /**
