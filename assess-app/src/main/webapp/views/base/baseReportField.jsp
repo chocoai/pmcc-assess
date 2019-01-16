@@ -153,10 +153,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
-                                            自定义key
+                                            书签key
                                         </label>
                                         <div class="col-sm-9">
-                                    <textarea placeholder="自定义key" id="remark" name="remark"
+                                    <textarea placeholder="书签key" id="remark" name="remark"
                                               class="form-control"></textarea>
                                         </div>
                                     </div>
@@ -286,10 +286,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
-                                            自定义key
+                                            书签key
                                         </label>
                                         <div class="col-sm-8">
-                                    <textarea placeholder="自定义key" id="subRemark" name="remark"
+                                    <textarea placeholder="书签key" id="subRemark" name="remark"
                                               class="form-control"></textarea>
                                         </div>
                                         <div class="col-sm-1">
@@ -492,7 +492,7 @@
             }
         });
         cols.push({field: 'sorting', title: '排序'});
-        cols.push({field: 'remark', title: '自定义key'});
+        cols.push({field: 'remark', title: '书签key'});
         cols.push({
             field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
