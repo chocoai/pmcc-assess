@@ -23,6 +23,10 @@ public class BaseReportFieldDao {
     @Autowired
     private BaseReportFieldMapper sysDataDicMapper;
 
+    public boolean delete(Integer id){
+        return sysDataDicMapper.deleteByPrimaryKey(id)==1;
+    }
+
     public List<BaseReportField> query(BaseReportField baseReportField){
         BaseReportFieldExample example = new BaseReportFieldExample();
         MybatisUtils.convertObj2Example(baseReportField, example);

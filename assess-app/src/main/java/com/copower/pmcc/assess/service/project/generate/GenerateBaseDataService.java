@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.assess.dal.basis.entity.BaseReportTemplate;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.service.base.BaseReportService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -10,9 +11,13 @@ import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Created by kings on 2019-1-16.
@@ -43,6 +48,18 @@ public class GenerateBaseDataService {
     private String wordNumber;
     //委托人
     private String principal;
+    //评估面积
+    private BigDecimal assessArea = null;
+    //评估方法
+    private String evaluationMethod;
+    //委托目的表述
+    private String statementPurposeEntrustment;
+    //价值类型
+    private String valueType;
+    //价值定义
+    private String definitionValue;
+    //价值含义
+    private String valueImplication;
 
     private GenerateBaseDataService() {
     }
@@ -104,6 +121,7 @@ public class GenerateBaseDataService {
 
     /**
      * 委托人
+     *
      * @return
      */
     public String getPrincipal() {
@@ -116,6 +134,7 @@ public class GenerateBaseDataService {
 
     /**
      * 获取项目info
+     *
      * @return
      */
     public ProjectInfoVo getProjectInfo() {
@@ -124,5 +143,60 @@ public class GenerateBaseDataService {
             this.projectInfo = projectInfoVo;
         }
         return projectInfo;
+    }
+
+    public BigDecimal getAssessArea() {
+        SchemeAreaGroup schemeAreaGroup = this.getSchemeAreaGroup();
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(schemeAreaGroup.getId());
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            double temp = 0.0;
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                temp += schemeJudgeObject.getEvaluationArea().doubleValue();
+            }
+            assessArea = new BigDecimal(temp);
+        } else {
+            return new BigDecimal(0.0d);
+        }
+        return assessArea;
+    }
+
+    /**
+     * 评估方法
+     * @return
+     */
+    public String getEvaluationMethod() {
+        return evaluationMethod;
+    }
+
+    /**
+     * 委托目的表述
+     * @return
+     */
+    public String getStatementPurposeEntrustment() {
+        return statementPurposeEntrustment;
+    }
+
+    /**
+     * get 价值类型
+     * @return
+     */
+    public String getValueType() {
+        return valueType;
+    }
+
+    /**
+     * get 价值定义
+     * @return
+     */
+    public String getDefinitionValue() {
+        return definitionValue;
+    }
+
+    /**
+     * get 价值含义
+     * @return
+     */
+    public String getValueImplication() {
+        return valueImplication;
     }
 }

@@ -8,18 +8,26 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2019/1/15 14:30
- * @Description:
+ * @Description:报告模板字段
  */
 public enum BaseReportFieldEnum {
-    REPORTNUMBER("","文号",BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    PRINCIPAL("","委托人",BaseReportFieldReplaceEnum.TEXT.getKey()),
-    ;
+    REPORTNUMBER("", "文号", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    PRINCIPAL("", "委托人", BaseReportFieldReplaceEnum.TEXT.getKey()),
+    Location("", "区位", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    ValueType("", "价值类型", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    DefinitionValue("", "价值定义", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    ValueImplication("", "价值含义", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    AssessArea("", "评估面积", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    UseRightType("", "使用权类型", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    LandPracticalUse("", "土地实际用途", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    StatementPurposeEntrustment("", "委托目的表述", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    EvaluationMethod("", "评估方法", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),;
     private String key;
 
     private String name;
     private String describe;
 
-    private BaseReportFieldEnum(String key, String name,String describe) {
+    private BaseReportFieldEnum(String key, String name, String describe) {
         this.name = name;
         this.key = key;
         this.describe = describe;

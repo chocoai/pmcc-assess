@@ -38,6 +38,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by kings on 2018-5-23.
@@ -248,7 +250,7 @@ public class GenerateReportService {
                             }
                             //附件(子模板)
                             if (com.google.common.base.Objects.equal(replaceEnum.getKey(), BaseReportFieldReplaceEnum.FILE.getKey())) {
-                                template(wordKey,value);
+                                template(wordKey, value);
                             }
                         }
                     }
@@ -260,7 +262,7 @@ public class GenerateReportService {
         return tempDir;
     }
 
-    private void template(String wordKey,Object value){
+    private void template(String wordKey, Object value) {
         //暂时不做处理
     }
 
@@ -283,13 +285,81 @@ public class GenerateReportService {
         if (bookmarkCollection.getCount() >= 1) {
             for (int i = 0; i < bookmarkCollection.getCount(); i++) {
                 //文号
-                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.REPORTNUMBER.getName(), bookmarkCollection.get(i).getName())) {
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.REPORTNUMBER.getName(), getChinese(bookmarkCollection.get(i).getName()))) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.REPORTNUMBER.getName());
                     if (baseReportField != null) {
                         mapSet.add(getBaseReportFieldReplaceEnumMap(
                                 BaseReportFieldReplaceEnum.BOOKMARK,
                                 BaseReportFieldEnum.REPORTNUMBER.getName(),
                                 generateBaseDataService.getWordNumber()));
+                    }
+                }
+                //区位
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.Location.getName(), getChinese(bookmarkCollection.get(i).getName()))) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.Location.getName());
+                    if (baseReportField != null) {
+
+                    }
+                }
+                //价值类型
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.ValueType.getName(), getChinese(bookmarkCollection.get(i).getName()))) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.ValueType.getName());
+                    if (baseReportField != null) {
+
+                    }
+                }
+                //价值定义
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.DefinitionValue.getName(), getChinese(bookmarkCollection.get(i).getName()))) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.DefinitionValue.getName());
+                    if (baseReportField != null) {
+
+                    }
+                }
+                //价值含义
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.ValueImplication.getName(), getChinese(bookmarkCollection.get(i).getName()))) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.ValueImplication.getName());
+                    if (baseReportField != null) {
+
+                    }
+                }
+                //评估面积
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.AssessArea.getName(), getChinese(bookmarkCollection.get(i).getName()))) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.AssessArea.getName());
+                    if (baseReportField != null) {
+                        if (baseReportField != null) {
+                            mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                    BaseReportFieldReplaceEnum.BOOKMARK,
+                                    bookmarkCollection.get(i).getName(),
+                                    generateBaseDataService.getAssessArea().doubleValue()));
+                        }
+                    }
+                }
+                //使用权类型
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.UseRightType.getName(), getChinese(bookmarkCollection.get(i).getName()))) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.UseRightType.getName());
+                    if (baseReportField != null) {
+
+                    }
+                }
+                //土地实际用途
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.LandPracticalUse.getName(), getChinese(bookmarkCollection.get(i).getName()))) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.LandPracticalUse.getName());
+                    if (baseReportField != null) {
+
+                    }
+                }
+                //委托目的表述
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.StatementPurposeEntrustment.getName(), getChinese(bookmarkCollection.get(i).getName()))) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.StatementPurposeEntrustment.getName());
+                    if (baseReportField != null) {
+
+                    }
+                }
+                //评估方法
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EvaluationMethod.getName(), getChinese(bookmarkCollection.get(i).getName()))) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EvaluationMethod.getName());
+                    if (baseReportField != null) {
+
                     }
                 }
             }
@@ -349,6 +419,21 @@ public class GenerateReportService {
             }
         }
         return null;
+    }
+
+    /**
+     * 利用 ascii 码 配合正则 提取中文
+     * @param paramValue
+     * @return
+     */
+    public String getChinese(String paramValue) {
+        String regex = "([\u4e00-\u9fa5]+)";
+        String str = "";
+        Matcher matcher = Pattern.compile(regex).matcher(paramValue);
+        while (matcher.find()) {
+            str += matcher.group(0);
+        }
+        return str;
     }
 
 
