@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">楼层描述<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">楼层描述</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouse.floorDesc}</label>
                 </div>
