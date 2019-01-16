@@ -39,7 +39,7 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageCompile/taskCompileIndex", "", 0, "0", "");
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
-        compileReportService.initReportDetail(projectPlanDetails.getId(),projectPhase.getPhaseKey());
+        compileReportService.initReportDetail(projectPlanDetails,projectPhase.getPhaseKey());
         setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }

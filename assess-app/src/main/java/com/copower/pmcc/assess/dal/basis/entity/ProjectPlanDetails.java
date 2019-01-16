@@ -64,6 +64,8 @@ public class ProjectPlanDetails {
 
     private Integer judgeObjectId;
 
+    private Integer areaId;
+
     private String creator;
 
     private Date gmtCreated;
@@ -308,6 +310,14 @@ public class ProjectPlanDetails {
 
     public void setJudgeObjectId(Integer judgeObjectId) {
         this.judgeObjectId = judgeObjectId;
+    }
+
+    public Integer getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(Integer areaId) {
+        this.areaId = areaId;
     }
 
     public String getCreator() {

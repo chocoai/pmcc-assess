@@ -6,8 +6,8 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="report_analysis_type" property="reportAnalysisType" jdbcType="INTEGER" />
     <result column="template" property="template" jdbcType="VARCHAR" />
-    <result column="entrustment" property="entrustment" jdbcType="VARCHAR" />
-    <result column="purpose" property="purpose" jdbcType="VARCHAR" />
+    <result column="entrustment" property="entrustment" jdbcType="INTEGER" />
+    <result column="purpose" property="purpose" jdbcType="INTEGER" />
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="district" property="district" jdbcType="VARCHAR" />
@@ -118,7 +118,7 @@
       creator, gmt_created, gmt_modified
       )
     values (#{name,jdbcType=VARCHAR}, #{reportAnalysisType,jdbcType=INTEGER}, #{template,jdbcType=VARCHAR}, 
-      #{entrustment,jdbcType=VARCHAR}, #{purpose,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{entrustment,jdbcType=INTEGER}, #{purpose,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{bisModifiable,jdbcType=BIT}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
@@ -177,10 +177,10 @@
         #{template,jdbcType=VARCHAR},
       </if>
       <if test="entrustment != null" >
-        #{entrustment,jdbcType=VARCHAR},
+        #{entrustment,jdbcType=INTEGER},
       </if>
       <if test="purpose != null" >
-        #{purpose,jdbcType=VARCHAR},
+        #{purpose,jdbcType=INTEGER},
       </if>
       <if test="province != null" >
         #{province,jdbcType=VARCHAR},
@@ -227,10 +227,10 @@
         template = #{record.template,jdbcType=VARCHAR},
       </if>
       <if test="record.entrustment != null" >
-        entrustment = #{record.entrustment,jdbcType=VARCHAR},
+        entrustment = #{record.entrustment,jdbcType=INTEGER},
       </if>
       <if test="record.purpose != null" >
-        purpose = #{record.purpose,jdbcType=VARCHAR},
+        purpose = #{record.purpose,jdbcType=INTEGER},
       </if>
       <if test="record.province != null" >
         province = #{record.province,jdbcType=VARCHAR},
@@ -264,8 +264,8 @@
       name = #{record.name,jdbcType=VARCHAR},
       report_analysis_type = #{record.reportAnalysisType,jdbcType=INTEGER},
       template = #{record.template,jdbcType=VARCHAR},
-      entrustment = #{record.entrustment,jdbcType=VARCHAR},
-      purpose = #{record.purpose,jdbcType=VARCHAR},
+      entrustment = #{record.entrustment,jdbcType=INTEGER},
+      purpose = #{record.purpose,jdbcType=INTEGER},
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
       district = #{record.district,jdbcType=VARCHAR},
@@ -290,10 +290,10 @@
         template = #{template,jdbcType=VARCHAR},
       </if>
       <if test="entrustment != null" >
-        entrustment = #{entrustment,jdbcType=VARCHAR},
+        entrustment = #{entrustment,jdbcType=INTEGER},
       </if>
       <if test="purpose != null" >
-        purpose = #{purpose,jdbcType=VARCHAR},
+        purpose = #{purpose,jdbcType=INTEGER},
       </if>
       <if test="province != null" >
         province = #{province,jdbcType=VARCHAR},
@@ -324,8 +324,8 @@
     set name = #{name,jdbcType=VARCHAR},
       report_analysis_type = #{reportAnalysisType,jdbcType=INTEGER},
       template = #{template,jdbcType=VARCHAR},
-      entrustment = #{entrustment,jdbcType=VARCHAR},
-      purpose = #{purpose,jdbcType=VARCHAR},
+      entrustment = #{entrustment,jdbcType=INTEGER},
+      purpose = #{purpose,jdbcType=INTEGER},
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},

@@ -10,6 +10,7 @@
     <result column="template" property="template" jdbcType="VARCHAR" />
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="json_content" property="jsonContent" jdbcType="CHAR" />
+    <result column="bis_modifiable" property="bisModifiable" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -74,7 +75,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, plan_details_id, report_analysis_type, report_analysis_name, name, template, 
-    content, json_content, creator, gmt_created, gmt_modified
+    content, json_content, bis_modifiable, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.CompileReportDetailExample" >
     select
@@ -112,12 +113,14 @@
     </selectKey>
     insert into tb_compile_report_detail (plan_details_id, report_analysis_type, 
       report_analysis_name, name, template, 
-      content, json_content, creator, 
-      gmt_created, gmt_modified)
+      content, json_content, bis_modifiable, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{planDetailsId,jdbcType=INTEGER}, #{reportAnalysisType,jdbcType=INTEGER}, 
       #{reportAnalysisName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{template,jdbcType=VARCHAR}, 
-      #{content,jdbcType=VARCHAR}, #{jsonContent,jdbcType=CHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{content,jdbcType=VARCHAR}, #{jsonContent,jdbcType=CHAR}, #{bisModifiable,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.CompileReportDetail" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -145,6 +148,9 @@
       </if>
       <if test="jsonContent != null" >
         json_content,
+      </if>
+      <if test="bisModifiable != null" >
+        bis_modifiable,
       </if>
       <if test="creator != null" >
         creator,
@@ -177,6 +183,9 @@
       </if>
       <if test="jsonContent != null" >
         #{jsonContent,jdbcType=CHAR},
+      </if>
+      <if test="bisModifiable != null" >
+        #{bisModifiable,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -222,6 +231,9 @@
       <if test="record.jsonContent != null" >
         json_content = #{record.jsonContent,jdbcType=CHAR},
       </if>
+      <if test="record.bisModifiable != null" >
+        bis_modifiable = #{record.bisModifiable,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -246,6 +258,7 @@
       template = #{record.template,jdbcType=VARCHAR},
       content = #{record.content,jdbcType=VARCHAR},
       json_content = #{record.jsonContent,jdbcType=CHAR},
+      bis_modifiable = #{record.bisModifiable,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -277,6 +290,9 @@
       <if test="jsonContent != null" >
         json_content = #{jsonContent,jdbcType=CHAR},
       </if>
+      <if test="bisModifiable != null" >
+        bis_modifiable = #{bisModifiable,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -298,6 +314,7 @@
       template = #{template,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
       json_content = #{jsonContent,jdbcType=CHAR},
+      bis_modifiable = #{bisModifiable,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

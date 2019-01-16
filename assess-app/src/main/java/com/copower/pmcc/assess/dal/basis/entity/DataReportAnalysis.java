@@ -11,9 +11,9 @@ public class DataReportAnalysis {
 
     private String template;
 
-    private String entrustment;
+    private Integer entrustment;
 
-    private String purpose;
+    private Integer purpose;
 
     private String province;
 
@@ -61,20 +61,20 @@ public class DataReportAnalysis {
         this.template = template == null ? null : template.trim();
     }
 
-    public String getEntrustment() {
+    public Integer getEntrustment() {
         return entrustment;
     }
 
-    public void setEntrustment(String entrustment) {
-        this.entrustment = entrustment == null ? null : entrustment.trim();
+    public void setEntrustment(Integer entrustment) {
+        this.entrustment = entrustment;
     }
 
-    public String getPurpose() {
+    public Integer getPurpose() {
         return purpose;
     }
 
-    public void setPurpose(String purpose) {
-        this.purpose = purpose == null ? null : purpose.trim();
+    public void setPurpose(Integer purpose) {
+        this.purpose = purpose;
     }
 
     public String getProvince() {

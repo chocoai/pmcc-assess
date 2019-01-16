@@ -2,8 +2,10 @@ package com.copower.pmcc.assess.dal.basis.dao.data;
 
 import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis;
 import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysisExample;
+import com.copower.pmcc.assess.dal.basis.entity.DataTaxRateAllocation;
+import com.copower.pmcc.assess.dal.basis.entity.DataTaxRateAllocationExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataReportAnalysisMapper;
-import com.copower.pmcc.assess.dal.basis.mapper.DataReportAnalysisMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -41,6 +43,12 @@ public class DataReportAnalysisDao {
         DataReportAnalysisExample example = new DataReportAnalysisExample();
         DataReportAnalysisExample.Criteria criteria = example.createCriteria();
         criteria.andReportAnalysisTypeEqualTo(reportAnalysisType);
+        return dataReportAnalysisMapper.selectByExample(example);
+    }
+
+    public List<DataReportAnalysis> getDataReportAnalysisList(DataReportAnalysis dataReportAnalysis) {
+        DataReportAnalysisExample example = new DataReportAnalysisExample();
+        MybatisUtils.convertObj2Example(dataReportAnalysis, example);
         return dataReportAnalysisMapper.selectByExample(example);
     }
 

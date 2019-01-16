@@ -19,6 +19,8 @@ public class CompileReportDetail {
 
     private String jsonContent;
 
+    private Boolean bisModifiable;
+
     private String creator;
 
     private Date gmtCreated;
@@ -87,6 +89,14 @@ public class CompileReportDetail {
 
     public void setJsonContent(String jsonContent) {
         this.jsonContent = jsonContent == null ? null : jsonContent.trim();
+    }
+
+    public Boolean getBisModifiable() {
+        return bisModifiable;
+    }
+
+    public void setBisModifiable(Boolean bisModifiable) {
+        this.bisModifiable = bisModifiable;
     }
 
     public String getCreator() {

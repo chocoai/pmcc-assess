@@ -83,83 +83,20 @@
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class="col-sm-1 control-label">
                                             名称<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10" id="method">
+                                        <div class="col-sm-11" id="method">
                                             <input required type="text" class="form-control" name="name">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">省
-                                            <span class="symbol required"></span></label>
-                                        <div class="col-sm-10">
-                                            <select id="province" name="province"
-                                                    class="form-control search-select select2"
-                                                    required="required">
-                                                <option value="" name="province">-请选择-</option>
-                                                <c:forEach items="${ProvinceList}" var="item">
-                                                    <c:choose>
-                                                        <c:when test="${item.areaId == projectInfo.province}">
-                                                            <option value="${item.areaId}"
-                                                                    selected="selected">${item.name}</option>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <option value="${item.areaId}">${item.name}</option>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">市</label>
-                                        <div class="col-sm-10">
-                                            <select id="city" name="city" class="form-control search-select select2">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">县</label>
-                                        <div class="col-sm-10">
-                                            <select id="district" name="district"
-                                                    class="form-control search-select select2">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">委托目的</label>
-                                        <div class="col-sm-10">
-                                            <select  name="entrustment"
-                                                    class="form-control search-select select2 entrustment">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">设定用途</label>
-                                        <div class="col-sm-10">
-                                            <select  name="purpose"
-                                                    class="form-control search-select select2 purpose">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class="col-sm-1 control-label">
                                             类别<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-3">
                                             <select required class="form-control search-select select2" name="reportAnalysisType">
                                                 <option value="">请选择</option>
                                                 <c:forEach items="${reportAnalysisTypeList}" var="item">
@@ -168,32 +105,63 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">委托目的</label>
+                                        <div class="col-sm-3">
+                                            <select  name="entrustment"
+                                                     class="form-control search-select select2 entrustment">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">设定用途</label>
+                                        <div class="col-sm-3">
+                                            <select  name="purpose"
+                                                     class="form-control search-select select2 purpose">
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class="col-sm-1 control-label">省
+                                            <span class="symbol required"></span></label>
+                                        <div class="col-sm-3">
+                                            <select id="province" name="province" class="form-control search-select select2" required="required">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">市</label>
+                                        <div class="col-sm-3">
+                                            <select id="city" name="city" class="form-control search-select select2">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            是否可修改
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="radio-inline">
+                                                <input type="checkbox" id="bisModifiable" name="bisModifiable" value="true"
+                                                       checked="checked">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
                                             模版<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-11">
                                             <textarea placeholder="请填写模版" class="form-control" id="template"
                                                       name="template" required="required"
                                                       onkeyup="extractTemplateField()"></textarea>
                                             <div class="template-field">
 
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            是否可修改
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <label class="radio-inline">
-                                                <input type="checkbox" id="bisModifiable" name="bisModifiable" value="true"
-                                                       checked="checked">
-                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -259,12 +227,12 @@
         var cols = [];
         cols.push({field: 'name', title: '名称'});
         cols.push({field: 'reportAnalysisTypeName', title: '类别'});
-        cols.push({field: 'template', title: '模板', width: '50%'});
-        cols.push({field: 'provinceName', title: '省'});
-        cols.push({field: 'cityName', title: '市'});
-        cols.push({field: 'districtName', title: '县'});
         cols.push({field: 'entrustmentName', title: '委托目的'});
         cols.push({field: 'purposeName', title: '设定用途'});
+        cols.push({field: 'area', title: '区域', formatter: function (value, row, index) {
+            return AssessCommon.getAreaFullName(row.provinceName,row.cityName,row.districtName);
+        }});
+        cols.push({field: 'template', title: '模板', width: '50%'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';

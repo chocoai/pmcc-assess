@@ -12,7 +12,7 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.168.2.206:3306/pmcc_assess_basic"
+                        connectionURL="jdbc:mysql://192.168.2.206:3306/pmcc_assess"
                         userId="root" password="123456">
         </jdbcConnection>
 
@@ -21,19 +21,19 @@
         </javaTypeResolver>
 
         <!-- entity 位置-->
-        <javaModelGenerator targetPackage="com.copower.pmcc.assess.dal.basic.entity"
+        <javaModelGenerator targetPackage="com.copower.pmcc.assess.dal.basis.entity"
                             targetProject="F:\idea_workspace\IdeaProjects\pmcc-assess\assess-app\src\main\java">
             <property name="enableSubPackages" value="false"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
         <!-- mapper xml 位置 -->
-        <sqlMapGenerator targetPackage="mybatis.basic"
+        <sqlMapGenerator targetPackage="mybatis.basis"
                          targetProject="F:\idea_workspace\IdeaProjects\pmcc-assess\assess-app\src\main\resources\">
         </sqlMapGenerator>
 
         <!--mapper 接口位置-->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.copower.pmcc.assess.dal.basic.mapper"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.copower.pmcc.assess.dal.basis.mapper"
                              targetProject="F:\idea_workspace\IdeaProjects\pmcc-assess\assess-app\src\main\java">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
