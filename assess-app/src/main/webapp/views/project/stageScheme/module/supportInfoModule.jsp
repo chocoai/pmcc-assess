@@ -109,7 +109,7 @@
             <div class="clearfix"></div>
         </div>
         <form id="frm_support_type_{supportType}" class="form-horizontal">
-            <div class="x_content">
+            <div class="x_content collapse">
 
             </div>
         </form>

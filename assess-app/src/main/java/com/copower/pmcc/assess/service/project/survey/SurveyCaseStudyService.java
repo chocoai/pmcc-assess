@@ -174,18 +174,18 @@ public class SurveyCaseStudyService {
             phaseKey = AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE;
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(phaseKey);
         //添加计划任务子项及待提交任务
+
+        SurveyExamineInfo surveyExamineInfo = new SurveyExamineInfo();
+        surveyExamineInfo.setExamineType(ExamineTypeEnum.CASE.getId());
+        surveyExamineInfo.setProjectId(planDetails.getProjectId());
+        surveyExamineInfo.setPlanDetailsId(planDetails.getId());
+        surveyExamineInfo.setExamineFormType(examineFormType);
+        surveyExamineInfo.setDeclareRecordId(planDetails.getDeclareRecordId());
+        surveyExamineInfo.setBisAssignment(true);
+        surveyExamineInfo.setCreator(commonService.thisUserAccount());
+        surveyExamineInfoService.save(surveyExamineInfo);
+
         ProjectPlanDetails taskPlanDetails = new ProjectPlanDetails();
-        if (true) {
-            SurveyExamineInfo surveyExamineInfo = new SurveyExamineInfo();
-            surveyExamineInfo.setExamineType(ExamineTypeEnum.CASE.getId());
-            surveyExamineInfo.setProjectId(planDetails.getProjectId());
-            surveyExamineInfo.setPlanDetailsId(planDetails.getId());
-            surveyExamineInfo.setExamineFormType(examineFormType);
-            surveyExamineInfo.setDeclareRecordId(planDetails.getDeclareRecordId());
-            surveyExamineInfo.setBisAssignment(true);
-            surveyExamineInfo.setCreator(commonService.thisUserAccount());
-            surveyExamineInfoService.save(surveyExamineInfo);
-        }
         BeanUtils.copyProperties(planDetails, taskPlanDetails);
         taskPlanDetails.setId(0);
         taskPlanDetails.setPid(planDetails.getId());

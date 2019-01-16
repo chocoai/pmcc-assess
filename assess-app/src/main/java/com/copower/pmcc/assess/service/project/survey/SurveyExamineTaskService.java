@@ -400,16 +400,6 @@ public class SurveyExamineTaskService {
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(phaseKey);
         //添加计划任务子项及待提交任务
 
-        SurveyExamineInfo surveyExamineInfo = new SurveyExamineInfo();
-        surveyExamineInfo.setExamineType(ExamineTypeEnum.EXPLORE.getId());
-        surveyExamineInfo.setProjectId(planDetails.getProjectId());
-        surveyExamineInfo.setPlanDetailsId(planDetails.getId());
-        surveyExamineInfo.setExamineFormType(examineFormType);
-        surveyExamineInfo.setDeclareRecordId(planDetails.getDeclareRecordId());
-        surveyExamineInfo.setBisAssignment(true);
-        surveyExamineInfo.setCreator(commonService.thisUserAccount());
-        surveyExamineInfoService.save(surveyExamineInfo);
-
         ProjectPlanDetails taskPlanDetails = new ProjectPlanDetails();
         BeanUtils.copyProperties(planDetails, taskPlanDetails);
         taskPlanDetails.setId(0);
@@ -422,6 +412,16 @@ public class SurveyExamineTaskService {
         taskPlanDetails.setCreator(commonService.thisUserAccount());
         taskPlanDetails.setProjectPhaseName(String.format("%s-%s", planDetails.getProjectPhaseName(), publicService.getUserNameByAccount(userAccount)));
         projectPlanDetailsService.saveProjectPlanDetails(taskPlanDetails);
+
+        SurveyExamineInfo surveyExamineInfo = new SurveyExamineInfo();
+        surveyExamineInfo.setExamineType(ExamineTypeEnum.EXPLORE.getId());
+        surveyExamineInfo.setProjectId(planDetails.getProjectId());
+        surveyExamineInfo.setPlanDetailsId(taskPlanDetails.getId());
+        surveyExamineInfo.setExamineFormType(examineFormType);
+        surveyExamineInfo.setDeclareRecordId(planDetails.getDeclareRecordId());
+        surveyExamineInfo.setBisAssignment(true);
+        surveyExamineInfo.setCreator(commonService.thisUserAccount());
+        surveyExamineInfoService.save(surveyExamineInfo);
         //save 保存查勘内容(工业与非工业)
         this.saveSurveyExamineTask(planDetails, examineFormType);
         //添加任务

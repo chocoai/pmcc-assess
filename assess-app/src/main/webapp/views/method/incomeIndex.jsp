@@ -12,24 +12,24 @@
         <form id="frm_income" class="form-horizontal" enctype="multipart/form-data">
             <input type="hidden" name="id" value="${empty mdIncome?0: mdIncome.id}">
             <input type="hidden" name="name" value="${judgeObject.name}">
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        房产剩余使用年限
-                    </label>
-                    <div class="col-sm-3">
-                        <label class="form-control">${houseSurplusYear}</label>
-                    </div>
-                </div>
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        土地剩余使用年限
-                    </label>
-                    <div class="col-sm-3">
-                        <label class="form-control">${landSurplusYear}</label>
-                    </div>
-                </div>
-            </div>
+            <%--<div class="form-group">--%>
+                <%--<div class="x-valid">--%>
+                    <%--<label class="col-sm-1 control-label">--%>
+                        <%--房产剩余使用年限--%>
+                    <%--</label>--%>
+                    <%--<div class="col-sm-3">--%>
+                        <%--<label class="form-control">${houseSurplusYear}</label>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+                <%--<div class="x-valid">--%>
+                    <%--<label class="col-sm-1 control-label">--%>
+                        <%--土地剩余使用年限--%>
+                    <%--</label>--%>
+                    <%--<div class="col-sm-3">--%>
+                        <%--<label class="form-control">${landSurplusYear}</label>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+            <%--</div>--%>
             <div class="form-group">
                 <label class="col-sm-1 control-label">
                     经营方式<span class="symbol required"></span>

@@ -1,78 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-
-<div class="x_panel">
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-        </ul>
-        <h3>
-            房价指数
-        </h3>
-        <div class="clearfix"></div>
-    </div>
-    <div class="x_content collapse">
-        <form id="frm_query_house_price_index" class="form-horizontal">
-            <div class="form-group ">
-                <div>
-                    <label class="col-sm-1 control-label">
-                        开始时间
-                    </label>
-                    <div class="col-sm-1">
-                        <input type="text" data-date-format="yyyy-mm-dd"
-                               placeholder="开始日期" name="startTime"
-                               class="form-control date-picker dbdate">
-                    </div>
-                </div>
-                <div>
-                    <label class="col-sm-1 control-label">
-                        结束时间
-                    </label>
-                    <div class="col-sm-1">
-                        <input type="text" data-date-format="yyyy-mm-dd"
-                               placeholder="结束日期" name="endTime"
-                               class="form-control date-picker dbdate">
-                    </div>
-                </div>
-                <div>
-                    <label class="col-sm-1 control-label">
-                        省
-                    </label>
-                    <div class="col-sm-1">
-                        <select name="province" class="form-control search-select select2">
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="col-sm-1 control-label">
-                        市
-                    </label>
-                    <div class="col-sm-1">
-                        <select name="city" class="form-control search-select select2">
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="col-sm-1 control-label">
-                        区县
-                    </label>
-                    <div class="col-sm-1">
-                        <select name="district" class="form-control search-select select2">
-                        </select>
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <button type="button" class="btn btn-primary" onclick="loadHousePriceIndexList();">
-                        查询
-                    </button>
-                </div>
-            </div>
-        </form>
-        <table class="table table-bordered" id="tb_house_price_index_list">
-        </table>
-    </div>
-</div>
-
 <div class="x_panel">
     <div class="x_title ">
         <ul class="nav navbar-right panel_toolbox">
@@ -104,7 +31,6 @@
                        onclick="marketCompare.toggle(this);">
                 <label for="cbxRatio">测算值</label>
             </span>
-
         </div>
         <div>
             <input type="hidden" id="marketCompareId">
@@ -140,46 +66,6 @@
     </div>
 </div>
 
-<script type="text/javascript">
-    $(function () {
-        loadHousePriceIndexList();
-
-        AssessCommon.initAreaInfo({
-            useDefaultText: false,
-            provinceTarget: $("#frm_query_house_price_index").find("[name='province']"),
-            cityTarget: $("#frm_query_house_price_index").find("[name='city']"),
-            districtTarget: $("#frm_query_house_price_index").find("[name='district']"),
-            provinceValue: "",
-            cityValue: "",
-            districtValue: ""
-        });
-    })
-
-    //加载房价指数列表
-    function loadHousePriceIndexList() {
-        var cols = [];
-        cols.push({field: 'yearMonthCalendarName', title: '日期'});
-        cols.push({field: 'provinceName', title: '省'});
-        cols.push({field: 'cityName', title: '市'});
-        cols.push({field: 'districtName', title: '县'});
-        cols.push({field: 'indexCalendar', title: '指数'});
-        $("#tb_house_price_index_list").bootstrapTable('destroy');
-        TableInit("tb_house_price_index_list", "${pageContext.request.contextPath}/housePriceIndex/list", cols, {
-            startTime: $("#frm_query_house_price_index").find("[name='startTime']").val(),
-            endTime: $("#frm_query_house_price_index").find("[name='endTime']").val(),
-            province: $("#frm_query_house_price_index").find("[name='province']").val(),
-            city: $("#frm_query_house_price_index").find("[name='city']").val(),
-            district: $("#frm_query_house_price_index").find("[name='district']").val()
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            onLoadSuccess: function () {
-                $('.tooltips').tooltip();
-            }
-        });
-    }
-</script>
 
 <script type="text/javascript">
     (function ($) {
@@ -215,13 +101,17 @@
 
         //设置元素可编辑
         function setElementEditable() {
-            $(".p_text").find('a').editable({
-                validate: function (value) { //字段验证
-                    if (!$.trim(value)) {
-                        return '不能为空';
-                    }
+            $(".p_text").find('a').each(function () {
+                if ($(this).text()) {
+                    $(this).editable({
+                        validate: function (value) { //字段验证
+                            if (!$.trim(value)) {
+                                return '不能为空';
+                            }
+                        }
+                    });
                 }
-            });
+            })
 
             $(".p_score").find('a').editable({
                 validate: function (value) { //字段验证
@@ -259,11 +149,11 @@
                     if (evaluationScore && currScore) {
                         evaluationScore = parseFloat(evaluationScore);
                         currScore = parseFloat(currScore);
-                        $(this).removeClass('green').removeClass('red');
+                        $(this).removeClass('bg-green').removeClass('bg-red');
                         if (evaluationScore > currScore)
-                            $(this).addClass('green');
+                            $(this).addClass('bg-green');
                         if (evaluationScore < currScore)
-                            $(this).addClass('red');
+                            $(this).addClass('bg-red');
                         ratioEle.text(iTofixed(evaluationScore / currScore, 4));
                     }
                     marketCompare.calculation();
@@ -295,7 +185,7 @@
         marketCompare.isPass = true;
         marketCompare.fields = [];
         marketCompare.mcId = 0;
-        marketCompare.setUse = 0;
+        marketCompare.price = 0;
         marketCompare.init = function (options) {
             var defaluts = {
                 marketCompare: undefined,//主表信息
@@ -304,7 +194,6 @@
                 cases: undefined,//案例
                 casesAll: undefined,//所有案例
                 mcId: undefined,
-                setUse: undefined,
                 readonly: false//
             };
             defaluts = $.extend({}, defaluts, options);
@@ -323,15 +212,9 @@
                 Alert("委估对象为空！");
                 return;
             }
-//            if (!defaluts.cases) {
-//                Alert("案例为空！");
-//                return;
-//            }
 
             marketCompare.mcId = defaluts.mcId;
-            marketCompare.setUse = defaluts.setUse;
-
-
+            $("#tb_md_mc_item_list").empty();
             marketCompare.initHead(defaluts);
             marketCompare.initBody(defaluts);
             marketCompare.initResult(defaluts);
@@ -340,6 +223,7 @@
                 setElementEditable();
                 //选择案例
                 if (defaluts.casesAll) {
+                    $(".select-case").empty();
                     $.each(defaluts.casesAll, function (i, item) {
                         var html = '<span class="checkbox-inline"><input type="checkbox" id="case' + item.id + '" value="' + item.id + '"><label for="case' + item.id + '">' + item.projectPhaseName + '</label></span>';
                         $(".select-case").append(html);
@@ -348,6 +232,8 @@
             } else {
                 $("#small_select_case").hide();
             }
+            $("#cbxScore,#cbxRatio").trigger('click');
+            marketCompare.calculation();//初始化后默认测试一次
         }
 
         //初始头部
@@ -356,7 +242,7 @@
             var headHtml = '<thead> <tr>';
             headHtml += '<th width="10%">项目</th>';
             headHtml += '<th width="20%" data-type="evaluation" data-item-id="' + defaluts.evaluation.id + '">估价对象</th>';
-            if(defaluts.cases&&defaluts.cases.length>0){
+            if (defaluts.cases && defaluts.cases.length > 0) {
                 for (var i = 1; i <= defaluts.cases.length; i++) {
                     headHtml += '<th width="20%" data-type="case" data-item-id="' + defaluts.cases[i - 1].id + '">';
                     headHtml += '<input type="hidden" name="initialPrice" value="' + defaluts.cases[i - 1].initialPrice + '">';
@@ -379,14 +265,16 @@
                 if (item.bisOnlyView) {//只用于显示的字段
                     if (!item.fieldName) {
                         var colspan = 2;
-                        if(defaluts.cases&&defaluts.cases.length>0){
+                        if (defaluts.cases && defaluts.cases.length > 0) {
                             colspan += defaluts.cases.length;
                         }
                         var text = item.name;
                         if (item.remark) {
                             text += '<span style="font-size: 12px;color: red;font-weight: normal;">(' + item.remark + ')<span>';
                         }
-                        bodyHtml += '<tr data-field-id="' + item.id + '" data-field-parent-id="' + item.pid + '" onclick="marketCompare.childrenToggle(this);"><td colspan="' + colspan + '" style="font-weight: 800;font-size: 16px">' + text + '</td></tr>';
+                        bodyHtml += '<tr data-field-id="' + item.id + '" data-field-parent-id="' + item.pid + '" onclick="marketCompare.childrenToggle(this);">'
+                            + '<td colspan="' + colspan + '" style="font-weight: 800;font-size: 16px;cursor: pointer;">'
+                            + text + ' <i class="fa fa-angle-double-down"></i></td></tr>';
                     } else {
                         var trHtml = '<tr data-field-id="' + item.id + '" data-field-parent-id="' + item.pid + '" data-group="' + item.fieldName + '" data-name="utext"';
                         item.bisPrimaryKey == true ? trHtml += ' data-bisPrimaryKey="true" ' : '';
@@ -396,7 +284,7 @@
                         if (evaluationItem) {
                             trHtml += ' <td data-item-id="' + toString(defaluts.evaluation.id) + '">' + toString(evaluationItem.value) + '</td>';
                         }
-                        if(defaluts.cases&&defaluts.cases.length>0){
+                        if (defaluts.cases && defaluts.cases.length > 0) {
                             for (var j = 0; j < defaluts.cases.length; j++) {
                                 var caseItem = getItemByName(JSON.parse(defaluts.cases[j].jsonContent), item.fieldName);
                                 caseItem = caseItem == undefined ? {} : caseItem;
@@ -415,7 +303,7 @@
                     rowHtml = rowHtml.replace(/{bisPrice}/g, toString(item.bisPrice)).replace(/{bisPrimaryKey}/g, toString(item.bisPrimaryKey));
                     //取到案例相关
                     var caseText, caseScore, caseRatio;
-                    if(defaluts.cases&&defaluts.cases.length>0){
+                    if (defaluts.cases && defaluts.cases.length > 0) {
                         for (var j = 0; j < defaluts.cases.length; j++) {
                             var caseItem = getItemByName(JSON.parse(defaluts.cases[j].jsonContent), item.fieldName);
                             var pTextHtml = getTempHtml("pTextTemp", defaluts.readonly);
@@ -567,6 +455,7 @@
                 averagePrice = iTofixed(totalPrice / caseItemIdArray.length, 2);
             }
             table.find('tr[data-name="averagePrice"]').find('td[data-item-id=' + evaluationItemId + ']').text(averagePrice);
+            marketCompare.price = averagePrice;
         }
 
         //切换
@@ -761,7 +650,7 @@
                         if (callback)
                             callback(result.data.id);
                     } else {
-                        Alert('保存数据异常，' + result.msg);
+                        Alert('保存数据异常，' + result.errmsg);
                     }
                 }
             })
@@ -783,7 +672,6 @@
                 url: '${pageContext.request.contextPath}/marketCompare/selectCase',
                 data: {
                     mcId: marketCompare.mcId,
-                    setUse: marketCompare.setUse,
                     planDetailsIdString: caseArray.join()
                 },
                 type: 'post',
@@ -791,11 +679,17 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        Alert("选择成功！");
+                        toastr.success("选择成功！");
                         $('#modal_select_case').modal('hide');
-                        window.location.href = window.location.href;
+                        marketCompare.init({
+                            mcId: result.data.mcId,
+                            marketCompare: result.data.marketCompare,
+                            fields: result.data.fields,
+                            evaluation: result.data.evaluation,
+                            cases: result.data.cases
+                        });
                     } else {
-                        Alert('选择案例异常，' + result.msg);
+                        Alert('选择案例异常，' + result.errmsg);
                     }
                 }
             })
@@ -804,7 +698,7 @@
         //控制子项的显示隐藏
         marketCompare.childrenToggle = function (_this) {
             var fieldParentId = $(_this).attr('data-field-id');
-            $(_this).closest('table').find('[data-field-parent-id='+fieldParentId+']').toggle();
+            $(_this).closest('table').find('[data-field-parent-id=' + fieldParentId + ']').toggle();
         }
 
         window.marketCompare = marketCompare;

@@ -286,6 +286,66 @@ public class MdIncomeLeaseExample {
             return (Criteria) this;
         }
 
+        public Criteria andMcIdIsNull() {
+            addCriterion("mc_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdIsNotNull() {
+            addCriterion("mc_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdEqualTo(Integer value) {
+            addCriterion("mc_id =", value, "mcId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdNotEqualTo(Integer value) {
+            addCriterion("mc_id <>", value, "mcId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdGreaterThan(Integer value) {
+            addCriterion("mc_id >", value, "mcId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("mc_id >=", value, "mcId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdLessThan(Integer value) {
+            addCriterion("mc_id <", value, "mcId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdLessThanOrEqualTo(Integer value) {
+            addCriterion("mc_id <=", value, "mcId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdIn(List<Integer> values) {
+            addCriterion("mc_id in", values, "mcId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdNotIn(List<Integer> values) {
+            addCriterion("mc_id not in", values, "mcId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdBetween(Integer value1, Integer value2) {
+            addCriterion("mc_id between", value1, value2, "mcId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMcIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("mc_id not between", value1, value2, "mcId");
+            return (Criteria) this;
+        }
+
         public Criteria andRentalIncomeIsNull() {
             addCriterion("rental_income is null");
             return (Criteria) this;

@@ -10,6 +10,8 @@ public class MdIncomeLease {
 
     private Integer sectionId;
 
+    private Integer mcId;
+
     private BigDecimal rentalIncome;
 
     private BigDecimal rentals;
@@ -60,6 +62,14 @@ public class MdIncomeLease {
 
     public void setSectionId(Integer sectionId) {
         this.sectionId = sectionId;
+    }
+
+    public Integer getMcId() {
+        return mcId;
+    }
+
+    public void setMcId(Integer mcId) {
+        this.mcId = mcId;
     }
 
     public BigDecimal getRentalIncome() {

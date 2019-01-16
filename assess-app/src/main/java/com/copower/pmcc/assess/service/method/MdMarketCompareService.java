@@ -103,7 +103,7 @@ public class MdMarketCompareService {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(judgeObject.getProjectId());
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
         ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetails(schemeJudgeObject.getDeclareRecordId(), projectPhase.getId());
-        mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(projectInfo, schemeJudgeObject.getDeclareRecordId(), planDetails.getId(), setUseFieldList));
+        mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(projectInfo, schemeJudgeObject.getDeclareRecordId(), planDetails.getId(), setUseFieldList,false));
         mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
 
         return mdMarketCompare;
@@ -141,7 +141,7 @@ public class MdMarketCompareService {
                 mdMarketCompareItem.setMustAdjustPrice(mustAdjustPrice(planDetailsId));
                 if (projectInfo == null)
                     projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-                mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(projectInfo, projectPlanDetails.getDeclareRecordId(), projectPlanDetails.getId(), setUseFieldList));
+                mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(projectInfo, projectPlanDetails.getDeclareRecordId(), projectPlanDetails.getId(), setUseFieldList,true));
                 mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
             }
         }

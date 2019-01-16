@@ -289,7 +289,7 @@
                         landLevel.loadLandLevelDetailList();
                         $('#land_level_detail_modal').modal('hide');
                     } else {
-                        Alert(result.msg);
+                        Alert(result.errmsg);
                     }
                 }
             })
@@ -308,7 +308,7 @@
                             toastr.success('删除成功');
                             landLevel.loadLandLevelDetailList();
                         } else {
-                            Alert(result.msg);
+                            Alert(result.errmsg);
                         }
                     }
                 })

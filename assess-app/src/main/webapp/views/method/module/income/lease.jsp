@@ -118,14 +118,21 @@
                 <form id="frm_lease_income" class="form-horizontal">
                     <input type="hidden" name="id">
                     <input type="hidden" name="sectionId">
+                    <input type="hidden" name="mcId">
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
                                 月租金收入(元)<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="rentalIncome" placeholder="月租金收入" data-rule-digits="true"
-                                       class="form-control" required="required">
+                                <div class="input-group">
+                                    <input type="text" name="rentalIncome" placeholder="月租金收入" data-rule-digits="true"
+                                           class="form-control" required="required">
+                                    <span class="input-group-btn">
+                                        <input type="button" class="btn btn-primary" value="市场比较法"
+                                               onclick="lease.callCompareMethod(this);"/>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div class="x-valid">
@@ -383,6 +390,39 @@
 
 <script type="text/javascript">
     var lease = {};
+
+    //调用市场比较法
+    lease.callCompareMethod = function (_this) {
+        var mcId = $("#frm_lease_income").find('[name=mcId]').val();
+        var frame = layer.open({
+            type: 2,
+            title: '市场比较法',
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: '${pageContext.request.contextPath}/marketCompare/index?mcId=' + mcId + '&judgeObjectId=${projectPlanDetails.judgeObjectId}',
+            cancel: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+                $(_this).closest('form').find('[name=mcId]').val(iframe.marketCompare.mcId);
+            },
+            btnAlign: 'c',
+            btn: ['保存', '关闭'],
+            yes:function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+                iframe.saveResult(function (mcId, price) {
+                    $(_this).closest('form').find('[name=mcId]').val(mcId);
+                    $(_this).closest('form').find('[name=rentalIncome]').val(price);
+                    layer.closeAll('iframe');
+                });
+            },
+            btn2:function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+                $(_this).closest('form').find('[name=mcId]').val(iframe.marketCompare.mcId);
+            }
+        });
+        layer.full(frame);
+    }
 
     //获取报酬率
     lease.getRewardRate = function (_this) {

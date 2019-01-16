@@ -28,6 +28,8 @@ public class DeclareRecord {
 
     private String practicalUse;
 
+    private String publicSituation;
+
     private BigDecimal floorArea;
 
     private Integer areaGroupId;
@@ -146,6 +148,14 @@ public class DeclareRecord {
 
     public void setPracticalUse(String practicalUse) {
         this.practicalUse = practicalUse == null ? null : practicalUse.trim();
+    }
+
+    public String getPublicSituation() {
+        return publicSituation;
+    }
+
+    public void setPublicSituation(String publicSituation) {
+        this.publicSituation = publicSituation == null ? null : publicSituation.trim();
     }
 
     public BigDecimal getFloorArea() {

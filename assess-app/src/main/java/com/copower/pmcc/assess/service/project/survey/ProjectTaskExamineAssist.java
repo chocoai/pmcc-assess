@@ -245,6 +245,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
             }
         } catch (Exception e) {
             //允许异常
+            logger.error(e.getMessage(),e);
         }
         if (basicApply == null) {
             basicApply = new BasicApply();

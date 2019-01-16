@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="income_id" property="incomeId" jdbcType="INTEGER" />
     <result column="section_id" property="sectionId" jdbcType="INTEGER" />
+    <result column="mc_id" property="mcId" jdbcType="INTEGER" />
     <result column="rental_income" property="rentalIncome" jdbcType="DECIMAL" />
     <result column="rentals" property="rentals" jdbcType="DECIMAL" />
     <result column="rentals_remark" property="rentalsRemark" jdbcType="VARCHAR" />
@@ -79,7 +80,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, income_id, section_id, rental_income, rentals, rentals_remark, month_number, 
+    id, income_id, section_id, mc_id, rental_income, rentals, rentals_remark, month_number, 
     deposit, deposit_remark, deposit_rate, deposit_rate_remark, other_income, other_income_remark, 
     gross_income, creator, gmt_created, gmt_modified
   </sql>
@@ -117,18 +118,18 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_income_lease (income_id, section_id, rental_income, 
-      rentals, rentals_remark, month_number, 
-      deposit, deposit_remark, deposit_rate, 
-      deposit_rate_remark, other_income, other_income_remark, 
-      gross_income, creator, gmt_created, 
-      gmt_modified)
-    values (#{incomeId,jdbcType=INTEGER}, #{sectionId,jdbcType=INTEGER}, #{rentalIncome,jdbcType=DECIMAL}, 
-      #{rentals,jdbcType=DECIMAL}, #{rentalsRemark,jdbcType=VARCHAR}, #{monthNumber,jdbcType=INTEGER}, 
-      #{deposit,jdbcType=DECIMAL}, #{depositRemark,jdbcType=VARCHAR}, #{depositRate,jdbcType=DECIMAL}, 
-      #{depositRateRemark,jdbcType=VARCHAR}, #{otherIncome,jdbcType=DECIMAL}, #{otherIncomeRemark,jdbcType=VARCHAR}, 
-      #{grossIncome,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_md_income_lease (income_id, section_id, mc_id, 
+      rental_income, rentals, rentals_remark, 
+      month_number, deposit, deposit_remark, 
+      deposit_rate, deposit_rate_remark, other_income, 
+      other_income_remark, gross_income, creator, 
+      gmt_created, gmt_modified)
+    values (#{incomeId,jdbcType=INTEGER}, #{sectionId,jdbcType=INTEGER}, #{mcId,jdbcType=INTEGER}, 
+      #{rentalIncome,jdbcType=DECIMAL}, #{rentals,jdbcType=DECIMAL}, #{rentalsRemark,jdbcType=VARCHAR}, 
+      #{monthNumber,jdbcType=INTEGER}, #{deposit,jdbcType=DECIMAL}, #{depositRemark,jdbcType=VARCHAR}, 
+      #{depositRate,jdbcType=DECIMAL}, #{depositRateRemark,jdbcType=VARCHAR}, #{otherIncome,jdbcType=DECIMAL}, 
+      #{otherIncomeRemark,jdbcType=VARCHAR}, #{grossIncome,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -141,6 +142,9 @@
       </if>
       <if test="sectionId != null" >
         section_id,
+      </if>
+      <if test="mcId != null" >
+        mc_id,
       </if>
       <if test="rentalIncome != null" >
         rental_income,
@@ -191,6 +195,9 @@
       </if>
       <if test="sectionId != null" >
         #{sectionId,jdbcType=INTEGER},
+      </if>
+      <if test="mcId != null" >
+        #{mcId,jdbcType=INTEGER},
       </if>
       <if test="rentalIncome != null" >
         #{rentalIncome,jdbcType=DECIMAL},
@@ -254,6 +261,9 @@
       <if test="record.sectionId != null" >
         section_id = #{record.sectionId,jdbcType=INTEGER},
       </if>
+      <if test="record.mcId != null" >
+        mc_id = #{record.mcId,jdbcType=INTEGER},
+      </if>
       <if test="record.rentalIncome != null" >
         rental_income = #{record.rentalIncome,jdbcType=DECIMAL},
       </if>
@@ -306,6 +316,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       income_id = #{record.incomeId,jdbcType=INTEGER},
       section_id = #{record.sectionId,jdbcType=INTEGER},
+      mc_id = #{record.mcId,jdbcType=INTEGER},
       rental_income = #{record.rentalIncome,jdbcType=DECIMAL},
       rentals = #{record.rentals,jdbcType=DECIMAL},
       rentals_remark = #{record.rentalsRemark,jdbcType=VARCHAR},
@@ -332,6 +343,9 @@
       </if>
       <if test="sectionId != null" >
         section_id = #{sectionId,jdbcType=INTEGER},
+      </if>
+      <if test="mcId != null" >
+        mc_id = #{mcId,jdbcType=INTEGER},
       </if>
       <if test="rentalIncome != null" >
         rental_income = #{rentalIncome,jdbcType=DECIMAL},
@@ -382,6 +396,7 @@
     update tb_md_income_lease
     set income_id = #{incomeId,jdbcType=INTEGER},
       section_id = #{sectionId,jdbcType=INTEGER},
+      mc_id = #{mcId,jdbcType=INTEGER},
       rental_income = #{rentalIncome,jdbcType=DECIMAL},
       rentals = #{rentals,jdbcType=DECIMAL},
       rentals_remark = #{rentalsRemark,jdbcType=VARCHAR},
