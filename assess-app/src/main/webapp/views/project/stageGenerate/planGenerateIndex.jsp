@@ -4,7 +4,6 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-
 <body class="nav-md footer_fixed">
 <div class="container body">
     <div class="main_container">
@@ -158,25 +157,21 @@
                                 <table class="table table-hover">
                                     <thead>
                                     <tr>
-                                        <td><input type="checkbox" name="checkboxAll" onclick="checkBoxAllClick(this);">
+                                        <td>
                                         </td>
                                         <th>序号</th>
                                         <th>名称</th>
                                         <th>证载面积</th>
                                         <th>评估面积</th>
-                                        <%--<th>评估单价</th>--%>
                                         <th>已出面积</th>
                                         <th>报告面积</th>
-                                        <%--<th>评估总价</th>--%>
-                                        <%--<th>报告总价</th>--%>
                                         <th>报告附件</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <c:forEach items="${reportRecordList}" var="item" varStatus="i">
                                         <tr>
-                                            <td><input type="checkbox" name="checkboxItem"
-                                                       onclick="checkBoxItemClick(this);"></td>
+                                            <td></td>
                                             <th>${i.index+1}</th>
                                             <td>${item.name}</td>
                                             <td>${item.floorArea}</td>
@@ -327,7 +322,7 @@
             }
         });
         $.ajax({
-            url: "${pageContext.request.contextPath}/createReport/createReportWord",
+            url: "${pageContext.request.contextPath}/generateReport/generate",
             data: {
                 ids: ids,
                 projectPlanId: '${projectPlan.id}',
@@ -338,6 +333,7 @@
             success: function (result) {
                 if (result.ret) {
                     AssessCommon.getSysAttachmentViewHtml(result.data, function (data) {
+                        $("#reportDownloadWord").empty();
                         $("#reportDownloadWord").append(data);
                     });
                 } else {
