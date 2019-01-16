@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecord;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecordExample;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectNumberRecordMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -59,10 +60,10 @@ public class ProjectNumberRecordDao {
     public ProjectNumberRecord getProjectNumberRecord(Integer projectId, Integer areaId, Integer year, Integer reportType) {
         ProjectNumberRecordExample example = new ProjectNumberRecordExample();
         ProjectNumberRecordExample.Criteria criteria = example.createCriteria();
-        criteria.andProjectIdEqualTo(projectId).andAreaIdEqualTo(areaId).andYearEqualTo(year).andReportTypeNotEqualTo(reportType);
+        criteria.andProjectIdEqualTo(projectId).andAreaIdEqualTo(areaId).andYearEqualTo(year).andReportTypeEqualTo(reportType);
         example.setOrderByClause("number desc");
         List<ProjectNumberRecord> numberRecordList = projectNumberRecordMapper.selectByExample(example);
-        if (numberRecordList == null) return null;
+        if (CollectionUtils.isEmpty(numberRecordList)) return null;
         return numberRecordList.get(0);
     }
 

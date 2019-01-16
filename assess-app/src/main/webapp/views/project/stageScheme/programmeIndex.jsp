@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        价值定义<span class="symbol required"></span>
+                                        价值类型<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
                                         <select name="valueDefinition" class="form-control" required>

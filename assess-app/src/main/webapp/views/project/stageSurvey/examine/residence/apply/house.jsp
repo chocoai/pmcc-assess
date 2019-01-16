@@ -27,10 +27,9 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">楼层描述<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">楼层描述</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="楼层描述" name="floorDesc" required
-                           class="form-control" value="${basicHouse.floorDesc}">
+                    <textarea class="form-control" name="floorDesc">${basicHouse.floorDesc}</textarea>
                 </div>
             </div>
         </div>

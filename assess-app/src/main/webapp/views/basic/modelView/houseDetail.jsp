@@ -21,10 +21,10 @@
                     <label class="form-control">${basicHouse.floor}</label>
                 </div>
             </div>
-            <div class="x-valid" id="industryUseEnvironment">
-                <label class="col-sm-1 control-label">使用环境</label>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">楼层描述</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicHouse.useEnvironmentName}</label>
+                    <label class="form-control">${basicHouse.floorDesc}</label>
                 </div>
             </div>
         </div>
@@ -40,6 +40,12 @@
                 <label class="col-sm-1 control-label">户型图</label>
                 <div class="col-sm-3" id="_house_huxing_plan">
 
+                </div>
+            </div>
+            <div class="x-valid" id="industryUseEnvironment">
+                <label class="col-sm-1 control-label">使用环境</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouse.useEnvironmentName}</label>
                 </div>
             </div>
         </div>
