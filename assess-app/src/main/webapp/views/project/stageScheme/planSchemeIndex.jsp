@@ -62,7 +62,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${panelTitle}阶段工作计划</h2>
+                    <h3>${panelTitle}阶段工作计划</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="treeGrid panel-body x_content" style="padding: 0px;">
@@ -70,12 +70,6 @@
                 </div>
             </div>
             <div class="x_panel">
-                <div class="x_title">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <div class="clearfix"></div>
-                </div>
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">

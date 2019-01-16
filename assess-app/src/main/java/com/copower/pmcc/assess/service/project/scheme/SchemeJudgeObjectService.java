@@ -33,6 +33,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -297,6 +298,7 @@ public class SchemeJudgeObjectService {
         StringBuilder numberBuilder = new StringBuilder();
         BigDecimal floorAreaTotal = new BigDecimal("0");
         BigDecimal evaluationAreaTotal = new BigDecimal("0");
+        StringBuilder stringBuilder = new StringBuilder();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             //委估对象编号合并
             numberBuilder.append(schemeJudgeObject.getNumber());
@@ -307,16 +309,18 @@ public class SchemeJudgeObjectService {
                 floorAreaTotal = floorAreaTotal.add(schemeJudgeObject.getFloorArea());
             if (schemeJudgeObject.getEvaluationArea() != null)
                 evaluationAreaTotal = evaluationAreaTotal.add(schemeJudgeObject.getEvaluationArea());
+            stringBuilder.append(schemeJudgeObject.getRentalPossessionDesc()).append("\r\n");
         }
         mergeJudgeObject.setId(null);
         mergeJudgeObject.setPid(0);
         mergeJudgeObject.setSplitNumber(null);
-        mergeJudgeObject.setNumber(numberBuilder.toString().replaceAll(",$", ""));
+        mergeJudgeObject.setNumber(StringUtils.strip(numberBuilder.toString(), ","));
         mergeJudgeObject.setName("");
         mergeJudgeObject.setOwnership("");
         mergeJudgeObject.setSeat("");
         mergeJudgeObject.setFloorArea(floorAreaTotal);
         mergeJudgeObject.setEvaluationArea(evaluationAreaTotal);
+        mergeJudgeObject.setRentalPossessionDesc(stringBuilder.toString());
         mergeJudgeObject.setBisSplit(false);
         mergeJudgeObject.setBisEnable(true);
         mergeJudgeObject.setBisMerge(true);
@@ -414,6 +418,7 @@ public class SchemeJudgeObjectService {
             ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SURE_PRICE, projectInfo.getProjectCategoryId());
             ProjectPhase phaseLiquidationAnalysis = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.LIQUIDATION_ANALYSIS, projectInfo.getProjectCategoryId());
             ProjectPhase phaseReimbursement = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.REIMBURSEMENT, projectInfo.getProjectCategoryId());
+            String mortgageKey = baseDataDicService.getCacheDataDicById(projectInfo.getEntrustPurpose()).getFieldName();
             int i = 0;
             Map<Integer, ProjectPhase> phaseMap = getProjectPhaseMap(projectInfo.getProjectCategoryId());
             for (SchemeAreaGroup schemeAreaGroup : areaGroupList) {
@@ -485,7 +490,7 @@ public class SchemeJudgeObjectService {
                         }
 
                         //如果是抵押评估还需添加事项，变现分析税费、法定优先受偿款
-                        if (projectInfo.getEntrustPurpose().equals(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE)) {
+                        if (StringUtils.equals(mortgageKey, AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE)) {
                             if (phaseLiquidationAnalysis != null) {
                                 ProjectPlanDetails details = new ProjectPlanDetails();
                                 details.setProjectWorkStageId(projectPlan.getWorkStageId());
@@ -519,8 +524,6 @@ public class SchemeJudgeObjectService {
                 }
             }
         }
-
-
     }
 
     private Map<Integer, ProjectPhase> getProjectPhaseMap(Integer categoryId) {
