@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -47,31 +48,48 @@ public class AsposeUtils {
         return stringList;
     }
 
-
     /**
-     * 替换书签
-     *
-     * @param builder
-     * @param bookmarkName
-     * @param bookmarkValue
-     * @throws Exception
+     * We want to merge the range of cells found in between these two cells.
+     * Cell cellStartRange = table.getRows().get(0).getCells().get(0); //第1行第1列
+     * Cell cellEndRange = table.getRows().get(1).getCells().get(0); //第2行第1列
+     * Merge all the cells between the two specified cells into one.
+     * mergeCells(cellStartRange, cellEndRange, table);
+     * aspose word中的表格合并
+     * @param startCell
+     * @param endCell
+     * @param parentTable
      */
-    public static void replaceBookmark(DocumentBuilder builder, String bookmarkName, String bookmarkValue) throws Exception {
-        builder.moveToBookmark(bookmarkName);
-        builder.write(bookmarkValue);
+    public static void mergeCells(Cell startCell, Cell endCell, Table parentTable) {
+        // Find the row and cell indices for the start and end cell.
+        Point startCellPos = new Point(startCell.getParentRow().indexOf(startCell), parentTable.indexOf(startCell.getParentRow()));
+        Point endCellPos = new Point(endCell.getParentRow().indexOf(endCell), parentTable.indexOf(endCell.getParentRow()));
+        // Create the range of cells to be merged based off these indices. Inverse each index if the end cell if before the start cell.
+        Rectangle mergeRange = new Rectangle(
+                Math.min(startCellPos.x, endCellPos.x),
+                Math.min(startCellPos.y, endCellPos.y),
+                Math.abs(endCellPos.x - startCellPos.x) + 1,
+                Math.abs(endCellPos.y - startCellPos.y) + 1
+        );
+        for (Row row : parentTable.getRows()) {
+            for (Cell cell : row.getCells()) {
+                Point currentPos = new Point(row.indexOf(cell), parentTable.indexOf(row));
+
+                // Check if the current cell is inside our merge range then merge it.
+                if (mergeRange.contains(currentPos)) {
+                    if (currentPos.x == mergeRange.x)
+                        cell.getCellFormat().setHorizontalMerge(CellMerge.FIRST);
+                    else
+                        cell.getCellFormat().setHorizontalMerge(CellMerge.PREVIOUS);
+
+                    if (currentPos.y == mergeRange.y)
+                        cell.getCellFormat().setVerticalMerge(CellMerge.FIRST);
+                    else
+                        cell.getCellFormat().setVerticalMerge(CellMerge.PREVIOUS);
+                }
+            }
+        }
     }
 
-    /**
-     * 替换名称
-     *
-     * @param doc
-     * @param replaceName
-     * @param replaceValue
-     * @throws Exception
-     */
-    public static void replaceText(Document doc, String replaceName, String replaceValue) throws Exception {
-        doc.getRange().replace(replaceName, replaceValue, false, false);
-    }
 
     //根据特殊文字替换 word 内容
 

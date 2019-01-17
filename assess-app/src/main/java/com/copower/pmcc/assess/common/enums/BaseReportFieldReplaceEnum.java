@@ -12,7 +12,8 @@ import java.util.List;
  */
 public enum BaseReportFieldReplaceEnum {
     TEXT("word.text","文本"),
-    FILE("word.file","附件(书签替换模板)"),
+    FILE("word.file","模板附件(书签替换模板)"),
+    FILE_FIXED("word.file.fixed","固定附件(书签替换模板)"),
     BOOKMARK("word.bookmark","书签"),
     OTHER("word.other","自定义"),
     ;

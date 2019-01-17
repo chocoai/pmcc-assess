@@ -14,6 +14,8 @@ public enum BaseReportFieldEnum {
     REPORTNUMBER("", "文号", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     PRINCIPAL("", "委托人", BaseReportFieldReplaceEnum.TEXT.getKey()),
     Location("", "区位", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    powerPerson("", "权利人", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),//(区位)
+    notPowerPerson("", "非权利人", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),//(区位)
     ValueType("", "价值类型", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     DefinitionValue("", "价值定义", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     ValueImplication("", "价值含义", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
@@ -21,7 +23,10 @@ public enum BaseReportFieldEnum {
     UseRightType("", "使用权类型", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     LandPracticalUse("", "土地实际用途", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     StatementPurposeEntrustment("", "委托目的表述", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    EvaluationMethod("", "评估方法", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),;
+    SetUse("", "设定用途", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    HouseType("", "房产类型", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    judgeObjectAreaStatusSheet("", "估价对象区位状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    EvaluationMethod("", "评估方法", BaseReportFieldReplaceEnum.BOOKMARK.getKey());
     private String key;
 
     private String name;
