@@ -12,3 +12,12 @@ AssessUploadKey.ESTATE_WATER_SUPPLY_PLAN = "estate_water_supply_plan";//楼盘�
 AssessUploadKey.ESTATE_POWER_SUPPLY_PLAN = "estate_power_supply_plan";//楼盘供电平面图
 AssessUploadKey.ESTATE_AIR_SUPPLY_PLAN = "estate_air_supply_plan";//楼盘供气平面图
 AssessUploadKey.ESTATE_HEATING_PLAN = "estate_heating_plan";//楼盘采暖平面图
+
+AssessUploadKey.HOUSE_HUXING_PLAN = "house_huxing_plan";//户型图
+AssessUploadKey.HOUSE_NEW_HUXING_PLAN = "house_new_huxing_plan";//新户型图
+AssessUploadKey.HOUSE_IMG_PLAN = "house_img_plan";//房屋平面图
+AssessUploadKey.OTHER_FILE = "otherFile";//其它附件
+
+AssessUploadKey.BUILDING_FLOOR_PLAN = "building_floor_plan";//平面图 (楼栋)
+AssessUploadKey.BUILDING_FIGURE_OUTSIDE = "building_figure_outside";//外装图(楼栋)
+AssessUploadKey.BUILDING_FLOOR_APPEARANCE_FIGURE = "building_floor_Appearance_figure";//外观图(楼栋)

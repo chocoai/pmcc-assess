@@ -6,7 +6,11 @@
     var buildingCommon = {};
     buildingCommon.buildingForm = $('#basicBuildingFrm');
     //附件上传控件id数组
-    buildingCommon.buildingFileControlIdArray = ['building_floor_plan', 'building_figure_outside', 'building_floor_Appearance_figure'];
+    buildingCommon.buildingFileControlIdArray = [
+        AssessUploadKey.BUILDING_FLOOR_PLAN,
+        AssessUploadKey.BUILDING_FIGURE_OUTSIDE,
+        AssessUploadKey.BUILDING_FLOOR_APPEARANCE_FIGURE
+    ];
 
     buildingCommon.getBuildingId = function () {
         var id = buildingCommon.buildingForm.find('[name=id]').val();

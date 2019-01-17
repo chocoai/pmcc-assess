@@ -7,7 +7,11 @@
     buildingCommon.buildingForm = $('#basicBuildingFrm');
     buildingCommon.buildingMapiframe = undefined;
     //附件上传控件id数组
-    buildingCommon.buildingFileControlIdArray = ['building_floor_plan', 'building_figure_outside', 'building_floor_Appearance_figure'];
+    buildingCommon.buildingFileControlIdArray = [
+        AssessUploadKey.BUILDING_FLOOR_PLAN,
+        AssessUploadKey.BUILDING_FIGURE_OUTSIDE,
+        AssessUploadKey.BUILDING_FLOOR_APPEARANCE_FIGURE
+    ];
 
     buildingCommon.getBuildingId = function () {
         return buildingCommon.buildingForm.find('[name=id]').val();
@@ -129,11 +133,11 @@
                     if (result.ret) {
                         var retHtml = '<option value="" selected>-请选择-</option>';
                         $.each(result.data, function (i, item) {
-                            retHtml += '<option key="' + item.buildingStructure + '" title="' + item.buildingStructure + '" value="' + item.id + '"' ;
+                            retHtml += '<option key="' + item.buildingStructure + '" title="' + item.buildingStructure + '" value="' + item.id + '"';
                             if (item.id == data.industryUseYear) {
                                 retHtml += 'selected="selected"'
                             }
-                            retHtml += '>' + item.buildingStructure + '</option>' ;
+                            retHtml += '>' + item.buildingStructure + '</option>';
                         });
                         buildingCommon.buildingForm.find('select.industryUseYear').empty().html(retHtml).trigger('change');
                     }

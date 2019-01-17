@@ -252,9 +252,9 @@
 </div>
 <script>
     $(function () {
-        fileShow('building_floor_plan');
-        fileShow('building_figure_outside');
-        fileShow('building_floor_Appearance_figure');
+        fileShow(AssessUploadKey.BUILDING_FLOOR_PLAN);
+        fileShow(AssessUploadKey.BUILDING_FIGURE_OUTSIDE);
+        fileShow(AssessUploadKey.BUILDING_FLOOR_APPEARANCE_FIGURE);
         buildingModel.prototype.viewInit();
     });
 
