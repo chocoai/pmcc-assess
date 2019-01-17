@@ -454,9 +454,9 @@
     };
 
     $(function () {
-        objectData.showFile('house_huxing_plan');
-        objectData.showFile('house_new_huxing_plan');
-        objectData.showFile('house_img_plan');
+        objectData.showFile(AssessUploadKey.HOUSE_HUXING_PLAN);
+        objectData.showFile(AssessUploadKey.HOUSE_NEW_HUXING_PLAN);
+        objectData.showFile(AssessUploadKey.HOUSE_IMG_PLAN);
         objectData.house.subLoadList(AssessDicKey.examineHouseTransactionTypeSell);
         objectData.house.subLoadList(AssessDicKey.examineHouseTransactionTypeLease);
     });

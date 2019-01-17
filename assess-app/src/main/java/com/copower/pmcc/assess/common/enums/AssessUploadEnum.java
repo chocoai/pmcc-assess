@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.common.enums;
 /**
  * 描述:模板类型表
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2017/11/2
  * @time: 15:46
  */
@@ -16,7 +16,17 @@ public enum AssessUploadEnum {
     ESTATE_WATER_SUPPLY_PLAN("estate_water_supply_plan", "楼盘供水平面图"),
     ESTATE_POWER_SUPPLY_PLAN("estate_power_supply_plan", "楼盘供电平面图"),
     ESTATE_AIR_SUPPLY_PLAN("estate_air_supply_plan", "楼盘供气平面图"),
-    ESTATE_HEATING_PLAN("estate_heating_plan", "楼盘采暖平面图");
+    ESTATE_HEATING_PLAN("estate_heating_plan", "楼盘采暖平面图"),
+
+    HOUSE_HUXING_PLAN("house_huxing_plan", "户型图"),
+    HOUSE_NEW_HUXING_PLAN("house_new_huxing_plan", "新户型图"),
+    HOUSE_IMG_PLAN("house_img_plan", "房屋平面图"),
+    OTHER_FILE("otherFile", "其它附件"),
+
+    BUILDING_FLOOR_PLAN("building_floor_plan", "平面图 (楼栋)"),
+    BUILDING_FIGURE_OUTSIDE("building_figure_outside", "外装图(楼栋)"),
+    BUILDING_FLOOR_APPEARANCE_FIGURE("building_floor_Appearance_figure", "外观图(楼栋)");
+
 
     private String key;
     private String value;

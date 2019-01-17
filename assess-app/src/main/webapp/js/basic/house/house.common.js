@@ -21,9 +21,11 @@
 
     //附件上传控件id数组
     houseCommon.houseFileControlIdArray = [
-        'house_huxing_plan',
-        'house_new_huxing_plan',
-        'house_img_plan', 'otherFile'];
+        AssessUploadKey.HOUSE_HUXING_PLAN,
+        AssessUploadKey.HOUSE_NEW_HUXING_PLAN,
+        AssessUploadKey.HOUSE_IMG_PLAN,
+        AssessUploadKey.OTHER_FILE
+    ];
 
     houseCommon.getHouseId = function () {
         return houseCommon.houseForm.find('[name=id]').val();
