@@ -40,7 +40,7 @@
         </div>
     </div>
 </div>
-
+<%@include file="/views/project/tool/residueRatio.jsp" %>
 <div id="modal_select_case" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -233,6 +233,11 @@
                 $("#small_select_case").hide();
             }
             $("#cbxScore,#cbxRatio").trigger('click');
+            $('#tb_md_mc_item_list').find('tr[data-group="new.degree"][data-name="text"]').each(function () {
+                $(this).find('td').each(function () {
+                    $(this).find('a').after('<input type="button" class="btn btn-xs btn-warning pull-right" onclick="" value="成新率">');
+                })
+            })
             marketCompare.calculation();//初始化后默认测试一次
         }
 
@@ -701,6 +706,17 @@
             $(_this).closest('table').find('[data-field-parent-id=' + fieldParentId + ']').toggle();
         }
 
+        //调用成新率工具
+        marketCompare.callResidueRatio = function (_this,readonly) {
+            residueRatio.init({
+                usedYear: 10,
+                usableYear: 50,
+                houseId: 591,
+                success: function (id, resultValue) {
+                    alert(5555);
+                }
+            });
+        }
         window.marketCompare = marketCompare;
     })(jQuery)
 </script>
@@ -843,7 +859,7 @@
 
 <%--行数据模板只读--%>
 <script type="text/html" id="pRowTempView">
-    <tbody style="background-color: #fbfbfb">
+    <tbody data-field-id="{fieldId}" data-field-parent-id="{fieldParentId}" style="background-color: #fbfbfb">
     <tr data-name="field">
         <td rowspan="4" style="vertical-align: middle">{fieldValue}</td>
     </tr>

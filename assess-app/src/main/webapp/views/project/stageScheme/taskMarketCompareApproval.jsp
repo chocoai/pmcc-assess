@@ -40,7 +40,6 @@
             evaluation: JSON.parse($("#evaluationJSON").val()),
             casesAll: JSON.parse($("#casesAllJSON").val()),
             mcId: '${mcId}',
-            setUse: '${setUse}',
             cases: JSON.parse($("#casesJSON").val())
         });
 

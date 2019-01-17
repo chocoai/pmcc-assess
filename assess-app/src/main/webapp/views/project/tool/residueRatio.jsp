@@ -59,7 +59,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group" style="display: none;" id="weight1">
+                    <div class="form-group" style="display: none;" id="residue_ratio_weight1">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
                                 权重
@@ -110,8 +110,10 @@
     //年限法成新率 1-已使用年限/可用年限
     //观察法成新率 取得完损度数据自动计算
     //综合法成新率 根据权重自动计算
+    residueRatio.form=$('#residue_ratio_form');
     residueRatio.init = function (options) {
         var defaults = {
+            readonly: false,
             residueRatioId: undefined,//数据id
             usedYear: undefined,//已使用年限
             usableYear: undefined,//可用年限
@@ -139,10 +141,9 @@
             success: function () {
                 ratioChange();
                 //填充数据
-                var form = $("#residue_ratio_form");
-                form.find('[name=usedYear]').val(defaults.usedYear);
-                form.find('[name=usableYear]').val(defaults.usableYear);
-                form.find('[name=houseId]').val(defaults.houseId);
+                residueRatio.form.find('[name=usedYear]').val(defaults.usedYear);
+                residueRatio.form.find('[name=usableYear]').val(defaults.usableYear);
+                residueRatio.form.find('[name=houseId]').val(defaults.houseId);
 
                 loadList($("#houseId").val(), "structural", "structural.part");
                 loadList($("#houseId").val(), "decoration", "decoration.part");
@@ -152,8 +153,7 @@
         });
     }
 
-    //加载列表数据
-    function loadList(houseId, tableName, type) {
+    residueRatio.loadList = function (houseId, tableName, type) {
         var cols = [];
         cols.push({field: 'categoryName', title: '类别'});
         cols.push({field: 'standardScore', title: '标准分'});
@@ -177,6 +177,11 @@
             uniqueId: "id",
             search: false
         });
+    }
+
+    //加载列表数据
+    function loadList(houseId, tableName, type) {
+
     }
 
     function saveData() {
@@ -347,7 +352,7 @@
             var ageLimitCxl = getAgeLimitCxl();
             console.log(ageLimitCxl);
             var observeCxl = getObserveCxl();
-            console.log(observeCxl+"========----")
+            console.log(observeCxl + "========----")
             var ageRate = $("#ageRate").val();
             var observeRate = $("#observeRate").val();
             if (observeCxl >= 0 && ageLimitCxl >= 0 && ageRate >= 0 && observeRate >= 0) {
@@ -357,19 +362,19 @@
         }
     }
 
-    function getLevel(data){
+    function getLevel(data) {
         var level = 50;
-        if(85<data &&data<=100){
+        if (85 < data && data <= 100) {
             level = 90;
         }
-        if(65<data && data<=85){
+        if (65 < data && data <= 85) {
             level = 75;
         }
-        if(50<data && data<=65){
+        if (50 < data && data <= 65) {
             level = 60;
         }
-        $("#cxl").text(level+"%");
-        $("#resultValue").val(level+"%")
+        $("#cxl").text(level + "%");
+        $("#resultValue").val(level + "%")
         return level;
     }
 </script>
