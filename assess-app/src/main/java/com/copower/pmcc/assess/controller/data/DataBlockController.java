@@ -160,29 +160,6 @@ public class DataBlockController extends BaseController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/getObserveList", name = "观察法数据", method = RequestMethod.GET)
-    public BootstrapTableVo getHouseDamagedDegreeList(Integer houseId, String type) throws Exception {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        DataDamagedDegree degree = dataDamagedDegreeService.getCacheDamagedDegreeByFieldName(type);
-        List<BasicHouseDamagedDegreeVo> list = basicHouseDamagedDegreeService.getDamagedDegreeVoList(houseId, degree.getId());
-        vo.setTotal(page.getTotal());
-        vo.setRows(ObjectUtils.isEmpty(list) ? new ArrayList<BasicHouseWaterDrainVo>(10) : list);
-        return vo;
-    }
 
-    @ResponseBody
-    @RequestMapping(value = "/saveResidueRatio", method = {RequestMethod.POST}, name = "保存")
-    public HttpResult saveResidueRatio(String formData) {
-        try {
-            dataBlockService.saveResidueRatio(formData);
-            return HttpResult.newCorrectResult("保存 success!");
-        } catch (Exception e) {
-            log.error(String.format("exception: %s", e.getMessage()), e);
-            return HttpResult.newErrorResult("保存异常");
-        }
-    }
 
 }

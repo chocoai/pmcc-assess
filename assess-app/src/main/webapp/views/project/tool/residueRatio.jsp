@@ -168,7 +168,7 @@
             }
         });
         $("#" + tableName).bootstrapTable('destroy');
-        TableInit(tableName, "${pageContext.request.contextPath}/dataBlock/getObserveList", cols, {
+        TableInit(tableName, "${pageContext.request.contextPath}/residueRatio/getObserveList", cols, {
             houseId: houseId,
             type: type
         }, {
@@ -185,7 +185,7 @@
         var data = formParams("residue_ratio_form");
         Loading.progressShow();
         $.ajax({
-            url: "${pageContext.request.contextPath}/dataBlock/saveResidueRatio",
+            url: "${pageContext.request.contextPath}/residueRatio/saveResidueRatio",
             type: "post",
             dataType: "json",
             data: {
