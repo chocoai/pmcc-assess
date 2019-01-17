@@ -7,6 +7,10 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="json_content" property="jsonContent" jdbcType="CHAR" />
+    <result column="residue_ratio_id" property="residueRatioId" jdbcType="INTEGER" />
+    <result column="used_year" property="usedYear" jdbcType="INTEGER" />
+    <result column="usable_year" property="usableYear" jdbcType="INTEGER" />
+    <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="initial_price" property="initialPrice" jdbcType="DECIMAL" />
     <result column="must_adjust_price" property="mustAdjustPrice" jdbcType="BIT" />
     <result column="specific_price" property="specificPrice" jdbcType="VARCHAR" />
@@ -78,9 +82,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, mc_id, name, type, json_content, initial_price, must_adjust_price, specific_price, 
-    correction_difference, case_difference, weight, weight_description, average_price, 
-    creator, gmt_created, gmt_modified
+    id, mc_id, name, type, json_content, residue_ratio_id, used_year, usable_year, house_id, 
+    initial_price, must_adjust_price, specific_price, correction_difference, case_difference, 
+    weight, weight_description, average_price, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItemExample" >
     select
@@ -117,17 +121,19 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_md_market_compare_item (mc_id, name, type, 
-      json_content, initial_price, must_adjust_price, 
-      specific_price, correction_difference, case_difference, 
-      weight, weight_description, average_price, 
-      creator, gmt_created, gmt_modified
-      )
+      json_content, residue_ratio_id, used_year, 
+      usable_year, house_id, initial_price, 
+      must_adjust_price, specific_price, correction_difference, 
+      case_difference, weight, weight_description, 
+      average_price, creator, gmt_created, 
+      gmt_modified)
     values (#{mcId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
-      #{jsonContent,jdbcType=CHAR}, #{initialPrice,jdbcType=DECIMAL}, #{mustAdjustPrice,jdbcType=BIT}, 
-      #{specificPrice,jdbcType=VARCHAR}, #{correctionDifference,jdbcType=VARCHAR}, #{caseDifference,jdbcType=VARCHAR}, 
-      #{weight,jdbcType=VARCHAR}, #{weightDescription,jdbcType=VARCHAR}, #{averagePrice,jdbcType=DECIMAL}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{jsonContent,jdbcType=CHAR}, #{residueRatioId,jdbcType=INTEGER}, #{usedYear,jdbcType=INTEGER}, 
+      #{usableYear,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{initialPrice,jdbcType=DECIMAL}, 
+      #{mustAdjustPrice,jdbcType=BIT}, #{specificPrice,jdbcType=VARCHAR}, #{correctionDifference,jdbcType=VARCHAR}, 
+      #{caseDifference,jdbcType=VARCHAR}, #{weight,jdbcType=VARCHAR}, #{weightDescription,jdbcType=VARCHAR}, 
+      #{averagePrice,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -146,6 +152,18 @@
       </if>
       <if test="jsonContent != null" >
         json_content,
+      </if>
+      <if test="residueRatioId != null" >
+        residue_ratio_id,
+      </if>
+      <if test="usedYear != null" >
+        used_year,
+      </if>
+      <if test="usableYear != null" >
+        usable_year,
+      </if>
+      <if test="houseId != null" >
+        house_id,
       </if>
       <if test="initialPrice != null" >
         initial_price,
@@ -193,6 +211,18 @@
       </if>
       <if test="jsonContent != null" >
         #{jsonContent,jdbcType=CHAR},
+      </if>
+      <if test="residueRatioId != null" >
+        #{residueRatioId,jdbcType=INTEGER},
+      </if>
+      <if test="usedYear != null" >
+        #{usedYear,jdbcType=INTEGER},
+      </if>
+      <if test="usableYear != null" >
+        #{usableYear,jdbcType=INTEGER},
+      </if>
+      <if test="houseId != null" >
+        #{houseId,jdbcType=INTEGER},
       </if>
       <if test="initialPrice != null" >
         #{initialPrice,jdbcType=DECIMAL},
@@ -253,6 +283,18 @@
       <if test="record.jsonContent != null" >
         json_content = #{record.jsonContent,jdbcType=CHAR},
       </if>
+      <if test="record.residueRatioId != null" >
+        residue_ratio_id = #{record.residueRatioId,jdbcType=INTEGER},
+      </if>
+      <if test="record.usedYear != null" >
+        used_year = #{record.usedYear,jdbcType=INTEGER},
+      </if>
+      <if test="record.usableYear != null" >
+        usable_year = #{record.usableYear,jdbcType=INTEGER},
+      </if>
+      <if test="record.houseId != null" >
+        house_id = #{record.houseId,jdbcType=INTEGER},
+      </if>
       <if test="record.initialPrice != null" >
         initial_price = #{record.initialPrice,jdbcType=DECIMAL},
       </if>
@@ -298,6 +340,10 @@
       name = #{record.name,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=INTEGER},
       json_content = #{record.jsonContent,jdbcType=CHAR},
+      residue_ratio_id = #{record.residueRatioId,jdbcType=INTEGER},
+      used_year = #{record.usedYear,jdbcType=INTEGER},
+      usable_year = #{record.usableYear,jdbcType=INTEGER},
+      house_id = #{record.houseId,jdbcType=INTEGER},
       initial_price = #{record.initialPrice,jdbcType=DECIMAL},
       must_adjust_price = #{record.mustAdjustPrice,jdbcType=BIT},
       specific_price = #{record.specificPrice,jdbcType=VARCHAR},
@@ -327,6 +373,18 @@
       </if>
       <if test="jsonContent != null" >
         json_content = #{jsonContent,jdbcType=CHAR},
+      </if>
+      <if test="residueRatioId != null" >
+        residue_ratio_id = #{residueRatioId,jdbcType=INTEGER},
+      </if>
+      <if test="usedYear != null" >
+        used_year = #{usedYear,jdbcType=INTEGER},
+      </if>
+      <if test="usableYear != null" >
+        usable_year = #{usableYear,jdbcType=INTEGER},
+      </if>
+      <if test="houseId != null" >
+        house_id = #{houseId,jdbcType=INTEGER},
       </if>
       <if test="initialPrice != null" >
         initial_price = #{initialPrice,jdbcType=DECIMAL},
@@ -370,6 +428,10 @@
       name = #{name,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},
       json_content = #{jsonContent,jdbcType=CHAR},
+      residue_ratio_id = #{residueRatioId,jdbcType=INTEGER},
+      used_year = #{usedYear,jdbcType=INTEGER},
+      usable_year = #{usableYear,jdbcType=INTEGER},
+      house_id = #{houseId,jdbcType=INTEGER},
       initial_price = #{initialPrice,jdbcType=DECIMAL},
       must_adjust_price = #{mustAdjustPrice,jdbcType=BIT},
       specific_price = #{specificPrice,jdbcType=VARCHAR},

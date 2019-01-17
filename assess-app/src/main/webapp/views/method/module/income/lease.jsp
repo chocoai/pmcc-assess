@@ -404,7 +404,9 @@
             content: '${pageContext.request.contextPath}/marketCompare/index?mcId=' + mcId + '&judgeObjectId=${projectPlanDetails.judgeObjectId}',
             cancel: function (index, layero) {
                 var iframe = window[layero.find('iframe')[0]['name']];
-                $(_this).closest('form').find('[name=mcId]').val(iframe.marketCompare.mcId);
+                if(iframe&&iframe.marketCompare&&iframe.marketCompare.mcId){
+                    $(_this).closest('form').find('[name=mcId]').val(iframe.marketCompare.mcId);
+                }
             },
             btnAlign: 'c',
             btn: ['保存', '关闭'],
@@ -418,7 +420,9 @@
             },
             btn2:function (index, layero) {
                 var iframe = window[layero.find('iframe')[0]['name']];
-                $(_this).closest('form').find('[name=mcId]').val(iframe.marketCompare.mcId);
+                if(iframe&&iframe.marketCompare&&iframe.marketCompare.mcId){
+                    $(_this).closest('form').find('[name=mcId]').val(iframe.marketCompare.mcId);
+                }
             }
         });
         layer.full(frame);

@@ -157,7 +157,7 @@ public class BasicBuildingService {
      * @return
      * @throws Exception
      */
-    public BasicBuilding getBasicBuildingByApplyId(Integer applyId) throws Exception {
+    public BasicBuilding getBasicBuildingByApplyId(Integer applyId)  {
         BasicBuilding where = new BasicBuilding();
         where.setApplyId(applyId);
         if (applyId == null || applyId == 0) {

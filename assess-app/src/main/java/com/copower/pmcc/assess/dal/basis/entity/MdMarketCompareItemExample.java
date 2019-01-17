@@ -426,6 +426,246 @@ public class MdMarketCompareItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andResidueRatioIdIsNull() {
+            addCriterion("residue_ratio_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioIdIsNotNull() {
+            addCriterion("residue_ratio_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioIdEqualTo(Integer value) {
+            addCriterion("residue_ratio_id =", value, "residueRatioId");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioIdNotEqualTo(Integer value) {
+            addCriterion("residue_ratio_id <>", value, "residueRatioId");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioIdGreaterThan(Integer value) {
+            addCriterion("residue_ratio_id >", value, "residueRatioId");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("residue_ratio_id >=", value, "residueRatioId");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioIdLessThan(Integer value) {
+            addCriterion("residue_ratio_id <", value, "residueRatioId");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioIdLessThanOrEqualTo(Integer value) {
+            addCriterion("residue_ratio_id <=", value, "residueRatioId");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioIdIn(List<Integer> values) {
+            addCriterion("residue_ratio_id in", values, "residueRatioId");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioIdNotIn(List<Integer> values) {
+            addCriterion("residue_ratio_id not in", values, "residueRatioId");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioIdBetween(Integer value1, Integer value2) {
+            addCriterion("residue_ratio_id between", value1, value2, "residueRatioId");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("residue_ratio_id not between", value1, value2, "residueRatioId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearIsNull() {
+            addCriterion("used_year is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearIsNotNull() {
+            addCriterion("used_year is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearEqualTo(Integer value) {
+            addCriterion("used_year =", value, "usedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearNotEqualTo(Integer value) {
+            addCriterion("used_year <>", value, "usedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearGreaterThan(Integer value) {
+            addCriterion("used_year >", value, "usedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearGreaterThanOrEqualTo(Integer value) {
+            addCriterion("used_year >=", value, "usedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearLessThan(Integer value) {
+            addCriterion("used_year <", value, "usedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearLessThanOrEqualTo(Integer value) {
+            addCriterion("used_year <=", value, "usedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearIn(List<Integer> values) {
+            addCriterion("used_year in", values, "usedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearNotIn(List<Integer> values) {
+            addCriterion("used_year not in", values, "usedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearBetween(Integer value1, Integer value2) {
+            addCriterion("used_year between", value1, value2, "usedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearNotBetween(Integer value1, Integer value2) {
+            addCriterion("used_year not between", value1, value2, "usedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearIsNull() {
+            addCriterion("usable_year is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearIsNotNull() {
+            addCriterion("usable_year is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearEqualTo(Integer value) {
+            addCriterion("usable_year =", value, "usableYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearNotEqualTo(Integer value) {
+            addCriterion("usable_year <>", value, "usableYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearGreaterThan(Integer value) {
+            addCriterion("usable_year >", value, "usableYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearGreaterThanOrEqualTo(Integer value) {
+            addCriterion("usable_year >=", value, "usableYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearLessThan(Integer value) {
+            addCriterion("usable_year <", value, "usableYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearLessThanOrEqualTo(Integer value) {
+            addCriterion("usable_year <=", value, "usableYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearIn(List<Integer> values) {
+            addCriterion("usable_year in", values, "usableYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearNotIn(List<Integer> values) {
+            addCriterion("usable_year not in", values, "usableYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearBetween(Integer value1, Integer value2) {
+            addCriterion("usable_year between", value1, value2, "usableYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearNotBetween(Integer value1, Integer value2) {
+            addCriterion("usable_year not between", value1, value2, "usableYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdIsNull() {
+            addCriterion("house_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdIsNotNull() {
+            addCriterion("house_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdEqualTo(Integer value) {
+            addCriterion("house_id =", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdNotEqualTo(Integer value) {
+            addCriterion("house_id <>", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdGreaterThan(Integer value) {
+            addCriterion("house_id >", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("house_id >=", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdLessThan(Integer value) {
+            addCriterion("house_id <", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdLessThanOrEqualTo(Integer value) {
+            addCriterion("house_id <=", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdIn(List<Integer> values) {
+            addCriterion("house_id in", values, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdNotIn(List<Integer> values) {
+            addCriterion("house_id not in", values, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdBetween(Integer value1, Integer value2) {
+            addCriterion("house_id between", value1, value2, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("house_id not between", value1, value2, "houseId");
+            return (Criteria) this;
+        }
+
         public Criteria andInitialPriceIsNull() {
             addCriterion("initial_price is null");
             return (Criteria) this;

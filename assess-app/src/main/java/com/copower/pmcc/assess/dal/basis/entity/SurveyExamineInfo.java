@@ -9,8 +9,6 @@ public class SurveyExamineInfo {
 
     private Integer planDetailsId;
 
-    private String processInsId;
-
     private Integer examineType;
 
     private String examineFormType;
@@ -18,16 +16,6 @@ public class SurveyExamineInfo {
     private Integer declareRecordId;
 
     private Boolean bisAssignment;
-
-    private String blockName;
-
-    private String estateName;
-
-    private String buildingNumber;
-
-    private String unitNumber;
-
-    private String houseNumber;
 
     private String creator;
 
@@ -57,14 +45,6 @@ public class SurveyExamineInfo {
 
     public void setPlanDetailsId(Integer planDetailsId) {
         this.planDetailsId = planDetailsId;
-    }
-
-    public String getProcessInsId() {
-        return processInsId;
-    }
-
-    public void setProcessInsId(String processInsId) {
-        this.processInsId = processInsId == null ? null : processInsId.trim();
     }
 
     public Integer getExamineType() {
@@ -97,46 +77,6 @@ public class SurveyExamineInfo {
 
     public void setBisAssignment(Boolean bisAssignment) {
         this.bisAssignment = bisAssignment;
-    }
-
-    public String getBlockName() {
-        return blockName;
-    }
-
-    public void setBlockName(String blockName) {
-        this.blockName = blockName == null ? null : blockName.trim();
-    }
-
-    public String getEstateName() {
-        return estateName;
-    }
-
-    public void setEstateName(String estateName) {
-        this.estateName = estateName == null ? null : estateName.trim();
-    }
-
-    public String getBuildingNumber() {
-        return buildingNumber;
-    }
-
-    public void setBuildingNumber(String buildingNumber) {
-        this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
-    }
-
-    public String getUnitNumber() {
-        return unitNumber;
-    }
-
-    public void setUnitNumber(String unitNumber) {
-        this.unitNumber = unitNumber == null ? null : unitNumber.trim();
-    }
-
-    public String getHouseNumber() {
-        return houseNumber;
-    }
-
-    public void setHouseNumber(String houseNumber) {
-        this.houseNumber = houseNumber == null ? null : houseNumber.trim();
     }
 
     public String getCreator() {

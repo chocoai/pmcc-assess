@@ -54,14 +54,11 @@ public class ResidueRatioController {
         return vo;
     }
 
-
-
     @ResponseBody
     @RequestMapping(value = "/saveResidueRatio", method = {RequestMethod.POST}, name = "保存")
     public HttpResult saveResidueRatio(String formData) {
         try {
-            dataBlockService.saveResidueRatio(formData);
-            return HttpResult.newCorrectResult("保存 success!");
+            return HttpResult.newCorrectResult(dataBlockService.saveResidueRatio(formData));
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");

@@ -249,7 +249,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         }
         if (basicApply == null) {
             basicApply = new BasicApply();
-            SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(projectPlanDetails.getId());
+            SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(projectPlanDetails.getPid());
             if (surveyExamineInfo != null) {
                 basicApply.setType(BasicApplyTypeEnum.getEnumByKey(surveyExamineInfo.getExamineFormType()).getId());
             }

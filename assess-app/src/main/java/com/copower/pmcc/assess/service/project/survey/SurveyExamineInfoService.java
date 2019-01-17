@@ -37,12 +37,6 @@ public class SurveyExamineInfoService {
 
     }
 
-
-    public SurveyExamineInfo getSurveyExamineInfo(String processInsId) {
-        SurveyExamineInfo surveyExamineInfo= surveyExamineInfoDao.getSurveyExamineInfo(processInsId);
-        return surveyExamineInfo;
-    }
-
     public SurveyExamineInfo getExploreByPlanDetailsId(Integer planDetailsId) {
         SurveyExamineInfo surveyExamineInfo= surveyExamineInfoDao.getExamineInfoByPlanDetailsId(planDetailsId);
         return surveyExamineInfo;

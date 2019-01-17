@@ -168,7 +168,7 @@ public class DataBlockService {
         return blockList.size() > 0;
     }
 
-    public void saveResidueRatio(String formData) throws Exception {
+    public ToolResidueRatio saveResidueRatio(String formData) throws Exception {
         JSONObject jsonObject = JSON.parseObject(formData);
         Integer houseId = -1;
         if (!"".equals(jsonObject.getString("houseId"))) {
@@ -189,16 +189,6 @@ public class DataBlockService {
             }
         }
 
-      /*  BigDecimal scoreTotal = new BigDecimal("0");
-        //结构部分"structural.part"
-        BigDecimal scoreStructural = getScoreTotal(houseId, "structural.part");
-        //装修部分"decoration.part"
-        BigDecimal scoreDecoration = getScoreTotal(houseId, "decoration.part");
-        //设备部分"equipment.part"
-        BigDecimal scoreEquipment = getScoreTotal(houseId, "equipment.part");
-        //其他"other"
-        BigDecimal scoreOther = getScoreTotal(houseId, "other");
-        scoreTotal = scoreTotal.add(scoreStructural).add(scoreDecoration).add(scoreEquipment).add(scoreOther);*/
         //保存
         ToolResidueRatio toolResidueRatio = new ToolResidueRatio();
         HashMap<String, String> parameterMap = new HashMap<>();
@@ -215,6 +205,7 @@ public class DataBlockService {
 
         toolResidueRatio.setCreator(commonService.thisUserAccount());
         toolResidueRatioDao.addToolResidueRatio(toolResidueRatio);
+        return toolResidueRatio;
     }
 
     public BigDecimal getScoreTotal(Integer houseId, String type) {

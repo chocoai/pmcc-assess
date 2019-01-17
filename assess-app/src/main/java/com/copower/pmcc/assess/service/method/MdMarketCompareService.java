@@ -1,27 +1,40 @@
 package com.copower.pmcc.assess.service.method;
 
+import com.copower.pmcc.assess.common.enums.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
+import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
+import com.copower.pmcc.assess.dal.basic.entity.BasicBuilding;
+import com.copower.pmcc.assess.dal.basic.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareItemDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareResultDto;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
+import com.copower.pmcc.assess.service.basic.BasicBuildingService;
+import com.copower.pmcc.assess.service.basic.BasicHouseService;
+import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -49,6 +62,18 @@ public class MdMarketCompareService {
     private ProjectPlanDetailsDao projectPlanDetailsDao;
     @Autowired
     private ProjectInfoService projectInfoService;
+    @Autowired
+    private BasicApplyService basicApplyService;
+    @Autowired
+    private SchemeAreaGroupService schemeAreaGroupService;
+    @Autowired
+    private BasicBuildingService basicBuildingService;
+    @Autowired
+    private BasicHouseService basicHouseService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private DataBuildingNewRateService dataBuildingNewRateService;
 
     public MdMarketCompare getMdMarketCompare(Integer id) {
         return mdMarketCompareDao.getMarketCompareById(id);
@@ -90,8 +115,10 @@ public class MdMarketCompareService {
         if (schemeJudgeObject == null) return null;
         List<DataSetUseField> setUseFieldList = getSetUseFieldList();
         if (CollectionUtils.isEmpty(setUseFieldList)) return null;
+        SchemeAreaGroup areaGroup = schemeAreaGroupService.get(schemeJudgeObject.getAreaGroupId());
         MdMarketCompare mdMarketCompare = new MdMarketCompare();
         mdMarketCompare.setName(String.format("%s号委估对象", schemeJudgeObject.getNumber()));
+        mdMarketCompare.setValueTimePoint(areaGroup.getValueTimePoint());
         mdMarketCompare.setCreator(commonService.thisUserAccount());
         mdMarketCompareDao.addMarketCompare(mdMarketCompare);
 
@@ -103,10 +130,31 @@ public class MdMarketCompareService {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(judgeObject.getProjectId());
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
         ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetails(schemeJudgeObject.getDeclareRecordId(), projectPhase.getId());
-        mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(projectInfo, schemeJudgeObject.getDeclareRecordId(), planDetails.getId(), setUseFieldList,false));
+        mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(projectInfo, schemeJudgeObject.getDeclareRecordId(), planDetails.getId(), setUseFieldList, false));
+        //获取成新率相关参数
+        setResidueRatioParam(mdMarketCompareItem, planDetails.getId(), mdMarketCompare.getValueTimePoint());
         mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
 
         return mdMarketCompare;
+    }
+
+    private void setResidueRatioParam(MdMarketCompareItem mdMarketCompareItem, Integer planDetailsId, Date timePoint) {
+        BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetailsId);
+        BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
+        BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
+        Integer usedYear = DateUtils.diffDate(timePoint, basicBuilding.getBeCompletedTime()) / DateUtils.DAYS_PER_YEAR;//已用年限
+        if (basicApply.getType().equals(BasicApplyTypeEnum.RESIDENCE.getId())) {
+            BaseDataDic dataDic = baseDataDicService.getDataDicById(basicBuilding.getResidenceUseYear());
+            if (dataDic != null)
+                mdMarketCompareItem.setUsableYear(Integer.valueOf(StringUtils.trim(dataDic.getRemark())));
+        } else {
+            DataBuildingNewRate buildingNewRate = dataBuildingNewRateService.getByiDdataBuildingNewRate(basicBuilding.getIndustryUseYear());
+            if (buildingNewRate != null)
+                mdMarketCompareItem.setUsableYear(buildingNewRate.getDurableLife());
+        }
+        mdMarketCompareItem.setResidueRatioId(0);
+        mdMarketCompareItem.setUsedYear(usedYear);
+        mdMarketCompareItem.setHouseId(basicHouse.getId());
     }
 
     /**
@@ -125,6 +173,8 @@ public class MdMarketCompareService {
                 mdMarketCompareItemDao.deleteMarketCompareItem(item.getId());
             }
         }
+        MdMarketCompare marketCompare = mdMarketCompareDao.getMarketCompareById(mcId);
+
         //添加选择后的案例信息
         List<Integer> planDetailsIdList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(planDetailsIdString));
         if (CollectionUtils.isNotEmpty(planDetailsIdList)) {
@@ -141,7 +191,9 @@ public class MdMarketCompareService {
                 mdMarketCompareItem.setMustAdjustPrice(mustAdjustPrice(planDetailsId));
                 if (projectInfo == null)
                     projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-                mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(projectInfo, projectPlanDetails.getDeclareRecordId(), projectPlanDetails.getId(), setUseFieldList,true));
+                mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(projectInfo, projectPlanDetails.getDeclareRecordId(), projectPlanDetails.getId(), setUseFieldList, true));
+                //获取成新率相关参数
+                setResidueRatioParam(mdMarketCompareItem, planDetailsId, marketCompare.getValueTimePoint());
                 mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
             }
         }

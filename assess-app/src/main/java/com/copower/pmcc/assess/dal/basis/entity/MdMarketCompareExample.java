@@ -236,6 +236,66 @@ public class MdMarketCompareExample {
             return (Criteria) this;
         }
 
+        public Criteria andValueTimePointIsNull() {
+            addCriterion("value_time_point is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueTimePointIsNotNull() {
+            addCriterion("value_time_point is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueTimePointEqualTo(Date value) {
+            addCriterion("value_time_point =", value, "valueTimePoint");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueTimePointNotEqualTo(Date value) {
+            addCriterion("value_time_point <>", value, "valueTimePoint");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueTimePointGreaterThan(Date value) {
+            addCriterion("value_time_point >", value, "valueTimePoint");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueTimePointGreaterThanOrEqualTo(Date value) {
+            addCriterion("value_time_point >=", value, "valueTimePoint");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueTimePointLessThan(Date value) {
+            addCriterion("value_time_point <", value, "valueTimePoint");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueTimePointLessThanOrEqualTo(Date value) {
+            addCriterion("value_time_point <=", value, "valueTimePoint");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueTimePointIn(List<Date> values) {
+            addCriterion("value_time_point in", values, "valueTimePoint");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueTimePointNotIn(List<Date> values) {
+            addCriterion("value_time_point not in", values, "valueTimePoint");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueTimePointBetween(Date value1, Date value2) {
+            addCriterion("value_time_point between", value1, value2, "valueTimePoint");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueTimePointNotBetween(Date value1, Date value2) {
+            addCriterion("value_time_point not between", value1, value2, "valueTimePoint");
+            return (Criteria) this;
+        }
+
         public Criteria andPriceIsNull() {
             addCriterion("price is null");
             return (Criteria) this;

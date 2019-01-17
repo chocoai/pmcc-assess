@@ -297,7 +297,7 @@
             target: "checkOriginalFile",
             formData: {
                 tableName: AssessDBKey.SurveyAssetInventory,
-                fieldsName: "checkOriginal",
+                fieldsName: AssessUploadKey.INVENTORY_CHECK_ORIGINAL,
                 tableId: '${surveyAssetInventory.id}'
             },
             deleteFlag: false
@@ -307,7 +307,7 @@
             target: "specialCaseFile",
             formData: {
                 tableName: AssessDBKey.SurveyAssetInventory,
-                fieldsName: "specialCase",
+                fieldsName: AssessUploadKey.INVENTORY_SPECIAL_CASE,
                 tableId: '${surveyAssetInventory.id}'
             },
             deleteFlag: false

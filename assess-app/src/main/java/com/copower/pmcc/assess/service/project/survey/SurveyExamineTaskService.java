@@ -218,7 +218,7 @@ public class SurveyExamineTaskService {
                 DataExamineTask dataExamineTask = dataExamineTaskService.getCacheDataExamineTaskById(id);
                 if (dataExamineTask != null) {
                     SurveyExamineTask surveyExamineTask = new SurveyExamineTask();
-                    surveyExamineTask.setPid(surveyExamineTaskDto.getPid());
+                    surveyExamineTask.setPid(surveyExamineTaskDto.getPlanDetailsId());
                     surveyExamineTask.setUserAccount(surveyExamineTaskDto.getUserAccount());
                     surveyExamineTask.setBisMust(dataExamineTask.getBisMust());
                     surveyExamineTask.setPlanDetailsId(surveyExamineTaskDto.getPlanDetailsId());
@@ -381,14 +381,16 @@ public class SurveyExamineTaskService {
     }
 
     /**
-     * 调查任务项分派
+     * 任务分派
+     *
      * @param planDetailsId
      * @param examineFormType
+     * @param examineTypeEnum
      * @throws BusinessException
      */
-    public void examineTaskAssignment(Integer planDetailsId, String examineFormType) throws BusinessException {
+    @Transactional(rollbackFor = Exception.class)
+    public void examineTaskAssignment(Integer planDetailsId, String examineFormType, ExamineTypeEnum examineTypeEnum) throws BusinessException {
         ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-        String userAccount = commonService.thisUserAccount();
         ProjectWorkStage workStage = projectWorkStageService.cacheProjectWorkStage(planDetails.getProjectWorkStageId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());
         ProjectPhase phase = projectPhaseService.getCacheProjectPhaseById(planDetails.getProjectPhaseId());
@@ -402,28 +404,28 @@ public class SurveyExamineTaskService {
 
         ProjectPlanDetails taskPlanDetails = new ProjectPlanDetails();
         BeanUtils.copyProperties(planDetails, taskPlanDetails);
-        taskPlanDetails.setId(0);
+        taskPlanDetails.setId(null);
         taskPlanDetails.setPid(planDetails.getId());
-        SysUserDto sysUser = erpRpcUserService.getSysUser(userAccount);
+        SysUserDto sysUser = erpRpcUserService.getSysUser(commonService.thisUserAccount());
         taskPlanDetails.setProjectPhaseId(projectPhase.getId());
-        taskPlanDetails.setExecuteUserAccount(userAccount);
+        taskPlanDetails.setExecuteUserAccount(commonService.thisUserAccount());
         taskPlanDetails.setExecuteDepartmentId(sysUser.getDepartmentId());
         taskPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
         taskPlanDetails.setCreator(commonService.thisUserAccount());
-        taskPlanDetails.setProjectPhaseName(String.format("%s-%s", planDetails.getProjectPhaseName(), publicService.getUserNameByAccount(userAccount)));
+        taskPlanDetails.setProjectPhaseName(String.format("%s-%s", planDetails.getProjectPhaseName(), publicService.getUserNameByAccount(commonService.thisUserAccount())));
         projectPlanDetailsService.saveProjectPlanDetails(taskPlanDetails);
 
         SurveyExamineInfo surveyExamineInfo = new SurveyExamineInfo();
         surveyExamineInfo.setExamineType(ExamineTypeEnum.EXPLORE.getId());
         surveyExamineInfo.setProjectId(planDetails.getProjectId());
-        surveyExamineInfo.setPlanDetailsId(taskPlanDetails.getId());
+        surveyExamineInfo.setPlanDetailsId(planDetails.getId());
         surveyExamineInfo.setExamineFormType(examineFormType);
         surveyExamineInfo.setDeclareRecordId(planDetails.getDeclareRecordId());
         surveyExamineInfo.setBisAssignment(true);
         surveyExamineInfo.setCreator(commonService.thisUserAccount());
         surveyExamineInfoService.save(surveyExamineInfo);
         //save 保存查勘内容(工业与非工业)
-        this.saveSurveyExamineTask(planDetails, examineFormType);
+        this.saveSurveyExamineTask(planDetails, examineFormType, examineTypeEnum);
         //添加任务
         ProjectResponsibilityDto projectTask = new ProjectResponsibilityDto();
         projectTask.setProjectId(planDetails.getProjectId());
@@ -433,7 +435,7 @@ public class SurveyExamineTaskService {
         projectTask.setPlanDetailsId(taskPlanDetails.getId());
         projectTask.setModel(ResponsibileModelEnum.TASK.getId());
         projectTask.setConclusion(ResponsibileModelEnum.TASK.getName());
-        projectTask.setUserAccount(userAccount);
+        projectTask.setUserAccount(commonService.thisUserAccount());
         projectTask.setBisEnable(true);
         projectTask.setAppKey(applicationConstant.getAppKey());
         projectTask.setPlanDetailsName(String.format("%s[%s]", workStage.getWorkStageName(), taskPlanDetails.getProjectPhaseName()));
@@ -442,30 +444,20 @@ public class SurveyExamineTaskService {
         bpmRpcProjectTaskService.saveProjectTask(projectTask);
     }
 
-    private void saveSurveyExamineTask(ProjectPlanDetails planDetails, String examineFormType) throws BusinessException {
+    private void saveSurveyExamineTask(ProjectPlanDetails planDetails, String examineFormType, ExamineTypeEnum examineTypeEnum) throws BusinessException {
         if (StringUtils.isNotBlank(examineFormType)) {
-            DataExamineTask dataExamineTask = null;
-            if (Objects.equal(AssessExamineTaskConstant.FC_RESIDENCE, examineFormType)) {
-                dataExamineTask = dataExamineTaskService.getCacheDataExamineTaskByFieldName(AssessExamineTaskConstant.FC_RESIDENCE);
-            }
-            if (Objects.equal(AssessExamineTaskConstant.FC_INDUSTRY, examineFormType)) {
-                dataExamineTask = dataExamineTaskService.getCacheDataExamineTaskByFieldName(AssessExamineTaskConstant.FC_INDUSTRY);
-            }
-            List<DataExamineTask> dataExamineTaskList = null;
-            List<DataExamineTask> examineTaskList = new ArrayList<DataExamineTask>(10);
-            if (dataExamineTask != null) {
-                dataExamineTaskList = dataExamineTaskService.getCacheDataExamineTaskListByKey(dataExamineTask.getFieldName());
-            }
+            List<DataExamineTask> dataExamineTaskList = dataExamineTaskService.getCacheDataExamineTaskListByKey(examineFormType);
+            List<DataExamineTask> examineTaskAllList = new ArrayList<DataExamineTask>(10);
             if (CollectionUtils.isNotEmpty(dataExamineTaskList)) {
                 for (DataExamineTask examineTask : dataExamineTaskList) {
-                    List<DataExamineTask> dataExamineTasks = dataExamineTaskService.getCacheDataExamineTaskListByKey(examineTask.getFieldName());
+                    List<DataExamineTask> dataExamineTasks = dataExamineTaskService.getCacheDataExamineTaskListByPid(examineTask.getId());
                     if (CollectionUtils.isNotEmpty(dataExamineTasks)) {
-                        examineTaskList.addAll(dataExamineTasks);
+                        examineTaskAllList.addAll(dataExamineTasks);
                     }
                 }
             }
-            if (CollectionUtils.isNotEmpty(examineTaskList)) {
-                for (DataExamineTask examineTask : examineTaskList) {
+            if (CollectionUtils.isNotEmpty(examineTaskAllList)) {
+                for (DataExamineTask examineTask : examineTaskAllList) {
                     SurveyExamineTask surveyExamineTask = new SurveyExamineTask();
                     surveyExamineTask.setPid(planDetails.getPid());
                     surveyExamineTask.setUserAccount(planDetails.getExecuteUserAccount());
@@ -473,7 +465,7 @@ public class SurveyExamineTaskService {
                     surveyExamineTask.setPlanDetailsId(planDetails.getId());
                     surveyExamineTask.setName(examineTask.getName());
                     surveyExamineTask.setSorting(examineTask.getSorting());
-                    surveyExamineTask.setExamineType(ExamineTypeEnum.EXPLORE.getId());
+                    surveyExamineTask.setExamineType(examineTypeEnum.getId());
                     surveyExamineTask.setDeclareId(planDetails.getDeclareRecordId());
                     surveyExamineTask.setPlanDetailsId(planDetails.getId());
                     surveyExamineTask.setDataTaskId(examineTask.getId());
@@ -622,7 +614,6 @@ public class SurveyExamineTaskService {
             examineTypeEnum = ExamineTypeEnum.CASE;
         }
         JSONObject jsonObject = JSONObject.parseObject(formData);
-        BasicApply basicApply = null;
         BasicEstate basicEstate = null;
         BasicEstateLandState basicEstateLandState = null;
         BasicBuilding basicBuilding = null;
@@ -653,7 +644,7 @@ public class SurveyExamineTaskService {
         }
 
         if (StringUtils.isNotBlank(jsonObject.getString("basicApply"))) {
-            basicApply = JSONObject.parseObject(jsonObject.getString("basicApply"), BasicApply.class);
+           BasicApply basicApply = JSONObject.parseObject(jsonObject.getString("basicApply"), BasicApply.class);
         }
         if (StringUtils.isNotBlank(jsonObject.getString("basicEstate"))) {
             basicEstate = JSONObject.parseObject(jsonObject.getString("basicEstate"), BasicEstate.class);

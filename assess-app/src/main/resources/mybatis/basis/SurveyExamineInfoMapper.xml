@@ -5,16 +5,10 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
-    <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
     <result column="examine_type" property="examineType" jdbcType="INTEGER" />
     <result column="examine_form_type" property="examineFormType" jdbcType="VARCHAR" />
     <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
     <result column="bis_assignment" property="bisAssignment" jdbcType="BIT" />
-    <result column="block_name" property="blockName" jdbcType="VARCHAR" />
-    <result column="estate_name" property="estateName" jdbcType="VARCHAR" />
-    <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
-    <result column="unit_number" property="unitNumber" jdbcType="VARCHAR" />
-    <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -78,9 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, plan_details_id, process_ins_id, examine_type, examine_form_type, 
-    declare_record_id, bis_assignment, block_name, estate_name, building_number, unit_number, 
-    house_number, creator, gmt_created, gmt_modified
+    id, project_id, plan_details_id, examine_type, examine_form_type, declare_record_id, 
+    bis_assignment, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyExamineInfoExample" >
     select
@@ -116,16 +109,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_survey_examine_info (project_id, plan_details_id, process_ins_id, 
-      examine_type, examine_form_type, declare_record_id, 
-      bis_assignment, block_name, estate_name, 
-      building_number, unit_number, house_number, 
+    insert into tb_survey_examine_info (project_id, plan_details_id, examine_type, 
+      examine_form_type, declare_record_id, bis_assignment, 
       creator, gmt_created, gmt_modified
       )
-    values (#{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
-      #{examineType,jdbcType=INTEGER}, #{examineFormType,jdbcType=VARCHAR}, #{declareRecordId,jdbcType=INTEGER}, 
-      #{bisAssignment,jdbcType=BIT}, #{blockName,jdbcType=VARCHAR}, #{estateName,jdbcType=VARCHAR}, 
-      #{buildingNumber,jdbcType=VARCHAR}, #{unitNumber,jdbcType=VARCHAR}, #{houseNumber,jdbcType=VARCHAR}, 
+    values (#{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, 
+      #{examineFormType,jdbcType=VARCHAR}, #{declareRecordId,jdbcType=INTEGER}, #{bisAssignment,jdbcType=BIT}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -141,9 +130,6 @@
       <if test="planDetailsId != null" >
         plan_details_id,
       </if>
-      <if test="processInsId != null" >
-        process_ins_id,
-      </if>
       <if test="examineType != null" >
         examine_type,
       </if>
@@ -155,21 +141,6 @@
       </if>
       <if test="bisAssignment != null" >
         bis_assignment,
-      </if>
-      <if test="blockName != null" >
-        block_name,
-      </if>
-      <if test="estateName != null" >
-        estate_name,
-      </if>
-      <if test="buildingNumber != null" >
-        building_number,
-      </if>
-      <if test="unitNumber != null" >
-        unit_number,
-      </if>
-      <if test="houseNumber != null" >
-        house_number,
       </if>
       <if test="creator != null" >
         creator,
@@ -188,9 +159,6 @@
       <if test="planDetailsId != null" >
         #{planDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="processInsId != null" >
-        #{processInsId,jdbcType=VARCHAR},
-      </if>
       <if test="examineType != null" >
         #{examineType,jdbcType=INTEGER},
       </if>
@@ -202,21 +170,6 @@
       </if>
       <if test="bisAssignment != null" >
         #{bisAssignment,jdbcType=BIT},
-      </if>
-      <if test="blockName != null" >
-        #{blockName,jdbcType=VARCHAR},
-      </if>
-      <if test="estateName != null" >
-        #{estateName,jdbcType=VARCHAR},
-      </if>
-      <if test="buildingNumber != null" >
-        #{buildingNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="unitNumber != null" >
-        #{unitNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="houseNumber != null" >
-        #{houseNumber,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -247,9 +200,6 @@
       <if test="record.planDetailsId != null" >
         plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="record.processInsId != null" >
-        process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
-      </if>
       <if test="record.examineType != null" >
         examine_type = #{record.examineType,jdbcType=INTEGER},
       </if>
@@ -261,21 +211,6 @@
       </if>
       <if test="record.bisAssignment != null" >
         bis_assignment = #{record.bisAssignment,jdbcType=BIT},
-      </if>
-      <if test="record.blockName != null" >
-        block_name = #{record.blockName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.estateName != null" >
-        estate_name = #{record.estateName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.buildingNumber != null" >
-        building_number = #{record.buildingNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="record.unitNumber != null" >
-        unit_number = #{record.unitNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="record.houseNumber != null" >
-        house_number = #{record.houseNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -296,16 +231,10 @@
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
-      process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       examine_type = #{record.examineType,jdbcType=INTEGER},
       examine_form_type = #{record.examineFormType,jdbcType=VARCHAR},
       declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       bis_assignment = #{record.bisAssignment,jdbcType=BIT},
-      block_name = #{record.blockName,jdbcType=VARCHAR},
-      estate_name = #{record.estateName,jdbcType=VARCHAR},
-      building_number = #{record.buildingNumber,jdbcType=VARCHAR},
-      unit_number = #{record.unitNumber,jdbcType=VARCHAR},
-      house_number = #{record.houseNumber,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -322,9 +251,6 @@
       <if test="planDetailsId != null" >
         plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="processInsId != null" >
-        process_ins_id = #{processInsId,jdbcType=VARCHAR},
-      </if>
       <if test="examineType != null" >
         examine_type = #{examineType,jdbcType=INTEGER},
       </if>
@@ -336,21 +262,6 @@
       </if>
       <if test="bisAssignment != null" >
         bis_assignment = #{bisAssignment,jdbcType=BIT},
-      </if>
-      <if test="blockName != null" >
-        block_name = #{blockName,jdbcType=VARCHAR},
-      </if>
-      <if test="estateName != null" >
-        estate_name = #{estateName,jdbcType=VARCHAR},
-      </if>
-      <if test="buildingNumber != null" >
-        building_number = #{buildingNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="unitNumber != null" >
-        unit_number = #{unitNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="houseNumber != null" >
-        house_number = #{houseNumber,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -368,16 +279,10 @@
     update tb_survey_examine_info
     set project_id = #{projectId,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
-      process_ins_id = #{processInsId,jdbcType=VARCHAR},
       examine_type = #{examineType,jdbcType=INTEGER},
       examine_form_type = #{examineFormType,jdbcType=VARCHAR},
       declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       bis_assignment = #{bisAssignment,jdbcType=BIT},
-      block_name = #{blockName,jdbcType=VARCHAR},
-      estate_name = #{estateName,jdbcType=VARCHAR},
-      building_number = #{buildingNumber,jdbcType=VARCHAR},
-      unit_number = #{unitNumber,jdbcType=VARCHAR},
-      house_number = #{houseNumber,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

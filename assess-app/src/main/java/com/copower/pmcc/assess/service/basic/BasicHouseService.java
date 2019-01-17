@@ -322,7 +322,7 @@ public class BasicHouseService {
         return objectMap;
     }
 
-    public BasicHouse getHouseByApplyId(Integer applyId) throws Exception {
+    public BasicHouse getHouseByApplyId(Integer applyId)  {
         BasicHouse where = new BasicHouse();
         where.setApplyId(applyId);
         if (applyId == null || applyId == 0) {

@@ -133,9 +133,9 @@ public class SurveyCaseStudyService {
     @Transactional(rollbackFor = Exception.class)
     public void saveCaseTask(ProjectPlanDetails projectPlanDetails, Integer planDetailsId, String examineFormType) throws BusinessException {
         if (projectPlanDetails.getId() != null && projectPlanDetails.getId() > 0) {
-            projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);
-            this.confirmAssignment(projectPlanDetails, examineFormType);
+            projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);//仅保存案例名称
         } else {
+            //添加子项节点
             ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
             planDetails.setId(0);
             planDetails.setPid(projectPlanDetails.getPid());
@@ -148,121 +148,8 @@ public class SurveyCaseStudyService {
             planDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
             planDetails.setCreator(commonService.thisUserAccount());
             projectPlanDetailsService.saveProjectPlanDetails(planDetails);
-            //分派
-            this.confirmAssignment(planDetails, examineFormType);
-        }
-    }
-
-    /**
-     * 分派
-     *
-     * @param planDetails
-     * @param examineFormType
-     * @throws BusinessException
-     */
-    private void confirmAssignment(ProjectPlanDetails planDetails, String examineFormType) throws BusinessException {
-        //清除还为运行的计划任务,同时查询待提交任务，一同清除
-        //根据现有任务分派情况，确定子计划任务及待提交任务
-        String userAccount = commonService.thisUserAccount();
-        ProjectWorkStage workStage = projectWorkStageService.cacheProjectWorkStage(planDetails.getProjectWorkStageId());
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());
-        ProjectPhase phase = projectPhaseService.getCacheProjectPhaseById(planDetails.getProjectPhaseId());
-        String phaseKey = null;
-        if (AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE.contains(phase.getPhaseKey()))
-            phaseKey = AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE;
-        if (AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE.contains(phase.getPhaseKey()))
-            phaseKey = AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE;
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(phaseKey);
-        //添加计划任务子项及待提交任务
-
-        SurveyExamineInfo surveyExamineInfo = new SurveyExamineInfo();
-        surveyExamineInfo.setExamineType(ExamineTypeEnum.CASE.getId());
-        surveyExamineInfo.setProjectId(planDetails.getProjectId());
-        surveyExamineInfo.setPlanDetailsId(planDetails.getId());
-        surveyExamineInfo.setExamineFormType(examineFormType);
-        surveyExamineInfo.setDeclareRecordId(planDetails.getDeclareRecordId());
-        surveyExamineInfo.setBisAssignment(true);
-        surveyExamineInfo.setCreator(commonService.thisUserAccount());
-        surveyExamineInfoService.save(surveyExamineInfo);
-
-        ProjectPlanDetails taskPlanDetails = new ProjectPlanDetails();
-        BeanUtils.copyProperties(planDetails, taskPlanDetails);
-        taskPlanDetails.setId(0);
-        taskPlanDetails.setPid(planDetails.getId());
-        taskPlanDetails.setProjectPhaseId(projectPhase.getId());
-        taskPlanDetails.setExecuteUserAccount(userAccount);
-        taskPlanDetails.setExecuteDepartmentId(commonService.thisUser().getDepartmentId());
-        taskPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-        taskPlanDetails.setCreator(commonService.thisUserAccount());
-        taskPlanDetails.setProjectPhaseName(String.format("%s-%s", planDetails.getProjectPhaseName(), publicService.getUserNameByAccount(userAccount)));
-        projectPlanDetailsService.saveProjectPlanDetails(taskPlanDetails);
-        //save 保存查勘内容(工业与非工业)
-        this.saveSurveyExamineTask(planDetails, examineFormType);
-        //添加任务
-        ProjectResponsibilityDto projectTask = new ProjectResponsibilityDto();
-        projectTask.setProjectId(planDetails.getProjectId());
-        projectTask.setProjectName(projectInfo.getProjectName());
-        projectTask.setPlanEndTime(planDetails.getPlanEndDate());
-        projectTask.setPlanId(planDetails.getPlanId());
-        projectTask.setPlanDetailsId(taskPlanDetails.getId());
-        projectTask.setModel(ResponsibileModelEnum.TASK.getId());
-        projectTask.setConclusion(ResponsibileModelEnum.TASK.getName());
-        projectTask.setUserAccount(userAccount);
-        projectTask.setBisEnable(true);
-        projectTask.setAppKey(applicationConstant.getAppKey());
-        projectTask.setPlanDetailsName(String.format("%s[%s]", workStage.getWorkStageName(), taskPlanDetails.getProjectPhaseName()));
-        projectPlanService.updateProjectTaskUrl(ResponsibileModelEnum.TASK, projectTask);
-        projectTask.setCreator(commonService.thisUserAccount());
-        bpmRpcProjectTaskService.saveProjectTask(projectTask);
-    }
-
-    /**
-     * 保存查勘内容(工业与非工业)
-     *
-     * @param planDetails
-     * @param examineFormType
-     * @throws BusinessException
-     */
-    private void saveSurveyExamineTask(ProjectPlanDetails planDetails, String examineFormType) throws BusinessException {
-        if (StringUtils.isNotBlank(examineFormType)) {
-            DataExamineTask dataExamineTask = null;
-            if (Objects.equal(AssessExamineTaskConstant.FC_RESIDENCE, examineFormType)) {
-                dataExamineTask = dataExamineTaskService.getCacheDataExamineTaskByFieldName(AssessExamineTaskConstant.FC_RESIDENCE);
-            }
-            if (Objects.equal(AssessExamineTaskConstant.FC_INDUSTRY, examineFormType)) {
-                dataExamineTask = dataExamineTaskService.getCacheDataExamineTaskByFieldName(AssessExamineTaskConstant.FC_INDUSTRY);
-            }
-            List<DataExamineTask> dataExamineTaskList = null;
-            List<DataExamineTask> examineTaskList = new ArrayList<DataExamineTask>(10);
-            if (dataExamineTask != null) {
-                dataExamineTaskList = dataExamineTaskService.getCacheDataExamineTaskListByKey(dataExamineTask.getFieldName());
-            }
-            if (CollectionUtils.isNotEmpty(dataExamineTaskList)) {
-                for (DataExamineTask examineTask : dataExamineTaskList) {
-                    List<DataExamineTask> dataExamineTasks = dataExamineTaskService.getCacheDataExamineTaskListByKey(examineTask.getFieldName());
-                    if (CollectionUtils.isNotEmpty(dataExamineTasks)) {
-                        examineTaskList.addAll(dataExamineTasks);
-                    }
-                }
-            }
-            if (CollectionUtils.isNotEmpty(examineTaskList)) {
-                for (DataExamineTask examineTask : examineTaskList) {
-                    SurveyExamineTask surveyExamineTask = new SurveyExamineTask();
-                    surveyExamineTask.setPid(planDetails.getPid());
-                    surveyExamineTask.setUserAccount(planDetails.getExecuteUserAccount());
-                    surveyExamineTask.setBisMust(examineTask.getBisMust());
-                    surveyExamineTask.setPlanDetailsId(planDetails.getId());
-                    surveyExamineTask.setName(examineTask.getName());
-                    surveyExamineTask.setSorting(examineTask.getSorting());
-                    surveyExamineTask.setExamineType(ExamineTypeEnum.CASE.getId());
-                    surveyExamineTask.setDeclareId(planDetails.getDeclareRecordId());
-                    surveyExamineTask.setPlanDetailsId(planDetails.getId());
-                    surveyExamineTask.setDataTaskId(examineTask.getId());
-                    surveyExamineTask.setTaskStatus(ProjectStatusEnum.WAIT.getKey());
-                    surveyExamineTask.setCreator(commonService.thisUserAccount());
-                    surveyExamineTaskService.saveSurveyExamineTask(surveyExamineTask);
-                }
-            }
+            //分派任务到当前人
+            surveyExamineTaskService.examineTaskAssignment(planDetails.getId(), examineFormType,ExamineTypeEnum.CASE);
         }
     }
 

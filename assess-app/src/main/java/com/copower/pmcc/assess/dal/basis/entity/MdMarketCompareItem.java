@@ -14,6 +14,14 @@ public class MdMarketCompareItem {
 
     private String jsonContent;
 
+    private Integer residueRatioId;
+
+    private Integer usedYear;
+
+    private Integer usableYear;
+
+    private Integer houseId;
+
     private BigDecimal initialPrice;
 
     private Boolean mustAdjustPrice;
@@ -74,6 +82,38 @@ public class MdMarketCompareItem {
 
     public void setJsonContent(String jsonContent) {
         this.jsonContent = jsonContent == null ? null : jsonContent.trim();
+    }
+
+    public Integer getResidueRatioId() {
+        return residueRatioId;
+    }
+
+    public void setResidueRatioId(Integer residueRatioId) {
+        this.residueRatioId = residueRatioId;
+    }
+
+    public Integer getUsedYear() {
+        return usedYear;
+    }
+
+    public void setUsedYear(Integer usedYear) {
+        this.usedYear = usedYear;
+    }
+
+    public Integer getUsableYear() {
+        return usableYear;
+    }
+
+    public void setUsableYear(Integer usableYear) {
+        this.usableYear = usableYear;
+    }
+
+    public Integer getHouseId() {
+        return houseId;
+    }
+
+    public void setHouseId(Integer houseId) {
+        this.houseId = houseId;
     }
 
     public BigDecimal getInitialPrice() {

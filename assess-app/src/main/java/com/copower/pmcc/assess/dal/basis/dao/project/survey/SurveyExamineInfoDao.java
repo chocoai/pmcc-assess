@@ -43,17 +43,6 @@ public class SurveyExamineInfoDao {
         return null;
     }
 
-    public SurveyExamineInfo getSurveyExamineInfo(String processInsId) {
-        SurveyExamineInfoExample example = new SurveyExamineInfoExample();
-        example.createCriteria().andProcessInsIdEqualTo(processInsId);
-        example.setOrderByClause(" id ASC");
-        List<SurveyExamineInfo> surveyExamineInfos = surveyExamineInfoMapper.selectByExample(example);
-        if(CollectionUtils.isNotEmpty(surveyExamineInfos)){
-            return surveyExamineInfos.get(0);
-        }
-        return null;
-    }
-
     public List<SurveyExamineInfo> getExamineInfoByDeclareId(Integer declareRecordId) {
         SurveyExamineInfoExample example = new SurveyExamineInfoExample();
         example.createCriteria().andDeclareRecordIdEqualTo(declareRecordId);

@@ -74,7 +74,8 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
                         }
                         break;
                     case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_AREA://登记面积与实际面积
-                        surveyAssetInventoryContent.setRegistration(String.valueOf(declareRecord.getFloorArea()));
+                        if (declareRecord.getFloorArea() != null)
+                            surveyAssetInventoryContent.setRegistration(String.valueOf(declareRecord.getFloorArea()));
                         break;
                 }
                 surveyAssetInventoryContentDao.save(surveyAssetInventoryContent);

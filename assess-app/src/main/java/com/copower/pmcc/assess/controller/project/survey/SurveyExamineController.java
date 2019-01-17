@@ -167,18 +167,6 @@ public class SurveyExamineController {
     }
 
     @ResponseBody
-    @PostMapping(name = "分派(选择工业和非工业之后直接分派)", value = "/examineTaskAssignment")
-    public HttpResult examineTaskAssignment(Integer planDetailsId, String examineFormType) {
-        try {
-            surveyExamineTaskService.examineTaskAssignment(planDetailsId,examineFormType);
-            return HttpResult.newCorrectResult();
-        } catch (Exception e) {
-            logger.error("确认分派", e);
-            return HttpResult.newErrorResult("确认分派异常");
-        }
-    }
-
-    @ResponseBody
     @PostMapping(name = "确认分派", value = "/confirmAssignment")
     public HttpResult confirmAssignment(SurveyExamineTaskDto surveyExamineTaskDto) {
         try {
@@ -211,6 +199,18 @@ public class SurveyExamineController {
         } catch (Exception e) {
             logger.error("保存调查信息", e);
             return HttpResult.newErrorResult("保存调查信息异常");
+        }
+    }
+
+    @ResponseBody
+    @PostMapping(name = "现场查勘分派任务", value = "/examineTaskAssignment")
+    public HttpResult examineTaskAssignment(Integer planDetailsId, String examineFormType) {
+        try {
+            surveyExamineTaskService.examineTaskAssignment(planDetailsId,examineFormType,ExamineTypeEnum.EXPLORE);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error("确认分派", e);
+            return HttpResult.newErrorResult("确认分派异常");
         }
     }
 }

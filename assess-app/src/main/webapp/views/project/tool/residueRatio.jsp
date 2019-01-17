@@ -110,7 +110,6 @@
     //年限法成新率 1-已使用年限/可用年限
     //观察法成新率 取得完损度数据自动计算
     //综合法成新率 根据权重自动计算
-    residueRatio.form = $('#residue_ratio_form');
     residueRatio.init = function (options) {
         var defaults = {
             readonly: false,
@@ -128,27 +127,28 @@
         var index = layer.open({
             type: 1,
             title: '成新率',
-            area: ['920px', '640px'],
+            area: ['1220px', '640px'],
             offset: 't',
             btn: ['保存'],
             yes: function (index) {
                 //保存对应数据
-                //defaults.success(0, "80%");
-                residueRatio.saveData();
+                if (!$("#residue_ratio_form").valid()) {
+                    return false;
+                }
+                residueRatio.saveData(defaults.success);
                 layer.close(index);
             },
             content: $("#residueRatioHtml").html(),
             success: function () {
                 residueRatio.ratioChange();
                 //填充数据
-                residueRatio.form.find('[name=usedYear]').val(defaults.usedYear);
-                residueRatio.form.find('[name=usableYear]').val(defaults.usableYear);
-                residueRatio.form.find('[name=houseId]').val(defaults.houseId);
-
-                residueRatio.loadList($("#residueRatioHouseId").val(), "residueRatioStructural", "structural.part");
-                residueRatio.loadList($("#residueRatioHouseId").val(), "residueRatioDecoration", "decoration.part");
-                residueRatio.loadList($("#residueRatioHouseId").val(), "residueRatioEquipment", "equipment.part");
-                residueRatio.loadList($("#residueRatioHouseId").val(), "residueRatioOther", "other");
+                $('#residue_ratio_form').find('[name=usedYear]').val(defaults.usedYear);
+                $('#residue_ratio_form').find('[name=usableYear]').val(defaults.usableYear);
+                $('#residue_ratio_form').find('[name=houseId]').val(defaults.houseId);
+                residueRatio.loadList(defaults.houseId, "residueRatioStructural", "structural.part");
+                residueRatio.loadList(defaults.houseId, "residueRatioDecoration", "decoration.part");
+                residueRatio.loadList(defaults.houseId, "residueRatioEquipment", "equipment.part");
+                residueRatio.loadList(defaults.houseId, "residueRatioOther", "other");
             }
         });
     }
@@ -163,7 +163,8 @@
             field: 'scores', title: '打分', width: 100,
             formatter: function (value, row, index) {
                 return '<div class="x-valid">' +
-                    '<input data-rule-number="true" placeholder="分数" class="form-control" required style="width: 100px" name=scores' + row.category + ' id=scores' + row.category + ' onblur=" residueRatio.checkNumberData(' + index + ',\'' + tableName + '\')">' +
+                    '<input data-rule-number="true" placeholder="分数" class="form-control" data-rule-range="[0,'+row.standardScore+']"' +
+                    'required style="width: 100px" name=scores' + row.category + ' id=scores' + row.category + ' onblur=" residueRatio.checkNumberData(' + index + ',\'' + tableName + '\')">' +
                     '</div>';
             }
         });
@@ -174,14 +175,12 @@
         }, {
             showColumns: false,
             showRefresh: false,
+            pagination:false,
             uniqueId: "id",
             search: false
         });
     }
-    residueRatio.saveData = function () {
-        if (!$("#residue_ratio_form").valid()) {
-            return false;
-        }
+    residueRatio.saveData = function (callbak) {
         var data = formParams("residue_ratio_form");
         Loading.progressShow();
         $.ajax({
@@ -195,7 +194,9 @@
                 Loading.progressHide();
                 if (result.ret) {
                     toastr.success('保存成功');
-
+                    if(callbak) {
+                        callbak(result.data.id,result.data.resultValue);
+                    }
                 }
                 else {
                     Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -274,8 +275,6 @@
             }
             return true;
         }
-        alert("请正确输入分数");
-        $("#" + id).val("");
         return false;
     }
 

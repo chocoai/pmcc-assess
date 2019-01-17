@@ -8,6 +8,8 @@ public class MdMarketCompare {
 
     private String name;
 
+    private Date valueTimePoint;
+
     private BigDecimal price;
 
     private String creator;
@@ -30,6 +32,14 @@ public class MdMarketCompare {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public Date getValueTimePoint() {
+        return valueTimePoint;
+    }
+
+    public void setValueTimePoint(Date valueTimePoint) {
+        this.valueTimePoint = valueTimePoint;
     }
 
     public BigDecimal getPrice() {
