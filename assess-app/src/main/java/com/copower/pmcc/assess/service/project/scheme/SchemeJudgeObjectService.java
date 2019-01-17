@@ -118,6 +118,18 @@ public class SchemeJudgeObjectService {
         return schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
     }
 
+    /**
+     * 获取启用的委估对象
+     * @param areaGroupId
+     * @return
+     */
+    public List<SchemeJudgeObject> getJudgeObjectApplicableListByAreaGroupId(Integer areaGroupId) {
+        SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
+        schemeJudgeObject.setAreaGroupId(areaGroupId);
+        schemeJudgeObject.setBisEnable(true);
+        return schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
+    }
+
     public List<SchemeJudgeObjectVo> getListByPid(Integer pid) {
         SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
         schemeJudgeObject.setPid(pid);

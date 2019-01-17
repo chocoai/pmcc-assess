@@ -19,10 +19,7 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
-import com.copower.pmcc.erp.common.utils.DateUtils;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
-import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.common.utils.*;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
@@ -30,6 +27,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,6 +67,7 @@ public class GenerateReportService {
     private ApplicationConstant applicationConstant;
     @Autowired
     private BaseReportService baseReportService;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public List<SchemeAreaGroup> getAreaGroupList(Integer projectId) {
         return schemeAreaGroupService.getAreaGroupList(projectId);
@@ -223,6 +223,7 @@ public class GenerateReportService {
             Map<String, String> bookmarkMap = Maps.newHashMap();
             //模板map(模板map中为erp中得附件id以及替换值)
             Map<Integer, Object> fileMap = Maps.newHashMap();
+            Map<String, String> fileFixedMap = Maps.newHashMap();
             Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> mapSet = getReportMap(baseReportTemplate, areaId, projectPlan, new Document(tempDir));
             if (CollectionUtils.isNotEmpty(mapSet)) {
                 Iterator<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> iterator = mapSet.iterator();
@@ -242,22 +243,43 @@ public class GenerateReportService {
                             Object value = enumObjectEntry.getValue();
                             //文本(字符串)
                             if (com.google.common.base.Objects.equal(replaceEnum.getKey(), BaseReportFieldReplaceEnum.TEXT.getKey())) {
-                                textMap.put(wordKey, value.toString());
+                                if (value != null) {
+                                    textMap.put(wordKey, value.toString());
+                                } else {
+                                    logger.error(String.format("word模板:%s%s", ChineseToPy.getFullSpell(wordKey), "替换失败!"), new Exception());
+                                }
                             }
                             //(书签)
                             if (com.google.common.base.Objects.equal(replaceEnum.getKey(), BaseReportFieldReplaceEnum.BOOKMARK.getKey())) {
-                                bookmarkMap.put(wordKey, value.toString());
+                                if (value != null) {
+                                    bookmarkMap.put(wordKey, value.toString());
+                                } else {
+                                    logger.error(String.format("word模板:%s%s", ChineseToPy.getFullSpell(wordKey), "替换失败!"), new Exception());
+                                }
                             }
-                            //附件(子模板)
+                            //附件(子模板)需要替换才能合并到目标文档
                             if (com.google.common.base.Objects.equal(replaceEnum.getKey(), BaseReportFieldReplaceEnum.FILE.getKey())) {
-                                template(wordKey, value);
+                                if (value != null) {
+                                    template(wordKey, value);
+                                } else {
+                                    logger.error(String.format("word模板:%s%s", ChineseToPy.getFullSpell(wordKey), "替换失败!"), new Exception());
+                                }
+                            }
+                            //固定word
+                            if (com.google.common.base.Objects.equal(replaceEnum.getKey(), BaseReportFieldReplaceEnum.FILE_FIXED.getKey())) {
+                                if (value != null) {
+                                    fileFixedMap.put(wordKey,value.toString());
+                                } else {
+                                    logger.error(String.format("word模板:%s%s", ChineseToPy.getFullSpell(wordKey), "替换失败!"), new Exception());
+                                }
                             }
                         }
                     }
                 }
             }
-            AsposeUtils.replaceBookmark(tempDir, bookmarkMap,true);
+            AsposeUtils.replaceBookmark(tempDir, bookmarkMap, false);
             AsposeUtils.replaceText(tempDir, textMap);
+            AsposeUtils.replaceBookmarkToFile(tempDir, fileFixedMap);
         }
         return tempDir;
     }
@@ -284,46 +306,102 @@ public class GenerateReportService {
         BookmarkCollection bookmarkCollection = AsposeUtils.getBookmarks(document);
         if (bookmarkCollection.getCount() >= 1) {
             for (int i = 0; i < bookmarkCollection.getCount(); i++) {
+                String bookmarkName =  getChinese(bookmarkCollection.get(i).getName());
                 //文号
-                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.REPORTNUMBER.getName(), getChinese(bookmarkCollection.get(i).getName()))) {
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.REPORTNUMBER.getName(), bookmarkName)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.REPORTNUMBER.getName());
                     if (baseReportField != null) {
                         mapSet.add(getBaseReportFieldReplaceEnumMap(
                                 BaseReportFieldReplaceEnum.BOOKMARK,
-                                BaseReportFieldEnum.REPORTNUMBER.getName(),
+                                bookmarkCollection.get(i).getName(),
                                 generateBaseDataService.getWordNumber()));
                     }
                 }
                 //区位
-                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.Location.getName(), getChinese(bookmarkCollection.get(i).getName()))) {
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.Location.getName(), bookmarkName)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.Location.getName());
                     if (baseReportField != null) {
-
+                        //由于区位以后可能会变,现在取权利人
+                        if (false) {
+                            BaseReportFieldEnum.notPowerPerson.getName();
+                            mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                    BaseReportFieldReplaceEnum.BOOKMARK,
+                                    bookmarkCollection.get(i).getName(),
+                                    generateBaseDataService.getNotPowerPerson()));
+                        }
+                        if (true) {
+                            BaseReportFieldEnum.powerPerson.getName();
+                            mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                    BaseReportFieldReplaceEnum.BOOKMARK,
+                                    bookmarkCollection.get(i).getName(),
+                                    generateBaseDataService.getPowerPerson()));
+                        }
                     }
                 }
                 //价值类型
-                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.ValueType.getName(), getChinese(bookmarkCollection.get(i).getName()))) {
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.ValueType.getName(), bookmarkName)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.ValueType.getName());
                     if (baseReportField != null) {
+                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                BaseReportFieldReplaceEnum.BOOKMARK,
+                                bookmarkCollection.get(i).getName(),
+                                StringUtils.isNotBlank(generateBaseDataService.getValueType()) ? generateBaseDataService.getValueType() : new Object()));
 
                     }
                 }
                 //价值定义
-                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.DefinitionValue.getName(), getChinese(bookmarkCollection.get(i).getName()))) {
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.DefinitionValue.getName(), bookmarkName)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.DefinitionValue.getName());
                     if (baseReportField != null) {
-
+                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                BaseReportFieldReplaceEnum.BOOKMARK,
+                                bookmarkCollection.get(i).getName(),
+                                StringUtils.isNotBlank(generateBaseDataService.getDefinitionValue()) ? generateBaseDataService.getDefinitionValue() : new Object()));
                     }
                 }
                 //价值含义
-                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.ValueImplication.getName(), getChinese(bookmarkCollection.get(i).getName()))) {
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.ValueImplication.getName(), bookmarkName)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.ValueImplication.getName());
                     if (baseReportField != null) {
-
+                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                BaseReportFieldReplaceEnum.BOOKMARK,
+                                bookmarkCollection.get(i).getName(),
+                                StringUtils.isNotBlank(generateBaseDataService.getValueImplication()) ? generateBaseDataService.getValueImplication() : new Object()));
                     }
                 }
+                //设定用途
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.SetUse.getName(), bookmarkName)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.SetUse.getName());
+                    if (baseReportField != null) {
+                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                BaseReportFieldReplaceEnum.BOOKMARK,
+                                bookmarkCollection.get(i).getName(),
+                                StringUtils.isNotBlank(generateBaseDataService.getSetUse()) ? generateBaseDataService.getSetUse() : new Object()));
+                    }
+                }
+                //房产类型
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.SetUse.getName(), bookmarkName)) {
+                    mapSet.add(getBaseReportFieldReplaceEnumMap(
+                            BaseReportFieldReplaceEnum.BOOKMARK,
+                            bookmarkCollection.get(i).getName(),
+                            StringUtils.isNotBlank(generateBaseDataService.getSetUse()) ? generateBaseDataService.getSetUse() : new Object()));
+                }
+                //土地实际用途
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.LandPracticalUse.getName(), bookmarkName)) {
+                    mapSet.add(getBaseReportFieldReplaceEnumMap(
+                            BaseReportFieldReplaceEnum.BOOKMARK,
+                            bookmarkCollection.get(i).getName(),
+                            StringUtils.isNotBlank(generateBaseDataService.getLandPracticalUse()) ? generateBaseDataService.getLandPracticalUse() : new Object()));
+                }
+                //使用权类型
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.UseRightType.getName(), bookmarkName)) {
+                    mapSet.add(getBaseReportFieldReplaceEnumMap(
+                            BaseReportFieldReplaceEnum.BOOKMARK,
+                            bookmarkCollection.get(i).getName(),
+                            StringUtils.isNotBlank(generateBaseDataService.getUseRightType()) ? generateBaseDataService.getUseRightType() : new Object()));
+                }
                 //评估面积
-                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.AssessArea.getName(), getChinese(bookmarkCollection.get(i).getName()))) {
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.AssessArea.getName(), bookmarkName)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.AssessArea.getName());
                     if (baseReportField != null) {
                         if (baseReportField != null) {
@@ -335,32 +413,51 @@ public class GenerateReportService {
                     }
                 }
                 //使用权类型
-                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.UseRightType.getName(), getChinese(bookmarkCollection.get(i).getName()))) {
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.UseRightType.getName(), bookmarkName)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.UseRightType.getName());
                     if (baseReportField != null) {
 
                     }
                 }
                 //土地实际用途
-                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.LandPracticalUse.getName(), getChinese(bookmarkCollection.get(i).getName()))) {
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.LandPracticalUse.getName(), bookmarkName)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.LandPracticalUse.getName());
                     if (baseReportField != null) {
 
                     }
                 }
                 //委托目的表述
-                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.StatementPurposeEntrustment.getName(), getChinese(bookmarkCollection.get(i).getName()))) {
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.StatementPurposeEntrustment.getName(), bookmarkName)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.StatementPurposeEntrustment.getName());
                     if (baseReportField != null) {
-
+                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                BaseReportFieldReplaceEnum.BOOKMARK,
+                                bookmarkCollection.get(i).getName(),
+                                generateBaseDataService.getStatementPurposeEntrustment()));
                     }
                 }
                 //评估方法
-                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EvaluationMethod.getName(), getChinese(bookmarkCollection.get(i).getName()))) {
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EvaluationMethod.getName(), bookmarkName)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EvaluationMethod.getName());
                     if (baseReportField != null) {
-
+                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                BaseReportFieldReplaceEnum.BOOKMARK,
+                                bookmarkCollection.get(i).getName(),
+                                generateBaseDataService.getEvaluationMethod()));
                     }
+                }
+                //估价对象区位状况表
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.judgeObjectAreaStatusSheet.getName(), bookmarkName)) {
+                    //测试模板是否能够添加成功!
+                    mapSet.add(getBaseReportFieldReplaceEnumMap(
+                            BaseReportFieldReplaceEnum.FILE_FIXED,
+                            bookmarkCollection.get(i).getName(),
+                            generateBaseDataService.getJudgeObjectAreaStatusSheet2()));
+
+//                    mapSet.add(getBaseReportFieldReplaceEnumMap(
+//                            BaseReportFieldReplaceEnum.BOOKMARK,
+//                            bookmarkCollection.get(i).getName(),
+//                            generateBaseDataService.getJudgeObjectAreaStatusSheet()));
                 }
             }
         }
@@ -374,7 +471,7 @@ public class GenerateReportService {
                     if (baseReportField != null) {
                         mapSet.add(getBaseReportFieldReplaceEnumMap(
                                 BaseReportFieldReplaceEnum.TEXT,
-                                String.format("${%s}", BaseReportFieldEnum.PRINCIPAL.getName()),
+                                String.format("${%s}", name),
                                 generateBaseDataService.getPrincipal()));
                     }
                 }
@@ -423,6 +520,7 @@ public class GenerateReportService {
 
     /**
      * 利用 ascii 码 配合正则 提取中文
+     *
      * @param paramValue
      * @return
      */
