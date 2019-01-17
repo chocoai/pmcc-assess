@@ -19,6 +19,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -169,17 +170,22 @@ public class DataBlockService {
 
     public void saveResidueRatio(String formData) throws Exception {
         JSONObject jsonObject = JSON.parseObject(formData);
-        Integer houseId = Integer.valueOf(jsonObject.getString("houseId"));
+        Integer houseId = -1;
+        if (!"".equals(jsonObject.getString("houseId"))) {
+            houseId = Integer.valueOf(jsonObject.getString("houseId"));
+        }
         //更改数据表分值
         List<BasicHouseDamagedDegreeVo> list = basicHouseDamagedDegreeService.getDamagedDegreeVoList(houseId);
         String method = jsonObject.getString("method");
-        if(!method.equals("0")) {
-            for (BasicHouseDamagedDegreeVo item : list) {
-                String scoreId = "scores" + item.getCategory();
-                String reallyScore = jsonObject.getString(scoreId);
-                BigDecimal score = new BigDecimal(reallyScore);
-                item.setScore(score);
-                basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(item);
+        if (!method.equals("0")) {
+            if(CollectionUtils.isNotEmpty(list)) {
+                for (BasicHouseDamagedDegreeVo item : list) {
+                    String scoreId = "scores" + item.getCategory();
+                    String reallyScore = jsonObject.getString(scoreId);
+                    BigDecimal score = new BigDecimal(reallyScore);
+                    item.setScore(score);
+                    basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(item);
+                }
             }
         }
 
@@ -196,11 +202,11 @@ public class DataBlockService {
         //保存
         ToolResidueRatio toolResidueRatio = new ToolResidueRatio();
         HashMap<String, String> parameterMap = new HashMap<>();
-        parameterMap.put("houseId",jsonObject.getString("houseId"));
-        parameterMap.put("usedYear",jsonObject.getString("usedYear"));
-        parameterMap.put("usableYear",jsonObject.getString("usableYear"));
-        parameterMap.put("ageRate",jsonObject.getString("ageRate"));
-        parameterMap.put("observeRate",jsonObject.getString("observeRate"));
+        parameterMap.put("houseId", jsonObject.getString("houseId"));
+        parameterMap.put("usedYear", jsonObject.getString("usedYear"));
+        parameterMap.put("usableYear", jsonObject.getString("usableYear"));
+        parameterMap.put("ageRate", jsonObject.getString("ageRate"));
+        parameterMap.put("observeRate", jsonObject.getString("observeRate"));
         String parameterValue = JSONObject.toJSON(parameterMap).toString();
         toolResidueRatio.setParameterValue(parameterValue);
         toolResidueRatio.setType(Integer.valueOf(method));
