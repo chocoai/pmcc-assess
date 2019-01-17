@@ -11,12 +11,12 @@
 
     //附件上传控件id数组
     estateCommon.estateFileControlIdArray = [
-        'estate_floor_total_plan',
-        'estate_floor_Appearance_figure',
-        'water_supply_plan',
-        'power_supply_plan',
-        'air_supply_plan',
-        'heating_plan'
+        AssessUploadKey.ESTATE_FLOOR_TOTAL_PLAN,
+        AssessUploadKey.ESTATE_FLOOR_APPEARANCE_FIGURE,
+        AssessUploadKey.ESTATE_WATER_SUPPLY_PLAN,
+        AssessUploadKey.ESTATE_POWER_SUPPLY_PLAN,
+        AssessUploadKey.ESTATE_AIR_SUPPLY_PLAN,
+        AssessUploadKey.ESTATE_HEATING_PLAN
     ];
 
     /**

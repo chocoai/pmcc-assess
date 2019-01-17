@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
 <script src="/assets/js/jquery/2.0.3/jquery.min.js"></script>
 <script src='${pageContext.request.contextPath}/js/assess.key.js'></script>
+<script src='${pageContext.request.contextPath}/js/assess.upload.key.js'></script>
 <script src='${pageContext.request.contextPath}/js/assess.default.js'></script>
 <script src='${pageContext.request.contextPath}/js/common.js'></script>
 <script src='${pageContext.request.contextPath}/js/common.column.js'></script>

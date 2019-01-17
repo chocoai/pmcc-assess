@@ -468,7 +468,7 @@
             disabledTarget: "btn_submit",
             formData: {
                 tableName: AssessDBKey.SurveyAssetInventory,
-                fieldsName: "checkOriginal",
+                fieldsName: AssessUploadKey.INVENTORY_CHECK_ORIGINAL,
                 tableId: '${empty surveyAssetInventory?0:surveyAssetInventory.id}'
             },
             deleteFlag: true
@@ -478,7 +478,7 @@
             target: "checkOriginalFile",
             formData: {
                 tableName: AssessDBKey.SurveyAssetInventory,
-                fieldsName: "checkOriginal",
+                fieldsName: AssessUploadKey.INVENTORY_CHECK_ORIGINAL,
                 tableId: '${empty surveyAssetInventory?0:surveyAssetInventory.id}'
             },
             deleteFlag: true
@@ -489,7 +489,7 @@
             disabledTarget: "btn_submit",
             formData: {
                 tableName: AssessDBKey.SurveyAssetInventory,
-                fieldsName: "specialCase",
+                fieldsName: AssessUploadKey.INVENTORY_SPECIAL_CASE,
                 tableId: '${empty surveyAssetInventory?0:surveyAssetInventory.id}'
             },
             deleteFlag: true
@@ -499,7 +499,7 @@
             target: "specialCaseFile",
             formData: {
                 tableName: AssessDBKey.SurveyAssetInventory,
-                fieldsName: "specialCase",
+                fieldsName: AssessUploadKey.INVENTORY_SPECIAL_CASE,
                 tableId: '${empty surveyAssetInventory?0:surveyAssetInventory.id}'
             },
             deleteFlag: true
@@ -511,7 +511,6 @@
             onUpload: function (file) {//上传之前触发
                 var formData = {
                     tableName: AssessDBKey.SurveyAssetInventoryRight,
-                    creater: "${currUserAccount}",
                     tableId: $("#frm_inventory_right").find('[name=id]').val()
                 };
                 return formData;

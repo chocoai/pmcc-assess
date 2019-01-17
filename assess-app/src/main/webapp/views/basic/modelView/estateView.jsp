@@ -217,16 +217,16 @@
                 <div class="x-valid" id="">
                     <label class="col-sm-1 control-label">供水平面图</label>
                     <div class="col-sm-5">
-                        <input id="water_supply_plan" placeholder="上传附件" class="form-control" type="file">
-                        <div id="_water_supply_plan"></div>
+                        <input id="estate_water_supply_plan" placeholder="上传附件" class="form-control" type="file">
+                        <div id="_estate_water_supply_plan"></div>
                     </div>
                 </div>
 
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">供电平面图</label>
                     <div class="col-sm-5">
-                        <input id="power_supply_plan" placeholder="上传附件" class="form-control" type="file">
-                        <div id="_power_supply_plan"></div>
+                        <input id="estate_power_supply_plan" placeholder="上传附件" class="form-control" type="file">
+                        <div id="_estate_power_supply_plan"></div>
                     </div>
                 </div>
             </div>
@@ -234,16 +234,16 @@
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">供气平面图</label>
                     <div class="col-sm-5">
-                        <input id="air_supply_plan" placeholder="上传附件" class="form-control" type="file">
-                        <div id="_air_supply_plan"></div>
+                        <input id="estate_air_supply_plan" placeholder="上传附件" class="form-control" type="file">
+                        <div id="_estate_air_supply_plan"></div>
                     </div>
                 </div>
 
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">采暖平面图</label>
                     <div class="col-sm-5">
-                        <input id="heating_plan" placeholder="上传附件" class="form-control" type="file">
-                        <div id="_heating_plan"></div>
+                        <input id="estate_heating_plan" placeholder="上传附件" class="form-control" type="file">
+                        <div id="_estate_heating_plan"></div>
                     </div>
                 </div>
             </div>

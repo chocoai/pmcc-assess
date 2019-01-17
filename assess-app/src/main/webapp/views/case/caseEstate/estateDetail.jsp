@@ -512,24 +512,6 @@
         estate: {
             frm: function () {
                 return "frm_estate";//楼盘基本信息frm
-            },
-            filePlanTotal: function () {
-                return "estate_floor_total_plan";//总平面图id和字段
-            },
-            waterSupplyPlan: function () {
-                return "water_supply_plan";//供水平面图id和字段
-            },
-            powerSupplyPlan: function () {
-                return "power_supply_plan";//供电平面图id和字段
-            },
-            airSupplyPlan: function () {
-                return "air_supply_plan";//供气平面图id和字段
-            },
-            heatingPlan: function () {
-                return "heating_plan";//采暖平面图id和字段
-            },
-            fileAppearance: function () {
-                return "estate_floor_Appearance_figure";//外观图id和字段
             }
         },
         landState: {
@@ -580,17 +562,17 @@
     caseEstate.estateModel = {
         init: function () {
             //总平面图
-            caseEstate.showFile(caseEstate.config.estate.filePlanTotal(), AssessDBKey.CaseEstate);
+            caseEstate.showFile(AssessUploadKey.ESTATE_FLOOR_TOTAL_PLAN, AssessDBKey.CaseEstate);
             //外观图
-            caseEstate.showFile(caseEstate.config.estate.fileAppearance(), AssessDBKey.CaseEstate);
+            caseEstate.showFile(AssessUploadKey.ESTATE_FLOOR_APPEARANCE_FIGURE, AssessDBKey.CaseEstate);
             //供水平面图
-            caseEstate.showFile(caseEstate.config.estate.waterSupplyPlan(), AssessDBKey.CaseEstate);
+            caseEstate.showFile(AssessUploadKey.ESTATE_WATER_SUPPLY_PLAN, AssessDBKey.CaseEstate);
             //供电平面图
-            caseEstate.showFile(caseEstate.config.estate.powerSupplyPlan(), AssessDBKey.CaseEstate);
+            caseEstate.showFile(AssessUploadKey.ESTATE_POWER_SUPPLY_PLAN, AssessDBKey.CaseEstate);
             //供气平面图
-            caseEstate.showFile(caseEstate.config.estate.airSupplyPlan(), AssessDBKey.CaseEstate);
+            caseEstate.showFile(AssessUploadKey.ESTATE_AIR_SUPPLY_PLAN, AssessDBKey.CaseEstate);
             //采暖平面图
-            caseEstate.showFile(caseEstate.config.estate.heatingPlan(), AssessDBKey.CaseEstate);
+            caseEstate.showFile(AssessUploadKey.ESTATE_HEATING_PLAN, AssessDBKey.CaseEstate);
         }
     };
 

@@ -247,15 +247,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-
 </form>
-<script type="text/javascript">
-</script>
-<script type="text/javascript">
 
-</script>
 
