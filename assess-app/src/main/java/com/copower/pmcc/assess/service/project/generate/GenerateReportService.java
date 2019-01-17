@@ -256,7 +256,7 @@ public class GenerateReportService {
                     }
                 }
             }
-            AsposeUtils.replaceBookmark(tempDir, bookmarkMap);
+            AsposeUtils.replaceBookmark(tempDir, bookmarkMap,true);
             AsposeUtils.replaceText(tempDir, textMap);
         }
         return tempDir;
