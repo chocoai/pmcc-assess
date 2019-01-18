@@ -11,6 +11,7 @@ public class ProjectTaskLiquidationAnalysisVo extends DataTaxRateAllocation {
     private BigDecimal money;
     private String typeName;
     private String remark;
+    private String rate;
     private BigDecimal price;
 
     public BigDecimal getMoney() {
@@ -43,5 +44,13 @@ public class ProjectTaskLiquidationAnalysisVo extends DataTaxRateAllocation {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public String getRate() {
+        return rate;
+    }
+
+    public void setRate(String rate) {
+        this.rate = rate;
     }
 }

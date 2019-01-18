@@ -90,7 +90,7 @@
                     html += item.typeName;
                     html += "</td>";
                     html += "<td class='hidden-xs'>";
-                    html += item.taxRate;
+                    html += item.rate;
                     html += "</td>";
                     html += "<td class='hidden-xs'>";
                     html += item.remark;
