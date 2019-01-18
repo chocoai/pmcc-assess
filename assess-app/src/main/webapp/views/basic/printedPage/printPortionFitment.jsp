@@ -36,7 +36,7 @@
             config: function () {
                 var data = {};
                 data.table = "FitmentPortionList";
-                data.type = "decoration.part";//装修部分
+                data.type = AssessDicKey.damaged_degree_decoration_part;//装修部分
                 return data;
             },
             loadDataDicList: function () {

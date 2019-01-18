@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationPrincipleDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationPrinciple;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationPrincipleVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -17,6 +16,7 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -35,8 +35,6 @@ public class EvaluationPrincipleService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private CommonService commonService;
-    @Autowired
-    private DataCommonService dataCommonService;
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
@@ -122,26 +120,13 @@ public class EvaluationPrincipleService {
         List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         DataEvaluationPrincipleVo vo = new DataEvaluationPrincipleVo();
         BeanUtils.copyProperties(evaluationPrinciple, vo);
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(evaluationPrinciple.getMethod())) {
-            vo.setMethodStr(dataCommonService.getDataDicName(methodDicList, evaluationPrinciple.getMethod()));
+        if (StringUtils.isNotBlank(evaluationPrinciple.getMethod())) {
+            vo.setMethodStr(baseDataDicService.getDataDicName(methodDicList, evaluationPrinciple.getMethod()));
         }
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(evaluationPrinciple.getEntrustmentPurpose())) {
-            vo.setEntrustmentPurposeStr(dataCommonService.getDataDicName(purposeDicList, evaluationPrinciple.getEntrustmentPurpose()));
+        if (StringUtils.isNotBlank(evaluationPrinciple.getEntrustmentPurpose())) {
+            vo.setEntrustmentPurposeStr(baseDataDicService.getDataDicName(purposeDicList, evaluationPrinciple.getEntrustmentPurpose()));
         }
-        BaseProjectClassify baseProjectClassify = null;
-        if (evaluationPrinciple.getCategory() != null){
-            baseProjectClassify = baseProjectClassifyService.getProjectClassifyById(evaluationPrinciple.getCategory());
-            if (baseProjectClassify != null){
-                vo.setCategoryName(baseProjectClassify.getName());
-                baseProjectClassify = null;
-            }
-        }
-        if (evaluationPrinciple.getType() != null){
-            baseProjectClassify = baseProjectClassifyService.getProjectClassifyById(evaluationPrinciple.getType());
-            if (baseProjectClassify != null){
-                vo.setTypeName(baseProjectClassify.getName());
-            }
-        }
+        vo.setTypeName(baseProjectClassifyService.getTypeAndCategoryName(evaluationPrinciple.getType(),evaluationPrinciple.getCategory()));
         return vo;
     }
 

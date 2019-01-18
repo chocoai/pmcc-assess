@@ -39,7 +39,6 @@ public class EvaluationPrincipleDao {
     public List<DataEvaluationPrinciple> getPrincipleList(Integer type, Integer category, String method, String purpose) {
         DataEvaluationPrincipleExample example = new DataEvaluationPrincipleExample();
         DataEvaluationPrincipleExample.Criteria criteria = example.createCriteria();
-        criteria.andTypeEqualTo(type).andCategoryEqualTo(category);
         if (StringUtils.isNotBlank(method)) {
             criteria.andMethodLike(String.format("%%%s%%", method));
         }

@@ -107,51 +107,30 @@ public class ProjectCenterService {
                 ProjectMemberVo projectMember = projectMemberService.getProjectMember(item.getId());
                 projectInfoVo.setUserAccountManagerName(projectMember.getUserAccountManagerName());
                 projectInfoVo.setUserAccountMemberName(projectMember.getUserAccountMemberName());
-
-                //项目大类
-                if (item.getProjectClassId() != null) {
-                    BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(item.getProjectClassId());
-                    if (projectClassify != null) {
-                        projectInfoVo.setProjectClassName(projectClassify.getName());
-                    }
-                }
-                //项目类型
-                if (item.getProjectTypeId() != null) {
-                    BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(item.getProjectTypeId());
-                    if (projectClassify != null) {
-                        projectInfoVo.setProjectTypeName(projectClassify.getName());
-                    }
-                }
-                //项目类别
-                if (item.getProjectCategoryId() != null) {
-                    BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(item.getProjectCategoryId());
-                    if (projectClassify != null) {
-                        projectInfoVo.setProjectCategoryName(projectClassify.getName());
-                    }
-                }
-
+                projectInfoVo.setProjectClassName(baseProjectClassifyService.getNameById(item.getProjectClassId()));
+                projectInfoVo.setProjectTypeName(baseProjectClassifyService.getNameById(item.getProjectTypeId()));
+                projectInfoVo.setProjectCategoryName(baseProjectClassifyService.getNameById(item.getProjectCategoryId()));
                 projectInfoVo.setProjectStatus(ProjectStatusEnum.getNameByKey(item.getProjectStatus()));
 
                 List<ProjectPlan> filter = LangUtils.filter(projectPlans, o -> {
                     return o.getProjectId().equals(item.getId());
                 });
                 if (CollectionUtils.isNotEmpty(filter)) {
-                    double finishCount = 0;
-                    double rungingCount = 0;
+                    int finishCount = 0;
+                    double finishWeight = 0L;
+                    double totalWeight = 0L;
                     for (ProjectPlan plan : filter) {
-                        if (plan.getProjectStatus().equals(ProjectStatusEnum.FINISH.getName())) {
-                            finishCount += plan.getSpecificGravity();
-                        } else {
-                            rungingCount += plan.getSpecificGravity();
+                        if (plan.getProjectStatus().equals(ProjectStatusEnum.FINISH.getKey())) {
+                            finishCount++;
+                            finishWeight += plan.getSpecificGravity();
                         }
+                        totalWeight += plan.getSpecificGravity();
                     }
-                    if (finishCount + rungingCount == 0)//如果没有设置权重，则设置未完成数量为1 ，以避免除法分母为0的情况
-                    {
-                        rungingCount = 1;
+                    if (totalWeight <= 0) {
+                        projectInfoVo.setFinishPre(finishCount/filter.size() * 100);
+                    } else {
+                        projectInfoVo.setFinishPre((int)(finishWeight/totalWeight * 100));
                     }
-                    double v = finishCount / (finishCount + rungingCount);
-                    projectInfoVo.setFinishPre((int) (v * 100));
-
                 } else {
                     projectInfoVo.setFinishPre(0);
                 }

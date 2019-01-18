@@ -30,7 +30,7 @@
                             </label>
                             <div class="x-valid">
                                 <div class="col-sm-5">
-                                    <input type="text" required placeholder="未设立单价" data-rule-number='true'
+                                    <input type="text" required placeholder="假定未设立法定优先受偿权单价" data-rule-number='true'
                                            name="notSetUpUnitPrice" class="form-control"
                                            value="${master.notSetUpUnitPrice}">
                                 </div>
@@ -40,7 +40,7 @@
                             </label>
                             <div class="x-valid">
                                 <div class="col-sm-5">
-                                    <input type="text" required placeholder="未设立总价" data-rule-number='true'
+                                    <input type="text" required placeholder="假定未设立法定优先受偿权总价" data-rule-number='true'
                                            name="notSetUpTotalPrice" class="form-control"
                                            value="${master.notSetUpTotalPrice}">
                                 </div>
@@ -52,7 +52,7 @@
                             </label>
                             <div class="x-valid">
                                 <div class="col-sm-5">
-                                    <input type="text" required placeholder="知悉总价" data-rule-number='true'
+                                    <input type="text" required placeholder="估价师知悉的法定优先受偿款总价" data-rule-number='true'
                                            name="knowTotalPrice" class="form-control" value="${master.knowTotalPrice}">
                                 </div>
                             </div>
@@ -61,7 +61,7 @@
                             </label>
                             <div class="x-valid">
                                 <div class="col-sm-5">
-                                    <input type="text" required placeholder="已抵押总价" data-rule-number='true'
+                                    <input type="text" required placeholder="已抵押担保的债权数额总价" data-rule-number='true'
                                            name="mortgagedTotalPrice" class="form-control"
                                            value="${master.mortgagedTotalPrice}">
                                 </div>
@@ -73,7 +73,7 @@
                             </label>
                             <div class="x-valid">
                                 <div class="col-sm-5">
-                                    <input type="text" required placeholder="拖欠总价" data-rule-number='true'
+                                    <input type="text" required placeholder="拖欠的建设工程价款总价" data-rule-number='true'
                                            name="owedTotalPrice" class="form-control" value="${master.owedTotalPrice}">
                                 </div>
                             </div>
@@ -82,7 +82,7 @@
                             </label>
                             <div class="x-valid">
                                 <div class="col-sm-5">
-                                    <input type="text" required placeholder="其它受偿款总价" data-rule-number='true'
+                                    <input type="text" required placeholder="其它法定优先受偿款总价" data-rule-number='true'
                                            name="otherTotalPrice" class="form-control"
                                            value="${master.otherTotalPrice}">
                                 </div>

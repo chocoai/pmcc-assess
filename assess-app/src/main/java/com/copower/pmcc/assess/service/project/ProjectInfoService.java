@@ -403,7 +403,7 @@ public class ProjectInfoService {
             ProjectPlanVo projectPlanVo = new ProjectPlanVo();
             BeanUtils.copyProperties(projectPlan, projectPlanVo);
             try {
-                ProjectStatusEnum projectStatusEnum = ProjectStatusEnum.getEnumByName(projectPlan.getProjectStatus());
+                ProjectStatusEnum projectStatusEnum = ProjectStatusEnum.getEnumByKey(projectPlan.getProjectStatus());
                 switch (projectStatusEnum) {
                     case FINISH:
                     case TASK:

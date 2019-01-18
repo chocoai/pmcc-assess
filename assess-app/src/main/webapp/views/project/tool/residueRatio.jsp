@@ -16,15 +16,15 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <span class="col-sm-2 col-sm-offset-2 radio-inline">
-                                            <input id="residueRatioType0" type="radio" name="method" value="0">
+                                            <input id="residueRatioType0" type="radio" name="type" value="0">
                                             <label for="residueRatioType0">年限法</label>
                                         </span>
                                 <span class="col-sm-2  radio-inline">
-                                            <input id="residueRatioType1" type="radio" name="method" value="1">
+                                            <input id="residueRatioType1" type="radio" name="type" value="1">
                                             <label for="residueRatioType1">观察法</label>
                                         </span>
                                 <span class="col-sm-2 radio-inline">
-                                            <input id="residueRatioType2" type="radio" name="method" value="2">
+                                            <input id="residueRatioType2" type="radio" name="type" value="2">
                                             <label for="residueRatioType2">综合法</label>
                                         </span>
                                 <span class="col-sm-2 radio-inline" id="residue_ratio_cxl"></span>
@@ -87,16 +87,16 @@
                         </div>
                     </div>
                     <h4>结构完损部分</h4>
-                    <input type="hidden" id="residueRatioStructuralScore">
+                    <input type="hidden" name="residueRatioStructuralScore" id="residueRatioStructuralScore">
                     <table id="residueRatioStructural" class="table table-bordered"></table>
                     <h4>装修部分</h4>
-                    <input type="hidden" id="residueRatioDecorationScore">
+                    <input type="hidden" name="residueRatioDecorationScore" id="residueRatioDecorationScore">
                     <table id="residueRatioDecoration" class="table table-bordered"></table>
                     <h4>设备部分</h4>
-                    <input type="hidden" id="residueRatioEquipmentScore">
+                    <input type="hidden" name="residueRatioEquipmentScore" id="residueRatioEquipmentScore">
                     <table id="residueRatioEquipment" class="table table-bordered"></table>
                     <h4>其他</h4>
-                    <input type="hidden" id="residueRatioOtherScore">
+                    <input type="hidden" name="residueRatioOtherScore" id="residueRatioOtherScore">
                     <table id="residueRatioOther" class="table table-bordered"></table>
 
                 </div>
@@ -113,7 +113,7 @@
     residueRatio.init = function (options) {
         var defaults = {
             readonly: false,
-            residueRatioId: undefined,//数据id
+            residueRatioId: 42,//数据id
             usedYear: undefined,//已使用年限
             usableYear: undefined,//可用年限
             houseId: undefined,//完损度关联的房屋id
@@ -135,20 +135,24 @@
                 if (!$("#residue_ratio_form").valid()) {
                     return false;
                 }
-                residueRatio.saveData(defaults.success);
+                residueRatio.saveData(defaults.success, defaults.residueRatioId);
                 layer.close(index);
             },
             content: $("#residueRatioHtml").html(),
             success: function () {
-                residueRatio.ratioChange();
+
                 //填充数据
                 $('#residue_ratio_form').find('[name=usedYear]').val(defaults.usedYear);
                 $('#residue_ratio_form').find('[name=usableYear]').val(defaults.usableYear);
                 $('#residue_ratio_form').find('[name=houseId]').val(defaults.houseId);
-                residueRatio.loadList(defaults.houseId, "residueRatioStructural", "structural.part");
-                residueRatio.loadList(defaults.houseId, "residueRatioDecoration", "decoration.part");
-                residueRatio.loadList(defaults.houseId, "residueRatioEquipment", "equipment.part");
-                residueRatio.loadList(defaults.houseId, "residueRatioOther", "other");
+                residueRatio.loadList(defaults.houseId, "residueRatioStructural", AssessDicKey.damaged_degree_structural_part);
+                residueRatio.loadList(defaults.houseId, "residueRatioDecoration", AssessDicKey.damaged_degree_decoration_part);
+                residueRatio.loadList(defaults.houseId, "residueRatioEquipment", AssessDicKey.damaged_degree_equipment_part);
+                residueRatio.loadList(defaults.houseId, "residueRatioOther", AssessDicKey.damaged_degree_other);
+
+                residueRatio.initAgeLimit(defaults.residueRatioId);
+                residueRatio.initObserve(defaults.residueRatioId);
+                residueRatio.ratioChange();
             }
         });
     }
@@ -163,7 +167,7 @@
             field: 'scores', title: '打分', width: 100,
             formatter: function (value, row, index) {
                 return '<div class="x-valid">' +
-                    '<input data-rule-number="true" placeholder="分数" class="form-control" data-rule-range="[0,'+row.standardScore+']"' +
+                    '<input data-rule-number="true" placeholder="分数" class="form-control" data-rule-range="[0,' + row.standardScore + ']"' +
                     'required style="width: 100px" name=scores' + row.category + ' id=scores' + row.category + ' onblur=" residueRatio.checkNumberData(' + index + ',\'' + tableName + '\')">' +
                     '</div>';
             }
@@ -175,13 +179,14 @@
         }, {
             showColumns: false,
             showRefresh: false,
-            pagination:false,
+            pagination: false,
             uniqueId: "id",
             search: false
         });
     }
-    residueRatio.saveData = function (callbak) {
+    residueRatio.saveData = function (callbak, residueRatioId) {
         var data = formParams("residue_ratio_form");
+        data.id = residueRatioId;
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/residueRatio/saveResidueRatio",
@@ -194,8 +199,8 @@
                 Loading.progressHide();
                 if (result.ret) {
                     toastr.success('保存成功');
-                    if(callbak) {
-                        callbak(result.data.id,result.data.resultValue);
+                    if (callbak) {
+                        callbak(result.data.id, result.data.resultValue);
                     }
                 }
                 else {
@@ -209,7 +214,7 @@
     }
     residueRatio.ratioChange = function () {
         $("#residueRatioType0").attr("checked", "checked");//默认第一个选中
-        $('input:radio[name="method"]').change(function () {
+        $('input:radio[name="type"]').change(function () {
             //清空成新率
             $("#residue_ratio_cxl").text("");
             $("#residue_ratio_resultValue").val("")
@@ -236,16 +241,36 @@
                 $("#residue_ratio_part2").show();
                 $("#residue_ratio_weight1").show();
                 $("#residue_ratio_weight2").show();
-
+                residueRatio.compositeCxl();
             }
         })
     }
-
+    residueRatio.ratioShow = function () {
+        var type = $("input[type='radio']:checked").val();
+        if (type == 0) {
+            $("#residueRatioType0").attr("checked", "checked");
+            $("#residue_ratio_part1").show();
+            $("#residue_ratio_part2").hide();
+            $("#residue_ratio_weight1").hide();
+            $("#residue_ratio_weight2").hide();
+        } else if (type == 1) {
+            $("#residueRatioType1").attr("checked", "checked");
+            $("#residue_ratio_part1").hide();
+            $("#residue_ratio_part2").show();
+            $("#residue_ratio_weight1").hide();
+            $("#residue_ratio_weight2").hide();
+        } else {
+            $("#residueRatioType2").attr("checked", "checked");
+            $("#residue_ratio_part1").show();
+            $("#residue_ratio_part2").show();
+            $("#residue_ratio_weight1").show();
+            $("#residue_ratio_weight2").show();
+        }
+    }
 
     //权重改变
     residueRatio.changeRate = function () {
         var ageRate = Number($("#residue_ratio_ageRate").val());
-        console.log(ageRate)
         if (ageRate >= 0 && ageRate <= 1) {
             $("#residue_ratio_observeRate").val(1 - ageRate);
             if ($("#residue_ratio_form").valid()) {
@@ -301,8 +326,6 @@
     residueRatio.getAgeLimitCxl = function () {
         var usedYear = Number($("#residue_ratio_usedYear").val());
         var usableYear = Number($("#residue_ratio_usableYear").val());
-        console.log(usedYear);
-        console.log(usableYear);
         if ($("#residue_ratio_usedYear").val() && $("#residue_ratio_usableYear").val()) {
             if (usedYear > usableYear) {
                 $("#residue_ratio_usedYear").val("");
@@ -311,8 +334,8 @@
             } else {
                 var ageLimitCxl = 1 - (usedYear / usableYear);
                 if ($("#residueRatioType0").is(":checked")) {
-                    $("#residue_ratio_cxl").text(ageLimitCxl * 100 + "%");
-                    $("#residue_ratio_resultValue").val(ageLimitCxl * 100 + "%")
+                    $("#residue_ratio_cxl").text((ageLimitCxl * 100).toFixed(2) + "%");
+                    $("#residue_ratio_resultValue").val((ageLimitCxl * 100).toFixed(2) + "%");
                 }
                 return ageLimitCxl * 100;
             }
@@ -333,6 +356,7 @@
                 $("#residueRatioDecorationScore").attr("value") >= 0 &&
                 $("#residueRatioEquipmentScore").attr("value") >= 0 &&
                 $("#residueRatioOtherScore").attr("value") >= 0) {
+
                 if (!$("#residueRatioType0").is(":checked")) {
                     observeCxl = residueRatio.getLevel(observeCxl);
                 }
@@ -347,14 +371,12 @@
     residueRatio.compositeCxl = function () {
         if ($("#residue_ratio_form").valid()) {
             var ageLimitCxl = residueRatio.getAgeLimitCxl();
-            console.log(ageLimitCxl);
             var observeCxl = residueRatio.getObserveCxl();
-            console.log(observeCxl + "========----")
             var ageRate = $("#residue_ratio_ageRate").val();
             var observeRate = $("#residue_ratio_observeRate").val();
             if (observeCxl >= 0 && ageLimitCxl >= 0 && ageRate >= 0 && observeRate >= 0) {
                 $("#residue_ratio_cxl").text(ageLimitCxl * ageRate + observeCxl * observeRate + "%");
-                $("#residue_ratio_resultValue").val(ageLimitCxl * ageRate + observeCxl * observeRate + "%");
+                $("#residue_ratio_resultValue").val((ageLimitCxl * ageRate + observeCxl * observeRate).toFixed(2) + "%");
             }
         }
     }
@@ -374,5 +396,67 @@
         $("#residue_ratio_resultValue").val(level + "%")
         return level;
     }
+
+    //观察法回显数据
+    residueRatio.initObserve = function (residueRatioId) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/residueRatio/initObserve",
+            type: "post",
+            dataType: "json",
+            data: {
+                residueRatioId: residueRatioId,
+            },
+            success: function (result) {
+                if (result.ret) {
+                    console.log(result.data);
+                    var serializeArray = $("#residue_ratio_form").serializeArray();
+                    for (var i = 0; i < serializeArray.length; i++) {
+                        var name = serializeArray[i].name;
+                        if (result.data[name]) {
+                            var value = result.data[name];
+                            $("[name='" + name + "']").val(value);
+                        }
+
+                    }
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
+    //年限法回显数据
+    residueRatio.initAgeLimit = function (residueRatioId) {
+        console.log("init" + residueRatioId);
+        $.ajax({
+            url: "${pageContext.request.contextPath}/residueRatio/initAgeLimit",
+            type: "post",
+            dataType: "json",
+            data: {
+                residueRatioId: residueRatioId,
+            },
+            success: function (result) {
+                if (result.ret) {
+                    console.log(result.data);
+                    $("#residue_ratio_form").initForm(result.data);
+                    if (result.data.resultValue) {
+                        $("#residue_ratio_cxl").text(result.data.resultValue);
+                    }
+                    residueRatio.ratioShow();
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
 
 </script>

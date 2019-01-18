@@ -120,7 +120,7 @@ public class SchemeSupportInfoService {
                 schemeSupportInfoDao.addSupportInfo(schemeSupportInfo);
             }
         }
-        List<DataEvaluationBasis> basisList = evaluationBasisService.getBasisList(type, category, medhod, purpose);//依据
+        List<DataEvaluationBasis> basisList = evaluationBasisService.getEnableBasisList(type, category, medhod, purpose);//依据
         if (CollectionUtils.isNotEmpty(basisList)) {
             for (DataEvaluationBasis evaluationBasis : basisList) {
                 //先判断该委估对象是否已产生填写该配置数据项

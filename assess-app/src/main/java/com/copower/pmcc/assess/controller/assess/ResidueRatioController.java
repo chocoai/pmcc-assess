@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.controller.assess;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.DataDamagedDegree;
+import com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatio;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseWaterDrainVo;
 import com.copower.pmcc.assess.service.basic.BasicHouseDamagedDegreeService;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -62,6 +65,30 @@ public class ResidueRatioController {
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/initObserve", method = {RequestMethod.POST}, name = "保存")
+    public HttpResult initObserve(Integer residueRatioId) {
+        try {
+            HashMap<String, String> observeDate = dataBlockService.getObserveDate(residueRatioId);
+            return HttpResult.newCorrectResult(JSONObject.toJSON(observeDate));
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("获取数据异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/initAgeLimit", method = {RequestMethod.POST}, name = "保存")
+    public HttpResult initAgeLimit(Integer residueRatioId) {
+        try {
+            ToolResidueRatio residueRatio = dataBlockService.initAgeLimit(residueRatioId);
+            return HttpResult.newCorrectResult(residueRatio);
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("获取数据异常");
         }
     }
 }

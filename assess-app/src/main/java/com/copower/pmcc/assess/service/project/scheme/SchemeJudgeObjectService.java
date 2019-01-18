@@ -120,6 +120,7 @@ public class SchemeJudgeObjectService {
 
     /**
      * 获取启用的委估对象
+     *
      * @param areaGroupId
      * @return
      */
@@ -321,7 +322,8 @@ public class SchemeJudgeObjectService {
                 floorAreaTotal = floorAreaTotal.add(schemeJudgeObject.getFloorArea());
             if (schemeJudgeObject.getEvaluationArea() != null)
                 evaluationAreaTotal = evaluationAreaTotal.add(schemeJudgeObject.getEvaluationArea());
-            stringBuilder.append(schemeJudgeObject.getRentalPossessionDesc()).append("\r\n");
+            if (StringUtils.isNotBlank(schemeJudgeObject.getRentalPossessionDesc()))
+                stringBuilder.append(schemeJudgeObject.getRentalPossessionDesc()).append("\r\n");
         }
         mergeJudgeObject.setId(null);
         mergeJudgeObject.setPid(0);

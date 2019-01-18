@@ -209,6 +209,11 @@ AssessDicKey.examine_house_heating_method = "examine.house.heating.method";//供
 AssessDicKey.examine_house_heating_equipment_price_range = "examine.house.heating.equipment_price_range";//供暖设备价格区间
 AssessDicKey.examine_house_corollary_equipment_type = "examine.house.corollary.equipment.type";//配套设备设施 类型
 
+//房屋完损度
+AssessDicKey.damaged_degree_structural_part = "structural.part";//房屋完损度-结构部分
+AssessDicKey.damaged_degree_decoration_part = "decoration.part";//房屋完损度-装修部分
+AssessDicKey.damaged_degree_equipment_part = "equipment.part";//房屋完损度-设备部分
+AssessDicKey.damaged_degree_other = "other";//房屋完损度-其它
 
 //其它
 AssessDicKey.build_addedvalueadditionaltaxrate = "build.addedValueAdditionalTaxRate";//增值及附加税率

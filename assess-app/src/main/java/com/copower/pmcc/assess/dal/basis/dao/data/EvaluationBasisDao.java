@@ -36,10 +36,16 @@ public class EvaluationBasisDao {
         return evaluationBasisMapper.selectByExample(example);
     }
 
-    public List<DataEvaluationBasis> getBasisList(Integer type, Integer category, String method, String purpose) {
+    public List<DataEvaluationBasis> getEnableBasisList(String type, String category, String method, String purpose) {
         DataEvaluationBasisExample example = new DataEvaluationBasisExample();
         DataEvaluationBasisExample.Criteria criteria = example.createCriteria();
-        criteria.andTypeEqualTo(type).andCategoryEqualTo(category);
+        criteria.andBisEnableEqualTo(true);
+        if (StringUtils.isNotBlank(type)) {
+            criteria.andTypeLike(String.format("%%%s%%", type));
+        }
+        if (StringUtils.isNotBlank(category)) {
+            criteria.andCategoryLike(String.format("%%%s%%", category));
+        }
         if (StringUtils.isNotBlank(method)) {
             criteria.andMethodLike(String.format("%%%s%%", method));
         }

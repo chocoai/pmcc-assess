@@ -36,7 +36,7 @@
             config: function () {
                 var data = {};
                 data.table = "OtherPortionList";
-                data.type = "other";//设备部分
+                data.type = AssessDicKey.damaged_degree_other;//设备部分
                 return data;
             },
             loadDataDicList: function () {

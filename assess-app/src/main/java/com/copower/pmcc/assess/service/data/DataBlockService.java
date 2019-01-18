@@ -31,6 +31,7 @@ import org.springframework.util.ObjectUtils;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: zch
@@ -169,42 +170,40 @@ public class DataBlockService {
     }
 
     public ToolResidueRatio saveResidueRatio(String formData) throws Exception {
+        ToolResidueRatio toolResidueRatio = JSON.parseObject(formData, ToolResidueRatio.class);
         JSONObject jsonObject = JSON.parseObject(formData);
-        Integer houseId = -1;
-        if (!"".equals(jsonObject.getString("houseId"))) {
-            houseId = Integer.valueOf(jsonObject.getString("houseId"));
-        }
+        Integer houseId = toolResidueRatio.getHouseId();
         //更改数据表分值
-        List<BasicHouseDamagedDegreeVo> list = basicHouseDamagedDegreeService.getDamagedDegreeVoList(houseId);
-        String method = jsonObject.getString("method");
-        if (!method.equals("0")) {
-            if(CollectionUtils.isNotEmpty(list)) {
-                for (BasicHouseDamagedDegreeVo item : list) {
-                    String scoreId = "scores" + item.getCategory();
-                    String reallyScore = jsonObject.getString(scoreId);
-                    BigDecimal score = new BigDecimal(reallyScore);
-                    item.setScore(score);
-                    basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(item);
+        if (houseId != null) {
+            List<BasicHouseDamagedDegreeVo> list = basicHouseDamagedDegreeService.getDamagedDegreeVoList(houseId);
+            if (toolResidueRatio.getType() != 0) {
+                if (CollectionUtils.isNotEmpty(list)) {
+                    for (BasicHouseDamagedDegreeVo item : list) {
+                        String scoreId = "scores" + item.getCategory();
+                        String reallyScore = jsonObject.getString(scoreId);
+                        BigDecimal score = new BigDecimal(reallyScore);
+                        item.setScore(score);
+                        basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(item);
+                    }
                 }
             }
         }
-
         //保存
-        ToolResidueRatio toolResidueRatio = new ToolResidueRatio();
         HashMap<String, String> parameterMap = new HashMap<>();
-        parameterMap.put("houseId", jsonObject.getString("houseId"));
-        parameterMap.put("usedYear", jsonObject.getString("usedYear"));
-        parameterMap.put("usableYear", jsonObject.getString("usableYear"));
-        parameterMap.put("ageRate", jsonObject.getString("ageRate"));
-        parameterMap.put("observeRate", jsonObject.getString("observeRate"));
+        parameterMap.put("residueRatioStructuralScore", jsonObject.getString("residueRatioStructuralScore"));
+        parameterMap.put("residueRatioDecorationScore", jsonObject.getString("residueRatioDecorationScore"));
+        parameterMap.put("residueRatioEquipmentScore", jsonObject.getString("residueRatioEquipmentScore"));
+        parameterMap.put("residueRatioOtherScore", jsonObject.getString("residueRatioOtherScore"));
         String parameterValue = JSONObject.toJSON(parameterMap).toString();
         toolResidueRatio.setParameterValue(parameterValue);
-        toolResidueRatio.setType(Integer.valueOf(method));
-        String resultValue = jsonObject.getString("resultValue");
-        toolResidueRatio.setResultValue(resultValue);
 
-        toolResidueRatio.setCreator(commonService.thisUserAccount());
-        toolResidueRatioDao.addToolResidueRatio(toolResidueRatio);
+        if (toolResidueRatio.getId() != null) {
+
+            toolResidueRatioDao.editToolResidueRatio(toolResidueRatio);
+        } else {
+            toolResidueRatio.setCreator(commonService.thisUserAccount());
+            toolResidueRatioDao.addToolResidueRatio(toolResidueRatio);
+        }
         return toolResidueRatio;
     }
 
@@ -217,5 +216,39 @@ public class DataBlockService {
             scoreTotal = scoreTotal.add(item.getScore());
         }
         return scoreTotal.multiply(weight);
+    }
+
+    public HashMap<String, String> getObserveDate(Integer residueRatioId) {
+        HashMap<String, String> observeDateMap = new HashMap<>();
+        if (residueRatioId != null) {
+            ToolResidueRatio toolResidueRatio = toolResidueRatioDao.getToolResidueRatio(residueRatioId);
+            //成新法表中存在数据
+            if (toolResidueRatio != null) {
+                String parameterValue = toolResidueRatio.getParameterValue();
+                Map map = JSON.parseObject(parameterValue, Map.class);
+                observeDateMap.putAll(map);
+                List<BasicHouseDamagedDegreeVo> list = basicHouseDamagedDegreeService.getDamagedDegreeVoList(toolResidueRatio.getHouseId());
+                if (CollectionUtils.isNotEmpty(list)) {
+                    for (BasicHouseDamagedDegreeVo item : list) {
+                        String scoreId = "scores" + item.getCategory();
+                        String score = item.getScore().toString();
+                        observeDateMap.put(scoreId, score);
+                    }
+                }
+            }
+        }
+        return observeDateMap;
+    }
+
+    public ToolResidueRatio initAgeLimit(Integer residueRatioId) {
+        ToolResidueRatio alreadyObj = new ToolResidueRatio();
+        if (residueRatioId != null) {
+            alreadyObj = toolResidueRatioDao.getToolResidueRatio(residueRatioId);
+            //成新法表中存在数据
+            if (alreadyObj != null) {
+                return alreadyObj;
+            }
+        }
+        return alreadyObj;
     }
 }

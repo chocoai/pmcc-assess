@@ -13,13 +13,15 @@ public class DataEvaluationHypothesis {
 
     private String template;
 
-    private Integer type;
+    private String type;
 
-    private Integer category;
+    private String category;
 
     private Date pubDate;
 
     private Boolean bisModifiable;
+
+    private Boolean bisEnable;
 
     private String creator;
 
@@ -67,20 +69,20 @@ public class DataEvaluationHypothesis {
         this.template = template == null ? null : template.trim();
     }
 
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
-    public Integer getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Integer category) {
-        this.category = category;
+    public void setCategory(String category) {
+        this.category = category == null ? null : category.trim();
     }
 
     public Date getPubDate() {
@@ -97,6 +99,14 @@ public class DataEvaluationHypothesis {
 
     public void setBisModifiable(Boolean bisModifiable) {
         this.bisModifiable = bisModifiable;
+    }
+
+    public Boolean getBisEnable() {
+        return bisEnable;
+    }
+
+    public void setBisEnable(Boolean bisEnable) {
+        this.bisEnable = bisEnable;
     }
 
     public String getCreator() {

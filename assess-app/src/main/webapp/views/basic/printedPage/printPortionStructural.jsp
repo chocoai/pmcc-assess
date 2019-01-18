@@ -36,7 +36,7 @@
             config: function () {
                 var data = {};
                 data.table = "StructuralPortionList";
-                data.type = "structural.part";//结构部分
+                data.type = AssessDicKey.damaged_degree_structural_part;//结构部分
                 return data;
             },
             loadDataDicList: function () {

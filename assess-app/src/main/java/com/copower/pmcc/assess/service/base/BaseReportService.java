@@ -47,6 +47,9 @@ public class BaseReportService {
     @Autowired
     private InitiateUnitInformationService initiateUnitInformationService;
 
+    public BaseReportTemplate getBaseReportTemplateById(Integer id) {
+        return baseReportDao.getBaseReportTemplateById(id);
+    }
 
     //报告模板======================================================
     public void changeBaseReportTemplate(Integer id, Integer type) {
@@ -123,11 +126,9 @@ public class BaseReportService {
         if (unitInformationVo == null) {
             return null;
         }
-        List<BaseReportTemplate> reportTemplateList = getReportTemplate(Integer.valueOf(unitInformationVo.getuUseUnit()), projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), reportType);
-        if (CollectionUtils.isEmpty(reportTemplateList)) {
-            return null;
-        }
-        return reportTemplateList.get(0);
+        BaseReportTemplate template = getReportTemplate(Integer.valueOf(unitInformationVo.getuUseUnit()),
+                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), reportType, projectInfo.getEntrustPurpose());
+        return template;
     }
 
     /**
@@ -137,32 +138,51 @@ public class BaseReportService {
      * @param projectTypeId     项目类型
      * @param projectCategoryId 项目类别
      * @param reportType        报告类型
+     * @param reportType        委托目的
      * @return
      */
-    public List<BaseReportTemplate> getReportTemplate(Integer useUnit, Integer projectTypeId, Integer projectCategoryId, Integer reportType) {
-        //1.根据传递过来的参数获取模板
-        //2.未找到对应的模板 先以范围为全部进行查询 如果依然未找到 则取公司下的模板
+    public BaseReportTemplate getReportTemplate(Integer useUnit, Integer projectTypeId, Integer projectCategoryId, Integer reportType, Integer entrustPurpose) {
+        //1.先查询报告使用单位是否设置模板，如果未设置则取系统内置模板，
+        //2.如果设置了则根据参数获取对应模板，如果还是未找到则取统内置模板，
+        BaseReportTemplate resultTemplate = null;
+
         BaseReportTemplate baseReportTemplateWhere = new BaseReportTemplate();
         baseReportTemplateWhere.setReportType(reportType);
-        //客户单位
-        baseReportTemplateWhere.setUseUnit(useUnit);
+        baseReportTemplateWhere.setUseUnit(useUnit);//报告使用单位
         baseReportTemplateWhere.setType(projectTypeId);
         baseReportTemplateWhere.setCategory(projectCategoryId);
         baseReportTemplateWhere.setBisEnable(true);
         List<BaseReportTemplate> reportTemplateList = getBaseReportTemplate(baseReportTemplateWhere);
-
-        if (CollectionUtils.isEmpty(reportTemplateList)) {
-            //公司下的模板
+        resultTemplate = getReportTemplateByPurpose(reportTemplateList, entrustPurpose);
+        if (CollectionUtils.isEmpty(reportTemplateList)) {//系统内置模板
             useUnit = 0;
             baseReportTemplateWhere.setUseUnit(useUnit);
             reportTemplateList = getBaseReportTemplate(baseReportTemplateWhere);
+            resultTemplate = getReportTemplateByPurpose(reportTemplateList, entrustPurpose);
         }
-        return reportTemplateList;
+        return resultTemplate;
     }
 
-    public BaseReportTemplate getBaseReportTemplateById(Integer id){
-        return baseReportDao.getBaseReportTemplateById(id);
+    /**
+     * 现有模板数据中根据委托目的获取报告模板
+     *
+     * @param reportTemplateList
+     * @param entrustPurpose
+     * @return
+     */
+    private BaseReportTemplate getReportTemplateByPurpose(List<BaseReportTemplate> reportTemplateList, Integer entrustPurpose) {
+        if (CollectionUtils.isEmpty(reportTemplateList)) return null;
+        //1.先循环模板查询是否与参数委托目的一致的模板,找到后直接返回
+        //2.如果未找到则寻找没有设置委托目的的模板
+        for (BaseReportTemplate template : reportTemplateList) {
+            if(template.getEntrustPurpose()!=null&&template.getEntrustPurpose().equals(entrustPurpose))
+                return template;
+        }
+        List<BaseReportTemplate> filter = LangUtils.filter(reportTemplateList, o -> o.getEntrustPurpose() == null || o.getEntrustPurpose() == 0);
+        if(CollectionUtils.isEmpty(filter))return null;
+        return filter.get(0);
     }
+
 
 
 
