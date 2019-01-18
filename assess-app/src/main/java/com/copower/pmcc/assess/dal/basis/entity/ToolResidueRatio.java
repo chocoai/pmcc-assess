@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ToolResidueRatio {
@@ -7,7 +8,17 @@ public class ToolResidueRatio {
 
     private Integer type;
 
+    private Integer houseId;
+
     private String parameterValue;
+
+    private BigDecimal usableYear;
+
+    private BigDecimal usedYear;
+
+    private BigDecimal observeRate;
+
+    private BigDecimal ageRate;
 
     private String resultValue;
 
@@ -33,12 +44,52 @@ public class ToolResidueRatio {
         this.type = type;
     }
 
+    public Integer getHouseId() {
+        return houseId;
+    }
+
+    public void setHouseId(Integer houseId) {
+        this.houseId = houseId;
+    }
+
     public String getParameterValue() {
         return parameterValue;
     }
 
     public void setParameterValue(String parameterValue) {
         this.parameterValue = parameterValue == null ? null : parameterValue.trim();
+    }
+
+    public BigDecimal getUsableYear() {
+        return usableYear;
+    }
+
+    public void setUsableYear(BigDecimal usableYear) {
+        this.usableYear = usableYear;
+    }
+
+    public BigDecimal getUsedYear() {
+        return usedYear;
+    }
+
+    public void setUsedYear(BigDecimal usedYear) {
+        this.usedYear = usedYear;
+    }
+
+    public BigDecimal getObserveRate() {
+        return observeRate;
+    }
+
+    public void setObserveRate(BigDecimal observeRate) {
+        this.observeRate = observeRate;
+    }
+
+    public BigDecimal getAgeRate() {
+        return ageRate;
+    }
+
+    public void setAgeRate(BigDecimal ageRate) {
+        this.ageRate = ageRate;
     }
 
     public String getResultValue() {

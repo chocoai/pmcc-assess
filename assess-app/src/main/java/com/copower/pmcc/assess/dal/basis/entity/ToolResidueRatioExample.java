@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -225,6 +226,66 @@ public class ToolResidueRatioExample {
             return (Criteria) this;
         }
 
+        public Criteria andHouseIdIsNull() {
+            addCriterion("house_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdIsNotNull() {
+            addCriterion("house_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdEqualTo(Integer value) {
+            addCriterion("house_id =", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdNotEqualTo(Integer value) {
+            addCriterion("house_id <>", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdGreaterThan(Integer value) {
+            addCriterion("house_id >", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("house_id >=", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdLessThan(Integer value) {
+            addCriterion("house_id <", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdLessThanOrEqualTo(Integer value) {
+            addCriterion("house_id <=", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdIn(List<Integer> values) {
+            addCriterion("house_id in", values, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdNotIn(List<Integer> values) {
+            addCriterion("house_id not in", values, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdBetween(Integer value1, Integer value2) {
+            addCriterion("house_id between", value1, value2, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("house_id not between", value1, value2, "houseId");
+            return (Criteria) this;
+        }
+
         public Criteria andParameterValueIsNull() {
             addCriterion("parameter_value is null");
             return (Criteria) this;
@@ -292,6 +353,246 @@ public class ToolResidueRatioExample {
 
         public Criteria andParameterValueNotBetween(String value1, String value2) {
             addCriterion("parameter_value not between", value1, value2, "parameterValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearIsNull() {
+            addCriterion("usable_year is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearIsNotNull() {
+            addCriterion("usable_year is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearEqualTo(BigDecimal value) {
+            addCriterion("usable_year =", value, "usableYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearNotEqualTo(BigDecimal value) {
+            addCriterion("usable_year <>", value, "usableYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearGreaterThan(BigDecimal value) {
+            addCriterion("usable_year >", value, "usableYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("usable_year >=", value, "usableYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearLessThan(BigDecimal value) {
+            addCriterion("usable_year <", value, "usableYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("usable_year <=", value, "usableYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearIn(List<BigDecimal> values) {
+            addCriterion("usable_year in", values, "usableYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearNotIn(List<BigDecimal> values) {
+            addCriterion("usable_year not in", values, "usableYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("usable_year between", value1, value2, "usableYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsableYearNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("usable_year not between", value1, value2, "usableYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearIsNull() {
+            addCriterion("used_year is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearIsNotNull() {
+            addCriterion("used_year is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearEqualTo(BigDecimal value) {
+            addCriterion("used_year =", value, "usedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearNotEqualTo(BigDecimal value) {
+            addCriterion("used_year <>", value, "usedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearGreaterThan(BigDecimal value) {
+            addCriterion("used_year >", value, "usedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("used_year >=", value, "usedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearLessThan(BigDecimal value) {
+            addCriterion("used_year <", value, "usedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("used_year <=", value, "usedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearIn(List<BigDecimal> values) {
+            addCriterion("used_year in", values, "usedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearNotIn(List<BigDecimal> values) {
+            addCriterion("used_year not in", values, "usedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("used_year between", value1, value2, "usedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsedYearNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("used_year not between", value1, value2, "usedYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andObserveRateIsNull() {
+            addCriterion("observe_rate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andObserveRateIsNotNull() {
+            addCriterion("observe_rate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andObserveRateEqualTo(BigDecimal value) {
+            addCriterion("observe_rate =", value, "observeRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andObserveRateNotEqualTo(BigDecimal value) {
+            addCriterion("observe_rate <>", value, "observeRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andObserveRateGreaterThan(BigDecimal value) {
+            addCriterion("observe_rate >", value, "observeRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andObserveRateGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("observe_rate >=", value, "observeRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andObserveRateLessThan(BigDecimal value) {
+            addCriterion("observe_rate <", value, "observeRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andObserveRateLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("observe_rate <=", value, "observeRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andObserveRateIn(List<BigDecimal> values) {
+            addCriterion("observe_rate in", values, "observeRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andObserveRateNotIn(List<BigDecimal> values) {
+            addCriterion("observe_rate not in", values, "observeRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andObserveRateBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("observe_rate between", value1, value2, "observeRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andObserveRateNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("observe_rate not between", value1, value2, "observeRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgeRateIsNull() {
+            addCriterion("age_rate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgeRateIsNotNull() {
+            addCriterion("age_rate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgeRateEqualTo(BigDecimal value) {
+            addCriterion("age_rate =", value, "ageRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgeRateNotEqualTo(BigDecimal value) {
+            addCriterion("age_rate <>", value, "ageRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgeRateGreaterThan(BigDecimal value) {
+            addCriterion("age_rate >", value, "ageRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgeRateGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("age_rate >=", value, "ageRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgeRateLessThan(BigDecimal value) {
+            addCriterion("age_rate <", value, "ageRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgeRateLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("age_rate <=", value, "ageRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgeRateIn(List<BigDecimal> values) {
+            addCriterion("age_rate in", values, "ageRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgeRateNotIn(List<BigDecimal> values) {
+            addCriterion("age_rate not in", values, "ageRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgeRateBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("age_rate between", value1, value2, "ageRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgeRateNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("age_rate not between", value1, value2, "ageRate");
             return (Criteria) this;
         }
 
