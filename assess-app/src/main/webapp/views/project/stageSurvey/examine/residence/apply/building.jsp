@@ -59,15 +59,15 @@
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    建筑使用年限
+                    建筑使用年限<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
                     <c:if test="${basicApply.type == 0 || basicApply.type==null}">
-                        <select name="residenceUseYear" class="form-control residenceUseYear search-select select2">
+                        <select name="residenceUseYear" required class="form-control residenceUseYear search-select select2">
                         </select>
                     </c:if>
                     <c:if test="${basicApply.type == 1}">
-                        <select name="industryUseYear" class="form-control industryUseYear search-select select2">
+                        <select name="industryUseYear" required class="form-control industryUseYear search-select select2">
                         </select>
                     </c:if>
                 </div>
@@ -183,11 +183,11 @@
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    竣工时间
+                    竣工时间<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
                     <input placeholder="竣工时间"
-                           name="beCompletedTime" data-date-format="yyyy-mm-dd"
+                           name="beCompletedTime" required data-date-format="yyyy-mm-dd"
                            class="form-control date-picker dbdate beCompletedTime">
                 </div>
             </div>
