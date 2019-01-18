@@ -84,6 +84,13 @@ public class ProjectTaskLiquidationAnalysisService {
         BeanUtils.copyProperties(dataTaxRateAllocation, vo);
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(dataTaxRateAllocation.getType());
         vo.setTypeName(baseDataDic.getName());
+        if(dataTaxRateAllocation.getTaxRate()!=null) {
+            vo.setRate(dataTaxRateAllocation.getTaxRate().multiply(new BigDecimal("100")).stripTrailingZeros().toString()+"%");
+        }else{
+            vo.setRate(dataTaxRateAllocation.getAmount().toString()+"元/㎡");
+        }
+        vo.setRemark("");
+        vo.setPrice(new BigDecimal("0"));
        /* if (dataTaxRateAllocation.getTaxRate() != null) {
             vo.setMoney(price.multiply(dataTaxRateAllocation.getTaxRate()));
         }*/
@@ -96,7 +103,7 @@ public class ProjectTaskLiquidationAnalysisService {
         vo.setTypeName(item.getTaxRateName());
         vo.setRemark(item.getRemark());
         if (item.getTaxRateValue() != null) {
-            vo.setTaxRate(new BigDecimal(item.getTaxRateValue()));
+            vo.setRate(item.getTaxRateValue());
         }
         vo.setPrice(item.getPrice());
         return vo;
@@ -167,8 +174,10 @@ public class ProjectTaskLiquidationAnalysisService {
             item.setMainId(master.getId());
             item.setTaxRateId(vo.getType());
             item.setTaxRateName(vo.getTypeName());
-            if (vo.getTaxRate() != null) {
-                item.setTaxRateValue(vo.getTaxRate().toString());
+            if(vo.getTaxRate()!=null) {
+                item.setTaxRateValue(vo.getTaxRate().multiply(new BigDecimal("100")).stripTrailingZeros().toString()+"%");
+            }else{
+                item.setTaxRateValue(vo.getAmount().toString()+"元/㎡");
             }
             schemeLiquidationAnalysisItemDao.addSchemeLiquidationAnalysisItem(item);
         } else {
