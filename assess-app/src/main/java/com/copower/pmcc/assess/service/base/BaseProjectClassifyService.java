@@ -481,7 +481,7 @@ public class BaseProjectClassifyService {
      * @return
      */
     public String getTypeAndCategoryName(String type, String category) {
-        if (StringUtils.isNotBlank(type) || StringUtils.isNotBlank(category)) return "";
+        if (StringUtils.isBlank(type) || StringUtils.isBlank(category)) return "";
         List<Integer> typeList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(StringUtils.strip(type, ",")));
         List<Integer> categoryList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(StringUtils.strip(category, ",")));
         if (CollectionUtils.isEmpty(typeList)) return "";
