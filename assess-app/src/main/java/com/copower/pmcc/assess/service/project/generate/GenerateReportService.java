@@ -180,8 +180,8 @@ public class GenerateReportService {
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setFileExtension("zip");
         //创建本地临时目录
-        String localPath = baseAttachmentService.createTempDirPath(UUID.randomUUID().toString().substring(2, 9));
-        File zipFile = new File(String.format("%s\\报告模板%s%s", localPath, UUID.randomUUID().toString().substring(1, 7), ".zip"));
+        String localPath = baseAttachmentService.createTempDirPath(UUID.randomUUID().toString());
+        File zipFile = new File(String.format("%s\\报告模板%s%s", localPath, UUID.randomUUID().toString(), ".zip"));
         FileUtils.zipFiles(srcFile, zipFile);
         sysAttachmentDto.setCreater(processControllerComponent.getThisUser());
         sysAttachmentDto.setFileSize(new Long(zipFile.length()).toString());
@@ -300,7 +300,7 @@ public class GenerateReportService {
      */
     private Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> getReportMap(BaseReportTemplate baseReportTemplate, Integer areaId, ProjectPlan projectPlan, Document document) throws Exception {
         Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> mapSet = Sets.newHashSet();
-        GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectPlan.getProjectId(), areaId, baseReportTemplate.getId());
+        GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectPlan.getProjectId(), areaId, baseReportTemplate.getId(),projectPlan);
         List<BaseReportField> fieldList = baseReportFieldService.query(new BaseReportField());
         //获取所有书签集合
         BookmarkCollection bookmarkCollection = AsposeUtils.getBookmarks(document);
@@ -380,7 +380,7 @@ public class GenerateReportService {
                     }
                 }
                 //房产类型
-                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.SetUse.getName(), bookmarkName)) {
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.HouseType.getName(), bookmarkName)) {
                     mapSet.add(getBaseReportFieldReplaceEnumMap(
                             BaseReportFieldReplaceEnum.BOOKMARK,
                             bookmarkCollection.get(i).getName(),
@@ -412,20 +412,6 @@ public class GenerateReportService {
                         }
                     }
                 }
-                //使用权类型
-                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.UseRightType.getName(), bookmarkName)) {
-                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.UseRightType.getName());
-                    if (baseReportField != null) {
-
-                    }
-                }
-                //土地实际用途
-                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.LandPracticalUse.getName(), bookmarkName)) {
-                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.LandPracticalUse.getName());
-                    if (baseReportField != null) {
-
-                    }
-                }
                 //委托目的表述
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.StatementPurposeEntrustment.getName(), bookmarkName)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.StatementPurposeEntrustment.getName());
@@ -449,15 +435,15 @@ public class GenerateReportService {
                 //估价对象区位状况表
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.judgeObjectAreaStatusSheet.getName(), bookmarkName)) {
                     //测试模板是否能够添加成功!
+//                    mapSet.add(getBaseReportFieldReplaceEnumMap(
+//                            BaseReportFieldReplaceEnum.FILE_FIXED,
+//                            bookmarkCollection.get(i).getName(),
+//                            generateBaseDataService.getJudgeObjectAreaStatusSheet2()));
+
                     mapSet.add(getBaseReportFieldReplaceEnumMap(
                             BaseReportFieldReplaceEnum.FILE_FIXED,
                             bookmarkCollection.get(i).getName(),
-                            generateBaseDataService.getJudgeObjectAreaStatusSheet2()));
-
-//                    mapSet.add(getBaseReportFieldReplaceEnumMap(
-//                            BaseReportFieldReplaceEnum.BOOKMARK,
-//                            bookmarkCollection.get(i).getName(),
-//                            generateBaseDataService.getJudgeObjectAreaStatusSheet()));
+                            generateBaseDataService.getJudgeObjectAreaStatusSheet()));
                 }
             }
         }

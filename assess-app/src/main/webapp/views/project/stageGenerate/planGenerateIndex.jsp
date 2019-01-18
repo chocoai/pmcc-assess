@@ -321,6 +321,7 @@
                 ids += $(n).val() + ",";
             }
         });
+        Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/generateReport/generate",
             data: {
@@ -335,6 +336,8 @@
                     AssessCommon.getSysAttachmentViewHtml(result.data, function (data) {
                         $("#reportDownloadWord").empty();
                         $("#reportDownloadWord").append(data);
+                        toastr.success('报告生成成功!');
+                        Loading.progressHide();
                     });
                 } else {
                     Alert("异常");

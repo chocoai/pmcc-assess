@@ -5,22 +5,29 @@ import com.aspose.words.Document;
 import com.aspose.words.DocumentBuilder;
 import com.aspose.words.Table;
 import com.copower.pmcc.assess.common.AsposeUtils;
-import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
+import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportService;
-import com.copower.pmcc.assess.service.method.MdMarketCompareFieldService;
+import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeFunctionService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
+import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,8 +36,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static com.copower.pmcc.assess.common.AsposeUtils.mergeCells;
 
 /**
  * Created by kings on 2019-1-16.
@@ -49,17 +54,21 @@ public class GenerateBaseDataService {
     private ProjectInfoService projectInfoService;
     private BaseDataDicService baseDataDicService;
     private BaseAttachmentService baseAttachmentService;
-    private MdMarketCompareFieldService mdMarketCompareFieldService;
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    private DataSetUseFieldService dataSetUseFieldService;
+    private ProjectPhaseService projectPhaseService;
 
     //构造器必须传入的参数
     private Integer projectId;
     private Integer areaId;
     private Integer baseReportTemplateId;
+    private ProjectPlan projectPlan;
 
     //中间变量
     private SchemeAreaGroup schemeAreaGroup;
     private BaseReportTemplate baseReportTemplate;
     private ProjectInfoVo projectInfo;
+    List<SchemeJudgeObject> schemeJudgeObjectList;
 
     //===========================================获取的值===============================
     //文号
@@ -93,23 +102,6 @@ public class GenerateBaseDataService {
     private String judgeObjectAreaStatusSheet;
     private String judgeObjectAreaStatusSheet2;
 
-    private GenerateBaseDataService() {
-    }
-
-    public GenerateBaseDataService(Integer projectId, Integer areaId, Integer baseReportTemplateId) {
-        this.projectId = projectId;
-        this.areaId = areaId;
-        this.baseReportTemplateId = baseReportTemplateId;
-        this.schemeJudgeObjectService = SpringContextUtils.getBean(SchemeJudgeObjectService.class);
-        this.schemeAreaGroupService = SpringContextUtils.getBean(SchemeAreaGroupService.class);
-        this.projectNumberRecordService = SpringContextUtils.getBean(ProjectNumberRecordService.class);
-        this.baseReportService = SpringContextUtils.getBean(BaseReportService.class);
-        this.projectInfoService = SpringContextUtils.getBean(ProjectInfoService.class);
-        this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
-        this.schemeJudgeFunctionService = SpringContextUtils.getBean(SchemeJudgeFunctionService.class);
-        this.baseAttachmentService = SpringContextUtils.getBean(BaseAttachmentService.class);
-        this.mdMarketCompareFieldService = SpringContextUtils.getBean(MdMarketCompareFieldService.class);
-    }
 
     /**
      * 获取区域信息(组)
@@ -120,7 +112,7 @@ public class GenerateBaseDataService {
         if (schemeAreaGroup != null) {
             return schemeAreaGroup;
         }
-        SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
+        SchemeAreaGroup areaGroup = schemeAreaGroupService.get(getAreaId());
         if (areaGroup == null) {
             areaGroup = new SchemeAreaGroup();
         }
@@ -162,6 +154,14 @@ public class GenerateBaseDataService {
         return projectId;
     }
 
+    public ProjectPlan getProjectPlan() {
+        return projectPlan;
+    }
+
+    public Integer getAreaId() {
+        return areaId;
+    }
+
     /**
      * 委托人
      *
@@ -193,8 +193,7 @@ public class GenerateBaseDataService {
     }
 
     public BigDecimal getAssessArea() {
-        SchemeAreaGroup schemeAreaGroup = this.getSchemeAreaGroup();
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(schemeAreaGroup.getId());
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             double temp = 0.0;
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
@@ -213,9 +212,8 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getEvaluationMethod() {
-        SchemeAreaGroup schemeAreaGroup = this.getSchemeAreaGroup();
         StringBuilder builder = new StringBuilder("");
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(schemeAreaGroup.getId());
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
             List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
@@ -304,7 +302,7 @@ public class GenerateBaseDataService {
         try {
             SchemeAreaGroup schemeAreaGroup = this.getSchemeAreaGroup();
             builder.append(schemeAreaGroup.getAreaName());
-            List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(schemeAreaGroup.getId());
+            List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
             if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
                 String text = String.format("%s%s", schemeJudgeObjectList.get(0).getSeat(), "");
                 Matcher m = Pattern.compile("[\\d]+号").matcher(text);
@@ -339,7 +337,7 @@ public class GenerateBaseDataService {
         try {
             SchemeAreaGroup schemeAreaGroup = this.getSchemeAreaGroup();
             builder.append(schemeAreaGroup.getAreaName());
-            List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(schemeAreaGroup.getId());
+            List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
             if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
                 String text = String.format("%s%s", schemeJudgeObjectList.get(0).getSeat(), "");
                 Matcher m = Pattern.compile("[\\d]+楼[\\d]+号").matcher(text);
@@ -375,20 +373,19 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getSetUse() {
-        String s1 = "";
-        String s2 = "";
-        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.WORK_PROGRAMME_SET_USE);
-        if (CollectionUtils.isNotEmpty(baseDataDics)) {
-            for (BaseDataDic baseDataDic : baseDataDics) {
-                if (baseDataDic.getName().contains("住宅")) {
-                    s1 = baseDataDic.getName();
-                }
-                if (baseDataDic.getName().contains("商业")) {
-                    s2 = baseDataDic.getName();
+        StringBuilder stringBuilder = new StringBuilder();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                if (schemeJudgeObject.getSetUse() != null) {
+                    DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
+                    if (dataSetUseField != null) {
+                        stringBuilder.append(dataSetUseField.getName());
+                    }
                 }
             }
+            this.setUse = moreJudgeObject(stringBuilder.toString(), stringBuilder.toString());
         }
-        this.setUse = moreJudgeObject(s1, s2);
         if (StringUtils.isNotBlank(this.setUse)) {
             return setUse;
         } else {
@@ -403,7 +400,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String moreJudgeObject(String str, String s) {
-        if (StringUtils.isBlank(str)) {
+        if (StringUtils.isBlank(str) || StringUtils.isBlank(s)) {
             return "";
         } else {
             return String.format("1,3号委估对象%s2号委估对象%s", str, s);
@@ -416,6 +413,18 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getLandPracticalUse() {
+        StringBuilder builder = new StringBuilder();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            schemeJudgeObjectList.parallelStream().forEach(schemeJudgeObject -> {
+                if (NumberUtils.isNumber(schemeJudgeObject.getCertUse())) {
+                    builder.append(baseDataDicService.getNameById(schemeJudgeObject.getCertUse()));
+                } else {
+                    builder.append(schemeJudgeObject.getCertUse());
+                }
+            });
+            this.landPracticalUse = moreJudgeObject(builder.toString(), builder.toString());
+        }
         if (StringUtils.isNotBlank(this.landPracticalUse)) {
             return landPracticalUse;
         } else {
@@ -429,6 +438,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getUseRightType() {
+        this.useRightType = getLandPracticalUse();
         if (StringUtils.isNotBlank(this.useRightType)) {
             return useRightType;
         } else {
@@ -443,7 +453,7 @@ public class GenerateBaseDataService {
      */
     public String getJudgeObjectAreaStatusSheet2() {
         Document doc = null;
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString().substring(2, 9)), UUID.randomUUID().toString().substring(1, 7), ".doc");
+        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
         try {
             doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -473,8 +483,10 @@ public class GenerateBaseDataService {
 
 
             // We want to merge the range of cells found in between these two cells.
-            Cell cellStartRange = table.getRows().get(0).getCells().get(0); //第1行第1列
-            Cell cellEndRange = table.getRows().get(1).getCells().get(0); //第2行第1列
+            //第1行第1列
+            Cell cellStartRange = table.getRows().get(0).getCells().get(0);
+            //第2行第1列
+            Cell cellEndRange = table.getRows().get(1).getCells().get(0);
             // Merge all the cells between the two specified cells into one.
             AsposeUtils.mergeCells(cellStartRange, cellEndRange, table);
             builder.endTable();
@@ -491,11 +503,146 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getJudgeObjectAreaStatusSheet() {
-        if (StringUtils.isNotBlank(this.judgeObjectAreaStatusSheet)) {
-            return judgeObjectAreaStatusSheet;
-        } else {
-            return errorStr;
+    public String getJudgeObjectAreaStatusSheet() throws Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+
+        List<ProjectPhaseVo> projectPhaseVos = projectPhaseService.queryProjectPhaseByCategory(getProjectInfo().getProjectTypeId(),
+                getProjectInfo().getProjectCategoryId(), null);
+        ProjectPhase projectPhaseScene = null;
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(projectPhaseVos)) {
+            for (ProjectPhaseVo projectPhaseVo : projectPhaseVos) {
+                if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
+                    projectPhaseScene = projectPhaseVo;
+                }
+            }
         }
+        if (projectPhaseScene != null) {
+            if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+                for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
+                    SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+                    ProjectPlanDetails query = new ProjectPlanDetails();
+                    query.setProjectId(getProjectId());
+                    query.setProjectPhaseId(projectPhaseScene.getId());
+                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
+                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+                        DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
+                        List<DataSetUseField> setUseFields = Lists.newArrayList();
+                        if (dataSetUseField != null) {
+                            setUseFields.add(dataSetUseField);
+                        }
+                        ProjectPlanDetails projectPlanDetails = projectPlanDetailsList.get(0);
+                        GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
+                        builder.writeln(schemeJudgeObject.getName());
+                        List<MergeCellModel> mergeCellModelList = Lists.newArrayList();
+                        Table table = builder.startTable();
+                        //行
+                        for (int j = 0; j < 20; j++) {
+                            if (0 <= j && j <= 5) {
+                                //列
+                                for (int k = 0; k < 5; k++) {
+                                    if (k == 0 && j == 0) {
+                                        builder.insertCell();
+                                        builder.writeln("区域位置");
+                                    } else {
+                                        builder.insertCell();
+                                        builder.writeln(String.format("%d-%d", j, k));
+                                    }
+                                }
+                                builder.endRow();
+                                mergeCellModelList.add(new MergeCellModel(0, 0, 5, 0));
+                                mergeCellModelList.add(new MergeCellModel(j, 1, j, 2));
+                            }
+                            if (5 < j && j <= 10) {
+                                for (int k = 0; k < 5; k++) {
+                                    if (k == 0 && j == 6) {
+                                        builder.insertCell();
+                                        builder.writeln("交通状况");
+                                    } else {
+                                        builder.insertCell();
+                                        builder.writeln(String.format("%d-%d", j, k));
+                                    }
+                                }
+                                builder.endRow();
+                                mergeCellModelList.add(new MergeCellModel(6, 0, 10, 0));
+                                mergeCellModelList.add(new MergeCellModel(j, 1, j, 2));
+                            }
+                            if (10 < j && j <= 15) {
+                                for (int k = 0; k < 5; k++) {
+                                    if (k == 0 && j == 11) {
+                                        builder.insertCell();
+                                        builder.writeln("外部配套设施");
+                                    } else {
+                                        builder.insertCell();
+                                        builder.writeln(String.format("%d-%d", j, k));
+                                    }
+                                }
+                                builder.endRow();
+                                mergeCellModelList.add(new MergeCellModel(11, 0, 15, 0));
+                                mergeCellModelList.add(new MergeCellModel(12, 1, 15, 1));
+                                mergeCellModelList.add(new MergeCellModel(11, 1, 11, 2));
+                            }
+                            if (15 < j && j <= 18){
+                                for (int k = 0; k < 5; k++) {
+                                    if (k == 0 && j == 16) {
+                                        builder.insertCell();
+                                        builder.writeln("周围环境和景观");
+                                    } else {
+                                        builder.insertCell();
+                                        builder.writeln(String.format("%d-%d", j, k));
+                                    }
+                                }
+                                builder.endRow();
+                                mergeCellModelList.add(new MergeCellModel(16, 0, 18, 0));
+                                mergeCellModelList.add(new MergeCellModel(j, 1, j, 2));
+                            }
+                        }
+                        for (MergeCellModel mergeCellModel : mergeCellModelList) {
+                            Cell cellStartRange = table.getRows().get(mergeCellModel.getStartRowIndex()).getCells().get(mergeCellModel.getStartColumnIndex());
+                            Cell cellEndRange = table.getRows().get(mergeCellModel.getEndRowIndex()).getCells().get(mergeCellModel.getEndColumnIndex());
+                            AsposeUtils.mergeCells(cellStartRange, cellEndRange, table);
+                        }
+                        builder.endTable();
+                    }
+                }
+            }
+        }
+        doc.save(localPath);
+        this.judgeObjectAreaStatusSheet = localPath;
+        return judgeObjectAreaStatusSheet;
     }
+
+    public List<SchemeJudgeObject> getSchemeJudgeObjectList() {
+        this.schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(this.getSchemeAreaGroup().getId());
+        return this.schemeJudgeObjectList;
+    }
+
+    public GenerateBaseExamineService getGenerateBaseExamineService(Integer planDetailsId) {
+        return new GenerateBaseExamineService(planDetailsId);
+    }
+
+    private GenerateBaseDataService() {
+    }
+
+    public GenerateBaseDataService(Integer projectId, Integer areaId, Integer baseReportTemplateId, ProjectPlan projectPlan) {
+        this.projectPlan = projectPlan;
+        this.projectId = projectId;
+        this.areaId = areaId;
+        this.baseReportTemplateId = baseReportTemplateId;
+        this.schemeJudgeObjectService = SpringContextUtils.getBean(SchemeJudgeObjectService.class);
+        this.schemeAreaGroupService = SpringContextUtils.getBean(SchemeAreaGroupService.class);
+        this.projectNumberRecordService = SpringContextUtils.getBean(ProjectNumberRecordService.class);
+        this.baseReportService = SpringContextUtils.getBean(BaseReportService.class);
+        this.projectInfoService = SpringContextUtils.getBean(ProjectInfoService.class);
+        this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
+        this.schemeJudgeFunctionService = SpringContextUtils.getBean(SchemeJudgeFunctionService.class);
+        this.baseAttachmentService = SpringContextUtils.getBean(BaseAttachmentService.class);
+        this.projectPlanDetailsService = SpringContextUtils.getBean(ProjectPlanDetailsService.class);
+        this.dataSetUseFieldService = SpringContextUtils.getBean(DataSetUseFieldService.class);
+        this.projectPhaseService = SpringContextUtils.getBean(ProjectPhaseService.class);
+    }
+
 }
