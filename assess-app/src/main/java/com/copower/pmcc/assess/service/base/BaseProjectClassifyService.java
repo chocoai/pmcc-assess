@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.service.base;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.basis.dao.base.BaseProjectClassifyDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.dto.output.base.BaseProjectClassifyVo;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -25,7 +24,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,46 +53,6 @@ public class BaseProjectClassifyService {
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(CollectionUtils.isEmpty(list) ? new ArrayList<BaseProjectClassify>() : list);
         return bootstrapTableVo;
-    }
-
-    /**
-     * 根据项目详细获取具体的项目类别
-     *
-     * @param projectInfo
-     * @return
-     */
-    public BaseProjectClassify getProjectInfoByClassify(ProjectInfo projectInfo) {
-        if (ObjectUtils.isEmpty(projectInfo)) {
-            return null;
-        }
-        BaseProjectClassify baseProjectClassify = null;
-        Integer id = null;
-        Integer projectCategoryId = projectInfo.getProjectCategoryId();
-        Integer projectTypeId = projectInfo.getProjectTypeId();
-        Integer projectClassId = projectInfo.getProjectClassId();
-        //最先匹配 projectTypeId (此值最容易有值)
-        if (!ObjectUtils.isEmpty(projectTypeId)) {
-            id = projectTypeId;
-            baseProjectClassify = getCacheProjectClassifyById(id);
-            if (!ObjectUtils.isEmpty(baseProjectClassify)) {
-                return baseProjectClassify;
-            }
-        }
-        if (!ObjectUtils.isEmpty(projectClassId)) {
-            id = projectClassId;
-            baseProjectClassify = getCacheProjectClassifyById(id);
-            if (!ObjectUtils.isEmpty(baseProjectClassify)) {
-                return baseProjectClassify;
-            }
-        }
-        if (!ObjectUtils.isEmpty(projectCategoryId)) {
-            id = projectCategoryId;
-            baseProjectClassify = getCacheProjectClassifyById(id);
-            if (!ObjectUtils.isEmpty(baseProjectClassify)) {
-                return baseProjectClassify;
-            }
-        }
-        return null;
     }
 
     /**
@@ -269,6 +227,18 @@ public class BaseProjectClassifyService {
         } catch (Exception e) {
             return baseProjectClassifyDao.getSingleObject(id);
         }
+    }
+
+    /**
+     * 根据id获取名称
+     *
+     * @param id
+     * @return
+     */
+    public String getNameById(Integer id) {
+        BaseProjectClassify projectClassify = this.getCacheProjectClassifyById(id);
+        if (projectClassify == null) return "";
+        return projectClassify.getName();
     }
 
     /**
@@ -491,6 +461,7 @@ public class BaseProjectClassifyService {
 
     /**
      * 获取数据引用id
+     *
      * @param id
      * @return
      */
@@ -500,5 +471,26 @@ public class BaseProjectClassifyService {
         if (StringUtils.isBlank(projectClassify.getUseSameFieldName())) return id;
         projectClassify = this.getCacheProjectClassifyByFieldName(projectClassify.getUseSameFieldName());
         return projectClassify == null ? id : projectClassify.getId();
+    }
+
+    /**
+     * 获取类型类别的名称
+     *
+     * @param type
+     * @param category
+     * @return
+     */
+    public String getTypeAndCategoryName(String type, String category) {
+        if (StringUtils.isBlank(type) || StringUtils.isBlank(category)) return "";
+        List<Integer> typeList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(StringUtils.strip(type, ",")));
+        List<Integer> categoryList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(StringUtils.strip(category, ",")));
+        if (CollectionUtils.isEmpty(typeList)) return "";
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < typeList.size(); i++) {
+            stringBuilder.append(this.getNameById(typeList.get(i))).append("/")
+                    .append(this.getNameById(categoryList.get(i))).append(",");
+        }
+
+        return StringUtils.stripEnd(stringBuilder.toString(), ",");
     }
 }

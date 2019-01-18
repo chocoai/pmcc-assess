@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationBasisDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationBasis;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationBasisVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -17,6 +16,7 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -35,8 +35,6 @@ public class EvaluationBasisService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private CommonService commonService;
-    @Autowired
-    private DataCommonService dataCommonService;
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
@@ -104,49 +102,42 @@ public class EvaluationBasisService {
      * @param purpose
      * @return
      */
-    public List<DataEvaluationBasis> getBasisList(Integer type, Integer category,Integer method, Integer purpose) {
+    public List<DataEvaluationBasis> getEnableBasisList(Integer type, Integer category, Integer method, Integer purpose) {
+        String typeStr = new String();
+        String categoryStr = new String();
         String methodStr = new String();
         String purposeStr = new String();
+        if (type != null && type > 0) {
+            typeStr = String.format(",%s,", type);
+        }
+        if (category != null && category > 0) {
+            categoryStr = String.format(",%s,", category);
+        }
         if (method != null && method > 0) {
             methodStr = String.format(",%s,", method);
         }
         if (purpose != null && purpose > 0) {
             purposeStr = String.format(",%s,", purpose);
         }
-        return evaluationBasisDao.getBasisList(type,category,methodStr, purposeStr);
+        return evaluationBasisDao.getEnableBasisList(typeStr, categoryStr, methodStr, purposeStr);
     }
 
 
-    public DataEvaluationBasisVo getBasisVo(DataEvaluationBasis oo) {
-        if (oo == null) return null;
+    public DataEvaluationBasisVo getBasisVo(DataEvaluationBasis evaluationBasis) {
+        if (evaluationBasis == null) return null;
         List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD);
         List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         DataEvaluationBasisVo vo = new DataEvaluationBasisVo();
-        BeanUtils.copyProperties(oo, vo);
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(oo.getMethod())) {
-            vo.setMethodStr(dataCommonService.getDataDicName(methodDicList, oo.getMethod()));
+        BeanUtils.copyProperties(evaluationBasis, vo);
+        if (StringUtils.isNotBlank(evaluationBasis.getMethod())) {
+            vo.setMethodStr(baseDataDicService.getDataDicName(methodDicList, evaluationBasis.getMethod()));
         }
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(oo.getEntrustmentPurpose())) {
-            vo.setEntrustmentPurposeStr(dataCommonService.getDataDicName(purposeDicList, oo.getEntrustmentPurpose()));
+        if (StringUtils.isNotBlank(evaluationBasis.getEntrustmentPurpose())) {
+            vo.setEntrustmentPurposeStr(baseDataDicService.getDataDicName(purposeDicList, evaluationBasis.getEntrustmentPurpose()));
         }
-        BaseProjectClassify baseProjectClassify = null;
-        if (oo.getCategory() != null){
-            baseProjectClassify = baseProjectClassifyService.getProjectClassifyById(oo.getCategory());
-            if (baseProjectClassify != null){
-                vo.setCategoryName(baseProjectClassify.getName());
-                baseProjectClassify = null;
-            }
-        }
-        if (oo.getType() != null){
-            baseProjectClassify = baseProjectClassifyService.getProjectClassifyById(oo.getType());
-            if (baseProjectClassify != null){
-                vo.setTypeName(baseProjectClassify.getName());
-                baseProjectClassify = null;
-            }
-        }
+        vo.setTypeName(baseProjectClassifyService.getTypeAndCategoryName(evaluationBasis.getType(),evaluationBasis.getCategory()));
         return vo;
     }
-
 
 
 }

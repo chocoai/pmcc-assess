@@ -238,6 +238,9 @@
     function submit() {
         var surePriceApply = {};
         var form = $("#sure_price_form");
+        if (!form.valid()) {
+            return false;
+        }
         surePriceApply.id = form.find('[name=id]').val();
         surePriceApply.judgeObjectId = '${projectPlanDetails.judgeObjectId}';
         surePriceApply.weightExplain = form.find('[name=weightExplain]').val();

@@ -70,120 +70,117 @@
             <form id="frm" class="form-horizontal">
                 <input type="hidden" id="id" name="id" value="0">
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel-body">
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="name" id="name" placeholder="名称"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            类型<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select name="type"
-                                                    class="form-control search-select select2 type">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            类别<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select name="category"
-                                                    class="form-control category search-select select2">
-                                                <option selected="selected" value="">请先选择类型</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            委托目的<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10" id="entrustmentPurpose">
-                                            <c:forEach items="${purposeDicList}" var="item">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                名称<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="name" id="name" placeholder="名称"
+                                       required="required">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                是否启用
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="radio-inline">
+                                    <input type="checkbox" id="bisEnable" name="bisEnable" value="true"
+                                           checked="checked">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                项目类型<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <select name="type" required class="form-control search-select select2 type">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                项目类别<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <select name="category" required class="form-control category search-select select2">
+                                    <option selected="selected" value="">请先选择类型</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                委托目的<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-10" id="entrustmentPurpose">
+                                <c:forEach items="${purposeDicList}" var="item">
                                                 <span class="checkbox-inline">
                                                 <input type="checkbox" id="entrustmentPurpose${item.id}" required name="entrustmentPurpose" value="${item.id}"
                                                        class="form-inline">
                                                 <label for="entrustmentPurpose${item.id}">${item.name}</label>
                                                 </span>
-                                            </c:forEach>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            评估方法<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10" id="method">
-                                            <c:forEach items="${methodDicList}" var="item">
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                评估方法<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-10" id="method">
+                                <c:forEach items="${methodDicList}" var="item">
                                                 <span class="checkbox-inline">
                                                 <input type="checkbox" id="method${item.id}" required name="method" value="${item.id}"
                                                        class="form-inline">
                                                 <label for="method${item.id}">${item.name}</label>
                                                 </span>
-                                            </c:forEach>
+                                </c:forEach>
 
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            发布日期
-                                        </label>
-                                        <div class="col-sm-5">
-                                            <input type="text" data-date-format="yyyy-mm-dd"
-                                                   placeholder="发布日期" name="pubDate"
-                                                   class="form-control date-picker dbdate">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            是否修改
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <label class="radio-inline">
-                                                <input type="checkbox" id="bisModifiable" name="bisModifiable" value="true"
-                                                       checked="checked">
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            模板<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                发布日期
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" data-date-format="yyyy-mm-dd"
+                                       placeholder="发布日期" name="pubDate"
+                                       class="form-control date-picker dbdate">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                是否修改
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="radio-inline">
+                                    <input type="checkbox" id="bisModifiable" name="bisModifiable" value="true"
+                                           checked="checked">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                模板<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-10">
                                             <textarea required="required" placeholder="请填写模板" class="form-control"
                                                       id="template" name="template"
                                                       onkeyup="extractTemplateField()"></textarea>
-                                            <div class="template-field">
+                                <div class="template-field">
 
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -226,12 +223,12 @@
     //加载 评估依据 数据列表
     function loadBasisList() {
         var cols = [];
-        cols.push({field: 'name', title: '名称'});
-        cols.push({field: 'categoryName', title: '类别'});
-        cols.push({field: 'typeName', title: '类型'});
+        cols.push({field: 'name', title: '名称', formatter: function (value, row, index) {
+            return '<span title="'+row.template+'">'+value+'</span>';
+        }});
+        cols.push({field: 'typeName', title: '项目类型'});
         cols.push({field: 'entrustmentPurposeStr', title: '委托目的'});
         cols.push({field: 'methodStr', title: '评估方法'});
-        cols.push({field: 'template', title: '模板', width: '50%'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -362,7 +359,7 @@
                 url: "${pageContext.request.contextPath}/baseProjectClassify/getProjectClassifyListByFieldName",
                 type: "post",
                 dataType: "json",
-                data: {fieldName: "single"},//字段为固定 请参照BaseProjectClassifyController中....
+                data: {fieldName: AssessProjectClassifyKey.single},
                 success: function (result) {
                     if (result.ret) {
                         var data = result.data;
@@ -371,9 +368,7 @@
                             for (var i = 0; i < data.length; i++) {
                                 option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
-                            // $("#frm" + " .type").html(option);
                             $("#frm").find('select.type').html(option);
-                            // $("#frm" + " .category").select2();
                         }
                     }
                     else {
@@ -390,7 +385,6 @@
         },
         //类别
         category:function () {
-            //监听change 事件 并做出......
             $("#frm" + " .type").change(function () {
                 var pid = $("#frm" + " .type").eq(1).val();
                 if (!objMethod.isEmpty(pid)) {
@@ -409,14 +403,7 @@
                                 for (var i = 0; i < data.length; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                // if ($("#frm" + " .category").prev(".category").size() > 0) {
-                                //     $("#frm" + " .category").prev(".category").remove();
-                                // }
                                 $("#frm").find('select.category').html(option);
-
-                                // $("#frm" + " .category").empty();
-                                // $("#frm" + " .category").html(option);
-                                // $("#frm" + " .category").select2();
                             }
                         }
                         else {

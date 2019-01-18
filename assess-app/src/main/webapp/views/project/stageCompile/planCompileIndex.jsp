@@ -107,6 +107,7 @@
                     <div class="col-md-12">
                         <div class="panel-body">
                             <form id="frm_planDetails" class="form-horizontal">
+                                <input type="hidden" name="id">
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">

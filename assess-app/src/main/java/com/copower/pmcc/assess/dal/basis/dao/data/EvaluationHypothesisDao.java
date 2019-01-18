@@ -40,7 +40,6 @@ public class EvaluationHypothesisDao {
     public List<DataEvaluationHypothesis> getHypothesisList(Integer type,Integer category,String method,String purpose) {
         DataEvaluationHypothesisExample example = new DataEvaluationHypothesisExample();
         DataEvaluationHypothesisExample.Criteria criteria = example.createCriteria();
-        criteria.andTypeEqualTo(type).andCategoryEqualTo(category);
         if(StringUtils.isNotBlank(method)){
             criteria.andMethodLike(String.format("%%%s%%",method));
         }

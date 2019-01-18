@@ -7,13 +7,15 @@ public class DataEvaluationThinking {
 
     private String name;
 
-    private Integer type;
+    private String type;
 
-    private Integer category;
+    private String category;
 
     private String method;
 
     private String templateContent;
+
+    private Boolean bisEnable;
 
     private String creator;
 
@@ -37,20 +39,20 @@ public class DataEvaluationThinking {
         this.name = name == null ? null : name.trim();
     }
 
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
-    public Integer getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Integer category) {
-        this.category = category;
+    public void setCategory(String category) {
+        this.category = category == null ? null : category.trim();
     }
 
     public String getMethod() {
@@ -67,6 +69,14 @@ public class DataEvaluationThinking {
 
     public void setTemplateContent(String templateContent) {
         this.templateContent = templateContent == null ? null : templateContent.trim();
+    }
+
+    public Boolean getBisEnable() {
+        return bisEnable;
+    }
+
+    public void setBisEnable(Boolean bisEnable) {
+        this.bisEnable = bisEnable;
     }
 
     public String getCreator() {

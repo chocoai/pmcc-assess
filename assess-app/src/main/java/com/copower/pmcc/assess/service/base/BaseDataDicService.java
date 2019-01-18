@@ -12,6 +12,7 @@ import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
 import com.github.pagehelper.Page;
@@ -359,4 +360,25 @@ public class BaseDataDicService {
         return null;
     }
 
+    /**
+     * 获取集合中对应名称
+     * @param dataDicList
+     * @param idString
+     * @return
+     */
+    public String getDataDicName(List<BaseDataDic> dataDicList,String idString){
+        StringBuilder result = new StringBuilder();
+        if (StringUtils.isNotBlank(idString)) {
+            String s = StringUtils.strip(idString, ",");
+            List<Integer> integerList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(s));
+            for (Integer integer : integerList) {
+                for (BaseDataDic baseDataDic : dataDicList) {
+                    if (integer.equals(baseDataDic.getId())){
+                        result.append(baseDataDic.getName()).append(",");
+                    }
+                }
+            }
+        }
+        return StringUtils.strip(result.toString(), ",");
+    }
 }

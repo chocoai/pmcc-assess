@@ -736,7 +736,7 @@
                 houseId: th.find('[name=houseId]').val(),
                 success: function (id, resultValue) {
                     th.find('[name=residueRatioId]').val(id);
-                    $(_this).closest('td').find('a').text(resultValue);
+                    $(_this).closest('td').find('a').editable('setValue',resultValue);
                 }
             });
         }
