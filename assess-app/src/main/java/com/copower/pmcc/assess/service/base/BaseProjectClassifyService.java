@@ -236,6 +236,7 @@ public class BaseProjectClassifyService {
      * @return
      */
     public String getNameById(Integer id) {
+        if (id == null) return "";
         BaseProjectClassify projectClassify = this.getCacheProjectClassifyById(id);
         if (projectClassify == null) return "";
         return projectClassify.getName();

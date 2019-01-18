@@ -139,11 +139,14 @@ public class SurveyCaseStudyService {
             ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
             planDetails.setId(0);
             planDetails.setPid(projectPlanDetails.getPid());
+            planDetails.setProjectPhaseId(null);
             planDetails.setProjectPhaseName(projectPlanDetails.getProjectPhaseName());
             planDetails.setPlanStartDate(projectPlanDetails.getPlanStartDate());
             planDetails.setPlanEndDate(projectPlanDetails.getPlanEndDate());
             planDetails.setPlanHours(projectPlanDetails.getPlanHours());
             planDetails.setProportion(projectPlanDetails.getProportion());
+            planDetails.setBisStart(false);
+            planDetails.setBisLastLayer(false);
             planDetails.setSorting(1);
             planDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
             planDetails.setCreator(commonService.thisUserAccount());
@@ -159,7 +162,7 @@ public class SurveyCaseStudyService {
      * @param planDetailsId
      */
     @Transactional(rollbackFor = Exception.class)
-    public void deleteCaseTask(Integer planDetailsId) throws BusinessException {
+    public void deleteCaseTask(Integer planDetailsId) throws Exception {
         //先验证是否满足删除条件
         //需删除该计划任务下的子项任务，项目待提交的任务
         List<ProjectPlanDetails> list = projectPlanDetailsService.getPlanDetailsListRecursion(planDetailsId, true);

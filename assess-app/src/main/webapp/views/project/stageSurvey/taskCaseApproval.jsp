@@ -25,12 +25,12 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${declareRecord.name}-${projectPlanDetails.projectPhaseName}</h2>
+                    <h3>${declareRecord.name}-${projectPlanDetails.projectPhaseName}</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
                     <table id="case_list" class="table table-bordered" style="max-height: auto;"></table>
-                    <form id="frm_case" class="form-horizontal">
+                    <form id="frm_case" class="form-horizontal" style="display: none">
                         <fieldset>
                             <legend>同步数据到其它权证</legend>
                             <div class="form-group">

@@ -91,7 +91,7 @@
                                 <li class="plan_tab_li" plan-id="${plan.id}">
                                     <a href="#tab_plan_${plan.id}" data-toggle="tab"
                                        aria-expanded="true">${plan.planName}
-                                        <c:if test="${plan.projectStatus eq 'plan' or plan.projectStatus eq 'task'}">
+                                        <c:if test="${plan.projectStatus eq 'planExecute' or plan.projectStatus eq 'task'}">
                                             <i class="fa fa-ellipsis-h"></i>
                                         </c:if>
                                     </a>
@@ -104,7 +104,7 @@
                                 <div class="tab-pane fade " id="tab_plan_${plan.id}">
                                     <c:if test="${not empty plan.planDisplayUrl}">
                                         <div class="col-md-3 col-sm-3 col-xs-3 col-sm-offset-1">
-                                            <div class="btn-group" style="display:none;">
+                                            <div class="btn-group">
                                                 <c:if test="${empty plan.planExecutUrl}">
                                                     <button class="btn btn-sm btn-primary" type="button">
                                                         计划编制
@@ -159,7 +159,7 @@
             projectDetails.loadPlanTabInfo($(this));
         });
 
-        projectDetails.selectRuningTab();
+        projectDetails.getRuningTab().tab('show');
     })
 </script>
 <script type="application/javascript">
@@ -401,21 +401,21 @@
             });
         },
 
-        //默认选择进行中的阶段tab
-        selectRuningTab: function () {
-            $('.plan_tab').find('i:first').closest('li').find('a').tab('show');
+        //选择进行中的阶段tab
+        getRuningTab: function () {
+            return $('.plan_tab').find('i:first').closest('li').find('a');
+        },
+
+        //选择激活的tab
+        getActiveTab: function () {
+            return $('.plan_tab').find('li.active').find('a');
         },
 
         //打开任务页面的回调
         taskOpenWin: function (url) {
             openWin(url, function () {
-                projectDetails.reloadPlanDetailsList();
+                projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
             })
-        },
-
-        //重新加载
-        reloadPlanDetailsList: function () {
-            projectDetails.loadPlanTabInfo($('.plan_tab').find('i:first').closest('li').find('a'));
         },
 
         //重启任务
@@ -430,7 +430,7 @@
                     success: function (result) {
                         if (result.ret) {
                             toastr.success('任务重启成功');
-                            projectDetails.reloadPlanDetailsList();
+                            projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
                             layer.close(index);
                         } else {
                             Alert(result.errmsg);
@@ -454,7 +454,7 @@
                             success: function (result) {
                                 if (result.ret) {
                                     toastr.success('责任人调整成功');
-                                    projectDetails.reloadPlanDetailsList();
+                                    projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
                                 } else {
                                     Alert(result.errmsg);
                                 }

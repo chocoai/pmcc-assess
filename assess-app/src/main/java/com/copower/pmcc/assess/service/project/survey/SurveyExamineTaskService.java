@@ -97,6 +97,8 @@ public class SurveyExamineTaskService {
     private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
     @Autowired
     private SurveyExamineTaskService surveyExamineTaskService;
+    @Autowired
+    private BasicApplyService basicApplyService;
 
     /**
      * 获取调查任务
@@ -393,11 +395,10 @@ public class SurveyExamineTaskService {
         ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         ProjectWorkStage workStage = projectWorkStageService.cacheProjectWorkStage(planDetails.getProjectWorkStageId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());
-        ProjectPhase phase = projectPhaseService.getCacheProjectPhaseById(planDetails.getProjectPhaseId());
         String phaseKey = null;
-        if (AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE.contains(phase.getPhaseKey()))
+        if (examineTypeEnum.getId().equals(ExamineTypeEnum.EXPLORE.getId()))
             phaseKey = AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE;
-        if (AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE.contains(phase.getPhaseKey()))
+        if (examineTypeEnum.getId().equals(ExamineTypeEnum.CASE.getId()))
             phaseKey = AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE;
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(phaseKey);
         //添加计划任务子项及待提交任务
@@ -410,13 +411,14 @@ public class SurveyExamineTaskService {
         taskPlanDetails.setProjectPhaseId(projectPhase.getId());
         taskPlanDetails.setExecuteUserAccount(commonService.thisUserAccount());
         taskPlanDetails.setExecuteDepartmentId(sysUser.getDepartmentId());
+        taskPlanDetails.setBisLastLayer(true);
         taskPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
         taskPlanDetails.setCreator(commonService.thisUserAccount());
         taskPlanDetails.setProjectPhaseName(String.format("%s-%s", planDetails.getProjectPhaseName(), publicService.getUserNameByAccount(commonService.thisUserAccount())));
         projectPlanDetailsService.saveProjectPlanDetails(taskPlanDetails);
 
         SurveyExamineInfo surveyExamineInfo = new SurveyExamineInfo();
-        surveyExamineInfo.setExamineType(ExamineTypeEnum.EXPLORE.getId());
+        surveyExamineInfo.setExamineType(examineTypeEnum.getId());
         surveyExamineInfo.setProjectId(planDetails.getProjectId());
         surveyExamineInfo.setPlanDetailsId(planDetails.getId());
         surveyExamineInfo.setExamineFormType(examineFormType);
@@ -483,7 +485,7 @@ public class SurveyExamineTaskService {
      * @param surveyExamineTaskDto
      */
     @Transactional(rollbackFor = Exception.class)
-    public void confirmAssignment(SurveyExamineTaskDto surveyExamineTaskDto) throws BusinessException {
+    public void confirmAssignment(SurveyExamineTaskDto surveyExamineTaskDto) throws Exception {
         ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(surveyExamineTaskDto.getPlanDetailsId());
         if (surveyExamineTaskDto.getExamineInfoId() == null) {
             SurveyExamineInfo surveyExamineInfo = new SurveyExamineInfo();
@@ -566,7 +568,8 @@ public class SurveyExamineTaskService {
      *
      * @param list
      */
-    public void deletePlanDetailsAndTask(List<ProjectPlanDetails> list) {
+    @Transactional(rollbackFor = Exception.class)
+    public void deletePlanDetailsAndTask(List<ProjectPlanDetails> list) throws Exception {
         if (CollectionUtils.isEmpty(list)) return;
         for (ProjectPlanDetails projectDetail : list) {
             //删除
@@ -581,6 +584,15 @@ public class SurveyExamineTaskService {
                     //删除此任务
                     bpmRpcProjectTaskService.deleteProjectTask(responsibilityDto.getId());
                 }
+            }
+            //删除查勘过程数据
+            BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(projectDetail.getId());
+            if (basicApply != null) {
+                basicEstateService.clearInvalidData(basicApply.getId());
+                basicBuildingService.clearInvalidData(basicApply.getId());
+                basicUnitService.clearInvalidData(basicApply.getId());
+                basicHouseService.clearInvalidData(basicApply.getId());
+                basicApplyService.deleteBasicApply(basicApply.getId());
             }
         }
     }
@@ -644,7 +656,7 @@ public class SurveyExamineTaskService {
         }
 
         if (StringUtils.isNotBlank(jsonObject.getString("basicApply"))) {
-           BasicApply basicApply = JSONObject.parseObject(jsonObject.getString("basicApply"), BasicApply.class);
+            BasicApply basicApply = JSONObject.parseObject(jsonObject.getString("basicApply"), BasicApply.class);
         }
         if (StringUtils.isNotBlank(jsonObject.getString("basicEstate"))) {
             basicEstate = JSONObject.parseObject(jsonObject.getString("basicEstate"), BasicEstate.class);

@@ -13,9 +13,16 @@ import java.util.List;
  * @time: 15:46
  */
 public enum ProjectStatusEnum {
-    PAUSEAPPLY("pauseapply", "暂停申请"), PAUSE("pause", "暂停"), WAIT("wait", "待处理"), STARTAPPLY("startapply", "启动申请"),
-    NORMAL("normal", "进行中"), CLOSE("close", "关闭"), FINISH("finish", "完成"), PLAN
-            ("planExecute", "安排计划"), TASK("task", "提交成果"),RUNING("runing","正在进行中");
+    PAUSEAPPLY("pauseapply", "暂停申请"),
+    PAUSE("pause", "暂停"),
+    WAIT("wait", "待处理"),
+    STARTAPPLY("startapply", "启动申请"),
+    NORMAL("normal", "进行中"),
+    CLOSE("close", "关闭"),
+    FINISH("finish", "完成"),
+    PLAN("planExecute", "安排计划"),
+    TASK("task", "提交成果"),
+    RUNING("runing","正在进行中");
 
     private String key;
 

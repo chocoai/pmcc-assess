@@ -46,7 +46,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>详情计划</h2>
+                    <h3>详情计划</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class='treeGrid panel-body x_content' style="padding: 0px;">
