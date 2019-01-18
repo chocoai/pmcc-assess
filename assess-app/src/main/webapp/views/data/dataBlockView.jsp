@@ -66,7 +66,7 @@
         residueRatio.init({
             //usedYear: 10,
             //usableYear: 50,
-            houseId: 591
+            houseId: 592
             /* ,
              success: function (id, resultValue) {
                  alert(5555);
