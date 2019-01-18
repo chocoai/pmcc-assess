@@ -9,15 +9,17 @@ public class DataBestUseDescription {
 
     private String description;
 
+    private String type;
+
+    private String category;
+
+    private Boolean bisEnable;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Integer type;
-
-    private Integer category;
 
     public Integer getId() {
         return id;
@@ -43,6 +45,30 @@ public class DataBestUseDescription {
         this.description = description == null ? null : description.trim();
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category == null ? null : category.trim();
+    }
+
+    public Boolean getBisEnable() {
+        return bisEnable;
+    }
+
+    public void setBisEnable(Boolean bisEnable) {
+        this.bisEnable = bisEnable;
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -65,21 +91,5 @@ public class DataBestUseDescription {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public Integer getCategory() {
-        return category;
-    }
-
-    public void setCategory(Integer category) {
-        this.category = category;
     }
 }

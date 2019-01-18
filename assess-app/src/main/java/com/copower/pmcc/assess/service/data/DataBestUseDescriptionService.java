@@ -1,11 +1,8 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.dal.basis.dao.data.DataBestUseDescriptionDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.DataBestUseDescription;
 import com.copower.pmcc.assess.dto.output.data.DataBestUseDescriptionVo;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -29,10 +26,6 @@ public class DataBestUseDescriptionService {
 
     @Autowired
     private DataBestUseDescriptionDao dataBestUseDescriptionDao;
-    @Autowired
-    private BaseDataDicService baseDataDicService;
-    @Autowired
-    private DataCommonService dataCommonService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -72,24 +65,10 @@ public class DataBestUseDescriptionService {
         return flag;
     }
 
-    public DataBestUseDescriptionVo getDataBestUseDescription(DataBestUseDescription oo){
+    public DataBestUseDescriptionVo getDataBestUseDescription(DataBestUseDescription bestUseDescription){
         DataBestUseDescriptionVo vo = new DataBestUseDescriptionVo();
-        BeanUtils.copyProperties(oo,vo);
-        BaseProjectClassify baseProjectClassify = null;
-        if (oo.getCategory() != null){
-            baseProjectClassify = baseProjectClassifyService.getProjectClassifyById(oo.getCategory());
-            if (baseProjectClassify != null){
-                vo.setCategoryName(baseProjectClassify.getName());
-                baseProjectClassify = null;
-            }
-        }
-        if (oo.getType() != null){
-            baseProjectClassify = baseProjectClassifyService.getProjectClassifyById(oo.getType());
-            if (baseProjectClassify != null){
-                vo.setTypeName(baseProjectClassify.getName());
-                baseProjectClassify = null;
-            }
-        }
+        BeanUtils.copyProperties(bestUseDescription,vo);
+        vo.setTypeName(baseProjectClassifyService.getTypeAndCategoryName(bestUseDescription.getType(),bestUseDescription.getCategory()));
         return vo;
     }
 

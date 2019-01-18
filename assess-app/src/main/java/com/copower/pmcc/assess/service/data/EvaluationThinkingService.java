@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.service.data;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationThinkingDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationThinking;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationThinkingVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -37,8 +36,6 @@ public class EvaluationThinkingService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private CommonService commonService;
-    @Autowired
-    private DataCommonService dataCommonService;
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
@@ -114,33 +111,19 @@ public class EvaluationThinkingService {
     }
 
 
-    public DataEvaluationThinkingVo getThinkingVo(DataEvaluationThinking oo) {
-        if (oo == null) return null;
+    public DataEvaluationThinkingVo getThinkingVo(DataEvaluationThinking thinking) {
+        if (thinking == null) return null;
         List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD);
         DataEvaluationThinkingVo vo = new DataEvaluationThinkingVo();
-        BeanUtils.copyProperties(oo, vo);
+        BeanUtils.copyProperties(thinking, vo);
         try {
-            if (org.apache.commons.lang3.StringUtils.isNotBlank(oo.getMethod())) {
-                vo.setMethodStr(dataCommonService.getDataDicName(methodDicList, oo.getMethod()));
+            if (org.apache.commons.lang3.StringUtils.isNotBlank(thinking.getMethod())) {
+                vo.setMethodStr(baseDataDicService.getDataDicName(methodDicList, thinking.getMethod()));
             }
         } catch (Exception e1) {
             logger.error("exception:%s",e1.getMessage());
         }
-        BaseProjectClassify baseProjectClassify = null;
-        if (oo.getCategory() != null){
-            baseProjectClassify = baseProjectClassifyService.getProjectClassifyById(oo.getCategory());
-            if (baseProjectClassify != null){
-                vo.setCategoryName(baseProjectClassify.getName());
-                baseProjectClassify = null;
-            }
-        }
-        if (oo.getType() != null){
-            baseProjectClassify = baseProjectClassifyService.getProjectClassifyById(oo.getType());
-            if (baseProjectClassify != null){
-                vo.setTypeName(baseProjectClassify.getName());
-                baseProjectClassify = null;
-            }
-        }
+        vo.setTypeName(baseProjectClassifyService.getTypeAndCategoryName(thinking.getType(),thinking.getCategory()));
         return vo;
     }
 

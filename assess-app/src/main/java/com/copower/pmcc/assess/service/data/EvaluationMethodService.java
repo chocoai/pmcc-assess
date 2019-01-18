@@ -1,9 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationMethodDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationMethod;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationMethodVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -38,8 +35,6 @@ public class EvaluationMethodService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private CommonService commonService;
-    @Autowired
-    private DataCommonService dataCommonService;
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
@@ -104,34 +99,12 @@ public class EvaluationMethodService {
     }
 
 
-    public DataEvaluationMethodVo getMethodVo(DataEvaluationMethod oo) {
-        if (oo == null) return null;
-        List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD);
+    public DataEvaluationMethodVo getMethodVo(DataEvaluationMethod method) {
+        if (method == null) return null;
         DataEvaluationMethodVo vo = new DataEvaluationMethodVo();
-        BeanUtils.copyProperties(oo, vo);
-        BaseDataDic baseDataDic = null;
-        if (oo.getMethod() != null && oo.getMethod().intValue() > 0) {
-             baseDataDic = baseDataDicService.getDataDicById(oo.getMethod());
-            if (baseDataDic != null){
-                vo.setMethodStr(baseDataDic.getName());
-                baseDataDic = null;
-            }
-        }
-        BaseProjectClassify baseProjectClassify = null;
-        if (oo.getCategory() != null){
-            baseProjectClassify = baseProjectClassifyService.getProjectClassifyById(oo.getCategory());
-            if (baseProjectClassify != null){
-                vo.setCategoryName(baseProjectClassify.getName());
-                baseProjectClassify = null;
-            }
-        }
-        if (oo.getType() != null){
-            baseProjectClassify = baseProjectClassifyService.getProjectClassifyById(oo.getType());
-            if (baseProjectClassify != null){
-                vo.setTypeName(baseProjectClassify.getName());
-                baseProjectClassify = null;
-            }
-        }
+        BeanUtils.copyProperties(method, vo);
+        vo.setMethodStr(baseDataDicService.getNameById(method.getMethod()));
+        vo.setTypeName(baseProjectClassifyService.getTypeAndCategoryName(method.getType(),method.getCategory()));
         return vo;
     }
 

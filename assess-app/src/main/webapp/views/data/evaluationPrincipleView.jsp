@@ -79,9 +79,20 @@
                                         <label class="col-sm-2 control-label">
                                             名称<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-4">
                                             <input type="text" class="form-control" name="name" id="name" placeholder="名称"
                                                    required="required">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            是否启用
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <label class="radio-inline">
+                                                <input type="checkbox" id="bisEnable" name="bisEnable" value="true"
+                                                       checked="checked">
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -91,27 +102,24 @@
                                         <label class="col-sm-2 control-label">
                                             类型<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
-                                            <select name="type"
+                                        <div class="col-sm-4">
+                                            <select name="type" required
                                                     class="form-control search-select select2 type">
                                             </select>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             类别<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
-                                            <select name="category"
+                                        <div class="col-sm-4">
+                                            <select name="category" required
                                                     class="form-control category search-select select2">
                                                 <option selected="selected" value="">请先选择类型</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
@@ -231,12 +239,12 @@
     //加载 评估原则 数据列表
     function loadPrincipleList() {
         var cols = [];
-        cols.push({field: 'name', title: '名称'});
-        cols.push({field: 'categoryName', title: '类别'});
-        cols.push({field: 'typeName', title: '类型'});
+        cols.push({field: 'name', title: '名称', formatter: function (value, row, index) {
+            return '<span title="'+row.template+'">'+value+'</span>';
+        }});
+        cols.push({field: 'typeName', title: '项目类型'});
         cols.push({field: 'entrustmentPurposeStr', title: '委托目的'});
         cols.push({field: 'methodStr', title: '评估方法'});
-        cols.push({field: 'template', title: '模板',width:'50%'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
