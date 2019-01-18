@@ -145,10 +145,10 @@
                 $('#residue_ratio_form').find('[name=usedYear]').val(defaults.usedYear);
                 $('#residue_ratio_form').find('[name=usableYear]').val(defaults.usableYear);
                 $('#residue_ratio_form').find('[name=houseId]').val(defaults.houseId);
-                residueRatio.loadList(defaults.houseId, "residueRatioStructural", "structural.part");
-                residueRatio.loadList(defaults.houseId, "residueRatioDecoration", "decoration.part");
-                residueRatio.loadList(defaults.houseId, "residueRatioEquipment", "equipment.part");
-                residueRatio.loadList(defaults.houseId, "residueRatioOther", "other");
+                residueRatio.loadList(defaults.houseId, "residueRatioStructural", AssessDicKey.damaged_degree_structural_part);
+                residueRatio.loadList(defaults.houseId, "residueRatioDecoration", AssessDicKey.damaged_degree_decoration_part);
+                residueRatio.loadList(defaults.houseId, "residueRatioEquipment", AssessDicKey.damaged_degree_equipment_part);
+                residueRatio.loadList(defaults.houseId, "residueRatioOther", AssessDicKey.damaged_degree_other);
             }
         });
     }
