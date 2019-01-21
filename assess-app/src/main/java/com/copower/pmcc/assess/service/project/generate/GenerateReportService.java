@@ -334,21 +334,23 @@ public class GenerateReportService {
         //获取所有书签集合
         BookmarkCollection bookmarkCollection = AsposeUtils.getBookmarks(document);
 
-        switch (report_type) {
-            case AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT:
-                if (bookmarkCollection.getCount() >= 1) {
-                    for (int i = 0; i < bookmarkCollection.getCount(); i++) {
-                        String bookmarkName = getChinese(bookmarkCollection.get(i).getName());
-                        //文号
-                        if (com.google.common.base.Objects.equal(BaseReportFieldEnum.REPORTNUMBER.getName(), bookmarkName)) {
-                            BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.REPORTNUMBER.getName());
-                            if (baseReportField != null) {
-                                mapSet.add(getBaseReportFieldReplaceEnumMap(
-                                        BaseReportFieldReplaceEnum.BOOKMARK,
-                                        bookmarkCollection.get(i).getName(),
-                                        generateBaseDataService.getWordNumber()));
-                            }
-                        }
+        if (bookmarkCollection.getCount() >= 1) {
+            for (int i = 0; i < bookmarkCollection.getCount(); i++) {
+                String bookmarkName = getChinese(bookmarkCollection.get(i).getName());
+                /*##########################################公共书签替换 start ###################################################### */
+                //文号
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.REPORTNUMBER.getName(), bookmarkName)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.REPORTNUMBER.getName());
+                    if (baseReportField != null) {
+                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                BaseReportFieldReplaceEnum.BOOKMARK,
+                                bookmarkCollection.get(i).getName(),
+                                generateBaseDataService.getWordNumber()));
+                    }
+                }
+                /*##########################################公共书签替换 end ###################################################### */
+                switch (report_type) {
+                    case AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT:
                         //区位
                         if (com.google.common.base.Objects.equal(BaseReportFieldEnum.Location.getName(), bookmarkName)) {
                             BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.Location.getName());
@@ -478,9 +480,23 @@ public class GenerateReportService {
                                     bookmarkCollection.get(i).getName(),
                                     generateBaseDataService.getJudgeObjectLandStateSheet()));
                         }
-                    }
+                        break;
+                    case AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY:
+                        break;
+                    case AssessDataDicKeyConstant.REPORT_TYPE_RESULT:
+                        break;
+                    default:
+                        break;
                 }
-                if (CollectionUtils.isNotEmpty(regexS)) {
+
+            }
+        }
+        if (CollectionUtils.isNotEmpty(regexS)) {
+            /*##########################################公共字符替换 end ###################################################### */
+            //暂无
+            /*##########################################公共字符替换 start ###################################################### */
+            switch (report_type) {
+                case AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT:
                     for (String name : regexS) {
                         //委托人
                         if (Objects.equal(BaseReportFieldEnum.PRINCIPAL.getName(), name)) {
@@ -493,16 +509,15 @@ public class GenerateReportService {
                             }
                         }
                     }
-                }
-                break;
-            case AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY:
-                break;
-            case AssessDataDicKeyConstant.REPORT_TYPE_RESULT:
-                break;
-            default:
-                break;
+                    break;
+                case AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY:
+                    break;
+                case AssessDataDicKeyConstant.REPORT_TYPE_RESULT:
+                    break;
+                default:
+                    break;
+            }
         }
-
         return mapSet;
     }
 
