@@ -1,11 +1,16 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.assess.dal.basic.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.*;
+import com.copower.pmcc.assess.dto.output.data.DataBlockVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
+import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +26,7 @@ public class GenerateBaseExamineService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private BasicApplyService basicApplyService;
+    private BaseDataDicService baseDataDicService;
 
     private BasicBuildingService basicBuildingService;
     private BasicBuildingFunctionService basicBuildingFunctionService;
@@ -51,6 +57,7 @@ public class GenerateBaseExamineService {
     private BasicEstateLandStateService basicEstateLandStateService;
     private BasicEstateParkingService basicEstateParkingService;
     private BasicMatchingMaterialService basicMatchingMaterialService;
+    private DataBlockService dataBlockService;
 
 
     private BasicUnitService basicUnitService;
@@ -63,6 +70,19 @@ public class GenerateBaseExamineService {
 
     //===========================================获取的值===============================
     private BasicApply basicApply;
+
+    /**
+     * 取得版块信息
+     * @return
+     * @throws Exception
+     */
+    public DataBlockVo getByDataBlock()throws Exception{
+        DataBlockVo dataBlockVo = dataBlockService.getDataBlockVo(dataBlockService.getDataBlockById(getEstate().getBlockId()));
+        if (dataBlockVo == null){
+            dataBlockVo = new DataBlockVo();
+        }
+        return dataBlockVo;
+    }
 
     public List<BasicEstateNetwork> getBasicEstateNetworkList() throws Exception {
         return basicEstateNetworkService.getBasicEstateNetworkList(getEstate().getId());
@@ -298,6 +318,8 @@ public class GenerateBaseExamineService {
         this.basicEstateParkingService = SpringContextUtils.getBean(BasicEstateParkingService.class);
         this.basicMatchingEducationService = SpringContextUtils.getBean(BasicMatchingEducationService.class);
         this.basicMatchingMaterialService = SpringContextUtils.getBean(BasicMatchingMaterialService.class);
+        this.dataBlockService = SpringContextUtils.getBean(DataBlockService.class);
+        this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
 
         BasicApply apply = basicApplyService.getBasicApplyByPlanDetailsId(planDetailsId);
         if (apply == null) {
@@ -309,5 +331,32 @@ public class GenerateBaseExamineService {
     }
 
     private GenerateBaseExamineService() {
+    }
+
+    public void getCommonSupply(StringBuilder stringBuilder, BasicEstateSupply supply) {
+        stringBuilder.append(StringUtils.isEmpty(supply.getName()) ? "" : String.format("供应商名称:%s；", supply.getName()));
+        stringBuilder.append(supply.getLineGrade() == null ? "" : String.format("供应保障等级:%s；", baseDataDicService.getNameById(supply.getLineGrade())));
+        stringBuilder.append(supply.getReputation() == null ? "" : String.format("供应商信誉:%s；", baseDataDicService.getNameById(supply.getReputation())));
+        stringBuilder.append(supply.getGrade() == null ? "" : String.format("供应商等级:%s；", baseDataDicService.getNameById(supply.getGrade())));
+        stringBuilder.append(StringUtils.isEmpty(supply.getPower()) ? "" : String.format("供应量或功率:%s；", supply.getPower()));
+    }
+
+    public void getCommonBuildingFunction(List<BasicBuildingFunction> buildingFunctions, StringBuilder stringBuilder, BaseDataDic heatPreservationDic) {
+        for (BasicBuildingFunction buildingFunction : buildingFunctions) {
+            if (buildingFunction.getType() != null && buildingFunction.getType().equals(heatPreservationDic.getId())) {
+                stringBuilder.append(buildingFunction.getDecorationPart() == null ? "" : String.format("装修部位:%s；", baseDataDicService.getNameById(buildingFunction.getDecorationPart())));
+                stringBuilder.append(buildingFunction.getDecoratingMaterial() == null ? "" : String.format("装修材料:%s；", baseDataDicService.getNameById(buildingFunction.getDecoratingMaterial())));
+                stringBuilder.append(buildingFunction.getConstructionTechnology() == null ? "" : String.format("施工工艺:%s；", baseDataDicService.getNameById(buildingFunction.getConstructionTechnology())));
+                stringBuilder.append(buildingFunction.getMaterialPrice() == null ? "" : String.format("材料价格区间:%s；", baseDataDicService.getNameById(buildingFunction.getMaterialPrice())));
+            }
+        }
+    }
+
+    public void getEnvironmentString(StringBuilder stringBuilder, BaseDataDic sceneryDic, BasicMatchingEnvironment examineMatchingEnvironment) {
+        if (StringUtils.equals(String.valueOf(sceneryDic.getId()), examineMatchingEnvironment.getType())) {
+            stringBuilder.append(baseDataDicService.getNameById(examineMatchingEnvironment.getCategory()));
+            stringBuilder.append(baseDataDicService.getNameById(examineMatchingEnvironment.getInfluenceDegree()));
+            stringBuilder.append("；");
+        }
     }
 }
