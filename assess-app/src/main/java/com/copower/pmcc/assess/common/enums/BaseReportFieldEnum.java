@@ -27,6 +27,8 @@ public enum BaseReportFieldEnum {
     HouseType("", "房产类型", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     judgeObjectAreaStatusSheet("", "估价对象区位状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     judgeObjectLandStateSheet("", "估价土地实体状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    judgeBuildLandStateSheet("", "估价建筑物实体状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    inventoryRight("", "土地他项权利情况", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     EvaluationMethod("", "评估方法", BaseReportFieldReplaceEnum.BOOKMARK.getKey());
     private String key;
 

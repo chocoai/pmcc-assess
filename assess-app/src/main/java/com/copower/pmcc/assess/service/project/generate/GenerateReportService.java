@@ -466,6 +466,14 @@ public class GenerateReportService {
                                         generateBaseDataService.getEvaluationMethod()));
                             }
                         }
+                        //土地他项权利情况
+                        if (com.google.common.base.Objects.equal(BaseReportFieldEnum.inventoryRight.getName(), bookmarkName)) {
+                            BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.inventoryRight.getName());
+                            mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                    BaseReportFieldReplaceEnum.BOOKMARK,
+                                    bookmarkCollection.get(i).getName(),
+                                    generateBaseDataService.getInventoryRight()));
+                        }
                         //估价对象区位状况表
                         if (com.google.common.base.Objects.equal(BaseReportFieldEnum.judgeObjectAreaStatusSheet.getName(), bookmarkName)) {
                             mapSet.add(getBaseReportFieldReplaceEnumMap(
@@ -479,6 +487,13 @@ public class GenerateReportService {
                                     BaseReportFieldReplaceEnum.FILE_FIXED,
                                     bookmarkCollection.get(i).getName(),
                                     generateBaseDataService.getJudgeObjectLandStateSheet()));
+                        }
+                        //估价对象建筑实体状况表
+                        if (com.google.common.base.Objects.equal(BaseReportFieldEnum.judgeBuildLandStateSheet.getName(), bookmarkName)) {
+                            mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                    BaseReportFieldReplaceEnum.FILE_FIXED,
+                                    bookmarkCollection.get(i).getName(),
+                                    generateBaseDataService.getJudgeBuildLandStateSheet()));
                         }
                         break;
                     case AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY:
