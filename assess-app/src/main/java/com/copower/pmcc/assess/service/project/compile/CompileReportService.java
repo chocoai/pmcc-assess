@@ -120,7 +120,7 @@ public class CompileReportService {
         ProjectPlanDetails areaPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(projectPlanDetails.getPid());
         SchemeAreaGroup areaGroup = schemeAreaGroupDao.get(areaPlanDetails.getAreaId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-        List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisService.getDataReportAnalysisList(baseDataDic.getId(), projectInfo.getEntrustPurpose(), areaGroup.getProvince(), areaGroup.getCity());
+        List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisService.getDataReportAnalysisList(baseDataDic.getId(), projectInfo.getEntrustPurpose());
         CompileReportDetail compileReportDetail = null;
         if (CollectionUtils.isNotEmpty(reportAnalysisList)) {
             for (DataReportAnalysis dataReportAnalysis : reportAnalysisList) {

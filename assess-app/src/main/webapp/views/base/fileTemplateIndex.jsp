@@ -3,8 +3,6 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-    <script src="${pageContext.request.contextPath}/excludes/assets/plugins/laydate/laydate.js"
-            type="text/javascript"></script>
 </head>
 
 <body class="nav-md footer_fixed">

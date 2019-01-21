@@ -21,9 +21,15 @@ public class SchemeAreaGroup {
 
     private String timePointExplain;
 
+    private Integer entrustPurpose;
+
+    private String remarkEntrustPurpose;
+
     private Integer valueDefinition;
 
     private String valueConnotation;
+
+    private String valueConnotationDesc;
 
     private Boolean bisEnable;
 
@@ -107,6 +113,22 @@ public class SchemeAreaGroup {
         this.timePointExplain = timePointExplain == null ? null : timePointExplain.trim();
     }
 
+    public Integer getEntrustPurpose() {
+        return entrustPurpose;
+    }
+
+    public void setEntrustPurpose(Integer entrustPurpose) {
+        this.entrustPurpose = entrustPurpose;
+    }
+
+    public String getRemarkEntrustPurpose() {
+        return remarkEntrustPurpose;
+    }
+
+    public void setRemarkEntrustPurpose(String remarkEntrustPurpose) {
+        this.remarkEntrustPurpose = remarkEntrustPurpose == null ? null : remarkEntrustPurpose.trim();
+    }
+
     public Integer getValueDefinition() {
         return valueDefinition;
     }
@@ -121,6 +143,14 @@ public class SchemeAreaGroup {
 
     public void setValueConnotation(String valueConnotation) {
         this.valueConnotation = valueConnotation == null ? null : valueConnotation.trim();
+    }
+
+    public String getValueConnotationDesc() {
+        return valueConnotationDesc;
+    }
+
+    public void setValueConnotationDesc(String valueConnotationDesc) {
+        this.valueConnotationDesc = valueConnotationDesc == null ? null : valueConnotationDesc.trim();
     }
 
     public Boolean getBisEnable() {

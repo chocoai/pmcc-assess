@@ -11,8 +11,11 @@
     <result column="area_name" property="areaName" jdbcType="VARCHAR" />
     <result column="value_time_point" property="valueTimePoint" jdbcType="TIMESTAMP" />
     <result column="time_point_explain" property="timePointExplain" jdbcType="VARCHAR" />
+    <result column="entrust_purpose" property="entrustPurpose" jdbcType="INTEGER" />
+    <result column="remark_entrust_purpose" property="remarkEntrustPurpose" jdbcType="VARCHAR" />
     <result column="value_definition" property="valueDefinition" jdbcType="INTEGER" />
     <result column="value_connotation" property="valueConnotation" jdbcType="VARCHAR" />
+    <result column="value_connotation_desc" property="valueConnotationDesc" jdbcType="VARCHAR" />
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
     <result column="bis_merge" property="bisMerge" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -79,8 +82,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, pid, project_id, province, city, district, area_name, value_time_point, time_point_explain, 
-    value_definition, value_connotation, bis_enable, bis_merge, creator, gmt_created, 
-    gmt_modified
+    entrust_purpose, remark_entrust_purpose, value_definition, value_connotation, value_connotation_desc, 
+    bis_enable, bis_merge, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroupExample" >
     select
@@ -118,16 +121,18 @@
     </selectKey>
     insert into tb_scheme_area_group (pid, project_id, province, 
       city, district, area_name, 
-      value_time_point, time_point_explain, value_definition, 
-      value_connotation, bis_enable, bis_merge, 
-      creator, gmt_created, gmt_modified
-      )
+      value_time_point, time_point_explain, entrust_purpose, 
+      remark_entrust_purpose, value_definition, 
+      value_connotation, value_connotation_desc, 
+      bis_enable, bis_merge, creator, 
+      gmt_created, gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{areaName,jdbcType=VARCHAR}, 
-      #{valueTimePoint,jdbcType=TIMESTAMP}, #{timePointExplain,jdbcType=VARCHAR}, #{valueDefinition,jdbcType=INTEGER}, 
-      #{valueConnotation,jdbcType=VARCHAR}, #{bisEnable,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{valueTimePoint,jdbcType=TIMESTAMP}, #{timePointExplain,jdbcType=VARCHAR}, #{entrustPurpose,jdbcType=INTEGER}, 
+      #{remarkEntrustPurpose,jdbcType=VARCHAR}, #{valueDefinition,jdbcType=INTEGER}, 
+      #{valueConnotation,jdbcType=VARCHAR}, #{valueConnotationDesc,jdbcType=VARCHAR}, 
+      #{bisEnable,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -159,11 +164,20 @@
       <if test="timePointExplain != null" >
         time_point_explain,
       </if>
+      <if test="entrustPurpose != null" >
+        entrust_purpose,
+      </if>
+      <if test="remarkEntrustPurpose != null" >
+        remark_entrust_purpose,
+      </if>
       <if test="valueDefinition != null" >
         value_definition,
       </if>
       <if test="valueConnotation != null" >
         value_connotation,
+      </if>
+      <if test="valueConnotationDesc != null" >
+        value_connotation_desc,
       </if>
       <if test="bisEnable != null" >
         bis_enable,
@@ -206,11 +220,20 @@
       <if test="timePointExplain != null" >
         #{timePointExplain,jdbcType=VARCHAR},
       </if>
+      <if test="entrustPurpose != null" >
+        #{entrustPurpose,jdbcType=INTEGER},
+      </if>
+      <if test="remarkEntrustPurpose != null" >
+        #{remarkEntrustPurpose,jdbcType=VARCHAR},
+      </if>
       <if test="valueDefinition != null" >
         #{valueDefinition,jdbcType=INTEGER},
       </if>
       <if test="valueConnotation != null" >
         #{valueConnotation,jdbcType=VARCHAR},
+      </if>
+      <if test="valueConnotationDesc != null" >
+        #{valueConnotationDesc,jdbcType=VARCHAR},
       </if>
       <if test="bisEnable != null" >
         #{bisEnable,jdbcType=BIT},
@@ -265,11 +288,20 @@
       <if test="record.timePointExplain != null" >
         time_point_explain = #{record.timePointExplain,jdbcType=VARCHAR},
       </if>
+      <if test="record.entrustPurpose != null" >
+        entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
+      </if>
+      <if test="record.remarkEntrustPurpose != null" >
+        remark_entrust_purpose = #{record.remarkEntrustPurpose,jdbcType=VARCHAR},
+      </if>
       <if test="record.valueDefinition != null" >
         value_definition = #{record.valueDefinition,jdbcType=INTEGER},
       </if>
       <if test="record.valueConnotation != null" >
         value_connotation = #{record.valueConnotation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.valueConnotationDesc != null" >
+        value_connotation_desc = #{record.valueConnotationDesc,jdbcType=VARCHAR},
       </if>
       <if test="record.bisEnable != null" >
         bis_enable = #{record.bisEnable,jdbcType=BIT},
@@ -302,8 +334,11 @@
       area_name = #{record.areaName,jdbcType=VARCHAR},
       value_time_point = #{record.valueTimePoint,jdbcType=TIMESTAMP},
       time_point_explain = #{record.timePointExplain,jdbcType=VARCHAR},
+      entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
+      remark_entrust_purpose = #{record.remarkEntrustPurpose,jdbcType=VARCHAR},
       value_definition = #{record.valueDefinition,jdbcType=INTEGER},
       value_connotation = #{record.valueConnotation,jdbcType=VARCHAR},
+      value_connotation_desc = #{record.valueConnotationDesc,jdbcType=VARCHAR},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       bis_merge = #{record.bisMerge,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -340,11 +375,20 @@
       <if test="timePointExplain != null" >
         time_point_explain = #{timePointExplain,jdbcType=VARCHAR},
       </if>
+      <if test="entrustPurpose != null" >
+        entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
+      </if>
+      <if test="remarkEntrustPurpose != null" >
+        remark_entrust_purpose = #{remarkEntrustPurpose,jdbcType=VARCHAR},
+      </if>
       <if test="valueDefinition != null" >
         value_definition = #{valueDefinition,jdbcType=INTEGER},
       </if>
       <if test="valueConnotation != null" >
         value_connotation = #{valueConnotation,jdbcType=VARCHAR},
+      </if>
+      <if test="valueConnotationDesc != null" >
+        value_connotation_desc = #{valueConnotationDesc,jdbcType=VARCHAR},
       </if>
       <if test="bisEnable != null" >
         bis_enable = #{bisEnable,jdbcType=BIT},
@@ -374,8 +418,11 @@
       area_name = #{areaName,jdbcType=VARCHAR},
       value_time_point = #{valueTimePoint,jdbcType=TIMESTAMP},
       time_point_explain = #{timePointExplain,jdbcType=VARCHAR},
+      entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
+      remark_entrust_purpose = #{remarkEntrustPurpose,jdbcType=VARCHAR},
       value_definition = #{valueDefinition,jdbcType=INTEGER},
       value_connotation = #{valueConnotation,jdbcType=VARCHAR},
+      value_connotation_desc = #{valueConnotationDesc,jdbcType=VARCHAR},
       bis_enable = #{bisEnable,jdbcType=BIT},
       bis_merge = #{bisMerge,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},

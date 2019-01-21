@@ -89,6 +89,6 @@ public class AssessDataDicKeyConstant {
     /**
      * 工作方案
      */
-    public static final String PROGRAMME_VALUE_DEFINITION = "programme.value.definition"; //价值定义
+    public static final String PROGRAMME_VALUE_CONNOTATION = "programme.value.connotation"; //价值内涵
     public static final String WORK_PROGRAMME_SET_USE = "work.programme.set.use"; //设定用途
 }
