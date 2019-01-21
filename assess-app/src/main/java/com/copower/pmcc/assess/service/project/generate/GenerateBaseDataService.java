@@ -111,6 +111,8 @@ public class GenerateBaseDataService {
     //估价对象区位状况表
     private String judgeObjectAreaStatusSheet;
 
+    //估价土地实体状况表
+    private String judgeObjectLandStateSheet;
 
     /**
      * 获取区域信息(组)
@@ -539,7 +541,7 @@ public class GenerateBaseDataService {
                                                     builder.writeln(String.format("%s%s", getSchemeAreaGroup().getAreaName(), schemeJudgeObject.getSeat()));
                                                     break;
                                                 case 1:
-                                                    builder.writeln(StringUtils.isNotBlank(generateBaseExamineService.getByDataBlock().getPosition())?generateBaseExamineService.getByDataBlock().getPosition():"方位：暂无");
+                                                    builder.writeln(StringUtils.isNotBlank(generateBaseExamineService.getByDataBlock().getPosition()) ? generateBaseExamineService.getByDataBlock().getPosition() : "方位：暂无");
                                                     break;
                                                 case 2:
                                                     builder.writeln("估价对象所在区域为规划新城区，区域商业待发展，目前以超市、零售商店为主，商业繁华度一般");
@@ -857,7 +859,7 @@ public class GenerateBaseDataService {
                                                     }
                                                     break;
                                                 case 18:
-                                                    if (true){
+                                                    if (true) {
                                                         List<BasicMatchingEnvironmentVo> environmentList = generateBaseExamineService.getBasicMatchingEnvironmentList();
                                                         StringBuilder stringBuilder = new StringBuilder(1024);
                                                         if (CollectionUtils.isNotEmpty(environmentList)) {
@@ -893,6 +895,233 @@ public class GenerateBaseDataService {
         doc.save(localPath);
         this.judgeObjectAreaStatusSheet = localPath;
         return judgeObjectAreaStatusSheet;
+    }
+
+    /**
+     * 估价土地实体状况表
+     *
+     * @return
+     */
+    public String getJudgeObjectLandStateSheet() throws Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+
+        List<ProjectPhaseVo> projectPhaseVos = projectPhaseService.queryProjectPhaseByCategory(getProjectInfo().getProjectTypeId(),
+                getProjectInfo().getProjectCategoryId(), null);
+        ProjectPhase projectPhaseScene = null;
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(projectPhaseVos)) {
+            for (ProjectPhaseVo projectPhaseVo : projectPhaseVos) {
+                if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
+                    projectPhaseScene = projectPhaseVo;
+                }
+            }
+        }
+        builder.writeln("估价土地实体状况表");
+        if (projectPhaseScene != null) {
+            if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+                for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
+                    SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+                    ProjectPlanDetails query = new ProjectPlanDetails();
+                    query.setProjectId(getProjectId());
+                    query.setProjectPhaseId(projectPhaseScene.getId());
+                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
+                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+                        ProjectPlanDetails projectPlanDetails = projectPlanDetailsList.get(0);
+                        GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
+                        Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
+                        Table table = builder.startTable();
+                        //行
+                        for (int j = 0; j < 8; j++) {
+                            switch (j) {
+                                case 0:
+                                    for (int k = 0; k < 5; k++) {
+                                        switch (k) {
+                                            case 0:
+                                                builder.insertCell();
+                                                builder.writeln("估价对象名称");
+                                                break;
+                                            case 1:
+                                                builder.insertCell();
+                                                builder.writeln(schemeJudgeObject.getName());
+                                                break;
+                                            case 4:
+                                                builder.insertCell();
+                                                if (i == 0) {
+
+                                                }
+                                                builder.writeln("备注");
+                                                break;
+                                            default:
+                                                builder.insertCell();
+                                                break;
+                                        }
+                                    }
+                                    builder.endRow();
+                                    break;
+                                case 1:
+                                    for (int k = 0; k < 5; k++) {
+                                        switch (k) {
+                                            case 0:
+                                                builder.insertCell();
+                                                builder.writeln("用途及级别");
+                                                break;
+                                            case 1:
+                                                builder.insertCell();
+                                                break;
+                                            case 4:
+                                                builder.insertCell();
+                                                break;
+                                            default:
+                                                builder.insertCell();
+                                                break;
+                                        }
+                                    }
+                                    builder.endRow();
+                                    break;
+                                case 2:
+                                    for (int k = 0; k < 5; k++) {
+                                        switch (k) {
+                                            case 0:
+                                                builder.insertCell();
+                                                builder.writeln("东至,南至,西至,北至");
+                                                break;
+                                            case 1:
+                                                builder.insertCell();
+                                                break;
+                                            case 4:
+                                                builder.insertCell();
+                                                break;
+                                            default:
+                                                builder.insertCell();
+                                                break;
+                                        }
+                                    }
+                                    builder.endRow();
+                                    break;
+                                case 3:
+                                    for (int k = 0; k < 5; k++) {
+                                        switch (k) {
+                                            case 0:
+                                                builder.insertCell();
+                                                builder.writeln("面积");
+                                                break;
+                                            case 1:
+                                                builder.insertCell();
+                                                break;
+                                            case 4:
+                                                builder.insertCell();
+                                                break;
+                                            default:
+                                                builder.insertCell();
+                                                break;
+                                        }
+                                    }
+                                    builder.endRow();
+                                    break;
+                                case 4:
+                                    for (int k = 0; k < 5; k++) {
+                                        switch (k) {
+                                            case 0:
+                                                builder.insertCell();
+                                                builder.writeln("形状");
+                                                break;
+                                            case 1:
+                                                builder.insertCell();
+                                                break;
+                                            case 4:
+                                                builder.insertCell();
+                                                break;
+                                            default:
+                                                builder.insertCell();
+                                                break;
+                                        }
+                                    }
+                                    builder.endRow();
+                                    break;
+                                case 5:
+                                    for (int k = 0; k < 5; k++) {
+                                        switch (k) {
+                                            case 0:
+                                                builder.insertCell();
+                                                builder.writeln("地形、地势、工程地质");
+                                                break;
+                                            case 1:
+                                                builder.insertCell();
+                                                break;
+                                            case 4:
+                                                builder.insertCell();
+                                                break;
+                                            default:
+                                                builder.insertCell();
+                                                break;
+                                        }
+                                    }
+                                    builder.endRow();
+                                    break;
+                                case 6:
+                                    for (int k = 0; k < 5; k++) {
+                                        switch (k) {
+                                            case 0:
+                                                builder.insertCell();
+                                                builder.writeln("开发程度");
+                                                break;
+                                            case 1:
+                                                builder.insertCell();
+                                                break;
+                                            case 4:
+                                                builder.insertCell();
+                                                break;
+                                            default:
+                                                builder.insertCell();
+                                                break;
+                                        }
+                                    }
+                                    builder.endRow();
+                                    break;
+                                case 7:
+                                    for (int k = 0; k < 5; k++) {
+                                        switch (k) {
+                                            case 0:
+                                                builder.insertCell();
+                                                builder.writeln("其它");
+                                                break;
+                                            case 1:
+                                                builder.insertCell();
+                                                break;
+                                            case 4:
+                                                builder.insertCell();
+                                                break;
+                                            default:
+                                                builder.insertCell();
+                                                break;
+                                        }
+                                    }
+                                    builder.endRow();
+                                    break;
+                                default:
+                                    break;
+                            }
+                            mergeCellModelList.add(new MergeCellModel(j, 1, j, 3));
+                        }
+                        if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
+                            for (MergeCellModel mergeCellModel : mergeCellModelList) {
+                                Cell cellStartRange = table.getRows().get(mergeCellModel.getStartRowIndex()).getCells().get(mergeCellModel.getStartColumnIndex());
+                                Cell cellEndRange = table.getRows().get(mergeCellModel.getEndRowIndex()).getCells().get(mergeCellModel.getEndColumnIndex());
+                                AsposeUtils.mergeCells(cellStartRange, cellEndRange, table);
+                            }
+                        }
+                        builder.endTable();
+                        builder.writeln("");
+                    }
+                }
+            }
+        }
+        doc.save(localPath);
+        this.judgeObjectLandStateSheet = localPath;
+        return judgeObjectLandStateSheet;
     }
 
     public List<SchemeJudgeObject> getSchemeJudgeObjectList() {
