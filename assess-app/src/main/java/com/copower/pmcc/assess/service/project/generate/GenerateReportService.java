@@ -246,7 +246,7 @@ public class GenerateReportService {
                                 if (value != null) {
                                     textMap.put(wordKey, value.toString());
                                 } else {
-                                    logger.error(String.format("word模板:%s%s", ChineseToPy.getFullSpell(wordKey), "替换失败!"), new Exception());
+                                    logger.error(String.format("word模板:%s%s", wordKey, "替换失败!"), new Exception());
                                 }
                             }
                             //(书签)
@@ -254,7 +254,7 @@ public class GenerateReportService {
                                 if (value != null) {
                                     bookmarkMap.put(wordKey, value.toString());
                                 } else {
-                                    logger.error(String.format("word模板:%s%s", ChineseToPy.getFullSpell(wordKey), "替换失败!"), new Exception());
+                                    logger.error(String.format("word模板:%s%s", wordKey, "替换失败!"), new Exception());
                                 }
                             }
                             //附件(子模板)需要替换才能合并到目标文档
@@ -268,9 +268,9 @@ public class GenerateReportService {
                             //固定word
                             if (com.google.common.base.Objects.equal(replaceEnum.getKey(), BaseReportFieldReplaceEnum.FILE_FIXED.getKey())) {
                                 if (value != null) {
-                                    fileFixedMap.put(wordKey,value.toString());
+                                    fileFixedMap.put(wordKey, value.toString());
                                 } else {
-                                    logger.error(String.format("word模板:%s%s", ChineseToPy.getFullSpell(wordKey), "替换失败!"), new Exception());
+                                    logger.error(String.format("word模板:%s%s", wordKey, "替换失败!"), new Exception());
                                 }
                             }
                         }
@@ -300,13 +300,13 @@ public class GenerateReportService {
      */
     private Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> getReportMap(BaseReportTemplate baseReportTemplate, Integer areaId, ProjectPlan projectPlan, Document document) throws Exception {
         Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> mapSet = Sets.newHashSet();
-        GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectPlan.getProjectId(), areaId, baseReportTemplate.getId(),projectPlan);
+        GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectPlan.getProjectId(), areaId, baseReportTemplate.getId(), projectPlan);
         List<BaseReportField> fieldList = baseReportFieldService.query(new BaseReportField());
         //获取所有书签集合
         BookmarkCollection bookmarkCollection = AsposeUtils.getBookmarks(document);
         if (bookmarkCollection.getCount() >= 1) {
             for (int i = 0; i < bookmarkCollection.getCount(); i++) {
-                String bookmarkName =  getChinese(bookmarkCollection.get(i).getName());
+                String bookmarkName = getChinese(bookmarkCollection.get(i).getName());
                 //文号
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.REPORTNUMBER.getName(), bookmarkName)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.REPORTNUMBER.getName());
@@ -434,12 +434,6 @@ public class GenerateReportService {
                 }
                 //估价对象区位状况表
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.judgeObjectAreaStatusSheet.getName(), bookmarkName)) {
-                    //测试模板是否能够添加成功!
-//                    mapSet.add(getBaseReportFieldReplaceEnumMap(
-//                            BaseReportFieldReplaceEnum.FILE_FIXED,
-//                            bookmarkCollection.get(i).getName(),
-//                            generateBaseDataService.getJudgeObjectAreaStatusSheet2()));
-
                     mapSet.add(getBaseReportFieldReplaceEnumMap(
                             BaseReportFieldReplaceEnum.FILE_FIXED,
                             bookmarkCollection.get(i).getName(),

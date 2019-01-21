@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.dto.output;
 /**
  * @Auther: zch
  * @Date: 2019/1/18 20:56
- * @Description:
+ * @Description:aspose word 表格合并类
  */
 public class MergeCellModel {
     private Integer startRowIndex;

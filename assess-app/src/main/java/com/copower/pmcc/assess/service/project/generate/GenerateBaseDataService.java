@@ -6,8 +6,14 @@ import com.aspose.words.DocumentBuilder;
 import com.aspose.words.Table;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
+import com.copower.pmcc.assess.dal.basic.entity.BasicHouseFaceStreet;
+import com.copower.pmcc.assess.dal.basic.entity.BasicMatchingFinance;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
+import com.copower.pmcc.assess.dto.output.basic.BasicHouseFaceStreetVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicMatchingEnvironmentVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicMatchingFinanceVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicMatchingTrafficVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -25,6 +31,7 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -33,6 +40,7 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -100,7 +108,6 @@ public class GenerateBaseDataService {
 
     //估价对象区位状况表
     private String judgeObjectAreaStatusSheet;
-    private String judgeObjectAreaStatusSheet2;
 
 
     /**
@@ -446,57 +453,6 @@ public class GenerateBaseDataService {
         }
     }
 
-    /**
-     * 估价对象区位状况表(临时)
-     *
-     * @return
-     */
-    public String getJudgeObjectAreaStatusSheet2() {
-        Document doc = null;
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        try {
-            doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            Table table = builder.startTable();
-
-            //自动计算行数(第一行)
-            builder.insertCell();
-            builder.writeln(String.format("%s%s%s", UUID.randomUUID().toString(), ",", UUID.randomUUID().toString()));
-            builder.insertCell();
-            builder.writeln(String.format("%s%s%s", UUID.randomUUID().toString(), ",", UUID.randomUUID().toString()));
-            builder.endRow();
-
-            //第二行
-            builder.insertCell();
-            builder.writeln(String.format("%s%s%s", UUID.randomUUID().toString(), ",", UUID.randomUUID().toString()));
-            builder.insertCell();
-            builder.writeln(String.format("%s%s%s", UUID.randomUUID().toString(), ",", UUID.randomUUID().toString()));
-            builder.endRow();
-
-            //第三行
-            builder.insertCell();
-            builder.writeln(String.format("%s%s%s", UUID.randomUUID().toString(), ",", UUID.randomUUID().toString()));
-            builder.insertCell();
-            builder.writeln(String.format("%s%s%s", UUID.randomUUID().toString(), ",", UUID.randomUUID().toString()));
-            builder.endRow();
-
-
-            // We want to merge the range of cells found in between these two cells.
-            //第1行第1列
-            Cell cellStartRange = table.getRows().get(0).getCells().get(0);
-            //第2行第1列
-            Cell cellEndRange = table.getRows().get(1).getCells().get(0);
-            // Merge all the cells between the two specified cells into one.
-            AsposeUtils.mergeCells(cellStartRange, cellEndRange, table);
-            builder.endTable();
-            doc.save(localPath);
-        } catch (Exception e) {
-
-        }
-        this.judgeObjectAreaStatusSheet2 = localPath;
-        return judgeObjectAreaStatusSheet2;
-    }
 
     /**
      * 估价对象区位状况表
@@ -537,7 +493,7 @@ public class GenerateBaseDataService {
                         ProjectPlanDetails projectPlanDetails = projectPlanDetailsList.get(0);
                         GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
                         builder.writeln(schemeJudgeObject.getName());
-                        List<MergeCellModel> mergeCellModelList = Lists.newArrayList();
+                        Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
                         Table table = builder.startTable();
                         //行
                         for (int j = 0; j < 20; j++) {
@@ -549,7 +505,80 @@ public class GenerateBaseDataService {
                                         builder.writeln("区域位置");
                                     } else {
                                         builder.insertCell();
-                                        builder.writeln(String.format("%d-%d", j, k));
+                                        if (k == 1) {
+                                            switch (j) {
+                                                case 0:
+                                                    builder.writeln("座落");
+                                                    break;
+                                                case 1:
+                                                    builder.writeln("方位");
+                                                    break;
+                                                case 2:
+                                                    builder.writeln("商业繁华程度");
+                                                    break;
+                                                case 3:
+                                                    builder.writeln("临街（路状况）");
+                                                    break;
+                                                case 4:
+                                                    builder.writeln("楼层");
+                                                    break;
+                                                case 5:
+                                                    builder.writeln("人文景观");
+                                                    break;
+                                                default:
+                                                    builder.writeln(String.format("%d-%d", j, k));
+                                                    break;
+                                            }
+                                        }
+                                        if (k == 3) {
+                                            mergeCellModelList.add(new MergeCellModel(j, k, j, k + 1));
+                                            switch (j) {
+                                                case 0:
+                                                    builder.writeln(schemeJudgeObject.getSeat());
+                                                    break;
+                                                case 1:
+                                                    builder.writeln(String.format("方位:%s%s", getSchemeAreaGroup().getAreaName(), schemeJudgeObject.getSeat()));
+                                                    break;
+                                                case 2:
+                                                    builder.writeln("估价对象所在区域为规划新城区，区域商业待发展，目前以超市、零售商店为主，商业繁华度一般");
+                                                    break;
+                                                case 3: {
+                                                    List<BasicHouseFaceStreetVo> list = generateBaseExamineService.getBasicHouseFaceStreetList();
+                                                    StringBuilder stringBuilder = new StringBuilder(1024);
+                                                    if (CollectionUtils.isNotEmpty(list)) {
+                                                        for (BasicHouseFaceStreetVo faceStreet : list) {
+                                                            stringBuilder.append(faceStreet.getStreetName())
+                                                                    .append(faceStreet.getStreetLevelName())
+                                                                    .append(faceStreet.getTrafficFlowName()).append(faceStreet.getVisitorsFlowrateName());
+                                                            stringBuilder.append("\r\n");
+                                                        }
+                                                    }
+                                                    builder.writeln(stringBuilder.toString());
+                                                }
+                                                break;
+                                                case 4: {
+                                                    List<BasicMatchingEnvironmentVo> basicMatchingEnvironmentVoList = generateBaseExamineService.getBasicMatchingEnvironmentList();
+                                                    StringBuilder stringBuilder = new StringBuilder(1024);
+                                                    if (CollectionUtils.isNotEmpty(basicMatchingEnvironmentVoList)) {
+                                                        basicMatchingEnvironmentVoList.parallelStream().forEach(basicMatchingEnvironmentVo -> {
+                                                            stringBuilder.append("自然环境:");
+                                                            stringBuilder.append(basicMatchingEnvironmentVo.getInfluenceDegreeName())
+                                                                    .append(basicMatchingEnvironmentVo.getCategoryName())
+                                                                    .append(basicMatchingEnvironmentVo.getTypeName());
+                                                            stringBuilder.append("\r\n");
+                                                        });
+                                                    }
+                                                    builder.writeln(stringBuilder.toString());
+                                                }
+                                                break;
+                                                case 5:
+                                                    builder.writeln("人文景观：分布有汇融悉尼湾达令港、盛世名城、炬星幸福里等众多住宅区，居民多为中档收入人群、素质较高，社会治安良好。");
+                                                    break;
+                                                default:
+                                                    builder.writeln("");
+                                                    break;
+                                            }
+                                        }
                                     }
                                 }
                                 builder.endRow();
@@ -563,7 +592,60 @@ public class GenerateBaseDataService {
                                         builder.writeln("交通状况");
                                     } else {
                                         builder.insertCell();
-                                        builder.writeln(String.format("%d-%d", j, k));
+                                        if (k == 1) {
+                                            switch (j) {
+                                                case 6:
+                                                    builder.writeln("道路状况");
+                                                    break;
+                                                case 7:
+                                                    builder.writeln("公共交通");
+                                                    break;
+                                                case 8:
+                                                    builder.writeln("对外交通");
+                                                    break;
+                                                case 9:
+                                                    builder.writeln("交通管制情况");
+                                                    break;
+                                                case 10:
+                                                    builder.writeln("停车方便度");
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
+                                        if (k == 3) {
+                                            mergeCellModelList.add(new MergeCellModel(j, k, j, k + 1));
+                                            switch (j) {
+                                                case 6: {
+                                                    StringBuilder stringBuilder = new StringBuilder(1024);
+                                                    List<BasicMatchingTrafficVo> voList = generateBaseExamineService.getBasicMatchingTrafficList();
+                                                    if (CollectionUtils.isNotEmpty(voList)) {
+                                                        voList.parallelStream().forEach(basicMatchingTrafficVo -> {
+                                                            stringBuilder.append(basicMatchingTrafficVo.getName())
+                                                                    .append(basicMatchingTrafficVo.getNatureName())
+                                                                    .append(basicMatchingTrafficVo.getDistanceName());
+                                                            stringBuilder.append("\r\n");
+                                                        });
+                                                    }
+                                                    builder.writeln(stringBuilder.toString());
+                                                }
+                                                break;
+                                                case 7:
+                                                    builder.writeln("暂无");
+                                                    break;
+                                                case 8:
+                                                    builder.writeln("暂无");
+                                                    break;
+                                                case 9:
+                                                    builder.writeln("暂无");
+                                                    break;
+                                                case 10:
+                                                    builder.writeln("暂无");
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
                                     }
                                 }
                                 builder.endRow();
@@ -577,7 +659,58 @@ public class GenerateBaseDataService {
                                         builder.writeln("外部配套设施");
                                     } else {
                                         builder.insertCell();
-                                        builder.writeln(String.format("%d-%d", j, k));
+                                        if (k == 1) {
+                                            switch (j) {
+                                                case 11:
+                                                    builder.writeln("城市基础设施");
+                                                    break;
+                                                case 12:
+                                                    builder.writeln("公共服务设施");
+                                                    break;
+                                            }
+                                        } else if (k == 2) {
+                                            switch (j) {
+                                                case 12:
+                                                    builder.writeln("银行");
+                                                    break;
+                                                case 13:
+                                                    builder.writeln("购物");
+                                                    break;
+                                                case 15:
+                                                    builder.writeln("娱乐休闲");
+                                                    break;
+                                            }
+                                        } else if (k == 3) {
+                                            mergeCellModelList.add(new MergeCellModel(j, k, j, k + 1));
+                                            switch (j) {
+                                                case 12:
+                                                    {
+                                                        StringBuilder stringBuilder = new StringBuilder(1024);
+                                                        List<BasicMatchingFinanceVo> basicMatchingFinanceList = generateBaseExamineService.getBasicMatchingFinanceList();
+                                                        if (CollectionUtils.isNotEmpty(basicMatchingFinanceList)){
+                                                            basicMatchingFinanceList.parallelStream().forEach(basicMatchingFinance -> {
+                                                                stringBuilder.append(basicMatchingFinance.getName())
+                                                                        .append(basicMatchingFinance.getCategoryName())
+                                                                        .append(basicMatchingFinance.getNatureName())
+                                                                        .append(basicMatchingFinance.getServiceContentName())
+                                                                .append(basicMatchingFinance.getAutoServiceContent());
+                                                                stringBuilder.append("\r\n");
+                                                            });
+                                                        }
+                                                        builder.writeln(stringBuilder.toString());
+                                                    }
+                                                    break;
+                                                case 13:
+                                                    builder.writeln("");
+                                                    break;
+                                                case 14:
+                                                    builder.writeln("");
+                                                    break;
+                                                case 15:
+                                                    builder.writeln("");
+                                                    break;
+                                            }
+                                        }
                                     }
                                 }
                                 builder.endRow();
@@ -585,14 +718,38 @@ public class GenerateBaseDataService {
                                 mergeCellModelList.add(new MergeCellModel(12, 1, 15, 1));
                                 mergeCellModelList.add(new MergeCellModel(11, 1, 11, 2));
                             }
-                            if (15 < j && j <= 18){
+                            if (15 < j && j <= 18) {
                                 for (int k = 0; k < 5; k++) {
                                     if (k == 0 && j == 16) {
                                         builder.insertCell();
                                         builder.writeln("周围环境和景观");
                                     } else {
                                         builder.insertCell();
-                                        builder.writeln(String.format("%d-%d", j, k));
+                                        if (k == 1) {
+                                            switch (j) {
+                                                case 16:
+                                                    builder.writeln("周边环境");
+                                                    break;
+                                            }
+                                        }
+                                        if (k == 3) {
+                                            mergeCellModelList.add(new MergeCellModel(j, k, j, k + 1));
+                                            switch (j) {
+                                                case 16:
+                                                    List<BasicMatchingEnvironmentVo> basicMatchingEnvironmentVoList = generateBaseExamineService.getBasicMatchingEnvironmentList();
+                                                    StringBuilder stringBuilder = new StringBuilder(1024);
+                                                    if (CollectionUtils.isNotEmpty(basicMatchingEnvironmentVoList)) {
+                                                        basicMatchingEnvironmentVoList.parallelStream().forEach(basicMatchingEnvironmentVo -> {
+                                                            stringBuilder.append(basicMatchingEnvironmentVo.getInfluenceDegreeName())
+                                                                    .append(basicMatchingEnvironmentVo.getCategoryName())
+                                                                    .append(basicMatchingEnvironmentVo.getTypeName());
+                                                            stringBuilder.append("\r\n");
+                                                        });
+                                                    }
+                                                    builder.writeln(stringBuilder.toString());
+                                                    break;
+                                            }
+                                        }
                                     }
                                 }
                                 builder.endRow();

@@ -1,11 +1,11 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.assess.dal.basic.entity.*;
-import com.copower.pmcc.assess.dto.output.basic.BasicHouseIntelligentVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicMatchingEnvironmentVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicMatchingTrafficVo;
+import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
+import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +37,7 @@ public class GenerateBaseExamineService {
     private BasicHouseCorollaryEquipmentService basicHouseCorollaryEquipmentService;
     private BasicHouseWaterService basicHouseWaterService;
     private BasicHouseWaterDrainService basicHouseWaterDrainService;
+    private BasicHouseFaceStreetService basicHouseFaceStreetService;
 
     private BasicEstateService basicEstateService;
     private BasicEstateNetworkService basicEstateNetworkService;
@@ -63,37 +64,44 @@ public class GenerateBaseExamineService {
     //===========================================获取的值===============================
     private BasicApply basicApply;
 
-    public List<BasicEstateNetwork> getBasicEstateNetworkList()throws Exception {
+    public List<BasicEstateNetwork> getBasicEstateNetworkList() throws Exception {
         return basicEstateNetworkService.getBasicEstateNetworkList(getEstate().getId());
     }
 
-    public List<BasicEstateParking> getBasicEstateParkingList()throws Exception {
+    public List<BasicEstateParking> getBasicEstateParkingList() throws Exception {
         BasicEstateParking query = new BasicEstateParking();
         query.setEstateId(getEstate().getId());
         return basicEstateParkingService.basicEstateParkingList(query);
     }
 
-    public List<BasicEstateSupply> getBasicEstateSupplyList() throws Exception{
+    public List<BasicEstateSupply> getBasicEstateSupplyList() throws Exception {
         return basicEstateSupplyService.getBasicEstateSupplyList(getEstate().getId());
     }
 
-    public List<BasicMatchingEducation> getBasicMatchingEducatioListn() throws Exception{
+    public List<BasicMatchingEducation> getBasicMatchingEducatioListn() throws Exception {
         return basicMatchingEducationService.getBasicMatchingEducationList(getEstate().getId());
     }
 
-    public List<BasicMatchingEnvironmentVo> getBasicMatchingEnvironmentList() throws Exception{
+    public List<BasicMatchingEnvironmentVo> getBasicMatchingEnvironmentList() throws Exception {
         return basicMatchingEnvironmentService.getBasicMatchingEnvironmentVos(getEstate().getId());
     }
 
-    public List<BasicMatchingFinance> getBasicMatchingFinanceList()throws Exception {
-        return basicMatchingFinanceService.getBasicMatchingFinanceList(getEstate().getId());
+    public List<BasicMatchingFinanceVo> getBasicMatchingFinanceList() throws Exception {
+        List<BasicMatchingFinanceVo> vos = Lists.newArrayList();
+        List<BasicMatchingFinance> financeList = basicMatchingFinanceService.getBasicMatchingFinanceList(getEstate().getId());
+        if (CollectionUtils.isNotEmpty(financeList)){
+            financeList.parallelStream().forEach(basicMatchingFinance -> {
+                vos.add(basicMatchingFinanceService.getBasicMatchingFinanceVo(basicMatchingFinance));
+            });
+        }
+        return vos;
     }
 
-    public List<BasicMatchingLeisurePlace> getBasicMatchingLeisurePlaceList() throws Exception{
+    public List<BasicMatchingLeisurePlace> getBasicMatchingLeisurePlaceList() throws Exception {
         return basicMatchingLeisurePlaceService.getBasicMatchingLeisurePlaceList(getEstate().getId());
     }
 
-    public List<BasicMatchingMaterial> getBasicMatchingMaterialList()throws Exception {
+    public List<BasicMatchingMaterial> getBasicMatchingMaterialList() throws Exception {
         BasicMatchingMaterial query = new BasicMatchingMaterial();
         query.setEstateId(getEstate().getId());
         return basicMatchingMaterialService.basicMatchingMaterialList(query);
@@ -111,7 +119,7 @@ public class GenerateBaseExamineService {
         BasicEstateLandState estateLandState = basicEstateLandStateService.getLandStateByEstateId(getEstate().getId());
         if (estateLandState == null) {
             estateLandState = new BasicEstateLandState();
-            logger.error("获取数据异常!",new Exception());
+            logger.error("获取数据异常!", new Exception());
         }
         return estateLandState;
     }
@@ -120,16 +128,16 @@ public class GenerateBaseExamineService {
         BasicEstate examineEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
         if (examineEstate == null) {
             examineEstate = new BasicEstate();
-            logger.error("获取数据异常!",new Exception());
+            logger.error("获取数据异常!", new Exception());
         }
         return examineEstate;
     }
 
     public BasicBuilding getBasicBuilding() {
         BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(getBasicApply().getId());
-        if (basicBuilding == null){
+        if (basicBuilding == null) {
             basicBuilding = new BasicBuilding();
-            logger.error("获取数据异常!",new Exception());
+            logger.error("获取数据异常!", new Exception());
         }
         return basicBuilding;
     }
@@ -138,7 +146,7 @@ public class GenerateBaseExamineService {
         return basicBuildingFunctionService.getBasicBuildingFunctionList(getBasicBuilding().getId());
     }
 
-    public List<BasicBuildingMaintenance> getBasicBuildingMaintenanceList() throws Exception{
+    public List<BasicBuildingMaintenance> getBasicBuildingMaintenanceList() throws Exception {
         BasicBuildingMaintenance query = new BasicBuildingMaintenance();
         query.setBuildingId(getBasicBuilding().getId());
         return basicBuildingMaintenanceService.basicBuildingMaintenanceList(query);
@@ -148,49 +156,49 @@ public class GenerateBaseExamineService {
         return basicBuildingOutfitService.getBasicBuildingOutfitVos(getBasicBuilding().getId());
     }
 
-    public List<BasicBuildingSurface> getBasicBuildingSurfaceList()throws Exception {
+    public List<BasicBuildingSurface> getBasicBuildingSurfaceList() throws Exception {
         BasicBuildingSurface query = new BasicBuildingSurface();
         query.setBuildingId(getBasicBuilding().getId());
         return basicBuildingSurfaceService.basicBuildingSurfaceList(query);
     }
 
-    public BasicUnit getBasicUnit()throws Exception {
+    public BasicUnit getBasicUnit() throws Exception {
         BasicUnit basicUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
-        if (basicUnit == null){
+        if (basicUnit == null) {
             basicUnit = new BasicUnit();
-            logger.error("获取数据异常!",new Exception());
+            logger.error("获取数据异常!", new Exception());
         }
         return basicUnit;
     }
 
-    public List<BasicUnitHuxing> getBasicUnitHuxingList() throws Exception{
+    public List<BasicUnitHuxing> getBasicUnitHuxingList() throws Exception {
         BasicUnitHuxing query = new BasicUnitHuxing();
         query.setUnitId(getBasicUnit().getId());
         return basicUnitHuxingService.basicUnitHuxingList(query);
     }
 
-    public List<BasicUnitElevator> getBasicUnitElevatorList()throws Exception {
+    public List<BasicUnitElevator> getBasicUnitElevatorList() throws Exception {
         return basicUnitElevatorService.getBasicUnitElevatorList(getBasicUnit().getId());
     }
 
-    public List<BasicUnitDecorate> getBasicUnitDecorateList()throws Exception {
+    public List<BasicUnitDecorate> getBasicUnitDecorateList() throws Exception {
         return basicUnitDecorateService.getBasicUnitDecorateList(getBasicUnit().getId());
     }
 
     public BasicHouse getBasicHouse() {
         BasicHouse basicHouse = basicHouseService.getHouseByApplyId(getBasicApply().getId());
-        if (basicHouse == null){
+        if (basicHouse == null) {
             basicHouse = new BasicHouse();
-            logger.error("获取数据异常!",new Exception());
+            logger.error("获取数据异常!", new Exception());
         }
         return basicHouse;
     }
 
     public BasicHouseTrading getBasicTrading() {
         BasicHouseTrading basicHouseTrading = basicHouseTradingService.getTradingByHouseId(getBasicHouse().getId());
-        if (basicHouseTrading == null){
+        if (basicHouseTrading == null) {
             basicHouseTrading = new BasicHouseTrading();
-            logger.error("获取数据异常!",new Exception());
+            logger.error("获取数据异常!", new Exception());
         }
         return basicHouseTrading;
     }
@@ -203,22 +211,35 @@ public class GenerateBaseExamineService {
         return basicHouseRoomService.getBasicHouseRoomList(getBasicHouse().getId());
     }
 
-    public List<BasicHouseTrading> getBasicHouseTradingList()throws Exception {
+    public List<BasicHouseTrading> getBasicHouseTradingList() throws Exception {
         BasicHouseTrading query = new BasicHouseTrading();
         query.setHouseId(getBasicHouse().getId());
         return basicHouseTradingService.basicHouseTradingList(query);
     }
 
-    public List<BasicHouseWater> getBasicHouseWaterList() throws Exception{
+    public List<BasicHouseWater> getBasicHouseWaterList() throws Exception {
         return basicHouseWaterService.getBasicHouseWaterList(getBasicHouse().getId());
     }
 
-    public List<BasicHouseWaterDrain> getBasicHouseWaterDrainList()throws Exception {
+    public List<BasicHouseWaterDrain> getBasicHouseWaterDrainList() throws Exception {
         return basicHouseWaterDrainService.getBasicHouseWaterDrainList(getBasicHouse().getId());
     }
 
-    public List<BasicHouseRoomDecorate> getBasicHouseRoomDecorateList(Integer roomId)throws Exception {
+    public List<BasicHouseRoomDecorate> getBasicHouseRoomDecorateList(Integer roomId) throws Exception {
         return basicHouseRoomDecorateService.getHouseRoomDecorateList(roomId);
+    }
+
+    public List<BasicHouseFaceStreetVo> getBasicHouseFaceStreetList() throws Exception {
+        List<BasicHouseFaceStreetVo> vos = Lists.newArrayList();
+        BasicHouseFaceStreet query = new BasicHouseFaceStreet();
+        query.setHouseId(getBasicHouse().getId());
+        List<BasicHouseFaceStreet> basicHouseFaceStreetList = basicHouseFaceStreetService.basicHouseFaceStreetList(query);
+        if (CollectionUtils.isNotEmpty(basicHouseFaceStreetList)) {
+            for (BasicHouseFaceStreet basicHouseFaceStreet : basicHouseFaceStreetList) {
+                vos.add(basicHouseFaceStreetService.getBasicHouseFaceStreetVo(basicHouseFaceStreet));
+            }
+        }
+        return vos;
     }
 
     public List<BasicHouseIntelligentVo> getBasicHouseIntelligentList() {
@@ -249,6 +270,7 @@ public class GenerateBaseExamineService {
         this.basicHouseRoomDecorateService = SpringContextUtils.getBean(BasicHouseRoomDecorateService.class);
         this.basicHouseCorollaryEquipmentService = SpringContextUtils.getBean(BasicHouseCorollaryEquipmentService.class);
         this.basicHouseWaterService = SpringContextUtils.getBean(BasicHouseWaterService.class);
+        this.basicHouseFaceStreetService = SpringContextUtils.getBean(BasicHouseFaceStreetService.class);
 
         this.basicEstateService = SpringContextUtils.getBean(BasicEstateService.class);
         this.basicMatchingTrafficService = SpringContextUtils.getBean(BasicMatchingTrafficService.class);
@@ -281,7 +303,7 @@ public class GenerateBaseExamineService {
         if (apply == null) {
             apply = new BasicApply();
             apply.setPlanDetailsId(planDetailsId);
-            logger.error("获取数据异常!",new Exception());
+            logger.error("获取数据异常!", new Exception());
         }
         this.basicApply = apply;
     }
