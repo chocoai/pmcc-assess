@@ -44,6 +44,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -125,6 +126,9 @@ public class GenerateBaseDataService {
     //估价对象建筑实体状况表
     private String judgeBuildLandStateSheet;
 
+    //报告出具日期
+    private Date reportIssuanceDate = new Date();
+
 
     /**
      * 获取区域信息(组)
@@ -141,6 +145,10 @@ public class GenerateBaseDataService {
         }
         this.schemeAreaGroup = areaGroup;
         return schemeAreaGroup;
+    }
+
+    public Date getReportIssuanceDate() {
+        return reportIssuanceDate;
     }
 
     /**
@@ -259,7 +267,7 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getEvaluationPriceCateGory() {
+    public String getEvaluationPriceCateGoryOne() {
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         Double price = new Double(0);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -279,7 +287,7 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getEvaluationAreaCateGory() {
+    public String getEvaluationAreaCateGoryOne() {
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         Double area = new Double(0);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -294,18 +302,33 @@ public class GenerateBaseDataService {
         return area.toString();
     }
 
+
     /**
      * 分类评估总价
      *
      * @return
      */
-    public String getEvaluationPriceCateGoryTotal() {
-        String a = getEvaluationAreaCateGory();
-        String b = getEvaluationPriceCateGory();
+    public String getEvaluationPriceCateGoryTotalOne() {
+        String a = getEvaluationAreaCateGoryOne();
+        String b = getEvaluationPriceCateGoryOne();
         if (NumberUtils.isNumber(a) && NumberUtils.isNumber(b)) {
             return String.valueOf(Double.parseDouble(a) * Double.parseDouble(b));
         }
         return errorStr;
+    }
+
+    /**
+     * getEvaluationAreaCateGoryOne,getEvaluationPriceCateGoryOne,getEvaluationPriceCateGoryTotalOne
+     * @return
+     * @throws Exception
+     */
+    public String getEvaluationAreaAndPriceAndTotalCateGorySheet()throws Exception{
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        builder.writeln("分类评估总价sheet");
+        doc.save(localPath);
+        return localPath;
     }
 
     /**

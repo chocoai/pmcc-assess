@@ -40,6 +40,7 @@ public enum BaseReportFieldEnum {
     TotalRealEstatePrice("", "房地产总价", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     ValueExpressionResult("", "价值表达结果", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     StatutoryOptimumReimbursement("", "法定优选受偿款", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    reportIssuanceDate("", "报告出具日期", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
 
     HousingOwnershipRegistrationStatementSheet("", "房屋所有权登记状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),

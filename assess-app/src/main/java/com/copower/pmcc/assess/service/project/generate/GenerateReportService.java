@@ -42,6 +42,7 @@ import java.util.regex.Pattern;
 
 /**
  * Created by kings on 2018-5-23.
+ * NumberToChn 数字转中文(临时记录一下)
  */
 @Service
 public class GenerateReportService {
@@ -356,6 +357,14 @@ public class GenerateReportService {
                                 generateBaseDataService.getWordNumber()));
                     }
                 }
+                //报告出具日期
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.reportIssuanceDate.getName(), bookmarkName)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.reportIssuanceDate.getName());
+                    mapSet.add(getBaseReportFieldReplaceEnumMap(
+                            BaseReportFieldReplaceEnum.BOOKMARK,
+                            bookmarkCollection.get(i).getName(),
+                            DateUtils.format(generateBaseDataService.getReportIssuanceDate(),DateUtils.DATE_CHINESE_PATTERN)));
+                }
                 /*##########################################公共书签替换 end ###################################################### */
                 switch (report_type) {
                     case AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT:
@@ -522,6 +531,48 @@ public class GenerateReportService {
                                     bookmarkCollection.get(i).getName(),
                                     generateBaseDataService.getEvaluationThink()));
                         }
+                        if (true) {
+                            List<SchemeJudgeObject> schemeJudgeObjectList = generateBaseDataService.getSchemeJudgeObjectList();
+                            if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+                                int num = schemeJudgeObjectList.size();
+                                if (num == 1) {
+                                    //分类评估单价
+                                    if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EvaluationPriceCateGory.getName(), bookmarkName)) {
+                                        BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EvaluationPriceCateGory.getName());
+                                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                                BaseReportFieldReplaceEnum.BOOKMARK,
+                                                bookmarkCollection.get(i).getName(),
+                                                generateBaseDataService.getEvaluationPriceCateGoryOne()));
+                                    }
+                                    //分类评估面积
+                                    if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EvaluationAreaCateGory.getName(), bookmarkName)) {
+                                        BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EvaluationAreaCateGory.getName());
+                                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                                BaseReportFieldReplaceEnum.BOOKMARK,
+                                                bookmarkCollection.get(i).getName(),
+                                                generateBaseDataService.getEvaluationAreaCateGoryOne()));
+                                    }
+                                    //分类评估总价
+                                    if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EvaluationPriceCateGoryTotal.getName(), bookmarkName)) {
+                                        BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EvaluationPriceCateGoryTotal.getName());
+                                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                                BaseReportFieldReplaceEnum.BOOKMARK,
+                                                bookmarkCollection.get(i).getName(),
+                                                generateBaseDataService.getEvaluationPriceCateGoryTotalOne()));
+                                    }
+                                }
+                                if (num > 1) {
+                                    //分类评估总价
+                                    if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EvaluationPriceCateGoryTotal.getName(), bookmarkName)) {
+                                        BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EvaluationPriceCateGoryTotal.getName());
+                                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                                BaseReportFieldReplaceEnum.FILE_FIXED,
+                                                bookmarkCollection.get(i).getName(),
+                                                generateBaseDataService.getEvaluationAreaAndPriceAndTotalCateGorySheet()));
+                                    }
+                                }
+                            }
+                        }
                         //选择估价方法
                         if (com.google.common.base.Objects.equal(BaseReportFieldEnum.SelectionValuationMethod.getName(), bookmarkName)) {
                             BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.SelectionValuationMethod.getName());
@@ -530,31 +581,7 @@ public class GenerateReportService {
                                     bookmarkCollection.get(i).getName(),
                                     generateBaseDataService.getSelectionValuationMethod()));
                         }
-                        //分类评估单价
-                        if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EvaluationPriceCateGory.getName(), bookmarkName)) {
-                            BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EvaluationPriceCateGory.getName());
-                            mapSet.add(getBaseReportFieldReplaceEnumMap(
-                                    BaseReportFieldReplaceEnum.BOOKMARK,
-                                    bookmarkCollection.get(i).getName(),
-                                    generateBaseDataService.getEvaluationPriceCateGory()));
-                        }
-                        //分类评估面积
-                        if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EvaluationAreaCateGory.getName(), bookmarkName)) {
-                            BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EvaluationAreaCateGory.getName());
-                            mapSet.add(getBaseReportFieldReplaceEnumMap(
-                                    BaseReportFieldReplaceEnum.BOOKMARK,
-                                    bookmarkCollection.get(i).getName(),
-                                    generateBaseDataService.getEvaluationAreaCateGory()));
-                        }
-                        //分类评估总价
-                        if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EvaluationPriceCateGoryTotal.getName(), bookmarkName)) {
-                            BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EvaluationPriceCateGoryTotal.getName());
-                            mapSet.add(getBaseReportFieldReplaceEnumMap(
-                                    BaseReportFieldReplaceEnum.BOOKMARK,
-                                    bookmarkCollection.get(i).getName(),
-                                    generateBaseDataService.getEvaluationPriceCateGoryTotal()));
-                        }
-                        //分类评估单价计算试
+                        //分类评估单价计算式
                         if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EvaluationExpression.getName(), bookmarkName)) {
                             BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EvaluationExpression.getName());
                             mapSet.add(getBaseReportFieldReplaceEnumMap(
