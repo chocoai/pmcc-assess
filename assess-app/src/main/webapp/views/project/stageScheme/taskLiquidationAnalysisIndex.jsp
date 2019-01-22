@@ -98,6 +98,7 @@
         $.ajax({
             url: "${pageContext.request.contextPath}/projectTaskLiquidationAnalysis/getTaxAllocation",
             data: {
+                projectPlanDetailsId: "${projectPlanDetails.id}",
                 judgeObjectId: "${projectPlanDetails.judgeObjectId}",
                 mainId: "${master.id}"
             },
@@ -106,7 +107,9 @@
             success: function (result) {
                 Loading.progressHide();
                 var html = "";
+                var total = 0;
                 $.each(result.data, function (i, item) {
+                    total += item.money;
                     html += "<tr>";
                     html += "<td class='hidden-xs'>";
                     html += item.typeName;
@@ -119,7 +122,7 @@
                     html += "</td>";
                     html += "<td class='hidden-xs'>";
                     html += "<div class='x-valid'>";
-                    html += "<input type='text'  name='price_" + item.type + "' value='" + item.price + "'  class='form-control' data-rule-number='true'>";
+                    html += "<input type='text'  name='price_" + item.type + "' value='" + item.money + "'  class='form-control' data-rule-number='true'>";
                     html += "</div>";
                     html += "</td>";
                     html += "</tr>";
@@ -130,7 +133,11 @@
                 html += "</td>";
                 html += "<td class='hidden-xs'>";
                 html += "<div class='x-valid'>";
-                html += "<input type='text'  name='total' class='form-control'value='${master.total}' data-rule-number='true'>";
+                if ('${master.total}') {
+                    html += "<input type='text'  name='total' class='form-control' value='${master.total}' data-rule-number='true'>";
+                } else {
+                    html += "<input type='text'  name='total' class='form-control' value='" + total + "' data-rule-number='true'>";
+                }
                 html += "</div>";
                 html += "</td>";
                 html += "</tr>";

@@ -97,7 +97,7 @@
                     html += "</td>";
                     html += "<td class='hidden-xs'>";
                     html += "<div class='x-valid'>";
-                    html += item.price;
+                    html += item.money;
                     html += "</div>";
                     html += "</td>";
                     html += "</tr>";

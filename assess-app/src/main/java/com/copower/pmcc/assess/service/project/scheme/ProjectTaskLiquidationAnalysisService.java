@@ -45,55 +45,80 @@ public class ProjectTaskLiquidationAnalysisService {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private SchemeAreaGroupService schemeAreaGroupService;
+    @Autowired
+    private SchemeSurePriceService schemeSurePriceService;
 
-    public List<ProjectTaskLiquidationAnalysisVo> editPageTaxAllocation(String mainId) {
+    public List<ProjectTaskLiquidationAnalysisVo> editPageTaxAllocation(Integer mainId) {
         SchemeLiquidationAnalysisItem item = new SchemeLiquidationAnalysisItem();
-        item.setMainId(Integer.valueOf(mainId));
+        item.setMainId(mainId);
         List<SchemeLiquidationAnalysisItem> list = schemeLiquidationAnalysisItemDao.getObjectList(item);
         return LangUtils.transform(list, o -> getProjectTaskLiquidationAnalysisVo(o));
 
     }
 
-    public List<ProjectTaskLiquidationAnalysisVo> getTaxAllocation(String judgeObjectId) {
-        ArrayList<DataTaxRateAllocation> list = new ArrayList<>();
+    public List<ProjectTaskLiquidationAnalysisVo> getTaxAllocation(Integer projectPlanDetailsId, Integer judgeObjectId) {
+        List<ProjectTaskLiquidationAnalysisVo> list = new ArrayList<>();
+        SchemeSurePrice schemeSurePrice = schemeSurePriceService.getSurePriceByPlanDetailsId(projectPlanDetailsId);
         //增值税
-        list.add(dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_SALES_TAX));
+        DataTaxRateAllocation allocationSales = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_SALES_TAX);
+        ProjectTaskLiquidationAnalysisVo allocationSalesVo = getProjectTaskLiquidationAnalysisVo(allocationSales, schemeSurePrice.getPrice());
+        list.add(allocationSalesVo);
         //城建税
-        list.add(dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_CONSTRUCTION_TAX));
-        //印花税
-        list.add(dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_STAMP_DUTY));
-        //土地增值税
-        list.add(dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_LAND_INCREMENT_TAX));
-        //交易手续费
-        list.add(dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_TRANSACTION_CHARGES));
-        //其他税费
-        list.add(dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_OTHER_TAXES_FEE));
-        //企业所得税
-        list.add(dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_CORPORATE_INCOME_TAX));
+        DataTaxRateAllocation allocationConstruction = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_CONSTRUCTION_TAX);
+        list.add(getProjectTaskLiquidationAnalysisVo(allocationConstruction, allocationSalesVo.getMoney()));
         //地方教育税附加
-        SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(Integer.valueOf(judgeObjectId));
+        SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(judgeObject.getAreaGroupId());
-        list.add(dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_LOCAL_EDUCATION_TAX_ADDITIONAL, areaGroup.getProvince(), areaGroup.getCity(), null));
-        //SchemeSurePrice schemeSurePrice = schemeSurePriceService.getSurePriceByPlanDetailsId(Integer.valueOf(projectPlanDetailsId));
-        List<ProjectTaskLiquidationAnalysisVo> transform = LangUtils.transform(list, o -> getProjectTaskLiquidationAnalysisVo(o));
-        return transform;
+        DataTaxRateAllocation localEducation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_LOCAL_EDUCATION_TAX_ADDITIONAL, areaGroup.getProvince(), areaGroup.getCity(), null);
+        list.add(getProjectTaskLiquidationAnalysisVo(localEducation, allocationSalesVo.getMoney()));
+        //印花税
+        DataTaxRateAllocation allocationStamp = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_STAMP_DUTY);
+        list.add(getProjectTaskLiquidationAnalysisVo(allocationStamp, schemeSurePrice.getPrice()));
+        //土地增值税
+        DataTaxRateAllocation landIncrement = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_LAND_INCREMENT_TAX);
+        list.add(getProjectTaskLiquidationAnalysisVo(landIncrement, schemeSurePrice.getPrice()));
+        //交易手续费
+        DataTaxRateAllocation transactionCharges = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_TRANSACTION_CHARGES);
+        list.add(getTransactionChargesVo(transactionCharges, judgeObject.getEvaluationArea()));
+        //其他税费
+        DataTaxRateAllocation otherTaxesFee = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_OTHER_TAXES_FEE);
+        list.add(getProjectTaskLiquidationAnalysisVo(otherTaxesFee, schemeSurePrice.getPrice()));
+        //企业所得税
+        DataTaxRateAllocation corporateIncome = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_CORPORATE_INCOME_TAX);
+        list.add(getProjectTaskLiquidationAnalysisVo(corporateIncome, schemeSurePrice.getPrice()));
+        return list;
     }
 
-    public ProjectTaskLiquidationAnalysisVo getProjectTaskLiquidationAnalysisVo(DataTaxRateAllocation dataTaxRateAllocation) {
+    public ProjectTaskLiquidationAnalysisVo getProjectTaskLiquidationAnalysisVo(DataTaxRateAllocation dataTaxRateAllocation, BigDecimal price) {
+        if (price == null) {
+            price = new BigDecimal("0");
+        }
         ProjectTaskLiquidationAnalysisVo vo = new ProjectTaskLiquidationAnalysisVo();
         BeanUtils.copyProperties(dataTaxRateAllocation, vo);
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(dataTaxRateAllocation.getType());
         vo.setTypeName(baseDataDic.getName());
-        if(dataTaxRateAllocation.getTaxRate()!=null) {
-            vo.setRate(dataTaxRateAllocation.getTaxRate().multiply(new BigDecimal("100")).stripTrailingZeros().toString()+"%");
-        }else{
-            vo.setRate(dataTaxRateAllocation.getAmount().toString()+"元/㎡");
+        if (dataTaxRateAllocation.getTaxRate() != null) {
+            vo.setRate(dataTaxRateAllocation.getTaxRate().multiply(new BigDecimal("100")).stripTrailingZeros().toString() + "%");
+            vo.setMoney(price.multiply(dataTaxRateAllocation.getTaxRate()));
         }
         vo.setRemark("");
-        vo.setPrice(new BigDecimal("0"));
-       /* if (dataTaxRateAllocation.getTaxRate() != null) {
-            vo.setMoney(price.multiply(dataTaxRateAllocation.getTaxRate()));
-        }*/
+        return vo;
+    }
+
+
+    public ProjectTaskLiquidationAnalysisVo getTransactionChargesVo(DataTaxRateAllocation dataTaxRateAllocation, BigDecimal area) {
+        if (area == null) {
+            area = new BigDecimal("0");
+        }
+        ProjectTaskLiquidationAnalysisVo vo = new ProjectTaskLiquidationAnalysisVo();
+        BeanUtils.copyProperties(dataTaxRateAllocation, vo);
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(dataTaxRateAllocation.getType());
+        vo.setTypeName(baseDataDic.getName());
+        if (dataTaxRateAllocation.getAmount() != null) {
+            vo.setRate(dataTaxRateAllocation.getAmount().toString() + "元/㎡");
+            vo.setMoney(area.multiply(dataTaxRateAllocation.getAmount()));
+        }
+        vo.setRemark("");
         return vo;
     }
 
@@ -105,7 +130,7 @@ public class ProjectTaskLiquidationAnalysisService {
         if (item.getTaxRateValue() != null) {
             vo.setRate(item.getTaxRateValue());
         }
-        vo.setPrice(item.getPrice());
+        vo.setMoney(item.getPrice());
         return vo;
     }
 
@@ -156,7 +181,7 @@ public class ProjectTaskLiquidationAnalysisService {
         if (areaGroup != null) {
             taxRate = dataTaxRateAllocationService.getTaxRateByKey(type, areaGroup.getProvince(), areaGroup.getCity(), null);
         }
-        ProjectTaskLiquidationAnalysisVo vo = getProjectTaskLiquidationAnalysisVo(taxRate);
+        ProjectTaskLiquidationAnalysisVo vo = getProjectTaskLiquidationAnalysisVo(taxRate, null);
         String price = jsonObject.getString("price_" + vo.getType());
         String remark = jsonObject.getString("remark_" + vo.getType());
         String method = jsonObject.getString("calculationMethod_" + vo.getType());
@@ -174,10 +199,10 @@ public class ProjectTaskLiquidationAnalysisService {
             item.setMainId(master.getId());
             item.setTaxRateId(vo.getType());
             item.setTaxRateName(vo.getTypeName());
-            if(vo.getTaxRate()!=null) {
-                item.setTaxRateValue(vo.getTaxRate().multiply(new BigDecimal("100")).stripTrailingZeros().toString()+"%");
-            }else{
-                item.setTaxRateValue(vo.getAmount().toString()+"元/㎡");
+            if (vo.getTaxRate() != null) {
+                item.setTaxRateValue(vo.getTaxRate().multiply(new BigDecimal("100")).stripTrailingZeros().toString() + "%");
+            } else {
+                item.setTaxRateValue(vo.getAmount().toString() + "元/㎡");
             }
             schemeLiquidationAnalysisItemDao.addSchemeLiquidationAnalysisItem(item);
         } else {
