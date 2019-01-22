@@ -63,6 +63,10 @@ public class SurveyAssetInventoryRightService {
         return vo;
     }
 
+    public List<SurveyAssetInventoryRight> surveyAssetInventoryRights(Integer planDetailsId){
+        return surveyAssetInventoryRightDao.getListByPlanDetailsId(planDetailsId);
+    }
+
     public BootstrapTableVo getListByProjectId(Integer projectId) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();

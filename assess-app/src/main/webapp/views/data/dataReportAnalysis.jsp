@@ -114,31 +114,6 @@
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">设定用途</label>
-                                        <div class="col-sm-3">
-                                            <select  name="purpose"
-                                                     class="form-control search-select select2 purpose">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">省
-                                            <span class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <select id="province" name="province" class="form-control search-select select2" required="required">
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">市</label>
-                                        <div class="col-sm-3">
-                                            <select id="city" name="city" class="form-control search-select select2">
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
                                         <label class="col-sm-1 control-label">
                                             是否可修改
                                         </label>
@@ -228,10 +203,10 @@
         cols.push({field: 'name', title: '名称'});
         cols.push({field: 'reportAnalysisTypeName', title: '类别'});
         cols.push({field: 'entrustmentName', title: '委托目的'});
-        cols.push({field: 'purposeName', title: '设定用途'});
-        cols.push({field: 'area', title: '区域', formatter: function (value, row, index) {
-            return AssessCommon.getAreaFullName(row.provinceName,row.cityName,row.districtName);
-        }});
+//        cols.push({field: 'purposeName', title: '设定用途'});
+//        cols.push({field: 'area', title: '区域', formatter: function (value, row, index) {
+//            return AssessCommon.getAreaFullName(row.provinceName,row.cityName,row.districtName);
+//        }});
         cols.push({field: 'template', title: '模板', width: '50%'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {

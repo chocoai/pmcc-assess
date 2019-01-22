@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
@@ -77,19 +78,27 @@
                                 </div>
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        价值类型<span class="symbol required"></span>
+                                        委托目的<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
-                                        <select name="valueDefinition" class="form-control" required>
+                                        <select name="entrustmentPurpose" class="form-control" required>
                                             <option value="">-请选择-</option>
-                                            <c:forEach items="${valueDefinitions}" var="valueDefinition">
-                                                <c:if test="${valueDefinition.id eq item.valueDefinition}">
-                                                    <option value="${valueDefinition.id}"
-                                                            selected="selected">${valueDefinition.name}</option>
-                                                </c:if>
-                                                <c:if test="${valueDefinition.id ne item.valueDefinition}">
-                                                    <option value="${valueDefinition.id}">${valueDefinition.name}</option>
-                                                </c:if>
+                                            <c:forEach items="${entrustmentPurposes}" var="entrustmentPurpose">
+                                                <c:choose>
+                                                    <c:when test="${entrustmentPurpose.id eq item.valueDefinition}">
+                                                        <option value="${entrustmentPurpose.id}"
+                                                                selected="selected">${entrustmentPurpose.name}</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <c:if test="${entrustmentPurpose.id eq projectInfo.entrustPurpose}">
+                                                            <option value="${entrustmentPurpose.id}"
+                                                                    selected="selected">${entrustmentPurpose.name}</option>
+                                                        </c:if>
+                                                        <c:if test="${entrustmentPurpose.id ne projectInfo.entrustPurpose}">
+                                                            <option value="${entrustmentPurpose.id}">${entrustmentPurpose.name}</option>
+                                                        </c:if>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </c:forEach>
                                         </select>
                                     </div>
@@ -98,11 +107,64 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        价值内涵
+                                        委托目的描述<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="remarkEntrustPurpose" required="required"
+                                               placeholder="委托目的描述" class="form-control"
+                                               value="${empty item.remarkEntrustPurpose?projectInfo.remarkEntrustPurpose:item.remarkEntrustPurpose}">
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        价值类型<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <select name="valueDefinition" class="form-control" required>
+                                            <option value="">-请选择-</option>
+                                            <c:forEach items="${valueTypes}" var="valueDefinition">
+                                                <c:choose>
+                                                    <c:when test="${valueDefinition.id eq item.valueDefinition}">
+                                                        <option value="${valueDefinition.id}"
+                                                                selected="selected">${valueDefinition.name}</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <c:if test="${valueDefinition.id eq projectInfo.valueType}">
+                                                            <option value="${valueDefinition.id}"
+                                                                    selected="selected">${valueDefinition.name}</option>
+                                                        </c:if>
+                                                        <c:if test="${valueDefinition.id ne projectInfo.valueType}">
+                                                            <option value="${valueDefinition.id}">${valueDefinition.name}</option>
+                                                        </c:if>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        价值内涵<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <select name="valueConnotation" class="form-control search-select select2"
+                                                multiple="multiple" required>
+                                            <option value="">-请选择-</option>
+                                            <c:forEach items="${valueConnotations}" var="valueConnotation">
+                                                <option value="${valueConnotation.id}">${valueConnotation.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        价值内涵描述
                                     </label>
                                     <div class="col-sm-11">
-                                        <textarea class="form-control" name="valueConnotation"
-                                                  placeholder="价值内涵">${item.valueConnotation}</textarea>
+                                        <textarea class="form-control" name="valueConnotationDesc"
+                                                  placeholder="价值内涵">${item.valueConnotationDesc}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -126,6 +188,11 @@
                                 </tbody>
                             </table>
                         </form>
+                        <script type="text/javascript">
+                            $(function () {
+                                programme.setValueConnotation(${item.id},'${item.valueConnotation}');
+                            })
+                        </script>
                     </div>
                 </div>
             </c:forEach>
@@ -775,6 +842,13 @@
         currJudgeMethodButton: undefined //当前评估方法button
     };
 
+    //设置价值内涵的值
+    programme.setValueConnotation = function (id, valueConnotation) {
+        if (valueConnotation) {
+            $("#frmJudgeObject" + id).find('[name=valueConnotation]').select2('val',JSON.parse(valueConnotation));
+        }
+    }
+
     //加载区域下的委估对象列表
     programme.loadJudgeObjectList = function (_this) {
         var tbody = $(_this).closest(".area_panel").find(".table").find("tbody");
@@ -1088,8 +1162,16 @@
         data.areaGroupId = $(areaPanel).find('[name="areaGroupId"]').val();
         data.valueTimePoint = $(areaPanel).find('[name="valueTimePoint"]').val();
         data.timePointExplain = $(areaPanel).find('[name="timePointExplain"]').val();
+
+        data.entrustmentPurpose = $(areaPanel).find('[name="entrustmentPurpose"]').val();
+        data.remarkEntrustPurpose = $(areaPanel).find('[name="remarkEntrustPurpose"]').val();
+
         data.valueDefinition = $(areaPanel).find('[name="valueDefinition"]').val();
         data.valueConnotation = $(areaPanel).find('[name="valueConnotation"]').val();
+        if(!data.valueConnotation){
+            data.valueConnotation=[];
+        }
+        data.valueConnotationDesc = $(areaPanel).find('[name="valueConnotationDesc"]').val();
         data.schemeJudgeObjects = [];
 
         var trs = $(areaPanel).find(".table").find("tbody").find('tr');

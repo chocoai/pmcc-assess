@@ -695,6 +695,136 @@ public class SchemeAreaGroupExample {
             return (Criteria) this;
         }
 
+        public Criteria andEntrustPurposeIsNull() {
+            addCriterion("entrust_purpose is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeIsNotNull() {
+            addCriterion("entrust_purpose is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeEqualTo(Integer value) {
+            addCriterion("entrust_purpose =", value, "entrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeNotEqualTo(Integer value) {
+            addCriterion("entrust_purpose <>", value, "entrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeGreaterThan(Integer value) {
+            addCriterion("entrust_purpose >", value, "entrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("entrust_purpose >=", value, "entrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeLessThan(Integer value) {
+            addCriterion("entrust_purpose <", value, "entrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeLessThanOrEqualTo(Integer value) {
+            addCriterion("entrust_purpose <=", value, "entrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeIn(List<Integer> values) {
+            addCriterion("entrust_purpose in", values, "entrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeNotIn(List<Integer> values) {
+            addCriterion("entrust_purpose not in", values, "entrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeBetween(Integer value1, Integer value2) {
+            addCriterion("entrust_purpose between", value1, value2, "entrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeNotBetween(Integer value1, Integer value2) {
+            addCriterion("entrust_purpose not between", value1, value2, "entrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustPurposeIsNull() {
+            addCriterion("remark_entrust_purpose is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustPurposeIsNotNull() {
+            addCriterion("remark_entrust_purpose is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustPurposeEqualTo(String value) {
+            addCriterion("remark_entrust_purpose =", value, "remarkEntrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustPurposeNotEqualTo(String value) {
+            addCriterion("remark_entrust_purpose <>", value, "remarkEntrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustPurposeGreaterThan(String value) {
+            addCriterion("remark_entrust_purpose >", value, "remarkEntrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustPurposeGreaterThanOrEqualTo(String value) {
+            addCriterion("remark_entrust_purpose >=", value, "remarkEntrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustPurposeLessThan(String value) {
+            addCriterion("remark_entrust_purpose <", value, "remarkEntrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustPurposeLessThanOrEqualTo(String value) {
+            addCriterion("remark_entrust_purpose <=", value, "remarkEntrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustPurposeLike(String value) {
+            addCriterion("remark_entrust_purpose like", value, "remarkEntrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustPurposeNotLike(String value) {
+            addCriterion("remark_entrust_purpose not like", value, "remarkEntrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustPurposeIn(List<String> values) {
+            addCriterion("remark_entrust_purpose in", values, "remarkEntrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustPurposeNotIn(List<String> values) {
+            addCriterion("remark_entrust_purpose not in", values, "remarkEntrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustPurposeBetween(String value1, String value2) {
+            addCriterion("remark_entrust_purpose between", value1, value2, "remarkEntrustPurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustPurposeNotBetween(String value1, String value2) {
+            addCriterion("remark_entrust_purpose not between", value1, value2, "remarkEntrustPurpose");
+            return (Criteria) this;
+        }
+
         public Criteria andValueDefinitionIsNull() {
             addCriterion("value_definition is null");
             return (Criteria) this;
@@ -822,6 +952,76 @@ public class SchemeAreaGroupExample {
 
         public Criteria andValueConnotationNotBetween(String value1, String value2) {
             addCriterion("value_connotation not between", value1, value2, "valueConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationDescIsNull() {
+            addCriterion("value_connotation_desc is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationDescIsNotNull() {
+            addCriterion("value_connotation_desc is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationDescEqualTo(String value) {
+            addCriterion("value_connotation_desc =", value, "valueConnotationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationDescNotEqualTo(String value) {
+            addCriterion("value_connotation_desc <>", value, "valueConnotationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationDescGreaterThan(String value) {
+            addCriterion("value_connotation_desc >", value, "valueConnotationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationDescGreaterThanOrEqualTo(String value) {
+            addCriterion("value_connotation_desc >=", value, "valueConnotationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationDescLessThan(String value) {
+            addCriterion("value_connotation_desc <", value, "valueConnotationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationDescLessThanOrEqualTo(String value) {
+            addCriterion("value_connotation_desc <=", value, "valueConnotationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationDescLike(String value) {
+            addCriterion("value_connotation_desc like", value, "valueConnotationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationDescNotLike(String value) {
+            addCriterion("value_connotation_desc not like", value, "valueConnotationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationDescIn(List<String> values) {
+            addCriterion("value_connotation_desc in", values, "valueConnotationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationDescNotIn(List<String> values) {
+            addCriterion("value_connotation_desc not in", values, "valueConnotationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationDescBetween(String value1, String value2) {
+            addCriterion("value_connotation_desc between", value1, value2, "valueConnotationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueConnotationDescNotBetween(String value1, String value2) {
+            addCriterion("value_connotation_desc not between", value1, value2, "valueConnotationDesc");
             return (Criteria) this;
         }
 

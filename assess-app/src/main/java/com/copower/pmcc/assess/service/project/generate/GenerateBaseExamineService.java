@@ -135,13 +135,15 @@ public class GenerateBaseExamineService {
         return basicMatchingTrafficService.getBasicMatchingTrafficVos(getEstate().getId());
     }
 
-    public BasicEstateLandState getBasicEstateLandState() throws Exception {
+    public BasicEstateLandStateVo getBasicEstateLandState() throws Exception {
         BasicEstateLandState estateLandState = basicEstateLandStateService.getLandStateByEstateId(getEstate().getId());
         if (estateLandState == null) {
             estateLandState = new BasicEstateLandState();
             logger.error("获取数据异常!", new Exception());
         }
-        return estateLandState;
+        BasicEstateLandStateVo vo = basicEstateLandStateService.getBasicEstateLandStateVo(estateLandState);
+
+        return vo;
     }
 
     public BasicEstate getEstate() throws Exception {

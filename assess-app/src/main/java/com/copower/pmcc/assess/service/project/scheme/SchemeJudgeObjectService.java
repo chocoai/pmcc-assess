@@ -31,6 +31,7 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -432,9 +433,17 @@ public class SchemeJudgeObjectService {
             ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SURE_PRICE, projectInfo.getProjectCategoryId());
             ProjectPhase phaseLiquidationAnalysis = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.LIQUIDATION_ANALYSIS, projectInfo.getProjectCategoryId());
             ProjectPhase phaseReimbursement = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.REIMBURSEMENT, projectInfo.getProjectCategoryId());
+            ProjectPhase supportInfo = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SUPPORT_INFO, projectInfo.getProjectCategoryId());
+            ProjectPhase reportFile = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.REPORT_FILE, projectInfo.getProjectCategoryId());
             String mortgageKey = baseDataDicService.getCacheDataDicById(projectInfo.getEntrustPurpose()).getFieldName();
             int i = 0;
             Map<Integer, ProjectPhase> phaseMap = getProjectPhaseMap(projectInfo.getProjectCategoryId());
+            List<ProjectPhase> areaProjectPhases= Lists.newArrayList(supportInfo,reportFile);
+            List<ProjectPhase> judgeProjectPhases= Lists.newArrayList(phaseSurePrice);
+            if (StringUtils.equals(mortgageKey, AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE)) {//如果是抵押评估还需添加事项，变现分析税费、法定优先受偿款
+                judgeProjectPhases.add(phaseLiquidationAnalysis);
+                judgeProjectPhases.add(phaseReimbursement);
+            }
             for (SchemeAreaGroup schemeAreaGroup : areaGroupList) {
                 ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
                 projectPlanDetails.setProjectWorkStageId(projectPlan.getWorkStageId());
@@ -446,9 +455,25 @@ public class SchemeJudgeObjectService {
                 projectPlanDetails.setSorting(i++);
                 projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
 
+                if(CollectionUtils.isNotEmpty(areaProjectPhases)){
+                    for (ProjectPhase projectPhase : areaProjectPhases) {
+                        ProjectPlanDetails details = new ProjectPlanDetails();
+                        details.setProjectWorkStageId(projectPlan.getWorkStageId());
+                        details.setPlanId(projectPlan.getId());
+                        details.setProjectId(projectPlan.getProjectId());
+                        details.setProjectPhaseName(projectPhase.getProjectPhaseName());
+                        details.setProjectPhaseId(projectPhase.getId());
+                        details.setAreaId(schemeAreaGroup.getId());
+                        details.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+                        details.setPid(projectPlanDetails.getId());
+                        details.setBisLastLayer(true);
+                        details.setSorting(i++);
+                        projectPlanDetailsDao.addProjectPlanDetails(details);
+                    }
+                }
+
                 List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getSchemeJudgeObjectList(schemeAreaGroup.getId());
                 if (CollectionUtils.isNotEmpty(judgeObjectList)) {
-                    int j = 0;
                     for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
                         ProjectPlanDetails planDetails = new ProjectPlanDetails();
                         planDetails.setProjectWorkStageId(projectPlan.getWorkStageId());
@@ -464,12 +489,11 @@ public class SchemeJudgeObjectService {
                         planDetails.setPid(projectPlanDetails.getId());
                         planDetails.setJudgeObjectId(schemeJudgeObject.getId());
                         planDetails.setBisLastLayer(false);
-                        planDetails.setSorting(j++);
+                        planDetails.setSorting(i++);
                         projectPlanDetailsDao.addProjectPlanDetails(planDetails);
 
                         List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
                         if (CollectionUtils.isNotEmpty(judgeFunctions)) {
-                            int k = 0;
                             for (SchemeJudgeFunction judgeFunction : judgeFunctions) {
                                 ProjectPhase projectPhase = phaseMap.get(judgeFunction.getMethodType());
                                 ProjectPlanDetails details = new ProjectPlanDetails();
@@ -482,55 +506,24 @@ public class SchemeJudgeObjectService {
                                 details.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
                                 details.setPid(planDetails.getId());
                                 details.setBisLastLayer(true);
-                                details.setSorting(k++);
+                                details.setSorting(i++);
                                 projectPlanDetailsDao.addProjectPlanDetails(details);
                             }
                         }
 
-                        //添加确定单价的工作事项
-                        if (phaseSurePrice != null) {
-                            ProjectPlanDetails details = new ProjectPlanDetails();
-                            details.setProjectWorkStageId(projectPlan.getWorkStageId());
-                            details.setPlanId(projectPlan.getId());
-                            details.setProjectId(projectPlan.getProjectId());
-                            details.setProjectPhaseName(phaseSurePrice.getProjectPhaseName());
-                            details.setProjectPhaseId(phaseSurePrice.getId());
-                            details.setJudgeObjectId(schemeJudgeObject.getId());
-                            details.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-                            details.setPid(planDetails.getId());
-                            details.setBisLastLayer(true);
-                            details.setSorting(100);
-                            projectPlanDetailsDao.addProjectPlanDetails(details);
-                        }
-
-                        //如果是抵押评估还需添加事项，变现分析税费、法定优先受偿款
-                        if (StringUtils.equals(mortgageKey, AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE)) {
-                            if (phaseLiquidationAnalysis != null) {
+                        if(CollectionUtils.isNotEmpty(judgeProjectPhases)){
+                            for (ProjectPhase projectPhase : judgeProjectPhases) {
                                 ProjectPlanDetails details = new ProjectPlanDetails();
                                 details.setProjectWorkStageId(projectPlan.getWorkStageId());
                                 details.setPlanId(projectPlan.getId());
                                 details.setProjectId(projectPlan.getProjectId());
-                                details.setProjectPhaseName(phaseLiquidationAnalysis.getProjectPhaseName());
-                                details.setProjectPhaseId(phaseLiquidationAnalysis.getId());
+                                details.setProjectPhaseName(projectPhase.getProjectPhaseName());
+                                details.setProjectPhaseId(projectPhase.getId());
                                 details.setJudgeObjectId(schemeJudgeObject.getId());
                                 details.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
                                 details.setPid(planDetails.getId());
                                 details.setBisLastLayer(true);
-                                details.setSorting(101);
-                                projectPlanDetailsDao.addProjectPlanDetails(details);
-                            }
-                            if (phaseReimbursement != null) {
-                                ProjectPlanDetails details = new ProjectPlanDetails();
-                                details.setProjectWorkStageId(projectPlan.getWorkStageId());
-                                details.setPlanId(projectPlan.getId());
-                                details.setProjectId(projectPlan.getProjectId());
-                                details.setProjectPhaseName(phaseReimbursement.getProjectPhaseName());
-                                details.setProjectPhaseId(phaseReimbursement.getId());
-                                details.setJudgeObjectId(schemeJudgeObject.getId());
-                                details.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-                                details.setPid(planDetails.getId());
-                                details.setBisLastLayer(true);
-                                details.setSorting(102);
+                                details.setSorting(i++);
                                 projectPlanDetailsDao.addProjectPlanDetails(details);
                             }
                         }

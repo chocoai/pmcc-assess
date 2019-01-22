@@ -121,16 +121,12 @@ public class DataReportAnalysisService {
      * 获取报告分析数据
      * @param type
      * @param entrustment
-     * @param province
-     * @param city
      * @return
      */
-    public List<DataReportAnalysis> getDataReportAnalysisList(Integer type,Integer entrustment,String province,String city){
+    public List<DataReportAnalysis> getDataReportAnalysisList(Integer type,Integer entrustment){
         DataReportAnalysis where=new DataReportAnalysis();
         where.setReportAnalysisType(type);
         where.setEntrustment(entrustment);
-        where.setProvince(province);
-        where.setCity(city);
         return dataReportAnalysisDao.getDataReportAnalysisList(where);
     }
 

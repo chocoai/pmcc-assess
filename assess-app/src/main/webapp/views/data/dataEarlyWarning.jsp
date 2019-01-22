@@ -193,7 +193,6 @@
     </div>
 </div>
 <%@include file="/views/share/main_footer.jsp" %>
-<script src="${pageContext.request.contextPath}/excludes/assets/plugins/laydate/laydate.js" type="application/javascript"></script>
 <script type="application/javascript">
     //页面初始化
     $(function () {

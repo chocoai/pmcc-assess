@@ -4,8 +4,6 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-
-
 <body class="nav-md footer_fixed">
 <div class="container body">
     <div class="main_container">
@@ -13,51 +11,154 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>${projectPlanDetails.projectPhaseName}成果提交</h3>
+                    <h3>估计委托书</h3>
                     <div class="clearfix"></div>
                 </div>
-                <div class="x_content">
-                    <form id="frm_task" class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                实际工时
-                            </label>
-                            <div class="x-valid">
-                                <div class="col-sm-3">
-                                    <input type="text" required
-                                           placeholder="实际工时" data-rule-number='true'
-                                           id="actualHours" name="actualHours" class="form-control" maxlength="3">
+                <div class="x_content collapse">
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary" value="上传委托书">
+                    </div>
+                    <div class="col-md-55">
+                        <div class="thumbnail">
+                            <div class="image view view-first">
+                                <img style="width: 100%; display: block;" src="images/media.jpg" alt="image">
+                                <div class="mask">
+                                    <p>Your Text</p>
+                                    <div class="tools tools-bottom">
+                                        <a href="#"><i class="fa fa-times"></i></a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                成果描述
-                            </label>
-                            <div class="x-valid">
-                                <div class="col-sm-11">
-                                        <textarea required placeholder="成果描述" id="taskRemarks" name="taskRemarks"
-                                                  class="form-control"></textarea>
-                                </div>
+                            <div class="caption">
+                                <p>Snow and Ice Incoming for the South</p>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                成果文件
-                            </label>
-                            <div class="col-sm-11">
-                                <input id="apply_file" name="apply_file" type="file" multiple="false">
-                                <div id="_apply_file">
+                    </div>
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
+                    <h3>估计对象位置示意图</h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content collapse">
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary" value="上传委托书">
+                    </div>
+                    <div class="col-md-55">
+                        <div class="thumbnail">
+                            <div class="image view view-first">
+                                <img style="width: 100%; display: block;" src="images/media.jpg" alt="image">
+                                <div class="mask">
+                                    <p>Your Text</p>
+                                    <div class="tools tools-bottom">
+                                        <a href="#"><i class="fa fa-times"></i></a>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="caption">
+                                <p>Snow and Ice Incoming for the South</p>
+                            </div>
                         </div>
-                    </form>
+                    </div>
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
+                    <h3>估价对象实况照片</h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content collapse">
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary" value="上传估价对象实况照片">
+                    </div>
+                    <div class="col-md-55">
+                        <div class="thumbnail">
+                            <div class="image view view-first">
+                                <img style="width: 100%; display: block;" src="images/media.jpg" alt="image">
+                                <div class="mask">
+                                    <p>Your Text</p>
+                                    <div class="tools tools-bottom">
+                                        <a href="#"><i class="fa fa-times"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="caption">
+                                <p>Snow and Ice Incoming for the South</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
+                    <h3>估价对象权属证明复印件</h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content collapse">
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary" value="上传估价对象权属证明复印件">
+                    </div>
+                    <div class="col-md-55">
+                        <div class="thumbnail">
+                            <div class="image view view-first">
+                                <img style="width: 100%; display: block;" src="images/media.jpg" alt="image">
+                                <div class="mask">
+                                    <p>Your Text</p>
+                                    <div class="tools tools-bottom">
+                                        <a href="#"><i class="fa fa-times"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="caption">
+                                <p>Snow and Ice Incoming for the South</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
+                    <h3>估价中引用的专用文件资料</h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content collapse">
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary" value="估价中引用的专用文件资料">
+                    </div>
+                    <div class="col-md-55">
+                        <div class="thumbnail">
+                            <div class="image view view-first">
+                                <img style="width: 100%; display: block;" src="images/media.jpg" alt="image">
+                                <div class="mask">
+                                    <p>Your Text</p>
+                                    <div class="tools tools-bottom">
+                                        <a href="#"><i class="fa fa-times"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="caption">
+                                <p>Snow and Ice Incoming for the South</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="x_panel">
@@ -82,17 +183,12 @@
 <script type="application/javascript">
 
     $(function () {
-
-        $("#frm_task").validate();
-
-        loadUploadFiles();
-        //上传附件
         FileUtils.uploadFiles({
             target: "apply_file",
             showFileList: false,
             disabledTarget: "btn_submit",
             formData: {
-                tableName: AssessDBKey.ProjectPlanDetails,
+                tableName: AssessDBKey.ProjectInfo,
                 tableId: ${projectPlanDetails.id},
                 fieldsName: "apply",
                 projectId: "${projectPlanDetails.projectId}"
@@ -119,15 +215,11 @@
 
 
     function submit() {
-        if (!$("#frm_task").valid()) {
-            return false;
-        }
-
         if ("${processInsId}" != "0") {
-            submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+            submitEditToServer("");
         }
         else {
-            submitToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+            submitToServer("");
         }
     }
 
