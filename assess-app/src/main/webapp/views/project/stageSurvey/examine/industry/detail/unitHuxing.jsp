@@ -77,7 +77,7 @@
                     onUpload: function (file) {
                         var formData={
                             fieldsName:unitHuxing.prototype.config().unitHuxingFileIDFildName,
-                            tableName: AssessDBKey.ExamineUnitHuxing,
+                            tableName: AssessDBKey.BasicUnitHuxing,
                             tableId: unitHuxing.prototype.getFileID()
                         };
                         return formData;
@@ -92,7 +92,7 @@
                     target: unitHuxing.prototype.config().unitHuxingFileIDFildName,
                     formData: {
                         fieldsName:unitHuxing.prototype.config().unitHuxingFileIDFildName,
-                        tableName: AssessDBKey.ExamineUnitHuxing,
+                        tableName: AssessDBKey.BasicUnitHuxing,
                         tableId: unitHuxing.prototype.getFileID(),
                         projectId: 0
                     },

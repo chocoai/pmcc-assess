@@ -46,9 +46,9 @@ public class EvaluationBasisDao {
         if (StringUtils.isNotBlank(category)) {
             criteria.andCategoryLike(String.format("%%%s%%", category));
         }
-        if (StringUtils.isNotBlank(method)) {
-            criteria.andMethodLike(String.format("%%%s%%", method));
-        }
+//        if (StringUtils.isNotBlank(method)) {
+//            criteria.andMethodLike(String.format("%%%s%%", method));
+//        }
         if (StringUtils.isNotBlank(purpose)) {
             criteria.andEntrustmentPurposeLike(String.format("%%%s%%", purpose));
         }

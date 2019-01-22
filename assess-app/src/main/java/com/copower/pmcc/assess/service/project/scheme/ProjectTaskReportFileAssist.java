@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -8,6 +9,8 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * 描述:
@@ -21,11 +24,18 @@ import org.springframework.web.servlet.ModelAndView;
 public class ProjectTaskReportFileAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private SchemeReportFileService schemeReportFileService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskReportFileIndex", "", 0, "0", "");
-
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(projectPlanDetails.getAreaId());//该区域下的所有委估对象
+        modelAndView.addObject("judgeObjectList",judgeObjectList);
+        modelAndView.addObject("ownershipCertFileList",schemeReportFileService.getOwnershipCertList(projectPlanDetails.getAreaId()));
+        modelAndView.addObject("inventoryAddressFileList",schemeReportFileService.getInventoryAddressList(projectPlanDetails.getAreaId()));
         return modelAndView;
     }
 

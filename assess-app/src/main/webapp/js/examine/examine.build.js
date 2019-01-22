@@ -162,7 +162,7 @@
             disabledTarget: "btn_submit",
             formData: {
                 fieldsName: fieldsName,
-                tableName: AssessDBKey.ExamineBuilding,
+                tableName: AssessDBKey.BasicBuilding,
                 tableId: buildingCommon.getBuildingId()
             },
             deleteFlag: true
@@ -175,7 +175,7 @@
             target: fieldsName,
             formData: {
                 fieldsName: fieldsName,
-                tableName: AssessDBKey.ExamineBuilding,
+                tableName: AssessDBKey.BasicBuilding,
                 tableId: buildingCommon.getBuildingId()
             },
             deleteFlag: true

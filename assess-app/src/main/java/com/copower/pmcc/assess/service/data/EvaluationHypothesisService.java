@@ -104,15 +104,23 @@ public class EvaluationHypothesisService {
      * @return
      */
     public List<DataEvaluationHypothesis> getHypothesisList(Integer type,Integer category,Integer method, Integer purpose) {
+        String typeStr = new String();
+        String categoryStr = new String();
         String methodStr = new String();
         String purposeStr = new String();
+        if (type != null && type > 0) {
+            typeStr = String.format(",%s,", type);
+        }
+        if (category != null && category > 0) {
+            categoryStr = String.format(",%s,", category);
+        }
         if (method != null && method > 0) {
             methodStr = String.format(",%s,", method);
         }
         if (purpose != null && purpose > 0) {
             purposeStr = String.format(",%s,", purpose);
         }
-        return evaluationHypothesisDao.getHypothesisList(type,category,methodStr, purposeStr);
+        return evaluationHypothesisDao.getHypothesisList(typeStr,categoryStr,methodStr, purposeStr);
     }
 
 

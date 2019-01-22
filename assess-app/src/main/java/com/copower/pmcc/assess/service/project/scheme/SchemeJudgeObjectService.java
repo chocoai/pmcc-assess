@@ -251,6 +251,7 @@ public class SchemeJudgeObjectService {
         }
         schemeJudgeObject.setId(null);
         schemeJudgeObject.setSplitNumber(judgeObjectList.size() + 1);
+        schemeJudgeObject.setName(String.format("(%s-%s)%s",schemeJudgeObject.getNumber(),schemeJudgeObject.getSplitNumber(),schemeJudgeObject.getName()));
         schemeJudgeObject.setBisSplit(true);
         schemeJudgeObject.setBisSetFunction(false);
         schemeJudgeObjectDao.addSchemeJudgeObject(schemeJudgeObject);
@@ -330,7 +331,7 @@ public class SchemeJudgeObjectService {
         mergeJudgeObject.setPid(0);
         mergeJudgeObject.setSplitNumber(null);
         mergeJudgeObject.setNumber(StringUtils.strip(numberBuilder.toString(), ","));
-        mergeJudgeObject.setName("");
+        mergeJudgeObject.setName(String.format("%s号委估对象",mergeJudgeObject.getNumber()));
         mergeJudgeObject.setOwnership("");
         mergeJudgeObject.setSeat("");
         mergeJudgeObject.setFloorArea(floorAreaTotal);

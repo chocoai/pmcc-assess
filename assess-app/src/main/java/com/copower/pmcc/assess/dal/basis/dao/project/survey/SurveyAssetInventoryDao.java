@@ -47,4 +47,14 @@ public class SurveyAssetInventoryDao {
         }
         return null;
     }
+
+    public SurveyAssetInventory getDataByDeclareId(Integer declareId) {
+        SurveyAssetInventoryExample example = new SurveyAssetInventoryExample();
+        example.createCriteria().andDeclareRecordIdEqualTo(declareId);
+        List<SurveyAssetInventory> surveyAssetInventory = surveyAssetInventoryMapper.selectByExample(example);
+        if (CollectionUtils.isNotEmpty(surveyAssetInventory)) {
+            return surveyAssetInventory.get(0);
+        }
+        return null;
+    }
 }

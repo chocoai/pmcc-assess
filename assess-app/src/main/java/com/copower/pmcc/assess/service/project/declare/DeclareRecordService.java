@@ -52,6 +52,7 @@ public class DeclareRecordService {
         }
     }
 
+
     /**
      * 申报记录信息按区域分组
      *
@@ -101,7 +102,7 @@ public class DeclareRecordService {
      * @param projectId
      * @return
      */
-    public List<SchemeAreaGroup> getSchemeGroup(Integer projectId) {
+    public List<SchemeAreaGroup> getSchemeAreaGroup(Integer projectId) {
         List<SchemeAreaGroup> voList = schemeAreaGroupService.getAreaGroupList(projectId);
         if (CollectionUtils.isNotEmpty(voList))
             return voList;

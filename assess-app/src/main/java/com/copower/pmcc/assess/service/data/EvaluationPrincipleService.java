@@ -41,6 +41,7 @@ public class EvaluationPrincipleService {
     private EvaluationPrincipleDao evaluationPrincipleDao;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+
     /**
      * 保存数据
      *
@@ -101,16 +102,24 @@ public class EvaluationPrincipleService {
      * @param purpose
      * @return
      */
-    public List<DataEvaluationPrinciple> getPrincipleList(Integer type, Integer category,Integer method, Integer purpose) {
+    public List<DataEvaluationPrinciple> getPrincipleList(Integer type, Integer category, Integer method, Integer purpose) {
+        String typeStr = new String();
+        String categoryStr = new String();
         String methodStr = new String();
         String purposeStr = new String();
+        if (type != null && type > 0) {
+            typeStr = String.format(",%s,", type);
+        }
+        if (category != null && category > 0) {
+            categoryStr = String.format(",%s,", category);
+        }
         if (method != null && method > 0) {
             methodStr = String.format(",%s,", method);
         }
         if (purpose != null && purpose > 0) {
             purposeStr = String.format(",%s,", purpose);
         }
-        return evaluationPrincipleDao.getPrincipleList(type,category,methodStr, purposeStr);
+        return evaluationPrincipleDao.getPrincipleList(typeStr, categoryStr, methodStr, purposeStr);
     }
 
 
@@ -126,7 +135,7 @@ public class EvaluationPrincipleService {
         if (StringUtils.isNotBlank(evaluationPrinciple.getEntrustmentPurpose())) {
             vo.setEntrustmentPurposeStr(baseDataDicService.getDataDicName(purposeDicList, evaluationPrinciple.getEntrustmentPurpose()));
         }
-        vo.setTypeName(baseProjectClassifyService.getTypeAndCategoryName(evaluationPrinciple.getType(),evaluationPrinciple.getCategory()));
+        vo.setTypeName(baseProjectClassifyService.getTypeAndCategoryName(evaluationPrinciple.getType(), evaluationPrinciple.getCategory()));
         return vo;
     }
 

@@ -17,12 +17,6 @@ AssessDBKey.InitiatePossessor = "tb_initiate_possessor";
 AssessDBKey.InitiateConsignor = "tb_initiate_consignor";
 AssessDBKey.BoxApprovalLog = "tb_box_approval_log";
 AssessDBKey.SurveyLocaleExploreDetail = "tb_survey_locale_explore_detail";
-AssessDBKey.ExamineEstate = "tb_examine_estate";
-AssessDBKey.ExamineHouse = "tb_examine_house";
-AssessDBKey.ExamineBuilding = "tb_examine_building";
-AssessDBKey.ExamineUnitHuxing = "tb_examine_unit_huxing";
-AssessDBKey.ExamineEstateParking = "tb_examine_estate_parking";
-AssessDBKey.ExamineHouseCorollaryEquipment = "tb_examine_house_corollary_equipment";
 
 AssessDBKey.CaseEstate = "tb_case_estate";
 AssessDBKey.CaseEstateLandState = "tb_case_estate_land_state";
@@ -44,6 +38,8 @@ AssessDBKey.BasicHouseCorollaryEquipment = "tb_basic_house_corollary_equipment";
 AssessDBKey.SurveyAssetInventory = "tb_survey_asset_inventory";
 AssessDBKey.SurveyAssetInventoryContent = "tb_survey_asset_inventory_content";
 AssessDBKey.SurveyAssetInventoryRight = "tb_survey_asset_inventory_right";
+
+AssessDBKey.SchemeJudgeObject = "tb_scheme_judge_object";
 
 AssessDBKey.BaseFileTemplate = "tb_base_file_template";
 

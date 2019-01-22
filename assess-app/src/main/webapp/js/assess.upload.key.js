@@ -3,11 +3,11 @@
  */
 var AssessUploadKey = {}
 
-AssessUploadKey.PROJECT_PROXY = "project_proxy";//资产清查证明文件
-AssessUploadKey.JUDGE_OBJECT_POSITION = "judge_object_position";//资产清查证明文件
-AssessUploadKey.JUDGE_OBJECT_LIVE_SITUATION = "judge_object_live_situation";//资产清查证明文件
-AssessUploadKey.JUDGE_OBJECT_OWNERSHIP = "judge_object_ownership";//资产清查证明文件
-AssessUploadKey.JUDGE_OBJECT_REFERENCE = "judge_object_reference";//资产清查证明文件
+AssessUploadKey.PROJECT_PROXY = "project_proxy";//估计委托书
+AssessUploadKey.JUDGE_OBJECT_POSITION = "judge_object_position";//估价对象位置示意图
+AssessUploadKey.JUDGE_OBJECT_LIVE_SITUATION = "judge_object_live_situation";//估价对象实况照片
+AssessUploadKey.JUDGE_OBJECT_OWNERSHIP = "judge_object_ownership";//估价对象权属证明
+AssessUploadKey.JUDGE_OBJECT_REFERENCE = "judge_object_reference";//估价中引用的专用文件
 
 AssessUploadKey.INVENTORY_CHECK_ORIGINAL = "inventory_check_original";//资产清查证明文件
 AssessUploadKey.INVENTORY_SPECIAL_CASE = "inventory_special_case";//资产清查特殊情况附件
