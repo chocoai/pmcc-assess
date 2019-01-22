@@ -101,9 +101,9 @@
                                             项目类型类别<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <button class="btn btn-xs btn-success"
+                                            <div class="btn btn-xs btn-success"
                                                     onclick="appendHTML('',this)"><i
-                                                    class="fa fa-plus"></i></button>
+                                                    class="fa fa-plus"></i></div>
                                         </div>
                                     </div>
                                 </div>
@@ -231,8 +231,7 @@
 <script type="application/javascript">
     $(function () {
         loadHypothesisList();
-        //objMethod.event.init();
-        //objMethod.event.change();
+
     })
 
     //提取字段
@@ -355,8 +354,6 @@
         var row = $("#tb_List").bootstrapTable('getData')[index];
         $("#frm").clearAll();
         $("#frm").initForm(row);
-        //writeHTMLData(row.type, row.category);
-        //objMethod.event.init();
         reload();
         AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='entrustmentPurpose']"), row.entrustmentPurpose.split(','));
         AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='method']"), row.method.split(','));
@@ -364,44 +361,57 @@
         $('#divBox').modal();
     }
 
-    /**
-     * @author:  zch
-     * 描述:加载一些select2数据 (类型 类别)
-     * @date:2018-08-30
-     **/
+
     var num = 0;
-    var objMethod = new Object();
-    objMethod.flag = true;
-    objMethod.isEmpty = function (data) {
-        if (data) {
-            return true;
+
+    //类型
+    function getType(number) {
+        if (!number && number != 0) {
+            number = num
         }
-        return false;
-    }
-    objMethod.writeSelect = function (frm, data, name) {
-        if (objMethod.isEmpty(data)) {
-            $("#" + frm + " ." + name + num).val(data).trigger("change");
-        } else {
-            $("#" + frm + " ." + name + num).val(null).trigger("change");
-        }
-    }
-    objMethod.event = {
-        init: function () {
-            if (objMethod.flag) {
-                objMethod.event.type();
-                objMethod.flag = false;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/baseProjectClassify/getProjectClassifyListByFieldName",
+            type: "post",
+            dataType: "json",
+            data: {fieldName: "single"},//字段为固定 请参照BaseProjectClassifyController中....
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data;
+                    if (data.length >= 1) {
+                        var option = "<option value=''>请选择</option>";
+                        for (var i = 0; i < data.length; i++) {
+                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        }
+                        $("#frm").find('select.type' + number).html(option);
+
+                    }
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
             }
-        },
-        //类型
-        type: function (number) {
-            if (!number && number != 0) {
-                number = num
+        });
+    }
+
+    //类别
+    function getCategory(number) {
+        if (!number && number != 0) {
+            number = num;
+        }
+        //监听change 事件 并做出......
+        $("#frm" + " .type" + number).change(function () {
+            var pid = $("#frm" + " .type" + number).eq(1).val();
+            if (!pid) {
+                return false;
             }
             $.ajax({
-                url: "${pageContext.request.contextPath}/baseProjectClassify/getProjectClassifyListByFieldName",
+                url: "${pageContext.request.contextPath}/baseProjectClassify/getCacheProjectClassifyListByPid",
                 type: "post",
                 dataType: "json",
-                data: {fieldName: "single"},//字段为固定 请参照BaseProjectClassifyController中....
+                data: {pid: pid},
                 success: function (result) {
                     if (result.ret) {
                         var data = result.data;
@@ -410,7 +420,7 @@
                             for (var i = 0; i < data.length; i++) {
                                 option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
-                            $("#frm").find('select.type' + number).html(option);
+                            $("#frm").find('select.category' + number).html(option);
 
                         }
                     }
@@ -421,51 +431,9 @@
                 error: function (result) {
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
-            });
-        },
-        change: function () {
-            objMethod.event.category();
-        },
-        //类别
-        category: function (number) {
-            if (!number && number != 0) {
-                number = num;
-            }
-            //监听change 事件 并做出......
-            $("#frm" + " .type" + number).change(function () {
-                var pid = $("#frm" + " .type" + number).eq(1).val();
-                if (!objMethod.isEmpty(pid)) {
-                    return false;
-                }
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/baseProjectClassify/getCacheProjectClassifyListByPid",
-                    type: "post",
-                    dataType: "json",
-                    data: {pid: pid},
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            if (data.length >= 1) {
-                                var option = "<option value=''>请选择</option>";
-                                for (var i = 0; i < data.length; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#frm").find('select.category' + number).html(option);
-
-                            }
-                        }
-                        else {
-                            Alert("保存数据失败，失败原因:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-            });
-        }
+            })
+        });
     }
-
 
     function appendHTML() {
         num++;
@@ -475,8 +443,8 @@
         $("#frm").find(".system").append(html);
         $("#frm").find("." + projectType).select2();
         $("#frm").find("." + projectCategory).select2();
-        objMethod.event.type();
-        objMethod.event.category();
+        getType();
+        getCategory();
     }
 
     function createHTML(projectType, projectCategory) {
@@ -509,7 +477,7 @@
     function typeChange(this_) {
         var str = $(this_).attr("id");
         var number = str.substr(str.length - 1, 1);
-        objMethod.event.category(number);
+        getCategory(number);
     }
 
     function reload() {
@@ -534,11 +502,12 @@
         html += "</div>";
         html += "</div>";
         $("#frm").find(".system").append(html);
-        objMethod.event.type(0);
-        objMethod.event.category(0);
+        getType(0);
+        getCategory(0);
         $("#frm").find(".type0").select2();
         $("#frm").find(".category0").select2();
     }
+
 
     /*function writeHTMLData(types,categorys) {
         console.log(types);
@@ -575,8 +544,8 @@
             $("#frm").find("." + projectCategory).select2();
             console.log(typeValues[i+1])
             console.log(categoryValues[i+1])
-            objMethod.event.type(i,typeValues[i+1],categoryValues[i+1]);
-            objMethod.event.category(i,categoryValues[i+1],typeValues[i+1]);
+            getType(i,typeValues[i+1],categoryValues[i+1]);
+            getCategory(i,categoryValues[i+1],typeValues[i+1]);
         }
     }*/
 
