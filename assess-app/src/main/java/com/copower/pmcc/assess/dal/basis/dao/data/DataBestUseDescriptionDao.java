@@ -25,9 +25,15 @@ public class DataBestUseDescriptionDao {
         }
         return dataBestUseDescriptionMapper.selectByExample(example);
     }
-    public List<DataBestUseDescription> dataBestUseDescriptionList(){
+    public List<DataBestUseDescription> dataBestUseDescriptionList(String type,String category){
         DataBestUseDescriptionExample example = new DataBestUseDescriptionExample();
-        example.createCriteria().andIdIsNotNull();
+        DataBestUseDescriptionExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(type)) {
+            criteria.andTypeLike(String.format("%%%s%%", type));
+        }
+        if (StringUtils.isNotBlank(category)) {
+            criteria.andCategoryLike(String.format("%%%s%%", category));
+        }
         return dataBestUseDescriptionMapper.selectByExample(example);
     }
 

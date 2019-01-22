@@ -74,9 +74,11 @@ public class SchemeProgrammeController {
     public ModelAndView index(Integer projectId, Integer planId) {
         String view = "/project/stageScheme/programmeIndex";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        List<SchemeAreaGroup> areaGroups = declareRecordService.getSchemeGroup(projectId);//获取分组信息
+        List<SchemeAreaGroup> areaGroups = declareRecordService.getSchemeAreaGroup(projectId);//获取分组信息
+        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
+        modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("areaGroups", areaGroups);
-        modelAndView.addObject("bestUseList", dataBestUseDescriptionService.dataBestUseDescriptionList());
+        modelAndView.addObject("bestUseList", dataBestUseDescriptionService.dataBestUseDescriptionList(projectInfoVo.getProjectTypeId(),projectInfoVo.getProjectCategoryId()));
         modelAndView.addObject("setUseList", dataSetUseFieldService.getCacheSetUseFieldListByPid(0));
         modelAndView.addObject("dataDicMethodList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD));
         modelAndView.addObject("valueTypes",baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE));//价值类型
@@ -86,8 +88,7 @@ public class SchemeProgrammeController {
         modelAndView.addObject("evaluationMethodMap", evaluationMethodService.getEvaluationMethodMap());
         modelAndView.addObject("evaluationThinkingMap", evaluationThinkingService.getEvaluationThinkingMap());
         modelAndView.addObject("inventoryRightTypeList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE));
-        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
-        modelAndView.addObject("projectInfo", projectInfoVo);
+
         modelAndView.addObject("planId", planId);
         return modelAndView;
     }
@@ -96,13 +97,14 @@ public class SchemeProgrammeController {
     public ModelAndView view(Integer projectId, Integer planId) {
         String view = "/project/stageScheme/programmeView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        List<SchemeAreaGroup> areaGroups = declareRecordService.getSchemeGroup(projectId);//获取分组信息
-        modelAndView.addObject("areaGroups", areaGroups);
-        modelAndView.addObject("bestUseList", dataBestUseDescriptionService.dataBestUseDescriptionList());
-        modelAndView.addObject("setUseList", baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_PRACTICAL_USE));
-        modelAndView.addObject("dataDicMethodList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD));
+        List<SchemeAreaGroup> areaGroups = declareRecordService.getSchemeAreaGroup(projectId);//获取分组信息
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
         modelAndView.addObject("projectInfo", projectInfoVo);
+        modelAndView.addObject("areaGroups", areaGroups);
+        modelAndView.addObject("bestUseList", dataBestUseDescriptionService.dataBestUseDescriptionList(projectInfoVo.getProjectTypeId(),projectInfoVo.getProjectCategoryId()));
+        modelAndView.addObject("setUseList", baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_PRACTICAL_USE));
+        modelAndView.addObject("dataDicMethodList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD));
+
         modelAndView.addObject("planId", planId);
         return modelAndView;
     }

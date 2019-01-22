@@ -131,8 +131,8 @@
         });
 
         $.each(estateCommon.estateFileControlIdArray, function (i, n) {
-            estateCommon.fileUpload(n, AssessDBKey.ExamineEstate, estateCommon.getEstateId());
-            estateCommon.fileShow(n, AssessDBKey.ExamineEstate,estateCommon.getEstateId());
+            estateCommon.fileUpload(n, AssessDBKey.BasicEstate, estateCommon.getEstateId());
+            estateCommon.fileShow(n, AssessDBKey.BasicEstate,estateCommon.getEstateId());
         });
 
         //初始化上传控件

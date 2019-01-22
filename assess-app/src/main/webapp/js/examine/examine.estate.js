@@ -130,8 +130,8 @@
         }, true);
 
         $.each(estateCommon.estateFileControlIdArray, function (i, n) {
-            estateCommon.fileUpload(n, AssessDBKey.ExamineEstate, data.estate.id);
-            estateCommon.fileShow(n, AssessDBKey.ExamineEstate, data.estate.id);
+            estateCommon.fileUpload(n, AssessDBKey.BasicEstate, data.estate.id);
+            estateCommon.fileShow(n, AssessDBKey.BasicEstate, data.estate.id);
         });
 
         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_total_land_use, data.land.landUseType, function (html, data) {

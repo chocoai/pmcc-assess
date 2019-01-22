@@ -31,8 +31,16 @@ public class DataBestUseDescriptionService {
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
 
-    public List<DataBestUseDescription> dataBestUseDescriptionList(){
-        return dataBestUseDescriptionDao.dataBestUseDescriptionList();
+    public List<DataBestUseDescription> dataBestUseDescriptionList(Integer type,Integer category){
+        String typeStr = new String();
+        String categoryStr = new String();
+        if (type != null && type > 0) {
+            typeStr = String.format(",%s,", type);
+        }
+        if (category != null && category > 0) {
+            categoryStr = String.format(",%s,", category);
+        }
+        return dataBestUseDescriptionDao.dataBestUseDescriptionList(typeStr,categoryStr);
     }
 
     public BootstrapTableVo getBestUseListVo(String name) {

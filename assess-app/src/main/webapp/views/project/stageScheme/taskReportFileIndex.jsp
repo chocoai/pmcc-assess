@@ -16,28 +16,13 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>估计委托书</h3>
+                    <h3>估价委托书</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content collapse">
-                    <div class="col-sm-2">
-                        <input type="button" class="btn btn-primary" value="上传委托书">
-                    </div>
-                    <div class="col-md-55">
-                        <div class="thumbnail">
-                            <div class="image view view-first">
-                                <img style="width: 100%; display: block;" src="images/media.jpg" alt="image">
-                                <div class="mask">
-                                    <p>Your Text</p>
-                                    <div class="tools tools-bottom">
-                                        <a href="#"><i class="fa fa-times"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="caption">
-                                <p>Snow and Ice Incoming for the South</p>
-                            </div>
-                        </div>
+                    <div class="col-sm-4">
+                        <input id="project_proxy" name="project_proxy" type="file" multiple="false">
+                        <div id="_project_proxy"></div>
                     </div>
                 </div>
             </div>
@@ -46,28 +31,37 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>估计对象位置示意图</h3>
+                    <h3>估价对象位置示意图</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content collapse">
-                    <div class="col-sm-2">
-                        <input type="button" class="btn btn-primary" value="上传委托书">
-                    </div>
-                    <div class="col-md-55">
-                        <div class="thumbnail">
-                            <div class="image view view-first">
-                                <img style="width: 100%; display: block;" src="images/media.jpg" alt="image">
-                                <div class="mask">
-                                    <p>Your Text</p>
-                                    <div class="tools tools-bottom">
-                                        <a href="#"><i class="fa fa-times"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="caption">
-                                <p>Snow and Ice Incoming for the South</p>
-                            </div>
-                        </div>
+                    <div class="col-sm-6">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>估价对象</th>
+                                <th>位置图</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach items="${judgeObjectList}" var="judgeObject">
+                                <tr>
+                                    <td>${judgeObject.name}</td>
+                                    <td>
+                                        <input id="judge_object_position${judgeObject.id}" name="project_proxy"
+                                               type="file" multiple="false">
+                                        <div id="_judge_object_position${judgeObject.id}"></div>
+                                    </td>
+                                </tr>
+                                <script type="text/javascript">
+                                    $(function () {
+                                        uploadFiles(AssessDBKey.SchemeJudgeObject, "${judgeObject.id}", AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position${judgeObject.id}");
+                                        loadUploadFiles(AssessDBKey.SchemeJudgeObject, "${judgeObject.id}", AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position${judgeObject.id}");
+                                    })
+                                </script>
+                            </c:forEach>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -80,25 +74,54 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content collapse">
-                    <div class="col-sm-2">
-                        <input type="button" class="btn btn-primary" value="上传估价对象实况照片">
-                    </div>
-                    <div class="col-md-55">
-                        <div class="thumbnail">
-                            <div class="image view view-first">
-                                <img style="width: 100%; display: block;" src="images/media.jpg" alt="image">
-                                <div class="mask">
-                                    <p>Your Text</p>
-                                    <div class="tools tools-bottom">
-                                        <a href="#"><i class="fa fa-times"></i></a>
+                    <c:forEach items="${judgeObjectList}" var="judgeObject">
+                        <div class="row">
+                            <input type="hidden" name="judgeObjectId" value="${judgeObject.id}">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">${judgeObject.name}-全部</div>
+                                    <div class="">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>序号</th>
+                                                <th>文件名称</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody data-id="${judgeObject.id}" data-name="live_situation_all">
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
-                            <div class="caption">
-                                <p>Snow and Ice Incoming for the South</p>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">${judgeObject.name}-已选</div>
+                                    <div class="">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>文件名称</th>
+                                                <th>排序</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody data-id="${judgeObject.id}" data-name="live_situation_select">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <script type="text/javascript">
+                            $(function () {
+                                //1.加载该委估对象所有相关实况照片 2.加载该委估对象已选择的实况照片
+                                loadLiveSituationAll($('tbody[data-id=${judgeObject.id}][data-name=live_situation_all]'), ${judgeObject.id});
+                                loadLiveSituationSelect($('tbody[data-id=${judgeObject.id}][data-name=live_situation_select]'), ${judgeObject.id});
+                            })
+                        </script>
+                    </c:forEach>
                 </div>
             </div>
             <div class="x_panel">
@@ -110,24 +133,27 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content collapse">
-                    <div class="col-sm-2">
-                        <input type="button" class="btn btn-primary" value="上传估价对象权属证明复印件">
-                    </div>
-                    <div class="col-md-55">
-                        <div class="thumbnail">
-                            <div class="image view view-first">
-                                <img style="width: 100%; display: block;" src="images/media.jpg" alt="image">
-                                <div class="mask">
-                                    <p>Your Text</p>
-                                    <div class="tools tools-bottom">
-                                        <a href="#"><i class="fa fa-times"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="caption">
-                                <p>Snow and Ice Incoming for the South</p>
-                            </div>
-                        </div>
+                    <div class="col-sm-6">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>文件名称</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach items="${ownershipCertFileList}" var="item" varStatus="i">
+                                <tr>
+                                    <th>${i}</th>
+                                    <td>${item.fileName}</td>
+                                    <td>
+                                        <input type="button" class="btn btn-xs btn-primary" value="编辑">
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -140,22 +166,59 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content collapse">
-                    <div class="col-sm-2">
-                        <input type="button" class="btn btn-primary" value="估价中引用的专用文件资料">
-                    </div>
-                    <div class="col-md-55">
-                        <div class="thumbnail">
-                            <div class="image view view-first">
-                                <img style="width: 100%; display: block;" src="images/media.jpg" alt="image">
-                                <div class="mask">
-                                    <p>Your Text</p>
-                                    <div class="tools tools-bottom">
-                                        <a href="#"><i class="fa fa-times"></i></a>
-                                    </div>
-                                </div>
+                    <div class="col-sm-6">
+                        <div class="x_panel">
+                            <div class="x_title">地址不一致附件</div>
+                            <div>
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>文件名称</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach items="${inventoryAddressFileList}" var="item" varStatus="i">
+                                        <tr>
+                                            <th>${i}</th>
+                                            <td>${item.fileName}</td>
+                                            <td>
+                                                <input type="button" class="btn btn-xs btn-primary" value="查看" onclick="">
+                                                <input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="">
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="caption">
-                                <p>Snow and Ice Incoming for the South</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="x_panel">
+                            <div class="x_title">法定优先受偿款附件</div>
+                            <div>
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>文件名称</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach items="${inventoryAddressFileList}" var="item" varStatus="i">
+                                        <tr>
+                                            <th>${i}</th>
+                                            <td>${item.fileName}</td>
+                                            <td>
+                                                <input type="button" class="btn btn-xs btn-primary" value="查看" onclick="">
+                                                <input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="">
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -181,39 +244,135 @@
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
-
     $(function () {
+        uploadFiles(AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", AssessUploadKey.PROJECT_PROXY);
+        loadUploadFiles(AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", AssessUploadKey.PROJECT_PROXY);
+    });
+
+    //初始化上传控件
+    function uploadFiles(tableName, tableId, fieldsName, target) {
         FileUtils.uploadFiles({
-            target: "apply_file",
-            showFileList: false,
+            target: target == undefined ? fieldsName : target,
             disabledTarget: "btn_submit",
             formData: {
-                tableName: AssessDBKey.ProjectInfo,
-                tableId: ${projectPlanDetails.id},
-                fieldsName: "apply",
+                tableName: tableName,
+                tableId: tableId,
+                fieldsName: fieldsName,
                 projectId: "${projectPlanDetails.projectId}"
             },
-            deleteFlag: true,
-            onUploadComplete: function () {
-                loadUploadFiles();
-            }
+            editFlag: true,
+            deleteFlag: true
         });
-    });
+    }
+
     //显示附件
-    function loadUploadFiles() {
+    function loadUploadFiles(tableName, tableId, fieldsName, target) {
         FileUtils.getFileShows({
-            target: "apply_file",
+            target: target == undefined ? fieldsName : target,
             formData: {
-                tableName: AssessDBKey.ProjectPlanDetails,
-                tableId: ${projectPlanDetails.id},
-                fieldsName: "apply",
+                tableName: tableName,
+                tableId: tableId,
+                fieldsName: fieldsName,
                 projectId: "${projectPlanDetails.projectId}"
             },
+            editFlag: true,
             deleteFlag: true
         })
     }
 
+    //加载委估对象下所有实况照片
+    function loadLiveSituationAll(tbody, judgeObjectId) {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/scheme/getLiveSituationAll',
+            data: {
+                judgeObjectId: judgeObjectId,
+                projectId: '${projectPlanDetails.projectId}'
+            },
+            success: function (result) {
+                if (result.ret) {
+                    var html = '';
+                    $.each(result.data, function (i, item) {
+                        ++i;
+                        html += '<tr><th scope="row">' + i + '</th><td>' + item.fileName + '</td><td>' +
+                            '<input type="button" class="btn btn-xs btn-primary" value="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
+                            '<input type="button" class="btn btn-xs btn-primary" value="选择" onclick="selectLiveSituation(' + item.id + ',' + judgeObjectId + ',\'' + item.fileName + '\');"></td></tr>';
+                    })
+                    tbody.empty().append(html);
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
 
+    //选择估价对象实况照片
+    function selectLiveSituation(attachmentId, judgeObjectId, fileName) {
+        var tbody = $('tbody[data-id=' + judgeObjectId + '][data-name=live_situation_select]');
+        var sorting = tbody.find('tr').length + 1;
+        $.ajax({
+            url: '${pageContext.request.contextPath}/scheme/selectLiveSituation',
+            data: {
+                attachmentId: attachmentId,
+                judgeObjectId: judgeObjectId,
+                fileName: fileName,
+                sorting: sorting,
+                planDetailsId: '${projectPlanDetails.id}'
+            },
+            success: function (result) {
+                if (result.ret) {
+                    var html = '<tr><td>' + fileName + '</td><td><input type="text" value="' + sorting + '"></td><td>' +
+                        '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="">' +
+                        '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeLiveSituation(' + result.data + ',this)"></td></tr>';
+                    $('tbody[data-id=' + judgeObjectId + '][data-name=live_situation_select]').append(html);
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
+
+    //移除实况照片
+    function removeLiveSituation(id, _this) {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/scheme/removeLiveSituation',
+            data: {
+                id: id
+            },
+            success: function (result) {
+                if (result.ret) {
+                    $(_this).closest('tr').remove();
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
+
+    //加载委估对象下已选实况照片
+    function loadLiveSituationSelect(tbody, judgeObjectId) {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/scheme/getLiveSituationSelect',
+            data: {
+                judgeObjectId: judgeObjectId,
+                planDetailsId: '${projectPlanDetails.id}'
+            },
+            success: function (result) {
+                if (result.ret) {
+                    var html = '';
+                    $.each(result.data, function (i, item) {
+                        html += '<tr><td>' + item.fileName + '</td><td><input type="text" value="' + AssessCommon.toString(item.sorting) + '"></td><td>' +
+                            '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="">' +
+                            '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeLiveSituation(' + item.id + ',this)"></td></tr>';
+                    })
+                    tbody.empty().append(html);
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
+
+    //提交
     function submit() {
         if ("${processInsId}" != "0") {
             submitEditToServer("");
@@ -222,7 +381,6 @@
             submitToServer("");
         }
     }
-
 </script>
 
 </html>
