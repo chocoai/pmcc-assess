@@ -134,30 +134,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <%--   <div class="form-group">
-                                       <div class="x-valid">
-                                           <label class="col-sm-2 control-label">
-                                               项目类型<span class="symbol required"></span>
-                                           </label>
-                                           <div class="col-sm-4">
-                                               <select name="type123" required
-                                                       class="form-control search-select select2 type">
-                                               </select>
-                                           </div>
-                                       </div>
-                                       <div class="x-valid">
-                                           <label class="col-sm-2 control-label">
-                                               项目类别<span class="symbol required"></span>
-                                           </label>
-                                           <div class="col-sm-4">
-                                               <select name="category123" required
-                                                       class="form-control category search-select select2">
-                                                   <option selected="selected" value="">请先选择类型</option>
-                                               </select>
-                                           </div>
-                                       </div>
-                                   </div>--%>
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
@@ -339,31 +315,7 @@
     function addHypothesis() {
         $("#frm").clearAll();
         extractTemplateField();
-        $("#frm").find(".system").empty();
-        var html = "<div class='form-group' style='margin-top:8px;'>";
-        html += "<label class='col-md-2 col-sm-2  control-label'>" + '项目类型' + "</label>";
-        html += "<div class='col-sm-3'>";
-        html += "<select  name='type' id='type0' onchange='typeChange(this)' class='form-control search-select select2 type0'>";
-        html += "<option selected='selected' value=''>" + '请选择' + "</option>";
-        html += "</select>";
-        html += "</div>";
-
-        html += "<label class='col-md-2 col-sm-2  control-label'>" + '项目类别' + "</label>";
-        html += "<div class='col-sm-3'>";
-        html += "<select  name='category' class='form-control search-select select2 category0'>";
-        html += "<option selected='selected' value=''>" + '请先选择类型' + "</option>";
-        html += "</select>";
-        html += "</div>";
-
-        html += "<div class='col-sm-2'>";
-        html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>";
-        html += "</div>";
-        html += "</div>";
-        $("#frm").find(".system").append(html);
-        objMethod.event.type(0);
-        objMethod.event.category(0);
-        $("#frm").find(".type0").select2();
-        $("#frm").find(".category0").select2();
+        reload();
     }
 
     //新增 评估假设 数据
@@ -403,8 +355,9 @@
         var row = $("#tb_List").bootstrapTable('getData')[index];
         $("#frm").clearAll();
         $("#frm").initForm(row);
-        writeHTMLData(row.type, row.category);
+        //writeHTMLData(row.type, row.category);
         //objMethod.event.init();
+        reload();
         AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='entrustmentPurpose']"), row.entrustmentPurpose.split(','));
         AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='method']"), row.method.split(','));
         extractTemplateField();
@@ -440,7 +393,7 @@
             }
         },
         //类型
-        type: function (number, value,categoryValue) {
+        type: function (number) {
             if (!number && number != 0) {
                 number = num
             }
@@ -458,10 +411,6 @@
                                 option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
                             $("#frm").find('select.type' + number).html(option);
-                            if(value&&categoryValue) {
-                                $('select.type' + number).select2('val',value);
-                                objMethod.event.category(number,categoryValue,value);
-                            }
 
                         }
                     }
@@ -478,8 +427,7 @@
             objMethod.event.category();
         },
         //类别
-        category: function (number,value,typeId) {
-            console.log("number:"+number+"value:"+value+"typeId:"+typeId)
+        category: function (number) {
             if (!number && number != 0) {
                 number = num;
             }
@@ -503,9 +451,7 @@
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
                                 $("#frm").find('select.category' + number).html(option);
-                                if(value) {
-                                    $('select.category' + number).select2('val',value);
-                                }
+
                             }
                         }
                         else {
@@ -560,7 +506,41 @@
         $(this_).parent().parent().remove();
     }
 
-    function writeHTMLData(types,categorys) {
+    function typeChange(this_) {
+        var str = $(this_).attr("id");
+        var number = str.substr(str.length - 1, 1);
+        objMethod.event.category(number);
+    }
+
+    function reload() {
+        $("#frm").find(".system").empty();
+        var html = "<div class='form-group' style='margin-top:8px;'>";
+        html += "<label class='col-md-2 col-sm-2  control-label'>" + '项目类型' + "</label>";
+        html += "<div class='col-sm-3'>";
+        html += "<select  name='type' id='type0' onchange='typeChange(this)' class='form-control search-select select2 type0'>";
+        html += "<option selected='selected' value=''>" + '请选择' + "</option>";
+        html += "</select>";
+        html += "</div>";
+
+        html += "<label class='col-md-2 col-sm-2  control-label'>" + '项目类别' + "</label>";
+        html += "<div class='col-sm-3'>";
+        html += "<select  name='category' class='form-control search-select select2 category0'>";
+        html += "<option selected='selected' value=''>" + '请先选择类型' + "</option>";
+        html += "</select>";
+        html += "</div>";
+
+        html += "<div class='col-sm-2'>";
+        html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>";
+        html += "</div>";
+        html += "</div>";
+        $("#frm").find(".system").append(html);
+        objMethod.event.type(0);
+        objMethod.event.category(0);
+        $("#frm").find(".type0").select2();
+        $("#frm").find(".category0").select2();
+    }
+
+    /*function writeHTMLData(types,categorys) {
         console.log(types);
         console.log(categorys);
         $("#frm").find(".system").empty();
@@ -598,13 +578,8 @@
             objMethod.event.type(i,typeValues[i+1],categoryValues[i+1]);
             objMethod.event.category(i,categoryValues[i+1],typeValues[i+1]);
         }
-    }
+    }*/
 
-    function typeChange(this_) {
-        var str = $(this_).attr("id");
-        var number = str.substr(str.length - 1, 1);
-        objMethod.event.category(number);
-    }
 </script>
 
 </html>
