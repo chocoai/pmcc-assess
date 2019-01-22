@@ -80,6 +80,17 @@
                                 <label class="form-control">${master.mortgageTotalPrice}</label>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-md-1 col-sm-1 col-xs-12 control-label">
+                                    附件
+                                </label>
+                                <div class="col-md-11 col-sm-11 col-xs-12">
+                                    <div id="_apply_file">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -92,6 +103,20 @@
 
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
+    $(function () {
+        FileUtils.getFileShows({
+            target: "apply_file",
+            formData: {
+                tableName: "tb_scheme_reimbursement",
+                processInsId: "${processInsId}",
+                creater: "${currUserInfo.userAccount}",
+                tableId: "${master.id}",
+                fieldsName: "apply"
+            },
+            deleteFlag: false
+        })
+    })
+
     function saveform() {
         saveApprovalform("");
     }

@@ -110,6 +110,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-md-1 col-sm-1 col-xs-12 control-label">
+                                    附件
+                                </label>
+                                <div class="col-md-11 col-sm-11 col-xs-12">
+                                    <input id="apply_file" type="file" multiple="false">
+                                    <div id="_apply_file">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <input type="hidden" name="id" value="${master.id}">
                     </form>
                 </div>
@@ -134,6 +146,40 @@
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
+    $(function () {
+        FileUtils.uploadFiles({
+                target: "apply_file",
+                formData: {
+                    tableName: "tb_scheme_reimbursement",
+                    processInsId: "${empty processInsId?'0':processInsId}",
+                    creater: "${currUserInfo.userAccount}",
+                    tableId: "${master.id}",
+                    fieldsName: "apply"
+                },
+                deleteFlag: true
+            },
+            {
+                onUploadComplete: function (file, result) {
+                    loadFiles();
+                }
+            }
+        );
+        loadFiles();
+    })
+
+    function loadFiles() {
+        FileUtils.getFileShows({
+            target: "apply_file",
+            formData: {
+                tableName: "tb_scheme_reimbursement",
+                processInsId: "${empty processInsId?'0':processInsId}",
+                creater: "${currUserInfo.userAccount}",
+                tableId: "${master.id}",
+                fieldsName: "apply"
+            },
+            deleteFlag: true
+        })
+    }
 
     function submit() {
         if ($("#master").length > 0) {
