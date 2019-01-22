@@ -294,7 +294,7 @@ public class DeclareRealtyLandCertService {
             return id;
         } else {
             declareRealtyLandCertDao.updateDeclareRealtyLandCert(declareRealtyLandCert);
-            return null;
+            return declareRealtyLandCert.getId();
         }
     }
 

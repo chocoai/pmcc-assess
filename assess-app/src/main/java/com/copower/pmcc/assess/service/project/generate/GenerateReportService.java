@@ -474,6 +474,14 @@ public class GenerateReportService {
                                     bookmarkCollection.get(i).getName(),
                                     generateBaseDataService.getInventoryRight()));
                         }
+                        //土地使用管制
+                        if (com.google.common.base.Objects.equal(BaseReportFieldEnum.LandUseControl.getName(), bookmarkName)) {
+                            BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.LandUseControl.getName());
+                            mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                    BaseReportFieldReplaceEnum.BOOKMARK,
+                                    bookmarkCollection.get(i).getName(),
+                                    generateBaseDataService.getLandUseControl()));
+                        }
                         //估价对象区位状况表
                         if (com.google.common.base.Objects.equal(BaseReportFieldEnum.judgeObjectAreaStatusSheet.getName(), bookmarkName)) {
                             mapSet.add(getBaseReportFieldReplaceEnumMap(

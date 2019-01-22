@@ -178,7 +178,7 @@
         });
         $("#" + declareRealtyHouseCert.config.table).bootstrapTable('destroy');
         TableInit(declareRealtyHouseCert.config.table, "${pageContext.request.contextPath}/declareRealtyHouseCert/getDeclareRealtyHouseCertList", cols, {
-            planDetailsId: ${empty projectPlanDetails.id?0:projectPlanDetails.id},
+            planDetailsId: ${empty projectPlanDetails.id?0:projectPlanDetails.id},enable:'yes'
         }, {
             showColumns: false,
             showRefresh: false,
@@ -356,7 +356,7 @@
         });
         $("#" + declareRealtyLandCert.config.table).bootstrapTable('destroy');
         TableInit(declareRealtyLandCert.config.table, "${pageContext.request.contextPath}/declareRealtyLandCert/getDeclareRealtyLandCertList", cols, {
-            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}'
+            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}' , enable:'yes'
         }, {
             showColumns: false,
             showRefresh: false,
@@ -448,7 +448,7 @@
         });
         $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('destroy');
         TableInit(declareRealtyRealEstateCert.config.table, "${pageContext.request.contextPath}/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertList", cols, {
-            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}'
+            planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}' , enable:'yes'
         }, {
             showColumns: false,
             showRefresh: false,

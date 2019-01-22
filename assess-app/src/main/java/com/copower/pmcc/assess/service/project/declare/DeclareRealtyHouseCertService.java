@@ -298,7 +298,7 @@ public class DeclareRealtyHouseCertService {
             return id;
         } else {
             declareRealtyHouseCertDao.updateDeclareRealtyHouseCert(declareRealtyHouseCert);
-            return null;
+            return declareRealtyHouseCert.getId();
         }
     }
 

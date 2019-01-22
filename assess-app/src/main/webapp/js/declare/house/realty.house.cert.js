@@ -133,22 +133,10 @@ assessCommonHouse.saveAndUpdateHouse = function () {
             return false;
         }
     }
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declareRealtyHouseCert/saveAndUpdateDeclareRealtyHouseCert",
-        data: data,
-        success: function (result) {
-            if (result.ret) {
-                assessCommonHouse.loadList();
-                toastr.success('成功!');
-                $('#' + assessCommonHouse.config.box).modal("hide");
-            } else {
-                Alert("保存失败:" + result.errmsg);
-            }
-        },
-        error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
-        }
+    assessCommonHouse.saveHouse(data , function () {
+        assessCommonHouse.loadList();
+        toastr.success('成功!');
+        $('#' + assessCommonHouse.config.box).modal("hide");
     });
 };
 
@@ -189,6 +177,41 @@ assessCommonHouse.deleteHouse = function () {
     }
 };
 
+assessCommonHouse.getHouse = function (id,callback) {
+    $.ajax({
+        url: getContextPath() + "/declareRealtyHouseCert/getDeclareRealtyHouseCertById",
+        type: "get",
+        dataType: "json",
+        data: {id: id},
+        success: function (result) {
+            if (result.ret) {
+                callback(result.data);
+            }
+        },
+        error: function (result) {
+            Alert("调用服务端方法失败，失败原因:" + result);
+        }
+    })
+};
+
+assessCommonHouse.saveHouse = function (data,callback) {
+    $.ajax({
+        type: "POST",
+        url: getContextPath() + "/declareRealtyHouseCert/saveAndUpdateDeclareRealtyHouseCert",
+        data: data,
+        success: function (result) {
+            if (result.ret) {
+                callback();
+            } else {
+                Alert("保存失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+
 /**
  * @author:  zch
  * 描述:房产证 编辑
@@ -199,24 +222,13 @@ assessCommonHouse.editHouse = function () {
     if (!rows || rows.length <= 0) {
         toastr.info("请选择要编辑的数据");
     } else if (rows.length == 1) {
-        $.ajax({
-            url: getContextPath() + "/declareRealtyHouseCert/getDeclareRealtyHouseCertById",
-            type: "get",
-            dataType: "json",
-            data: {id: rows[0].id},
-            success: function (result) {
-                if (result.ret) {
-                    $("#" + assessCommonHouse.config.frm).clearAll();
-                    assessCommonHouse.init(result.data);
-                    //使校验生效
-                    $("#" + assessCommonHouse.config.frm).validate();
-                    $('#' + assessCommonHouse.config.box).modal("show");
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
+        assessCommonHouse.getHouse(rows[0].id , function (data) {
+            $("#" + assessCommonHouse.config.frm).clearAll();
+            assessCommonHouse.init(data);
+            //使校验生效
+            $("#" + assessCommonHouse.config.frm).validate();
+            $('#' + assessCommonHouse.config.box).modal("show");
+        });
     } else {
         toastr.info("只能选择一行数据进行编辑");
     }
@@ -359,8 +371,17 @@ assessCommonHouse.saveAndUpdateLand = function () {
         data: data,
         success: function (result) {
             if (result.ret) {
-                assessCommonHouse.loadList();
-                $('#' + assessCommonHouse.config.son.declareRealtyLandCert.box).modal("hide");
+                if (data.id){
+                    assessCommonHouse.loadList();
+                    $('#' + assessCommonHouse.config.son.declareRealtyLandCert.box).modal("hide");
+                }else {
+                    assessCommonHouse.getHouse(data.pid , function (item) {
+                        assessCommonHouse.saveHouse({id:item.id,pid:result.data} , function () {
+                            assessCommonHouse.loadList();
+                            $('#' + assessCommonHouse.config.son.declareRealtyLandCert.box).modal("hide");
+                        });
+                    });
+                }
             } else {
                 Alert("保存失败:" + result.errmsg);
             }

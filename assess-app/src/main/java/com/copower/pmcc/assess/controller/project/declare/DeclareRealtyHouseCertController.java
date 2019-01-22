@@ -110,8 +110,8 @@ public class DeclareRealtyHouseCertController {
             BeanUtils.copyProperties(declareRealtyHouseCertDto, declareRealtyHouseCert);
         }
         try {
-            declareRealtyHouseCertService.saveAndUpdateDeclareRealtyHouseCert(declareRealtyHouseCert);
-            return HttpResult.newCorrectResult("保存 success!");
+            Integer id = declareRealtyHouseCertService.saveAndUpdateDeclareRealtyHouseCert(declareRealtyHouseCert);
+            return HttpResult.newCorrectResult(id);
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");

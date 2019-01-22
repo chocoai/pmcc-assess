@@ -24,6 +24,7 @@ public enum BaseReportFieldEnum {
     LandPracticalUse("", "土地实际用途", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     StatementPurposeEntrustment("", "委托目的表述", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     SetUse("", "设定用途", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    LandUseControl("", "土地使用管制", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     HouseType("", "房产类型", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     judgeObjectAreaStatusSheet("", "估价对象区位状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     judgeObjectLandStateSheet("", "估价土地实体状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),

@@ -466,16 +466,61 @@ public class GenerateBaseDataService {
     }
 
     /**
+     * 土地使用管制
+     *
+     * @return
+     */
+    public String getLandUseControl() {
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        StringBuilder stringBuilder = new StringBuilder();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                if (StringUtils.isNotBlank(schemeJudgeObject.getCertUse())) {
+                    stringBuilder.append(schemeJudgeObject.getCertUse());
+                    stringBuilder.append(";");
+                }
+            }
+        }
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(stringBuilder.toString())) {
+            return stringBuilder.toString();
+        }
+        return errorStr;
+    }
+
+    /**
      * 土地他项权利
      *
      * @return
      */
     public String getInventoryRight() {
+        StringBuilder stringBuilder = new StringBuilder();
         try {
             ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, getProjectInfo().getProjectCategoryId());
-            List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightService.surveyAssetInventoryRights(null);
+            List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+            if (projectPhase != null) {
+                for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
+                    SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+                    ProjectPlanDetails query = new ProjectPlanDetails();
+                    query.setProjectId(getProjectId());
+                    query.setProjectPhaseId(projectPhase.getId());
+                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
+                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+                        ProjectPlanDetails projectPlanDetails = projectPlanDetailsList.get(0);
+                        List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightService.surveyAssetInventoryRights(projectPlanDetails.getId());
+                        if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
+                            for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
+                                stringBuilder.append(String.format("%s；", baseDataDicService.getNameById(inventoryRight.getCategory())));
+                            }
+                        }
+                    }
+                }
+            }
         } catch (Exception e1) {
 
+        }
+        if (StringUtils.isNotBlank(stringBuilder.toString())) {
+            return stringBuilder.toString();
         }
         return errorStr;
     }
