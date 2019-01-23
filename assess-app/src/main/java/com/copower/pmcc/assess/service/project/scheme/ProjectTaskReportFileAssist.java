@@ -1,11 +1,16 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeReportFile;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeReportFileItem;
+import com.copower.pmcc.assess.dto.input.project.scheme.SchemeReportFileDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,11 +37,16 @@ public class ProjectTaskReportFileAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskReportFileIndex", "", 0, "0", "");
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(projectPlanDetails.getAreaId());//该区域下的所有委估对象
-        modelAndView.addObject("judgeObjectList",judgeObjectList);
-        modelAndView.addObject("ownershipCertFileList",schemeReportFileService.getOwnershipCertList(projectPlanDetails.getAreaId()));
-        modelAndView.addObject("inventoryAddressFileList",schemeReportFileService.getInventoryAddressList(projectPlanDetails.getAreaId()));
+        setParam(projectPlanDetails, modelAndView);
         return modelAndView;
+    }
+
+    private void setParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(projectPlanDetails.getAreaId());//该区域下的所有委估对象
+        modelAndView.addObject("judgeObjectList", judgeObjectList);
+        modelAndView.addObject("ownershipCertFileList", schemeReportFileService.getOwnershipCertFileList(projectPlanDetails.getAreaId()));
+        modelAndView.addObject("inventoryAddressFileList", schemeReportFileService.getInventoryAddressFileList(projectPlanDetails.getAreaId()));
+        modelAndView.addObject("reimbursementFileList", schemeReportFileService.getReimbursementFileList(projectPlanDetails.getAreaId()));
     }
 
     /**
@@ -52,7 +62,7 @@ public class ProjectTaskReportFileAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskReportFileApproval", processInsId, boxId, taskId, agentUserAccount);
-
+        setParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -69,7 +79,7 @@ public class ProjectTaskReportFileAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskReportFileIndex", processInsId, boxId, taskId, agentUserAccount);
-
+        setParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -81,13 +91,25 @@ public class ProjectTaskReportFileAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskReportFileApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-
+        setParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-
+        SchemeReportFileDto customDto = JSON.parseObject(formData, SchemeReportFileDto.class);
+        List<SchemeReportFileItem> reportFileItemList = customDto.getReportFileItemList();
+        if(CollectionUtils.isNotEmpty(reportFileItemList)){
+            for (SchemeReportFileItem custom : reportFileItemList) {
+                schemeReportFileService.updateReportFileItem(custom);
+            }
+        }
+        SchemeReportFile schemeReportFile=new SchemeReportFile();
+        schemeReportFile.setAreaId(projectPlanDetails.getAreaId());
+        schemeReportFile.setPlanDetailsId(projectPlanDetails.getId());
+        schemeReportFile.setProcessInsId(processInsId);
+        schemeReportFile.setProjectId(projectPlanDetails.getProjectId());
+        schemeReportFileService.saveSchemeReportFile(schemeReportFile);
     }
 
     @Override
@@ -97,6 +119,12 @@ public class ProjectTaskReportFileAssist implements ProjectTaskInterface {
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-
+        SchemeReportFileDto customDto = JSON.parseObject(formData, SchemeReportFileDto.class);
+        List<SchemeReportFileItem> reportFileItemList = customDto.getReportFileItemList();
+        if(CollectionUtils.isNotEmpty(reportFileItemList)){
+            for (SchemeReportFileItem custom : reportFileItemList) {
+                schemeReportFileService.updateReportFileItem(custom);
+            }
+        }
     }
 }

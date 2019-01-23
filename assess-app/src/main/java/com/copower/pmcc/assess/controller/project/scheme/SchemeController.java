@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.project.scheme;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeReportFileCustom;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeReportFileItem;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeFunctionService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeReportFileService;
@@ -88,10 +89,33 @@ public class SchemeController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getOwnershipCertList", name = "获取该区域下所有权属证明文件 ", method = RequestMethod.POST)
-    public HttpResult getOwnershipCertList(Integer areaId) {
+    @RequestMapping(value = "/getReportFileCustomList", name = "获取自定义块 ", method = RequestMethod.POST)
+    public HttpResult getReportFileCustomList(Integer planDetailsId) {
         try {
-            return HttpResult.newCorrectResult(schemeReportFileService.getOwnershipCertList(areaId));
+            return HttpResult.newCorrectResult(schemeReportFileService.getReportFileCustomList(planDetailsId));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/addReportFileCustom", name = "新增自定义块 ", method = RequestMethod.POST)
+    public HttpResult addReportFileCustom(SchemeReportFileCustom schemeReportFileCustom) {
+        try {
+            return HttpResult.newCorrectResult(schemeReportFileService.addReportFileCustom(schemeReportFileCustom));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deleteReportFileCustom", name = "删除自定义块 ", method = RequestMethod.POST)
+    public HttpResult deleteReportFileCustom(Integer id) {
+        try {
+            schemeReportFileService.deleteReportFileCustom(id);
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());

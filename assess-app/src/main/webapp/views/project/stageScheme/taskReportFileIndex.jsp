@@ -162,65 +162,76 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>估价中引用的专用文件资料</h3>
+                    <h3>
+                        估价中引用的专用文件资料
+                    </h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content collapse">
-                    <div class="col-sm-6">
-                        <div class="x_panel">
-                            <div class="x_title">地址不一致附件</div>
-                            <div>
-                                <table class="table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>序号</th>
-                                        <th>文件名称</th>
-                                        <th>操作</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <c:forEach items="${inventoryAddressFileList}" var="item" varStatus="i">
+                    <input type="button" class="btn btn-success" value="添加" onclick="addReportFileCustom();">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="x_panel">
+                                <div class="x_title">地址不一致附件</div>
+                                <div>
+                                    <table class="table table-hover">
+                                        <thead>
                                         <tr>
-                                            <th>${i}</th>
-                                            <td>${item.fileName}</td>
-                                            <td>
-                                                <input type="button" class="btn btn-xs btn-primary" value="查看" onclick="">
-                                                <input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="">
-                                            </td>
+                                            <th>序号</th>
+                                            <th>文件名称</th>
+                                            <th>操作</th>
                                         </tr>
-                                    </c:forEach>
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach items="${inventoryAddressFileList}" var="item" varStatus="i">
+                                            <tr>
+                                                <th>${i}</th>
+                                                <td>${item.fileName}</td>
+                                                <td>
+                                                    <input type="button" class="btn btn-xs btn-primary" value="查看"
+                                                           onclick="">
+                                                    <input type="button" class="btn btn-xs btn-primary" value="编辑"
+                                                           onclick="">
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="x_panel">
+                                <div class="x_title">法定优先受偿款附件</div>
+                                <div>
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>文件名称</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach items="${reimbursementFileList}" var="item" varStatus="i">
+                                            <tr>
+                                                <th>${i}</th>
+                                                <td>${item.fileName}</td>
+                                                <td>
+                                                    <input type="button" class="btn btn-xs btn-primary" value="查看"
+                                                           onclick="">
+                                                    <input type="button" class="btn btn-xs btn-primary" value="编辑"
+                                                           onclick="">
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="x_panel">
-                            <div class="x_title">法定优先受偿款附件</div>
-                            <div>
-                                <table class="table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>序号</th>
-                                        <th>文件名称</th>
-                                        <th>操作</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <c:forEach items="${inventoryAddressFileList}" var="item" varStatus="i">
-                                        <tr>
-                                            <th>${i}</th>
-                                            <td>${item.fileName}</td>
-                                            <td>
-                                                <input type="button" class="btn btn-xs btn-primary" value="查看" onclick="">
-                                                <input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="">
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                    <div class="row report-file-custom">
                     </div>
                 </div>
             </div>
@@ -230,7 +241,6 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-
                         <button id="btn_submit" class="btn btn-success" onclick="submit();">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
@@ -243,10 +253,27 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+<script type="text/html" id="reportFileCustomHtml">
+    <div class="col-sm-6">
+        <div class="x_panel">
+            <div class="x_title">
+                {name}
+                <input type="button" class="btn btn-xs btn-warning" value="删除"
+                       onclick="deleteReportFileCustom(this,'{id}');"
+                       style="margin-left: 5px;">
+            </div>
+            <div class="col-sm-6">
+                <input id="reportFileCustom{id}" name="reportFileCustom" type="file" multiple="false">
+                <div id="_reportFileCustom{id}"></div>
+            </div>
+        </div>
+    </div>
+</script>
 <script type="application/javascript">
     $(function () {
         uploadFiles(AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", AssessUploadKey.PROJECT_PROXY);
         loadUploadFiles(AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", AssessUploadKey.PROJECT_PROXY);
+        loadReportFileCustomList();
     });
 
     //初始化上传控件
@@ -320,7 +347,7 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    var html = '<tr><td>' + fileName + '</td><td><input type="text" value="' + sorting + '"></td><td>' +
+                    var html = '<tr><td>' + fileName + '</td><td><input type="text" data-id="' + result.data + '" data-name="sorting" value="' + sorting + '"></td><td>' +
                         '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="">' +
                         '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeLiveSituation(' + result.data + ',this)"></td></tr>';
                     $('tbody[data-id=' + judgeObjectId + '][data-name=live_situation_select]').append(html);
@@ -360,7 +387,7 @@
                 if (result.ret) {
                     var html = '';
                     $.each(result.data, function (i, item) {
-                        html += '<tr><td>' + item.fileName + '</td><td><input type="text" value="' + AssessCommon.toString(item.sorting) + '"></td><td>' +
+                        html += '<tr><td>' + item.fileName + '</td><td><input type="text" data-id="' + item.id + '" data-name="sorting" value="' + AssessCommon.toString(item.sorting) + '"></td><td>' +
                             '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="">' +
                             '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeLiveSituation(' + item.id + ',this)"></td></tr>';
                     })
@@ -372,13 +399,89 @@
         })
     }
 
+    //加载自定义附件
+    function loadReportFileCustomList() {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/scheme/getReportFileCustomList',
+            data: {
+                planDetailsId: '${projectPlanDetails.id}'
+            },
+            success: function (result) {
+                if (result.ret) {
+                    $('.report-file-custom').empty();
+                    $.each(result.data, function (i, item) {
+                        appendCustomHtml(item.id, item.name);
+                    })
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
+
+    //添加html
+    function appendCustomHtml(id, name) {
+        var html = $("#reportFileCustomHtml").html();
+        html = html.replace(/{id}/g, id).replace(/{name}/g, name);
+        $('.report-file-custom').append(html);
+        uploadFiles(AssessDBKey.SchemeReportFileCustom, id, "reportFileCustom" + id);
+        loadUploadFiles(AssessDBKey.SchemeReportFileCustom, id, "reportFileCustom" + id);
+    }
+
+    //添加自定义块
+    function addReportFileCustom() {
+        layer.prompt(function (value, index, elem) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/scheme/addReportFileCustom',
+                data: {
+                    name: value,
+                    planDetailsId: '${projectPlanDetails.id}'
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        appendCustomHtml(result.data.id, result.data.name);
+                        layer.close(index);
+                    } else {
+                        Alert(result.errmsg);
+                    }
+                }
+            })
+        });
+    }
+
+    //删除自定义块
+    function deleteReportFileCustom(_this, id) {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/scheme/deleteReportFileCustom',
+            data: {
+                id: id
+            },
+            success: function (result) {
+                if (result.ret) {
+                    $(_this).closest('.x_panel').parent().remove();
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
+
+
     //提交
     function submit() {
+        var data = {};
+        data.reportFileItemList = [];
+        $('[data-name=sorting]').each(function () {
+            var reportFileItem = {};
+            reportFileItem.id=$(this).attr('data-id');
+            reportFileItem.sorting=$(this).val();
+            data.reportFileItemList.push(reportFileItem);
+        })
         if ("${processInsId}" != "0") {
-            submitEditToServer("");
+            submitEditToServer(JSON.stringify(data));
         }
         else {
-            submitToServer("");
+            submitToServer(JSON.stringify(data));
         }
     }
 </script>

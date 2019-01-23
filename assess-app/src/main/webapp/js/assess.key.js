@@ -40,6 +40,7 @@ AssessDBKey.SurveyAssetInventoryContent = "tb_survey_asset_inventory_content";
 AssessDBKey.SurveyAssetInventoryRight = "tb_survey_asset_inventory_right";
 
 AssessDBKey.SchemeJudgeObject = "tb_scheme_judge_object";
+AssessDBKey.SchemeReportFileCustom = "tb_scheme_report_file_custom";
 
 AssessDBKey.BaseFileTemplate = "tb_base_file_template";
 

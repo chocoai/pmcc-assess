@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basic.entity.BasicBuilding;
 import com.copower.pmcc.assess.dal.basic.entity.BasicEstate;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileCustomDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -25,6 +26,7 @@ import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
@@ -42,6 +44,8 @@ import java.util.List;
 public class SchemeReportFileService extends BaseService {
     @Autowired
     private SchemeReportFileDao schemeReportFileDao;
+    @Autowired
+    private SchemeReportFileCustomDao schemeReportFileCustomDao;
     @Autowired
     private SchemeReportFileItemDao schemeReportFileItemDao;
     @Autowired
@@ -70,6 +74,22 @@ public class SchemeReportFileService extends BaseService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
+    @Autowired
+    private SchemeReimbursementService schemeReimbursementService;
+
+    /**
+     * 保存数据
+     *
+     * @param schemeReportFile
+     */
+    public void saveSchemeReportFile(SchemeReportFile schemeReportFile) {
+        if (schemeReportFile.getId() == null || schemeReportFile.getId() <= 0) {
+            schemeReportFile.setCreator(commonService.thisUserAccount());
+            schemeReportFileDao.addReportFile(schemeReportFile);
+        } else {
+            schemeReportFileDao.updateReportFile(schemeReportFile);
+        }
+    }
 
     /**
      * 获取委估对象下所有的实况图片
@@ -128,6 +148,10 @@ public class SchemeReportFileService extends BaseService {
         schemeReportFileItemDao.deleteReportFileItem(id);
     }
 
+    public void updateReportFileItem(SchemeReportFileItem schemeReportFileItem) {
+        schemeReportFileItemDao.updateReportFileItem(schemeReportFileItem);
+    }
+
     /**
      * 获取委估对象下已选的实况图片
      *
@@ -148,7 +172,7 @@ public class SchemeReportFileService extends BaseService {
      * @param areaId
      * @return
      */
-    public List<SysAttachmentDto> getOwnershipCertList(Integer areaId) {
+    public List<SysAttachmentDto> getOwnershipCertFileList(Integer areaId) {
         //1.找出该区域下的所有申报记录
         //2.根据申报记录获取对应的权证附件
         HashSet<Integer> hashSet = Sets.newHashSet();
@@ -175,7 +199,7 @@ public class SchemeReportFileService extends BaseService {
      * @param areaId
      * @return
      */
-    public List<SysAttachmentDto> getInventoryAddressList(Integer areaId) {
+    public List<SysAttachmentDto> getInventoryAddressFileList(Integer areaId) {
         HashSet<Integer> hashSet = Sets.newHashSet();
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaId);
         if (CollectionUtils.isEmpty(judgeObjectList)) return null;
@@ -203,5 +227,63 @@ public class SchemeReportFileService extends BaseService {
             }
         }
         return attachmentDtoList;
+    }
+
+    /**
+     * 获取法定优先受偿款附件
+     *
+     * @param areaId
+     * @return
+     */
+    public List<SysAttachmentDto> getReimbursementFileList(Integer areaId) {
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaId);
+        if (CollectionUtils.isEmpty(judgeObjectList)) return null;
+        List<Integer> judgeIds = LangUtils.transform(judgeObjectList, o -> o.getId());
+        List<SchemeReimbursement> reimbursements = schemeReimbursementService.getSchemeReimbursements(judgeIds);
+        List<SysAttachmentDto> attachmentDtoList = Lists.newArrayList();
+        for (SchemeReimbursement reimbursement : reimbursements) {
+            List<SysAttachmentDto> dtos = baseAttachmentService.getByField_tableId(reimbursement.getId(), null, FormatUtils.entityNameConvertToTableName(SchemeReimbursement.class));
+            if (CollectionUtils.isNotEmpty(dtos)) {
+                attachmentDtoList.addAll(dtos);
+            }
+        }
+        return attachmentDtoList;
+    }
+
+    /**
+     * 获取自定义块
+     *
+     * @param planDetailsId
+     * @return
+     */
+    public List<SchemeReportFileCustom> getReportFileCustomList(Integer planDetailsId) {
+        SchemeReportFileCustom where = new SchemeReportFileCustom();
+        where.setPlanDetailsId(planDetailsId);
+        return schemeReportFileCustomDao.getReportFileCustomList(where);
+    }
+
+    /**
+     * 新增自定义块
+     *
+     * @param schemeReportFileCustom
+     */
+    public SchemeReportFileCustom addReportFileCustom(SchemeReportFileCustom schemeReportFileCustom) {
+        schemeReportFileCustom.setCreator(commonService.thisUserAccount());
+        schemeReportFileCustomDao.addReportFileCustom(schemeReportFileCustom);
+        return schemeReportFileCustom;
+    }
+
+    /**
+     * 删除自定义块
+     *
+     * @param id
+     */
+    public void deleteReportFileCustom(Integer id) {
+        //有相关附件一并删除
+        SysAttachmentDto where = new SysAttachmentDto();
+        where.setTableId(id);
+        where.setTableName(FormatUtils.entityNameConvertToTableName(SchemeReportFileCustom.class));
+        baseAttachmentService.deleteAttachmentByDto(where);
+        schemeReportFileCustomDao.deleteReportFileCustom(id);
     }
 }

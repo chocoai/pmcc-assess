@@ -3,15 +3,16 @@ package com.copower.pmcc.assess.service.project.scheme;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReimbursementDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursement;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
-import com.copower.pmcc.erp.api.provider.ErpRpcAttachmentService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -21,7 +22,7 @@ public class SchemeReimbursementService {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private ErpRpcAttachmentService erpRpcAttachmentService;
+    private BaseAttachmentService baseAttachmentService;
 
     public SchemeReimbursement getDataByPlanDetailsId(Integer planDetailsId) {
         SchemeReimbursement where = new SchemeReimbursement();
@@ -46,15 +47,12 @@ public class SchemeReimbursementService {
                 throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
             }
             //更新附件
-            SysAttachmentDto sysAttachment = new SysAttachmentDto();
-            sysAttachment.setTableId(0);
-            sysAttachment.setFieldsName("apply");
-            sysAttachment.setTableName(FormatUtils.entityNameConvertToTableName(SchemeReimbursement.class));
-
-            SysAttachmentDto sysAttachmentNew = new SysAttachmentDto();
-            sysAttachmentNew.setTableId(schemeReimbursement.getId());
-            erpRpcAttachmentService.updateAttachmentByParam(sysAttachment, sysAttachmentNew);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(SchemeReimbursement.class),schemeReimbursement.getId());
         }
+    }
+
+    public List<SchemeReimbursement> getSchemeReimbursements(List<Integer> judgeObjectIds){
+        return schemeReimbursementDao.getSchemeReimbursements(judgeObjectIds);
     }
 
     public SchemeReimbursement getSingleObject(Integer id) {

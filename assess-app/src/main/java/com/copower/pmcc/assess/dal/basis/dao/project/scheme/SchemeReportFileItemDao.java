@@ -48,7 +48,7 @@ public class SchemeReportFileItemDao {
     public List<SchemeReportFileItem> getReportFileItemList(SchemeReportFileItem examineReportFileItem) {
         SchemeReportFileItemExample example = new SchemeReportFileItemExample();
         MybatisUtils.convertObj2Example(examineReportFileItem, example);
-        example.setOrderByClause("sorting desc");
+        example.setOrderByClause("sorting");
         return schemeReportFileItemMapper.selectByExample(example);
     }
 
