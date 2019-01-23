@@ -363,7 +363,7 @@ public class GenerateReportService {
                     mapSet.add(getBaseReportFieldReplaceEnumMap(
                             BaseReportFieldReplaceEnum.BOOKMARK,
                             bookmarkCollection.get(i).getName(),
-                            DateUtils.format(generateBaseDataService.getReportIssuanceDate(),DateUtils.DATE_CHINESE_PATTERN)));
+                            DateUtils.format(generateBaseDataService.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN)));
                 }
                 /*##########################################公共书签替换 end ###################################################### */
                 switch (report_type) {
@@ -459,7 +459,7 @@ public class GenerateReportService {
                                     mapSet.add(getBaseReportFieldReplaceEnumMap(
                                             BaseReportFieldReplaceEnum.BOOKMARK,
                                             bookmarkCollection.get(i).getName(),
-                                            generateBaseDataService.getAssessArea().doubleValue()));
+                                            generateBaseDataService.getAssessArea().toString()));
                                 }
                             }
                         }
@@ -534,42 +534,29 @@ public class GenerateReportService {
                         if (true) {
                             List<SchemeJudgeObject> schemeJudgeObjectList = generateBaseDataService.getSchemeJudgeObjectList();
                             if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-                                int num = schemeJudgeObjectList.size();
-                                if (num == 1) {
-                                    //分类评估单价
-                                    if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EvaluationPriceCateGory.getName(), bookmarkName)) {
-                                        BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EvaluationPriceCateGory.getName());
-                                        mapSet.add(getBaseReportFieldReplaceEnumMap(
-                                                BaseReportFieldReplaceEnum.BOOKMARK,
-                                                bookmarkCollection.get(i).getName(),
-                                                generateBaseDataService.getEvaluationPriceCateGoryOne()));
-                                    }
-                                    //分类评估面积
-                                    if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EvaluationAreaCateGory.getName(), bookmarkName)) {
-                                        BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EvaluationAreaCateGory.getName());
-                                        mapSet.add(getBaseReportFieldReplaceEnumMap(
-                                                BaseReportFieldReplaceEnum.BOOKMARK,
-                                                bookmarkCollection.get(i).getName(),
-                                                generateBaseDataService.getEvaluationAreaCateGoryOne()));
-                                    }
-                                    //分类评估总价
-                                    if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EvaluationPriceCateGoryTotal.getName(), bookmarkName)) {
-                                        BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EvaluationPriceCateGoryTotal.getName());
-                                        mapSet.add(getBaseReportFieldReplaceEnumMap(
-                                                BaseReportFieldReplaceEnum.BOOKMARK,
-                                                bookmarkCollection.get(i).getName(),
-                                                generateBaseDataService.getEvaluationPriceCateGoryTotalOne()));
-                                    }
+                                //分类评估单价
+                                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EvaluationPriceCateGory.getName(), bookmarkName)) {
+                                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EvaluationPriceCateGory.getName());
+                                    mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                            BaseReportFieldReplaceEnum.BOOKMARK,
+                                            bookmarkCollection.get(i).getName(),
+                                            generateBaseDataService.getEvaluationPriceCateGoryOne()));
                                 }
-                                if (num > 1) {
-                                    //分类评估总价
-                                    if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EvaluationPriceCateGoryTotal.getName(), bookmarkName)) {
-                                        BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EvaluationPriceCateGoryTotal.getName());
-                                        mapSet.add(getBaseReportFieldReplaceEnumMap(
-                                                BaseReportFieldReplaceEnum.FILE_FIXED,
-                                                bookmarkCollection.get(i).getName(),
-                                                generateBaseDataService.getEvaluationAreaAndPriceAndTotalCateGorySheet()));
-                                    }
+                                //分类评估面积
+                                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EvaluationAreaCateGory.getName(), bookmarkName)) {
+                                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EvaluationAreaCateGory.getName());
+                                    mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                            BaseReportFieldReplaceEnum.BOOKMARK,
+                                            bookmarkCollection.get(i).getName(),
+                                            generateBaseDataService.getEvaluationAreaCateGoryOne()));
+                                }
+                                //分类评估总价
+                                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EvaluationPriceCateGoryTotal.getName(), bookmarkName)) {
+                                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EvaluationPriceCateGoryTotal.getName());
+                                    mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                            BaseReportFieldReplaceEnum.BOOKMARK,
+                                            bookmarkCollection.get(i).getName(),
+                                            generateBaseDataService.getEvaluationPriceCateGoryTotalOne()));
                                 }
                             }
                         }
@@ -612,6 +599,14 @@ public class GenerateReportService {
                                     BaseReportFieldReplaceEnum.BOOKMARK,
                                     bookmarkCollection.get(i).getName(),
                                     generateBaseDataService.getTotalRealEstatePrice()));
+                        }
+                        //大写金额
+                        if (com.google.common.base.Objects.equal(BaseReportFieldEnum.CapitalizationAmount.getName(), bookmarkName)) {
+                            BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.CapitalizationAmount.getName());
+                            mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                    BaseReportFieldReplaceEnum.BOOKMARK,
+                                    bookmarkCollection.get(i).getName(),
+                                    generateBaseDataService.getCapitalizationAmount()));
                         }
                         //价值表达结果
                         if (com.google.common.base.Objects.equal(BaseReportFieldEnum.ValueExpressionResult.getName(), bookmarkName)) {
