@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.common.CnNumberUtils;
 import com.copower.pmcc.assess.common.enums.ExamineEstateSupplyEnumType;
 import com.copower.pmcc.assess.common.enums.ExamineHouseEquipmentTypeEnum;
 import com.copower.pmcc.assess.common.enums.ExamineMatchingLeisurePlaceTypeEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basic.entity.*;
@@ -428,19 +429,27 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getEvaluationMethodResult() {
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        BigDecimal price = new BigDecimal(0);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                if (schemeJudgeObject.getPrice() != null) {
-                    if (NumberUtils.isNumber(schemeJudgeObject.getPrice().toString())) {
-                        price.add(schemeJudgeObject.getPrice());
+    public String getEvaluationMethodResult(String report_type) {
+        if (Objects.equal(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT, report_type)) {
+            List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+            BigDecimal price = new BigDecimal(0);
+            if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                    if (schemeJudgeObject.getPrice() != null) {
+                        if (NumberUtils.isNumber(schemeJudgeObject.getPrice().toString())) {
+                            price.add(schemeJudgeObject.getPrice());
+                        }
                     }
                 }
             }
+            return String.format("最终单价:%s", price.toString());
         }
-        return String.format("最终单价:%s", price.toString());
+
+        if (Objects.equal(AssessDataDicKeyConstant.REPORT_TYPE_RESULT, report_type)) {
+            return errorStr;
+        }
+
+        return errorStr;
     }
 
     /**
@@ -904,6 +913,360 @@ public class GenerateBaseDataService {
         }
         return errorStr;
     }
+
+    /**
+     * 假设开发法适用原因
+     *
+     * @return
+     */
+    public String getDevelopmentAssistApplyReason() {
+        StringBuilder builder = new StringBuilder();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+            List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
+            if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
+                for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
+                    if (schemeJudgeFunction.getBisApplicable()) {
+                        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_DEVELOPMENT);
+                        if (baseDataDic != null) {
+                            if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
+                                builder.append(schemeJudgeFunction.getApplicableReason()).append(";");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
+        }
+        return errorStr;
+    }
+
+    /**
+     * 假设开发法不适用原因
+     *
+     * @return
+     */
+    public String getDevelopmentAssistNotApplicableReason() {
+        StringBuilder builder = new StringBuilder();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+            List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
+            if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
+                for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
+                    if (!schemeJudgeFunction.getBisApplicable()) {
+                        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_DEVELOPMENT);
+                        if (baseDataDic != null) {
+                            if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
+                                builder.append(schemeJudgeFunction.getNotApplicableReason()).append(";");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
+        }
+        return errorStr;
+    }
+
+    /**
+     * 假设开发法不适用原因
+     *
+     * @return
+     */
+    public String getDevelopmentAssistThink() {
+        StringBuilder builder = new StringBuilder();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+            List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
+            if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
+                for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
+                    BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_DEVELOPMENT);
+                    if (baseDataDic != null) {
+                        if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
+                            builder.append(schemeJudgeFunction.getThinking()).append(";");
+                        }
+                    }
+                }
+            }
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
+        }
+        return errorStr;
+    }
+
+
+    /**
+     * 收益法适用原因
+     *
+     * @return
+     */
+    public String getIncomeAssistApplyReason() {
+        StringBuilder builder = new StringBuilder();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+            List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
+            if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
+                for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
+                    if (schemeJudgeFunction.getBisApplicable()) {
+                        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME);
+                        if (baseDataDic != null) {
+                            if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
+                                builder.append(schemeJudgeFunction.getApplicableReason()).append(";");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
+        }
+        return errorStr;
+    }
+
+    /**
+     * 收益法不适用原因
+     *
+     * @return
+     */
+    public String getIncomeAssistNotApplicableReason() {
+        StringBuilder builder = new StringBuilder();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+            List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
+            if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
+                for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
+                    if (!schemeJudgeFunction.getBisApplicable()) {
+                        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME);
+                        if (baseDataDic != null) {
+                            if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
+                                builder.append(schemeJudgeFunction.getNotApplicableReason()).append(";");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
+        }
+        return errorStr;
+    }
+
+    /**
+     * 收益法评估思路
+     *
+     * @return
+     */
+    public String getIncomeAssistThink() {
+        StringBuilder builder = new StringBuilder();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+            List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
+            if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
+                for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
+                    BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME);
+                    if (baseDataDic != null) {
+                        if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
+                            builder.append(schemeJudgeFunction.getThinking()).append(";");
+                        }
+                    }
+                }
+            }
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
+        }
+        return errorStr;
+    }
+
+    /**
+     * 市场比较法适用原因
+     *
+     * @return
+     */
+    public String getCompareAssistApplyReason() {
+        StringBuilder builder = new StringBuilder();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+            List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
+            if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
+                for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
+                    if (schemeJudgeFunction.getBisApplicable()) {
+                        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
+                        if (baseDataDic != null) {
+                            if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
+                                builder.append(schemeJudgeFunction.getApplicableReason()).append(";");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
+        }
+        return errorStr;
+    }
+
+    /**
+     * 市场比较法不适用原因
+     *
+     * @return
+     */
+    public String getCompareAssistNotApplicableReason() {
+        StringBuilder builder = new StringBuilder();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+            List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
+            if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
+                for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
+                    if (!schemeJudgeFunction.getBisApplicable()) {
+                        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
+                        if (baseDataDic != null) {
+                            if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
+                                builder.append(schemeJudgeFunction.getNotApplicableReason()).append(";");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
+        }
+        return errorStr;
+    }
+
+    /**
+     * 市场比较法评估思路
+     *
+     * @return
+     */
+    public String getCompareAssistThink() {
+        StringBuilder builder = new StringBuilder();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+            List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
+            if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
+                for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
+                    BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
+                    if (baseDataDic != null) {
+                        if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
+                            builder.append(schemeJudgeFunction.getThinking()).append(";");
+                        }
+                    }
+                }
+            }
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
+        }
+        return errorStr;
+    }
+
+    /**
+     * 成本法适用原因
+     *
+     * @return
+     */
+    public String getCostAssistApplyReason() {
+        StringBuilder builder = new StringBuilder();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+            List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
+            if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
+                for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
+                    if (schemeJudgeFunction.getBisApplicable()) {
+                        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST);
+                        if (baseDataDic != null) {
+                            if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
+                                builder.append(schemeJudgeFunction.getApplicableReason()).append(";");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
+        }
+        return errorStr;
+    }
+
+    /**
+     * 成本法不适用原因
+     *
+     * @return
+     */
+    public String getCostAssistNotApplicableReason() {
+        StringBuilder builder = new StringBuilder();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+            List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
+            if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
+                for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
+                    if (!schemeJudgeFunction.getBisApplicable()) {
+                        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST);
+                        if (baseDataDic != null) {
+                            if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
+                                builder.append(schemeJudgeFunction.getNotApplicableReason()).append(";");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
+        }
+        return errorStr;
+    }
+
+    /**
+     * 成本法评估思路
+     *
+     * @return
+     */
+    public String getCostAssistThink() {
+        StringBuilder builder = new StringBuilder();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+            List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
+            if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
+                for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
+                    BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST);
+                    if (baseDataDic != null) {
+                        if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
+                            builder.append(schemeJudgeFunction.getThinking()).append(";");
+                        }
+                    }
+                }
+            }
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
+        }
+        return errorStr;
+    }
+
 
     /**
      * 计算过程
