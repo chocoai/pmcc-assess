@@ -25,8 +25,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
-
 /**
  * Created by kings on 2018-10-24.
  * 案例基础数据
@@ -71,6 +69,14 @@ public class BasicApplyController extends BaseController {
         BasicApply basicApply = new BasicApply();
         basicApply.setId(0);
         modelAndView.addObject("basicApply", basicApply);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/basicApplyTransfer", name = "过程数据申请进入案例库", method = RequestMethod.GET)
+    public ModelAndView basicApplyTransfer(Integer planDetailsId) {
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyTransfer", "0", 0, "0", "");
+        //1.数据复制，包含各项关联表（可参考案例复制到过程表）
+        //2.复制过来的数据默认为草稿数据，下次进入时默认显示草稿数据
         return modelAndView;
     }
 
