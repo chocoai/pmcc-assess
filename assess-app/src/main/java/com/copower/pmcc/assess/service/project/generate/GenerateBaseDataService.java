@@ -5,6 +5,7 @@ import com.aspose.words.Document;
 import com.aspose.words.DocumentBuilder;
 import com.aspose.words.Table;
 import com.copower.pmcc.assess.common.AsposeUtils;
+import com.copower.pmcc.assess.common.CnNumberUtils;
 import com.copower.pmcc.assess.common.enums.ExamineEstateSupplyEnumType;
 import com.copower.pmcc.assess.common.enums.ExamineHouseEquipmentTypeEnum;
 import com.copower.pmcc.assess.common.enums.ExamineMatchingLeisurePlaceTypeEnum;
@@ -225,12 +226,12 @@ public class GenerateBaseDataService {
 
     public BigDecimal getAssessArea() {
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        BigDecimal bigDecimal = new BigDecimal(0);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            double temp = 0.0;
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                temp += schemeJudgeObject.getEvaluationArea().doubleValue();
+                bigDecimal= bigDecimal.add(schemeJudgeObject.getEvaluationArea());
             }
-            assessArea = new BigDecimal(temp);
+            assessArea = bigDecimal;
         } else {
             return new BigDecimal(0.0d);
         }
@@ -263,23 +264,41 @@ public class GenerateBaseDataService {
     }
 
     /**
+     * 大写金额
+     *
+     * @return
+     */
+    public String getCapitalizationAmount() {
+        String price = getTotalRealEstatePrice();
+        if (NumberUtils.isNumber(price)) {
+            BigDecimal bg = new BigDecimal(Double.parseDouble(price));
+            //强制保留2位
+            double d = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            return CnNumberUtils.toUppercase(d);
+        }
+        return errorStr;
+    }
+
+    /**
      * 分类评估单价
      *
      * @return
      */
     public String getEvaluationPriceCateGoryOne() {
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        Double price = new Double(0);
+        StringBuilder builder = new StringBuilder();
+        builder.append("[");
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (schemeJudgeObject.getPrice() != null) {
                     if (NumberUtils.isNumber(schemeJudgeObject.getPrice().toString())) {
-                        price += schemeJudgeObject.getPrice().doubleValue();
+                        builder.append(schemeJudgeObject.getPrice().toString()).append(",");
                     }
                 }
             }
         }
-        return price.toString();
+        builder.append("]");
+        return builder.toString();
     }
 
     /**
@@ -289,17 +308,19 @@ public class GenerateBaseDataService {
      */
     public String getEvaluationAreaCateGoryOne() {
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        Double area = new Double(0);
+        StringBuilder builder = new StringBuilder();
+        builder.append("[");
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (schemeJudgeObject.getEvaluationArea() != null) {
                     if (NumberUtils.isNumber(schemeJudgeObject.getEvaluationArea().toString())) {
-                        area += schemeJudgeObject.getEvaluationArea().doubleValue();
+                        builder.append(schemeJudgeObject.getEvaluationArea().toString()).append(",");
                     }
                 }
             }
         }
-        return area.toString();
+        builder.append("]");
+        return builder.toString();
     }
 
 
@@ -309,27 +330,26 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getEvaluationPriceCateGoryTotalOne() {
-        String a = getEvaluationAreaCateGoryOne();
-        String b = getEvaluationPriceCateGoryOne();
-        if (NumberUtils.isNumber(a) && NumberUtils.isNumber(b)) {
-            return String.valueOf(Double.parseDouble(a) * Double.parseDouble(b));
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        StringBuilder builder = new StringBuilder();
+        builder.append("[");
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                if (schemeJudgeObject.getEvaluationArea() != null && schemeJudgeObject.getPrice() != null) {
+                    if (NumberUtils.isNumber(schemeJudgeObject.getEvaluationArea().toString()) && NumberUtils.isNumber(schemeJudgeObject.getPrice().toString())) {
+                        BigDecimal bigDecimalA = new BigDecimal(schemeJudgeObject.getEvaluationArea().toString());
+                        BigDecimal bigDecimalB = new BigDecimal(schemeJudgeObject.getPrice().toString());
+                        BigDecimal bigDecimal = bigDecimalA.multiply(bigDecimalB);
+                        builder.append(bigDecimal.toString()).append(",");
+                    }
+                }
+            }
         }
-        return errorStr;
+        builder.append("]");
+        return builder.toString();
     }
 
-    /**
-     * getEvaluationAreaCateGoryOne,getEvaluationPriceCateGoryOne,getEvaluationPriceCateGoryTotalOne
-     * @return
-     * @throws Exception
-     */
-    public String getEvaluationAreaAndPriceAndTotalCateGorySheet()throws Exception{
-        Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        builder.writeln("分类评估总价sheet");
-        doc.save(localPath);
-        return localPath;
-    }
+
 
     /**
      * 分类评估单价计算试
@@ -347,12 +367,12 @@ public class GenerateBaseDataService {
      */
     public String getEvaluationMethodResult() {
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        Double price = new Double(0);
+        BigDecimal price = new BigDecimal(0);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (schemeJudgeObject.getPrice() != null) {
                     if (NumberUtils.isNumber(schemeJudgeObject.getPrice().toString())) {
-                        price += schemeJudgeObject.getPrice().doubleValue();
+                        price.add(schemeJudgeObject.getPrice());
                     }
                 }
             }
@@ -395,20 +415,21 @@ public class GenerateBaseDataService {
      */
     public String getTotalRealEstatePrice() {
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        Double area = new Double(0);
-        Double price = new Double(0);
+        BigDecimal area = new BigDecimal(0);
+        BigDecimal price = new BigDecimal(0);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                if (schemeJudgeObject.getEvaluationArea() != null) {
-                    if (NumberUtils.isNumber(schemeJudgeObject.getEvaluationArea().toString())) {
-                        area += schemeJudgeObject.getEvaluationArea().doubleValue();
-                        price += schemeJudgeObject.getPrice().doubleValue();
+                if (schemeJudgeObject.getEvaluationArea() != null && schemeJudgeObject.getPrice() != null) {
+                    if (NumberUtils.isNumber(schemeJudgeObject.getEvaluationArea().toString()) && NumberUtils.isNumber(schemeJudgeObject.getPrice().toString())) {
+                        area = area.add(schemeJudgeObject.getEvaluationArea());
+                        price = price.add(schemeJudgeObject.getPrice());
                     }
                 }
             }
         }
         if (area.doubleValue() > 0 && price.doubleValue() > 0) {
-            return String.valueOf(area.doubleValue() * price.doubleValue());
+            BigDecimal decimal = area.multiply(price);
+            return decimal.toString();
         }
         return errorStr;
     }
@@ -444,9 +465,10 @@ public class GenerateBaseDataService {
 
     /**
      * 价值表达结果
+     *
      * @return
      */
-    public String getValueExpressionResult(){
+    public String getValueExpressionResult() {
         StringBuilder builder = new StringBuilder();
         return "抵押价值特殊处理";
     }
