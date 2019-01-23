@@ -10,6 +10,7 @@
     supportInfoModule.init = function (options) {
         var defaluts = {
             supportInfo: undefined,//支撑信息
+            handleField: false,
             readonly: false//
         };
         defaluts = $.extend({}, defaluts, options);
@@ -19,11 +20,12 @@
                 if ($('#frm_support_type_' + item.supportType).length <= 0) {
                     var supportInfoPanelHtml = $('#supportInfoPanel').html();
                     supportInfoPanelHtml = supportInfoPanelHtml.replace(/{supportTypeName}/g, item.supportTypeName).replace(/{supportType}/g, item.supportType);
+                    supportInfoPanelHtml = supportInfoPanelHtml.replace(/{content}/g, AssessCommon.toString(item.content));
                     $('.supportInfoContent').append(supportInfoPanelHtml);
                 }
 
                 var supportInfoWellHtml = '';
-                if (defaluts.readonly) {
+                if (defaluts.readonly|| !item.bisModifiable) {
                     supportInfoWellHtml = $('#supportInfoWellView').html();
                     supportInfoWellHtml = supportInfoWellHtml.replace(/{name}/g, AssessCommon.toString(item.name)).replace(/{content}/g, AssessCommon.toString(item.content));
                 } else {
@@ -32,19 +34,21 @@
                     supportInfoWellHtml = supportInfoWellHtml.replace(/{template}/g, item.template).replace(/{content}/g, AssessCommon.toString(item.content));
                     //处理字段
                     var wellFields = '';
-                    var fieldArray = JSON.parse(item.jsonContent);
-                    if (fieldArray && fieldArray.length > 0) {
-                        wellFields = "<div class='form-group'>";
-                        for (var j = 0; j < fieldArray.length; j++) {
-                            if (j > 0 && j % 3 == 0) {
-                                wellFields += '</div><div class="form-group">';
+                    if(defaluts.handleField){
+                        var fieldArray = JSON.parse(item.jsonContent);
+                        if (fieldArray && fieldArray.length > 0) {
+                            wellFields = "<div class='form-group'>";
+                            for (var j = 0; j < fieldArray.length; j++) {
+                                if (j > 0 && j % 3 == 0) {
+                                    wellFields += '</div><div class="form-group">';
+                                }
+                                var supportInfoFieldHtml = $("#supportInfoField").html();
+                                // console.log(fieldArray[j]);
+                                supportInfoFieldHtml = supportInfoFieldHtml.replace(/{key}/g, fieldArray[j].key).replace(/{value}/g, fieldArray[j].value);
+                                wellFields += supportInfoFieldHtml;
                             }
-                            var supportInfoFieldHtml = $("#supportInfoField").html();
-                            // console.log(fieldArray[j]);
-                            supportInfoFieldHtml = supportInfoFieldHtml.replace(/{key}/g, fieldArray[j].key).replace(/{value}/g, fieldArray[j].value);
-                            wellFields += supportInfoFieldHtml;
+                            wellFields += "</div>";
                         }
-                        wellFields += "</div>";
                     }
                     supportInfoWellHtml = supportInfoWellHtml.replace(/{wellFields}/g, wellFields);
                 }
@@ -71,8 +75,14 @@
         var forms = $('.supportInfoContent').find('form');
         for (var i = 0; i < forms.length; i++) {
             var form = $(forms[i]);
+            var $BOX_PANEL = $(form).closest('.x_panel'),
+                $ICON = $(form).closest('.x_title').find('i'),
+                $BOX_CONTENT = $BOX_PANEL.find('.x_content');
+            $BOX_PANEL.css('height', 'auto');
+            $ICON.removeClass('fa-chevron-up').addClass("fa-chevron-down");
+            $BOX_CONTENT.show();
             var title = form.closest('.x_panel').find('.x_title').find('h2').text();
-            if (!form.valid(title + '未填写完整！')) {
+            if (!form.valid()) {
                 return false;
             }
         }

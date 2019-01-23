@@ -37,12 +37,13 @@ public class SchemeSupportInfoService {
 
     /**
      * 根据区域id获取依据假设原则数据
+     *
      * @param areaId
      * @param schemeSupportTypeEnum
      * @return
      */
-    public List<SchemeSupportInfo> getSupportInfoListByAreaId(Integer areaId,SchemeSupportTypeEnum schemeSupportTypeEnum){
-        SchemeSupportInfo where=new SchemeSupportInfo();
+    public List<SchemeSupportInfo> getSupportInfoListByAreaId(Integer areaId, SchemeSupportTypeEnum schemeSupportTypeEnum) {
+        SchemeSupportInfo where = new SchemeSupportInfo();
         where.setAreaId(areaId);
         where.setSupportType(schemeSupportTypeEnum.getId());
         return schemeSupportInfoDao.getSupportInfoList(where);
@@ -106,6 +107,10 @@ public class SchemeSupportInfoService {
                 schemeSupportInfo.setTemplate(evaluationBasis.getTemplate());
                 schemeSupportInfo.setSupportType(SchemeSupportTypeEnum.BASIS.getId());
                 schemeSupportInfo.setSupportTypeName(SchemeSupportTypeEnum.BASIS.getName());
+                schemeSupportInfo.setBisModifiable(evaluationBasis.getBisModifiable());
+                if (evaluationBasis.getBisModifiable() == Boolean.FALSE) {
+                    schemeSupportInfo.setContent(evaluationBasis.getTemplate());
+                }
                 schemeSupportInfo.setJsonContent(publicService.extractField(evaluationBasis.getTemplate()));
                 schemeSupportInfo.setPlanDetailsId(projectPlanDetails.getId());
                 schemeSupportInfo.setAreaId(projectPlanDetails.getAreaId());
@@ -121,6 +126,10 @@ public class SchemeSupportInfoService {
                 schemeSupportInfo.setTemplate(evaluationHypothesis.getTemplate());
                 schemeSupportInfo.setSupportType(SchemeSupportTypeEnum.HYPOTHESIS.getId());
                 schemeSupportInfo.setSupportTypeName(SchemeSupportTypeEnum.HYPOTHESIS.getName());
+                schemeSupportInfo.setBisModifiable(evaluationHypothesis.getBisModifiable());
+                if (evaluationHypothesis.getBisModifiable() == Boolean.FALSE){
+                    schemeSupportInfo.setContent(evaluationHypothesis.getTemplate());
+                }
                 schemeSupportInfo.setJsonContent(publicService.extractField(evaluationHypothesis.getTemplate()));
                 schemeSupportInfo.setPlanDetailsId(projectPlanDetails.getId());
                 schemeSupportInfo.setAreaId(projectPlanDetails.getAreaId());
@@ -136,6 +145,10 @@ public class SchemeSupportInfoService {
                 schemeSupportInfo.setTemplate(evaluationPrinciple.getTemplate());
                 schemeSupportInfo.setSupportType(SchemeSupportTypeEnum.PRINCIPLE.getId());
                 schemeSupportInfo.setSupportTypeName(SchemeSupportTypeEnum.PRINCIPLE.getName());
+                schemeSupportInfo.setBisModifiable(evaluationPrinciple.getBisModifiable());
+                if (evaluationPrinciple.getBisModifiable() == Boolean.FALSE){
+                    schemeSupportInfo.setContent(evaluationPrinciple.getTemplate());
+                }
                 schemeSupportInfo.setJsonContent(publicService.extractField(evaluationPrinciple.getTemplate()));
                 schemeSupportInfo.setPlanDetailsId(projectPlanDetails.getId());
                 schemeSupportInfo.setAreaId(projectPlanDetails.getAreaId());

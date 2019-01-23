@@ -5,7 +5,9 @@ import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.enums.ProcessActivityEnum;
 import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
+import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
+import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
@@ -31,7 +33,17 @@ public class PublicService {
     @Autowired
     private ErpRpcUserService erpRpcUserService;
     @Autowired
+    private ErpRpcDepartmentService erpRpcDepartmentService;
+    @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    /**
+     * 获取当前公司
+     * @return
+     */
+    public SysDepartmentDto getCurrentCompany(){
+        return erpRpcDepartmentService.getDepartmentAssess();
+    }
 
     /**
      * 获取到说明的视图信息
