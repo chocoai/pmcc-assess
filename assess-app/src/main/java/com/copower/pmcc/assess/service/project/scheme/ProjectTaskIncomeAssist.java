@@ -172,12 +172,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         SchemeIncomeApplyDto schemeIncomeApplyDto = JSON.parseObject(formData, SchemeIncomeApplyDto.class);
-        if (CollectionUtils.isNotEmpty(schemeIncomeApplyDto.getSupportInfoList())) {
-            for (SchemeSupportInfo schemeSupportInfo : schemeIncomeApplyDto.getSupportInfoList()) {
-                schemeSupportInfoService.saveSupportInfo(schemeSupportInfo);
-            }
-        }
-        MdIncome mdIncome = mdIncomeService.saveResult(schemeIncomeApplyDto.getIncomeInfo());
+        mdIncomeService.saveResult(schemeIncomeApplyDto.getIncomeInfo());
         SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         schemeInfo.setProcessInsId(processInsId);
         schemeInfoService.saveSchemeInfo(schemeInfo);
@@ -191,12 +186,6 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         SchemeIncomeApplyDto schemeIncomeApplyDto = JSON.parseObject(formData, SchemeIncomeApplyDto.class);
-        if (CollectionUtils.isNotEmpty(schemeIncomeApplyDto.getSupportInfoList())) {
-            for (SchemeSupportInfo schemeSupportInfo : schemeIncomeApplyDto.getSupportInfoList()) {
-                schemeSupportInfoService.saveSupportInfo(schemeSupportInfo);
-            }
-        }
-
         mdIncomeService.saveResult(schemeIncomeApplyDto.getIncomeInfo());
     }
 }

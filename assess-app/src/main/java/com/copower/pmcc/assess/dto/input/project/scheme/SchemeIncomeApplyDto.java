@@ -9,16 +9,7 @@ import java.util.List;
  * Created by 13426 on 2018/5/21.
  */
 public class SchemeIncomeApplyDto {
-    private List<SchemeSupportInfo> supportInfoList;
     private MdIncomeResultDto incomeInfo;
-
-    public List<SchemeSupportInfo> getSupportInfoList() {
-        return supportInfoList;
-    }
-
-    public void setSupportInfoList(List<SchemeSupportInfo> supportInfoList) {
-        this.supportInfoList = supportInfoList;
-    }
 
     public MdIncomeResultDto getIncomeInfo() {
         return incomeInfo;

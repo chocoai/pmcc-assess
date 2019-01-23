@@ -41,11 +41,16 @@
         });
     })
     function submit() {
+        if (!supportInfoModule.valid()) {
+            return false;
+        }
+        var data = {};
+        data.supportInfoList = supportInfoModule.getData();
         if ("${processInsId}" != "0") {
-            submitEditToServer("");
+            submitEditToServer(JSON.stringify(data));
         }
         else {
-            submitToServer("");
+            submitToServer(JSON.stringify(data));
         }
     }
 </script>

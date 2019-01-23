@@ -35,6 +35,18 @@ public class SchemeSupportInfoService {
     @Autowired
     private EvaluationPrincipleService evaluationPrincipleService;
 
+    /**
+     * 根据区域id获取依据假设原则数据
+     * @param areaId
+     * @param schemeSupportTypeEnum
+     * @return
+     */
+    public List<SchemeSupportInfo> getSupportInfoListByAreaId(Integer areaId,SchemeSupportTypeEnum schemeSupportTypeEnum){
+        SchemeSupportInfo where=new SchemeSupportInfo();
+        where.setAreaId(areaId);
+        where.setSupportType(schemeSupportTypeEnum.getId());
+        return schemeSupportInfoDao.getSupportInfoList(where);
+    }
 
     /**
      * 保存支撑信息
@@ -84,18 +96,19 @@ public class SchemeSupportInfoService {
         Integer category = projectInfo.getProjectCategoryId();//项目类别
         Integer purpose = projectInfo.getEntrustPurpose();//委托目的
         Integer medhod = baseDataDic.getId();//评估方法
-        List<DataEvaluationPrinciple> principleList = evaluationPrincipleService.getPrincipleList(type, category, medhod, purpose);//原则
         SchemeSupportInfo schemeSupportInfo = null;
-        if (CollectionUtils.isNotEmpty(principleList)) {
-            for (DataEvaluationPrinciple evaluationPrinciple : principleList) {
+        List<DataEvaluationBasis> basisList = evaluationBasisService.getEnableBasisList(type, category, medhod, purpose);//依据
+        if (CollectionUtils.isNotEmpty(basisList)) {
+            for (DataEvaluationBasis evaluationBasis : basisList) {
                 schemeSupportInfo = new SchemeSupportInfo();
                 schemeSupportInfo.setCreator(commonService.thisUserAccount());
-                schemeSupportInfo.setName(evaluationPrinciple.getName());
-                schemeSupportInfo.setTemplate(evaluationPrinciple.getTemplate());
-                schemeSupportInfo.setSupportType(SchemeSupportTypeEnum.PRINCIPLE.getId());
-                schemeSupportInfo.setSupportTypeName(SchemeSupportTypeEnum.PRINCIPLE.getName());
-                schemeSupportInfo.setJsonContent(publicService.extractField(evaluationPrinciple.getTemplate()));
+                schemeSupportInfo.setName(evaluationBasis.getName());
+                schemeSupportInfo.setTemplate(evaluationBasis.getTemplate());
+                schemeSupportInfo.setSupportType(SchemeSupportTypeEnum.BASIS.getId());
+                schemeSupportInfo.setSupportTypeName(SchemeSupportTypeEnum.BASIS.getName());
+                schemeSupportInfo.setJsonContent(publicService.extractField(evaluationBasis.getTemplate()));
                 schemeSupportInfo.setPlanDetailsId(projectPlanDetails.getId());
+                schemeSupportInfo.setAreaId(projectPlanDetails.getAreaId());
                 schemeSupportInfoDao.addSupportInfo(schemeSupportInfo);
             }
         }
@@ -110,24 +123,24 @@ public class SchemeSupportInfoService {
                 schemeSupportInfo.setSupportTypeName(SchemeSupportTypeEnum.HYPOTHESIS.getName());
                 schemeSupportInfo.setJsonContent(publicService.extractField(evaluationHypothesis.getTemplate()));
                 schemeSupportInfo.setPlanDetailsId(projectPlanDetails.getId());
+                schemeSupportInfo.setAreaId(projectPlanDetails.getAreaId());
                 schemeSupportInfoDao.addSupportInfo(schemeSupportInfo);
             }
         }
-        List<DataEvaluationBasis> basisList = evaluationBasisService.getEnableBasisList(type, category, medhod, purpose);//依据
-        if (CollectionUtils.isNotEmpty(basisList)) {
-            for (DataEvaluationBasis evaluationBasis : basisList) {
+        List<DataEvaluationPrinciple> principleList = evaluationPrincipleService.getPrincipleList(type, category, medhod, purpose);//原则
+        if (CollectionUtils.isNotEmpty(principleList)) {
+            for (DataEvaluationPrinciple evaluationPrinciple : principleList) {
                 schemeSupportInfo = new SchemeSupportInfo();
                 schemeSupportInfo.setCreator(commonService.thisUserAccount());
-                schemeSupportInfo.setName(evaluationBasis.getName());
-                schemeSupportInfo.setTemplate(evaluationBasis.getTemplate());
-                schemeSupportInfo.setSupportType(SchemeSupportTypeEnum.BASIS.getId());
-                schemeSupportInfo.setSupportTypeName(SchemeSupportTypeEnum.BASIS.getName());
-                schemeSupportInfo.setJsonContent(publicService.extractField(evaluationBasis.getTemplate()));
+                schemeSupportInfo.setName(evaluationPrinciple.getName());
+                schemeSupportInfo.setTemplate(evaluationPrinciple.getTemplate());
+                schemeSupportInfo.setSupportType(SchemeSupportTypeEnum.PRINCIPLE.getId());
+                schemeSupportInfo.setSupportTypeName(SchemeSupportTypeEnum.PRINCIPLE.getName());
+                schemeSupportInfo.setJsonContent(publicService.extractField(evaluationPrinciple.getTemplate()));
                 schemeSupportInfo.setPlanDetailsId(projectPlanDetails.getId());
+                schemeSupportInfo.setAreaId(projectPlanDetails.getAreaId());
                 schemeSupportInfoDao.addSupportInfo(schemeSupportInfo);
             }
         }
-
     }
-
 }

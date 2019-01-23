@@ -11,7 +11,6 @@ import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,11 +140,6 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
 
         SchemeMarketCompareApplyDto schemeMarketCompareApplyDto = JSON.parseObject(formData, SchemeMarketCompareApplyDto.class);
         MdMarketCompare mdMarketCompare = mdMarketCompareService.saveResult(schemeMarketCompareApplyDto.getMarketCompare());
-        if (CollectionUtils.isNotEmpty(schemeMarketCompareApplyDto.getSupportInfoList())) {
-            for (SchemeSupportInfo schemeSupportInfo : schemeMarketCompareApplyDto.getSupportInfoList()) {
-                schemeSupportInfoService.saveSupportInfo(schemeSupportInfo);
-            }
-        }
         SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         schemeInfo.setProcessInsId(processInsId);
         schemeInfoService.saveSchemeInfo(schemeInfo);
@@ -160,10 +154,5 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         SchemeMarketCompareApplyDto schemeMarketCompareApplyDto = JSON.parseObject(formData, SchemeMarketCompareApplyDto.class);
         mdMarketCompareService.saveResult(schemeMarketCompareApplyDto.getMarketCompare());
-        if (CollectionUtils.isNotEmpty(schemeMarketCompareApplyDto.getSupportInfoList())) {
-            for (SchemeSupportInfo schemeSupportInfo : schemeMarketCompareApplyDto.getSupportInfoList()) {
-                schemeSupportInfoService.saveSupportInfo(schemeSupportInfo);
-            }
-        }
     }
 }

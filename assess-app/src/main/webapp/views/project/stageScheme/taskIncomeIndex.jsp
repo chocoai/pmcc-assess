@@ -15,7 +15,6 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <jsp:include page="/views/project/stageScheme/module/ftContentChangeModule.jsp"></jsp:include>
-            <jsp:include page="/views/project/stageScheme/module/supportInfoModule.jsp"></jsp:include>
             <jsp:include page="/views/method/incomeIndex.jsp"></jsp:include>
             <div class="x_panel">
                 <div class="x_content">
@@ -37,30 +36,21 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
-<input type="hidden" id="supportInfosJSON" value='${supportInfosJSON}'>
 <input type="hidden" id="mdIncomeJSON" value='${mdIncomeJSON}'>
 <input type="hidden" id="incomeSelfSupportJSON" value='${incomeSelfSupportJSON}'>
 
 <script type="text/javascript">
     $(function () {
-        //支撑信息初始化
-        supportInfoModule.init({
-            supportInfo: JSON.parse($("#supportInfosJSON").val())
-        });
-
 
     })
 </script>
 <script type="application/javascript">
     function submit() {
-        if (!supportInfoModule.valid()) {
-            return false;
-        }
+
         if (!incomeIndex.valid()) {
             return false;
         }
         var data = {};
-        data.supportInfoList = supportInfoModule.getData();
         data.incomeInfo = incomeIndex.getData();
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(data));
