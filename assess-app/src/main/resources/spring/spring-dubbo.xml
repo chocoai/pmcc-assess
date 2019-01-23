@@ -40,4 +40,6 @@
     <!-- ======================crm - consumer========================== -->
     <dubbo:reference interface="com.copower.pmcc.crm.api.provider.CrmRpcCustomerService" id="crmRpcCustomerService" check="false" retries="0" timeout="10000" url="${crm.api.url}" />
     <dubbo:reference interface="com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService" id="crmRpcBaseDataDicService" check="false" retries="0" timeout="10000" url="${crm.api.url}" />
+    <!-- ======================ad - consumer========================== -->
+    <dubbo:reference interface="com.copower.pmcc.ad.api.provider.AdRpcQualificationsService" id="adRpcQualificationsService" check="false" retries="0" timeout="10000" url="${ad.api.url}" />
 </beans>
