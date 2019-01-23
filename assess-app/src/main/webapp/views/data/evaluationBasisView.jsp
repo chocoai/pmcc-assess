@@ -45,7 +45,6 @@
                                 </button>
                             </div>
                         </div>
-
                     </form>
                     <table class="table table-bordered" id="tb_List">
                         <!-- cerare document add ajax data-->
@@ -94,42 +93,40 @@
                     </div>
                     <div class="form-group">
                         <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                项目类型类别<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-10 col-sm-offset-2">
                                 <div class="btn btn-xs btn-success"
-                                        onclick="appendHTML('',this)"><i
+                                     onclick="appendHTML('',this)"><i
                                         class="fa fa-plus"></i></div>
                             </div>
                         </div>
                     </div>
-                    <div style="margin-bottom: 8px;" class="system">
+                    <div style="margin-bottom: 8px;">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-2 control-label">
-                                    项目类型
+                                    项目类型<span class="symbol required"></span>
                                 </label>
                                 <div class="col-sm-3">
-                                    <select name="type" onchange="typeChange(this);" id="type0"
-                                            class="form-control search-select select2 type0">
+                                    <select required name="type" onchange="typeChange(this);" id="type0"
+                                            class="form-control type0">
                                     </select>
                                 </div>
+                            </div>
+                            <div class="x-valid">
                                 <label class="col-sm-2 control-label">
-                                    项目类别
+                                    项目类别<span class="symbol required"></span>
                                 </label>
                                 <div class="col-sm-3">
-                                    <select name="category"
-                                            class="form-control search-select select2 category0">
+                                    <select required name="category"
+                                            class="form-control category0">
                                         <option selected="selected" value="">请先选择类型</option>
                                     </select>
                                 </div>
-                                <div class="col-sm-2">
-                                    <input type="button" class="btn btn-warning" value="X"
-                                           onclick="cleanHTMLData(this)">
-                                </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-group project-type">
+
                     </div>
                     <div class="form-group">
                         <div class="x-valid">
@@ -139,28 +136,12 @@
                             <div class="col-sm-10" id="entrustmentPurpose">
                                 <c:forEach items="${purposeDicList}" var="item">
                                                 <span class="checkbox-inline">
-                                                <input type="checkbox" id="entrustmentPurpose${item.id}" required name="entrustmentPurpose" value="${item.id}"
+                                                <input type="checkbox" id="entrustmentPurpose${item.id}" required
+                                                       name="entrustmentPurpose" value="${item.id}"
                                                        class="form-inline">
                                                 <label for="entrustmentPurpose${item.id}">${item.name}</label>
                                                 </span>
                                 </c:forEach>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                评估方法<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-10" id="method">
-                                <c:forEach items="${methodDicList}" var="item">
-                                                <span class="checkbox-inline">
-                                                <input type="checkbox" id="method${item.id}" required name="method" value="${item.id}"
-                                                       class="form-inline">
-                                                <label for="method${item.id}">${item.name}</label>
-                                                </span>
-                                </c:forEach>
-
                             </div>
                         </div>
                     </div>
@@ -177,7 +158,7 @@
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                是否修改
+                                是否可修改
                             </label>
                             <div class="col-sm-4">
                                 <label class="radio-inline">
@@ -204,7 +185,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default" >
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
                     <button type="button" class="btn btn-primary" onclick="saveBasis()">
@@ -239,12 +220,13 @@
     //加载 评估依据 数据列表
     function loadBasisList() {
         var cols = [];
-        cols.push({field: 'name', title: '名称', formatter: function (value, row, index) {
-            return '<span title="'+row.template+'">'+value+'</span>';
-        }});
+        cols.push({
+            field: 'name', title: '名称', formatter: function (value, row, index) {
+                return '<span title="' + row.template + '">' + value + '</span>';
+            }
+        });
         cols.push({field: 'typeName', title: '项目类型'});
         cols.push({field: 'entrustmentPurposeStr', title: '委托目的'});
-        cols.push({field: 'methodStr', title: '评估方法'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -298,16 +280,25 @@
     //对新增 评估依据 数据处理
     function addBasis() {
         $("#frm").clearAll();
+        $("#frm").find(".project-type").empty();
+        num = 0;
+        getType(0);
         extractTemplateField();
-        reload();
     }
     //新增 评估依据 数据
     function saveBasis() {
         var data = formParams("frm");
-        data.method = ',' + data.method + ',';//方便like查询
         data.entrustmentPurpose = ',' + data.entrustmentPurpose + ',';//方便like查询
-        data.type = ',' + data.type + ',';//方便like查询
-        data.category = ',' + data.category + ',';//方便like查询
+        var type = ',';
+        $("#frm").find('[name^=type]').each(function () {
+            type += $(this).val() + ',';
+        })
+        var category = ',';
+        $("#frm").find('[name^=category]').each(function () {
+            category += $(this).val() + ',';
+        })
+        data.type = type;//方便like查询
+        data.category = category;//方便like查询
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/evaluationBasis/save",
@@ -335,11 +326,10 @@
     //评估依据 修改
     function editBasis(index) {
         var row = $("#tb_List").bootstrapTable('getData')[index];
-        $("#frm").clearAll();
-        $("#frm").initForm(row);
-        reload();
-        AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='entrustmentPurpose']"),row.entrustmentPurpose.split(','));
-        AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='method']"),row.method.split(','));
+        $("#frm").clearAll().initForm(row);
+        num = 0;
+        $("#frm").find(".project-type").empty();
+        AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='entrustmentPurpose']"), row.entrustmentPurpose.split(','));
         extractTemplateField();
         $('#divBox').modal();
     }
@@ -355,7 +345,7 @@
             url: "${pageContext.request.contextPath}/baseProjectClassify/getProjectClassifyListByFieldName",
             type: "post",
             dataType: "json",
-            data: {fieldName: "single"},//字段为固定 请参照BaseProjectClassifyController中....
+            data: {fieldName: "single"},
             success: function (result) {
                 if (result.ret) {
                     var data = result.data;
@@ -378,72 +368,30 @@
         });
     }
 
-    //类别
-    function getCategory(number) {
-        if (!number && number != 0) {
-            number = num;
-        }
-        //监听change 事件 并做出......
-        $("#frm" + " .type" + number).change(function () {
-            var pid = $("#frm" + " .type" + number).eq(1).val();
-            if (!pid) {
-                return false;
-            }
-            $.ajax({
-                url: "${pageContext.request.contextPath}/baseProjectClassify/getCacheProjectClassifyListByPid",
-                type: "post",
-                dataType: "json",
-                data: {pid: pid},
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        if (data.length >= 1) {
-                            var option = "<option value=''>请选择</option>";
-                            for (var i = 0; i < data.length; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                            }
-                            $("#frm").find('select.category' + number).html(option);
-
-                        }
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        });
-    }
-
     function appendHTML() {
         num++;
         var projectType = "type" + num;
         var projectCategory = "category" + num;
         var html = createHTML(projectType, projectCategory);
-        $("#frm").find(".system").append(html);
-        $("#frm").find("." + projectType).select2();
-        $("#frm").find("." + projectCategory).select2();
+        $("#frm").find(".project-type").append(html);
         getType();
-        getCategory();
     }
 
     function createHTML(projectType, projectCategory) {
         var html = "<div class='form-group' style='margin-top:8px;'>";
-        html += "<label class='col-md-2 col-sm-2  control-label'>" + '项目类型' + "</label>";
-        html += "<div class='col-sm-3'>";
-        html += "<select  name='type' id='" + projectType + "' onchange='typeChange(this)' class='form-control search-select select2 " + projectType + "'>";
+        html += "<label class='col-md-2 col-sm-2  control-label'>" + '项目类型' + "<span class='symbol required'></span></label>";
+        html += "<div class='x-valid'><div class='col-sm-3'>";
+        html += "<select required  name='" + projectType + "' id='" + projectType + "' onchange='typeChange(this)' class='form-control search-select select2 " + projectType + "'>";
         html += "<option selected='selected' value=''>" + '请选择' + "</option>";
         html += "</select>";
-        html += "</div>";
+        html += "</div></div>";
 
-        html += "<label class='col-md-2 col-sm-2  control-label'>" + '项目类别' + "</label>";
-        html += "<div class='col-sm-3'>";
-        html += "<select  name='category' id='" + projectCategory + "'  class='form-control search-select select2 " + projectCategory + "'>";
+        html += "<label class='col-md-2 col-sm-2  control-label'>" + '项目类别' + "<span class='symbol required'></span></label>";
+        html += "<div class='x-valid'><div class='col-sm-3'>";
+        html += "<select required  name='" + projectCategory + "' id='" + projectCategory + "'  class='form-control " + projectCategory + "'>";
         html += "<option selected='selected' value=''>" + '请先选择类型' + "</option>";
         html += "</select>";
-        html += "</div>";
+        html += "</div></div>";
 
         html += "<div class='col-sm-2'>";
         html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>";
@@ -457,37 +405,36 @@
     }
 
     function typeChange(this_) {
-        var str = $(this_).attr("id");
-        var number = str.substr(str.length - 1, 1);
-        getCategory(number);
-    }
+        var pid = $(this_).val();
+        if(!pid){
+            $(this_).closest('.form-group').find('[name^=category]').empty();
+            return false;
+        }
+        $.ajax({
+            url: "${pageContext.request.contextPath}/baseProjectClassify/getCacheProjectClassifyListByPid",
+            type: "post",
+            dataType: "json",
+            data: {pid: pid},
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data;
+                    if (data.length >= 1) {
+                        var option = "<option value=''>请选择</option>";
+                        for (var i = 0; i < data.length; i++) {
+                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        }
+                        $(this_).closest('.form-group').find('[name^=category]').html(option);
 
-    function reload() {
-        $("#frm").find(".system").empty();
-        var html = "<div class='form-group' style='margin-top:8px;'>";
-        html += "<label class='col-md-2 col-sm-2  control-label'>" + '项目类型' + "</label>";
-        html += "<div class='col-sm-3'>";
-        html += "<select  name='type' id='type0' onchange='typeChange(this)' class='form-control search-select select2 type0'>";
-        html += "<option selected='selected' value=''>" + '请选择' + "</option>";
-        html += "</select>";
-        html += "</div>";
-
-        html += "<label class='col-md-2 col-sm-2  control-label'>" + '项目类别' + "</label>";
-        html += "<div class='col-sm-3'>";
-        html += "<select  name='category' class='form-control search-select select2 category0'>";
-        html += "<option selected='selected' value=''>" + '请先选择类型' + "</option>";
-        html += "</select>";
-        html += "</div>";
-
-        html += "<div class='col-sm-2'>";
-        html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>";
-        html += "</div>";
-        html += "</div>";
-        $("#frm").find(".system").append(html);
-        getType(0);
-        getCategory(0);
-        $("#frm").find(".type0").select2();
-        $("#frm").find(".category0").select2();
+                    }
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
     }
 
 
