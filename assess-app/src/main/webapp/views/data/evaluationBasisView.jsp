@@ -328,6 +328,7 @@
         var row = $("#tb_List").bootstrapTable('getData')[index];
         $("#frm").clearAll().initForm(row);
         num = 0;
+        getType(0);
         $("#frm").find(".project-type").empty();
         AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='entrustmentPurpose']"), row.entrustmentPurpose.split(','));
         extractTemplateField();
@@ -381,7 +382,7 @@
         var html = "<div class='form-group' style='margin-top:8px;'>";
         html += "<label class='col-md-2 col-sm-2  control-label'>" + '项目类型' + "<span class='symbol required'></span></label>";
         html += "<div class='x-valid'><div class='col-sm-3'>";
-        html += "<select required  name='" + projectType + "' id='" + projectType + "' onchange='typeChange(this)' class='form-control search-select select2 " + projectType + "'>";
+        html += "<select required  name='" + projectType + "' id='" + projectType + "' onchange='typeChange(this)' class='form-control " + projectType + "'>";
         html += "<option selected='selected' value=''>" + '请选择' + "</option>";
         html += "</select>";
         html += "</div></div>";

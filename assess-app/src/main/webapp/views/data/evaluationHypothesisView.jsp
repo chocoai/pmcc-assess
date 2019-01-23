@@ -339,6 +339,7 @@
         var row = $("#tb_List").bootstrapTable('getData')[index];
         $("#frm").clearAll().initForm(row);
         num = 0;
+        getType(0);
         $("#frm").find(".project-type").empty();
         AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='entrustmentPurpose']"), row.entrustmentPurpose.split(','));
         extractTemplateField();

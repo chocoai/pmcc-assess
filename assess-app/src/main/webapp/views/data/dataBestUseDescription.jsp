@@ -126,10 +126,6 @@
                                                     <option selected="selected" value="">请先选择类型</option>
                                                 </select>
                                             </div>
-                                            <div class="col-sm-2">
-                                                <input type="button" class="btn btn-warning" value="X"
-                                                       onclick="cleanHTMLData(this)">
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -162,24 +158,6 @@
                     </button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
-
-
-<!--最佳利用描述数据子项数据 ===========-->
-<div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent">最佳利用数据</h4>
-            </div>
-            <div class="panel-body">
-                <table class="table table-bordered" id="tbDataDicList">
-                </table>
-            </div>
         </div>
     </div>
 </div>
@@ -256,8 +234,7 @@
     }
     //新增 最佳利用数据
     function saveSubDataDic() {
-        var flag = false;
-        var data = $("#frm").serialize();
+        var data = formParams("frm");
         var type = ',';
         $("#frm").find('[name^=type]').each(function () {
             type += $(this).val() + ',';
@@ -297,6 +274,7 @@
         $("#frm").clearAll();
         $("#frm").clearAll().initForm(row);
         num = 0;
+        getType(0);
         $("#frm").find(".project-type").empty();
         $('#divBox').modal();
     }
@@ -348,7 +326,7 @@
         var html = "<div class='form-group' style='margin-top:8px;'>";
         html += "<label class='col-md-2 col-sm-2  control-label'>" + '项目类型' + "<span class='symbol required'></span></label>";
         html += "<div class='x-valid'><div class='col-sm-3'>";
-        html += "<select required  name='" + projectType + "' id='" + projectType + "' onchange='typeChange(this)' class='form-control search-select select2 " + projectType + "'>";
+        html += "<select required  name='" + projectType + "' id='" + projectType + "' onchange='typeChange(this)' class='form-control " + projectType + "'>";
         html += "<option selected='selected' value=''>" + '请选择' + "</option>";
         html += "</select>";
         html += "</div></div>";
