@@ -41,6 +41,7 @@ public enum BaseReportFieldEnum {
     ValueExpressionResult("", "价值表达结果", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     StatutoryOptimumReimbursement("", "法定优选受偿款", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     reportIssuanceDate("", "报告出具日期", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    CapitalizationAmount("", "大写金额", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
 
     HousingOwnershipRegistrationStatementSheet("", "房屋所有权登记状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
