@@ -42,7 +42,6 @@ import java.util.regex.Pattern;
 
 /**
  * Created by kings on 2018-5-23.
- * NumberToChn 数字转中文(临时记录一下)
  */
 @Service
 public class GenerateReportService {
@@ -243,8 +242,6 @@ public class GenerateReportService {
             Map<String, String> textMap = Maps.newHashMap();
             //书签map
             Map<String, String> bookmarkMap = Maps.newHashMap();
-            //模板map(模板map中为erp中得附件id以及替换值)
-            Map<Integer, Object> fileMap = Maps.newHashMap();
             Map<String, String> fileFixedMap = Maps.newHashMap();
             Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> mapSet = getReportMap(baseReportTemplate, areaId, projectPlan, new Document(tempDir), report_type);
             if (CollectionUtils.isNotEmpty(mapSet)) {
@@ -287,13 +284,22 @@ public class GenerateReportService {
                             if (com.google.common.base.Objects.equal(replaceEnum.getKey(), BaseReportFieldReplaceEnum.FILE.getKey())) {
                                 if (value != null) {
                                     if (StringUtils.isNotBlank(value.toString())) {
-                                        template(wordKey, value);
+                                        String dir = value.toString();
+                                        Document docDelete = new Document(dir);
+                                        BookmarkCollection bookmarkCollection = AsposeUtils.getBookmarks(docDelete);
+                                        if (bookmarkCollection.getCount() >= 1) {
+                                            for (int i = 0; i < bookmarkCollection.getCount(); i++) {
+                                                docDelete.getRange().getBookmarks().remove(bookmarkCollection.get(i).getName());
+                                            }
+                                            docDelete.save(dir);
+                                        }
+                                        fileFixedMap.put(wordKey, dir);
                                     }
                                 } else {
                                     logger.error(String.format("word模板:%s%s", ChineseToPy.getFullSpell(wordKey), "替换失败!"), new Exception());
                                 }
                             }
-                            //固定word
+                            //固定word (或者已经处理好了的)
                             if (com.google.common.base.Objects.equal(replaceEnum.getKey(), BaseReportFieldReplaceEnum.FILE_FIXED.getKey())) {
                                 if (value != null) {
                                     if (StringUtils.isNotBlank(value.toString())) {
@@ -320,9 +326,6 @@ public class GenerateReportService {
         return tempDir;
     }
 
-    private void template(String wordKey, Object value) {
-        //暂时不做处理
-    }
 
     /**
      * 获取报告模板数据数据
@@ -364,6 +367,22 @@ public class GenerateReportService {
                             BaseReportFieldReplaceEnum.BOOKMARK,
                             bookmarkCollection.get(i).getName(),
                             DateUtils.format(generateBaseDataService.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN)));
+                }
+                //房地产总价
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.TotalRealEstatePrice.getName(), bookmarkName)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.TotalRealEstatePrice.getName());
+                    mapSet.add(getBaseReportFieldReplaceEnumMap(
+                            BaseReportFieldReplaceEnum.BOOKMARK,
+                            bookmarkCollection.get(i).getName(),
+                            generateBaseDataService.getTotalRealEstatePrice()));
+                }
+                //大写金额
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.CapitalizationAmount.getName(), bookmarkName)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.CapitalizationAmount.getName());
+                    mapSet.add(getBaseReportFieldReplaceEnumMap(
+                            BaseReportFieldReplaceEnum.BOOKMARK,
+                            bookmarkCollection.get(i).getName(),
+                            generateBaseDataService.getCapitalizationAmount()));
                 }
                 /*##########################################公共书签替换 end ###################################################### */
                 switch (report_type) {
@@ -592,22 +611,6 @@ public class GenerateReportService {
                                     bookmarkCollection.get(i).getName(),
                                     generateBaseDataService.getWeightSpecification()));
                         }
-                        //房地产总价
-                        if (com.google.common.base.Objects.equal(BaseReportFieldEnum.TotalRealEstatePrice.getName(), bookmarkName)) {
-                            BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.TotalRealEstatePrice.getName());
-                            mapSet.add(getBaseReportFieldReplaceEnumMap(
-                                    BaseReportFieldReplaceEnum.BOOKMARK,
-                                    bookmarkCollection.get(i).getName(),
-                                    generateBaseDataService.getTotalRealEstatePrice()));
-                        }
-                        //大写金额
-                        if (com.google.common.base.Objects.equal(BaseReportFieldEnum.CapitalizationAmount.getName(), bookmarkName)) {
-                            BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.CapitalizationAmount.getName());
-                            mapSet.add(getBaseReportFieldReplaceEnumMap(
-                                    BaseReportFieldReplaceEnum.BOOKMARK,
-                                    bookmarkCollection.get(i).getName(),
-                                    generateBaseDataService.getCapitalizationAmount()));
-                        }
                         //价值表达结果
                         if (com.google.common.base.Objects.equal(BaseReportFieldEnum.ValueExpressionResult.getName(), bookmarkName)) {
                             BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.ValueExpressionResult.getName());
@@ -656,6 +659,86 @@ public class GenerateReportService {
                     case AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY:
                         break;
                     case AssessDataDicKeyConstant.REPORT_TYPE_RESULT:
+                        //估价项目名称
+                        if (com.google.common.base.Objects.equal(BaseReportFieldEnum.ValuationProjectName.getName(), bookmarkName)) {
+                            BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.ValuationProjectName.getName());
+                            mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                    BaseReportFieldReplaceEnum.BOOKMARK,
+                                    bookmarkCollection.get(i).getName(),
+                                    generateBaseDataService.getValuationProjectName()));
+                        }
+                        //估价结果一览表
+                        if (com.google.common.base.Objects.equal(BaseReportFieldEnum.judgeBuildResultSurveySheet.getName(), bookmarkName)) {
+                            BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.judgeBuildResultSurveySheet.getName());
+                            mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                    BaseReportFieldReplaceEnum.FILE_FIXED,
+                                    bookmarkCollection.get(i).getName(),
+                                    generateBaseDataService.getjudgeBuildResultSurveySheet()));
+                        }
+                        //计算过程
+                        if (com.google.common.base.Objects.equal(BaseReportFieldEnum.ComputationProcess.getName(), bookmarkName)) {
+                            BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.ComputationProcess.getName());
+                            SysAttachmentDto query = new SysAttachmentDto();
+                            if (baseReportField != null) {
+                                query.setTableId(baseReportField.getId());
+                                query.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportField.class));
+                                List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
+                                if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
+                                    mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                            BaseReportFieldReplaceEnum.FILE,
+                                            bookmarkCollection.get(i).getName(),
+                                            generateBaseDataService.getComputationProcess(sysAttachmentDtoList.get(0))));
+                                }
+                            }
+                        }
+                        //参数选取与应用
+                        if (com.google.common.base.Objects.equal(BaseReportFieldEnum.SelectionApplicationParameters.getName(), bookmarkName)) {
+                            BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.SelectionApplicationParameters.getName());
+                            SysAttachmentDto query = new SysAttachmentDto();
+                            if (baseReportField != null) {
+                                query.setTableId(baseReportField.getId());
+                                query.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportField.class));
+                                List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
+                                if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
+                                    mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                            BaseReportFieldReplaceEnum.FILE,
+                                            bookmarkCollection.get(i).getName(),
+                                            generateBaseDataService.getSelectionApplicationParameters(sysAttachmentDtoList.get(0))));
+                                }
+                            }
+                        }
+                        //建筑物权益状况
+                        if (com.google.common.base.Objects.equal(BaseReportFieldEnum.StatusBuildingRightsInterests.getName(), bookmarkName)) {
+                            BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.StatusBuildingRightsInterests.getName());
+                            SysAttachmentDto query = new SysAttachmentDto();
+                            if (baseReportField != null) {
+                                query.setTableId(baseReportField.getId());
+                                query.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportField.class));
+                                List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
+                                if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
+                                    mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                            BaseReportFieldReplaceEnum.FILE,
+                                            bookmarkCollection.get(i).getName(),
+                                            generateBaseDataService.getStatusBuildingRightsInterests(sysAttachmentDtoList.get(0))));
+                                }
+                            }
+                        }
+                        //本次估价的总体思路和评估方法的选取
+                        if (com.google.common.base.Objects.equal(BaseReportFieldEnum.theGeneralIdeaOfThisEvaluationAndTheSelectionOfEvaluationMethods.getName(), bookmarkName)) {
+                            BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.theGeneralIdeaOfThisEvaluationAndTheSelectionOfEvaluationMethods.getName());
+                            SysAttachmentDto query = new SysAttachmentDto();
+                            if (baseReportField != null) {
+                                query.setTableId(baseReportField.getId());
+                                query.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportField.class));
+                                List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
+                                if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
+                                    mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                            BaseReportFieldReplaceEnum.FILE,
+                                            bookmarkCollection.get(i).getName(),
+                                            generateBaseDataService.gettheGeneralIdeaOfThisEvaluationAndTheSelectionOfEvaluationMethods(sysAttachmentDtoList.get(0))));
+                                }
+                            }
+                        }
                         break;
                     default:
                         break;
