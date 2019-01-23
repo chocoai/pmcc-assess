@@ -42,12 +42,35 @@ public enum BaseReportFieldEnum {
     StatutoryOptimumReimbursement("", "法定优选受偿款", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     reportIssuanceDate("", "报告出具日期", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     CapitalizationAmount("", "大写金额", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    ValuationProjectName("", "估价项目名称", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
+    ComputationProcess("", "计算过程", BaseReportFieldReplaceEnum.FILE.getKey()),
+    SelectionApplicationParameters("", "参数选取与应用", BaseReportFieldReplaceEnum.FILE.getKey()),
+    StatusBuildingRightsInterests("", "建筑物权益状况", BaseReportFieldReplaceEnum.FILE.getKey()),
+    theGeneralIdeaOfThisEvaluationAndTheSelectionOfEvaluationMethods("", "本次估价的总体思路和评估方法的选取", BaseReportFieldReplaceEnum.FILE.getKey()),
+
+    CostAssistApplyReason("", "成本法适用原因", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    CostAssistNotApplicableReason("", "成本法不适用原因", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    CostAssistThink("", "成本法评估思路", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+
+    CompareAssistApplyReason("", "市场比较法适用原因", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    CompareAssistNotApplicableReason("", "市场比较法不适用原因", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    CompareAssistThink("", "市场比较法评估思路", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+
+    IncomeAssistApplyReason("", "收益法适用原因", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    IncomeAssistNotApplicableReason("", "收益法不适用原因", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    IncomeAssistThink("", "收益法评估思路", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+
+    DevelopmentAssistApplyReason("", "假设开发法适用原因", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    DevelopmentAssistNotApplicableReason("", "假设开发法不适用原因", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    DevelopmentAssistThink("", "假设开发法评估思路", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
     HousingOwnershipRegistrationStatementSheet("", "房屋所有权登记状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     judgeObjectAreaStatusSheet("", "估价对象区位状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     judgeObjectLandStateSheet("", "估价土地实体状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     judgeBuildLandStateSheet("", "估价建筑物实体状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    judgeBuildResultSurveySheet("", "估价结果一览表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+
     inventoryRight("", "土地他项权利情况", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     EvaluationMethod("", "评估方法", BaseReportFieldReplaceEnum.BOOKMARK.getKey());
     private String key;
