@@ -79,6 +79,15 @@ public enum BaseReportFieldEnum {
 
     AssistanceStaff("", "协助工作人员", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
+    XIEHE_organizationName("", "机构名称", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    XIEHE_RealEstateValuationAgency("", "房地产估价机构", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    XIEHE_organizationAddress("", "机构住所", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    XIEHE_legalRepresentative("", "机构名称法定代表人", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    XIEHE_registeredNo("", "机构工商注册号", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    XIEHE_organizationRank("", "机构资质等级", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    XIEHE_certificateNo("", "机构证书号", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    XIEHE_certificateEffectiveDate("", "证书有效期", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+
     HousingOwnershipRegistrationStatementSheet("", "房屋所有权登记状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     judgeObjectAreaStatusSheet("", "估价对象区位状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     judgeObjectLandStateSheet("", "估价土地实体状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),

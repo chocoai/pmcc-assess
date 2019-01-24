@@ -27,6 +27,7 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportService;
+import com.copower.pmcc.assess.service.data.DataReportAnalysisService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
@@ -82,6 +83,7 @@ public class GenerateBaseDataService {
     private com.copower.pmcc.assess.service.AdRpcQualificationsAppService adRpcQualificationsService;
     private PublicService publicService;
     private SchemeSupportInfoService schemeSupportInfoService;
+    private DataReportAnalysisService dataReportAnalysisService;
 
     //构造器必须传入的参数
     private Integer projectId;
@@ -790,7 +792,6 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getReportAnalysis() {
-
         return errorStr;
     }
 
@@ -3213,6 +3214,7 @@ public class GenerateBaseDataService {
         this.publicService = SpringContextUtils.getBean(PublicService.class);
         this.schemeSupportInfoService = SpringContextUtils.getBean(SchemeSupportInfoService.class);
         this.adRpcQualificationsService = SpringContextUtils.getBean(com.copower.pmcc.assess.service.AdRpcQualificationsAppService.class);
+        this.dataReportAnalysisService = SpringContextUtils.getBean(DataReportAnalysisService.class);
     }
 
 
