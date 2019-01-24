@@ -51,9 +51,6 @@
                                         </span>
                                         </c:forEach>
                                     </div>
-                                    <label id="lbl_report_count" class="col-sm-1 control-label" style="display: none;">
-                                        报告份数：<span style="color: red;font-size: large;">0</span>
-                                    </label>
                                 </div>
 
                                 <div class="x-valid">
@@ -61,7 +58,76 @@
                                         报告下载<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-4" id="reportDownloadWord">
+                                    </div>
+                                </div>
+                            </div>
 
+                            <div class="form-group">
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        报告出具日期<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="reportIssuanceDate" placeholder="报告出具日期"
+                                               class="form-control date-picker dbdate" pattern='yyyy-MM-dd' data-date-format="yyyy-mm-dd">
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        作业结束时间<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="HomeWorkEndTime" placeholder="作业结束时间"
+                                               class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd" pattern='yyyy-MM-dd'>
+                                    </div>
+                                </div>
+
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">估价师选择</label>
+                                    <div class="col-sm-3">
+                                        <div class="input-group">
+                                            <input type="hidden" name="userAccountMember">
+                                            <input type="text" class="form-control" readonly="readonly"
+                                                   name="userAccountMemberName"
+                                                   onclick="selectUserAccount(this);">
+                                            <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default docs-tooltip"
+                                                    data-toggle="tooltip"
+                                                    data-original-title="选择"
+                                                    onclick="selectUserAccount(this);">
+                                            <i class="fa fa-search"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-default docs-tooltip"
+                                                    onclick="$(this).closest('.input-group').find('input').val('');"
+                                                    data-toggle="tooltip" data-original-title="清除">
+                                            <i class="fa fa-trash-o"></i>
+                                            </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        现场查勘开始日期<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="InvestigationsStartDate" placeholder="现场查勘开始日期"
+                                               class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd" pattern='yyyy-MM-dd'>
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        现场查勘结束日期<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="InvestigationsEndDate" placeholder="现场查勘结束日期"
+                                               class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd" pattern='yyyy-MM-dd'>
                                     </div>
                                 </div>
                             </div>
@@ -219,7 +285,7 @@
 </body>
 </html>
 <%@include file="/views/share/main_footer.jsp" %>
-
+<script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>
 <!--评估对象-->
 <script type="text/html" id="judgeObjectHtml">
     <tr>
@@ -251,6 +317,61 @@
     </tr>
 </script>
 <script type="text/javascript">
+
+
+    /**
+     * 获取资质
+     * @param userAccount
+     * @param callback
+     */
+    function getAdPersonalIdentityDto(userAccount, callback) {
+        var qualificationType = "${PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS}";
+        if ('${projectInfo.projectCategoryName}' == '房产') {
+            qualificationType = '${PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS}';
+        }
+        var data = {
+            userAccount: userAccount,
+            qualificationType: qualificationType
+        };
+        $.ajax({
+            url: "${pageContext.request.contextPath}/public/getAdPersonalIdentityDto",
+            data: data,
+            type: "get",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret && result.data) {
+                    callback(result.data);
+                } else {
+                    Alert("异常");
+                }
+            },
+            error: function (result) {
+                alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    }
+
+    /**
+     * 人选选择
+     * @param this_
+     */
+    function selectUserAccount(this_) {
+        erpEmployee.select({
+            multi: true,
+            onSelected: function (data) {
+                getAdPersonalIdentityDto(data.account,function (item) {
+                    console.log(item);
+                    if (item.length >= 1){
+                        $(this_).closest('.input-group').find("input[name='userAccountMember']").val(data.account);
+                        $(this_).closest('.input-group').find("input[name='userAccountMemberName']").val(data.name);
+                    }else {
+                        Alert("该人员未有《注册房地产估价师》资格!");
+                    }
+                });
+            }
+        });
+    }
+
     function loadJudgeObjectList(_this) {
         var tbody = $(_this).closest(".area_panel").find(".table").find("tbody");
         tbody.empty();
@@ -305,9 +426,14 @@
     }
 
 
-
     //生成报告
     function generateReport(areaId) {
+        var data = formParams("frm_content");
+        if (data.userAccountMember){
+        }else {
+            toastr.success('估价师必须选择');
+            return false;
+        }
         var item = $("#frm_content").find("[name=reportType]:checked");
         var ids = '';
         if (item.size() < 1) {
@@ -321,14 +447,13 @@
                 ids += $(n).val() + ",";
             }
         });
+        data.ids = ids;
+        data.areaId = areaId;
+        data.projectPlanId = '${projectPlan.id}';
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/generateReport/generate",
-            data: {
-                ids: ids,
-                projectPlanId: '${projectPlan.id}',
-                areaId: areaId
-            },
+            data: data,
             type: "post",
             dataType: "json",
             success: function (result) {
@@ -336,8 +461,9 @@
                     AssessCommon.getSysAttachmentViewHtml(result.data, function (data) {
                         $("#reportDownloadWord").empty();
                         $("#reportDownloadWord").append(data);
-                        toastr.success('报告生成成功!');
                         Loading.progressHide();
+                        $("#frm_content").clearAll();
+                        toastr.success('报告生成成功!');
                     });
                 } else {
                     Alert("异常");
