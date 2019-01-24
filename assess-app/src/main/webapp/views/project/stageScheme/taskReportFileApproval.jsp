@@ -146,7 +146,7 @@
                                     <th>${i}</th>
                                     <td>${item.fileName}</td>
                                     <td>
-                                        <input type="button" class="btn btn-xs btn-primary" value="编辑">
+                                        <input type="button" class="btn btn-xs btn-warning" value="查看" onclick="FileUtils.showAttachment(${item.id},'${item.fileExtension}');">
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -185,7 +185,7 @@
                                                 <th>${i}</th>
                                                 <td>${item.fileName}</td>
                                                 <td>
-                                                    <input type="button" class="btn btn-xs btn-primary" value="查看" onclick="">
+                                                    <input type="button" class="btn btn-xs btn-warning" value="查看" onclick="FileUtils.showAttachment(${item.id},'${item.fileExtension}');">
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -212,7 +212,7 @@
                                                 <th>${i}</th>
                                                 <td>${item.fileName}</td>
                                                 <td>
-                                                    <input type="button" class="btn btn-xs btn-primary" value="查看" onclick="">
+                                                    <input type="button" class="btn btn-xs btn-warning" value="查看" onclick="FileUtils.showAttachment(${item.id},'${item.fileExtension}');">
                                                 </td>
                                             </tr>
                                         </c:forEach>

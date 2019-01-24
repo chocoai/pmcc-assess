@@ -145,10 +145,11 @@
                             <tbody>
                             <c:forEach items="${ownershipCertFileList}" var="item" varStatus="i">
                                 <tr>
-                                    <th>${i}</th>
+                                    <th>${i.index+1}</th>
                                     <td>${item.fileName}</td>
                                     <td>
-                                        <input type="button" class="btn btn-xs btn-primary" value="编辑">
+                                        <input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="FileUtils.editAttachment(${item.id},'${item.fileExtension}');">
+                                        <input type="button" class="btn btn-xs btn-warning" value="查看" onclick="FileUtils.showAttachment(${item.id},'${item.fileExtension}');">
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -185,13 +186,11 @@
                                         <tbody>
                                         <c:forEach items="${inventoryAddressFileList}" var="item" varStatus="i">
                                             <tr>
-                                                <th>${i}</th>
+                                                <th>${i.index+1}</th>
                                                 <td>${item.fileName}</td>
                                                 <td>
-                                                    <input type="button" class="btn btn-xs btn-primary" value="查看"
-                                                           onclick="">
-                                                    <input type="button" class="btn btn-xs btn-primary" value="编辑"
-                                                           onclick="">
+                                                    <input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="FileUtils.editAttachment(${item.id},'${item.fileExtension}');">
+                                                    <input type="button" class="btn btn-xs btn-warning" value="查看" onclick="FileUtils.showAttachment(${item.id},'${item.fileExtension}');">
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -215,13 +214,11 @@
                                         <tbody>
                                         <c:forEach items="${reimbursementFileList}" var="item" varStatus="i">
                                             <tr>
-                                                <th>${i}</th>
+                                                <th>${i.index+1}</th>
                                                 <td>${item.fileName}</td>
                                                 <td>
-                                                    <input type="button" class="btn btn-xs btn-primary" value="查看"
-                                                           onclick="">
-                                                    <input type="button" class="btn btn-xs btn-primary" value="编辑"
-                                                           onclick="">
+                                                    <input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="FileUtils.editAttachment(${item.id},'${item.fileExtension}');">
+                                                    <input type="button" class="btn btn-xs btn-warning" value="查看" onclick="FileUtils.showAttachment(${item.id},'${item.fileExtension}');">
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -348,7 +345,7 @@
             success: function (result) {
                 if (result.ret) {
                     var html = '<tr><td>' + fileName + '</td><td><input type="text" data-id="' + result.data + '" data-name="sorting" value="' + sorting + '"></td><td>' +
-                        '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="">' +
+                        '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="FileUtils.editAttachment(' + attachmentId + ',\'' + fileName + '\');">' +
                         '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeLiveSituation(' + result.data + ',this)"></td></tr>';
                     $('tbody[data-id=' + judgeObjectId + '][data-name=live_situation_select]').append(html);
                 } else {
@@ -388,7 +385,7 @@
                     var html = '';
                     $.each(result.data, function (i, item) {
                         html += '<tr><td>' + item.fileName + '</td><td><input type="text" data-id="' + item.id + '" data-name="sorting" value="' + AssessCommon.toString(item.sorting) + '"></td><td>' +
-                            '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="">' +
+                            '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="FileUtils.editAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
                             '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeLiveSituation(' + item.id + ',this)"></td></tr>';
                     })
                     tbody.empty().append(html);

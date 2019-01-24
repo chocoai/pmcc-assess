@@ -13,7 +13,6 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <jsp:include page="/views/project/stageScheme/module/supportInfoModule.jsp"></jsp:include>
             <jsp:include page="/views/method/incomeDetail.jsp"></jsp:include>
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
@@ -22,16 +21,11 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-<input type="hidden" id="supportInfosJSON" value='${supportInfosJSON}'>
 <input type="hidden" id="mdIncomeJSON" value='${mdIncomeJSON}'>
 <input type="hidden" id="incomeSelfSupportJSON" value='${incomeSelfSupportJSON}'>
 <script type="text/javascript">
     $(function () {
-        //支撑信息初始化
-        supportInfoModule.init({
-            readonly: true,
-            supportInfo: JSON.parse($("#supportInfosJSON").val())
-        });
+
     })
 </script>
 <script type="application/javascript">

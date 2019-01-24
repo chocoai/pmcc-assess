@@ -29,7 +29,7 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        其它附件
+                        附件
                     </label>
                     <div class="col-sm-11">
                         <input id="otherFile" type="file" multiple="false">

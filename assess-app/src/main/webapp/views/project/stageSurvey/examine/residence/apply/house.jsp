@@ -29,7 +29,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">楼层描述</label>
                 <div class="col-sm-3">
-                    <textarea class="form-control" name="floorDesc">${basicHouse.floorDesc}</textarea>
+                    <input type="text" class="form-control" name="floorDesc" value="${basicHouse.floorDesc}">
                 </div>
             </div>
         </div>

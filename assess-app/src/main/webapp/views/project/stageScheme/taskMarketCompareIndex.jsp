@@ -13,7 +13,6 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <jsp:include page="/views/project/stageScheme/module/ftContentChangeModule.jsp"></jsp:include>
-            <jsp:include page="/views/project/stageScheme/module/supportInfoModule.jsp"></jsp:include>
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
@@ -115,7 +114,6 @@
 <input type="hidden" id="casesJSON" value='${casesJSON}'>
 <input type="hidden" id="casesAllJSON" value='${casesAllJSON}'>
 
-<input type="hidden" id="supportInfosJSON" value='${supportInfosJSON}'>
 <script type="text/javascript">
     $(function () {
         //市场比较法信息初始化
@@ -128,10 +126,6 @@
             cases: JSON.parse($("#casesJSON").val())
         });
 
-        //支撑信息初始化
-        supportInfoModule.init({
-            supportInfo: JSON.parse($("#supportInfosJSON").val())
-        });
 
         loadHousePriceIndexList();
         AssessCommon.initAreaInfo({
@@ -173,14 +167,10 @@
 <script type="application/javascript">
     //提交
     function submit() {
-        if (!supportInfoModule.valid()) {
-            return false;
-        }
         if (!marketCompare.valid()) {
             return false;
         }
         var data = {};
-        data.supportInfoList = supportInfoModule.getData();
         data.marketCompare = marketCompare.getData();
 
         if ("${processInsId}" != "0") {

@@ -89,8 +89,6 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineInfoIndex", "", 0, "0", "");
-        SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(projectPlanDetails.getId());
-        modelAndView.addObject("surveyExamineInfo", surveyExamineInfo);
         setViewParam(commonService.thisUserAccount(), projectPlanDetails, modelAndView);
         return modelAndView;
     }
@@ -166,6 +164,8 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
      * @param modelAndView
      */
     private void setViewParam(String userAccount, ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
+        SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(projectPlanDetails.getPid());
+        modelAndView.addObject("surveyExamineInfo", surveyExamineInfo);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
         try {

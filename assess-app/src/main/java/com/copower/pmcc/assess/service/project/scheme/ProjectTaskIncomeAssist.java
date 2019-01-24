@@ -15,8 +15,6 @@ import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
-import com.google.common.collect.Lists;
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * 描述:
@@ -61,9 +58,6 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskIncomeIndex", 0);
-        //初始化支撑数据
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-        schemeSupportInfoService.initSupportInfo(projectPlanDetails, projectInfo, AssessDataDicKeyConstant.MD_INCOME);
         setViewParam(projectPlanDetails, modelAndView);
         SchemeInfo info = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         if (info == null) {
@@ -132,9 +126,6 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         modelAndView.addObject("schemeInfo", schemeInfo);
-        //评估支持数据
-        List<SchemeSupportInfo> supportInfoList = schemeSupportInfoService.getSupportInfoList(projectPlanDetails.getId());
-        modelAndView.addObject("supportInfosJSON", JSON.toJSONString(CollectionUtils.isEmpty(supportInfoList) ? Lists.newArrayList() : supportInfoList));
         //收益法相关
         MdIncome mdIncome = null;
         if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {

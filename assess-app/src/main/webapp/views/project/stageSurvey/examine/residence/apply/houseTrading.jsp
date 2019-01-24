@@ -5,7 +5,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!-- 当查勘为null的时候显示 surveySceneExplore 服务端已经处理(当是案例的时候查勘一定会是null)  -->
-<c:if test="${not empty basicHouseTrading}">
+<c:if test="${not empty surveyExamineInfo and surveyExamineInfo.examineType eq 1}">
     <div class="x_content">
         <div class="x_title">
             <h3>

@@ -4,7 +4,7 @@
  房屋交易信息
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<c:if test="${not empty basicHouseTrading}">
+<c:if test="${not empty surveyExamineInfo and surveyExamineInfo.examineType eq 1}">
     <div class="x_content">
         <div class="x_title">
             <h3>

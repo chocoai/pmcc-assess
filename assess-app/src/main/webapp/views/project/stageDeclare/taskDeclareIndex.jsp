@@ -35,7 +35,21 @@
                 <%@include
                         file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyRealEstateCert.jsp" %>
             </div>
-
+            <div class="x_panel">
+                <div class="x_content form-horizontal">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-md-1 col-sm-1 col-xs-12 control-label">
+                                估价委托书
+                            </label>
+                            <div class="col-md-5 col-sm-5 col-xs-12">
+                                <input id="project_proxy" name="project_proxy" type="file" multiple="false">
+                                <div id="_project_proxy"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="x_panel">
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
@@ -150,9 +164,46 @@
     };
     $(document).ready(function () {
         declareFunObj.declare.init();
+
+        uploadFiles(AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", AssessUploadKey.PROJECT_PROXY);
+        loadUploadFiles(AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", AssessUploadKey.PROJECT_PROXY);
     });
+
+
 </script>
 <script type="application/javascript">
+    //初始化上传控件
+    function uploadFiles(tableName, tableId, fieldsName, target) {
+        FileUtils.uploadFiles({
+            target: target == undefined ? fieldsName : target,
+
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: tableName,
+                tableId: tableId,
+                fieldsName: fieldsName,
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            editFlag: true,
+            deleteFlag: true
+        });
+    }
+
+    //显示附件
+    function loadUploadFiles(tableName, tableId, fieldsName, target) {
+        FileUtils.getFileShows({
+            target: target == undefined ? fieldsName : target,
+            formData: {
+                tableName: tableName,
+                tableId: tableId,
+                fieldsName: fieldsName,
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            editFlag: true,
+            deleteFlag: true
+        })
+    }
+
     //提交
     function submit(mustUseBox) {
         //检查是否填写了申报数据

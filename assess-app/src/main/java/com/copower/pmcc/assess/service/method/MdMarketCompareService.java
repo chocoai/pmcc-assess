@@ -288,8 +288,11 @@ public class MdMarketCompareService {
         ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
         projectPlanDetails.setDeclareRecordId(declareId);
         projectPlanDetails.setProjectPhaseId(projectPhase.getId());
-        projectPlanDetails.setBisStart(false);
+        projectPlanDetails.setBisStart(true);
         List<ProjectPlanDetails> detailsList = projectPlanDetailsDao.getListObject(projectPlanDetails);
-        return detailsList;
+        if(CollectionUtils.isEmpty(detailsList)){
+            return null;
+        }
+        return projectPlanDetailsDao.getProjectPlanDetailsByPid(detailsList.get(0).getId());
     }
 }

@@ -69,9 +69,6 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
                 }
             }
         }
-        //初始化支撑数据
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-        schemeSupportInfoService.initSupportInfo(projectPlanDetails, projectInfo, AssessDataDicKeyConstant.MD_MARKET_COMPARE);
         setViewParam(projectPlanDetails, info,judgeObject, modelAndView);
         return modelAndView;
     }
@@ -115,9 +112,6 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
      * @param modelAndView
      */
     private void setViewParam(ProjectPlanDetails projectPlanDetails, SchemeInfo info,SchemeJudgeObject judgeObject, ModelAndView modelAndView) {
-        //评估支持数据
-        List<SchemeSupportInfo> supportInfoList = schemeSupportInfoService.getSupportInfoList(projectPlanDetails.getId());
-        modelAndView.addObject("supportInfosJSON", JSON.toJSONString(supportInfoList));
         //市场比较法相关
         List<ProjectPlanDetails> caseAll = mdMarketCompareService.getCaseAll(judgeObject.getDeclareRecordId(),projectPlanDetails.getProjectId());
         modelAndView.addObject("casesAllJSON", JSON.toJSONString(caseAll));

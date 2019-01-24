@@ -14,7 +14,6 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!--填写表单-->
-            <jsp:include page="/views/project/stageScheme/module/supportInfoModule.jsp"></jsp:include>
             <jsp:include page="/views/method/module/marketCompareIndex.jsp"></jsp:include>
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
@@ -30,7 +29,6 @@
 <input type="hidden" id="casesJSON" value='${casesJSON}'>
 <input type="hidden" id="casesAllJSON" value='${casesAllJSON}'>
 
-<input type="hidden" id="supportInfosJSON" value='${supportInfosJSON}'>
 <script type="text/javascript">
     $(function () {
         marketCompare.init({
@@ -42,19 +40,12 @@
             mcId: '${mcId}',
             cases: JSON.parse($("#casesJSON").val())
         });
-
-        //支撑信息初始化
-        supportInfoModule.init({
-            readonly: true,
-            supportInfo: JSON.parse($("#supportInfosJSON").val())
-        });
     })
 </script>
 <script type="application/javascript">
     function saveform() {
         saveApprovalform("");
     }
-
 </script>
 </body>
 </html>
