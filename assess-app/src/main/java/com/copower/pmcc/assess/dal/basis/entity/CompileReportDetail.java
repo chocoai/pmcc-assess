@@ -7,6 +7,8 @@ public class CompileReportDetail {
 
     private Integer planDetailsId;
 
+    private Integer areaId;
+
     private Integer reportAnalysisType;
 
     private String reportAnalysisName;
@@ -41,6 +43,14 @@ public class CompileReportDetail {
 
     public void setPlanDetailsId(Integer planDetailsId) {
         this.planDetailsId = planDetailsId;
+    }
+
+    public Integer getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(Integer areaId) {
+        this.areaId = areaId;
     }
 
     public Integer getReportAnalysisType() {

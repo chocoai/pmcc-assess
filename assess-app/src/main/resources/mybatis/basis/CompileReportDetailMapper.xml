@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.CompileReportDetail" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
+    <result column="area_id" property="areaId" jdbcType="INTEGER" />
     <result column="report_analysis_type" property="reportAnalysisType" jdbcType="INTEGER" />
     <result column="report_analysis_name" property="reportAnalysisName" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -74,7 +75,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, plan_details_id, report_analysis_type, report_analysis_name, name, template, 
+    id, plan_details_id, area_id, report_analysis_type, report_analysis_name, name, template, 
     content, json_content, bis_modifiable, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.CompileReportDetailExample" >
@@ -111,12 +112,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_compile_report_detail (plan_details_id, report_analysis_type, 
+    insert into tb_compile_report_detail (plan_details_id, area_id, report_analysis_type, 
       report_analysis_name, name, template, 
       content, json_content, bis_modifiable, 
       creator, gmt_created, gmt_modified
       )
-    values (#{planDetailsId,jdbcType=INTEGER}, #{reportAnalysisType,jdbcType=INTEGER}, 
+    values (#{planDetailsId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, #{reportAnalysisType,jdbcType=INTEGER}, 
       #{reportAnalysisName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{template,jdbcType=VARCHAR}, 
       #{content,jdbcType=VARCHAR}, #{jsonContent,jdbcType=CHAR}, #{bisModifiable,jdbcType=BIT}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
@@ -130,6 +131,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="planDetailsId != null" >
         plan_details_id,
+      </if>
+      <if test="areaId != null" >
+        area_id,
       </if>
       <if test="reportAnalysisType != null" >
         report_analysis_type,
@@ -165,6 +169,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="planDetailsId != null" >
         #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=INTEGER},
       </if>
       <if test="reportAnalysisType != null" >
         #{reportAnalysisType,jdbcType=INTEGER},
@@ -213,6 +220,9 @@
       <if test="record.planDetailsId != null" >
         plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
+      <if test="record.areaId != null" >
+        area_id = #{record.areaId,jdbcType=INTEGER},
+      </if>
       <if test="record.reportAnalysisType != null" >
         report_analysis_type = #{record.reportAnalysisType,jdbcType=INTEGER},
       </if>
@@ -252,6 +262,7 @@
     update tb_compile_report_detail
     set id = #{record.id,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      area_id = #{record.areaId,jdbcType=INTEGER},
       report_analysis_type = #{record.reportAnalysisType,jdbcType=INTEGER},
       report_analysis_name = #{record.reportAnalysisName,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
@@ -271,6 +282,9 @@
     <set >
       <if test="planDetailsId != null" >
         plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        area_id = #{areaId,jdbcType=INTEGER},
       </if>
       <if test="reportAnalysisType != null" >
         report_analysis_type = #{reportAnalysisType,jdbcType=INTEGER},
@@ -308,6 +322,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.CompileReportDetail" >
     update tb_compile_report_detail
     set plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      area_id = #{areaId,jdbcType=INTEGER},
       report_analysis_type = #{reportAnalysisType,jdbcType=INTEGER},
       report_analysis_name = #{reportAnalysisName,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},

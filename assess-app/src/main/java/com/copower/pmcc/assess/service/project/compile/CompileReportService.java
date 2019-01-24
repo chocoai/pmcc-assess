@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.compile;
 
 
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.compile.CompileReportDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.compile.CompileReportDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeAreaGroupDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -31,6 +32,8 @@ public class CompileReportService {
     private PublicService publicService;
     @Autowired
     private CompileReportDetailDao compileReportDetailDao;
+    @Autowired
+    private CompileReportDao compileReportDao;
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
@@ -78,6 +81,20 @@ public class CompileReportService {
     }
 
     /**
+     * 根据区域id获取报告分析数据
+     *
+     * @param areaId
+     * @param reportAnalysisType
+     * @return
+     */
+    public List<CompileReportDetail> getCompileReportDetailList(Integer areaId, Integer reportAnalysisType) {
+        CompileReportDetail where = new CompileReportDetail();
+        where.setAreaId(areaId);
+        where.setReportAnalysisType(reportAnalysisType);
+        return compileReportDetailDao.getReportDetailList(where);
+    }
+
+    /**
      * 保存分析信息
      *
      * @param schemeReportDetail
@@ -91,6 +108,10 @@ public class CompileReportService {
             schemeReportDetail.setCreator(commonService.thisUserAccount());
             compileReportDetailDao.addReportDetail(schemeReportDetail);
         }
+    }
+
+    public CompileReport getCompileReportByPlanDetailsId(Integer planDetailsId) {
+        return compileReportDao.getCompileReportByPlanDetailsId(planDetailsId);
     }
 
     /**
@@ -118,7 +139,6 @@ public class CompileReportService {
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(phaseKey);
         if (baseDataDic == null) return;
         ProjectPlanDetails areaPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(projectPlanDetails.getPid());
-        SchemeAreaGroup areaGroup = schemeAreaGroupDao.get(areaPlanDetails.getAreaId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisService.getDataReportAnalysisList(baseDataDic.getId(), projectInfo.getEntrustPurpose());
         CompileReportDetail compileReportDetail = null;
@@ -131,6 +151,7 @@ public class CompileReportService {
                 if (dataReportAnalysis.getBisModifiable() == Boolean.FALSE) {
                     compileReportDetail.setContent(dataReportAnalysis.getTemplate());
                 }
+                compileReportDetail.setAreaId(areaPlanDetails.getAreaId());
                 compileReportDetail.setReportAnalysisType(baseDataDic.getId());
                 compileReportDetail.setReportAnalysisName(baseDataDic.getName());
                 compileReportDetail.setJsonContent(publicService.extractField(dataReportAnalysis.getTemplate()));

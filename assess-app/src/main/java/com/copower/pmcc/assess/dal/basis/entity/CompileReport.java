@@ -7,6 +7,8 @@ public class CompileReport {
 
     private Integer projectId;
 
+    private Integer areaId;
+
     private Integer planDetailsId;
 
     private String processInsId;
@@ -31,6 +33,14 @@ public class CompileReport {
 
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
+    }
+
+    public Integer getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(Integer areaId) {
+        this.areaId = areaId;
     }
 
     public Integer getPlanDetailsId() {
