@@ -8,8 +8,8 @@ package com.copower.pmcc.assess.common.enums;
  * @time: 15:46
  */
 public enum AssessUploadEnum {
-    PROJECT_PROXY("project_proxy", "估计委托书"),
-    JUDGE_OBJECT_POSITION("judge_object_position", "估计对象位置示意图"),
+    PROJECT_PROXY("project_proxy", "估价委托书"),
+    JUDGE_OBJECT_POSITION("judge_object_position", "估价对象位置示意图"),
     JUDGE_OBJECT_LIVE_SITUATION("judge_object_live_situation", "估价对象实况照片"),
     JUDGE_OBJECT_OWNERSHIP("judge_object_ownership", "估价对象权属证明"),
     JUDGE_OBJECT_REFERENCE("judge_object_reference", "估价中引用的专用文件"),

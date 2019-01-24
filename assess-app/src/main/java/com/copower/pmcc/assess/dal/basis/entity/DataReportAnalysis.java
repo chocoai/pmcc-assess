@@ -11,15 +11,7 @@ public class DataReportAnalysis {
 
     private String template;
 
-    private Integer entrustment;
-
-    private Integer purpose;
-
-    private String province;
-
-    private String city;
-
-    private String district;
+    private String entrustmentPurpose;
 
     private Boolean bisModifiable;
 
@@ -61,44 +53,12 @@ public class DataReportAnalysis {
         this.template = template == null ? null : template.trim();
     }
 
-    public Integer getEntrustment() {
-        return entrustment;
+    public String getEntrustmentPurpose() {
+        return entrustmentPurpose;
     }
 
-    public void setEntrustment(Integer entrustment) {
-        this.entrustment = entrustment;
-    }
-
-    public Integer getPurpose() {
-        return purpose;
-    }
-
-    public void setPurpose(Integer purpose) {
-        this.purpose = purpose;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province == null ? null : province.trim();
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city == null ? null : city.trim();
-    }
-
-    public String getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(String district) {
-        this.district = district == null ? null : district.trim();
+    public void setEntrustmentPurpose(String entrustmentPurpose) {
+        this.entrustmentPurpose = entrustmentPurpose == null ? null : entrustmentPurpose.trim();
     }
 
     public Boolean getBisModifiable() {

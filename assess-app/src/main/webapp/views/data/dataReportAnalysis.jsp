@@ -32,7 +32,7 @@
                                 </div>
                             </div>
                             <div>
-                                <label class="col-sm-1 control-label">报告类别</label>
+                                <label class="col-sm-1 control-label">类别</label>
                                 <div class="col-sm-2">
                                     <select  class="form-control" id="queryReportAnalysisType">
                                         <option value="">-请选择-</option>
@@ -83,20 +83,20 @@
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
+                                        <label class="col-sm-2 control-label">
                                             名称<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-11" id="method">
+                                        <div class="col-sm-10" id="method">
                                             <input required type="text" class="form-control" name="name">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
+                                        <label class="col-sm-2 control-label">
                                             类别<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-4">
                                             <select required class="form-control search-select select2" name="reportAnalysisType">
                                                 <option value="">请选择</option>
                                                 <c:forEach items="${reportAnalysisTypeList}" var="item">
@@ -106,18 +106,10 @@
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">委托目的</label>
-                                        <div class="col-sm-3">
-                                            <select  name="entrustment"
-                                                     class="form-control search-select select2 entrustment">
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
+                                        <label class="col-sm-2 control-label">
                                             是否可修改
                                         </label>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-4">
                                             <label class="radio-inline">
                                                 <input type="checkbox" id="bisModifiable" name="bisModifiable" value="true"
                                                        checked="checked">
@@ -127,10 +119,27 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
+                                        <label class="col-sm-2 control-label">
+                                            委托目的<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10" id="entrustmentPurpose">
+                                            <c:forEach items="${purposeDicList}" var="item">
+                                                <span class="checkbox-inline">
+                                                <input type="checkbox" id="entrustmentPurpose${item.id}" required
+                                                       name="entrustmentPurpose" value="${item.id}"
+                                                       class="form-inline">
+                                                <label for="entrustmentPurpose${item.id}">${item.name}</label>
+                                                </span>
+                                            </c:forEach>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             模版<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-11">
+                                        <div class="col-sm-10">
                                             <textarea placeholder="请填写模版" class="form-control" id="template"
                                                       name="template" required="required"
                                                       onkeyup="extractTemplateField()"></textarea>
@@ -161,7 +170,6 @@
 <script type="application/javascript">
     $(function () {
         loadReportAnalysisList();
-        select2Load();
     })
     //提取字段
     function extractTemplateField() {
@@ -178,36 +186,13 @@
         }
     }
 
-    function select2Load() {
-        //使数据校验生效
-        $("#frm").validate();
-        AssessCommon.initAreaInfo({
-            provinceTarget: $("#province"),
-            cityTarget: $("#city"),
-            districtTarget: $("#district"),
-            provinceValue: '',
-            cityValue: '',
-            districtValue: ''
-        });
-        AssessCommon.loadDataDicByKey(AssessDicKey.dataEntrustmentPurpose, "", function (html, data) {
-            $("#frm").find('select.entrustment').html(html);
-        });
-        AssessCommon.loadDataDicByKey(AssessDicKey.workProgrammeSetUse, "", function (html, data) {
-            $("#frm").find('select.purpose').html(html);
-        });
-    }
-
     //加载 评估依据 数据列表
     function loadReportAnalysisList() {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
         cols.push({field: 'reportAnalysisTypeName', title: '类别'});
-        cols.push({field: 'entrustmentName', title: '委托目的'});
-//        cols.push({field: 'purposeName', title: '设定用途'});
-//        cols.push({field: 'area', title: '区域', formatter: function (value, row, index) {
-//            return AssessCommon.getAreaFullName(row.provinceName,row.cityName,row.districtName);
-//        }});
-        cols.push({field: 'template', title: '模板', width: '50%'});
+        cols.push({field: 'entrustmentPurposeName', title: '委托目的'});
+        cols.push({field: 'template', title: '模板', width: '40%'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -267,9 +252,7 @@
     //新增 评估依据 数据
     function saveReportAnalysis() {
         var data = formParams("frm");
-        data.method = ',' + data.method + ',';//方便like查询
         data.entrustmentPurpose = ',' + data.entrustmentPurpose + ',';//方便like查询
-
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/reportAnalysis/save",
@@ -295,8 +278,8 @@
     //评估依据 修改
     function editReportAnalysis(index) {
         var row = $("#tb_List").bootstrapTable('getData')[index];
-        $("#frm").clearAll();
-        $("#frm").initForm(row);
+        $("#frm").clearAll().initForm(row);
+        AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='entrustmentPurpose']"), row.entrustmentPurpose.split(','));
         extractTemplateField();
         $('#divBox').modal();
     }

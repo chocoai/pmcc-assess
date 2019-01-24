@@ -111,7 +111,7 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        projectTaskLiquidationAnalysisService.commit(formData, projectPlanDetails, processInsId);
+       // projectTaskLiquidationAnalysisService.commit(formData, projectPlanDetails, processInsId);
     }
 
     @Override

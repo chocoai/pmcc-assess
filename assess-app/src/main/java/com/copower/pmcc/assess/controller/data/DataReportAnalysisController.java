@@ -40,9 +40,10 @@ public class DataReportAnalysisController {
     @RequestMapping(value = "/view", name = "转到index页面")
     public ModelAndView index() {
         List<BaseDataDic> reportAnalysisTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY);
+        List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataReportAnalysis");
         modelAndView.addObject("reportAnalysisTypeList", reportAnalysisTypeList);
-        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
+        modelAndView.addObject("purposeDicList", purposeDicList);//所有省份
         return modelAndView;
     }
 

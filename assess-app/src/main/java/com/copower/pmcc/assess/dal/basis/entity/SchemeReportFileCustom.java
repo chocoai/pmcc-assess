@@ -5,7 +5,7 @@ import java.util.Date;
 public class SchemeReportFileCustom {
     private Integer id;
 
-    private Integer planDetailsId;
+    private Integer areaId;
 
     private String name;
 
@@ -23,12 +23,12 @@ public class SchemeReportFileCustom {
         this.id = id;
     }
 
-    public Integer getPlanDetailsId() {
-        return planDetailsId;
+    public Integer getAreaId() {
+        return areaId;
     }
 
-    public void setPlanDetailsId(Integer planDetailsId) {
-        this.planDetailsId = planDetailsId;
+    public void setAreaId(Integer areaId) {
+        this.areaId = areaId;
     }
 
     public String getName() {

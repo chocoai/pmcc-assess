@@ -377,8 +377,7 @@
         $.ajax({
             url: '${pageContext.request.contextPath}/scheme/getLiveSituationSelect',
             data: {
-                judgeObjectId: judgeObjectId,
-                planDetailsId: '${projectPlanDetails.id}'
+                judgeObjectId: judgeObjectId
             },
             success: function (result) {
                 if (result.ret) {
@@ -401,7 +400,7 @@
         $.ajax({
             url: '${pageContext.request.contextPath}/scheme/getReportFileCustomList',
             data: {
-                planDetailsId: '${projectPlanDetails.id}'
+                areaId: '${projectPlanDetails.areaId}'
             },
             success: function (result) {
                 if (result.ret) {
@@ -432,7 +431,7 @@
                 url: '${pageContext.request.contextPath}/scheme/addReportFileCustom',
                 data: {
                     name: value,
-                    planDetailsId: '${projectPlanDetails.id}'
+                    areaId: '${projectPlanDetails.areaId}'
                 },
                 success: function (result) {
                     if (result.ret) {

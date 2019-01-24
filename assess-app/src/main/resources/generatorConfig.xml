@@ -39,6 +39,6 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_scheme_report_file_custom" domainObjectName="SchemeReportFileCustom"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <table tableName="tb_data_report_analysis" domainObjectName="DataReportAnalysis"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
     </context>
 </generatorConfiguration>

@@ -165,63 +165,63 @@ public class SchemeReportFileCustomExample {
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailsIdIsNull() {
-            addCriterion("plan_details_id is null");
+        public Criteria andAreaIdIsNull() {
+            addCriterion("area_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailsIdIsNotNull() {
-            addCriterion("plan_details_id is not null");
+        public Criteria andAreaIdIsNotNull() {
+            addCriterion("area_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailsIdEqualTo(Integer value) {
-            addCriterion("plan_details_id =", value, "planDetailsId");
+        public Criteria andAreaIdEqualTo(Integer value) {
+            addCriterion("area_id =", value, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailsIdNotEqualTo(Integer value) {
-            addCriterion("plan_details_id <>", value, "planDetailsId");
+        public Criteria andAreaIdNotEqualTo(Integer value) {
+            addCriterion("area_id <>", value, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailsIdGreaterThan(Integer value) {
-            addCriterion("plan_details_id >", value, "planDetailsId");
+        public Criteria andAreaIdGreaterThan(Integer value) {
+            addCriterion("area_id >", value, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailsIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("plan_details_id >=", value, "planDetailsId");
+        public Criteria andAreaIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("area_id >=", value, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailsIdLessThan(Integer value) {
-            addCriterion("plan_details_id <", value, "planDetailsId");
+        public Criteria andAreaIdLessThan(Integer value) {
+            addCriterion("area_id <", value, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailsIdLessThanOrEqualTo(Integer value) {
-            addCriterion("plan_details_id <=", value, "planDetailsId");
+        public Criteria andAreaIdLessThanOrEqualTo(Integer value) {
+            addCriterion("area_id <=", value, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailsIdIn(List<Integer> values) {
-            addCriterion("plan_details_id in", values, "planDetailsId");
+        public Criteria andAreaIdIn(List<Integer> values) {
+            addCriterion("area_id in", values, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailsIdNotIn(List<Integer> values) {
-            addCriterion("plan_details_id not in", values, "planDetailsId");
+        public Criteria andAreaIdNotIn(List<Integer> values) {
+            addCriterion("area_id not in", values, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailsIdBetween(Integer value1, Integer value2) {
-            addCriterion("plan_details_id between", value1, value2, "planDetailsId");
+        public Criteria andAreaIdBetween(Integer value1, Integer value2) {
+            addCriterion("area_id between", value1, value2, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailsIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("plan_details_id not between", value1, value2, "planDetailsId");
+        public Criteria andAreaIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("area_id not between", value1, value2, "areaId");
             return (Criteria) this;
         }
 

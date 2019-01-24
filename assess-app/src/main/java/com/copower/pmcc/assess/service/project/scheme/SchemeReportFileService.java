@@ -153,14 +153,34 @@ public class SchemeReportFileService extends BaseService {
     }
 
     /**
+     * 获取估价委托书附件
+     *
+     * @param projectId
+     * @return
+     */
+    public List<SysAttachmentDto> getProjectProxyFileList(Integer projectId) {
+        return baseAttachmentService.getByField_tableId(projectId, AssessUploadEnum.PROJECT_PROXY.getKey(), FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
+    }
+
+    /**
+     * 获取估价对象位置示意图附件
+     *
+     * @param judgeObjectId
+     * @return
+     */
+    public List<SysAttachmentDto> getJudgeObjectPositionFileList(Integer judgeObjectId) {
+        return baseAttachmentService.getByField_tableId(judgeObjectId, AssessUploadEnum.JUDGE_OBJECT_POSITION.getKey(),
+                FormatUtils.entityNameConvertToTableName(SchemeJudgeObject.class));
+    }
+
+    /**
      * 获取委估对象下已选的实况图片
      *
      * @param judgeObjectId
      * @return
      */
-    public List<SchemeReportFileItem> getLiveSituationSelect(Integer planDetailsId, Integer judgeObjectId) {
+    public List<SchemeReportFileItem> getLiveSituationSelect(Integer judgeObjectId) {
         SchemeReportFileItem where = new SchemeReportFileItem();
-        where.setPlanDetailsId(planDetailsId);
         where.setJudgeObjectId(judgeObjectId);
         where.setType(AssessUploadEnum.JUDGE_OBJECT_LIVE_SITUATION.getKey());
         return schemeReportFileItemDao.getReportFileItemList(where);
@@ -253,13 +273,22 @@ public class SchemeReportFileService extends BaseService {
     /**
      * 获取自定义块
      *
-     * @param planDetailsId
+     * @param areaId
      * @return
      */
-    public List<SchemeReportFileCustom> getReportFileCustomList(Integer planDetailsId) {
+    public List<SchemeReportFileCustom> getReportFileCustomList(Integer areaId) {
         SchemeReportFileCustom where = new SchemeReportFileCustom();
-        where.setPlanDetailsId(planDetailsId);
+        where.setAreaId(areaId);
         return schemeReportFileCustomDao.getReportFileCustomList(where);
+    }
+
+    /**
+     * 获取自定义块附件
+     * @param customId
+     * @return
+     */
+    public List<SysAttachmentDto> getCustomFileList(Integer customId){
+        return baseAttachmentService.getByField_tableId(customId, null, FormatUtils.entityNameConvertToTableName(SchemeReportFileCustom.class));
     }
 
     /**

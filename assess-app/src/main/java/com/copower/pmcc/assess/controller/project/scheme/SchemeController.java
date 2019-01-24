@@ -56,9 +56,9 @@ public class SchemeController {
 
     @ResponseBody
     @RequestMapping(value = "/getLiveSituationSelect", name = "获取选择的实况图片 ", method = RequestMethod.POST)
-    public HttpResult getLiveSituationSelect(Integer planDetailsId,Integer judgeObjectId) {
+    public HttpResult getLiveSituationSelect(Integer judgeObjectId) {
         try {
-            return HttpResult.newCorrectResult(schemeReportFileService.getLiveSituationSelect(planDetailsId,judgeObjectId));
+            return HttpResult.newCorrectResult(schemeReportFileService.getLiveSituationSelect(judgeObjectId));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
@@ -90,9 +90,9 @@ public class SchemeController {
 
     @ResponseBody
     @RequestMapping(value = "/getReportFileCustomList", name = "获取自定义块 ", method = RequestMethod.POST)
-    public HttpResult getReportFileCustomList(Integer planDetailsId) {
+    public HttpResult getReportFileCustomList(Integer areaId) {
         try {
-            return HttpResult.newCorrectResult(schemeReportFileService.getReportFileCustomList(planDetailsId));
+            return HttpResult.newCorrectResult(schemeReportFileService.getReportFileCustomList(areaId));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
