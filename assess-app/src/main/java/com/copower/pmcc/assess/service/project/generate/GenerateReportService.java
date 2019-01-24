@@ -457,25 +457,103 @@ public class GenerateReportService {
                                 generateBaseDataService.getSurveyExamineDate(InvestigationsStartDate, InvestigationsEndDate)));
                     }
                 }
+                AdCompanyQualificationDto qualificationDto = generateBaseDataService.getCompanyQualificationForPractising();
+                if (qualificationDto != null) {
+                    //机构住所
+                    if (com.google.common.base.Objects.equal(BaseReportFieldEnum.XIEHE_organizationAddress.getName(), bookmarkName)) {
+                        BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.XIEHE_organizationAddress.getName());
+                        if (baseReportField != null) {
+                            mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                    BaseReportFieldReplaceEnum.BOOKMARK,
+                                    bookmarkCollection.get(i).getName(),
+                                    qualificationDto.getOrganizationAddress()));
+                        }
+                    }
+                    //机构名称
+                    if (com.google.common.base.Objects.equal(BaseReportFieldEnum.XIEHE_organizationName.getName(), bookmarkName)) {
+                        BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.XIEHE_organizationName.getName());
+                        if (baseReportField != null) {
+                            mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                    BaseReportFieldReplaceEnum.BOOKMARK,
+                                    bookmarkCollection.get(i).getName(),
+                                    qualificationDto.getOrganizationName()));
+                        }
+                    }
+                    //房地产估价机构
+                    if (com.google.common.base.Objects.equal(BaseReportFieldEnum.XIEHE_RealEstateValuationAgency.getName(), bookmarkName)) {
+                        BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.XIEHE_RealEstateValuationAgency.getName());
+                        if (baseReportField != null) {
+                            mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                    BaseReportFieldReplaceEnum.BOOKMARK,
+                                    bookmarkCollection.get(i).getName(),
+                                    qualificationDto.getOrganizationName()));
+                        }
+                    }
+                    //机构名称法定代表人
+                    if (com.google.common.base.Objects.equal(BaseReportFieldEnum.XIEHE_legalRepresentative.getName(), bookmarkName)) {
+                        BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.XIEHE_legalRepresentative.getName());
+                        if (baseReportField != null) {
+                            mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                    BaseReportFieldReplaceEnum.BOOKMARK,
+                                    bookmarkCollection.get(i).getName(),
+                                    qualificationDto.getLegalRepresentative()));
+                        }
+                    }
+                    //机构工商注册号
+                    if (com.google.common.base.Objects.equal(BaseReportFieldEnum.XIEHE_registeredNo.getName(), bookmarkName)) {
+                        BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.XIEHE_registeredNo.getName());
+                        if (baseReportField != null) {
+                            mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                    BaseReportFieldReplaceEnum.BOOKMARK,
+                                    bookmarkCollection.get(i).getName(),
+                                    qualificationDto.getRegisteredNo()));
+                        }
+                    }
+                    //机构资质等级
+                    if (com.google.common.base.Objects.equal(BaseReportFieldEnum.XIEHE_organizationRank.getName(), bookmarkName)) {
+                        BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.XIEHE_organizationRank.getName());
+                        if (baseReportField != null) {
+                            mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                    BaseReportFieldReplaceEnum.BOOKMARK,
+                                    bookmarkCollection.get(i).getName(),
+                                    qualificationDto.getOrganizationRank()));
+                        }
+                    }
+                    //机构证书号
+                    if (com.google.common.base.Objects.equal(BaseReportFieldEnum.XIEHE_certificateNo.getName(), bookmarkName)) {
+                        BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.XIEHE_certificateNo.getName());
+                        if (baseReportField != null) {
+                            mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                    BaseReportFieldReplaceEnum.BOOKMARK,
+                                    bookmarkCollection.get(i).getName(),
+                                    qualificationDto.getCertificateNo()));
+                        }
+                    }
+                    //证书有效期
+                    if (com.google.common.base.Objects.equal(BaseReportFieldEnum.XIEHE_certificateEffectiveDate.getName(), bookmarkName)) {
+                        BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.XIEHE_certificateEffectiveDate.getName());
+                        if (baseReportField != null) {
+                            mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                    BaseReportFieldReplaceEnum.BOOKMARK,
+                                    bookmarkCollection.get(i).getName(),
+                                    qualificationDto.getCertificateEffectiveDate()));
+                        }
+                    }
+                }
                 //注册房产估价师
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuer.getName(), bookmarkName)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.RegisteredRealEstateValuer.getName());
-                    if (baseReportField != null){
+                    if (baseReportField != null) {
                         mapSet.add(getBaseReportFieldReplaceEnumMap(
                                 BaseReportFieldReplaceEnum.BOOKMARK,
                                 bookmarkCollection.get(i).getName(),
                                 generateBaseDataService.getRegisteredRealEstateValuer(registeredRealEstateValuer)));
-                        AdCompanyQualificationDto qualificationDto1 = generateBaseDataService.getCompanyQualificationForLicense();
-                        AdCompanyQualificationDto qualificationDto2 = generateBaseDataService.getCompanyQualificationForPractising();
-                        if (qualificationDto2 != null) {
-
-                        }
                     }
                 }
                 //注册房产估价师 注册号
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.registrationNumber.getName(), bookmarkName)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.registrationNumber.getName());
-                    if (baseReportField != null){
+                    if (baseReportField != null) {
                         mapSet.add(getBaseReportFieldReplaceEnumMap(
                                 BaseReportFieldReplaceEnum.BOOKMARK,
                                 bookmarkCollection.get(i).getName(),
