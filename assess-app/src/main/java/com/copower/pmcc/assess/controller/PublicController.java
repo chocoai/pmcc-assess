@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.controller;
 
+import com.copower.pmcc.ad.api.dto.AdPersonalQualificationDto;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
+import com.copower.pmcc.assess.service.AdRpcQualificationsAppService;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
@@ -30,6 +32,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -54,6 +57,8 @@ public class PublicController {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+    @Autowired
+    private AdRpcQualificationsAppService adRpcQualificationsAppService;
 
     @RequestMapping(value = "/importAjaxFile", name = "导入文件", method = RequestMethod.POST)
     public HttpResult importAjaxFile(HttpServletRequest request,String tableName,@RequestParam(defaultValue = "0") String tableId,String fieldsName) {
@@ -149,6 +154,24 @@ public class PublicController {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newErrorResult("没有获取到数据!");
+    }
+
+    @GetMapping(value = "/getAdPersonalIdentityDto",name = "获取资质")
+    public HttpResult getAdPersonalIdentityDto(String userAccount, String qualificationType){
+        List<AdPersonalQualificationDto> adPersonalQualificationDtoList = null;
+        if (StringUtils.isNotBlank(userAccount)){
+            try {
+                if (StringUtils.isEmpty(qualificationType)){
+                    adPersonalQualificationDtoList = adRpcQualificationsAppService.getAdPersonalIdentityDto(userAccount);
+                }
+                if (StringUtils.isNotBlank(qualificationType)){
+                    adPersonalQualificationDtoList = adRpcQualificationsAppService.getAdPersonalQualificationDto(userAccount,qualificationType);
+                }
+            } catch (Exception e1) {
+                logger.error("获取资质异常!",e1);
+            }
+        }
+        return HttpResult.newCorrectResult(CollectionUtils.isNotEmpty(adPersonalQualificationDtoList)?adPersonalQualificationDtoList:new ArrayList<AdPersonalQualificationDto>());
     }
 
     @RequestMapping(value = "/getApprovalLogByProject", name = "获取项目日志", method = RequestMethod.GET)

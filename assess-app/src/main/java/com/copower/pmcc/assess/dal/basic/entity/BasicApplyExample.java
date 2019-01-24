@@ -1485,6 +1485,66 @@ public class BasicApplyExample {
             return (Criteria) this;
         }
 
+        public Criteria andCopyIdIsNull() {
+            addCriterion("copy_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCopyIdIsNotNull() {
+            addCriterion("copy_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCopyIdEqualTo(Integer value) {
+            addCriterion("copy_id =", value, "copyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCopyIdNotEqualTo(Integer value) {
+            addCriterion("copy_id <>", value, "copyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCopyIdGreaterThan(Integer value) {
+            addCriterion("copy_id >", value, "copyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCopyIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("copy_id >=", value, "copyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCopyIdLessThan(Integer value) {
+            addCriterion("copy_id <", value, "copyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCopyIdLessThanOrEqualTo(Integer value) {
+            addCriterion("copy_id <=", value, "copyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCopyIdIn(List<Integer> values) {
+            addCriterion("copy_id in", values, "copyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCopyIdNotIn(List<Integer> values) {
+            addCriterion("copy_id not in", values, "copyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCopyIdBetween(Integer value1, Integer value2) {
+            addCriterion("copy_id between", value1, value2, "copyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCopyIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("copy_id not between", value1, value2, "copyId");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

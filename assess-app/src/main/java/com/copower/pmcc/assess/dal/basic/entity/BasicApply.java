@@ -45,6 +45,8 @@ public class BasicApply {
 
     private Boolean writeBackBlockFlag;
 
+    private Integer copyId;
+
     private String creator;
 
     private Date gmtCreated;
@@ -217,6 +219,14 @@ public class BasicApply {
 
     public void setWriteBackBlockFlag(Boolean writeBackBlockFlag) {
         this.writeBackBlockFlag = writeBackBlockFlag;
+    }
+
+    public Integer getCopyId() {
+        return copyId;
+    }
+
+    public void setCopyId(Integer copyId) {
+        this.copyId = copyId;
     }
 
     public String getCreator() {

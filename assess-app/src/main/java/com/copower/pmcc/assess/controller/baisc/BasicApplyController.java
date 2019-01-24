@@ -50,6 +50,8 @@ public class BasicApplyController extends BaseController {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private BasicEstateTaggingService basicEstateTaggingService;
+    @Autowired
+    private BasicApplyTransferService basicApplyTransferService;
 
     @RequestMapping(value = "/basicApplyIndex", name = "案例基础数据 初始", method = RequestMethod.GET)
     public ModelAndView basicApplyIndex() {
@@ -73,10 +75,12 @@ public class BasicApplyController extends BaseController {
     }
 
     @RequestMapping(value = "/basicApplyTransfer", name = "过程数据申请进入案例库", method = RequestMethod.GET)
-    public ModelAndView basicApplyTransfer(Integer planDetailsId) {
+    public ModelAndView basicApplyTransfer(Integer planDetailsId) throws Exception {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyTransfer", "0", 0, "0", "");
         //1.数据复制，包含各项关联表（可参考案例复制到过程表）
+        BasicApply copy = basicApplyTransferService.copy(planDetailsId);
         //2.复制过来的数据默认为草稿数据，下次进入时默认显示草稿数据
+        this.setViewParam(copy, modelAndView);
         return modelAndView;
     }
 
@@ -292,9 +296,9 @@ public class BasicApplyController extends BaseController {
     @RequestMapping(value = "/saveAndUpdate", name = "单纯的就是修改或者添加", method = RequestMethod.POST)
     public HttpResult saveAndUpdate(BasicApply basicApply) {
         try {
-            if (basicApply.getId() == null || basicApply.getId().equals(0)){
+            if (basicApply.getId() == null || basicApply.getId().equals(0)) {
                 basicApplyService.saveBasicApply(basicApply);
-            }else {
+            } else {
                 basicApplyService.updateBasicApply(basicApply);
             }
             return HttpResult.newCorrectResult(basicApply);
@@ -306,7 +310,7 @@ public class BasicApplyController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/getBasicApplyById", name = "根据id获取", method = RequestMethod.GET)
-    public HttpResult getBasicApplyById(Integer id){
+    public HttpResult getBasicApplyById(Integer id) {
         BasicApply basicApply = basicApplyService.getByBasicApplyId(id);
         return HttpResult.newCorrectResult(basicApply);
     }

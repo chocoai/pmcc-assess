@@ -106,6 +106,27 @@ public class PublicService {
     }
 
     /**
+     * 提取模板中的字段为map格式字符串
+     *
+     * @param template
+     * @return
+     */
+    public List<Map<String, String>>  extractFieldMap(String template) {
+        String regex = "\\{(.*?)\\}";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(template);
+        List<Map<String, String>> maps = Lists.newArrayList();
+        while (m.find()) {
+            Map<String, String> map = Maps.newHashMap();
+            String result = m.group();
+            map.put("key", result.replaceAll("^\\{|\\}$", ""));
+            map.put("value", "");
+            maps.add(map);
+        }
+        return maps;
+    }
+
+    /**
      * 获取返回修改的审批模型数据
      *
      * @param approvalModelDto

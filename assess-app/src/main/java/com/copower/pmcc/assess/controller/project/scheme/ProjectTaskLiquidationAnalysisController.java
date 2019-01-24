@@ -29,7 +29,7 @@ public class ProjectTaskLiquidationAnalysisController {
     @RequestMapping(value = "/getTaxAllocation", name = "获取率费配置", method = RequestMethod.POST)
     public HttpResult changeFunctionContent(Integer projectPlanDetailsId, Integer judgeObjectId, Integer mainId) {
         List<ProjectTaskLiquidationAnalysisVo> vos = new ArrayList<>();
-        if ("0".equals(mainId)) {
+        if (mainId == 0) {
             vos = projectTaskLiquidationAnalysisService.getTaxAllocation(projectPlanDetailsId, judgeObjectId);
             return HttpResult.newCorrectResult(vos);
         } else {

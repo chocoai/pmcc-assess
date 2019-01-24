@@ -58,11 +58,11 @@
                 </label>
                 <div class="col-sm-3">
                     <div id="residenceUseYearModel_A">
-                        <select name="residenceUseYear" required class="form-control residenceUseYear search-select select2">
+                        <select name="residenceUseYear"  class="form-control residenceUseYear search-select select2">
                         </select>
                     </div>
                     <div id="industryUseYearModel_A">
-                        <select name="industryUseYear" required class="form-control industryUseYear search-select select2">
+                        <select name="industryUseYear"  class="form-control industryUseYear search-select select2">
                         </select>
                     </div>
                 </div>
