@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.generate;
 
 import com.aspose.words.BookmarkCollection;
 import com.aspose.words.Document;
+import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldEnum;
@@ -125,7 +126,7 @@ public class GenerateReportService {
      * @return
      * @throws Exception
      */
-    public Integer createReportWord(String ids, Integer projectPlanId, Integer areaId) throws Exception {
+    public Integer createReportWord(String ids, Integer projectPlanId, Integer areaId, Date HomeWorkEndTime, Date InvestigationsStartDate, Date InvestigationsEndDate, Date reportIssuanceDate, String registeredRealEstateValuer) throws Exception {
         if (StringUtils.isEmpty(ids) || projectPlanId == null) {
             return null;
         }
@@ -143,7 +144,7 @@ public class GenerateReportService {
                     BaseReportTemplate baseReportTemplate = baseReportService.getReportTemplate(projectPlan.getProjectId(), baseDataDic.getId());
                     if (baseReportTemplate != null) {
                         //获取替换后得报告文件路径 ==>
-                        String path = this.fullReportPath(baseReportTemplate, areaId, projectPlan, AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
+                        String path = this.fullReportPath(baseReportTemplate, areaId, projectPlan, AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT, HomeWorkEndTime, InvestigationsStartDate, InvestigationsEndDate, reportIssuanceDate, registeredRealEstateValuer);
                         if (StringUtils.isNotBlank(path)) {
                             String localPath = baseAttachmentService.createTempDirPath(UUID.randomUUID().toString());
                             File file = new File(String.format("%s\\预评报告%s%s", localPath, UUID.randomUUID().toString(), ".doc"));
@@ -156,7 +157,7 @@ public class GenerateReportService {
                 if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY)) {
                     BaseReportTemplate baseReportTemplate = baseReportService.getReportTemplate(projectPlan.getProjectId(), baseDataDic.getId());
                     if (baseReportTemplate != null) {
-                        String path = this.fullReportPath(baseReportTemplate, areaId, projectPlan, AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY);
+                        String path = this.fullReportPath(baseReportTemplate, areaId, projectPlan, AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY, HomeWorkEndTime, InvestigationsStartDate, InvestigationsEndDate, reportIssuanceDate, registeredRealEstateValuer);
                         if (StringUtils.isNotBlank(path)) {
                             String localPath = baseAttachmentService.createTempDirPath(UUID.randomUUID().toString());
                             File file = new File(String.format("%s\\技术报告%s%s", localPath, UUID.randomUUID().toString(), ".doc"));
@@ -169,7 +170,7 @@ public class GenerateReportService {
                 if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_RESULT)) {
                     BaseReportTemplate baseReportTemplate = baseReportService.getReportTemplate(projectPlan.getProjectId(), baseDataDic.getId());
                     if (baseReportTemplate != null) {
-                        String path = this.fullReportPath(baseReportTemplate, areaId, projectPlan, AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
+                        String path = this.fullReportPath(baseReportTemplate, areaId, projectPlan, AssessDataDicKeyConstant.REPORT_TYPE_RESULT, HomeWorkEndTime, InvestigationsStartDate, InvestigationsEndDate, reportIssuanceDate, registeredRealEstateValuer);
                         if (StringUtils.isNotBlank(path)) {
                             String localPath = baseAttachmentService.createTempDirPath(UUID.randomUUID().toString());
                             File file = new File(String.format("%s\\结果报告%s%s", localPath, UUID.randomUUID().toString(), ".doc"));
@@ -227,7 +228,7 @@ public class GenerateReportService {
      * @return
      * @throws Exception
      */
-    private String fullReportPath(BaseReportTemplate baseReportTemplate, Integer areaId, ProjectPlan projectPlan, String report_type) throws Exception {
+    private String fullReportPath(BaseReportTemplate baseReportTemplate, Integer areaId, ProjectPlan projectPlan, String report_type, Date HomeWorkEndTime, Date InvestigationsStartDate, Date InvestigationsEndDate, Date reportIssuanceDate, String registeredRealEstateValuer) throws Exception {
         String tempDir = "";
         if (baseReportTemplate == null) {
             return "";
@@ -243,7 +244,7 @@ public class GenerateReportService {
             //书签map
             Map<String, String> bookmarkMap = Maps.newHashMap();
             Map<String, String> fileFixedMap = Maps.newHashMap();
-            Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> mapSet = getReportMap(baseReportTemplate, areaId, projectPlan, new Document(tempDir), report_type);
+            Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> mapSet = getReportMap(baseReportTemplate, areaId, projectPlan, new Document(tempDir), report_type, HomeWorkEndTime, InvestigationsStartDate, InvestigationsEndDate, reportIssuanceDate, registeredRealEstateValuer);
             if (CollectionUtils.isNotEmpty(mapSet)) {
                 Iterator<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> iterator = mapSet.iterator();
                 while (iterator.hasNext()) {
@@ -337,7 +338,7 @@ public class GenerateReportService {
      * @return 如:文号,<文号,四川协和预评（2019）0001号>
      * @throws Exception
      */
-    private Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> getReportMap(BaseReportTemplate baseReportTemplate, Integer areaId, ProjectPlan projectPlan, Document document, String report_type) throws Exception {
+    private Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> getReportMap(BaseReportTemplate baseReportTemplate, Integer areaId, ProjectPlan projectPlan, Document document, String report_type, Date HomeWorkEndTime, Date InvestigationsStartDate, Date InvestigationsEndDate, Date reportIssuanceDate, String registeredRealEstateValuer) throws Exception {
         Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> mapSet = Sets.newHashSet();
         GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectPlan.getProjectId(), areaId, baseReportTemplate.getId(), projectPlan);
         List<BaseReportField> fieldList = baseReportFieldService.query(new BaseReportField());
@@ -364,10 +365,121 @@ public class GenerateReportService {
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.reportIssuanceDate.getName(), bookmarkName)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.reportIssuanceDate.getName());
                     if (baseReportField != null) {
+                        String reportIssuanceStr = null;
+                        if (reportIssuanceDate != null) {
+                            reportIssuanceStr = DateUtils.format(reportIssuanceDate, DateUtils.DATE_CHINESE_PATTERN);
+                        } else {
+                            reportIssuanceStr = DateUtils.format(generateBaseDataService.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN);
+                        }
                         mapSet.add(getBaseReportFieldReplaceEnumMap(
                                 BaseReportFieldReplaceEnum.BOOKMARK,
                                 bookmarkCollection.get(i).getName(),
-                                DateUtils.format(generateBaseDataService.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN)));
+                                reportIssuanceStr));
+                    }
+                }
+                //协助工作人员
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.AssistanceStaff.getName(), bookmarkName)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.AssistanceStaff.getName());
+                    if (baseReportField != null) {
+                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                BaseReportFieldReplaceEnum.BOOKMARK,
+                                bookmarkCollection.get(i).getName(),
+                                generateBaseDataService.getAssistanceStaff(registeredRealEstateValuer)));
+                    }
+                }
+                //评估假设
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EVALUATION_HYPOTHESIS.getName(), bookmarkName)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EVALUATION_HYPOTHESIS.getName());
+                    if (baseReportField != null) {
+                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                BaseReportFieldReplaceEnum.BOOKMARK,
+                                bookmarkCollection.get(i).getName(),
+                                generateBaseDataService.getEVALUATION_HYPOTHESIS()));
+                    }
+                }
+                //评估依据
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EVALUATION_BASIS.getName(), bookmarkName)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EVALUATION_BASIS.getName());
+                    if (baseReportField != null) {
+                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                BaseReportFieldReplaceEnum.BOOKMARK,
+                                bookmarkCollection.get(i).getName(),
+                                generateBaseDataService.getEVALUATION_BASIS()));
+                    }
+                }
+                //评估原则
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EVALUATION_PRINCIPLE.getName(), bookmarkName)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EVALUATION_PRINCIPLE.getName());
+                    if (baseReportField != null) {
+                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                BaseReportFieldReplaceEnum.BOOKMARK,
+                                bookmarkCollection.get(i).getName(),
+                                generateBaseDataService.getEVALUATION_PRINCIPLE()));
+                    }
+                }
+                //报告分析
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.ReportAnalysis.getName(), bookmarkName)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.ReportAnalysis.getName());
+                    if (baseReportField != null) {
+                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                BaseReportFieldReplaceEnum.BOOKMARK,
+                                bookmarkCollection.get(i).getName(),
+                                generateBaseDataService.getReportAnalysis()));
+                    }
+                }
+                //作业结束时间
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.HomeWorkEndTime.getName(), bookmarkName)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.HomeWorkEndTime.getName());
+                    if (baseReportField != null) {
+                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                BaseReportFieldReplaceEnum.BOOKMARK,
+                                bookmarkCollection.get(i).getName(),
+                                generateBaseDataService.getHomeWorkEndTime(HomeWorkEndTime)));
+                    }
+                }
+                //作业开始时间
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.HomeWorkStartTime.getName(), bookmarkName)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.HomeWorkStartTime.getName());
+                    if (baseReportField != null) {
+                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                BaseReportFieldReplaceEnum.BOOKMARK,
+                                bookmarkCollection.get(i).getName(),
+                                generateBaseDataService.getHomeWorkStartTime()));
+                    }
+                }
+                //现场查勘期
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.surveyExamineDate.getName(), bookmarkName)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.surveyExamineDate.getName());
+                    if (baseReportField != null) {
+                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                BaseReportFieldReplaceEnum.BOOKMARK,
+                                bookmarkCollection.get(i).getName(),
+                                generateBaseDataService.getSurveyExamineDate(InvestigationsStartDate, InvestigationsEndDate)));
+                    }
+                }
+                //注册房产估价师
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuer.getName(), bookmarkName)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.RegisteredRealEstateValuer.getName());
+                    if (baseReportField != null){
+                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                BaseReportFieldReplaceEnum.BOOKMARK,
+                                bookmarkCollection.get(i).getName(),
+                                generateBaseDataService.getRegisteredRealEstateValuer(registeredRealEstateValuer)));
+                        AdCompanyQualificationDto qualificationDto1 = generateBaseDataService.getCompanyQualificationForLicense();
+                        AdCompanyQualificationDto qualificationDto2 = generateBaseDataService.getCompanyQualificationForPractising();
+                        if (qualificationDto2 != null) {
+
+                        }
+                    }
+                }
+                //注册房产估价师 注册号
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.registrationNumber.getName(), bookmarkName)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.registrationNumber.getName());
+                    if (baseReportField != null){
+                        mapSet.add(getBaseReportFieldReplaceEnumMap(
+                                BaseReportFieldReplaceEnum.BOOKMARK,
+                                bookmarkCollection.get(i).getName(),
+                                generateBaseDataService.getRegistrationNumber(registeredRealEstateValuer)));
                     }
                 }
                 //房地产总价

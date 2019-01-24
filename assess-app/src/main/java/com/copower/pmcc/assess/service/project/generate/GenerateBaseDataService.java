@@ -1,13 +1,15 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.aspose.words.*;
-import com.copower.pmcc.ad.api.dto.AdBaseDataDicDto;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
+import com.copower.pmcc.ad.api.dto.AdPersonalQualificationDto;
+import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.CnNumberUtils;
 import com.copower.pmcc.assess.common.enums.ExamineEstateSupplyEnumType;
 import com.copower.pmcc.assess.common.enums.ExamineHouseEquipmentTypeEnum;
 import com.copower.pmcc.assess.common.enums.ExamineMatchingLeisurePlaceTypeEnum;
+import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
@@ -21,6 +23,7 @@ import com.copower.pmcc.assess.dto.output.basic.BasicMatchingFinanceVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingTrafficVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportService;
@@ -46,10 +49,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -79,6 +80,8 @@ public class GenerateBaseDataService {
     private SchemeSurePriceService schemeSurePriceService;
     private SchemeReimbursementService schemeReimbursementService;
     private com.copower.pmcc.assess.service.AdRpcQualificationsAppService adRpcQualificationsService;
+    private PublicService publicService;
+    private SchemeSupportInfoService schemeSupportInfoService;
 
     //构造器必须传入的参数
     private Integer projectId;
@@ -429,7 +432,7 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getEvaluationMethodResult(String report_type) {
+    public String getEvaluationMethodResult(String report_type) throws Exception {
         if (Objects.equal(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT, report_type)) {
             List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
             BigDecimal price = new BigDecimal(0);
@@ -446,7 +449,7 @@ public class GenerateBaseDataService {
         }
 
         if (Objects.equal(AssessDataDicKeyConstant.REPORT_TYPE_RESULT, report_type)) {
-            return errorStr;
+            return getjudgeBuildResultSurveySheet();
         }
 
         return errorStr;
@@ -642,6 +645,197 @@ public class GenerateBaseDataService {
         } else {
             return errorStr;
         }
+    }
+
+    /**
+     * 注册房产估价师
+     *
+     * @param account
+     * @return
+     */
+    public String getRegisteredRealEstateValuer(String account) {
+        String temp = publicService.getUserNameByAccount(account);
+        return temp;
+    }
+
+    /**
+     * 注册房产估价师 编号
+     *
+     * @param account
+     * @return
+     * @throws Exception
+     */
+    public String getRegistrationNumber(String account) throws Exception {
+        List<AdPersonalQualificationDto> adPersonalQualificationDtoList = adRpcQualificationsService.getAdPersonalQualificationDto(account, AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getValue());
+        if (CollectionUtils.isNotEmpty(adPersonalQualificationDtoList)) {
+            return adPersonalQualificationDtoList.get(0).getCertificateNo();
+        }
+        return errorStr;
+    }
+
+    /**
+     * 根据公司编号取得公司营业执照
+     *
+     * @return
+     */
+    public AdCompanyQualificationDto getCompanyQualificationForLicense() {
+        return adRpcQualificationsService.getCompanyQualificationForLicense(publicService.getCurrentCompany().getCompanyId());
+    }
+
+    /**
+     * 根据公司编号取得公司执业资质
+     *
+     * @return
+     */
+    public AdCompanyQualificationDto getCompanyQualificationForPractising() {
+        return adRpcQualificationsService.getCompanyQualificationForPractising(publicService.getCurrentCompany().getCompanyId());
+    }
+
+    /**
+     * 现场查勘期
+     *
+     * @param start
+     * @param end
+     * @return
+     */
+    public String getSurveyExamineDate(Date start, Date end) {
+        if (start == null) {
+            start = new Date();
+        }
+        if (end == null) {
+            end = new Date();
+        }
+        return String.format("%s%s", DateUtils.format(start, DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(end, DateUtils.DATE_CHINESE_PATTERN));
+    }
+
+    /**
+     * 作业结束时间
+     *
+     * @param end
+     * @return
+     */
+    public String getHomeWorkEndTime(Date end) {
+        if (end == null) {
+            end = new Date();
+        }
+        return DateUtils.format(end, DateUtils.DATE_CHINESE_PATTERN);
+    }
+
+    /**
+     * 作业开始时间
+     *
+     * @return
+     */
+    public String getHomeWorkStartTime() {
+        return DateUtils.format(getProjectInfo().getGmtCreated(), DateUtils.DATE_CHINESE_PATTERN);
+    }
+
+    /**
+     * 评估假设
+     *
+     * @return
+     */
+    public String getEVALUATION_HYPOTHESIS() {
+        List<SchemeSupportInfo> schemeSupportInfoList = schemeSupportInfoService.getSupportInfoListByAreaId(getAreaId(), SchemeSupportTypeEnum.HYPOTHESIS);
+        if (CollectionUtils.isNotEmpty(schemeSupportInfoList)) {
+            for (SchemeSupportInfo schemeSupportInfo : schemeSupportInfoList) {
+                List<Map<String, String>> mapList = publicService.extractFieldMap(schemeSupportInfo.getTemplate());
+                if (CollectionUtils.isNotEmpty(mapList)) {
+
+                }
+            }
+        }
+        return errorStr;
+    }
+
+    /**
+     * 评估依据
+     *
+     * @return
+     */
+    public String getEVALUATION_BASIS() {
+        List<SchemeSupportInfo> schemeSupportInfoList = schemeSupportInfoService.getSupportInfoListByAreaId(getAreaId(), SchemeSupportTypeEnum.BASIS);
+        if (CollectionUtils.isNotEmpty(schemeSupportInfoList)) {
+            for (SchemeSupportInfo schemeSupportInfo : schemeSupportInfoList) {
+                List<Map<String, String>> mapList = publicService.extractFieldMap(schemeSupportInfo.getTemplate());
+                if (CollectionUtils.isNotEmpty(mapList)) {
+
+                }
+            }
+        }
+        return errorStr;
+    }
+
+    /**
+     * 评估原则
+     *
+     * @return
+     */
+    public String getEVALUATION_PRINCIPLE() {
+        List<SchemeSupportInfo> schemeSupportInfoList = schemeSupportInfoService.getSupportInfoListByAreaId(getAreaId(), SchemeSupportTypeEnum.PRINCIPLE);
+        if (CollectionUtils.isNotEmpty(schemeSupportInfoList)) {
+            for (SchemeSupportInfo schemeSupportInfo : schemeSupportInfoList) {
+                List<Map<String, String>> mapList = publicService.extractFieldMap(schemeSupportInfo.getTemplate());
+                if (CollectionUtils.isNotEmpty(mapList)) {
+
+                }
+            }
+        }
+        return errorStr;
+    }
+
+    /**
+     * 报告分析
+     *
+     * @return
+     */
+    public String getReportAnalysis() {
+
+        return errorStr;
+    }
+
+    /**
+     * 协助工作人员
+     *
+     * @return
+     */
+    public String getAssistanceStaff(String account) {
+        List<ProjectPhaseVo> projectPhaseVos = projectPhaseService.queryProjectPhaseByCategory(getProjectInfo().getProjectTypeId(),
+                getProjectInfo().getProjectCategoryId(), null);
+        ProjectPhase projectPhaseScene = null;
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        StringBuilder builder = new StringBuilder();
+        if (CollectionUtils.isNotEmpty(projectPhaseVos)) {
+            for (ProjectPhaseVo projectPhaseVo : projectPhaseVos) {
+                if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
+                    projectPhaseScene = projectPhaseVo;
+                }
+            }
+        }
+        if (projectPhaseScene != null) {
+            if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+                SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+                ProjectPlanDetails query = new ProjectPlanDetails();
+                query.setProjectId(getProjectId());
+                query.setProjectPhaseId(projectPhaseScene.getId());
+                query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+                List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
+                if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+                    projectPlanDetailsList.parallelStream().forEach(projectPlanDetails -> {
+                        if (StringUtils.isNotBlank(projectPlanDetails.getExecuteUserAccount())) {
+                            if (Objects.equal(account, projectPlanDetails.getExecuteUserAccount())) {
+                            } else {
+                                builder.append(publicService.getUserNameByAccount(projectPlanDetails.getExecuteUserAccount()));
+                            }
+                        }
+                    });
+                }
+            }
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
+        }
+        return errorStr;
     }
 
     /**
@@ -3016,6 +3210,8 @@ public class GenerateBaseDataService {
         this.surveyAssetInventoryDao = SpringContextUtils.getBean(SurveyAssetInventoryDao.class);
         this.schemeSurePriceService = SpringContextUtils.getBean(SchemeSurePriceService.class);
         this.schemeReimbursementService = SpringContextUtils.getBean(SchemeReimbursementService.class);
+        this.publicService = SpringContextUtils.getBean(PublicService.class);
+        this.schemeSupportInfoService = SpringContextUtils.getBean(SchemeSupportInfoService.class);
         this.adRpcQualificationsService = SpringContextUtils.getBean(com.copower.pmcc.assess.service.AdRpcQualificationsAppService.class);
     }
 

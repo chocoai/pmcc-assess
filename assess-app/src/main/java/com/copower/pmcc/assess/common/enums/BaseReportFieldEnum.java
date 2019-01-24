@@ -65,6 +65,20 @@ public enum BaseReportFieldEnum {
     DevelopmentAssistNotApplicableReason("", "假设开发法不适用原因", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     DevelopmentAssistThink("", "假设开发法评估思路", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
+    RegisteredRealEstateValuer("", "注册房产估价师", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    registrationNumber("", "注册号", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    surveyExamineDate("", "现场查勘期", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    HomeWorkEndTime("", "作业结束时间", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    HomeWorkStartTime("", "作业开始时间", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+
+    EVALUATION_HYPOTHESIS("", "评估假设", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    EVALUATION_BASIS("", "评估依据", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    EVALUATION_PRINCIPLE("", "评估原则", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    ReportAnalysis("", "报告分析", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    EXECUTE_USER_ACCOUNT("", "报告分析", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+
+    AssistanceStaff("", "协助工作人员", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+
     HousingOwnershipRegistrationStatementSheet("", "房屋所有权登记状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     judgeObjectAreaStatusSheet("", "估价对象区位状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     judgeObjectLandStateSheet("", "估价土地实体状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
