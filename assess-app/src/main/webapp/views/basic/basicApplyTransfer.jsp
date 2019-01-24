@@ -81,47 +81,32 @@
     });
 </script>
 <script type="application/javascript">
+    //提交
     function saveform() {
         if (!basicCommon.submitFormValid()) {
             return false;
         }
-        var data = {};
-        data.formData = JSON.stringify(basicCommon.getFormData());
-        var approvalData = formParams('frm_approval');
-        data = $.extend({}, approvalData, data);
         Loading.progressShow();
+        var formData = JSON.stringify(basicCommon.getFormData());
         $.ajax({
-            url: "${pageContext.request.contextPath}/basicApply/basicEditSubmit",
+            url: "${pageContext.request.contextPath}/basicApply/basicApplySubmit",
             type: "post",
             dataType: "json",
-            data: data,
+            async: false,
+            data: {formData: formData},
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
                     Alert("提交数据成功!", 1, null, function () {
                         window.close();
                     });
+                } else {
+                    Alert(result.errmsg);
                 }
-                else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);
-                }
-            },
-            error: function (result) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         });
     }
 
-    //关闭流程
-    function closeBasicApp() {
-        Alert('确定要关闭流程么？', 2, null, function () {
-            AssessCommon.closeProcess('${basicApply.processInsId}', function () {
-                Alert('流程关闭成功', 1, null, function () {
-                    window.close();
-                })
-            })
-        })
-    }
+
 </script>
 </html>

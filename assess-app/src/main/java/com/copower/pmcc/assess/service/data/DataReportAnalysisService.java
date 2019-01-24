@@ -1,9 +1,10 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataReportAnalysisDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis;
 import com.copower.pmcc.assess.dto.output.data.DataReportAnalysisVo;
-import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -13,7 +14,7 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -32,8 +33,6 @@ public class DataReportAnalysisService {
     private DataReportAnalysisDao dataReportAnalysisDao;
     @Autowired
     private BaseDataDicService baseDataDicService;
-    @Autowired
-    private ErpAreaService erpAreaService;
 
     /**
      * 保存数据
@@ -76,11 +75,11 @@ public class DataReportAnalysisService {
      * @param name
      * @return
      */
-    public BootstrapTableVo getReportAnalysisList(String name,Integer reportAnalysisType) {
+    public BootstrapTableVo getReportAnalysisList(String name, Integer reportAnalysisType) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataReportAnalysis> hypothesisList = dataReportAnalysisDao.getReportAnalysisList(name,reportAnalysisType);
+        List<DataReportAnalysis> hypothesisList = dataReportAnalysisDao.getReportAnalysisList(name, reportAnalysisType);
         List<DataReportAnalysisVo> vos = LangUtils.transform(hypothesisList, p -> getReportAnalysisVo(p));
         vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(vos) ? new ArrayList<DataReportAnalysisVo>() : vos);
         vo.setTotal(page.getTotal());
@@ -98,36 +97,28 @@ public class DataReportAnalysisService {
     }
 
 
-    public DataReportAnalysisVo getReportAnalysisVo(DataReportAnalysis evaluationReportAnalysis) {
-        if (evaluationReportAnalysis == null) return null;
+    public DataReportAnalysisVo getReportAnalysisVo(DataReportAnalysis reportAnalysis) {
+        if (reportAnalysis == null) return null;
         DataReportAnalysisVo vo = new DataReportAnalysisVo();
-        BeanUtils.copyProperties(evaluationReportAnalysis, vo);
-        vo.setReportAnalysisTypeName(baseDataDicService.getNameById(evaluationReportAnalysis.getReportAnalysisType()));
-        vo.setEntrustmentName(baseDataDicService.getNameById(evaluationReportAnalysis.getEntrustment()));
-        vo.setPurposeName(baseDataDicService.getNameById(evaluationReportAnalysis.getPurpose()));
-        if (StringUtils.isNotBlank(evaluationReportAnalysis.getProvince())) {
-            vo.setProvinceName(erpAreaService.getSysAreaName(evaluationReportAnalysis.getProvince()));//省
-        }
-        if (StringUtils.isNotBlank(evaluationReportAnalysis.getCity())) {
-            vo.setCityName(erpAreaService.getSysAreaName(evaluationReportAnalysis.getCity()));//市或者县
-        }
-        if (StringUtils.isNotBlank(evaluationReportAnalysis.getDistrict())) {
-            vo.setDistrictName(erpAreaService.getSysAreaName(evaluationReportAnalysis.getDistrict()));//县
+        BeanUtils.copyProperties(reportAnalysis, vo);
+        vo.setReportAnalysisTypeName(baseDataDicService.getNameById(reportAnalysis.getReportAnalysisType()));
+        List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
+        if (StringUtils.isNotBlank(reportAnalysis.getEntrustmentPurpose())) {
+            vo.setEntrustmentPurposeName(baseDataDicService.getDataDicName(purposeDicList, reportAnalysis.getEntrustmentPurpose()));
         }
         return vo;
     }
 
     /**
      * 获取报告分析数据
+     *
      * @param type
-     * @param entrustment
+     * @param entrustmentPurpose
      * @return
      */
-    public List<DataReportAnalysis> getDataReportAnalysisList(Integer type,Integer entrustment){
-        DataReportAnalysis where=new DataReportAnalysis();
-        where.setReportAnalysisType(type);
-        where.setEntrustment(entrustment);
-        return dataReportAnalysisDao.getDataReportAnalysisList(where);
+    public List<DataReportAnalysis> getDataReportAnalysisList(Integer type, Integer entrustmentPurpose) {
+        String entrustmentPurposeString = String.format(",%s,",entrustmentPurpose);
+        return dataReportAnalysisDao.getReportAnalysisList(type,entrustmentPurposeString);
     }
 
 }

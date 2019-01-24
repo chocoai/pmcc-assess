@@ -39,6 +39,18 @@ public class DataReportAnalysisDao {
         return dataReportAnalysisMapper.selectByExample(example);
     }
 
+    public List<DataReportAnalysis> getReportAnalysisList(Integer reportAnalysisType,String entrustmentPurpose) {
+        DataReportAnalysisExample example = new DataReportAnalysisExample();
+        DataReportAnalysisExample.Criteria criteria = example.createCriteria();
+        if(reportAnalysisType!=null){
+            criteria.andReportAnalysisTypeEqualTo(reportAnalysisType);
+        }
+        if (StringUtils.isNotBlank(entrustmentPurpose)) {
+            criteria.andEntrustmentPurposeLike(String.format("%%%s%%", entrustmentPurpose));
+        }
+        return dataReportAnalysisMapper.selectByExample(example);
+    }
+
     public List<DataReportAnalysis> getReportAnalysisList(Integer reportAnalysisType) {
         DataReportAnalysisExample example = new DataReportAnalysisExample();
         DataReportAnalysisExample.Criteria criteria = example.createCriteria();
