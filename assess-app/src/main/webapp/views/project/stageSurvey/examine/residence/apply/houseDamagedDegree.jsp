@@ -23,24 +23,6 @@
     </div>
 </div>
 
-<div class="x_panel">
-    <div class="x_content">
-        <form class="form-horizontal">
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        附件
-                    </label>
-                    <div class="col-sm-11">
-                        <input id="otherFile" type="file" multiple="false">
-                        <div id="_otherFile"></div>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
 <!--明细项-->
 <div id="damagedDegreeDetailListModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog" aria-hidden="true">

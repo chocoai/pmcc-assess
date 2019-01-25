@@ -135,21 +135,6 @@
 </div>
 <%@include file="/views/basic/modelView/house/damagedDegreeDetail.jsp" %>
 
-<div class="x_content">
-    <form class="form-horizontal">
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    其它附件
-                </label>
-                <div class="col-sm-11">
-                    <div id="_otherFile"></div>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
-
 <script type="text/javascript">
     var houseRoom;
     (function () {
@@ -564,18 +549,6 @@
             houseNewWind.prototype.loadDataDicList();
         })
     })();
-
-    $(function () {
-        FileUtils.getFileShows({
-            target: "otherFile",
-            formData: {
-                tableName: AssessDBKey.BasicHouse,
-                fieldsName: "otherFile",
-                tableId: houseCommon.getHouseId()
-            },
-            deleteFlag: false
-        });
-    })
 </script>
 
 <div id="SubclassDivBoxHouseRoom" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"

@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.controller.project.scheme;
 
 import com.copower.pmcc.assess.dto.output.project.scheme.ProjectTaskLiquidationAnalysisVo;
-import com.copower.pmcc.assess.service.project.scheme.ProjectTaskLiquidationAnalysisService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeLiquidationAnalysisService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ import java.util.List;
 public class ProjectTaskLiquidationAnalysisController {
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
-    private ProjectTaskLiquidationAnalysisService projectTaskLiquidationAnalysisService;
+    private SchemeLiquidationAnalysisService projectTaskLiquidationAnalysisService;
 
 
     @ResponseBody

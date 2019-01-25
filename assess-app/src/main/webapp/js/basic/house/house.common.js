@@ -24,7 +24,7 @@
         AssessUploadKey.HOUSE_HUXING_PLAN,
         AssessUploadKey.HOUSE_NEW_HUXING_PLAN,
         AssessUploadKey.HOUSE_IMG_PLAN,
-        AssessUploadKey.OTHER_FILE
+        AssessUploadKey.HOUSE_FILE
     ];
 
     houseCommon.getHouseId = function () {

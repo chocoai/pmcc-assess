@@ -37,6 +37,14 @@ public class ProjectTaskReportFileAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskReportFileIndex", "", 0, "0", "");
+        SchemeReportFile schemeReportFile = schemeReportFileService.getReportFileByPlanDetailsId(projectPlanDetails.getId());
+        if (schemeReportFile == null) {
+            schemeReportFile = new SchemeReportFile();
+            schemeReportFile.setAreaId(projectPlanDetails.getAreaId());
+            schemeReportFile.setPlanDetailsId(projectPlanDetails.getId());
+            schemeReportFile.setProjectId(projectPlanDetails.getProjectId());
+            schemeReportFileService.saveSchemeReportFile(schemeReportFile);
+        }
         setParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
@@ -99,16 +107,13 @@ public class ProjectTaskReportFileAssist implements ProjectTaskInterface {
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         SchemeReportFileDto customDto = JSON.parseObject(formData, SchemeReportFileDto.class);
         List<SchemeReportFileItem> reportFileItemList = customDto.getReportFileItemList();
-        if(CollectionUtils.isNotEmpty(reportFileItemList)){
+        if (CollectionUtils.isNotEmpty(reportFileItemList)) {
             for (SchemeReportFileItem custom : reportFileItemList) {
                 schemeReportFileService.updateReportFileItem(custom);
             }
         }
-        SchemeReportFile schemeReportFile=new SchemeReportFile();
-        schemeReportFile.setAreaId(projectPlanDetails.getAreaId());
-        schemeReportFile.setPlanDetailsId(projectPlanDetails.getId());
+        SchemeReportFile schemeReportFile = schemeReportFileService.getReportFileByPlanDetailsId(projectPlanDetails.getId());
         schemeReportFile.setProcessInsId(processInsId);
-        schemeReportFile.setProjectId(projectPlanDetails.getProjectId());
         schemeReportFileService.saveSchemeReportFile(schemeReportFile);
     }
 
@@ -121,7 +126,7 @@ public class ProjectTaskReportFileAssist implements ProjectTaskInterface {
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         SchemeReportFileDto customDto = JSON.parseObject(formData, SchemeReportFileDto.class);
         List<SchemeReportFileItem> reportFileItemList = customDto.getReportFileItemList();
-        if(CollectionUtils.isNotEmpty(reportFileItemList)){
+        if (CollectionUtils.isNotEmpty(reportFileItemList)) {
             for (SchemeReportFileItem custom : reportFileItemList) {
                 schemeReportFileService.updateReportFileItem(custom);
             }

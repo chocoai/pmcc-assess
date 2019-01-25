@@ -32,17 +32,20 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
-    private ProjectTaskLiquidationAnalysisService projectTaskLiquidationAnalysisService;
+    private SchemeLiquidationAnalysisService schemeLiquidationAnalysisService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskLiquidationAnalysisIndex", "", 0, "0", "");
-        SchemeLiquidationAnalysis schemeLiquidationAnalysis = projectTaskLiquidationAnalysisService.getDataByPlanDetailsId(projectPlanDetails.getId());
+        SchemeLiquidationAnalysis schemeLiquidationAnalysis = schemeLiquidationAnalysisService.getDataByPlanDetailsId(projectPlanDetails.getId());
         if (schemeLiquidationAnalysis == null) {
             schemeLiquidationAnalysis = new SchemeLiquidationAnalysis();
-            schemeLiquidationAnalysis.setId(0);
+            schemeLiquidationAnalysis.setProjectId(projectPlanDetails.getProjectId());
+            schemeLiquidationAnalysis.setPlanDetailsId(projectPlanDetails.getId());
+            schemeLiquidationAnalysis.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
+            schemeLiquidationAnalysisService.saveLiquidationAnalysis(schemeLiquidationAnalysis);
         }
-        modelAndView.addObject("master", schemeLiquidationAnalysis == null ? new SchemeLiquidationAnalysis() : schemeLiquidationAnalysis);
+        modelAndView.addObject("master",  schemeLiquidationAnalysis);
         modelAndView.addObject("judgeObjectName", projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid()).getProjectPhaseName());
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
         modelAndView.addObject("judgeObject", judgeObject);
@@ -64,7 +67,7 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskLiquidationAnalysisApproval", processInsId, boxId, taskId, agentUserAccount);
-        SchemeLiquidationAnalysis schemeLiquidationAnalysis = projectTaskLiquidationAnalysisService.getDataByPlanDetailsId(projectPlanDetails.getId());
+        SchemeLiquidationAnalysis schemeLiquidationAnalysis = schemeLiquidationAnalysisService.getDataByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("master", schemeLiquidationAnalysis);
         modelAndView.addObject("judgeObjectName", projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid()).getProjectPhaseName());
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
@@ -87,7 +90,7 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskLiquidationAnalysisIndex", processInsId, boxId, taskId, agentUserAccount);
-        SchemeLiquidationAnalysis schemeLiquidationAnalysis = projectTaskLiquidationAnalysisService.getDataByPlanDetailsId(projectPlanDetails.getId());
+        SchemeLiquidationAnalysis schemeLiquidationAnalysis = schemeLiquidationAnalysisService.getDataByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("master", schemeLiquidationAnalysis);
         modelAndView.addObject("judgeObjectName", projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid()).getProjectPhaseName());
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
@@ -104,14 +107,20 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
 
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskLiquidationAnalysisApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskLiquidationAnalysisApproval",projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        SchemeLiquidationAnalysis schemeLiquidationAnalysis = schemeLiquidationAnalysisService.getDataByPlanDetailsId(projectPlanDetails.getId());
+        modelAndView.addObject("master", schemeLiquidationAnalysis);
+        modelAndView.addObject("judgeObjectName", projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid()).getProjectPhaseName());
+        SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
+        modelAndView.addObject("judgeObject", judgeObject);
+        SchemeSurePrice schemeSurePrice = schemeSurePriceService.getSurePriceByPlanDetailsId(projectPlanDetails.getId());
+        modelAndView.addObject("schemeSurePrice", schemeSurePrice);
         return modelAndView;
     }
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-       // projectTaskLiquidationAnalysisService.commit(formData, projectPlanDetails, processInsId);
+        schemeLiquidationAnalysisService.commit(formData, projectPlanDetails, processInsId);
     }
 
     @Override
@@ -121,6 +130,6 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        projectTaskLiquidationAnalysisService.commit(formData, projectPlanDetails, processInsId);
+        schemeLiquidationAnalysisService.commit(formData, projectPlanDetails, processInsId);
     }
 }

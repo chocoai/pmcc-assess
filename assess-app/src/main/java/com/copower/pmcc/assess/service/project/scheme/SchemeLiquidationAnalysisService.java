@@ -9,7 +9,6 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.scheme.ProjectTaskLiquidationAnalysisVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataTaxRateAllocationService;
-import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.LangUtils;
@@ -30,7 +29,7 @@ import java.util.List;
  * @time: 14:15
  */
 @Service
-public class ProjectTaskLiquidationAnalysisService {
+public class SchemeLiquidationAnalysisService {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
@@ -137,27 +136,22 @@ public class ProjectTaskLiquidationAnalysisService {
         return vo;
     }
 
-    public void commit(String formData, ProjectPlanDetails projectPlanDetails, String processInsId) throws BusinessException {
-        JSONObject jsonObject = JSON.parseObject(formData);
-        String id = jsonObject.getString("id");
-        SchemeLiquidationAnalysis schemeLiquidationAnalysis = new SchemeLiquidationAnalysis();
-        if (StringUtils.isNotBlank(id)) {
-            schemeLiquidationAnalysis.setId(Integer.valueOf(id));
-        }
-        String total = jsonObject.getString("total");
-        BigDecimal decimalTotal = new BigDecimal(total);
-        schemeLiquidationAnalysis.setTotal(decimalTotal);
-        if (schemeLiquidationAnalysis.getId() == null || schemeLiquidationAnalysis.getId() == 0) {
-            schemeLiquidationAnalysis.setProjectId(projectPlanDetails.getProjectId());
-            schemeLiquidationAnalysis.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
-            schemeLiquidationAnalysis.setPlanDetailsId(projectPlanDetails.getId());
+    public void saveLiquidationAnalysis(SchemeLiquidationAnalysis schemeLiquidationAnalysis) {
+        if (schemeLiquidationAnalysis.getId() == null && schemeLiquidationAnalysis.getId() <= 0) {
             schemeLiquidationAnalysis.setCreator(processControllerComponent.getThisUser());
-            schemeLiquidationAnalysis.setProcessInsId(processInsId);
-            schemeLiquidationAnalysis.setStatus(ProcessStatusEnum.RUN.getValue());
             schemeLiquidationAnalysisDao.addSchemeLiquidationAnalysis(schemeLiquidationAnalysis);
-        } else {
+        }else{
             schemeLiquidationAnalysisDao.editSchemeLiquidationAnalysis(schemeLiquidationAnalysis);
         }
+    }
+
+    public void commit(String formData, ProjectPlanDetails projectPlanDetails, String processInsId) throws BusinessException {
+        JSONObject jsonObject = JSON.parseObject(formData);
+        SchemeLiquidationAnalysis schemeLiquidationAnalysis = getDataByPlanDetailsId(projectPlanDetails.getId());
+        BigDecimal decimalTotal = new BigDecimal(jsonObject.getString("total"));
+        schemeLiquidationAnalysis.setTotal(decimalTotal);
+        schemeLiquidationAnalysis.setProcessInsId(processInsId);
+        schemeLiquidationAnalysisDao.editSchemeLiquidationAnalysis(schemeLiquidationAnalysis);
         //保存明细
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(judgeObject.getAreaGroupId());

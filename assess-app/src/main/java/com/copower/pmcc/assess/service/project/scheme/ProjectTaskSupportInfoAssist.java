@@ -41,6 +41,14 @@ public class ProjectTaskSupportInfoAssist implements ProjectTaskInterface {
         //初始化支撑数据
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         schemeSupportInfoService.initSupportInfo(projectPlanDetails, projectInfo, AssessDataDicKeyConstant.MD_MARKET_COMPARE);
+        SchemeSupport schemeSupport = schemeSupportService.getSchemeSupportByPlanDetailsId(projectPlanDetails.getId());
+        if (schemeSupport == null) {
+            schemeSupport = new SchemeSupport();
+            schemeSupport.setProjectId(projectPlanDetails.getProjectId());
+            schemeSupport.setPlanDetailsId(projectPlanDetails.getId());
+            schemeSupport.setAreaId(projectPlanDetails.getAreaId());
+            schemeSupportService.saveSchemeSupport(schemeSupport);
+        }
         List<SchemeSupportInfo> supportInfoList = schemeSupportInfoService.getSupportInfoList(projectPlanDetails.getId());
         modelAndView.addObject("supportInfosJSON", JSON.toJSONString(supportInfoList));
         return modelAndView;
@@ -103,10 +111,7 @@ public class ProjectTaskSupportInfoAssist implements ProjectTaskInterface {
                 schemeSupportInfoService.saveSupportInfo(schemeSupportInfo);
             }
         }
-        SchemeSupport schemeSupport = new SchemeSupport();
-        schemeSupport.setProjectId(projectPlanDetails.getProjectId());
-        schemeSupport.setPlanDetailsId(projectPlanDetails.getId());
-        schemeSupport.setAreaId(projectPlanDetails.getAreaId());
+        SchemeSupport schemeSupport = schemeSupportService.getSchemeSupportByPlanDetailsId(projectPlanDetails.getId());
         schemeSupport.setProcessInsId(processInsId);
         schemeSupportService.saveSchemeSupport(schemeSupport);
     }
