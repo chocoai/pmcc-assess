@@ -6,7 +6,7 @@ package com.copower.pmcc.assess.common.enums;
  * @Description:
  */
 public enum GenerateReportEnum {
-    JUDGEOBJECTIMG(50,50,600,800,"常量图片宽度")
+    JUDGEOBJECTIMG(200,100,200,100,"常量图片宽度")
     ;
     private double width;
     private double height;

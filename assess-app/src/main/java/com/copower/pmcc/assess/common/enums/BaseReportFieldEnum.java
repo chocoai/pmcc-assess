@@ -100,6 +100,10 @@ public enum BaseReportFieldEnum {
     Copies_the_Ownership_Certificate_the_Valuation_Object("", "估价对象权属证明复印件", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     Special_documentation_referenced_in_valuation("", "估价中引用的专用文件资料", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
+    CopyBusinessLicenseRealEstateValuationAgency("", "房地产估价机构营业执照复印件", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    CopyQualificationCertificateRealEstateValuationInstitution("", "房地产估价机构资质证书复印件", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    RegisteredRealEstateValuerValuationInstitution("", "注册房地产估价师注册证书复印件", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+
     inventoryRight("", "土地他项权利情况", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     EvaluationMethod("", "评估方法", BaseReportFieldReplaceEnum.BOOKMARK.getKey());
     private String key;

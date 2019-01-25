@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.generate;
 
+import com.alibaba.fastjson.JSON;
 import com.aspose.words.*;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.ad.api.dto.AdPersonalQualificationDto;
@@ -3228,49 +3229,255 @@ public class GenerateBaseDataService {
 
     /**
      * 估计对象位置示意图
+     *
      * @return
      */
-    public String getEstimatedObjectLocationDiagram()throws Exception{
+    public String getEstimatedObjectLocationDiagram() throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                List<SysAttachmentDto> sysAttachmentDtoList = schemeReportFileService.getJudgeObjectPositionFileList(schemeJudgeObject.getId());
+                if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
+                    for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
+                        String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
+                        if (StringUtils.isNotBlank(imgPath)) {
+                            if (FileUtils.checkImgSuffix(imgPath)) {
+                                builder.insertImage(imgPath,
+                                        RelativeHorizontalPosition.MARGIN,
+                                        GenerateReportEnum.JUDGEOBJECTIMG.getLeft(),
+                                        RelativeVerticalPosition.MARGIN,
+                                        GenerateReportEnum.JUDGEOBJECTIMG.getTop(),
+                                        GenerateReportEnum.JUDGEOBJECTIMG.getWidth(),
+                                        GenerateReportEnum.JUDGEOBJECTIMG.getHeight(),
+                                        WrapType.SQUARE);
+                            }
+                        }
+                    }
+                }
+            }
+        }
         doc.save(localPath);
         return localPath;
     }
 
     /**
      * 估价对象实况照片
+     *
      * @return
      */
-    public String getValuation_Target_Live_Photos()throws Exception{
+    public String getValuation_Target_Live_Photos() throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                List<SchemeReportFileItem> sysAttachmentDtoList = schemeReportFileService.getLiveSituationSelect(schemeJudgeObject.getId());
+                if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
+                    for (SchemeReportFileItem sysAttachmentDto : sysAttachmentDtoList) {
+                        String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getAttachmentId());
+                        if (StringUtils.isNotBlank(imgPath)) {
+                            if (FileUtils.checkImgSuffix(imgPath)) {
+                                builder.insertImage(imgPath,
+                                        RelativeHorizontalPosition.MARGIN,
+                                        GenerateReportEnum.JUDGEOBJECTIMG.getLeft(),
+                                        RelativeVerticalPosition.MARGIN,
+                                        GenerateReportEnum.JUDGEOBJECTIMG.getTop(),
+                                        GenerateReportEnum.JUDGEOBJECTIMG.getWidth(),
+                                        GenerateReportEnum.JUDGEOBJECTIMG.getHeight(),
+                                        WrapType.SQUARE);
+                            }
+                        }
+                    }
+                }
+            }
+        }
         doc.save(localPath);
         return localPath;
     }
 
     /**
      * 估价对象权属证明复印件
+     *
      * @return
      */
-    public String getCopies_the_Ownership_Certificate_the_Valuation_Object()throws Exception{
+    public String getCopies_the_Ownership_Certificate_the_Valuation_Object() throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        List<SysAttachmentDto> sysAttachmentDtoList = schemeReportFileService.getOwnershipCertFileList(getAreaId());
+        if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
+            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
+                String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
+                if (StringUtils.isNotBlank(imgPath)) {
+                    if (FileUtils.checkImgSuffix(imgPath)) {
+                        builder.insertImage(imgPath,
+                                RelativeHorizontalPosition.MARGIN,
+                                GenerateReportEnum.JUDGEOBJECTIMG.getLeft(),
+                                RelativeVerticalPosition.MARGIN,
+                                GenerateReportEnum.JUDGEOBJECTIMG.getTop(),
+                                GenerateReportEnum.JUDGEOBJECTIMG.getWidth(),
+                                GenerateReportEnum.JUDGEOBJECTIMG.getHeight(),
+                                WrapType.SQUARE);
+                    }
+                }
+            }
+        }
         doc.save(localPath);
         return localPath;
     }
 
     /**
      * 估价中引用的专用文件资料
+     *
      * @return
      * @throws Exception
      */
-    public String getSpecial_documentation_referenced_in_valuation()throws Exception{
+    public String getSpecial_documentation_referenced_in_valuation() throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        List<SysAttachmentDto> sysAttachmentDtoList = Lists.newArrayList();
+        List<SysAttachmentDto> sysAttachmentDtoList1 = schemeReportFileService.getInventoryAddressFileList(getAreaId());
+        if (CollectionUtils.isNotEmpty(sysAttachmentDtoList1)) {
+            sysAttachmentDtoList.addAll(sysAttachmentDtoList1);
+        }
+        List<SysAttachmentDto> sysAttachmentDtoList2 = schemeReportFileService.getOwnershipCertFileList(getAreaId());
+        if (CollectionUtils.isNotEmpty(sysAttachmentDtoList2)) {
+            sysAttachmentDtoList.addAll(sysAttachmentDtoList2);
+        }
+        if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
+            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
+                String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
+                if (StringUtils.isNotBlank(imgPath)) {
+                    if (FileUtils.checkImgSuffix(imgPath)) {
+                        builder.insertImage(imgPath,
+                                RelativeHorizontalPosition.MARGIN,
+                                GenerateReportEnum.JUDGEOBJECTIMG.getLeft(),
+                                RelativeVerticalPosition.MARGIN,
+                                GenerateReportEnum.JUDGEOBJECTIMG.getTop(),
+                                GenerateReportEnum.JUDGEOBJECTIMG.getWidth(),
+                                GenerateReportEnum.JUDGEOBJECTIMG.getHeight(),
+                                WrapType.SQUARE);
+                    }
+                }
+            }
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 房地产估价机构营业执照复印件
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getCopyBusinessLicenseRealEstateValuationAgency() throws Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        AdCompanyQualificationDto adCompanyQualificationDto = getCompanyQualificationForLicense();
+        if (adCompanyQualificationDto != null) {
+            if (StringUtils.isNotBlank(adCompanyQualificationDto.getStandardImageJson())) {
+                List<SysAttachmentDto> attachmentDtoList = JSON.parseArray(adCompanyQualificationDto.getStandardImageJson(), SysAttachmentDto.class);
+                if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
+                    SysAttachmentDto sysAttachmentDto = attachmentDtoList.get(0);
+                    String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
+                    if (StringUtils.isNotBlank(imgPath)) {
+                        if (FileUtils.checkImgSuffix(imgPath)) {
+                            builder.insertImage(imgPath,
+                                    RelativeHorizontalPosition.MARGIN,
+                                    GenerateReportEnum.JUDGEOBJECTIMG.getLeft(),
+                                    RelativeVerticalPosition.MARGIN,
+                                    GenerateReportEnum.JUDGEOBJECTIMG.getTop(),
+                                    GenerateReportEnum.JUDGEOBJECTIMG.getWidth(),
+                                    GenerateReportEnum.JUDGEOBJECTIMG.getHeight(),
+                                    WrapType.SQUARE);
+                        }
+                    }
+                }
+            }
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * '房地产估价机构资质证书复印件
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getCopyQualificationCertificateRealEstateValuationInstitution() throws Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        AdCompanyQualificationDto adCompanyQualificationDto = getCompanyQualificationForPractising();
+        if (adCompanyQualificationDto != null) {
+            if (StringUtils.isNotBlank(adCompanyQualificationDto.getStandardImageJson())) {
+                List<SysAttachmentDto> attachmentDtoList = JSON.parseArray(adCompanyQualificationDto.getStandardImageJson(), SysAttachmentDto.class);
+                if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
+                    SysAttachmentDto sysAttachmentDto = attachmentDtoList.get(0);
+                    String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
+                    if (StringUtils.isNotBlank(imgPath)) {
+                        if (FileUtils.checkImgSuffix(imgPath)) {
+                            builder.insertImage(imgPath,
+                                    RelativeHorizontalPosition.MARGIN,
+                                    GenerateReportEnum.JUDGEOBJECTIMG.getLeft(),
+                                    RelativeVerticalPosition.MARGIN,
+                                    GenerateReportEnum.JUDGEOBJECTIMG.getTop(),
+                                    GenerateReportEnum.JUDGEOBJECTIMG.getWidth(),
+                                    GenerateReportEnum.JUDGEOBJECTIMG.getHeight(),
+                                    WrapType.SQUARE);
+                        }
+                    }
+                }
+            }
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 注册房地产估价师注册证书复印件
+     *
+     * @param account
+     * @return
+     * @throws Exception
+     */
+    public String getRegisteredRealEstateValuerValuationInstitution(String account) throws Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        List<AdPersonalQualificationDto> adPersonalQualificationDtoList = adRpcQualificationsService.getAdPersonalQualificationDto(account, AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getValue());
+        if (CollectionUtils.isNotEmpty(adPersonalQualificationDtoList)) {
+            AdPersonalQualificationDto adCompanyQualificationDto = adPersonalQualificationDtoList.get(0);
+            if (adCompanyQualificationDto != null) {
+                if (StringUtils.isNotBlank(adCompanyQualificationDto.getStandardImageJson())) {
+                    List<SysAttachmentDto> attachmentDtoList = JSON.parseArray(adCompanyQualificationDto.getStandardImageJson(), SysAttachmentDto.class);
+                    if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
+                        SysAttachmentDto sysAttachmentDto = attachmentDtoList.get(0);
+                        String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
+                        if (StringUtils.isNotBlank(imgPath)) {
+                            if (FileUtils.checkImgSuffix(imgPath)) {
+                                builder.insertImage(imgPath,
+                                        RelativeHorizontalPosition.MARGIN,
+                                        GenerateReportEnum.JUDGEOBJECTIMG.getLeft(),
+                                        RelativeVerticalPosition.MARGIN,
+                                        GenerateReportEnum.JUDGEOBJECTIMG.getTop(),
+                                        GenerateReportEnum.JUDGEOBJECTIMG.getWidth(),
+                                        GenerateReportEnum.JUDGEOBJECTIMG.getHeight(),
+                                        WrapType.SQUARE);
+                            }
+                        }
+                    }
+                }
+            }
+        }
         doc.save(localPath);
         return localPath;
     }
