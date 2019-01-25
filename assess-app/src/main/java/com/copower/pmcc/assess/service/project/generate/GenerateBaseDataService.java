@@ -6,10 +6,8 @@ import com.copower.pmcc.ad.api.dto.AdPersonalQualificationDto;
 import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.CnNumberUtils;
-import com.copower.pmcc.assess.common.enums.ExamineEstateSupplyEnumType;
-import com.copower.pmcc.assess.common.enums.ExamineHouseEquipmentTypeEnum;
-import com.copower.pmcc.assess.common.enums.ExamineMatchingLeisurePlaceTypeEnum;
-import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
+import com.copower.pmcc.assess.common.FileUtils;
+import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
@@ -27,12 +25,12 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportService;
-import com.copower.pmcc.assess.service.data.DataReportAnalysisService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.compile.CompileReportService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.*;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightService;
@@ -61,7 +59,7 @@ import java.util.regex.Pattern;
 public class GenerateBaseDataService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    private final String errorStr = "暂无数据";
+    protected final String errorStr = "暂无数据";
 
     //spring bean
     private SchemeJudgeObjectService schemeJudgeObjectService;
@@ -83,7 +81,8 @@ public class GenerateBaseDataService {
     private com.copower.pmcc.assess.service.AdRpcQualificationsAppService adRpcQualificationsService;
     private PublicService publicService;
     private SchemeSupportInfoService schemeSupportInfoService;
-    private DataReportAnalysisService dataReportAnalysisService;
+    private CompileReportService compileReportService;
+    private SchemeReportFileService schemeReportFileService;
 
     //构造器必须传入的参数
     private Integer projectId;
@@ -621,13 +620,12 @@ public class GenerateBaseDataService {
      */
     public String getValueType() {
         if (getSchemeAreaGroup() != null) {
-            this.valueType = baseDataDicService.getNameById(getSchemeAreaGroup().getValueDefinition());
+            String value = baseDataDicService.getNameById(getSchemeAreaGroup().getValueDefinition());
+            if (StringUtils.isNotBlank(value)) {
+                return value;
+            }
         }
-        if (StringUtils.isNotBlank(this.valueType)) {
-            return valueType;
-        } else {
-            return errorStr;
-        }
+        return errorStr;
     }
 
     /**
@@ -639,14 +637,12 @@ public class GenerateBaseDataService {
         if (getSchemeAreaGroup() != null) {
             BaseDataDic baseDataDic = baseDataDicService.getDataDicById(getSchemeAreaGroup().getValueDefinition());
             if (baseDataDic != null) {
-                this.definitionValue = baseDataDic.getRemark();
+                if (StringUtils.isNotBlank(baseDataDic.getRemark())) {
+                    return baseDataDic.getRemark();
+                }
             }
         }
-        if (StringUtils.isNotBlank(this.definitionValue)) {
-            return definitionValue;
-        } else {
-            return errorStr;
-        }
+        return errorStr;
     }
 
     /**
@@ -738,14 +734,18 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getEVALUATION_HYPOTHESIS() {
+        StringBuilder builder = new StringBuilder();
         List<SchemeSupportInfo> schemeSupportInfoList = schemeSupportInfoService.getSupportInfoListByAreaId(getAreaId(), SchemeSupportTypeEnum.HYPOTHESIS);
         if (CollectionUtils.isNotEmpty(schemeSupportInfoList)) {
             for (SchemeSupportInfo schemeSupportInfo : schemeSupportInfoList) {
-                List<Map<String, String>> mapList = publicService.extractFieldMap(schemeSupportInfo.getTemplate());
-                if (CollectionUtils.isNotEmpty(mapList)) {
-
+                if (StringUtils.isNotBlank(schemeSupportInfo.getTemplate())) {
+                    builder.append(schemeSupportInfo.getTemplate());
+                    builder.append("\r\n");
                 }
             }
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
         }
         return errorStr;
     }
@@ -756,14 +756,18 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getEVALUATION_BASIS() {
+        StringBuilder builder = new StringBuilder();
         List<SchemeSupportInfo> schemeSupportInfoList = schemeSupportInfoService.getSupportInfoListByAreaId(getAreaId(), SchemeSupportTypeEnum.BASIS);
         if (CollectionUtils.isNotEmpty(schemeSupportInfoList)) {
             for (SchemeSupportInfo schemeSupportInfo : schemeSupportInfoList) {
-                List<Map<String, String>> mapList = publicService.extractFieldMap(schemeSupportInfo.getTemplate());
-                if (CollectionUtils.isNotEmpty(mapList)) {
-
+                if (StringUtils.isNotBlank(schemeSupportInfo.getTemplate())) {
+                    builder.append(schemeSupportInfo.getTemplate());
+                    builder.append("\r\n");
                 }
             }
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
         }
         return errorStr;
     }
@@ -774,14 +778,18 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getEVALUATION_PRINCIPLE() {
+        StringBuilder builder = new StringBuilder();
         List<SchemeSupportInfo> schemeSupportInfoList = schemeSupportInfoService.getSupportInfoListByAreaId(getAreaId(), SchemeSupportTypeEnum.PRINCIPLE);
         if (CollectionUtils.isNotEmpty(schemeSupportInfoList)) {
             for (SchemeSupportInfo schemeSupportInfo : schemeSupportInfoList) {
-                List<Map<String, String>> mapList = publicService.extractFieldMap(schemeSupportInfo.getTemplate());
-                if (CollectionUtils.isNotEmpty(mapList)) {
-
+                if (StringUtils.isNotBlank(schemeSupportInfo.getTemplate())) {
+                    builder.append(schemeSupportInfo.getTemplate());
+                    builder.append("\r\n");
                 }
             }
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
         }
         return errorStr;
     }
@@ -792,6 +800,26 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getReportAnalysis() {
+        StringBuilder builder = new StringBuilder();
+        String[] strings = new String[]{AssessPhaseKeyConstant.LIQUIDATION_ANALYSIS, AssessPhaseKeyConstant.REIMBURSEMENT};
+        List<CompileReportDetail> compileReportDetailList = Lists.newArrayList();
+        for (String s : strings) {
+            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(s);
+            if (baseDataDic != null) {
+                List<CompileReportDetail> compileReportDetails = compileReportService.getCompileReportDetailList(getAreaId(), baseDataDic.getId());
+                if (CollectionUtils.isNotEmpty(compileReportDetails)) {
+                    compileReportDetailList.addAll(compileReportDetails);
+                }
+            }
+        }
+        if (CollectionUtils.isNotEmpty(compileReportDetailList)) {
+            for (CompileReportDetail compileReportDetail : compileReportDetailList) {
+                builder.append(compileReportDetail.getTemplate());
+            }
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
+        }
         return errorStr;
     }
 
@@ -846,12 +874,10 @@ public class GenerateBaseDataService {
      */
     public String getValueImplication() {
         String temp = String.format("%s%s%s", getValueType(), getDefinitionValue(), getSchemeAreaGroup().getValueConnotation());
-        this.valueImplication = temp;
-        if (StringUtils.isNotBlank(this.valueImplication)) {
-            return valueImplication;
-        } else {
-            return errorStr;
+        if (StringUtils.isNotBlank(temp)) {
+            return temp;
         }
+        return errorStr;
     }
 
     public String getPowerPerson() {
@@ -881,12 +907,10 @@ public class GenerateBaseDataService {
         } catch (Exception e1) {
             logger.error("权利人(区位)拼接异常!");
         }
-        this.powerPerson = builder.toString();
-        if (StringUtils.isNotBlank(this.powerPerson)) {
-            return powerPerson;
-        } else {
-            return errorStr;
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
         }
+        return errorStr;
     }
 
     public String getNotPowerPerson() {
@@ -916,9 +940,8 @@ public class GenerateBaseDataService {
         } catch (Exception e1) {
             logger.error("不是权利人(区位)拼接异常!");
         }
-        this.notPowerPerson = builder.toString();
-        if (StringUtils.isNotBlank(this.notPowerPerson)) {
-            return notPowerPerson;
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
         } else {
             return errorStr;
         }
@@ -941,13 +964,11 @@ public class GenerateBaseDataService {
                     }
                 }
             }
-            this.setUse = moreJudgeObject(stringBuilder.toString(), stringBuilder.toString());
+            if (StringUtils.isNotBlank(stringBuilder.toString())) {
+                return moreJudgeObject(stringBuilder.toString(), stringBuilder.toString());
+            }
         }
-        if (StringUtils.isNotBlank(this.setUse)) {
-            return setUse;
-        } else {
-            return errorStr;
-        }
+        return errorStr;
     }
 
     /**
@@ -980,13 +1001,15 @@ public class GenerateBaseDataService {
                     builder.append(schemeJudgeObject.getCertUse());
                 }
             });
-            this.landPracticalUse = moreJudgeObject(builder.toString(), builder.toString());
+            try {
+                if (StringUtils.isNotBlank(builder.toString())) {
+                    return moreJudgeObject(builder.toString(), builder.toString());
+                }
+            } catch (Exception e) {
+
+            }
         }
-        if (StringUtils.isNotBlank(this.landPracticalUse)) {
-            return landPracticalUse;
-        } else {
-            return errorStr;
-        }
+        return errorStr;
     }
 
     /**
@@ -995,9 +1018,9 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getUseRightType() {
-        this.useRightType = getLandPracticalUse();
-        if (StringUtils.isNotBlank(this.useRightType)) {
-            return useRightType;
+        String value = getLandPracticalUse();
+        if (StringUtils.isNotBlank(value)) {
+            return value;
         } else {
             return errorStr;
         }
@@ -3175,6 +3198,83 @@ public class GenerateBaseDataService {
         return judgeBuildLandStateSheet;
     }
 
+    /**
+     * 估价委托书复印件
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getJUDGEOBJECTPRINCIPALCOPYSHEET() throws Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        List<SysAttachmentDto> sysAttachmentDtoList = schemeReportFileService.getProjectProxyFileList(getProjectId());
+        if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
+            String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDtoList.get(0).getId());
+            if (FileUtils.checkImgSuffix(imgPath)) {
+                builder.insertImage(imgPath,
+                        RelativeHorizontalPosition.MARGIN,
+                        GenerateReportEnum.JUDGEOBJECTIMG.getLeft(),
+                        RelativeVerticalPosition.MARGIN,
+                        GenerateReportEnum.JUDGEOBJECTIMG.getTop(),
+                        GenerateReportEnum.JUDGEOBJECTIMG.getWidth(),
+                        GenerateReportEnum.JUDGEOBJECTIMG.getHeight(),
+                        WrapType.SQUARE);
+            }
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 估计对象位置示意图
+     * @return
+     */
+    public String getEstimatedObjectLocationDiagram()throws Exception{
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 估价对象实况照片
+     * @return
+     */
+    public String getValuation_Target_Live_Photos()throws Exception{
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 估价对象权属证明复印件
+     * @return
+     */
+    public String getCopies_the_Ownership_Certificate_the_Valuation_Object()throws Exception{
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 估价中引用的专用文件资料
+     * @return
+     * @throws Exception
+     */
+    public String getSpecial_documentation_referenced_in_valuation()throws Exception{
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        doc.save(localPath);
+        return localPath;
+    }
+
 
     public List<SchemeJudgeObject> getSchemeJudgeObjectList() {
         if (!CollectionUtils.isNotEmpty(this.schemeJudgeObjectList)) {
@@ -3214,7 +3314,8 @@ public class GenerateBaseDataService {
         this.publicService = SpringContextUtils.getBean(PublicService.class);
         this.schemeSupportInfoService = SpringContextUtils.getBean(SchemeSupportInfoService.class);
         this.adRpcQualificationsService = SpringContextUtils.getBean(com.copower.pmcc.assess.service.AdRpcQualificationsAppService.class);
-        this.dataReportAnalysisService = SpringContextUtils.getBean(DataReportAnalysisService.class);
+        this.compileReportService = SpringContextUtils.getBean(CompileReportService.class);
+        this.schemeReportFileService = SpringContextUtils.getBean(SchemeReportFileService.class);
     }
 
 

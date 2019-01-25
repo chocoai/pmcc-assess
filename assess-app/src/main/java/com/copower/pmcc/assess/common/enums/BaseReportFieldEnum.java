@@ -94,6 +94,12 @@ public enum BaseReportFieldEnum {
     judgeBuildLandStateSheet("", "估价建筑物实体状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     judgeBuildResultSurveySheet("", "估价结果一览表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
+    JUDGEOBJECTPRINCIPALCOPYSHEET("", "估价委托书复印件", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    EstimatedObjectLocationDiagram("", "估计对象位置示意图", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    Valuation_Target_Live_Photos("", "估价对象实况照片", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    Copies_the_Ownership_Certificate_the_Valuation_Object("", "估价对象权属证明复印件", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    Special_documentation_referenced_in_valuation("", "估价中引用的专用文件资料", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+
     inventoryRight("", "土地他项权利情况", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     EvaluationMethod("", "评估方法", BaseReportFieldReplaceEnum.BOOKMARK.getKey());
     private String key;

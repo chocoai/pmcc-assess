@@ -4,6 +4,8 @@ import com.aspose.words.*;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.regex.Pattern;
  * Created by kings on 2018-6-6.
  */
 public class AsposeUtils {
+    private static final Logger logger = LoggerFactory.getLogger(AsposeUtils.class);
     //根据书签替换word 内容
 
     //获取所有书签
@@ -47,6 +50,8 @@ public class AsposeUtils {
         }
         return stringList;
     }
+
+
 
     /**
      * We want to merge the range of cells found in between these two cells.
@@ -159,8 +164,10 @@ public class AsposeUtils {
         Document doc = new Document(filePath);
         for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {
             Bookmark bookmark = doc.getRange().getBookmarks().get(stringStringEntry.getKey());
-            bookmark.setText(stringStringEntry.getValue());
-            bookmarkList.add(bookmark.getName());
+            if (bookmark != null) {
+                bookmark.setText(stringStringEntry.getValue());
+                bookmarkList.add(bookmark.getName());
+            }
         }
         doc.save(filePath);
         if (deleteBookMark) {
@@ -185,13 +192,29 @@ public class AsposeUtils {
      * @throws Exception
      */
     public static void replaceText(String filePath, Map<String, String> map) throws Exception {
-        if (StringUtils.isBlank(filePath))
+        if (StringUtils.isBlank(filePath)) {
             throw new Exception("error: empty file path");
-        if (map == null || map.isEmpty())
+        }
+        if (map == null || map.isEmpty()) {
             throw new Exception("error: empty map");
+        }
         Document doc = new Document(filePath);
         for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {
-            doc.getRange().replace(stringStringEntry.getKey(), stringStringEntry.getValue(), false, false);
+            if (StringUtils.isNotBlank(stringStringEntry.getKey()) && StringUtils.isNotBlank(stringStringEntry.getValue())) {
+                try {
+                    //The replace string cannot contain special or break characters.()
+                    //对value 进行校验
+                    String regEx = "[ _`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]|\n|\r|\t";
+                    Pattern p = Pattern.compile(regEx);
+                    Matcher m = p.matcher((stringStringEntry.getValue()));
+                    boolean check = m.find();
+                    if (!check) {
+                        doc.getRange().replace(stringStringEntry.getKey(), stringStringEntry.getValue(), false, false);
+                    }
+                } catch (Exception e) {
+                    //不再需要抛出异常!
+                }
+            }
         }
         doc.save(filePath);
     }
@@ -216,7 +239,6 @@ public class AsposeUtils {
         }
         doc.save(filePath);
     }
-
 
 
     /**

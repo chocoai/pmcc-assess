@@ -15,6 +15,7 @@ public enum BaseReportFieldReplaceEnum {
     FILE("word.file","模板附件(书签替换模板)"),
     FILE_FIXED("word.file.fixed","固定附件(书签替换模板)"),
     BOOKMARK("word.bookmark","书签"),
+    IMAGE("word.image","图片"),
     OTHER("word.other","自定义"),
     ;
     private String key;

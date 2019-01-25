@@ -7,8 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
+import java.awt.*;
 import java.io.*;
 import java.util.List;
 import java.util.Map;
@@ -141,6 +143,24 @@ public class FileUtils {
                 bis.close();
                 fis.close();
             }
+        }
+    }
+
+    /**
+     * 注意： 该方法适用的图片格式为 bmp/gif/jpg/png
+     * @param path
+     * @return
+     */
+    public static boolean checkImgSuffix(String path){
+        File file = new File(path);
+        try {
+            // 通过ImageReader来解码这个file并返回一个BufferedImage对象
+            // 如果找不到合适的ImageReader则会返回null，我们可以认为这不是图片文件
+            // 或者在解析过程中报错，也返回false
+            Image image = ImageIO.read(file);
+            return image != null;
+        } catch(IOException ex) {
+            return false;
         }
     }
 
