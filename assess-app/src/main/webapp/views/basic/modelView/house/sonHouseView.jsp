@@ -163,22 +163,6 @@
 
 <%@include file="/views/basic/modelView/house/damagedDegreeView.jsp" %>
 
-<div class="x_content">
-    <form class="form-horizontal">
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    附件
-                </label>
-                <div class="col-sm-11">
-                    <input id="otherFile" type="file" multiple="false">
-                    <div id="_otherFile"></div>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
-
 <script src="${pageContext.request.contextPath}/js/basic/house/sonHouseView.js"></script>
 
 <div id="divBoxHouseRoom" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"

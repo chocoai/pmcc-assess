@@ -5,8 +5,8 @@ import com.copower.pmcc.assess.dal.basis.entity.DataDamagedDegree;
 import com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatio;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseWaterDrainVo;
+import com.copower.pmcc.assess.service.assist.ResidueRatioService;
 import com.copower.pmcc.assess.service.basic.BasicHouseDamagedDegreeService;
-import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.data.DataDamagedDegreeService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -35,9 +35,8 @@ import java.util.List;
 @RequestMapping("/residueRatio")
 public class ResidueRatioController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
-
     @Autowired
-    private DataBlockService dataBlockService;
+    private ResidueRatioService residueRatioService;
     @Autowired
     private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
     @Autowired
@@ -61,7 +60,7 @@ public class ResidueRatioController {
     @RequestMapping(value = "/saveResidueRatio", method = {RequestMethod.POST}, name = "保存")
     public HttpResult saveResidueRatio(String formData) {
         try {
-            return HttpResult.newCorrectResult(dataBlockService.saveResidueRatio(formData));
+            return HttpResult.newCorrectResult(residueRatioService.saveResidueRatio(formData));
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");
@@ -72,7 +71,7 @@ public class ResidueRatioController {
     @RequestMapping(value = "/initObserve", method = {RequestMethod.POST}, name = "保存")
     public HttpResult initObserve(Integer residueRatioId) {
         try {
-            HashMap<String, String> observeDate = dataBlockService.getObserveDate(residueRatioId);
+            HashMap<String, String> observeDate = residueRatioService.getObserveDate(residueRatioId);
             return HttpResult.newCorrectResult(JSONObject.toJSON(observeDate));
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
@@ -84,7 +83,7 @@ public class ResidueRatioController {
     @RequestMapping(value = "/initAgeLimit", method = {RequestMethod.POST}, name = "保存")
     public HttpResult initAgeLimit(Integer residueRatioId) {
         try {
-            ToolResidueRatio residueRatio = dataBlockService.initAgeLimit(residueRatioId);
+            ToolResidueRatio residueRatio = residueRatioService.initAgeLimit(residueRatioId);
             return HttpResult.newCorrectResult(residueRatio);
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);

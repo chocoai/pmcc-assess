@@ -457,6 +457,7 @@
         objectData.showFile(AssessUploadKey.HOUSE_HUXING_PLAN);
         objectData.showFile(AssessUploadKey.HOUSE_NEW_HUXING_PLAN);
         objectData.showFile(AssessUploadKey.HOUSE_IMG_PLAN);
+        objectData.showFile(AssessUploadKey.HOUSE_FILE);
         objectData.house.subLoadList(AssessDicKey.examineHouseTransactionTypeSell);
         objectData.house.subLoadList(AssessDicKey.examineHouseTransactionTypeLease);
     });

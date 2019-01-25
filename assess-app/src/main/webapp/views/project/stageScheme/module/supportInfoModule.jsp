@@ -96,14 +96,16 @@
             var supportInfo = {};
             supportInfo.id = $(this).find('[name=id]').val();
             supportInfo.content = $(this).find('[data-name=content]').val();
-            supportInfo.jsonContent = [];
-            $(this).find('.content-field').find(':text').each(function () {
-                var keyValue = {};
-                keyValue.key = $(this).attr('data-name');
-                keyValue.value = $(this).val();
-                supportInfo.jsonContent.push(keyValue);
-            })
-            supportInfoArray.push(supportInfo);
+            if(supportInfo.content){
+                supportInfo.jsonContent = [];
+                $(this).find('.content-field').find(':text').each(function () {
+                    var keyValue = {};
+                    keyValue.key = $(this).attr('data-name');
+                    keyValue.value = $(this).val();
+                    supportInfo.jsonContent.push(keyValue);
+                })
+                supportInfoArray.push(supportInfo);
+            }
         })
         return supportInfoArray;
     }

@@ -102,41 +102,35 @@
                         <div class="tab-content">
                             <c:forEach items="${projectPlanList}" var="plan">
                                 <div class="tab-pane fade " id="tab_plan_${plan.id}">
-                                    <c:if test="${not empty plan.planDisplayUrl}">
-                                        <div class="col-md-3 col-sm-3 col-xs-3 col-sm-offset-1">
+                                    <div id="plan_item_${plan.id}" class="col-md-3 col-sm-3 col-xs-3 col-sm-offset-1">
+                                        <c:if test="${not empty plan.planDisplayUrl}">
                                             <div class="btn-group">
                                                 <c:if test="${empty plan.planExecutUrl}">
-                                                    <button class="btn btn-sm btn-primary" type="button">
-                                                        计划编制
-                                                    </button>
-                                                    <button class="btn btn-sm btn-warning" type="button"
-                                                            data-placement="top"
-                                                            data-toggle="tooltip" data-original-title="查看"
-                                                            onclick="window.open('${plan.planDisplayUrl}')"><i
-                                                            class="fa fa-search"></i></button>
+                                                    <div class="btn btn-sm btn-primary">计划编制</div>
+                                                    <div class="btn btn-sm btn-warning" data-placement="top"
+                                                         data-toggle="tooltip" data-original-title="查看"
+                                                         onclick="window.open('${plan.planDisplayUrl}')"><i
+                                                            class="fa fa-search"></i></div>
                                                 </c:if>
                                                 <c:if test="${not empty plan.planExecutUrl}">
-                                                    <button class="btn btn-sm btn-primary" type="button">
-                                                        计划编制
-                                                    </button>
-                                                    <button class="btn btn-sm btn-default" type="button"
-                                                            data-placement="top" data-toggle="tooltip"
-                                                            data-original-title="责任人">${plan.planExecutor}
-                                                    </button>
+                                                    <div class="btn btn-sm btn-primary">计划编制</div>
+                                                    <div class="btn btn-sm btn-default" data-placement="top"
+                                                         data-toggle="tooltip"
+                                                         data-original-title="责任人">${plan.planExecutor}
+                                                    </div>
                                                     <c:if test="${plan.planCanExecut eq true}">
-                                                        <button class="btn btn-sm btn-success" type="button"
-                                                                data-placement="top" data-toggle="tooltip"
-                                                                onclick="projectDetails.taskOpenWin('${plan.planExecutUrl}')"
-                                                                data-original-title="处理"><i
-                                                                class="fa fa-arrow-right"></i>
-                                                        </button>
+                                                        <div class="btn btn-sm btn-success" data-placement="top"
+                                                             data-toggle="tooltip"
+                                                             onclick="projectDetails.taskOpenWin('${plan.planExecutUrl}')"
+                                                             data-original-title="处理"><i class="fa fa-arrow-right"></i>
+                                                        </div>
                                                     </c:if>
                                                 </c:if>
                                             </div>
-                                        </div>
-                                    </c:if>
+                                        </c:if>
+                                    </div>
                                     <p>
-                                    <table id="plan_item_list_${plan.id}" class="table table-bordered"></table>
+                                    <table id="plan_task_list${plan.id}" class="table table-bordered"></table>
                                     </p>
                                 </div>
                             </c:forEach>
@@ -150,6 +144,26 @@
     </div>
 </div>
 </body>
+<script type="text/html" id="planItemHtml">
+    <div class="btn-group">
+        <div class="btn btn-sm btn-primary">计划编制</div>
+        <div class="btn btn-sm btn-default" data-placement="top" data-toggle="tooltip"
+             data-original-title="责任人">{planExecutor}
+        </div>
+        <div class="btn btn-sm btn-success" data-placement="top" data-toggle="tooltip"
+             onclick="projectDetails.taskOpenWin('{planExecutUrl}')"
+             data-original-title="处理"><i class="fa fa-arrow-right"></i>
+        </div>
+    </div>
+</script>
+<script type="text/html" id="planItemViewHtml">
+    <div class="btn-group">
+        <div class="btn btn-sm btn-primary">计划编制</div>
+        <div class="btn btn-sm btn-warning" data-placement="top"
+             data-toggle="tooltip" data-original-title="查看"
+             onclick="window.open('{planDisplayUrl}')"><i class="fa fa-search"></i></div>
+    </div>
+</script>
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
@@ -160,6 +174,10 @@
         });
 
         projectDetails.getRuningTab().tab('show');
+
+        setInterval(function () {
+            projectDetails.loadPlanItem(projectDetails.getActiveTab().closest('li').attr('plan-id'));
+        }, 30 * 1000)
     })
 </script>
 <script type="application/javascript">
@@ -167,10 +185,31 @@
         loadPlanTabInfo: function (tab) {
             var that = $(tab).closest('li');
             projectDetails.loadTaskList({
-                target: $('#plan_item_list_' + that.attr('plan-id')),
+                target: $('#plan_task_list' + that.attr('plan-id')),
                 projectId: '${projectInfo.id}',
                 planId: that.attr('plan-id')
             });
+        },
+
+        loadPlanItem: function (planId) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/projectInfo/getProjectPlanItem',
+                data: {planId: planId},
+                success: function (result) {
+                    $('#plan_item_' + planId).empty();
+                    if (result.ret) {
+                        if (result.data.planDisplayUrl) {
+                            var html = '';
+                            if (result.data.planExecutUrl) {
+                                html = $('#planItemHtml').html().replace(/{planExecutor}/g, result.data.planExecutor).replace(/{planExecutUrl}/g, result.data.planExecutUrl);
+                            } else {
+                                html = $('#planItemViewHtml').html().replace(/{planDisplayUrl}/g, result.data.planDisplayUrl);
+                            }
+                            $('#plan_item_' + planId).append(html);
+                        }
+                    }
+                }
+            })
         },
 
         loadTaskList: function (options) {
@@ -180,7 +219,8 @@
                 planId: undefined
             }
             var defaults = $.extend({}, defaults, options);
-            $('#plan_item_list_' + defaults.planId).treegrid({
+            projectDetails.loadPlanItem(defaults.planId);
+            $('#plan_task_list' + defaults.planId).treegrid({
                 url: "${pageContext.request.contextPath}/projectInfo/getPlanDetailListByPlanId",
                 queryParams: {
                     projectId: defaults.projectId,

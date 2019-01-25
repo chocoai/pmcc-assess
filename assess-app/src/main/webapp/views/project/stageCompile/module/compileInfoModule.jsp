@@ -84,14 +84,16 @@
             var compileInfo = {};
             compileInfo.id = $(this).find('[name=id]').val();
             compileInfo.content = $(this).find('[data-name=content]').val();
-            compileInfo.jsonContent = [];
-            $(this).find('.content-field').find(':text').each(function () {
-                var keyValue = {};
-                keyValue.key = $(this).attr('data-name');
-                keyValue.value = $(this).val();
-                compileInfo.jsonContent.push(keyValue);
-            })
-            compileInfoArray.push(compileInfo);
+            if (compileInfo.content) {
+                compileInfo.jsonContent = [];
+                $(this).find('.content-field').find(':text').each(function () {
+                    var keyValue = {};
+                    keyValue.key = $(this).attr('data-name');
+                    keyValue.value = $(this).val();
+                    compileInfo.jsonContent.push(keyValue);
+                })
+                compileInfoArray.push(compileInfo);
+            }
         })
         return compileInfoArray;
     }

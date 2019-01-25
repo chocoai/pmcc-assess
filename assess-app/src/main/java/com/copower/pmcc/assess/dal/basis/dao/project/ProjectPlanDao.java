@@ -40,7 +40,7 @@ public class ProjectPlanDao {
         return projectPlanMapper.selectByExample(example);
     }
 
-    public ProjectPlan getProjectplanById(Integer id) {
+    public ProjectPlan getProjectPlanById(Integer id) {
         return projectPlanMapper.selectByPrimaryKey(id);
     }
 

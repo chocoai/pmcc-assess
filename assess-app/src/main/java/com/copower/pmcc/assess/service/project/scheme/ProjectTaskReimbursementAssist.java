@@ -35,7 +35,9 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
         SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByPlanDetailsId(projectPlanDetails.getId());
         if (schemeReimbursement == null) {
             schemeReimbursement = new SchemeReimbursement();
-            schemeReimbursement.setId(0);
+            schemeReimbursement.setProjectId(projectPlanDetails.getProjectId());
+            schemeReimbursement.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
+            schemeReimbursement.setPlanDetailsId(projectPlanDetails.getId());
         }
         modelAndView.addObject("master", schemeReimbursement == null ? new SchemeReimbursement() : schemeReimbursement);
         modelAndView.addObject("judgeObjectName", projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid()).getProjectPhaseName());
@@ -97,7 +99,7 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         SchemeReimbursement schemeReimbursement = JSON.parseObject(formData, SchemeReimbursement.class);
-        schemeReimbursementService.saveSchemeReimbursement(schemeReimbursement, projectPlanDetails, processInsId);
+        schemeReimbursementService.saveSchemeReimbursement(schemeReimbursement);
     }
 
     @Override
@@ -108,6 +110,6 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         SchemeReimbursement schemeReimbursement = JSON.parseObject(formData, SchemeReimbursement.class);
-        schemeReimbursementService.saveSchemeReimbursement(schemeReimbursement, projectPlanDetails, processInsId);
+        schemeReimbursementService.saveSchemeReimbursement(schemeReimbursement);
     }
 }

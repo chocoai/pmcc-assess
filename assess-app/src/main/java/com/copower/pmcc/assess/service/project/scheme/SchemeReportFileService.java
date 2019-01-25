@@ -91,6 +91,14 @@ public class SchemeReportFileService extends BaseService {
         }
     }
 
+    public SchemeReportFile getReportFileByPlanDetailsId(Integer planDetailsId) {
+        SchemeReportFile where = new SchemeReportFile();
+        where.setPlanDetailsId(planDetailsId);
+        List<SchemeReportFile> reportFileList = schemeReportFileDao.getReportFileList(where);
+        if (CollectionUtils.isEmpty(reportFileList)) return null;
+        return reportFileList.get(0);
+    }
+
     /**
      * 获取委估对象下所有的实况图片
      *
@@ -284,10 +292,11 @@ public class SchemeReportFileService extends BaseService {
 
     /**
      * 获取自定义块附件
+     *
      * @param customId
      * @return
      */
-    public List<SysAttachmentDto> getCustomFileList(Integer customId){
+    public List<SysAttachmentDto> getCustomFileList(Integer customId) {
         return baseAttachmentService.getByField_tableId(customId, null, FormatUtils.entityNameConvertToTableName(SchemeReportFileCustom.class));
     }
 

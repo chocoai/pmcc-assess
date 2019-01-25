@@ -74,6 +74,20 @@
                     </form>
                 </div>
             </div>
+            <div class="x_panel">
+                <div class="x_content form-horizontal">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-md-1 col-sm-1 col-xs-12 control-label">
+                                估价委托书
+                            </label>
+                            <div class="col-md-5 col-sm-5 col-xs-12">
+                                <div id="_project_proxy"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
@@ -231,9 +245,25 @@
 
     $(function () {
         declareRealtyHouseCert.loadList();
+        loadUploadFiles(AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", AssessUploadKey.PROJECT_PROXY);
     });
 </script>
-<script>
+<script type="text/javascript">
+    //显示附件
+    function loadUploadFiles(tableName, tableId, fieldsName, target) {
+        FileUtils.getFileShows({
+            target: target == undefined ? fieldsName : target,
+            formData: {
+                tableName: tableName,
+                tableId: tableId,
+                fieldsName: fieldsName,
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            editFlag: false,
+            deleteFlag: false
+        })
+    }
+
     var declareRealtyLandCert = {} ;
     declareRealtyLandCert.config = {
         frm: "frmDeclareRealtyLandCert",

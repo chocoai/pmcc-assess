@@ -107,9 +107,7 @@
         FileUtils.getFileShows({
             target: "apply_file",
             formData: {
-                tableName: "tb_scheme_reimbursement",
-                processInsId: "${processInsId}",
-                creater: "${currUserInfo.userAccount}",
+                tableName: AssessDBKey.SchemeReimbursement,
                 tableId: "${master.id}",
                 fieldsName: "apply"
             },

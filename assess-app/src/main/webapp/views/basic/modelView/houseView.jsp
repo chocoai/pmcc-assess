@@ -150,6 +150,18 @@
                 </div>
             </div>
         </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    附件
+                </label>
+                <div class="col-sm-3">
+                    <input id="house_file" type="file" multiple="false">
+                    <div id="_house_file"></div>
+                </div>
+            </div>
+        </div>
     </form>
 </div>
 <div class="x_content">

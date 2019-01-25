@@ -36,9 +36,16 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskSurePriceIndex", "", 0, "0", "");
         SchemeSurePrice schemeSurePrice = schemeSurePriceService.getSurePriceByPlanDetailsId(projectPlanDetails.getId());
-        modelAndView.addObject("schemeSurePrice", schemeSurePrice == null ? new SchemeSurePrice() : schemeSurePrice);
+        if (schemeSurePrice == null) {
+            schemeSurePrice = new SchemeSurePrice();
+            schemeSurePrice.setProjectId(projectPlanDetails.getProjectId());
+            schemeSurePrice.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
+            schemeSurePrice.setPlanDetailsId(projectPlanDetails.getId());
+            schemeSurePriceService.saveSchemeSurePrice(schemeSurePrice);
+        }
+        modelAndView.addObject("schemeSurePrice", schemeSurePrice);
         modelAndView.addObject("judgeObjectName", projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid()).getProjectPhaseName());
-        modelAndView.addObject("subJudgeObjectList",schemeJudgeObjectService.getListByPid(projectPlanDetails.getJudgeObjectId()));
+        modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getListByPid(projectPlanDetails.getJudgeObjectId()));
         return modelAndView;
     }
 
@@ -58,7 +65,7 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
         modelAndView.addObject("schemeSurePrice", schemeSurePriceService.getSurePriceByPlanDetailsId(projectPlanDetails.getId()));
         modelAndView.addObject("judgeObjectName", projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid()).getProjectPhaseName());
         modelAndView.addObject("surePriceItemList", schemeSurePriceService.getSchemeSurePriceItemList(projectPlanDetails.getJudgeObjectId(), false));
-        modelAndView.addObject("subJudgeObjectList",schemeJudgeObjectService.getListByPid(projectPlanDetails.getJudgeObjectId()));
+        modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getListByPid(projectPlanDetails.getJudgeObjectId()));
         return modelAndView;
     }
 
@@ -78,7 +85,7 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
         SchemeSurePrice schemeSurePrice = schemeSurePriceService.getSurePriceByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("schemeSurePrice", schemeSurePrice == null ? new SchemeSurePrice() : schemeSurePrice);
         modelAndView.addObject("judgeObjectName", projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid()).getProjectPhaseName());
-        modelAndView.addObject("subJudgeObjectList",schemeJudgeObjectService.getListByPid(projectPlanDetails.getJudgeObjectId()));
+        modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getListByPid(projectPlanDetails.getJudgeObjectId()));
         return modelAndView;
     }
 
@@ -92,14 +99,14 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskSurePriceApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         modelAndView.addObject("judgeObjectName", projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid()).getProjectPhaseName());
         modelAndView.addObject("surePriceItemList", schemeSurePriceService.getSchemeSurePriceItemList(projectPlanDetails.getJudgeObjectId(), false));
-        modelAndView.addObject("subJudgeObjectList",schemeJudgeObjectService.getListByPid(projectPlanDetails.getJudgeObjectId()));
+        modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getListByPid(projectPlanDetails.getJudgeObjectId()));
         return modelAndView;
     }
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         SchemeSurePriceApplyDto schemeSurePriceApplyDto = JSON.parseObject(formData, SchemeSurePriceApplyDto.class);
-        schemeSurePriceService.saveSurePrice(schemeSurePriceApplyDto, projectPlanDetails, processInsId);
+        schemeSurePriceService.submitSurePrice(schemeSurePriceApplyDto, projectPlanDetails, processInsId);
     }
 
     @Override
@@ -110,7 +117,7 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         SchemeSurePriceApplyDto schemeSurePriceApplyDto = JSON.parseObject(formData, SchemeSurePriceApplyDto.class);
-        schemeSurePriceService.saveSurePrice(schemeSurePriceApplyDto, projectPlanDetails, processInsId);
+        schemeSurePriceService.submitSurePrice(schemeSurePriceApplyDto, projectPlanDetails, processInsId);
     }
 
 

@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.project.scheme;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeSupportDao;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeSupport;
-import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.slf4j.Logger;
@@ -28,9 +27,7 @@ public class SchemeSupportService {
      * @param schemeSupport
      * @throws BusinessException
      */
-    public void saveSchemeSupport(SchemeSupport schemeSupport) throws BusinessException {
-        if (schemeSupport == null)
-            throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+    public void saveSchemeSupport(SchemeSupport schemeSupport) {
         if (schemeSupport.getId() != null && schemeSupport.getId() > 0) {
             schemeSupportDao.updateSupport(schemeSupport);
         } else {
@@ -39,10 +36,10 @@ public class SchemeSupportService {
         }
     }
 
-    public SchemeSupport getSchemeSupport(Integer planDetailsId) {
-        SchemeSupport examle = new SchemeSupport();
-        examle.setPlanDetailsId(planDetailsId);
-        SchemeSupport schemeSupport = schemeSupportDao.getSchemeSupport(examle);
+    public SchemeSupport getSchemeSupportByPlanDetailsId(Integer planDetailsId) {
+        SchemeSupport where = new SchemeSupport();
+        where.setPlanDetailsId(planDetailsId);
+        SchemeSupport schemeSupport = schemeSupportDao.getSchemeSupport(where);
         return schemeSupport;
     }
 }

@@ -398,62 +398,76 @@ public class ProjectInfoService {
     public List<ProjectPlanVo> getProjectPlanList(Integer projectId) {
         List<ProjectPlan> projectPlanList = projectPlanDao.getProjectPlanList(projectId);
         projectPlanList.remove(0);//去除立项阶段
-        String viewUrl = String.format("/%s/ProjectPlan/planDetailsById?planId=", applicationConstant.getAppKey());
-        List<ProjectPlanVo> projectPlanVos = LangUtils.transform(projectPlanList, projectPlan -> {
-            ProjectPlanVo projectPlanVo = new ProjectPlanVo();
-            BeanUtils.copyProperties(projectPlan, projectPlanVo);
-            try {
-                ProjectStatusEnum projectStatusEnum = ProjectStatusEnum.getEnumByKey(projectPlan.getProjectStatus());
-                switch (projectStatusEnum) {
-                    case FINISH:
-                    case TASK:
-                        projectPlanVo.setPlanDisplayUrl(String.format("%s%s", viewUrl, projectPlan.getId()));
-                    case PLAN:
-                        //判断有没有发起流程 如果发起了流程 则取待办 没有发起流程 则取任务
-                        if (StringUtils.equals(projectPlan.getProcessInsId(), "-1")) {
-                            ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
-                            projectResponsibilityDto.setProjectId(projectId);
-                            projectResponsibilityDto.setPlanId(projectPlan.getId());
-                            projectResponsibilityDto.setAppKey(applicationConstant.getAppKey());
-                            projectResponsibilityDto.setModel(ResponsibileModelEnum.NEWPLAN.getId());
-                            ProjectResponsibilityDto projectTask = bpmRpcProjectTaskService.getProjectTask(projectResponsibilityDto);
-                            if (projectTask != null) {
-                                projectPlanVo.setPlanExecutor(publicService.getUserNameByAccount(projectTask.getUserAccount()));
-                                projectPlanVo.setPlanCanExecut(StringUtils.equals(commonService.thisUserAccount(), projectTask.getUserAccount()));
-                                projectPlanVo.setPlanExecutUrl(projectTask.getUrl());
-                                projectPlanVo.setPlanDisplayUrl(String.format("%s%s", viewUrl, projectPlan.getId()));
-                            }
-                        } else {
-                            List<ActivitiTaskNodeDto> activitiTaskNodeDtos = null;
-                            try {
-                                activitiTaskNodeDtos = bpmRpcActivitiProcessManageService.queryProcessCurrentTask(projectPlan.getProcessInsId());
-                            } catch (BpmException e) {
-                                logger.error("计划流程查询异常", e);
-                            }
-                            if (CollectionUtils.isNotEmpty(activitiTaskNodeDtos)) {
-                                ActivitiTaskNodeDto activitiTaskNodeDto = activitiTaskNodeDtos.get(0);
-                                BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(Integer.parseInt(activitiTaskNodeDto.getBusinessKey()));
-                                String approvalUrl = boxReDto.getProcessApprovalUrl();
-                                if (StringUtils.equals(ProcessActivityEnum.EDIT.getValue(), activitiTaskNodeDto.getTaskKey())) {
-                                    approvalUrl = boxReDto.getProcessEditUrl();
-                                }
-                                approvalUrl = String.format("/%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), activitiTaskNodeDto.getProcessInstanceId(), activitiTaskNodeDto.getTaskId());
-                                String displayUrl = String.format("/%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), boxReDto.getProcessDisplayUrl(), boxReDto.getId(), activitiTaskNodeDto.getProcessInstanceId(), activitiTaskNodeDto.getTaskId());
-                                projectPlanVo.setPlanExecutor(publicService.getUserNameByAccountList(activitiTaskNodeDto.getUsers()));
-                                projectPlanVo.setPlanCanExecut(activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount()));
-                                projectPlanVo.setPlanExecutUrl(approvalUrl);
-                                projectPlanVo.setPlanDisplayUrl(displayUrl);
-                            }
-                        }
-                        break;
-                }
-
-            } catch (Exception e) {
-                logger.error("获取任务信息异常", e);
-            }
-            return projectPlanVo;
-        });
+        List<ProjectPlanVo> projectPlanVos = LangUtils.transform(projectPlanList, projectPlan -> getProjectPlanVo(projectPlan));
         return projectPlanVos;
+    }
+
+    /**
+     * 获取项目详情显示的项目阶段
+     *
+     * @param planId
+     * @return
+     */
+    public ProjectPlanVo getProjectPlanItem(Integer planId){
+        ProjectPlan projectPlan = projectPlanDao.getProjectPlanById(planId);
+        if(projectPlan==null) return null;
+        return getProjectPlanVo(projectPlan);
+    }
+
+    public ProjectPlanVo getProjectPlanVo(ProjectPlan projectPlan){
+        ProjectPlanVo projectPlanVo = new ProjectPlanVo();
+        BeanUtils.copyProperties(projectPlan, projectPlanVo);
+        String viewUrl = String.format("/%s/ProjectPlan/planDetailsById?planId=", applicationConstant.getAppKey());
+        try {
+            ProjectStatusEnum projectStatusEnum = ProjectStatusEnum.getEnumByKey(projectPlan.getProjectStatus());
+            switch (projectStatusEnum) {
+                case FINISH:
+                case TASK:
+                    projectPlanVo.setPlanDisplayUrl(String.format("%s%s", viewUrl, projectPlan.getId()));
+                case PLAN:
+                    //判断有没有发起流程 如果发起了流程 则取待办 没有发起流程 则取任务
+                    if (StringUtils.equals(projectPlan.getProcessInsId(), "-1")) {
+                        ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
+                        projectResponsibilityDto.setProjectId(projectPlan.getProjectId());
+                        projectResponsibilityDto.setPlanId(projectPlan.getId());
+                        projectResponsibilityDto.setAppKey(applicationConstant.getAppKey());
+                        projectResponsibilityDto.setModel(ResponsibileModelEnum.NEWPLAN.getId());
+                        ProjectResponsibilityDto projectTask = bpmRpcProjectTaskService.getProjectTask(projectResponsibilityDto);
+                        if (projectTask != null) {
+                            projectPlanVo.setPlanExecutor(publicService.getUserNameByAccount(projectTask.getUserAccount()));
+                            projectPlanVo.setPlanCanExecut(StringUtils.equals(commonService.thisUserAccount(), projectTask.getUserAccount()));
+                            projectPlanVo.setPlanExecutUrl(projectTask.getUrl());
+                            projectPlanVo.setPlanDisplayUrl(String.format("%s%s", viewUrl, projectPlan.getId()));
+                        }
+                    } else {
+                        List<ActivitiTaskNodeDto> activitiTaskNodeDtos = null;
+                        try {
+                            activitiTaskNodeDtos = bpmRpcActivitiProcessManageService.queryProcessCurrentTask(projectPlan.getProcessInsId());
+                        } catch (BpmException e) {
+                            logger.error("计划流程查询异常", e);
+                        }
+                        if (CollectionUtils.isNotEmpty(activitiTaskNodeDtos)) {
+                            ActivitiTaskNodeDto activitiTaskNodeDto = activitiTaskNodeDtos.get(0);
+                            BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(Integer.parseInt(activitiTaskNodeDto.getBusinessKey()));
+                            String approvalUrl = boxReDto.getProcessApprovalUrl();
+                            if (StringUtils.equals(ProcessActivityEnum.EDIT.getValue(), activitiTaskNodeDto.getTaskKey())) {
+                                approvalUrl = boxReDto.getProcessEditUrl();
+                            }
+                            approvalUrl = String.format("/%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), activitiTaskNodeDto.getProcessInstanceId(), activitiTaskNodeDto.getTaskId());
+                            String displayUrl = String.format("/%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), boxReDto.getProcessDisplayUrl(), boxReDto.getId(), activitiTaskNodeDto.getProcessInstanceId(), activitiTaskNodeDto.getTaskId());
+                            projectPlanVo.setPlanExecutor(publicService.getUserNameByAccountList(activitiTaskNodeDto.getUsers()));
+                            projectPlanVo.setPlanCanExecut(activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount()));
+                            projectPlanVo.setPlanExecutUrl(approvalUrl);
+                            projectPlanVo.setPlanDisplayUrl(displayUrl);
+                        }
+                    }
+                    break;
+            }
+
+        } catch (Exception e) {
+            logger.error("获取任务信息异常", e);
+        }
+        return projectPlanVo;
     }
 
 

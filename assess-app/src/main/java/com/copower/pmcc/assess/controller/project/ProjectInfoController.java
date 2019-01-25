@@ -245,7 +245,7 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/getProjectTaskByProjectId", name = "取得项目工作成果", method = RequestMethod.GET)
-    public BootstrapTableVo getProjectPlanByProjectId(Integer projecId) {
+    public BootstrapTableVo getProjectPlanDetailsByProjectId(Integer projecId) {
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = projectPlanDetailsService.getProjectPlanDetailsByProjectId(projecId);
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         bootstrapTableVo.setTotal((long) projectPlanDetailsVos.size());
@@ -261,5 +261,17 @@ public class ProjectInfoController {
         bootstrapTableVo.setTotal((long) projectPlanDetailsVos.size());
         bootstrapTableVo.setRows(projectPlanDetailsVos);
         return bootstrapTableVo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getProjectPlanItem", name = "取得计划编制信息", method = RequestMethod.POST)
+    public HttpResult getProjectPlanItem(Integer planId) {
+        try {
+            ProjectPlanVo projectPlanItem = projectInfoService.getProjectPlanItem(planId);
+            return HttpResult.newCorrectResult(projectPlanItem);
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+            return HttpResult.newErrorResult("取得计划编制信息异常");
+        }
     }
 }

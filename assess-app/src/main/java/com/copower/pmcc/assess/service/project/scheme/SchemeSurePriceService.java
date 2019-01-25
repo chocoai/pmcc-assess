@@ -173,29 +173,18 @@ public class SchemeSurePriceService {
     }
 
     /**
-     * 保存确定后单价
+     * 提交对应单价
      *
      * @param schemeSurePriceApplyDto
      */
-    @Transactional
-    public void saveSurePrice(SchemeSurePriceApplyDto schemeSurePriceApplyDto, ProjectPlanDetails projectPlanDetails, String processInsId) {
-        if (schemeSurePriceApplyDto.getId() == null || schemeSurePriceApplyDto.getId() <= 0) {
-            SchemeSurePrice schemeSurePrice = new SchemeSurePrice();
-            schemeSurePrice.setProjectId(projectPlanDetails.getProjectId());
-            schemeSurePrice.setJudgeObjectId(schemeSurePriceApplyDto.getJudgeObjectId());
-            schemeSurePrice.setPlanDetailsId(projectPlanDetails.getId());
-            schemeSurePrice.setProcessInsId(processInsId);
-            schemeSurePrice.setWeightExplain(schemeSurePriceApplyDto.getWeightExplain());
-            schemeSurePrice.setPrice(schemeSurePriceApplyDto.getPrice());
-            schemeSurePrice.setCreator(commonService.thisUserAccount());
-            schemeSurePriceDao.addSurePrice(schemeSurePrice);
-        } else {
-            SchemeSurePrice schemeSurePrice = new SchemeSurePrice();
-            schemeSurePrice.setId(schemeSurePriceApplyDto.getId());
-            schemeSurePrice.setWeightExplain(schemeSurePriceApplyDto.getWeightExplain());
-            schemeSurePrice.setPrice(schemeSurePriceApplyDto.getPrice());
-            schemeSurePriceDao.updateSurePrice(schemeSurePrice);
-        }
+    @Transactional(rollbackFor = Exception.class)
+    public void submitSurePrice(SchemeSurePriceApplyDto schemeSurePriceApplyDto, ProjectPlanDetails projectPlanDetails, String processInsId) {
+        SchemeSurePrice schemeSurePrice = schemeSurePriceDao.getSurePriceById(schemeSurePriceApplyDto.getId());
+        schemeSurePrice.setProcessInsId(processInsId);
+        schemeSurePrice.setWeightExplain(schemeSurePriceApplyDto.getWeightExplain());
+        schemeSurePrice.setPrice(schemeSurePriceApplyDto.getPrice());
+        schemeSurePriceDao.updateSurePrice(schemeSurePrice);
+
         List<SchemeSurePriceItem> surePriceItems = schemeSurePriceApplyDto.getSurePriceItemList();
         if (CollectionUtils.isNotEmpty(surePriceItems)) {
             for (SchemeSurePriceItem surePriceItem : surePriceItems) {

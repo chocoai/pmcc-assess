@@ -150,9 +150,7 @@
         FileUtils.uploadFiles({
                 target: "apply_file",
                 formData: {
-                    tableName: "tb_scheme_reimbursement",
-                    processInsId: "${empty processInsId?'0':processInsId}",
-                    creater: "${currUserInfo.userAccount}",
+                    tableName: AssessDBKey.SchemeReimbursement,
                     tableId: "${master.id}",
                     fieldsName: "apply"
                 },
@@ -172,8 +170,6 @@
             target: "apply_file",
             formData: {
                 tableName: "tb_scheme_reimbursement",
-                processInsId: "${empty processInsId?'0':processInsId}",
-                creater: "${currUserInfo.userAccount}",
                 tableId: "${master.id}",
                 fieldsName: "apply"
             },
@@ -182,11 +178,8 @@
     }
 
     function submit() {
-        if ($("#master").length > 0) {
-            $("#master").validate();
-            if (!$("#master").valid()) {
-                return false;
-            }
+        if (!$("#master").valid()) {
+            return false;
         }
         var formData = formParams("master");
 
