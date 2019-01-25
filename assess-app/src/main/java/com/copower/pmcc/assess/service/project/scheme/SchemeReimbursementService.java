@@ -23,7 +23,7 @@ public class SchemeReimbursementService {
     }
 
     public void saveSchemeReimbursement(SchemeReimbursement schemeReimbursement) {
-        if (schemeReimbursement.getId() == null && schemeReimbursement.getId() > 0) {
+        if (schemeReimbursement.getId() != null && schemeReimbursement.getId() > 0) {
             schemeReimbursementDao.editSchemeReimbursement(schemeReimbursement);
         } else {
             schemeReimbursement.setCreator(processControllerComponent.getThisUser());

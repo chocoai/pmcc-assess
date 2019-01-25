@@ -148,20 +148,14 @@
 <script type="application/javascript">
     $(function () {
         FileUtils.uploadFiles({
-                target: "apply_file",
-                formData: {
-                    tableName: AssessDBKey.SchemeReimbursement,
-                    tableId: "${master.id}",
-                    fieldsName: "apply"
-                },
-                deleteFlag: true
+            target: "apply_file",
+            formData: {
+                tableName: AssessDBKey.SchemeReimbursement,
+                tableId: "${master.id}",
+                fieldsName: "apply"
             },
-            {
-                onUploadComplete: function (file, result) {
-                    loadFiles();
-                }
-            }
-        );
+            deleteFlag: true
+        });
         loadFiles();
     })
 
@@ -169,7 +163,7 @@
         FileUtils.getFileShows({
             target: "apply_file",
             formData: {
-                tableName: "tb_scheme_reimbursement",
+                tableName: AssessDBKey.SchemeReimbursement,
                 tableId: "${master.id}",
                 fieldsName: "apply"
             },

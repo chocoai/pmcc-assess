@@ -38,8 +38,9 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
             schemeReimbursement.setProjectId(projectPlanDetails.getProjectId());
             schemeReimbursement.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
             schemeReimbursement.setPlanDetailsId(projectPlanDetails.getId());
+            schemeReimbursementService.saveSchemeReimbursement(schemeReimbursement);
         }
-        modelAndView.addObject("master", schemeReimbursement == null ? new SchemeReimbursement() : schemeReimbursement);
+        modelAndView.addObject("master", schemeReimbursement);
         modelAndView.addObject("judgeObjectName", projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid()).getProjectPhaseName());
         return modelAndView;
     }
