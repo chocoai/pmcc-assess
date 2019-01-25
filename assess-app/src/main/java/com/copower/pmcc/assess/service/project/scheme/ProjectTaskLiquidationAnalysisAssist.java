@@ -44,13 +44,11 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
             schemeLiquidationAnalysis.setPlanDetailsId(projectPlanDetails.getId());
             schemeLiquidationAnalysis.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
             schemeLiquidationAnalysisService.saveLiquidationAnalysis(schemeLiquidationAnalysis);
+
+            schemeLiquidationAnalysisService.initTaxAllocation(projectPlanDetails.getJudgeObjectId(),projectPlanDetails.getId());
         }
         modelAndView.addObject("master",  schemeLiquidationAnalysis);
-        modelAndView.addObject("judgeObjectName", projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid()).getProjectPhaseName());
-        SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-        modelAndView.addObject("judgeObject", judgeObject);
-        SchemeSurePrice schemeSurePrice = schemeSurePriceService.getSurePriceByPlanDetailsId(projectPlanDetails.getId());
-        modelAndView.addObject("schemeSurePrice", schemeSurePrice);
+        modelAndView.addObject("judgeObject", schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId()));
         return modelAndView;
     }
 
@@ -120,7 +118,7 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        schemeLiquidationAnalysisService.commit(formData, projectPlanDetails, processInsId);
+        schemeLiquidationAnalysisService.commit(formData, processInsId);
     }
 
     @Override
@@ -130,6 +128,6 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        schemeLiquidationAnalysisService.commit(formData, projectPlanDetails, processInsId);
+        schemeLiquidationAnalysisService.commit(formData, processInsId);
     }
 }

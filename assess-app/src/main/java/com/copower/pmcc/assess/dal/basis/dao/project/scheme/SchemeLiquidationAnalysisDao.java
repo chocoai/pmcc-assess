@@ -35,7 +35,7 @@ public class SchemeLiquidationAnalysisDao {
     }
 
     public boolean addSchemeLiquidationAnalysis(SchemeLiquidationAnalysis schemeLiquidationAnalysis) {
-        int i = schemeLiquidationAnalysisMapper.insert(schemeLiquidationAnalysis);
+        int i = schemeLiquidationAnalysisMapper.insertSelective(schemeLiquidationAnalysis);
         return i > 0;
     }
 

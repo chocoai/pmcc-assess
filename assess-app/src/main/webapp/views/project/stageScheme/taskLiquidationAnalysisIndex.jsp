@@ -17,7 +17,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>${judgeObjectName}</h3>
+                    <h3>${judgeObject.name}</h3>
                     <div class="clearfix"></div>
                 </div>
                 <form class="form-horizontal" id="master">
@@ -31,12 +31,12 @@
                             <th class="hidden-xs">商业</th>
                         </tr>
                         </thead>
-                        <tbody id="tbody_data_section">
+                        <tbody>
                         <tr>
                             <td class="hidden-xs">面积(平方米)</td>
                             <td class="hidden-xs">/</td>
                             <td class="hidden-xs"></td>
-                            <td class="hidden-xs">
+                            <td class="hidden-xs" id="evaluationArea">
                                 ${judgeObject.evaluationArea}
                             </td>
                         </tr>
@@ -44,8 +44,19 @@
                             <td class="hidden-xs">评估价(元)</td>
                             <td class="hidden-xs">/</td>
                             <td class="hidden-xs"></td>
-                            <td class="hidden-xs">
-                                ${schemeSurePrice.price}
+                            <td class="hidden-xs" id="evaluationPrice">
+                                ${judgeObject.price}
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tbody id="tbody_data_section">
+
+                        </tbody>
+                        <tbody>
+                        <tr>
+                            <td class='hidden-xs' colspan='3' style='text-align:center;'>合计费用</td>
+                            <td class='hidden-xs'>
+                                <label class="form-control" name="total"></label>
                             </td>
                         </tr>
                         </tbody>
@@ -74,17 +85,14 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
     $(function () {
-        getTaxAllocation();
+        getAnalysisItemList();
     });
 
     function submit() {
-        if ($("#master").length > 0) {
-            $("#master").validate();
-            if (!$("#master").valid()) {
-                return false;
-            }
+        if (!$("#master").valid()) {
+            return false;
         }
-        var formData = formParams("master");
+        var formData = getFormData();
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
         }
@@ -93,60 +101,87 @@
         }
     }
 
-    function getTaxAllocation() {
+    //计算结果
+    function computeResult() {
+        var total = 0;
+        var evaluationArea = $("#evaluationArea").text();
+        var evaluationPrice = $("#evaluationPrice").text();
+        $("#tbody_data_section").find('tr').each(function () {
+            var $taxRateValue = $(this).find('[name^=taxRateValue]');
+            var rate = $taxRateValue.val();
+            var price;
+            if ($taxRateValue.hasClass('x-percent')) {
+                rate = $taxRateValue.attr('data-value');
+                if (rate && evaluationPrice) {
+                    price = evaluationPrice * rate;
+                }
+            } else {
+                if (rate && evaluationArea) {
+                    price = evaluationArea * rate;
+                }
+            }
+            total += price;
+            $(this).find('[name^=price]').val(price);
+        })
+        $('#master').find('[name=total]').text(total);
+    }
+
+    //获取需要保存的数据
+    function getFormData() {
+        var data = {};
+        data.id = $('#master').find('[name=id]').val();
+        data.total = $('#master').find('[name=total]').text();
+        data.analysisItemList = [];
+        $("#tbody_data_section").find('tr').each(function () {
+            var analysisItem = {};
+            analysisItem.id = $(this).find('[name=id]').val();
+            analysisItem.price = $(this).find('[name^=price]').val();
+            analysisItem.remark = $(this).find('[name^=remark]').val();
+            data.analysisItemList.push(analysisItem);
+        })
+        return data;
+    }
+
+    function getAnalysisItemList() {
         Loading.progressShow();
         $.ajax({
-            url: "${pageContext.request.contextPath}/projectTaskLiquidationAnalysis/getTaxAllocation",
+            url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/getAnalysisItemList",
             data: {
-                projectPlanDetailsId: "${projectPlanDetails.id}",
-                judgeObjectId: "${projectPlanDetails.judgeObjectId}",
-                mainId: "${master.id}"
+                planDetailsId: "${projectPlanDetails.id}"
             },
             type: "post",
             dataType: "json",
             success: function (result) {
                 Loading.progressHide();
-                var html = "";
-                var total = 0;
-                $.each(result.data, function (i, item) {
-                    total += item.money;
-                    html += "<tr>";
-                    html += "<td class='hidden-xs'>";
-                    html += item.typeName;
-                    html += "</td>";
-                    html += "<td class='hidden-xs'>";
-                    html += item.rate;
-                    html += "</td>";
-                    html += "<td class='hidden-xs'>";
-                    html += "<input type='text'  name='remark_" + item.type + "' value='" + item.remark + "' class='form-control'>";
-                    html += "</td>";
-                    html += "<td class='hidden-xs'>";
-                    html += "<div class='x-valid'>";
-                    html += "<input type='text'  name='price_" + item.type + "' value='" + item.money + "'  class='form-control' data-rule-number='true'>";
-                    html += "</div>";
-                    html += "</td>";
-                    html += "</tr>";
-                });
-                html += "<tr>";
-                html += "<td class='hidden-xs' colspan='3' style='text-align:center;'>";
-                html += "合计费用";
-                html += "</td>";
-                html += "<td class='hidden-xs'>";
-                html += "<div class='x-valid'>";
-                if ('${master.total}') {
-                    html += "<input type='text'  name='total' class='form-control' value='${master.total}' data-rule-number='true'>";
-                } else {
-                    html += "<input type='text'  name='total' class='form-control' value='" + total + "' data-rule-number='true'>";
+                $("#tbody_data_section").empty();
+                if (result.ret) {
+                    var html = "";
+                    $.each(result.data, function (i, item) {
+                        html += "<tr>";
+                        html += "<td class='hidden-xs'>";
+                        html += '<input type="hidden" name="id" value="' + item.id + '">';
+                        html += item.taxRateName;
+                        html += "</td>";
+                        html += "<td class='hidden-xs'>";
+                        if (item.calculationMethod == 0) {
+                            html += "<input type='text' required onblur='computeResult();' data-value='" + item.taxRateValue + "' name='taxRateValue_" + item.id + "' value='" + item.taxRateValue + "' class='form-control'>";
+                        } else {
+                            html += "<input type='text' required onblur='computeResult();' data-value='" + item.taxRateValue + "' name='taxRateValue_" + item.id + "' value='" + item.taxRateValue * 100 + "%' class='form-control x-percent'>";
+                        }
+                        html += "</td>";
+                        html += "<td class='hidden-xs'>";
+                        html += "<input type='text'  name='remark_" + item.id + "' value='" + AssessCommon.toString(item.remark) + "' class='form-control'>";
+                        html += "</td>";
+                        html += "<td class='hidden-xs'>";
+                        html += "<div class='x-valid'>";
+                        html += "<input type='text' required  name='price_" + item.id + "' value='" + AssessCommon.toString(item.price) + "'  class='form-control' data-rule-number='true'>";
+                        html += "</div>";
+                        html += "</td>";
+                        html += "</tr>";
+                    });
+                    $("#tbody_data_section").append(html);
+                    computeResult();
                 }
-                html += "</div>";
-                html += "</td>";
-                html += "</tr>";
-                $("#tbody_data_section").append(html);
-
-            },
-            error: function (result) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         });
     }

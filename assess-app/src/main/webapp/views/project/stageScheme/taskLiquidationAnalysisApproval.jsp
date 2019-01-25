@@ -19,10 +19,11 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>${judgeObjectName}</h3>
+                    <h3>${judgeObject.name}</h3>
                     <div class="clearfix"></div>
                 </div>
                 <form class="form-horizontal" id="master">
+                    <input type="hidden" name="id" value="${master.id}">
                     <table class="table">
                         <thead>
                         <tr>
@@ -32,12 +33,12 @@
                             <th class="hidden-xs">商业</th>
                         </tr>
                         </thead>
-                        <tbody id="tbody_data_section">
+                        <tbody>
                         <tr>
                             <td class="hidden-xs">面积(平方米)</td>
                             <td class="hidden-xs">/</td>
                             <td class="hidden-xs"></td>
-                            <td class="hidden-xs">
+                            <td class="hidden-xs" id="evaluationArea">
                                 ${judgeObject.evaluationArea}
                             </td>
                         </tr>
@@ -45,12 +46,24 @@
                             <td class="hidden-xs">评估价(元)</td>
                             <td class="hidden-xs">/</td>
                             <td class="hidden-xs"></td>
-                            <td class="hidden-xs">
-                                ${schemeSurePrice.price}
+                            <td class="hidden-xs" id="evaluationPrice">
+                                ${judgeObject.price}
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tbody id="tbody_data_section">
+
+                        </tbody>
+                        <tbody>
+                        <tr>
+                            <td class='hidden-xs' colspan='3' style='text-align:center;'>合计费用</td>
+                            <td class='hidden-xs'>
+                                <label class="form-control" name="total">${master.total}</label>
                             </td>
                         </tr>
                         </tbody>
                     </table>
+
                 </form>
             </div>
             <%@include file="/views/share/form_approval.jsp" %>
@@ -67,57 +80,43 @@
     }
 
     $(function () {
-        getTaxAllocation();
+        getAnalysisItemList();
     });
 
-    function getTaxAllocation() {
-
+    function getAnalysisItemList() {
         Loading.progressShow();
         $.ajax({
-            url: "${pageContext.request.contextPath}/projectTaskLiquidationAnalysis/getTaxAllocation",
+            url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/getAnalysisItemList",
             data: {
-                judgeObjectId: "${projectPlanDetails.judgeObjectId}",
-                mainId: "${master.id}"
+                planDetailsId: "${projectPlanDetails.id}"
             },
             type: "post",
             dataType: "json",
             success: function (result) {
                 Loading.progressHide();
-                var html = "";
-                $.each(result.data, function (i, item) {
-                    html += "<tr>";
-                    html += "<td class='hidden-xs'>";
-                    html += item.typeName;
-                    html += "</td>";
-                    html += "<td class='hidden-xs'>";
-                    html += item.rate;
-                    html += "</td>";
-                    html += "<td class='hidden-xs'>";
-                    html += item.remark;
-                    html += "</td>";
-                    html += "<td class='hidden-xs'>";
-                    html += "<div class='x-valid'>";
-                    html += item.money;
-                    html += "</div>";
-                    html += "</td>";
-                    html += "</tr>";
-                });
-                html += "<tr>";
-                html += "<td class='hidden-xs' colspan='3' style='text-align:center;'>";
-                html += "合计费用";
-                html += "</td>";
-                html += "<td class='hidden-xs'>";
-                html += "<div class='x-valid'>";
-                html += '${master.total}';
-                html += "</div>";
-                html += "</td>";
-                html += "</tr>";
-                $("#tbody_data_section").append(html);
-
-            },
-            error: function (result) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                $("#tbody_data_section").empty();
+                if (result.ret) {
+                    var html = "";
+                    $.each(result.data, function (i, item) {
+                        html += "<tr>";
+                        html += "<td class='hidden-xs'>";
+                        html += item.taxRateName;
+                        html += "</td>";
+                        html += "<td class='hidden-xs'>";
+                        html += item.taxRateValue*100+"%";
+                        html += "</td>";
+                        html += "<td class='hidden-xs'>";
+                        html +=  AssessCommon.toString(item.remark);
+                        html += "</td>";
+                        html += "<td class='hidden-xs'>";
+                        html += "<div class='x-valid'>";
+                        html +=  AssessCommon.toString(item.price);
+                        html += "</div>";
+                        html += "</td>";
+                        html += "</tr>";
+                    });
+                    $("#tbody_data_section").append(html);
+                }
             }
         });
     }

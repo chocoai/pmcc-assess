@@ -100,7 +100,7 @@ public class ProjectPlanService {
     }
 
     public ProjectPlan getProjectplanById(Integer id) {
-        return projectPlanDao.getProjectplanById(id);
+        return projectPlanDao.getProjectPlanById(id);
     }
 
     public List<ProjectPlan> getProjectplanByProjectId(Integer projectId, String status) {
@@ -109,7 +109,7 @@ public class ProjectPlanService {
 
     @Transactional(rollbackFor = Exception.class)
     public Boolean initProjectPlanDetails(Integer planId) throws BusinessException {
-        ProjectPlan projectPlan = projectPlanDao.getProjectplanById(planId);
+        ProjectPlan projectPlan = projectPlanDao.getProjectPlanById(planId);
 
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
         if (!projectWorkStage.getBisLoadDefalut()) {
@@ -311,7 +311,7 @@ public class ProjectPlanService {
     public void saveFinancialClaimProjectPlan(String formData, String appointUserAccount) throws BusinessException {
         ProjectPlanDto projectPlanDto = JSON.parseObject(formData, ProjectPlanDto.class);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDto.getProjectId());
-        ProjectPlan projectPlan = projectPlanDao.getProjectplanById(projectPlanDto.getId());//取得项目计划
+        ProjectPlan projectPlan = projectPlanDao.getProjectPlanById(projectPlanDto.getId());//取得项目计划
         //更新计划内容
         projectPlan.setProjectPlanStart(projectPlanDto.getProjectPlanStart());
         projectPlan.setProjectPlanEnd(projectPlanDto.getProjectPlanEnd());
@@ -380,7 +380,7 @@ public class ProjectPlanService {
     public void saveProjectPlan(String formData, String appointUserAccount) throws BusinessException {
         ProjectPlanDto projectPlanDto = JSON.parseObject(formData, ProjectPlanDto.class);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDto.getProjectId());
-        ProjectPlan projectPlan = projectPlanDao.getProjectplanById(projectPlanDto.getId());//取得项目计划
+        ProjectPlan projectPlan = projectPlanDao.getProjectPlanById(projectPlanDto.getId());//取得项目计划
         if (projectPlanDto.getBisChildren().equals("0")) {
             //更新计划内容
             projectPlan.setProjectPlanStart(projectPlanDto.getProjectPlanStart());
@@ -624,7 +624,7 @@ public class ProjectPlanService {
     public void submitPlanEdit(String formData) throws BusinessException {
         ProjectPlanDto projectPlanDto = JSON.parseObject(formData, ProjectPlanDto.class);
         ApprovalModelDto approvalModelDto = JSON.parseObject(formData, ApprovalModelDto.class);
-        ProjectPlan projectPlan = projectPlanDao.getProjectplanById(projectPlanDto.getId());//取得项目计划
+        ProjectPlan projectPlan = projectPlanDao.getProjectPlanById(projectPlanDto.getId());//取得项目计划
         //更新计划内容
         projectPlan.setProjectPlanStart(projectPlanDto.getProjectPlanStart());
         projectPlan.setProjectPlanEnd(projectPlanDto.getProjectPlanEnd());
@@ -675,7 +675,7 @@ public class ProjectPlanService {
     @Transactional(rollbackFor = Exception.class)
     public void enterNextStage(Integer planId) throws Exception {
         //1.将当前阶段设置结束，并清理所有任务
-        ProjectPlan projectPlan = projectPlanDao.getProjectplanById(planId);
+        ProjectPlan projectPlan = projectPlanDao.getProjectPlanById(planId);
         projectPlan.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
         projectPlan.setFinishDate(new Date());
         int currStageSort = projectPlan.getStageSort().intValue();

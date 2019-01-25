@@ -207,7 +207,7 @@ public class ProjectPlanFinancialClaimService {
         String sqlTemp = "insert into tb_project_plan_details (project_phase_name, plan_id, project_id,project_phase_id, status, " + "sorting,project_work_stage_id, first_pid, pid, bis_last_layer) " +
                 "" + "" + "" + "" + "" + "" + "" + "" + "" + "values ('%s',%s,%s,%s,'%s',0,%s,1,0,false);";
 
-        ProjectPlan projectPlan = projectPlanDao.getProjectplanById(planId);
+        ProjectPlan projectPlan = projectPlanDao.getProjectPlanById(planId);
         if (CollectionUtils.isNotEmpty(csrBorrowers)) {
             for (CsrBorrowerVo item : csrBorrowers) {
 
@@ -231,7 +231,7 @@ public class ProjectPlanFinancialClaimService {
         StringBuilder stringBuilder = new StringBuilder();
         String sqlTemp = "insert into tb_project_plan_details (project_phase_name,plan_hours, plan_id, project_id,project_phase_id, status, sorting,project_work_stage_id, first_pid, pid, " +
                 "bis_last_layer) values ('%s',%s,%s,%s,%s,'%s',%s,%s,%s,%s,%s);";
-        ProjectPlan projectPlan = projectPlanDao.getProjectplanById(projectPlanDetails.getPlanId());
+        ProjectPlan projectPlan = projectPlanDao.getProjectPlanById(projectPlanDetails.getPlanId());
         List<ProjectPhase> projectPhases = projectPhaseService.getCacheProjectPhaseByCategoryId(projectPlan.getCategoryId());
         List<ProjectPhase> filter = LangUtils.filter(projectPhases, o -> {
             return o.getWorkStageId().equals(projectPlan.getWorkStageId());
