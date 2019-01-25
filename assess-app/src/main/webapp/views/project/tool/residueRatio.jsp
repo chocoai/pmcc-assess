@@ -245,8 +245,7 @@
             }
         })
     }
-    residueRatio.ratioShow = function () {
-        var type = $("input[type='radio']:checked").val();
+    residueRatio.ratioShow = function (type) {
         if (type == 0) {
             $("#residueRatioType0").attr("checked", "checked");
             $("#residue_ratio_part1").show();
@@ -408,7 +407,6 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    console.log(result.data);
                     var serializeArray = $("#residue_ratio_form").serializeArray();
                     for (var i = 0; i < serializeArray.length; i++) {
                         var name = serializeArray[i].name;
@@ -441,12 +439,13 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    console.log(result.data);
-                    $("#residue_ratio_form").initForm(result.data);
-                    if (result.data.resultValue) {
-                        $("#residue_ratio_cxl").text(result.data.resultValue);
+                    if (result.data) {
+                        $("#residue_ratio_form").initForm(result.data);
+                        if (result.data.resultValue) {
+                            $("#residue_ratio_cxl").text(result.data.resultValue);
+                        }
+                        residueRatio.ratioShow(result.data.type);
                     }
-                    residueRatio.ratioShow();
                 }
                 else {
                     Alert("保存数据失败，失败原因:" + result.errmsg);
