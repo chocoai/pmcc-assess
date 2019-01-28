@@ -290,11 +290,15 @@ public class GenerateBaseDataService {
             //强制保留2位
             double d = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
             String[] strNumArray = price.split("\\.");
-            String number = strNumArray[1];
-            if (number.length() > 2) {
-                number = number.substring(0, 2);
+            if (strNumArray.length == 2){
+                String number = strNumArray[1];
+                if (number.length() > 2) {
+                    number = number.substring(0, 2);
+                }
+                return CnNumberUtils.toUppercase(String.format("%s.%s", strNumArray[0], number));
+            }else {
+                return CnNumberUtils.toUppercase(String.format("%s", strNumArray[0]));
             }
-            return CnNumberUtils.toUppercase(String.format("%s.%s", strNumArray[0], number));
         }
         return errorStr;
     }
