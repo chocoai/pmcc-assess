@@ -290,13 +290,13 @@ public class GenerateBaseDataService {
             //强制保留2位
             double d = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
             String[] strNumArray = price.split("\\.");
-            if (strNumArray.length == 2){
+            if (strNumArray.length == 2) {
                 String number = strNumArray[1];
                 if (number.length() > 2) {
                     number = number.substring(0, 2);
                 }
                 return CnNumberUtils.toUppercase(String.format("%s.%s", strNumArray[0], number));
-            }else {
+            } else {
                 return CnNumberUtils.toUppercase(String.format("%s", strNumArray[0]));
             }
         }
@@ -308,47 +308,88 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getValuationProjectName() {
+    public String getValuationProjectName() throws Exception {
         StringBuilder builder = new StringBuilder();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        List<ProjectPhaseVo> projectPhaseVos = projectPhaseService.queryProjectPhaseByCategory(getProjectInfo().getProjectTypeId(),
+                getProjectInfo().getProjectCategoryId(), null);
+        ProjectPhase projectPhaseScene = null;
+        if (CollectionUtils.isNotEmpty(projectPhaseVos)) {
+            for (ProjectPhaseVo projectPhaseVo : projectPhaseVos) {
+                if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
+                    projectPhaseScene = projectPhaseVo;
+                }
+            }
+        }
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            if (schemeJudgeObjectList.size() == 1) {
-                SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+            ProjectPlanDetails query = new ProjectPlanDetails();
+            query.setProjectId(getProjectId());
+            query.setProjectPhaseId(projectPhaseScene.getId());
+            query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+            List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
+            if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+                ProjectPlanDetails projectPlanDetails = projectPlanDetailsList.get(0);
+                GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
+                builder.append(generateBaseExamineService.getEstate().getName());
+            }
+            if (StringUtils.isNotBlank(schemeJudgeObject.getSeat())) {
                 builder.append(schemeJudgeObject.getSeat()).append(";");
-                if (schemeJudgeObject.getSetUse() != null) {
-                    DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
-                    if (dataSetUseField != null) {
-                        builder.append(dataSetUseField.getName()).append(";");
-                    }
+            }
+            if (schemeJudgeObject.getSetUse() != null) {
+                DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
+                if (dataSetUseField != null) {
+                    builder.append(dataSetUseField.getName()).append(";");
                 }
-                builder.append(getValueImplication()).append(";");
-                builder.append(schemeJudgeObject.getEvaluationArea().toString());
-            } else {
-                int num = schemeJudgeObjectList.size() > 2 ? 2 : schemeJudgeObjectList.size();
-                String temp = "";
-                BigDecimal evaluationArea = null;
-                for (int i = 0; i < num; i++) {
-                    SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(i);
-                    builder.append(schemeJudgeObject.getSeat()).append(";");
-                    if (schemeJudgeObject.getSetUse() != null) {
-                        DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
-                        if (dataSetUseField != null) {
-                            builder.append(dataSetUseField.getName()).append(";");
-                        }
-                        if (i == num - 1) {
-                            builder.append("等").append(schemeJudgeObject.getNumber());
-                            temp = schemeJudgeObject.getCertUse();
-                            evaluationArea = schemeJudgeObject.getEvaluationArea();
-                        }
-                    }
+            }
+            if (getSchemeAreaGroup().getEntrustPurpose() != null) {
+                builder.append(baseDataDicService.getNameById(getSchemeAreaGroup().getEntrustPurpose())).append(";");
+            }
+            if (schemeJudgeObjectList.size() > 1) {
+                builder.append("等");
+            }
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
+        }
+        return errorStr;
+    }
+
+    /**
+     * 证载用途总括
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getSummaryCertificateUses() throws Exception {
+        StringBuilder builder = new StringBuilder();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+            if (StringUtils.isNotBlank(schemeJudgeObject.getCertUse())) {
+                builder.append(schemeJudgeObject.getCertUse()).append(";");
+            }
+            if (schemeJudgeObjectList.size() > 1) {
+                builder.append("等");
+            }
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
+        }
+        return errorStr;
+    }
+
+    /**
+     * 证载用途分述
+     * @return
+     * @throws Exception
+     */
+    public String getSeparationCertificateUses() throws Exception {
+        StringBuilder builder = new StringBuilder();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                if (StringUtils.isNotBlank(schemeJudgeObject.getCertUse())) {
+                    builder.append(schemeJudgeObject.getNumber()).append(schemeJudgeObject.getCertUse()).append(",");
                 }
-                builder.append(getValueImplication()).append(";");
-                builder.append(temp);
-                if (getSchemeAreaGroup().getEntrustPurpose() != null) {
-                    builder.append(baseDataDicService.getNameById(getSchemeAreaGroup().getEntrustPurpose()));
-                }
-                builder.append("委估面积:");
-                builder.append(evaluationArea.toString());
             }
         }
         if (StringUtils.isNotBlank(builder.toString())) {
@@ -560,12 +601,37 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 评估方法
+     * 评估方法分述
      *
      * @return
      */
-    public String getEvaluationMethod() {
-        StringBuilder builder = new StringBuilder("");
+    public String getAssessmentMethods() {
+        StringBuilder builder = new StringBuilder(128);
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject:schemeJudgeObjectList){
+                builder.append(schemeJudgeObject.getNumber()).append("-");
+                List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
+                if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
+                    for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
+                        builder.append(schemeJudgeFunction.getName());
+                    }
+                }
+                builder.append(";");
+            }
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
+        }
+        return errorStr;
+    }
+
+    /**
+     * 评估方法总括
+     * @return
+     */
+    public String getSummaryEvaluationMethod(){
+        StringBuilder builder = new StringBuilder(128);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
@@ -575,13 +641,14 @@ public class GenerateBaseDataService {
                     builder.append(schemeJudgeFunction.getName());
                 }
             }
+            if (schemeJudgeFunctionList.size() > 1) {
+                builder.append("等");
+            }
         }
-        this.evaluationMethod = moreJudgeObject(builder.toString(), builder.toString());
-        if (StringUtils.isNotBlank(this.evaluationMethod)) {
-            return evaluationMethod;
-        } else {
-            return errorStr;
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
         }
+        return errorStr;
     }
 
     /**
@@ -923,6 +990,34 @@ public class GenerateBaseDataService {
         return errorStr;
     }
 
+    /**
+     * 区位(2019-01-28 修改之后)
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getLocation_() throws Exception {
+        StringBuilder builder = new StringBuilder(1024);
+        try {
+            SchemeAreaGroup schemeAreaGroup = this.getSchemeAreaGroup();
+            builder.append(schemeAreaGroup.getAreaName());
+            List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+            if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+                SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+                builder.append(schemeJudgeObject.getSeat());
+                if (schemeJudgeObjectList.size() > 1) {
+                    builder.append("等");
+                }
+            }
+        } catch (Exception e1) {
+            logger.error("(区位)拼接异常!");
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
+        }
+        return errorStr;
+    }
+
     public String getNotPowerPerson() {
         StringBuilder builder = new StringBuilder(1024);
         try {
@@ -966,16 +1061,18 @@ public class GenerateBaseDataService {
         StringBuilder stringBuilder = new StringBuilder();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                if (schemeJudgeObject.getSetUse() != null) {
-                    DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
-                    if (dataSetUseField != null) {
-                        stringBuilder.append(dataSetUseField.getName());
-                    }
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+            if (schemeJudgeObject.getSetUse() != null) {
+                DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
+                if (dataSetUseField != null) {
+                    stringBuilder.append(dataSetUseField.getName());
                 }
             }
+            if (schemeJudgeObjectList.size() > 1) {
+                stringBuilder.append("等");
+            }
             if (StringUtils.isNotBlank(stringBuilder.toString())) {
-                return moreJudgeObject(stringBuilder.toString(), stringBuilder.toString());
+                return stringBuilder.toString();
             }
         }
         return errorStr;
