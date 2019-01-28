@@ -26,24 +26,10 @@
                     <div class="form-horizontal">
                         <div class="form-group">
                             <label class="col-sm-1 control-label">
-                                假定未设立法定优先受偿权单价(元/㎡)
-                            </label>
-                            <div class="col-sm-5">
-                                <label class="form-control">${master.notSetUpUnitPrice}</label>
-                            </div>
-                            <label class="col-sm-1 control-label">
                                 假定未设立法定优先受偿权总价(元)
                             </label>
                             <div class="col-sm-5">
                                 <label class="form-control">${master.notSetUpTotalPrice}</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                估价师知悉的法定优先受偿款总价(元)
-                            </label>
-                            <div class="col-sm-5">
-                                <label class="form-control">${master.knowTotalPrice}</label>
                             </div>
                             <label class="col-sm-1 control-label">
                                 已抵押担保的债权数额总价(元)
@@ -68,10 +54,10 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-1 control-label">
-                                抵押价值单价(元/㎡)
+                                估价师知悉的法定优先受偿款总价(元)
                             </label>
                             <div class="col-sm-5">
-                                <label class="form-control">${master.mortgageUnitPrice}</label>
+                                <label class="form-control">${master.knowTotalPrice}</label>
                             </div>
                             <label class="col-sm-1 control-label">
                                 抵押价值总价(元)

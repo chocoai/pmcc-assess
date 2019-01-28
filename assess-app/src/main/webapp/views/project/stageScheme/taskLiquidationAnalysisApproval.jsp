@@ -103,7 +103,11 @@
                         html += item.taxRateName;
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
-                        html += item.taxRateValue*100+"%";
+                        if (item.calculationMethod == 0) {
+                            html += Number(item.taxRateValue).toFixed(2);
+                        } else {
+                            html += Number(item.taxRateValue*100).toFixed(2)+"%";
+                        }
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
                         html +=  AssessCommon.toString(item.remark);

@@ -26,34 +26,13 @@
                     <form id="master" class="form-horizontal">
                         <div class="form-group">
                             <label class="col-sm-1 control-label">
-                                假定未设立法定优先受偿权单价(元/㎡)
-                            </label>
-                            <div class="x-valid">
-                                <div class="col-sm-5">
-                                    <input type="text" required placeholder="假定未设立法定优先受偿权单价" data-rule-number='true'
-                                           name="notSetUpUnitPrice" class="form-control"
-                                           value="${master.notSetUpUnitPrice}">
-                                </div>
-                            </div>
-                            <label class="col-sm-1 control-label">
                                 假定未设立法定优先受偿权总价(元)
                             </label>
                             <div class="x-valid">
                                 <div class="col-sm-5">
                                     <input type="text" required placeholder="假定未设立法定优先受偿权总价" data-rule-number='true'
-                                           name="notSetUpTotalPrice" class="form-control"
+                                           name="notSetUpTotalPrice" class="form-control" onblur="getTotal()"
                                            value="${master.notSetUpTotalPrice}">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                估价师知悉的法定优先受偿款总价(元)
-                            </label>
-                            <div class="x-valid">
-                                <div class="col-sm-5">
-                                    <input type="text" required placeholder="估价师知悉的法定优先受偿款总价" data-rule-number='true'
-                                           name="knowTotalPrice" class="form-control" value="${master.knowTotalPrice}">
                                 </div>
                             </div>
                             <label class="col-sm-1 control-label">
@@ -62,7 +41,7 @@
                             <div class="x-valid">
                                 <div class="col-sm-5">
                                     <input type="text" required placeholder="已抵押担保的债权数额总价" data-rule-number='true'
-                                           name="mortgagedTotalPrice" class="form-control"
+                                           name="mortgagedTotalPrice" class="form-control" onblur="getTotal()"
                                            value="${master.mortgagedTotalPrice}">
                                 </div>
                             </div>
@@ -74,7 +53,8 @@
                             <div class="x-valid">
                                 <div class="col-sm-5">
                                     <input type="text" required placeholder="拖欠的建设工程价款总价" data-rule-number='true'
-                                           name="owedTotalPrice" class="form-control" value="${master.owedTotalPrice}">
+                                           name="owedTotalPrice" class="form-control" onblur="getTotal()"
+                                           value="${master.owedTotalPrice}">
                                 </div>
                             </div>
                             <label class="col-sm-1 control-label">
@@ -83,20 +63,20 @@
                             <div class="x-valid">
                                 <div class="col-sm-5">
                                     <input type="text" required placeholder="其它法定优先受偿款总价" data-rule-number='true'
-                                           name="otherTotalPrice" class="form-control"
+                                           name="otherTotalPrice" class="form-control" onblur="getTotal()"
                                            value="${master.otherTotalPrice}">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-1 control-label">
-                                抵押价值单价(元/㎡)
+                                估价师知悉的法定优先受偿款总价(元)
                             </label>
                             <div class="x-valid">
                                 <div class="col-sm-5">
-                                    <input type="text" required placeholder="抵押价值单价" data-rule-number='true'
-                                           name="mortgageUnitPrice" class="form-control"
-                                           value="${master.mortgageUnitPrice}">
+                                    <input type="text" required placeholder="估价师知悉的法定优先受偿款总价" data-rule-number='true'
+                                           name="knowTotalPrice" class="form-control" value="${master.knowTotalPrice}"
+                                           readonly>
                                 </div>
                             </div>
                             <label class="col-sm-1 control-label">
@@ -106,7 +86,7 @@
                                 <div class="col-sm-5">
                                     <input type="text" required placeholder="抵押价值总价" data-rule-number='true'
                                            name="mortgageTotalPrice" class="form-control"
-                                           value="${master.mortgageTotalPrice}">
+                                           value="${master.mortgageTotalPrice}" readonly>
                                 </div>
                             </div>
                         </div>
@@ -185,6 +165,21 @@
         }
     }
 
+    function getTotal() {
+        var notSetUpTotalPrice = $("#master").find('[name=notSetUpTotalPrice]').val();
+        var mortgagedTotalPrice = $("#master").find('[name=mortgagedTotalPrice]').val();
+        var owedTotalPrice = $("#master").find('[name=owedTotalPrice]').val();
+        var otherTotalPrice = $("#master").find('[name=otherTotalPrice]').val();
+        var knowTotalPrice = 0;
+        if (mortgagedTotalPrice && owedTotalPrice && otherTotalPrice) {
+            knowTotalPrice = Number(mortgagedTotalPrice) + Number(owedTotalPrice) + Number(otherTotalPrice);
+            $("#master").find('[name=knowTotalPrice]').val(Number(knowTotalPrice).toFixed(2));
+        }
+        if(notSetUpTotalPrice&&mortgagedTotalPrice && owedTotalPrice && otherTotalPrice){
+            var mortgageTotalPrice = Number(notSetUpTotalPrice)-Number(knowTotalPrice);
+            $("#master").find('[name=mortgageTotalPrice]').val(Number(mortgageTotalPrice).toFixed(2));
+        }
+    }
 </script>
 
 </html>
