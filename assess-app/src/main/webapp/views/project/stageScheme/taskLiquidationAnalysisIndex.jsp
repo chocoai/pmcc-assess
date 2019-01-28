@@ -113,14 +113,15 @@
             if ($taxRateValue.hasClass('x-percent')) {
                 rate = $taxRateValue.attr('data-value');
                 if (rate && evaluationPrice) {
-                    price = evaluationPrice * rate;
+                    price = Number(evaluationPrice * rate).toFixed(2);
+
                 }
             } else {
                 if (rate && evaluationArea) {
-                    price = evaluationArea * rate;
+                    price = Number(evaluationArea * rate).toFixed(2);
                 }
             }
-            total += price;
+            total += Number(price);
             $(this).find('[name^=price]').val(price);
         })
         $('#master').find('[name=total]').text(total);
@@ -164,9 +165,9 @@
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
                         if (item.calculationMethod == 0) {
-                            html += "<input type='text' required onblur='computeResult();' data-value='" + item.taxRateValue + "' name='taxRateValue_" + item.id + "' value='" + item.taxRateValue + "' class='form-control'>";
+                            html += "<input type='text' required onblur='computeResult();' data-value='" + item.taxRateValue + "' name='taxRateValue_" + item.id + "' value='" + Number(item.taxRateValue).toFixed(2) + "' class='form-control'>";
                         } else {
-                            html += "<input type='text' required onblur='computeResult();' data-value='" + item.taxRateValue + "' name='taxRateValue_" + item.id + "' value='" + item.taxRateValue * 100 + "%' class='form-control x-percent'>";
+                            html += "<input type='text' required onblur='computeResult();' data-value='" + item.taxRateValue + "' name='taxRateValue_" + item.id + "' value='" + Number(item.taxRateValue * 100).toFixed(2) + "%' class='form-control x-percent'>";
                         }
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
