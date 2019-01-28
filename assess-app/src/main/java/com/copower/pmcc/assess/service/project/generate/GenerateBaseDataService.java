@@ -289,7 +289,12 @@ public class GenerateBaseDataService {
             BigDecimal bg = new BigDecimal(Double.parseDouble(price));
             //强制保留2位
             double d = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-            return CnNumberUtils.toUppercase(d);
+            String[] strNumArray = price.split("\\.");
+            String number = strNumArray[1];
+            if (number.length() > 2) {
+                number = number.substring(0, 2);
+            }
+            return CnNumberUtils.toUppercase(String.format("%s.%s", strNumArray[0], number));
         }
         return errorStr;
     }
