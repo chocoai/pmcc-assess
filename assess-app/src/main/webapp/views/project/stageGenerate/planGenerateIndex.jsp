@@ -26,18 +26,17 @@
             <div class="clearfix"></div>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <!--填写表单-->
-            <form id="frm_content" class="form-horizontal">
-                <div class="x_panel">
-                    <div class="x_title collapse-link">
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                        </ul>
-                        <h2>报告选择</h2>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-
-                        <div class="panel-body">
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
+                    <h2>报告选择</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="panel-body">
+                        <form id="frm_content" class="form-horizontal">
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
@@ -45,55 +44,62 @@
                                     </label>
                                     <div class="col-sm-4 col-sm-offset-2">
                                         <c:forEach items="${reportTypeList}" var="item">
-                                        <span class="checkbox-inline">
-                                            <input type="checkbox" name="reportType" value="${item.id}">
-                                            <label>${item.name}</label>
-                                        </span>
+                                            <span class="checkbox-inline">
+                                                <input type="checkbox" name="reportType" value="${item.id}">
+                                                <label>${item.name}</label>
+                                            </span>
                                         </c:forEach>
                                     </div>
                                 </div>
-
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        报告下载<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-4" id="reportDownloadWord">
-                                    </div>
-                                </div>
                             </div>
+                        </form>
+                    </div>
 
-                            <div class="form-group">
-
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        报告出具日期<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="reportIssuanceDate" placeholder="报告出具日期"
-                                               class="form-control date-picker dbdate" pattern='yyyy-MM-dd' data-date-format="yyyy-mm-dd">
-                                    </div>
-                                </div>
-
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        作业结束时间<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="HomeWorkEndTime" placeholder="作业结束时间"
-                                               class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd" pattern='yyyy-MM-dd'>
-                                    </div>
-                                </div>
-
-
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">估价师选择</label>
-                                    <div class="col-sm-3">
-                                        <div class="input-group">
-                                            <input type="hidden" name="userAccountMember">
-                                            <input type="text" class="form-control" readonly="readonly"
-                                                   name="userAccountMemberName"
-                                                   onclick="selectUserAccount(this);">
-                                            <span class="input-group-btn">
+                    <c:forEach items="${schemeAreaGroupList}" var="item">
+                        <div class="x_panel area_panel">
+                            <input type="hidden" name="areaGroupId" value="${item.id}">
+                            <div class="x_title collapse-link" onclick="loadJudgeObjectList(this);">
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                                </ul>
+                                <h3>
+                                    <label>${item.areaName}</label>
+                                </h3>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content collapse">
+                                <form class="form-horizontal" id="groupForm${item.id}">
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                报告出具日期<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input type="text" name="reportIssuanceDate" placeholder="报告出具日期"
+                                                       class="form-control date-picker dbdate" pattern='yyyy-MM-dd'
+                                                       data-date-format="yyyy-mm-dd">
+                                            </div>
+                                        </div>
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                作业结束时间<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input type="text" name="homeWorkEndTime" placeholder="作业结束时间"
+                                                       class="form-control date-picker dbdate"
+                                                       data-date-format="yyyy-mm-dd"
+                                                       pattern='yyyy-MM-dd'>
+                                            </div>
+                                        </div>
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">估价师选择</label>
+                                            <div class="col-sm-3">
+                                                <div class="input-group">
+                                                    <input type="hidden" name="realEstateAppraiser">
+                                                    <input type="text" class="form-control" readonly="readonly"
+                                                           name="realEstateAppraiserName"
+                                                           onclick="selectUserAccount(this);">
+                                                    <span class="input-group-btn">
                                             <button type="button" class="btn btn-default docs-tooltip"
                                                     data-toggle="tooltip"
                                                     data-original-title="选择"
@@ -106,160 +112,98 @@
                                             <i class="fa fa-trash-o"></i>
                                             </button>
                                             </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        现场查勘开始日期<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="InvestigationsStartDate" placeholder="现场查勘开始日期"
-                                               class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd" pattern='yyyy-MM-dd'>
-                                    </div>
-                                </div>
-
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        现场查勘结束日期<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="InvestigationsEndDate" placeholder="现场查勘结束日期"
-                                               class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd" pattern='yyyy-MM-dd'>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <c:forEach items="${schemeAreaGroupList}" var="item">
-                            <div class="x_panel area_panel">
-                                <input type="hidden" name="areaGroupId" value="${item.id}">
-                                <div class="x_title collapse-link" onclick="loadJudgeObjectList(this);">
-                                    <ul class="nav navbar-right panel_toolbox">
-                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                                    </ul>
-                                    <h3>
-                                        <label>${item.areaName}</label>
-                                    </h3>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="x_content collapse">
-                                    <form id="frmJudgeObject${item.id}" class="form-horizontal">
-                                        <div class="form-group">
-                                            <div class="x-valid">
-                                                <label class="col-sm-1 control-label">
-                                                    评估基准日<span class="symbol required"></span>
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <input type="text" name="valueTimePoint" placeholder="评估基准日"
-                                                           class="form-control"
-                                                           readonly="readonly" pattern='yyyy-MM-dd'
-                                                           value="<fmt:formatDate value="${empty item.valueTimePoint?projectInfo.valuationDate:item.valueTimePoint}" pattern="yyyy-MM-dd"/>">
-                                                </div>
-                                            </div>
-                                            <div class="x-valid">
-                                                <label class="col-sm-1 control-label">
-                                                    基准日说明<span class="symbol required"></span>
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <input type="text" name="timePointExplain" readonly="readonly"
-                                                           class="form-control"
-                                                           value="${item.timePointExplain}">
-                                                </div>
-                                            </div>
-                                            <div class="x-valid">
-                                                <label class="col-sm-1 control-label">
-                                                    生成报告
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <a class="btn-primary btn active"
-                                                       onclick="generateReport('${item.id}')">生成报告<i
-                                                            class="fa fa-file-word-o"></i></a>
                                                 </div>
                                             </div>
                                         </div>
-                                        <table class="table">
-                                            <thead>
-                                            <tr>
-                                                <th style="width: 5%">编号</th>
-                                                <th style="width: 5%">所有权人</th>
-                                                <th style="width: 15%">坐落</th>
-                                                <th style="width: 10%">证载用途</th>
-                                                <th style="width: 10%">实际用途</th>
-                                                <th style="width: 10%">设定用途</th>
-                                                <th style="width: 10%">最佳利用描述</th>
-                                                <th style="width: 5%">证载面积</th>
-                                                <th style="width: 5%">评估面积</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </form>
-                                </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                现场查勘开始日期<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input type="text" name="investigationsStartDate" placeholder="现场查勘开始日期"
+                                                       class="form-control date-picker dbdate"
+                                                       data-date-format="yyyy-mm-dd"
+                                                       pattern='yyyy-MM-dd'>
+                                            </div>
+                                        </div>
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                现场查勘结束日期<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input type="text" name="investigationsEndDate" placeholder="现场查勘结束日期"
+                                                       class="form-control date-picker dbdate"
+                                                       data-date-format="yyyy-mm-dd"
+                                                       pattern='yyyy-MM-dd'>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- 报告下载 -->
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                预评报告
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <div id="_reporttypepreaudit${item.id}"></div>
+                                            </div>
+                                        </div>
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                技术报告
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <div id="_reporttypetechnology${item.id}"></div>
+                                            </div>
+                                        </div>
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                结果报告
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <div id="_reporttyperesult${item.id}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                生成报告
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <a class="btn-primary btn active"
+                                                   onclick="generateReport('${item.id}',this)">生成报告<i
+                                                        class="fa fa-file-word-o"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                        </c:forEach>
-
-                        <div class="x_panel">
-
-                            <div class="x_title collapse-link">
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                                </ul>
-                                <h2>
-                                    <small>权证信息</small>
-                                </h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
-
-
-                            <div class="x_content">
-                                <table class="table table-hover">
+                            <div class="x_content collapse">
+                                <table class="table">
                                     <thead>
                                     <tr>
-                                        <td>
-                                        </td>
-                                        <th>序号</th>
-                                        <th>名称</th>
-                                        <th>证载面积</th>
-                                        <th>评估面积</th>
-                                        <th>已出面积</th>
-                                        <th>报告面积</th>
-                                        <th>报告附件</th>
+                                        <th style="width: 5%">编号</th>
+                                        <th style="width: 5%">所有权人</th>
+                                        <th style="width: 15%">坐落</th>
+                                        <th style="width: 10%">证载用途</th>
+                                        <th style="width: 10%">实际用途</th>
+                                        <th style="width: 10%">设定用途</th>
+                                        <th style="width: 10%">最佳利用描述</th>
+                                        <th style="width: 5%">证载面积</th>
+                                        <th style="width: 5%">评估面积</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach items="${reportRecordList}" var="item" varStatus="i">
-                                        <tr>
-                                            <td></td>
-                                            <th>${i.index+1}</th>
-                                            <td>${item.name}</td>
-                                            <td>${item.floorArea}</td>
-                                            <td>${item.assessArea}</td>
-                                            <td>${item.alreadyOutArea}</td>
-                                            <td>
-                                                <div class="x-valid">
-                                                    <input type="text" class="form-control" name="reportArea"
-                                                           data-rule-digits="true"
-                                                           style="width: 120px;height: 30px;"></div>
-                                            </td>
-                                            <td></td>
-                                        </tr>
-                                    </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
-                    </div>
+                    </c:forEach>
                 </div>
-            </form>
+            </div>
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
@@ -318,6 +262,20 @@
 </script>
 <script type="text/javascript">
 
+    //报告附件 数组
+    var schemeReportGenerationFileControlIdArray = ["reporttypepreaudit","reporttypetechnology","reporttyperesult"] ;
+
+    function fileShow(fieldsName, deleteFlag,id) {
+        FileUtils.getFileShows({
+            target: fieldsName,
+            formData: {
+                fieldsName: fieldsName,
+                tableName: AssessDBKey.SchemeReportGeneration,
+                tableId: id == undefined ? 0 : id
+            },
+            deleteFlag: deleteFlag == undefined ? true : deleteFlag
+        })
+    }
 
     /**
      * 获取资质
@@ -351,6 +309,25 @@
         });
     }
 
+    function getSchemeReportGeneration(data,callback) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/generateReport/getSchemeReportGeneration",
+            data: data,
+            type: "get",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret && result.data) {
+                    callback(result.data);
+                } else {
+                    Alert("异常");
+                }
+            },
+            error: function (result) {
+                alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    }
+
     /**
      * 人选选择
      * @param this_
@@ -359,12 +336,11 @@
         erpEmployee.select({
             multi: true,
             onSelected: function (data) {
-                getAdPersonalIdentityDto(data.account,function (item) {
-                    console.log(item);
-                    if (item.length >= 1){
-                        $(this_).closest('.input-group').find("input[name='userAccountMember']").val(data.account);
-                        $(this_).closest('.input-group').find("input[name='userAccountMemberName']").val(data.name);
-                    }else {
+                getAdPersonalIdentityDto(data.account, function (item) {
+                    if (item.length >= 1) {
+                        $(this_).closest('.input-group').find("input[name='realEstateAppraiser']").val(data.account);
+                        $(this_).closest('.input-group').find("input[name='realEstateAppraiserName']").val(data.name);
+                    } else {
                         Alert("该人员未有《注册房地产估价师》资格!");
                     }
                 });
@@ -376,6 +352,17 @@
         var tbody = $(_this).closest(".area_panel").find(".table").find("tbody");
         tbody.empty();
         var areaGroupId = $(_this).closest('.area_panel').find('[name=areaGroupId]').val();
+        var formId = $(_this).parent().find("form").eq(0).attr("id") ;
+        getSchemeReportGeneration({projectPlanId:'${projectPlan.id}',areaGroupId:areaGroupId},function (info) {
+            $(formId).initForm(info);
+            $("#" + formId).find("input[name='investigationsStartDate']").val(formatDate(info.investigationsStartDate));
+            $("#" + formId).find("input[name='investigationsEndDate']").val(formatDate(info.investigationsEndDate));
+            $("#" + formId).find("input[name='reportIssuanceDate']").val(formatDate(info.reportIssuanceDate));
+            $("#" + formId).find("input[name='homeWorkEndTime']").val(formatDate(info.homeWorkEndTime));
+            $.each(schemeReportGenerationFileControlIdArray,function (i,n) {
+                fileShow(n+""+areaGroupId,false,info.id);
+            });
+        });
         $.ajax({
             url: "${pageContext.request.contextPath}/schemeProgramme/getSchemeJudgeObjectList",
             data: {
@@ -427,10 +414,11 @@
 
 
     //生成报告
-    function generateReport(areaId) {
-        var data = formParams("frm_content");
-        if (data.userAccountMember){
-        }else {
+    function generateReport(areaId, item) {
+        var formId = $(item).closest("form").attr("id") ;
+        var data = formParams(formId);
+        if (data.realEstateAppraiser) {
+        } else {
             toastr.success('估价师必须选择');
             return false;
         }
@@ -448,8 +436,9 @@
             }
         });
         data.ids = ids;
-        data.areaId = areaId;
+        data.areaGroupId = areaId;
         data.projectPlanId = '${projectPlan.id}';
+        data.projectId = '${projectPlan.projectId}';
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/generateReport/generate",
@@ -458,11 +447,16 @@
             dataType: "json",
             success: function (result) {
                 if (result.ret) {
-                    AssessCommon.getSysAttachmentViewHtml(result.data, function (data) {
-                        $("#reportDownloadWord").empty();
-                        $("#reportDownloadWord").append(data);
+                    getSchemeReportGeneration(data,function (info) {
+                        $(formId).initForm(info);
+                        $("#" + formId).find("input[name='investigationsStartDate']").val(formatDate(info.investigationsStartDate));
+                        $("#" + formId).find("input[name='investigationsEndDate']").val(formatDate(info.investigationsEndDate));
+                        $("#" + formId).find("input[name='reportIssuanceDate']").val(formatDate(info.reportIssuanceDate));
+                        $("#" + formId).find("input[name='homeWorkEndTime']").val(formatDate(info.homeWorkEndTime));
+                        $.each(schemeReportGenerationFileControlIdArray,function (i,n) {
+                            fileShow(n+""+areaId,false,info.id);
+                        });
                         Loading.progressHide();
-                        $("#frm_content").clearAll();
                         toastr.success('报告生成成功!');
                     });
                 } else {

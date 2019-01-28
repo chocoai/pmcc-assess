@@ -1,19 +1,14 @@
 package com.copower.pmcc.assess.service.project.generate;
 
-import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
-import com.copower.pmcc.ad.api.enums.AdQualificationsEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
-import com.copower.pmcc.assess.dto.output.project.generate.GenerateReportRecordVo;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
-import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -36,6 +31,8 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private GenerateReportService generateReportService;
+    @Autowired
+    private SchemeReportGenerationService schemeReportGenerationService;
 
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
@@ -43,20 +40,9 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
         //获取报告类型
         List<BaseDataDic> reportTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
         modelAndView.addObject("reportTypeList",reportTypeList);
-        List<GenerateReportRecordVo> reportRecordList = generateReportService.getGenerateReportRecordList(projectPlan.getProjectId(), projectPlan.getId());
-        modelAndView.addObject("reportRecordList",reportRecordList);
         List<SchemeAreaGroup> schemeAreaGroupList = generateReportService.getAreaGroupList(projectPlan.getProjectId());
         modelAndView.addObject("schemeAreaGroupList",schemeAreaGroupList);
         modelAndView.addObject("projectPlan",projectPlan);
-        List<KeyValueDto> keyValueDtoList = Lists.newArrayList();
-        for (AdPersonalEnum adPersonalEnum:AdPersonalEnum.values()){
-            KeyValueDto keyValueDto = new KeyValueDto();
-            keyValueDto.setKey(adPersonalEnum.getValue());
-            keyValueDto.setValue(adPersonalEnum.getName());
-            keyValueDtoList.add(keyValueDto);
-        }
-        //资质枚举list
-        modelAndView.addObject("AdPersonalEnums", JSON.toJSONString(keyValueDtoList));
         modelAndView.addObject("PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS", AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getValue());
         return modelAndView;
     }
