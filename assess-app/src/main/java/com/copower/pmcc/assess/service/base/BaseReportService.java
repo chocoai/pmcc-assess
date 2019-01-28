@@ -138,7 +138,7 @@ public class BaseReportService {
      * @param projectTypeId     项目类型
      * @param projectCategoryId 项目类别
      * @param reportType        报告类型
-     * @param reportType        委托目的
+     * @param entrustPurpose        委托目的
      * @return
      */
     public BaseReportTemplate getReportTemplate(Integer useUnit, Integer projectTypeId, Integer projectCategoryId, Integer reportType, Integer entrustPurpose) {
