@@ -52,7 +52,6 @@ public class AsposeUtils {
     }
 
 
-
     /**
      * We want to merge the range of cells found in between these two cells.
      * Cell cellStartRange = table.getRows().get(0).getCells().get(0); //第1行第1列
@@ -208,11 +207,12 @@ public class AsposeUtils {
                     Pattern p = Pattern.compile(regEx);
                     Matcher m = p.matcher((stringStringEntry.getValue()));
                     boolean check = m.find();
+                    doc.getRange().replace(stringStringEntry.getKey(), stringStringEntry.getValue(), false, false);
                     if (!check) {
-                        doc.getRange().replace(stringStringEntry.getKey(), stringStringEntry.getValue(), false, false);
+                        //不再做检测
                     }
                 } catch (Exception e) {
-                    //不再需要抛出异常!
+
                 }
             }
         }

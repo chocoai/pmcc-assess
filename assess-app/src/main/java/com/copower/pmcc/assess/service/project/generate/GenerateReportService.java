@@ -306,14 +306,16 @@ public class GenerateReportService {
                     }
                 }
             }
+            if (!textMap.isEmpty()) {
+                AsposeUtils.replaceText(tempDir, textMap);
+                //必要的,因为模板里面会插入可能又待替换模板
+                AsposeUtils.replaceText(tempDir, textMap);
+            }
             if (!fileFixedMap.isEmpty()) {
                 AsposeUtils.replaceBookmarkToFile(tempDir, fileFixedMap);
             }
             if (!bookmarkMap.isEmpty()) {
                 AsposeUtils.replaceBookmark(tempDir, bookmarkMap, false);
-            }
-            if (!textMap.isEmpty()) {
-                AsposeUtils.replaceText(tempDir, textMap);
             }
         }
         return tempDir;
@@ -387,28 +389,28 @@ public class GenerateReportService {
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EVALUATION_HYPOTHESIS.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EVALUATION_HYPOTHESIS.getName());
                     if (baseReportField != null) {
-                        replaceReportPutValue(name, generateBaseDataService.getEVALUATION_HYPOTHESIS(), false, true, false, mapSet);
+                        replaceReportPutValue(name, generateBaseDataService.getEVALUATION_HYPOTHESIS(), true, true, false, mapSet);
                     }
                 }
                 //评估依据
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EVALUATION_BASIS.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EVALUATION_BASIS.getName());
                     if (baseReportField != null) {
-                        replaceReportPutValue(name, generateBaseDataService.getEVALUATION_BASIS(), false, true, false, mapSet);
+                        replaceReportPutValue(name, generateBaseDataService.getEVALUATION_BASIS(), true, true, false, mapSet);
                     }
                 }
                 //评估原则
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EVALUATION_PRINCIPLE.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EVALUATION_PRINCIPLE.getName());
                     if (baseReportField != null) {
-                        replaceReportPutValue(name, generateBaseDataService.getEVALUATION_PRINCIPLE(), false, true, false, mapSet);
+                        replaceReportPutValue(name, generateBaseDataService.getEVALUATION_PRINCIPLE(), true, true, false, mapSet);
                     }
                 }
                 //报告分析
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.ReportAnalysis.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.ReportAnalysis.getName());
                     if (baseReportField != null) {
-                        replaceReportPutValue(name, generateBaseDataService.getReportAnalysis(), false, true, false, mapSet);
+                        replaceReportPutValue(name, generateBaseDataService.getReportAnalysis(), true, true, false, mapSet);
                     }
                 }
                 //作业结束时间
@@ -923,7 +925,7 @@ public class GenerateReportService {
                         query.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportField.class));
                         List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
                         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-                            replaceReportPutValue(name, generateBaseDataService.getStatusBuildingRightsInterests(sysAttachmentDtoList.get(0)), false, false, true, mapSet);
+//                            replaceReportPutValue(name, generateBaseDataService.getStatusBuildingRightsInterests(sysAttachmentDtoList.get(0)), false, false, true, mapSet);
                         }
                     }
                 }
