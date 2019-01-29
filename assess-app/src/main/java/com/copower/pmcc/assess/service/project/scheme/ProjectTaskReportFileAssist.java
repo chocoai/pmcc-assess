@@ -50,8 +50,9 @@ public class ProjectTaskReportFileAssist implements ProjectTaskInterface {
     }
 
     private void setParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(projectPlanDetails.getAreaId());//该区域下的所有委估对象
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(projectPlanDetails.getAreaId());//该区域下的所有委估对象
         modelAndView.addObject("judgeObjectList", judgeObjectList);
+        modelAndView.addObject("judgeObjectFullList", schemeJudgeObjectService.getJudgeObjectFullListByAreaId(projectPlanDetails.getAreaId()));
         modelAndView.addObject("ownershipCertFileList", schemeReportFileService.getOwnershipCertFileList(projectPlanDetails.getAreaId()));
         modelAndView.addObject("inventoryAddressFileList", schemeReportFileService.getInventoryAddressFileList(projectPlanDetails.getAreaId()));
         modelAndView.addObject("reimbursementFileList", schemeReportFileService.getReimbursementFileList(projectPlanDetails.getAreaId()));

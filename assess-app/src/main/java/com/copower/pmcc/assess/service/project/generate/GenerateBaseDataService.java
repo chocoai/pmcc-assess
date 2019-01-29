@@ -847,7 +847,9 @@ public class GenerateBaseDataService {
             projectPlanDetailsList.stream().forEach(projectPlanDetails -> stringSet.add(projectPlanDetails.getExecuteUserAccount()));
             if (CollectionUtils.isNotEmpty(stringSet)) {
                 StringBuilder builder = new StringBuilder();
-                if (CollectionUtils.isNotEmpty(stringSet)) {stringSet.stream().forEach(s -> builder.append(publicService.getUserNameByAccount(s)).append(","));}
+                if (CollectionUtils.isNotEmpty(stringSet)) {
+                    stringSet.stream().forEach(s -> builder.append(publicService.getUserNameByAccount(s)).append(","));
+                }
                 if (StringUtils.isNotBlank(builder.toString())) {
                     return builder.toString();
                 }
@@ -3394,9 +3396,9 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        List<SysAttachmentDto> sysAttachmentDtoList = schemeReportFileService.getProjectProxyFileList(getProjectId());
-        if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-            String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDtoList.get(0).getId());
+        SysAttachmentDto sysAttachmentDto = schemeReportFileService.getProjectProxyFileList(getProjectId());
+        if (sysAttachmentDto != null) {
+            String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
             if (FileUtils.checkImgSuffix(imgPath)) {
                 builder.insertImage(imgPath,
                         RelativeHorizontalPosition.MARGIN,
@@ -3493,7 +3495,8 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        List<SysAttachmentDto> sysAttachmentDtoList = schemeReportFileService.getOwnershipCertFileList(getAreaId());
+        Map<Integer, List<SysAttachmentDto>> ownershipCertFileList = schemeReportFileService.getOwnershipCertFileList(getAreaId());
+        List<SysAttachmentDto> sysAttachmentDtoList = ownershipCertFileList.get(0);
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
             for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
                 String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
@@ -3530,7 +3533,8 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList1)) {
             sysAttachmentDtoList.addAll(sysAttachmentDtoList1);
         }
-        List<SysAttachmentDto> sysAttachmentDtoList2 = schemeReportFileService.getOwnershipCertFileList(getAreaId());
+        Map<Integer, List<SysAttachmentDto>> ownershipCertFileList = schemeReportFileService.getOwnershipCertFileList(getAreaId());
+        List<SysAttachmentDto> sysAttachmentDtoList2 = ownershipCertFileList.get(0);
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList2)) {
             sysAttachmentDtoList.addAll(sysAttachmentDtoList2);
         }

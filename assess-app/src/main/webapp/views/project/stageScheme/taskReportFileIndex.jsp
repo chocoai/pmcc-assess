@@ -74,7 +74,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content collapse">
-                    <c:forEach items="${judgeObjectList}" var="judgeObject">
+                    <c:forEach items="${judgeObjectFullList}" var="judgeObject">
                         <div class="row">
                             <input type="hidden" name="judgeObjectId" value="${judgeObject.id}">
                             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -86,6 +86,7 @@
                                             <tr>
                                                 <th>序号</th>
                                                 <th>文件名称</th>
+                                                <th>来源</th>
                                                 <th>操作</th>
                                             </tr>
                                             </thead>
@@ -133,29 +134,39 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content collapse">
-                    <div class="col-sm-6">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>序号</th>
-                                <th>文件名称</th>
-                                <th>操作</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach items="${ownershipCertFileList}" var="item" varStatus="i">
-                                <tr>
-                                    <th>${i.index+1}</th>
-                                    <td>${item.fileName}</td>
-                                    <td>
-                                        <input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="FileUtils.editAttachment(${item.id},'${item.fileExtension}');">
-                                        <input type="button" class="btn btn-xs btn-warning" value="查看" onclick="FileUtils.showAttachment(${item.id},'${item.fileExtension}');">
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
-                    </div>
+                    <c:forEach items="${judgeObjectList}" var="judgeObject">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">${judgeObject.name}</div>
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>文件名称</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach items="${ownershipCertFileList.get(judgeObject.id)}" var="item"
+                                                   varStatus="i">
+                                            <tr>
+                                                <th>${i.index+1}</th>
+                                                <td>${item.fileName}</td>
+                                                <td>
+                                                    <input type="button" class="btn btn-xs btn-primary" value="编辑"
+                                                           onclick="FileUtils.editAttachment(${item.id},'${item.fileExtension}');">
+                                                    <input type="button" class="btn btn-xs btn-warning" value="查看"
+                                                           onclick="FileUtils.showAttachment(${item.id},'${item.fileExtension}');">
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
                 </div>
             </div>
             <div class="x_panel">
@@ -189,8 +200,10 @@
                                                 <th>${i.index+1}</th>
                                                 <td>${item.fileName}</td>
                                                 <td>
-                                                    <input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="FileUtils.editAttachment(${item.id},'${item.fileExtension}');">
-                                                    <input type="button" class="btn btn-xs btn-warning" value="查看" onclick="FileUtils.showAttachment(${item.id},'${item.fileExtension}');">
+                                                    <input type="button" class="btn btn-xs btn-primary" value="编辑"
+                                                           onclick="FileUtils.editAttachment(${item.id},'${item.fileExtension}');">
+                                                    <input type="button" class="btn btn-xs btn-warning" value="查看"
+                                                           onclick="FileUtils.showAttachment(${item.id},'${item.fileExtension}');">
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -217,8 +230,10 @@
                                                 <th>${i.index+1}</th>
                                                 <td>${item.fileName}</td>
                                                 <td>
-                                                    <input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="FileUtils.editAttachment(${item.id},'${item.fileExtension}');">
-                                                    <input type="button" class="btn btn-xs btn-warning" value="查看" onclick="FileUtils.showAttachment(${item.id},'${item.fileExtension}');">
+                                                    <input type="button" class="btn btn-xs btn-primary" value="编辑"
+                                                           onclick="FileUtils.editAttachment(${item.id},'${item.fileExtension}');">
+                                                    <input type="button" class="btn btn-xs btn-warning" value="查看"
+                                                           onclick="FileUtils.showAttachment(${item.id},'${item.fileExtension}');">
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -317,7 +332,7 @@
                     var html = '';
                     $.each(result.data, function (i, item) {
                         ++i;
-                        html += '<tr><th scope="row">' + i + '</th><td>' + item.fileName + '</td><td>' +
+                        html += '<tr><th scope="row">' + i + '</th><td>' + item.fileName + '</td><td>' + item.reName + '</td><td>' +
                             '<input type="button" class="btn btn-xs btn-primary" value="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
                             '<input type="button" class="btn btn-xs btn-primary" value="选择" onclick="selectLiveSituation(' + item.id + ',' + judgeObjectId + ',\'' + item.fileName + '\');"></td></tr>';
                     })
@@ -469,8 +484,8 @@
         data.reportFileItemList = [];
         $('[data-name=sorting]').each(function () {
             var reportFileItem = {};
-            reportFileItem.id=$(this).attr('data-id');
-            reportFileItem.sorting=$(this).val();
+            reportFileItem.id = $(this).attr('data-id');
+            reportFileItem.sorting = $(this).val();
             data.reportFileItemList.push(reportFileItem);
         })
         if ("${processInsId}" != "0") {

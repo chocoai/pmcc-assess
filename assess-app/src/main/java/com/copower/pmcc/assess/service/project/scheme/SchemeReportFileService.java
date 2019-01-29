@@ -2,10 +2,7 @@ package com.copower.pmcc.assess.service.project.scheme;
 
 import com.copower.pmcc.assess.common.enums.AssessUploadEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
-import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
-import com.copower.pmcc.assess.dal.basic.entity.BasicBuilding;
-import com.copower.pmcc.assess.dal.basic.entity.BasicEstate;
+import com.copower.pmcc.assess.dal.basic.entity.*;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileCustomDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileItemDao;
@@ -13,7 +10,6 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicBuildingService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -22,12 +18,14 @@ import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryContentService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
+import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +34,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kings on 2019-1-22.
@@ -57,7 +56,7 @@ public class SchemeReportFileService extends BaseService {
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
-    private BasicApplyService basicApplyService;
+    private SurveyCommonService surveyCommonService;
     @Autowired
     private BasicEstateService basicEstateService;
     @Autowired
@@ -110,23 +109,46 @@ public class SchemeReportFileService extends BaseService {
         //2.委估对象是合并对象，楼盘楼栋相关图值取一份
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
         if (judgeObject == null) return null;
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
-        ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetails(judgeObject.getDeclareRecordId(), projectPhase.getId());//现场查勘任务
-        BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetails.getId());
+        BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
         List<SysAttachmentDto> attachmentDtoList = Lists.newArrayList();
         if (basicApply != null) {
             BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
             BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
             List<SysAttachmentDto> dtoList = baseAttachmentService.getByField_tableId(basicEstate.getId(), AssessUploadEnum.ESTATE_FLOOR_APPEARANCE_FIGURE.getKey(), FormatUtils.entityNameConvertToTableName(BasicEstate.class));
-            if (CollectionUtils.isNotEmpty(dtoList))
-                attachmentDtoList.addAll(dtoList);
+            if (CollectionUtils.isNotEmpty(dtoList)) {
+                dtoList.forEach(o -> {
+                    o.setReName(AssessUploadEnum.ESTATE_FLOOR_APPEARANCE_FIGURE.getValue());
+                    attachmentDtoList.add(o);
+                });
+            }
             dtoList = baseAttachmentService.getByField_tableId(basicBuilding.getId(), AssessUploadEnum.BUILDING_FIGURE_OUTSIDE.getKey(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-            if (CollectionUtils.isNotEmpty(dtoList))
-                attachmentDtoList.addAll(dtoList);
+            if (CollectionUtils.isNotEmpty(dtoList)) {
+                dtoList.forEach(o -> {
+                    o.setReName(AssessUploadEnum.BUILDING_FIGURE_OUTSIDE.getValue());
+                    attachmentDtoList.add(o);
+                });
+            }
             dtoList = baseAttachmentService.getByField_tableId(basicBuilding.getId(), AssessUploadEnum.BUILDING_FLOOR_APPEARANCE_FIGURE.getKey(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-            if (CollectionUtils.isNotEmpty(dtoList))
-                attachmentDtoList.addAll(dtoList);
+            if (CollectionUtils.isNotEmpty(dtoList)) {
+                dtoList.forEach(o -> {
+                    o.setReName(AssessUploadEnum.BUILDING_FLOOR_APPEARANCE_FIGURE.getValue());
+                    attachmentDtoList.add(o);
+                });
+            }
+            dtoList = baseAttachmentService.getByField_tableId(basicBuilding.getId(), AssessUploadEnum.UNIT_APPEARANCE.getKey(), FormatUtils.entityNameConvertToTableName(BasicUnit.class));
+            if (CollectionUtils.isNotEmpty(dtoList)) {
+                dtoList.forEach(o -> {
+                    o.setReName(AssessUploadEnum.UNIT_APPEARANCE.getValue());
+                    attachmentDtoList.add(o);
+                });
+            }
+            dtoList = baseAttachmentService.getByField_tableId(basicBuilding.getId(), AssessUploadEnum.HOUSE_DECORATE.getKey(), FormatUtils.entityNameConvertToTableName(BasicHouse.class));
+            if (CollectionUtils.isNotEmpty(dtoList)) {
+                dtoList.forEach(o -> {
+                    o.setReName(AssessUploadEnum.HOUSE_DECORATE.getValue());
+                    attachmentDtoList.add(o);
+                });
+            }
         }
         return attachmentDtoList;
     }
@@ -166,8 +188,10 @@ public class SchemeReportFileService extends BaseService {
      * @param projectId
      * @return
      */
-    public List<SysAttachmentDto> getProjectProxyFileList(Integer projectId) {
-        return baseAttachmentService.getByField_tableId(projectId, AssessUploadEnum.PROJECT_PROXY.getKey(), FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
+    public SysAttachmentDto getProjectProxyFileList(Integer projectId) {
+        List<SysAttachmentDto> attachmentDtoList = baseAttachmentService.getByField_tableId(projectId, AssessUploadEnum.PROJECT_PROXY.getKey(), FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
+        if (CollectionUtils.isEmpty(attachmentDtoList)) return null;
+        return attachmentDtoList.get(attachmentDtoList.size() - 1);
     }
 
     /**
@@ -200,25 +224,33 @@ public class SchemeReportFileService extends BaseService {
      * @param areaId
      * @return
      */
-    public List<SysAttachmentDto> getOwnershipCertFileList(Integer areaId) {
+    public Map<Integer, List<SysAttachmentDto>> getOwnershipCertFileList(Integer areaId) {
         //1.找出该区域下的所有申报记录
         //2.根据申报记录获取对应的权证附件
-        HashSet<Integer> hashSet = Sets.newHashSet();
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaId);
         if (CollectionUtils.isEmpty(judgeObjectList)) return null;
+        Map<Integer, List<SysAttachmentDto>> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            hashSet.add(schemeJudgeObject.getDeclareRecordId());
-        }
-        List<SysAttachmentDto> attachmentDtoList = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(hashSet)) {
-            for (Integer id : hashSet) {
-                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(id);
-                List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getByField_tableId(declareRecord.getDataTableId(), null, declareRecord.getDataTableName());
-                if (CollectionUtils.isNotEmpty(attachmentDtos))
-                    attachmentDtoList.addAll(attachmentDtos);
+            List<SysAttachmentDto> resultAttachments = Lists.newArrayList();
+            if (schemeJudgeObject.getBisMerge() == Boolean.TRUE) {
+                List<SchemeJudgeObject> childrenJudgeObject = schemeJudgeObjectService.getChildrenJudgeObject(schemeJudgeObject.getId());
+                if (CollectionUtils.isNotEmpty(childrenJudgeObject)) {
+                    for (SchemeJudgeObject judgeObject : childrenJudgeObject) {
+                        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
+                        List<SysAttachmentDto> attachmentDtoList = baseAttachmentService.getByField_tableId(declareRecord.getDataTableId(), null, declareRecord.getDataTableName());
+                        if (CollectionUtils.isNotEmpty(attachmentDtoList))
+                            resultAttachments.addAll(attachmentDtoList);
+                    }
+                }
+            } else {
+                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+                List<SysAttachmentDto> attachmentDtoList = baseAttachmentService.getByField_tableId(declareRecord.getDataTableId(), null, declareRecord.getDataTableName());
+                if (CollectionUtils.isNotEmpty(attachmentDtoList))
+                    resultAttachments.addAll(attachmentDtoList);
             }
+            map.put(schemeJudgeObject.getId(), resultAttachments);
         }
-        return attachmentDtoList;
+        return map;
     }
 
     /**
@@ -231,10 +263,25 @@ public class SchemeReportFileService extends BaseService {
         HashSet<Integer> hashSet = Sets.newHashSet();
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaId);
         if (CollectionUtils.isEmpty(judgeObjectList)) return null;
+        Map<Integer, List<SysAttachmentDto>> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            hashSet.add(schemeJudgeObject.getDeclareRecordId());
+            if (schemeJudgeObject.getBisMerge() == Boolean.TRUE) {
+                List<SchemeJudgeObject> childrenJudgeObject = schemeJudgeObjectService.getChildrenJudgeObject(schemeJudgeObject.getId());
+                if (CollectionUtils.isNotEmpty(childrenJudgeObject)) {
+                    for (SchemeJudgeObject judgeObject : childrenJudgeObject) {
+                        getFile(hashSet, map, schemeJudgeObject);
+                    }
+                }
+            } else {
+                getFile(hashSet, map, schemeJudgeObject);
+            }
         }
         List<SysAttachmentDto> attachmentDtoList = Lists.newArrayList();
+
+        return attachmentDtoList;
+    }
+
+    private void getFile(HashSet<Integer> hashSet, Map<Integer, List<SysAttachmentDto>> map, SchemeJudgeObject schemeJudgeObject) {
         Integer inventoryContent = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS).getId();
         if (CollectionUtils.isNotEmpty(hashSet)) {
             for (Integer id : hashSet) {
@@ -247,14 +294,13 @@ public class SchemeReportFileService extends BaseService {
                                 //取附件
                                 List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getByField_tableId(content.getId(), null, FormatUtils.entityNameConvertToTableName(SurveyAssetInventoryContent.class));
                                 if (CollectionUtils.isNotEmpty(attachmentDtos))
-                                    attachmentDtoList.addAll(attachmentDtos);
+                                    map.put(schemeJudgeObject.getId(), attachmentDtos);
                             }
                         }
                     }
                 }
             }
         }
-        return attachmentDtoList;
     }
 
     /**

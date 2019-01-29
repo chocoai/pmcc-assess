@@ -132,6 +132,25 @@ public class SchemeJudgeObjectService {
         return schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
     }
 
+    /**
+     * 获取区域下完整的委估对象
+     * @return
+     */
+    public List<SchemeJudgeObject> getJudgeObjectFullListByAreaId(Integer areaGroupId){
+        SchemeJudgeObject where = new SchemeJudgeObject();
+        where.setAreaGroupId(areaGroupId);
+        where.setBisMerge(false);
+        List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectDao.getJudgeObjectList(where);
+        return judgeObjects;
+    }
+
+    public List<SchemeJudgeObject> getChildrenJudgeObject(Integer id){
+        SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
+        schemeJudgeObject.setPid(id);
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
+        return judgeObjectList;
+    }
+
     public List<SchemeJudgeObjectVo> getListByPid(Integer pid) {
         SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
         schemeJudgeObject.setPid(pid);
