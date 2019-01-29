@@ -53,7 +53,8 @@ public class BaseReportFieldDao {
             criteria.andFieldNameLike(MessageFormat.format("%{0}%", fieldName));
         }
         if (StringUtils.isNotBlank(name)) {
-            criteria.andNameLike(String.format("%%%s%%", name));
+//            criteria.andNameLike(String.format("%%%s%%", name));
+            criteria.andNameEqualTo(name);
         }
         example.setOrderByClause("sorting");
         List<BaseReportField> list = sysDataDicMapper.selectByExample(example);

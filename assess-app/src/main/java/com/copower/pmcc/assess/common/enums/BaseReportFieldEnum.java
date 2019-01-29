@@ -65,6 +65,10 @@ public enum BaseReportFieldEnum {
     DevelopmentAssistNotApplicableReason("", "假设开发法不适用原因", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     DevelopmentAssistThink("", "假设开发法评估思路", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
+    SeparationCertificateUses("", "证载用途分述", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    SummaryCertificateUses("", "证载用途总括", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    CertificationPurpose("", "证载用途", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+
     RegisteredRealEstateValuer("", "注册房产估价师", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     registrationNumber("", "注册号", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     surveyExamineDate("", "现场查勘期", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
@@ -105,7 +109,9 @@ public enum BaseReportFieldEnum {
     RegisteredRealEstateValuerValuationInstitution("", "注册房地产估价师注册证书复印件", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
     inventoryRight("", "土地他项权利情况", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    EvaluationMethod("", "评估方法", BaseReportFieldReplaceEnum.BOOKMARK.getKey());
+    EvaluationMethod("", "评估方法", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    SummaryEvaluationMethod("", "评估方法总括", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    AssessmentMethods("", "评估方法分述", BaseReportFieldReplaceEnum.BOOKMARK.getKey());
     private String key;
 
     private String name;

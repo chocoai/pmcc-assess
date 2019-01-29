@@ -359,6 +359,8 @@
             $("#" + formId).find("input[name='investigationsEndDate']").val(formatDate(info.investigationsEndDate));
             $("#" + formId).find("input[name='reportIssuanceDate']").val(formatDate(info.reportIssuanceDate));
             $("#" + formId).find("input[name='homeWorkEndTime']").val(formatDate(info.homeWorkEndTime));
+            $("#" + formId).find("input[name='realEstateAppraiser']").val(info.realEstateAppraiser);
+            $("#" + formId).find("input[name='realEstateAppraiserName']").val(info.realEstateAppraiserName);
             $.each(schemeReportGenerationFileControlIdArray,function (i,n) {
                 fileShow(n+""+areaGroupId,false,info.id);
             });
@@ -453,6 +455,8 @@
                         $("#" + formId).find("input[name='investigationsEndDate']").val(formatDate(info.investigationsEndDate));
                         $("#" + formId).find("input[name='reportIssuanceDate']").val(formatDate(info.reportIssuanceDate));
                         $("#" + formId).find("input[name='homeWorkEndTime']").val(formatDate(info.homeWorkEndTime));
+                        $("#" + formId).find("input[name='realEstateAppraiser']").val(info.realEstateAppraiser);
+                        $("#" + formId).find("input[name='realEstateAppraiserName']").val(info.realEstateAppraiserName);
                         $.each(schemeReportGenerationFileControlIdArray,function (i,n) {
                             fileShow(n+""+areaId,false,info.id);
                         });
