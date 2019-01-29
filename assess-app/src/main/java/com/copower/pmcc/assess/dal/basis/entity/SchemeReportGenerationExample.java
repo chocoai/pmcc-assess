@@ -535,133 +535,53 @@ public class SchemeReportGenerationExample {
             return (Criteria) this;
         }
 
-        public Criteria andRealEstateAppraiserEqualTo(String value) {
+        public Criteria andRealEstateAppraiserEqualTo(Integer value) {
             addCriterion("real_estate_appraiser =", value, "realEstateAppraiser");
             return (Criteria) this;
         }
 
-        public Criteria andRealEstateAppraiserNotEqualTo(String value) {
+        public Criteria andRealEstateAppraiserNotEqualTo(Integer value) {
             addCriterion("real_estate_appraiser <>", value, "realEstateAppraiser");
             return (Criteria) this;
         }
 
-        public Criteria andRealEstateAppraiserGreaterThan(String value) {
+        public Criteria andRealEstateAppraiserGreaterThan(Integer value) {
             addCriterion("real_estate_appraiser >", value, "realEstateAppraiser");
             return (Criteria) this;
         }
 
-        public Criteria andRealEstateAppraiserGreaterThanOrEqualTo(String value) {
+        public Criteria andRealEstateAppraiserGreaterThanOrEqualTo(Integer value) {
             addCriterion("real_estate_appraiser >=", value, "realEstateAppraiser");
             return (Criteria) this;
         }
 
-        public Criteria andRealEstateAppraiserLessThan(String value) {
+        public Criteria andRealEstateAppraiserLessThan(Integer value) {
             addCriterion("real_estate_appraiser <", value, "realEstateAppraiser");
             return (Criteria) this;
         }
 
-        public Criteria andRealEstateAppraiserLessThanOrEqualTo(String value) {
+        public Criteria andRealEstateAppraiserLessThanOrEqualTo(Integer value) {
             addCriterion("real_estate_appraiser <=", value, "realEstateAppraiser");
             return (Criteria) this;
         }
 
-        public Criteria andRealEstateAppraiserLike(String value) {
-            addCriterion("real_estate_appraiser like", value, "realEstateAppraiser");
-            return (Criteria) this;
-        }
-
-        public Criteria andRealEstateAppraiserNotLike(String value) {
-            addCriterion("real_estate_appraiser not like", value, "realEstateAppraiser");
-            return (Criteria) this;
-        }
-
-        public Criteria andRealEstateAppraiserIn(List<String> values) {
+        public Criteria andRealEstateAppraiserIn(List<Integer> values) {
             addCriterion("real_estate_appraiser in", values, "realEstateAppraiser");
             return (Criteria) this;
         }
 
-        public Criteria andRealEstateAppraiserNotIn(List<String> values) {
+        public Criteria andRealEstateAppraiserNotIn(List<Integer> values) {
             addCriterion("real_estate_appraiser not in", values, "realEstateAppraiser");
             return (Criteria) this;
         }
 
-        public Criteria andRealEstateAppraiserBetween(String value1, String value2) {
+        public Criteria andRealEstateAppraiserBetween(Integer value1, Integer value2) {
             addCriterion("real_estate_appraiser between", value1, value2, "realEstateAppraiser");
             return (Criteria) this;
         }
 
-        public Criteria andRealEstateAppraiserNotBetween(String value1, String value2) {
+        public Criteria andRealEstateAppraiserNotBetween(Integer value1, Integer value2) {
             addCriterion("real_estate_appraiser not between", value1, value2, "realEstateAppraiser");
-            return (Criteria) this;
-        }
-
-        public Criteria andRealEstateAppraiserNameIsNull() {
-            addCriterion("real_estate_appraiser_name is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRealEstateAppraiserNameIsNotNull() {
-            addCriterion("real_estate_appraiser_name is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRealEstateAppraiserNameEqualTo(String value) {
-            addCriterion("real_estate_appraiser_name =", value, "realEstateAppraiserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andRealEstateAppraiserNameNotEqualTo(String value) {
-            addCriterion("real_estate_appraiser_name <>", value, "realEstateAppraiserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andRealEstateAppraiserNameGreaterThan(String value) {
-            addCriterion("real_estate_appraiser_name >", value, "realEstateAppraiserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andRealEstateAppraiserNameGreaterThanOrEqualTo(String value) {
-            addCriterion("real_estate_appraiser_name >=", value, "realEstateAppraiserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andRealEstateAppraiserNameLessThan(String value) {
-            addCriterion("real_estate_appraiser_name <", value, "realEstateAppraiserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andRealEstateAppraiserNameLessThanOrEqualTo(String value) {
-            addCriterion("real_estate_appraiser_name <=", value, "realEstateAppraiserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andRealEstateAppraiserNameLike(String value) {
-            addCriterion("real_estate_appraiser_name like", value, "realEstateAppraiserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andRealEstateAppraiserNameNotLike(String value) {
-            addCriterion("real_estate_appraiser_name not like", value, "realEstateAppraiserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andRealEstateAppraiserNameIn(List<String> values) {
-            addCriterion("real_estate_appraiser_name in", values, "realEstateAppraiserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andRealEstateAppraiserNameNotIn(List<String> values) {
-            addCriterion("real_estate_appraiser_name not in", values, "realEstateAppraiserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andRealEstateAppraiserNameBetween(String value1, String value2) {
-            addCriterion("real_estate_appraiser_name between", value1, value2, "realEstateAppraiserName");
-            return (Criteria) this;
-        }
-
-        public Criteria andRealEstateAppraiserNameNotBetween(String value1, String value2) {
-            addCriterion("real_estate_appraiser_name not between", value1, value2, "realEstateAppraiserName");
             return (Criteria) this;
         }
 

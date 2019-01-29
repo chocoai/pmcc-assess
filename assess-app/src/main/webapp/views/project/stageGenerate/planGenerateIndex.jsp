@@ -92,29 +92,16 @@
                                             </div>
                                         </div>
                                         <div class="x-valid">
-                                            <label class="col-sm-1 control-label">估价师选择</label>
+                                            <label class="col-sm-1 control-label">-注册房地产估价师<span
+                                                    class="symbol required"></span></label>
                                             <div class="col-sm-3">
-                                                <div class="input-group">
-                                                    <input type="hidden" name="realEstateAppraiser">
-                                                    <input type="text" class="form-control" readonly="readonly"
-                                                           name="realEstateAppraiserName"
-                                                           onclick="selectUserAccount(this);">
-                                                    <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default docs-tooltip"
-                                                    data-toggle="tooltip"
-                                                    data-original-title="选择"
-                                                    onclick="selectUserAccount(this);">
-                                            <i class="fa fa-search"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-default docs-tooltip"
-                                                    onclick="$(this).closest('.input-group').find('input').val('');"
-                                                    data-toggle="tooltip" data-original-title="清除">
-                                            <i class="fa fa-trash-o"></i>
-                                            </button>
-                                            </span>
-                                                </div>
+                                                <select name="realEstateAppraiser"
+                                                        class="form-control search-select select2"
+                                                        required="required">
+                                                </select>
                                             </div>
                                         </div>
+
                                     </div>
                                     <div class="form-group">
                                         <div class="x-valid">
@@ -125,7 +112,7 @@
                                                 <input type="text" name="investigationsStartDate" placeholder="现场查勘开始日期"
                                                        class="form-control date-picker dbdate"
                                                        data-date-format="yyyy-mm-dd"
-                                                       pattern='yyyy-MM-dd'>
+                                                       pattern='yyyy-MM-dd' value="<fmt:formatDate value='${schemeReportGeneration.investigationsStartDate}' pattern='yyyy-MM-dd'/>">
                                             </div>
                                         </div>
                                         <div class="x-valid">
@@ -136,7 +123,7 @@
                                                 <input type="text" name="investigationsEndDate" placeholder="现场查勘结束日期"
                                                        class="form-control date-picker dbdate"
                                                        data-date-format="yyyy-mm-dd"
-                                                       pattern='yyyy-MM-dd'>
+                                                       pattern='yyyy-MM-dd' value="<fmt:formatDate value='${schemeReportGeneration.investigationsEndDate}' pattern='yyyy-MM-dd'/>">
                                             </div>
                                         </div>
                                     </div>
@@ -263,9 +250,9 @@
 <script type="text/javascript">
 
     //报告附件 数组
-    var schemeReportGenerationFileControlIdArray = ["reporttypepreaudit","reporttypetechnology","reporttyperesult"] ;
+    var schemeReportGenerationFileControlIdArray = ["reporttypepreaudit", "reporttypetechnology", "reporttyperesult"];
 
-    function fileShow(fieldsName, deleteFlag,id) {
+    function fileShow(fieldsName, deleteFlag, id) {
         FileUtils.getFileShows({
             target: fieldsName,
             formData: {
@@ -277,39 +264,29 @@
         })
     }
 
-    /**
-     * 获取资质
-     * @param userAccount
-     * @param callback
-     */
-    function getAdPersonalIdentityDto(userAccount, callback) {
-        var qualificationType = "${PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS}";
-        if ('${projectInfo.projectCategoryName}' == '房产') {
-            qualificationType = '${PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS}';
-        }
-        var data = {
-            userAccount: userAccount,
-            qualificationType: qualificationType
-        };
-        $.ajax({
-            url: "${pageContext.request.contextPath}/public/getAdPersonalIdentityDto",
-            data: data,
-            type: "get",
-            dataType: "json",
-            success: function (result) {
-                if (result.ret && result.data) {
-                    callback(result.data);
-                } else {
-                    Alert("异常");
-                }
-            },
-            error: function (result) {
-                alert("调用服务端方法失败，失败原因:" + result);
-            }
+
+    //赋值
+    function initFormSchemeReportGeneration(info, frm, areaGroupId) {
+        $(frm).initForm(info);
+        $("#" + frm).find("input[name='investigationsStartDate']").val(formatDate(info.investigationsStartDate));
+        $("#" + frm).find("input[name='investigationsEndDate']").val(formatDate(info.investigationsEndDate));
+        $("#" + frm).find("input[name='reportIssuanceDate']").val(formatDate(info.reportIssuanceDate));
+        $("#" + frm).find("input[name='homeWorkEndTime']").val(formatDate(info.homeWorkEndTime));
+        $.each(schemeReportGenerationFileControlIdArray, function (i, n) {
+            fileShow(n + "" + areaGroupId, false, info.id);
         });
+        var retHtml = '<option value="" selected>-请选择-</option>';
+        $.each(JSON.parse('${dataQualificationList}'), function (i, item) {
+            retHtml += '<option key="' + item.qualificationTypeName + '" title="' + item.qualificationTypeName+"-"+item.userAccountName + '" value="' + item.id + '"';
+            if (item.id == info.realEstateAppraiser) {
+                retHtml += 'selected="selected"';
+            }
+            retHtml += '>' + item.qualificationTypeName+"-"+item.userAccountName + '</option>';
+        });
+        $("#" + frm).find("select[name='realEstateAppraiser']").empty().html(retHtml).trigger('change');
     }
 
-    function getSchemeReportGeneration(data,callback) {
+    function getSchemeReportGeneration(data, callback) {
         $.ajax({
             url: "${pageContext.request.contextPath}/generateReport/getSchemeReportGeneration",
             data: data,
@@ -328,42 +305,14 @@
         });
     }
 
-    /**
-     * 人选选择
-     * @param this_
-     */
-    function selectUserAccount(this_) {
-        erpEmployee.select({
-            multi: true,
-            onSelected: function (data) {
-                getAdPersonalIdentityDto(data.account, function (item) {
-                    if (item.length >= 1) {
-                        $(this_).closest('.input-group').find("input[name='realEstateAppraiser']").val(data.account);
-                        $(this_).closest('.input-group').find("input[name='realEstateAppraiserName']").val(data.name);
-                    } else {
-                        Alert("该人员未有《注册房地产估价师》资格!");
-                    }
-                });
-            }
-        });
-    }
 
     function loadJudgeObjectList(_this) {
         var tbody = $(_this).closest(".area_panel").find(".table").find("tbody");
         tbody.empty();
         var areaGroupId = $(_this).closest('.area_panel').find('[name=areaGroupId]').val();
-        var formId = $(_this).parent().find("form").eq(0).attr("id") ;
-        getSchemeReportGeneration({projectPlanId:'${projectPlan.id}',areaGroupId:areaGroupId},function (info) {
-            $(formId).initForm(info);
-            $("#" + formId).find("input[name='investigationsStartDate']").val(formatDate(info.investigationsStartDate));
-            $("#" + formId).find("input[name='investigationsEndDate']").val(formatDate(info.investigationsEndDate));
-            $("#" + formId).find("input[name='reportIssuanceDate']").val(formatDate(info.reportIssuanceDate));
-            $("#" + formId).find("input[name='homeWorkEndTime']").val(formatDate(info.homeWorkEndTime));
-            $("#" + formId).find("input[name='realEstateAppraiser']").val(info.realEstateAppraiser);
-            $("#" + formId).find("input[name='realEstateAppraiserName']").val(info.realEstateAppraiserName);
-            $.each(schemeReportGenerationFileControlIdArray,function (i,n) {
-                fileShow(n+""+areaGroupId,false,info.id);
-            });
+        var formId = $(_this).parent().find("form").eq(0).attr("id");
+        getSchemeReportGeneration({projectPlanId: '${projectPlan.id}', areaGroupId: areaGroupId}, function (info) {
+            initFormSchemeReportGeneration(info, formId, areaGroupId);
         });
         $.ajax({
             url: "${pageContext.request.contextPath}/schemeProgramme/getSchemeJudgeObjectList",
@@ -417,7 +366,7 @@
 
     //生成报告
     function generateReport(areaId, item) {
-        var formId = $(item).closest("form").attr("id") ;
+        var formId = $(item).closest("form").attr("id");
         var data = formParams(formId);
         if (data.realEstateAppraiser) {
         } else {
@@ -449,17 +398,8 @@
             dataType: "json",
             success: function (result) {
                 if (result.ret) {
-                    getSchemeReportGeneration(data,function (info) {
-                        $(formId).initForm(info);
-                        $("#" + formId).find("input[name='investigationsStartDate']").val(formatDate(info.investigationsStartDate));
-                        $("#" + formId).find("input[name='investigationsEndDate']").val(formatDate(info.investigationsEndDate));
-                        $("#" + formId).find("input[name='reportIssuanceDate']").val(formatDate(info.reportIssuanceDate));
-                        $("#" + formId).find("input[name='homeWorkEndTime']").val(formatDate(info.homeWorkEndTime));
-                        $("#" + formId).find("input[name='realEstateAppraiser']").val(info.realEstateAppraiser);
-                        $("#" + formId).find("input[name='realEstateAppraiserName']").val(info.realEstateAppraiserName);
-                        $.each(schemeReportGenerationFileControlIdArray,function (i,n) {
-                            fileShow(n+""+areaId,false,info.id);
-                        });
+                    getSchemeReportGeneration(data, function (info) {
+                        initFormSchemeReportGeneration(info, formId, areaId);
                         Loading.progressHide();
                         toastr.success('报告生成成功!');
                     });

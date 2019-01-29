@@ -20,12 +20,14 @@ import com.copower.pmcc.assess.dto.output.basic.BasicHouseFaceStreetVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingEnvironmentVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingFinanceVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingTrafficVo;
+import com.copower.pmcc.assess.dto.output.data.DataQualificationVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportService;
+import com.copower.pmcc.assess.service.data.DataQualificationService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
@@ -85,6 +87,7 @@ public class GenerateBaseDataService {
     private SchemeSupportInfoService schemeSupportInfoService;
     private CompileReportService compileReportService;
     private SchemeReportFileService schemeReportFileService;
+    private DataQualificationService dataQualificationService;
 
     //构造器必须传入的参数
     private Integer projectId;
@@ -381,6 +384,7 @@ public class GenerateBaseDataService {
 
     /**
      * 证载用途分述
+     *
      * @return
      * @throws Exception
      */
@@ -610,7 +614,7 @@ public class GenerateBaseDataService {
         StringBuilder builder = new StringBuilder(128);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject:schemeJudgeObjectList){
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 builder.append(schemeJudgeObject.getNumber()).append("-");
                 List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
@@ -629,9 +633,10 @@ public class GenerateBaseDataService {
 
     /**
      * 评估方法总括
+     *
      * @return
      */
-    public String getSummaryEvaluationMethod(){
+    public String getSummaryEvaluationMethod() {
         StringBuilder builder = new StringBuilder(128);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -729,9 +734,14 @@ public class GenerateBaseDataService {
      * @param account
      * @return
      */
-    public String getRegisteredRealEstateValuer(String account) {
-        String temp = publicService.getUserNameByAccount(account);
-        return temp;
+    public String getRegisteredRealEstateValuer(Integer id) {
+        DataQualificationVo dataQualificationVo = dataQualificationService.getByDataQualificationId(id);
+        if (dataQualificationVo != null) {
+            if (StringUtils.isNotBlank(dataQualificationVo.getUserAccountName())) {
+                return dataQualificationVo.getUserAccountName();
+            }
+        }
+        return errorStr;
     }
 
     /**
@@ -741,10 +751,21 @@ public class GenerateBaseDataService {
      * @return
      * @throws Exception
      */
-    public String getRegistrationNumber(String account) throws Exception {
-        List<AdPersonalQualificationDto> adPersonalQualificationDtoList = adRpcQualificationsService.getAdPersonalQualificationDto(account, AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getValue());
-        if (CollectionUtils.isNotEmpty(adPersonalQualificationDtoList)) {
-            return adPersonalQualificationDtoList.get(0).getCertificateNo();
+    public String getRegistrationNumber(Integer id) throws Exception {
+        StringBuilder builder = new StringBuilder();
+        DataQualificationVo dataQualificationVo = dataQualificationService.getByDataQualificationId(id);
+        if (dataQualificationVo != null) {
+            if (StringUtils.isNotBlank(dataQualificationVo.getUserAccount())) {
+                for (String account : dataQualificationVo.getUserAccount().split(",")) {
+                    List<AdPersonalQualificationDto> adPersonalQualificationDtoList = adRpcQualificationsService.getAdPersonalQualificationDto(account, AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getValue());
+                    if (CollectionUtils.isNotEmpty(adPersonalQualificationDtoList)) {
+                        builder.append(adPersonalQualificationDtoList.get(0).getCertificateNo());
+                    }
+                }
+            }
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            return builder.toString();
         }
         return errorStr;
     }
@@ -785,6 +806,57 @@ public class GenerateBaseDataService {
     }
 
     /**
+     * 现场查勘人员
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getSurveyExamineCreate() throws Exception {
+        List<ProjectPhaseVo> projectPhaseVos = projectPhaseService.queryProjectPhaseByCategory(getProjectInfo().getProjectTypeId(),
+                getProjectInfo().getProjectCategoryId(), null);
+        List<ProjectPhaseVo> projectPhaseVoList = Lists.newArrayList();
+        List<ProjectPlanDetails> projectPlanDetailsList = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(projectPhaseVos)) {
+            projectPhaseVos.stream().filter(projectPhaseVo -> {
+                //查勘通过
+                if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
+                    return true;
+                }
+                //案例同样通过
+                if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
+                    return true;
+                }
+                return false;
+            }).distinct().forEach(projectPhaseVo -> {
+                projectPhaseVoList.add(projectPhaseVo);
+            });
+        }
+        if (CollectionUtils.isNotEmpty(projectPhaseVoList)) {
+            projectPhaseVoList.stream().forEach(projectPhaseVo -> {
+                ProjectPlanDetails query = new ProjectPlanDetails();
+                query.setProjectId(getProjectId());
+                query.setProjectPhaseId(projectPhaseVo.getId());
+                List<ProjectPlanDetails> projectPlanDetailss = projectPlanDetailsService.getProjectDetails(query);
+                if (CollectionUtils.isNotEmpty(projectPlanDetailss)) {
+                    projectPlanDetailsList.addAll(projectPlanDetailss);
+                }
+            });
+        }
+        Set<String> stringSet = Sets.newHashSet();
+        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+            projectPlanDetailsList.stream().forEach(projectPlanDetails -> stringSet.add(projectPlanDetails.getExecuteUserAccount()));
+            if (CollectionUtils.isNotEmpty(stringSet)) {
+                StringBuilder builder = new StringBuilder();
+                if (CollectionUtils.isNotEmpty(stringSet)) {stringSet.stream().forEach(s -> builder.append(publicService.getUserNameByAccount(s)).append(","));}
+                if (StringUtils.isNotBlank(builder.toString())) {
+                    return builder.toString();
+                }
+            }
+        }
+        return errorStr;
+    }
+
+    /**
      * 作业结束时间
      *
      * @param end
@@ -822,7 +894,7 @@ public class GenerateBaseDataService {
             }
         }
         if (StringUtils.isNotBlank(builder.toString())) {
-            return builder.toString().replaceAll("\r","");
+            return builder.toString().replaceAll("\r", "");
         }
         return errorStr;
     }
@@ -843,7 +915,7 @@ public class GenerateBaseDataService {
             }
         }
         if (StringUtils.isNotBlank(builder.toString())) {
-            return builder.toString().replaceAll("\r","");
+            return builder.toString().replaceAll("\r", "");
         }
         return errorStr;
     }
@@ -864,7 +936,7 @@ public class GenerateBaseDataService {
             }
         }
         if (StringUtils.isNotBlank(builder.toString())) {
-            return builder.toString().replaceAll("\r","");
+            return builder.toString().replaceAll("\r", "");
         }
         return errorStr;
     }
@@ -893,7 +965,7 @@ public class GenerateBaseDataService {
             }
         }
         if (StringUtils.isNotBlank(builder.toString())) {
-            return builder.toString().replaceAll("\r","");
+            return builder.toString().replaceAll("\r", "");
         }
         return errorStr;
     }
@@ -903,7 +975,8 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getAssistanceStaff(String account) {
+    public String getAssistanceStaff(Integer id) {
+        DataQualificationVo dataQualificationVo = dataQualificationService.getByDataQualificationId(id);
         List<ProjectPhaseVo> projectPhaseVos = projectPhaseService.queryProjectPhaseByCategory(getProjectInfo().getProjectTypeId(),
                 getProjectInfo().getProjectCategoryId(), null);
         ProjectPhase projectPhaseScene = null;
@@ -927,9 +1000,17 @@ public class GenerateBaseDataService {
                 if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
                     projectPlanDetailsList.parallelStream().forEach(projectPlanDetails -> {
                         if (StringUtils.isNotBlank(projectPlanDetails.getExecuteUserAccount())) {
-                            if (Objects.equal(account, projectPlanDetails.getExecuteUserAccount())) {
-                            } else {
-                                builder.append(publicService.getUserNameByAccount(projectPlanDetails.getExecuteUserAccount()));
+                            if (dataQualificationVo != null) {
+                                if (StringUtils.isNotBlank(dataQualificationVo.getUserAccount())) {
+                                    for (String account : dataQualificationVo.getUserAccount().split(",")) {
+                                        if (Objects.equal(account, projectPlanDetails.getExecuteUserAccount())) {
+
+                                        } else {
+                                            builder.append(publicService.getUserNameByAccount(projectPlanDetails.getExecuteUserAccount()));
+                                            break;
+                                        }
+                                    }
+                                }
                             }
                         }
                     });
@@ -2022,7 +2103,7 @@ public class GenerateBaseDataService {
         if (projectPhaseScene != null) {
             if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
                 for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                    SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+                    SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(i);
                     ProjectPlanDetails query = new ProjectPlanDetails();
                     query.setProjectId(getProjectId());
                     query.setProjectPhaseId(projectPhaseScene.getId());
@@ -3553,29 +3634,36 @@ public class GenerateBaseDataService {
      * @return
      * @throws Exception
      */
-    public String getRegisteredRealEstateValuerValuationInstitution(String account) throws Exception {
+    public String getRegisteredRealEstateValuerValuationInstitution(Integer id) throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        List<AdPersonalQualificationDto> adPersonalQualificationDtoList = adRpcQualificationsService.getAdPersonalQualificationDto(account, AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getValue());
-        if (CollectionUtils.isNotEmpty(adPersonalQualificationDtoList)) {
-            AdPersonalQualificationDto adCompanyQualificationDto = adPersonalQualificationDtoList.get(0);
-            if (adCompanyQualificationDto != null) {
-                if (StringUtils.isNotBlank(adCompanyQualificationDto.getStandardImageJson())) {
-                    List<SysAttachmentDto> attachmentDtoList = JSON.parseArray(adCompanyQualificationDto.getStandardImageJson(), SysAttachmentDto.class);
-                    if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
-                        SysAttachmentDto sysAttachmentDto = attachmentDtoList.get(0);
-                        String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                        if (StringUtils.isNotBlank(imgPath)) {
-                            if (FileUtils.checkImgSuffix(imgPath)) {
-                                builder.insertImage(imgPath,
-                                        RelativeHorizontalPosition.MARGIN,
-                                        GenerateReportEnum.JUDGEOBJECTIMG.getLeft(),
-                                        RelativeVerticalPosition.MARGIN,
-                                        GenerateReportEnum.JUDGEOBJECTIMG.getTop(),
-                                        GenerateReportEnum.JUDGEOBJECTIMG.getWidth(),
-                                        GenerateReportEnum.JUDGEOBJECTIMG.getHeight(),
-                                        WrapType.SQUARE);
+        DataQualificationVo dataQualificationVo = dataQualificationService.getByDataQualificationId(id);
+        if (dataQualificationVo != null) {
+            if (StringUtils.isNotBlank(dataQualificationVo.getUserAccount())) {
+                for (String account : dataQualificationVo.getUserAccount().split(",")) {
+                    List<AdPersonalQualificationDto> adPersonalQualificationDtoList = adRpcQualificationsService.getAdPersonalQualificationDto(account, AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getValue());
+                    if (CollectionUtils.isNotEmpty(adPersonalQualificationDtoList)) {
+                        AdPersonalQualificationDto adCompanyQualificationDto = adPersonalQualificationDtoList.get(0);
+                        if (adCompanyQualificationDto != null) {
+                            if (StringUtils.isNotBlank(adCompanyQualificationDto.getStandardImageJson())) {
+                                List<SysAttachmentDto> attachmentDtoList = JSON.parseArray(adCompanyQualificationDto.getStandardImageJson(), SysAttachmentDto.class);
+                                if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
+                                    SysAttachmentDto sysAttachmentDto = attachmentDtoList.get(0);
+                                    String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
+                                    if (StringUtils.isNotBlank(imgPath)) {
+                                        if (FileUtils.checkImgSuffix(imgPath)) {
+                                            builder.insertImage(imgPath,
+                                                    RelativeHorizontalPosition.MARGIN,
+                                                    GenerateReportEnum.JUDGEOBJECTIMG.getLeft(),
+                                                    RelativeVerticalPosition.MARGIN,
+                                                    GenerateReportEnum.JUDGEOBJECTIMG.getTop(),
+                                                    GenerateReportEnum.JUDGEOBJECTIMG.getWidth(),
+                                                    GenerateReportEnum.JUDGEOBJECTIMG.getHeight(),
+                                                    WrapType.SQUARE);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -3627,6 +3715,7 @@ public class GenerateBaseDataService {
         this.adRpcQualificationsService = SpringContextUtils.getBean(com.copower.pmcc.assess.service.AdRpcQualificationsAppService.class);
         this.compileReportService = SpringContextUtils.getBean(CompileReportService.class);
         this.schemeReportFileService = SpringContextUtils.getBean(SchemeReportFileService.class);
+        this.dataQualificationService = SpringContextUtils.getBean(DataQualificationService.class);
     }
 
 

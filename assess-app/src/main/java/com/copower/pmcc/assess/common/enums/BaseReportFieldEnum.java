@@ -70,8 +70,10 @@ public enum BaseReportFieldEnum {
     CertificationPurpose("", "证载用途", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
     RegisteredRealEstateValuer("", "注册房产估价师", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    RegisteredRealEstateValuerAndNumber("", "注册房产估价师及注册号", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     registrationNumber("", "注册号", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     surveyExamineDate("", "现场查勘期", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    surveyExamineCreate("", "现场查勘人员", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     HomeWorkEndTime("", "作业结束时间", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     HomeWorkStartTime("", "作业开始时间", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
