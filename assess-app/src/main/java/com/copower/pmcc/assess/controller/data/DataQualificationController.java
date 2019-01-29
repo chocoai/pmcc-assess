@@ -36,7 +36,8 @@ public class DataQualificationController {
         Map<String, String> qualification = new HashMap<>();
         qualification.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCTDGJS.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCTDGJS.getName());
         qualification.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCZCGJS.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCZCGJS.getName());
-        qualification.put(AdPersonalEnum.PERSONAL_QUALIFICATION_FINANCE_ZCKJS.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_FINANCE_ZCKJS.getName());
+        qualification.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_SFJDR.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_SFJDR.getName());
+        qualification.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getName());
         modelAndView.addObject("qualificationTypes", qualification);
         return modelAndView;
     }
