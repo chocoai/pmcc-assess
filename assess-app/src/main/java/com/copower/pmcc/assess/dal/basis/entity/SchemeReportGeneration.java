@@ -17,9 +17,7 @@ public class SchemeReportGeneration {
 
     private Date homeWorkEndTime;
 
-    private String realEstateAppraiser;
-
-    private String realEstateAppraiserName;
+    private Integer realEstateAppraiser;
 
     private Integer areaGroupId;
 
@@ -85,20 +83,12 @@ public class SchemeReportGeneration {
         this.homeWorkEndTime = homeWorkEndTime;
     }
 
-    public String getRealEstateAppraiser() {
+    public Integer getRealEstateAppraiser() {
         return realEstateAppraiser;
     }
 
-    public void setRealEstateAppraiser(String realEstateAppraiser) {
-        this.realEstateAppraiser = realEstateAppraiser == null ? null : realEstateAppraiser.trim();
-    }
-
-    public String getRealEstateAppraiserName() {
-        return realEstateAppraiserName;
-    }
-
-    public void setRealEstateAppraiserName(String realEstateAppraiserName) {
-        this.realEstateAppraiserName = realEstateAppraiserName == null ? null : realEstateAppraiserName.trim();
+    public void setRealEstateAppraiser(Integer realEstateAppraiser) {
+        this.realEstateAppraiser = realEstateAppraiser;
     }
 
     public Integer getAreaGroupId() {

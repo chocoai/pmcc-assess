@@ -57,6 +57,10 @@ public class DataQualificationService {
         return vo;
     }
 
+    public List<DataQualification> getDataQualificationList(String type){
+        return dataQualificationDao.getDataQualificationList(type);
+    }
+
 
     public DataQualificationVo getDataQualificationVo(DataQualification dataQualification) {
         if (dataQualification == null) return null;

@@ -23,8 +23,7 @@ public class SchemeReportGenerationDto implements Serializable {
     @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date homeWorkEndTime;
 
-    private String realEstateAppraiser;
-    private String realEstateAppraiserName;
+    private Integer realEstateAppraiser;
 
     private Integer areaGroupId;
 
@@ -76,11 +75,11 @@ public class SchemeReportGenerationDto implements Serializable {
         this.homeWorkEndTime = homeWorkEndTime;
     }
 
-    public String getRealEstateAppraiser() {
+    public Integer getRealEstateAppraiser() {
         return realEstateAppraiser;
     }
 
-    public void setRealEstateAppraiser(String realEstateAppraiser) {
+    public void setRealEstateAppraiser(Integer realEstateAppraiser) {
         this.realEstateAppraiser = realEstateAppraiser;
     }
 
@@ -100,11 +99,4 @@ public class SchemeReportGenerationDto implements Serializable {
         this.projectPlanId = projectPlanId;
     }
 
-    public String getRealEstateAppraiserName() {
-        return realEstateAppraiserName;
-    }
-
-    public void setRealEstateAppraiserName(String realEstateAppraiserName) {
-        this.realEstateAppraiserName = realEstateAppraiserName;
-    }
 }

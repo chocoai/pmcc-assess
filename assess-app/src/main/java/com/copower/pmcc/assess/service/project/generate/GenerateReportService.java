@@ -201,7 +201,7 @@ public class GenerateReportService {
         for (String s : strs) {
             builder.append(s);
         }
-        sysAttachmentDto.setFieldsName(String.format("%s%d",  FormatUtils.underlineToCamel(builder.toString(), false),schemeReportGeneration.getAreaGroupId()));
+        sysAttachmentDto.setFieldsName(String.format("%s%d", FormatUtils.underlineToCamel(builder.toString(), false), schemeReportGeneration.getAreaGroupId()));
         String[] strings = path.split("\\\\");
         sysAttachmentDto.setFileName(strings[strings.length - 1]);
         String ftpBasePath = String.format("%s/%s/%s/%s", baseAttachmentService.createFTPBasePath(), DateUtils.format(new Date(), "yyyy-MM-dd"), processControllerComponent.getThisUser(), UUID.randomUUID().toString());
@@ -342,7 +342,7 @@ public class GenerateReportService {
         //获取所有书签集合
         BookmarkCollection bookmarkCollection = AsposeUtils.getBookmarks(document);
         if (bookmarkCollection.getCount() >= 1) {
-            for (int i = 0; i < bookmarkCollection.getCount(); i++){
+            for (int i = 0; i < bookmarkCollection.getCount(); i++) {
                 BookmarkAndRegexDto regexDto = new BookmarkAndRegexDto();
                 regexDto.setChineseName(getChinese(bookmarkCollection.get(i).getName())).setName(bookmarkCollection.get(i).getName()).setType(BaseReportFieldReplaceEnum.BOOKMARK.getKey());
                 bookmarkAndRegexDtoHashSet.add(regexDto);
@@ -355,9 +355,9 @@ public class GenerateReportService {
                 bookmarkAndRegexDtoHashSet.add(regexDto);
             }
         }
-        if (CollectionUtils.isNotEmpty(bookmarkAndRegexDtoHashSet)){
-            for (BookmarkAndRegexDto bookmarkAndRegex:bookmarkAndRegexDtoHashSet){
-                String name = StringUtils.isNotBlank(bookmarkAndRegex.getChineseName())?bookmarkAndRegex.getChineseName():bookmarkAndRegex.getName();
+        if (CollectionUtils.isNotEmpty(bookmarkAndRegexDtoHashSet)) {
+            for (BookmarkAndRegexDto bookmarkAndRegex : bookmarkAndRegexDtoHashSet) {
+                String name = StringUtils.isNotBlank(bookmarkAndRegex.getChineseName()) ? bookmarkAndRegex.getChineseName() : bookmarkAndRegex.getName();
                 //文号
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.REPORTNUMBER.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.REPORTNUMBER.getName());
@@ -432,6 +432,13 @@ public class GenerateReportService {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.surveyExamineDate.getName());
                     if (baseReportField != null) {
                         replaceReportPutValue(name, generateBaseDataService.getSurveyExamineDate(schemeReportGeneration.getInvestigationsStartDate(), schemeReportGeneration.getInvestigationsEndDate()), true, true, false, mapSet);
+                    }
+                }
+                //现场查勘人员
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.surveyExamineCreate.getName(), name)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.surveyExamineCreate.getName());
+                    if (baseReportField != null) {
+                        replaceReportPutValue(name, generateBaseDataService.getSurveyExamineCreate(), true, true, false, mapSet);
                     }
                 }
                 AdCompanyQualificationDto qualificationDto = generateBaseDataService.getCompanyQualificationForPractising();
@@ -512,6 +519,13 @@ public class GenerateReportService {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.RegisteredRealEstateValuer.getName());
                     if (baseReportField != null) {
                         replaceReportPutValue(name, generateBaseDataService.getRegisteredRealEstateValuer(schemeReportGeneration.getRealEstateAppraiser()), true, true, false, mapSet);
+                    }
+                }
+                //注册房产估价师及注册号
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuerAndNumber.getName(), name)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.RegisteredRealEstateValuerAndNumber.getName());
+                    if (baseReportField != null) {
+                        replaceReportPutValue(name, String.format("%s及%s", generateBaseDataService.getRegisteredRealEstateValuer(schemeReportGeneration.getRealEstateAppraiser()), generateBaseDataService.getRegistrationNumber(schemeReportGeneration.getRealEstateAppraiser())), true, true, false, mapSet);
                     }
                 }
                 //注册房产估价师 注册号

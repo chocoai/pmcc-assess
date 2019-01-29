@@ -9,8 +9,7 @@
     <result column="investigations_end_date" property="investigationsEndDate" jdbcType="TIMESTAMP" />
     <result column="report_issuance_date" property="reportIssuanceDate" jdbcType="TIMESTAMP" />
     <result column="home_work_end_time" property="homeWorkEndTime" jdbcType="TIMESTAMP" />
-    <result column="real_estate_appraiser" property="realEstateAppraiser" jdbcType="VARCHAR" />
-    <result column="real_estate_appraiser_name" property="realEstateAppraiserName" jdbcType="VARCHAR" />
+    <result column="real_estate_appraiser" property="realEstateAppraiser" jdbcType="INTEGER" />
     <result column="area_group_id" property="areaGroupId" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -76,8 +75,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, project_id, project_plan_id, investigations_start_date, investigations_end_date, 
-    report_issuance_date, home_work_end_time, real_estate_appraiser, real_estate_appraiser_name, 
-    area_group_id, creator, gmt_created, gmt_modified
+    report_issuance_date, home_work_end_time, real_estate_appraiser, area_group_id, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReportGenerationExample" >
     select
@@ -116,13 +115,13 @@
     insert into tb_scheme_report_generation (project_id, project_plan_id, investigations_start_date, 
       investigations_end_date, report_issuance_date, 
       home_work_end_time, real_estate_appraiser, 
-      real_estate_appraiser_name, area_group_id, creator, 
-      gmt_created, gmt_modified)
+      area_group_id, creator, gmt_created, 
+      gmt_modified)
     values (#{projectId,jdbcType=INTEGER}, #{projectPlanId,jdbcType=INTEGER}, #{investigationsStartDate,jdbcType=TIMESTAMP}, 
       #{investigationsEndDate,jdbcType=TIMESTAMP}, #{reportIssuanceDate,jdbcType=TIMESTAMP}, 
-      #{homeWorkEndTime,jdbcType=TIMESTAMP}, #{realEstateAppraiser,jdbcType=VARCHAR}, 
-      #{realEstateAppraiserName,jdbcType=VARCHAR}, #{areaGroupId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{homeWorkEndTime,jdbcType=TIMESTAMP}, #{realEstateAppraiser,jdbcType=INTEGER}, 
+      #{areaGroupId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReportGeneration" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -150,9 +149,6 @@
       </if>
       <if test="realEstateAppraiser != null" >
         real_estate_appraiser,
-      </if>
-      <if test="realEstateAppraiserName != null" >
-        real_estate_appraiser_name,
       </if>
       <if test="areaGroupId != null" >
         area_group_id,
@@ -187,10 +183,7 @@
         #{homeWorkEndTime,jdbcType=TIMESTAMP},
       </if>
       <if test="realEstateAppraiser != null" >
-        #{realEstateAppraiser,jdbcType=VARCHAR},
-      </if>
-      <if test="realEstateAppraiserName != null" >
-        #{realEstateAppraiserName,jdbcType=VARCHAR},
+        #{realEstateAppraiser,jdbcType=INTEGER},
       </if>
       <if test="areaGroupId != null" >
         #{areaGroupId,jdbcType=INTEGER},
@@ -237,10 +230,7 @@
         home_work_end_time = #{record.homeWorkEndTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.realEstateAppraiser != null" >
-        real_estate_appraiser = #{record.realEstateAppraiser,jdbcType=VARCHAR},
-      </if>
-      <if test="record.realEstateAppraiserName != null" >
-        real_estate_appraiser_name = #{record.realEstateAppraiserName,jdbcType=VARCHAR},
+        real_estate_appraiser = #{record.realEstateAppraiser,jdbcType=INTEGER},
       </if>
       <if test="record.areaGroupId != null" >
         area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
@@ -268,8 +258,7 @@
       investigations_end_date = #{record.investigationsEndDate,jdbcType=TIMESTAMP},
       report_issuance_date = #{record.reportIssuanceDate,jdbcType=TIMESTAMP},
       home_work_end_time = #{record.homeWorkEndTime,jdbcType=TIMESTAMP},
-      real_estate_appraiser = #{record.realEstateAppraiser,jdbcType=VARCHAR},
-      real_estate_appraiser_name = #{record.realEstateAppraiserName,jdbcType=VARCHAR},
+      real_estate_appraiser = #{record.realEstateAppraiser,jdbcType=INTEGER},
       area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -300,10 +289,7 @@
         home_work_end_time = #{homeWorkEndTime,jdbcType=TIMESTAMP},
       </if>
       <if test="realEstateAppraiser != null" >
-        real_estate_appraiser = #{realEstateAppraiser,jdbcType=VARCHAR},
-      </if>
-      <if test="realEstateAppraiserName != null" >
-        real_estate_appraiser_name = #{realEstateAppraiserName,jdbcType=VARCHAR},
+        real_estate_appraiser = #{realEstateAppraiser,jdbcType=INTEGER},
       </if>
       <if test="areaGroupId != null" >
         area_group_id = #{areaGroupId,jdbcType=INTEGER},
@@ -328,8 +314,7 @@
       investigations_end_date = #{investigationsEndDate,jdbcType=TIMESTAMP},
       report_issuance_date = #{reportIssuanceDate,jdbcType=TIMESTAMP},
       home_work_end_time = #{homeWorkEndTime,jdbcType=TIMESTAMP},
-      real_estate_appraiser = #{realEstateAppraiser,jdbcType=VARCHAR},
-      real_estate_appraiser_name = #{realEstateAppraiserName,jdbcType=VARCHAR},
+      real_estate_appraiser = #{realEstateAppraiser,jdbcType=INTEGER},
       area_group_id = #{areaGroupId,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
