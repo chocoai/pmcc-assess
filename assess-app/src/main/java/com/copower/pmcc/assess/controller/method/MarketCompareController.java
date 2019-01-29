@@ -107,4 +107,25 @@ public class MarketCompareController {
             return HttpResult.newErrorResult("保存失败");
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/getMarketCompareItemById", name = "获取明细项数据", method = RequestMethod.POST)
+    public HttpResult getMarketCompareItemById(Integer id){
+        try {
+            return HttpResult.newCorrectResult( mdMarketCompareService.getMarketCompareItemById(id));
+        } catch (Exception e) {
+            return HttpResult.newErrorResult("获取失败");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveMarketCompareItem", name = "保存明细项数据", method = RequestMethod.POST)
+    public HttpResult saveMarketCompareItem(MdMarketCompareItem mdMarketCompareItem){
+        try {
+            mdMarketCompareService.saveMarketCompareItem(mdMarketCompareItem);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            return HttpResult.newErrorResult("保存失败");
+        }
+    }
 }

@@ -33,7 +33,7 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    unitCommon.unitForm.initForm(result.data);
+                    unitCommon.showUnitView(result.data);
                     if (callback) {
                         callback($(_this).attr('data-mode'));
                     }
@@ -58,7 +58,7 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    unitCommon.unitForm.initForm(result.data);
+                    unitCommon.showUnitView(result.data);
                     if (callback) {
                         callback($(_this).attr('data-mode'));
                     }
@@ -75,7 +75,7 @@
             data: {applyId: applyId},
             success: function (result) {
                 if (result.ret) {
-                    unitCommon.unitForm.initForm(result.data);
+                    unitCommon.showUnitView(result.data);
                     if (callback) {
                         callback();
                     }
@@ -95,12 +95,24 @@
                     unitCommon.unitForm.initForm(result.data,function () {
                         //附件显示
                         $.each(unitCommon.unitFileControlIdArray, function (i, item) {
+                            alert(item);
                             unitCommon.fileShow(item);
                         })
                     });
                 }
             }
         })
+    }
+
+    //显示单元信息
+    unitCommon.showUnitView = function (data) {
+        unitCommon.unitForm.initForm(data,function () {
+            $.each(unitCommon.unitFileControlIdArray, function (i, item) {
+                unitCommon.fileUpload(item);
+                unitCommon.fileShow(item);
+            })
+
+        });
     }
 
     //附件上传

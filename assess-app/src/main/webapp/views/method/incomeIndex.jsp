@@ -12,29 +12,37 @@
         <form id="frm_income" class="form-horizontal" enctype="multipart/form-data">
             <input type="hidden" name="id" value="${empty mdIncome?0: mdIncome.id}">
             <input type="hidden" name="name" value="${judgeObject.name}">
-            <%--<div class="form-group">--%>
-                <%--<div class="x-valid">--%>
-                    <%--<label class="col-sm-1 control-label">--%>
-                        <%--房产剩余使用年限--%>
-                    <%--</label>--%>
-                    <%--<div class="col-sm-3">--%>
-                        <%--<label class="form-control">${houseSurplusYear}</label>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-                <%--<div class="x-valid">--%>
-                    <%--<label class="col-sm-1 control-label">--%>
-                        <%--土地剩余使用年限--%>
-                    <%--</label>--%>
-                    <%--<div class="col-sm-3">--%>
-                        <%--<label class="form-control">${landSurplusYear}</label>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        房产剩余使用年限
+                    </label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${houseSurplusYear}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        土地剩余使用年限
+                    </label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${landSurplusYear}</label>
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
                 <label class="col-sm-1 control-label">
                     经营方式<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-2 col-sm-offset-1">
+                    <div class="x-valid">
+                        <span class="radio-inline"><input type="radio" name="operationMode" id="operationMode1"
+                                                          onclick="incomeIndex.operationModeChange(this);"
+                                                          value="1"><label
+                                for="operationMode1">租赁</label></span>
+                    </div>
+                </div>
+                <div class="col-sm-2">
                     <div class="x-valid">
                          <span class="radio-inline"><input type="radio" required name="operationMode"
                                                            id="operationMode0"
@@ -43,14 +51,7 @@
                         <label for="operationMode0">自营</label></span>
                     </div>
                 </div>
-                <div class="col-sm-2">
-                    <div class="x-valid">
-                        <span class="radio-inline"><input type="radio" name="operationMode" id="operationMode1"
-                                                          onclick="incomeIndex.operationModeChange(this);"
-                                                          value="1"><label
-                                for="operationMode1">租赁</label></span>
-                    </div>
-                </div>
+
             </div>
             <div class="form-group" id="group_FormType" style="display: none;">
                 <div class="x-valid">

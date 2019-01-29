@@ -357,6 +357,16 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                增长率说明<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-10">
+                                <textarea name="rentalGrowthRateExplain" placeholder="租金增长率说明" class="form-control" required></textarea>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -699,6 +709,7 @@
                 return AssessCommon.pointToPercent(value);
             }
         });
+        cols.push({field: 'rentalGrowthRateExplain', title: '增长率说明'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';

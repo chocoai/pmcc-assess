@@ -39,6 +39,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -158,7 +159,7 @@ public class MdIncomeService {
     @Transactional(rollbackFor = Exception.class)
     public void deleteHistory(String ids) {
         List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
-        if(CollectionUtils.isEmpty(integers)) return;
+        if (CollectionUtils.isEmpty(integers)) return;
         for (Integer id : integers) {
             MdIncomeHistory history = mdIncomeHistoryDao.getHistoryById(id);
             mdIncomeHistoryDao.deleteHistory(id);
@@ -907,5 +908,34 @@ public class MdIncomeService {
         total = total.add(salesTax.multiply(new BigDecimal("1").add(constructionTax).add(localEducationTax).add(educationFeePlus)));
         total = total.setScale(4, BigDecimal.ROUND_HALF_UP);
         return total;
+    }
+
+    /**
+     * 获取土地剩余使用年限
+     *
+     * @param landUseEndDate
+     * @param valueTimePoint
+     * @return
+     */
+    public BigDecimal getLandSurplusYear(Date landUseEndDate, Date valueTimePoint) {
+        if (landUseEndDate == null || valueTimePoint == null) return null;
+        BigDecimal landSurplusYear = new BigDecimal(DateUtils.diffDate(landUseEndDate, valueTimePoint));
+        landSurplusYear = landSurplusYear.divide(new BigDecimal(DateUtils.DAYS_PER_YEAR), 2, BigDecimal.ROUND_HALF_DOWN);
+        return landSurplusYear;
+    }
+
+    /**
+     * 获取房产剩余使用年限
+     *
+     * @param completedTime
+     * @param valueTimePoint
+     * @param canUseYear
+     * @return
+     */
+    public BigDecimal getHouseSurplusYear(Date completedTime, Date valueTimePoint, Integer canUseYear) {
+        if (completedTime == null || valueTimePoint == null || canUseYear == null) return null;
+        BigDecimal usedYear = new BigDecimal(DateUtils.diffDate(valueTimePoint, completedTime)).divide(new BigDecimal(DateUtils.DAYS_PER_YEAR), 2, BigDecimal.ROUND_HALF_DOWN);
+        BigDecimal houseSurplusYear =new BigDecimal(canUseYear).subtract(usedYear);
+        return houseSurplusYear;
     }
 }

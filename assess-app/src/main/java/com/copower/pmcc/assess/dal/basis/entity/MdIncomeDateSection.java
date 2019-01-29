@@ -26,6 +26,8 @@ public class MdIncomeDateSection {
 
     private BigDecimal rentalGrowthRate;
 
+    private String rentalGrowthRateExplain;
+
     private BigDecimal correctionFactor;
 
     private BigDecimal presentValueFactor;
@@ -124,6 +126,14 @@ public class MdIncomeDateSection {
 
     public void setRentalGrowthRate(BigDecimal rentalGrowthRate) {
         this.rentalGrowthRate = rentalGrowthRate;
+    }
+
+    public String getRentalGrowthRateExplain() {
+        return rentalGrowthRateExplain;
+    }
+
+    public void setRentalGrowthRateExplain(String rentalGrowthRateExplain) {
+        this.rentalGrowthRateExplain = rentalGrowthRateExplain == null ? null : rentalGrowthRateExplain.trim();
     }
 
     public BigDecimal getCorrectionFactor() {

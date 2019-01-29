@@ -225,6 +225,9 @@ public class MdMarketCompareFieldService extends BaseService {
                                 list.add(getMarketCompareItemDto(MethodCompareFieldEnum.OFFICE_CONCENTRATION.getKey(), stringBuilder.toString()));
                             }
                             break;
+                        case BUILDING://楼栋
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.BUILDING.getKey(), examineBuilding.getBuildingName()));
+                            break;
                         case FLOOR://楼层
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.FLOOR.getKey(), String.valueOf(examineHouse.getFloor())));
                             break;

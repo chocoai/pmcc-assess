@@ -20,6 +20,7 @@ public enum MethodCompareFieldEnum {
     //区位状况-----------------------------------------------------------------------------------------------区位状况
     LOCATION("location", "房地产坐落及方位"),//ps:权证的坐落、板块的方位、楼盘的方位字段组合
     OFFICE_CONCENTRATION("office.concentration", "集聚度"),//ps:多条交通枢信息 （名称+距离）相组合显示
+    BUILDING("building", "楼栋"),//ps:楼栋-楼栋的名称
     FLOOR("floor", "楼层"),//ps:房屋-所在层数
     ORIENTATION("orientation", "朝向"),//ps:房屋-朝向
     TRAFFIC_CONDITIONS("traffic.conditions", "交通条件"),//ps:地铁、公交、主干道、主要转换互通桥信息的所有数据叠加

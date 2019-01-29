@@ -188,7 +188,7 @@ public class MdMarketCompareService {
                 mdMarketCompareItem.setType(ExamineTypeEnum.CASE.getId());
                 mdMarketCompareItem.setCreator(commonService.thisUserAccount());
                 mdMarketCompareItem.setInitialPrice(new BigDecimal("15000"));
-                mdMarketCompareItem.setMustAdjustPrice(mustAdjustPrice(planDetailsId));
+                mdMarketCompareItem.setMustAdjustPrice(false);
                 if (projectInfo == null)
                     projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
                 mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(projectInfo, projectPlanDetails.getDeclareRecordId(), projectPlanDetails.getId(), setUseFieldList, true));
@@ -199,29 +199,29 @@ public class MdMarketCompareService {
         }
     }
 
-
     /**
-     * 是否必须调整成交价
+     * 获取数据by id
      *
-     * @param planDetailsId
+     * @param id
      * @return
      */
-    public Boolean mustAdjustPrice(Integer planDetailsId) {
-//        ExamineHouseTrading houseTrading = examineHouseTradingDao.getHouseTradingByPlanDetailsId(planDetailsId);
-//        if (houseTrading != null) {
-//            BaseDataDic transactionDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_HOUSE_NORMAL_TRANSACTION_YES);
-//            BaseDataDic disposableDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_HOUSE_PAYMENT_METHOD_DISPOSABLE);
-//            if (StringUtils.isNotBlank(houseTrading.getNormalTransaction())) {
-//                if (!Integer.valueOf(houseTrading.getNormalTransaction()).equals(transactionDic.getId()))
-//                    return true;
-//            }
-//
-//            if (StringUtils.isNotBlank(houseTrading.getPaymentMethod()) && !houseTrading.getPaymentMethod().equals(disposableDic.getId())) {
-//                if (!Integer.valueOf(houseTrading.getPaymentMethod()).equals(disposableDic.getId()))
-//                    return true;
-//            }
-//        }
-        return false;
+    public MdMarketCompareItem getMarketCompareItemById(Integer id) {
+        MdMarketCompareItem mdMarketCompareItem = mdMarketCompareItemDao.getMarketCompareItemById(id);
+        return mdMarketCompareItem;
+    }
+
+    /**
+     * 保存数据
+     *
+     * @param mdMarketCompareItem
+     */
+    public void saveMarketCompareItem(MdMarketCompareItem mdMarketCompareItem) {
+        if (mdMarketCompareItem.getId() == null || mdMarketCompareItem.getId() <= 0) {
+            mdMarketCompareItem.setCreator(commonService.thisUserAccount());
+            mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
+        } else {
+            mdMarketCompareItemDao.updateMarketCompareItem(mdMarketCompareItem);
+        }
     }
 
     /**
@@ -290,7 +290,7 @@ public class MdMarketCompareService {
         projectPlanDetails.setProjectPhaseId(projectPhase.getId());
         projectPlanDetails.setBisStart(true);
         List<ProjectPlanDetails> detailsList = projectPlanDetailsDao.getListObject(projectPlanDetails);
-        if(CollectionUtils.isEmpty(detailsList)){
+        if (CollectionUtils.isEmpty(detailsList)) {
             return null;
         }
         return projectPlanDetailsDao.getProjectPlanDetailsByPid(detailsList.get(0).getId());

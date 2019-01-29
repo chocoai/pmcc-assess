@@ -3,25 +3,28 @@ package com.copower.pmcc.assess.service.project.scheme;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.MethodIncomeOperationModeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
+import com.copower.pmcc.assess.dal.basic.entity.BasicBuilding;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeIncomeApplyDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicBuildingService;
 import com.copower.pmcc.assess.service.data.DataTaxRateAllocationService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
-import com.copower.pmcc.erp.common.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Date;
+import java.math.BigDecimal;
 
 /**
  * 描述:
@@ -54,6 +57,10 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     private SchemeAreaGroupService schemeAreaGroupService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private SurveyCommonService surveyCommonService;
+    @Autowired
+    private BasicBuildingService basicBuildingService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -62,7 +69,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
         SchemeInfo info = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         if (info == null) {
             MdIncome mdIncome = new MdIncome();
-            mdIncome.setOperationMode(MethodIncomeOperationModeEnum.PROPRIETARY.getId());
+            mdIncome.setOperationMode(MethodIncomeOperationModeEnum.LEASE.getId());
             mdIncome.setCreator(processControllerComponent.getThisUser());
             mdIncomeService.saveIncome(mdIncome);
             modelAndView.addObject("mdIncome", mdIncome);
@@ -132,18 +139,20 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
             mdIncome = mdIncomeService.getIncomeById(schemeInfo.getMethodDataId());
         }
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-        if (judgeObject != null) {
-            modelAndView.addObject("judgeObject", judgeObject);
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
-            if (declareRecord != null) {
-                if (declareRecord.getHouseUseEndDate() != null)//房产使用剩余年限
-                    modelAndView.addObject("houseSurplusYear", DateUtils.diffDate(declareRecord.getHouseUseEndDate(), new Date()) / DateUtils.DAYS_PER_YEAR);
-                if (declareRecord.getLandUseEndDate() != null)//土地使用剩余年限
-                    modelAndView.addObject("landSurplusYear", DateUtils.diffDate(declareRecord.getLandUseEndDate(), new Date()) / DateUtils.DAYS_PER_YEAR);
+        SchemeAreaGroup areaGroup = schemeAreaGroupService.get(judgeObject.getAreaGroupId());
+        modelAndView.addObject("judgeObject", judgeObject);
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
+        if (declareRecord != null) {
+            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(declareRecord.getId());
+            if(basicApply!=null){
+                BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
+                BigDecimal houseSurplusYear = mdIncomeService.getHouseSurplusYear(basicBuilding.getBeCompletedTime(), areaGroup.getValueTimePoint(), surveyCommonService.getBuildingUsableYear(basicApply, basicBuilding));
+                modelAndView.addObject("houseSurplusYear",houseSurplusYear); //房产使用剩余年限
             }
+            //土地使用剩余年限
+            modelAndView.addObject("landSurplusYear", mdIncomeService.getLandSurplusYear(declareRecord.getLandUseEndDate(),areaGroup.getValueTimePoint()));
         }
         //取重置价格
-        SchemeAreaGroup areaGroup = schemeAreaGroupService.get(judgeObject.getAreaGroupId());
         DataTaxRateAllocation taxRateAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_LAND_REPLACEMENT_VALUE, areaGroup.getProvince(), areaGroup.getCity(), null);
         if (taxRateAllocation != null)
             modelAndView.addObject("replacementValue", taxRateAllocation.getAmount());

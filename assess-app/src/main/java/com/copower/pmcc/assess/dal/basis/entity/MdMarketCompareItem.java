@@ -14,6 +14,8 @@ public class MdMarketCompareItem {
 
     private String jsonContent;
 
+    private String tradingTimeExplain;
+
     private Integer residueRatioId;
 
     private Integer usedYear;
@@ -82,6 +84,14 @@ public class MdMarketCompareItem {
 
     public void setJsonContent(String jsonContent) {
         this.jsonContent = jsonContent == null ? null : jsonContent.trim();
+    }
+
+    public String getTradingTimeExplain() {
+        return tradingTimeExplain;
+    }
+
+    public void setTradingTimeExplain(String tradingTimeExplain) {
+        this.tradingTimeExplain = tradingTimeExplain == null ? null : tradingTimeExplain.trim();
     }
 
     public Integer getResidueRatioId() {

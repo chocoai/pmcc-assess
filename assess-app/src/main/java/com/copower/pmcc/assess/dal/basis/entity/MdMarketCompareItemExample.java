@@ -426,6 +426,76 @@ public class MdMarketCompareItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andTradingTimeExplainIsNull() {
+            addCriterion("trading_time_explain is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTimeExplainIsNotNull() {
+            addCriterion("trading_time_explain is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTimeExplainEqualTo(String value) {
+            addCriterion("trading_time_explain =", value, "tradingTimeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTimeExplainNotEqualTo(String value) {
+            addCriterion("trading_time_explain <>", value, "tradingTimeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTimeExplainGreaterThan(String value) {
+            addCriterion("trading_time_explain >", value, "tradingTimeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTimeExplainGreaterThanOrEqualTo(String value) {
+            addCriterion("trading_time_explain >=", value, "tradingTimeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTimeExplainLessThan(String value) {
+            addCriterion("trading_time_explain <", value, "tradingTimeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTimeExplainLessThanOrEqualTo(String value) {
+            addCriterion("trading_time_explain <=", value, "tradingTimeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTimeExplainLike(String value) {
+            addCriterion("trading_time_explain like", value, "tradingTimeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTimeExplainNotLike(String value) {
+            addCriterion("trading_time_explain not like", value, "tradingTimeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTimeExplainIn(List<String> values) {
+            addCriterion("trading_time_explain in", values, "tradingTimeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTimeExplainNotIn(List<String> values) {
+            addCriterion("trading_time_explain not in", values, "tradingTimeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTimeExplainBetween(String value1, String value2) {
+            addCriterion("trading_time_explain between", value1, value2, "tradingTimeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTimeExplainNotBetween(String value1, String value2) {
+            addCriterion("trading_time_explain not between", value1, value2, "tradingTimeExplain");
+            return (Criteria) this;
+        }
+
         public Criteria andResidueRatioIdIsNull() {
             addCriterion("residue_ratio_id is null");
             return (Criteria) this;

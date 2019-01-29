@@ -3,16 +3,26 @@ package com.copower.pmcc.assess.service.project.survey;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.NetDownloadUtils;
+import com.copower.pmcc.assess.common.enums.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
+import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
+import com.copower.pmcc.assess.dal.basic.entity.BasicBuilding;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyExamineTask;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
+import com.copower.pmcc.assess.service.basic.BasicBuildingService;
+import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
 import com.copower.pmcc.assess.service.data.DataExamineTaskService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
@@ -71,6 +81,18 @@ public class SurveyCommonService {
     private DeclareRecordService declareRecordService;
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
+    @Autowired
+    private BasicApplyService basicApplyService;
+    @Autowired
+    private BasicBuildingService basicBuildingService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private DataBuildingNewRateService dataBuildingNewRateService;
 
 
     /**
@@ -265,6 +287,60 @@ public class SurveyCommonService {
     }
 
     /**
+     * 获取查勘过程申请表信息
+     *
+     * @param declareId
+     * @return
+     */
+    public BasicApply getSceneExploreBasicApply(Integer declareId) {
+        try {
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareId);
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(declareRecord.getProjectId());
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
+            ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetails(declareId, projectPhase.getId());
+            BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetails.getId());
+            return basicApply;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return null;
+        }
+    }
+
+
+    /**
+     * 获取楼栋可使用年限
+     *
+     * @param declareId
+     * @return
+     */
+    public Integer getBuildingUsableYear(Integer declareId) {
+        //获取该证现场查勘时楼栋的可使用年限
+        Integer buildingUsableYear = 0;
+        try {
+            BasicApply basicApply = this.getSceneExploreBasicApply(declareId);
+            BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
+            buildingUsableYear = this.getBuildingUsableYear(basicApply, basicBuilding);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return buildingUsableYear;
+    }
+
+    public Integer getBuildingUsableYear(BasicApply basicApply, BasicBuilding basicBuilding) {
+        Integer buildingUsableYear = 0;
+        if (basicApply == null || basicBuilding == null) return buildingUsableYear;
+        if (BasicApplyTypeEnum.RESIDENCE.getId().equals(basicApply.getType())) {
+            BaseDataDic baseDataDic = baseDataDicService.getDataDicById(basicBuilding.getResidenceUseYear());
+            buildingUsableYear = Integer.valueOf(baseDataDic.getRemark());
+        } else if (BasicApplyTypeEnum.INDUSTRY.getId().equals(basicApply.getType())) {
+            DataBuildingNewRate buildingNewRate = dataBuildingNewRateService.getByiDdataBuildingNewRate(basicBuilding.getIndustryUseYear());
+            buildingUsableYear = buildingNewRate.getDurableLife();
+        }
+        return buildingUsableYear;
+    }
+
+
+    /**
      * 获取初始化权证json数据
      *
      * @param projectId
@@ -276,11 +352,11 @@ public class SurveyCommonService {
         if (CollectionUtils.isEmpty(declareRecordList)) return null;
         JSONArray jsonArray = new JSONArray();
         for (DeclareRecord declareRecord : declareRecordList) {
-            if(declareRecord.getId().equals(declareId)) continue;
+            if (declareRecord.getId().equals(declareId)) continue;
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("key",declareRecord.getId());
-            jsonObject.put("isChecked",false);
-            jsonObject.put("value",declareRecord.getName());
+            jsonObject.put("key", declareRecord.getId());
+            jsonObject.put("isChecked", false);
+            jsonObject.put("value", declareRecord.getName());
             jsonArray.add(jsonObject);
         }
         return jsonArray.toJSONString();
@@ -288,11 +364,12 @@ public class SurveyCommonService {
 
     /**
      * 获取调查信息相关表
+     *
      * @return
      */
     public List<String> getTableList() {
-        String dbName=BaseConstant.DATABASE_PMCC_ASSESS;
-        String sql = String.format("select TABLE_NAME from information_schema.`TABLES` where table_schema='%s' and TABLE_NAME LIKE 'tb_examine_%%'",dbName);
+        String dbName = BaseConstant.DATABASE_PMCC_ASSESS;
+        String sql = String.format("select TABLE_NAME from information_schema.`TABLES` where table_schema='%s' and TABLE_NAME LIKE 'tb_examine_%%'", dbName);
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sql);
         List<String> tableList = Lists.newArrayList();
         for (Map<String, Object> map : mapList) {
@@ -303,6 +380,7 @@ public class SurveyCommonService {
 
     /**
      * 获取同步sql语句
+     *
      * @param tableName
      * @param oldPlanDetailsId
      * @param newPlanDetailsId
@@ -310,8 +388,8 @@ public class SurveyCommonService {
      * @return
      */
     public String getSynchronizeSql(String tableName, Integer oldPlanDetailsId, Integer newPlanDetailsId, Integer newDeclareId) {
-        String dbName=BaseConstant.DATABASE_PMCC_ASSESS;
-        String sql = String.format("select column_name from information_schema.columns where table_name='%s' and table_schema='%s'", tableName,dbName);
+        String dbName = BaseConstant.DATABASE_PMCC_ASSESS;
+        String sql = String.format("select column_name from information_schema.columns where table_name='%s' and table_schema='%s'", tableName, dbName);
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sql);
         //1.去除id 评出sql前半截  拼出sql后半截
         for (Map<String, Object> map : mapList) {

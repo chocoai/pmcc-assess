@@ -40,4 +40,13 @@ public class SchemeReimbursementService {
     }
 
 
+    /**
+     * 获取法定有限受偿款完整描述（单位万元）
+     * @param judgeObjectId
+     * @return
+     */
+    public String getFullDescription(Integer judgeObjectId){
+
+        return null;
+    }
 }

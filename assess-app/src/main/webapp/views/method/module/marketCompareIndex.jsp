@@ -233,9 +233,14 @@
                 $("#small_select_case").hide();
             }
             $("#cbxScore,#cbxRatio").each(function () {
-                if($(this).prop('checked')){
+                if ($(this).prop('checked')) {
                     $(this).trigger('click');
                 }
+            })
+            $('#tb_md_mc_item_list').find('tr[data-group="trading.time"]').each(function () {
+                $(this).find('td:gt(1)').each(function () {
+                    $(this).append('<input type="button" class="btn btn-xs btn-warning pull-right" onclick="marketCompare.tradingTimeExplain(this,' + defaluts.readonly + ');" value="修正说明">');
+                })
             })
             $('#tb_md_mc_item_list').find('tr[data-group="new.degree"][data-name="text"]').each(function () {
                 $(this).find('td').each(function () {
@@ -251,18 +256,10 @@
             var headHtml = '<thead> <tr>';
             headHtml += '<th width="10%">项目</th>';
             headHtml += '<th width="20%" data-type="evaluation" data-item-id="' + defaluts.evaluation.id + '">估价对象';
-            headHtml += '<input type="hidden" name="residueRatioId" value="' + defaluts.evaluation.residueRatioId + '">';
-            headHtml += '<input type="hidden" name="usedYear" value="' + defaluts.evaluation.usedYear + '">';
-            headHtml += '<input type="hidden" name="usableYear" value="' + defaluts.evaluation.usableYear + '">';
-            headHtml += '<input type="hidden" name="houseId" value="' + defaluts.evaluation.houseId + '">';
             headHtml += '</th>';
             if (defaluts.cases && defaluts.cases.length > 0) {
                 for (var i = 1; i <= defaluts.cases.length; i++) {
                     headHtml += '<th width="20%" data-type="case" data-item-id="' + defaluts.cases[i - 1].id + '">';
-                    headHtml += '<input type="hidden" name="residueRatioId" value="' + defaluts.cases[i - 1].residueRatioId + '">';
-                    headHtml += '<input type="hidden" name="usedYear" value="' + defaluts.cases[i - 1].usedYear + '">';
-                    headHtml += '<input type="hidden" name="usableYear" value="' + defaluts.cases[i - 1].usableYear + '">';
-                    headHtml += '<input type="hidden" name="houseId" value="' + defaluts.cases[i - 1].houseId + '">';
                     headHtml += defaluts.cases[i - 1].name;
                     headHtml += '</th>';
                 }
@@ -722,23 +719,83 @@
             //获取已使用年限,当前评估基准日-楼栋的竣工时间
             //获取可用年限，根据建筑使用年限配置而来
             var itemId = $(_this).closest('td').attr('data-item-id');
+            $.ajax({
+                url: '${pageContext.request.contextPath}/marketCompare/getMarketCompareItemById',
+                data: {id: itemId},
+                success: function (result) {
+                    if (result.ret) {
+                        residueRatio.init({
+                            readonly: readonly,
+                            residueRatioId: result.data.residueRatioId,
+                            usedYear: result.data.usedYear,
+                            usableYear: result.data.usableYear,
+                            houseId: result.data.houseId,
+                            success: function (id, resultValue) {
+                                $.ajax({
+                                    url: '${pageContext.request.contextPath}/marketCompare/saveMarketCompareItem',
+                                    data: {
+                                        id: itemId,
+                                        residueRatioId: id
+                                    },
+                                    success: function (result) {}
+                                })
+                                $(_this).closest('td').find('a').editable('setValue', resultValue);
+                            }
+                        });
+                    }
+                }
+            })
+
             console.log(itemId);
-            var th = $('#tb_md_mc_item_list').find('thead th[data-item-id='+itemId+']');
+            var th = $('#tb_md_mc_item_list').find('thead th[data-item-id=' + itemId + ']');
             console.log(th.find('[name=residueRatioId]').val());
             console.log(th.find('[name=usedYear]').val());
             console.log(th.find('[name=usableYear]').val());
             console.log(th.find('[name=houseId]').val());
-            residueRatio.init({
-                readonly: readonly,
-                residueRatioId: th.find('[name=residueRatioId]').val(),
-                usedYear: th.find('[name=usedYear]').val(),
-                usableYear: th.find('[name=usableYear]').val(),
-                houseId: th.find('[name=houseId]').val(),
-                success: function (id, resultValue) {
-                    th.find('[name=residueRatioId]').val(id);
-                    $(_this).closest('td').find('a').editable('setValue',resultValue);
+
+        }
+
+        //交易时间修正说明
+        marketCompare.tradingTimeExplain = function (_this, readonly) {
+            var itemId = $(_this).closest('td').attr('data-item-id');
+            $.ajax({
+                url: '${pageContext.request.contextPath}/marketCompare/getMarketCompareItemById',
+                data: {id: itemId},
+                success: function (result) {
+                    if (result.ret) {
+                        var tradingTimeExplain = result.data.tradingTimeExplain;
+                        if (readonly) {
+                            layer.alert(tradingTimeExplain);
+                        } else {
+                            layer.prompt({
+                                formType: 2,
+                                value: tradingTimeExplain,
+                                title: '交易时间修正说明',
+                                area: ['500px', '150px']
+                            }, function (value, index, elem) {
+                                $.ajax({
+                                    url: '${pageContext.request.contextPath}/marketCompare/saveMarketCompareItem',
+                                    data: {
+                                        id: itemId,
+                                        tradingTimeExplain: value
+                                    },
+                                    success: function (result) {
+                                        if (result.ret) {
+                                            toastr.success("保存成功");
+                                            layer.close(index);
+                                        } else {
+                                            toastr.error(result.errmsg);
+                                        }
+                                    }
+                                })
+                            });
+                        }
+                    } else {
+                        toastr.error(result.errmsg);
+                    }
                 }
-            });
+            })
+
         }
         window.marketCompare = marketCompare;
     })(jQuery)

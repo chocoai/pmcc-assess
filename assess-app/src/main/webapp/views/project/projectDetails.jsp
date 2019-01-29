@@ -193,7 +193,7 @@
 
         loadPlanItem: function (planId) {
             $.ajax({
-                url: '${pageContext.request.contextPath}/projectInfo/getProjectPlanItem',
+                url: '${pageContext.request.contextPath}/projectInfo/getProjectPlanItem1',
                 data: {planId: planId},
                 success: function (result) {
                     $('#plan_item_' + planId).empty();
@@ -208,6 +208,9 @@
                             $('#plan_item_' + planId).append(html);
                         }
                     }
+                },
+                global:false,
+                error:function () {
                 }
             })
         },
