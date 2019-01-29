@@ -27,6 +27,14 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">外观图</label>
+                    <div class="col-sm-3">
+                        <div id="_unit_appearance"></div>
+                    </div>
+                </div>
+            </div>
         </form>
 
         <!-- 楼栋内装信息	 -->

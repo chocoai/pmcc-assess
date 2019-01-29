@@ -27,11 +27,14 @@ public enum AssessUploadEnum {
     HOUSE_HUXING_PLAN("house_huxing_plan", "户型图"),
     HOUSE_NEW_HUXING_PLAN("house_new_huxing_plan", "新户型图"),
     HOUSE_IMG_PLAN("house_img_plan", "房屋平面图"),
+    HOUSE_DECORATE("house_decorate", "房屋外观图"),
     HOUSE_FILE("house_file", "其它附件"),
 
     BUILDING_FLOOR_PLAN("building_floor_plan", "平面图 (楼栋)"),
     BUILDING_FIGURE_OUTSIDE("building_figure_outside", "外装图(楼栋)"),
-    BUILDING_FLOOR_APPEARANCE_FIGURE("building_floor_Appearance_figure", "外观图(楼栋)");
+    BUILDING_FLOOR_APPEARANCE_FIGURE("building_floor_Appearance_figure", "外观图(楼栋)"),
+
+    UNIT_APPEARANCE("unit_appearance", "外观图(单元)");
 
 
     private String key;

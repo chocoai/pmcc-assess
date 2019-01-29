@@ -30,6 +30,7 @@ AssessDBKey.CaseUnitHuxing = "tb_case_unit_huxing";
 AssessDBKey.BasicEstate = "tb_basic_estate";
 AssessDBKey.BasicBuilding = "tb_basic_building";
 AssessDBKey.BasicHouse = "tb_basic_house";
+AssessDBKey.BasicUnit = "tb_basic_unit";
 AssessDBKey.BasicHouseTrading = "tb_basic_house_trading";
 AssessDBKey.BasicUnitHuxing = "tb_basic_unit_huxing";
 AssessDBKey.BasicEstateParking = "tb_basic_estate_parking";

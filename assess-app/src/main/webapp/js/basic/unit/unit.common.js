@@ -7,6 +7,11 @@
     unitCommon.unitForm = $('#basicUnitFrm');
     unitCommon.unitMapiframe = undefined;
 
+    //附件上传控件id数组
+    unitCommon.unitFileControlIdArray = [
+        AssessUploadKey.UNIT_APPEARANCE
+    ];
+
     unitCommon.getUnitId = function () {
         return unitCommon.unitForm.find('[name=id]').val();
     }
@@ -87,15 +92,47 @@
             data: {applyId: applyId},
             success: function (result) {
                 if (result.ret) {
-                    unitCommon.unitForm.initForm(result.data);
+                    unitCommon.unitForm.initForm(result.data,function () {
+                        //附件显示
+                        $.each(unitCommon.unitFileControlIdArray, function (i, item) {
+                            unitCommon.fileShow(item);
+                        })
+                    });
                 }
             }
         })
     }
 
+    //附件上传
+    unitCommon.fileUpload = function (fieldsName) {
+        FileUtils.uploadFiles({
+            target: fieldsName,
+            disabledTarget: "btn_submit",
+            formData: {
+                fieldsName: fieldsName,
+                tableName: AssessDBKey.BasicUnit,
+                tableId: unitCommon.getUnitId()
+            },
+            deleteFlag: true
+        });
+    }
+
+    //附件显示
+    unitCommon.fileShow = function (fieldsName, deleteFlag) {
+        FileUtils.getFileShows({
+            target: fieldsName,
+            formData: {
+                fieldsName: fieldsName,
+                tableName: AssessDBKey.BasicUnit,
+                tableId: unitCommon.getUnitId()
+            },
+            deleteFlag: deleteFlag == undefined ? true : deleteFlag
+        })
+    }
+
     //楼栋标注
     unitCommon.mapMarker = function (readonly) {
-        var contentUrl = getContextPath() + '/map/mapMarkerEstate?estateName=' + estateCommon.getEstateName();
+        var contentUrl = getContextPath() + '/map/mapMarkerEstate?estateName=' + unitCommon.getEstateName();
         if (readonly != true) {
             contentUrl += '&click=unitCommon.addMarker';
         }
@@ -117,7 +154,7 @@
     //添加标注
     unitCommon.addMarker = function (lng, lat) {
         $.ajax({
-            url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
+            url: getContextPath() + '/basicEstateTagging/addBasicUnitTagging',
             data: {
                 applyId: basicCommon.getApplyId(),
                 type: 'unit',

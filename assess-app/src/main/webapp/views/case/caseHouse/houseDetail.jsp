@@ -112,11 +112,16 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">房屋平面图</label>
-                    <div class="col-sm-3">
+                    <div class="col-sm-5">
                         <div id="_house_img_plan"></div>
                     </div>
                 </div>
-
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">房屋装饰图</label>
+                    <div class="col-sm-5">
+                        <div id="_house_decorate"></div>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
@@ -457,6 +462,7 @@
         objectData.showFile(AssessUploadKey.HOUSE_HUXING_PLAN);
         objectData.showFile(AssessUploadKey.HOUSE_NEW_HUXING_PLAN);
         objectData.showFile(AssessUploadKey.HOUSE_IMG_PLAN);
+        objectData.showFile(AssessUploadKey.HOUSE_DECORATE);
         objectData.showFile(AssessUploadKey.HOUSE_FILE);
         objectData.house.subLoadList(AssessDicKey.examineHouseTransactionTypeSell);
         objectData.house.subLoadList(AssessDicKey.examineHouseTransactionTypeLease);

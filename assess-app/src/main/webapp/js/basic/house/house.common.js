@@ -24,6 +24,7 @@
         AssessUploadKey.HOUSE_HUXING_PLAN,
         AssessUploadKey.HOUSE_NEW_HUXING_PLAN,
         AssessUploadKey.HOUSE_IMG_PLAN,
+        AssessUploadKey.HOUSE_DECORATE,
         AssessUploadKey.HOUSE_FILE
     ];
 

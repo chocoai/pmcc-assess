@@ -6,6 +6,11 @@
     var unitCommon = {};
     unitCommon.unitForm = $('#basicUnitFrm');
 
+    //附件上传控件id数组
+    unitCommon.unitFileControlIdArray = [
+        AssessUploadKey.UNIT_APPEARANCE
+    ];
+
     unitCommon.getUnitId = function () {
         return unitCommon.unitForm.find('[name=id]').val();
     };
@@ -32,6 +37,38 @@
     unitCommon.initForm = function (data) {
         unitCommon.unitForm.clearAll();
         unitCommon.unitForm.initForm(data);
+        //初始化上传控件
+        $.each(unitCommon.unitFileControlIdArray, function (i, item) {
+            unitCommon.fileUpload(item);
+            unitCommon.fileShow(item);
+        });
+    };
+
+    //附件上传
+    unitCommon.fileUpload = function (fieldsName) {
+        FileUtils.uploadFiles({
+            target: fieldsName,
+            disabledTarget: "btn_submit",
+            formData: {
+                fieldsName: fieldsName,
+                tableName: AssessDBKey.BasicUnit,
+                tableId: unitCommon.getUnitId()
+            },
+            deleteFlag: true,
+        });
+    };
+
+    //附件显示
+    unitCommon.fileShow = function (fieldsName, deleteFlag) {
+        FileUtils.getFileShows({
+            target: fieldsName,
+            formData: {
+                fieldsName: fieldsName,
+                tableName: AssessDBKey.BasicUnit,
+                tableId: unitCommon.getUnitId()
+            },
+            deleteFlag: true
+        })
     };
 
     //楼栋标注
