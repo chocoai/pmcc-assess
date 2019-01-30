@@ -333,7 +333,7 @@ public class BaseDataDicService {
      */
     public String getNameById(Integer id) {
         if (id == null) return "";
-        BaseDataDic baseDataDic = cmsBaseDataDicDao.getSingleObject(id);
+        BaseDataDic baseDataDic = this.getCacheDataDicById(id);
         if (baseDataDic == null) return "";
         return baseDataDic.getName();
     }

@@ -29,7 +29,7 @@ public class BaseReportFieldController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private BaseReportFieldService baseDataDicService;
+    private BaseReportFieldService baseReportFieldService;
     /**
      * 基础数据字典配置页面视图
      *
@@ -43,19 +43,19 @@ public class BaseReportFieldController {
     }
 
     @GetMapping("/getBaseReportFieldListByPid")
-    public BootstrapTableVo getDataDicListByPid(Integer pid) {
-        return baseDataDicService.getDataDicListByPidVo(pid);
+    public BootstrapTableVo getReportFieldListByPid(Integer pid) {
+        return baseReportFieldService.getReportFieldListByPidVo(pid);
     }
 
     @GetMapping("/getBaseReportFieldList")
-    public BootstrapTableVo getDataDicList(String fieldName, String name) {
-        return baseDataDicService.getDataDicListVo(fieldName, name);
+    public BootstrapTableVo getReportFieldList(String fieldName, String name) {
+        return baseReportFieldService.getReportFieldListVo(fieldName, name);
     }
 
     @PostMapping(value = "/saveBaseReportField",name = "更新或者添加")
-    public HttpResult saveDataDic(BaseReportField baseReportField) {
+    public HttpResult saveReportField(BaseReportField baseReportField) {
         try {
-            baseDataDicService.saveDataDic(baseReportField);
+            baseReportFieldService.saveReportField(baseReportField);
         } catch (Exception e) {
             LOGGER.error("保存数据字典异常", e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -64,9 +64,9 @@ public class BaseReportFieldController {
     }
 
     @DeleteMapping(value = "/delBaseReportField", name = "删除数据")
-    public HttpResult delDataDic(Integer id) {
+    public HttpResult delReportField(Integer id) {
         try {
-            baseDataDicService.delDataDic(id);
+            baseReportFieldService.delReportField(id);
         } catch (Exception e) {
             LOGGER.error("删除数据字典异常", e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -76,7 +76,7 @@ public class BaseReportFieldController {
 
     @GetMapping(value = "/getBaseReportField")
     public HttpResult getBaseReportField(Integer id) {
-        BaseReportField baseReportField = baseDataDicService.getDataDicById(id);
+        BaseReportField baseReportField = baseReportFieldService.getReportFieldById(id);
         if (baseReportField == null) {
             baseReportField = new BaseReportField();
         }
@@ -84,9 +84,9 @@ public class BaseReportFieldController {
     }
 
     @PostMapping(value = "/getBaseReportFieldLevel",name = "获取字典层级")
-    public HttpResult getDataDicLevel(Integer id) {
+    public HttpResult getReportFieldLevel(Integer id) {
         try {
-            return HttpResult.newCorrectResult(200,baseDataDicService.getDataDicLevel(id));
+            return HttpResult.newCorrectResult(200,baseReportFieldService.getReportFieldLevel(id));
         } catch (Exception e) {
             LOGGER.error("获取字典层级异常", e);
             return HttpResult.newErrorResult(500,e.getMessage());
@@ -95,17 +95,17 @@ public class BaseReportFieldController {
 
     @PostMapping(value = "/queryBaseReportFieldTree")
     public List<ZtreeDto> queryBaseDicTree(String name) {
-        return baseDataDicService.queryBaseDicTree(name);
+        return baseReportFieldService.queryBaseDicTree(name);
     }
 
     @PostMapping(value = "/getBaseReportFieldTree")
     public List<ZtreeDto> getBaseDicTree(Integer pid) {
-        return baseDataDicService.getBaseDicTree(pid);
+        return baseReportFieldService.getBaseDicTree(pid);
     }
 
     @PostMapping(value = "/getBaseReportFieldByKey")
     public List<ZtreeDto> getBaseDicByKey(String key) {
-        return baseDataDicService.getBaseDicByKey(key);
+        return baseReportFieldService.getBaseDicByKey(key);
     }
 
 }
