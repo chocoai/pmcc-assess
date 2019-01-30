@@ -3420,6 +3420,7 @@ public class GenerateBaseDataService {
      */
     public String getEstimatedObjectLocationDiagram() throws Exception {
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        new Document().save(localPath);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
@@ -3449,33 +3450,32 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getValuation_Target_Live_Photos() throws Exception {
-        Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        new Document().save(localPath);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 List<SchemeReportFileItem> sysAttachmentDtoList = schemeReportFileService.getLiveSituationSelect(schemeJudgeObject.getId());
+                List<String> images = Lists.newArrayList();
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
                     for (SchemeReportFileItem sysAttachmentDto : sysAttachmentDtoList) {
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getAttachmentId());
                         if (StringUtils.isNotBlank(imgPath)) {
                             if (FileUtils.checkImgSuffix(imgPath)) {
-                                builder.insertImage(imgPath,
-                                        RelativeHorizontalPosition.MARGIN,
-                                        GenerateReportEnum.JUDGEOBJECTIMG.getLeft(),
-                                        RelativeVerticalPosition.MARGIN,
-                                        GenerateReportEnum.JUDGEOBJECTIMG.getTop(),
-                                        GenerateReportEnum.JUDGEOBJECTIMG.getWidth(),
-                                        GenerateReportEnum.JUDGEOBJECTIMG.getHeight(),
-                                        WrapType.SQUARE);
+                                if (StringUtils.isNotBlank(imgPath)) {
+                                    if (FileUtils.checkImgSuffix(imgPath)) {
+                                        images.add(imgPath);
+                                    }
+                                }
                             }
                         }
                     }
                 }
+                if (CollectionUtils.isNotEmpty(images)) {
+                    AsposeUtils.insertImage(localPath, images, 200, 100);
+                }
             }
         }
-        doc.save(localPath);
         return localPath;
     }
 
@@ -3485,29 +3485,24 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getCopies_the_Ownership_Certificate_the_Valuation_Object() throws Exception {
-        Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        new Document().save(localPath);
         Map<Integer, List<SysAttachmentDto>> ownershipCertFileList = schemeReportFileService.getOwnershipCertFileList(getAreaId());
         List<SysAttachmentDto> sysAttachmentDtoList = ownershipCertFileList.get(0);
+        List<String> images = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
             for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
                 String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
                 if (StringUtils.isNotBlank(imgPath)) {
                     if (FileUtils.checkImgSuffix(imgPath)) {
-                        builder.insertImage(imgPath,
-                                RelativeHorizontalPosition.MARGIN,
-                                GenerateReportEnum.JUDGEOBJECTIMG.getLeft(),
-                                RelativeVerticalPosition.MARGIN,
-                                GenerateReportEnum.JUDGEOBJECTIMG.getTop(),
-                                GenerateReportEnum.JUDGEOBJECTIMG.getWidth(),
-                                GenerateReportEnum.JUDGEOBJECTIMG.getHeight(),
-                                WrapType.SQUARE);
+                        images.add(imgPath);
                     }
                 }
             }
         }
-        doc.save(localPath);
+        if (CollectionUtils.isNotEmpty(images)) {
+            AsposeUtils.insertImage(localPath, images, 200, 100);
+        }
         return localPath;
     }
 
@@ -3518,9 +3513,8 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getSpecial_documentation_referenced_in_valuation() throws Exception {
-        Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        new Document().save(localPath);
         List<SysAttachmentDto> sysAttachmentDtoList = Lists.newArrayList();
         Map<Integer, List<SysAttachmentDto>> inventoryAddressFileList = schemeReportFileService.getInventoryAddressFileList(getAreaId());
         List<SysAttachmentDto> sysAttachmentDtoList1 = inventoryAddressFileList.get(0);
@@ -3532,24 +3526,20 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList2)) {
             sysAttachmentDtoList.addAll(sysAttachmentDtoList2);
         }
+        List<String> images = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
             for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
                 String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
                 if (StringUtils.isNotBlank(imgPath)) {
                     if (FileUtils.checkImgSuffix(imgPath)) {
-                        builder.insertImage(imgPath,
-                                RelativeHorizontalPosition.MARGIN,
-                                GenerateReportEnum.JUDGEOBJECTIMG.getLeft(),
-                                RelativeVerticalPosition.MARGIN,
-                                GenerateReportEnum.JUDGEOBJECTIMG.getTop(),
-                                GenerateReportEnum.JUDGEOBJECTIMG.getWidth(),
-                                GenerateReportEnum.JUDGEOBJECTIMG.getHeight(),
-                                WrapType.SQUARE);
+                        images.add(imgPath);
                     }
                 }
             }
         }
-        doc.save(localPath);
+        if (CollectionUtils.isNotEmpty(images)) {
+            AsposeUtils.insertImage(localPath, images, 200, 100);
+        }
         return localPath;
     }
 
@@ -3560,32 +3550,28 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getCopyBusinessLicenseRealEstateValuationAgency() throws Exception {
-        Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        new Document().save(localPath);
         AdCompanyQualificationDto adCompanyQualificationDto = getCompanyQualificationForLicense();
         if (adCompanyQualificationDto != null) {
             if (StringUtils.isNotBlank(adCompanyQualificationDto.getStandardImageJson())) {
                 List<SysAttachmentDto> attachmentDtoList = JSON.parseArray(adCompanyQualificationDto.getStandardImageJson(), SysAttachmentDto.class);
+                List<String> images = Lists.newArrayList();
                 if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
-                    SysAttachmentDto sysAttachmentDto = attachmentDtoList.get(0);
-                    String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                    if (StringUtils.isNotBlank(imgPath)) {
-                        if (FileUtils.checkImgSuffix(imgPath)) {
-                            builder.insertImage(imgPath,
-                                    RelativeHorizontalPosition.MARGIN,
-                                    GenerateReportEnum.JUDGEOBJECTIMG.getLeft(),
-                                    RelativeVerticalPosition.MARGIN,
-                                    GenerateReportEnum.JUDGEOBJECTIMG.getTop(),
-                                    GenerateReportEnum.JUDGEOBJECTIMG.getWidth(),
-                                    GenerateReportEnum.JUDGEOBJECTIMG.getHeight(),
-                                    WrapType.SQUARE);
+                    for (SysAttachmentDto sysAttachmentDto : attachmentDtoList) {
+                        String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
+                        if (StringUtils.isNotBlank(imgPath)) {
+                            if (FileUtils.checkImgSuffix(imgPath)) {
+                                images.add(imgPath);
+                            }
                         }
                     }
                 }
+                if (CollectionUtils.isNotEmpty(images)) {
+                    AsposeUtils.insertImage(localPath, images, 200, 100);
+                }
             }
         }
-        doc.save(localPath);
         return localPath;
     }
 

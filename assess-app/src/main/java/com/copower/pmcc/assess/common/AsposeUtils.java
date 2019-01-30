@@ -230,7 +230,7 @@ public class AsposeUtils {
      * @throws Exception
      */
     public static void insertImage(String filePath, String[] images, double width, double height) throws Exception {
-        if (StringUtils.isNotBlank(filePath) || images.length == 0) {
+        if (StringUtils.isEmpty(filePath) || images.length == 0) {
             throw new Exception("不符合约定!");
         }
         if (width < 1 || height < 1){
@@ -268,7 +268,7 @@ public class AsposeUtils {
      * @throws Exception
      */
     public static void insertImage(String filePath, List<String> images, double width, double height) throws Exception {
-        if (StringUtils.isNotBlank(filePath) || images.size() == 0) {
+        if (StringUtils.isEmpty(filePath) || images.size() < 0) {
             throw new Exception("不符合约定!");
         }
         if (width < 1 || height < 1){
@@ -307,7 +307,7 @@ public class AsposeUtils {
      * @throws Exception
      */
     public static void replaceBookmarkToImageFile(String filePath, String imagePath, String bookmarkName, double width, double height) throws Exception {
-        if (StringUtils.isNotBlank(filePath) || StringUtils.isNotBlank(imagePath) || StringUtils.isNotBlank(bookmarkName)) {
+        if (StringUtils.isEmpty(filePath) || StringUtils.isEmpty(imagePath) || StringUtils.isEmpty(bookmarkName)) {
             throw new Exception("不符合约定!");
         }
         if (width < 1 || height < 1){
