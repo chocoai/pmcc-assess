@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.declare;
 
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
@@ -132,7 +133,8 @@ public class DeclareRecordService {
                         schemeJudgeObject.setAreaGroupId(areaGroup.getId());
                         schemeJudgeObject.setOriginalAreaGroupId(areaGroup.getId());
                         schemeJudgeObject.setFloorArea(declareRecord.getFloorArea());
-                        schemeJudgeObject.setName(declareRecord.getName());
+                        schemeJudgeObject.setName(String.format("%s%s",i, BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
+                        schemeJudgeObject.setCertName(declareRecord.getName());
                         schemeJudgeObject.setOwnership(declareRecord.getOwnership());
                         schemeJudgeObject.setSeat(declareRecord.getSeat());
                         schemeJudgeObject.setCertUse(declareRecord.getCertUse());

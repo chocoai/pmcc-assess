@@ -24,6 +24,8 @@ public class SchemeJudgeObject {
 
     private String name;
 
+    private String certName;
+
     private String ownership;
 
     private String seat;
@@ -140,6 +142,14 @@ public class SchemeJudgeObject {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public String getCertName() {
+        return certName;
+    }
+
+    public void setCertName(String certName) {
+        this.certName = certName == null ? null : certName.trim();
     }
 
     public String getOwnership() {

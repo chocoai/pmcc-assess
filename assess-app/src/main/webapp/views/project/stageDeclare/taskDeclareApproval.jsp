@@ -128,7 +128,6 @@
         FileUtils.getFileShows({
             target: target,
             formData: {
-                fieldsName: target,
                 tableName: tableName,
                 tableId: id,
                 projectId: 0
@@ -292,7 +291,6 @@
         FileUtils.getFileShows({
             target: target,
             formData: {
-                fieldsName: target,
                 tableName: tableName,
                 tableId: id,
                 projectId: 0
@@ -419,7 +417,6 @@
         FileUtils.getFileShows({
             target: target,
             formData: {
-                fieldsName: target,
                 tableName: tableName,
                 tableId: id,
                 projectId: 0

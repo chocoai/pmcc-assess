@@ -1,25 +1,36 @@
 package com.copower.pmcc.assess.service;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.NetDownloadUtils;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.enums.ProcessActivityEnum;
 import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
+import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.utils.FileUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -30,12 +41,19 @@ import java.util.regex.Pattern;
  */
 @Service
 public class PublicService {
+    private final Logger log = LoggerFactory.getLogger(getClass());
     @Autowired
     private ErpRpcUserService erpRpcUserService;
     @Autowired
     private ErpRpcDepartmentService erpRpcDepartmentService;
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private FtpUtilsExtense ftpUtilsExtense;
+    @Autowired
+    private CommonService commonService;
 
     /**
      * 获取当前公司
@@ -194,5 +212,40 @@ public class PublicService {
                 targetBuilder.deleteCharAt(targetBuilder.length() - 1).toString(), sourceBuilder.deleteCharAt(sourceBuilder.length() - 1).toString(),
                 synchronousDataDto.getSourceDataBase(), synchronousDataDto.getSourceTable(),
                 org.springframework.util.StringUtils.isEmpty(synchronousDataDto.getWhereSql()) ? "1=1" : synchronousDataDto.getWhereSql());
+    }
+
+    /**
+     * 下载定位图片
+     *
+     * @param lng            经度
+     * @param lat            纬度
+     * @param baseAttachment
+     */
+    public void downLoadLocationImage(String lng, String lat, SysAttachmentDto baseAttachment) {
+        String surveyLocaltion = String.format("%s,%s", lng, lat);
+        String localDir = baseAttachmentService.createTempDirPath(commonService.thisUserAccount());
+        String imageName = baseAttachmentService.createNoRepeatFileName("jpg");
+        String url = String.format("%s?location=%s&zoom=17&size=900*600&markers=mid,,A:%s&key=%s",
+                BaseConstant.MPA_API_URL, surveyLocaltion, surveyLocaltion, BaseConstant.MAP_WEB_SERVICE_KEY);
+        try {
+            NetDownloadUtils.download(url, imageName, localDir);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        //再将图片上传到FTP
+        String ftpFileName = baseAttachmentService.createNoRepeatFileName("jpg");
+        String ftpDirName = baseAttachmentService.createFTPBasePath();
+        try {
+            ftpUtilsExtense.uploadFilesToFTP(ftpDirName, new FileInputStream(localDir + File.separator + imageName), ftpFileName);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        //数据库添加定位图片记录
+        baseAttachment.setFtpFileName(ftpFileName);
+        baseAttachment.setFileExtension("jpg");
+        baseAttachment.setFilePath(ftpDirName);
+        baseAttachment.setFileSize(FileUtils.getSize(new File(localDir + File.separator + imageName).length()));
+        baseAttachment.setCreater(commonService.thisUserAccount());
+        baseAttachmentService.addAttachment(baseAttachment);
     }
 }

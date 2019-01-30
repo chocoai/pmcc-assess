@@ -386,7 +386,7 @@ public class BasicApplyTransferService {
         BasicEstateTagging query = new BasicEstateTagging();
         query.setApplyId(dataIdOld);
         query.setType(typeEnum.getKey());
-        List<BasicEstateTagging> basicEstateTaggingList = basicEstateTaggingService.basicEstateTaggingList(query);
+        List<BasicEstateTagging> basicEstateTaggingList = basicEstateTaggingService.getBasicEstateTaggingList(query);
         if (!ObjectUtils.isEmpty(basicEstateTaggingList)) {
             for (BasicEstateTagging oo : basicEstateTaggingList) {
                 BasicEstateTagging basicEstateTagging = new BasicEstateTagging();

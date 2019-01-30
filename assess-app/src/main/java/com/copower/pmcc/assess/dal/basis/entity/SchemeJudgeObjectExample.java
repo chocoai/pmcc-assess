@@ -736,6 +736,76 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
+        public Criteria andCertNameIsNull() {
+            addCriterion("cert_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameIsNotNull() {
+            addCriterion("cert_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameEqualTo(String value) {
+            addCriterion("cert_name =", value, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameNotEqualTo(String value) {
+            addCriterion("cert_name <>", value, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameGreaterThan(String value) {
+            addCriterion("cert_name >", value, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameGreaterThanOrEqualTo(String value) {
+            addCriterion("cert_name >=", value, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameLessThan(String value) {
+            addCriterion("cert_name <", value, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameLessThanOrEqualTo(String value) {
+            addCriterion("cert_name <=", value, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameLike(String value) {
+            addCriterion("cert_name like", value, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameNotLike(String value) {
+            addCriterion("cert_name not like", value, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameIn(List<String> values) {
+            addCriterion("cert_name in", values, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameNotIn(List<String> values) {
+            addCriterion("cert_name not in", values, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameBetween(String value1, String value2) {
+            addCriterion("cert_name between", value1, value2, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameNotBetween(String value1, String value2) {
+            addCriterion("cert_name not between", value1, value2, "certName");
+            return (Criteria) this;
+        }
+
         public Criteria andOwnershipIsNull() {
             addCriterion("ownership is null");
             return (Criteria) this;

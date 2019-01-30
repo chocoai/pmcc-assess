@@ -337,6 +337,8 @@
                 return getBoolChs(value);
             }
         });
+        cols.push({field: 'sorting', title: '排序'});
+        cols.push({field: 'remark', title: '备注'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -373,34 +375,28 @@
     function saveDataDic() {
         if ($("#frm").valid()) {
             var data = formParams("frm");
-            checkByOneName(data.name, function (item) {
-                if (item.length >= 1) {
-                    toastr.success('名称不能相同');
-                } else {
-                    Loading.progressShow();
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/baseReportField/saveBaseReportField",
-                        type: "post",
-                        dataType: "json",
-                        data: data,
-                        success: function (result) {
-                            Loading.progressHide();
-                            if (result.ret) {
-                                toastr.success('保存成功');
-                                TableReload("tb_List");
-                                $('#divBox').modal('hide');
-                            }
-                            else {
-                                Alert("保存数据失败，失败原因:" + result.errmsg);
-                            }
-                        },
-                        error: function (result) {
-                            Loading.progressHide();
-                            Alert("调用服务端方法失败，失败原因:" + result);
-                        }
-                    })
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/baseReportField/saveBaseReportField",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        TableReload("tb_List");
+                        $('#divBox').modal('hide');
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
                 }
-            });
+            })
         }
     }
 
@@ -560,31 +556,25 @@
         if (!$("#frmSub").valid()) {
             return false;
         }
-        checkByOneName(data.name, function (item) {
-            if (item.length >= 1) {
-                toastr.success('名称不能相同');
-            } else {
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/baseReportField/saveBaseReportField",
-                    type: "post",
-                    dataType: "json",
-                    data: data,
-                    success: function (result) {
-                        if (result.ret) {
-                            toastr.success('保存成功');
-                            TableReload("tbDataDicList");
-                            $('#divSubDataDicManage').modal('hide');
-                        }
-                        else {
-                            Alert("保存数据失败，失败原因:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
+        $.ajax({
+            url: "${pageContext.request.contextPath}/baseReportField/saveBaseReportField",
+            type: "post",
+            dataType: "json",
+            data: data,
+            success: function (result) {
+                if (result.ret) {
+                    toastr.success('保存成功');
+                    TableReload("tbDataDicList");
+                    $('#divSubDataDicManage').modal('hide');
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
             }
-        });
+        })
     }
 
     var strLevelHtml = "";

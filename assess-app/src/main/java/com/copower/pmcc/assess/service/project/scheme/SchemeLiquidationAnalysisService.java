@@ -158,10 +158,34 @@ public class SchemeLiquidationAnalysisService {
         schemeLiquidationAnalysis.setProcessInsId(processInsId);
         schemeLiquidationAnalysisDao.editSchemeLiquidationAnalysis(schemeLiquidationAnalysis);
 
+        //修改子表
         List<SchemeLiquidationAnalysisItem> analysisItemList = analysisApplyDto.getAnalysisItemList();
         if(CollectionUtils.isNotEmpty(analysisItemList)) {
             for (SchemeLiquidationAnalysisItem analysisItem : analysisItemList) {
-                schemeLiquidationAnalysisItemDao.editSchemeLiquidationAnalysisItem(analysisItem);
+                if(analysisItem.getId()!=null) {
+                    schemeLiquidationAnalysisItemDao.editSchemeLiquidationAnalysisItem(analysisItem);
+                }
+            }
+        }
+        //移除删掉的内容
+        SchemeLiquidationAnalysisItem schemeLiquidationAnalysisItem = new SchemeLiquidationAnalysisItem();
+        schemeLiquidationAnalysisItem.setPlanDetailsId(schemeLiquidationAnalysis.getPlanDetailsId());
+        List<SchemeLiquidationAnalysisItem> objectList = schemeLiquidationAnalysisItemDao.getObjectList(schemeLiquidationAnalysisItem);
+        Boolean flag = true;
+        if(CollectionUtils.isNotEmpty(objectList)) {
+            for (SchemeLiquidationAnalysisItem oldItem : objectList) {
+                for (SchemeLiquidationAnalysisItem newItem : analysisItemList) {
+                    if(newItem.getId()!=null) {
+                        flag = true;
+                        if(oldItem.getId()==newItem.getId()){
+                            flag = false;
+                            break;
+                        }
+                    }
+                }
+                if(flag) {
+                    schemeLiquidationAnalysisItemDao.deleteSchemeLiquidationAnalysisItem(oldItem.getId());
+                }
             }
         }
     }

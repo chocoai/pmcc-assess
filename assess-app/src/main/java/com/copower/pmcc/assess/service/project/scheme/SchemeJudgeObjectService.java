@@ -1,10 +1,14 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 
+import com.copower.pmcc.assess.common.enums.AssessUploadEnum;
 import com.copower.pmcc.assess.common.enums.ComputeDataTypeEnum;
+import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
+import com.copower.pmcc.assess.dal.basic.entity.BasicEstateTagging;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
@@ -12,14 +16,18 @@ import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeSurePriceFacto
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
+import com.copower.pmcc.assess.service.basic.BasicEstateTaggingService;
 import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
+import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -81,6 +89,12 @@ public class SchemeJudgeObjectService {
     private BasicApplyService basicApplyService;
     @Autowired
     private BasicHouseService basicHouseService;
+    @Autowired
+    private SurveyCommonService surveyCommonService;
+    @Autowired
+    private BasicEstateTaggingService basicEstateTaggingService;
+    @Autowired
+    private PublicService publicService;
 
     public boolean addSchemeJudgeObject(SchemeJudgeObject schemeJudgeObject) {
         return schemeJudgeObjectDao.addSchemeJudgeObject(schemeJudgeObject);
@@ -270,7 +284,7 @@ public class SchemeJudgeObjectService {
         }
         schemeJudgeObject.setId(null);
         schemeJudgeObject.setSplitNumber(judgeObjectList.size() + 1);
-        schemeJudgeObject.setName(String.format("(%s-%s)%s",schemeJudgeObject.getNumber(),schemeJudgeObject.getSplitNumber(),schemeJudgeObject.getName()));
+        schemeJudgeObject.setName(String.format("%s-%s%s",schemeJudgeObject.getNumber(),schemeJudgeObject.getSplitNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
         schemeJudgeObject.setBisSplit(true);
         schemeJudgeObject.setBisSetFunction(false);
         schemeJudgeObjectDao.addSchemeJudgeObject(schemeJudgeObject);
@@ -350,7 +364,7 @@ public class SchemeJudgeObjectService {
         mergeJudgeObject.setPid(0);
         mergeJudgeObject.setSplitNumber(null);
         mergeJudgeObject.setNumber(StringUtils.strip(numberBuilder.toString(), ","));
-        mergeJudgeObject.setName(String.format("%s号委估对象",mergeJudgeObject.getNumber()));
+        mergeJudgeObject.setName(String.format("%s%s",mergeJudgeObject.getNumber(),BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
         mergeJudgeObject.setOwnership("");
         mergeJudgeObject.setSeat("");
         mergeJudgeObject.setFloorArea(floorAreaTotal);
@@ -503,7 +517,7 @@ public class SchemeJudgeObjectService {
                         if (schemeJudgeObject.getSplitNumber() != null && schemeJudgeObject.getSplitNumber() > 0) {
                             phaseName.append("-").append(schemeJudgeObject.getSplitNumber());
                         }
-                        phaseName.append("号委估对象");
+                        phaseName.append(BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME);
                         planDetails.setProjectPhaseName(phaseName.toString());
                         planDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
                         planDetails.setPid(projectPlanDetails.getId());
@@ -547,6 +561,7 @@ public class SchemeJudgeObjectService {
                                 projectPlanDetailsDao.addProjectPlanDetails(details);
                             }
                         }
+                        this.makeJudgeObjectPosition(Lists.newArrayList(schemeJudgeObject.getId()));
                     }
                 }
             }
@@ -563,6 +578,30 @@ public class SchemeJudgeObjectService {
                 map.put(method.getId(), projectPhase);
         }
         return map;
+    }
+
+    /**
+     * 生成委估对象的位置示意图
+     *
+     * @param judgeObjectIds
+     */
+    public void makeJudgeObjectPosition(List<Integer> judgeObjectIds) {
+        if (CollectionUtils.isEmpty(judgeObjectIds)) return;
+        for (Integer judgeObjectId : judgeObjectIds) {
+            SchemeJudgeObject judgeObject = this.getSchemeJudgeObject(judgeObjectId);
+            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
+            List<BasicEstateTagging> taggingList = basicEstateTaggingService.getEstateTaggingList(basicApply.getId(), EstateTaggingTypeEnum.UNIT.getKey());
+            if (CollectionUtils.isNotEmpty(taggingList)) {
+                BasicEstateTagging tagging = taggingList.get(0);
+                SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+                sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(SchemeJudgeObject.class));
+                sysAttachmentDto.setTableId(judgeObject.getId());
+                sysAttachmentDto.setProjectId(judgeObject.getProjectId());
+                sysAttachmentDto.setFieldsName(AssessUploadEnum.JUDGE_OBJECT_POSITION.getKey());
+                sysAttachmentDto.setFileName("位置示意图.jpg");
+                publicService.downLoadLocationImage(tagging.getLng(), tagging.getLat(), sysAttachmentDto);
+            }
+        }
     }
 
     /**

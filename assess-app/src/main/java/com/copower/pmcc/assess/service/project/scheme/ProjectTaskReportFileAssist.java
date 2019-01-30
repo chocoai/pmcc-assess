@@ -45,6 +45,7 @@ public class ProjectTaskReportFileAssist implements ProjectTaskInterface {
             schemeReportFile.setProjectId(projectPlanDetails.getProjectId());
             schemeReportFileService.saveSchemeReportFile(schemeReportFile);
         }
+        //针对委估对象下载对应的位置示意图
         setParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }

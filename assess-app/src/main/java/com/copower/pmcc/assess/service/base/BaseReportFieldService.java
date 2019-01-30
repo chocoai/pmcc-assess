@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.base;
 
+import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.basis.dao.base.BaseReportFieldDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseReportField;
 import com.copower.pmcc.assess.dal.basis.entity.BaseReportField;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.dto.output.TreeViewVo;
@@ -14,6 +14,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.constant.CacheConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -42,6 +43,76 @@ public class BaseReportFieldService {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
 
+
+    /**
+     * 获取缓存中的数据字典数据
+     *
+     * @return
+     */
+    public List<BaseReportField> getCacheReportFieldList(String fieldName) {
+
+        try {
+
+            String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_REPORT_FIELD_FIELD, fieldName);
+            List<BaseReportField> dataDics = LangUtils.listCache(costsKeyPrefix, fieldName, BaseReportField.class, input -> baseReportFieldDao.getEnableList(input));
+            return dataDics;
+        } catch (Exception e) {
+            return baseReportFieldDao.getEnableList(fieldName);
+        }
+
+    }
+
+
+    public BaseReportField getCacheReportFieldByFieldName(String fieldName) {
+        String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_REPORT_FIELD_FIELD_ITEM, fieldName);
+
+        try {
+            BaseReportField sysReportField = LangUtils.singleCache(costsKeyPrefix, fieldName, BaseReportField.class, o -> baseReportFieldDao.getSingleObject(o));
+            return sysReportField;
+        } catch (Exception e) {
+            return baseReportFieldDao.getSingleObject(fieldName);
+        }
+
+    }
+
+    //region 获取缓存中的数据字典数据
+
+    /**
+     * 获取缓存中的数据字典数据
+     *
+     * @return
+     */
+    public List<BaseReportField> getCacheReportFieldListByPid(Integer pid) {
+        String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_REPORT_FIELD_PID, String.valueOf(pid));
+
+        try {
+            List<BaseReportField> sysReportFields = LangUtils.listCache(rdsKey, pid, BaseReportField.class, input -> baseReportFieldDao.getEnableListByPid(input));
+            return sysReportFields;
+        } catch (Exception e) {
+            return baseReportFieldDao.getEnableListByPid(pid);
+        }
+    }
+
+    /**
+     * 获取缓存中的数据字典数据
+     *
+     * @return
+     */
+    public BaseReportField getCacheReportFieldById(Integer id) {
+        String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_REPORT_FIELD_ID, String.valueOf(id));
+
+        try {
+            BaseReportField sysReportField = LangUtils.singleCache(rdsKey, id, BaseReportField.class, o -> baseReportFieldDao.getSingleObject(o));
+            return sysReportField;
+        } catch (Exception e) {
+            return baseReportFieldDao.getSingleObject(id);
+        }
+
+    }
+    
+    
+    
+
     public List<BaseReportField> query(BaseReportField baseReportField){
         return baseReportFieldDao.query(baseReportField);
     }
@@ -53,7 +124,7 @@ public class BaseReportFieldService {
      *
      * @return
      */
-    public BootstrapTableVo getDataDicListVo(String fieldName, String name) {
+    public BootstrapTableVo getReportFieldListVo(String fieldName, String name) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -68,7 +139,7 @@ public class BaseReportFieldService {
      *
      * @return
      */
-    public BootstrapTableVo getDataDicListByPidVo(Integer pid) {
+    public BootstrapTableVo getReportFieldListByPidVo(Integer pid) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -86,7 +157,7 @@ public class BaseReportFieldService {
      *
      * @param baseReportField
      */
-    public void saveDataDic(BaseReportField baseReportField) throws BusinessException {
+    public void saveReportField(BaseReportField baseReportField) throws BusinessException {
         BaseReportField baseReportFieldTemp = null;
 
         if (baseReportFieldDao.isExist(baseReportField.getFieldName(), baseReportField.getId())) {
@@ -126,23 +197,22 @@ public class BaseReportFieldService {
      *
      * @param id
      */
-    public void delDataDic(Integer id) throws BusinessException {
-        baseReportFieldDao.delete(id);
+    public void delReportField(Integer id) throws BusinessException {
         BaseReportField baseReportField = baseReportFieldDao.getSingleObject(id);
         if (baseReportField != null) {
             baseReportField.setBisDelete(true);
-//            if (!baseReportFieldDao.updateObject(baseReportField)) {
-//                throw new BusinessException(HttpReturnEnum.DELETEFAIL.getName());
-//            }
+            if (!baseReportFieldDao.updateObject(baseReportField)) {
+                throw new BusinessException(HttpReturnEnum.DELETEFAIL.getName());
+            }
         }
     }
     //endregion
 
-    public List<BaseReportField> getDataDicListByPid(Integer pid) {
+    public List<BaseReportField> getReportFieldListByPid(Integer pid) {
         return baseReportFieldDao.getEnableListByPid(pid);
     }
 
-    public List<BaseReportField> getDataDicList(String fieldName) {
+    public List<BaseReportField> getReportFieldList(String fieldName) {
         return baseReportFieldDao.getEnableList(fieldName);
     }
 
@@ -151,7 +221,7 @@ public class BaseReportFieldService {
     }
 
 
-    public BaseReportField getDataDicById(Integer id) {
+    public BaseReportField getReportFieldById(Integer id) {
         return baseReportFieldDao.getSingleObject(id);
     }
 
@@ -161,25 +231,25 @@ public class BaseReportFieldService {
      * @param id
      * @return
      */
-    public KeyValueDto getDataDicLevel(Integer id) {
+    public KeyValueDto getReportFieldLevel(Integer id) {
         KeyValueDto keyValueDto = new KeyValueDto();
-        BaseReportField baseReportField = getDataDicById(id);
-        BaseReportField subBaseReportField = getDataDicById(baseReportField.getPid());
+        BaseReportField baseReportField = getReportFieldById(id);
+        BaseReportField subBaseReportField = getReportFieldById(baseReportField.getPid());
         if (subBaseReportField != null && subBaseReportField.getId() != null) {
-            getDataDicLevelRecursion(keyValueDto, subBaseReportField.getId());
+            getReportFieldLevelRecursion(keyValueDto, subBaseReportField.getId());
         }
         keyValueDto.setKey(String.valueOf(baseReportField.getId()));
         keyValueDto.setValue(baseReportField.getName());
         return keyValueDto;
     }
 
-    private void getDataDicLevelRecursion(KeyValueDto keyValueDto, Integer id) {
-        BaseReportField baseReportField = getDataDicById(id);
+    private void getReportFieldLevelRecursion(KeyValueDto keyValueDto, Integer id) {
+        BaseReportField baseReportField = getReportFieldById(id);
         if (baseReportField != null && baseReportField.getId() != null) {
             KeyValueDto kv = new KeyValueDto();
-            BaseReportField subBaseReportField = getDataDicById(baseReportField.getPid());
+            BaseReportField subBaseReportField = getReportFieldById(baseReportField.getPid());
             if (subBaseReportField != null && subBaseReportField.getId() != null) {
-                getDataDicLevelRecursion(kv, subBaseReportField.getId());
+                getReportFieldLevelRecursion(kv, subBaseReportField.getId());
             }
             kv.setKey(String.valueOf(baseReportField.getId()));
             kv.setValue(baseReportField.getName());
@@ -195,26 +265,26 @@ public class BaseReportFieldService {
      * @return
      */
     public TreeViewVo getTreeViewByKey(String fieldName) {
-        List<BaseReportField> baseDataDics = getDataDicList(fieldName);
-        BaseReportField baseDataDic = baseDataDics.get(0);
+        List<BaseReportField> baseReportFields = getReportFieldList(fieldName);
+        BaseReportField baseReportField = baseReportFields.get(0);
         TreeViewVo treeViewVo = new TreeViewVo();
-        if (baseDataDic != null) {
-            treeViewVo.setId(baseDataDic.getId());
-            treeViewVo.setText(baseDataDic.getName());
+        if (baseReportField != null) {
+            treeViewVo.setId(baseReportField.getId());
+            treeViewVo.setText(baseReportField.getName());
             treeViewVo.setpId(0);
             treeViewVo.setpName("");
             treeViewVo.setLevel("1");
-            treeViewVo.setNodes(getTreeView(baseDataDic.getId(), treeViewVo.getLevel()));
+            treeViewVo.setNodes(getTreeView(baseReportField.getId(), treeViewVo.getLevel()));
         }
         return treeViewVo;
     }
 
     private List<TreeViewVo> getTreeView(Integer pid, String parentLevel) {
         TreeViewVo treeViewVo;
-        List<BaseReportField> baseDataDics = getDataDicListByPid(pid);
+        List<BaseReportField> baseReportFields = getReportFieldListByPid(pid);
         List<TreeViewVo> treeViewVos = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(baseDataDics)) {
-            for (BaseReportField item : baseDataDics) {
+        if (CollectionUtils.isNotEmpty(baseReportFields)) {
+            for (BaseReportField item : baseReportFields) {
                 treeViewVo = new TreeViewVo();
                 treeViewVo.setId(item.getId());
                 treeViewVo.setText(item.getName());
@@ -241,11 +311,11 @@ public class BaseReportFieldService {
         if (pid == null) {
             return Lists.newArrayList();
         }
-        List<BaseReportField> baseDataDicList = getDataDicListByPid(pid);
-        if (CollectionUtils.isEmpty(baseDataDicList)) {
+        List<BaseReportField> baseReportFieldList = getReportFieldListByPid(pid);
+        if (CollectionUtils.isEmpty(baseReportFieldList)) {
             return Lists.newArrayList();
         }
-        return LangUtils.transform(baseDataDicList, p -> {
+        return LangUtils.transform(baseReportFieldList, p -> {
             return getZtreeDto(p);
         });
     }
@@ -270,20 +340,20 @@ public class BaseReportFieldService {
     }
 
     public List<ZtreeDto> getBaseDicByKey(String key) {
-        List<BaseReportField> baseDataDics = getDataDicList(key);
-        BaseReportField baseDataDic = baseDataDics.get(0);
-        if (baseDataDic == null) {
+        List<BaseReportField> baseReportFields = getReportFieldList(key);
+        BaseReportField baseReportField = baseReportFields.get(0);
+        if (baseReportField == null) {
             return null;
         }
-        return Lists.newArrayList(getZtreeDto(baseDataDic));
+        return Lists.newArrayList(getZtreeDto(baseReportField));
     }
 
-    private ZtreeDto getZtreeDto(BaseReportField baseDataDic) {
+    private ZtreeDto getZtreeDto(BaseReportField baseReportField) {
         ZtreeDto ztreeDto = new ZtreeDto();
-        ztreeDto.setId(baseDataDic.getId());
-        ztreeDto.setPid(baseDataDic.getPid());
-        ztreeDto.setName(baseDataDic.getName());
-        List<BaseReportField> dataDics = getDataDicListByPid(baseDataDic.getId());
+        ztreeDto.setId(baseReportField.getId());
+        ztreeDto.setPid(baseReportField.getPid());
+        ztreeDto.setName(baseReportField.getName());
+        List<BaseReportField> dataDics = getReportFieldListByPid(baseReportField.getId());
         ztreeDto.setIsParent(CollectionUtils.isNotEmpty(dataDics));
         return ztreeDto;
     }
@@ -298,33 +368,11 @@ public class BaseReportFieldService {
         if (id == null) {
             return "";
         }
-        BaseReportField baseDataDic = baseReportFieldDao.getSingleObject(id);
-        if (baseDataDic == null) {
+        BaseReportField baseReportField = baseReportFieldDao.getSingleObject(id);
+        if (baseReportField == null) {
             return "";
         }
-        return baseDataDic.getName();
-    }
-
-    /**
-     * 从现有集合中根据名称找出对应数据
-     *
-     * @param list
-     * @param name
-     * @return
-     */
-    public BaseReportField getDataDicByName(List<BaseReportField> list, String name) {
-        if (CollectionUtils.isEmpty(list)) {
-            return null;
-        }
-        if (StringUtils.isBlank(name)) {
-            return null;
-        }
-        for (BaseReportField baseDataDic : list) {
-            if (StringUtils.equals(baseDataDic.getName().trim(), name.trim())) {
-                return baseDataDic;
-            }
-        }
-        return null;
+        return baseReportField.getName();
     }
 
 
