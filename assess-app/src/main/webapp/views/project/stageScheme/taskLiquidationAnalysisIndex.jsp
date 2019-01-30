@@ -29,6 +29,7 @@
                             <th class="hidden-xs">税率</th>
                             <th class="hidden-xs">备注</th>
                             <th class="hidden-xs">商业</th>
+                            <th class="hidden-xs">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -101,20 +102,19 @@
         }
     }
 
-    //计算结果
-    function computeResult() {
+    //初始化计算结果
+    function initResult() {
         var total = 0;
         var evaluationArea = $("#evaluationArea").text();
         var evaluationPrice = $("#evaluationPrice").text();
         $("#tbody_data_section").find('tr').each(function () {
             var $taxRateValue = $(this).find('[name^=taxRateValue]');
             var rate = $taxRateValue.val();
-            var price;
+            var price = 0;
             if ($taxRateValue.hasClass('x-percent')) {
                 rate = $taxRateValue.attr('data-value');
                 if (rate && evaluationPrice) {
                     price = Number(evaluationPrice * rate).toFixed(2);
-
                 }
             } else {
                 if (rate && evaluationArea) {
@@ -124,7 +124,7 @@
             total += Number(price);
             $(this).find('[name^=price]').val(price);
         })
-        $('#master').find('[name=total]').text(total);
+        $('#master').find('[name=total]').text(Number(total).toFixed(2));
     }
 
     //获取需要保存的数据
@@ -165,9 +165,9 @@
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
                         if (item.calculationMethod == 0) {
-                            html += "<input type='text' required onblur='computeResult();' data-value='" + item.taxRateValue + "' name='taxRateValue_" + item.id + "' value='" + Number(item.taxRateValue).toFixed(2) + "' class='form-control'>";
+                            html += "<input type='text' required onblur='getThisPrice(this);' data-value='" + item.taxRateValue + "' name='taxRateValue_" + item.id + "' value='" + Number(item.taxRateValue).toFixed(2) + "' class='form-control'>";
                         } else {
-                            html += "<input type='text' required onblur='computeResult();' data-value='" + item.taxRateValue + "' name='taxRateValue_" + item.id + "' value='" + Number(item.taxRateValue * 100).toFixed(2) + "%' class='form-control x-percent'>";
+                            html += "<input type='text' required onblur='getThisPrice(this);' data-value='" + item.taxRateValue + "' name='taxRateValue_" + item.id + "' value='" + Number(item.taxRateValue * 100).toFixed(2) + "%' class='form-control x-percent'>";
                         }
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
@@ -175,16 +175,62 @@
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
                         html += "<div class='x-valid'>";
-                        html += "<input type='text' required  name='price_" + item.id + "' value='" + AssessCommon.toString(item.price) + "'  class='form-control' data-rule-number='true'>";
+                        html += "<input type='text' required  name='price_" + item.id + "' value='" + AssessCommon.toString(item.price) + "' onblur='getTotal()'  class='form-control' data-rule-number='true'>";
                         html += "</div>";
+                        html += "</td>";
+                        html += "<td class='hidden-xs'>";
+                        html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
                         html += "</td>";
                         html += "</tr>";
                     });
+
                     $("#tbody_data_section").append(html);
-                    computeResult();
+                    if ('${master.total}') {
+                        $('#master').find('[name=total]').text('${master.total}');
+                    } else {
+                        initResult();
+                    }
                 }
             }
         });
+    }
+
+    function cleanHTMLData(item) {
+        $(item).parent().parent().parent().empty();
+        getTotal();
+    }
+
+    function getThisPrice(_this) {
+        var evaluationArea = $("#evaluationArea").text();
+        var evaluationPrice = $("#evaluationPrice").text();
+        var $taxRateValue = $(_this).parent().parent().find('[name^=taxRateValue]');
+        var rate = $taxRateValue.val();
+        var price = 0;
+        if ($taxRateValue.hasClass('x-percent')) {
+            rate = $taxRateValue.attr('data-value');
+            if (rate && evaluationPrice) {
+                price = Number(evaluationPrice * rate).toFixed(2);
+            }
+        } else {
+            if (rate && evaluationArea) {
+                price = Number(evaluationArea * rate).toFixed(2);
+            }
+        }
+        $(_this).parent().parent().find('[name^=price]').val(price);
+        getTotal();
+    }
+
+    //获取结果值
+    function getTotal() {
+        var total = 0;
+        $("#tbody_data_section").find('tr').each(function () {
+            var price = 0;
+            price = $(this).find('[name^=price]').val();
+            if (price) {
+                total += Number(price);
+            }
+        })
+        $('#master').find('[name=total]').text(Number(total).toFixed(2));
     }
 
 
