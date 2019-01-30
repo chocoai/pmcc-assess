@@ -117,7 +117,7 @@ public class MdMarketCompareService {
         if (CollectionUtils.isEmpty(setUseFieldList)) return null;
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(schemeJudgeObject.getAreaGroupId());
         MdMarketCompare mdMarketCompare = new MdMarketCompare();
-        mdMarketCompare.setName(String.format("%s号委估对象", schemeJudgeObject.getNumber()));
+        mdMarketCompare.setName(schemeJudgeObject.getName());
         mdMarketCompare.setValueTimePoint(areaGroup.getValueTimePoint());
         mdMarketCompare.setCreator(commonService.thisUserAccount());
         mdMarketCompareDao.addMarketCompare(mdMarketCompare);

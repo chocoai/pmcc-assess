@@ -28,4 +28,7 @@ public class BaseConstant {
 
     //设定用户字段-住宅
     public static final String ASSESS_DATA_SET_USE_FIELD_HOUSE = "set.use.type.house";
+
+    //估价对象中文显示名称
+    public static final String ASSESS_JUDGE_OBJECT_CN_NAME = "号估价对象";
 }

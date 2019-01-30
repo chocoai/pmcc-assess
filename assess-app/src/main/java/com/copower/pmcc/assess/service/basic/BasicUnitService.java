@@ -69,27 +69,6 @@ public class BasicUnitService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public BasicEstateTagging getBasicEstateTagging(Integer id) throws Exception {
-        BasicUnit basicUnit = getBasicUnitByApplyId(id);
-        if (basicUnit == null) {
-            BasicUnit query = new BasicUnit();
-            query.setApplyId(0);
-            query.setCreator(commonService.thisUserAccount());
-            List<BasicUnit> basicUnitList = basicUnitDao.basicUnitList(query);
-            if (ObjectUtils.isEmpty(basicUnitList)) {
-                return null;
-            }
-            basicUnit = basicUnitList.get(0);
-        }
-        BasicEstateTagging query = new BasicEstateTagging();
-        query.setApplyId(0);
-        query.setType(EstateTaggingTypeEnum.UNIT.getKey());
-        List<BasicEstateTagging> basicEstateTaggings = basicEstateTaggingService.basicEstateTaggingList(query);
-        if (!ObjectUtils.isEmpty(basicEstateTaggings)) {
-            return basicEstateTaggings.get(0);
-        }
-        return null;
-    }
 
     /**
      * 获取数据

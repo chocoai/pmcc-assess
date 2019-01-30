@@ -55,11 +55,11 @@ public class BaseAttachmentService {
         return erpRpcAttachmentService.createNoRepeatFileName(suffix);
     }
 
-    public boolean deleteAttachment(Integer id){
+    public boolean deleteAttachment(Integer id) {
         return erpRpcAttachmentService.deleteAttachment(id);
     }
 
-    public int deleteAttachmentByDto(SysAttachmentDto sysAttachmentDto){
+    public int deleteAttachmentByDto(SysAttachmentDto sysAttachmentDto) {
         return erpRpcAttachmentService.deleteAttachmentByDto(sysAttachmentDto);
     }
 
@@ -70,7 +70,9 @@ public class BaseAttachmentService {
      * @return
      */
     public String createTempDirPath(String... params) {
-        String filePath = servletContext.getRealPath("/") + File.separator + applicationConstant.getAppKey() + File.separator + TEMP_UPLOAD_PATH;
+        String realPath = servletContext.getRealPath("/");
+        realPath = StringUtils.endsWith(realPath, File.separator) ? realPath : realPath + File.separator;
+        String filePath = realPath + applicationConstant.getAppKey() + File.separator + TEMP_UPLOAD_PATH;
         //清除今天、昨天以外的临时文件
         FileUtils.deleteDir(filePath, Lists.newArrayList(DateUtils.formatDate(DateUtils.addDay(new Date(), -1), DateUtils.DATE_SHORT_PATTERN), DateUtils.formatNowToYMD()));
         filePath += File.separator + DateUtils.formatNowToYMD() + File.separator + commonService.thisUserAccount();
@@ -286,13 +288,13 @@ public class BaseAttachmentService {
         sysAttachmentDto.setProjectId(0);
         sysAttachmentDto.setFileSize(FileUtils.getSize(multipartFile.getBytes().length));
         try {
-            String ftpBasePath = String.format("%s/%s/%s/%s",createFTPBasePath(),DateUtils.format(new Date(),"yyyy-MM-dd"),commonService.thisUserAccount(),UUID.randomUUID().toString());
+            String ftpBasePath = String.format("%s/%s/%s/%s", createFTPBasePath(), DateUtils.format(new Date(), "yyyy-MM-dd"), commonService.thisUserAccount(), UUID.randomUUID().toString());
             String ftpFileName = createNoRepeatFileName(sysAttachmentDto.getFileExtension());
             sysAttachmentDto.setFilePath(ftpBasePath);
             sysAttachmentDto.setFtpFileName(ftpFileName);
-            ftpUtilsExtense.uploadFilesToFTP(ftpBasePath,new FileInputStream(filePath),ftpFileName);
+            ftpUtilsExtense.uploadFilesToFTP(ftpBasePath, new FileInputStream(filePath), ftpFileName);
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
         }
         this.addAttachment(sysAttachmentDto);
         return String.format("%d", sysAttachmentDto.getId());
@@ -315,7 +317,7 @@ public class BaseAttachmentService {
             try {
                 ftpUtilsExtense.downloadFileToLocal(sysAttachment.getFtpFileName(), sysAttachment.getFilePath(), loaclFileName, localDirPath);
             } catch (Exception e) {
-               logger.error("",e);
+                logger.error("", e);
             }
         }
         return viewUrl;

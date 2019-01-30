@@ -44,7 +44,7 @@ public class BasicEstateTaggingDao {
         return basicEstateTaggingMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicEstateTagging> basicEstateTaggingList(BasicEstateTagging basicEstateTagging) throws SQLException {
+    public List<BasicEstateTagging> getBasicEstateTaggingList(BasicEstateTagging basicEstateTagging) {
         BasicEstateTaggingExample example = new BasicEstateTaggingExample();
         MybatisUtils.convertObj2Example(basicEstateTagging, example);
         return basicEstateTaggingMapper.selectByExample(example);
