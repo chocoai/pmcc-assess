@@ -471,7 +471,7 @@ public class PublicBasicService {
         BasicEstateTagging query = new BasicEstateTagging();
         query.setApplyId(applyId);
         query.setType(typeEnum.getKey());
-        List<BasicEstateTagging> basicEstateTaggingList = basicEstateTaggingService.basicEstateTaggingList(query);
+        List<BasicEstateTagging> basicEstateTaggingList = basicEstateTaggingService.getBasicEstateTaggingList(query);
         if (!ObjectUtils.isEmpty(basicEstateTaggingList)) {
             for (BasicEstateTagging oo : basicEstateTaggingList) {
                 CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
@@ -1302,7 +1302,7 @@ public class PublicBasicService {
         BasicEstateTagging where = new BasicEstateTagging();
         where.setApplyId(0);
         where.setCreator(commonService.thisUserAccount());
-        List<BasicEstateTagging> taggings = basicEstateTaggingService.basicEstateTaggingList(where);
+        List<BasicEstateTagging> taggings = basicEstateTaggingService.getBasicEstateTaggingList(where);
         if (!CollectionUtils.isEmpty(taggings)) {
             for (BasicEstateTagging tagging : taggings) {
                 //防止用户反复修改如楼盘号码楼栋编号等数字

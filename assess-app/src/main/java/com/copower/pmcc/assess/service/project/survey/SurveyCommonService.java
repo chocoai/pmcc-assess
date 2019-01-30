@@ -96,47 +96,6 @@ public class SurveyCommonService {
 
 
     /**
-     * 下载定位图片
-     *
-     * @param tableName
-     * @param tableId
-     * @param surveyLocaltion
-     */
-    public void downLoadLocationImage(String tableName, Integer tableId, String surveyLocaltion) {
-        String localDir = baseAttachmentService.createTempDirPath(commonService.thisUserAccount());
-        String imageName = baseAttachmentService.createNoRepeatFileName("jpg");
-        String url = String.format("%s?location=%s&zoom=17&size=900*600&markers=mid,,A:%s&key=%s",
-                BaseConstant.MPA_API_URL, surveyLocaltion, surveyLocaltion, BaseConstant.MAP_WEB_SERVICE_KEY);
-        try {
-            NetDownloadUtils.download(url, imageName, localDir);
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-        //再将图片上传到FTP
-        String ftpFileName = baseAttachmentService.createNoRepeatFileName("jpg");
-        String ftpDirName = baseAttachmentService.createFTPBasePath();
-        try {
-            ftpUtilsExtense.uploadFilesToFTP(ftpDirName, new FileInputStream(localDir + File.separator + imageName), ftpFileName);
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-        //数据库添加定位图片记录
-        SysAttachmentDto baseAttachment = new SysAttachmentDto();
-        baseAttachment.setTableId(tableId);
-        baseAttachment.setTableName(tableName);
-        baseAttachment.setFieldsName("survey_localtion");
-        baseAttachment.setFtpFileName(ftpFileName);
-        baseAttachment.setFileExtension("jpg");
-        baseAttachment.setFilePath(ftpDirName);
-        baseAttachment.setFileName("定位图.jpg");
-        baseAttachment.setFileSize(FileUtils.getSize(new File(localDir + File.separator + imageName).length()));
-        baseAttachment.setCreater(processControllerComponent.getThisUser());
-        //baseAttachment.setModifier(processControllerComponent.getThisUser());
-        baseAttachmentService.addAttachment(baseAttachment);
-    }
-
-
-    /**
      * 获取房产所有调查表单
      *
      * @return

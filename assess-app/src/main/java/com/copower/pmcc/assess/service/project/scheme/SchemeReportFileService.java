@@ -8,10 +8,12 @@ import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.BaseService;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicBuildingService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
+import com.copower.pmcc.assess.service.basic.BasicEstateTaggingService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
@@ -72,6 +74,10 @@ public class SchemeReportFileService extends BaseService {
     private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
     @Autowired
     private SchemeReimbursementService schemeReimbursementService;
+    @Autowired
+    private BasicEstateTaggingService basicEstateTaggingService;
+    @Autowired
+    private PublicService publicService;
 
     /**
      * 保存数据
@@ -92,6 +98,7 @@ public class SchemeReportFileService extends BaseService {
         where.setPlanDetailsId(planDetailsId);
         List<SchemeReportFile> reportFileList = schemeReportFileDao.getReportFileList(where);
         if (CollectionUtils.isEmpty(reportFileList)) return null;
+        baseAttachmentService.createTempDirPath(commonService.thisUserAccount());
         return reportFileList.get(0);
     }
 

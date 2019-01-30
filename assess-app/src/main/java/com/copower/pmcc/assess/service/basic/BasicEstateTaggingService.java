@@ -91,17 +91,17 @@ public class BasicEstateTaggingService {
      * @return
      * @throws Exception
      */
-    public List<BasicEstateTagging> basicEstateTaggingList(BasicEstateTagging basicEstateTagging) throws Exception {
-        return basicEstateTaggingDao.basicEstateTaggingList(basicEstateTagging);
+    public List<BasicEstateTagging> getBasicEstateTaggingList(BasicEstateTagging basicEstateTagging) throws Exception {
+        return basicEstateTaggingDao.getBasicEstateTaggingList(basicEstateTagging);
     }
 
-    public List<BasicEstateTagging> getEstateTaggingList(Integer applyId, String type) throws Exception {
+    public List<BasicEstateTagging> getEstateTaggingList(Integer applyId, String type) {
         BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
         if (applyId == null || applyId == 0)
             basicEstateTagging.setCreator(commonService.thisUserAccount());
         basicEstateTagging.setApplyId(applyId);
         basicEstateTagging.setType(type);
-        return basicEstateTaggingDao.basicEstateTaggingList(basicEstateTagging);
+        return basicEstateTaggingDao.getBasicEstateTaggingList(basicEstateTagging);
     }
 
     public void removeBasicEstateTagging(BasicEstateTagging basicEstateTagging) throws Exception {
@@ -137,7 +137,7 @@ public class BasicEstateTaggingService {
             where.setType(EstateTaggingTypeEnum.UNIT.getKey());
             if (applyId == null || applyId == 0)
                 where.setCreator(commonService.thisUserAccount());
-            List<BasicEstateTagging> taggingList = basicEstateTaggingDao.basicEstateTaggingList(where);
+            List<BasicEstateTagging> taggingList = basicEstateTaggingDao.getBasicEstateTaggingList(where);
             if (!CollectionUtils.isEmpty(taggingList))
                 tagging = taggingList.get(0);
         }
@@ -154,7 +154,7 @@ public class BasicEstateTaggingService {
         where.setType(EstateTaggingTypeEnum.HOUSE.getKey());
         if (applyId == null || applyId == 0)
             where.setCreator(commonService.thisUserAccount());
-        List<BasicEstateTagging> taggingList = basicEstateTaggingDao.basicEstateTaggingList(where);
+        List<BasicEstateTagging> taggingList = basicEstateTaggingDao.getBasicEstateTaggingList(where);
         if(CollectionUtils.isEmpty(taggingList)) return;
         taggingList.forEach(o->basicEstateTaggingDao.deleteBasicEstateTagging(o.getId()));
     }
