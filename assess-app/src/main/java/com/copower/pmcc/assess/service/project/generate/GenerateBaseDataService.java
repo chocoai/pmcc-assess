@@ -3528,7 +3528,8 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
         List<SysAttachmentDto> sysAttachmentDtoList = Lists.newArrayList();
-        List<SysAttachmentDto> sysAttachmentDtoList1 = schemeReportFileService.getInventoryAddressFileList(getAreaId());
+        Map<Integer, List<SysAttachmentDto>> inventoryAddressFileList = schemeReportFileService.getInventoryAddressFileList(getAreaId());
+        List<SysAttachmentDto> sysAttachmentDtoList1 = inventoryAddressFileList.get(0);
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList1)) {
             sysAttachmentDtoList.addAll(sysAttachmentDtoList1);
         }

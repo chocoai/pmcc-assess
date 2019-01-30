@@ -23,16 +23,13 @@ import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -259,48 +256,47 @@ public class SchemeReportFileService extends BaseService {
      * @param areaId
      * @return
      */
-    public List<SysAttachmentDto> getInventoryAddressFileList(Integer areaId) {
-        HashSet<Integer> hashSet = Sets.newHashSet();
+    public Map<Integer, List<SysAttachmentDto>> getInventoryAddressFileList(Integer areaId) {
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaId);
         if (CollectionUtils.isEmpty(judgeObjectList)) return null;
         Map<Integer, List<SysAttachmentDto>> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            List<SysAttachmentDto> resultList = Lists.newArrayList();
             if (schemeJudgeObject.getBisMerge() == Boolean.TRUE) {
                 List<SchemeJudgeObject> childrenJudgeObject = schemeJudgeObjectService.getChildrenJudgeObject(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(childrenJudgeObject)) {
                     for (SchemeJudgeObject judgeObject : childrenJudgeObject) {
-                        getFile(hashSet, map, schemeJudgeObject);
+                        List<SysAttachmentDto> list = getInventoryContentFile(judgeObject);
+                        if (CollectionUtils.isNotEmpty(list))
+                            resultList.addAll(list);
                     }
                 }
             } else {
-                getFile(hashSet, map, schemeJudgeObject);
+                List<SysAttachmentDto> list = getInventoryContentFile(schemeJudgeObject);
+                if (CollectionUtils.isNotEmpty(list))
+                    resultList.addAll(list);
             }
+            map.put(schemeJudgeObject.getId(), resultList);
         }
-        List<SysAttachmentDto> attachmentDtoList = Lists.newArrayList();
-
-        return attachmentDtoList;
+        return map;
     }
 
-    private void getFile(HashSet<Integer> hashSet, Map<Integer, List<SysAttachmentDto>> map, SchemeJudgeObject schemeJudgeObject) {
+    private List<SysAttachmentDto> getInventoryContentFile(SchemeJudgeObject schemeJudgeObject) {
         Integer inventoryContent = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS).getId();
-        if (CollectionUtils.isNotEmpty(hashSet)) {
-            for (Integer id : hashSet) {
-                SurveyAssetInventory inventory = surveyAssetInventoryService.getDataByDeclareId(id);
-                if (inventory != null) {
-                    List<SurveyAssetInventoryContent> contents = surveyAssetInventoryContentService.getContentListByPlanDetailsId(inventory.getPlanDetailId());
-                    if (CollectionUtils.isNotEmpty(contents)) {
-                        for (SurveyAssetInventoryContent content : contents) {
-                            if (inventoryContent.equals(content.getInventoryContent()) && StringUtils.equals(content.getAreConsistent(), "不一致")) {
-                                //取附件
-                                List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getByField_tableId(content.getId(), null, FormatUtils.entityNameConvertToTableName(SurveyAssetInventoryContent.class));
-                                if (CollectionUtils.isNotEmpty(attachmentDtos))
-                                    map.put(schemeJudgeObject.getId(), attachmentDtos);
-                            }
-                        }
+        SurveyAssetInventory inventory = surveyAssetInventoryService.getDataByDeclareId(schemeJudgeObject.getDeclareRecordId());
+        if (inventory != null) {
+            List<SurveyAssetInventoryContent> contents = surveyAssetInventoryContentService.getContentListByPlanDetailsId(inventory.getPlanDetailId());
+            if (CollectionUtils.isNotEmpty(contents)) {
+                for (SurveyAssetInventoryContent content : contents) {
+                    if (inventoryContent.equals(content.getInventoryContent()) && StringUtils.equals(content.getAreConsistent(), "不一致")) {
+                        //取附件
+                        List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getByField_tableId(content.getId(), null, FormatUtils.entityNameConvertToTableName(SurveyAssetInventoryContent.class));
+                        return attachmentDtos;
                     }
                 }
             }
         }
+        return null;
     }
 
     /**
@@ -309,19 +305,20 @@ public class SchemeReportFileService extends BaseService {
      * @param areaId
      * @return
      */
-    public List<SysAttachmentDto> getReimbursementFileList(Integer areaId) {
+    public Map<Integer, List<SysAttachmentDto>> getReimbursementFileList(Integer areaId) {
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaId);
         if (CollectionUtils.isEmpty(judgeObjectList)) return null;
-        List<Integer> judgeIds = LangUtils.transform(judgeObjectList, o -> o.getId());
-        List<SchemeReimbursement> reimbursements = schemeReimbursementService.getSchemeReimbursements(judgeIds);
-        List<SysAttachmentDto> attachmentDtoList = Lists.newArrayList();
-        for (SchemeReimbursement reimbursement : reimbursements) {
-            List<SysAttachmentDto> dtos = baseAttachmentService.getByField_tableId(reimbursement.getId(), null, FormatUtils.entityNameConvertToTableName(SchemeReimbursement.class));
-            if (CollectionUtils.isNotEmpty(dtos)) {
-                attachmentDtoList.addAll(dtos);
+        Map<Integer, List<SysAttachmentDto>> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            List<SchemeReimbursement> reimbursements = schemeReimbursementService.getSchemeReimbursements(Lists.newArrayList(schemeJudgeObject.getId()));
+            if (CollectionUtils.isNotEmpty(reimbursements)) {
+                SchemeReimbursement schemeReimbursement = reimbursements.get(0);
+                List<SysAttachmentDto> dtos = baseAttachmentService.getByField_tableId(schemeReimbursement.getId(), null, FormatUtils.entityNameConvertToTableName(SchemeReimbursement.class));
+                if (CollectionUtils.isNotEmpty(dtos))
+                    map.put(schemeJudgeObject.getId(), dtos);
             }
         }
-        return attachmentDtoList;
+        return map;
     }
 
     /**
