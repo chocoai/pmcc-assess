@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.common;
 
 import com.aspose.words.*;
+import com.aspose.words.Shape;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -216,6 +217,110 @@ public class AsposeUtils {
                 }
             }
         }
+        doc.save(filePath);
+    }
+
+    /**
+     * 插入多张图片
+     *
+     * @param filePath word文档地址
+     * @param images   需要插入图片的地址
+     * @param width    宽度(建议200)
+     * @param height   高度(建议100)
+     * @throws Exception
+     */
+    public static void insertImage(String filePath, String[] images, double width, double height) throws Exception {
+        if (StringUtils.isNotBlank(filePath) || images.length == 0) {
+            throw new Exception("不符合约定!");
+        }
+        if (width < 1 || height < 1){
+            throw new Exception("不符合约定!");
+        }
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        double top = 0.0;
+        for (int i = 0; i < images.length; i++) {
+            double left = 0.0;
+            if (i % 2 == 0) {
+                top += height;
+            }
+            if (i % 2 != 0) {
+                left += width + 20;
+            }
+            Shape shape = new Shape(doc, ShapeType.IMAGE);
+            shape.getImageData().setImage(images[i]);
+            shape.setTop(top);
+            shape.setLeft(left);
+            shape.setWidth(width);
+            shape.setHeight(height);
+            builder.insertNode(shape);
+        }
+        doc.save(filePath);
+    }
+
+    /**
+     * 插入多张图片
+     *
+     * @param filePath word文档地址
+     * @param images   需要插入图片的地址
+     * @param width    宽度(建议200)
+     * @param height   高度(建议100)
+     * @throws Exception
+     */
+    public static void insertImage(String filePath, List<String> images, double width, double height) throws Exception {
+        if (StringUtils.isNotBlank(filePath) || images.size() == 0) {
+            throw new Exception("不符合约定!");
+        }
+        if (width < 1 || height < 1){
+            throw new Exception("不符合约定!");
+        }
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        double top = 0.0;
+        for (int i = 0; i < images.size(); i++) {
+            double left = 0.0;
+            if (i % 2 == 0) {
+                top += height;
+            }
+            if (i % 2 != 0) {
+                left += width + 20;
+            }
+            Shape shape = new Shape(doc, ShapeType.IMAGE);
+            shape.getImageData().setImage(images.get(i));
+            shape.setTop(top);
+            shape.setLeft(left);
+            shape.setWidth(width);
+            shape.setHeight(height);
+            builder.insertNode(shape);
+        }
+        doc.save(filePath);
+    }
+
+
+    /**
+     * 书签替换图片
+     * @param filePath
+     * @param imagePath
+     * @param bookmarkName
+     * @param width  宽度(建议200)
+     * @param height 高度(建议100)
+     * @throws Exception
+     */
+    public static void replaceBookmarkToImageFile(String filePath, String imagePath, String bookmarkName, double width, double height) throws Exception {
+        if (StringUtils.isNotBlank(filePath) || StringUtils.isNotBlank(imagePath) || StringUtils.isNotBlank(bookmarkName)) {
+            throw new Exception("不符合约定!");
+        }
+        if (width < 1 || height < 1){
+            throw new Exception("不符合约定!");
+        }
+        Document doc = new Document(filePath);
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        Shape shape = builder.insertImage(imagePath);
+        shape.setWidth(width);
+        shape.setHeight(height);
+        shape.setWrapType(WrapType.NONE);
+        builder.moveToBookmark(bookmarkName);
+        builder.insertNode(shape);
         doc.save(filePath);
     }
 

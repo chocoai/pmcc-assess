@@ -36,6 +36,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -260,7 +262,7 @@ public class GenerateReportService {
                                         textMap.put(wordKey, value.toString());
                                     }
                                 } else {
-                                    logger.error(String.format("word模板:%s%s", wordKey, "替换失败!"), new Exception());
+                                    logger.error(String.format("word模板:%s%s", ChineseToPy.getFullSpell(wordKey), "替换失败!"), new Exception());
                                 }
                             }
                             //(书签)
@@ -270,7 +272,8 @@ public class GenerateReportService {
                                         bookmarkMap.put(wordKey, value.toString());
                                     }
                                 } else {
-                                    logger.error(String.format("word模板:%s%s", wordKey, "替换失败!"), new Exception());
+                                    logger.error(String.format("word模板:%s%s", ChineseToPy.getFullSpell(wordKey), "替换失败!"), new Exception());
+                                    logger.info(System.getProperty("file.encoding"));
                                 }
                             }
                             //附件(子模板)需要替换才能合并到目标文档 (如配置好的模板)
@@ -299,7 +302,7 @@ public class GenerateReportService {
                                         fileFixedMap.put(wordKey, value.toString());
                                     }
                                 } else {
-                                    logger.error(String.format("word模板:%s%s", wordKey, "替换失败!"), new Exception());
+                                    logger.error(String.format("word模板:%s%s", ChineseToPy.getFullSpell(wordKey), "替换失败!"), new Exception());
                                 }
                             }
                         }
@@ -849,7 +852,7 @@ public class GenerateReportService {
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EvaluationMethodResult.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EvaluationMethodResult.getName());
                     if (baseReportField != null) {
-                        replaceReportPutValue(name, generateBaseDataService.getEvaluationMethodResult(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT), true, true, false, mapSet);
+//                        replaceReportPutValue(name, generateBaseDataService.getEvaluationMethodResult(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT), false, false, true, mapSet);
                     }
                 }
                 //权重说明
@@ -960,7 +963,7 @@ public class GenerateReportService {
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EvaluationMethodResult.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EvaluationMethodResult.getName());
                     if (baseReportField != null) {
-                        replaceReportPutValue(name, generateBaseDataService.getEvaluationMethodResult(AssessDataDicKeyConstant.REPORT_TYPE_RESULT), true, true, false, mapSet);
+                        replaceReportPutValue(name, generateBaseDataService.getEvaluationMethodResult(AssessDataDicKeyConstant.REPORT_TYPE_RESULT), false, false, true, mapSet);
                     }
                 }
 

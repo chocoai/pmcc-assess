@@ -2103,8 +2103,8 @@ public class GenerateBaseDataService {
         }
         if (projectPhaseScene != null) {
             if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-                for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                    SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(i);
+                for (int i = 0; i < 1; i++) {
+                    SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
                     ProjectPlanDetails query = new ProjectPlanDetails();
                     query.setProjectId(getProjectId());
                     query.setProjectPhaseId(projectPhaseScene.getId());
@@ -3419,33 +3419,27 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getEstimatedObjectLocationDiagram() throws Exception {
-        Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 List<SysAttachmentDto> sysAttachmentDtoList = schemeReportFileService.getJudgeObjectPositionFileList(schemeJudgeObject.getId());
+                List<String> images = Lists.newArrayList();
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
                     for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
                         if (StringUtils.isNotBlank(imgPath)) {
                             if (FileUtils.checkImgSuffix(imgPath)) {
-                                builder.insertImage(imgPath,
-                                        RelativeHorizontalPosition.MARGIN,
-                                        GenerateReportEnum.JUDGEOBJECTIMG.getLeft(),
-                                        RelativeVerticalPosition.MARGIN,
-                                        GenerateReportEnum.JUDGEOBJECTIMG.getTop(),
-                                        GenerateReportEnum.JUDGEOBJECTIMG.getWidth(),
-                                        GenerateReportEnum.JUDGEOBJECTIMG.getHeight(),
-                                        WrapType.SQUARE);
+                                images.add(imgPath);
                             }
                         }
                     }
                 }
+                if (CollectionUtils.isNotEmpty(images)) {
+                    AsposeUtils.insertImage(localPath, images, 200, 100);
+                }
             }
         }
-        doc.save(localPath);
         return localPath;
     }
 
