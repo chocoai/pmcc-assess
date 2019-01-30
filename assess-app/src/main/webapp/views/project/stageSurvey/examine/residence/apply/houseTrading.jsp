@@ -198,20 +198,27 @@
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">信息来源类型</label>
+                    <label class="col-sm-1 control-label">信息来源类型123</label>
                     <div class="col-sm-3">
                         <select class="form-control search-select select2 informationType" name="informationType">
                         </select>
                     </div>
                 </div>
-                <div class="x-valid">
+                <div class="x-valid infomationTypeOpen" style="display: none;">
+                    <label class="col-sm-1 control-label">信息来源类别</label>
+                    <div class="col-sm-3">
+                        <select class="form-control search-select select2 informationCategory" name="informationCategory">
+                        </select>
+                    </div>
+                </div>
+                <div class="x-valid infomationTypeOther" style="display: none;">
                     <label class="col-sm-1 control-label">姓名</label>
                     <div class="col-sm-3">
                         <input type="text" placeholder="姓名" class="form-control" name="name"
                                value="${basicHouseTrading.name}">
                     </div>
                 </div>
-                <div class="x-valid">
+                <div class="x-valid infomationTypeOther" style="display: none;">
                     <label class="col-sm-1 control-label">电话</label>
                     <div class="col-sm-3">
                         <input type="text" placeholder="电话" class="form-control" name="phone"

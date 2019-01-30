@@ -1765,7 +1765,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="证载面积(数字)" name="evidenceArea" class="form-control"
-                           data-rule-maxlength="100"
+                           data-rule-maxlength="100" required
                            data-rule-number='true'>
                 </div>
             </div>
