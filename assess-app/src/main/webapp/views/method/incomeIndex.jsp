@@ -123,7 +123,7 @@
 </div>
 <jsp:include page="/views/method/module/income/selfSupport/apply/info.jsp"></jsp:include>
 <jsp:include page="/views/method/module/income/lease.jsp"></jsp:include>
-<jsp:include page="/views/method/module/income/rewardRate.jsp"></jsp:include>
+<jsp:include page="/views/project/tool/rewardRate.jsp"></jsp:include>
 <div id="modal_data_section" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">

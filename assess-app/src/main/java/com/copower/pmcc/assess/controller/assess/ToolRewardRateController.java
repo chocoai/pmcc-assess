@@ -34,10 +34,10 @@ public class ToolRewardRateController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/initForm", method = {RequestMethod.POST}, name = "保存")
-    public HttpResult initObserve(Integer rewardRateId) {
+    @RequestMapping(value = "/getToolRewardRateById", method = {RequestMethod.POST}, name = "获取数据")
+    public HttpResult getToolRewardRateById(Integer rewardRateId) {
         try {
-            ToolRewardRate toolRewardRate = toolRewardRateService.getDataById(rewardRateId);
+            ToolRewardRate toolRewardRate = toolRewardRateService.getToolRewardRateById(rewardRateId);
             return HttpResult.newCorrectResult(toolRewardRate);
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);

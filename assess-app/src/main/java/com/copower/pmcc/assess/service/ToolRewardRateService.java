@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.dao.data.ToolRewardRateDao;
 import com.copower.pmcc.assess.dal.basis.entity.ToolRewardRate;
 import com.copower.pmcc.erp.common.CommonService;
@@ -35,7 +34,7 @@ public class ToolRewardRateService {
         return toolRewardRate;
     }
 
-    public ToolRewardRate getDataById(Integer id) throws Exception {
+    public ToolRewardRate getToolRewardRateById(Integer id) throws Exception {
         ToolRewardRate toolRewardRate = toolRewardRateDao.getSingleObject(id);
         return toolRewardRate;
     }

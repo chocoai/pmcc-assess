@@ -235,6 +235,76 @@ public class ToolRewardRateExample {
             return (Criteria) this;
         }
 
+        public Criteria andResultValueIsNull() {
+            addCriterion("result_value is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultValueIsNotNull() {
+            addCriterion("result_value is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultValueEqualTo(String value) {
+            addCriterion("result_value =", value, "resultValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultValueNotEqualTo(String value) {
+            addCriterion("result_value <>", value, "resultValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultValueGreaterThan(String value) {
+            addCriterion("result_value >", value, "resultValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultValueGreaterThanOrEqualTo(String value) {
+            addCriterion("result_value >=", value, "resultValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultValueLessThan(String value) {
+            addCriterion("result_value <", value, "resultValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultValueLessThanOrEqualTo(String value) {
+            addCriterion("result_value <=", value, "resultValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultValueLike(String value) {
+            addCriterion("result_value like", value, "resultValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultValueNotLike(String value) {
+            addCriterion("result_value not like", value, "resultValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultValueIn(List<String> values) {
+            addCriterion("result_value in", values, "resultValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultValueNotIn(List<String> values) {
+            addCriterion("result_value not in", values, "resultValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultValueBetween(String value1, String value2) {
+            addCriterion("result_value between", value1, value2, "resultValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultValueNotBetween(String value1, String value2) {
+            addCriterion("result_value not between", value1, value2, "resultValue");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

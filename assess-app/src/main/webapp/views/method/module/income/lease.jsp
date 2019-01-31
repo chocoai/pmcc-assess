@@ -50,6 +50,7 @@
                                        placeholder="报酬率"
                                        data-value="${mdIncome.rewardRate}" onblur="lease.computeNetProfit();">
                                 <span class="input-group-btn">
+                                    <input type="hidden" name="rewardRateId" value="${mdIncome.rewardRateId}">
                               <input type="button" class="btn btn-primary" value="报酬率测算"
                                      onclick="lease.getRewardRate(this);"/>
                             </span>
@@ -363,7 +364,8 @@
                                 增长率说明<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-10">
-                                <textarea name="rentalGrowthRateExplain" placeholder="租金增长率说明" class="form-control" required></textarea>
+                                <textarea name="rentalGrowthRateExplain" placeholder="租金增长率说明" class="form-control"
+                                          required></textarea>
                             </div>
                         </div>
                     </div>
@@ -414,13 +416,13 @@
             content: '${pageContext.request.contextPath}/marketCompare/index?mcId=' + mcId + '&judgeObjectId=${projectPlanDetails.judgeObjectId}',
             cancel: function (index, layero) {
                 var iframe = window[layero.find('iframe')[0]['name']];
-                if(iframe&&iframe.marketCompare&&iframe.marketCompare.mcId){
+                if (iframe && iframe.marketCompare && iframe.marketCompare.mcId) {
                     $(_this).closest('form').find('[name=mcId]').val(iframe.marketCompare.mcId);
                 }
             },
             btnAlign: 'c',
             btn: ['保存', '关闭'],
-            yes:function (index, layero) {
+            yes: function (index, layero) {
                 var iframe = window[layero.find('iframe')[0]['name']];
                 iframe.saveResult(function (mcId, price) {
                     $(_this).closest('form').find('[name=mcId]').val(mcId);
@@ -428,9 +430,9 @@
                     layer.closeAll('iframe');
                 });
             },
-            btn2:function (index, layero) {
+            btn2: function (index, layero) {
                 var iframe = window[layero.find('iframe')[0]['name']];
-                if(iframe&&iframe.marketCompare&&iframe.marketCompare.mcId){
+                if (iframe && iframe.marketCompare && iframe.marketCompare.mcId) {
                     $(_this).closest('form').find('[name=mcId]').val(iframe.marketCompare.mcId);
                 }
             }
@@ -440,11 +442,11 @@
 
     //获取报酬率
     lease.getRewardRate = function (_this) {
-        rewardRateFunc.calculation(function (result) {
-            if (result) {
-                var element = $(_this).closest('.input-group').find(':text');
-                element.val(result);
-                AssessCommon.elementParsePoint(element);
+        var group = $(_this).closest('.input-group');
+        rewardRateFunc.calculation(group.find('[name=rewardRateId]').val(), function (data) {
+            if (data) {
+                group.find('[name=rewardRateId]').val(data.id);
+                AssessCommon.elementParsePoint(group.find('[name=rewardRate]').val(data.resultValue));
                 lease.computeNetProfit();
             }
         })
@@ -775,6 +777,7 @@
         formData.mdIncome.operationMode = $("#frm_income").find('[name=operationMode]:checked').val();
         formData.mdIncome.leaseMode = $("#frm_income").find('[name=leaseMode]:checked').val();
         formData.mdIncome.rewardRate = $("#frm_lease").find('[name=rewardRate]').attr('data-value');
+        formData.mdIncome.rewardRateId = $("#frm_lease").find('[name=rewardRateId]').val();
         formData.dateSectionList = [];
         $("#leaseResultBody").find('tr').each(function () {
             var section = {};

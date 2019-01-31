@@ -806,73 +806,63 @@ public class MdIncomeExample {
             return (Criteria) this;
         }
 
-        public Criteria andRewardRateJsonIsNull() {
-            addCriterion("reward_rate_json is null");
+        public Criteria andRewardRateIdIsNull() {
+            addCriterion("reward_rate_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andRewardRateJsonIsNotNull() {
-            addCriterion("reward_rate_json is not null");
+        public Criteria andRewardRateIdIsNotNull() {
+            addCriterion("reward_rate_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRewardRateJsonEqualTo(String value) {
-            addCriterion("reward_rate_json =", value, "rewardRateJson");
+        public Criteria andRewardRateIdEqualTo(Integer value) {
+            addCriterion("reward_rate_id =", value, "rewardRateId");
             return (Criteria) this;
         }
 
-        public Criteria andRewardRateJsonNotEqualTo(String value) {
-            addCriterion("reward_rate_json <>", value, "rewardRateJson");
+        public Criteria andRewardRateIdNotEqualTo(Integer value) {
+            addCriterion("reward_rate_id <>", value, "rewardRateId");
             return (Criteria) this;
         }
 
-        public Criteria andRewardRateJsonGreaterThan(String value) {
-            addCriterion("reward_rate_json >", value, "rewardRateJson");
+        public Criteria andRewardRateIdGreaterThan(Integer value) {
+            addCriterion("reward_rate_id >", value, "rewardRateId");
             return (Criteria) this;
         }
 
-        public Criteria andRewardRateJsonGreaterThanOrEqualTo(String value) {
-            addCriterion("reward_rate_json >=", value, "rewardRateJson");
+        public Criteria andRewardRateIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("reward_rate_id >=", value, "rewardRateId");
             return (Criteria) this;
         }
 
-        public Criteria andRewardRateJsonLessThan(String value) {
-            addCriterion("reward_rate_json <", value, "rewardRateJson");
+        public Criteria andRewardRateIdLessThan(Integer value) {
+            addCriterion("reward_rate_id <", value, "rewardRateId");
             return (Criteria) this;
         }
 
-        public Criteria andRewardRateJsonLessThanOrEqualTo(String value) {
-            addCriterion("reward_rate_json <=", value, "rewardRateJson");
+        public Criteria andRewardRateIdLessThanOrEqualTo(Integer value) {
+            addCriterion("reward_rate_id <=", value, "rewardRateId");
             return (Criteria) this;
         }
 
-        public Criteria andRewardRateJsonLike(String value) {
-            addCriterion("reward_rate_json like", value, "rewardRateJson");
+        public Criteria andRewardRateIdIn(List<Integer> values) {
+            addCriterion("reward_rate_id in", values, "rewardRateId");
             return (Criteria) this;
         }
 
-        public Criteria andRewardRateJsonNotLike(String value) {
-            addCriterion("reward_rate_json not like", value, "rewardRateJson");
+        public Criteria andRewardRateIdNotIn(List<Integer> values) {
+            addCriterion("reward_rate_id not in", values, "rewardRateId");
             return (Criteria) this;
         }
 
-        public Criteria andRewardRateJsonIn(List<String> values) {
-            addCriterion("reward_rate_json in", values, "rewardRateJson");
+        public Criteria andRewardRateIdBetween(Integer value1, Integer value2) {
+            addCriterion("reward_rate_id between", value1, value2, "rewardRateId");
             return (Criteria) this;
         }
 
-        public Criteria andRewardRateJsonNotIn(List<String> values) {
-            addCriterion("reward_rate_json not in", values, "rewardRateJson");
-            return (Criteria) this;
-        }
-
-        public Criteria andRewardRateJsonBetween(String value1, String value2) {
-            addCriterion("reward_rate_json between", value1, value2, "rewardRateJson");
-            return (Criteria) this;
-        }
-
-        public Criteria andRewardRateJsonNotBetween(String value1, String value2) {
-            addCriterion("reward_rate_json not between", value1, value2, "rewardRateJson");
+        public Criteria andRewardRateIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("reward_rate_id not between", value1, value2, "rewardRateId");
             return (Criteria) this;
         }
 

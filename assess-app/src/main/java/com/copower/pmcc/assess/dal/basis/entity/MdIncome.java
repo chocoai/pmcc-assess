@@ -26,7 +26,7 @@ public class MdIncome {
 
     private BigDecimal rewardRate;
 
-    private String rewardRateJson;
+    private Integer rewardRateId;
 
     private String creator;
 
@@ -122,12 +122,12 @@ public class MdIncome {
         this.rewardRate = rewardRate;
     }
 
-    public String getRewardRateJson() {
-        return rewardRateJson;
+    public Integer getRewardRateId() {
+        return rewardRateId;
     }
 
-    public void setRewardRateJson(String rewardRateJson) {
-        this.rewardRateJson = rewardRateJson == null ? null : rewardRateJson.trim();
+    public void setRewardRateId(Integer rewardRateId) {
+        this.rewardRateId = rewardRateId;
     }
 
     public String getCreator() {

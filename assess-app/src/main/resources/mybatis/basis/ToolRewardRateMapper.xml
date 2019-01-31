@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ToolRewardRate" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="parameter_value" property="parameterValue" jdbcType="CHAR" />
+    <result column="result_value" property="resultValue" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, parameter_value, creator, gmt_created, gmt_modified
+    id, parameter_value, result_value, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolRewardRateExample" >
     select
@@ -103,10 +104,10 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_tool_reward_rate (parameter_value, creator, gmt_created, 
-      gmt_modified)
-    values (#{parameterValue,jdbcType=CHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_tool_reward_rate (parameter_value, result_value, creator, 
+      gmt_created, gmt_modified)
+    values (#{parameterValue,jdbcType=CHAR}, #{resultValue,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolRewardRate" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -116,6 +117,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="parameterValue != null" >
         parameter_value,
+      </if>
+      <if test="resultValue != null" >
+        result_value,
       </if>
       <if test="creator != null" >
         creator,
@@ -130,6 +134,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="parameterValue != null" >
         #{parameterValue,jdbcType=CHAR},
+      </if>
+      <if test="resultValue != null" >
+        #{resultValue,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -157,6 +164,9 @@
       <if test="record.parameterValue != null" >
         parameter_value = #{record.parameterValue,jdbcType=CHAR},
       </if>
+      <if test="record.resultValue != null" >
+        result_value = #{record.resultValue,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -175,6 +185,7 @@
     update tb_tool_reward_rate
     set id = #{record.id,jdbcType=INTEGER},
       parameter_value = #{record.parameterValue,jdbcType=CHAR},
+      result_value = #{record.resultValue,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -187,6 +198,9 @@
     <set >
       <if test="parameterValue != null" >
         parameter_value = #{parameterValue,jdbcType=CHAR},
+      </if>
+      <if test="resultValue != null" >
+        result_value = #{resultValue,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -203,6 +217,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolRewardRate" >
     update tb_tool_reward_rate
     set parameter_value = #{parameterValue,jdbcType=CHAR},
+      result_value = #{resultValue,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

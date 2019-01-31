@@ -7,6 +7,8 @@ public class ToolRewardRate {
 
     private String parameterValue;
 
+    private String resultValue;
+
     private String creator;
 
     private Date gmtCreated;
@@ -27,6 +29,14 @@ public class ToolRewardRate {
 
     public void setParameterValue(String parameterValue) {
         this.parameterValue = parameterValue == null ? null : parameterValue.trim();
+    }
+
+    public String getResultValue() {
+        return resultValue;
+    }
+
+    public void setResultValue(String resultValue) {
+        this.resultValue = resultValue == null ? null : resultValue.trim();
     }
 
     public String getCreator() {
