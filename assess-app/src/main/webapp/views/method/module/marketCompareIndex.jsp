@@ -276,7 +276,7 @@
                 var evaluationItem = getItemByName(JSON.parse(defaluts.evaluation.jsonContent), item.fieldName);
                 evaluationItem = evaluationItem == undefined ? {} : evaluationItem;
                 if (item.bisOnlyView) {//只用于显示的字段
-                    if (!item.fieldName) {
+                    if (item.canShrink) {
                         var colspan = 2;
                         if (defaluts.cases && defaluts.cases.length > 0) {
                             colspan += defaluts.cases.length;
