@@ -4,12 +4,14 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataBuildingNewRate;
 import com.copower.pmcc.assess.dto.output.data.DataBuildingNewRateVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,8 @@ public class DataBuildingNewRateController {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private PublicService publicService;
 
 
     @RequestMapping(value = "/Index")
@@ -50,6 +54,9 @@ public class DataBuildingNewRateController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataArchitectureDic");
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_BUILDING_NEW_RATE_USE);
         modelAndView.addObject("useList", baseDataDics);
+        List<String> list= Lists.newArrayList("长城半岛一期1栋1单元1001号","长城半岛一期1栋1单元1002号","长城半岛一期1栋1单元1003号");
+        String s = publicService.fusinString(list);
+        System.out.print(s);
         return modelAndView;
     }
 

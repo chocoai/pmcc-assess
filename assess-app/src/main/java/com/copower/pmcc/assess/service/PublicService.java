@@ -57,9 +57,10 @@ public class PublicService {
 
     /**
      * 获取当前公司
+     *
      * @return
      */
-    public SysDepartmentDto getCurrentCompany(){
+    public SysDepartmentDto getCurrentCompany() {
         return erpRpcDepartmentService.getDepartmentAssess();
     }
 
@@ -129,7 +130,7 @@ public class PublicService {
      * @param template
      * @return
      */
-    public List<Map<String, String>>  extractFieldMap(String template) {
+    public List<Map<String, String>> extractFieldMap(String template) {
         String regex = "\\{(.*?)\\}";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(template);
@@ -197,7 +198,7 @@ public class PublicService {
 
         if (synchronousDataDto.getFieldDefaultValue() != null) {
             for (Map.Entry<String, String> stringEntry : synchronousDataDto.getFieldDefaultValue().entrySet()) {
-                resultMap.put(stringEntry.getKey(),String.format("'%s'",stringEntry.getValue()));
+                resultMap.put(stringEntry.getKey(), String.format("'%s'", stringEntry.getValue()));
             }
         }
         StringBuilder sourceBuilder = new StringBuilder();
@@ -247,5 +248,46 @@ public class PublicService {
         baseAttachment.setFileSize(FileUtils.getSize(new File(localDir + File.separator + imageName).length()));
         baseAttachment.setCreater(commonService.thisUserAccount());
         baseAttachmentService.addAttachment(baseAttachment);
+    }
+
+    /**
+     * 最小单元融合字符串
+     *
+     * @param list
+     * @return
+     */
+    public String fusinString(List<String> list) {
+        if (CollectionUtils.isEmpty(list)) return null;
+        //xx楼盘1栋2单元1011号
+        //xx楼盘2栋2单元1011号
+        if (list.size() == 1) return list.get(0);
+        String samePart = list.get(0);//以第一个字符串作为基础
+        for (String s : list) {
+            samePart = getSamePart(samePart, s);
+        }
+        StringBuilder resultBuilder = new StringBuilder(samePart);
+        for (String s : list) {
+            resultBuilder.append(s.replace(samePart, "")).append(",");
+        }
+        return resultBuilder.deleteCharAt(resultBuilder.length() - 1).toString();
+    }
+
+    /**
+     * @param var1
+     * @param var2
+     * @return
+     */
+    public String getSamePart(String var1, String var2) {
+        if (StringUtils.isBlank(var1) || StringUtils.isBlank(var2)) return "";
+        int length = var1.length() > var2.length() ? var2.length() : var1.length();
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            if (var1.charAt(i) == var2.charAt(i)) {
+                result.append(var1.charAt(i));
+            } else {
+                break;
+            }
+        }
+        return result.toString();
     }
 }
