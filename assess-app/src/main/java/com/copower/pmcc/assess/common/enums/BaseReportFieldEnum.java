@@ -94,11 +94,12 @@ public enum BaseReportFieldEnum {
     XIEHE_certificateNo("", "机构证书号", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     XIEHE_certificateEffectiveDate("", "证书有效期", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
-    HousingOwnershipRegistrationStatementSheet("", "房屋所有权登记状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    judgeObjectAreaStatusSheet("", "估价对象区位状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    judgeObjectLandStateSheet("", "估价土地实体状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    judgeBuildLandStateSheet("", "估价建筑物实体状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    judgeBuildResultSurveySheet("", "估价结果一览表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    HousingOwnershipRegistrationStatementSheet("", "房屋所有权登记状况表", BaseReportFieldReplaceEnum.FILE_FIXED.getKey()),
+    judgeObjectAreaStatusSheet("", "估价对象区位状况表", BaseReportFieldReplaceEnum.FILE_FIXED.getKey()),
+    judgeObjectLandStateSheet("", "估价土地实体状况表", BaseReportFieldReplaceEnum.FILE_FIXED.getKey()),
+    judgeBuildLandStateSheet("", "估价建筑物实体状况表", BaseReportFieldReplaceEnum.FILE_FIXED.getKey()),
+    judgeBuildResultSurveySheet("", "估价结果一览表", BaseReportFieldReplaceEnum.FILE_FIXED.getKey()),
+    judgeSummarySheet("", "汇总表", BaseReportFieldReplaceEnum.FILE_FIXED.getKey()),
 
     JUDGEOBJECTPRINCIPALCOPYSHEET("", "估价委托书复印件", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     EstimatedObjectLocationDiagram("", "估计对象位置示意图", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
