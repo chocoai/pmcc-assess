@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.common;
 import com.aspose.words.*;
 import com.aspose.words.Shape;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.List;
 
 /**
  * Created by kings on 2018-6-6.
@@ -50,6 +52,19 @@ public class AsposeUtils {
             }
         }
         return stringList;
+    }
+
+    public static Map<String, String> getRegexExtendList(Document document) {
+        Map<String, String> map = Maps.newHashMap();
+        //获取所有段落
+        ParagraphCollection paragraphs = document.getFirstSection().getBody().getParagraphs();
+        for (int i = 0; i < paragraphs.toArray().length; i++) {
+            Matcher m = Pattern.compile("\\$\\{(.*?)\\}").matcher(paragraphs.get(i).getText());
+            while (m.find()) {
+                map.put(m.group(),m.group(1));
+            }
+        }
+        return map;
     }
 
 
@@ -202,16 +217,7 @@ public class AsposeUtils {
         for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {
             if (StringUtils.isNotBlank(stringStringEntry.getKey()) && StringUtils.isNotBlank(stringStringEntry.getValue())) {
                 try {
-                    //The replace string cannot contain special or break characters.()
-                    //对value 进行校验
-                    String regEx = "[ _`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]|\n|\r|\t";
-                    Pattern p = Pattern.compile(regEx);
-                    Matcher m = p.matcher((stringStringEntry.getValue()));
-                    boolean check = m.find();
                     doc.getRange().replace(stringStringEntry.getKey(), stringStringEntry.getValue(), false, false);
-                    if (!check) {
-                        //不再做检测
-                    }
                 } catch (Exception e) {
 
                 }
@@ -233,7 +239,7 @@ public class AsposeUtils {
         if (StringUtils.isEmpty(filePath) || images.length == 0) {
             throw new Exception("不符合约定!");
         }
-        if (width < 1 || height < 1){
+        if (width < 1 || height < 1) {
             throw new Exception("不符合约定!");
         }
         Document doc = new Document();
@@ -271,7 +277,7 @@ public class AsposeUtils {
         if (StringUtils.isEmpty(filePath) || images.size() < 0) {
             throw new Exception("不符合约定!");
         }
-        if (width < 1 || height < 1){
+        if (width < 1 || height < 1) {
             throw new Exception("不符合约定!");
         }
         Document doc = new Document();
@@ -299,18 +305,19 @@ public class AsposeUtils {
 
     /**
      * 书签替换图片
+     *
      * @param filePath
      * @param imagePath
      * @param bookmarkName
-     * @param width  宽度(建议200)
-     * @param height 高度(建议100)
+     * @param width        宽度(建议200)
+     * @param height       高度(建议100)
      * @throws Exception
      */
     public static void replaceBookmarkToImageFile(String filePath, String imagePath, String bookmarkName, double width, double height) throws Exception {
         if (StringUtils.isEmpty(filePath) || StringUtils.isEmpty(imagePath) || StringUtils.isEmpty(bookmarkName)) {
             throw new Exception("不符合约定!");
         }
-        if (width < 1 || height < 1){
+        if (width < 1 || height < 1) {
             throw new Exception("不符合约定!");
         }
         Document doc = new Document(filePath);
@@ -345,6 +352,24 @@ public class AsposeUtils {
         doc.save(filePath);
     }
 
+    /**
+     * 转义正则特殊字符 （$()*+.[]?\^{},|）
+     *
+     * @param keyword
+     * @return
+     */
+    public static String escapeExprSpecialWord(String keyword) {
+        if (StringUtils.isNotBlank(keyword)) {
+            String[] fbsArr = { "\\", "$", "(", ")", "*", "+", ".", "[", "]", "?", "^", "{", "}", "|" };
+            for (String key : fbsArr) {
+                if (keyword.contains(key)) {
+                    keyword = keyword.replace(key, "\\" + key);
+                }
+            }
+        }
+        return keyword;
+    }
+
 
     /**
      * 文本替换为文件
@@ -358,9 +383,9 @@ public class AsposeUtils {
         if (map == null || map.isEmpty())
             throw new Exception("error: empty map");
         Document doc = new Document(filePath);
-        DocumentBuilder builder = new DocumentBuilder(doc);
         for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {
-            doc.getRange().replace(Pattern.compile(stringStringEntry.getKey()), new IReplacingCallback() {
+            Pattern compile = Pattern.compile(escapeExprSpecialWord(stringStringEntry.getKey()));
+            doc.getRange().replace(compile, new IReplacingCallback() {
                 @Override
                 public int replacing(ReplacingArgs e) throws Exception {
                     DocumentBuilder builder = new DocumentBuilder((Document) e.getMatchNode().getDocument());

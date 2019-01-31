@@ -39,6 +39,14 @@ public class SchemeInfoService {
         }
     }
 
+    public SchemeInfo getSchemeInfo(Integer judgeObjectId,Integer methodType) {
+        SchemeInfo examle = new SchemeInfo();
+        examle.setJudgeObjectId(judgeObjectId);
+        examle.setMethodType(methodType);
+        SchemeInfo schemeInfo = schemeInfoDao.getSchemeInfo(examle);
+        return schemeInfo;
+    }
+
     public SchemeInfo getSchemeInfo(Integer planDetailsId) {
         SchemeInfo examle = new SchemeInfo();
         examle.setPlanDetailsId(planDetailsId);

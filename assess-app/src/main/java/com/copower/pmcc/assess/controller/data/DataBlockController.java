@@ -2,32 +2,21 @@ package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
-import com.copower.pmcc.assess.dal.basis.entity.DataDamagedDegree;
-import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicHouseWaterDrainVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicHouseDamagedDegreeService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.data.DataDamagedDegreeService;
+import com.copower.pmcc.assess.service.project.generate.GenerateMdCompareService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
-import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @Auther: zch
@@ -56,6 +45,13 @@ public class DataBlockController extends BaseController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         //所有省份
         modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());
+        GenerateMdCompareService generateMdCompareService=new GenerateMdCompareService(289);
+        try {
+            String s = generateMdCompareService.generateCompareFile();
+            System.out.print(s);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return modelAndView;
     }
 
