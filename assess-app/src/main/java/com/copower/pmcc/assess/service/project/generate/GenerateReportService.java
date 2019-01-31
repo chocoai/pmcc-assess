@@ -891,7 +891,10 @@ public class GenerateReportService {
                 //估价对象建筑实体状况表
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.judgeBuildLandStateSheet.getName(), name)) {
                     replaceReportPutValue(name, generateBaseDataService.getJudgeBuildLandStateSheet(), false, false, true, mapSet);
-
+                }
+                //汇总表
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.judgeSummarySheet.getName(), name)) {
+                    replaceReportPutValue(name, generateBaseDataService.getJudgeSummarySheet(), false, false, true, mapSet);
                 }
                 //估价项目名称
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.ValuationProjectName.getName(), name)) {
