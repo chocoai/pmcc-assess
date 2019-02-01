@@ -12,17 +12,21 @@ import java.util.List;
  */
 public enum BaseReportFieldEnum {
     REPORTNUMBER("", "文号", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    PRINCIPAL("", "委托人", BaseReportFieldReplaceEnum.TEXT.getKey()),
+    PRINCIPAL("", "估价委托人", BaseReportFieldReplaceEnum.TEXT.getKey()),
+    PrincipalAddress("", "委托人地址", BaseReportFieldReplaceEnum.TEXT.getKey()),
+    PrincipalLegalRepresentative("", "委托人法定代表人", BaseReportFieldReplaceEnum.TEXT.getKey()),
     Location("", "区位", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     powerPerson("", "权利人", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),//(区位)
     notPowerPerson("", "非权利人", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),//(区位)
     ValueType("", "价值类型", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     DefinitionValue("", "价值定义", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     ValueImplication("", "价值含义", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    ValueConnotation("", "价值内涵", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     AssessArea("", "评估面积", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     UseRightType("", "使用权类型", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     LandPracticalUse("", "土地实际用途", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    StatementPurposeEntrustment("", "委托目的表述", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    StatementPurposeEntrustment("", "委托目的描述", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    DelegatePurpose("", "委托目的", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     SetUse("", "设定用途", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     LandUseControl("", "土地使用管制", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     rentalPossessionDesc("", "出租或占用情况", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
@@ -41,7 +45,9 @@ public enum BaseReportFieldEnum {
     ValueExpressionResult("", "价值表达结果", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     StatutoryOptimumReimbursement("", "法定优选受偿款", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     reportIssuanceDate("", "报告出具日期", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    CapitalizationAmount("", "大写金额", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    ReportingCategories("", "报告类别", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    CapitalizationAmount("", "房地产总价大写金额", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    Capital_capitalization_total_price_real_estate("", "房地产总价大写", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     ValuationProjectName("", "估价项目名称", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
     ComputationProcess("", "计算过程", BaseReportFieldReplaceEnum.FILE.getKey()),
@@ -81,7 +87,6 @@ public enum BaseReportFieldEnum {
     EVALUATION_BASIS("", "评估依据", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     EVALUATION_PRINCIPLE("", "评估原则", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     ReportAnalysis("", "报告分析", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    EXECUTE_USER_ACCOUNT("", "报告分析", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
     AssistanceStaff("", "协助工作人员", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
@@ -92,14 +97,14 @@ public enum BaseReportFieldEnum {
     XIEHE_registeredNo("", "机构工商注册号", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     XIEHE_organizationRank("", "机构资质等级", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     XIEHE_certificateNo("", "机构证书号", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    XIEHE_certificateEffectiveDate("", "证书有效期", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    XIEHE_certificateEffectiveDate("", "机构证书有效期", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
     HousingOwnershipRegistrationStatementSheet("", "房屋所有权登记状况表", BaseReportFieldReplaceEnum.FILE_FIXED.getKey()),
     judgeObjectAreaStatusSheet("", "估价对象区位状况表", BaseReportFieldReplaceEnum.FILE_FIXED.getKey()),
     judgeObjectLandStateSheet("", "估价土地实体状况表", BaseReportFieldReplaceEnum.FILE_FIXED.getKey()),
     judgeBuildLandStateSheet("", "估价建筑物实体状况表", BaseReportFieldReplaceEnum.FILE_FIXED.getKey()),
     judgeBuildResultSurveySheet("", "估价结果一览表", BaseReportFieldReplaceEnum.FILE_FIXED.getKey()),
-    judgeSummarySheet("", "汇总表", BaseReportFieldReplaceEnum.FILE_FIXED.getKey()),
+    judgeSummarySheet("", "估价汇总表", BaseReportFieldReplaceEnum.FILE_FIXED.getKey()),
 
     JUDGEOBJECTPRINCIPALCOPYSHEET("", "估价委托书复印件", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     EstimatedObjectLocationDiagram("", "估计对象位置示意图", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),

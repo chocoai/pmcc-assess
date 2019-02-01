@@ -198,7 +198,7 @@
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">信息来源类型123</label>
+                    <label class="col-sm-1 control-label">信息来源类型</label>
                     <div class="col-sm-3">
                         <select class="form-control search-select select2 informationType" name="informationType">
                         </select>
