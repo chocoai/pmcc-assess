@@ -941,6 +941,10 @@ public class GenerateReportService {
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.judgeSummarySheet.getName(), name)) {
                     replaceReportPutValue(name, generateBaseDataService.getJudgeSummarySheet(), false, false, true, mapSet);
                 }
+                //土地使用权登记状况表
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.judgeObjectLandUseCertificateSheet.getName(), name)) {
+                    replaceReportPutValue(name, generateBaseDataService.getjudgeObjectLandUseCertificateSheet(), false, false, true, mapSet);
+                }
                 //估价项目名称
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.ValuationProjectName.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.ValuationProjectName.getName());
