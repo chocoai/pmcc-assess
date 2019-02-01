@@ -148,9 +148,10 @@ public class SchemeJudgeObjectService {
 
     /**
      * 获取区域下完整的委估对象
+     *
      * @return
      */
-    public List<SchemeJudgeObject> getJudgeObjectFullListByAreaId(Integer areaGroupId){
+    public List<SchemeJudgeObject> getJudgeObjectFullListByAreaId(Integer areaGroupId) {
         SchemeJudgeObject where = new SchemeJudgeObject();
         where.setAreaGroupId(areaGroupId);
         where.setBisMerge(false);
@@ -158,7 +159,7 @@ public class SchemeJudgeObjectService {
         return judgeObjects;
     }
 
-    public List<SchemeJudgeObject> getChildrenJudgeObject(Integer id){
+    public List<SchemeJudgeObject> getChildrenJudgeObject(Integer id) {
         SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
         schemeJudgeObject.setPid(id);
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
@@ -284,7 +285,7 @@ public class SchemeJudgeObjectService {
         }
         schemeJudgeObject.setId(null);
         schemeJudgeObject.setSplitNumber(judgeObjectList.size() + 1);
-        schemeJudgeObject.setName(String.format("%s-%s%s",schemeJudgeObject.getNumber(),schemeJudgeObject.getSplitNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
+        schemeJudgeObject.setName(String.format("%s-%s%s", schemeJudgeObject.getNumber(), schemeJudgeObject.getSplitNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
         schemeJudgeObject.setBisSplit(true);
         schemeJudgeObject.setBisSetFunction(false);
         schemeJudgeObjectDao.addSchemeJudgeObject(schemeJudgeObject);
@@ -347,6 +348,8 @@ public class SchemeJudgeObjectService {
         BigDecimal floorAreaTotal = new BigDecimal("0");
         BigDecimal evaluationAreaTotal = new BigDecimal("0");
         StringBuilder stringBuilder = new StringBuilder();
+        List<String> ownershipList = Lists.newArrayList();
+        List<String> seatList = Lists.newArrayList();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             //委估对象编号合并
             numberBuilder.append(schemeJudgeObject.getNumber());
@@ -359,14 +362,16 @@ public class SchemeJudgeObjectService {
                 evaluationAreaTotal = evaluationAreaTotal.add(schemeJudgeObject.getEvaluationArea());
             if (StringUtils.isNotBlank(schemeJudgeObject.getRentalPossessionDesc()))
                 stringBuilder.append(schemeJudgeObject.getRentalPossessionDesc()).append("\r\n");
+            ownershipList.add(schemeJudgeObject.getOwnership());
+            seatList.add(schemeJudgeObject.getSeat());
         }
         mergeJudgeObject.setId(null);
         mergeJudgeObject.setPid(0);
         mergeJudgeObject.setSplitNumber(null);
         mergeJudgeObject.setNumber(StringUtils.strip(numberBuilder.toString(), ","));
-        mergeJudgeObject.setName(String.format("%s%s",mergeJudgeObject.getNumber(),BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
-        mergeJudgeObject.setOwnership("");
-        mergeJudgeObject.setSeat("");
+        mergeJudgeObject.setName(String.format("%s%s", mergeJudgeObject.getNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
+        mergeJudgeObject.setOwnership(publicService.districtString(ownershipList));
+        mergeJudgeObject.setSeat(publicService.fusinString(seatList));
         mergeJudgeObject.setFloorArea(floorAreaTotal);
         mergeJudgeObject.setEvaluationArea(evaluationAreaTotal);
         mergeJudgeObject.setRentalPossessionDesc(stringBuilder.toString());
@@ -472,8 +477,8 @@ public class SchemeJudgeObjectService {
             String mortgageKey = baseDataDicService.getCacheDataDicById(projectInfo.getEntrustPurpose()).getFieldName();
             int i = 0;
             Map<Integer, ProjectPhase> phaseMap = getProjectPhaseMap(projectInfo.getProjectCategoryId());
-            List<ProjectPhase> areaProjectPhases= Lists.newArrayList(supportInfo,reportFile);
-            List<ProjectPhase> judgeProjectPhases= Lists.newArrayList(phaseSurePrice);
+            List<ProjectPhase> areaProjectPhases = Lists.newArrayList(supportInfo, reportFile);
+            List<ProjectPhase> judgeProjectPhases = Lists.newArrayList(phaseSurePrice);
             if (StringUtils.equals(mortgageKey, AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE)) {//如果是抵押评估还需添加事项，变现分析税费、法定优先受偿款
                 judgeProjectPhases.add(phaseLiquidationAnalysis);
                 judgeProjectPhases.add(phaseReimbursement);
@@ -489,7 +494,7 @@ public class SchemeJudgeObjectService {
                 projectPlanDetails.setSorting(i++);
                 projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
 
-                if(CollectionUtils.isNotEmpty(areaProjectPhases)){
+                if (CollectionUtils.isNotEmpty(areaProjectPhases)) {
                     for (ProjectPhase projectPhase : areaProjectPhases) {
                         ProjectPlanDetails details = new ProjectPlanDetails();
                         details.setProjectWorkStageId(projectPlan.getWorkStageId());
@@ -545,7 +550,7 @@ public class SchemeJudgeObjectService {
                             }
                         }
 
-                        if(CollectionUtils.isNotEmpty(judgeProjectPhases)){
+                        if (CollectionUtils.isNotEmpty(judgeProjectPhases)) {
                             for (ProjectPhase projectPhase : judgeProjectPhases) {
                                 ProjectPlanDetails details = new ProjectPlanDetails();
                                 details.setProjectWorkStageId(projectPlan.getWorkStageId());

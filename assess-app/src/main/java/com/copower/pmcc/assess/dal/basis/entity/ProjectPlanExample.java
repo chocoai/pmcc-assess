@@ -735,136 +735,6 @@ public class ProjectPlanExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreatorIsNull() {
-            addCriterion("creator is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorIsNotNull() {
-            addCriterion("creator is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorEqualTo(String value) {
-            addCriterion("creator =", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotEqualTo(String value) {
-            addCriterion("creator <>", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorGreaterThan(String value) {
-            addCriterion("creator >", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorGreaterThanOrEqualTo(String value) {
-            addCriterion("creator >=", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorLessThan(String value) {
-            addCriterion("creator <", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorLessThanOrEqualTo(String value) {
-            addCriterion("creator <=", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorLike(String value) {
-            addCriterion("creator like", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotLike(String value) {
-            addCriterion("creator not like", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorIn(List<String> values) {
-            addCriterion("creator in", values, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotIn(List<String> values) {
-            addCriterion("creator not in", values, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorBetween(String value1, String value2) {
-            addCriterion("creator between", value1, value2, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotBetween(String value1, String value2) {
-            addCriterion("creator not between", value1, value2, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedIsNull() {
-            addCriterion("created is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedIsNotNull() {
-            addCriterion("created is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedEqualTo(Date value) {
-            addCriterion("created =", value, "created");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedNotEqualTo(Date value) {
-            addCriterion("created <>", value, "created");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedGreaterThan(Date value) {
-            addCriterion("created >", value, "created");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedGreaterThanOrEqualTo(Date value) {
-            addCriterion("created >=", value, "created");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedLessThan(Date value) {
-            addCriterion("created <", value, "created");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedLessThanOrEqualTo(Date value) {
-            addCriterion("created <=", value, "created");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedIn(List<Date> values) {
-            addCriterion("created in", values, "created");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedNotIn(List<Date> values) {
-            addCriterion("created not in", values, "created");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedBetween(Date value1, Date value2) {
-            addCriterion("created between", value1, value2, "created");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedNotBetween(Date value1, Date value2) {
-            addCriterion("created not between", value1, value2, "created");
-            return (Criteria) this;
-        }
-
         public Criteria andProcessInsIdApprovalIsNull() {
             addCriterion("process_ins_id_approval is null");
             return (Criteria) this;
@@ -1135,6 +1005,66 @@ public class ProjectPlanExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisAutoCompleteIsNull() {
+            addCriterion("bis_auto_complete is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAutoCompleteIsNotNull() {
+            addCriterion("bis_auto_complete is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAutoCompleteEqualTo(Boolean value) {
+            addCriterion("bis_auto_complete =", value, "bisAutoComplete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAutoCompleteNotEqualTo(Boolean value) {
+            addCriterion("bis_auto_complete <>", value, "bisAutoComplete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAutoCompleteGreaterThan(Boolean value) {
+            addCriterion("bis_auto_complete >", value, "bisAutoComplete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAutoCompleteGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_auto_complete >=", value, "bisAutoComplete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAutoCompleteLessThan(Boolean value) {
+            addCriterion("bis_auto_complete <", value, "bisAutoComplete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAutoCompleteLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_auto_complete <=", value, "bisAutoComplete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAutoCompleteIn(List<Boolean> values) {
+            addCriterion("bis_auto_complete in", values, "bisAutoComplete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAutoCompleteNotIn(List<Boolean> values) {
+            addCriterion("bis_auto_complete not in", values, "bisAutoComplete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAutoCompleteBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_auto_complete between", value1, value2, "bisAutoComplete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAutoCompleteNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_auto_complete not between", value1, value2, "bisAutoComplete");
+            return (Criteria) this;
+        }
+
         public Criteria andFinishDateIsNull() {
             addCriterion("finish_date is null");
             return (Criteria) this;
@@ -1322,6 +1252,136 @@ public class ProjectPlanExample {
 
         public Criteria andSpecificGravityNotBetween(Integer value1, Integer value2) {
             addCriterion("specific_gravity not between", value1, value2, "specificGravity");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorIsNull() {
+            addCriterion("creator is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorIsNotNull() {
+            addCriterion("creator is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorEqualTo(String value) {
+            addCriterion("creator =", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotEqualTo(String value) {
+            addCriterion("creator <>", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorGreaterThan(String value) {
+            addCriterion("creator >", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorGreaterThanOrEqualTo(String value) {
+            addCriterion("creator >=", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorLessThan(String value) {
+            addCriterion("creator <", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorLessThanOrEqualTo(String value) {
+            addCriterion("creator <=", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorLike(String value) {
+            addCriterion("creator like", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotLike(String value) {
+            addCriterion("creator not like", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorIn(List<String> values) {
+            addCriterion("creator in", values, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotIn(List<String> values) {
+            addCriterion("creator not in", values, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorBetween(String value1, String value2) {
+            addCriterion("creator between", value1, value2, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotBetween(String value1, String value2) {
+            addCriterion("creator not between", value1, value2, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedIsNull() {
+            addCriterion("created is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedIsNotNull() {
+            addCriterion("created is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedEqualTo(Date value) {
+            addCriterion("created =", value, "created");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedNotEqualTo(Date value) {
+            addCriterion("created <>", value, "created");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedGreaterThan(Date value) {
+            addCriterion("created >", value, "created");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedGreaterThanOrEqualTo(Date value) {
+            addCriterion("created >=", value, "created");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedLessThan(Date value) {
+            addCriterion("created <", value, "created");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedLessThanOrEqualTo(Date value) {
+            addCriterion("created <=", value, "created");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedIn(List<Date> values) {
+            addCriterion("created in", values, "created");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedNotIn(List<Date> values) {
+            addCriterion("created not in", values, "created");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedBetween(Date value1, Date value2) {
+            addCriterion("created between", value1, value2, "created");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedNotBetween(Date value1, Date value2) {
+            addCriterion("created not between", value1, value2, "created");
             return (Criteria) this;
         }
     }

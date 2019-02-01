@@ -23,10 +23,6 @@ public class ProjectPlan {
 
     private Date projectPlanEnd;
 
-    private String creator;
-
-    private Date created;
-
     private String processInsIdApproval;
 
     private String status;
@@ -35,11 +31,17 @@ public class ProjectPlan {
 
     private Boolean bisRestart;
 
+    private Boolean bisAutoComplete;
+
     private Date finishDate;
 
     private String projectStatus;
 
     private Integer specificGravity;
+
+    private String creator;
+
+    private Date created;
 
     public Integer getId() {
         return id;
@@ -121,22 +123,6 @@ public class ProjectPlan {
         this.projectPlanEnd = projectPlanEnd;
     }
 
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
     public String getProcessInsIdApproval() {
         return processInsIdApproval;
     }
@@ -169,6 +155,14 @@ public class ProjectPlan {
         this.bisRestart = bisRestart;
     }
 
+    public Boolean getBisAutoComplete() {
+        return bisAutoComplete;
+    }
+
+    public void setBisAutoComplete(Boolean bisAutoComplete) {
+        this.bisAutoComplete = bisAutoComplete;
+    }
+
     public Date getFinishDate() {
         return finishDate;
     }
@@ -191,5 +185,21 @@ public class ProjectPlan {
 
     public void setSpecificGravity(Integer specificGravity) {
         this.specificGravity = specificGravity;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 }

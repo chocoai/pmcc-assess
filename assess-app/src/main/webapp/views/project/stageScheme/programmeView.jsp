@@ -43,24 +43,64 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        评估基准日<span class="symbol required"></span>
+                                        评估基准日
                                     </label>
                                     <div class="col-sm-3">
-                                        <input type="text" name="valueTimePoint" required="required" placeholder="评估基准日"
-                                               data-date-format="yyyy-mm-dd" class="form-control date-picker dbdate"
-                                               readonly="readonly" pattern='yyyy-MM-dd'
-                                               value="<fmt:formatDate value="${empty item.valueTimePoint?projectInfo.valuationDate:item.valueTimePoint}"
-                                   pattern="yyyy-MM-dd"/>">
+                                        <label class="form-control">
+                                            <fmt:formatDate value="${item.valueTimePoint}" pattern="yyyy-MM-dd"/>
+                                        </label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        基准日说明<span class="symbol required"></span>
+                                        基准日说明
                                     </label>
                                     <div class="col-sm-3">
-                                        <input type="text" name="timePointExplain" required="required"
-                                               placeholder="基准日说明" class="form-control"
-                                               value="${item.timePointExplain}">
+                                        <label class="form-control">${item.timePointExplain}</label>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        委托目的
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control">${item.entrustPurpose}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        委托目的描述
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control">${item.remarkEntrustPurpose}</label>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        价值类型
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control">${item.valueDefinition}</label>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        价值内涵
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control">${item.valueConnotation}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        价值内涵描述
+                                    </label>
+                                    <div class="col-sm-11">
+                                        <label class="form-control">${item.valueConnotationDesc}</label>
                                     </div>
                                 </div>
                             </div>
@@ -68,8 +108,8 @@
                                 <thead>
                                 <tr>
                                     <th style="width: 5%">编号</th>
-                                    <%--<th style="width: 10%">权证号</th>--%>
-                                    <%--<th style="width: 5%">所有权人</th>--%>
+                                        <%--<th style="width: 10%">权证号</th>--%>
+                                        <%--<th style="width: 5%">所有权人</th>--%>
                                     <th style="width: 15%">坐落</th>
                                     <th style="width: 10%">证载用途</th>
                                     <th style="width: 10%">实际用途</th>
@@ -105,13 +145,7 @@
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                            取消
-                        </button>
-                        <button class="btn btn-warning" onclick="programme.saveProgrammeAll();">
-                            保存<i style="margin-left: 10px" class="fa fa-save"></i>
-                        </button>
-                        <button id="commit_btn" class="btn btn-success" onclick="programme.submitProgramme();">
-                            提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                            关闭
                         </button>
                     </div>
                 </div>
@@ -152,13 +186,15 @@
                                         <div class="x-valid">
                                             <div class="col-sm-10 col-sm-offset-2">
                                                 <span class="radio-inline">
-                                                <input type="radio" required onclick="applicableChange(this,true)" readonly="readonly"
+                                                <input type="radio" required onclick="applicableChange(this,true)"
+                                                       readonly="readonly"
                                                        name="bisApplicable" id="rdoApplicable${method.id}" value="true">
                                                 <label for="rdoApplicable${method.id}">适用</label>
                                                 </span>
 
                                                 <span class="radio-inline">
-                                                <input type="radio" required onclick="applicableChange(this,false)" readonly="readonly"
+                                                <input type="radio" required onclick="applicableChange(this,false)"
+                                                       readonly="readonly"
                                                        name="bisApplicable" id="rdoNotApplicable${method.id}"
                                                        value="false">
                                                 <label for="rdoNotApplicable${method.id}">不适用</label>
@@ -170,7 +206,7 @@
                                         <div class="well">
                                             <div class="form-group ">
                                                 <label class="col-sm-2 control-label">
-                                                    方法适用原因<span class="symbol required"></span>
+                                                    方法适用原因
                                                 </label>
                                                 <div class="x-valid">
                                                     <div class="col-sm-10">
@@ -186,7 +222,7 @@
                                         <div class="well">
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label">
-                                                    思路适用原因<span class="symbol required"></span>
+                                                    思路适用原因
                                                 </label>
                                                 <div class="x-valid">
                                                     <div class="col-sm-10">
@@ -202,7 +238,7 @@
                                         <div class="well">
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label">
-                                                    方法不适用原因<span class="symbol required"></span>
+                                                    方法不适用原因
                                                 </label>
                                                 <div class="x-valid">
                                                     <div class="col-sm-10">
@@ -216,7 +252,7 @@
                                         <div class="well">
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label">
-                                                    思路不适用原因<span class="symbol required"></span>
+                                                    思路不适用原因
                                                 </label>
                                                 <div class="x-valid">
                                                     <div class="col-sm-10">
@@ -432,45 +468,21 @@
             <label class="form-control" data-name="mergeNumber">{mergeNumber}</label>
         </td>
         <%--<td>--%>
-            <%--<label class="form-control" data-name="name">--%>
-                <%--<span>{name}</span>--%>
-                <%--<a href="javascript://" onclick="programme.viewJudgeInfo(this);"--%>
-                   <%--class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>--%>
-            <%--</label>--%>
+        <%--<label class="form-control" data-name="name">--%>
+        <%--<span>{name}</span>--%>
+        <%--<a href="javascript://" onclick="programme.viewJudgeInfo(this);"--%>
+        <%--class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>--%>
+        <%--</label>--%>
 
         <%--</td>--%>
         <%--<td><label class="form-control" data-name="ownership">{ownership}</label></td>--%>
         <td><label class="form-control" data-name="seat">{seat}</label></td>
         <td><label class="form-control" data-name="certUse">{certUse}</label></td>
         <td><label class="form-control" data-name="practicalUse">{practicalUse}</label></td>
-        <td>
-            <div class="x-valid">
-                <select class="form-control" required data-name="setUse" name="setUse{id}">
-                    <option value="">--请选择--</option>
-                    <c:forEach items="${setUseList}" var="setUse">
-                        <option value="${setUse.id}">${setUse.name}</option>
-                    </c:forEach>
-                </select>
-            </div>
-        </td>
-        <td>
-            <div class="x-valid">
-                <select class="form-control" required data-name="bestUse" name="bestUse{id}">
-                    <option value="">--请选择--</option>
-                    <c:forEach items="${bestUseList}" var="bestUse">
-                        <option value="${bestUse.id}">${bestUse.name}</option>
-                    </c:forEach>
-                </select>
-            </div>
-        </td>
+        <td><label class="form-control" data-name="setUse">{setUse}</label></td>
+        <td><label class="form-control" data-name="setUse">{bestUse}</label></td>
         <td><label class="form-control">{floorArea}</label></td>
-        <td>
-            <div class="x-valid">
-                <input class="form-control" type="text" required data-rule-number="true"
-                       name="evaluationArea{id}" data-name="evaluationArea"
-                       placeholder="评估面积" value="{evaluationArea}">
-            </div>
-        </td>
+        <td><label class="form-control">{evaluationArea}</label></td>
         <td>
             <a href="javascript://" onclick="setEvaluationMethod(this);"
                class="btn btn-xs btn-success judge-method tooltips">评估方法</a>
@@ -531,10 +543,12 @@
                         }
                         html = html.replace(/{name}/g, item.name == undefined ? "" : item.name);
                         html = html.replace(/{declareId}/g, item.declareRecordId == undefined ? "" : item.declareRecordId);
-                        html = html.replace(/{ownership}/g, item.ownership == undefined ? "" : item.ownership);
-                        html = html.replace(/{seat}/g, item.seat == undefined ? "" : item.seat);
+                        html = html.replace(/{ownership}/g, item.ownership == undefined ? "" : AssessCommon.substring(item.ownership, 30));
+                        html = html.replace(/{seat}/g, item.seat == undefined ? "" : AssessCommon.substring(item.seat, 30));
                         html = html.replace(/{certUse}/g, item.certUse == undefined ? "" : item.certUse);
                         html = html.replace(/{practicalUse}/g, item.practicalUse == undefined ? "" : item.practicalUse);
+                        html = html.replace(/{setUse}/g, item.setUse == undefined ? "" : item.setUse);
+                        html = html.replace(/{bestUse}/g, item.bestUse == undefined ? "" : item.bestUse);
                         html = html.replace(/{floorArea}/g, item.floorArea == undefined ? "" : item.floorArea);
                         html = html.replace(/{evaluationArea}/g, item.evaluationArea == undefined ? "" : item.evaluationArea);
                         tbody.append(html);

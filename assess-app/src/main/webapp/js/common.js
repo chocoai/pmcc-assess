@@ -611,7 +611,7 @@ $(function () {
                 }
             })
         },
-        getSysAttachmentViewHtml:function (item, callback) {
+        getSysAttachmentViewHtml: function (item, callback) {
             $.ajax({
                 url: getContextPath() + "/public/getSysAttachmentViewHtml",
                 type: "get",
@@ -695,6 +695,13 @@ $(function () {
                     }
                 }
             });
+        },
+
+        //字符串截取
+        substring: function (str, length) {
+            if (!str) return "";
+            if (length >= str.length) return str;
+            return str.substring(0, length) + "...";
         }
     };
 

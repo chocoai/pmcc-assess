@@ -169,7 +169,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
         try {
-            setSurveyCaseStudyOrSurveySceneExploreValue(projectPlanDetails, modelAndView);
+            setSurveyCaseStudyOrSurveySceneExploreValue(declareRecord, projectPlanDetails, modelAndView);
         } catch (Exception e1) {
             logger.error("设置数据异常!", e1);
         }
@@ -209,7 +209,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         }
     }
 
-    private void setSurveyCaseStudyOrSurveySceneExploreValue(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) throws Exception {
+    private void setSurveyCaseStudyOrSurveySceneExploreValue(DeclareRecord declareRecord, ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) throws Exception {
         ExamineTypeEnum examineTypeEnum = ExamineTypeEnum.EXPLORE;
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
         if (StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE)) {
@@ -245,7 +245,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
             }
         } catch (Exception e) {
             //允许异常
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
         }
         if (basicApply == null) {
             basicApply = new BasicApply();
@@ -260,6 +260,9 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         if (basicEstate == null) {
             basicEstate = new BasicEstate();
             basicEstate.setApplyId(basicApply.getId());
+            basicEstate.setProvince(declareRecord.getProvince());
+            basicEstate.setCity(declareRecord.getCity());
+            basicEstate.setDistrict(declareRecord.getDistrict());
             basicEstateService.saveAndUpdateBasicEstate(basicEstate);
             landState = new BasicEstateLandState();
             landState.setEstateId(basicEstate.getId());
