@@ -295,8 +295,8 @@
             success: function (result) {
                 if (result.ret && result.data) {
                     callback(result.data);
-                } else {
-                    Alert("异常");
+                }else {
+                    callback({});
                 }
             },
             error: function (result) {
@@ -403,8 +403,6 @@
                         Loading.progressHide();
                         toastr.success('报告生成成功!');
                     });
-                } else {
-                    Alert("异常");
                 }
             },
             error: function (result) {
