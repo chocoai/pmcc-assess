@@ -61,7 +61,7 @@ public class AsposeUtils {
         for (int i = 0; i < paragraphs.toArray().length; i++) {
             Matcher m = Pattern.compile("\\$\\{(.*?)\\}").matcher(paragraphs.get(i).getText());
             while (m.find()) {
-                map.put(m.group(),m.group(1));
+                map.put(m.group(), m.group(1));
             }
         }
         return map;
@@ -360,7 +360,7 @@ public class AsposeUtils {
      */
     public static String escapeExprSpecialWord(String keyword) {
         if (StringUtils.isNotBlank(keyword)) {
-            String[] fbsArr = { "\\", "$", "(", ")", "*", "+", ".", "[", "]", "?", "^", "{", "}", "|" };
+            String[] fbsArr = {"\\", "$", "(", ")", "*", "+", ".", "[", "]", "?", "^", "{", "}", "|"};
             for (String key : fbsArr) {
                 if (keyword.contains(key)) {
                     keyword = keyword.replace(key, "\\" + key);
@@ -384,19 +384,21 @@ public class AsposeUtils {
             throw new Exception("error: empty map");
         Document doc = new Document(filePath);
         for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {
-            Pattern compile = Pattern.compile(escapeExprSpecialWord(stringStringEntry.getKey()));
-            doc.getRange().replace(compile, new IReplacingCallback() {
-                @Override
-                public int replacing(ReplacingArgs e) throws Exception {
-                    DocumentBuilder builder = new DocumentBuilder((Document) e.getMatchNode().getDocument());
-                    builder.moveTo(e.getMatchNode());
-                    Document document = new Document(stringStringEntry.getValue());
-                    builder.insertDocument(document, ImportFormatMode.KEEP_DIFFERENT_STYLES);
-                    return ReplaceAction.REPLACE;
-                }
-            }, false);
+            if (StringUtils.isNotBlank(stringStringEntry.getValue())) {
+                Pattern compile = Pattern.compile(escapeExprSpecialWord(stringStringEntry.getKey()));
+                doc.getRange().replace(compile, new IReplacingCallback() {
+                    @Override
+                    public int replacing(ReplacingArgs e) throws Exception {
+                        DocumentBuilder builder = new DocumentBuilder((Document) e.getMatchNode().getDocument());
+                        builder.moveTo(e.getMatchNode());
+                        Document document = new Document(stringStringEntry.getValue());
+                        builder.insertDocument(document, ImportFormatMode.KEEP_DIFFERENT_STYLES);
+                        return ReplaceAction.REPLACE;
+                    }
+                }, false);
+                doc.save(filePath);
+            }
         }
-        doc.save(filePath);
     }
 
 }

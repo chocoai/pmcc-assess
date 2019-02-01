@@ -1,15 +1,16 @@
 package com.copower.pmcc.assess.service.project.generate;
 
-import com.aspose.words.Bookmark;
-import com.aspose.words.BookmarkCollection;
-import com.aspose.words.Document;
+import com.alibaba.fastjson.JSON;
+import com.aspose.words.*;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldCompareEnum;
+import com.copower.pmcc.assess.common.enums.MethodCompareFieldEnum;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseReportField;
 import com.copower.pmcc.assess.dal.basis.entity.DataSetUseField;
 import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompare;
 import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem;
+import com.copower.pmcc.assess.dto.input.method.MarketCompareItemDto;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
@@ -25,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by kings on 2019-1-31.
@@ -47,13 +49,14 @@ public class GenerateMdCompareService {
     private GenerateMdCompareService() {
     }
 
-    public GenerateMdCompareService(Integer mcId) {
+    public GenerateMdCompareService(Integer mcId) throws Exception {
         this.mcId = mcId;
         this.commonService = SpringContextUtils.getBean(CommonService.class);
         this.baseReportFieldService = SpringContextUtils.getBean(BaseReportFieldService.class);
         this.baseAttachmentService = SpringContextUtils.getBean(BaseAttachmentService.class);
         this.mdMarketCompareService = SpringContextUtils.getBean(MdMarketCompareService.class);
         this.dataSetUseFieldService = SpringContextUtils.getBean(DataSetUseFieldService.class);
+        getEvaluationItemList();
     }
 
     /**
@@ -85,7 +88,7 @@ public class GenerateMdCompareService {
      *
      * @return
      */
-    public MdMarketCompareItem getEvaluationItemList() {
+    public MdMarketCompareItem getEvaluationItemList() throws Exception {
         if (evaluationItem != null)
             return this.evaluationItem;
         MdMarketCompareItem marketCompareItem = mdMarketCompareService.getEvaluationListByMcId(getMarketCompare().getId());
@@ -144,26 +147,86 @@ public class GenerateMdCompareService {
      * @param key
      * @return
      */
-    public String getValueByKey(String key) {
+    public String getValueByKey(String key) throws Exception {
         if (StringUtils.isBlank(key)) return null;
         BaseReportFieldCompareEnum fieldCompareEnum = BaseReportFieldCompareEnum.getEnumByName(key);
-        if(fieldCompareEnum!=null){
+        MdMarketCompareItem evaluationItemList = getEvaluationItemList();
+        List<MarketCompareItemDto> marketCompareItemDtos = JSON.parseArray(evaluationItemList.getJsonContent(), MarketCompareItemDto.class);
+        String localPath = "";
+        if (fieldCompareEnum != null) {
+            String title = fieldCompareEnum.getName();
             switch (fieldCompareEnum) {
                 case COMPARABLE_BASIS:
-
+                    localPath = getTable(marketCompareItemDtos, title, "comparative.basis", "trading.status");
                     break;
                 case LOCATION_CONDITION:
-
+                    localPath = getTable(marketCompareItemDtos, title, "location.condition", "");
                     break;
                 case RIGHTS_INTERESTS:
-
+                    localPath = getTable(marketCompareItemDtos, title, "equity.condition", "");
+                    break;
+                case ENTITY_CONDITION:
+                    localPath = getTable(marketCompareItemDtos, title, "entity.condition", "");
                     break;
             }
         }
         //dataSetUseFieldService.getCacheSetUseFieldList()
 
 
-        return "D:\\IdeaProjects\\pmcc-assess\\assess-app\\target\\pmcc-assess\\temporary\\20190131\\1.docx";
+        //return "D:\\IdeaProjects\\pmcc-assess\\assess-app\\target\\pmcc-assess\\temporary\\20190131\\1.docx";
+        return localPath;
     }
 
+    //生成表格
+    public String getTable(List<MarketCompareItemDto> list, String title, String fieldName, String fieldMore) throws Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        builder.writeln(title);
+        List<DataSetUseField> cacheSetUseFieldList = dataSetUseFieldService.getCacheSetUseFieldList(fieldName);
+
+        for (MarketCompareItemDto item : list) {
+            for (DataSetUseField useField : cacheSetUseFieldList) {
+                if (useField.getFieldName().equals(item.getName())) {
+                    builder.insertCell();
+                    builder.writeln(MethodCompareFieldEnum.getNameByKey(item.getName()));
+                    builder.insertCell();
+                    builder.writeln(item.getValue());
+                    builder.endRow();
+                }
+            }
+        }
+        //交易情况
+        if (StringUtils.isNotBlank(fieldMore)) {
+            builder.writeln("交易情况");
+            List<DataSetUseField> tradingFieldList = dataSetUseFieldService.getCacheSetUseFieldList(fieldMore);
+            for (MarketCompareItemDto item : list) {
+                for (DataSetUseField useField : tradingFieldList) {
+                    if (useField.getFieldName().equals(item.getName())) {
+                        builder.insertCell();
+                        builder.writeln(MethodCompareFieldEnum.getNameByKey(item.getName()));
+                        builder.insertCell();
+                        builder.writeln(item.getValue());
+                        builder.endRow();
+                    }
+                }
+            }
+        }
+        //设置表格边框的宽度
+        builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
+        builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
+        builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
+        builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
+        //设置具体宽度
+        builder.getCellFormat().setWidth(100);
+        //水平居中
+        builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+        //上下居中
+        builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+        builder.endTable();
+
+
+        doc.save(localPath);
+        return localPath;
+    }
 }
