@@ -149,7 +149,7 @@ public class GenerateReportService {
                     BaseReportTemplate baseReportTemplate = baseReportService.getReportTemplate(projectPlan.getProjectId(), baseDataDic.getId());
                     if (baseReportTemplate != null) {
                         //获取替换后得报告文件路径 ==>
-                        String path = this.fullReportPath(baseReportTemplate, schemeReportGeneration);
+                        String path = this.fullReportPath(baseReportTemplate, schemeReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
                         if (StringUtils.isNotBlank(path)) {
                             this.createSysAttachment(path, schemeReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
                         }
@@ -159,7 +159,7 @@ public class GenerateReportService {
                 if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY)) {
                     BaseReportTemplate baseReportTemplate = baseReportService.getReportTemplate(projectPlan.getProjectId(), baseDataDic.getId());
                     if (baseReportTemplate != null) {
-                        String path = this.fullReportPath(baseReportTemplate, schemeReportGeneration);
+                        String path = this.fullReportPath(baseReportTemplate, schemeReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY);
                         if (StringUtils.isNotBlank(path)) {
                             this.createSysAttachment(path, schemeReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY);
                         }
@@ -169,7 +169,7 @@ public class GenerateReportService {
                 if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_RESULT)) {
                     BaseReportTemplate baseReportTemplate = baseReportService.getReportTemplate(projectPlan.getProjectId(), baseDataDic.getId());
                     if (baseReportTemplate != null) {
-                        String path = this.fullReportPath(baseReportTemplate, schemeReportGeneration);
+                        String path = this.fullReportPath(baseReportTemplate, schemeReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
                         if (StringUtils.isNotBlank(path)) {
                             this.createSysAttachment(path, schemeReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
                         }
@@ -222,7 +222,7 @@ public class GenerateReportService {
      * @return
      * @throws Exception
      */
-    private String fullReportPath(BaseReportTemplate baseReportTemplate, SchemeReportGeneration schemeReportGeneration) throws Exception {
+    private String fullReportPath(BaseReportTemplate baseReportTemplate, SchemeReportGeneration schemeReportGeneration, String reportType) throws Exception {
         String tempDir = "";
         if (baseReportTemplate == null) {
             return "";
@@ -238,7 +238,7 @@ public class GenerateReportService {
             //书签map
             Map<String, String> bookmarkMap = Maps.newHashMap();
             Map<String, String> fileFixedMap = Maps.newHashMap();
-            Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> mapSet = getReportMap(baseReportTemplate, new Document(tempDir), schemeReportGeneration);
+            Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> mapSet = getReportMap(baseReportTemplate, new Document(tempDir), schemeReportGeneration, reportType);
             if (CollectionUtils.isNotEmpty(mapSet)) {
                 Iterator<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> iterator = mapSet.iterator();
                 while (iterator.hasNext()) {
@@ -334,7 +334,7 @@ public class GenerateReportService {
      * @return 如:文号,<文号,四川协和预评（2019）0001号>
      * @throws Exception
      */
-    private Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> getReportMap(BaseReportTemplate baseReportTemplate, Document document, SchemeReportGeneration schemeReportGeneration) throws Exception {
+    private Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> getReportMap(BaseReportTemplate baseReportTemplate, Document document, SchemeReportGeneration schemeReportGeneration, String reportType) throws Exception {
         Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> mapSet = Sets.newHashSet();
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(schemeReportGeneration.getProjectPlanId());
         GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(schemeReportGeneration.getProjectId(), schemeReportGeneration.getAreaGroupId(), baseReportTemplate.getId(), projectPlan);
@@ -366,6 +366,30 @@ public class GenerateReportService {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.REPORTNUMBER.getName());
                     if (baseReportField != null) {
                         replaceReportPutValue(name, generateBaseDataService.getWordNumber(), true, true, false, mapSet);
+                    }
+                }
+                //报告类别
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.ReportingCategories.getName(), name)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.ReportingCategories.getName());
+                    if (baseReportField != null) {
+                        if (StringUtils.isNotBlank(reportType)) {
+                            switch (reportType) {
+                                case AssessDataDicKeyConstant.REPORT_TYPE_RESULT:
+                                    replaceReportPutValue(name, "结果报告", true, true, false, mapSet);
+                                    break;
+                                case AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY:
+                                    replaceReportPutValue(name, "技术报告", true, true, false, mapSet);
+                                    break;
+                                case AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT:
+                                    replaceReportPutValue(name, "预评报告", true, true, false, mapSet);
+                                    break;
+                                case AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY:
+                                    replaceReportPutValue(name, "报告分析类别", true, true, false, mapSet);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
                     }
                 }
                 //报告出具日期
@@ -552,9 +576,16 @@ public class GenerateReportService {
                         replaceReportPutValue(name, generateBaseDataService.getTotalRealEstatePrice(), true, true, false, mapSet);
                     }
                 }
-                //大写金额
+                //房地产总价大写金额
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.CapitalizationAmount.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.CapitalizationAmount.getName());
+                    if (baseReportField != null) {
+                        replaceReportPutValue(name, generateBaseDataService.getCapitalizationAmount(), true, true, false, mapSet);
+                    }
+                }
+                //房地产总价大写
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.Capital_capitalization_total_price_real_estate.getName(), name)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.Capital_capitalization_total_price_real_estate.getName());
                     if (baseReportField != null) {
                         replaceReportPutValue(name, generateBaseDataService.getCapitalizationAmount(), true, true, false, mapSet);
                     }
@@ -680,6 +711,13 @@ public class GenerateReportService {
                         replaceReportPutValue(name, generateBaseDataService.getValueImplication(), true, true, false, mapSet);
                     }
                 }
+                //价值内涵
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.ValueConnotation.getName(), name)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.ValueConnotation.getName());
+                    if (baseReportField != null) {
+                        replaceReportPutValue(name, generateBaseDataService.getValueImplication(), true, true, false, mapSet);
+                    }
+                }
                 //设定用途
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.SetUse.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.SetUse.getName());
@@ -743,6 +781,13 @@ public class GenerateReportService {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.StatementPurposeEntrustment.getName());
                     if (baseReportField != null) {
                         replaceReportPutValue(name, generateBaseDataService.getStatementPurposeEntrustment(), true, true, false, mapSet);
+                    }
+                }
+                //委托目的
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.DelegatePurpose.getName(), name)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.DelegatePurpose.getName());
+                    if (baseReportField != null) {
+                        replaceReportPutValue(name, generateBaseDataService.getDelegatePurpose(), true, true, false, mapSet);
                     }
                 }
                 //评估方法
@@ -966,7 +1011,7 @@ public class GenerateReportService {
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EvaluationMethodResult.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EvaluationMethodResult.getName());
                     if (baseReportField != null) {
-                        replaceReportPutValue(name, generateBaseDataService.getEvaluationMethodResult(AssessDataDicKeyConstant.REPORT_TYPE_RESULT), false, false, true, mapSet);
+//                        replaceReportPutValue(name, generateBaseDataService.getEvaluationMethodResult(AssessDataDicKeyConstant.REPORT_TYPE_RESULT), false, false, true, mapSet);
                     }
                 }
 
@@ -1015,6 +1060,22 @@ public class GenerateReportService {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.PRINCIPAL.getName());
                     if (baseReportField != null) {
                         replaceReportPutValue(name, generateBaseDataService.getPrincipal(), true, true, false, mapSet);
+                    }
+                }
+
+                //委托人地址
+                if (Objects.equal(BaseReportFieldEnum.PrincipalAddress.getName(), name)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.PrincipalAddress.getName());
+                    if (baseReportField != null) {
+                        replaceReportPutValue(name, generateBaseDataService.getPrincipalAddress(), true, true, false, mapSet);
+                    }
+                }
+
+                //委托人法定代表人
+                if (Objects.equal(BaseReportFieldEnum.PrincipalLegalRepresentative.getName(), name)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.PrincipalLegalRepresentative.getName());
+                    if (baseReportField != null) {
+                        replaceReportPutValue(name, generateBaseDataService.getPrincipalLegalRepresentative(), true, true, false, mapSet);
                     }
                 }
             }

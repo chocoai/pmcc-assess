@@ -226,6 +226,33 @@ public class GenerateBaseDataService {
     }
 
     /**
+     * 委托人地址
+     *
+     * @return
+     */
+    public String getPrincipalAddress() {
+        String str = getProjectInfo().getConsignorVo().getCsAddress();
+        if (StringUtils.isNotBlank(str)) {
+            return str;
+        } else {
+            return "暂无委托人地址";
+        }
+    }
+
+    /**
+     * 委托人法定代表人
+     * @return
+     */
+    public String getPrincipalLegalRepresentative(){
+        String str = getProjectInfo().getConsignorVo().getCsLegalRepresentative();
+        if (StringUtils.isNotBlank(str)) {
+            return str;
+        } else {
+            return "暂无委托人法定代表人";
+        }
+    }
+
+    /**
      * 获取项目info
      *
      * @return
@@ -501,11 +528,11 @@ public class GenerateBaseDataService {
                     }
                 }
             }
-            return String.format("最终单价:%s", price.toString());
+//            return String.format("最终单价:%s", price.toString());
         }
 
         if (Objects.equal(AssessDataDicKeyConstant.REPORT_TYPE_RESULT, report_type)) {
-            return getjudgeBuildResultSurveySheet();
+//            return getjudgeBuildResultSurveySheet();
         }
 
         return errorStr;
@@ -686,13 +713,22 @@ public class GenerateBaseDataService {
      */
     public String getStatementPurposeEntrustment() {
         if (getProjectInfo() != null) {
-            this.statementPurposeEntrustment = getProjectInfo().getRemarkEntrustPurpose();
+            this.statementPurposeEntrustment = getSchemeAreaGroup().getRemarkEntrustPurpose();
         }
         if (StringUtils.isNotBlank(this.statementPurposeEntrustment)) {
             return statementPurposeEntrustment;
         } else {
             return errorStr;
         }
+    }
+
+    //委托目的
+    public String getDelegatePurpose(){
+        String str = baseDataDicService.getNameById(getSchemeAreaGroup().getEntrustPurpose());
+        if (StringUtils.isNotBlank(str)){
+            return str;
+        }
+        return errorStr;
     }
 
     /**
@@ -1726,7 +1762,7 @@ public class GenerateBaseDataService {
     public String getjudgeBuildResultSurveySheet() throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = String.format("%s\\报告模板1%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         builder.writeln("估价结果一览表");
         Set<String> a0 = Sets.newHashSet();
@@ -4171,6 +4207,7 @@ public class GenerateBaseDataService {
 
     /**
      * 汇总表
+     *
      * @return
      * @throws Exception
      */
@@ -4179,7 +4216,176 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = new DocumentBuilder(doc);
         builder.writeln("汇总表");
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        builder.writeln("估价结果汇总表");
+        Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
+        Table table = builder.startTable();
+        for (int j = 0; j < 2; j++) {
+            switch (j) {
+                case 0:
+                    for (int k = 0; k < 8; k++) {
+                        switch (k) {
+                            case 0:
+                                builder.insertCell();
+                                builder.writeln("估价对象及结果\\估价方法及结果");
+                                mergeCellModelList.add(new MergeCellModel(0, 0, 1, 2));
+                                break;
+                            case 3:
+                                builder.insertCell();
+                                builder.writeln("测算结果");
+                                mergeCellModelList.add(new MergeCellModel(0, 3, 0, 5));
+                                break;
+                            case 6:
+                                builder.insertCell();
+                                builder.writeln("估价结果");
+                                //未处理
+                                mergeCellModelList.add(new MergeCellModel(j, 6, j + 1, 7));
+                                break;
+                            default:
+                                builder.insertCell();
+                                break;
+                        }
+                    }
+                    builder.endRow();
+                    break;
+                case 1:
+                    for (int k = 0; k < 8; k++) {
+                        switch (k) {
+                            case 3:
+                                builder.insertCell();
+                                builder.writeln("市场比较法");
+                                break;
+                            case 4:
+                                builder.insertCell();
+                                builder.writeln("收益法");
+                                break;
+                            case 5:
+                                builder.insertCell();
+                                builder.writeln("假设开发法");
+                                break;
+                            case 6:
+                                builder.insertCell();
+                                break;
 
+                            default:
+                                builder.insertCell();
+                                break;
+                        }
+                    }
+                    builder.endRow();
+                    break;
+                default:
+                    break;
+            }
+        }
+        for (int j = 2; j < 2 + schemeJudgeObjectList.size(); j++) {
+            int num = j % 2;
+            switch (num) {
+                case 0:
+                    for (int k = 0; k < 8; k++) {
+                        switch (k) {
+                            case 0:
+                                builder.insertCell();
+                                builder.writeln(String.format("委估对象%s", schemeJudgeObjectList.get(j - 2).getNumber()));
+                                mergeCellModelList.add(new MergeCellModel(j, 0, j + 1, 0));
+                                break;
+                            case 1:
+                                builder.insertCell();
+                                builder.writeln("总价(元或万元)");
+                                mergeCellModelList.add(new MergeCellModel(j, 1, j, 2));
+                                break;
+                            case 6:
+                                builder.insertCell();
+                                mergeCellModelList.add(new MergeCellModel(j, 6, j, 7));
+                                break;
+                            default:
+                                builder.insertCell();
+                                break;
+                        }
+                    }
+                    builder.endRow();
+                    break;
+                case 1:
+                    for (int k = 0; k < 8; k++) {
+                        switch (k) {
+                            case 1:
+                                builder.insertCell();
+                                builder.writeln("单价(元/m2)");
+                                mergeCellModelList.add(new MergeCellModel(j, 1, j, 2));
+                                break;
+                            case 6:
+                                builder.insertCell();
+                                mergeCellModelList.add(new MergeCellModel(j, 6, j, 7));
+                                break;
+                            default:
+                                builder.insertCell();
+                                break;
+                        }
+                    }
+                    builder.endRow();
+                    break;
+                default:
+                    break;
+            }
+        }
+        for (int j = 2 + schemeJudgeObjectList.size(); j < 2 + schemeJudgeObjectList.size() + 2; j++) {
+            int num = j % 2;
+            switch (num) {
+                case 0:
+                    for (int k = 0; k < 8; k++) {
+                        switch (k) {
+                            case 0:
+                                builder.insertCell();
+                                builder.writeln("汇总平均价值");
+                                mergeCellModelList.add(new MergeCellModel(j, 0, j + 1, 0));
+                                break;
+                            case 1:
+                                builder.insertCell();
+                                builder.writeln("总价(元或万元)");
+                                mergeCellModelList.add(new MergeCellModel(j, 1, j, 2));
+                                break;
+                            case 6:
+                                builder.insertCell();
+                                mergeCellModelList.add(new MergeCellModel(j, 6, j, 7));
+                                break;
+                            default:
+                                builder.insertCell();
+                                break;
+                        }
+                    }
+                    builder.endRow();
+                    break;
+                case 1:
+                    for (int k = 0; k < 8; k++) {
+                        switch (k) {
+                            case 1:
+                                builder.insertCell();
+                                builder.writeln("平均单价(元/m2)");
+                                mergeCellModelList.add(new MergeCellModel(j, 1, j, 2));
+                                break;
+                            case 6:
+                                builder.insertCell();
+                                mergeCellModelList.add(new MergeCellModel(j, 6, j, 7));
+                                break;
+                            default:
+                                builder.insertCell();
+                                break;
+                        }
+                    }
+                    builder.endRow();
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
+            for (MergeCellModel mergeCellModel : mergeCellModelList) {
+                Cell cellStartRange = table.getRows().get(mergeCellModel.getStartRowIndex()).getCells().get(mergeCellModel.getStartColumnIndex());
+                Cell cellEndRange = table.getRows().get(mergeCellModel.getEndRowIndex()).getCells().get(mergeCellModel.getEndColumnIndex());
+                AsposeUtils.mergeCells(cellStartRange, cellEndRange, table);
+            }
+        }
+        builder.endTable();
         doc.save(localPath);
         return localPath;
     }
