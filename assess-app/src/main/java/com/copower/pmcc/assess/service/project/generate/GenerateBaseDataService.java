@@ -241,9 +241,10 @@ public class GenerateBaseDataService {
 
     /**
      * 委托人法定代表人
+     *
      * @return
      */
-    public String getPrincipalLegalRepresentative(){
+    public String getPrincipalLegalRepresentative() {
         String str = getProjectInfo().getConsignorVo().getCsLegalRepresentative();
         if (StringUtils.isNotBlank(str)) {
             return str;
@@ -723,9 +724,9 @@ public class GenerateBaseDataService {
     }
 
     //委托目的
-    public String getDelegatePurpose(){
+    public String getDelegatePurpose() {
         String str = baseDataDicService.getNameById(getSchemeAreaGroup().getEntrustPurpose());
-        if (StringUtils.isNotBlank(str)){
+        if (StringUtils.isNotBlank(str)) {
             return str;
         }
         return errorStr;
@@ -1751,6 +1752,109 @@ public class GenerateBaseDataService {
     public String gettheGeneralIdeaOfThisEvaluationAndTheSelectionOfEvaluationMethods(SysAttachmentDto sysAttachmentDto) throws Exception {
         String tempDir = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
         return tempDir;
+    }
+
+    /**
+     * 土地使用权登记状况表
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getjudgeObjectLandUseCertificateSheet() throws Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
+        Table table = builder.startTable();
+        int num = 2;
+        int length = 12;
+        for (int j = 0; j < num; j++) {
+            switch (j) {
+                case 0:
+                    for (int k = 0; k < length; k++) {
+                        if (k == 0) {
+                            builder.insertCell();
+                            mergeCellModelList.add(new MergeCellModel(0, 0, 0, 11));
+                            builder.writeln("估价对象《土地使用证》登记状况一览表");
+                        } else {
+                            builder.insertCell();
+                            builder.writeln("");
+                        }
+                    }
+                    builder.endRow();
+                    break;
+                case 1:
+                    for (int k = 0; k < length; k++) {
+                        switch (k) {
+                            case 0:
+                                builder.insertCell();
+                                builder.writeln("土地证号");
+                                break;
+                            case 1:
+                                builder.insertCell();
+                                builder.writeln("座落");
+                                break;
+                            case 2:
+                                builder.insertCell();
+                                builder.writeln("土地使用权人");
+                                break;
+                            case 3:
+                                builder.insertCell();
+                                builder.writeln("地号");
+                                break;
+                            case 4:
+                                builder.insertCell();
+                                builder.writeln("图号");
+                                break;
+                            case 5:
+                                builder.insertCell();
+                                builder.writeln("终止日期");
+                                break;
+                            case 6:
+                                builder.insertCell();
+                                builder.writeln("使用权类型");
+                                break;
+                            case 7:
+                                builder.insertCell();
+                                builder.writeln("用途");
+                                break;
+                            case 8:
+                                builder.insertCell();
+                                builder.writeln("使用权面积（㎡）");
+                                break;
+                            case 9:
+                                builder.insertCell();
+                                builder.writeln("其中：分摊面积（㎡）");
+                                break;
+                            case 10:
+                                builder.insertCell();
+                                builder.writeln("取得价格（万元）");
+                                break;
+                            case 11:
+                                builder.insertCell();
+                                builder.writeln("记   事");
+                                break;
+                            default:
+                                builder.insertCell();
+                                break;
+                        }
+                    }
+                    builder.endRow();
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
+            for (MergeCellModel mergeCellModel : mergeCellModelList) {
+                Cell cellStartRange = table.getRows().get(mergeCellModel.getStartRowIndex()).getCells().get(mergeCellModel.getStartColumnIndex());
+                Cell cellEndRange = table.getRows().get(mergeCellModel.getEndRowIndex()).getCells().get(mergeCellModel.getEndColumnIndex());
+                AsposeUtils.mergeCells(cellStartRange, cellEndRange, table);
+            }
+        }
+        builder.endTable();
+        doc.save(localPath);
+        return localPath;
     }
 
     /**
