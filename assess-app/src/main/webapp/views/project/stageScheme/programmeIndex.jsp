@@ -190,7 +190,7 @@
                         </form>
                         <script type="text/javascript">
                             $(function () {
-                                programme.setValueConnotation(${item.id},'${item.valueConnotation}');
+                                programme.setValueConnotation(${item.id}, '${item.valueConnotation}');
                             })
                         </script>
                     </div>
@@ -845,7 +845,7 @@
     //设置价值内涵的值
     programme.setValueConnotation = function (id, valueConnotation) {
         if (valueConnotation) {
-            $("#frmJudgeObject" + id).find('[name=valueConnotation]').select2('val',JSON.parse(valueConnotation));
+            $("#frmJudgeObject" + id).find('[name=valueConnotation]').select2('val', JSON.parse(valueConnotation));
         }
     }
 
@@ -878,8 +878,8 @@
                         }
                         html = html.replace(/{name}/g, item.name == undefined ? "" : item.name);
                         html = html.replace(/{declareId}/g, item.declareRecordId == undefined ? "" : item.declareRecordId);
-                        html = html.replace(/{ownership}/g, item.ownership == undefined ? "" : item.ownership);
-                        html = html.replace(/{seat}/g, item.seat == undefined ? "" : item.seat);
+                        html = html.replace(/{ownership}/g, item.ownership == undefined ? "" : AssessCommon.substring(item.ownership, 10));
+                        html = html.replace(/{seat}/g, item.seat == undefined ? "" : AssessCommon.substring(item.seat, 20));
                         html = html.replace(/{certUse}/g, item.certUse == undefined ? "" : item.certUse);
                         html = html.replace(/{practicalUse}/g, item.practicalUse == undefined ? "" : item.practicalUse);
                         html = html.replace(/{floorArea}/g, item.floorArea == undefined ? "" : item.floorArea);
@@ -1168,8 +1168,8 @@
 
         data.valueDefinition = $(areaPanel).find('[name="valueDefinition"]').val();
         data.valueConnotation = $(areaPanel).find('[name="valueConnotation"]').val();
-        if(!data.valueConnotation){
-            data.valueConnotation=[];
+        if (!data.valueConnotation) {
+            data.valueConnotation = [];
         }
         data.valueConnotationDesc = $(areaPanel).find('[name="valueConnotationDesc"]').val();
         data.schemeJudgeObjects = [];

@@ -12,15 +12,16 @@
     <result column="plan_remarks" property="planRemarks" jdbcType="VARCHAR" />
     <result column="project_plan_start" property="projectPlanStart" jdbcType="TIMESTAMP" />
     <result column="project_plan_end" property="projectPlanEnd" jdbcType="TIMESTAMP" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="created" property="created" jdbcType="TIMESTAMP" />
     <result column="process_ins_id_approval" property="processInsIdApproval" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="approval_status" property="approvalStatus" jdbcType="VARCHAR" />
     <result column="bis_restart" property="bisRestart" jdbcType="BIT" />
+    <result column="bis_auto_complete" property="bisAutoComplete" jdbcType="BIT" />
     <result column="finish_date" property="finishDate" jdbcType="TIMESTAMP" />
     <result column="project_status" property="projectStatus" jdbcType="VARCHAR" />
     <result column="specific_gravity" property="specificGravity" jdbcType="INTEGER" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -82,8 +83,9 @@
   </sql>
   <sql id="Base_Column_List" >
     id, project_id, process_ins_id, work_stage_id, stage_sort, category_id, plan_name, 
-    plan_remarks, project_plan_start, project_plan_end, creator, created, process_ins_id_approval, 
-    status, approval_status, bis_restart, finish_date, project_status, specific_gravity
+    plan_remarks, project_plan_start, project_plan_end, process_ins_id_approval, status, 
+    approval_status, bis_restart, bis_auto_complete, finish_date, project_status, specific_gravity, 
+    creator, created
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPlanExample" >
     select
@@ -122,17 +124,17 @@
     insert into tb_project_plan (project_id, process_ins_id, work_stage_id, 
       stage_sort, category_id, plan_name, 
       plan_remarks, project_plan_start, project_plan_end, 
-      creator, created, process_ins_id_approval, 
-      status, approval_status, bis_restart, 
-      finish_date, project_status, specific_gravity
-      )
+      process_ins_id_approval, status, approval_status, 
+      bis_restart, bis_auto_complete, finish_date, 
+      project_status, specific_gravity, creator, 
+      created)
     values (#{projectId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, #{workStageId,jdbcType=INTEGER}, 
       #{stageSort,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{planName,jdbcType=VARCHAR}, 
       #{planRemarks,jdbcType=VARCHAR}, #{projectPlanStart,jdbcType=TIMESTAMP}, #{projectPlanEnd,jdbcType=TIMESTAMP}, 
-      #{creator,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{processInsIdApproval,jdbcType=VARCHAR}, 
-      #{status,jdbcType=VARCHAR}, #{approvalStatus,jdbcType=VARCHAR}, #{bisRestart,jdbcType=BIT}, 
-      #{finishDate,jdbcType=TIMESTAMP}, #{projectStatus,jdbcType=VARCHAR}, #{specificGravity,jdbcType=INTEGER}
-      )
+      #{processInsIdApproval,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{approvalStatus,jdbcType=VARCHAR}, 
+      #{bisRestart,jdbcType=BIT}, #{bisAutoComplete,jdbcType=BIT}, #{finishDate,jdbcType=TIMESTAMP}, 
+      #{projectStatus,jdbcType=VARCHAR}, #{specificGravity,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{created,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPlan" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -167,12 +169,6 @@
       <if test="projectPlanEnd != null" >
         project_plan_end,
       </if>
-      <if test="creator != null" >
-        creator,
-      </if>
-      <if test="created != null" >
-        created,
-      </if>
       <if test="processInsIdApproval != null" >
         process_ins_id_approval,
       </if>
@@ -185,6 +181,9 @@
       <if test="bisRestart != null" >
         bis_restart,
       </if>
+      <if test="bisAutoComplete != null" >
+        bis_auto_complete,
+      </if>
       <if test="finishDate != null" >
         finish_date,
       </if>
@@ -193,6 +192,12 @@
       </if>
       <if test="specificGravity != null" >
         specific_gravity,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="created != null" >
+        created,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -223,12 +228,6 @@
       <if test="projectPlanEnd != null" >
         #{projectPlanEnd,jdbcType=TIMESTAMP},
       </if>
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="created != null" >
-        #{created,jdbcType=TIMESTAMP},
-      </if>
       <if test="processInsIdApproval != null" >
         #{processInsIdApproval,jdbcType=VARCHAR},
       </if>
@@ -241,6 +240,9 @@
       <if test="bisRestart != null" >
         #{bisRestart,jdbcType=BIT},
       </if>
+      <if test="bisAutoComplete != null" >
+        #{bisAutoComplete,jdbcType=BIT},
+      </if>
       <if test="finishDate != null" >
         #{finishDate,jdbcType=TIMESTAMP},
       </if>
@@ -249,6 +251,12 @@
       </if>
       <if test="specificGravity != null" >
         #{specificGravity,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -291,12 +299,6 @@
       <if test="record.projectPlanEnd != null" >
         project_plan_end = #{record.projectPlanEnd,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.created != null" >
-        created = #{record.created,jdbcType=TIMESTAMP},
-      </if>
       <if test="record.processInsIdApproval != null" >
         process_ins_id_approval = #{record.processInsIdApproval,jdbcType=VARCHAR},
       </if>
@@ -309,6 +311,9 @@
       <if test="record.bisRestart != null" >
         bis_restart = #{record.bisRestart,jdbcType=BIT},
       </if>
+      <if test="record.bisAutoComplete != null" >
+        bis_auto_complete = #{record.bisAutoComplete,jdbcType=BIT},
+      </if>
       <if test="record.finishDate != null" >
         finish_date = #{record.finishDate,jdbcType=TIMESTAMP},
       </if>
@@ -317,6 +322,12 @@
       </if>
       <if test="record.specificGravity != null" >
         specific_gravity = #{record.specificGravity,jdbcType=INTEGER},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null" >
+        created = #{record.created,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -335,15 +346,16 @@
       plan_remarks = #{record.planRemarks,jdbcType=VARCHAR},
       project_plan_start = #{record.projectPlanStart,jdbcType=TIMESTAMP},
       project_plan_end = #{record.projectPlanEnd,jdbcType=TIMESTAMP},
-      creator = #{record.creator,jdbcType=VARCHAR},
-      created = #{record.created,jdbcType=TIMESTAMP},
       process_ins_id_approval = #{record.processInsIdApproval,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
       approval_status = #{record.approvalStatus,jdbcType=VARCHAR},
       bis_restart = #{record.bisRestart,jdbcType=BIT},
+      bis_auto_complete = #{record.bisAutoComplete,jdbcType=BIT},
       finish_date = #{record.finishDate,jdbcType=TIMESTAMP},
       project_status = #{record.projectStatus,jdbcType=VARCHAR},
-      specific_gravity = #{record.specificGravity,jdbcType=INTEGER}
+      specific_gravity = #{record.specificGravity,jdbcType=INTEGER},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -378,12 +390,6 @@
       <if test="projectPlanEnd != null" >
         project_plan_end = #{projectPlanEnd,jdbcType=TIMESTAMP},
       </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="created != null" >
-        created = #{created,jdbcType=TIMESTAMP},
-      </if>
       <if test="processInsIdApproval != null" >
         process_ins_id_approval = #{processInsIdApproval,jdbcType=VARCHAR},
       </if>
@@ -396,6 +402,9 @@
       <if test="bisRestart != null" >
         bis_restart = #{bisRestart,jdbcType=BIT},
       </if>
+      <if test="bisAutoComplete != null" >
+        bis_auto_complete = #{bisAutoComplete,jdbcType=BIT},
+      </if>
       <if test="finishDate != null" >
         finish_date = #{finishDate,jdbcType=TIMESTAMP},
       </if>
@@ -404,6 +413,12 @@
       </if>
       <if test="specificGravity != null" >
         specific_gravity = #{specificGravity,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -419,15 +434,16 @@
       plan_remarks = #{planRemarks,jdbcType=VARCHAR},
       project_plan_start = #{projectPlanStart,jdbcType=TIMESTAMP},
       project_plan_end = #{projectPlanEnd,jdbcType=TIMESTAMP},
-      creator = #{creator,jdbcType=VARCHAR},
-      created = #{created,jdbcType=TIMESTAMP},
       process_ins_id_approval = #{processInsIdApproval,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       approval_status = #{approvalStatus,jdbcType=VARCHAR},
       bis_restart = #{bisRestart,jdbcType=BIT},
+      bis_auto_complete = #{bisAutoComplete,jdbcType=BIT},
       finish_date = #{finishDate,jdbcType=TIMESTAMP},
       project_status = #{projectStatus,jdbcType=VARCHAR},
-      specific_gravity = #{specificGravity,jdbcType=INTEGER}
+      specific_gravity = #{specificGravity,jdbcType=INTEGER},
+      creator = #{creator,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

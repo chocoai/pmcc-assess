@@ -20,6 +20,7 @@ import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -31,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -251,6 +253,23 @@ public class PublicService {
     }
 
     /**
+     * 字符串去重
+     *
+     * @param list
+     * @return
+     */
+    public String districtString(List<String> list) {
+        if (CollectionUtils.isEmpty(list)) return null;
+        HashSet<String> hashSet = Sets.newHashSet();
+        list.forEach(o -> hashSet.add(o));
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String s : hashSet) {
+            stringBuilder.append(s).append(",");
+        }
+        return StringUtils.strip(stringBuilder.toString(), ",");
+    }
+
+    /**
      * 最小单元融合字符串
      *
      * @param list
@@ -265,6 +284,8 @@ public class PublicService {
         for (String s : list) {
             samePart = getSamePart(samePart, s);
         }
+        //samePart 如果后面为数字则去掉数字
+        samePart = samePart.replaceAll("\\d+$", "");
         StringBuilder resultBuilder = new StringBuilder(samePart);
         for (String s : list) {
             resultBuilder.append(s.replace(samePart, "")).append(",");

@@ -21,7 +21,7 @@
         <if test="district!=null and district!=''">
             AND district = #{district}
         </if>
-        ORDER BY version DESC) AS T
+        ORDER BY version DESC,id DESC) AS T
         GROUP BY `name` ORDER BY version DESC,NAME
     </select>
 
@@ -34,7 +34,7 @@
         <if test="estateId!=null">
             AND estate_id=#{estateId}
         </if>
-        ORDER BY version DESC) AS T
+        ORDER BY version DESC,id DESC) AS T
         GROUP BY building_number ORDER BY version DESC,building_number
     </select>
 
@@ -47,7 +47,7 @@
         <if test="buildingId!=null">
             AND building_id=#{buildingId}
         </if>
-        ORDER BY version DESC) AS T
+        ORDER BY version DESC,id DESC) AS T
         GROUP BY unit_number ORDER BY version DESC,unit_number
     </select>
 
@@ -60,7 +60,7 @@
         <if test="unitId!=null">
             AND unit_id=#{unitId}
         </if>
-        ORDER BY version DESC) AS T
+        ORDER BY version DESC,id DESC) AS T
         GROUP BY house_number ORDER BY version DESC,house_number
     </select>
 

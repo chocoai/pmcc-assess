@@ -75,6 +75,7 @@ public class PlanSurveyExecute implements ProjectPlanExecuteInterface {
             }
         }
         projectPlan.setProjectStatus(ProjectStatusEnum.TASK.getKey());
+        projectPlan.setBisAutoComplete(true);
         projectPlanService.updateProjectPlan(projectPlan);
     }
 

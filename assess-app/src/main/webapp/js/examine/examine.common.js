@@ -113,28 +113,26 @@ basicCommon.blockSelect = function (this_) {
 };
 
 basicCommon.valid = function () {
-    if (!estateCommon.estateForm.valid()) {
-        toastr.success('楼盘数据不完整');
+    $('.task_examine_item_tab a[data-name=estate]').tab('show');
+    if (!estateCommon.estateForm.valid('楼盘数据不完整')) {
         return false;
     }
-    if (!estateCommon.estateLandStateForm.valid()) {
-        toastr.success('楼盘数据不完整');
+    if (!estateCommon.estateLandStateForm.valid('楼盘数据不完整')) {
         return false;
     }
-    if (!buildingCommon.buildingForm.valid()) {
-        toastr.success('楼栋数据不完整');
+    $('.task_examine_item_tab a[data-name=building]').tab('show');
+    if (!buildingCommon.buildingForm.valid('楼栋数据不完整')) {
         return false;
     }
-    if (!unitCommon.unitForm.valid()) {
-        toastr.success('单元数据不完整');
+    $('.task_examine_item_tab a[data-name=unit]').tab('show');
+    if (!unitCommon.unitForm.valid('单元数据不完整')) {
         return false;
     }
-    if (!houseCommon.houseForm.valid()) {
-        toastr.success('房屋数据不完整');
+    $('.task_examine_item_tab a[data-name=house]').tab('show');
+    if (!houseCommon.houseForm.valid('房屋数据不完整')) {
         return false;
     }
-    if (houseCommon.houseTradingForm.length > 0 && !houseCommon.houseTradingForm.valid()) {
-        toastr.success('房屋数据不完整');
+    if (houseCommon.houseTradingForm.length > 0 && !houseCommon.houseTradingForm.valid('房屋数据不完整')) {
         return false;
     }
     return true;

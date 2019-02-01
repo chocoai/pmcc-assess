@@ -103,7 +103,7 @@
                             <c:forEach items="${projectPlanList}" var="plan">
                                 <div class="tab-pane fade " id="tab_plan_${plan.id}">
                                     <div id="plan_item_${plan.id}" class="col-md-3 col-sm-3 col-xs-3 col-sm-offset-1">
-                                        <c:if test="${not empty plan.planDisplayUrl}">
+                                        <c:if test="${not empty plan.planDisplayUrl and plan.bisAutoComplete eq false}">
                                             <div class="btn-group">
                                                 <c:if test="${empty plan.planExecutUrl}">
                                                     <div class="btn btn-sm btn-primary">计划编制</div>
