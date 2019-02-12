@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class SchemeReportGenerationExample {
+public class GenerateReportGenerationExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public SchemeReportGenerationExample() {
+    public GenerateReportGenerationExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 

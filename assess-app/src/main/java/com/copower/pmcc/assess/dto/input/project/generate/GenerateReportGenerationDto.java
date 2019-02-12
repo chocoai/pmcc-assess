@@ -1,31 +1,31 @@
-package com.copower.pmcc.assess.dal.basis.entity;
+package com.copower.pmcc.assess.dto.input.project.generate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class SchemeReportGeneration {
+/**
+ * @Auther: zch
+ * @Date: 2019/1/28 11:27
+ * @Description:
+ */
+public class GenerateReportGenerationDto implements Serializable {
     private Integer id;
-
-    private Integer projectId;
-
     private Integer projectPlanId;
-
+    private Integer projectId;
+    @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date investigationsStartDate;
-
+    @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date investigationsEndDate;
-
+    @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date reportIssuanceDate;
-
+    @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date homeWorkEndTime;
 
     private Integer realEstateAppraiser;
 
     private Integer areaGroupId;
-
-    private String creator;
-
-    private Date gmtCreated;
-
-    private Date gmtModified;
 
     public Integer getId() {
         return id;
@@ -41,14 +41,6 @@ public class SchemeReportGeneration {
 
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
-    }
-
-    public Integer getProjectPlanId() {
-        return projectPlanId;
-    }
-
-    public void setProjectPlanId(Integer projectPlanId) {
-        this.projectPlanId = projectPlanId;
     }
 
     public Date getInvestigationsStartDate() {
@@ -99,27 +91,12 @@ public class SchemeReportGeneration {
         this.areaGroupId = areaGroupId;
     }
 
-    public String getCreator() {
-        return creator;
+    public Integer getProjectPlanId() {
+        return projectPlanId;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
+    public void setProjectPlanId(Integer projectPlanId) {
+        this.projectPlanId = projectPlanId;
     }
 
-    public Date getGmtCreated() {
-        return gmtCreated;
-    }
-
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
-    }
 }

@@ -41,7 +41,7 @@
         <!-- 具体表 -->
 
 
-        <table tableName="tb_scheme_report_generation" domainObjectName="SchemeReportGeneration">
+        <table tableName="tb_generate_report_generation" domainObjectName="GenerateReportGeneration">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

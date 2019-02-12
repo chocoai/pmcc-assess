@@ -69,7 +69,7 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
             modelAndView.addObject("dataQualificationList", JSONObject.toJSONString(dataQualificationVos));
         }
         modelAndView.addObject("PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS", AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getValue());
-        SchemeReportGeneration schemeReportGeneration = new SchemeReportGeneration();
+        GenerateReportGeneration generateReportGeneration = new GenerateReportGeneration();
         List<ProjectPlanDetails> projectPlanDetailsList = Lists.newArrayList();
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
         Set<Long> startTime_ = Sets.newHashSet();
@@ -112,16 +112,16 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
                 startTime.add(aLong);
             });
             Collections.sort(startTime);
-            schemeReportGeneration.setInvestigationsStartDate(com.copower.pmcc.erp.common.utils.DateUtils.convertDate(startTime.get(0)));
+            generateReportGeneration.setInvestigationsStartDate(com.copower.pmcc.erp.common.utils.DateUtils.convertDate(startTime.get(0)));
         }
         if (CollectionUtils.isNotEmpty(endTime_)) {
             endTime_.parallelStream().forEach(aLong -> {
                 endTime.add(aLong);
             });
             Collections.sort(endTime);
-            schemeReportGeneration.setInvestigationsEndDate(com.copower.pmcc.erp.common.utils.DateUtils.convertDate(endTime.get(0)));
+            generateReportGeneration.setInvestigationsEndDate(com.copower.pmcc.erp.common.utils.DateUtils.convertDate(endTime.get(0)));
         }
-        modelAndView.addObject("schemeReportGeneration", schemeReportGeneration);
+        modelAndView.addObject("generateReportGeneration", generateReportGeneration);
         return modelAndView;
     }
 

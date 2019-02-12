@@ -36,8 +36,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,7 +68,7 @@ public class GenerateReportService {
     @Autowired
     private BaseReportService baseReportService;
     @Autowired
-    private SchemeReportGenerationService schemeReportGenerationService;
+    private GenerateReportGenerationService generateReportGenerationService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public List<SchemeAreaGroup> getAreaGroupList(Integer projectId) {
@@ -108,33 +106,33 @@ public class GenerateReportService {
      * 创建报告模板
      *
      * @param ids
-     * @param schemeReportGeneration
+     * @param generateReportGeneration
      * @return
      * @throws Exception
      */
     @Transactional(rollbackFor = {Exception.class})
-    public void createReportWord(String ids, SchemeReportGeneration schemeReportGeneration) throws Exception {
-        if (StringUtils.isEmpty(ids) || schemeReportGeneration.getProjectPlanId() == null) {
+    public void createReportWord(String ids, GenerateReportGeneration generateReportGeneration) throws Exception {
+        if (StringUtils.isEmpty(ids) || generateReportGeneration.getProjectPlanId() == null) {
             return;
         }
         String[] strings = ids.split(",");
-        ProjectPlan projectPlan = projectPlanService.getProjectplanById(schemeReportGeneration.getProjectPlanId());
+        ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportGeneration.getProjectPlanId());
         if (projectPlan == null) {
             return;
         }
-        if (schemeReportGeneration.getId() == null || schemeReportGeneration.getId().equals(1)) {
-            SchemeReportGeneration query = schemeReportGenerationService.getSchemeReportGenerationByAreaGroupId(schemeReportGeneration.getAreaGroupId(), schemeReportGeneration.getProjectPlanId());
+        if (generateReportGeneration.getId() == null || generateReportGeneration.getId().equals(1)) {
+            GenerateReportGeneration query = generateReportGenerationService.getGenerateReportGenerationByAreaGroupId(generateReportGeneration.getAreaGroupId(), generateReportGeneration.getProjectPlanId());
             if (query != null) {
-                schemeReportGeneration.setId(query.getId());
+                generateReportGeneration.setId(query.getId());
             }
             if (query == null) {
-                schemeReportGeneration.setCreator(processControllerComponent.getThisUser());
-                schemeReportGenerationService.addSchemeReportGeneration(schemeReportGeneration);
+                generateReportGeneration.setCreator(processControllerComponent.getThisUser());
+                generateReportGenerationService.addGenerateReportGeneration(generateReportGeneration);
             }
         }
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-        sysAttachmentDto.setTableId(schemeReportGeneration.getId());
-        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(SchemeReportGeneration.class));
+        sysAttachmentDto.setTableId(generateReportGeneration.getId());
+        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportGeneration.class));
         List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
             for (SysAttachmentDto attachmentDto : sysAttachmentDtoList) {
@@ -149,9 +147,9 @@ public class GenerateReportService {
                     BaseReportTemplate baseReportTemplate = baseReportService.getReportTemplate(projectPlan.getProjectId(), baseDataDic.getId());
                     if (baseReportTemplate != null) {
                         //获取替换后得报告文件路径 ==>
-                        String path = this.fullReportPath(baseReportTemplate, schemeReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
+                        String path = this.fullReportPath(baseReportTemplate, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
                         if (StringUtils.isNotBlank(path)) {
-                            this.createSysAttachment(path, schemeReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
+                            this.createSysAttachment(path, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
                         }
                     }
                 }
@@ -159,9 +157,9 @@ public class GenerateReportService {
                 if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY)) {
                     BaseReportTemplate baseReportTemplate = baseReportService.getReportTemplate(projectPlan.getProjectId(), baseDataDic.getId());
                     if (baseReportTemplate != null) {
-                        String path = this.fullReportPath(baseReportTemplate, schemeReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY);
+                        String path = this.fullReportPath(baseReportTemplate, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY);
                         if (StringUtils.isNotBlank(path)) {
-                            this.createSysAttachment(path, schemeReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY);
+                            this.createSysAttachment(path, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY);
                         }
                     }
                 }
@@ -169,15 +167,15 @@ public class GenerateReportService {
                 if (baseDataDic.getFieldName().equals(AssessDataDicKeyConstant.REPORT_TYPE_RESULT)) {
                     BaseReportTemplate baseReportTemplate = baseReportService.getReportTemplate(projectPlan.getProjectId(), baseDataDic.getId());
                     if (baseReportTemplate != null) {
-                        String path = this.fullReportPath(baseReportTemplate, schemeReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
+                        String path = this.fullReportPath(baseReportTemplate, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
                         if (StringUtils.isNotBlank(path)) {
-                            this.createSysAttachment(path, schemeReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
+                            this.createSysAttachment(path, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
                         }
                     }
                 }
             }
         }
-        schemeReportGenerationService.updateSchemeReportGeneration(schemeReportGeneration);
+        generateReportGenerationService.updateGenerateReportGeneration(generateReportGeneration);
     }
 
     /**
@@ -186,13 +184,13 @@ public class GenerateReportService {
      * @param path
      * @return
      */
-    private void createSysAttachment(String path, SchemeReportGeneration schemeReportGeneration, String reportType) throws Exception {
+    private void createSysAttachment(String path, GenerateReportGeneration generateReportGeneration, String reportType) throws Exception {
         if (StringUtils.isEmpty(path)) {
             return;
         }
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-        sysAttachmentDto.setTableId(schemeReportGeneration.getId());
-        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(SchemeReportGeneration.class));
+        sysAttachmentDto.setTableId(generateReportGeneration.getId());
+        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportGeneration.class));
         File file = new File(path);
         sysAttachmentDto.setFileExtension(file.getName().substring(file.getName().lastIndexOf(".") + 1, file.getName().length()));
         sysAttachmentDto.setCreater(processControllerComponent.getThisUser());
@@ -203,7 +201,7 @@ public class GenerateReportService {
         for (String s : strs) {
             builder.append(s);
         }
-        sysAttachmentDto.setFieldsName(String.format("%s%d", FormatUtils.underlineToCamel(builder.toString(), false), schemeReportGeneration.getAreaGroupId()));
+        sysAttachmentDto.setFieldsName(String.format("%s%d", FormatUtils.underlineToCamel(builder.toString(), false), generateReportGeneration.getAreaGroupId()));
         String[] strings = path.split("\\\\");
         sysAttachmentDto.setFileName(strings[strings.length - 1]);
         String ftpBasePath = String.format("%s/%s/%s/%s", baseAttachmentService.createFTPBasePath(), DateUtils.format(new Date(), "yyyy-MM-dd"), processControllerComponent.getThisUser(), UUID.randomUUID().toString());
@@ -218,11 +216,11 @@ public class GenerateReportService {
      * 创建报告模板(具体)
      *
      * @param baseReportTemplate
-     * @param schemeReportGeneration
+     * @param generateReportGeneration
      * @return
      * @throws Exception
      */
-    private String fullReportPath(BaseReportTemplate baseReportTemplate, SchemeReportGeneration schemeReportGeneration, String reportType) throws Exception {
+    private String fullReportPath(BaseReportTemplate baseReportTemplate, GenerateReportGeneration generateReportGeneration, String reportType) throws Exception {
         String tempDir = "";
         if (baseReportTemplate == null) {
             return "";
@@ -238,7 +236,7 @@ public class GenerateReportService {
             //书签map
             Map<String, String> bookmarkMap = Maps.newHashMap();
             Map<String, String> fileFixedMap = Maps.newHashMap();
-            Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> mapSet = getReportMap(baseReportTemplate, new Document(tempDir), schemeReportGeneration, reportType);
+            Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> mapSet = getReportMap(baseReportTemplate, new Document(tempDir), generateReportGeneration, reportType);
             if (CollectionUtils.isNotEmpty(mapSet)) {
                 Iterator<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> iterator = mapSet.iterator();
                 while (iterator.hasNext()) {
@@ -329,15 +327,15 @@ public class GenerateReportService {
      * 获取报告模板数据数据
      *
      * @param baseReportTemplate
-     * @param schemeReportGeneration
+     * @param generateReportGeneration
      * @param document
      * @return 如:文号,<文号,四川协和预评（2019）0001号>
      * @throws Exception
      */
-    private Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> getReportMap(BaseReportTemplate baseReportTemplate, Document document, SchemeReportGeneration schemeReportGeneration, String reportType) throws Exception {
+    private Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> getReportMap(BaseReportTemplate baseReportTemplate, Document document, GenerateReportGeneration generateReportGeneration, String reportType) throws Exception {
         Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> mapSet = Sets.newHashSet();
-        ProjectPlan projectPlan = projectPlanService.getProjectplanById(schemeReportGeneration.getProjectPlanId());
-        GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(schemeReportGeneration.getProjectId(), schemeReportGeneration.getAreaGroupId(), baseReportTemplate.getId(), projectPlan);
+        ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportGeneration.getProjectPlanId());
+        GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(generateReportGeneration.getProjectId(), generateReportGeneration.getAreaGroupId(), baseReportTemplate.getId(), projectPlan);
         List<BaseReportField> fieldList = baseReportFieldService.query(new BaseReportField());
         Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet = Sets.newHashSet();
         //获取待替换文本的集合
@@ -397,8 +395,8 @@ public class GenerateReportService {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.reportIssuanceDate.getName());
                     if (baseReportField != null) {
                         String reportIssuanceStr = null;
-                        if (schemeReportGeneration.getReportIssuanceDate() != null) {
-                            reportIssuanceStr = DateUtils.format(schemeReportGeneration.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN);
+                        if (generateReportGeneration.getReportIssuanceDate() != null) {
+                            reportIssuanceStr = DateUtils.format(generateReportGeneration.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN);
                         } else {
                             reportIssuanceStr = DateUtils.format(generateBaseDataService.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN);
                         }
@@ -409,7 +407,7 @@ public class GenerateReportService {
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.AssistanceStaff.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.AssistanceStaff.getName());
                     if (baseReportField != null) {
-                        replaceReportPutValue(name, generateBaseDataService.getAssistanceStaff(schemeReportGeneration.getRealEstateAppraiser()), true, true, false, mapSet);
+                        replaceReportPutValue(name, generateBaseDataService.getAssistanceStaff(generateReportGeneration.getRealEstateAppraiser()), true, true, false, mapSet);
                     }
                 }
                 //评估假设
@@ -444,7 +442,7 @@ public class GenerateReportService {
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.HomeWorkEndTime.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.HomeWorkEndTime.getName());
                     if (baseReportField != null) {
-                        replaceReportPutValue(name, generateBaseDataService.getHomeWorkEndTime(schemeReportGeneration.getHomeWorkEndTime()), true, true, false, mapSet);
+                        replaceReportPutValue(name, generateBaseDataService.getHomeWorkEndTime(generateReportGeneration.getHomeWorkEndTime()), true, true, false, mapSet);
                     }
                 }
                 //作业开始时间
@@ -458,7 +456,7 @@ public class GenerateReportService {
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.surveyExamineDate.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.surveyExamineDate.getName());
                     if (baseReportField != null) {
-                        replaceReportPutValue(name, generateBaseDataService.getSurveyExamineDate(schemeReportGeneration.getInvestigationsStartDate(), schemeReportGeneration.getInvestigationsEndDate()), true, true, false, mapSet);
+                        replaceReportPutValue(name, generateBaseDataService.getSurveyExamineDate(generateReportGeneration.getInvestigationsStartDate(), generateReportGeneration.getInvestigationsEndDate()), true, true, false, mapSet);
                     }
                 }
                 //现场查勘人员
@@ -545,28 +543,28 @@ public class GenerateReportService {
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuer.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.RegisteredRealEstateValuer.getName());
                     if (baseReportField != null) {
-                        replaceReportPutValue(name, generateBaseDataService.getRegisteredRealEstateValuer(schemeReportGeneration.getRealEstateAppraiser()), true, true, false, mapSet);
+                        replaceReportPutValue(name, generateBaseDataService.getRegisteredRealEstateValuer(generateReportGeneration.getRealEstateAppraiser()), true, true, false, mapSet);
                     }
                 }
                 //注册房产估价师及注册号
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuerAndNumber.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.RegisteredRealEstateValuerAndNumber.getName());
                     if (baseReportField != null) {
-                        replaceReportPutValue(name, String.format("%s及%s", generateBaseDataService.getRegisteredRealEstateValuer(schemeReportGeneration.getRealEstateAppraiser()), generateBaseDataService.getRegistrationNumber(schemeReportGeneration.getRealEstateAppraiser())), true, true, false, mapSet);
+                        replaceReportPutValue(name, String.format("%s及%s", generateBaseDataService.getRegisteredRealEstateValuer(generateReportGeneration.getRealEstateAppraiser()), generateBaseDataService.getRegistrationNumber(generateReportGeneration.getRealEstateAppraiser())), true, true, false, mapSet);
                     }
                 }
                 //注册房产估价师 注册号
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.registrationNumber.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.registrationNumber.getName());
                     if (baseReportField != null) {
-                        replaceReportPutValue(name, generateBaseDataService.getRegistrationNumber(schemeReportGeneration.getRealEstateAppraiser()), true, true, false, mapSet);
+                        replaceReportPutValue(name, generateBaseDataService.getRegistrationNumber(generateReportGeneration.getRealEstateAppraiser()), true, true, false, mapSet);
                     }
                 }
                 //注册房产估价师 注册房地产估价师注册证书复印件
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuerValuationInstitution.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.RegisteredRealEstateValuerValuationInstitution.getName());
                     if (baseReportField != null) {
-                        replaceReportPutValue(name, generateBaseDataService.getRegisteredRealEstateValuerValuationInstitution(schemeReportGeneration.getRealEstateAppraiser()), false, false, true, mapSet);
+                        replaceReportPutValue(name, generateBaseDataService.getRegisteredRealEstateValuerValuationInstitution(generateReportGeneration.getRealEstateAppraiser()), false, false, true, mapSet);
                     }
                 }
                 //房地产总价

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.SchemeReportGenerationMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SchemeReportGeneration" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.GenerateReportGenerationMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.GenerateReportGeneration" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="project_plan_id" property="projectPlanId" jdbcType="INTEGER" />
@@ -78,13 +78,13 @@
     report_issuance_date, home_work_end_time, real_estate_appraiser, area_group_id, creator, 
     gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReportGenerationExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.GenerateReportGenerationExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_scheme_report_generation
+    from tb_generate_report_generation
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -95,24 +95,24 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_scheme_report_generation
+    from tb_generate_report_generation
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_scheme_report_generation
+    delete from tb_generate_report_generation
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReportGenerationExample" >
-    delete from tb_scheme_report_generation
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.GenerateReportGenerationExample" >
+    delete from tb_generate_report_generation
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReportGeneration" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.GenerateReportGeneration" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_scheme_report_generation (project_id, project_plan_id, investigations_start_date, 
+    insert into tb_generate_report_generation (project_id, project_plan_id, investigations_start_date, 
       investigations_end_date, report_issuance_date, 
       home_work_end_time, real_estate_appraiser, 
       area_group_id, creator, gmt_created, 
@@ -123,11 +123,11 @@
       #{areaGroupId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReportGeneration" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.GenerateReportGeneration" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_scheme_report_generation
+    insert into tb_generate_report_generation
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
         project_id,
@@ -199,14 +199,14 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReportGenerationExample" resultType="java.lang.Integer" >
-    select count(*) from tb_scheme_report_generation
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.GenerateReportGenerationExample" resultType="java.lang.Integer" >
+    select count(*) from tb_generate_report_generation
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_scheme_report_generation
+    update tb_generate_report_generation
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
@@ -250,7 +250,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_scheme_report_generation
+    update tb_generate_report_generation
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
       project_plan_id = #{record.projectPlanId,jdbcType=INTEGER},
@@ -267,8 +267,8 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReportGeneration" >
-    update tb_scheme_report_generation
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.GenerateReportGeneration" >
+    update tb_generate_report_generation
     <set >
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=INTEGER},
@@ -306,8 +306,8 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReportGeneration" >
-    update tb_scheme_report_generation
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.GenerateReportGeneration" >
+    update tb_generate_report_generation
     set project_id = #{projectId,jdbcType=INTEGER},
       project_plan_id = #{projectPlanId,jdbcType=INTEGER},
       investigations_start_date = #{investigationsStartDate,jdbcType=TIMESTAMP},
