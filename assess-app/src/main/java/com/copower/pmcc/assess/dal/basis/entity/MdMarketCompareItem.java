@@ -12,6 +12,8 @@ public class MdMarketCompareItem {
 
     private Integer type;
 
+    private Integer planDetailsId;
+
     private String jsonContent;
 
     private String tradingTimeExplain;
@@ -76,6 +78,14 @@ public class MdMarketCompareItem {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
     }
 
     public String getJsonContent() {

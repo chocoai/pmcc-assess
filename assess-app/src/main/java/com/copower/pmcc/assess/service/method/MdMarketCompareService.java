@@ -184,6 +184,7 @@ public class MdMarketCompareService {
                 ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
                 MdMarketCompareItem mdMarketCompareItem = new MdMarketCompareItem();
                 mdMarketCompareItem.setMcId(mcId);
+                mdMarketCompareItem.setPlanDetailsId(planDetailsId);
                 mdMarketCompareItem.setName(projectPlanDetails.getProjectPhaseName());
                 mdMarketCompareItem.setType(ExamineTypeEnum.CASE.getId());
                 mdMarketCompareItem.setCreator(commonService.thisUserAccount());
