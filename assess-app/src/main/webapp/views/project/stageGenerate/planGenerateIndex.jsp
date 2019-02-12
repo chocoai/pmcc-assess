@@ -112,7 +112,8 @@
                                                 <input type="text" name="investigationsStartDate" placeholder="现场查勘开始日期"
                                                        class="form-control date-picker dbdate"
                                                        data-date-format="yyyy-mm-dd"
-                                                       pattern='yyyy-MM-dd' value="<fmt:formatDate value='${generateReportGeneration.investigationsStartDate}' pattern='yyyy-MM-dd'/>">
+                                                       pattern='yyyy-MM-dd'
+                                                       value="<fmt:formatDate value='${schemeReportGeneration.investigationsStartDate}' pattern='yyyy-MM-dd'/>">
                                             </div>
                                         </div>
                                         <div class="x-valid">
@@ -123,7 +124,8 @@
                                                 <input type="text" name="investigationsEndDate" placeholder="现场查勘结束日期"
                                                        class="form-control date-picker dbdate"
                                                        data-date-format="yyyy-mm-dd"
-                                                       pattern='yyyy-MM-dd' value="<fmt:formatDate value='${generateReportGeneration.investigationsEndDate}' pattern='yyyy-MM-dd'/>">
+                                                       pattern='yyyy-MM-dd'
+                                                       value="<fmt:formatDate value='${schemeReportGeneration.investigationsEndDate}' pattern='yyyy-MM-dd'/>">
                                             </div>
                                         </div>
                                     </div>
@@ -209,6 +211,11 @@
                     </div>
                 </div>
             </div>
+            <c:if test="${processInsId ne '0'}">
+                <form id="frm_approval">
+                    <%@include file="/views/share/ApprovalVariable.jsp" %>
+                </form>
+            </c:if>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
     </div>
@@ -250,14 +257,14 @@
 <script type="text/javascript">
 
     //报告附件 数组
-    var generateReportGenerationFileControlIdArray = ["reporttypepreaudit", "reporttypetechnology", "reporttyperesult"];
+    var schemeReportGenerationFileControlIdArray = ["reporttypepreaudit", "reporttypetechnology", "reporttyperesult"];
 
     function fileShow(fieldsName, deleteFlag, id) {
         FileUtils.getFileShows({
             target: fieldsName,
             formData: {
                 fieldsName: fieldsName,
-                tableName: AssessDBKey.GenerateReportGeneration,
+                tableName: AssessDBKey.SchemeReportGeneration,
                 tableId: id == undefined ? 0 : id
             },
             deleteFlag: deleteFlag == undefined ? true : deleteFlag
@@ -266,36 +273,36 @@
 
 
     //赋值
-    function initFormGenerateReportGeneration(info, frm, areaGroupId) {
+    function initFormSchemeReportGeneration(info, frm, areaGroupId) {
         $(frm).initForm(info);
         $("#" + frm).find("input[name='investigationsStartDate']").val(formatDate(info.investigationsStartDate));
         $("#" + frm).find("input[name='investigationsEndDate']").val(formatDate(info.investigationsEndDate));
         $("#" + frm).find("input[name='reportIssuanceDate']").val(formatDate(info.reportIssuanceDate));
         $("#" + frm).find("input[name='homeWorkEndTime']").val(formatDate(info.homeWorkEndTime));
-        $.each(generateReportGenerationFileControlIdArray, function (i, n) {
+        $.each(schemeReportGenerationFileControlIdArray, function (i, n) {
             fileShow(n + "" + areaGroupId, false, info.id);
         });
         var retHtml = '<option value="" selected>-请选择-</option>';
         $.each(JSON.parse('${dataQualificationList}'), function (i, item) {
-            retHtml += '<option key="' + item.qualificationTypeName + '" title="' + item.qualificationTypeName+"-"+item.userAccountName + '" value="' + item.id + '"';
+            retHtml += '<option key="' + item.qualificationTypeName + '" title="' + item.qualificationTypeName + "-" + item.userAccountName + '" value="' + item.id + '"';
             if (item.id == info.realEstateAppraiser) {
                 retHtml += 'selected="selected"';
             }
-            retHtml += '>' + item.qualificationTypeName+"-"+item.userAccountName + '</option>';
+            retHtml += '>' + item.qualificationTypeName + "-" + item.userAccountName + '</option>';
         });
         $("#" + frm).find("select[name='realEstateAppraiser']").empty().html(retHtml).trigger('change');
     }
 
-    function getGenerateReportGeneration(data, callback) {
+    function getSchemeReportGeneration(data, callback) {
         $.ajax({
-            url: "${pageContext.request.contextPath}/generateReport/getGenerateReportGeneration",
+            url: "${pageContext.request.contextPath}/generateReport/getSchemeReportGeneration",
             data: data,
             type: "get",
             dataType: "json",
             success: function (result) {
                 if (result.ret && result.data) {
                     callback(result.data);
-                }else {
+                } else {
                     callback({});
                 }
             },
@@ -311,8 +318,8 @@
         tbody.empty();
         var areaGroupId = $(_this).closest('.area_panel').find('[name=areaGroupId]').val();
         var formId = $(_this).parent().find("form").eq(0).attr("id");
-        getGenerateReportGeneration({projectPlanId: '${projectPlan.id}', areaGroupId: areaGroupId}, function (info) {
-            initFormGenerateReportGeneration(info, formId, areaGroupId);
+        getSchemeReportGeneration({projectPlanId: '${projectPlan.id}', areaGroupId: areaGroupId}, function (info) {
+            initFormSchemeReportGeneration(info, formId, areaGroupId);
         });
         $.ajax({
             url: "${pageContext.request.contextPath}/schemeProgramme/getSchemeJudgeObjectList",
@@ -398,8 +405,8 @@
             dataType: "json",
             success: function (result) {
                 if (result.ret) {
-                    getGenerateReportGeneration(data, function (info) {
-                        initFormGenerateReportGeneration(info, formId, areaId);
+                    getSchemeReportGeneration(data, function (info) {
+                        initFormSchemeReportGeneration(info, formId, areaId);
                         Loading.progressHide();
                         toastr.success('报告生成成功!');
                     });
@@ -413,9 +420,36 @@
 
     //提交
     function commitApply() {
-        if (!$("#frm_content").valid()) {
+        var isPass = true;
+        $(".area_panel").each(function () {
+            $(this).find('.x_content').show();
+            isPass = $(this).find('form').valid();
+        })
+        if (!isPass) {
             return false;
         }
+        var data = {};
+        data.planId = '${projectPlan.id}';
+        var url = "${pageContext.request.contextPath}/generate/submitApply";
+        if ("${empty processInsId?"0":processInsId}" != "0") {
+            url = "${pageContext.request.contextPath}/generate/submitEditApproval";
+            var approvalData = formParams("frm_approval");
+            data = $.extend(data, approvalData);
+        }
+        //提交流程
+        $.ajax({
+            url: url,
+            data: data,
+            success: function (result) {
+                if (result.ret) {
+                    Alert('提交成功',1,null,function () {
+                        closeWindow();
+                    });
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
     }
 
 </script>

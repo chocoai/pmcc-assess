@@ -56,6 +56,11 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
     public ModelAndView applyView(ProjectPlan projectPlan) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/planGenerateIndex", "", 0, "-1", "");
         //获取报告类型
+        setModelParam(projectPlan, modelAndView);
+        return modelAndView;
+    }
+
+    private void setModelParam(ProjectPlan projectPlan, ModelAndView modelAndView) {
         List<BaseDataDic> reportTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
         modelAndView.addObject("reportTypeList", reportTypeList);
         List<SchemeAreaGroup> schemeAreaGroupList = generateReportService.getAreaGroupList(projectPlan.getProjectId());
@@ -69,7 +74,7 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
             modelAndView.addObject("dataQualificationList", JSONObject.toJSONString(dataQualificationVos));
         }
         modelAndView.addObject("PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS", AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getValue());
-        GenerateReportGeneration generateReportGeneration = new GenerateReportGeneration();
+        GenerateReportGeneration schemeReportGeneration = new GenerateReportGeneration();
         List<ProjectPlanDetails> projectPlanDetailsList = Lists.newArrayList();
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
         Set<Long> startTime_ = Sets.newHashSet();
@@ -112,34 +117,36 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
                 startTime.add(aLong);
             });
             Collections.sort(startTime);
-            generateReportGeneration.setInvestigationsStartDate(com.copower.pmcc.erp.common.utils.DateUtils.convertDate(startTime.get(0)));
+            schemeReportGeneration.setInvestigationsStartDate(com.copower.pmcc.erp.common.utils.DateUtils.convertDate(startTime.get(0)));
         }
         if (CollectionUtils.isNotEmpty(endTime_)) {
             endTime_.parallelStream().forEach(aLong -> {
                 endTime.add(aLong);
             });
             Collections.sort(endTime);
-            generateReportGeneration.setInvestigationsEndDate(com.copower.pmcc.erp.common.utils.DateUtils.convertDate(endTime.get(0)));
+            schemeReportGeneration.setInvestigationsEndDate(com.copower.pmcc.erp.common.utils.DateUtils.convertDate(endTime.get(0)));
         }
-        modelAndView.addObject("generateReportGeneration", generateReportGeneration);
-        return modelAndView;
+        modelAndView.addObject("schemeReportGeneration", schemeReportGeneration);
     }
 
     @Override
     public ModelAndView approvalView(ProjectPlan projectPlan, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/planGenerateApproval", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
+        setModelParam(projectPlan, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalEdit(ProjectPlan projectPlan, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/planGenerateIndex", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
+        setModelParam(projectPlan, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView detailsView(ProjectPlan projectPlan, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/planGenerateApproval", projectPlan.getProcessInsId(), boxId, "-1", "");
+        setModelParam(projectPlan, modelAndView);
         return modelAndView;
     }
 
