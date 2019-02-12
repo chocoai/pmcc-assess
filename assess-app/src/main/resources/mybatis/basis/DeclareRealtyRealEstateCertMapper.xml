@@ -20,7 +20,8 @@
     <result column="attached_number" property="attachedNumber" jdbcType="VARCHAR" />
     <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
     <result column="unit" property="unit" jdbcType="VARCHAR" />
-    <result column="floor" property="floor" jdbcType="INTEGER" />
+    <result column="floor" property="floor" jdbcType="VARCHAR" />
+    <result column="room_number" property="roomNumber" jdbcType="VARCHAR" />
     <result column="registration_time" property="registrationTime" jdbcType="TIMESTAMP" />
     <result column="nature" property="nature" jdbcType="VARCHAR" />
     <result column="planning_use" property="planningUse" jdbcType="VARCHAR" />
@@ -31,7 +32,6 @@
     <result column="other" property="other" jdbcType="VARCHAR" />
     <result column="land_number" property="landNumber" jdbcType="VARCHAR" />
     <result column="graph_number" property="graphNumber" jdbcType="VARCHAR" />
-    <result column="room_number" property="roomNumber" jdbcType="VARCHAR" />
     <result column="land_acquisition" property="landAcquisition" jdbcType="VARCHAR" />
     <result column="use_start_date" property="useStartDate" jdbcType="TIMESTAMP" />
     <result column="use_end_date" property="useEndDate" jdbcType="TIMESTAMP" />
@@ -115,8 +115,8 @@
   <sql id="Base_Column_List" >
     id, pid, plan_details_id, province, city, district, cert_name, type, location, be_located, 
     number, name, ownership, public_situation, street_number, attached_number, building_number, 
-    unit, floor, registration_time, nature, planning_use, floor_count, floor_area, evidence_area, 
-    inner_area, other, land_number, graph_number, room_number, land_acquisition, use_start_date, 
+    unit, floor, room_number, registration_time, nature, planning_use, floor_count, floor_area, 
+    evidence_area, inner_area, other, land_number, graph_number, land_acquisition, use_start_date, 
     use_end_date, public_area, other_note, registration_authority, registration_date, 
     use_right_type, acquisition_price, purpose, termination_date, memo, apportionment_area, 
     acreage, use_right_area, enable, declare_type, real_estate_unit_number, gmt_modified, 
@@ -162,10 +162,10 @@
       number, name, ownership, 
       public_situation, street_number, attached_number, 
       building_number, unit, floor, 
-      registration_time, nature, planning_use, 
-      floor_count, floor_area, evidence_area, 
-      inner_area, other, land_number, 
-      graph_number, room_number, land_acquisition, 
+      room_number, registration_time, nature, 
+      planning_use, floor_count, floor_area, 
+      evidence_area, inner_area, other, 
+      land_number, graph_number, land_acquisition, 
       use_start_date, use_end_date, public_area, 
       other_note, registration_authority, registration_date, 
       use_right_type, acquisition_price, purpose, 
@@ -178,11 +178,11 @@
       #{type,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{beLocated,jdbcType=VARCHAR}, 
       #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
       #{publicSituation,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, #{attachedNumber,jdbcType=VARCHAR}, 
-      #{buildingNumber,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{floor,jdbcType=INTEGER}, 
-      #{registrationTime,jdbcType=TIMESTAMP}, #{nature,jdbcType=VARCHAR}, #{planningUse,jdbcType=VARCHAR}, 
-      #{floorCount,jdbcType=INTEGER}, #{floorArea,jdbcType=DECIMAL}, #{evidenceArea,jdbcType=DECIMAL}, 
-      #{innerArea,jdbcType=DECIMAL}, #{other,jdbcType=VARCHAR}, #{landNumber,jdbcType=VARCHAR}, 
-      #{graphNumber,jdbcType=VARCHAR}, #{roomNumber,jdbcType=VARCHAR}, #{landAcquisition,jdbcType=VARCHAR}, 
+      #{buildingNumber,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{floor,jdbcType=VARCHAR}, 
+      #{roomNumber,jdbcType=VARCHAR}, #{registrationTime,jdbcType=TIMESTAMP}, #{nature,jdbcType=VARCHAR}, 
+      #{planningUse,jdbcType=VARCHAR}, #{floorCount,jdbcType=INTEGER}, #{floorArea,jdbcType=DECIMAL}, 
+      #{evidenceArea,jdbcType=DECIMAL}, #{innerArea,jdbcType=DECIMAL}, #{other,jdbcType=VARCHAR}, 
+      #{landNumber,jdbcType=VARCHAR}, #{graphNumber,jdbcType=VARCHAR}, #{landAcquisition,jdbcType=VARCHAR}, 
       #{useStartDate,jdbcType=TIMESTAMP}, #{useEndDate,jdbcType=TIMESTAMP}, #{publicArea,jdbcType=DECIMAL}, 
       #{otherNote,jdbcType=VARCHAR}, #{registrationAuthority,jdbcType=VARCHAR}, #{registrationDate,jdbcType=TIMESTAMP}, 
       #{useRightType,jdbcType=VARCHAR}, #{acquisitionPrice,jdbcType=DECIMAL}, #{purpose,jdbcType=VARCHAR}, 
@@ -251,6 +251,9 @@
       <if test="floor != null" >
         floor,
       </if>
+      <if test="roomNumber != null" >
+        room_number,
+      </if>
       <if test="registrationTime != null" >
         registration_time,
       </if>
@@ -280,9 +283,6 @@
       </if>
       <if test="graphNumber != null" >
         graph_number,
-      </if>
-      <if test="roomNumber != null" >
-        room_number,
       </if>
       <if test="landAcquisition != null" >
         land_acquisition,
@@ -401,7 +401,10 @@
         #{unit,jdbcType=VARCHAR},
       </if>
       <if test="floor != null" >
-        #{floor,jdbcType=INTEGER},
+        #{floor,jdbcType=VARCHAR},
+      </if>
+      <if test="roomNumber != null" >
+        #{roomNumber,jdbcType=VARCHAR},
       </if>
       <if test="registrationTime != null" >
         #{registrationTime,jdbcType=TIMESTAMP},
@@ -432,9 +435,6 @@
       </if>
       <if test="graphNumber != null" >
         #{graphNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="roomNumber != null" >
-        #{roomNumber,jdbcType=VARCHAR},
       </if>
       <if test="landAcquisition != null" >
         #{landAcquisition,jdbcType=VARCHAR},
@@ -565,7 +565,10 @@
         unit = #{record.unit,jdbcType=VARCHAR},
       </if>
       <if test="record.floor != null" >
-        floor = #{record.floor,jdbcType=INTEGER},
+        floor = #{record.floor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roomNumber != null" >
+        room_number = #{record.roomNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.registrationTime != null" >
         registration_time = #{record.registrationTime,jdbcType=TIMESTAMP},
@@ -596,9 +599,6 @@
       </if>
       <if test="record.graphNumber != null" >
         graph_number = #{record.graphNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="record.roomNumber != null" >
-        room_number = #{record.roomNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.landAcquisition != null" >
         land_acquisition = #{record.landAcquisition,jdbcType=VARCHAR},
@@ -688,7 +688,8 @@
       attached_number = #{record.attachedNumber,jdbcType=VARCHAR},
       building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       unit = #{record.unit,jdbcType=VARCHAR},
-      floor = #{record.floor,jdbcType=INTEGER},
+      floor = #{record.floor,jdbcType=VARCHAR},
+      room_number = #{record.roomNumber,jdbcType=VARCHAR},
       registration_time = #{record.registrationTime,jdbcType=TIMESTAMP},
       nature = #{record.nature,jdbcType=VARCHAR},
       planning_use = #{record.planningUse,jdbcType=VARCHAR},
@@ -699,7 +700,6 @@
       other = #{record.other,jdbcType=VARCHAR},
       land_number = #{record.landNumber,jdbcType=VARCHAR},
       graph_number = #{record.graphNumber,jdbcType=VARCHAR},
-      room_number = #{record.roomNumber,jdbcType=VARCHAR},
       land_acquisition = #{record.landAcquisition,jdbcType=VARCHAR},
       use_start_date = #{record.useStartDate,jdbcType=TIMESTAMP},
       use_end_date = #{record.useEndDate,jdbcType=TIMESTAMP},
@@ -780,7 +780,10 @@
         unit = #{unit,jdbcType=VARCHAR},
       </if>
       <if test="floor != null" >
-        floor = #{floor,jdbcType=INTEGER},
+        floor = #{floor,jdbcType=VARCHAR},
+      </if>
+      <if test="roomNumber != null" >
+        room_number = #{roomNumber,jdbcType=VARCHAR},
       </if>
       <if test="registrationTime != null" >
         registration_time = #{registrationTime,jdbcType=TIMESTAMP},
@@ -811,9 +814,6 @@
       </if>
       <if test="graphNumber != null" >
         graph_number = #{graphNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="roomNumber != null" >
-        room_number = #{roomNumber,jdbcType=VARCHAR},
       </if>
       <if test="landAcquisition != null" >
         land_acquisition = #{landAcquisition,jdbcType=VARCHAR},
@@ -900,7 +900,8 @@
       attached_number = #{attachedNumber,jdbcType=VARCHAR},
       building_number = #{buildingNumber,jdbcType=VARCHAR},
       unit = #{unit,jdbcType=VARCHAR},
-      floor = #{floor,jdbcType=INTEGER},
+      floor = #{floor,jdbcType=VARCHAR},
+      room_number = #{roomNumber,jdbcType=VARCHAR},
       registration_time = #{registrationTime,jdbcType=TIMESTAMP},
       nature = #{nature,jdbcType=VARCHAR},
       planning_use = #{planningUse,jdbcType=VARCHAR},
@@ -911,7 +912,6 @@
       other = #{other,jdbcType=VARCHAR},
       land_number = #{landNumber,jdbcType=VARCHAR},
       graph_number = #{graphNumber,jdbcType=VARCHAR},
-      room_number = #{roomNumber,jdbcType=VARCHAR},
       land_acquisition = #{landAcquisition,jdbcType=VARCHAR},
       use_start_date = #{useStartDate,jdbcType=TIMESTAMP},
       use_end_date = #{useEndDate,jdbcType=TIMESTAMP},

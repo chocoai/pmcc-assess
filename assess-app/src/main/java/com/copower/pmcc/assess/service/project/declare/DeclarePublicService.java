@@ -148,7 +148,7 @@ public class DeclarePublicService {
         }
         //楼层
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(12)))) {
-            oo.setFloor(Integer.parseInt(PoiUtils.getCellValue(row.getCell(12))));
+            oo.setFloor(PoiUtils.getCellValue(row.getCell(12)));
         }
         //房号
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(13)))) {

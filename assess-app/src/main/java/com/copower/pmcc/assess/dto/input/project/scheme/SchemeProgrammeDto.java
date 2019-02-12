@@ -15,8 +15,11 @@ public class SchemeProgrammeDto {
     @DateTimeFormat(pattern = "YYYY-MM-DD")
     private Date valueTimePoint;
     private String timePointExplain;
+    private Integer entrustmentPurpose;
+    private String remarkEntrustPurpose;
     private Integer valueDefinition;
     private String valueConnotation;
+    private String valueConnotationDesc;
     List<SchemeJudgeObject> schemeJudgeObjects;
 
     public Integer getAreaGroupId() {
@@ -35,6 +38,30 @@ public class SchemeProgrammeDto {
         this.valueTimePoint = valueTimePoint;
     }
 
+    public String getTimePointExplain() {
+        return timePointExplain;
+    }
+
+    public void setTimePointExplain(String timePointExplain) {
+        this.timePointExplain = timePointExplain;
+    }
+
+    public Integer getEntrustmentPurpose() {
+        return entrustmentPurpose;
+    }
+
+    public void setEntrustmentPurpose(Integer entrustmentPurpose) {
+        this.entrustmentPurpose = entrustmentPurpose;
+    }
+
+    public String getRemarkEntrustPurpose() {
+        return remarkEntrustPurpose;
+    }
+
+    public void setRemarkEntrustPurpose(String remarkEntrustPurpose) {
+        this.remarkEntrustPurpose = remarkEntrustPurpose;
+    }
+
     public Integer getValueDefinition() {
         return valueDefinition;
     }
@@ -51,19 +78,19 @@ public class SchemeProgrammeDto {
         this.valueConnotation = valueConnotation;
     }
 
+    public String getValueConnotationDesc() {
+        return valueConnotationDesc;
+    }
+
+    public void setValueConnotationDesc(String valueConnotationDesc) {
+        this.valueConnotationDesc = valueConnotationDesc;
+    }
+
     public List<SchemeJudgeObject> getSchemeJudgeObjects() {
         return schemeJudgeObjects;
     }
 
     public void setSchemeJudgeObjects(List<SchemeJudgeObject> schemeJudgeObjects) {
         this.schemeJudgeObjects = schemeJudgeObjects;
-    }
-
-    public String getTimePointExplain() {
-        return timePointExplain;
-    }
-
-    public void setTimePointExplain(String timePointExplain) {
-        this.timePointExplain = timePointExplain;
     }
 }

@@ -420,6 +420,8 @@ public class SchemeJudgeObjectService {
         schemeAreaGroup.setTimePointExplain(schemeProgrammeDto.getTimePointExplain());
         schemeAreaGroup.setValueDefinition(schemeProgrammeDto.getValueDefinition());
         schemeAreaGroup.setValueConnotation(schemeProgrammeDto.getValueConnotation());
+        schemeAreaGroup.setEntrustPurpose(schemeProgrammeDto.getEntrustmentPurpose());
+        schemeAreaGroup.setRemarkEntrustPurpose(schemeProgrammeDto.getRemarkEntrustPurpose());
         schemeAreaGroupService.saveAreaGroup(schemeAreaGroup);
 
         List<SchemeJudgeObject> schemeJudgeObjects = schemeProgrammeDto.getSchemeJudgeObjects();

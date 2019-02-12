@@ -295,7 +295,7 @@
 
     function getSchemeReportGeneration(data, callback) {
         $.ajax({
-            url: "${pageContext.request.contextPath}/generateReport/getSchemeReportGeneration",
+            url: "${pageContext.request.contextPath}/generateReport/getGenerateReportGeneration",
             data: data,
             type: "get",
             dataType: "json",
@@ -307,7 +307,7 @@
                 }
             },
             error: function (result) {
-                alert("调用服务端方法失败，失败原因:" + result);
+                Alert("调用服务端方法失败，失败原因:" + result);
             }
         });
     }

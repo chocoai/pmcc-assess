@@ -24,6 +24,18 @@ public class DeclareRecord {
 
     private String seat;
 
+    private String streetNumber;
+
+    private String attachedNumber;
+
+    private String buildingNumber;
+
+    private String unit;
+
+    private String floor;
+
+    private String roomNumber;
+
     private String certUse;
 
     private String practicalUse;
@@ -132,6 +144,54 @@ public class DeclareRecord {
 
     public void setSeat(String seat) {
         this.seat = seat == null ? null : seat.trim();
+    }
+
+    public String getStreetNumber() {
+        return streetNumber;
+    }
+
+    public void setStreetNumber(String streetNumber) {
+        this.streetNumber = streetNumber == null ? null : streetNumber.trim();
+    }
+
+    public String getAttachedNumber() {
+        return attachedNumber;
+    }
+
+    public void setAttachedNumber(String attachedNumber) {
+        this.attachedNumber = attachedNumber == null ? null : attachedNumber.trim();
+    }
+
+    public String getBuildingNumber() {
+        return buildingNumber;
+    }
+
+    public void setBuildingNumber(String buildingNumber) {
+        this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit == null ? null : unit.trim();
+    }
+
+    public String getFloor() {
+        return floor;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor == null ? null : floor.trim();
+    }
+
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber == null ? null : roomNumber.trim();
     }
 
     public String getCertUse() {

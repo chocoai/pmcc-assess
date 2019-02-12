@@ -12,6 +12,12 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="ownership" property="ownership" jdbcType="VARCHAR" />
     <result column="seat" property="seat" jdbcType="VARCHAR" />
+    <result column="street_number" property="streetNumber" jdbcType="VARCHAR" />
+    <result column="attached_number" property="attachedNumber" jdbcType="VARCHAR" />
+    <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="floor" property="floor" jdbcType="VARCHAR" />
+    <result column="room_number" property="roomNumber" jdbcType="VARCHAR" />
     <result column="cert_use" property="certUse" jdbcType="VARCHAR" />
     <result column="practical_use" property="practicalUse" jdbcType="VARCHAR" />
     <result column="public_situation" property="publicSituation" jdbcType="VARCHAR" />
@@ -88,7 +94,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, project_id, data_table_name, data_table_id, province, city, district, name, ownership, 
-    seat, cert_use, practical_use, public_situation, floor_area, area_group_id, house_use_end_date, 
+    seat, street_number, attached_number, building_number, unit, floor, room_number, 
+    cert_use, practical_use, public_situation, floor_area, area_group_id, house_use_end_date, 
     land_use_end_date, inventory_content_key, price, assess_area, already_out_area, bis_generate_all, 
     creator, gmt_created, gmt_modified
   </sql>
@@ -129,6 +136,8 @@
     insert into tb_declare_record (project_id, data_table_name, data_table_id, 
       province, city, district, 
       name, ownership, seat, 
+      street_number, attached_number, building_number, 
+      unit, floor, room_number, 
       cert_use, practical_use, public_situation, 
       floor_area, area_group_id, house_use_end_date, 
       land_use_end_date, inventory_content_key, 
@@ -138,6 +147,8 @@
     values (#{projectId,jdbcType=INTEGER}, #{dataTableName,jdbcType=VARCHAR}, #{dataTableId,jdbcType=INTEGER}, 
       #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, #{seat,jdbcType=VARCHAR}, 
+      #{streetNumber,jdbcType=VARCHAR}, #{attachedNumber,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=VARCHAR}, 
+      #{unit,jdbcType=VARCHAR}, #{floor,jdbcType=VARCHAR}, #{roomNumber,jdbcType=VARCHAR}, 
       #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, #{publicSituation,jdbcType=VARCHAR}, 
       #{floorArea,jdbcType=DECIMAL}, #{areaGroupId,jdbcType=INTEGER}, #{houseUseEndDate,jdbcType=TIMESTAMP}, 
       #{landUseEndDate,jdbcType=TIMESTAMP}, #{inventoryContentKey,jdbcType=VARCHAR}, 
@@ -177,6 +188,24 @@
       </if>
       <if test="seat != null" >
         seat,
+      </if>
+      <if test="streetNumber != null" >
+        street_number,
+      </if>
+      <if test="attachedNumber != null" >
+        attached_number,
+      </if>
+      <if test="buildingNumber != null" >
+        building_number,
+      </if>
+      <if test="unit != null" >
+        unit,
+      </if>
+      <if test="floor != null" >
+        floor,
+      </if>
+      <if test="roomNumber != null" >
+        room_number,
       </if>
       <if test="certUse != null" >
         cert_use,
@@ -251,6 +280,24 @@
       </if>
       <if test="seat != null" >
         #{seat,jdbcType=VARCHAR},
+      </if>
+      <if test="streetNumber != null" >
+        #{streetNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="attachedNumber != null" >
+        #{attachedNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingNumber != null" >
+        #{buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="floor != null" >
+        #{floor,jdbcType=VARCHAR},
+      </if>
+      <if test="roomNumber != null" >
+        #{roomNumber,jdbcType=VARCHAR},
       </if>
       <if test="certUse != null" >
         #{certUse,jdbcType=VARCHAR},
@@ -338,6 +385,24 @@
       <if test="record.seat != null" >
         seat = #{record.seat,jdbcType=VARCHAR},
       </if>
+      <if test="record.streetNumber != null" >
+        street_number = #{record.streetNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attachedNumber != null" >
+        attached_number = #{record.attachedNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buildingNumber != null" >
+        building_number = #{record.buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unit != null" >
+        unit = #{record.unit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.floor != null" >
+        floor = #{record.floor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roomNumber != null" >
+        room_number = #{record.roomNumber,jdbcType=VARCHAR},
+      </if>
       <if test="record.certUse != null" >
         cert_use = #{record.certUse,jdbcType=VARCHAR},
       </if>
@@ -400,6 +465,12 @@
       name = #{record.name,jdbcType=VARCHAR},
       ownership = #{record.ownership,jdbcType=VARCHAR},
       seat = #{record.seat,jdbcType=VARCHAR},
+      street_number = #{record.streetNumber,jdbcType=VARCHAR},
+      attached_number = #{record.attachedNumber,jdbcType=VARCHAR},
+      building_number = #{record.buildingNumber,jdbcType=VARCHAR},
+      unit = #{record.unit,jdbcType=VARCHAR},
+      floor = #{record.floor,jdbcType=VARCHAR},
+      room_number = #{record.roomNumber,jdbcType=VARCHAR},
       cert_use = #{record.certUse,jdbcType=VARCHAR},
       practical_use = #{record.practicalUse,jdbcType=VARCHAR},
       public_situation = #{record.publicSituation,jdbcType=VARCHAR},
@@ -448,6 +519,24 @@
       </if>
       <if test="seat != null" >
         seat = #{seat,jdbcType=VARCHAR},
+      </if>
+      <if test="streetNumber != null" >
+        street_number = #{streetNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="attachedNumber != null" >
+        attached_number = #{attachedNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingNumber != null" >
+        building_number = #{buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null" >
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="floor != null" >
+        floor = #{floor,jdbcType=VARCHAR},
+      </if>
+      <if test="roomNumber != null" >
+        room_number = #{roomNumber,jdbcType=VARCHAR},
       </if>
       <if test="certUse != null" >
         cert_use = #{certUse,jdbcType=VARCHAR},
@@ -508,6 +597,12 @@
       name = #{name,jdbcType=VARCHAR},
       ownership = #{ownership,jdbcType=VARCHAR},
       seat = #{seat,jdbcType=VARCHAR},
+      street_number = #{streetNumber,jdbcType=VARCHAR},
+      attached_number = #{attachedNumber,jdbcType=VARCHAR},
+      building_number = #{buildingNumber,jdbcType=VARCHAR},
+      unit = #{unit,jdbcType=VARCHAR},
+      floor = #{floor,jdbcType=VARCHAR},
+      room_number = #{roomNumber,jdbcType=VARCHAR},
       cert_use = #{certUse,jdbcType=VARCHAR},
       practical_use = #{practicalUse,jdbcType=VARCHAR},
       public_situation = #{publicSituation,jdbcType=VARCHAR},

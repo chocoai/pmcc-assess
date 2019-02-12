@@ -40,7 +40,9 @@ public class DeclareRealtyRealEstateCert {
 
     private String unit;
 
-    private Integer floor;
+    private String floor;
+
+    private String roomNumber;
 
     private Date registrationTime;
 
@@ -61,8 +63,6 @@ public class DeclareRealtyRealEstateCert {
     private String landNumber;
 
     private String graphNumber;
-
-    private String roomNumber;
 
     private String landAcquisition;
 
@@ -250,12 +250,20 @@ public class DeclareRealtyRealEstateCert {
         this.unit = unit == null ? null : unit.trim();
     }
 
-    public Integer getFloor() {
+    public String getFloor() {
         return floor;
     }
 
-    public void setFloor(Integer floor) {
-        this.floor = floor;
+    public void setFloor(String floor) {
+        this.floor = floor == null ? null : floor.trim();
+    }
+
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber == null ? null : roomNumber.trim();
     }
 
     public Date getRegistrationTime() {
@@ -336,14 +344,6 @@ public class DeclareRealtyRealEstateCert {
 
     public void setGraphNumber(String graphNumber) {
         this.graphNumber = graphNumber == null ? null : graphNumber.trim();
-    }
-
-    public String getRoomNumber() {
-        return roomNumber;
-    }
-
-    public void setRoomNumber(String roomNumber) {
-        this.roomNumber = roomNumber == null ? null : roomNumber.trim();
     }
 
     public String getLandAcquisition() {
