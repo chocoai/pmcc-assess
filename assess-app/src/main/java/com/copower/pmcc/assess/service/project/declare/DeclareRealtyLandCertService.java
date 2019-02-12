@@ -312,6 +312,17 @@ public class DeclareRealtyLandCertService {
         return vo;
     }
 
+    public List<DeclareRealtyLandCertVo> getList(Integer planDetailsId){
+        List<DeclareRealtyLandCert> declareRealtyLandCerts = declareRealtyLandCertDao.getList(planDetailsId);
+        List<DeclareRealtyLandCertVo> vos = Lists.newArrayList();
+        if (!ObjectUtils.isEmpty(declareRealtyLandCerts)) {
+            for (DeclareRealtyLandCert landLevel : declareRealtyLandCerts) {
+                vos.add(getDeclareRealtyLandCertVo(landLevel));
+            }
+        }
+        return vos;
+    }
+
     public List<DeclareRealtyLandCertVo> lists(DeclareRealtyLandCert declareRealtyLandCert) {
         List<DeclareRealtyLandCert> declareRealtyLandCerts = declareRealtyLandCertDao.getDeclareRealtyLandCertList(declareRealtyLandCert);
         List<DeclareRealtyLandCertVo> vos = Lists.newArrayList();
