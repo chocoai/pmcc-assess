@@ -588,6 +588,22 @@ public class GenerateReportService {
                         replaceReportPutValue(name, generateBaseDataService.getCapitalizationAmount(), true, true, false, mapSet);
                     }
                 }
+                //收益法模板
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.MdIncome.getName(), name)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.MdIncome.getName());
+                    if (baseReportField != null) {
+                        replaceReportPutValue(name, generateBaseDataService.getMdIncomeSheet(), false, false, true, mapSet);
+                    }
+                }
+                //市场比较法模板
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.MdCompare.getName(), name)) {
+                    BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.MdCompare.getName());
+                    if (baseReportField != null) {
+                        if (false) {
+                            replaceReportPutValue(name, generateBaseDataService.getMdCompareSheet(), false, false, true, mapSet);
+                        }
+                    }
+                }
                 //假设开发法适用原因
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.DevelopmentAssistApplyReason.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.DevelopmentAssistApplyReason.getName());
