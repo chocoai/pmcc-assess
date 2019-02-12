@@ -23,6 +23,7 @@ import com.copower.pmcc.assess.dto.output.basic.BasicMatchingTrafficVo;
 import com.copower.pmcc.assess.dto.output.data.DataQualificationVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
+import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -34,6 +35,7 @@ import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.compile.CompileReportService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.*;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightService;
@@ -55,6 +57,7 @@ import java.util.*;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Created by kings on 2019-1-16.
@@ -87,6 +90,7 @@ public class GenerateBaseDataService {
     private CompileReportService compileReportService;
     private SchemeReportFileService schemeReportFileService;
     private DataQualificationService dataQualificationService;
+    private DeclareRealtyLandCertService declareRealtyLandCertService;
 
     //构造器必须传入的参数
     private Integer projectId;
@@ -1761,6 +1765,37 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getjudgeObjectLandUseCertificateSheet() throws Exception {
+        List<ProjectPhaseVo> projectPhaseVos = projectPhaseService.queryProjectPhaseByCategory(getProjectInfo().getProjectTypeId(),
+                getProjectInfo().getProjectCategoryId(), null).stream().filter(projectPhaseVo -> {
+            if (Objects.equal(AssessPhaseKeyConstant.ASSET_INVENTORY, projectPhaseVo.getPhaseKey())) {
+                return true;
+            }
+            return false;
+        }).collect(Collectors.toList());
+        List<ProjectPlanDetails> projectPlanDetailsList = Lists.newArrayList();
+        List<DeclareRealtyLandCertVo> declareRealtyLandCertVoList = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(projectPhaseVos)) {
+            projectPhaseVos.stream().forEach(projectPhaseVo -> {
+                ProjectPlanDetails query = new ProjectPlanDetails();
+                query.setProjectId(getProjectId());
+                query.setProjectPhaseId(projectPhaseVo.getId());
+                List<ProjectPlanDetails> projectPlanDetailss = projectPlanDetailsService.getProjectDetails(query);
+                if (CollectionUtils.isNotEmpty(projectPlanDetailss)) {
+                    projectPlanDetailsList.addAll(projectPlanDetailss);
+                }
+            });
+        }
+        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+            projectPlanDetailsList.stream().forEach(projectPlanDetails -> {
+                DeclareRealtyLandCertVo query = new DeclareRealtyLandCertVo();
+                query.setPlanDetailsId(projectPlanDetails.getId());
+                query.setEnable(DeclareTypeEnum.Enable.getKey());
+                List<DeclareRealtyLandCertVo> declareRealtyLandCertVos = declareRealtyLandCertService.lists(query);
+                if (CollectionUtils.isNotEmpty(declareRealtyLandCertVos)) {
+                    declareRealtyLandCertVoList.addAll(declareRealtyLandCertVos);
+                }
+            });
+        }
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
@@ -1843,6 +1878,79 @@ public class GenerateBaseDataService {
                     break;
                 default:
                     break;
+            }
+        }
+        if (false) {
+            for (int i = num; i < declareRealtyLandCertVoList.size() + num; i++) {
+                DeclareRealtyLandCertVo declareRealtyLandCertVo = declareRealtyLandCertVoList.get(i - num);
+                for (int k = 0; k < length; k++) {
+                    switch (k) {
+                        case 0:
+                            builder.insertCell();
+                            builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getNumber()) ? declareRealtyLandCertVo.getNumber() : "");
+                            break;
+                        case 1:
+                            builder.insertCell();
+                            builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getLandCertName()) ? declareRealtyLandCertVo.getLandCertName() : "");
+                            break;
+                        case 2:
+                            builder.insertCell();
+                            builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getOwnership()) ? declareRealtyLandCertVo.getOwnership() : "");
+                            break;
+                        case 3:
+                            builder.insertCell();
+                            builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getLandNumber()) ? declareRealtyLandCertVo.getLandNumber() : "");
+                            break;
+                        case 4:
+                            builder.insertCell();
+                            builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getGraphNumber()) ? declareRealtyLandCertVo.getGraphNumber() : "");
+                            break;
+                        case 5:
+                            builder.insertCell();
+                            if (declareRealtyLandCertVo.getTerminationDate() != null) {
+                                builder.writeln(DateUtils.format(declareRealtyLandCertVo.getTerminationDate(), DateUtils.DATE_CHINESE_PATTERN));
+                            } else {
+                                builder.writeln("");
+                            }
+                            break;
+                        case 6:
+                            builder.insertCell();
+                            builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getUseRightType()) ? declareRealtyLandCertVo.getUseRightType() : "");
+                            break;
+                        case 7:
+                            builder.insertCell();
+                            String s = baseDataDicService.getNameById(declareRealtyLandCertVo.getPurpose());
+                            s = StringUtils.isNotBlank(s) ? s : "";
+                            builder.writeln(s);
+                            break;
+                        case 8:
+                            builder.insertCell();
+                            if (declareRealtyLandCertVo.getUseRightArea() != null) {
+                                builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getUseRightArea().toString()) ? declareRealtyLandCertVo.getUseRightArea().toString() : "");
+                            }
+                            break;
+                        case 9:
+                            builder.insertCell();
+                            if (declareRealtyLandCertVo.getApportionmentArea() != null) {
+                                builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getApportionmentArea().toString()) ? declareRealtyLandCertVo.getApportionmentArea().toString() : "");
+                            }
+                            break;
+                        case 10:
+                            builder.insertCell();
+                            if (declareRealtyLandCertVo.getAcquisitionPrice() != null) {
+                                builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getAcquisitionPrice().toString()) ? declareRealtyLandCertVo.getAcquisitionPrice().toString() : "");
+                            }
+                            break;
+                        case 11:
+                            builder.insertCell();
+                            builder.writeln(StringUtils.isNotBlank(declareRealtyLandCertVo.getMemo()) ? declareRealtyLandCertVo.getMemo() : "");
+                            break;
+                        default:
+                            builder.insertCell();
+                            break;
+                    }
+                }
+                builder.endRow();
             }
         }
         if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
@@ -4796,6 +4904,7 @@ public class GenerateBaseDataService {
         this.compileReportService = SpringContextUtils.getBean(CompileReportService.class);
         this.schemeReportFileService = SpringContextUtils.getBean(SchemeReportFileService.class);
         this.dataQualificationService = SpringContextUtils.getBean(DataQualificationService.class);
+        this.declareRealtyLandCertService = SpringContextUtils.getBean(DeclareRealtyLandCertService.class);
     }
 
     private String toSetString(Set<String> stringSet) {
