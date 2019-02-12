@@ -32,6 +32,14 @@ public class DeclareRealtyLandCertDao {
         return declareRealtyLandCertMapper.updateByPrimaryKeySelective(declareRealtyLandCert)==1;
     }
 
+    public List<DeclareRealtyLandCert> getList(Integer planDetailsId){
+        DeclareRealtyLandCertExample example = new DeclareRealtyLandCertExample();
+        DeclareRealtyLandCertExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        criteria.andPlanDetailsIdEqualTo(planDetailsId);
+        return declareRealtyLandCertMapper.selectByExample(example);
+    }
+
     public void removeDeclareRealtyLandCert(DeclareRealtyLandCert declareRealtyLandCert){
         DeclareRealtyLandCertExample example = new DeclareRealtyLandCertExample();
         MybatisUtils.convertObj2Example(declareRealtyLandCert, example);

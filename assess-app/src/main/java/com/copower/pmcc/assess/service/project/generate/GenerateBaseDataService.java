@@ -42,6 +42,7 @@ import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightS
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
@@ -1765,36 +1766,26 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getjudgeObjectLandUseCertificateSheet() throws Exception {
-        List<ProjectPhaseVo> projectPhaseVos = projectPhaseService.queryProjectPhaseByCategory(getProjectInfo().getProjectTypeId(),
-                getProjectInfo().getProjectCategoryId(), null).stream().filter(projectPhaseVo -> {
-            if (Objects.equal(AssessPhaseKeyConstant.ASSET_INVENTORY, projectPhaseVo.getPhaseKey())) {
-                return true;
-            }
-            return false;
-        }).collect(Collectors.toList());
-        List<ProjectPlanDetails> projectPlanDetailsList = Lists.newArrayList();
         List<DeclareRealtyLandCertVo> declareRealtyLandCertVoList = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(projectPhaseVos)) {
-            projectPhaseVos.stream().forEach(projectPhaseVo -> {
-                ProjectPlanDetails query = new ProjectPlanDetails();
-                query.setProjectId(getProjectId());
-                query.setProjectPhaseId(projectPhaseVo.getId());
-                List<ProjectPlanDetails> projectPlanDetailss = projectPlanDetailsService.getProjectDetails(query);
-                if (CollectionUtils.isNotEmpty(projectPlanDetailss)) {
-                    projectPlanDetailsList.addAll(projectPlanDetailss);
+        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(getProjectId());
+        if (CollectionUtils.isNotEmpty(declareRecordList)) {
+            List<DeclareRecord> declareRecords = declareRecordList.stream().filter(declareRecord -> {
+                if (declareRecord.getDataTableName().equals(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class))) {
+                    return true;
                 }
-            });
-        }
-        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-            projectPlanDetailsList.stream().forEach(projectPlanDetails -> {
-                DeclareRealtyLandCertVo query = new DeclareRealtyLandCertVo();
-                query.setPlanDetailsId(projectPlanDetails.getId());
-                query.setEnable(DeclareTypeEnum.Enable.getKey());
-                List<DeclareRealtyLandCertVo> declareRealtyLandCertVos = declareRealtyLandCertService.lists(query);
-                if (CollectionUtils.isNotEmpty(declareRealtyLandCertVos)) {
-                    declareRealtyLandCertVoList.addAll(declareRealtyLandCertVos);
-                }
-            });
+                return false;
+            }).collect(Collectors.toList());
+            if (CollectionUtils.isNotEmpty(declareRecords)) {
+                declareRecords.stream().forEach(declareRecord -> {
+                    if (declareRecord.getDataTableId() != null) {
+                        DeclareRealtyLandCert declareRealtyLandCert = declareRealtyLandCertService.getDeclareRealtyLandCertById(declareRecord.getDataTableId());
+                        if (declareRealtyLandCert != null) {
+                            DeclareRealtyLandCertVo declareRealtyLandCertVo = declareRealtyLandCertService.getDeclareRealtyLandCertVo(declareRealtyLandCert);
+                            declareRealtyLandCertVoList.add(declareRealtyLandCertVo);
+                        }
+                    }
+                });
+            }
         }
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1880,7 +1871,7 @@ public class GenerateBaseDataService {
                     break;
             }
         }
-        if (false) {
+        if (CollectionUtils.isNotEmpty(declareRealtyLandCertVoList)) {
             for (int i = num; i < declareRealtyLandCertVoList.size() + num; i++) {
                 DeclareRealtyLandCertVo declareRealtyLandCertVo = declareRealtyLandCertVoList.get(i - num);
                 for (int k = 0; k < length; k++) {
@@ -4600,6 +4591,30 @@ public class GenerateBaseDataService {
         builder.endTable();
         doc.save(localPath);
         return localPath;
+    }
+
+    /**
+     * 收益法替换模板
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getMdIncomeSheet() throws Exception {
+        GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(null, getProjectId(), getAreaId());
+        String localPath = generateMdIncomeService.generateCompareFile();
+        return localPath;
+    }
+
+    /**
+     * 市场比较法替换模板
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getMdCompareSheet() throws Exception {
+        GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(289);
+        String s = generateMdCompareService.generateCompareFile();
+        return s;
     }
 
     /**

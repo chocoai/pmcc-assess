@@ -121,7 +121,11 @@ public enum BaseReportFieldEnum {
     inventoryRight("", "土地他项权利情况", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     EvaluationMethod("", "评估方法", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     SummaryEvaluationMethod("", "评估方法总括", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    AssessmentMethods("", "评估方法分述", BaseReportFieldReplaceEnum.BOOKMARK.getKey());
+    AssessmentMethods("", "评估方法分述", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+
+    MdIncome("", "收益法字段", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    MdCompare("", "市场比较法字段", BaseReportFieldReplaceEnum.BOOKMARK.getKey());
+
     private String key;
 
     private String name;
