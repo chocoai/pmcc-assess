@@ -4629,7 +4629,12 @@ public class GenerateBaseDataService {
             });
         }
         if (CollectionUtils.isNotEmpty(schemeInfoList)) {
-            GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfoList.stream().findFirst().get(), getProjectId(), getAreaId());
+            GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfoList.stream().sorted(new Comparator<Integer>() {
+                @Override
+                public int compare(Integer o1, Integer o2) {
+                    return o1-o2;
+                }
+            }).findFirst().get(), getProjectId(), getAreaId());
             String localPath = generateMdIncomeService.generateCompareFile();
             return localPath;
         }
