@@ -153,4 +153,9 @@ public class MdIncomeDateSectionService {
         return vo;
     }
 
+    public List<MdIncomeDateSection> getMdIncomeDateSectionList(MdIncomeDateSection mdIncomeDateSection){
+        List<MdIncomeDateSection> sectionList = mdIncomeDateSectionDao.getDateSectionList(mdIncomeDateSection);
+        return sectionList;
+    }
+
 }
