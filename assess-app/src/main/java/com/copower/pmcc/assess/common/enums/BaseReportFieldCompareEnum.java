@@ -22,6 +22,7 @@ public enum BaseReportFieldCompareEnum {
     EQUITY_INDEX("", "估价对象权益指数表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     ENTITY_INDEX("", "估价对象实体指数表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     CALCULATION_RESULT("", "测算结果表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    HOUSEPRICE_INDEX("", "房价指数表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     ;
     private String key;
 

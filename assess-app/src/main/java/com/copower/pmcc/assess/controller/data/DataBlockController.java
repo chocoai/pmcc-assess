@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
+
 /**
  * @Auther: zch
  * @Date: 2018/9/11 10:08
@@ -46,7 +48,7 @@ public class DataBlockController extends BaseController {
         //所有省份
         modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());
         try {
-            GenerateMdCompareService generateMdCompareService=new GenerateMdCompareService(289);
+            GenerateMdCompareService generateMdCompareService=new GenerateMdCompareService(289,new Date());
             String s = generateMdCompareService.generateCompareFile();
             System.out.print(s);
         } catch (Exception e) {
