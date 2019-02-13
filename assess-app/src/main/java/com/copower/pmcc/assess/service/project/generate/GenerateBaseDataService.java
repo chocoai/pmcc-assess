@@ -30,6 +30,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportService;
 import com.copower.pmcc.assess.service.data.DataQualificationService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
+import com.copower.pmcc.assess.service.data.EvaluationMethodService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
@@ -92,6 +93,8 @@ public class GenerateBaseDataService {
     private SchemeReportFileService schemeReportFileService;
     private DataQualificationService dataQualificationService;
     private DeclareRealtyLandCertService declareRealtyLandCertService;
+    private SchemeInfoService schemeInfoService;
+    private EvaluationMethodService evaluationMethodService;
 
     //构造器必须传入的参数
     private Integer projectId;
@@ -4600,9 +4603,30 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getMdIncomeSheet() throws Exception {
-        GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(null, getProjectId(), getAreaId());
-        String localPath = generateMdIncomeService.generateCompareFile();
-        return localPath;
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        Set<Integer> schemeInfoList = Sets.newHashSet();
+        DataEvaluationMethod dataEvaluationMethod = evaluationMethodService.getMethodAllList().stream().filter(oo -> {
+            if (oo.getName().equals("收益法")) {
+                return true;
+            }
+            return false;
+        }).findFirst().get();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            schemeJudgeObjectList.stream().forEach(schemeJudgeObject -> {
+                if (dataEvaluationMethod != null){
+                    SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), dataEvaluationMethod.getMethod());
+                    if (schemeInfo != null) {
+                        schemeInfoList.add(schemeInfo.getMethodDataId());
+                    }
+                }
+            });
+        }
+        if (CollectionUtils.isNotEmpty(schemeInfoList)) {
+            GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfoList.stream().findFirst().get(), getProjectId(), getAreaId());
+            String localPath = generateMdIncomeService.generateCompareFile();
+            return localPath;
+        }
+        return null;
     }
 
     /**
@@ -4920,6 +4944,8 @@ public class GenerateBaseDataService {
         this.schemeReportFileService = SpringContextUtils.getBean(SchemeReportFileService.class);
         this.dataQualificationService = SpringContextUtils.getBean(DataQualificationService.class);
         this.declareRealtyLandCertService = SpringContextUtils.getBean(DeclareRealtyLandCertService.class);
+        this.schemeInfoService = SpringContextUtils.getBean(SchemeInfoService.class);
+        this.evaluationMethodService = SpringContextUtils.getBean(EvaluationMethodService.class);
     }
 
     private String toSetString(Set<String> stringSet) {

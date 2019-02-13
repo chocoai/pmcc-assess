@@ -98,6 +98,10 @@ public class EvaluationMethodService {
         return evaluationMethodDao.getMethodListByMethod(method);
     }
 
+    public List<DataEvaluationMethod> getMethodAllList() {
+        return evaluationMethodDao.getMethodAllList();
+    }
+
 
     public DataEvaluationMethodVo getMethodVo(DataEvaluationMethod method) {
         if (method == null) return null;

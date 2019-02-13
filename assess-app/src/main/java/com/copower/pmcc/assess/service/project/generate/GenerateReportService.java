@@ -120,7 +120,7 @@ public class GenerateReportService {
         if (projectPlan == null) {
             return;
         }
-        if (generateReportGeneration.getId() == null || generateReportGeneration.getId().equals(1)) {
+        if (generateReportGeneration.getId() == null || generateReportGeneration.getId().equals(0)) {
             GenerateReportGeneration query = generateReportGenerationService.getGenerateReportGenerationByAreaGroupId(generateReportGeneration.getAreaGroupId(), generateReportGeneration.getProjectPlanId());
             if (query != null) {
                 generateReportGeneration.setId(query.getId());
@@ -592,7 +592,10 @@ public class GenerateReportService {
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.MdIncome.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.MdIncome.getName());
                     if (baseReportField != null) {
-                        replaceReportPutValue(name, generateBaseDataService.getMdIncomeSheet(), false, false, true, mapSet);
+                        String s = generateBaseDataService.getMdIncomeSheet();
+                        if (StringUtils.isNotBlank(s)) {
+                            replaceReportPutValue(name, s, false, false, true, mapSet);
+                        }
                     }
                 }
                 //市场比较法模板
