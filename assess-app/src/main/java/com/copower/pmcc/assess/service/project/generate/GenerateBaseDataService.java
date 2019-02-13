@@ -8,7 +8,10 @@ import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.CnNumberUtils;
 import com.copower.pmcc.assess.common.FileUtils;
-import com.copower.pmcc.assess.common.enums.*;
+import com.copower.pmcc.assess.common.enums.ExamineEstateSupplyEnumType;
+import com.copower.pmcc.assess.common.enums.ExamineHouseEquipmentTypeEnum;
+import com.copower.pmcc.assess.common.enums.ExamineMatchingLeisurePlaceTypeEnum;
+import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
@@ -54,6 +57,10 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.List;
@@ -4613,7 +4620,7 @@ public class GenerateBaseDataService {
         }).findFirst().get();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             schemeJudgeObjectList.stream().forEach(schemeJudgeObject -> {
-                if (dataEvaluationMethod != null){
+                if (dataEvaluationMethod != null) {
                     SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), dataEvaluationMethod.getMethod());
                     if (schemeInfo != null) {
                         schemeInfoList.add(schemeInfo.getMethodDataId());
@@ -4671,27 +4678,22 @@ public class GenerateBaseDataService {
      */
     public String getEstimatedObjectLocationDiagram() throws Exception {
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        new Document().save(localPath);
+        Document document = new Document();
+        DocumentBuilder builder = new DocumentBuilder(document);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 List<SysAttachmentDto> sysAttachmentDtoList = schemeReportFileService.getJudgeObjectPositionFileList(schemeJudgeObject.getId());
-                List<String> images = Lists.newArrayList();
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
+                    builder.writeln(schemeJudgeObject.getName());
                     for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                        if (StringUtils.isNotBlank(imgPath)) {
-                            if (FileUtils.checkImgSuffix(imgPath)) {
-                                images.add(imgPath);
-                            }
-                        }
+                        builderInsertImage(builder, imgPath);
                     }
-                }
-                if (CollectionUtils.isNotEmpty(images)) {
-                    AsposeUtils.insertImage(localPath, images, 200, 100);
                 }
             }
         }
+        document.save(localPath);
         return localPath;
     }
 
@@ -4702,32 +4704,34 @@ public class GenerateBaseDataService {
      */
     public String getValuation_Target_Live_Photos() throws Exception {
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        new Document().save(localPath);
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+        Document document = new Document();
+        DocumentBuilder builder = new DocumentBuilder(document);
+        List<SchemeJudgeObject> schemeJudgeObjectFullList = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(this.getAreaId());
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectFullList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectFullList) {
                 List<SchemeReportFileItem> sysAttachmentDtoList = schemeReportFileService.getLiveSituationSelect(schemeJudgeObject.getId());
-                List<String> images = Lists.newArrayList();
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
+                    builder.writeln(schemeJudgeObject.getName());
                     for (SchemeReportFileItem sysAttachmentDto : sysAttachmentDtoList) {
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getAttachmentId());
-                        if (StringUtils.isNotBlank(imgPath)) {
-                            if (FileUtils.checkImgSuffix(imgPath)) {
-                                if (StringUtils.isNotBlank(imgPath)) {
-                                    if (FileUtils.checkImgSuffix(imgPath)) {
-                                        images.add(imgPath);
-                                    }
-                                }
-                            }
-                        }
+                        builderInsertImage(builder, imgPath);
                     }
-                }
-                if (CollectionUtils.isNotEmpty(images)) {
-                    AsposeUtils.insertImage(localPath, images, 200, 100);
                 }
             }
         }
+        document.save(localPath);
         return localPath;
+    }
+
+    private void builderInsertImage(DocumentBuilder builder, String imgPath) throws Exception {
+        if (StringUtils.isNotBlank(imgPath)&&FileUtils.checkImgSuffix(imgPath)) {
+            File file = new File(imgPath);
+            BufferedImage sourceImg = ImageIO.read(new FileInputStream(file));
+            builder.insertImage(imgPath,
+                    sourceImg.getWidth() > 400 ? 400 : sourceImg.getWidth(),
+                    sourceImg.getHeight() > 500 ? 500 : sourceImg.getHeight());
+            builder.write(" ");//为图片设置间隔
+        }
     }
 
     /**
@@ -4737,23 +4741,23 @@ public class GenerateBaseDataService {
      */
     public String getCopies_the_Ownership_Certificate_the_Valuation_Object() throws Exception {
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        new Document().save(localPath);
+        Document document = new Document();
+        DocumentBuilder builder = new DocumentBuilder(document);
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         Map<Integer, List<SysAttachmentDto>> ownershipCertFileList = schemeReportFileService.getOwnershipCertFileList(getAreaId());
-        List<SysAttachmentDto> sysAttachmentDtoList = ownershipCertFileList.get(0);
-        List<String> images = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                if (StringUtils.isNotBlank(imgPath)) {
-                    if (FileUtils.checkImgSuffix(imgPath)) {
-                        images.add(imgPath);
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                List<SysAttachmentDto> sysAttachmentDtoList = ownershipCertFileList.get(schemeJudgeObject.getId());
+                if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
+                    builder.writeln(schemeJudgeObject.getName());
+                    for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
+                        String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
+                        builderInsertImage(builder, imgPath);
                     }
                 }
             }
         }
-        if (CollectionUtils.isNotEmpty(images)) {
-            AsposeUtils.insertImage(localPath, images, 200, 100);
-        }
+        document.save(localPath);
         return localPath;
     }
 
@@ -4765,32 +4769,49 @@ public class GenerateBaseDataService {
      */
     public String getSpecial_documentation_referenced_in_valuation() throws Exception {
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        new Document().save(localPath);
-        List<SysAttachmentDto> sysAttachmentDtoList = Lists.newArrayList();
-        Map<Integer, List<SysAttachmentDto>> inventoryAddressFileList = schemeReportFileService.getInventoryAddressFileList(getAreaId());
-        List<SysAttachmentDto> sysAttachmentDtoList1 = inventoryAddressFileList.get(0);
-        if (CollectionUtils.isNotEmpty(sysAttachmentDtoList1)) {
-            sysAttachmentDtoList.addAll(sysAttachmentDtoList1);
-        }
-        Map<Integer, List<SysAttachmentDto>> ownershipCertFileList = schemeReportFileService.getOwnershipCertFileList(getAreaId());
-        List<SysAttachmentDto> sysAttachmentDtoList2 = ownershipCertFileList.get(0);
-        if (CollectionUtils.isNotEmpty(sysAttachmentDtoList2)) {
-            sysAttachmentDtoList.addAll(sysAttachmentDtoList2);
-        }
-        List<String> images = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                if (StringUtils.isNotBlank(imgPath)) {
-                    if (FileUtils.checkImgSuffix(imgPath)) {
-                        images.add(imgPath);
+        Document document = new Document();
+        DocumentBuilder builder = new DocumentBuilder(document);
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            Map<Integer, List<SysAttachmentDto>> inventoryAddressFileList = schemeReportFileService.getInventoryAddressFileList(getAreaId());
+            Map<Integer, List<SysAttachmentDto>> reimbursementFileList = schemeReportFileService.getReimbursementFileList(getAreaId());
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                //1.先取地址不一致附件与法定优先受偿款附件
+                List<SysAttachmentDto> addressFileList = inventoryAddressFileList.get(schemeJudgeObject.getId());
+                List<SysAttachmentDto> reimFileList = reimbursementFileList.get(schemeJudgeObject.getId());
+                if(CollectionUtils.isEmpty(addressFileList)&&CollectionUtils.isEmpty(reimFileList)) continue;
+                builder.writeln(schemeJudgeObject.getName());
+                if(CollectionUtils.isNotEmpty(addressFileList)){
+                    builder.writeln("地址不一致附件");
+                    for (SysAttachmentDto sysAttachmentDto : addressFileList) {
+                        String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
+                        builderInsertImage(builder, imgPath);
+                    }
+                }
+                if(CollectionUtils.isNotEmpty(reimFileList)){
+                    builder.writeln("法定优先受偿款附件");
+                    for (SysAttachmentDto sysAttachmentDto : reimFileList) {
+                        String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
+                        builderInsertImage(builder, imgPath);
                     }
                 }
             }
         }
-        if (CollectionUtils.isNotEmpty(images)) {
-            AsposeUtils.insertImage(localPath, images, 200, 100);
+        //2.取得自定义的附件
+        List<SchemeReportFileCustom> reportFileCustomList = schemeReportFileService.getReportFileCustomList(getAreaId());
+        if(CollectionUtils.isNotEmpty(reportFileCustomList)){
+            for (SchemeReportFileCustom schemeReportFileCustom : reportFileCustomList) {
+                List<SysAttachmentDto> fileList = schemeReportFileService.getCustomFileList(schemeReportFileCustom.getId());
+                if(CollectionUtils.isNotEmpty(fileList)){
+                    builder.writeln(schemeReportFileCustom.getName());
+                    for (SysAttachmentDto sysAttachmentDto : fileList) {
+                        String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
+                        builderInsertImage(builder, imgPath);
+                    }
+                }
+            }
         }
+        document.save(localPath);
         return localPath;
     }
 

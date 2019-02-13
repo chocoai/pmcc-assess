@@ -235,44 +235,6 @@ public class AsposeUtils {
      * @param height   高度(建议100)
      * @throws Exception
      */
-    public static void insertImage(String filePath, String[] images, double width, double height) throws Exception {
-        if (StringUtils.isEmpty(filePath) || images.length == 0) {
-            throw new Exception("不符合约定!");
-        }
-        if (width < 1 || height < 1) {
-            throw new Exception("不符合约定!");
-        }
-        Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        double top = 0.0;
-        for (int i = 0; i < images.length; i++) {
-            double left = 0.0;
-            if (i % 2 == 0) {
-                top += height;
-            }
-            if (i % 2 != 0) {
-                left += width + 20;
-            }
-            Shape shape = new Shape(doc, ShapeType.IMAGE);
-            shape.getImageData().setImage(images[i]);
-            shape.setTop(top);
-            shape.setLeft(left);
-            shape.setWidth(width);
-            shape.setHeight(height);
-            builder.insertNode(shape);
-        }
-        doc.save(filePath);
-    }
-
-    /**
-     * 插入多张图片
-     *
-     * @param filePath word文档地址
-     * @param images   需要插入图片的地址
-     * @param width    宽度(建议200)
-     * @param height   高度(建议100)
-     * @throws Exception
-     */
     public static void insertImage(String filePath, List<String> images, double width, double height) throws Exception {
         if (StringUtils.isEmpty(filePath) || images.size() < 0) {
             throw new Exception("不符合约定!");
@@ -285,20 +247,20 @@ public class AsposeUtils {
 
         double top = 0.0;
         for (int i = 0; i < images.size(); i++) {
-//            double left = 0.0;
-//            if (i % 2 == 0) {
-//                top += height;
-//            }
-//            if (i % 2 != 0) {
-//                left += width + 20;
-//            }
-//            Shape shape = new Shape(doc, ShapeType.IMAGE);
-//            shape.getImageData().setImage(images.get(i));shape.setFilled();
-////            shape.setTop(top);
-////            shape.setLeft(left);
-//            shape.setWidth(width);
-//            shape.setHeight(height);
-//            builder.insertNode(shape);
+            double left = 0.0;
+            if (i % 2 == 0) {
+                top += height;
+            }
+            if (i % 2 != 0) {
+                left += width + 20;
+            }
+            Shape shape = new Shape(doc, ShapeType.IMAGE);
+            shape.getImageData().setImage(images.get(i));
+//            shape.setTop(top);
+//            shape.setLeft(left);
+            shape.setWidth(width);
+            shape.setHeight(height);
+            builder.insertNode(shape);
             builder.insertImage(images.get(i),width,height);
         }
         doc.save(filePath);
@@ -388,15 +350,12 @@ public class AsposeUtils {
         for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {
             if (StringUtils.isNotBlank(stringStringEntry.getValue())) {
                 Pattern compile = Pattern.compile(escapeExprSpecialWord(stringStringEntry.getKey()));
-                doc.getRange().replace(compile, new IReplacingCallback() {
-                    @Override
-                    public int replacing(ReplacingArgs e) throws Exception {
-                        DocumentBuilder builder = new DocumentBuilder((Document) e.getMatchNode().getDocument());
-                        builder.moveTo(e.getMatchNode());
-                        Document document = new Document(stringStringEntry.getValue());
-                        builder.insertDocument(document, ImportFormatMode.KEEP_DIFFERENT_STYLES);
-                        return ReplaceAction.REPLACE;
-                    }
+                doc.getRange().replace(compile, e -> {
+                    DocumentBuilder builder = new DocumentBuilder((Document) e.getMatchNode().getDocument());
+                    builder.moveTo(e.getMatchNode());
+                    Document document = new Document(stringStringEntry.getValue());
+                    builder.insertDocument(document, ImportFormatMode.KEEP_DIFFERENT_STYLES);
+                    return ReplaceAction.REPLACE;
                 }, false);
                 doc.save(filePath);
             }

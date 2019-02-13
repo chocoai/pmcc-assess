@@ -40,7 +40,8 @@
                                 <input type="hidden" id="tree_value" value="0">
                                 <div class="row">
                                     <div class="col-xs-4">
-                                        <select id='projectType' class='form-control search-select select2' onchange="getProjectClassify()">
+                                        <select id='projectType' class='form-control search-select select2'
+                                                onchange="getProjectClassify()">
                                             <c:forEach var="item" items="${projectTypeList}">
                                                 <option value="${item.id}">${item.name}</option>
                                             </c:forEach>
@@ -108,7 +109,7 @@
                                             委托目的
                                         </label>
                                         <div class="col-sm-10">
-                                            <select  name='entrustPurpose' class='form-control  search-select select2'>
+                                            <select name='entrustPurpose' class='form-control  search-select select2'>
                                                 <option value="0">-请选择-</option>
                                                 <c:forEach var="item" items="${entrustPurposeList}">
                                                     <option value="${item.id}">${item.name}</option>
@@ -175,6 +176,7 @@
                 creater: "${currUserAccount}",
                 tableId: tableId
             },
+            editFlag: true,
             deleteFlag: true
         });
     }
@@ -234,7 +236,7 @@
                 }
             });
     }
-   
+
     function addReportTemplate() {
         $("#frm_files").clearAll();
         $("#files_id").val(0);

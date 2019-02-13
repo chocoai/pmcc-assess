@@ -109,7 +109,7 @@ public enum BaseReportFieldEnum {
     judgeObjectLandUseCertificateSheet("", "土地使用权登记状况表", BaseReportFieldReplaceEnum.FILE_FIXED.getKey()),
 
     JUDGEOBJECTPRINCIPALCOPYSHEET("", "估价委托书复印件", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    EstimatedObjectLocationDiagram("", "估计对象位置示意图", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    EstimatedObjectLocationDiagram("", "估价对象位置示意图", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     Valuation_Target_Live_Photos("", "估价对象实况照片", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     Copies_the_Ownership_Certificate_the_Valuation_Object("", "估价对象权属证明复印件", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     Special_documentation_referenced_in_valuation("", "估价中引用的专用文件资料", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),

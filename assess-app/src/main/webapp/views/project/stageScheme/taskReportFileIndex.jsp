@@ -320,8 +320,7 @@
             formData: {
                 tableName: tableName,
                 tableId: tableId,
-                fieldsName: fieldsName,
-                projectId: "${projectPlanDetails.projectId}"
+                fieldsName: fieldsName
             },
             editFlag: true,
             deleteFlag: true
@@ -408,7 +407,7 @@
                     var html = '';
                     $.each(result.data, function (i, item) {
                         html += '<tr><td>' + item.fileName + '</td><td><input type="text" data-id="' + item.id + '" data-name="sorting" value="' + AssessCommon.toString(item.sorting) + '"></td><td>' +
-                            '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="FileUtils.editAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
+                            '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="FileUtils.editAttachment(' + item.attachmentId + ',\'' + item.fileName + '\');">' +
                             '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeLiveSituation(' + item.id + ',this)"></td></tr>';
                     })
                     tbody.empty().append(html);
