@@ -6,6 +6,7 @@ import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldEnum;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldReplaceEnum;
+import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.generate.GenerateReportDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -19,7 +20,10 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
-import com.copower.pmcc.erp.common.utils.*;
+import com.copower.pmcc.erp.common.utils.ChineseToPy;
+import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
@@ -443,21 +447,21 @@ public class GenerateReportService {
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EVALUATION_HYPOTHESIS.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EVALUATION_HYPOTHESIS.getName());
                     if (baseReportField != null) {
-                        replaceReportPutValue(name, generateBaseDataService.getEVALUATION_HYPOTHESIS(),bookmarkAndRegex.getType(), false, mapSet);
+                        replaceReportPutValue(name, generateBaseDataService.getPrincipleBasisHypothesis(SchemeSupportTypeEnum.HYPOTHESIS),bookmarkAndRegex.getType(), true, mapSet);
                     }
                 }
                 //评估依据
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EVALUATION_BASIS.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EVALUATION_BASIS.getName());
                     if (baseReportField != null) {
-                        replaceReportPutValue(name, generateBaseDataService.getEVALUATION_BASIS(),bookmarkAndRegex.getType(), false, mapSet);
+                        replaceReportPutValue(name, generateBaseDataService.getPrincipleBasisHypothesis(SchemeSupportTypeEnum.BASIS),bookmarkAndRegex.getType(), true, mapSet);
                     }
                 }
                 //评估原则
                 if (com.google.common.base.Objects.equal(BaseReportFieldEnum.EVALUATION_PRINCIPLE.getName(), name)) {
                     BaseReportField baseReportField = whereBaseReportFieldByName(fieldList, BaseReportFieldEnum.EVALUATION_PRINCIPLE.getName());
                     if (baseReportField != null) {
-                        replaceReportPutValue(name, generateBaseDataService.getEVALUATION_PRINCIPLE(),bookmarkAndRegex.getType(), false, mapSet);
+                        replaceReportPutValue(name, generateBaseDataService.getPrincipleBasisHypothesis(SchemeSupportTypeEnum.PRINCIPLE),bookmarkAndRegex.getType(), true, mapSet);
                     }
                 }
                 //报告分析

@@ -932,66 +932,28 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 评估假设
-     *
+     * 评估依据假设原则
+     * @param schemeSupportTypeEnum
      * @return
+     * @throws Exception
      */
-    public String getEVALUATION_HYPOTHESIS() {
-        StringBuilder builder = new StringBuilder();
-        List<SchemeSupportInfo> schemeSupportInfoList = schemeSupportInfoService.getSupportInfoListByAreaId(getAreaId(), SchemeSupportTypeEnum.HYPOTHESIS);
+    public String getPrincipleBasisHypothesis(SchemeSupportTypeEnum schemeSupportTypeEnum) throws Exception {
+        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        Document document = new Document();
+        DocumentBuilder builder = new DocumentBuilder(document);
+        List<SchemeSupportInfo> schemeSupportInfoList = schemeSupportInfoService.getSupportInfoListByAreaId(getAreaId(), schemeSupportTypeEnum);
         if (CollectionUtils.isNotEmpty(schemeSupportInfoList)) {
+            int i = 1;
             for (SchemeSupportInfo schemeSupportInfo : schemeSupportInfoList) {
-                if (StringUtils.isNotBlank(schemeSupportInfo.getTemplate())) {
-                    builder.append(schemeSupportInfo.getContent());
+                if (StringUtils.isNotBlank(schemeSupportInfo.getContent())) {
+                    builder.insertHtml(String.format("<h5>%s.%s</h5>", i, schemeSupportInfo.getName()));
+                    builder.writeln(schemeSupportInfo.getContent());
+                    i++;
                 }
             }
         }
-        if (StringUtils.isNotBlank(builder.toString())) {
-            return builder.toString().replaceAll("\r", "");
-        }
-        return errorStr;
-    }
-
-    /**
-     * 评估依据
-     *
-     * @return
-     */
-    public String getEVALUATION_BASIS() {
-        StringBuilder builder = new StringBuilder();
-        List<SchemeSupportInfo> schemeSupportInfoList = schemeSupportInfoService.getSupportInfoListByAreaId(getAreaId(), SchemeSupportTypeEnum.BASIS);
-        if (CollectionUtils.isNotEmpty(schemeSupportInfoList)) {
-            for (SchemeSupportInfo schemeSupportInfo : schemeSupportInfoList) {
-                if (StringUtils.isNotBlank(schemeSupportInfo.getTemplate())) {
-                    builder.append(schemeSupportInfo.getTemplate());
-                }
-            }
-        }
-        if (StringUtils.isNotBlank(builder.toString())) {
-            return builder.toString().replaceAll("\r", "");
-        }
-        return errorStr;
-    }
-
-    /**
-     * 评估原则
-     *
-     * @return
-     */
-    public String getEVALUATION_PRINCIPLE() {
-        StringBuilder builder = new StringBuilder();
-        List<SchemeSupportInfo> schemeSupportInfoList = schemeSupportInfoService.getSupportInfoListByAreaId(getAreaId(), SchemeSupportTypeEnum.PRINCIPLE);
-        if (CollectionUtils.isNotEmpty(schemeSupportInfoList)) {
-            for (SchemeSupportInfo schemeSupportInfo : schemeSupportInfoList) {
-                if (StringUtils.isNotBlank(schemeSupportInfo.getTemplate())) {
-                    builder.append(schemeSupportInfo.getTemplate());
-                }
-            }
-        }
-        if (StringUtils.isNotBlank(builder.toString())) {
-            return builder.toString().replaceAll("\r", "");
-        }
-        return errorStr;
+        document.save(localPath);
+        return localPath;
     }
 
     /**
@@ -1363,7 +1325,7 @@ public class GenerateBaseDataService {
                 }
             }
         } catch (Exception e1) {
-
+            logger.error(e1.getMessage(), e1);
         }
         if (StringUtils.isNotBlank(stringBuilder.toString())) {
             return stringBuilder.toString();
@@ -4643,7 +4605,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getMdCompareSheet() throws Exception {
-        GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(289, new Date(),266);
+        GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(289, new Date(), 266);
         String s = generateMdCompareService.generateCompareFile();
         return s;
     }
@@ -4724,7 +4686,7 @@ public class GenerateBaseDataService {
     }
 
     private void builderInsertImage(DocumentBuilder builder, String imgPath) throws Exception {
-        if (StringUtils.isNotBlank(imgPath)&&FileUtils.checkImgSuffix(imgPath)) {
+        if (StringUtils.isNotBlank(imgPath) && FileUtils.checkImgSuffix(imgPath)) {
             File file = new File(imgPath);
             BufferedImage sourceImg = ImageIO.read(new FileInputStream(file));
             builder.insertImage(imgPath,
@@ -4779,16 +4741,16 @@ public class GenerateBaseDataService {
                 //1.先取地址不一致附件与法定优先受偿款附件
                 List<SysAttachmentDto> addressFileList = inventoryAddressFileList.get(schemeJudgeObject.getId());
                 List<SysAttachmentDto> reimFileList = reimbursementFileList.get(schemeJudgeObject.getId());
-                if(CollectionUtils.isEmpty(addressFileList)&&CollectionUtils.isEmpty(reimFileList)) continue;
+                if (CollectionUtils.isEmpty(addressFileList) && CollectionUtils.isEmpty(reimFileList)) continue;
                 builder.writeln(schemeJudgeObject.getName());
-                if(CollectionUtils.isNotEmpty(addressFileList)){
+                if (CollectionUtils.isNotEmpty(addressFileList)) {
                     builder.writeln("地址不一致附件");
                     for (SysAttachmentDto sysAttachmentDto : addressFileList) {
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
                         builderInsertImage(builder, imgPath);
                     }
                 }
-                if(CollectionUtils.isNotEmpty(reimFileList)){
+                if (CollectionUtils.isNotEmpty(reimFileList)) {
                     builder.writeln("法定优先受偿款附件");
                     for (SysAttachmentDto sysAttachmentDto : reimFileList) {
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
@@ -4799,10 +4761,10 @@ public class GenerateBaseDataService {
         }
         //2.取得自定义的附件
         List<SchemeReportFileCustom> reportFileCustomList = schemeReportFileService.getReportFileCustomList(getAreaId());
-        if(CollectionUtils.isNotEmpty(reportFileCustomList)){
+        if (CollectionUtils.isNotEmpty(reportFileCustomList)) {
             for (SchemeReportFileCustom schemeReportFileCustom : reportFileCustomList) {
                 List<SysAttachmentDto> fileList = schemeReportFileService.getCustomFileList(schemeReportFileCustom.getId());
-                if(CollectionUtils.isNotEmpty(fileList)){
+                if (CollectionUtils.isNotEmpty(fileList)) {
                     builder.writeln(schemeReportFileCustom.getName());
                     for (SysAttachmentDto sysAttachmentDto : fileList) {
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
