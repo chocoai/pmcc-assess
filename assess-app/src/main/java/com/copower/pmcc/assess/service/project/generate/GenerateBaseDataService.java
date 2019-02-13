@@ -961,28 +961,24 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getReportAnalysis() {
-        StringBuilder builder = new StringBuilder();
-        String[] strings = new String[]{AssessPhaseKeyConstant.LIQUIDATION_ANALYSIS, AssessPhaseKeyConstant.REIMBURSEMENT};
-        List<CompileReportDetail> compileReportDetailList = Lists.newArrayList();
-        for (String s : strings) {
-            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(s);
-            if (baseDataDic != null) {
-                List<CompileReportDetail> compileReportDetails = compileReportService.getCompileReportDetailList(getAreaId(), baseDataDic.getId());
-                if (CollectionUtils.isNotEmpty(compileReportDetails)) {
-                    compileReportDetailList.addAll(compileReportDetails);
+    public String getReportAnalysis(String type) throws Exception {
+        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        Document document = new Document();
+        DocumentBuilder builder = new DocumentBuilder(document);
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(type);
+        List<CompileReportDetail> compileReportDetailList = compileReportService.getCompileReportDetailList(getAreaId(),baseDataDic.getId());
+        if (CollectionUtils.isNotEmpty(compileReportDetailList)) {
+            int i = 1;
+            for (CompileReportDetail compileReportDetail : compileReportDetailList) {
+                if (StringUtils.isNotBlank(compileReportDetail.getContent())) {
+                    builder.insertHtml(String.format("<h5>%s.%s</h5>", i, compileReportDetail.getName()));
+                    builder.writeln(compileReportDetail.getContent());
+                    i++;
                 }
             }
         }
-        if (CollectionUtils.isNotEmpty(compileReportDetailList)) {
-            for (CompileReportDetail compileReportDetail : compileReportDetailList) {
-                builder.append(compileReportDetail.getTemplate());
-            }
-        }
-        if (StringUtils.isNotBlank(builder.toString())) {
-            return builder.toString().replaceAll("\r", "");
-        }
-        return errorStr;
+        document.save(localPath);
+        return localPath;
     }
 
     /**

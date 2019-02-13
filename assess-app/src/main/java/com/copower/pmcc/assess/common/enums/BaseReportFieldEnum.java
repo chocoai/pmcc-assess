@@ -43,7 +43,7 @@ public enum BaseReportFieldEnum {
     WeightSpecification("", "权重说明", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     TotalRealEstatePrice("", "房地产总价", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     ValueExpressionResult("", "价值表达结果", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    StatutoryOptimumReimbursement("", "法定优选受偿款", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    StatutoryOptimumReimbursement("", "法定优先受偿款", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     reportIssuanceDate("", "报告出具日期", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     ReportingCategories("", "报告类别", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     CapitalizationAmount("", "房地产总价大写金额", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
@@ -86,7 +86,8 @@ public enum BaseReportFieldEnum {
     EVALUATION_HYPOTHESIS("", "评估假设", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     EVALUATION_BASIS("", "评估依据", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     EVALUATION_PRINCIPLE("", "评估原则", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    ReportAnalysis("", "报告分析", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    ANALYSIS_CATEGORY_LIQUIDITY("", "变现能力分析", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    ANALYSIS_CATEGORY_RISK("", "风险提示", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
     AssistanceStaff("", "协助工作人员", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
