@@ -4643,7 +4643,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getMdCompareSheet() throws Exception {
-        GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(289, new Date(),226);
+        GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(289, new Date(),266);
         String s = generateMdCompareService.generateCompareFile();
         return s;
     }

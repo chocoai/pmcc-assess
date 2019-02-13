@@ -48,7 +48,7 @@ public class DataBlockController extends BaseController {
         //所有省份
         modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());
         try {
-            GenerateMdCompareService generateMdCompareService=new GenerateMdCompareService(289,new Date(),226);
+            GenerateMdCompareService generateMdCompareService=new GenerateMdCompareService(289,new Date(),266);
             String s = generateMdCompareService.generateCompareFile();
             System.out.print(s);
         } catch (Exception e) {
