@@ -444,9 +444,10 @@ public class GenerateMdIncomeService {
 
     /**
      * 维修保养费率
+     *
      * @return
      */
-    public String getMaintenanceCostRatio(){
+    public String getMaintenanceCostRatio() {
         StringBuilder builder = new StringBuilder();
         MdIncomeLeaseCost query = new MdIncomeLeaseCost();
         query.setIncomeId(miId);
@@ -470,11 +471,122 @@ public class GenerateMdIncomeService {
     }
 
     /**
-     * 土地使用税
+     * 维修保养费
      * @return
      */
-    public String getLandUseTax(){
-        return "";
+    public String getMaintenance(){
+        StringBuilder builder = new StringBuilder();
+        MdIncomeLeaseCost query = new MdIncomeLeaseCost();
+        query.setIncomeId(miId);
+        List<MdIncomeLeaseCostVo> leaseVoList = mdIncomeLeaseCostDao.getLeaseCostList(query).stream().map(mdIncomeLeaseCost -> mdIncomeService.getMdIncomeLeaseCostVo(mdIncomeLeaseCost)).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(leaseVoList)) {
+            leaseVoList.stream().filter(mdIncomeLeaseCostVo -> {
+                if (mdIncomeLeaseCostVo.getBeginDate() == null || mdIncomeLeaseCostVo.getEndDate() == null) {
+                    return false;
+                }
+                return true;
+            }).forEach(mdIncomeLeaseCostVo -> {
+                builder.append(DateUtils.format(mdIncomeLeaseCostVo.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN));
+                builder.append("-");
+                builder.append(DateUtils.format(mdIncomeLeaseCostVo.getEndDate(), DateUtils.DATE_CHINESE_PATTERN));
+                builder.append(":");
+                builder.append(mdIncomeLeaseCostVo.getMaintenance());
+                builder.append(";");
+            });
+        }
+        return builder.toString();
+    }
+
+    /**
+     * 土地使用税
+     *
+     * @return
+     */
+    public String getLandUseTax() {
+        StringBuilder builder = new StringBuilder();
+        MdIncomeLeaseCost query = new MdIncomeLeaseCost();
+        query.setIncomeId(miId);
+        List<MdIncomeLeaseCostVo> leaseVoList = mdIncomeLeaseCostDao.getLeaseCostList(query).stream().map(mdIncomeLeaseCost -> mdIncomeService.getMdIncomeLeaseCostVo(mdIncomeLeaseCost)).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(leaseVoList)) {
+            leaseVoList.stream().filter(mdIncomeLeaseCostVo -> {
+                if (mdIncomeLeaseCostVo.getBeginDate() == null || mdIncomeLeaseCostVo.getEndDate() == null || mdIncomeLeaseCostVo.getLandUseTax() == null) {
+                    return false;
+                }
+                return true;
+            }).forEach(mdIncomeLeaseCostVo -> {
+                builder.append(DateUtils.format(mdIncomeLeaseCostVo.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN));
+                builder.append("-");
+                builder.append(DateUtils.format(mdIncomeLeaseCostVo.getEndDate(), DateUtils.DATE_CHINESE_PATTERN));
+                builder.append(":");
+                builder.append(mdIncomeLeaseCostVo.getLandUseTax().toString());
+                builder.append(";");
+            });
+        }
+        return builder.toString();
+    }
+
+    /**
+     * 保险费/年报费
+     * @return
+     */
+    public String getInsurancePremium(){
+        StringBuilder builder = new StringBuilder();
+        MdIncomeLeaseCost query = new MdIncomeLeaseCost();
+        query.setIncomeId(miId);
+        List<MdIncomeLeaseCostVo> leaseVoList = mdIncomeLeaseCostDao.getLeaseCostList(query).stream().map(mdIncomeLeaseCost -> mdIncomeService.getMdIncomeLeaseCostVo(mdIncomeLeaseCost)).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(leaseVoList)) {
+            leaseVoList.stream().filter(mdIncomeLeaseCostVo -> {
+                if (mdIncomeLeaseCostVo.getBeginDate() == null || mdIncomeLeaseCostVo.getEndDate() == null) {
+                    return false;
+                }
+                return true;
+            }).forEach(mdIncomeLeaseCostVo -> {
+                builder.append(DateUtils.format(mdIncomeLeaseCostVo.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN));
+                builder.append("-");
+                builder.append(DateUtils.format(mdIncomeLeaseCostVo.getEndDate(), DateUtils.DATE_CHINESE_PATTERN));
+                builder.append(":");
+                builder.append(mdIncomeLeaseCostVo.getInsurancePremium());
+                builder.append(";");
+            });
+        }
+        return builder.toString();
+    }
+
+    /**
+     * 管理费
+     *
+     * @return
+     */
+    public String getManagementCost() {
+        StringBuilder builder = new StringBuilder();
+        MdIncomeLeaseCost query = new MdIncomeLeaseCost();
+        query.setIncomeId(miId);
+        List<MdIncomeLeaseCostVo> leaseVoList = mdIncomeLeaseCostDao.getLeaseCostList(query).stream().map(mdIncomeLeaseCost -> mdIncomeService.getMdIncomeLeaseCostVo(mdIncomeLeaseCost)).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(leaseVoList)) {
+            leaseVoList.stream().filter(mdIncomeLeaseCostVo -> {
+                if (mdIncomeLeaseCostVo.getBeginDate() == null || mdIncomeLeaseCostVo.getEndDate() == null) {
+                    return false;
+                }
+                if (mdIncomeLeaseCostVo.getManagementCostRatio() == null) {
+                    return false;
+                }
+                return true;
+            }).forEach(mdIncomeLeaseCostVo -> {
+                builder.append(DateUtils.format(mdIncomeLeaseCostVo.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN));
+                builder.append("-");
+                builder.append(DateUtils.format(mdIncomeLeaseCostVo.getEndDate(), DateUtils.DATE_CHINESE_PATTERN));
+                builder.append(":");
+                MdIncomeDateSection mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
+                if (mdIncomeDateSection != null) {
+                    if (mdIncomeDateSection.getIncomeTotal() != null){
+                        BigDecimal temp = mdIncomeLeaseCostVo.getManagementCostRatio().multiply(mdIncomeDateSection.getIncomeTotal());
+                        builder.append(temp.toString());
+                    }
+                }
+                builder.append(";");
+            });
+        }
+        return builder.toString();
     }
 
     private List<MdIncomeDateSection> getMdIncomeDateSectionList() {
