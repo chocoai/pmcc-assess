@@ -57,7 +57,7 @@ public class GenerateMdCompareService {
     private GenerateMdCompareService() {
     }
 
-    public GenerateMdCompareService(Integer mcId, Date date) throws Exception {
+    public GenerateMdCompareService(Integer mcId, Date date,Integer areaId) throws Exception {
         this.mcId = mcId;
         this.valueTimePoint = date;
         this.commonService = SpringContextUtils.getBean(CommonService.class);
