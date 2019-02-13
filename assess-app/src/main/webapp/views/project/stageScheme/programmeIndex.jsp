@@ -85,7 +85,7 @@
                                             <option value="">-请选择-</option>
                                             <c:forEach items="${entrustmentPurposes}" var="entrustmentPurpose">
                                                 <c:choose>
-                                                    <c:when test="${entrustmentPurpose.id eq item.valueDefinition}">
+                                                    <c:when test="${entrustmentPurpose.id eq item.entrustPurpose}">
                                                         <option value="${entrustmentPurpose.id}"
                                                                 selected="selected">${entrustmentPurpose.name}</option>
                                                     </c:when>

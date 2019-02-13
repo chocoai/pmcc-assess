@@ -282,22 +282,24 @@ public class AsposeUtils {
         }
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
+
         double top = 0.0;
         for (int i = 0; i < images.size(); i++) {
-            double left = 0.0;
-            if (i % 2 == 0) {
-                top += height;
-            }
-            if (i % 2 != 0) {
-                left += width + 20;
-            }
-            Shape shape = new Shape(doc, ShapeType.IMAGE);
-            shape.getImageData().setImage(images.get(i));
-            shape.setTop(top);
-            shape.setLeft(left);
-            shape.setWidth(width);
-            shape.setHeight(height);
-            builder.insertNode(shape);
+//            double left = 0.0;
+//            if (i % 2 == 0) {
+//                top += height;
+//            }
+//            if (i % 2 != 0) {
+//                left += width + 20;
+//            }
+//            Shape shape = new Shape(doc, ShapeType.IMAGE);
+//            shape.getImageData().setImage(images.get(i));shape.setFilled();
+////            shape.setTop(top);
+////            shape.setLeft(left);
+//            shape.setWidth(width);
+//            shape.setHeight(height);
+//            builder.insertNode(shape);
+            builder.insertImage(images.get(i),width,height);
         }
         doc.save(filePath);
     }
