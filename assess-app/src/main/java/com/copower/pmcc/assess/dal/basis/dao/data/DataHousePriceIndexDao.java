@@ -35,10 +35,10 @@ public class DataHousePriceIndexDao {
         DataHousePriceIndexExample example = new DataHousePriceIndexExample();
         DataHousePriceIndexExample.Criteria criteria = example.createCriteria();
         if (startTime != null) {
-            criteria.andYearMonthCalendarGreaterThan(startTime);//大于
+            criteria.andYearMonthCalendarGreaterThanOrEqualTo(startTime);//大于
         }
         if (endTime != null) {
-            criteria.andYearMonthCalendarLessThan(endTime);//小于
+            criteria.andYearMonthCalendarLessThanOrEqualTo(endTime);//小于
         }
         if (StringUtils.isNotBlank(province)) {
             criteria.andProvinceEqualTo(province);
@@ -49,6 +49,25 @@ public class DataHousePriceIndexDao {
         if (StringUtils.isNotBlank(district)) {
             criteria.andDistrictEqualTo(district);
         }
+        return dataHousePriceIndexMapper.selectByExample(example);
+    }
+
+    public List<DataHousePriceIndex> listEndStart(Date startTime, Date endTime, String province, String city) {
+        DataHousePriceIndexExample example = new DataHousePriceIndexExample();
+        DataHousePriceIndexExample.Criteria criteria = example.createCriteria();
+        if (startTime != null) {
+            criteria.andYearMonthCalendarGreaterThanOrEqualTo(startTime);//大于
+        }
+        if (endTime != null) {
+            criteria.andYearMonthCalendarLessThanOrEqualTo(endTime);//小于
+        }
+        if (StringUtils.isNotBlank(province)) {
+            criteria.andProvinceEqualTo(province);
+        }
+        if (StringUtils.isNotBlank(city)) {
+            criteria.andCityEqualTo(city);
+        }
+        criteria.andDistrictEqualTo("");
         return dataHousePriceIndexMapper.selectByExample(example);
     }
 

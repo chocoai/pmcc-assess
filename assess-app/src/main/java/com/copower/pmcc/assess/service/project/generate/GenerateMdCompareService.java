@@ -18,6 +18,7 @@ import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicHouseTradingService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.method.MdMarketCompareService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -38,6 +39,7 @@ public class GenerateMdCompareService {
 
     private Integer mcId;
     private Date valueTimePoint;
+    private Integer areaId;
     private List<DataSetUseField> setUseFieldList;
     private MdMarketCompare marketCompare;
     private MdMarketCompareItem evaluationItem;
@@ -52,6 +54,7 @@ public class GenerateMdCompareService {
     private BasicApplyService basicApplyService;
     private BasicHouseTradingService basicHouseTradingService;
     private BaseDataDicService baseDataDicService;
+    private SchemeAreaGroupService schemeAreaGroupService;
     private DataHousePriceIndexDao dataHousePriceIndexDao;
 
     private GenerateMdCompareService() {
@@ -60,6 +63,7 @@ public class GenerateMdCompareService {
     public GenerateMdCompareService(Integer mcId, Date date,Integer areaId) throws Exception {
         this.mcId = mcId;
         this.valueTimePoint = date;
+        this.areaId = areaId;
         this.commonService = SpringContextUtils.getBean(CommonService.class);
         this.baseReportFieldService = SpringContextUtils.getBean(BaseReportFieldService.class);
         this.baseAttachmentService = SpringContextUtils.getBean(BaseAttachmentService.class);
@@ -69,6 +73,7 @@ public class GenerateMdCompareService {
         this.basicHouseTradingService = SpringContextUtils.getBean(BasicHouseTradingService.class);
         this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
         this.dataHousePriceIndexDao = SpringContextUtils.getBean(DataHousePriceIndexDao.class);
+        this.schemeAreaGroupService = SpringContextUtils.getBean(SchemeAreaGroupService.class);
         getEvaluationItemList();
     }
 
@@ -170,39 +175,39 @@ public class GenerateMdCompareService {
         if (fieldCompareEnum != null) {
             String title = fieldCompareEnum.getName();
             switch (fieldCompareEnum) {
-                case COMPARABLE_BASIS:
-                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "comparative.basis", "trading.status", false);
-                    break;
-                case LOCATION_CONDITION:
-                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "location.condition", "", false);
-                    break;
-                case RIGHTS_INTERESTS:
-                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "equity.condition", "", false);
-                    break;
-                case ENTITY_CONDITION:
-                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "entity.condition", "", false);
-                    break;
-                case MARKET_ADJUSTMENT:
-                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "comparative.basis", "", true);
-                    break;
-                case LOCATION_QUOTIENT:
-                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "location.condition", "", true);
-                    break;
-                case EQUITY_INDEX:
-                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "equity.condition", "", true);
-                    break;
-                case ENTITY_INDEX:
-                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "entity.condition", "", true);
-                    break;
-                case CALCULATION_RESULT:
-                    localPath = getCalculationTable(title, evaluationItemList, caseItemList);
-                    break;
-                case DATE_REVISION:
-                    localPath = getDateRevision(title, caseItemList);
-                    break;
-                case TRANSACTION_MODIFICATION:
-                    localPath = getTransaction(title, caseItemList);
-                    break;
+//                case COMPARABLE_BASIS:
+//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "comparative.basis", "trading.status", false);
+//                    break;
+//                case LOCATION_CONDITION:
+//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "location.condition", "", false);
+//                    break;
+//                case RIGHTS_INTERESTS:
+//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "equity.condition", "", false);
+//                    break;
+//                case ENTITY_CONDITION:
+//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "entity.condition", "", false);
+//                    break;
+//                case MARKET_ADJUSTMENT:
+//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "comparative.basis", "", true);
+//                    break;
+//                case LOCATION_QUOTIENT:
+//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "location.condition", "", true);
+//                    break;
+//                case EQUITY_INDEX:
+//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "equity.condition", "", true);
+//                    break;
+//                case ENTITY_INDEX:
+//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "entity.condition", "", true);
+//                    break;
+//                case CALCULATION_RESULT:
+//                    localPath = getCalculationTable(title, evaluationItemList, caseItemList);
+//                    break;
+//                case DATE_REVISION:
+//                    localPath = getDateRevision(title, caseItemList);
+//                    break;
+//                case TRANSACTION_MODIFICATION:
+//                    localPath = getTransaction(title, caseItemList);
+//                    break;
                 case HOUSEPRICE_INDEX:
                     localPath = getHousepriceIndex(title, caseItemList);
                     break;
@@ -482,7 +487,7 @@ public class GenerateMdCompareService {
         builder.endRow();
         String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat sdf2 = new SimpleDateFormat(" yyyy年MM月dd日 ");
+        SimpleDateFormat sdf2 = new SimpleDateFormat(" yyyy年MM月");
         List<String> dateList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(caseItemList)) {
             for (MdMarketCompareItem item : caseItemList) {
@@ -497,14 +502,21 @@ public class GenerateMdCompareService {
             Collections.sort(dateList);
             //获取最小日期
             Date startDate = sdf.parse(dateList.get(0));
-            //获取时间区间内的房价指数
-            List<DataHousePriceIndex> dataHousePriceIndexList = dataHousePriceIndexDao.listEndStart(startDate, this.valueTimePoint, null, null, null);
-            for (DataHousePriceIndex index : dataHousePriceIndexList) {
-                builder.insertCell();
-                builder.writeln(sdf2.format(index.getYearMonthCalendar()));
-                builder.insertCell();
-                builder.writeln(index.getIndexCalendar());
-                builder.endRow();
+
+            SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(this.areaId);
+            //获取时间区间与地区内的房价指数
+            List<DataHousePriceIndex> dataHousePriceIndexList = dataHousePriceIndexDao.listEndStart(startDate, this.valueTimePoint, schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict());
+            if (CollectionUtils.isEmpty(dataHousePriceIndexList)) {
+                dataHousePriceIndexList = dataHousePriceIndexDao.listEndStart(startDate, this.valueTimePoint, schemeAreaGroup.getProvince(), schemeAreaGroup.getCity());
+            }
+            if (CollectionUtils.isNotEmpty(dataHousePriceIndexList)) {
+                for (DataHousePriceIndex index : dataHousePriceIndexList) {
+                    builder.insertCell();
+                    builder.writeln(sdf2.format(index.getYearMonthCalendar()));
+                    builder.insertCell();
+                    builder.writeln(index.getIndexCalendar());
+                    builder.endRow();
+                }
             }
         }
         //表格属性
