@@ -102,6 +102,7 @@ public class GenerateBaseDataService {
     private DeclareRealtyLandCertService declareRealtyLandCertService;
     private SchemeInfoService schemeInfoService;
     private EvaluationMethodService evaluationMethodService;
+    private SchemeLiquidationAnalysisService schemeLiquidationAnalysisService;
 
     //构造器必须传入的参数
     private Integer projectId;
@@ -622,6 +623,93 @@ public class GenerateBaseDataService {
             }
         }
         return builder.toString();
+    }
+
+    /**
+     * 变现分析表
+     *
+     * @param title  标题
+     * @return
+     */
+    public String getLiquidationAnalysis(String title) throws Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        for (SchemeJudgeObject judgeObject : this.getSchemeJudgeObjectList()) {
+            createLiquidationAnalysisTable(builder, judgeObject);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    public void createLiquidationAnalysisTable(DocumentBuilder builder, SchemeJudgeObject judgeObject) throws Exception {
+        builder.writeln(judgeObject.getName());
+        //表头
+        builder.insertCell();
+        builder.writeln("物业类型");
+        builder.insertCell();
+        builder.writeln("税率");
+        builder.insertCell();
+        builder.writeln("备注");
+        builder.insertCell();
+        builder.writeln("商业");
+        builder.endRow();
+
+        builder.insertCell();
+        builder.writeln("面积");
+        builder.insertCell();
+        builder.insertCell();
+        builder.insertCell();
+        builder.writeln(judgeObject.getEvaluationArea().toString());
+        builder.endRow();
+
+        builder.insertCell();
+        builder.writeln("评估价");
+        builder.insertCell();
+        builder.insertCell();
+        builder.insertCell();
+        builder.writeln(judgeObject.getPrice().toString());
+        builder.endRow();
+        SchemeLiquidationAnalysis object = new SchemeLiquidationAnalysis();
+        object.setJudgeObjectId(judgeObject.getId());
+        SchemeLiquidationAnalysis schemeLiquidationAnalysis = schemeLiquidationAnalysisService.getDataByJudgeObjectId(judgeObject.getId());
+        List<SchemeLiquidationAnalysisItem> itemList = schemeLiquidationAnalysisService.getAnalysisItemList(schemeLiquidationAnalysis.getPlanDetailsId());
+        for (SchemeLiquidationAnalysisItem item : itemList) {
+            builder.insertCell();
+            if (!StringUtils.isEmpty(item.getTaxRateName())) {
+                builder.writeln(item.getTaxRateName());
+            } else {
+                builder.writeln("空");
+            }
+            builder.insertCell();
+            if (item.getCalculationMethod() == 1 && !StringUtils.isEmpty(item.getTaxRateValue())) {
+                builder.writeln(new BigDecimal(item.getTaxRateValue()).multiply(new BigDecimal("100")).stripTrailingZeros().toString() + "%");
+            } else if (item.getCalculationMethod() == 0 && !StringUtils.isEmpty(item.getTaxRateValue())) {
+                builder.writeln(item.getTaxRateValue() + "元/㎡");
+            } else {
+                builder.writeln("空");
+            }
+            builder.insertCell();
+            if (!StringUtils.isEmpty(item.getRemark())) {
+                builder.writeln(item.getRemark());
+            } else {
+                builder.writeln("空");
+            }
+            builder.insertCell();
+            if (!StringUtils.isEmpty(item.getPrice().toString())) {
+                builder.writeln(item.getPrice().toString());
+            } else {
+                builder.writeln("空");
+            }
+            builder.endRow();
+        }
+        builder.insertCell();
+        builder.writeln("合计费用");
+        builder.insertCell();
+        builder.insertCell();
+        builder.insertCell();
+        builder.writeln(schemeLiquidationAnalysis.getTotal().toString());
+        builder.endRow();
     }
 
     /**
@@ -4915,6 +5003,7 @@ public class GenerateBaseDataService {
         this.declareRealtyLandCertService = SpringContextUtils.getBean(DeclareRealtyLandCertService.class);
         this.schemeInfoService = SpringContextUtils.getBean(SchemeInfoService.class);
         this.evaluationMethodService = SpringContextUtils.getBean(EvaluationMethodService.class);
+        this.schemeLiquidationAnalysisService = SpringContextUtils.getBean(SchemeLiquidationAnalysisService.class);
     }
 
     private String toSetString(Set<String> stringSet) {

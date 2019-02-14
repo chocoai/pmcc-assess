@@ -141,7 +141,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach items="${ownershipCertFileList}" var="item" varStatus="i">
+                            <c:forEach items="${ownershipCertFileList.get(judgeObject.id)}" var="item" varStatus="i">
                                 <tr>
                                     <th>${i}</th>
                                     <td>${item.fileName}</td>
@@ -180,7 +180,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <c:forEach items="${inventoryAddressFileList}" var="item" varStatus="i">
+                                        <c:forEach items="${inventoryAddressFileList.get(judgeObject.id)}" var="item" varStatus="i">
                                             <tr>
                                                 <th>${i}</th>
                                                 <td>${item.fileName}</td>

@@ -23,7 +23,7 @@ public class ProjectReportController {
     @Autowired
     private GenerateReportGenerationService generateReportGenerationService;
 
-    @PostMapping(value = "/generate", name = "生产报告模板")
+    @PostMapping(value = "/generate", name = "生成报告")
     public HttpResult generate(String ids, GenerateReportGenerationDto generateReportGenerationDto) {
         //生成报告信息
         try {

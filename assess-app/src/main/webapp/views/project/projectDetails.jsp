@@ -193,7 +193,7 @@
 
         loadPlanItem: function (planId) {
             $.ajax({
-                url: '${pageContext.request.contextPath}/projectInfo/getProjectPlanItem1',
+                url: '${pageContext.request.contextPath}/projectInfo/getProjectPlanItem',
                 data: {planId: planId},
                 success: function (result) {
                     $('#plan_item_' + planId).empty();

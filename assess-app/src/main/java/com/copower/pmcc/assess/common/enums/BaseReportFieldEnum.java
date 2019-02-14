@@ -43,6 +43,7 @@ public enum BaseReportFieldEnum {
     WeightSpecification("", "权重说明"),
     TotalRealEstatePrice("", "房地产总价"),
     ValueExpressionResult("", "价值表达结果"),
+    LIQUIDATION_ANALYSIS("", "变现分析税费"),
     StatutoryOptimumReimbursement("", "法定优先受偿款"),
     reportIssuanceDate("", "报告出具日期"),
     ReportingCategories("", "报告类别"),

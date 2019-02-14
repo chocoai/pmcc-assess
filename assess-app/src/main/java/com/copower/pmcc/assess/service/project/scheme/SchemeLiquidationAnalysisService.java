@@ -196,6 +196,12 @@ public class SchemeLiquidationAnalysisService {
         return schemeLiquidationAnalysisDao.getSchemeLiquidationAnalysis(where);
     }
 
+    public SchemeLiquidationAnalysis getDataByJudgeObjectId(Integer judgeObjectId) {
+        SchemeLiquidationAnalysis where = new SchemeLiquidationAnalysis();
+        where.setJudgeObjectId(judgeObjectId);
+        return schemeLiquidationAnalysisDao.getSchemeLiquidationAnalysis(where);
+    }
+
     public SchemeLiquidationAnalysis getSchemeLiquidationAnalysis(Integer id){
         return schemeLiquidationAnalysisDao.getSchemeLiquidationAnalysis(id);
     }
