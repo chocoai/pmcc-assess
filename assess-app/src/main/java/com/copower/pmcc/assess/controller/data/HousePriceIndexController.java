@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.data;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndex;
 import com.copower.pmcc.assess.dto.input.data.DataHousePriceIndexDto;
 import com.copower.pmcc.assess.dto.output.data.DataHousePriceIndexVo;
@@ -64,7 +65,8 @@ public class HousePriceIndexController {
 
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdate", method = {RequestMethod.POST}, name = "房价指数 更新")
-    public HttpResult add(DataHousePriceIndexDto housePriceIndexDto) {
+    public HttpResult add(String formData) {
+        DataHousePriceIndexDto housePriceIndexDto = JSON.parseObject(formData, DataHousePriceIndexDto.class);
         try {
             housePriceIndexService.saveAndUpdateDataHousePriceIndex(housePriceIndexDto);
         } catch (Exception e) {

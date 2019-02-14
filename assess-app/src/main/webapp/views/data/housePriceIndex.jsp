@@ -36,9 +36,8 @@
                                     开始日期
                                 </label>
                                 <div class="col-sm-3">
-                                    <input type="text" data-date-format="yyyy-mm-dd"
-                                           placeholder="开始日期" id="startTime" name="startTime"
-                                           class="form-control date-picker dbdate">
+                                    <input type="text" placeholder="开始日期" id="startTime"
+                                           name="startTime" class="form-control date-month">
                                 </div>
                             </div>
                             <div>
@@ -46,9 +45,8 @@
                                     结束日期
                                 </label>
                                 <div class="col-sm-3">
-                                    <input type="text" data-date-format="yyyy-mm-dd"
-                                           placeholder="结束日期" id="endTime" name="endTime"
-                                           class="form-control date-picker dbdate">
+                                    <input type="text" placeholder="结束日期" id="endTime"
+                                           name="endTime" class="form-control date-month">
                                 </div>
                             </div>
 
@@ -83,6 +81,16 @@
     $(function () {
         dataProperty.prototype.loadDataDicList();
         dataProperty.prototype.select2Load();
+
+        DatepickerUtils.initDate($('.date-month'), {
+            autoclose: true,
+            todayBtn: "linked",
+            language: "zh-CN",
+            clearBtn: true,
+            format: 'yyyy-mm',
+            startView: 4,
+            minView: 3
+        });
     });
     var dataProperty = function () {
 
@@ -103,7 +111,12 @@
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'yearMonthCalendarName', title: '日期'});
+            cols.push({
+                field: 'yearMonthCalendar', title: '日期', formatter: function (value, row, index) {
+                    return dataProperty.prototype.formatDate(row.yearMonthCalendar);
+                }
+            });
+
             cols.push({field: 'provinceName', title: '省'});
             cols.push({field: 'cityName', title: '市'});
             cols.push({field: 'districtName', title: '县'});
@@ -120,7 +133,7 @@
             });
             $("#" + dataProperty.prototype.config().table).bootstrapTable('destroy');
             TableInit(dataProperty.prototype.config().table, "${pageContext.request.contextPath}/housePriceIndex/list", cols, {
-                startTime: $("#startTime").val(),endTime:$("#endTime").val()
+                startTime: $("#startTime").val() + "-01", endTime: $("#endTime").val() + "-01"
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -167,11 +180,15 @@
                 return false;
             }
             var data = formParams(dataProperty.prototype.config().frm);
+            console.log(data);
+            data.yearMonthCalendar = data.yearMonthCalendar + "-01";
+            console.log(data);
+            console.log(data.yearMonthCalendar + "------");
             $.ajax({
                 url: "${pageContext.request.contextPath}/housePriceIndex/saveAndUpdate",
                 type: "post",
                 dataType: "json",
-                data: data,
+                data: {formData: JSON.stringify(data)},
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
@@ -224,8 +241,25 @@
             } else {
                 $("#" + frm + " ." + name).val(null).trigger("change");
             }
+        },
+        //日期格式化
+        formatDate: function (v) {
+            if (!v) {
+                return "";
+            }
+            if (/^(-)?\d{1,10}$/.test(v)) {
+                v = v * 1000;
+            } else if (/^(-)?\d{1,13}$/.test(v)) {
+                v = v * 1;
+            }
+            var dateObj = new Date(v);
+            var month = dateObj.getMonth() + 1;
+            if (month < 10) {
+                month = "0" + month;
+            }
+            var UnixTimeToDate = dateObj.getFullYear() + '-' + month;
+            return UnixTimeToDate;
         }
-
     }
 </script>
 <div id="divBoxFather" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
@@ -249,9 +283,10 @@
                                             日期<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" name="yearMonthCalendar"
-                                                   placeholder="日期" required="required">
+                                            <input type="text" placeholder="月份" id="yearMonthCalendar"
+                                                   required="required"
+                                                   name="yearMonthCalendar" class="form-control date-month"
+                                                   data-date-format="yyyy-mm">
                                         </div>
                                     </div>
                                 </div>
@@ -296,7 +331,8 @@
                                             指数<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" data-rule-number='true' name="indexCalendar"
+                                            <input type="text" class="form-control" data-rule-number='true'
+                                                   name="indexCalendar"
                                                    placeholder="指数(数字)" required="required">
                                         </div>
                                     </div>
