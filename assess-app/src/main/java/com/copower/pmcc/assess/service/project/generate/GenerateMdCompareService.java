@@ -186,42 +186,42 @@ public class GenerateMdCompareService {
         if (fieldCompareEnum != null) {
             String title = fieldCompareEnum.getName();
             switch (fieldCompareEnum) {
-//                case COMPARABLE_BASIS:
-//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "comparative.basis", "trading.status", false);
-//                    break;
-//                case LOCATION_CONDITION:
-//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "location.condition", "", false);
-//                    break;
-//                case RIGHTS_INTERESTS:
-//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "equity.condition", "", false);
-//                    break;
-//                case ENTITY_CONDITION:
-//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "entity.condition", "", false);
-//                    break;
-//                case MARKET_ADJUSTMENT:
-//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "comparative.basis", "", true);
-//                    break;
-//                case LOCATION_QUOTIENT:
-//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "location.condition", "", true);
-//                    break;
-//                case EQUITY_INDEX:
-//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "equity.condition", "", true);
-//                    break;
-//                case ENTITY_INDEX:
-//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "entity.condition", "", true);
-//                    break;
-//                case CALCULATION_RESULT:
-//                    localPath = getCalculationTable(title, evaluationItemList, caseItemList);
-//                    break;
-//                case DATE_REVISION:
-//                    localPath = getDateRevision(title, caseItemList);
-//                    break;
-//                case TRANSACTION_MODIFICATION:
-//                    localPath = getTransaction(title, caseItemList);
-//                    break;
-//                case HOUSEPRICE_INDEX:
-//                    localPath = getHousepriceIndex(title, caseItemList);
-//                    break;
+                case COMPARABLE_BASIS:
+                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "comparative.basis", "trading.status", false);
+                    break;
+                case LOCATION_CONDITION:
+                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "location.condition", "", false);
+                    break;
+                case RIGHTS_INTERESTS:
+                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "equity.condition", "", false);
+                    break;
+                case ENTITY_CONDITION:
+                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "entity.condition", "", false);
+                    break;
+                case MARKET_ADJUSTMENT:
+                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "comparative.basis", "", true);
+                    break;
+                case LOCATION_QUOTIENT:
+                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "location.condition", "", true);
+                    break;
+                case EQUITY_INDEX:
+                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "equity.condition", "", true);
+                    break;
+                case ENTITY_INDEX:
+                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "entity.condition", "", true);
+                    break;
+                case CALCULATION_RESULT:
+                    localPath = getCalculationTable(title, evaluationItemList, caseItemList);
+                    break;
+                case DATE_REVISION:
+                    localPath = getDateRevision(title, caseItemList);
+                    break;
+                case TRANSACTION_MODIFICATION:
+                    localPath = getTransaction(title, caseItemList);
+                    break;
+                case HOUSEPRICE_INDEX:
+                    localPath = getHousepriceIndex(title, caseItemList);
+                    break;
                 case LIQUIDATION_ANALYSIS:
                     localPath = getLiquidationAnalysis(title, this.areaId);
                     break;
@@ -552,14 +552,14 @@ public class GenerateMdCompareService {
         String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
         List<SchemeJudgeObjectVo> schemeJudgeObjectList = schemeJudgeObjectService.getSchemeJudgeObjectList(areaId);
         for (SchemeJudgeObjectVo judgeObjectVo : schemeJudgeObjectList) {
-            createLiquidationAnalysisTable(builder, title, judgeObjectVo);
+            createLiquidationAnalysisTable(builder, judgeObjectVo);
         }
 
         doc.save(localPath);
         return localPath;
     }
 
-    public void createLiquidationAnalysisTable(DocumentBuilder builder, String title, SchemeJudgeObjectVo vo) throws Exception {
+    public void createLiquidationAnalysisTable(DocumentBuilder builder, SchemeJudgeObjectVo vo) throws Exception {
         builder.writeln(vo.getName());
         //表头
         builder.insertCell();
