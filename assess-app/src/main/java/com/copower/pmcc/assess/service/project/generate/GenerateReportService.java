@@ -240,57 +240,44 @@ public class GenerateReportService {
             //书签map
             Map<String, String> bookmarkMap = Maps.newHashMap();
             Map<String, String> bookmarkFileMap = Maps.newHashMap();
-            List<Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>>> setList = getReportMap(baseReportTemplate, new Document(tempDir), generateReportGeneration, reportType);
-            for (Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> mapSet : setList) {
+            List<Set<Map<String, Map<BaseReportFieldReplaceEnum, String>>>> setList = getReportMap(baseReportTemplate, new Document(tempDir), generateReportGeneration, reportType);
+            for (Set<Map<String, Map<BaseReportFieldReplaceEnum, String>>> mapSet : setList) {
                 if (CollectionUtils.isNotEmpty(mapSet)) {
-                    Iterator<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> iterator = mapSet.iterator();
+                    Iterator<Map<String, Map<BaseReportFieldReplaceEnum, String>>> iterator = mapSet.iterator();
                     while (iterator.hasNext()) {
                         //这一层实际只有一个值
-                        Map<String, Map<BaseReportFieldReplaceEnum, Object>> mapMap = iterator.next();
-                        Iterator<Map.Entry<String, Map<BaseReportFieldReplaceEnum, Object>>> entryIterator = mapMap.entrySet().iterator();
+                        Map<String, Map<BaseReportFieldReplaceEnum, String>> mapMap = iterator.next();
+                        Iterator<Map.Entry<String, Map<BaseReportFieldReplaceEnum, String>>> entryIterator = mapMap.entrySet().iterator();
                         while (entryIterator.hasNext()) {
-                            Map.Entry<String, Map<BaseReportFieldReplaceEnum, Object>> mapEntry = entryIterator.next();
-                            Map<BaseReportFieldReplaceEnum, Object> baseReportFieldReplaceEnumObjectMap = mapEntry.getValue();
+                            Map.Entry<String, Map<BaseReportFieldReplaceEnum, String>> mapEntry = entryIterator.next();
+                            Map<BaseReportFieldReplaceEnum, String> baseReportFieldReplaceEnumObjectMap = mapEntry.getValue();
                             String wordKey = mapEntry.getKey();
-                            Iterator<Map.Entry<BaseReportFieldReplaceEnum, Object>> it = baseReportFieldReplaceEnumObjectMap.entrySet().iterator();
+                            Iterator<Map.Entry<BaseReportFieldReplaceEnum, String>> it = baseReportFieldReplaceEnumObjectMap.entrySet().iterator();
                             //最终要得这一层
                             while (it.hasNext()) {
-                                Map.Entry<BaseReportFieldReplaceEnum, Object> enumObjectEntry = it.next();
+                                Map.Entry<BaseReportFieldReplaceEnum, String> enumObjectEntry = it.next();
                                 BaseReportFieldReplaceEnum replaceEnum = enumObjectEntry.getKey();
-                                Object value = enumObjectEntry.getValue();
+                                String value = enumObjectEntry.getValue();
                                 //文本(字符串)
                                 if (com.google.common.base.Objects.equal(replaceEnum.getKey(), BaseReportFieldReplaceEnum.TEXT.getKey())) {
-                                    if (value != null) {
-                                        if (StringUtils.isNotBlank(value.toString())) {
-                                            textMap.put(wordKey, value.toString());
-                                        }
-                                    } else {
-                                        logger.error(String.format("word模板:%s%s", ChineseToPy.getFullSpell(wordKey), "替换失败!"), new Exception());
-                                    }
+                                    textMap.put(wordKey, value);
                                 }
                                 //文本替换附件
                                 if (Objects.equal(replaceEnum.getKey(), BaseReportFieldReplaceEnum.TEXT_FILE.getKey())) {
-                                    if (value != null) {
-                                        if (StringUtils.isNotBlank(value.toString())) {
-                                            textFileMap.put(wordKey, value.toString());
-                                        }
+                                    if (StringUtils.isNotBlank(value)) {
+                                        textFileMap.put(wordKey, value);
                                     } else {
                                         logger.error(String.format("word模板:%s%s", ChineseToPy.getFullSpell(wordKey), "替换失败!"), new Exception());
                                     }
                                 }
                                 //(书签)
                                 if (com.google.common.base.Objects.equal(replaceEnum.getKey(), BaseReportFieldReplaceEnum.BOOKMARK.getKey())) {
-                                    if (value != null) {
-                                        bookmarkMap.put(wordKey, value.toString());
-                                    } else {
-                                        logger.error(String.format("word模板:%s%s", ChineseToPy.getFullSpell(wordKey), "替换失败!"), new Exception());
-                                        logger.info(System.getProperty("file.encoding"));
-                                    }
+                                    bookmarkMap.put(wordKey, value);
                                 }
                                 //(书签替换附件)
                                 if (Objects.equal(replaceEnum.getKey(), BaseReportFieldReplaceEnum.BOOKMARK_FILE.getKey())) {
-                                    if (value != null) {
-                                        bookmarkFileMap.put(wordKey, value.toString());
+                                    if (StringUtils.isNotBlank(value)) {
+                                        bookmarkFileMap.put(wordKey, value);
                                     } else {
                                         logger.error(String.format("word模板:%s%s", ChineseToPy.getFullSpell(wordKey), "替换失败!"), new Exception());
                                         logger.info(System.getProperty("file.encoding"));
@@ -327,10 +314,10 @@ public class GenerateReportService {
      * @return 如:文号,<文号,四川协和预评（2019）0001号>
      * @throws Exception
      */
-    private List<Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>>> getReportMap(BaseReportTemplate baseReportTemplate, Document document, GenerateReportGeneration generateReportGeneration, String reportType) throws Exception {
-        List<Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>>> list = Lists.newArrayList();
-        Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> preMapSet = Sets.newHashSet();
-        Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> mapSet = Sets.newHashSet();
+    private List<Set<Map<String, Map<BaseReportFieldReplaceEnum, String>>>> getReportMap(BaseReportTemplate baseReportTemplate, Document document, GenerateReportGeneration generateReportGeneration, String reportType) throws Exception {
+        List<Set<Map<String, Map<BaseReportFieldReplaceEnum, String>>>> list = Lists.newArrayList();
+        Set<Map<String, Map<BaseReportFieldReplaceEnum, String>>> preMapSet = Sets.newHashSet();
+        Set<Map<String, Map<BaseReportFieldReplaceEnum, String>>> mapSet = Sets.newHashSet();
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportGeneration.getProjectPlanId());
         GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(generateReportGeneration.getProjectId(), generateReportGeneration.getAreaGroupId(), baseReportTemplate.getId(), projectPlan);
         Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet = Sets.newHashSet();
@@ -1096,7 +1083,7 @@ public class GenerateReportService {
     }
 
 
-    private void replaceReportPutValue(String name, String value, String replaceType, boolean fileFixed, Set<Map<String, Map<BaseReportFieldReplaceEnum, Object>>> mapSet) {
+    private void replaceReportPutValue(String name, String value, String replaceType, boolean fileFixed, Set<Map<String, Map<BaseReportFieldReplaceEnum, String>>> mapSet) {
         if (BaseReportFieldReplaceEnum.TEXT.getKey().equals(replaceType)) {
             if (fileFixed) {
                 mapSet.add(getBaseReportFieldReplaceEnumMap(BaseReportFieldReplaceEnum.TEXT_FILE,
@@ -1123,10 +1110,10 @@ public class GenerateReportService {
      * @param value
      * @return
      */
-    private Map<String, Map<BaseReportFieldReplaceEnum, Object>> getBaseReportFieldReplaceEnumMap(BaseReportFieldReplaceEnum baseReportFieldReplaceEnum, String wordKey, Object value) {
-        Map<String, Map<BaseReportFieldReplaceEnum, Object>> stringEntryMap = new HashMap<String, Map<BaseReportFieldReplaceEnum, Object>>(1);
-        Map<BaseReportFieldReplaceEnum, Object> enumObjectMap = new HashMap<BaseReportFieldReplaceEnum, Object>(1);
-        enumObjectMap.put(baseReportFieldReplaceEnum, value);
+    private Map<String, Map<BaseReportFieldReplaceEnum, String>> getBaseReportFieldReplaceEnumMap(BaseReportFieldReplaceEnum baseReportFieldReplaceEnum, String wordKey, String value) {
+        Map<String, Map<BaseReportFieldReplaceEnum, String>> stringEntryMap = Maps.newHashMap();
+        Map<BaseReportFieldReplaceEnum, String> enumObjectMap = Maps.newHashMap();
+        enumObjectMap.put(baseReportFieldReplaceEnum, StringUtils.defaultString(value,""));
         stringEntryMap.put(wordKey, enumObjectMap);
         return stringEntryMap;
     }
@@ -1140,17 +1127,6 @@ public class GenerateReportService {
             }
         }
         return stringList;
-    }
-
-    private BaseReportField whereBaseReportFieldByName(List<BaseReportField> baseReportFields, String name) {
-        if (CollectionUtils.isNotEmpty(baseReportFields)) {
-            for (BaseReportField baseReportField : baseReportFields) {
-                if (Objects.equal(name, baseReportField.getName())) {
-                    return baseReportField;
-                }
-            }
-        }
-        return null;
     }
 
     /**

@@ -396,12 +396,15 @@
             type: "post",
             dataType: "json",
             success: function (result) {
+                Loading.progressHide();
                 if (result.ret) {
                     getSchemeReportGeneration(data, function (info) {
                         initFormSchemeReportGeneration(info, formId, areaId);
                         Loading.progressHide();
                         toastr.success('报告生成成功!');
                     });
+                }else{
+                    Alert(result.errmsg);
                 }
             },
             error: function (result) {

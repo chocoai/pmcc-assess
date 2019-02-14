@@ -215,7 +215,7 @@ public class AsposeUtils {
         }
         Document doc = new Document(filePath);
         for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {
-            if (StringUtils.isNotBlank(stringStringEntry.getKey()) && StringUtils.isNotBlank(stringStringEntry.getValue())) {
+            if (StringUtils.isNotBlank(stringStringEntry.getKey())) {
                 try {
                     doc.getRange().replace(stringStringEntry.getKey(), stringStringEntry.getValue(), false, false);
                 } catch (Exception e) {
