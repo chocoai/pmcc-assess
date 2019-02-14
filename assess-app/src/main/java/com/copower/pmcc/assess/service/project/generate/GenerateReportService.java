@@ -912,7 +912,7 @@ public class GenerateReportService {
                     if (Objects.equal(BaseReportFieldEnum.LIQUIDATION_ANALYSIS.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
-                            replaceReportPutValue(name, generateBaseDataService.getLiquidationAnalysis(name), bookmarkAndRegex.getType(), false, mapSet);
+                            replaceReportPutValue(name, generateBaseDataService.getLiquidationAnalysis(name), bookmarkAndRegex.getType(), true, mapSet);
                         }
                     }
                     //法定优先受偿款
