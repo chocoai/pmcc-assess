@@ -100,14 +100,14 @@ public enum BaseReportFieldEnum {
     XIEHE_certificateNo("", "机构证书号"),
     XIEHE_certificateEffectiveDate("", "机构证书有效期"),
 
-    HousingOwnershipRegistrationStatementSheet("", "房屋所有权登记状况表"),
-    judgeObjectAreaStatusSheet("", "估价对象区位状况表"),
-    judgeObjectLandStateSheet("", "估价土地实体状况表"),
-    judgeBuildLandStateSheet("", "估价建筑物实体状况表"),
+    HousingOwnershipRegistrationStatementSheet("", "房屋所有权登记状况"),
+    judgeObjectAreaStatusSheet("", "估价对象区位状况"),
+    judgeObjectLandStateSheet("", "估价土地实体状况"),
+    judgeBuildLandStateSheet("", "估价建筑物实体状况"),
     judgeBuildResultSurveySheet("", "估价结果一览表"),
     judgeSummarySheet("", "估价汇总表"),
     //土地证
-    judgeObjectLandUseCertificateSheet("", "土地使用权登记状况表"),
+    judgeObjectLandUseCertificateSheet("", "土地使用权登记状况"),
 
     JUDGEOBJECTPRINCIPALCOPYSHEET("", "估价委托书复印件"),
     EstimatedObjectLocationDiagram("", "估价对象位置示意图"),

@@ -4,9 +4,11 @@ import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.common.CommonService;
@@ -39,6 +41,8 @@ public class DeclareRecordService {
     private SchemeAreaGroupService schemeAreaGroupService;
     @Autowired
     private ErpAreaService erpAreaService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
 
     public Integer saveAndUpdateDeclareRecord(DeclareRecord declareRecord) throws BusinessException {
@@ -110,11 +114,17 @@ public class DeclareRecordService {
         List<DeclareRecord> declareRecords = declareRecordDao.getDeclareRecordByProjectId(projectId);
         List<SchemeAreaGroup> areaGroups = groupDeclareRecord(declareRecords);
         if (CollectionUtils.isNotEmpty(areaGroups)) {
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
             List<DeclareRecord> removeList = Lists.newArrayList();
             for (SchemeAreaGroup areaGroup : areaGroups) {
                 String areaFullName = erpAreaService.getAreaFullName(areaGroup.getProvince(), areaGroup.getCity(), areaGroup.getDistrict());
                 areaGroup.setAreaName(areaFullName);
                 areaGroup.setProjectId(projectId);
+                areaGroup.setValueTimePoint(projectInfo.getValuationDate());
+                areaGroup.setEntrustPurpose(projectInfo.getEntrustPurpose());
+                areaGroup.setRemarkEntrustPurpose(projectInfo.getRemarkEntrustPurpose());
+                areaGroup.setValueDefinition(projectInfo.getValueType());
+                areaGroup.setRemarkEntrustPurpose(projectInfo.getRemarkEntrustPurpose());
                 areaGroup.setPid(0);
                 areaGroup.setCreator(commonService.thisUserAccount());
                 schemeAreaGroupService.add(areaGroup);
@@ -133,7 +143,7 @@ public class DeclareRecordService {
                         schemeJudgeObject.setAreaGroupId(areaGroup.getId());
                         schemeJudgeObject.setOriginalAreaGroupId(areaGroup.getId());
                         schemeJudgeObject.setFloorArea(declareRecord.getFloorArea());
-                        schemeJudgeObject.setName(String.format("%s%s",i, BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
+                        schemeJudgeObject.setName(String.format("%s%s", i, BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
                         schemeJudgeObject.setCertName(declareRecord.getName());
                         schemeJudgeObject.setOwnership(declareRecord.getOwnership());
                         schemeJudgeObject.setSeat(declareRecord.getSeat());
