@@ -9,8 +9,11 @@ import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouseTrading;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeLiquidationAnalysisDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeLiquidationAnalysisItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareItemDto;
+import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
@@ -19,6 +22,7 @@ import com.copower.pmcc.assess.service.basic.BasicHouseTradingService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.method.MdMarketCompareService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -28,6 +32,7 @@ import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
@@ -55,12 +60,15 @@ public class GenerateMdCompareService {
     private BasicHouseTradingService basicHouseTradingService;
     private BaseDataDicService baseDataDicService;
     private SchemeAreaGroupService schemeAreaGroupService;
+    private SchemeJudgeObjectService schemeJudgeObjectService;
     private DataHousePriceIndexDao dataHousePriceIndexDao;
+    private SchemeLiquidationAnalysisDao schemeLiquidationAnalysisDao;
+    private SchemeLiquidationAnalysisItemDao schemeLiquidationAnalysisItemDao;
 
     private GenerateMdCompareService() {
     }
 
-    public GenerateMdCompareService(Integer mcId, Date date,Integer areaId) throws Exception {
+    public GenerateMdCompareService(Integer mcId, Date date, Integer areaId) throws Exception {
         this.mcId = mcId;
         this.valueTimePoint = date;
         this.areaId = areaId;
@@ -74,6 +82,9 @@ public class GenerateMdCompareService {
         this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
         this.dataHousePriceIndexDao = SpringContextUtils.getBean(DataHousePriceIndexDao.class);
         this.schemeAreaGroupService = SpringContextUtils.getBean(SchemeAreaGroupService.class);
+        this.schemeJudgeObjectService = SpringContextUtils.getBean(SchemeJudgeObjectService.class);
+        this.schemeLiquidationAnalysisDao = SpringContextUtils.getBean(SchemeLiquidationAnalysisDao.class);
+        this.schemeLiquidationAnalysisItemDao = SpringContextUtils.getBean(SchemeLiquidationAnalysisItemDao.class);
         getEvaluationItemList();
     }
 
@@ -175,41 +186,44 @@ public class GenerateMdCompareService {
         if (fieldCompareEnum != null) {
             String title = fieldCompareEnum.getName();
             switch (fieldCompareEnum) {
-//                case COMPARABLE_BASIS:
-//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "comparative.basis", "trading.status", false);
-//                    break;
-//                case LOCATION_CONDITION:
-//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "location.condition", "", false);
-//                    break;
-//                case RIGHTS_INTERESTS:
-//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "equity.condition", "", false);
-//                    break;
-//                case ENTITY_CONDITION:
-//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "entity.condition", "", false);
-//                    break;
-//                case MARKET_ADJUSTMENT:
-//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "comparative.basis", "", true);
-//                    break;
-//                case LOCATION_QUOTIENT:
-//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "location.condition", "", true);
-//                    break;
-//                case EQUITY_INDEX:
-//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "equity.condition", "", true);
-//                    break;
-//                case ENTITY_INDEX:
-//                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "entity.condition", "", true);
-//                    break;
-//                case CALCULATION_RESULT:
-//                    localPath = getCalculationTable(title, evaluationItemList, caseItemList);
-//                    break;
-//                case DATE_REVISION:
-//                    localPath = getDateRevision(title, caseItemList);
-//                    break;
-//                case TRANSACTION_MODIFICATION:
-//                    localPath = getTransaction(title, caseItemList);
-//                    break;
+                case COMPARABLE_BASIS:
+                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "comparative.basis", "trading.status", false);
+                    break;
+                case LOCATION_CONDITION:
+                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "location.condition", "", false);
+                    break;
+                case RIGHTS_INTERESTS:
+                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "equity.condition", "", false);
+                    break;
+                case ENTITY_CONDITION:
+                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "entity.condition", "", false);
+                    break;
+                case MARKET_ADJUSTMENT:
+                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "comparative.basis", "", true);
+                    break;
+                case LOCATION_QUOTIENT:
+                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "location.condition", "", true);
+                    break;
+                case EQUITY_INDEX:
+                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "equity.condition", "", true);
+                    break;
+                case ENTITY_INDEX:
+                    localPath = getTable(marketCompareItemDtos, caseItemList, title, "entity.condition", "", true);
+                    break;
+                case CALCULATION_RESULT:
+                    localPath = getCalculationTable(title, evaluationItemList, caseItemList);
+                    break;
+                case DATE_REVISION:
+                    localPath = getDateRevision(title, caseItemList);
+                    break;
+                case TRANSACTION_MODIFICATION:
+                    localPath = getTransaction(title, caseItemList);
+                    break;
                 case HOUSEPRICE_INDEX:
                     localPath = getHousepriceIndex(title, caseItemList);
+                    break;
+                case LIQUIDATION_ANALYSIS:
+                    localPath = getLiquidationAnalysis(title, this.areaId);
                     break;
             }
         }
@@ -524,6 +538,97 @@ public class GenerateMdCompareService {
         doc.save(localPath);
         return localPath;
     }
+
+    /**
+     * 变现分析表
+     *
+     * @param title  标题
+     * @param areaId 区域Id
+     * @return
+     */
+    public String getLiquidationAnalysis(String title, Integer areaId) throws Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        List<SchemeJudgeObjectVo> schemeJudgeObjectList = schemeJudgeObjectService.getSchemeJudgeObjectList(areaId);
+        for (SchemeJudgeObjectVo judgeObjectVo : schemeJudgeObjectList) {
+            createLiquidationAnalysisTable(builder, judgeObjectVo);
+        }
+
+        doc.save(localPath);
+        return localPath;
+    }
+
+    public void createLiquidationAnalysisTable(DocumentBuilder builder, SchemeJudgeObjectVo vo) throws Exception {
+        builder.writeln(vo.getName());
+        //表头
+        builder.insertCell();
+        builder.writeln("物业类型");
+        builder.insertCell();
+        builder.writeln("税率");
+        builder.insertCell();
+        builder.writeln("备注");
+        builder.insertCell();
+        builder.writeln("商业");
+        builder.endRow();
+
+        builder.insertCell();
+        builder.writeln("面积");
+        builder.insertCell();
+        builder.insertCell();
+        builder.insertCell();
+        builder.writeln(vo.getEvaluationArea().toString());
+        builder.endRow();
+
+        builder.insertCell();
+        builder.writeln("评估价");
+        builder.insertCell();
+        builder.insertCell();
+        builder.insertCell();
+        builder.writeln(vo.getPrice().toString());
+        builder.endRow();
+        SchemeLiquidationAnalysis object = new SchemeLiquidationAnalysis();
+        object.setJudgeObjectId(vo.getId());
+        SchemeLiquidationAnalysis schemeLiquidationAnalysis = schemeLiquidationAnalysisDao.getSchemeLiquidationAnalysis(object);
+        List<SchemeLiquidationAnalysisItem> itemList = schemeLiquidationAnalysisItemDao.getSchemeLiquidationAnalysisItemList(schemeLiquidationAnalysis.getId());
+        for (SchemeLiquidationAnalysisItem item : itemList) {
+            builder.insertCell();
+            if (!StringUtils.isEmpty(item.getTaxRateName())) {
+                builder.writeln(item.getTaxRateName());
+            } else {
+                builder.writeln("空");
+            }
+            builder.insertCell();
+            if (item.getCalculationMethod() == 1 && !StringUtils.isEmpty(item.getTaxRateValue())) {
+                builder.writeln(new BigDecimal(item.getTaxRateValue()).multiply(new BigDecimal("100")).stripTrailingZeros().toString() + "%");
+            } else if (item.getCalculationMethod() == 0 && !StringUtils.isEmpty(item.getTaxRateValue())) {
+                builder.writeln(item.getTaxRateValue() + "元/㎡");
+            } else {
+                builder.writeln("空");
+            }
+            builder.insertCell();
+            if (!StringUtils.isEmpty(item.getRemark())) {
+                builder.writeln(item.getRemark());
+            } else {
+                builder.writeln("空");
+            }
+            builder.insertCell();
+            if (!StringUtils.isEmpty(item.getPrice().toString())) {
+                builder.writeln(item.getPrice().toString());
+            } else {
+                builder.writeln("空");
+            }
+            builder.endRow();
+        }
+        builder.insertCell();
+        builder.writeln("合计费用");
+        builder.insertCell();
+        builder.insertCell();
+        builder.insertCell();
+        builder.writeln(schemeLiquidationAnalysis.getTotal().toString());
+        builder.endRow();
+    }
+
 
     //设置表格属性
     public void setTableProperty(DocumentBuilder builder) throws Exception {
