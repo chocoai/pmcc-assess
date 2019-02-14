@@ -885,6 +885,76 @@ public class SchemeAreaGroupExample {
             return (Criteria) this;
         }
 
+        public Criteria andValueDefinitionDescIsNull() {
+            addCriterion("value_definition_desc is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionDescIsNotNull() {
+            addCriterion("value_definition_desc is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionDescEqualTo(String value) {
+            addCriterion("value_definition_desc =", value, "valueDefinitionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionDescNotEqualTo(String value) {
+            addCriterion("value_definition_desc <>", value, "valueDefinitionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionDescGreaterThan(String value) {
+            addCriterion("value_definition_desc >", value, "valueDefinitionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionDescGreaterThanOrEqualTo(String value) {
+            addCriterion("value_definition_desc >=", value, "valueDefinitionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionDescLessThan(String value) {
+            addCriterion("value_definition_desc <", value, "valueDefinitionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionDescLessThanOrEqualTo(String value) {
+            addCriterion("value_definition_desc <=", value, "valueDefinitionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionDescLike(String value) {
+            addCriterion("value_definition_desc like", value, "valueDefinitionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionDescNotLike(String value) {
+            addCriterion("value_definition_desc not like", value, "valueDefinitionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionDescIn(List<String> values) {
+            addCriterion("value_definition_desc in", values, "valueDefinitionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionDescNotIn(List<String> values) {
+            addCriterion("value_definition_desc not in", values, "valueDefinitionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionDescBetween(String value1, String value2) {
+            addCriterion("value_definition_desc between", value1, value2, "valueDefinitionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueDefinitionDescNotBetween(String value1, String value2) {
+            addCriterion("value_definition_desc not between", value1, value2, "valueDefinitionDesc");
+            return (Criteria) this;
+        }
+
         public Criteria andValueConnotationIsNull() {
             addCriterion("value_connotation is null");
             return (Criteria) this;

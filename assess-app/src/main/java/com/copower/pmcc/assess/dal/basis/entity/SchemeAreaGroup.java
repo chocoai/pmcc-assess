@@ -27,6 +27,8 @@ public class SchemeAreaGroup {
 
     private Integer valueDefinition;
 
+    private String valueDefinitionDesc;
+
     private String valueConnotation;
 
     private String valueConnotationDesc;
@@ -135,6 +137,14 @@ public class SchemeAreaGroup {
 
     public void setValueDefinition(Integer valueDefinition) {
         this.valueDefinition = valueDefinition;
+    }
+
+    public String getValueDefinitionDesc() {
+        return valueDefinitionDesc;
+    }
+
+    public void setValueDefinitionDesc(String valueDefinitionDesc) {
+        this.valueDefinitionDesc = valueDefinitionDesc == null ? null : valueDefinitionDesc.trim();
     }
 
     public String getValueConnotation() {

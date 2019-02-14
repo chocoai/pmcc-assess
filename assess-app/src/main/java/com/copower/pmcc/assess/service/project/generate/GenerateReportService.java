@@ -704,18 +704,11 @@ public class GenerateReportService {
                         replaceReportPutValue(name, generateBaseDataService.getValueType(), bookmarkAndRegex.getType(), false, mapSet);
                     }
                 }
-                //价值定义
-                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.DefinitionValue.getName(), name)) {
+                //价值类型描述
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.ValueTypeDesc.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     if (baseReportField != null) {
-                        replaceReportPutValue(name, generateBaseDataService.getDefinitionValue(), bookmarkAndRegex.getType(), false, mapSet);
-                    }
-                }
-                //价值含义
-                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.ValueImplication.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        replaceReportPutValue(name, generateBaseDataService.getValueImplication(), bookmarkAndRegex.getType(), false, mapSet);
+                        replaceReportPutValue(name, generateBaseDataService.getValueTypeDesc(), bookmarkAndRegex.getType(), false, mapSet);
                     }
                 }
                 //价值内涵
@@ -723,6 +716,13 @@ public class GenerateReportService {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     if (baseReportField != null) {
                         replaceReportPutValue(name, generateBaseDataService.getValueImplication(), bookmarkAndRegex.getType(), false, mapSet);
+                    }
+                }
+                //价值内涵描述
+                if (com.google.common.base.Objects.equal(BaseReportFieldEnum.ValueImplicationDesc.getName(), name)) {
+                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                    if (baseReportField != null) {
+                        replaceReportPutValue(name, generateBaseDataService.getValueImplicationDesc(), bookmarkAndRegex.getType(), false, mapSet);
                     }
                 }
                 //设定用途

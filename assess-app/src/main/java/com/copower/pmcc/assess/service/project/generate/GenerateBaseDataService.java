@@ -749,27 +749,16 @@ public class GenerateBaseDataService {
         return errorStr;
     }
 
-    /**
-     * get 价值定义
-     *
-     * @return
-     */
-    public String getDefinitionValue() {
-        if (getSchemeAreaGroup() != null) {
-            BaseDataDic baseDataDic = baseDataDicService.getDataDicById(getSchemeAreaGroup().getValueDefinition());
-            if (baseDataDic != null) {
-                if (StringUtils.isNotBlank(baseDataDic.getRemark())) {
-                    return baseDataDic.getRemark();
-                }
-            }
-        }
-        return errorStr;
+    //价值类型描述
+    public String getValueTypeDesc() {
+        return getSchemeAreaGroup().getValueDefinitionDesc();
     }
+
 
     /**
      * 注册房产估价师
      *
-     * @param account
+     * @param id
      * @return
      */
     public String getRegisteredRealEstateValuer(Integer id) {
@@ -785,7 +774,7 @@ public class GenerateBaseDataService {
     /**
      * 注册房产估价师 编号
      *
-     * @param account
+     * @param id
      * @return
      * @throws Exception
      */
@@ -920,6 +909,7 @@ public class GenerateBaseDataService {
 
     /**
      * 评估依据假设原则
+     *
      * @param schemeSupportTypeEnum
      * @return
      * @throws Exception
@@ -953,7 +943,7 @@ public class GenerateBaseDataService {
         Document document = new Document();
         DocumentBuilder builder = new DocumentBuilder(document);
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(type);
-        List<CompileReportDetail> compileReportDetailList = compileReportService.getCompileReportDetailList(getAreaId(),baseDataDic.getId());
+        List<CompileReportDetail> compileReportDetailList = compileReportService.getCompileReportDetailList(getAreaId(), baseDataDic.getId());
         if (CollectionUtils.isNotEmpty(compileReportDetailList)) {
             int i = 1;
             for (CompileReportDetail compileReportDetail : compileReportDetailList) {
@@ -1022,16 +1012,24 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * get 价值含义
+     * get 价值内涵
      *
      * @return
      */
     public String getValueImplication() {
-        String temp = String.format("%s%s%s", getValueType(), getDefinitionValue(), getSchemeAreaGroup().getValueConnotation());
-        if (StringUtils.isNotBlank(temp)) {
-            return temp;
+        List<String> list = JSON.parseArray(getSchemeAreaGroup().getValueConnotation(), String.class);
+        if (CollectionUtils.isEmpty(list)) return null;
+        List<Integer> integerList = FormatUtils.ListStringToListInteger(list);
+        String result = new String();
+        for (String s : list) {
+            result += baseDataDicService.getNameById(s) + ",";
         }
-        return errorStr;
+        return StringUtils.strip(result, ",");
+    }
+
+    //价值内涵描述
+    public String getValueImplicationDesc() {
+        return getSchemeAreaGroup().getValueConnotationDesc();
     }
 
     public String getPowerPerson() {
@@ -4577,7 +4575,7 @@ public class GenerateBaseDataService {
             GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfoList.stream().sorted(new Comparator<Integer>() {
                 @Override
                 public int compare(Integer o1, Integer o2) {
-                    return o1-o2;
+                    return o1 - o2;
                 }
             }).findFirst().get(), getProjectId(), getAreaId());
             String localPath = generateMdIncomeService.generateCompareFile();

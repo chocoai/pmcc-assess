@@ -31,7 +31,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>报告选择</h2>
+                    <h3>报告生成</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -45,8 +45,8 @@
                                     <div class="col-sm-4 col-sm-offset-2">
                                         <c:forEach items="${reportTypeList}" var="item">
                                             <span class="checkbox-inline">
-                                                <input type="checkbox" name="reportType" value="${item.id}">
-                                                <label>${item.name}</label>
+                                                <input type="checkbox" id="reportType${item.id}" name="reportType" value="${item.id}">
+                                                <label for="reportType${item.id}">${item.name}</label>
                                             </span>
                                         </c:forEach>
                                     </div>
@@ -176,13 +176,13 @@
                                     <tr>
                                         <th style="width: 5%">编号</th>
                                         <th style="width: 5%">所有权人</th>
-                                        <th style="width: 15%">坐落</th>
+                                        <th style="width: 25%">坐落</th>
                                         <th style="width: 10%">证载用途</th>
                                         <th style="width: 10%">实际用途</th>
                                         <th style="width: 10%">设定用途</th>
                                         <th style="width: 10%">最佳利用描述</th>
-                                        <th style="width: 5%">证载面积</th>
-                                        <th style="width: 5%">评估面积</th>
+                                        <th style="width: 10%">证载面积</th>
+                                        <th style="width: 10%">评估面积</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -223,7 +223,6 @@
 </body>
 </html>
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>
 <!--评估对象-->
 <script type="text/html" id="judgeObjectHtml">
     <tr>
@@ -354,13 +353,6 @@
                         html = html.replace(/{setUse}/g, item.setUse == undefined ? "" : item.setUse);
                         html = html.replace(/{bestUse}/g, item.bestUse == undefined ? "" : item.bestUse);
                         tbody.append(html);
-                        //设值
-                        var lastTr = tbody.find("tr:last");
-                        lastTr.find('td:last').find(item.bisSplit ? '.judge-split' : '.judge-remove').remove();
-                        lastTr.find('td:last').find(item.bisMerge ? '.judge-merge' : '.judge-merge-cancel').remove();
-                        if (item.bisSetFunction) {
-                            lastTr.find('td:last').find('.judge-method').removeClass('btn-success').addClass('btn-primary');
-                        }
                     })
                 }
             },
