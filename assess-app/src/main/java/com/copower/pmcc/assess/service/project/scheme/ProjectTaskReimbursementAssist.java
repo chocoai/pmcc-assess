@@ -20,7 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @time: 14:15
  */
 @Component
-@WorkFlowAnnotation(desc = "法定优选受偿款")
+@WorkFlowAnnotation(desc = "法定优先受偿款")
 public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;

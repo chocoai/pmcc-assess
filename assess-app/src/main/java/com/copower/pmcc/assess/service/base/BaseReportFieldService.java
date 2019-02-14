@@ -50,7 +50,6 @@ public class BaseReportFieldService {
      * @return
      */
     public List<BaseReportField> getCacheReportFieldList(String fieldName) {
-
         try {
 
             String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_REPORT_FIELD_FIELD, fieldName);
@@ -59,7 +58,6 @@ public class BaseReportFieldService {
         } catch (Exception e) {
             return baseReportFieldDao.getEnableList(fieldName);
         }
-
     }
 
 
@@ -71,6 +69,17 @@ public class BaseReportFieldService {
             return sysReportField;
         } catch (Exception e) {
             return baseReportFieldDao.getSingleObject(fieldName);
+        }
+
+    }
+
+    public BaseReportField getCacheReportFieldByName(String name) {
+        String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_REPORT_FIELD_NAME_ITEM, name);
+        try {
+            BaseReportField sysReportField = LangUtils.singleCache(costsKeyPrefix, name, BaseReportField.class, o -> baseReportFieldDao.getBaseReportFieldByName(o));
+            return sysReportField;
+        } catch (Exception e) {
+            return baseReportFieldDao.getBaseReportFieldByName(name);
         }
 
     }

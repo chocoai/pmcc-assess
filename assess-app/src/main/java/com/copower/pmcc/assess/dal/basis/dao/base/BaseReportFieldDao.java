@@ -135,6 +135,19 @@ public class BaseReportFieldDao {
     }
     //endregion
 
+    public BaseReportField getBaseReportFieldByName(String name) {
+        if (StringUtils.isBlank(name)) {
+            return null;
+        }
+        BaseReportFieldExample example = new BaseReportFieldExample();
+        example.createCriteria().andNameEqualTo(name);
+        example.setOrderByClause("sorting");
+        List<BaseReportField> list = sysDataDicMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(list)) {
+            return null;
+        }
+        return list.get(0);
+    }
 
     //region 获取单条数据
 

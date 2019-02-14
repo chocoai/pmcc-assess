@@ -609,7 +609,7 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 法定优选受偿款
+     * 法定优先受偿款
      *
      * @return
      */
@@ -617,24 +617,11 @@ public class GenerateBaseDataService {
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         StringBuilder builder = new StringBuilder();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                ProjectPlanDetails query = new ProjectPlanDetails();
-                query.setProjectId(getProjectId());
-                query.setDeclareRecordId(schemeJudgeObjectList.get(i).getDeclareRecordId());
-                List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                    SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByPlanDetailsId(projectPlanDetailsList.get(0).getId());
-                    if (schemeReimbursement != null) {
-                        builder.append(schemeReimbursement.getNotSetUpTotalPrice().toString());
-                        builder.append(";");
-                    }
-                }
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                builder.append(schemeJudgeObject.getName()).append(schemeReimbursementService.getFullDescription(schemeJudgeObject.getId()));
             }
         }
-        if (StringUtils.isNotBlank(builder.toString())) {
-            return builder.toString();
-        }
-        return errorStr;
+        return builder.toString();
     }
 
     /**

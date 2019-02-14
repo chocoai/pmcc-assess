@@ -56,17 +56,12 @@ public class SchemeReimbursementService {
         if (CollectionUtils.isNotEmpty(list)) {
             SchemeReimbursement object = list.get(0);
             BigDecimal decimal = new BigDecimal("10000");
-            builder.append("notSetUpTotalPrice" + ":" + (object.getNotSetUpTotalPrice().divide(decimal)));
-            builder.append(",");
-            builder.append("mortgagedTotalPrice" + ":" + (object.getMortgagedTotalPrice().divide(decimal)));
-            builder.append(",");
-            builder.append("owedTotalPrice" + ":" + (object.getOwedTotalPrice().divide(decimal)));
-            builder.append(",");
-            builder.append("otherTotalPrice" + ":" + (object.getOtherTotalPrice().divide(decimal)));
-            builder.append(",");
-            builder.append("knowTotalPrice" + ":" + (object.getKnowTotalPrice().divide(decimal)));
-            builder.append(",");
-            builder.append("mortgageTotalPrice" + ":" + (object.getMortgageTotalPrice().divide(decimal)));
+            builder.append(String.format("假定未设立法定优先受偿权总价%s万元,", (object.getNotSetUpTotalPrice().divide(decimal))));
+            builder.append(String.format("已抵押担保的债权数额总价%s万元,", (object.getMortgagedTotalPrice().divide(decimal))));
+            builder.append(String.format("拖欠的建设工程价款总价%s万元,", (object.getOwedTotalPrice().divide(decimal))));
+            builder.append(String.format("其它法定优先受偿款总价%s万元,",(object.getOtherTotalPrice().divide(decimal))) );
+            builder.append(String.format("估价师知悉的法定优先受偿款总价%s万元,",(object.getKnowTotalPrice().divide(decimal))));
+            builder.append(String.format("抵押价值总价%s万元;",(object.getMortgageTotalPrice().divide(decimal))));
             return builder.toString();
         }
         return null;

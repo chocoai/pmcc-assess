@@ -46,6 +46,7 @@ public class AssessCacheConstant {
     public static final String PMCC_ASSESS_REPORT_FIELD_PID = "pmcc:assess:report:field:pid";
     public static final String PMCC_ASSESS_REPORT_FIELD_FIELD = "pmcc:assess:report:field:field";
     public static final String PMCC_ASSESS_REPORT_FIELD_FIELD_ITEM = "pmcc:assess:report:field:field:item";
+    public static final String PMCC_ASSESS_REPORT_FIELD_NAME_ITEM = "pmcc:assess:report:field:name:item";
 
     //房屋完损度
     public static final String PMCC_ASSESS_DAMAGED_DEGREE= "pmcc:assess:damaged:degree";
