@@ -20,10 +20,7 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
-import com.copower.pmcc.erp.common.utils.ChineseToPy;
-import com.copower.pmcc.erp.common.utils.DateUtils;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
+import com.copower.pmcc.erp.common.utils.*;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
@@ -141,6 +138,24 @@ public class GenerateReportService {
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
             for (SysAttachmentDto attachmentDto : sysAttachmentDtoList) {
                 baseAttachmentService.deleteAttachmentByDto(attachmentDto);
+            }
+        }
+        //必要的(否则垃圾会越来越多)
+        File file = new File(baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()));
+        if (file.isDirectory()) {
+            //往上走三层在递归删除
+            File dirFile = null;
+            if (file.getParentFile().isDirectory()) {
+                dirFile = file.getParentFile();
+                if (file.getParentFile().getParentFile().isDirectory()) {
+                    dirFile = file.getParentFile().getParentFile();
+                    if (file.getParentFile().getParentFile().getParentFile().isDirectory()) {
+                        dirFile = file.getParentFile().getParentFile().getParentFile();
+                    }
+                }
+            }
+            if (dirFile != null) {
+                FileUtils.deleteDir(dirFile);
             }
         }
         for (String string : strings) {

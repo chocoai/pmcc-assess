@@ -1,5 +1,8 @@
 package com.copower.pmcc.assess.dto.input.project.generate;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.io.Serializable;
 
 /**
@@ -37,5 +40,29 @@ public class BookmarkAndRegexDto implements Serializable {
     public BookmarkAndRegexDto setChineseName(String chineseName) {
         this.chineseName = chineseName;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BookmarkAndRegexDto that = (BookmarkAndRegexDto) o;
+
+        return new EqualsBuilder()
+                .append(name, that.name)
+                .append(type, that.type)
+                .append(chineseName, that.chineseName)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(name)
+                .append(type)
+                .append(chineseName)
+                .toHashCode();
     }
 }
