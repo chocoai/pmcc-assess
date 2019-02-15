@@ -1,15 +1,11 @@
 package com.copower.pmcc.assess.service.project.generate;
 
-import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dto.output.data.DataQualificationVo;
-import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.data.DataQualificationService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
@@ -17,15 +13,12 @@ import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 描述:
@@ -43,8 +36,6 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private GenerateReportService generateReportService;
-    @Autowired
-    private DataQualificationService dataQualificationService;
     @Autowired
     private ProjectPhaseService projectPhaseService;
     @Autowired
@@ -66,66 +57,56 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
         List<SchemeAreaGroup> schemeAreaGroupList = generateReportService.getAreaGroupList(projectPlan.getProjectId());
         modelAndView.addObject("schemeAreaGroupList", schemeAreaGroupList);
         modelAndView.addObject("projectPlan", projectPlan);
-        List<DataQualificationVo> dataQualificationVos = Lists.newArrayList();
-        List<DataQualification> dataQualificationList = dataQualificationService.getDataQualificationList(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getValue());
-        //资质数据
-        if (CollectionUtils.isNotEmpty(dataQualificationList)) {
-            dataQualificationList.parallelStream().forEach(dataQualification -> dataQualificationVos.add(dataQualificationService.getDataQualificationVo(dataQualification)));
-            modelAndView.addObject("dataQualificationList", JSONObject.toJSONString(dataQualificationVos));
-        }
-        modelAndView.addObject("PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS", AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getValue());
         GenerateReportGeneration schemeReportGeneration = new GenerateReportGeneration();
         List<ProjectPlanDetails> projectPlanDetailsList = Lists.newArrayList();
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
-        Set<Long> startTime_ = Sets.newHashSet();
-        Set<Long> endTime_ = Sets.newHashSet();
-        List<Long> startTime = Lists.newArrayList();
-        List<Long> endTime = Lists.newArrayList();
+        List<Date> startTime = Lists.newArrayList();
+        List<Date> endTime = Lists.newArrayList();
         if (projectInfo != null) {
-            List<ProjectPhaseVo> projectPhaseVos = projectPhaseService.queryProjectPhaseByCategory(projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null);
-            List<ProjectPhaseVo> projectPhaseVoList = Lists.newArrayList();
-            if (CollectionUtils.isNotEmpty(projectPhaseVos)) {
-                projectPhaseVos.parallelStream().forEach(projectPhaseVo -> {
-                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
-                        projectPhaseVoList.add(projectPhaseVo);
-                    }
-                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
-                        projectPhaseVoList.add(projectPhaseVo);
-                    }
-                });
-            }
-            if (CollectionUtils.isNotEmpty(projectPhaseVoList)) {
-                projectPhaseVoList.parallelStream().forEach(projectPhaseVo -> {
-                    ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(projectPlan.getProjectId());
-                    query.setProjectPhaseId(projectPhaseVo.getId());
-                    List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsService.getProjectDetails(query);
-                    if (CollectionUtils.isNotEmpty(projectPlanDetails)) {
-                        projectPlanDetailsList.addAll(projectPlanDetails);
-                    }
-                });
-            }
+            projectPhaseService.queryProjectPhaseByCategory(projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null).stream().filter(projectPhaseVo -> {
+                if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
+                    return true;
+                }
+                if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
+                    return true;
+                }
+                return false;
+            }).forEach(projectPhaseVo -> {
+                ProjectPlanDetails query = new ProjectPlanDetails();
+                query.setProjectId(projectPlan.getProjectId());
+                query.setProjectPhaseId(projectPhaseVo.getId());
+                List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsService.getProjectDetails(query);
+                if (CollectionUtils.isNotEmpty(projectPlanDetails)) {
+                    projectPlanDetailsList.addAll(projectPlanDetails);
+                }
+            });
             if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                projectPlanDetailsList.parallelStream().forEach(projectPlanDetails -> {
-                    startTime_.add(projectPlanDetails.getPlanStartDate().getTime());
-                    endTime_.add(projectPlanDetails.getPlanEndDate().getTime());
+                projectPlanDetailsList.stream().forEach(projectPlanDetails -> {
+                    startTime.add(projectPlanDetails.getPlanStartDate());
+                    endTime.add(projectPlanDetails.getPlanEndDate());
                 });
             }
         }
-        if (CollectionUtils.isNotEmpty(startTime_)) {
-            startTime_.parallelStream().forEach(aLong -> {
-                startTime.add(aLong);
-            });
-            Collections.sort(startTime);
-            schemeReportGeneration.setInvestigationsStartDate(com.copower.pmcc.erp.common.utils.DateUtils.convertDate(startTime.get(0)));
+        if (CollectionUtils.isNotEmpty(startTime)) {
+            schemeReportGeneration.setInvestigationsStartDate(startTime.stream().sorted(
+                    //反向排序 取最小
+                    (o1, o2) -> {
+                        long thisTime = o1.getTime();
+                        long anotherTime = o2.getTime();
+                        return (thisTime > anotherTime ? -1 : (thisTime == anotherTime ? 0 : 1));
+                    }
+            ).findFirst().get());
         }
-        if (CollectionUtils.isNotEmpty(endTime_)) {
-            endTime_.parallelStream().forEach(aLong -> {
-                endTime.add(aLong);
-            });
-            Collections.sort(endTime);
-            schemeReportGeneration.setInvestigationsEndDate(com.copower.pmcc.erp.common.utils.DateUtils.convertDate(endTime.get(0)));
+        if (CollectionUtils.isNotEmpty(endTime)) {
+            //排序 取最大
+            schemeReportGeneration.setInvestigationsEndDate(endTime.stream().sorted().findFirst().get());
         }
+        Map<String, String> qualification = new HashMap<>();
+        qualification.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCTDGJS.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCTDGJS.getName());
+        qualification.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCZCGJS.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCZCGJS.getName());
+        qualification.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_SFJDR.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_SFJDR.getName());
+        qualification.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getName());
+        modelAndView.addObject("qualificationTypes", qualification);
         modelAndView.addObject("schemeReportGeneration", schemeReportGeneration);
     }
 

@@ -17,7 +17,9 @@ public class GenerateReportGeneration {
 
     private Date homeWorkEndTime;
 
-    private Integer realEstateAppraiser;
+    private String realEstateAppraiser;
+
+    private String qualificationType;
 
     private Integer areaGroupId;
 
@@ -83,12 +85,20 @@ public class GenerateReportGeneration {
         this.homeWorkEndTime = homeWorkEndTime;
     }
 
-    public Integer getRealEstateAppraiser() {
+    public String getRealEstateAppraiser() {
         return realEstateAppraiser;
     }
 
-    public void setRealEstateAppraiser(Integer realEstateAppraiser) {
-        this.realEstateAppraiser = realEstateAppraiser;
+    public void setRealEstateAppraiser(String realEstateAppraiser) {
+        this.realEstateAppraiser = realEstateAppraiser == null ? null : realEstateAppraiser.trim();
+    }
+
+    public String getQualificationType() {
+        return qualificationType;
+    }
+
+    public void setQualificationType(String qualificationType) {
+        this.qualificationType = qualificationType == null ? null : qualificationType.trim();
     }
 
     public Integer getAreaGroupId() {

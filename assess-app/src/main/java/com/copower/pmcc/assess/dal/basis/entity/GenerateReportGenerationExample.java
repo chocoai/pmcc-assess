@@ -535,53 +535,133 @@ public class GenerateReportGenerationExample {
             return (Criteria) this;
         }
 
-        public Criteria andRealEstateAppraiserEqualTo(Integer value) {
+        public Criteria andRealEstateAppraiserEqualTo(String value) {
             addCriterion("real_estate_appraiser =", value, "realEstateAppraiser");
             return (Criteria) this;
         }
 
-        public Criteria andRealEstateAppraiserNotEqualTo(Integer value) {
+        public Criteria andRealEstateAppraiserNotEqualTo(String value) {
             addCriterion("real_estate_appraiser <>", value, "realEstateAppraiser");
             return (Criteria) this;
         }
 
-        public Criteria andRealEstateAppraiserGreaterThan(Integer value) {
+        public Criteria andRealEstateAppraiserGreaterThan(String value) {
             addCriterion("real_estate_appraiser >", value, "realEstateAppraiser");
             return (Criteria) this;
         }
 
-        public Criteria andRealEstateAppraiserGreaterThanOrEqualTo(Integer value) {
+        public Criteria andRealEstateAppraiserGreaterThanOrEqualTo(String value) {
             addCriterion("real_estate_appraiser >=", value, "realEstateAppraiser");
             return (Criteria) this;
         }
 
-        public Criteria andRealEstateAppraiserLessThan(Integer value) {
+        public Criteria andRealEstateAppraiserLessThan(String value) {
             addCriterion("real_estate_appraiser <", value, "realEstateAppraiser");
             return (Criteria) this;
         }
 
-        public Criteria andRealEstateAppraiserLessThanOrEqualTo(Integer value) {
+        public Criteria andRealEstateAppraiserLessThanOrEqualTo(String value) {
             addCriterion("real_estate_appraiser <=", value, "realEstateAppraiser");
             return (Criteria) this;
         }
 
-        public Criteria andRealEstateAppraiserIn(List<Integer> values) {
+        public Criteria andRealEstateAppraiserLike(String value) {
+            addCriterion("real_estate_appraiser like", value, "realEstateAppraiser");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateAppraiserNotLike(String value) {
+            addCriterion("real_estate_appraiser not like", value, "realEstateAppraiser");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateAppraiserIn(List<String> values) {
             addCriterion("real_estate_appraiser in", values, "realEstateAppraiser");
             return (Criteria) this;
         }
 
-        public Criteria andRealEstateAppraiserNotIn(List<Integer> values) {
+        public Criteria andRealEstateAppraiserNotIn(List<String> values) {
             addCriterion("real_estate_appraiser not in", values, "realEstateAppraiser");
             return (Criteria) this;
         }
 
-        public Criteria andRealEstateAppraiserBetween(Integer value1, Integer value2) {
+        public Criteria andRealEstateAppraiserBetween(String value1, String value2) {
             addCriterion("real_estate_appraiser between", value1, value2, "realEstateAppraiser");
             return (Criteria) this;
         }
 
-        public Criteria andRealEstateAppraiserNotBetween(Integer value1, Integer value2) {
+        public Criteria andRealEstateAppraiserNotBetween(String value1, String value2) {
             addCriterion("real_estate_appraiser not between", value1, value2, "realEstateAppraiser");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeIsNull() {
+            addCriterion("qualification_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeIsNotNull() {
+            addCriterion("qualification_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeEqualTo(String value) {
+            addCriterion("qualification_type =", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeNotEqualTo(String value) {
+            addCriterion("qualification_type <>", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeGreaterThan(String value) {
+            addCriterion("qualification_type >", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("qualification_type >=", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeLessThan(String value) {
+            addCriterion("qualification_type <", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeLessThanOrEqualTo(String value) {
+            addCriterion("qualification_type <=", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeLike(String value) {
+            addCriterion("qualification_type like", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeNotLike(String value) {
+            addCriterion("qualification_type not like", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeIn(List<String> values) {
+            addCriterion("qualification_type in", values, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeNotIn(List<String> values) {
+            addCriterion("qualification_type not in", values, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeBetween(String value1, String value2) {
+            addCriterion("qualification_type between", value1, value2, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeNotBetween(String value1, String value2) {
+            addCriterion("qualification_type not between", value1, value2, "qualificationType");
             return (Criteria) this;
         }
 

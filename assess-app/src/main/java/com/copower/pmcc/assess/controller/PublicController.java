@@ -156,24 +156,6 @@ public class PublicController {
         return HttpResult.newErrorResult("没有获取到数据!");
     }
 
-    @GetMapping(value = "/getAdPersonalIdentityDto",name = "获取资质")
-    public HttpResult getAdPersonalIdentityDto(String userAccount, String qualificationType){
-        List<AdPersonalQualificationDto> adPersonalQualificationDtoList = null;
-        if (StringUtils.isNotBlank(userAccount)){
-            try {
-                if (StringUtils.isEmpty(qualificationType)){
-                    adPersonalQualificationDtoList = adRpcQualificationsAppService.getAdPersonalIdentityDto(userAccount);
-                }
-                if (StringUtils.isNotBlank(qualificationType)){
-                    adPersonalQualificationDtoList = adRpcQualificationsAppService.getAdPersonalQualificationDto(userAccount,qualificationType);
-                }
-            } catch (Exception e1) {
-                logger.error("获取资质异常!",e1);
-            }
-        }
-        return HttpResult.newCorrectResult(CollectionUtils.isNotEmpty(adPersonalQualificationDtoList)?adPersonalQualificationDtoList:new ArrayList<AdPersonalQualificationDto>());
-    }
-
     @RequestMapping(value = "/getApprovalLogByProject", name = "获取项目日志", method = RequestMethod.GET)
     public BootstrapTableVo getApprovalLogByProject(Integer projectId) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
