@@ -183,9 +183,6 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-                        <button class="btn btn-warning" onclick="printedPage();">
-                            打印<i style="margin-left: 10px" class="fa fa-print"></i>
-                        </button>
                         <button class="btn btn-warning" onclick="saveDraft();">
                             保存<i style="margin-left: 10px" class="fa fa-save"></i>
                         </button>

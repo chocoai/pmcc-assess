@@ -730,7 +730,6 @@
             search: false,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
-                lease.computeNetProfit();
             }
         });
     }
@@ -758,6 +757,7 @@
                         html = html.replace(/{presentValueFactor}/g, AssessCommon.toString(item.presentValueFactor)).replace(/{incomePrice}/g, AssessCommon.toString(item.incomePrice));
                         $("#leaseResultBody").append(html);
                     })
+                    lease.computeNetProfit();
                 }
             },
             error: function (result) {

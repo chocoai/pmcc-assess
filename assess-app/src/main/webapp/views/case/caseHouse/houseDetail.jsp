@@ -20,14 +20,12 @@
                         <label class="form-control">${caseHouse.floor}</label>
                     </div>
                 </div>
-                <c:if test="${caseHouse.type eq 1}">
-                    <div class="x-valid" id="industryUseEnvironment">
-                        <label class="col-sm-1 control-label">使用环境</label>
-                        <div class="col-sm-3">
-                            <label class="form-control">${caseHouse.useEnvironmentName}</label>
-                        </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">楼层描述</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${caseHouse.floorDesc}</label>
                     </div>
-                </c:if>
+                </div>
             </div>
 
             <div class="form-group">
@@ -43,6 +41,14 @@
 
                     </div>
                 </div>
+                <c:if test="${caseHouse.type eq 1}">
+                    <div class="x-valid" id="industryUseEnvironment">
+                        <label class="col-sm-1 control-label">使用环境</label>
+                        <div class="col-sm-3">
+                            <label class="form-control">${caseHouse.useEnvironmentName}</label>
+                        </div>
+                    </div>
+                </c:if>
             </div>
             <div class="form-group">
                 <div class="x-valid">

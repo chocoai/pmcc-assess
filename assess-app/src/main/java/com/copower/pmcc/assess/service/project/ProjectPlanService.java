@@ -409,6 +409,8 @@ public class ProjectPlanService {
              */
 
             List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsLastLayer(projectPlanDto.getId(), ProcessStatusEnum.NOPROCESS.getValue());
+            if (CollectionUtils.isEmpty(projectPlanDetails))
+                throw new BusinessException("请为阶段设置相关任务");
             //数据效性验证
             StringBuilder sb = new StringBuilder();
             for (ProjectPlanDetails item : projectPlanDetails) {

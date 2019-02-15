@@ -243,6 +243,7 @@ public class ProjectPlanDetailsService {
             SysProjectEnum sysProjectEnum = SysProjectEnum.getEnumByName(SysProjectEnum.getNameByKey(projectPlanDetailsVo.getStatus()));
             switch (sysProjectEnum) {
                 case NONE:
+                case CLOSE://业务异常关闭流程错误更新状态的数据
                 case RUNING:
                     if (StringUtils.equals(projectPlanDetailsVo.getProcessInsId(), "0")) {
                         if (CollectionUtils.isNotEmpty(projectTaskList)) {
