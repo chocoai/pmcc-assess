@@ -45,7 +45,8 @@
                                     <div class="col-sm-4 col-sm-offset-2">
                                         <c:forEach items="${reportTypeList}" var="item">
                                             <span class="checkbox-inline">
-                                                <input type="checkbox" id="reportType${item.id}" name="reportType" value="${item.id}">
+                                                <input type="checkbox" id="reportType${item.id}" name="reportType"
+                                                       value="${item.id}">
                                                 <label for="reportType${item.id}">${item.name}</label>
                                             </span>
                                         </c:forEach>
@@ -57,7 +58,6 @@
 
                     <c:forEach items="${schemeAreaGroupList}" var="item">
                         <div class="x_panel area_panel">
-                            <input type="hidden" name="areaGroupId" value="${item.id}">
                             <div class="x_title collapse-link" onclick="loadJudgeObjectList(this);">
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
@@ -69,6 +69,7 @@
                             </div>
                             <div class="x_content collapse">
                                 <form class="form-horizontal" id="groupForm${item.id}">
+                                    <input type="hidden" name="areaGroupId" value="${item.id}">
                                     <div class="form-group">
                                         <div class="x-valid">
                                             <label class="col-sm-1 control-label">
@@ -92,10 +93,10 @@
                                             </div>
                                         </div>
                                         <div class="x-valid">
-                                            <label class="col-sm-1 control-label">-注册房地产估价师<span
+                                            <label class="col-sm-1 control-label">估价师<span
                                                     class="symbol required"></span></label>
                                             <div class="col-sm-3">
-                                                <select name="realEstateAppraiser"
+                                                <select name="realEstateAppraiser" multiple="multiple"
                                                         class="form-control search-select select2"
                                                         required="required">
                                                 </select>
@@ -126,6 +127,24 @@
                                                        data-date-format="yyyy-mm-dd"
                                                        pattern='yyyy-MM-dd'
                                                        value="<fmt:formatDate value='${schemeReportGeneration.investigationsEndDate}' pattern='yyyy-MM-dd'/>">
+                                            </div>
+                                        </div>
+                                        <div class="x-valid">
+                                            <div>
+                                                <label class="col-sm-1 control-label">
+                                                    资质类型<span class="symbol required"></span>
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control" name="qualificationType"
+                                                            onchange="onChange(this)">
+                                                        <option value="">--请选择--</option>
+                                                        <c:if test="${not empty qualificationTypes}">
+                                                            <c:forEach items="${qualificationTypes}" var="itemA">
+                                                                <option value="${itemA.key}">${itemA.value}</option>
+                                                            </c:forEach>
+                                                        </c:if>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -263,33 +282,68 @@
             target: fieldsName,
             formData: {
                 fieldsName: fieldsName,
-                tableName: AssessDBKey.SchemeReportGeneration,
+                tableName: AssessDBKey.GenerateReportGeneration,
                 tableId: id == undefined ? 0 : id
             },
             deleteFlag: deleteFlag == undefined ? true : deleteFlag
         })
     }
 
+    function onChange(item) {
+        var v = $(item).find("option:selected");
+        var frm = $(item).closest("form");
+        dataQualificationShow(v.val(), null, frm.attr("id"));
+    }
+
+    /**
+     * 资质显示
+     * @param type
+     * @param realEstateAppraiser
+     * @param frm
+     */
+    function dataQualificationShow(type, realEstateAppraiser, frm) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/dataQualification/findDataQualificationList",
+            data: {type: type},
+            type: "get",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret && result.data) {
+                    var retHtml = '<option value="" selected>-请选择-</option>';
+                    $.each(result.data, function (i, item) {
+                        retHtml += '<option key="' + item.qualificationTypeName + '" title="' + item.userAccountName + '" value="' + item.id + '"';
+                        if (item.id == realEstateAppraiser) {
+                            retHtml += 'selected="selected"';
+                        }
+                        retHtml += '>' + item.userAccountName + '</option>';
+                    });
+                    if (type) {
+                        $("#" + frm).find("select[name='realEstateAppraiser']").empty().html(retHtml).trigger('change');
+                    }
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    }
+
 
     //赋值
     function initFormSchemeReportGeneration(info, frm, areaGroupId) {
         $(frm).initForm(info);
-        $("#" + frm).find("input[name='investigationsStartDate']").val(formatDate(info.investigationsStartDate));
-        $("#" + frm).find("input[name='investigationsEndDate']").val(formatDate(info.investigationsEndDate));
+        if (info.investigationsStartDate) {
+            $("#" + frm).find("input[name='investigationsStartDate']").val(formatDate(info.investigationsStartDate));
+        }
+        if (info.investigationsEndDate) {
+            $("#" + frm).find("input[name='investigationsEndDate']").val(formatDate(info.investigationsEndDate));
+        }
         $("#" + frm).find("input[name='reportIssuanceDate']").val(formatDate(info.reportIssuanceDate));
         $("#" + frm).find("input[name='homeWorkEndTime']").val(formatDate(info.homeWorkEndTime));
         $.each(schemeReportGenerationFileControlIdArray, function (i, n) {
             fileShow(n + "" + areaGroupId, false, info.id);
         });
-        var retHtml = '<option value="" selected>-请选择-</option>';
-        $.each(JSON.parse('${dataQualificationList}'), function (i, item) {
-            retHtml += '<option key="' + item.qualificationTypeName + '" title="' + item.qualificationTypeName + "-" + item.userAccountName + '" value="' + item.id + '"';
-            if (item.id == info.realEstateAppraiser) {
-                retHtml += 'selected="selected"';
-            }
-            retHtml += '>' + item.qualificationTypeName + "-" + item.userAccountName + '</option>';
-        });
-        $("#" + frm).find("select[name='realEstateAppraiser']").empty().html(retHtml).trigger('change');
+        dataQualificationShow(info.qualificationType, info.realEstateAppraiser, frm);
     }
 
     function getSchemeReportGeneration(data, callback) {
@@ -311,7 +365,10 @@
         });
     }
 
-
+    /**
+     * show 委估对象
+     * @param _this
+     */
     function loadJudgeObjectList(_this) {
         var tbody = $(_this).closest(".area_panel").find(".table").find("tbody");
         tbody.empty();
@@ -403,11 +460,12 @@
                         Loading.progressHide();
                         toastr.success('报告生成成功!');
                     });
-                }else{
+                } else {
                     Alert(result.errmsg);
                 }
             },
             error: function (result) {
+                console.log(result);
                 alert("调用服务端方法失败，失败原因:" + result);
             }
         });
@@ -437,7 +495,7 @@
             data: data,
             success: function (result) {
                 if (result.ret) {
-                    Alert('提交成功',1,null,function () {
+                    Alert('提交成功', 1, null, function () {
                         closeWindow();
                     });
                 } else {
