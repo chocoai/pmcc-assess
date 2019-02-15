@@ -150,7 +150,7 @@
         <div class="btn btn-sm btn-default" data-placement="top" data-toggle="tooltip"
              data-original-title="责任人">{planExecutor}
         </div>
-        <div class="btn btn-sm btn-success" data-placement="top" data-toggle="tooltip"
+        <div class="btn btn-sm btn-{btnClass}" data-placement="top" data-toggle="tooltip"
              onclick="projectDetails.taskOpenWin('{planExecutUrl}')"
              data-original-title="处理"><i class="fa fa-arrow-right"></i>
         </div>
@@ -198,10 +198,12 @@
                 success: function (result) {
                     $('#plan_item_' + planId).empty();
                     if (result.ret) {
-                        if (result.data.planDisplayUrl) {
+                        if (result.data.planDisplayUrl && result.data.bisAutoComplete == false) {
                             var html = '';
                             if (result.data.planExecutUrl) {
-                                html = $('#planItemHtml').html().replace(/{planExecutor}/g, result.data.planExecutor).replace(/{planExecutUrl}/g, result.data.planExecutUrl);
+                                html = $('#planItemHtml').html().replace(/{planExecutor}/g, result.data.planExecutor)
+                                    .replace(/{planExecutUrl}/g, result.data.planExecutUrl)
+                                    .replace(/{btnClass}/g, result.data.processInsId == "-1" ? "success" : "primary");
                             } else {
                                 html = $('#planItemViewHtml').html().replace(/{planDisplayUrl}/g, result.data.planDisplayUrl);
                             }
@@ -209,8 +211,8 @@
                         }
                     }
                 },
-                global:false,
-                error:function () {
+                global: false,
+                error: function () {
                 }
             })
         },

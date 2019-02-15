@@ -700,7 +700,7 @@ public class ProjectPlanService {
                     ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(plan.getWorkStageId());
                     if (projectWorkStage.getStageForm().endsWith("Execute")) {//后台自动执行计划内容
                         ProjectPlanExecuteInterface bean = (ProjectPlanExecuteInterface) SpringContextUtils.getBean(projectWorkStage.getStageForm());
-                        bean.execute(plan,projectWorkStage);
+                        bean.execute(plan, projectWorkStage);
                     } else {//页面实施计划编制
                         String userAccounts = projectWorkStageService.getWorkStageUserAccounts(plan.getWorkStageId(), plan.getProjectId());
                         if (StringUtils.isNotBlank(userAccounts)) {
@@ -720,7 +720,7 @@ public class ProjectPlanService {
                 projectInfo.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
                 projectInfoDao.updateProjectInfo(projectInfo);
                 SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(projectInfo.getId(), applicationConstant.getAppKey());
-                if (sysProjectDto.getId() > 0) {
+                if (sysProjectDto != null && sysProjectDto.getId() != null && sysProjectDto.getId() > 0) {
                     sysProjectDto.setStatus(SysProjectEnum.FINISH.getValue());
                     erpRpcProjectService.saveProject(sysProjectDto);
                 }

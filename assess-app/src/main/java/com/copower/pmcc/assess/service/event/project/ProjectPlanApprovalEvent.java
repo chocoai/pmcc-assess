@@ -13,6 +13,7 @@ import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,15 +41,18 @@ public class ProjectPlanApprovalEvent extends BaseProcessEvent {
     @Override
     public void processFinishExecute(ProcessExecution processExecution)throws  Exception {
         super.processFinishExecute(processExecution);
-
         ProjectPlan projectPlan = projectPlanService.getProjectplanByProcessInsId(processExecution.getProcessInstanceId());
-        projectPlan.setProjectStatus(ProjectStatusEnum.TASK.getKey());
-        projectPlanService.updateProjectPlan(projectPlan);
         List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsLastLayer(projectPlan.getId(), ProcessStatusEnum.NOPROCESS.getValue());
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
-        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
-        for (ProjectPlanDetails item : projectPlanDetails) {
-            projectPlanService.saveProjectPlanDetailsResponsibility(item, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
+        if(CollectionUtils.isEmpty(projectPlanDetails)){
+            projectPlanService.enterNextStage(projectPlan.getId());//直接进入下个阶段
+        }else{
+            projectPlan.setProjectStatus(ProjectStatusEnum.TASK.getKey());
+            projectPlanService.updateProjectPlan(projectPlan);
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
+            ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
+            for (ProjectPlanDetails item : projectPlanDetails) {
+                projectPlanService.saveProjectPlanDetailsResponsibility(item, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
+            }
         }
     }
 }

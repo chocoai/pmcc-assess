@@ -4,7 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.service.PublicService;
-import com.copower.pmcc.assess.service.event.project.ProjectInfoEvent;
+import com.copower.pmcc.assess.service.event.project.ProjectPlanApprovalEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
@@ -73,6 +73,7 @@ public class GenerateService {
         processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
         processInfo.setTableId(projectInfo.getId());
         processInfo.setBoxId(boxReDto.getId());
+        processInfo.setProcessEventExecutorName(ProjectPlanApprovalEvent.class.getSimpleName());
         processInfo.setWorkStage(projectWorkStage.getWorkStageName());
         processInfo.setWorkStageId(projectWorkStage.getId());
         processInfo.setAppKey(applicationConstant.getAppKey());
