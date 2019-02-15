@@ -16,6 +16,7 @@ import com.copower.pmcc.assess.service.project.survey.SurveyExamineInfoService;
 import com.copower.pmcc.assess.service.project.survey.SurveyExamineTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
@@ -208,7 +209,9 @@ public class SurveyExamineController {
         try {
             surveyExamineTaskService.examineTaskAssignment(planDetailsId, examineFormType, ExamineTypeEnum.EXPLORE);
             return HttpResult.newCorrectResult();
-        } catch (Exception e) {
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }catch (Exception e) {
             logger.error("确认分派", e);
             return HttpResult.newErrorResult("确认分派异常");
         }
