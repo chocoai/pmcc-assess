@@ -192,9 +192,9 @@ public class SurveyExamineController {
 
     @ResponseBody
     @PostMapping(name = "保存调查信息", value = "/saveExamineDataInfo")
-    public HttpResult saveExamineDataInfo(String formData,ProjectPlanDetails projectPlanDetails) {
+    public HttpResult saveExamineDataInfo(String formData, ProjectPlanDetails projectPlanDetails) {
         try {
-            surveyExamineTaskService.saveExamineDataInfo(formData,projectPlanDetails);
+            surveyExamineTaskService.saveExamineDataInfo(formData, projectPlanDetails);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("保存调查信息", e);
@@ -206,11 +206,22 @@ public class SurveyExamineController {
     @PostMapping(name = "现场查勘分派任务", value = "/examineTaskAssignment")
     public HttpResult examineTaskAssignment(Integer planDetailsId, String examineFormType) {
         try {
-            surveyExamineTaskService.examineTaskAssignment(planDetailsId,examineFormType,ExamineTypeEnum.EXPLORE);
+            surveyExamineTaskService.examineTaskAssignment(planDetailsId, examineFormType, ExamineTypeEnum.EXPLORE);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("确认分派", e);
             return HttpResult.newErrorResult("确认分派异常");
+        }
+    }
+
+    @ResponseBody
+    @PostMapping(name = "检查是否添加任务", value = "/checkAssignmentTask")
+    public HttpResult checkAssignmentTask(Integer planDetailsId) {
+        try {
+            return HttpResult.newCorrectResult(surveyExamineTaskService.checkAssignmentTask(planDetailsId));
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("操作异常");
         }
     }
 }

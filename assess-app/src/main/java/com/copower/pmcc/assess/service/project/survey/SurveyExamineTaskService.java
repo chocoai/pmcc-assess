@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyExamineTask;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyExamineTaskDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyExamineTaskDto;
+import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.basic.*;
@@ -698,5 +699,17 @@ public class SurveyExamineTaskService {
             }
         }
 
+    }
+
+
+    //检查是否添加任务
+    public boolean checkAssignmentTask(Integer planDetailsId){
+        ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
+        projectPlanDetails.setPid(planDetailsId);
+        List<ProjectPlanDetailsVo> list = projectPlanDetailsService.getProjectDetailsTask(projectPlanDetails);
+        if(CollectionUtils.isNotEmpty(list)){
+            return true;
+        }
+        return false;
     }
 }

@@ -56,15 +56,15 @@
                         </button>
                         <c:choose>
                             <c:when test="${projectPhase.bisUseBox eq false}">
-                                <button id="btn_submit" class="btn btn-success" onclick="submit(false);">
+                                <button id="btn_submit" class="btn btn-success" onclick="taskExploreIndex.checkAssignmentTask(false);">
                                     直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                                 </button>
-                                <button id="btn_submit" class="btn btn-primary" onclick="submit(true);">
+                                <button id="btn_submit" class="btn btn-primary" onclick="taskExploreIndex.checkAssignmentTask(true);">
                                     提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                                 </button>
                             </c:when>
                             <c:otherwise>
-                                <button id="btn_submit" class="btn btn-success" onclick="submit();">
+                                <button id="btn_submit" class="btn btn-success" onclick="taskExploreIndex.checkAssignmentTask();">
                                     提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                                 </button>
                             </c:otherwise>
@@ -88,6 +88,7 @@
     });
 
 
+
     //任务提交
     function submit(mustUseBox) {
         if (!taskExploreIndex.isAllFinish()) {
@@ -106,6 +107,31 @@
     }
 
     var taskExploreIndex = {};
+
+    //检查是否添加任务
+    taskExploreIndex.checkAssignmentTask = function (mustUseBox) {
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/surveyExamine/checkAssignmentTask",
+            data: {
+                planDetailsId: "${projectPlanDetails.id}"
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.data) {
+                    submit(mustUseBox);
+                    $('#plan_details_modal').modal('hide');
+                } else {
+                    Alert("请添加一条任务");
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    };
 
     //加载现场查勘数据
     taskExploreIndex.getExploreTaskList = function () {
