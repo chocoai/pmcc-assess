@@ -304,17 +304,6 @@
             <div class="modal-body">
                 <form id="frm_inventory_right" class="form-horizontal">
                     <input type="hidden" name="id" value="0">
-                    <div class="form-group border-bottom-line">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                附件
-                            </label>
-                            <div class="col-sm-10">
-                                <input id="inventoryRightFile" type="file" multiple="false">
-                                <div id="_inventoryRightFile"></div>
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="form-group">
                         <div class="x-valid">
@@ -439,6 +428,17 @@
                                 <input placeholder="结束日期" id="endDate"
                                        name="endDate" data-date-format="yyyy-mm-dd"
                                        class="form-control date-picker dbdate" readonly="readonly">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group border-bottom-line">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                附件
+                            </label>
+                            <div class="col-sm-10">
+                                <input id="inventoryRightFile" type="file" multiple="false">
+                                <div id="_inventoryRightFile"></div>
                             </div>
                         </div>
                     </div>
