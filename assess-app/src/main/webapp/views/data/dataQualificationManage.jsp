@@ -39,9 +39,9 @@
                                     <select class="form-control" required id="queryType">
                                         <option value="">--请选择--</option>
                                         <c:if test="${not empty qualificationTypes}">
-                                        <c:forEach items="${qualificationTypes}" var="item">
-                                        <option value="${item.key}">${item.value}</option>
-                                        </c:forEach>
+                                            <c:forEach items="${qualificationTypes}" var="item">
+                                                <option value="${item.key}">${item.value}</option>
+                                            </c:forEach>
                                         </c:if>
                                     </select>
                                 </div>
@@ -75,6 +75,34 @@
 
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
+
+    /**
+     * 获取资质
+     * @param userAccount
+     * @param qualificationType
+     * @param callback
+     * @author zch
+     */
+    function getAdPersonalIdentityDto(userAccount, qualificationType, callback) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/dataQualification/getAdPersonalIdentityDto",
+            data: {
+                userAccount: userAccount,
+                qualificationType: qualificationType
+            },
+            type: "get",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret && result.data) {
+                    callback(result.data);
+                }
+            },
+            error: function (result) {
+                alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    }
+
     $(function () {
         dataQualification.prototype.loadDataDicList();
     });
@@ -185,23 +213,31 @@
             })
         },
         //选择人员
-        personSelect: function () {
-            erpEmployee.select({
-                multi: true,
-                currOrgId: 1,
-                userName: $("#userAccountName").val(),
-                userAccount: $("#userAccount").val(),
-                onSelected: function (data) {
-                    if (data.account) {
-                        $("#userAccount").val(data.account);
-                        $("#userAccountName").val(data.name);
+        personSelect: function (this_) {
+            var frm = $(this_).closest("form");
+            var item = formParams(frm.attr("id"));
+            if (item.qualificationType){
+                erpEmployee.select({
+                    multi: false,
+                    currOrgId: 1,
+                    userName: $("#userAccountName").val(),
+                    userAccount: $("#userAccount").val(),
+                    onSelected: function (data) {
+                        getAdPersonalIdentityDto(data.account,item.qualificationType, function (item) {
+                            if (item.length >= 1) {
+                                $("#userAccount").val(data.account);
+                                $("#userAccountName").val(data.name);
+                            } else {
+                                $("#userAccount").val("");
+                                $("#userAccountName").val("");
+                                Alert("该人员未有评估师资格!");
+                            }
+                        });
                     }
-                    else {
-                        $("#userAccount").val("");
-                        $("#userAccountName").val("");
-                    }
-                }
-            });
+                });
+            }else {
+                Alert("资格类型必须先选择!");
+            }
         }
 
     }
@@ -247,7 +283,7 @@
                                             <input type="hidden" id="userAccount" name="userAccount">
                                             <input type="text" data-rule-maxlength="50" readonly
                                                    placeholder="选择人员"
-                                                   onclick="dataQualification.prototype.personSelect()"
+                                                   onclick="dataQualification.prototype.personSelect(this)"
                                                    id="userAccountName" name="userAccountName" class="form-control">
                                         </div>
                                     </div>

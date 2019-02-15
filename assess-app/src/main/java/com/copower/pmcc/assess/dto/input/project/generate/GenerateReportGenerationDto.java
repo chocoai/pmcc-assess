@@ -22,8 +22,8 @@ public class GenerateReportGenerationDto implements Serializable {
     private Date reportIssuanceDate;
     @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date homeWorkEndTime;
-
-    private Integer realEstateAppraiser;
+    private String qualificationType;
+    private String realEstateAppraiser;
 
     private Integer areaGroupId;
 
@@ -75,11 +75,11 @@ public class GenerateReportGenerationDto implements Serializable {
         this.homeWorkEndTime = homeWorkEndTime;
     }
 
-    public Integer getRealEstateAppraiser() {
+    public String getRealEstateAppraiser() {
         return realEstateAppraiser;
     }
 
-    public void setRealEstateAppraiser(Integer realEstateAppraiser) {
+    public void setRealEstateAppraiser(String realEstateAppraiser) {
         this.realEstateAppraiser = realEstateAppraiser;
     }
 
@@ -99,4 +99,11 @@ public class GenerateReportGenerationDto implements Serializable {
         this.projectPlanId = projectPlanId;
     }
 
+    public String getQualificationType() {
+        return qualificationType;
+    }
+
+    public void setQualificationType(String qualificationType) {
+        this.qualificationType = qualificationType;
+    }
 }

@@ -116,29 +116,19 @@ public class GenerateReportService {
         if (StringUtils.isEmpty(ids) || generateReportGeneration.getProjectPlanId() == null) {
             return;
         }
+        generateReportGeneration.setId(0);
         String[] strings = ids.split(",");
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportGeneration.getProjectPlanId());
         if (projectPlan == null) {
             return;
         }
-        if (generateReportGeneration.getId() == null || generateReportGeneration.getId().equals(0)) {
-            GenerateReportGeneration query = generateReportGenerationService.getGenerateReportGenerationByAreaGroupId(generateReportGeneration.getAreaGroupId(), generateReportGeneration.getProjectPlanId());
-            if (query != null) {
-                generateReportGeneration.setId(query.getId());
-            }
-            if (query == null) {
-                generateReportGeneration.setCreator(processControllerComponent.getThisUser());
-                generateReportGenerationService.addGenerateReportGeneration(generateReportGeneration);
-            }
-        }
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableId(generateReportGeneration.getId());
         sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportGeneration.class));
+        sysAttachmentDto.setCreater(processControllerComponent.getThisUser());
         List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-            for (SysAttachmentDto attachmentDto : sysAttachmentDtoList) {
-                baseAttachmentService.deleteAttachmentByDto(attachmentDto);
-            }
+            sysAttachmentDtoList.stream().forEach(attachmentDto -> baseAttachmentService.deleteAttachmentByDto(attachmentDto) );
         }
         //必要的(否则垃圾会越来越多)
         File file = new File(baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()));
