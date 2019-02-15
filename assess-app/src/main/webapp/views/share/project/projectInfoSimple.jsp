@@ -73,37 +73,14 @@
                         <label class="form-control">${projectInfo.remarkValueType}</label>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">省</label>
-                    <div class="col-sm-3">
-                        <label class="form-control">${projectInfo.provinceName}</label>
-                    </div>
-                </div>
-
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">市</label>
-                    <div class="col-sm-3">
-                        <label class="form-control">${projectInfo.cityName}</label>
-                    </div>
-                </div>
-
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">县</label>
-                    <div class="col-sm-3">
-                        <label class="form-control">${projectInfo.districtName}</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">执业部门</label>
                     <div class="col-sm-3">
                         <label class="form-control">${projectInfo.departmentName}</label>
                     </div>
                 </div>
+            </div>
+            <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">项目经理</label>
                     <div class="col-sm-3">

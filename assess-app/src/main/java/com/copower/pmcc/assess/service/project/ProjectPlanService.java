@@ -697,22 +697,24 @@ public class ProjectPlanService {
             List<ProjectPlan> nextProjectPlans = getNextProjectPlans(currStageSort, projectPlans);
             if (CollectionUtils.isNotEmpty(nextProjectPlans)) {
                 for (ProjectPlan plan : nextProjectPlans) {
-                    ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(plan.getWorkStageId());
-                    if (projectWorkStage.getStageForm().endsWith("Execute")) {//后台自动执行计划内容
-                        ProjectPlanExecuteInterface bean = (ProjectPlanExecuteInterface) SpringContextUtils.getBean(projectWorkStage.getStageForm());
-                        bean.execute(plan, projectWorkStage);
-                    } else {//页面实施计划编制
-                        String userAccounts = projectWorkStageService.getWorkStageUserAccounts(plan.getWorkStageId(), plan.getProjectId());
-                        if (StringUtils.isNotBlank(userAccounts)) {
-                            List<String> strings = FormatUtils.transformString2List(userAccounts);
-                            for (String s : strings) {
-                                saveProjectPlanResponsibility(plan, s, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.NEWPLAN);
+                    if (StringUtils.equals(ProjectStatusEnum.WAIT.getKey(), plan.getProjectStatus())) {
+                        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(plan.getWorkStageId());
+                        if (projectWorkStage.getStageForm().endsWith("Execute")) {//后台自动执行计划内容
+                            ProjectPlanExecuteInterface bean = (ProjectPlanExecuteInterface) SpringContextUtils.getBean(projectWorkStage.getStageForm());
+                            bean.execute(plan, projectWorkStage);
+                        } else {//页面实施计划编制
+                            String userAccounts = projectWorkStageService.getWorkStageUserAccounts(plan.getWorkStageId(), plan.getProjectId());
+                            if (StringUtils.isNotBlank(userAccounts)) {
+                                List<String> strings = FormatUtils.transformString2List(userAccounts);
+                                for (String s : strings) {
+                                    saveProjectPlanResponsibility(plan, s, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.NEWPLAN);
+                                }
+                            } else {
+                                throw new BusinessException(projectWorkStage.getWorkStageName() + "阶段没有配置相应的责任人");
                             }
-                        } else {
-                            throw new BusinessException(projectWorkStage.getWorkStageName() + "阶段没有配置相应的责任人");
+                            plan.setProjectStatus(ProjectStatusEnum.PLAN.getKey());
+                            projectPlanDao.updateProjectPlan(plan);
                         }
-                        plan.setProjectStatus(ProjectStatusEnum.PLAN.getKey());
-                        projectPlanDao.updateProjectPlan(plan);
                     }
                 }
             } else { //如果没有相应的阶段，则说明项目已经结束，处理更新项目状态的相关事项
