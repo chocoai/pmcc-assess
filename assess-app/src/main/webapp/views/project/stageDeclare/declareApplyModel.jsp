@@ -175,29 +175,16 @@
                 }
             }
         },
-        getRealEstateColumn:function () {
+        getRealEstateColumn: function () {
             var cols = [];
             cols.push({
                 field: 'provinceName', title: '区域', formatter: function (value, row, index) {
                     return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
                 }
             });
-            cols.push({field: 'useRightType', title: '使用权类型'});
-            cols.push({field: 'publicArea', title: '公摊面积'});
             cols.push({field: 'evidenceArea', title: '证载面积'});
             cols.push({field: 'certName', title: '不动产权证号'});
             cols.push({field: 'beLocated', title: '房屋坐落'});
-            cols.push({field: 'realEstateUnitNumber', title: '不动产单元号'});
-            cols.push({
-                field: 'registrationDate', title: '登记日期', formatter: function (value, row, index) {
-                    return formatDate(row.registrationDate) ;
-                }
-            });
-            cols.push({
-                field: 'registrationTime', title: '登记时间', formatter: function (value, row, index) {
-                    return formatDate(row.registrationTime) ;
-                }
-            });
             return cols;
         }
     };
@@ -298,7 +285,7 @@
                 }
             }
         },
-        getHouseColumn:function () {
+        getHouseColumn: function () {
             var cols = [];
             cols.push({
                 field: 'provinceName', title: '区域', formatter: function (value, row, index) {
@@ -308,20 +295,8 @@
             cols.push({field: 'certName', title: '房屋权证号'});
             cols.push({field: 'beLocated', title: '房屋坐落'});
             cols.push({field: 'ownership', title: '房屋所有权人'});
-            cols.push({field: 'publicSituation', title: '共有情况'});
             cols.push({field: 'floorArea', title: '建筑面积'});
             cols.push({field: 'planningUseName', title: '规划用途'});
-            cols.push({field: 'landNumber', title: '土地证号'});
-            cols.push({
-                field: 'registrationDate', title: '登记日期', formatter: function (value, row, index) {
-                    return formatDate(row.registrationDate) ;
-                }
-            });
-            cols.push({
-                field: 'registrationTime', title: '登记时间', formatter: function (value, row, index) {
-                    return formatDate(row.registrationTime) ;
-                }
-            });
             return cols;
         }
     };
@@ -414,7 +389,7 @@
         getHtml: function () {
             return $("#" + commonDeclareApplyModel.config.land.id).html();
         },
-        getLandColumn:function () {
+        getLandColumn: function () {
             var cols = [];
             cols.push({
                 field: 'provinceName', title: '区域', formatter: function (value, row, index) {
@@ -425,14 +400,7 @@
             cols.push({field: 'beLocated', title: '房屋坐落'});
             cols.push({field: 'landNumber', title: '地号'});
             cols.push({field: 'graphNumber', title: '图号'});
-            cols.push({field: 'useRightType', title: '使用权类型'});
             cols.push({field: 'useRightArea', title: '使用权面积'});
-            cols.push({field: 'acreage', title: '独用面积'});
-            cols.push({
-                field: 'terminationDate', title: '登记日期', formatter: function (value, row, index) {
-                    return formatDate(row.terminationDate) ;
-                }
-            });
             return cols;
         }
 
@@ -1621,7 +1589,7 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">房屋所有权人<span
+                <label class="col-sm-1 control-label">房屋所有权人3<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <input type="text"
@@ -1666,7 +1634,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="街道号" name="streetNumber" class="form-control"
-                            onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
+                           onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
                 </div>
             </div>
             <div class="x-valid">
@@ -1714,7 +1682,7 @@
                     <input type="text"
                            placeholder="房号(数字)" name="roomNumber" class="form-control"
                            data-rule-maxlength="100" data-rule-number='true'
-                            onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
+                           onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
                 </div>
             </div>
         </div>
@@ -1723,7 +1691,7 @@
             color="#6f5499" size="10"/>
 
         <div class="form-group">
-            <div class="x-valid">
+           <%-- <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     登记时间
                 </label>
@@ -1732,7 +1700,7 @@
                            name="registrationTime" data-date-format="yyyy-mm-dd"
                            class="form-control date-picker dbdate roomTime">
                 </div>
-            </div>
+            </div>--%>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">房屋性质</label>
                 <div class="col-sm-3">
@@ -1748,6 +1716,13 @@
                     </select>
                 </div>
             </div>
+               <div class="x-valid">
+                   <label class="col-sm-1 control-label">登记机关</label>
+                   <div class="col-sm-3">
+                       <input type="text"
+                              placeholder="登记机关" name="registrationAuthority" class="form-control">
+                   </div>
+               </div>
         </div>
 
         <div class="form-group">
@@ -1756,7 +1731,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="总层数(数字)" name="floorCount" class="form-control"
-                            data-rule-maxlength="100"
+                           data-rule-maxlength="100"
                            data-rule-number='true'>
                 </div>
             </div>
@@ -1824,7 +1799,7 @@
                            class="form-control date-picker dbdate roomTime">
                 </div>
             </div>
-            <div class="x-valid">
+          <%--  <div class="x-valid">
                 <label class="col-sm-1 control-label">公摊面积</label>
                 <div class="col-sm-3">
                     <input type="text"
@@ -1832,32 +1807,12 @@
                            data-rule-maxlength="100"
                            data-rule-number='true'>
                 </div>
-            </div>
-        </div>
-
-        <div class="form-group">
+            </div>--%>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">附记其它</label>
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="附记其它" name="otherNote" class="form-control">
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">登记机关</label>
-                <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="登记机关" name="registrationAuthority" class="form-control">
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    登记日期
-                </label>
-                <div class="col-sm-3">
-                    <input placeholder="登记日期"
-                           name="registrationDate" data-date-format="yyyy-mm-dd"
-                           class="form-control date-picker dbdate roomTime">
                 </div>
             </div>
         </div>
@@ -1901,7 +1856,7 @@
                            placeholder="取得价格" name="acquisitionPrice" class="form-control">
                 </div>
             </div>
-            <div class="x-valid">
+          <%--  <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     使用权类型
                 </label>
@@ -1913,7 +1868,7 @@
                         <option value="出证" name="useRightType">出证</option>
                     </select>
                 </div>
-            </div>
+            </div>--%>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     终止日期
@@ -1924,9 +1879,6 @@
                            class="form-control date-picker dbdate roomTime">
                 </div>
             </div>
-        </div>
-
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">使用权面积</label>
                 <div class="col-sm-3">
@@ -1935,6 +1887,9 @@
                            data-rule-maxlength="100" data-rule-number='true'>
                 </div>
             </div>
+        </div>
+
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">独用面积</label>
                 <div class="col-sm-3">
@@ -1963,17 +1918,17 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">不动产单元号<span
-                        class="symbol required"></span></label>
-                <div class="col-sm-11">
-                                            <textarea class="form-control" name="realEstateUnitNumber"
-                                                      required="required">
-                                            </textarea>
-                </div>
-            </div>
-        </div>
+        <%--<div class="form-group">--%>
+            <%--<div class="x-valid">--%>
+                <%--<label class="col-sm-1 control-label">不动产单元号<span--%>
+                        <%--class="symbol required"></span></label>--%>
+                <%--<div class="col-sm-11">--%>
+                                            <%--<textarea class="form-control" name="realEstateUnitNumber"--%>
+                                                      <%--required="required">--%>
+                                            <%--</textarea>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+        <%--</div>--%>
     </div>
 </script>
 
@@ -2066,14 +2021,14 @@
                            required="required">
                 </div>
             </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">共有情况<span class="symbol required"></span></label>
-                <div class="col-sm-3">
-                    <select required="required" name="publicSituation"
-                            class="form-control search-select select2 publicSituation">
-                    </select>
-                </div>
-            </div>
+            <%--  <div class="x-valid">
+                  <label class="col-sm-1 control-label">共有情况<span class="symbol required"></span></label>
+                  <div class="col-sm-3">
+                      <select required="required" name="publicSituation"
+                              class="form-control search-select select2 publicSituation">
+                      </select>
+                  </div>
+              </div>--%>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">建筑面积<span class="symbol required"></span></label>
                 <div class="col-sm-3">
@@ -2100,7 +2055,8 @@
                 <label class="col-sm-1 control-label">街道号</label>
                 <div class="col-sm-3">
                     <input type="text"
-                           placeholder="街道号" name="streetNumber" class="form-control" onblur="commonDeclareApplyModel.house.beLocatedSplicing(this)">
+                           placeholder="街道号" name="streetNumber" class="form-control"
+                           onblur="commonDeclareApplyModel.house.beLocatedSplicing(this)">
                 </div>
             </div>
             <div class="x-valid">
@@ -2157,26 +2113,26 @@
             color="#6f5499" size="10"/>
 
         <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    登记时间<span class="symbol required"></span>
-                </label>
-                <div class="col-sm-3">
-                    <input placeholder="登记时间"
-                           name="registrationTime" data-date-format="yyyy-mm-dd"
-                           class="form-control date-picker dbdate roomTime" required="required">
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    登记日期<span class="symbol required"></span>
-                </label>
-                <div class="col-sm-3">
-                    <input placeholder="登记日期"
-                           name="registrationDate" data-date-format="yyyy-mm-dd"
-                           class="form-control date-picker dbdate roomTime" required="required">
-                </div>
-            </div>
+            <%--<div class="x-valid">--%>
+            <%--<label class="col-sm-1 control-label">--%>
+            <%--登记时间<span class="symbol required"></span>--%>
+            <%--</label>--%>
+            <%--<div class="col-sm-3">--%>
+            <%--<input placeholder="登记时间"--%>
+            <%--name="registrationTime" data-date-format="yyyy-mm-dd"--%>
+            <%--class="form-control date-picker dbdate roomTime" required="required">--%>
+            <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="x-valid">--%>
+            <%--<label class="col-sm-1 control-label">--%>
+            <%--登记日期<span class="symbol required"></span>--%>
+            <%--</label>--%>
+            <%--<div class="col-sm-3">--%>
+            <%--<input placeholder="登记日期"--%>
+            <%--name="registrationDate" data-date-format="yyyy-mm-dd"--%>
+            <%--class="form-control date-picker dbdate roomTime" required="required">--%>
+            <%--</div>--%>
+            <%--</div>--%>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">规划用途<span class="symbol required"></span></label>
                 <div class="col-sm-3">
@@ -2185,9 +2141,6 @@
                     </select>
                 </div>
             </div>
-        </div>
-
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">总层数</label>
                 <div class="col-sm-3">
@@ -2205,6 +2158,9 @@
                            data-rule-number='true'>
                 </div>
             </div>
+        </div>
+
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">套内面积</label>
                 <div class="col-sm-3">
@@ -2220,13 +2176,13 @@
         <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
             color="#6f5499" size="10"/>
         <div class="form-group">
-            <div class="x-valid">
+            <%--<div class="x-valid">
                 <label class="col-sm-1 control-label">土地证号</label>
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="土地证号" name="landNumber" class="form-control">
                 </div>
-            </div>
+            </div>--%>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地取得方式</label>
                 <div class="col-sm-3">
@@ -2241,9 +2197,6 @@
                            placeholder="登记机关" name="registrationAuthority" class="form-control">
                 </div>
             </div>
-        </div>
-
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     土地使用年限起
@@ -2254,6 +2207,9 @@
                            class="form-control date-picker dbdate roomTime">
                 </div>
             </div>
+        </div>
+
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     土地使用年限止
@@ -2360,7 +2316,7 @@
                            placeholder="土地使用权人">
                 </div>
             </div>
-            <div class="x-valid">
+            <%--<div class="x-valid">
                 <label class="col-sm-1 control-label">
                     登记日期<span class="symbol required"></span>
                 </label>
@@ -2368,6 +2324,17 @@
                     <input placeholder="登记日期"
                            name="registrationDate" data-date-format="yyyy-mm-dd"
                            class="form-control date-picker dbdate roomTime" required="required">
+                </div>
+            </div>--%>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    类型
+                </label>
+                <div class="col-sm-3">
+                    <select required="required" name="type"
+                            onchange="commonDeclareApplyModel.land.landCertNameSplicing(this)"
+                            class="form-control search-select select2 type">
+                    </select>
                 </div>
             </div>
         </div>
@@ -2383,17 +2350,6 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    类型
-                </label>
-                <div class="col-sm-3">
-                    <select required="required" name="type"
-                            onchange="commonDeclareApplyModel.land.landCertNameSplicing(this)"
-                            class="form-control search-select select2 type">
-                    </select>
-                </div>
-            </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     年份
@@ -2538,7 +2494,7 @@
                            required="required">
                 </div>
             </div>
-            <div class="x-valid">
+            <%--<div class="x-valid">
                 <label class="col-sm-1 control-label">
                     使用权类型
                 </label>
@@ -2550,7 +2506,7 @@
                         <option value="出证" name="useRightType">出证</option>
                     </select>
                 </div>
-            </div>
+            </div>--%>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     终止日期<span class="symbol required"></span>
@@ -2559,6 +2515,15 @@
                     <input placeholder="终止日期"
                            name="terminationDate" data-date-format="yyyy-mm-dd"
                            class="form-control date-picker dbdate roomTime" required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">登记机关<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="登记机关" name="registrationAuthority" class="form-control"
+                           required="required">
                 </div>
             </div>
         </div>
@@ -2574,7 +2539,7 @@
                            required="required">
                 </div>
             </div>
-            <div class="x-valid">
+         <%--   <div class="x-valid">
                 <label class="col-sm-1 control-label">独用面积<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
@@ -2583,7 +2548,7 @@
                            data-rule-maxlength="100" data-rule-number='true'
                            required="required">
                 </div>
-            </div>
+            </div>--%>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">分摊面积<span
                         class="symbol required"></span></label>
@@ -2602,17 +2567,6 @@
                         class="symbol required"></span></label>
                 <div class="col-sm-11">
                     <textarea class="form-control" name="memo" required="required"></textarea>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">登记机关<span
-                        class="symbol required"></span></label>
-                <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="登记机关" name="registrationAuthority" class="form-control"
-                           required="required">
                 </div>
             </div>
         </div>
