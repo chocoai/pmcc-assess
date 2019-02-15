@@ -60,13 +60,14 @@ public class SchemeLiquidationAnalysisService {
 
     /**
      * 初始化所有相关税费信息
+     *
      * @param judgeObjectId
      * @param planDetailsId
      */
     @Transactional(rollbackFor = Exception.class)
-    public void initTaxAllocation(Integer judgeObjectId,Integer planDetailsId) {
+    public void initTaxAllocation(Integer judgeObjectId, Integer planDetailsId) {
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
-        SchemeLiquidationAnalysisItem analysisItem=new SchemeLiquidationAnalysisItem();
+        SchemeLiquidationAnalysisItem analysisItem = new SchemeLiquidationAnalysisItem();
         analysisItem.setJudgeObjectId(judgeObjectId);
         analysisItem.setPlanDetailsId(planDetailsId);
         analysisItem.setCreator(commonService.thisUserAccount());
@@ -146,13 +147,13 @@ public class SchemeLiquidationAnalysisService {
         if (schemeLiquidationAnalysis.getId() == null || schemeLiquidationAnalysis.getId() <= 0) {
             schemeLiquidationAnalysis.setCreator(processControllerComponent.getThisUser());
             schemeLiquidationAnalysisDao.addSchemeLiquidationAnalysis(schemeLiquidationAnalysis);
-        }else{
+        } else {
             schemeLiquidationAnalysisDao.editSchemeLiquidationAnalysis(schemeLiquidationAnalysis);
         }
     }
 
     public void commit(String formData, String processInsId) throws BusinessException {
-        SchemeLiquidationAnalysisApplyDto analysisApplyDto = JSON.parseObject(formData,SchemeLiquidationAnalysisApplyDto.class);
+        SchemeLiquidationAnalysisApplyDto analysisApplyDto = JSON.parseObject(formData, SchemeLiquidationAnalysisApplyDto.class);
         SchemeLiquidationAnalysis schemeLiquidationAnalysis = this.getSchemeLiquidationAnalysis(analysisApplyDto.getId());
         schemeLiquidationAnalysis.setTotal(analysisApplyDto.getTotal());
         schemeLiquidationAnalysis.setProcessInsId(processInsId);
@@ -160,34 +161,34 @@ public class SchemeLiquidationAnalysisService {
 
         //修改子表
         List<SchemeLiquidationAnalysisItem> analysisItemList = analysisApplyDto.getAnalysisItemList();
-        if(CollectionUtils.isNotEmpty(analysisItemList)) {
+        if (CollectionUtils.isNotEmpty(analysisItemList)) {
             for (SchemeLiquidationAnalysisItem analysisItem : analysisItemList) {
-                if(analysisItem.getId()!=null) {
+                if (analysisItem.getId() != null) {
                     schemeLiquidationAnalysisItemDao.editSchemeLiquidationAnalysisItem(analysisItem);
                 }
             }
         }
         //移除删掉的内容
-        SchemeLiquidationAnalysisItem schemeLiquidationAnalysisItem = new SchemeLiquidationAnalysisItem();
-        schemeLiquidationAnalysisItem.setPlanDetailsId(schemeLiquidationAnalysis.getPlanDetailsId());
-        List<SchemeLiquidationAnalysisItem> objectList = schemeLiquidationAnalysisItemDao.getObjectList(schemeLiquidationAnalysisItem);
-        Boolean flag = true;
-        if(CollectionUtils.isNotEmpty(objectList)) {
-            for (SchemeLiquidationAnalysisItem oldItem : objectList) {
-                for (SchemeLiquidationAnalysisItem newItem : analysisItemList) {
-                    if(newItem.getId()!=null) {
-                        flag = true;
-                        if(oldItem.getId()==newItem.getId()){
-                            flag = false;
-                            break;
-                        }
-                    }
-                }
-                if(flag) {
-                    schemeLiquidationAnalysisItemDao.deleteSchemeLiquidationAnalysisItem(oldItem.getId());
-                }
-            }
-        }
+//        SchemeLiquidationAnalysisItem schemeLiquidationAnalysisItem = new SchemeLiquidationAnalysisItem();
+//        schemeLiquidationAnalysisItem.setPlanDetailsId(schemeLiquidationAnalysis.getPlanDetailsId());
+//        List<SchemeLiquidationAnalysisItem> objectList = schemeLiquidationAnalysisItemDao.getObjectList(schemeLiquidationAnalysisItem);
+//        Boolean flag = true;
+//        if(CollectionUtils.isNotEmpty(objectList)) {
+//            for (SchemeLiquidationAnalysisItem oldItem : objectList) {
+//                for (SchemeLiquidationAnalysisItem newItem : analysisItemList) {
+//                    if(newItem.getId()!=null) {
+//                        flag = true;
+//                        if(oldItem.getId()==newItem.getId()){
+//                            flag = false;
+//                            break;
+//                        }
+//                    }
+//                }
+//                if(flag) {
+//                    schemeLiquidationAnalysisItemDao.deleteSchemeLiquidationAnalysisItem(oldItem.getId());
+//                }
+//            }
+//        }
     }
 
     public SchemeLiquidationAnalysis getDataByPlanDetailsId(Integer planDetailsId) {
@@ -202,7 +203,7 @@ public class SchemeLiquidationAnalysisService {
         return schemeLiquidationAnalysisDao.getSchemeLiquidationAnalysis(where);
     }
 
-    public SchemeLiquidationAnalysis getSchemeLiquidationAnalysis(Integer id){
+    public SchemeLiquidationAnalysis getSchemeLiquidationAnalysis(Integer id) {
         return schemeLiquidationAnalysisDao.getSchemeLiquidationAnalysis(id);
     }
 

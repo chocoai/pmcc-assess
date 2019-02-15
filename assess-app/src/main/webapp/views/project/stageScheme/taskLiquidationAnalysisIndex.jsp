@@ -179,7 +179,7 @@
                         html += "</div>";
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
-                        html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
+                        html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this," + item.id + ")'>" + "</span>";
                         html += "</td>";
                         html += "</tr>";
                     });
@@ -195,9 +195,33 @@
         });
     }
 
-    function cleanHTMLData(item) {
-        $(item).parent().parent().parent().empty();
-        getTotal();
+    function cleanHTMLData(_this,id) {
+        Alert("确认要删除么？", 2, null, function () {
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/deleteItem",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        $(_this).parent().parent().parent().empty();
+                        getTotal();
+                    }
+                    else {
+                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        })
+        // $(_this).parent().parent().parent().empty();
+        // getTotal();
     }
 
     function getThisPrice(_this) {
