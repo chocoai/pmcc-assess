@@ -92,4 +92,14 @@ public class SurveyCaseStudyController {
         }
     }
 
+    @ResponseBody
+    @PostMapping(name = "检查是否添加任务", value = "/checkAssignmentTask")
+    public HttpResult checkAssignmentTask(Integer planDetailsId) {
+        try {
+            return HttpResult.newCorrectResult(surveyCaseStudyService.checkAssignmentTask(planDetailsId));
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("操作异常");
+        }
+    }
 }

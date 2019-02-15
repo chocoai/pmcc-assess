@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyCaseStudyDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.data.DataExamineTaskService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -250,5 +251,16 @@ public class SurveyCaseStudyService {
 //        }
 
         //关联附件信息
+    }
+
+    //检查是否添加任务
+    public boolean checkAssignmentTask(Integer planDetailsId){
+        ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
+        projectPlanDetails.setPid(planDetailsId);
+        List<ProjectPlanDetailsVo> list = projectPlanDetailsService.getProjectDetailsTask(projectPlanDetails);
+        if(CollectionUtils.isNotEmpty(list)){
+            return true;
+        }
+        return false;
     }
 }
