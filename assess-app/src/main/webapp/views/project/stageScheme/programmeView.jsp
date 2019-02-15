@@ -45,7 +45,7 @@
                                     <label class="col-sm-1 control-label">
                                         评估基准日
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         <label class="form-control">
                                             <fmt:formatDate value="${item.valueTimePoint}" pattern="yyyy-MM-dd"/>
                                         </label>
@@ -55,7 +55,7 @@
                                     <label class="col-sm-1 control-label">
                                         基准日说明
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         <label class="form-control">${item.timePointExplain}</label>
                                     </div>
                                 </div>
@@ -63,43 +63,49 @@
                                     <label class="col-sm-1 control-label">
                                         委托目的
                                     </label>
-                                    <div class="col-sm-3">
-                                        <label class="form-control">${item.entrustPurpose}</label>
+                                    <div class="col-sm-2">
+                                        <label class="form-control">${item.entrustPurposeName}</label>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        委托目的描述
+                                    </label>
+                                    <div class="col-sm-2">
+                                        <label class="form-control">${item.remarkEntrustPurpose}</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        委托目的描述
+                                        价值类型
                                     </label>
-                                    <div class="col-sm-3">
-                                        <label class="form-control">${item.remarkEntrustPurpose}</label>
+                                    <div class="col-sm-2">
+                                        <label class="form-control">${item.valueDefinitionName}</label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        价值类型
+                                        委托目的描述
                                     </label>
-                                    <div class="col-sm-3">
-                                        <label class="form-control">${item.valueDefinition}</label>
+                                    <div class="col-sm-2">
+                                        <label class="form-control">${item.valueDefinitionDesc}</label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
                                         价值内涵
                                     </label>
-                                    <div class="col-sm-3">
-                                        <label class="form-control">${item.valueConnotation}</label>
+                                    <div class="col-sm-2">
+                                        <label class="form-control">${item.valueConnotationName}</label>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
                                         价值内涵描述
                                     </label>
-                                    <div class="col-sm-11">
+                                    <div class="col-sm-2">
                                         <label class="form-control">${item.valueConnotationDesc}</label>
                                     </div>
                                 </div>
@@ -109,7 +115,7 @@
                                 <tr>
                                     <th style="width: 5%">编号</th>
                                         <%--<th style="width: 10%">权证号</th>--%>
-                                        <%--<th style="width: 5%">所有权人</th>--%>
+                                    <th style="width: 5%">所有权人</th>
                                     <th style="width: 15%">坐落</th>
                                     <th style="width: 10%">证载用途</th>
                                     <th style="width: 10%">实际用途</th>
@@ -465,27 +471,30 @@
             <input type="hidden" data-name="number" value="{number}">
             <input type="hidden" data-name="splitNumber" value="{splitNumber}">
             <input type="hidden" data-name="declareId" value="{declareId}">
+            <input type="hidden" data-name="rentalPossessionDesc" value="{rentalPossessionDesc}">
             <label class="form-control" data-name="mergeNumber">{mergeNumber}</label>
         </td>
         <%--<td>--%>
         <%--<label class="form-control" data-name="name">--%>
         <%--<span>{name}</span>--%>
-        <%--<a href="javascript://" onclick="programme.viewJudgeInfo(this);"--%>
-        <%--class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>--%>
         <%--</label>--%>
-
         <%--</td>--%>
-        <%--<td><label class="form-control" data-name="ownership">{ownership}</label></td>--%>
+        <td><label class="form-control" data-name="ownership">{ownership}
+            <a href="javascript://" onclick="programme.viewJudgeInfo(this);"
+               class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>
+        </label></td>
         <td><label class="form-control" data-name="seat">{seat}</label></td>
         <td><label class="form-control" data-name="certUse">{certUse}</label></td>
         <td><label class="form-control" data-name="practicalUse">{practicalUse}</label></td>
-        <td><label class="form-control" data-name="setUse">{setUse}</label></td>
-        <td><label class="form-control" data-name="setUse">{bestUse}</label></td>
+        <td><label class="form-control" data-name="setUse">{setUseName}</label></td>
+        <td><label class="form-control" data-name="setUse">{bestUseName}</label></td>
         <td><label class="form-control">{floorArea}</label></td>
         <td><label class="form-control">{evaluationArea}</label></td>
         <td>
             <a href="javascript://" onclick="setEvaluationMethod(this);"
                class="btn btn-xs btn-success judge-method tooltips">评估方法</a>
+            <a href="javascript://" title="出租或占用情况描述" onclick="programme.viewRentalPossessionDesc(this);"
+               class="btn btn-xs btn-success judge-description tooltips">描述</a>
         </td>
     </tr>
 </script>
@@ -536,6 +545,7 @@
                         html = html.replace(/{bisMerge}/g, item.bisMerge == undefined ? false : item.bisMerge);
                         html = html.replace(/{number}/g, item.number == undefined ? "" : item.number);
                         html = html.replace(/{splitNumber}/g, item.splitNumber == undefined ? "" : item.splitNumber);
+                        html = html.replace(/{rentalPossessionDesc}/g, item.rentalPossessionDesc == undefined ? "" : item.rentalPossessionDesc);
                         if (item.splitNumber) {
                             html = html.replace(/{mergeNumber}/g, item.number + "-" + item.splitNumber);
                         } else {
@@ -547,17 +557,13 @@
                         html = html.replace(/{seat}/g, item.seat == undefined ? "" : AssessCommon.substring(item.seat, 30));
                         html = html.replace(/{certUse}/g, item.certUse == undefined ? "" : item.certUse);
                         html = html.replace(/{practicalUse}/g, item.practicalUse == undefined ? "" : item.practicalUse);
-                        html = html.replace(/{setUse}/g, item.setUse == undefined ? "" : item.setUse);
-                        html = html.replace(/{bestUse}/g, item.bestUse == undefined ? "" : item.bestUse);
+                        html = html.replace(/{setUseName}/g, item.setUseName == undefined ? "" : item.setUseName);
+                        html = html.replace(/{bestUseName}/g, item.bestUseName == undefined ? "" : item.bestUseName);
                         html = html.replace(/{floorArea}/g, item.floorArea == undefined ? "" : item.floorArea);
                         html = html.replace(/{evaluationArea}/g, item.evaluationArea == undefined ? "" : item.evaluationArea);
                         tbody.append(html);
                         //设值
                         var lastTr = tbody.find("tr:last");
-                        lastTr.find('[data-name="setUse"]').val(item.setUse);
-                        lastTr.find('[data-name="bestUse"]').val(item.bestUse);
-                        lastTr.find('td:last').find(item.bisSplit ? '.judge-split' : '.judge-remove').remove();
-                        lastTr.find('td:last').find(item.bisMerge ? '.judge-merge' : '.judge-merge-cancel').remove();
                         if (item.bisSetFunction) {
                             lastTr.find('td:last').find('.judge-method').removeClass('btn-success').addClass('btn-primary');
                         }
@@ -714,6 +720,15 @@
             }
         });
     };
+
+    //查看描述内容
+    programme.viewRentalPossessionDesc = function (_this) {
+        var rentalPossessionDesc = $(_this).closest('tr').find('[data-name=rentalPossessionDesc]').val();
+        layer.open({
+            title: '出租或占用情况描述'
+            ,content: rentalPossessionDesc
+        });
+    }
 
 </script>
 <script type="text/javascript">

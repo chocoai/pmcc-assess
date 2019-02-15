@@ -15,6 +15,9 @@ public class DataBestUseDescriptionDao {
     @Autowired
     private DataBestUseDescriptionMapper dataBestUseDescriptionMapper;
 
+    public DataBestUseDescription getDataBestUseDescription(Integer id) {
+        return dataBestUseDescriptionMapper.selectByPrimaryKey(id);
+    }
 
     public List<DataBestUseDescription> getDataBestUseDescriptionList(String name) {
         DataBestUseDescriptionExample example = new DataBestUseDescriptionExample();
@@ -25,7 +28,8 @@ public class DataBestUseDescriptionDao {
         }
         return dataBestUseDescriptionMapper.selectByExample(example);
     }
-    public List<DataBestUseDescription> dataBestUseDescriptionList(String type,String category){
+
+    public List<DataBestUseDescription> dataBestUseDescriptionList(String type, String category) {
         DataBestUseDescriptionExample example = new DataBestUseDescriptionExample();
         DataBestUseDescriptionExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(type)) {
@@ -41,9 +45,9 @@ public class DataBestUseDescriptionDao {
         DataBestUseDescriptionExample example = new DataBestUseDescriptionExample();
         example.createCriteria().andNameEqualTo(dataBestUseDescription.getName()).andDescriptionEqualTo(dataBestUseDescription.getDescription());
         List<DataBestUseDescription> dataBestUseDescriptions = dataBestUseDescriptionMapper.selectByExample(example);
-        if(dataBestUseDescriptions.size() > 0){
+        if (dataBestUseDescriptions.size() > 0) {
             return false;
-        }else{
+        } else {
             int i = dataBestUseDescriptionMapper.insert(dataBestUseDescription);
             return i > 0;
         }

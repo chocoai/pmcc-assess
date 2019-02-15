@@ -23,7 +23,7 @@
                     </ul>
                     <h3>${projectPlan.planName}阶段工作计划
                         <small>
-                            <input type="button" class="btn btn-xs btn-success" onclick="viewProgramme();" value="查看方案"/>
+                            <input type="button" class="btn btn-xs btn-warning" onclick="viewProgramme();" value="查看方案"/>
                         </small>
                     </h3>
                     <div class="clearfix"></div>
@@ -39,18 +39,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>详情计划</h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class='treeGrid panel-body x_content' style="padding: 0px;">
-                    <table id="PlanItemListed" class="table table-bordered" ></table>
+                    <div class='treeGrid panel-body x_content' style="padding: 0px;">
+                        <table id="PlanItemListed" class="table table-bordered" ></table>
+                    </div>
                 </div>
             </div>
             <%@include file="/views/share/form_approval.jsp" %>

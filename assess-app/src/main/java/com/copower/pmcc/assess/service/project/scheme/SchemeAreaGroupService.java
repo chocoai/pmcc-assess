@@ -1,10 +1,12 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeAreaGroupDao;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
-import com.copower.pmcc.assess.service.PublicService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -12,6 +14,7 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +34,7 @@ public class SchemeAreaGroupService {
     @Autowired
     private SchemeAreaGroupDao schemeAreaGroupDao;
     @Autowired
-    private PublicService publicService;
+    private BaseDataDicService baseDataDicService;
     @Autowired
     private ErpAreaService erpAreaService;
     @Autowired
@@ -157,4 +160,21 @@ public class SchemeAreaGroupService {
         return schemeAreaGroupDao.get(id);
     }
 
+
+    public SchemeAreaGroupVo getSchemeAreaGroupVo(SchemeAreaGroup schemeAreaGroup) {
+        if (schemeAreaGroup == null) return null;
+        SchemeAreaGroupVo schemeAreaGroupVo = new SchemeAreaGroupVo();
+        BeanUtils.copyProperties(schemeAreaGroup, schemeAreaGroupVo);
+        schemeAreaGroupVo.setEntrustPurposeName(baseDataDicService.getNameById(schemeAreaGroup.getEntrustPurpose()));
+        schemeAreaGroupVo.setValueDefinitionName(baseDataDicService.getNameById(schemeAreaGroup.getValueDefinition()));
+        if (StringUtils.isNotBlank(schemeAreaGroup.getValueConnotation())) {
+            List<String> list = JSON.parseArray(schemeAreaGroup.getValueConnotation(), String.class);
+            if (CollectionUtils.isNotEmpty(list)) {
+                StringBuilder builder = new StringBuilder();
+                list.forEach(o -> builder.append(baseDataDicService.getNameById(o)).append(","));
+                schemeAreaGroupVo.setValueConnotationName(StringUtils.strip(builder.toString(), ","));
+            }
+        }
+        return schemeAreaGroupVo;
+    }
 }

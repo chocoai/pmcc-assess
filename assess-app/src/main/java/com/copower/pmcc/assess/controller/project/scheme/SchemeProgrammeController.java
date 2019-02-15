@@ -3,11 +3,11 @@ package com.copower.pmcc.assess.controller.project.scheme;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
+import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
@@ -74,7 +74,7 @@ public class SchemeProgrammeController {
     public ModelAndView index(Integer projectId, Integer planId) {
         String view = "/project/stageScheme/programmeIndex";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        List<SchemeAreaGroup> areaGroups = declareRecordService.getSchemeAreaGroup(projectId);//获取分组信息
+        List<SchemeAreaGroupVo> areaGroups = declareRecordService.getSchemeAreaGroup(projectId);//获取分组信息
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("areaGroups", areaGroups);
@@ -97,7 +97,7 @@ public class SchemeProgrammeController {
     public ModelAndView view(Integer projectId, Integer planId) {
         String view = "/project/stageScheme/programmeView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        List<SchemeAreaGroup> areaGroups = declareRecordService.getSchemeAreaGroup(projectId);//获取分组信息
+        List<SchemeAreaGroupVo> areaGroups = declareRecordService.getSchemeAreaGroup(projectId);//获取分组信息
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("areaGroups", areaGroups);

@@ -21,6 +21,8 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicEstateTaggingService;
 import com.copower.pmcc.assess.service.basic.BasicHouseService;
+import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
+import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
@@ -95,6 +97,10 @@ public class SchemeJudgeObjectService {
     private BasicEstateTaggingService basicEstateTaggingService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private DataBestUseDescriptionService dataBestUseDescriptionService;
+    @Autowired
+    private DataSetUseFieldService dataSetUseFieldService;
 
     public boolean addSchemeJudgeObject(SchemeJudgeObject schemeJudgeObject) {
         return schemeJudgeObjectDao.addSchemeJudgeObject(schemeJudgeObject);
@@ -263,8 +269,16 @@ public class SchemeJudgeObjectService {
     public SchemeJudgeObjectVo getSchemeJudgeObjectVo(SchemeJudgeObject schemeJudgeObject) {
         SchemeJudgeObjectVo schemeJudgeObjectVo = new SchemeJudgeObjectVo();
         BeanUtils.copyProperties(schemeJudgeObject, schemeJudgeObjectVo);
-        schemeJudgeObjectVo.setSetUseName(baseDataDicService.getNameById(schemeJudgeObject.getSetUse()));
-        schemeJudgeObjectVo.setBestUseName(baseDataDicService.getNameById(schemeJudgeObject.getBestUse()));
+        if (schemeJudgeObject.getSetUse() != null) {
+            DataSetUseField setUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
+            if (setUseField != null)
+                schemeJudgeObjectVo.setSetUseName(setUseField.getName());
+        }
+        if (schemeJudgeObject.getBestUse() != null) {
+            DataBestUseDescription bestUseDescription = dataBestUseDescriptionService.getCacheBestUseDescriptionById(schemeJudgeObject.getBestUse());
+            if (bestUseDescription != null)
+                schemeJudgeObjectVo.setBestUseName(bestUseDescription.getName());
+        }
         return schemeJudgeObjectVo;
     }
 
@@ -419,7 +433,9 @@ public class SchemeJudgeObjectService {
         schemeAreaGroup.setValueTimePoint(schemeProgrammeDto.getValueTimePoint());
         schemeAreaGroup.setTimePointExplain(schemeProgrammeDto.getTimePointExplain());
         schemeAreaGroup.setValueDefinition(schemeProgrammeDto.getValueDefinition());
+        schemeAreaGroup.setValueDefinitionDesc(schemeProgrammeDto.getValueDefinitionDesc());
         schemeAreaGroup.setValueConnotation(schemeProgrammeDto.getValueConnotation());
+        schemeAreaGroup.setValueConnotationDesc(schemeProgrammeDto.getValueConnotationDesc());
         schemeAreaGroup.setEntrustPurpose(schemeProgrammeDto.getEntrustmentPurpose());
         schemeAreaGroup.setRemarkEntrustPurpose(schemeProgrammeDto.getRemarkEntrustPurpose());
         schemeAreaGroupService.saveAreaGroup(schemeAreaGroup);

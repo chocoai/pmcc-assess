@@ -265,7 +265,6 @@ function deletePlan(id) {
 
 
 function getPlanItemList() {
-    Loading.progressShow();
     $.ajax({
         url: getContextPath() + "/ProjectPlan/getProjectPlanDetailsByPlanApply",
         data: {
@@ -274,12 +273,10 @@ function getPlanItemList() {
         type: "get",
         dataType: "json",
         success: function (result) {
-            Loading.progressHide();
             result.rows = sortObjectArray(result.rows, ["sorting"]);
             treeGridJson = result;
             treeGridJsonData = $.extend(true, {}, result);
             treeGridload();
-
         },
         error: function (result) {
             Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
@@ -524,6 +521,10 @@ function commitApply() {
     data["detailsSoring"] = JSON.stringify(detailsSoring);
     data["bisChildren"] = $("#bisChildren").val();
     data["projectId"] = $("#projectId").val();
+    if(detailsSoring.length<=0){
+        Alert("还未添加阶段任务，不允许提交！");
+        return false;
+    }
     Loading.progressShow();
     var url = getContextPath() + "/ProjectPlan/saveProjectPlan";
     if ($("#processInsId").length > 0 && $("#processInsId").val() != "0") {

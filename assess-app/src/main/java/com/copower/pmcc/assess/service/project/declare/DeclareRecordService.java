@@ -7,12 +7,14 @@ import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
@@ -107,10 +109,10 @@ public class DeclareRecordService {
      * @param projectId
      * @return
      */
-    public List<SchemeAreaGroup> getSchemeAreaGroup(Integer projectId) {
+    public List<SchemeAreaGroupVo> getSchemeAreaGroup(Integer projectId) {
         List<SchemeAreaGroup> voList = schemeAreaGroupService.getAreaGroupList(projectId);
         if (CollectionUtils.isNotEmpty(voList))
-            return voList;
+            return LangUtils.transform(voList, o -> schemeAreaGroupService.getSchemeAreaGroupVo(o));
         List<DeclareRecord> declareRecords = declareRecordDao.getDeclareRecordByProjectId(projectId);
         List<SchemeAreaGroup> areaGroups = groupDeclareRecord(declareRecords);
         if (CollectionUtils.isNotEmpty(areaGroups)) {
@@ -170,7 +172,7 @@ public class DeclareRecordService {
             }
         }
         voList = schemeAreaGroupService.getAreaGroupList(projectId);
-        return voList;
+        return LangUtils.transform(voList, o -> schemeAreaGroupService.getSchemeAreaGroupVo(o));
     }
 
 

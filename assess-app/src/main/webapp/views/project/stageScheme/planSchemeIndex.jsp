@@ -20,16 +20,11 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <!--填写表单-->
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>
-                        ${panelTitle}阶段工作计划
-                        <small>
-                            <input type="button" class="btn btn-xs btn-success" onclick="setProgramme();" value="设置方案"/>
-                        </small>
-                    </h3>
+                    <h3>${panelTitle}阶段工作计划</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -38,11 +33,6 @@
                         <input type="hidden" id="planId" name="id" value="${projectPlan.id}">
                         <input type="hidden" id="workStageId" value="${projectPlan.workStageId}">
                         <input type="hidden" id="planDetailsIds" value="${planDetailsIds}">
-                        <div class="form-group">
-                            <div class="col-sm-11 col-sm-offset-1">
-
-                            </div>
-                        </div>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
@@ -55,15 +45,6 @@
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>${panelTitle}阶段工作计划</h3>
-                    <div class="clearfix"></div>
                 </div>
                 <div class="treeGrid panel-body x_content" style="padding: 0px;">
                     <table id="PlanItemListed" class="table table-bordered" style="max-height: auto;"></table>
@@ -210,6 +191,9 @@
 </div>
 <div id="tb" style="padding:5px;height:auto;display: none;">
     <div style=" margin-bottom:5px">
+        <button type="button" onclick="setProgramme();" class="btn btn-success btn-xs">
+            <i class='fa fa-cog fa-white'></i> 设置方案
+        </button>
         <button type="button" onclick="move('up')" class="btn btn-primary btn-xs">
             <i class='fa fa-arrow-up fa-white'></i> 上移
         </button>
@@ -400,7 +384,7 @@
     //设置方案
     function setProgramme() {
         openWin('${pageContext.request.contextPath}/schemeProgramme/index?projectId=${projectId}&planId=${projectPlan.id}', function () {
-            window.location.href = window.location.href;
+            getPlanItemList();
         })
     }
 

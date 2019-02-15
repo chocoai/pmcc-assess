@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataBestUseDescriptionDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataBestUseDescription;
 import com.copower.pmcc.assess.dto.output.data.DataBestUseDescriptionVo;
@@ -10,6 +11,7 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.constant.CacheConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -52,6 +54,17 @@ public class DataBestUseDescriptionService {
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<DataBestUseDescriptionVo>() : vos);
         return vo;
+    }
+
+    public DataBestUseDescription getCacheBestUseDescriptionById(Integer id) {
+        String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_BEST_USE_ID, String.valueOf(id));
+        try {
+            DataBestUseDescription bestUseDescription = LangUtils.singleCache(rdsKey, id, DataBestUseDescription.class, o -> dataBestUseDescriptionDao.getDataBestUseDescription(o));
+            return bestUseDescription;
+        } catch (Exception e) {
+            return dataBestUseDescriptionDao.getDataBestUseDescription(id);
+        }
+
     }
 
     public boolean addDataBestUseDescription(DataBestUseDescription dataBestUseDescription) throws BusinessException {

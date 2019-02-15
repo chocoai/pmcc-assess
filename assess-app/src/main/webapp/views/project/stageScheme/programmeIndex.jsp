@@ -58,7 +58,7 @@
                                     <label class="col-sm-1 control-label">
                                         评估基准日<span class="symbol required"></span>
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         <input type="text" name="valueTimePoint" required="required" placeholder="评估基准日"
                                                data-date-format="yyyy-mm-dd" class="form-control date-picker dbdate"
                                                readonly="readonly" pattern='yyyy-MM-dd'
@@ -70,7 +70,7 @@
                                     <label class="col-sm-1 control-label">
                                         基准日说明<span class="symbol required"></span>
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         <input type="text" name="timePointExplain" required="required"
                                                placeholder="基准日说明" class="form-control"
                                                value="${item.timePointExplain}">
@@ -80,7 +80,7 @@
                                     <label class="col-sm-1 control-label">
                                         委托目的<span class="symbol required"></span>
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         <select name="entrustmentPurpose" class="form-control" required>
                                             <option value="">-请选择-</option>
                                             <c:forEach items="${entrustmentPurposes}" var="entrustmentPurpose">
@@ -103,23 +103,26 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
                                         委托目的描述<span class="symbol required"></span>
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         <input type="text" name="remarkEntrustPurpose" required="required"
                                                placeholder="委托目的描述" class="form-control"
                                                value="${empty item.remarkEntrustPurpose?projectInfo.remarkEntrustPurpose:item.remarkEntrustPurpose}">
                                     </div>
                                 </div>
+                            </div>
+                            <div class="form-group">
+
+                            </div>
+                            <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
                                         价值类型<span class="symbol required"></span>
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         <select name="valueDefinition" class="form-control" required>
                                             <option value="">-请选择-</option>
                                             <c:forEach items="${valueTypes}" var="valueDefinition">
@@ -144,9 +147,17 @@
                                 </div>
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
+                                        价值类型描述
+                                    </label>
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control" name="valueDefinitionDesc" placeholder="价值类型描述" value="${item.valueConnotationDesc}">
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
                                         价值内涵<span class="symbol required"></span>
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         <select name="valueConnotation" class="form-control search-select select2"
                                                 multiple="multiple" required>
                                             <option value="">-请选择-</option>
@@ -156,17 +167,17 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
                                         价值内涵描述
                                     </label>
-                                    <div class="col-sm-11">
-                                        <textarea class="form-control" name="valueConnotationDesc"
-                                                  placeholder="价值内涵">${item.valueConnotationDesc}</textarea>
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control" name="valueConnotationDesc" placeholder="价值内涵描述" value="${item.valueConnotationDesc}">
                                     </div>
                                 </div>
+                            </div>
+                            <div class="form-group">
+
                             </div>
                             <table class="table">
                                 <thead>
@@ -608,6 +619,7 @@
         <td>
             <div class="x-valid">
                 <input class="form-control" type="text" required data-rule-number="true"
+                       data-rule-range="[0,{floorArea}]"
                        name="evaluationArea{id}" data-name="evaluationArea"
                        placeholder="评估面积" value="{evaluationArea}">
             </div>
@@ -920,7 +932,7 @@
                 offset: 't',
                 shade: false,
                 zIndex: 998,
-                area: ['320px', '300px'], //宽高
+                area: ['420px', '300px'], //宽高
                 content: '<ul id="area-merge-ul" class="to_do"></ul>',
                 yes: function (index, layero) {
                     programme.areaMergeSubmit();
@@ -1072,7 +1084,7 @@
                 offset: 't',
                 shade: false,
                 zIndex: 999,
-                area: ['320px', '300px'], //宽高
+                area: ['420px', '300px'], //宽高
                 content: '<ul id="judge-merge-ul" class="to_do"></ul>',
                 yes: function (index, layero) {
                     programme.mergeJudgeSubmit(_this, $(_this).closest('.area_panel'));
@@ -1171,6 +1183,7 @@
         if (!data.valueConnotation) {
             data.valueConnotation = [];
         }
+        data.valueDefinitionDesc = $(areaPanel).find('[name="valueDefinitionDesc"]').val();
         data.valueConnotationDesc = $(areaPanel).find('[name="valueConnotationDesc"]').val();
         data.schemeJudgeObjects = [];
 
@@ -1272,7 +1285,7 @@
                         window.close();
                     });
                 } else {
-                    Alert("提交方案失败:" + result.errmsg);
+                    Alert(result.errmsg);
                 }
             },
             error: function (result) {

@@ -55,6 +55,9 @@ public class AssessCacheConstant {
     public static final String PMCC_ASSESS_DAMAGED_DEGREE_FIELD = "pmcc:assess:damaged:degree:field";
     public static final String PMCC_ASSESS_DAMAGED_DEGREE_FIELD_ITEM = "pmcc:assess:damaged:degree:field:item";
 
+    //最佳利用描述
+    public static final String PMCC_ASSESS_BEST_USE_ID = "pmcc:assess:best:use:id";
+
     //设定用途字段
     public static final String PMCC_ASSESS_SET_USE = "pmcc:assess:set:use";
     public static final String PMCC_ASSESS_SET_USE_ID = "pmcc:assess:set:use:id";
