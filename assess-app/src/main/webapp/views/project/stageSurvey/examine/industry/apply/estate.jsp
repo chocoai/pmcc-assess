@@ -209,6 +209,44 @@
                 </div>
             </div>
         </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">供水平面图</label>
+                <div class="col-sm-5">
+                    <input id="estate_water_supply_plan" placeholder="上传附件" class="form-control"
+                           type="file">
+                    <div id="_estate_water_supply_plan"></div>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">供电平面图</label>
+                <div class="col-sm-5">
+                    <input id="estate_power_supply_plan" placeholder="上传附件" class="form-control"
+                           type="file">
+                    <div id="_estate_power_supply_plan"></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">供气平面图</label>
+                <div class="col-sm-5">
+                    <input id="estate_air_supply_plan" placeholder="上传附件" class="form-control"
+                           type="file">
+                    <div id="_estate_air_supply_plan"></div>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">采暖平面图</label>
+                <div class="col-sm-5">
+                    <input id="estate_heating_plan" placeholder="上传附件" class="form-control"
+                           type="file">
+                    <div id="_estate_heating_plan"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="x_content" id="industrySupplyInfo">
