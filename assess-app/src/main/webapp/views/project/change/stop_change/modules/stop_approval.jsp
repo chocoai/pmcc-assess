@@ -27,7 +27,7 @@
                                 关闭时间<span class="symbol required"></span>
                             </label>
                             <div class="col-md-3 col-sm-3 col-xs-12">
-                                <label data-name="stopTime" class="form-control"></label>
+                                <label name="stopTime" class="form-control"></label>
                             </div>
                         </div>
                     </div>
@@ -37,7 +37,7 @@
                                 关闭原因
                             </label>
                             <div class="col-md-11 col-sm-11 col-xs-12">
-                                <label data-name="changeReason" class="form-control"></label>
+                                <label name="changeReason" class="form-control"></label>
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                                 可能影响
                             </label>
                             <div class="col-md-11 col-sm-11 col-xs-12">
-                                <label data-name="influence" class="form-control"></label>
+                                <label name="influence" class="form-control"></label>
                             </div>
                         </div>
                     </div>
@@ -64,7 +64,8 @@
 
     $(function () {
         var json = '${costsProjectChangeLog.newRecord}';
+        console.log(json);
         var projectInfo = JSON.parse(json);
-        projectStopApplyObj.projectStopForm.initLabel(projectInfo);
+        projectStopApplyObj.projectStopForm.initForm(projectInfo);
     });
 </script>

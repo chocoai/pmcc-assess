@@ -26,7 +26,7 @@
                                 重启时间
                             </label>
                             <div class="col-md-3 col-sm-3 col-xs-12">
-                                <label data-name="restartTime" class="form-control"></label>
+                                <label name="restartTime" class="form-control"></label>
                             </div>
                         </div>
 
@@ -38,7 +38,7 @@
                                 重启原因
                             </label>
                             <div class="col-md-11 col-sm-11 col-xs-12">
-                                <label data-name="changeReason" class="form-control"></label>
+                                <label name="changeReason" class="form-control"></label>
                             </div>
                         </div>
                     </div>
@@ -55,6 +55,6 @@
     $(function () {
         var json = '${costsProjectChangeLog.newRecord}';
         var projectInfo = JSON.parse(json);
-        projectRestartApplyObj.projectRestartForm.initLabel(projectInfo);
+        projectRestartApplyObj.projectRestartForm.initForm(projectInfo);
     });
 </script>
