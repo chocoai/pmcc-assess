@@ -1271,28 +1271,17 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 土地实际用途
+     * 实际用途
      *
      * @return
      */
-    public String getLandPracticalUse() {
+    public String getPracticalUse() {
         StringBuilder builder = new StringBuilder();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             schemeJudgeObjectList.parallelStream().forEach(schemeJudgeObject -> {
-                if (NumberUtils.isNumber(schemeJudgeObject.getCertUse())) {
-                    builder.append(baseDataDicService.getNameById(schemeJudgeObject.getCertUse()));
-                } else {
-                    builder.append(schemeJudgeObject.getCertUse());
-                }
+                builder.append(schemeJudgeObject.getName()).append(baseDataDicService.getNameById(schemeJudgeObject.getPracticalUse()));
             });
-            try {
-                if (StringUtils.isNotBlank(builder.toString())) {
-                    return moreJudgeObject(builder.toString(), builder.toString());
-                }
-            } catch (Exception e) {
-
-            }
         }
         return errorStr;
     }
@@ -1303,7 +1292,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getUseRightType() {
-        String value = getLandPracticalUse();
+        String value = getPracticalUse();
         if (StringUtils.isNotBlank(value)) {
             return value;
         } else {

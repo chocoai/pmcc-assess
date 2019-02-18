@@ -349,7 +349,7 @@ public class GenerateReportService {
                 try {
                     String name = StringUtils.isNotBlank(bookmarkAndRegex.getChineseName()) ? bookmarkAndRegex.getChineseName() : bookmarkAndRegex.getName();
                     //文号
-                    if (Objects.equal(BaseReportFieldEnum.REPORTNUMBER.getName(), name)) {
+                    if (Objects.equal(BaseReportFieldEnum.ReportNumber.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
                             replaceReportPutValue(name, generateBaseDataService.getWordNumber(), bookmarkAndRegex.getType(), false, mapSet);
@@ -366,7 +366,7 @@ public class GenerateReportService {
                         }
                     }
                     //报告出具日期
-                    if (Objects.equal(BaseReportFieldEnum.reportIssuanceDate.getName(), name)) {
+                    if (Objects.equal(BaseReportFieldEnum.ReportIssuanceDate.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
                             String reportIssuanceStr = null;
@@ -563,13 +563,6 @@ public class GenerateReportService {
                             replaceReportPutValue(name, generateBaseDataService.getCapitalizationAmount(), bookmarkAndRegex.getType(), false, mapSet);
                         }
                     }
-                    //房地产总价大写
-                    if (Objects.equal(BaseReportFieldEnum.Capital_capitalization_total_price_real_estate.getName(), name)) {
-                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                        if (baseReportField != null) {
-                            replaceReportPutValue(name, generateBaseDataService.getCapitalizationAmount(), bookmarkAndRegex.getType(), false, mapSet);
-                        }
-                    }
                     //收益法模板
                     if (Objects.equal(BaseReportFieldEnum.MdIncome.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
@@ -684,7 +677,7 @@ public class GenerateReportService {
                                 replaceReportPutValue(name, generateBaseDataService.getNotPowerPerson(), bookmarkAndRegex.getType(), false, mapSet);
                             }
                             if (false) {
-                                BaseReportFieldEnum.powerPerson.getName();
+                                BaseReportFieldEnum.PowerPerson.getName();
                                 replaceReportPutValue(name, generateBaseDataService.getPowerPerson(), bookmarkAndRegex.getType(), false, mapSet);
                             }
                         }
@@ -753,14 +746,14 @@ public class GenerateReportService {
                         }
                     }
                     //土地实际用途
-                    if (Objects.equal(BaseReportFieldEnum.LandPracticalUse.getName(), name)) {
+                    if (Objects.equal(BaseReportFieldEnum.PracticalUse.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
-                            replaceReportPutValue(name, generateBaseDataService.getLandPracticalUse(), bookmarkAndRegex.getType(), false, mapSet);
+                            replaceReportPutValue(name, generateBaseDataService.getPracticalUse(), bookmarkAndRegex.getType(), false, mapSet);
                         }
                     }
-                    //使用权类型
-                    if (Objects.equal(BaseReportFieldEnum.UseRightType.getName(), name)) {
+                    //土地使用权类型
+                    if (Objects.equal(BaseReportFieldEnum.LandUseRightType.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
                             replaceReportPutValue(name, generateBaseDataService.getUseRightType(), bookmarkAndRegex.getType(), false, mapSet);
@@ -932,15 +925,15 @@ public class GenerateReportService {
                         replaceReportPutValue(name, generateBaseDataService.getHousingOwnershipRegistrationStatementSheet(), bookmarkAndRegex.getType(), true, mapSet);
                     }
                     //估价对象区位状况表
-                    if (Objects.equal(BaseReportFieldEnum.judgeObjectAreaStatusSheet.getName(), name)) {
+                    if (Objects.equal(BaseReportFieldEnum.JudgeObjectAreaStatusSheet.getName(), name)) {
                         replaceReportPutValue(name, generateBaseDataService.getJudgeObjectAreaStatusSheet(), bookmarkAndRegex.getType(), true, mapSet);
                     }
                     //估价土地实体状况表
-                    if (Objects.equal(BaseReportFieldEnum.judgeObjectLandStateSheet.getName(), name)) {
+                    if (Objects.equal(BaseReportFieldEnum.JudgeObjectLandStateSheet.getName(), name)) {
                         replaceReportPutValue(name, generateBaseDataService.getJudgeObjectLandStateSheet(), bookmarkAndRegex.getType(), true, mapSet);
                     }
                     //估价对象建筑实体状况表
-                    if (Objects.equal(BaseReportFieldEnum.judgeBuildLandStateSheet.getName(), name)) {
+                    if (Objects.equal(BaseReportFieldEnum.JudgeBuildLandStateSheet.getName(), name)) {
                         replaceReportPutValue(name, generateBaseDataService.getJudgeBuildLandStateSheet(), bookmarkAndRegex.getType(), true, mapSet);
                     }
                     //汇总表
@@ -959,7 +952,7 @@ public class GenerateReportService {
                         }
                     }
                     //估价结果一览表
-                    if (Objects.equal(BaseReportFieldEnum.judgeBuildResultSurveySheet.getName(), name)) {
+                    if (Objects.equal(BaseReportFieldEnum.JudgeBuildResultSurveySheet.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
                             replaceReportPutValue(name, generateBaseDataService.getjudgeBuildResultSurveySheet(), bookmarkAndRegex.getType(), true, mapSet);
