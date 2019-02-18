@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.controller.baisc;
 
-import com.copower.pmcc.assess.dal.basic.entity.BasicUnit;
-import com.copower.pmcc.assess.dal.basic.entity.BasicUnitHuxing;
+import com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing;
 import com.copower.pmcc.assess.service.basic.BasicUnitHuxingService;
 import com.copower.pmcc.assess.service.basic.BasicUnitService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -10,10 +9,7 @@ import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @Auther: zch

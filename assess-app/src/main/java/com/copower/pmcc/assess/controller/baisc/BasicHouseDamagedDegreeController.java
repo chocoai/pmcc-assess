@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.controller.baisc;
 
 import com.copower.pmcc.assess.controller.BaseController;
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouseDamagedDegreeDetail;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseDamagedDegreeDetail;
 import com.copower.pmcc.assess.service.basic.BasicHouseDamagedDegreeService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;

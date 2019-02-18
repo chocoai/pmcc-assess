@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.cases;
 
 import com.copower.pmcc.assess.common.BeanCopyHelp;
-import com.copower.pmcc.assess.dal.basic.entity.BasicEstate;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

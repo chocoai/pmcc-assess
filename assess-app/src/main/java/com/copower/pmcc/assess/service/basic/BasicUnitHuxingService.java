@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.dal.basic.dao.BasicUnitHuxingDao;
-import com.copower.pmcc.assess.dal.basic.entity.BasicUnit;
-import com.copower.pmcc.assess.dal.basic.entity.BasicUnitHuxing;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitHuxingDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
+import com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnitHuxing;
 import com.copower.pmcc.assess.dto.output.basic.BasicUnitHuxingVo;
 import com.copower.pmcc.assess.dto.output.cases.CaseUnitHuxingVo;

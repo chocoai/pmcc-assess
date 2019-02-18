@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.controller.baisc;
 
-import com.copower.pmcc.assess.dal.basic.entity.BasicMatchingEnvironment;
+import com.copower.pmcc.assess.dal.basis.entity.BasicMatchingEnvironment;
 import com.copower.pmcc.assess.service.basic.BasicMatchingEnvironmentService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;

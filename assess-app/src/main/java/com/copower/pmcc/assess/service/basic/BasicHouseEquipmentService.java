@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.dal.basic.dao.BasicHouseEquipmentDao;
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouseEquipment;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseEquipmentDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseEquipment;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseEquipmentVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;

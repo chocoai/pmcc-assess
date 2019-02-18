@@ -6,8 +6,7 @@ import com.copower.pmcc.assess.common.enums.BasicApplyFormNameEnum;
 import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
-import com.copower.pmcc.assess.dal.basic.entity.*;
-import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
@@ -1149,7 +1148,7 @@ public class PublicBasicService {
      * @param formData
      * @throws Exception
      */
-    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public BasicApply saveBasicApply(String formData, Boolean isDraft) throws Exception {
         if (StringUtils.isEmpty(formData)) {
             return null;

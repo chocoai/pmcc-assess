@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.basic;
 
-import com.copower.pmcc.assess.dal.basic.entity.BasicEstate;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
 
 /**
  * @Auther: zch

@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.event.basic;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
-import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;

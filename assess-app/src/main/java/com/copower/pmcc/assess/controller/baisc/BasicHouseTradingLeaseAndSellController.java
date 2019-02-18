@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.controller.baisc;
 
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouseTradingLease;
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouseTradingSell;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLease;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingSell;
 import com.copower.pmcc.assess.dto.input.basic.BasicHouseTradingLeaseAndSellDto;
 import com.copower.pmcc.assess.service.basic.BasicHouseTradingLeaseAndSellDtoService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;

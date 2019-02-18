@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouseTradingLease;
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouseTradingSell;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLease;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingSell;
 import com.copower.pmcc.assess.dto.input.basic.BasicHouseTradingLeaseAndSellDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.google.common.base.Objects;

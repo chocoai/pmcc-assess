@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.dal.basic.dao.BasicHouseTradingLeaseDao;
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouseTradingLease;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseTradingLeaseDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLease;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingLeaseVo;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;

@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.controller.baisc;
 
-import com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandState;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;

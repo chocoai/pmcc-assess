@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicUnitHuxingMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="unit_id" property="unitId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="DECIMAL" />
+    <result column="orientation" property="orientation" jdbcType="VARCHAR" />
+    <result column="span_length" property="spanLength" jdbcType="DECIMAL" />
+    <result column="span_width" property="spanWidth" jdbcType="INTEGER" />
+    <result column="span_number" property="spanNumber" jdbcType="DECIMAL" />
+    <result column="bay" property="bay" jdbcType="DECIMAL" />
+    <result column="deep" property="deep" jdbcType="DECIMAL" />
+    <result column="house_category" property="houseCategory" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, unit_id, type, name, area, orientation, span_length, span_width, span_number, 
+    bay, deep, house_category, description, creator, gmt_created, gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxingExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_basic_unit_huxing
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_basic_unit_huxing
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_basic_unit_huxing
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxingExample" >
+    delete from tb_basic_unit_huxing
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_basic_unit_huxing (unit_id, type, name, 
+      area, orientation, span_length, 
+      span_width, span_number, bay, 
+      deep, house_category, description, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{unitId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{area,jdbcType=DECIMAL}, #{orientation,jdbcType=VARCHAR}, #{spanLength,jdbcType=DECIMAL}, 
+      #{spanWidth,jdbcType=INTEGER}, #{spanNumber,jdbcType=DECIMAL}, #{bay,jdbcType=DECIMAL}, 
+      #{deep,jdbcType=DECIMAL}, #{houseCategory,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_basic_unit_huxing
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="unitId != null" >
+        unit_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="area != null" >
+        area,
+      </if>
+      <if test="orientation != null" >
+        orientation,
+      </if>
+      <if test="spanLength != null" >
+        span_length,
+      </if>
+      <if test="spanWidth != null" >
+        span_width,
+      </if>
+      <if test="spanNumber != null" >
+        span_number,
+      </if>
+      <if test="bay != null" >
+        bay,
+      </if>
+      <if test="deep != null" >
+        deep,
+      </if>
+      <if test="houseCategory != null" >
+        house_category,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="unitId != null" >
+        #{unitId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=DECIMAL},
+      </if>
+      <if test="orientation != null" >
+        #{orientation,jdbcType=VARCHAR},
+      </if>
+      <if test="spanLength != null" >
+        #{spanLength,jdbcType=DECIMAL},
+      </if>
+      <if test="spanWidth != null" >
+        #{spanWidth,jdbcType=INTEGER},
+      </if>
+      <if test="spanNumber != null" >
+        #{spanNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="bay != null" >
+        #{bay,jdbcType=DECIMAL},
+      </if>
+      <if test="deep != null" >
+        #{deep,jdbcType=DECIMAL},
+      </if>
+      <if test="houseCategory != null" >
+        #{houseCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxingExample" resultType="java.lang.Integer" >
+    select count(*) from tb_basic_unit_huxing
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_basic_unit_huxing
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.unitId != null" >
+        unit_id = #{record.unitId,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.area != null" >
+        area = #{record.area,jdbcType=DECIMAL},
+      </if>
+      <if test="record.orientation != null" >
+        orientation = #{record.orientation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.spanLength != null" >
+        span_length = #{record.spanLength,jdbcType=DECIMAL},
+      </if>
+      <if test="record.spanWidth != null" >
+        span_width = #{record.spanWidth,jdbcType=INTEGER},
+      </if>
+      <if test="record.spanNumber != null" >
+        span_number = #{record.spanNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="record.bay != null" >
+        bay = #{record.bay,jdbcType=DECIMAL},
+      </if>
+      <if test="record.deep != null" >
+        deep = #{record.deep,jdbcType=DECIMAL},
+      </if>
+      <if test="record.houseCategory != null" >
+        house_category = #{record.houseCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_basic_unit_huxing
+    set id = #{record.id,jdbcType=INTEGER},
+      unit_id = #{record.unitId,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      area = #{record.area,jdbcType=DECIMAL},
+      orientation = #{record.orientation,jdbcType=VARCHAR},
+      span_length = #{record.spanLength,jdbcType=DECIMAL},
+      span_width = #{record.spanWidth,jdbcType=INTEGER},
+      span_number = #{record.spanNumber,jdbcType=DECIMAL},
+      bay = #{record.bay,jdbcType=DECIMAL},
+      deep = #{record.deep,jdbcType=DECIMAL},
+      house_category = #{record.houseCategory,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing" >
+    update tb_basic_unit_huxing
+    <set >
+      <if test="unitId != null" >
+        unit_id = #{unitId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        area = #{area,jdbcType=DECIMAL},
+      </if>
+      <if test="orientation != null" >
+        orientation = #{orientation,jdbcType=VARCHAR},
+      </if>
+      <if test="spanLength != null" >
+        span_length = #{spanLength,jdbcType=DECIMAL},
+      </if>
+      <if test="spanWidth != null" >
+        span_width = #{spanWidth,jdbcType=INTEGER},
+      </if>
+      <if test="spanNumber != null" >
+        span_number = #{spanNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="bay != null" >
+        bay = #{bay,jdbcType=DECIMAL},
+      </if>
+      <if test="deep != null" >
+        deep = #{deep,jdbcType=DECIMAL},
+      </if>
+      <if test="houseCategory != null" >
+        house_category = #{houseCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing" >
+    update tb_basic_unit_huxing
+    set unit_id = #{unitId,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      area = #{area,jdbcType=DECIMAL},
+      orientation = #{orientation,jdbcType=VARCHAR},
+      span_length = #{spanLength,jdbcType=DECIMAL},
+      span_width = #{spanWidth,jdbcType=INTEGER},
+      span_number = #{spanNumber,jdbcType=DECIMAL},
+      bay = #{bay,jdbcType=DECIMAL},
+      deep = #{deep,jdbcType=DECIMAL},
+      house_category = #{houseCategory,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.controller.baisc;
 
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouseFaceStreet;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseFaceStreet;
 import com.copower.pmcc.assess.service.basic.BasicHouseFaceStreetService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;

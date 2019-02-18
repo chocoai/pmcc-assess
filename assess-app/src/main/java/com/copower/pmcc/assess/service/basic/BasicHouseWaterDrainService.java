@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.dal.basic.dao.BasicHouseWaterDrainDao;
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouseWaterDrain;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseWaterDrainDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseWaterDrain;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseWaterDrainVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;

@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.dal.basic.dao.BasicMatchingLeisurePlaceDao;
-import com.copower.pmcc.assess.dal.basic.entity.BasicMatchingLeisurePlace;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicMatchingLeisurePlaceDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicMatchingLeisurePlace;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingLeisurePlaceVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;

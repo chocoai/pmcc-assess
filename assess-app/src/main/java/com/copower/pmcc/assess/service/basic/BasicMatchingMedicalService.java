@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.dal.basic.dao.BasicMatchingMedicalDao;
-import com.copower.pmcc.assess.dal.basic.entity.BasicMatchingMedical;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicMatchingMedicalDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicMatchingMedical;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingMedicalVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;

@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.basic;
 
-import com.copower.pmcc.assess.dal.basic.entity.BasicEstateNetwork;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstateNetwork;
 
 /**
  * Created by kings on 2018-12-27.

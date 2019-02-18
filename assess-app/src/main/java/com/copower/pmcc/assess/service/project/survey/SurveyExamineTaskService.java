@@ -1,13 +1,10 @@
 package com.copower.pmcc.assess.service.project.survey;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
-import com.copower.pmcc.assess.dal.basic.entity.*;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyExamineTask;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyExamineTaskDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -33,7 +30,6 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
-import com.google.common.base.Objects;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;

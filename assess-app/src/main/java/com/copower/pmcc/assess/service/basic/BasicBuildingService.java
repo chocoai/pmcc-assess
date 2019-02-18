@@ -3,8 +3,8 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
-import com.copower.pmcc.assess.dal.basic.dao.BasicBuildingDao;
-import com.copower.pmcc.assess.dal.basic.entity.*;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -213,7 +213,7 @@ public class BasicBuildingService {
      * @return
      * @throws Exception
      */
-    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public BasicBuilding addBuilding(String buildingNumber) throws Exception {
         this.clearInvalidData(0);
 
@@ -231,7 +231,7 @@ public class BasicBuildingService {
      *
      * @throws Exception
      */
-    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void clearInvalidData(Integer applyId) throws Exception {
         BasicBuilding where = new BasicBuilding();
         where.setApplyId(applyId);
@@ -292,7 +292,7 @@ public class BasicBuildingService {
      * @param caseBuildingId
      * @throws Exception
      */
-    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public BasicBuilding appWriteBuilding(Integer caseBuildingId, String buildingPartInMode, Integer applyId) throws Exception {
         if (caseBuildingId == null) {
             throw new Exception("null point");

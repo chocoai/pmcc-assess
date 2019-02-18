@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.basic;
 
-import com.copower.pmcc.assess.dal.basic.entity.BasicMatchingEducation;
+import com.copower.pmcc.assess.dal.basis.entity.BasicMatchingEducation;
 
 /**
  * @Auther: zch

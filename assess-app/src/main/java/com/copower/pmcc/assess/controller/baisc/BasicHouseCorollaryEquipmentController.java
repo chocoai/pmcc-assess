@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.controller.baisc;
 
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouseCorollaryEquipment;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseCorollaryEquipment;
 import com.copower.pmcc.assess.service.basic.BasicHouseCorollaryEquipmentService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;

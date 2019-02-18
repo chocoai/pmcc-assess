@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.dal.basic.dao.BasicMatchingTrafficDao;
-import com.copower.pmcc.assess.dal.basic.entity.BasicMatchingTraffic;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicMatchingTrafficDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicMatchingTraffic;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingTrafficVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;

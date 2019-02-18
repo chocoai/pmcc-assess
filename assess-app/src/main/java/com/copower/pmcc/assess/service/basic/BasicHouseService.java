@@ -2,9 +2,8 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
-import com.copower.pmcc.assess.dal.basic.dao.BasicHouseDao;
-import com.copower.pmcc.assess.dal.basic.entity.*;
-import com.copower.pmcc.assess.dal.basis.entity.DataDamagedDegree;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseDao;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
@@ -204,7 +203,7 @@ public class BasicHouseService {
      *
      * @throws Exception
      */
-    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void clearInvalidData(Integer applyId) throws Exception {
         BasicHouse where = new BasicHouse();
         where.setApplyId(applyId);
@@ -342,7 +341,7 @@ public class BasicHouseService {
      * @return
      * @throws Exception
      */
-    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> addHouseAndTrading(String houseNumber, Integer applyId) throws Exception {
         this.clearInvalidData(0);
         Map<String, Object> objectMap = Maps.newHashMap();
@@ -392,7 +391,7 @@ public class BasicHouseService {
      * @param caseHouseId
      * @throws Exception
      */
-    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> appWriteHouse(Integer caseHouseId, String housePartInMode, Integer applyId) throws Exception {
         if (caseHouseId == null) {
             throw new Exception("null ponit");

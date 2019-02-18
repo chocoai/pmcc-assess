@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.dal.basic.dao.BasicEstateNetworkDao;
-import com.copower.pmcc.assess.dal.basic.entity.BasicEstateNetwork;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateNetworkDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstateNetwork;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateNetworkVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;

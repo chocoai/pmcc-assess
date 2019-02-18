@@ -5,7 +5,6 @@ import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
-import com.copower.pmcc.assess.dal.basic.entity.*;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryRightDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;

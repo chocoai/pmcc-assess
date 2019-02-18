@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.controller.baisc;
 
-import com.copower.pmcc.assess.dal.basic.entity.BasicEstateTagging;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstateTagging;
 import com.copower.pmcc.assess.service.basic.BasicEstateTaggingService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;

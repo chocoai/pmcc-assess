@@ -3,10 +3,9 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
-import com.copower.pmcc.assess.dal.basic.dao.BasicEstateDao;
-import com.copower.pmcc.assess.dal.basic.dao.BasicEstateLandStateDao;
-import com.copower.pmcc.assess.dal.basic.entity.*;
-import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandStateDao;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
@@ -223,7 +222,7 @@ public class BasicEstateService {
      *
      * @throws Exception
      */
-    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void clearInvalidData(Integer applyId) throws Exception {
         BasicEstate where = new BasicEstate();
         where.setApplyId(applyId);
@@ -398,7 +397,7 @@ public class BasicEstateService {
      * @return
      * @throws Exception
      */
-    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> addEstateAndLandstate(String estateName, String province, String city) throws Exception {
         this.clearInvalidData(0);
         Map<String, Object> objectMap = Maps.newHashMap();
@@ -428,7 +427,7 @@ public class BasicEstateService {
      * @param caseEstateId
      * @throws Exception
      */
-    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> appWriteEstate(Integer caseEstateId, String estatePartInMode, Integer applyId) throws Exception {
         this.clearInvalidData(0);
         //清空此申请id下所有的楼盘数据

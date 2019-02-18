@@ -2,9 +2,9 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
-import com.copower.pmcc.assess.dal.basic.dao.BasicApplyDao;
-import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
-import com.copower.pmcc.assess.dal.basic.entity.BasicEstate;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
 import com.copower.pmcc.assess.dto.output.basic.BasicApplyVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
@@ -37,7 +37,6 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by kings on 2018-10-24.
@@ -150,7 +149,7 @@ public class BasicApplyService {
      * @param approvalModelDto
      * @throws Exception
      */
-    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void processApprovalSubmit(ApprovalModelDto approvalModelDto, String blockName, Boolean writeBackBlockFlag) throws Exception {
         try {
             if (writeBackBlockFlag != null) {
@@ -245,7 +244,7 @@ public class BasicApplyService {
      *
      * @param id
      */
-    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void deleteBasicApply(Integer id) throws Exception {
         basicEstateService.clearInvalidData(id);
         basicBuildingService.clearInvalidData(id);

@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
-import com.copower.pmcc.assess.dal.basic.dao.BasicEstateTaggingDao;
-import com.copower.pmcc.assess.dal.basic.entity.BasicEstateTagging;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstateTagging;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateTagging;
 import com.copower.pmcc.assess.service.cases.CaseEstateTaggingService;
 import com.copower.pmcc.erp.common.CommonService;
@@ -54,7 +54,7 @@ public class BasicEstateTaggingService {
         return basicEstateTaggingDao.getBasicEstateTaggingById(id);
     }
 
-    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void addBasicEstateTagging(BasicEstateTagging basicEstateTagging) throws Exception {
         //先清除标记
         BasicEstateTagging where = new BasicEstateTagging();

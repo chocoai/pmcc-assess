@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.project.scheme;
 
 import com.copower.pmcc.assess.common.enums.AssessUploadEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basic.entity.*;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileCustomDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileItemDao;

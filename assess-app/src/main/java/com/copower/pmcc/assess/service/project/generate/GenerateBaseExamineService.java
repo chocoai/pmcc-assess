@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.project.generate;
 
-import com.copower.pmcc.assess.dal.basic.entity.*;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.dto.output.data.DataBlockVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;

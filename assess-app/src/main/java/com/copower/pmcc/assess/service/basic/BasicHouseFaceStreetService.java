@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.dal.basic.dao.BasicHouseFaceStreetDao;
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouseFaceStreet;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseFaceStreetDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseFaceStreet;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseFaceStreetVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;

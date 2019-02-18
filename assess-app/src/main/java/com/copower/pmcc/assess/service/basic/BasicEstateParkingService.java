@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.dal.basic.dao.BasicEstateParkingDao;
-import com.copower.pmcc.assess.dal.basic.entity.BasicEstateParking;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateParkingDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstateParking;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateParkingVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;

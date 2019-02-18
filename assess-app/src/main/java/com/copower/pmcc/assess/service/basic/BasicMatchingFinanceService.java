@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.dal.basic.dao.BasicMatchingFinanceDao;
-import com.copower.pmcc.assess.dal.basic.entity.BasicMatchingFinance;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicMatchingFinanceDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicMatchingFinance;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingFinanceVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;

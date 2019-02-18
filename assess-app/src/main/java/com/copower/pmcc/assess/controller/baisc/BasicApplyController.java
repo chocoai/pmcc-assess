@@ -2,9 +2,9 @@ package com.copower.pmcc.assess.controller.baisc;
 
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.controller.BaseController;
-import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
-import com.copower.pmcc.assess.dal.basic.entity.BasicBuilding;
-import com.copower.pmcc.assess.dal.basic.entity.BasicUnit;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
+import com.copower.pmcc.assess.dal.basis.entity.BasicBuilding;
+import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;

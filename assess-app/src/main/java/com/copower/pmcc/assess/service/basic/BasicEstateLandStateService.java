@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.dal.basic.dao.BasicEstateLandStateDao;
-import com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandState;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandStateDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;

@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.basic;
 
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouseDamagedDegreeDetail;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseDamagedDegreeDetail;
 
 import java.math.BigDecimal;
 

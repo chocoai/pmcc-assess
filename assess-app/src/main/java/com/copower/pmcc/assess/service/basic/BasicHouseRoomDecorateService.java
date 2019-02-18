@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.dal.basic.dao.BasicHouseRoomDecorateDao;
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoomDecorate;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseRoomDecorateDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoomDecorate;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseRoomDecorateVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;

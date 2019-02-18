@@ -2,8 +2,11 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
-import com.copower.pmcc.assess.dal.basic.dao.BasicUnitDao;
-import com.copower.pmcc.assess.dal.basic.entity.*;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
+import com.copower.pmcc.assess.dal.basis.entity.BasicUnitDecorate;
+import com.copower.pmcc.assess.dal.basis.entity.BasicUnitElevator;
+import com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.cases.CaseUnitHuxingVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -141,7 +144,7 @@ public class BasicUnitService {
      *
      * @throws Exception
      */
-    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void clearInvalidData(Integer applyId) throws Exception {
         BasicUnit where = new BasicUnit();
         where.setApplyId(applyId);
@@ -220,7 +223,7 @@ public class BasicUnitService {
      * @return
      * @throws Exception
      */
-    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public BasicUnit addUnit(String unitNumber) throws Exception {
         this.clearInvalidData(0);
         BasicUnit basicUnit = new BasicUnit();
@@ -238,7 +241,7 @@ public class BasicUnitService {
      * @param caseUnitId
      * @throws Exception
      */
-    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public BasicUnit appWriteUnit(Integer caseUnitId, String unitPartInMode, Integer applyId) throws Exception {
         this.clearInvalidData(0);
         if (caseUnitId == null) {

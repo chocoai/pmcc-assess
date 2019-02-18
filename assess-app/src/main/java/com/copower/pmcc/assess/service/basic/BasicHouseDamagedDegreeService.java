@@ -1,10 +1,10 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.common.enums.DataDamagedDegreeEnum;
-import com.copower.pmcc.assess.dal.basic.dao.BasicHouseDamagedDegreeDao;
-import com.copower.pmcc.assess.dal.basic.dao.BasicHouseDamagedDegreeDetailDao;
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouseDamagedDegree;
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouseDamagedDegreeDetail;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseDamagedDegreeDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseDamagedDegreeDetailDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseDamagedDegree;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseDamagedDegreeDetail;
 import com.copower.pmcc.assess.dal.basis.entity.DataDamagedDegree;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeDetailVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeVo;

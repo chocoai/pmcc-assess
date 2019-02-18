@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.constant.BaseConstant;
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouse;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;

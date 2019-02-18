@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.controller.baisc;
 
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoom;
-import com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoomDecorate;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoom;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoomDecorate;
 import com.copower.pmcc.assess.service.basic.BasicHouseRoomDecorateService;
 import com.copower.pmcc.assess.service.basic.BasicHouseRoomService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;

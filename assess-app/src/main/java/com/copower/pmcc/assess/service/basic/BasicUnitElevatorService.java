@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.dal.basic.dao.BasicUnitElevatorDao;
-import com.copower.pmcc.assess.dal.basic.entity.BasicUnitElevator;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitElevatorDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicUnitElevator;
 import com.copower.pmcc.assess.dto.output.basic.BasicUnitElevatorVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
