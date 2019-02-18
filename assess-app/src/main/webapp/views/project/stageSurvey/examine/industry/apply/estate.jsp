@@ -249,7 +249,7 @@
         </div>
     </div>
 
-    <div class="x_content" id="industrySupplyInfo">
+    <%--<div class="x_content" id="industrySupplyInfo">
         <div class="x_title">楼盘供应信息</div>
         <div class="form-horizontal">
             <div class="form-group">
@@ -293,7 +293,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>--%>
 
 </form>
 <script type="text/javascript">

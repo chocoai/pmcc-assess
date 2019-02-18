@@ -161,9 +161,39 @@
                 </div>
             </div>
         </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">供水平面图</label>
+                <div class="col-sm-5">
+                    <div id="_estate_water_supply_plan"></div>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">供电平面图</label>
+                <div class="col-sm-5">
+                    <div id="_estate_power_supply_plan"></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">供气平面图</label>
+                <div class="col-sm-5">
+                    <div id="_estate_air_supply_plan"></div>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">采暖平面图</label>
+                <div class="col-sm-5">
+                    <div id="_estate_heating_plan"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="x_content">
+  <%--  <div class="x_content">
         <div class="x_title">楼盘供应信息</div>
         <div class="form-horizontal">
             <div class="x_content">
@@ -206,5 +236,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>--%>
 </form>
