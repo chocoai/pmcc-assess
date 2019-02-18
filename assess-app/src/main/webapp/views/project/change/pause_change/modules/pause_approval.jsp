@@ -26,7 +26,7 @@
                                 预计恢复时间<span class="symbol required"></span>
                             </label>
                             <div class="col-md-3 col-sm-3 col-xs-12">
-                                <label data-name="recoveryTime" class="form-control"></label>
+                                <label name="recoveryTime" class="form-control"></label>
                                 <%--<input id="recoveryTime" name="recoveryTime" class="form-control" readonly="readonly">--%>
                             </div>
                         </div>
@@ -39,7 +39,7 @@
                                 暂停原因
                             </label>
                             <div class="col-md-11 col-sm-11 col-xs-12">
-                                <label data-name="changeReason" class="form-control"></label>
+                                <label name="changeReason" class="form-control"></label>
                                 <%--<textarea class="form-control" id="changeReason" name="changeReason" rows="4" required--%>
                                           <%--data-rule-maxlength="255" placeholder=""></textarea>--%>
                             </div>
@@ -51,7 +51,7 @@
                                 可能影响
                             </label>
                             <div class="col-md-11 col-sm-11 col-xs-12">
-                                <label data-name="influence" class="form-control"></label>
+                                <label name="influence" class="form-control"></label>
                                 <%--<textarea class="form-control" id="influence" name="influence" rows="4" required--%>
                                           <%--data-rule-maxlength="255" placeholder=""></textarea>--%>
                             </div>
@@ -71,7 +71,7 @@
     $(function () {
         var json = '${costsProjectChangeLog.newRecord}';
         var projectInfo = JSON.parse(json);
-        projectPauseApplyObj.projectPauseForm.initLabel(projectInfo);
+        projectPauseApplyObj.projectPauseForm.initForm(projectInfo);
     });
 
 </script>
