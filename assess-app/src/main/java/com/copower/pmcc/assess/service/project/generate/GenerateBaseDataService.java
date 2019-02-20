@@ -15,14 +15,13 @@ import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
-import com.copower.pmcc.assess.dto.output.basic.BasicHouseFaceStreetVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicMatchingEnvironmentVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicMatchingFinanceVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicMatchingTrafficVo;
+import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.dto.output.data.DataQualificationVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
+import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyHouseCertVo;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
+import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyRealEstateCertVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -37,7 +36,9 @@ import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.compile.CompileReportService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRealtyRealEstateCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.*;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightService;
@@ -48,6 +49,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -103,6 +105,8 @@ public class GenerateBaseDataService {
     private SchemeLiquidationAnalysisService schemeLiquidationAnalysisService;
     private MdIncomeService mdIncomeService;
     private MdMarketCompareService mdMarketCompareService;
+    private DeclareRealtyHouseCertService declareRealtyHouseCertService;
+    private DeclareRealtyRealEstateCertService declareRealtyRealEstateCertService;
 
     //构造器必须传入的参数
     private Integer projectId;
@@ -937,25 +941,19 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getSurveyExamineCreate() throws Exception {
-        List<ProjectPhaseVo> projectPhaseVos = projectPhaseService.queryProjectPhaseByCategory(getProjectInfo().getProjectTypeId(),
-                getProjectInfo().getProjectCategoryId(), null);
-        List<ProjectPhaseVo> projectPhaseVoList = Lists.newArrayList();
+        List<ProjectPhaseVo> projectPhaseVoList = projectPhaseService.queryProjectPhaseByCategory(getProjectInfo().getProjectTypeId(),
+                getProjectInfo().getProjectCategoryId(), null).stream().filter(projectPhaseVo -> {
+            //查勘通过
+            if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
+                return true;
+            }
+            //案例同样通过
+            if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
+                return true;
+            }
+            return false;
+        }).collect(Collectors.toList());
         List<ProjectPlanDetails> projectPlanDetailsList = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(projectPhaseVos)) {
-            projectPhaseVos.stream().filter(projectPhaseVo -> {
-                //查勘通过
-                if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
-                    return true;
-                }
-                //案例同样通过
-                if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
-                    return true;
-                }
-                return false;
-            }).distinct().forEach(projectPhaseVo -> {
-                projectPhaseVoList.add(projectPhaseVo);
-            });
-        }
         if (CollectionUtils.isNotEmpty(projectPhaseVoList)) {
             projectPhaseVoList.stream().forEach(projectPhaseVo -> {
                 ProjectPlanDetails query = new ProjectPlanDetails();
@@ -1785,14 +1783,178 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 建筑物权益状况
+     * 估价对象权益状况
      *
      * @return
      * @throws Exception
      */
-    public String getStatusBuildingRightsInterests(SysAttachmentDto sysAttachmentDto) throws Exception {
-        String tempDir = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-        return tempDir;
+    public String getEquityStatusValuatedObjects() throws Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
+                getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
+                .stream()
+                .filter(projectPhaseVo -> {
+                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
+                        return true;
+                    }
+                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
+                        return true;
+                    }
+                    return false;
+                }).collect(Collectors.toList());
+        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        Map<SchemeJudgeObject, DeclareRealtyRealEstateCertVo> objectDeclareRealtyRealEstateCertVoMap = Maps.newHashMap();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList().stream().filter(schemeJudgeObject -> {
+            if (schemeJudgeObject.getDeclareRecordId() == null) {
+                return false;
+            }
+            if (schemeJudgeObject.getDeclareRecordId().equals(0)) {
+                return false;
+            }
+            return true;
+        }).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+                if (declareRecord != null) {
+                    if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), declareRecord.getDataTableName())) {
+                        DeclareRealtyRealEstateCert declareRealtyRealEstateCert = declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertById(declareRecord.getDataTableId());
+                        if (declareRealtyRealEstateCert != null) {
+                            objectDeclareRealtyRealEstateCertVoMap.put(schemeJudgeObject, declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertVo(declareRealtyRealEstateCert));
+                        }
+                    }
+                }
+            }
+        }
+        builder.writeln("1、房屋及土地权属登记状况");
+        builder.writeln("根据估价委托方提供的估价对象《不动产权证》复印件，估价对象房屋权属状况见下表：");
+        if (!objectDeclareRealtyRealEstateCertVoMap.isEmpty()) {
+            final int colMax = 11;
+            Table table = builder.startTable();
+            for (int j = 0; j < colMax; j++) {
+                builder.insertCell();
+                if (j == 0) builder.writeln("估价对象");
+                if (j == 1) builder.writeln("不动产权证号");
+                if (j == 2) builder.writeln("权利人");
+                if (j == 3) builder.writeln("共有情况");
+                if (j == 4) builder.writeln("坐落");
+                if (j == 5) builder.writeln("用途");
+                if (j == 6) builder.writeln("土地终止日期");
+                if (j == 7) builder.writeln("房屋总层数");
+                if (j == 8) builder.writeln("所在层数");
+                if (j == 9) builder.writeln("分摊土地使用权面积");
+                if (j == 10) builder.writeln("建筑面积（㎡）");
+            }
+            builder.endRow();
+            for (Map.Entry<SchemeJudgeObject, DeclareRealtyRealEstateCertVo> realEstateCertVoEntry : objectDeclareRealtyRealEstateCertVoMap.entrySet()) {
+                for (int j = 0; j < colMax; j++) {
+                    builder.insertCell();
+                    if (j == 0)
+                        builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getKey().getNumber()) ? realEstateCertVoEntry.getKey().getNumber() : ""));
+                    if (j == 1)
+                        builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getCertName()) ? realEstateCertVoEntry.getValue().getCertName() : ""));
+                    if (j == 2)
+                        builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getOwnership()) ? realEstateCertVoEntry.getValue().getOwnership() : ""));
+                    if (j == 3)
+                        builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getPublicSituation()) ? realEstateCertVoEntry.getValue().getPublicSituation() : ""));
+                    if (j == 4)
+                        builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getBeLocated()) ? realEstateCertVoEntry.getValue().getBeLocated() : ""));
+                    if (j == 5)
+                        builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getPurpose()) ? baseDataDicService.getNameById(realEstateCertVoEntry.getValue().getPurpose()) : ""));
+                    if (j == 6)
+                        builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getUseEndDate().toString()) ? DateUtils.format(realEstateCertVoEntry.getValue().getUseEndDate(), DateUtils.DATE_CHINESE_PATTERN) : ""));
+                    if (j == 7)
+                        builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getFloorCount().toString()) ? realEstateCertVoEntry.getValue().getFloorCount().toString() : ""));
+                    if (j == 8) builder.writeln(String.format("%s", "无"));
+                    if (j == 9)
+                        builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getApportionmentArea().toString()) ? realEstateCertVoEntry.getValue().getApportionmentArea().toString() : ""));
+                    if (j == 10)
+                        builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getFloorArea().toString()) ? realEstateCertVoEntry.getValue().getFloorArea().toString() : ""));
+                }
+                builder.endRow();
+            }
+            //设置表格边框的宽度
+            builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
+            builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
+            builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
+            builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
+            //设置具体宽度
+            builder.getCellFormat().setWidth(100);
+            //水平居中
+            builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+            //上下居中
+            builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+            builder.endTable();
+        }
+        //规划条件
+        Set<String> planningConditions = Sets.newHashSet();
+        //所有权
+        Set<String> ownerships = Sets.newHashSet();
+        //共有权情况
+        Set<String> coOwnership = Sets.newHashSet();
+        //租赁或占用情况
+        Set<String> rentalPossessionDesc = Sets.newHashSet();
+        //拖欠工程款情况
+        Set<String> statutoryOptimumReimbursement = Sets.newHashSet();
+        if (CollectionUtils.isNotEmpty(projectPhases) && CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (ProjectPhase projectPhase : projectPhases) {
+                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                    ownerships.add(schemeJudgeObject.getOwnership());
+                    ProjectPlanDetails query = new ProjectPlanDetails();
+                    query.setProjectId(getProjectId());
+                    query.setProjectPhaseId(projectPhase.getId());
+                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
+                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+                        for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
+                            GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
+                            if (generateBaseExamineService.getBasicApply().getId() != null && generateBaseExamineService.getBasicApply().getId().intValue() != 0) {
+                                StringBuilder stringBuilder = new StringBuilder(128);
+                                BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
+                                if (landStateVo != null) {
+                                    if (StringUtils.isNotBlank(landStateVo.getPlotRatio())) {
+                                        stringBuilder.append("容积率%").append(landStateVo.getPlotRatio());
+                                    }
+                                    if (StringUtils.isNotBlank(landStateVo.getBuildingDensity())) {
+                                        stringBuilder.append("建筑密度%").append(landStateVo.getBuildingDensity());
+                                    }
+                                    if (StringUtils.isNotBlank(landStateVo.getGreenSpaceRate())) {
+                                        stringBuilder.append("绿地率%").append(landStateVo.getGreenSpaceRate());
+                                    }
+                                }
+                                if (StringUtils.isNotBlank(stringBuilder.toString())) {
+                                    planningConditions.add(stringBuilder.toString());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        coOwnership.add("独自所有");
+        rentalPossessionDesc.add(getRentalPossessionDesc());
+        statutoryOptimumReimbursement.add(getStatutoryOptimumReimbursement());
+
+        builder.writeln("2、用途:");
+        builder.writeln(String.format("%s%s", getSeparationCertificateUses(), getPracticalUse()));
+        builder.writeln("3、规划条件:");
+        builder.writeln(String.format("%s", toSetString(planningConditions)));
+        builder.writeln("4、所有权:");
+        builder.writeln(String.format("%s", toSetString(ownerships)));
+        builder.writeln("5、共有权情况:");
+        builder.writeln(String.format("%s", toSetString(coOwnership)));
+        builder.writeln("6、用益物权设立情况:暂无");
+        builder.writeln("7、担保物权设立情况:暂无");
+        builder.writeln("8、租赁或占用情况:");
+        builder.writeln(String.format("%s", toSetString(rentalPossessionDesc)));
+        builder.writeln("9、拖欠工程款情况:");
+        builder.writeln(String.format("%s", toSetString(statutoryOptimumReimbursement)));
+        builder.writeln("10、权属清晰情况:权属清晰");
+        builder.writeln(String.format("%s%s", "11、其他:", getInventoryRight()));
+
+        doc.save(localPath);
+        return localPath;
     }
 
     /**
@@ -2010,168 +2172,77 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getjudgeBuildResultSurveySheet() throws Exception {
+        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
+                getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
+                .stream()
+                .filter(projectPhaseVo -> {
+                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
+                        return true;
+                    }
+                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
+                        return true;
+                    }
+                    return false;
+                }).collect(Collectors.toList());
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        Map<SchemeJudgeObject, Integer> judgeObjectIntegerMap = Maps.newHashMap();
+        if (CollectionUtils.isNotEmpty(projectPhases)) {
+            for (ProjectPhase projectPhase : projectPhases) {
+                if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+                    for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                        ProjectPlanDetails query = new ProjectPlanDetails();
+                        query.setProjectId(getProjectId());
+                        query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+                        query.setProjectPhaseId(projectPhase.getId());
+                        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
+                        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+                            for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
+                                GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
+                                if (generateBaseExamineService.getBasicApply().getId() != null && generateBaseExamineService.getBasicApply().getId().intValue() != 0) {
+                                    judgeObjectIntegerMap.put(schemeJudgeObject, projectPlanDetails.getId());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = String.format("%s\\报告模板1%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         builder.writeln("估价结果一览表");
-        Set<String> a0 = Sets.newHashSet();
-        Set<String> a1 = Sets.newHashSet();
-        Set<String> a2 = Sets.newHashSet();
-        Set<String> a3 = Sets.newHashSet();
-        Set<String> a4 = Sets.newHashSet();
-        Set<String> a5 = Sets.newHashSet();
-        Set<String> a6 = Sets.newHashSet();
-        Set<String> a7 = Sets.newHashSet();
-        Set<String> a8 = Sets.newHashSet();
-        Set<String> a9 = Sets.newHashSet();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            int i = 0;
-            while (i < schemeJudgeObjectList.size()) {
-                SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(i);
-                for (int k = 0; k < 9; k++) {
-                    switch (k) {
-                        case 0:
-                            a0.add(schemeJudgeObject.getName());
-                            break;
-                        case 1:
-                            a1.add(schemeJudgeObject.getName());
-                            break;
-                        case 2:
-                            a2.add("");
-                            break;
-                        case 3:
-                            a3.add(schemeJudgeObject.getOwnership());
-                            break;
-                        case 4:
-                            a4.add(errorStr);
-                            break;
-                        case 5:
-                            a5.add(schemeJudgeObject.getCertUse());
-                            break;
-                        case 6:
-                            a6.add(schemeJudgeObject.getName());
-                            break;
-                        case 7:
-                            a7.add(schemeJudgeObject.getEvaluationArea().toString());
-                            break;
-                        case 8:
-                            a8.add(errorStr);
-                            break;
-                        case 9:
-                            a9.add(errorStr);
-                            break;
-                        default:
-                            break;
+        Table table = builder.startTable();
+        final int colMax = 11;
+        for (int j = 0; j < colMax; j++) {
+            builder.insertCell();
+            if (j == 0) builder.writeln("估价对象");
+            if (j == 1) builder.writeln("坐落");
+            if (j == 2) builder.writeln("用途(证载)");
+            if (j == 3) builder.writeln("用途(实际)");
+            if (j == 4) builder.writeln("房屋总层数");
+            if (j == 5) builder.writeln("所在层数");
+            if (j == 6) builder.writeln("建筑面积");
+            if (j == 7) builder.writeln("单价（元/㎡）");
+            if (j == 8) builder.writeln("评估总价（万元）");
+            if (j == 9) builder.writeln("法定优先受偿款(万元)");
+            if (j == 10) builder.writeln("抵押价值(万元)");
+        }
+        builder.endRow();
+        if (!judgeObjectIntegerMap.isEmpty()) {
+            for (Map.Entry<SchemeJudgeObject, Integer> integerEntry : judgeObjectIntegerMap.entrySet()) {
+                for (int j = 0; j < colMax; j++) {
+                    builder.insertCell();
+                    if (j == 0) builder.writeln(String.format("%s%s", "估价对象", integerEntry.getKey().getNumber()));
+                    //抵押 == >取法定优先受偿款(万元)
+                    if (Objects.equal(getSchemeAreaGroup().getEntrustPurpose(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId())) {
+                        //抵押价值金额
+                        //schemeReimbursementService.getFullDescription(schemeJudgeObject.getId());
+
+                    } else {
+
                     }
                 }
-                i++;
-            }
-        }
-        for (int j = 0; j < 2; j++) {
-            switch (j) {
-                case 0:
-                    for (int k = 0; k < 9; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("产权证号");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln("业务件号");
-                                break;
-                            case 2:
-                                builder.insertCell();
-                                builder.writeln("房屋座落");
-                                break;
-                            case 3:
-                                builder.insertCell();
-                                builder.writeln("权利人");
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln("共有方式");
-                                break;
-                            case 5:
-                                builder.insertCell();
-                                builder.writeln("规划用途");
-                                break;
-                            case 6:
-                                builder.insertCell();
-                                builder.writeln("所在层数");
-                                break;
-                            case 7:
-                                builder.insertCell();
-                                builder.writeln("建筑面积");
-                                break;
-                            case 8:
-                                builder.insertCell();
-                                builder.writeln("房地产单价");
-                                break;
-                            case 9:
-                                builder.insertCell();
-                                builder.writeln("房地产价值");
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
-                    break;
-                case 1:
-                    for (int k = 0; k < 9; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a0));
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a1));
-                                break;
-                            case 2:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a2));
-                                break;
-                            case 3:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a3));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a4));
-                                break;
-                            case 5:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a5));
-                                break;
-                            case 6:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a6));
-                                break;
-                            case 7:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a7));
-                                break;
-                            case 8:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a8));
-                                break;
-                            case 9:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a9));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
-                    break;
-                default:
-                    break;
+                builder.endRow();
             }
         }
         //设置表格边框的宽度
@@ -2212,7 +2283,7 @@ public class GenerateBaseDataService {
                 query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                 List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
                 if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                    projectPlanDetailsList.parallelStream().forEach(projectPlanDetails -> {
+                    projectPlanDetailsList.stream().forEach(projectPlanDetails -> {
                         try {
                             GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
                             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
@@ -2531,42 +2602,68 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        List<ProjectPhaseVo> projectPhaseVos = projectPhaseService.queryProjectPhaseByCategory(getProjectInfo().getProjectTypeId(),
-                getProjectInfo().getProjectCategoryId(), null);
-        List<ProjectPhase> projectPhases = Lists.newArrayList();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(projectPhaseVos)) {
-            projectPhaseVos.parallelStream().filter(projectPhaseVo -> {
-                if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
-                    return true;
-                }
-                if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
-                    return true;
-                }
-                return false;
-            }).forEach(projectPhaseVo -> {
-                projectPhases.add(projectPhaseVo);
-            });
-        }
-        Set<String> a_0_3 = Sets.newHashSet();
-        Set<String> a_1_3 = Sets.newHashSet();
-        Set<String> a_2_3 = Sets.newHashSet();
-        Set<String> a_3_3 = Sets.newHashSet();
-        Set<String> a_4_3 = Sets.newHashSet();
-        Set<String> a_5_3 = Sets.newHashSet();
-        Set<String> a_6_3 = Sets.newHashSet();
-        Set<String> a_7_3 = Sets.newHashSet();
-        Set<String> a_8_3 = Sets.newHashSet();
-        Set<String> a_9_3 = Sets.newHashSet();
-        Set<String> a_10_3 = Sets.newHashSet();
-        Set<String> a_11_3 = Sets.newHashSet();
-        Set<String> a_12_3 = Sets.newHashSet();
-        Set<String> a_13_3 = Sets.newHashSet();
-        Set<String> a_14_3 = Sets.newHashSet();
-        Set<String> a_15_3 = Sets.newHashSet();
-        Set<String> a_16_3 = Sets.newHashSet();
-        Set<String> a_17_3 = Sets.newHashSet();
-        Set<String> a_18_3 = Sets.newHashSet();
+        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
+                getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
+                .stream()
+                .filter(projectPhaseVo -> {
+                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
+                        return true;
+                    }
+                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
+                        return true;
+                    }
+                    return false;
+                }).collect(Collectors.toList());
+        //坐落
+        Set<String> beLocated = Sets.newHashSet();
+        //方位
+        Set<String> position = Sets.newHashSet();
+        //与重要场所的距离
+        Set<String> importantDistance = Sets.newHashSet();
+        //临街（路）状况
+        Set<String> houseFaceStreet = Sets.newHashSet();
+        //楼栋
+        Set<String> building = Sets.newHashSet();
+        //楼层
+        Set<String> floor = Sets.newHashSet();
+        //朝向
+        Set<String> orientation = Sets.newHashSet();
+        //商业繁华度
+        Set<String> businessProsperity = Sets.newHashSet();
+        //人流量
+        Set<String> visitorsFlowrates = Sets.newHashSet();
+        //道路状况
+        Set<String> roadCondition = Sets.newHashSet();
+        //交通工具
+        Set<String> vehicle = Sets.newHashSet();
+        //交通管制
+        Set<String> trafficControl = Sets.newHashSet();
+        //停车方便度
+        Set<String> parkingConvenience = Sets.newHashSet();
+        //交通收费情况
+        Set<String> trafficToll = Sets.newHashSet();
+        //外部基础设施
+        Set<String> externalInfrastructure = Sets.newHashSet();
+        //购物
+        Set<String> shop = Sets.newHashSet();
+        //银行
+        Set<String> bank = Sets.newHashSet();
+        //教育文化
+        Set<String> education = Sets.newHashSet();
+        //医疗康养
+        Set<String> medical = Sets.newHashSet();
+        //娱乐休闲
+        Set<String> entertainment = Sets.newHashSet();
+        //餐饮文化
+        Set<String> restaurant = Sets.newHashSet();
+        //自然环境
+        Set<String> naturalEnvironment = Sets.newHashSet();
+        //人文环境
+        Set<String> culturalEnvironment = Sets.newHashSet();
+        //景观
+        Set<String> scenery = Sets.newHashSet();
+        //区位综述
+        Set<String> locationSummary = Sets.newHashSet();
         if (CollectionUtils.isNotEmpty(projectPhases)) {
             for (ProjectPhase projectPhaseScene : projectPhases) {
                 if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -2580,266 +2677,263 @@ public class GenerateBaseDataService {
                         if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
                             for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
                                 GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
-                                //行
-                                for (int j = 0; j < 20; j++) {
+                                if (generateBaseExamineService.getBasicApply().getPlanDetailsId() != null && generateBaseExamineService.getBasicApply().getId() != null) {
                                     try {
-                                        if (0 <= j && j <= 5) {
-                                            //列
-                                            for (int k = 0; k < 5; k++) {
-                                                if (k == 3) {
-                                                    switch (j) {
-                                                        case 0:
-                                                            a_0_3.add(String.format("%s%s", getSchemeAreaGroup().getAreaName(), schemeJudgeObject.getSeat()));
-                                                            break;
-                                                        case 1:
-                                                            a_1_3.add(StringUtils.isNotBlank(generateBaseExamineService.getByDataBlock().getPosition()) ? generateBaseExamineService.getByDataBlock().getPosition() : "方位：暂无");
-                                                            break;
-                                                        case 2:
-                                                            a_2_3.add("估价对象所在区域为规划新城区，区域商业待发展，目前以超市、零售商店为主，商业繁华度一般");
-                                                            break;
-                                                        case 3:
-                                                            if (true) {
-                                                                List<BasicHouseFaceStreetVo> list = generateBaseExamineService.getBasicHouseFaceStreetList();
-                                                                StringBuilder stringBuilder = new StringBuilder(1024);
-                                                                if (CollectionUtils.isNotEmpty(list)) {
-                                                                    for (BasicHouseFaceStreetVo faceStreet : list) {
-                                                                        stringBuilder.append(faceStreet.getStreetName())
-                                                                                .append(faceStreet.getStreetLevelName())
-                                                                                .append(faceStreet.getTrafficFlowName()).append(faceStreet.getVisitorsFlowrateName());
-                                                                        stringBuilder.append("\r\n");
-                                                                    }
-                                                                }
-                                                                a_3_3.add(stringBuilder.toString());
-                                                            }
-                                                            break;
-                                                        case 4:
-                                                            a_4_3.add(generateBaseExamineService.getBasicHouse().getFloor());
-                                                            break;
-                                                        case 5:
-                                                            a_5_3.add("人文景观：分布有汇融悉尼湾达令港、盛世名城、炬星幸福里等众多住宅区，居民多为中档收入人群、素质较高，社会治安良好。");
-                                                            break;
-                                                        default:
-                                                            break;
+                                        //座落
+                                        beLocated.add(String.format("%s%s", getSchemeAreaGroup().getAreaName(), schemeJudgeObject.getSeat()));
+                                        //方位
+                                        position.add(StringUtils.isNotBlank(generateBaseExamineService.getByDataBlock().getPosition()) ? generateBaseExamineService.getByDataBlock().getPosition() : "方位：暂无");
+                                        //与重要场所的距离
+                                        importantDistance.add("0");
+                                        if (true) {
+                                            List<BasicHouseFaceStreetVo> list = generateBaseExamineService.getBasicHouseFaceStreetList();
+                                            StringBuilder stringBuilder = new StringBuilder();
+                                            if (CollectionUtils.isNotEmpty(list)) {
+                                                for (BasicHouseFaceStreetVo faceStreet : list) {
+                                                    stringBuilder.append(faceStreet.getStreetName())
+                                                            .append(faceStreet.getStreetLevelName())
+                                                            .append(faceStreet.getTrafficFlowName()).append(faceStreet.getVisitorsFlowrateName());
+                                                    stringBuilder.append("\r\n");
+                                                }
+                                                //临街（路）状况
+                                                houseFaceStreet.add(stringBuilder.toString());
+                                                stringBuilder.delete(0, stringBuilder.toString().length());
+                                                //人流量
+                                                list.stream().forEach(faceStreet -> {
+                                                    if (faceStreet.getVisitorsFlowrate() != null) {
+                                                        stringBuilder.append(baseDataDicService.getNameById(faceStreet.getVisitorsFlowrate()));
+                                                    }
+                                                });
+                                                visitorsFlowrates.add(stringBuilder.toString());
+                                            }
+                                        }
+                                        //楼栋
+                                        building.add(generateBaseExamineService.getBasicBuilding().getBuildingNumber());
+                                        //楼层
+                                        floor.add(generateBaseExamineService.getBasicBuilding().getFloorCount().toString());
+                                        //商业繁华度
+                                        businessProsperity.add("估价对象所在区域为规划新城区，区域商业待发展，目前以超市、零售商店为主，商业繁华度一般");
+                                        //朝向
+                                        orientation.add(baseDataDicService.getNameById(generateBaseExamineService.getBasicHouse().getOrientation()));
+                                        //道路状况
+                                        if (true) {
+                                            StringBuilder stringBuilder = new StringBuilder(1024);
+                                            List<BasicMatchingTrafficVo> voList = generateBaseExamineService.getBasicMatchingTrafficList();
+                                            if (CollectionUtils.isNotEmpty(voList)) {
+                                                voList.parallelStream().forEach(basicMatchingTrafficVo -> {
+                                                    stringBuilder.append(basicMatchingTrafficVo.getName())
+                                                            .append(basicMatchingTrafficVo.getNatureName())
+                                                            .append(basicMatchingTrafficVo.getDistanceName());
+                                                    stringBuilder.append("\r\n");
+                                                });
+                                            }
+                                            roadCondition.add(stringBuilder.toString());
+                                        }
+                                        //交通工具
+                                        if (true) {
+                                            List<BasicMatchingTrafficVo> matchingTrafficVoList = generateBaseExamineService.getBasicMatchingTrafficList();
+                                            StringBuilder stringBuilder = new StringBuilder(1024);
+                                            if (CollectionUtils.isNotEmpty(matchingTrafficVoList)) {
+                                                long a = matchingTrafficVoList.stream().filter(basicMatchingTrafficVo -> {
+                                                    if (Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.METRO.getName())) {
+                                                        return true;
+                                                    }
+                                                    return false;
+                                                }).count();
+                                                long b = matchingTrafficVoList.stream().filter(basicMatchingTrafficVo -> {
+                                                    if (Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.TRANSIT.getName())) {
+                                                        return true;
+                                                    }
+                                                    return false;
+                                                }).count();
+                                                if (a > 0) {
+                                                    stringBuilder.append("地铁 ");
+                                                }
+                                                if (b > 0) {
+                                                    stringBuilder.append("公交 ");
+                                                }
+                                            }
+                                            vehicle.add(stringBuilder.toString());
+                                        }
+                                        //交通管制
+                                        trafficControl.add("暂无交通管制信息");
+                                        //停车方便度
+                                        parkingConvenience.add("暂无停车方便度信息");
+                                        //交通收费情况
+                                        trafficToll.add("暂无交通收费情况信息");
+                                        //外部基础设施
+                                        if (true) {
+                                            List<BasicEstateSupply> estateSupplyList = generateBaseExamineService.getBasicEstateSupplyList();
+                                            StringBuilder stringBuilder = new StringBuilder(128);
+                                            //楼盘下供电
+                                            if (CollectionUtils.isNotEmpty(estateSupplyList)) {
+                                                for (BasicEstateSupply supply : estateSupplyList) {
+                                                    if (org.apache.commons.lang.StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getName())) {
+                                                        generateBaseExamineService.getCommonSupply(stringBuilder, supply);
                                                     }
                                                 }
                                             }
-                                        }
-                                        if (5 < j && j <= 10) {
-                                            for (int k = 0; k < 5; k++) {
-                                                if (k == 3) {
-                                                    switch (j) {
-                                                        case 6:
-                                                            if (true) {
-                                                                StringBuilder stringBuilder = new StringBuilder(1024);
-                                                                List<BasicMatchingTrafficVo> voList = generateBaseExamineService.getBasicMatchingTrafficList();
-                                                                if (CollectionUtils.isNotEmpty(voList)) {
-                                                                    voList.parallelStream().forEach(basicMatchingTrafficVo -> {
-                                                                        stringBuilder.append(basicMatchingTrafficVo.getName())
-                                                                                .append(basicMatchingTrafficVo.getNatureName())
-                                                                                .append(basicMatchingTrafficVo.getDistanceName());
-                                                                        stringBuilder.append("\r\n");
-                                                                    });
-                                                                }
-                                                                a_6_3.add(stringBuilder.toString());
-                                                            }
-                                                            break;
-                                                        case 7:
-                                                            a_7_3.add("暂无");
-                                                            break;
-                                                        case 8:
-                                                            a_8_3.add("暂无");
-                                                            break;
-                                                        case 9:
-                                                            a_9_3.add("暂无");
-                                                            break;
-                                                        case 10:
-                                                            a_10_3.add("暂无");
-                                                            break;
-                                                        default:
-                                                            break;
+                                            //楼盘下供水
+                                            if (CollectionUtils.isNotEmpty(estateSupplyList)) {
+                                                for (BasicEstateSupply supply : estateSupplyList) {
+                                                    if (org.apache.commons.lang.StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_WATER.getName())) {
+                                                        generateBaseExamineService.getCommonSupply(stringBuilder, supply);
                                                     }
                                                 }
                                             }
-                                        }
-                                        if (10 < j && j <= 15) {
-                                            for (int k = 0; k < 5; k++) {
-                                                if (k == 3) {
-                                                    switch (j) {
-                                                        //城市基础设施
-                                                        case 11:
-                                                            List<BasicEstateSupply> estateSupplyList = generateBaseExamineService.getBasicEstateSupplyList();
-                                                            if (true) {
-                                                                StringBuilder stringBuilder = new StringBuilder(128);
-                                                                //楼盘下供电
-                                                                if (CollectionUtils.isNotEmpty(estateSupplyList)) {
-                                                                    for (BasicEstateSupply supply : estateSupplyList) {
-                                                                        if (org.apache.commons.lang.StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getName())) {
-                                                                            generateBaseExamineService.getCommonSupply(stringBuilder, supply);
-                                                                        }
-                                                                    }
-                                                                }
-
-                                                                //楼盘下供水
-                                                                if (CollectionUtils.isNotEmpty(estateSupplyList)) {
-                                                                    for (BasicEstateSupply supply : estateSupplyList) {
-                                                                        if (org.apache.commons.lang.StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_WATER.getName())) {
-                                                                            generateBaseExamineService.getCommonSupply(stringBuilder, supply);
-                                                                        }
-                                                                    }
-                                                                }
-
-                                                                //楼盘下排水
-                                                                if (CollectionUtils.isNotEmpty(estateSupplyList)) {
-                                                                    for (BasicEstateSupply supply : estateSupplyList) {
-                                                                        if (org.apache.commons.lang.StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_DRAIN_WATER.getName())) {
-                                                                            generateBaseExamineService.getCommonSupply(stringBuilder, supply);
-                                                                        }
-                                                                    }
-                                                                }
-
-                                                                //楼盘下采暖供热
-                                                                if (CollectionUtils.isNotEmpty(estateSupplyList)) {
-                                                                    for (BasicEstateSupply supply : estateSupplyList) {
-                                                                        if (org.apache.commons.lang.StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_HEATING.getName())) {
-                                                                            generateBaseExamineService.getCommonSupply(stringBuilder, supply);
-                                                                        }
-                                                                    }
-                                                                }
-
-                                                                //楼盘下供气
-                                                                if (CollectionUtils.isNotEmpty(estateSupplyList)) {
-                                                                    for (BasicEstateSupply supply : estateSupplyList) {
-                                                                        if (org.apache.commons.lang.StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_GAS.getName())) {
-                                                                            generateBaseExamineService.getCommonSupply(stringBuilder, supply);
-                                                                        }
-                                                                    }
-                                                                }
-                                                                a_11_3.add(stringBuilder.toString());
-                                                            }
-                                                            break;
-                                                        case 12:
-                                                            if (true) {//金融机构
-                                                                if (true) {
-                                                                    StringBuilder stringBuilder = new StringBuilder(1024);
-                                                                    List<BasicMatchingFinanceVo> financeList = generateBaseExamineService.getBasicMatchingFinanceList();
-                                                                    if (CollectionUtils.isNotEmpty(financeList)) {
-                                                                        for (BasicMatchingFinance finance : financeList) {
-                                                                            stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(finance.getName()) ? "" : String.format("名称:%s；", finance.getName()));
-                                                                            stringBuilder.append(finance.getCategory() == null ? "" : String.format("类别:%s；", baseDataDicService.getNameById(finance.getCategory())));
-                                                                            stringBuilder.append(finance.getNature() == null ? "" : String.format("金融机构性质:%s；", baseDataDicService.getNameById(finance.getNature())));
-                                                                            stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(finance.getName()) ? "" : String.format("服务内容:%s；", finance.getName()));
-                                                                        }
-                                                                    }
-                                                                    a_12_3.add(stringBuilder.toString());
-                                                                }
-                                                            }
-                                                            break;
-
-                                                        case 13: //购物
-                                                            if (true) {
-                                                                StringBuilder stringBuilder = new StringBuilder(1024);
-                                                                List<BasicMatchingLeisurePlace> leisurePlaceList = generateBaseExamineService.getBasicMatchingLeisurePlaceList();
-                                                                if (CollectionUtils.isNotEmpty(leisurePlaceList)) {
-                                                                    for (BasicMatchingLeisurePlace leisurePlace : leisurePlaceList) {
-                                                                        if (Objects.equal(leisurePlace.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())) {
-                                                                            stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(leisurePlace.getName()) ? "" : String.format("名称:%s；", leisurePlace.getName()));
-                                                                            stringBuilder.append(leisurePlace.getCategory() == null ? "" : String.format("类别:%s；", baseDataDicService.getNameById(leisurePlace.getCategory())));
-                                                                            stringBuilder.append(leisurePlace.getGrade() == null ? "" : String.format("档次:%s；", baseDataDicService.getNameById(leisurePlace.getGrade())));
-                                                                            stringBuilder.append(leisurePlace.getDistance() == null ? "" : String.format("距离:%s；", baseDataDicService.getNameById(leisurePlace.getDistance())));
-                                                                        }
-                                                                    }
-                                                                }
-                                                                a_13_3.add(stringBuilder.toString());
-                                                            }
-                                                            break;
-                                                        case 14://教育
-                                                            if (true) {
-                                                                StringBuilder stringBuilder = new StringBuilder(1024);
-                                                                List<BasicMatchingEducation> educationList = generateBaseExamineService.getBasicMatchingEducatioListn();
-                                                                if (CollectionUtils.isNotEmpty(educationList)) {
-                                                                    for (BasicMatchingEducation education : educationList) {
-                                                                        stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(education.getSchoolName()) ? "" : String.format("学校名称:%s；", education.getSchoolName()));
-                                                                        stringBuilder.append(education.getSchoolNature() == null ? "" : String.format("学校性质:%s；", baseDataDicService.getNameById(education.getSchoolNature())));
-                                                                        stringBuilder.append(education.getSchoolGradation() == null ? "" : String.format("学校级次:%s；", baseDataDicService.getNameById(education.getSchoolGradation())));
-                                                                        stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(education.getSchoolLevel()) ? "" : String.format("学校等级:%s；", baseDataDicService.getNameById(Integer.valueOf(education.getSchoolLevel()))));
-                                                                        stringBuilder.append(education.getDistance() == null ? "" : String.format("距离:%s；", baseDataDicService.getNameById(education.getDistance())));
-                                                                    }
-                                                                }
-                                                                a_14_3.add(stringBuilder.toString());
-                                                            }
-                                                            break;
-                                                        case 15://娱乐休闲
-                                                            if (true) {
-                                                                StringBuilder stringBuilder = new StringBuilder(1024);
-                                                                List<BasicMatchingLeisurePlace> leisurePlaceList = generateBaseExamineService.getBasicMatchingLeisurePlaceList();
-                                                                if (CollectionUtils.isNotEmpty(leisurePlaceList)) {
-                                                                    for (BasicMatchingLeisurePlace leisurePlace : leisurePlaceList) {
-                                                                        if (Objects.equal(leisurePlace.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getKey())) {
-                                                                            stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(leisurePlace.getName()) ? "" : String.format("名称:%s；", leisurePlace.getName()));
-                                                                            stringBuilder.append(leisurePlace.getCategory() == null ? "" : String.format("类别:%s；", baseDataDicService.getNameById(leisurePlace.getCategory())));
-                                                                            stringBuilder.append(leisurePlace.getGrade() == null ? "" : String.format("档次:%s；", baseDataDicService.getNameById(leisurePlace.getGrade())));
-                                                                            stringBuilder.append(leisurePlace.getDistance() == null ? "" : String.format("距离:%s；", baseDataDicService.getNameById(leisurePlace.getDistance())));
-                                                                        }
-                                                                    }
-                                                                }
-                                                                a_15_3.add(stringBuilder.toString());
-                                                            }
-                                                            break;
+                                            //楼盘下排水
+                                            if (CollectionUtils.isNotEmpty(estateSupplyList)) {
+                                                for (BasicEstateSupply supply : estateSupplyList) {
+                                                    if (org.apache.commons.lang.StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_DRAIN_WATER.getName())) {
+                                                        generateBaseExamineService.getCommonSupply(stringBuilder, supply);
                                                     }
                                                 }
                                             }
-                                        }
-                                        if (15 < j && j <= 18) {
-                                            for (int k = 0; k < 5; k++) {
-                                                if (k == 3) {
-                                                    switch (j) {
-                                                        case 16:
-                                                            if (true) {
-                                                                StringBuilder stringBuilder = new StringBuilder(1024);
-                                                                List<BasicMatchingEnvironmentVo> environmentList = generateBaseExamineService.getBasicMatchingEnvironmentList();
-                                                                if (CollectionUtils.isNotEmpty(environmentList)) {
-                                                                    BaseDataDic naturalDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.ESTATE_ENVIRONMENT_TYPE_NATURAL);
-                                                                    for (BasicMatchingEnvironment examineMatchingEnvironment : environmentList) {
-                                                                        generateBaseExamineService.getEnvironmentString(stringBuilder, naturalDic, examineMatchingEnvironment);
-                                                                    }
-                                                                }
-                                                                a_16_3.add(stringBuilder.toString());
-                                                            }
-                                                            break;
-                                                        case 17:
-                                                            if (true) {
-                                                                StringBuilder stringBuilder = new StringBuilder(1024);
-                                                                List<BasicMatchingEnvironmentVo> environmentList = generateBaseExamineService.getBasicMatchingEnvironmentList();
-                                                                if (CollectionUtils.isNotEmpty(environmentList)) {
-                                                                    BaseDataDic culturalDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.ESTATE_ENVIRONMENT_TYPE_CULTURAL);
-                                                                    for (BasicMatchingEnvironment examineMatchingEnvironment : environmentList) {
-                                                                        generateBaseExamineService.getEnvironmentString(stringBuilder, culturalDic, examineMatchingEnvironment);
-                                                                    }
-                                                                }
-                                                                a_17_3.add(stringBuilder.toString());
-                                                            }
-                                                            break;
-                                                        case 18:
-                                                            if (true) {
-                                                                List<BasicMatchingEnvironmentVo> environmentList = generateBaseExamineService.getBasicMatchingEnvironmentList();
-                                                                StringBuilder stringBuilder = new StringBuilder(1024);
-                                                                if (CollectionUtils.isNotEmpty(environmentList)) {
-                                                                    BaseDataDic sceneryDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.ESTATE_ENVIRONMENT_TYPE_SCENERY);
-                                                                    for (BasicMatchingEnvironment examineMatchingEnvironment : environmentList) {
-                                                                        generateBaseExamineService.getEnvironmentString(stringBuilder, sceneryDic, examineMatchingEnvironment);
-                                                                    }
-                                                                }
-                                                                a_18_3.add(stringBuilder.toString());
-                                                            }
-                                                            break;
-                                                        default:
-                                                            break;
+                                            //楼盘下采暖供热
+                                            if (CollectionUtils.isNotEmpty(estateSupplyList)) {
+                                                for (BasicEstateSupply supply : estateSupplyList) {
+                                                    if (org.apache.commons.lang.StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_HEATING.getName())) {
+                                                        generateBaseExamineService.getCommonSupply(stringBuilder, supply);
                                                     }
                                                 }
                                             }
+                                            //楼盘下供气
+                                            if (CollectionUtils.isNotEmpty(estateSupplyList)) {
+                                                for (BasicEstateSupply supply : estateSupplyList) {
+                                                    if (org.apache.commons.lang.StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_GAS.getName())) {
+                                                        generateBaseExamineService.getCommonSupply(stringBuilder, supply);
+                                                    }
+                                                }
+                                            }
+                                            externalInfrastructure.add(stringBuilder.toString());
                                         }
+                                        //购物
+                                        if (true) {
+                                            StringBuilder stringBuilder = new StringBuilder(1024);
+                                            List<BasicMatchingLeisurePlace> leisurePlaceList = generateBaseExamineService.getBasicMatchingLeisurePlaceList();
+                                            if (CollectionUtils.isNotEmpty(leisurePlaceList)) {
+                                                for (BasicMatchingLeisurePlace leisurePlace : leisurePlaceList) {
+                                                    if (Objects.equal(leisurePlace.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())) {
+                                                        stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(leisurePlace.getName()) ? "" : String.format("名称:%s；", leisurePlace.getName()));
+                                                        stringBuilder.append(leisurePlace.getCategory() == null ? "" : String.format("类别:%s；", baseDataDicService.getNameById(leisurePlace.getCategory())));
+                                                        stringBuilder.append(leisurePlace.getGrade() == null ? "" : String.format("档次:%s；", baseDataDicService.getNameById(leisurePlace.getGrade())));
+                                                        stringBuilder.append(leisurePlace.getDistance() == null ? "" : String.format("距离:%s；", baseDataDicService.getNameById(leisurePlace.getDistance())));
+                                                    }
+                                                }
+                                            }
+                                            shop.add(stringBuilder.toString());
+                                        }
+                                        //银行 | 金融机构
+                                        if (true) {
+                                            StringBuilder stringBuilder = new StringBuilder(1024);
+                                            List<BasicMatchingFinanceVo> financeList = generateBaseExamineService.getBasicMatchingFinanceList();
+                                            if (CollectionUtils.isNotEmpty(financeList)) {
+                                                for (BasicMatchingFinance finance : financeList) {
+                                                    stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(finance.getName()) ? "" : String.format("名称:%s；", finance.getName()));
+                                                    stringBuilder.append(finance.getCategory() == null ? "" : String.format("类别:%s；", baseDataDicService.getNameById(finance.getCategory())));
+                                                    stringBuilder.append(finance.getNature() == null ? "" : String.format("金融机构性质:%s；", baseDataDicService.getNameById(finance.getNature())));
+                                                    stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(finance.getName()) ? "" : String.format("服务内容:%s；", finance.getName()));
+                                                }
+                                            }
+                                            bank.add(stringBuilder.toString());
+                                        }
+                                        //教育文化
+                                        if (true) {
+                                            StringBuilder stringBuilder = new StringBuilder(1024);
+                                            List<BasicMatchingEducation> educationList = generateBaseExamineService.getBasicMatchingEducatioListn();
+                                            if (CollectionUtils.isNotEmpty(educationList)) {
+                                                for (BasicMatchingEducation matchingEducation : educationList) {
+                                                    stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(matchingEducation.getSchoolName()) ? "" : String.format("学校名称:%s；", matchingEducation.getSchoolName()));
+                                                    stringBuilder.append(matchingEducation.getSchoolNature() == null ? "" : String.format("学校性质:%s；", baseDataDicService.getNameById(matchingEducation.getSchoolNature())));
+                                                    stringBuilder.append(matchingEducation.getSchoolGradation() == null ? "" : String.format("学校级次:%s；", baseDataDicService.getNameById(matchingEducation.getSchoolGradation())));
+                                                    stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(matchingEducation.getSchoolLevel()) ? "" : String.format("学校等级:%s；", baseDataDicService.getNameById(Integer.valueOf(matchingEducation.getSchoolLevel()))));
+                                                    stringBuilder.append(matchingEducation.getDistance() == null ? "" : String.format("距离:%s；", baseDataDicService.getNameById(matchingEducation.getDistance())));
+                                                }
+                                            }
+                                            education.add(stringBuilder.toString());
+                                        }
+                                        //医疗康养
+                                        if (true) {
+                                            List<BasicMatchingMedical> matchingMedicalList = generateBaseExamineService.getBasicMatchingMedicalList();
+                                            if (CollectionUtils.isNotEmpty(matchingMedicalList)) {
+                                                StringBuilder stringBuilder = new StringBuilder(1024);
+                                                matchingMedicalList.stream().forEach(basicMatchingMedical -> {
+                                                    stringBuilder.append(basicMatchingMedical.getOrganizationName());
+                                                    stringBuilder.append(" ");
+                                                    stringBuilder.append(baseDataDicService.getNameById(basicMatchingMedical.getOrganizationLevel())).append(" ");
+                                                    stringBuilder.append(baseDataDicService.getNameById(basicMatchingMedical.getBedNumber())).append(" ");
+                                                    stringBuilder.append(baseDataDicService.getNameById(basicMatchingMedical.getDistance())).append(" ");
+                                                });
+                                                medical.add(stringBuilder.toString());
+                                            }
+                                        }
+                                        if (true) {
+                                            StringBuilder stringBuilder = new StringBuilder(1024);
+                                            List<BasicMatchingLeisurePlace> leisurePlaceList = generateBaseExamineService.getBasicMatchingLeisurePlaceList();
+                                            if (CollectionUtils.isNotEmpty(leisurePlaceList)) {
+                                                //娱乐休闲
+                                                for (BasicMatchingLeisurePlace leisurePlace : leisurePlaceList) {
+                                                    if (Objects.equal(leisurePlace.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getKey())) {
+                                                        stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(leisurePlace.getName()) ? "" : String.format("名称:%s；", leisurePlace.getName()));
+                                                        stringBuilder.append(leisurePlace.getCategory() == null ? "" : String.format("类别:%s；", baseDataDicService.getNameById(leisurePlace.getCategory())));
+                                                        stringBuilder.append(leisurePlace.getGrade() == null ? "" : String.format("档次:%s；", baseDataDicService.getNameById(leisurePlace.getGrade())));
+                                                        stringBuilder.append(leisurePlace.getDistance() == null ? "" : String.format("距离:%s；", baseDataDicService.getNameById(leisurePlace.getDistance())));
+                                                    }
+                                                }
+                                                entertainment.add(stringBuilder.toString());
+                                                stringBuilder.delete(0, stringBuilder.toString().length());
+                                                //餐饮文化
+                                                for (BasicMatchingLeisurePlace leisurePlace : leisurePlaceList) {
+                                                    if (Objects.equal(leisurePlace.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getKey())) {
+                                                        stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(leisurePlace.getName()) ? "" : String.format("名称:%s；", leisurePlace.getName()));
+                                                        stringBuilder.append(leisurePlace.getCategory() == null ? "" : String.format("类别:%s；", baseDataDicService.getNameById(leisurePlace.getCategory())));
+                                                        stringBuilder.append(leisurePlace.getGrade() == null ? "" : String.format("档次:%s；", baseDataDicService.getNameById(leisurePlace.getGrade())));
+                                                        stringBuilder.append(leisurePlace.getDistance() == null ? "" : String.format("距离:%s；", baseDataDicService.getNameById(leisurePlace.getDistance())));
+                                                    }
+                                                }
+                                                restaurant.add(stringBuilder.toString());
+                                            }
+                                        }
+                                        //自然环境
+                                        if (true) {
+                                            StringBuilder stringBuilder = new StringBuilder(1024);
+                                            List<BasicMatchingEnvironmentVo> environmentList = generateBaseExamineService.getBasicMatchingEnvironmentList();
+                                            if (CollectionUtils.isNotEmpty(environmentList)) {
+                                                BaseDataDic naturalDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.ESTATE_ENVIRONMENT_TYPE_NATURAL);
+                                                for (BasicMatchingEnvironment examineMatchingEnvironment : environmentList) {
+                                                    generateBaseExamineService.getEnvironmentString(stringBuilder, naturalDic, examineMatchingEnvironment);
+                                                }
+                                            }
+                                            naturalEnvironment.add(stringBuilder.toString());
+                                        }
+                                        //人文环境
+                                        if (true) {
+                                            StringBuilder stringBuilder = new StringBuilder(1024);
+                                            List<BasicMatchingEnvironmentVo> environmentList = generateBaseExamineService.getBasicMatchingEnvironmentList();
+                                            if (CollectionUtils.isNotEmpty(environmentList)) {
+                                                BaseDataDic culturalDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.ESTATE_ENVIRONMENT_TYPE_CULTURAL);
+                                                for (BasicMatchingEnvironment examineMatchingEnvironment : environmentList) {
+                                                    generateBaseExamineService.getEnvironmentString(stringBuilder, culturalDic, examineMatchingEnvironment);
+                                                }
+                                            }
+                                            culturalEnvironment.add(stringBuilder.toString());
+                                        }
+                                        //景观
+                                        if (true) {
+                                            List<BasicMatchingEnvironmentVo> environmentList = generateBaseExamineService.getBasicMatchingEnvironmentList();
+                                            StringBuilder stringBuilder = new StringBuilder(1024);
+                                            if (CollectionUtils.isNotEmpty(environmentList)) {
+                                                BaseDataDic sceneryDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.ESTATE_ENVIRONMENT_TYPE_SCENERY);
+                                                for (BasicMatchingEnvironment examineMatchingEnvironment : environmentList) {
+                                                    generateBaseExamineService.getEnvironmentString(stringBuilder, sceneryDic, examineMatchingEnvironment);
+                                                }
+                                            }
+                                            scenery.add(stringBuilder.toString());
+                                        }
+                                        //区位综述
+                                        locationSummary.add("........");
                                     } catch (Exception e1) {
-                                        //允许,因为数据来源不一
+                                        //允许exception
                                     }
                                 }
                             }
@@ -2848,244 +2942,52 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
-        Table table = builder.startTable();
-        //行
-        for (int j = 0; j < 20; j++) {
-            if (0 <= j && j <= 5) {
-                //列
-                for (int k = 0; k < 5; k++) {
-                    if (k == 0 && j == 0) {
-                        builder.insertCell();
-                        builder.writeln("区域位置");
-                    } else {
-                        builder.insertCell();
-                        if (k == 1) {
-                            switch (j) {
-                                case 0:
-                                    builder.writeln("座落");
-                                    break;
-                                case 1:
-                                    builder.writeln("方位");
-                                    break;
-                                case 2:
-                                    builder.writeln("商业繁华程度");
-                                    break;
-                                case 3:
-                                    builder.writeln("临街（路状况）");
-                                    break;
-                                case 4:
-                                    builder.writeln("楼层");
-                                    break;
-                                case 5:
-                                    builder.writeln("人文景观");
-                                    break;
-                                default:
-                                    builder.writeln(String.format("%d-%d", j, k));
-                                    break;
-                            }
-                        }
-                        if (k == 3) {
-                            mergeCellModelList.add(new MergeCellModel(j, k, j, k + 1));
-                            switch (j) {
-                                case 0:
-                                    builder.writeln(toSetString(a_0_3));
-                                    break;
-                                case 1:
-                                    builder.writeln(toSetString(a_1_3));
-                                    break;
-                                case 2:
-                                    builder.writeln(toSetString(a_2_3));
-                                    break;
-                                case 3:
-                                    builder.writeln(toSetString(a_3_3));
-                                    break;
-                                case 4:
-                                    builder.writeln(toSetString(a_4_3));
-                                    break;
-                                case 5:
-                                    builder.writeln(toSetString(a_5_3));
-                                    break;
-                                default:
-                                    builder.writeln("");
-                                    break;
-                            }
-                        }
-                    }
-                }
-                builder.endRow();
-                mergeCellModelList.add(new MergeCellModel(0, 0, 5, 0));
-                mergeCellModelList.add(new MergeCellModel(j, 1, j, 2));
-            }
-            if (5 < j && j <= 10) {
-                for (int k = 0; k < 5; k++) {
-                    if (k == 0 && j == 6) {
-                        builder.insertCell();
-                        builder.writeln("交通状况");
-                    } else {
-                        builder.insertCell();
-                        if (k == 1) {
-                            switch (j) {
-                                case 6:
-                                    builder.writeln("道路状况");
-                                    break;
-                                case 7:
-                                    builder.writeln("公共交通");
-                                    break;
-                                case 8:
-                                    builder.writeln("对外交通");
-                                    break;
-                                case 9:
-                                    builder.writeln("交通管制情况");
-                                    break;
-                                case 10:
-                                    builder.writeln("停车方便度");
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        if (k == 3) {
-                            mergeCellModelList.add(new MergeCellModel(j, k, j, k + 1));
-                            switch (j) {
-                                case 6:
-                                    builder.writeln(toSetString(a_6_3));
-                                    break;
-                                case 7:
-                                    builder.writeln(toSetString(a_7_3));
-                                    break;
-                                case 8:
-                                    builder.writeln(toSetString(a_8_3));
-                                    break;
-                                case 9:
-                                    builder.writeln(toSetString(a_9_3));
-                                    break;
-                                case 10:
-                                    builder.writeln(toSetString(a_10_3));
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    }
-                }
-                builder.endRow();
-                mergeCellModelList.add(new MergeCellModel(6, 0, 10, 0));
-                mergeCellModelList.add(new MergeCellModel(j, 1, j, 2));
-            }
-            if (10 < j && j <= 15) {
-                for (int k = 0; k < 5; k++) {
-                    if (k == 0 && j == 11) {
-                        builder.insertCell();
-                        builder.writeln("外部配套设施");
-                    } else {
-                        builder.insertCell();
-                        if (k == 1) {
-                            switch (j) {
-                                case 11:
-                                    builder.writeln("城市基础设施");
-                                    break;
-                                case 12:
-                                    builder.writeln("公共服务设施");
-                                    break;
-                            }
-                        } else if (k == 2) {
-                            switch (j) {
-                                case 12:
-                                    builder.writeln("银行");
-                                    break;
-                                case 13:
-                                    builder.writeln("购物");
-                                    break;
-                                case 14:
-                                    builder.writeln("教育");
-                                    break;
-                                case 15:
-                                    builder.writeln("娱乐休闲");
-                                    break;
-                            }
-                        } else if (k == 3) {
-                            mergeCellModelList.add(new MergeCellModel(j, k, j, k + 1));
-                            switch (j) {
-                                case 11:
-                                    //城市基础设施
-                                    builder.writeln(toSetString(a_11_3));
-                                    break;
-                                case 12:
-                                    //金融机构
-                                    builder.writeln(toSetString(a_12_3));
-                                    break;
-
-                                case 13:
-                                    //购物
-                                    builder.writeln(toSetString(a_13_3));
-                                    break;
-                                case 14:
-                                    //教育
-                                    builder.writeln(toSetString(a_14_3));
-                                    break;
-                                case 15:
-                                    //娱乐休闲
-                                    builder.writeln(toSetString(a_15_3));
-                                    break;
-                            }
-                        }
-                    }
-                }
-                builder.endRow();
-                mergeCellModelList.add(new MergeCellModel(11, 0, 15, 0));
-                mergeCellModelList.add(new MergeCellModel(12, 1, 15, 1));
-                mergeCellModelList.add(new MergeCellModel(11, 1, 11, 2));
-            }
-            if (15 < j && j <= 18) {
-                for (int k = 0; k < 5; k++) {
-                    if (k == 0 && j == 16) {
-                        builder.insertCell();
-                        builder.writeln("周围环境和景观");
-                    } else {
-                        builder.insertCell();
-                        if (k == 1) {
-                            switch (j) {
-                                case 16:
-                                    builder.writeln("自然环境");
-                                    break;
-                                case 17:
-                                    builder.writeln("人文环境");
-                                    break;
-                                case 18:
-                                    builder.writeln("景观");
-                                    break;
-                            }
-                        }
-                        if (k == 3) {
-                            mergeCellModelList.add(new MergeCellModel(j, k, j, k + 1));
-                            switch (j) {
-                                case 16:
-                                    builder.writeln(toSetString(a_16_3));
-                                    break;
-                                case 17:
-                                    builder.writeln(toSetString(a_17_3));
-                                    break;
-                                case 18:
-                                    builder.writeln(toSetString(a_18_3));
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    }
-                }
-                builder.endRow();
-                mergeCellModelList.add(new MergeCellModel(16, 0, 18, 0));
-                mergeCellModelList.add(new MergeCellModel(j, 1, j, 2));
+        for (int j = 0; j < 5; j++) {
+            switch (j) {
+                case 0:
+                    builder.writeln(String.format("%d%s", (j + 1), "位置状况包括:"));
+                    builder.writeln(String.format("%s%s", "坐落:", toSetString(beLocated)));
+                    builder.writeln(String.format("%s%s", "方位:", toSetString(position)));
+                    builder.writeln(String.format("%s%s", "与重要场所的距离:", toSetString(importantDistance)));
+                    builder.writeln(String.format("%s%s", "临街（路）状况:", toSetString(houseFaceStreet)));
+                    builder.writeln(String.format("%s%s", "楼栋:", toSetString(building)));
+                    builder.writeln(String.format("%s%s", "楼层:", toSetString(floor)));
+                    builder.writeln(String.format("%s%s", "朝向:", toSetString(orientation)));
+                    builder.writeln(String.format("%s%s", "商业繁华度:", toSetString(businessProsperity)));
+                    builder.writeln(String.format("%s%s", "人流量:", toSetString(visitorsFlowrates)));
+                    break;
+                case 1:
+                    builder.writeln(String.format("%d%s", (j + 1), "交通状况包括:"));
+                    builder.writeln(String.format("%s%s", "道路状况:", toSetString(roadCondition)));
+                    builder.writeln(String.format("%s%s", "出入可利用的交通工具:", toSetString(vehicle)));
+                    builder.writeln(String.format("%s%s", "交通管制情况:", toSetString(trafficControl)));
+                    builder.writeln(String.format("%s%s", "停车方便度:", toSetString(parkingConvenience)));
+                    builder.writeln(String.format("%s%s", "交通收费情况:", toSetString(trafficToll)));
+                    break;
+                case 2:
+                    builder.writeln(String.format("%d%s", (j + 1), "外部配套设施:"));
+                    builder.writeln(String.format("%s%s", "外部基础设施:", toSetString(externalInfrastructure)));
+                    break;
+                case 3:
+                    builder.writeln(String.format("%d%s", (j + 1), "外部公共服务设施:"));
+                    builder.writeln(String.format("%s%s", "购物:", toSetString(shop)));
+                    builder.writeln(String.format("%s%s", "银行:", toSetString(bank)));
+                    builder.writeln(String.format("%s%s", "教育文化:", toSetString(education)));
+                    builder.writeln(String.format("%s%s", "医疗康养:", toSetString(medical)));
+                    builder.writeln(String.format("%s%s", "娱乐休闲:", toSetString(entertainment)));
+                    builder.writeln(String.format("%s%s", "餐饮文化:", toSetString(restaurant)));
+                    break;
+                case 4:
+                    builder.writeln(String.format("%d%s", (j + 1), "周围环境:"));
+                    builder.writeln(String.format("%s%s", "自然环境:", toSetString(naturalEnvironment)));
+                    builder.writeln(String.format("%s%s", "人文环境:", toSetString(culturalEnvironment)));
+                    builder.writeln(String.format("%s%s", "景观:", toSetString(scenery)));
+                    builder.writeln(String.format("%s%s", "区位综述:", toSetString(locationSummary)));
+                    break;
+                default:
+                    break;
             }
         }
-        for (MergeCellModel mergeCellModel : mergeCellModelList) {
-            Cell cellStartRange = table.getRows().get(mergeCellModel.getStartRowIndex()).getCells().get(mergeCellModel.getStartColumnIndex());
-            Cell cellEndRange = table.getRows().get(mergeCellModel.getEndRowIndex()).getCells().get(mergeCellModel.getEndColumnIndex());
-            AsposeUtils.mergeCells(cellStartRange, cellEndRange, table);
-        }
-        builder.endTable();
         doc.save(localPath);
         this.judgeObjectAreaStatusSheet = localPath;
         return judgeObjectAreaStatusSheet;
@@ -3100,39 +3002,38 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        List<ProjectPhaseVo> projectPhaseVos = projectPhaseService.queryProjectPhaseByCategory(getProjectInfo().getProjectTypeId(),
-                getProjectInfo().getProjectCategoryId(), null);
-        List<ProjectPhase> projectPhases = Lists.newArrayList();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(projectPhaseVos)) {
-            projectPhaseVos.parallelStream().filter(projectPhaseVo -> {
-                if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
-                    return true;
-                }
-                if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
-                    return true;
-                }
-                return false;
-            }).forEach(projectPhaseVo -> {
-                projectPhases.add(projectPhaseVo);
-            });
-        }
-        Set<String> a_0_1 = Sets.newHashSet();
-        Set<String> a_0_4 = Sets.newHashSet();
-        Set<String> a_1_1 = Sets.newHashSet();
-        Set<String> a_1_4 = Sets.newHashSet();
-        Set<String> a_2_1 = Sets.newHashSet();
-        Set<String> a_2_4 = Sets.newHashSet();
-        Set<String> a_3_1 = Sets.newHashSet();
-        Set<String> a_3_4 = Sets.newHashSet();
-        Set<String> a_4_1 = Sets.newHashSet();
-        Set<String> a_4_4 = Sets.newHashSet();
-        Set<String> a_5_1 = Sets.newHashSet();
-        Set<String> a_5_4 = Sets.newHashSet();
-        Set<String> a_6_1 = Sets.newHashSet();
-        Set<String> a_6_4 = Sets.newHashSet();
-        Set<String> a_7_1 = Sets.newHashSet();
-        Set<String> a_7_4 = Sets.newHashSet();
+        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
+                getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
+                .stream()
+                .filter(projectPhaseVo -> {
+                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
+                        return true;
+                    }
+                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
+                        return true;
+                    }
+                    return false;
+                }).collect(Collectors.toList());
+        //名称
+        Set<String> names = Sets.newHashSet();
+        //四至
+        Set<String> allDirections = Sets.newHashSet();
+        //土地面积
+        Set<String> landArea = Sets.newHashSet();
+        //用途
+        Set<String> purposes = Sets.newHashSet();
+        //形状
+        Set<String> shapes = Sets.newHashSet();
+        //地形
+        Set<String> terrains = Sets.newHashSet();
+        //地势
+        Set<String> topographys = Sets.newHashSet();
+        //地质
+        Set<String> geologys = Sets.newHashSet();
+        //开发程度
+        Set<String> developmentLevels = Sets.newHashSet();
+        //综上所述
+        Set<String> inSummary = Sets.newHashSet();
         if (CollectionUtils.isNotEmpty(projectPhases)) {
             for (ProjectPhase projectPhaseScene : projectPhases) {
                 if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -3146,188 +3047,47 @@ public class GenerateBaseDataService {
                         if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
                             for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
                                 GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
-                                //行
-                                for (int j = 0; j < 8; j++) {
+                                if (generateBaseExamineService.getBasicApply().getId() != null && generateBaseExamineService.getPlanDetailsId() != null) {
                                     try {
-                                        switch (j) {
-                                            case 0:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //估价对象名称
-                                                            break;
-                                                        case 1:
-                                                            a_0_1.add(schemeJudgeObject.getName());
-                                                            break;
-                                                        case 4:
-                                                            a_0_4.add("备注");
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 1:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //"用途及级别"
-                                                            break;
-                                                        case 1:
-                                                            if (true) {
-                                                                StringBuilder stringBuilder = new StringBuilder(10);
-                                                                stringBuilder.append("土地类型:");
-                                                                stringBuilder.append(StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getLandUseTypeName()) ? generateBaseExamineService.getBasicEstateLandState().getLandUseTypeName() : errorStr);
-                                                                stringBuilder.append(";");
-                                                                stringBuilder.append("土地级别:");
-                                                                stringBuilder.append(StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getLandLevelName()) ? generateBaseExamineService.getBasicEstateLandState().getLandLevelName() : errorStr);
-                                                                a_1_1.add(stringBuilder.toString());
-                                                            }
-                                                            break;
-                                                        case 4:
-                                                            a_1_4.add(errorStr);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 2:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //"东至,南至,西至,北至"
-                                                            break;
-                                                        case 1:
-                                                            if (true) {
-                                                                StringBuilder stringBuilder = new StringBuilder(10);
-                                                                stringBuilder.append(StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getEastTo()) ? generateBaseExamineService.getBasicEstateLandState().getEastTo() : errorStr);
-                                                                stringBuilder.append(",");
-                                                                stringBuilder.append(StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getSouthTo()) ? generateBaseExamineService.getBasicEstateLandState().getSouthTo() : errorStr);
-                                                                stringBuilder.append(",");
-                                                                stringBuilder.append(StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getWestTo()) ? generateBaseExamineService.getBasicEstateLandState().getWestTo() : errorStr);
-                                                                stringBuilder.append(",");
-                                                                stringBuilder.append(StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getNorthTo()) ? generateBaseExamineService.getBasicEstateLandState().getNorthTo() : errorStr);
-                                                                stringBuilder.append(",");
-                                                                a_2_1.add(stringBuilder.toString());
-                                                            }
-                                                            break;
-                                                        case 4:
-                                                            a_2_4.add(errorStr);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 3:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //面积
-                                                            break;
-                                                        case 1:
-                                                            a_3_1.add(generateBaseExamineService.getBasicEstateLandState().getLandArea());
-                                                            break;
-                                                        case 4:
-                                                            a_3_4.add(errorStr);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 4:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //形状
-                                                            break;
-                                                        case 1:
-                                                            a_4_1.add(generateBaseExamineService.getBasicEstateLandState().getShapeStateName());
-                                                            break;
-                                                        case 4:
-                                                            a_4_4.add(generateBaseExamineService.getBasicEstateLandState().getShapeStateRemark());
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 5:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //地形、地势、工程地质
-                                                            break;
-                                                        case 1:
-                                                            if (true) {
-                                                                StringBuilder stringBuilder = new StringBuilder(128);
-                                                                stringBuilder.append("地形:");
-                                                                if (StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getPlanenessName())) {
-                                                                    stringBuilder.append(generateBaseExamineService.getBasicEstateLandState().getPlanenessName());
-                                                                } else {
-                                                                    stringBuilder.append(errorStr);
-                                                                }
-                                                                stringBuilder.append(";");
-                                                                stringBuilder.append("地势:");
-                                                                if (StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getTopographicTerrainName())) {
-                                                                    stringBuilder.append(generateBaseExamineService.getBasicEstateLandState().getTopographicTerrainName());
-                                                                } else {
-                                                                    stringBuilder.append(errorStr);
-                                                                }
-                                                                stringBuilder.append(";");
-                                                                stringBuilder.append("工程地质:");
-                                                                a_5_1.add(stringBuilder.toString());
-                                                            }
-                                                            break;
-                                                        case 4:
-                                                            a_5_4.add(errorStr);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 6:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //开发程度
-                                                            break;
-                                                        case 1:
-                                                            a_6_1.add(generateBaseExamineService.getBasicEstateLandState().getDevelopmentDegreeName());
-                                                            break;
-                                                        case 4:
-                                                            a_6_4.add(errorStr);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 7:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //其它
-                                                            break;
-                                                        case 1:
-                                                            a_7_1.add(errorStr);
-                                                            break;
-                                                        case 4:
-                                                            a_7_4.add(errorStr);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            default:
-                                                break;
+                                        //名称
+                                        names.add(generateBaseExamineService.getBasicEstateLandState().getName());
+                                        //"东至,南至,西至,北至"
+                                        if (true) {
+                                            StringBuilder stringBuilder = new StringBuilder(10);
+                                            stringBuilder.append(StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getEastTo()) ? generateBaseExamineService.getBasicEstateLandState().getEastTo() : errorStr);
+                                            stringBuilder.append(",");
+                                            stringBuilder.append(StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getSouthTo()) ? generateBaseExamineService.getBasicEstateLandState().getSouthTo() : errorStr);
+                                            stringBuilder.append(",");
+                                            stringBuilder.append(StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getWestTo()) ? generateBaseExamineService.getBasicEstateLandState().getWestTo() : errorStr);
+                                            stringBuilder.append(",");
+                                            stringBuilder.append(StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getNorthTo()) ? generateBaseExamineService.getBasicEstateLandState().getNorthTo() : errorStr);
+                                            stringBuilder.append(",");
+                                            allDirections.add(stringBuilder.toString());
                                         }
-                                    } catch (Exception e1) {
-                                        //允许,因为数据来源不一
+                                        //土地面积
+                                        landArea.add(generateBaseExamineService.getBasicEstateLandState().getLandArea());
+                                        //用途
+                                        if (true) {
+                                            StringBuilder stringBuilder = new StringBuilder(10);
+                                            stringBuilder.append("土地类型:");
+                                            stringBuilder.append(StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getLandUseTypeName()) ? generateBaseExamineService.getBasicEstateLandState().getLandUseTypeName() : errorStr);
+                                            stringBuilder.append(";");
+                                            stringBuilder.append("土地级别:");
+                                            stringBuilder.append(StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getLandLevelName()) ? generateBaseExamineService.getBasicEstateLandState().getLandLevelName() : errorStr);
+                                            purposes.add(stringBuilder.toString());
+                                        }
+                                        //形状
+                                        shapes.add(generateBaseExamineService.getBasicEstateLandState().getShapeStateName());
+                                        //地形
+                                        terrains.add(generateBaseExamineService.getBasicEstateLandState().getPlanenessName());
+                                        //地势
+                                        topographys.add(generateBaseExamineService.getBasicEstateLandState().getTopographicTerrainName());
+                                        //地质
+                                        geologys.add("暂无");
+                                        //开发程度
+                                        developmentLevels.add(generateBaseExamineService.getBasicEstateLandState().getDevelopmentDegreeName());
+                                        inSummary.add("暂无");
+                                    } catch (Exception e) {
                                     }
                                 }
                             }
@@ -3336,203 +3096,43 @@ public class GenerateBaseDataService {
                 }
             }
         }
-
         builder.writeln("估价土地实体状况表");
-        Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
-        Table table = builder.startTable();
-        //行
-        for (int j = 0; j < 8; j++) {
+        for (int j = 0; j < 10; j++) {
             switch (j) {
                 case 0:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("估价对象名称");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_0_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_0_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
+                    builder.writeln(String.format("%d%s%s", (j + 1), "名称:", toSetString(names)));
                     break;
                 case 1:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("用途及级别");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_1_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_1_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
+                    builder.writeln(String.format("%d%s%s", (j + 1), "东至,南至,西至,北至:", toSetString(allDirections)));
                     break;
                 case 2:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("东至,南至,西至,北至");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_2_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_2_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
+                    builder.writeln(String.format("%d%s%s", (j + 1), "土地面积:", toSetString(landArea)));
                     break;
                 case 3:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("面积");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_3_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_3_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
+                    builder.writeln(String.format("%d%s%s", (j + 1), "用途:", toSetString(purposes)));
                     break;
                 case 4:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("形状");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_4_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_4_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
+                    builder.writeln(String.format("%d%s%s", (j + 1), "形状:", toSetString(shapes)));
                     break;
                 case 5:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("地形、地势、工程地质");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_5_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_5_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
+                    builder.writeln(String.format("%d%s%s", (j + 1), "地形:", toSetString(terrains)));
                     break;
                 case 6:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("开发程度");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_6_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_6_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
+                    builder.writeln(String.format("%d%s%s", (j + 1), "地势:", toSetString(topographys)));
                     break;
                 case 7:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("其它");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_7_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_7_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
+                    builder.writeln(String.format("%d%s%s", (j + 1), "地质:", toSetString(geologys)));
+                    break;
+                case 8:
+                    builder.writeln(String.format("%d%s%s", (j + 1), "开发程度:", toSetString(developmentLevels)));
+                    break;
+                case 9:
+                    builder.writeln(String.format("%s%s", "综上所述:", toSetString(inSummary)));
                     break;
                 default:
                     break;
             }
-            mergeCellModelList.add(new MergeCellModel(j, 1, j, 3));
         }
-        if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
-            for (MergeCellModel mergeCellModel : mergeCellModelList) {
-                Cell cellStartRange = table.getRows().get(mergeCellModel.getStartRowIndex()).getCells().get(mergeCellModel.getStartColumnIndex());
-                Cell cellEndRange = table.getRows().get(mergeCellModel.getEndRowIndex()).getCells().get(mergeCellModel.getEndColumnIndex());
-                AsposeUtils.mergeCells(cellStartRange, cellEndRange, table);
-            }
-        }
-        builder.endTable();
-        builder.writeln("");
         doc.save(localPath);
         this.judgeObjectLandStateSheet = localPath;
         return judgeObjectLandStateSheet;
@@ -3547,59 +3147,44 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        List<ProjectPhaseVo> projectPhaseVos = projectPhaseService.queryProjectPhaseByCategory(getProjectInfo().getProjectTypeId(),
-                getProjectInfo().getProjectCategoryId(), null);
-        List<ProjectPhase> projectPhases = Lists.newArrayList();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(projectPhaseVos)) {
-            projectPhaseVos.parallelStream().filter(projectPhaseVo -> {
-                if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
-                    return true;
-                }
-                if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
-                    return true;
-                }
-                return false;
-            }).forEach(projectPhaseVo -> {
-                projectPhases.add(projectPhaseVo);
-            });
-        }
-        Set<String> a_0_1 = Sets.newHashSet();
-        Set<String> a_0_4 = Sets.newHashSet();
-        Set<String> a_1_1 = Sets.newHashSet();
-        Set<String> a_1_4 = Sets.newHashSet();
-        Set<String> a_2_1 = Sets.newHashSet();
-        Set<String> a_2_4 = Sets.newHashSet();
-        Set<String> a_3_1 = Sets.newHashSet();
-        Set<String> a_3_4 = Sets.newHashSet();
-        Set<String> a_4_1 = Sets.newHashSet();
-        Set<String> a_4_4 = Sets.newHashSet();
-        Set<String> a_5_1 = Sets.newHashSet();
-        Set<String> a_5_4 = Sets.newHashSet();
-        Set<String> a_6_1 = Sets.newHashSet();
-        Set<String> a_6_4 = Sets.newHashSet();
-        Set<String> a_7_1 = Sets.newHashSet();
-        Set<String> a_7_4 = Sets.newHashSet();
-        Set<String> a_8_1 = Sets.newHashSet();
-        Set<String> a_8_4 = Sets.newHashSet();
-        Set<String> a_9_1 = Sets.newHashSet();
-        Set<String> a_9_4 = Sets.newHashSet();
-        Set<String> a_10_1 = Sets.newHashSet();
-        Set<String> a_10_4 = Sets.newHashSet();
-        Set<String> a_11_1 = Sets.newHashSet();
-        Set<String> a_11_4 = Sets.newHashSet();
-        Set<String> a_12_1 = Sets.newHashSet();
-        Set<String> a_12_4 = Sets.newHashSet();
-        Set<String> a_13_1 = Sets.newHashSet();
-        Set<String> a_13_4 = Sets.newHashSet();
-        Set<String> a_14_1 = Sets.newHashSet();
-        Set<String> a_14_4 = Sets.newHashSet();
-        Set<String> a_15_1 = Sets.newHashSet();
-        Set<String> a_15_4 = Sets.newHashSet();
-        Set<String> a_16_1 = Sets.newHashSet();
-        Set<String> a_16_4 = Sets.newHashSet();
-        Set<String> a_17_1 = Sets.newHashSet();
-        Set<String> a_17_4 = Sets.newHashSet();
+        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
+                getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
+                .stream()
+                .filter(projectPhaseVo -> {
+                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
+                        return true;
+                    }
+                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
+                        return true;
+                    }
+                    return false;
+                }).collect(Collectors.toList());
+        //楼盘名称
+        Set<String> estateName = Sets.newHashSet();
+        //建筑结构
+        Set<String> buildingStructures = Sets.newHashSet();
+        //建筑规模
+        Set<String> buildingScale = Sets.newHashSet();
+        //设施设备
+        Set<String> facilitiesEquipment = Sets.newHashSet();
+        //装饰装修
+        Set<String> decoration = Sets.newHashSet();
+        //层高
+        Set<String> storeyHeight = Sets.newHashSet();
+        //空间布局
+        Set<String> spatialDistributions = Sets.newHashSet();
+        //建筑功能
+        Set<String> buildingFunctions = Sets.newHashSet();
+        //工程质量
+        Set<String> constructionQuality = Sets.newHashSet();
+        //外观
+        Set<String> appearance = Sets.newHashSet();
+        //新旧程度及维护使用情况
+        Set<String> maintenance = Sets.newHashSet();
+        //物业管理
+        Set<String> estateManagement = Sets.newHashSet();
+        //建筑实体分析
+        Set<String> architecturalEntityAnalysis = Sets.newHashSet();
         if (CollectionUtils.isNotEmpty(projectPhases)) {
             for (ProjectPhase projectPhaseScene : projectPhases) {
                 if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -3613,438 +3198,163 @@ public class GenerateBaseDataService {
                         if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
                             for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
                                 GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
-                                //行
-                                for (int j = 0; j < 18; j++) {
-                                    try {
-                                        switch (j) {
-                                            case 0:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //估价对象名称
-                                                            break;
-                                                        case 1:
-                                                            a_0_1.add(schemeJudgeObject.getName());
-                                                            break;
-                                                        case 4:
-                                                            a_0_4.add("备注");
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 1:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //建筑规模
-                                                            break;
-                                                        case 1:
-                                                            a_1_1.add(errorStr);
-                                                            break;
-                                                        case 4:
-                                                            a_1_4.add(errorStr);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 2:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //建筑功能
-                                                            break;
-                                                        case 1:
-                                                            if (true) {
-                                                                StringBuilder stringBuilder = new StringBuilder(128);
-                                                                List<BasicBuildingFunction> functionList = generateBaseExamineService.getBasicBuildingFunctionList();
-                                                                if (CollectionUtils.isNotEmpty(functionList)) {
-                                                                    functionList.parallelStream().forEach(basicBuildingFunction -> {
-                                                                        stringBuilder.append(baseDataDicService.getNameById(basicBuildingFunction.getType()));
-                                                                        stringBuilder.append(",");
-                                                                        stringBuilder.append(baseDataDicService.getNameById(basicBuildingFunction.getDecorationPart()));
-                                                                    });
-                                                                }
-                                                                a_2_1.add(stringBuilder.toString());
-                                                            }
-                                                            break;
-                                                        case 4:
-                                                            a_2_4.add(errorStr);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 3:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //结构
-                                                            break;
-                                                        case 1:
-                                                            String temp = baseDataDicService.getNameById(generateBaseExamineService.getBasicBuilding().getBuildingStructureCategory());
-                                                            a_3_1.add(temp);
-                                                            break;
-                                                        case 4:
-                                                            a_3_4.add(errorStr);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 4:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //层数
-                                                            break;
-                                                        case 1:
-                                                            a_4_1.add(String.valueOf(generateBaseExamineService.getBasicBuilding().getFloorCount()));
-                                                            break;
-                                                        case 4:
-                                                            a_4_4.add(errorStr);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 5:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //外观
-                                                            break;
-                                                        case 1:
-                                                            if (true) {
-                                                                StringBuilder stringBuilder = new StringBuilder(128);
-                                                                List<BasicBuildingOutfit> outfitList = generateBaseExamineService.getBasicBuildingOutfitList();
-                                                                if (CollectionUtils.isNotEmpty(outfitList)) {
-                                                                    for (BasicBuildingOutfit outfit : outfitList) {
-                                                                        stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(outfit.getDecorationPart()) ? errorStr : String.format("装修部位:%s；", outfit.getDecorationPart()));
-                                                                        stringBuilder.append(outfit.getDecoratingMaterial() == null ? errorStr : String.format("装修材料:%s；", baseDataDicService.getNameById(outfit.getDecoratingMaterial())));
-                                                                        stringBuilder.append(outfit.getConstructionTechnology() == null ? errorStr : String.format("施工工艺:%s；", baseDataDicService.getNameById(outfit.getConstructionTechnology())));
-                                                                        stringBuilder.append(outfit.getMaterialPrice() == null ? errorStr : String.format("材料价格区间:%s；", baseDataDicService.getNameById(outfit.getMaterialPrice())));
-                                                                    }
-                                                                }
-                                                                a_5_1.add(stringBuilder.toString());
-                                                            }
-                                                            break;
-                                                        case 4:
-                                                            a_5_4.add(errorStr);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 6:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //室内净高或层高
-                                                            break;
-                                                        case 1:
-                                                            if (true) {
-                                                                StringBuilder stringBuilder = new StringBuilder(128);
-                                                                stringBuilder.append(String.valueOf(generateBaseExamineService.getBasicBuilding().getFloorHeight() == null ? errorStr : generateBaseExamineService.getBasicBuilding().getFloorHeight()));
-                                                                stringBuilder.append(",");
-                                                                stringBuilder.append(String.valueOf(generateBaseExamineService.getBasicBuilding().getNetHeight() == null ? errorStr : generateBaseExamineService.getBasicBuilding().getNetHeight()));
-                                                                a_6_1.add(stringBuilder.toString());
-                                                            }
-                                                            break;
-                                                        case 4:
-                                                            a_6_4.add(errorStr);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 7:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //装饰装修
-                                                            break;
-                                                        case 1:
-                                                            if (true) {
-                                                                StringBuilder stringBuilder = new StringBuilder();
-                                                                List<BasicUnitDecorate> decorateList = generateBaseExamineService.getBasicUnitDecorateList();
-                                                                if (CollectionUtils.isNotEmpty(decorateList)) {
-                                                                    for (BasicUnitDecorate unitDecorate : decorateList) {
-                                                                        stringBuilder.append(unitDecorate.getDecorationPart() == null ? errorStr : String.format("装修部位:%s；", baseDataDicService.getNameById(unitDecorate.getDecorationPart())));
-                                                                        stringBuilder.append(unitDecorate.getDecoratingMaterial() == null ? errorStr : String.format("装修材料:%s；", baseDataDicService.getNameById(unitDecorate.getDecoratingMaterial())));
-                                                                        stringBuilder.append(unitDecorate.getConstructionTechnology() == null ? errorStr : String.format("施工工艺:%s；", baseDataDicService.getNameById(unitDecorate.getConstructionTechnology())));
-                                                                        stringBuilder.append(unitDecorate.getMaterialPriceRange() == null ? errorStr : String.format("材料价格区间:%s；", baseDataDicService.getNameById(unitDecorate.getMaterialPriceRange())));
-                                                                    }
-                                                                }
-                                                                a_7_1.add(stringBuilder.toString());
-                                                            }
-                                                            break;
-                                                        case 4:
-                                                            a_7_4.add(errorStr);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 8:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //设施设备
-                                                            break;
-                                                        case 1:
-                                                            if (true) {
-                                                                StringBuilder stringBuilder = new StringBuilder();
-                                                                List<BasicHouseEquipment> equipmentList = generateBaseExamineService.getBasicHouseEquipmentList();
-                                                                if (CollectionUtils.isNotEmpty(equipmentList)) {
-                                                                    stringBuilder = new StringBuilder();
-                                                                    for (BasicHouseEquipment examineHouseEquipment : equipmentList) {
-                                                                        if (org.apache.commons.lang.StringUtils.equals(examineHouseEquipment.getType(), ExamineHouseEquipmentTypeEnum.houseNewWind.getKey()) ||
-                                                                                org.apache.commons.lang.StringUtils.equals(examineHouseEquipment.getType(), ExamineHouseEquipmentTypeEnum.houseAirConditioner.getKey())) {
-                                                                            stringBuilder.append(baseDataDicService.getNameById(examineHouseEquipment.getCategory()));
-                                                                            stringBuilder.append(examineHouseEquipment.getEquipment()).append(examineHouseEquipment.getEquipmentPrice()).append("；");
-                                                                        }
-                                                                    }
-                                                                }
-                                                                a_8_1.add(stringBuilder.toString());
-                                                            }
-                                                            break;
-                                                        case 4:
-                                                            a_8_4.add(errorStr);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 9:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //空间布局
-                                                            break;
-                                                        case 1:
-                                                            if (true) {
-                                                                StringBuilder stringBuilder = new StringBuilder();
-                                                                BaseDataDic practicalUseDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_HOUSE_PRACTICAL_USE_HOUSE);
-                                                                if (practicalUseDic != null) {
-                                                                    String huxing = org.apache.commons.lang.StringUtils.isBlank(generateBaseExamineService.getBasicHouse().getNewHuxingName()) ? generateBaseExamineService.getBasicHouse().getHuxingName() : generateBaseExamineService.getBasicHouse().getNewHuxingName();
-                                                                    stringBuilder.append(huxing).append("；");
-                                                                    if (!practicalUseDic.getId().equals(generateBaseExamineService.getBasicHouse().getPracticalUse())) {
-                                                                        List<BasicHouseRoom> roomList = generateBaseExamineService.getBasicHouseRoomList();
-                                                                        if (CollectionUtils.isNotEmpty(roomList)) {
-                                                                            for (BasicHouseRoom room : roomList) {
-                                                                                stringBuilder.append(baseDataDicService.getNameById(room.getRoomType()))
-                                                                                        .append(String.format("开间:%s米；", room.getOpening())).append(String.format("进深:%s米；", room.getDepth())).append("；");
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                                a_9_1.add(stringBuilder.toString());
-                                                            }
-                                                            break;
-                                                        case 4:
-                                                            a_9_4.add(errorStr);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 10:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //竣工日期和设计使用年限
-                                                            break;
-                                                        case 1:
-                                                            a_10_1.add(DateUtils.format(generateBaseExamineService.getBasicBuilding().getBeCompletedTime()));
-                                                            break;
-                                                        case 4:
-                                                            a_10_4.add(errorStr);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 11:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //维护保养和完损状况
-                                                            break;
-                                                        case 1:
-                                                            if (true) {
-                                                                StringBuilder stringBuilder = new StringBuilder();
-                                                                List<BasicUnitElevator> elevatorList = generateBaseExamineService.getBasicUnitElevatorList();
-                                                                if (CollectionUtils.isNotEmpty(elevatorList)) {
-                                                                    for (BasicUnitElevator elevator : elevatorList) {
-                                                                        stringBuilder.append(elevator.getMaintenance() == null ? errorStr : String.format("电梯维护情况:%s；", baseDataDicService.getNameById(elevator.getMaintenance())));
-                                                                        stringBuilder.append(elevator.getType() == null ? errorStr : String.format("电梯类型:%s；", baseDataDicService.getNameById(elevator.getType())));
-                                                                        stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(elevator.getBrand()) ? errorStr : String.format("电梯品牌:%s；", elevator.getBrand()));
-                                                                        stringBuilder.append(elevator.getNumber() == null ? errorStr : String.format("电梯数量:%s；", elevator.getNumber()));
-                                                                        stringBuilder.append(elevator.getQuasiLoadNumber() == null ? errorStr : String.format("准载人数:%s；", elevator.getQuasiLoadNumber()));
-                                                                        stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(elevator.getQuasiLoadWeight()) ? "" : String.format("准载重量:%s；", elevator.getQuasiLoadWeight()));
-                                                                        stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(elevator.getRunningSpeed()) ? "" : String.format("运行速度:%s；", elevator.getRunningSpeed()));
-                                                                    }
-                                                                }
-                                                                stringBuilder.append("\r\n");
-                                                                List<BasicHouseCorollaryEquipment> corollaryEquipmentList = generateBaseExamineService.getBasicHouseCorollaryEquipmentList();
-                                                                if (CollectionUtils.isNotEmpty(corollaryEquipmentList)) {
-                                                                    for (BasicHouseCorollaryEquipment equipment : corollaryEquipmentList) {
-                                                                        stringBuilder.append(equipment.getType() == null ? errorStr : String.format("类型:%s；", baseDataDicService.getNameById(equipment.getType())));
-                                                                        stringBuilder.append(equipment.getCategory() == null ? errorStr : String.format("类别:%s；", baseDataDicService.getNameById(equipment.getCategory())));
-                                                                        stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(equipment.getName()) ? errorStr : String.format("名称:%s；", equipment.getName()));
-                                                                        stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(equipment.getParameterIndex()) ? errorStr : String.format("参数指标:%s；", equipment.getParameterIndex()));
-                                                                        stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(equipment.getMaintenanceStatus()) ? errorStr : String.format("维护状况:%s；", equipment.getMaintenanceStatus()));
-                                                                        stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(equipment.getEquipmentUse()) ? errorStr : String.format("设备用途:%s；", equipment.getEquipmentUse()));
-                                                                        stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(equipment.getPrice()) ? errorStr : String.format("价格:%s；", equipment.getPrice()));
-                                                                    }
-                                                                }
-                                                                a_11_1.add(stringBuilder.toString());
-                                                            }
-                                                            break;
-                                                        case 4:
-                                                            a_11_4.add(errorStr);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 12:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //工程质量
-                                                            break;
-                                                        case 1:
-                                                            a_12_1.add(errorStr);
-                                                            break;
-                                                        case 4:
-                                                            a_12_4.add(errorStr);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 13:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //日照、采光、通风、保温、隔热、隔声、防水
-                                                            break;
-                                                        case 1:
-                                                            if (true) {
-                                                                StringBuilder stringBuilder = new StringBuilder();
-                                                                List<BasicHouseRoom> roomList = generateBaseExamineService.getBasicHouseRoomList();
-                                                                List<BasicBuildingFunction> functionList = generateBaseExamineService.getBasicBuildingFunctionList();
-                                                                if (CollectionUtils.isNotEmpty(roomList)) {
-                                                                    for (BasicHouseRoom room : roomList) {
-                                                                        //日照
-                                                                        stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(room.getSunshine()) ? "" : String.format("%s:%s；", baseDataDicService.getNameById(room.getRoomType()), room.getSunshine()));
-                                                                        //采光
-                                                                        stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(room.getLighting()) ? "" : String.format("%s:%s；", baseDataDicService.getNameById(room.getRoomType()), room.getLighting()));
-                                                                        //通风
-                                                                        stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(room.getAeration()) ? "" : String.format("%s:%s；", baseDataDicService.getNameById(room.getRoomType()), room.getAeration()));
-                                                                        //隔音
-                                                                        stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(room.getSoundInsulation()) ? "" : String.format("%s:%s；", baseDataDicService.getNameById(room.getRoomType()), room.getSoundInsulation()));
-                                                                    }
-                                                                    //保温
-                                                                    if (CollectionUtils.isNotEmpty(functionList)) {
-                                                                        BaseDataDic heatInsulationDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_BUILDING_FUNCTION_TYPE_HEAT_INSULATION);
-                                                                        generateBaseExamineService.getCommonBuildingFunction(functionList, stringBuilder, heatInsulationDic);
-                                                                    }
-                                                                    //隔热
-                                                                    if (CollectionUtils.isNotEmpty(functionList)) {
-                                                                        BaseDataDic heatInsulationDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_BUILDING_FUNCTION_TYPE_HEAT_INSULATION);
-                                                                        generateBaseExamineService.getCommonBuildingFunction(functionList, stringBuilder, heatInsulationDic);
-                                                                    }
-                                                                    //防水
-                                                                    if (CollectionUtils.isNotEmpty(functionList)) {
-                                                                        BaseDataDic waterproofDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_BUILDING_FUNCTION_TYPE_WATERPROOF);
-                                                                        generateBaseExamineService.getCommonBuildingFunction(functionList, stringBuilder, waterproofDic);
-                                                                    }
-                                                                }
-                                                                a_13_1.add(stringBuilder.toString());
-                                                            }
-                                                            break;
-                                                        case 4:
-                                                            a_13_4.add(errorStr);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 14:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //其它
-                                                            break;
-                                                        case 1:
-                                                            a_14_1.add(errorStr);
-                                                            break;
-                                                        case 4:
-                                                            a_14_4.add(errorStr);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 15:
-                                                for (int k = 0; k < 5; k++) {
-                                                    a_15_1.add(errorStr);
-                                                    a_15_4.add(errorStr);
-                                                }
-                                                break;
-                                            case 16:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //委估对象序号
-                                                            break;
-                                                        case 1:
-                                                            a_16_1.add(schemeJudgeObject.getNumber());
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            case 17:
-                                                for (int k = 0; k < 5; k++) {
-                                                    switch (k) {
-                                                        case 0:
-                                                            //建筑实体分析
-                                                            break;
-                                                        case 1:
-                                                            a_17_1.add("综上所述，影响估价对象商业用房地产价值的实体状况中，其建筑物较新，相关配套设施齐全，维护保养较好，商铺开间、进深比一般，对估价对象商业用房地产价值的保值有积极的影响。");
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            default:
-                                                break;
-                                        }
-                                    } catch (Exception e1) {
-                                        //允许,因为数据来源不一
+                                if (generateBaseExamineService.getBasicApply().getId() != null && generateBaseExamineService.getBasicApply().getPlanDetailsId() != null) {
+                                    //楼盘名称
+                                    if (generateBaseExamineService.getEstate().getId() != null) {
+                                        estateName.add(generateBaseExamineService.getEstate().getName());
                                     }
+                                    //建筑结构
+                                    buildingStructures.add(baseDataDicService.getNameById(generateBaseExamineService.getBasicBuilding().getBuildingStructureCategory()));
+                                    //建筑规模
+                                    buildingScale.add("暂无");
+                                    //设施设备
+                                    if (true) {
+                                        StringBuilder stringBuilder = new StringBuilder();
+                                        List<BasicHouseEquipment> equipmentList = generateBaseExamineService.getBasicHouseEquipmentList();
+                                        if (CollectionUtils.isNotEmpty(equipmentList)) {
+                                            stringBuilder = new StringBuilder();
+                                            for (BasicHouseEquipment examineHouseEquipment : equipmentList) {
+                                                if (org.apache.commons.lang.StringUtils.equals(examineHouseEquipment.getType(), ExamineHouseEquipmentTypeEnum.houseNewWind.getKey()) ||
+                                                        org.apache.commons.lang.StringUtils.equals(examineHouseEquipment.getType(), ExamineHouseEquipmentTypeEnum.houseAirConditioner.getKey())) {
+                                                    stringBuilder.append(baseDataDicService.getNameById(examineHouseEquipment.getCategory()));
+                                                    stringBuilder.append(examineHouseEquipment.getEquipment()).append(examineHouseEquipment.getEquipmentPrice()).append("；");
+                                                }
+                                            }
+                                        }
+                                        facilitiesEquipment.add(stringBuilder.toString());
+                                    }
+                                    //装饰装修
+                                    if (true) {
+                                        StringBuilder stringBuilder = new StringBuilder();
+                                        List<BasicUnitDecorate> decorateList = generateBaseExamineService.getBasicUnitDecorateList();
+                                        if (CollectionUtils.isNotEmpty(decorateList)) {
+                                            for (BasicUnitDecorate unitDecorate : decorateList) {
+                                                stringBuilder.append(unitDecorate.getDecorationPart() == null ? errorStr : String.format("装修部位:%s；", baseDataDicService.getNameById(unitDecorate.getDecorationPart())));
+                                                stringBuilder.append(unitDecorate.getDecoratingMaterial() == null ? errorStr : String.format("装修材料:%s；", baseDataDicService.getNameById(unitDecorate.getDecoratingMaterial())));
+                                                stringBuilder.append(unitDecorate.getConstructionTechnology() == null ? errorStr : String.format("施工工艺:%s；", baseDataDicService.getNameById(unitDecorate.getConstructionTechnology())));
+                                                stringBuilder.append(unitDecorate.getMaterialPriceRange() == null ? errorStr : String.format("材料价格区间:%s；", baseDataDicService.getNameById(unitDecorate.getMaterialPriceRange())));
+                                            }
+                                        }
+                                        stringBuilder.append("室内净高和层高");
+                                        stringBuilder.append(String.valueOf(generateBaseExamineService.getBasicBuilding().getFloorHeight() == null ? errorStr : generateBaseExamineService.getBasicBuilding().getFloorHeight()));
+                                        stringBuilder.append(",");
+                                        stringBuilder.append(String.valueOf(generateBaseExamineService.getBasicBuilding().getNetHeight() == null ? errorStr : generateBaseExamineService.getBasicBuilding().getNetHeight()));
+                                        decoration.add(stringBuilder.toString());
+                                    }
+                                    //层高
+                                    if (generateBaseExamineService.getBasicBuilding().getId() != null && generateBaseExamineService.getBasicBuilding() != null) {
+                                        storeyHeight.add(generateBaseExamineService.getBasicBuilding().getFloorHeight().toString());
+                                    }
+                                    //空间布局
+                                    if (true) {
+                                        StringBuilder stringBuilder = new StringBuilder();
+                                        BaseDataDic practicalUseDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_HOUSE_PRACTICAL_USE_HOUSE);
+                                        if (practicalUseDic != null) {
+                                            String huxing = org.apache.commons.lang.StringUtils.isBlank(generateBaseExamineService.getBasicHouse().getNewHuxingName()) ? generateBaseExamineService.getBasicHouse().getHuxingName() : generateBaseExamineService.getBasicHouse().getNewHuxingName();
+                                            stringBuilder.append(huxing).append("；");
+                                            if (!practicalUseDic.getId().equals(generateBaseExamineService.getBasicHouse().getPracticalUse())) {
+                                                List<BasicHouseRoom> roomList = generateBaseExamineService.getBasicHouseRoomList();
+                                                if (CollectionUtils.isNotEmpty(roomList)) {
+                                                    for (BasicHouseRoom room : roomList) {
+                                                        stringBuilder.append(baseDataDicService.getNameById(room.getRoomType()))
+                                                                .append(String.format("开间:%s米；", room.getOpening())).append(String.format("进深:%s米；", room.getDepth())).append("；");
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        spatialDistributions.add(stringBuilder.toString());
+                                    }
+                                    //建筑功能-防水、保温、隔热、隔声、通风、采光、日照
+                                    if (true) {
+                                        StringBuilder stringBuilder = new StringBuilder(128);
+                                        List<BasicBuildingFunction> functionList = generateBaseExamineService.getBasicBuildingFunctionList();
+                                        if (CollectionUtils.isNotEmpty(functionList)) {
+                                            functionList.stream().forEach(basicBuildingFunction -> {
+                                                stringBuilder.append(baseDataDicService.getNameById(basicBuildingFunction.getType()));
+                                                stringBuilder.append(",");
+                                                stringBuilder.append(baseDataDicService.getNameById(basicBuildingFunction.getDecorationPart()));
+                                            });
+                                        }
+                                        List<BasicHouseRoom> roomList = generateBaseExamineService.getBasicHouseRoomList();
+                                        if (CollectionUtils.isNotEmpty(roomList)) {
+                                            for (BasicHouseRoom room : roomList) {
+                                                //日照
+                                                stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(room.getSunshine()) ? "" : String.format("%s:%s；", baseDataDicService.getNameById(room.getRoomType()), room.getSunshine()));
+                                                //采光
+                                                stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(room.getLighting()) ? "" : String.format("%s:%s；", baseDataDicService.getNameById(room.getRoomType()), room.getLighting()));
+                                                //通风
+                                                stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(room.getAeration()) ? "" : String.format("%s:%s；", baseDataDicService.getNameById(room.getRoomType()), room.getAeration()));
+                                                //隔音
+                                                stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(room.getSoundInsulation()) ? "" : String.format("%s:%s；", baseDataDicService.getNameById(room.getRoomType()), room.getSoundInsulation()));
+                                            }
+                                            //保温
+                                            if (CollectionUtils.isNotEmpty(functionList)) {
+                                                BaseDataDic heatInsulationDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_BUILDING_FUNCTION_TYPE_HEAT_INSULATION);
+                                                generateBaseExamineService.getCommonBuildingFunction(functionList, stringBuilder, heatInsulationDic);
+                                            }
+                                            //隔热
+                                            if (CollectionUtils.isNotEmpty(functionList)) {
+                                                BaseDataDic heatInsulationDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_BUILDING_FUNCTION_TYPE_HEAT_INSULATION);
+                                                generateBaseExamineService.getCommonBuildingFunction(functionList, stringBuilder, heatInsulationDic);
+                                            }
+                                            //防水
+                                            if (CollectionUtils.isNotEmpty(functionList)) {
+                                                BaseDataDic waterproofDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_BUILDING_FUNCTION_TYPE_WATERPROOF);
+                                                generateBaseExamineService.getCommonBuildingFunction(functionList, stringBuilder, waterproofDic);
+                                            }
+                                        }
+                                        buildingFunctions.add(stringBuilder.toString());
+                                    }
+                                    //工程质量
+                                    constructionQuality.add("暂无");
+                                    //外观
+                                    if (true) {
+                                        StringBuilder stringBuilder = new StringBuilder(128);
+                                        List<BasicBuildingOutfit> outfitList = generateBaseExamineService.getBasicBuildingOutfitList();
+                                        if (CollectionUtils.isNotEmpty(outfitList)) {
+                                            for (BasicBuildingOutfit outfit : outfitList) {
+                                                stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(outfit.getDecorationPart()) ? errorStr : String.format("装修部位:%s；", outfit.getDecorationPart()));
+                                                stringBuilder.append(outfit.getDecoratingMaterial() == null ? errorStr : String.format("装修材料:%s；", baseDataDicService.getNameById(outfit.getDecoratingMaterial())));
+                                                stringBuilder.append(outfit.getConstructionTechnology() == null ? errorStr : String.format("施工工艺:%s；", baseDataDicService.getNameById(outfit.getConstructionTechnology())));
+                                                stringBuilder.append(outfit.getMaterialPrice() == null ? errorStr : String.format("材料价格区间:%s；", baseDataDicService.getNameById(outfit.getMaterialPrice())));
+                                            }
+                                        }
+                                        appearance.add(stringBuilder.toString());
+                                    }
+                                    //新旧程度及维护使用情况
+                                    if (true) {
+                                        StringBuilder stringBuilder = new StringBuilder();
+                                        List<BasicUnitElevator> elevatorList = generateBaseExamineService.getBasicUnitElevatorList();
+                                        if (CollectionUtils.isNotEmpty(elevatorList)) {
+                                            for (BasicUnitElevator elevator : elevatorList) {
+                                                stringBuilder.append(elevator.getMaintenance() == null ? errorStr : String.format("电梯维护情况:%s；", baseDataDicService.getNameById(elevator.getMaintenance())));
+                                                stringBuilder.append(elevator.getType() == null ? errorStr : String.format("电梯类型:%s；", baseDataDicService.getNameById(elevator.getType())));
+                                                stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(elevator.getBrand()) ? errorStr : String.format("电梯品牌:%s；", elevator.getBrand()));
+                                                stringBuilder.append(elevator.getNumber() == null ? errorStr : String.format("电梯数量:%s；", elevator.getNumber()));
+                                                stringBuilder.append(elevator.getQuasiLoadNumber() == null ? errorStr : String.format("准载人数:%s；", elevator.getQuasiLoadNumber()));
+                                                stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(elevator.getQuasiLoadWeight()) ? "" : String.format("准载重量:%s；", elevator.getQuasiLoadWeight()));
+                                                stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(elevator.getRunningSpeed()) ? "" : String.format("运行速度:%s；", elevator.getRunningSpeed()));
+                                            }
+                                        }
+                                        stringBuilder.append("\r\n");
+                                        List<BasicHouseCorollaryEquipment> corollaryEquipmentList = generateBaseExamineService.getBasicHouseCorollaryEquipmentList();
+                                        if (CollectionUtils.isNotEmpty(corollaryEquipmentList)) {
+                                            for (BasicHouseCorollaryEquipment equipment : corollaryEquipmentList) {
+                                                stringBuilder.append(equipment.getType() == null ? errorStr : String.format("类型:%s；", baseDataDicService.getNameById(equipment.getType())));
+                                                stringBuilder.append(equipment.getCategory() == null ? errorStr : String.format("类别:%s；", baseDataDicService.getNameById(equipment.getCategory())));
+                                                stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(equipment.getName()) ? errorStr : String.format("名称:%s；", equipment.getName()));
+                                                stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(equipment.getParameterIndex()) ? errorStr : String.format("参数指标:%s；", equipment.getParameterIndex()));
+                                                stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(equipment.getMaintenanceStatus()) ? errorStr : String.format("维护状况:%s；", equipment.getMaintenanceStatus()));
+                                                stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(equipment.getEquipmentUse()) ? errorStr : String.format("设备用途:%s；", equipment.getEquipmentUse()));
+                                                stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(equipment.getPrice()) ? errorStr : String.format("价格:%s；", equipment.getPrice()));
+                                            }
+                                        }
+                                        maintenance.add(stringBuilder.toString());
+                                    }
+                                    //物业管理
+                                    estateManagement.add("较好");
+                                    //建筑实体分析
+                                    architecturalEntityAnalysis.add("暂无");
                                 }
                             }
                         }
@@ -4053,403 +3363,51 @@ public class GenerateBaseDataService {
             }
         }
         builder.writeln("估价对象建筑实体状况表");
-        Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
-        Table table = builder.startTable();
-        //行
-        for (int j = 0; j < 18; j++) {
+        for (int j = 0; j < 13; j++) {
             switch (j) {
                 case 0:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("估价对象名称");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_0_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_0_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
+                    builder.writeln(String.format("%d%s%s", (j + 1), "楼盘名称:", toSetString(estateName)));
                     break;
                 case 1:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("建筑规模");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_1_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_1_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
+                    builder.writeln(String.format("%d%s%s", (j + 1), "建筑结构:", toSetString(buildingStructures)));
                     break;
                 case 2:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("建筑功能");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_2_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_2_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
+                    builder.writeln(String.format("%d%s%s", (j + 1), "建筑规模:", toSetString(buildingScale)));
                     break;
                 case 3:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("结构");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_3_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_3_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
+                    builder.writeln(String.format("%d%s%s", (j + 1), "设施设备:", toSetString(buildingScale)));
                     break;
                 case 4:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("层数");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_4_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_4_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
+                    builder.writeln(String.format("%d%s%s", (j + 1), "装饰装修:", toSetString(decoration)));
                     break;
                 case 5:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("外观");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_5_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_5_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
+                    builder.writeln(String.format("%d%s%s", (j + 1), "层高:", toSetString(storeyHeight)));
                     break;
                 case 6:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("室内净高或层高");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_6_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_6_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
+                    builder.writeln(String.format("%d%s%s", (j + 1), "空间布局:", toSetString(spatialDistributions)));
                     break;
                 case 7:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("装饰装修");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_7_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_7_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
+                    builder.writeln(String.format("%d%s%s", (j + 1), "建筑功能:", toSetString(buildingFunctions)));
                     break;
                 case 8:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("设施设备");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_8_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_8_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
+                    builder.writeln(String.format("%d%s%s", (j + 1), "工程质量:", toSetString(constructionQuality)));
                     break;
                 case 9:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("空间布局");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_9_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_9_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
+                    builder.writeln(String.format("%d%s%s", (j + 1), "外观:", toSetString(appearance)));
                     break;
                 case 10:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("竣工日期和设计使用年限");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_10_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_10_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
+                    builder.writeln(String.format("%d%s%s", (j + 1), "新旧程度及维护使用情况:", toSetString(maintenance)));
                     break;
                 case 11:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("维护保养和完损状况");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_11_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_11_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
+                    builder.writeln(String.format("%d%s%s", (j + 1), "物业管理:", toSetString(estateManagement)));
                     break;
                 case 12:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("工程质量");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_12_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_12_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
-                    break;
-                case 13:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("日照、采光、通风、保温、隔热、隔声、防水");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_13_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_13_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
-                    break;
-                case 14:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("其它");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_14_1));
-                                break;
-                            case 4:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_14_4));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
-                    break;
-                case 15:
-                    for (int k = 0; k < 5; k++) {
-                        builder.insertCell();
-                    }
-                    builder.endRow();
-                    break;
-                case 16:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("委估对象序号");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_16_1));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
-                    break;
-                case 17:
-                    for (int k = 0; k < 5; k++) {
-                        switch (k) {
-                            case 0:
-                                builder.insertCell();
-                                builder.writeln("建筑实体分析");
-                                break;
-                            case 1:
-                                builder.insertCell();
-                                builder.writeln(toSetString(a_17_1));
-                                break;
-                            default:
-                                builder.insertCell();
-                                break;
-                        }
-                    }
-                    builder.endRow();
+                    builder.writeln(String.format("%d%s%s", (j + 1), "建筑实体分析:", toSetString(architecturalEntityAnalysis)));
                     break;
                 default:
                     break;
             }
-            if (j == 17 || j == 16) {
-                mergeCellModelList.add(new MergeCellModel(j, 1, j, 4));
-            } else if (j == 15) {
-                mergeCellModelList.add(new MergeCellModel(j, 0, j, 4));
-            } else {
-                mergeCellModelList.add(new MergeCellModel(j, 1, j, 3));
-            }
         }
-        if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
-            for (MergeCellModel mergeCellModel : mergeCellModelList) {
-                Cell cellStartRange = table.getRows().get(mergeCellModel.getStartRowIndex()).getCells().get(mergeCellModel.getStartColumnIndex());
-                Cell cellEndRange = table.getRows().get(mergeCellModel.getEndRowIndex()).getCells().get(mergeCellModel.getEndColumnIndex());
-                AsposeUtils.mergeCells(cellStartRange, cellEndRange, table);
-            }
-        }
-        builder.endTable();
-        builder.writeln("");
         doc.save(localPath);
         this.judgeBuildLandStateSheet = localPath;
         return judgeBuildLandStateSheet;
@@ -4973,7 +3931,7 @@ public class GenerateBaseDataService {
     /**
      * 注册房地产估价师注册证书复印件
      *
-     * @param id
+     * @param str
      * @return
      * @throws Exception
      */
@@ -5118,6 +4076,8 @@ public class GenerateBaseDataService {
         this.schemeLiquidationAnalysisService = SpringContextUtils.getBean(SchemeLiquidationAnalysisService.class);
         this.mdIncomeService = SpringContextUtils.getBean(MdIncomeService.class);
         this.mdMarketCompareService = SpringContextUtils.getBean(MdMarketCompareService.class);
+        this.declareRealtyHouseCertService = SpringContextUtils.getBean(DeclareRealtyHouseCertService.class);
+        this.declareRealtyRealEstateCertService = SpringContextUtils.getBean(DeclareRealtyRealEstateCertService.class);
     }
 
     private String toSetString(Set<String> stringSet) {
