@@ -11,18 +11,21 @@ import java.util.List;
  * @Description:报告模板字段
  */
 public enum BaseReportFieldCompareEnum {
-    COMPARABLE_BASIS("", "委估对象可比基础", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    LOCATION_CONDITION("", "估价对象区位状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    RIGHTS_INTERESTS("", "估价对象权益状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    ENTITY_CONDITION("", "估价对象实体状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    TRANSACTION_MODIFICATION("", "交易情况修正", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    DATE_REVISION("", "期日修正", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    MARKET_ADJUSTMENT("", "委估对象市场状况调整", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    LOCATION_QUOTIENT("", "估价对象区位指数表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    EQUITY_INDEX("", "估价对象权益指数表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    ENTITY_INDEX("", "估价对象实体指数表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    CALCULATION_RESULT("", "测算结果表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    HOUSEPRICE_INDEX("", "房价指数表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    COMPARABLE_BASIS("", "比较法委估对象可比基础", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    LOCATION_CONDITION("", "比较法估价对象区位状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    RIGHTS_INTERESTS("", "比较法估价对象权益状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    ENTITY_CONDITION("", "比较法估价对象实体状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+
+    TRANSACTION_MODIFICATION("", "比较法交易情况修正", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    DATE_REVISION("", "比较法期日修正", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+
+    MARKET_ADJUSTMENT("", "比较法委估对象市场状况调整", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    LOCATION_QUOTIENT("", "比较法估价对象区位指数表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    EQUITY_INDEX("", "比较法估价对象权益指数表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    ENTITY_INDEX("", "比较法估价对象实体指数表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    CALCULATION_RESULT("", "比较法测算结果表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+
+    HOUSEPRICE_INDEX("", "比较法房价指数表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     ;
     private String key;
 
