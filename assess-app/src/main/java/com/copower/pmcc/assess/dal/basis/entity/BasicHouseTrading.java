@@ -40,6 +40,8 @@ public class BasicHouseTrading {
 
     private Integer scopeProperty;
 
+    private String scopePropertyExplain;
+
     private String downPaymentRatio;
 
     private BigDecimal lendingRate;
@@ -204,6 +206,14 @@ public class BasicHouseTrading {
 
     public void setScopeProperty(Integer scopeProperty) {
         this.scopeProperty = scopeProperty;
+    }
+
+    public String getScopePropertyExplain() {
+        return scopePropertyExplain;
+    }
+
+    public void setScopePropertyExplain(String scopePropertyExplain) {
+        this.scopePropertyExplain = scopePropertyExplain == null ? null : scopePropertyExplain.trim();
     }
 
     public String getDownPaymentRatio() {

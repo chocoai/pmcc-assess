@@ -182,17 +182,17 @@
         <input type="hidden" name="id" value="${basicHouseTrading.id}">
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">交易情况</label>
-                <div class="col-sm-3">
-                    <select class="form-control transactionSituation" name="transactionSituation">
-                    </select>
-                </div>
-            </div>
-            <div class="x-valid">
                 <label class="col-sm-1 control-label">财产范围</label>
                 <div class="col-sm-3">
                     <select class="form-control search-select select2 scopeProperty" name="scopeProperty">
                     </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">财产范围说明</label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="财产范围说明" name="scopePropertyExplain" class="form-control"
+                           value="${basicHouseTrading.scopePropertyExplain}">
                 </div>
             </div>
             <div class="x-valid">
@@ -203,19 +203,28 @@
                 </div>
             </div>
         </div>
-        <div class="form-group" id="abnormalTransaction" style="display: none;">
+        <div class="form-group" >
             <div class="x-valid">
-                <label class="col-sm-1 control-label">说明事项类型</label>
+                <label class="col-sm-1 control-label">交易情况</label>
                 <div class="col-sm-3">
-                    <select class="form-control descriptionType" name="descriptionType">
+                    <select class="form-control transactionSituation" name="transactionSituation">
                     </select>
                 </div>
             </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">说明事项内容</label>
-                <div class="col-sm-3">
-                    <input type="text" placeholder="说明事项内容" name="descriptionContent" class="form-control"
-                           value="${basicHouseTrading.descriptionContent}">
+            <div id="abnormalTransaction" style="display: none;">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">说明事项类型</label>
+                    <div class="col-sm-3">
+                        <select class="form-control descriptionType" name="descriptionType">
+                        </select>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">说明事项内容</label>
+                    <div class="col-sm-3">
+                        <input type="text" placeholder="说明事项内容" name="descriptionContent" class="form-control"
+                               value="${basicHouseTrading.descriptionContent}">
+                    </div>
                 </div>
             </div>
         </div>

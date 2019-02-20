@@ -19,6 +19,7 @@
     <result column="transaction_situation" property="transactionSituation" jdbcType="INTEGER" />
     <result column="tax_burden" property="taxBurden" jdbcType="INTEGER" />
     <result column="scope_property" property="scopeProperty" jdbcType="INTEGER" />
+    <result column="scope_property_explain" property="scopePropertyExplain" jdbcType="VARCHAR" />
     <result column="down_payment_ratio" property="downPaymentRatio" jdbcType="VARCHAR" />
     <result column="lending_rate" property="lendingRate" jdbcType="DECIMAL" />
     <result column="loan_period" property="loanPeriod" jdbcType="INTEGER" />
@@ -93,8 +94,9 @@
     id, house_id, trading_time, trading_type, trading_unit_price, trading_total_price, 
     buyer_extra_tax, buyer_extra_fee, renting_extra_tax, renting_extra_fee, description_type, 
     description_content, installment_interest_rate, payment_method, transaction_situation, 
-    tax_burden, scope_property, down_payment_ratio, lending_rate, loan_period, deposit, 
-    information_type, information_category, name, phone, creator, gmt_created, gmt_modified
+    tax_burden, scope_property, scope_property_explain, down_payment_ratio, lending_rate, 
+    loan_period, deposit, information_type, information_category, name, phone, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingExample" >
     select
@@ -135,21 +137,21 @@
       buyer_extra_fee, renting_extra_tax, renting_extra_fee, 
       description_type, description_content, installment_interest_rate, 
       payment_method, transaction_situation, tax_burden, 
-      scope_property, down_payment_ratio, lending_rate, 
-      loan_period, deposit, information_type, 
-      information_category, name, phone, 
-      creator, gmt_created, gmt_modified
-      )
+      scope_property, scope_property_explain, down_payment_ratio, 
+      lending_rate, loan_period, deposit, 
+      information_type, information_category, name, 
+      phone, creator, gmt_created, 
+      gmt_modified)
     values (#{houseId,jdbcType=INTEGER}, #{tradingTime,jdbcType=TIMESTAMP}, #{tradingType,jdbcType=INTEGER}, 
       #{tradingUnitPrice,jdbcType=DECIMAL}, #{tradingTotalPrice,jdbcType=DECIMAL}, #{buyerExtraTax,jdbcType=VARCHAR}, 
       #{buyerExtraFee,jdbcType=VARCHAR}, #{rentingExtraTax,jdbcType=VARCHAR}, #{rentingExtraFee,jdbcType=VARCHAR}, 
       #{descriptionType,jdbcType=INTEGER}, #{descriptionContent,jdbcType=VARCHAR}, #{installmentInterestRate,jdbcType=VARCHAR}, 
       #{paymentMethod,jdbcType=INTEGER}, #{transactionSituation,jdbcType=INTEGER}, #{taxBurden,jdbcType=INTEGER}, 
-      #{scopeProperty,jdbcType=INTEGER}, #{downPaymentRatio,jdbcType=VARCHAR}, #{lendingRate,jdbcType=DECIMAL}, 
-      #{loanPeriod,jdbcType=INTEGER}, #{deposit,jdbcType=VARCHAR}, #{informationType,jdbcType=INTEGER}, 
-      #{informationCategory,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{scopeProperty,jdbcType=INTEGER}, #{scopePropertyExplain,jdbcType=VARCHAR}, #{downPaymentRatio,jdbcType=VARCHAR}, 
+      #{lendingRate,jdbcType=DECIMAL}, #{loanPeriod,jdbcType=INTEGER}, #{deposit,jdbcType=VARCHAR}, 
+      #{informationType,jdbcType=INTEGER}, #{informationCategory,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseTrading" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -204,6 +206,9 @@
       </if>
       <if test="scopeProperty != null" >
         scope_property,
+      </if>
+      <if test="scopePropertyExplain != null" >
+        scope_property_explain,
       </if>
       <if test="downPaymentRatio != null" >
         down_payment_ratio,
@@ -287,6 +292,9 @@
       </if>
       <if test="scopeProperty != null" >
         #{scopeProperty,jdbcType=INTEGER},
+      </if>
+      <if test="scopePropertyExplain != null" >
+        #{scopePropertyExplain,jdbcType=VARCHAR},
       </if>
       <if test="downPaymentRatio != null" >
         #{downPaymentRatio,jdbcType=VARCHAR},
@@ -383,6 +391,9 @@
       <if test="record.scopeProperty != null" >
         scope_property = #{record.scopeProperty,jdbcType=INTEGER},
       </if>
+      <if test="record.scopePropertyExplain != null" >
+        scope_property_explain = #{record.scopePropertyExplain,jdbcType=VARCHAR},
+      </if>
       <if test="record.downPaymentRatio != null" >
         down_payment_ratio = #{record.downPaymentRatio,jdbcType=VARCHAR},
       </if>
@@ -440,6 +451,7 @@
       transaction_situation = #{record.transactionSituation,jdbcType=INTEGER},
       tax_burden = #{record.taxBurden,jdbcType=INTEGER},
       scope_property = #{record.scopeProperty,jdbcType=INTEGER},
+      scope_property_explain = #{record.scopePropertyExplain,jdbcType=VARCHAR},
       down_payment_ratio = #{record.downPaymentRatio,jdbcType=VARCHAR},
       lending_rate = #{record.lendingRate,jdbcType=DECIMAL},
       loan_period = #{record.loanPeriod,jdbcType=INTEGER},
@@ -506,6 +518,9 @@
       <if test="scopeProperty != null" >
         scope_property = #{scopeProperty,jdbcType=INTEGER},
       </if>
+      <if test="scopePropertyExplain != null" >
+        scope_property_explain = #{scopePropertyExplain,jdbcType=VARCHAR},
+      </if>
       <if test="downPaymentRatio != null" >
         down_payment_ratio = #{downPaymentRatio,jdbcType=VARCHAR},
       </if>
@@ -560,6 +575,7 @@
       transaction_situation = #{transactionSituation,jdbcType=INTEGER},
       tax_burden = #{taxBurden,jdbcType=INTEGER},
       scope_property = #{scopeProperty,jdbcType=INTEGER},
+      scope_property_explain = #{scopePropertyExplain,jdbcType=VARCHAR},
       down_payment_ratio = #{downPaymentRatio,jdbcType=VARCHAR},
       lending_rate = #{lendingRate,jdbcType=DECIMAL},
       loan_period = #{loanPeriod,jdbcType=INTEGER},

@@ -895,6 +895,76 @@ public class SurveyAssetInventoryContentExample {
             return (Criteria) this;
         }
 
+        public Criteria andSureConsistentIsNull() {
+            addCriterion("sure_consistent is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSureConsistentIsNotNull() {
+            addCriterion("sure_consistent is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSureConsistentEqualTo(String value) {
+            addCriterion("sure_consistent =", value, "sureConsistent");
+            return (Criteria) this;
+        }
+
+        public Criteria andSureConsistentNotEqualTo(String value) {
+            addCriterion("sure_consistent <>", value, "sureConsistent");
+            return (Criteria) this;
+        }
+
+        public Criteria andSureConsistentGreaterThan(String value) {
+            addCriterion("sure_consistent >", value, "sureConsistent");
+            return (Criteria) this;
+        }
+
+        public Criteria andSureConsistentGreaterThanOrEqualTo(String value) {
+            addCriterion("sure_consistent >=", value, "sureConsistent");
+            return (Criteria) this;
+        }
+
+        public Criteria andSureConsistentLessThan(String value) {
+            addCriterion("sure_consistent <", value, "sureConsistent");
+            return (Criteria) this;
+        }
+
+        public Criteria andSureConsistentLessThanOrEqualTo(String value) {
+            addCriterion("sure_consistent <=", value, "sureConsistent");
+            return (Criteria) this;
+        }
+
+        public Criteria andSureConsistentLike(String value) {
+            addCriterion("sure_consistent like", value, "sureConsistent");
+            return (Criteria) this;
+        }
+
+        public Criteria andSureConsistentNotLike(String value) {
+            addCriterion("sure_consistent not like", value, "sureConsistent");
+            return (Criteria) this;
+        }
+
+        public Criteria andSureConsistentIn(List<String> values) {
+            addCriterion("sure_consistent in", values, "sureConsistent");
+            return (Criteria) this;
+        }
+
+        public Criteria andSureConsistentNotIn(List<String> values) {
+            addCriterion("sure_consistent not in", values, "sureConsistent");
+            return (Criteria) this;
+        }
+
+        public Criteria andSureConsistentBetween(String value1, String value2) {
+            addCriterion("sure_consistent between", value1, value2, "sureConsistent");
+            return (Criteria) this;
+        }
+
+        public Criteria andSureConsistentNotBetween(String value1, String value2) {
+            addCriterion("sure_consistent not between", value1, value2, "sureConsistent");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

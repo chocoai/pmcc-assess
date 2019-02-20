@@ -18,6 +18,7 @@
     <result column="register_date" property="registerDate" jdbcType="TIMESTAMP" />
     <result column="begin_date" property="beginDate" jdbcType="TIMESTAMP" />
     <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -83,7 +84,7 @@
   <sql id="Base_Column_List" >
     id, project_id, plan_details_id, cert_name, type, category, number, obligor, obligee, 
     register_area, right_rank, register_amount, actual_amount, register_date, begin_date, 
-    end_date, creator, gmt_created, gmt_modified
+    end_date, remark, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRightExample" >
     select
@@ -124,15 +125,15 @@
       obligor, obligee, register_area, 
       right_rank, register_amount, actual_amount, 
       register_date, begin_date, end_date, 
-      creator, gmt_created, gmt_modified
-      )
+      remark, creator, gmt_created, 
+      gmt_modified)
     values (#{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{certName,jdbcType=VARCHAR}, 
       #{type,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, 
       #{obligor,jdbcType=VARCHAR}, #{obligee,jdbcType=VARCHAR}, #{registerArea,jdbcType=VARCHAR}, 
       #{rightRank,jdbcType=VARCHAR}, #{registerAmount,jdbcType=VARCHAR}, #{actualAmount,jdbcType=VARCHAR}, 
       #{registerDate,jdbcType=TIMESTAMP}, #{beginDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -184,6 +185,9 @@
       </if>
       <if test="endDate != null" >
         end_date,
+      </if>
+      <if test="remark != null" >
+        remark,
       </if>
       <if test="creator != null" >
         creator,
@@ -240,6 +244,9 @@
       </if>
       <if test="endDate != null" >
         #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -309,6 +316,9 @@
       <if test="record.endDate != null" >
         end_date = #{record.endDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -341,6 +351,7 @@
       register_date = #{record.registerDate,jdbcType=TIMESTAMP},
       begin_date = #{record.beginDate,jdbcType=TIMESTAMP},
       end_date = #{record.endDate,jdbcType=TIMESTAMP},
+      remark = #{record.remark,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -396,6 +407,9 @@
       <if test="endDate != null" >
         end_date = #{endDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -425,6 +439,7 @@
       register_date = #{registerDate,jdbcType=TIMESTAMP},
       begin_date = #{beginDate,jdbcType=TIMESTAMP},
       end_date = #{endDate,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

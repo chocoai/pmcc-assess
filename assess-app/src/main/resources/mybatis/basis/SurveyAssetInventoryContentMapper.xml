@@ -14,6 +14,7 @@
     <result column="credential_accessory" property="credentialAccessory" jdbcType="VARCHAR" />
     <result column="voucher" property="voucher" jdbcType="VARCHAR" />
     <result column="survey_time" property="surveyTime" jdbcType="TIMESTAMP" />
+    <result column="sure_consistent" property="sureConsistent" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -79,7 +80,7 @@
   <sql id="Base_Column_List" >
     id, project_id, plan_details_id, inventory_content, are_consistent, registration, 
     actual, difference_reason, credential, credential_accessory, voucher, survey_time, 
-    creator, gmt_created, gmt_modified
+    sure_consistent, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryContentExample" >
     select
@@ -118,13 +119,15 @@
     insert into tb_survey_asset_inventory_content (project_id, plan_details_id, inventory_content, 
       are_consistent, registration, actual, 
       difference_reason, credential, credential_accessory, 
-      voucher, survey_time, creator, 
-      gmt_created, gmt_modified)
+      voucher, survey_time, sure_consistent, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{inventoryContent,jdbcType=INTEGER}, 
       #{areConsistent,jdbcType=VARCHAR}, #{registration,jdbcType=VARCHAR}, #{actual,jdbcType=VARCHAR}, 
       #{differenceReason,jdbcType=VARCHAR}, #{credential,jdbcType=VARCHAR}, #{credentialAccessory,jdbcType=VARCHAR}, 
-      #{voucher,jdbcType=VARCHAR}, #{surveyTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{voucher,jdbcType=VARCHAR}, #{surveyTime,jdbcType=TIMESTAMP}, #{sureConsistent,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryContent" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -164,6 +167,9 @@
       </if>
       <if test="surveyTime != null" >
         survey_time,
+      </if>
+      <if test="sureConsistent != null" >
+        sure_consistent,
       </if>
       <if test="creator != null" >
         creator,
@@ -208,6 +214,9 @@
       </if>
       <if test="surveyTime != null" >
         #{surveyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sureConsistent != null" >
+        #{sureConsistent,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -265,6 +274,9 @@
       <if test="record.surveyTime != null" >
         survey_time = #{record.surveyTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.sureConsistent != null" >
+        sure_consistent = #{record.sureConsistent,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -293,6 +305,7 @@
       credential_accessory = #{record.credentialAccessory,jdbcType=VARCHAR},
       voucher = #{record.voucher,jdbcType=VARCHAR},
       survey_time = #{record.surveyTime,jdbcType=TIMESTAMP},
+      sure_consistent = #{record.sureConsistent,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -336,6 +349,9 @@
       <if test="surveyTime != null" >
         survey_time = #{surveyTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="sureConsistent != null" >
+        sure_consistent = #{sureConsistent,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -361,6 +377,7 @@
       credential_accessory = #{credentialAccessory,jdbcType=VARCHAR},
       voucher = #{voucher,jdbcType=VARCHAR},
       survey_time = #{surveyTime,jdbcType=TIMESTAMP},
+      sure_consistent = #{sureConsistent,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

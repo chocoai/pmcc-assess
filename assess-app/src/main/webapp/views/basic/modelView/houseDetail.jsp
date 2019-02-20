@@ -153,15 +153,15 @@
         <input type="hidden" name="id" value="${basicHouseTrading.id}">
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">交易情况</label>
-                <div class="col-sm-3">
-                    <label class="form-control">${basicHouseTrading.transactionSituationName}</label>
-                </div>
-            </div>
-            <div class="x-valid">
                 <label class="col-sm-1 control-label">财产范围</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouseTrading.scopePropertyName}</label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">财产范围说明</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouseTrading.scopePropertyExplain}</label>
                 </div>
             </div>
             <div class="x-valid">
@@ -171,8 +171,15 @@
                 </div>
             </div>
         </div>
-        <c:if test="${isHouseAbnormal eq true}">
-            <div class="form-group">
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">交易情况</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouseTrading.transactionSituationName}</label>
+                </div>
+            </div>
+            <c:if test="${isHouseAbnormal eq true}">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">说明事项类型</label>
                     <div class="col-sm-3">
@@ -186,8 +193,9 @@
                         <label class="form-control">${basicHouseTrading.descriptionContent}</label>
                     </div>
                 </div>
-            </div>
-        </c:if>
+            </c:if>
+        </div>
+
         <div class="x_title">融资条件</div>
         <div class="form-group">
             <div class="x-valid">

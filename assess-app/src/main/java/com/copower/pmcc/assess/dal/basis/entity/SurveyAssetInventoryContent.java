@@ -27,6 +27,8 @@ public class SurveyAssetInventoryContent {
 
     private Date surveyTime;
 
+    private String sureConsistent;
+
     private String creator;
 
     private Date gmtCreated;
@@ -127,6 +129,14 @@ public class SurveyAssetInventoryContent {
 
     public void setSurveyTime(Date surveyTime) {
         this.surveyTime = surveyTime;
+    }
+
+    public String getSureConsistent() {
+        return sureConsistent;
+    }
+
+    public void setSureConsistent(String sureConsistent) {
+        this.sureConsistent = sureConsistent == null ? null : sureConsistent.trim();
     }
 
     public String getCreator() {

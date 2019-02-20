@@ -124,6 +124,7 @@
                                 <th style="width: 10%">证明文件附件</th>
                                 <th style="width: 5%">证明人</th>
                                 <th style="width: 6%">调查时间</th>
+                                <th style="width: 6%">确认一致</th>
                                 <th style="width: 10%">操作</th>
                             </tr>
                             </thead>
@@ -192,6 +193,15 @@
                                                    class="form-control date-picker dbdate"
                                                    readonly="readonly"
                                                    value='<fmt:formatDate value="${item.surveyTime}" pattern="yyyy-MM-dd"/>'>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="x-valid show-hide" style="display: ${item.sureConsistent eq '一致'?'none':'block'}">
+                                            <select class="form-control" name="sureConsistent${item.id}" required>
+                                                <option value=""></option>
+                                                <option value="一致">一致</option>
+                                                <option value="不一致">不一致</option>
+                                            </select>
                                         </div>
                                     </td>
                                     <td>
@@ -431,7 +441,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group border-bottom-line">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">备注</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" name="remark"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
                                 附件

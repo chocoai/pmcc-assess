@@ -35,6 +35,8 @@ public class SurveyAssetInventoryRight {
 
     private Date endDate;
 
+    private String remark;
+
     private String creator;
 
     private Date gmtCreated;
@@ -167,6 +169,14 @@ public class SurveyAssetInventoryRight {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
     public String getCreator() {

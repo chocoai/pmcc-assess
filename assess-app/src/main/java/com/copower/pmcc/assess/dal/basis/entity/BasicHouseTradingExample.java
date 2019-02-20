@@ -1246,6 +1246,76 @@ public class BasicHouseTradingExample {
             return (Criteria) this;
         }
 
+        public Criteria andScopePropertyExplainIsNull() {
+            addCriterion("scope_property_explain is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopePropertyExplainIsNotNull() {
+            addCriterion("scope_property_explain is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopePropertyExplainEqualTo(String value) {
+            addCriterion("scope_property_explain =", value, "scopePropertyExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopePropertyExplainNotEqualTo(String value) {
+            addCriterion("scope_property_explain <>", value, "scopePropertyExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopePropertyExplainGreaterThan(String value) {
+            addCriterion("scope_property_explain >", value, "scopePropertyExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopePropertyExplainGreaterThanOrEqualTo(String value) {
+            addCriterion("scope_property_explain >=", value, "scopePropertyExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopePropertyExplainLessThan(String value) {
+            addCriterion("scope_property_explain <", value, "scopePropertyExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopePropertyExplainLessThanOrEqualTo(String value) {
+            addCriterion("scope_property_explain <=", value, "scopePropertyExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopePropertyExplainLike(String value) {
+            addCriterion("scope_property_explain like", value, "scopePropertyExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopePropertyExplainNotLike(String value) {
+            addCriterion("scope_property_explain not like", value, "scopePropertyExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopePropertyExplainIn(List<String> values) {
+            addCriterion("scope_property_explain in", values, "scopePropertyExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopePropertyExplainNotIn(List<String> values) {
+            addCriterion("scope_property_explain not in", values, "scopePropertyExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopePropertyExplainBetween(String value1, String value2) {
+            addCriterion("scope_property_explain between", value1, value2, "scopePropertyExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopePropertyExplainNotBetween(String value1, String value2) {
+            addCriterion("scope_property_explain not between", value1, value2, "scopePropertyExplain");
+            return (Criteria) this;
+        }
+
         public Criteria andDownPaymentRatioIsNull() {
             addCriterion("down_payment_ratio is null");
             return (Criteria) this;
