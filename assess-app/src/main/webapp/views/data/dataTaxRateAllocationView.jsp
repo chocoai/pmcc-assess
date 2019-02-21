@@ -119,6 +119,9 @@
                 }
             });
             cols.push({field: 'amount', title: '金额'});
+            cols.push({field: 'calculateBase', title: '计算基数'});
+            cols.push({field: 'calculationFormula', title: '计算公式'});
+            cols.push({field: 'taxesBurden', title: '税费负担方'});
             cols.push({field: 'exExplain', title: '说明'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -362,6 +365,34 @@
                                         <div class="col-sm-3">
                                             <input type="text" data-rule-number='true' class="form-control"
                                                    name="amount" placeholder="金额(数字)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">计算基数<span
+                                                class="symbol required"></span></label>
+                                        <div class="col-sm-3">
+                                            <input type="text" data-rule-number='true' class="form-control"
+                                                   name="calculateBase" placeholder="计算基数(数字)">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            计算公式
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control"
+                                                   name="calculationFormula" placeholder="计算公式">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            税费负担方
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control"
+                                                   name="taxesBurden" placeholder="税费负担方">
                                         </div>
                                     </div>
                                 </div>

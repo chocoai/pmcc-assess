@@ -14,6 +14,9 @@
     <result column="tax_rate" property="taxRate" jdbcType="DECIMAL" />
     <result column="amount" property="amount" jdbcType="DECIMAL" />
     <result column="bis_national_unity" property="bisNationalUnity" jdbcType="BIT" />
+    <result column="calculate_base" property="calculateBase" jdbcType="DECIMAL" />
+    <result column="calculation_formula" property="calculationFormula" jdbcType="VARCHAR" />
+    <result column="taxes_burden" property="taxesBurden" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,7 +78,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, creator, gmt_created, gmt_modified, province, city, district, type, ex_explain, 
-    tax_rate, amount, bis_national_unity
+    tax_rate, amount, bis_national_unity, calculate_base, calculation_formula, taxes_burden
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataTaxRateAllocationExample" >
     select
@@ -114,11 +117,13 @@
     insert into tb_data_tax_rate_allocation (creator, gmt_created, gmt_modified, 
       province, city, district, 
       type, ex_explain, tax_rate, 
-      amount, bis_national_unity)
+      amount, bis_national_unity, calculate_base, 
+      calculation_formula, taxes_burden)
     values (#{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
       #{type,jdbcType=INTEGER}, #{exExplain,jdbcType=VARCHAR}, #{taxRate,jdbcType=DECIMAL}, 
-      #{amount,jdbcType=DECIMAL}, #{bisNationalUnity,jdbcType=BIT})
+      #{amount,jdbcType=DECIMAL}, #{bisNationalUnity,jdbcType=BIT}, #{calculateBase,jdbcType=DECIMAL}, 
+      #{calculationFormula,jdbcType=VARCHAR}, #{taxesBurden,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataTaxRateAllocation" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -159,6 +164,15 @@
       <if test="bisNationalUnity != null" >
         bis_national_unity,
       </if>
+      <if test="calculateBase != null" >
+        calculate_base,
+      </if>
+      <if test="calculationFormula != null" >
+        calculation_formula,
+      </if>
+      <if test="taxesBurden != null" >
+        taxes_burden,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="creator != null" >
@@ -193,6 +207,15 @@
       </if>
       <if test="bisNationalUnity != null" >
         #{bisNationalUnity,jdbcType=BIT},
+      </if>
+      <if test="calculateBase != null" >
+        #{calculateBase,jdbcType=DECIMAL},
+      </if>
+      <if test="calculationFormula != null" >
+        #{calculationFormula,jdbcType=VARCHAR},
+      </if>
+      <if test="taxesBurden != null" >
+        #{taxesBurden,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -241,6 +264,15 @@
       <if test="record.bisNationalUnity != null" >
         bis_national_unity = #{record.bisNationalUnity,jdbcType=BIT},
       </if>
+      <if test="record.calculateBase != null" >
+        calculate_base = #{record.calculateBase,jdbcType=DECIMAL},
+      </if>
+      <if test="record.calculationFormula != null" >
+        calculation_formula = #{record.calculationFormula,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taxesBurden != null" >
+        taxes_burden = #{record.taxesBurden,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -259,7 +291,10 @@
       ex_explain = #{record.exExplain,jdbcType=VARCHAR},
       tax_rate = #{record.taxRate,jdbcType=DECIMAL},
       amount = #{record.amount,jdbcType=DECIMAL},
-      bis_national_unity = #{record.bisNationalUnity,jdbcType=BIT}
+      bis_national_unity = #{record.bisNationalUnity,jdbcType=BIT},
+      calculate_base = #{record.calculateBase,jdbcType=DECIMAL},
+      calculation_formula = #{record.calculationFormula,jdbcType=VARCHAR},
+      taxes_burden = #{record.taxesBurden,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -300,6 +335,15 @@
       <if test="bisNationalUnity != null" >
         bis_national_unity = #{bisNationalUnity,jdbcType=BIT},
       </if>
+      <if test="calculateBase != null" >
+        calculate_base = #{calculateBase,jdbcType=DECIMAL},
+      </if>
+      <if test="calculationFormula != null" >
+        calculation_formula = #{calculationFormula,jdbcType=VARCHAR},
+      </if>
+      <if test="taxesBurden != null" >
+        taxes_burden = #{taxesBurden,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -315,7 +359,10 @@
       ex_explain = #{exExplain,jdbcType=VARCHAR},
       tax_rate = #{taxRate,jdbcType=DECIMAL},
       amount = #{amount,jdbcType=DECIMAL},
-      bis_national_unity = #{bisNationalUnity,jdbcType=BIT}
+      bis_national_unity = #{bisNationalUnity,jdbcType=BIT},
+      calculate_base = #{calculateBase,jdbcType=DECIMAL},
+      calculation_formula = #{calculationFormula,jdbcType=VARCHAR},
+      taxes_burden = #{taxesBurden,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

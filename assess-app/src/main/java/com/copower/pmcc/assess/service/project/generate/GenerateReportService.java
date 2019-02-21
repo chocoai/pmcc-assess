@@ -928,6 +928,10 @@ public class GenerateReportService {
                     if (Objects.equal(BaseReportFieldEnum.JudgeObjectAreaStatusSheet.getName(), name)) {
                         replaceReportPutValue(name, generateBaseDataService.getJudgeObjectAreaStatusSheet(), bookmarkAndRegex.getType(), true, mapSet);
                     }
+                    //估价对象权属状况表
+                    if (Objects.equal(BaseReportFieldEnum.EquityStatusValuatedObject.getName(), name)) {
+                        replaceReportPutValue(name, generateBaseDataService.getEquityStatusValuatedObjects(), bookmarkAndRegex.getType(), true, mapSet);
+                    }
                     //估价土地实体状况表
                     if (Objects.equal(BaseReportFieldEnum.JudgeObjectLandStateSheet.getName(), name)) {
                         replaceReportPutValue(name, generateBaseDataService.getJudgeObjectLandStateSheet(), bookmarkAndRegex.getType(), true, mapSet);
