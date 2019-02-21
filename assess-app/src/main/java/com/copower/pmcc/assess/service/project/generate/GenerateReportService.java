@@ -128,7 +128,7 @@ public class GenerateReportService {
         sysAttachmentDto.setCreater(processControllerComponent.getThisUser());
         List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-            sysAttachmentDtoList.stream().forEach(attachmentDto -> baseAttachmentService.deleteAttachmentByDto(attachmentDto) );
+            sysAttachmentDtoList.stream().forEach(attachmentDto -> baseAttachmentService.deleteAttachmentByDto(attachmentDto));
         }
         //必要的(否则垃圾会越来越多)
         File file = new File(baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()));
@@ -488,8 +488,8 @@ public class GenerateReportService {
                         //机构名称法定代表人
                         if (Objects.equal(BaseReportFieldEnum.XIEHE_legalRepresentative.getName(), name)) {
                             BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                            replaceReportPutValue(name, qualificationDto.getLegalRepresentative(), bookmarkAndRegex.getType(), false, mapSet);
                             if (baseReportField != null) {
-                                replaceReportPutValue(name, qualificationDto.getLegalRepresentative(), bookmarkAndRegex.getType(), false, mapSet);
                             }
                         }
                         //机构工商注册号
@@ -559,8 +559,8 @@ public class GenerateReportService {
                     //房地产总价大写金额
                     if (Objects.equal(BaseReportFieldEnum.CapitalizationAmount.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getCapitalizationAmount(), bookmarkAndRegex.getType(), false, mapSet);
                         if (baseReportField != null) {
-                            replaceReportPutValue(name, generateBaseDataService.getCapitalizationAmount(), bookmarkAndRegex.getType(), false, mapSet);
                         }
                     }
                     //收益法模板
@@ -671,15 +671,13 @@ public class GenerateReportService {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
                             replaceReportPutValue(name, generateBaseDataService.getLocation_(), bookmarkAndRegex.getType(), false, mapSet);
-                            //由于区位以后可能会变,现在取权利人
-                            if (false) {
-                                BaseReportFieldEnum.notPowerPerson.getName();
-                                replaceReportPutValue(name, generateBaseDataService.getNotPowerPerson(), bookmarkAndRegex.getType(), false, mapSet);
-                            }
-                            if (false) {
-                                BaseReportFieldEnum.PowerPerson.getName();
-                                replaceReportPutValue(name, generateBaseDataService.getPowerPerson(), bookmarkAndRegex.getType(), false, mapSet);
-                            }
+                        }
+                    }
+                    //权利人
+                    if (Objects.equal(BaseReportFieldEnum.PowerPerson.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getPowerPerson(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
                         }
                     }
                     //价值类型
@@ -721,7 +719,7 @@ public class GenerateReportService {
                     if (Objects.equal(BaseReportFieldEnum.CertificationPurpose.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
-                            replaceReportPutValue(name, generateBaseDataService.getSummaryCertificateUses(), bookmarkAndRegex.getType(), false, mapSet);
+                            replaceReportPutValue(name, generateBaseDataService.getSeparationCertificateUses(), bookmarkAndRegex.getType(), false, mapSet);
                         }
                     }
                     //证载用途分述
@@ -745,19 +743,26 @@ public class GenerateReportService {
                             replaceReportPutValue(name, generateBaseDataService.getSetUse(), bookmarkAndRegex.getType(), false, mapSet);
                         }
                     }
-                    //土地实际用途
+                    //土地 实际用途
                     if (Objects.equal(BaseReportFieldEnum.PracticalUse.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
-                            replaceReportPutValue(name, generateBaseDataService.getPracticalUse(), bookmarkAndRegex.getType(), false, mapSet);
                         }
+                        replaceReportPutValue(name, generateBaseDataService.getPracticalUse(), bookmarkAndRegex.getType(), false, mapSet);
+                    }
+                    //建筑结构类别
+                    if (Objects.equal(BaseReportFieldEnum.BuildingStructureCategory.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        if (baseReportField != null) {
+                        }
+                        replaceReportPutValue(name, generateBaseDataService.getBuildingStructureCategory(), bookmarkAndRegex.getType(), false, mapSet);
                     }
                     //土地使用权类型
                     if (Objects.equal(BaseReportFieldEnum.LandUseRightType.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
-                            replaceReportPutValue(name, generateBaseDataService.getUseRightType(), bookmarkAndRegex.getType(), false, mapSet);
                         }
+                        replaceReportPutValue(name, generateBaseDataService.getUseRightType(), bookmarkAndRegex.getType(), false, mapSet);
                     }
                     //评估面积
                     if (Objects.equal(BaseReportFieldEnum.AssessArea.getName(), name)) {
@@ -831,6 +836,13 @@ public class GenerateReportService {
                             replaceReportPutValue(name, generateBaseDataService.getValueTimePoint(), bookmarkAndRegex.getType(), false, mapSet);
                         }
                     }
+                    //估价时点
+                    if (Objects.equal(BaseReportFieldEnum.dateValue.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getValueTimePoint(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
                     //价值时点说明
                     if (Objects.equal(BaseReportFieldEnum.ValueTimePointRemark.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
@@ -889,7 +901,7 @@ public class GenerateReportService {
                     if (Objects.equal(BaseReportFieldEnum.EvaluationMethodResult.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
-    //                        replaceReportPutValue(name, generateBaseDataService.getEvaluationMethodResult(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT),bookmarkAndRegex.getType(), true, mapSet);
+                            //                        replaceReportPutValue(name, generateBaseDataService.getEvaluationMethodResult(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT),bookmarkAndRegex.getType(), true, mapSet);
                         }
                     }
                     //权重说明
@@ -918,6 +930,20 @@ public class GenerateReportService {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
                             replaceReportPutValue(name, generateBaseDataService.getStatutoryOptimumReimbursement(), bookmarkAndRegex.getType(), false, mapSet);
+                        }
+                    }
+                    //抵押价值总金额
+                    if (Objects.equal(BaseReportFieldEnum.totalAmountMortgageValue.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getTotalAmountMortgageValue(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //抵押价值总金额大写
+                    if (Objects.equal(BaseReportFieldEnum.totalAmountMortgageValueCapitalization.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getTotalAmountMortgageValueCapitalization(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
                         }
                     }
                     //房屋所有权登记状况表
@@ -997,7 +1023,7 @@ public class GenerateReportService {
                             query.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportField.class));
                             List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
                             if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-    //                            replaceReportPutValue(name, generateBaseDataService.getStatusBuildingRightsInterests(sysAttachmentDtoList.get(0)),bookmarkAndRegex.getType(), true, mapSet);
+                                //                            replaceReportPutValue(name, generateBaseDataService.getStatusBuildingRightsInterests(sysAttachmentDtoList.get(0)),bookmarkAndRegex.getType(), true, mapSet);
                             }
                         }
                     }
@@ -1018,7 +1044,7 @@ public class GenerateReportService {
                     if (Objects.equal(BaseReportFieldEnum.EvaluationMethodResult.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
-    //                        replaceReportPutValue(name, generateBaseDataService.getEvaluationMethodResult(AssessDataDicKeyConstant.REPORT_TYPE_RESULT),bookmarkAndRegex.getType(), true, mapSet);
+                            //                        replaceReportPutValue(name, generateBaseDataService.getEvaluationMethodResult(AssessDataDicKeyConstant.REPORT_TYPE_RESULT),bookmarkAndRegex.getType(), true, mapSet);
                         }
                     }
 
@@ -1062,11 +1088,35 @@ public class GenerateReportService {
                         }
                     }
 
-                    //委托人
+                    //委托人 估价委托人
                     if (Objects.equal(BaseReportFieldEnum.PRINCIPAL.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
                             replaceReportPutValue(name, generateBaseDataService.getPrincipal(), bookmarkAndRegex.getType(), false, mapSet);
+                        }
+                    }
+
+                    //座落
+                    if (Objects.equal(BaseReportFieldEnum.Seat.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getSeat(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+
+                    //财产范围说明
+                    if (Objects.equal(BaseReportFieldEnum.ScopePropertyExplain.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getScopePropertyExplain(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+
+                    //建筑面积及评估面积
+                    if (Objects.equal(BaseReportFieldEnum.BuildingAndAssessArea.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getBuildingAndAssessArea(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
                         }
                     }
 
@@ -1086,7 +1136,7 @@ public class GenerateReportService {
                         }
                     }
                 } catch (Exception e) {
-                    logger.error(e.getMessage(),e);
+                    logger.error(e.getMessage(), e);
                 }
             }
         }
@@ -1126,7 +1176,7 @@ public class GenerateReportService {
     private Map<String, Map<BaseReportFieldReplaceEnum, String>> getBaseReportFieldReplaceEnumMap(BaseReportFieldReplaceEnum baseReportFieldReplaceEnum, String wordKey, String value) {
         Map<String, Map<BaseReportFieldReplaceEnum, String>> stringEntryMap = Maps.newHashMap();
         Map<BaseReportFieldReplaceEnum, String> enumObjectMap = Maps.newHashMap();
-        enumObjectMap.put(baseReportFieldReplaceEnum, StringUtils.defaultString(value,""));
+        enumObjectMap.put(baseReportFieldReplaceEnum, StringUtils.defaultString(value, ""));
         stringEntryMap.put(wordKey, enumObjectMap);
         return stringEntryMap;
     }

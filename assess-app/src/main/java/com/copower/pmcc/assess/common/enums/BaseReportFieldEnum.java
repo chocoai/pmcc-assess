@@ -27,10 +27,13 @@ public enum BaseReportFieldEnum {
     PowerPerson("", "权利人"),//
     BuildingStructureCategory("", "建筑结构类别"),//new 建筑结构类别
     ValueTimePoint("", "价值时点"),
+    dateValue("", "估价时点"),
     ValueTimePointRemark("", "价值时点说明"),
     EvaluationMethod("", "评估方法"),//方案中选择使用的方法，只描述一次
     TotalRealEstatePrice("", "房地产总价"),
     CapitalizationAmount("", "房地产总价大写金额"),
+    totalAmountMortgageValue("", "抵押价值总金额"),
+    totalAmountMortgageValueCapitalization("", "抵押价值总金额大写"),
     JudgeBuildResultSurveySheet("", "估价结果一览表"),
     HisRightInfoPublicity("", "他权信息公示"),//new 他权信息公示
     HisRightType("", "他权类别"),//new 他权类别
