@@ -28,6 +28,12 @@ public class DataTaxRateAllocation {
 
     private Boolean bisNationalUnity;
 
+    private BigDecimal calculateBase;
+
+    private String calculationFormula;
+
+    private String taxesBurden;
+
     public Integer getId() {
         return id;
     }
@@ -122,5 +128,29 @@ public class DataTaxRateAllocation {
 
     public void setBisNationalUnity(Boolean bisNationalUnity) {
         this.bisNationalUnity = bisNationalUnity;
+    }
+
+    public BigDecimal getCalculateBase() {
+        return calculateBase;
+    }
+
+    public void setCalculateBase(BigDecimal calculateBase) {
+        this.calculateBase = calculateBase;
+    }
+
+    public String getCalculationFormula() {
+        return calculationFormula;
+    }
+
+    public void setCalculationFormula(String calculationFormula) {
+        this.calculationFormula = calculationFormula == null ? null : calculationFormula.trim();
+    }
+
+    public String getTaxesBurden() {
+        return taxesBurden;
+    }
+
+    public void setTaxesBurden(String taxesBurden) {
+        this.taxesBurden = taxesBurden == null ? null : taxesBurden.trim();
     }
 }

@@ -875,6 +875,206 @@ public class DataTaxRateAllocationExample {
             addCriterion("bis_national_unity not between", value1, value2, "bisNationalUnity");
             return (Criteria) this;
         }
+
+        public Criteria andCalculateBaseIsNull() {
+            addCriterion("calculate_base is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculateBaseIsNotNull() {
+            addCriterion("calculate_base is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculateBaseEqualTo(BigDecimal value) {
+            addCriterion("calculate_base =", value, "calculateBase");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculateBaseNotEqualTo(BigDecimal value) {
+            addCriterion("calculate_base <>", value, "calculateBase");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculateBaseGreaterThan(BigDecimal value) {
+            addCriterion("calculate_base >", value, "calculateBase");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculateBaseGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("calculate_base >=", value, "calculateBase");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculateBaseLessThan(BigDecimal value) {
+            addCriterion("calculate_base <", value, "calculateBase");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculateBaseLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("calculate_base <=", value, "calculateBase");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculateBaseIn(List<BigDecimal> values) {
+            addCriterion("calculate_base in", values, "calculateBase");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculateBaseNotIn(List<BigDecimal> values) {
+            addCriterion("calculate_base not in", values, "calculateBase");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculateBaseBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("calculate_base between", value1, value2, "calculateBase");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculateBaseNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("calculate_base not between", value1, value2, "calculateBase");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculationFormulaIsNull() {
+            addCriterion("calculation_formula is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculationFormulaIsNotNull() {
+            addCriterion("calculation_formula is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculationFormulaEqualTo(String value) {
+            addCriterion("calculation_formula =", value, "calculationFormula");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculationFormulaNotEqualTo(String value) {
+            addCriterion("calculation_formula <>", value, "calculationFormula");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculationFormulaGreaterThan(String value) {
+            addCriterion("calculation_formula >", value, "calculationFormula");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculationFormulaGreaterThanOrEqualTo(String value) {
+            addCriterion("calculation_formula >=", value, "calculationFormula");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculationFormulaLessThan(String value) {
+            addCriterion("calculation_formula <", value, "calculationFormula");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculationFormulaLessThanOrEqualTo(String value) {
+            addCriterion("calculation_formula <=", value, "calculationFormula");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculationFormulaLike(String value) {
+            addCriterion("calculation_formula like", value, "calculationFormula");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculationFormulaNotLike(String value) {
+            addCriterion("calculation_formula not like", value, "calculationFormula");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculationFormulaIn(List<String> values) {
+            addCriterion("calculation_formula in", values, "calculationFormula");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculationFormulaNotIn(List<String> values) {
+            addCriterion("calculation_formula not in", values, "calculationFormula");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculationFormulaBetween(String value1, String value2) {
+            addCriterion("calculation_formula between", value1, value2, "calculationFormula");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculationFormulaNotBetween(String value1, String value2) {
+            addCriterion("calculation_formula not between", value1, value2, "calculationFormula");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxesBurdenIsNull() {
+            addCriterion("taxes_burden is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxesBurdenIsNotNull() {
+            addCriterion("taxes_burden is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxesBurdenEqualTo(String value) {
+            addCriterion("taxes_burden =", value, "taxesBurden");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxesBurdenNotEqualTo(String value) {
+            addCriterion("taxes_burden <>", value, "taxesBurden");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxesBurdenGreaterThan(String value) {
+            addCriterion("taxes_burden >", value, "taxesBurden");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxesBurdenGreaterThanOrEqualTo(String value) {
+            addCriterion("taxes_burden >=", value, "taxesBurden");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxesBurdenLessThan(String value) {
+            addCriterion("taxes_burden <", value, "taxesBurden");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxesBurdenLessThanOrEqualTo(String value) {
+            addCriterion("taxes_burden <=", value, "taxesBurden");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxesBurdenLike(String value) {
+            addCriterion("taxes_burden like", value, "taxesBurden");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxesBurdenNotLike(String value) {
+            addCriterion("taxes_burden not like", value, "taxesBurden");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxesBurdenIn(List<String> values) {
+            addCriterion("taxes_burden in", values, "taxesBurden");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxesBurdenNotIn(List<String> values) {
+            addCriterion("taxes_burden not in", values, "taxesBurden");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxesBurdenBetween(String value1, String value2) {
+            addCriterion("taxes_burden between", value1, value2, "taxesBurden");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxesBurdenNotBetween(String value1, String value2) {
+            addCriterion("taxes_burden not between", value1, value2, "taxesBurden");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
