@@ -6,6 +6,8 @@ import java.util.Date;
 public class SchemeLiquidationAnalysisItem {
     private Integer id;
 
+    private Integer mainId;
+
     private Integer judgeObjectId;
 
     private Integer planDetailsId;
@@ -18,6 +20,12 @@ public class SchemeLiquidationAnalysisItem {
 
     private String taxRateName;
 
+    private BigDecimal calculateBase;
+
+    private String calculationFormula;
+
+    private String taxesBurden;
+
     private BigDecimal price;
 
     private String remark;
@@ -28,14 +36,20 @@ public class SchemeLiquidationAnalysisItem {
 
     private Date gmtModified;
 
-    private Integer mainId;
-
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getMainId() {
+        return mainId;
+    }
+
+    public void setMainId(Integer mainId) {
+        this.mainId = mainId;
     }
 
     public Integer getJudgeObjectId() {
@@ -86,6 +100,30 @@ public class SchemeLiquidationAnalysisItem {
         this.taxRateName = taxRateName == null ? null : taxRateName.trim();
     }
 
+    public BigDecimal getCalculateBase() {
+        return calculateBase;
+    }
+
+    public void setCalculateBase(BigDecimal calculateBase) {
+        this.calculateBase = calculateBase;
+    }
+
+    public String getCalculationFormula() {
+        return calculationFormula;
+    }
+
+    public void setCalculationFormula(String calculationFormula) {
+        this.calculationFormula = calculationFormula == null ? null : calculationFormula.trim();
+    }
+
+    public String getTaxesBurden() {
+        return taxesBurden;
+    }
+
+    public void setTaxesBurden(String taxesBurden) {
+        this.taxesBurden = taxesBurden == null ? null : taxesBurden.trim();
+    }
+
     public BigDecimal getPrice() {
         return price;
     }
@@ -124,13 +162,5 @@ public class SchemeLiquidationAnalysisItem {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getMainId() {
-        return mainId;
-    }
-
-    public void setMainId(Integer mainId) {
-        this.mainId = mainId;
     }
 }

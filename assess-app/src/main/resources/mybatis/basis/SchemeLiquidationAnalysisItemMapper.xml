@@ -3,18 +3,21 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.SchemeLiquidationAnalysisItemMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisItem" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="main_id" property="mainId" jdbcType="INTEGER" />
     <result column="judge_object_id" property="judgeObjectId" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="tax_rate_id" property="taxRateId" jdbcType="INTEGER" />
     <result column="tax_rate_value" property="taxRateValue" jdbcType="VARCHAR" />
     <result column="calculation_method" property="calculationMethod" jdbcType="INTEGER" />
     <result column="tax_rate_name" property="taxRateName" jdbcType="VARCHAR" />
+    <result column="calculate_base" property="calculateBase" jdbcType="DECIMAL" />
+    <result column="calculation_formula" property="calculationFormula" jdbcType="VARCHAR" />
+    <result column="taxes_burden" property="taxesBurden" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="main_id" property="mainId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,8 +78,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, judge_object_id, plan_details_id, tax_rate_id, tax_rate_value, calculation_method, 
-    tax_rate_name, price, remark, creator, gmt_created, gmt_modified, main_id
+    id, main_id, judge_object_id, plan_details_id, tax_rate_id, tax_rate_value, calculation_method, 
+    tax_rate_name, calculate_base, calculation_formula, taxes_burden, price, remark, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisItemExample" >
     select
@@ -112,15 +116,17 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_scheme_liquidation_analysis_item (judge_object_id, plan_details_id, tax_rate_id, 
-      tax_rate_value, calculation_method, tax_rate_name, 
-      price, remark, creator, 
-      gmt_created, gmt_modified, main_id
+    insert into tb_scheme_liquidation_analysis_item (main_id, judge_object_id, plan_details_id, 
+      tax_rate_id, tax_rate_value, calculation_method, 
+      tax_rate_name, calculate_base, calculation_formula, 
+      taxes_burden, price, remark, 
+      creator, gmt_created, gmt_modified
       )
-    values (#{judgeObjectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{taxRateId,jdbcType=INTEGER}, 
-      #{taxRateValue,jdbcType=VARCHAR}, #{calculationMethod,jdbcType=INTEGER}, #{taxRateName,jdbcType=VARCHAR}, 
-      #{price,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{mainId,jdbcType=INTEGER}
+    values (#{mainId,jdbcType=INTEGER}, #{judgeObjectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
+      #{taxRateId,jdbcType=INTEGER}, #{taxRateValue,jdbcType=VARCHAR}, #{calculationMethod,jdbcType=INTEGER}, 
+      #{taxRateName,jdbcType=VARCHAR}, #{calculateBase,jdbcType=DECIMAL}, #{calculationFormula,jdbcType=VARCHAR}, 
+      #{taxesBurden,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisItem" >
@@ -129,6 +135,9 @@
     </selectKey>
     insert into tb_scheme_liquidation_analysis_item
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mainId != null" >
+        main_id,
+      </if>
       <if test="judgeObjectId != null" >
         judge_object_id,
       </if>
@@ -147,6 +156,15 @@
       <if test="taxRateName != null" >
         tax_rate_name,
       </if>
+      <if test="calculateBase != null" >
+        calculate_base,
+      </if>
+      <if test="calculationFormula != null" >
+        calculation_formula,
+      </if>
+      <if test="taxesBurden != null" >
+        taxes_burden,
+      </if>
       <if test="price != null" >
         price,
       </if>
@@ -162,11 +180,11 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="mainId != null" >
-        main_id,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mainId != null" >
+        #{mainId,jdbcType=INTEGER},
+      </if>
       <if test="judgeObjectId != null" >
         #{judgeObjectId,jdbcType=INTEGER},
       </if>
@@ -185,6 +203,15 @@
       <if test="taxRateName != null" >
         #{taxRateName,jdbcType=VARCHAR},
       </if>
+      <if test="calculateBase != null" >
+        #{calculateBase,jdbcType=DECIMAL},
+      </if>
+      <if test="calculationFormula != null" >
+        #{calculationFormula,jdbcType=VARCHAR},
+      </if>
+      <if test="taxesBurden != null" >
+        #{taxesBurden,jdbcType=VARCHAR},
+      </if>
       <if test="price != null" >
         #{price,jdbcType=DECIMAL},
       </if>
@@ -200,9 +227,6 @@
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="mainId != null" >
-        #{mainId,jdbcType=INTEGER},
-      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisItemExample" resultType="java.lang.Integer" >
@@ -216,6 +240,9 @@
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.mainId != null" >
+        main_id = #{record.mainId,jdbcType=INTEGER},
       </if>
       <if test="record.judgeObjectId != null" >
         judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
@@ -235,6 +262,15 @@
       <if test="record.taxRateName != null" >
         tax_rate_name = #{record.taxRateName,jdbcType=VARCHAR},
       </if>
+      <if test="record.calculateBase != null" >
+        calculate_base = #{record.calculateBase,jdbcType=DECIMAL},
+      </if>
+      <if test="record.calculationFormula != null" >
+        calculation_formula = #{record.calculationFormula,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taxesBurden != null" >
+        taxes_burden = #{record.taxesBurden,jdbcType=VARCHAR},
+      </if>
       <if test="record.price != null" >
         price = #{record.price,jdbcType=DECIMAL},
       </if>
@@ -250,9 +286,6 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.mainId != null" >
-        main_id = #{record.mainId,jdbcType=INTEGER},
-      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -261,18 +294,21 @@
   <update id="updateByExample" parameterType="map" >
     update tb_scheme_liquidation_analysis_item
     set id = #{record.id,jdbcType=INTEGER},
+      main_id = #{record.mainId,jdbcType=INTEGER},
       judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       tax_rate_id = #{record.taxRateId,jdbcType=INTEGER},
       tax_rate_value = #{record.taxRateValue,jdbcType=VARCHAR},
       calculation_method = #{record.calculationMethod,jdbcType=INTEGER},
       tax_rate_name = #{record.taxRateName,jdbcType=VARCHAR},
+      calculate_base = #{record.calculateBase,jdbcType=DECIMAL},
+      calculation_formula = #{record.calculationFormula,jdbcType=VARCHAR},
+      taxes_burden = #{record.taxesBurden,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=DECIMAL},
       remark = #{record.remark,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      main_id = #{record.mainId,jdbcType=INTEGER}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -280,6 +316,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisItem" >
     update tb_scheme_liquidation_analysis_item
     <set >
+      <if test="mainId != null" >
+        main_id = #{mainId,jdbcType=INTEGER},
+      </if>
       <if test="judgeObjectId != null" >
         judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
       </if>
@@ -298,6 +337,15 @@
       <if test="taxRateName != null" >
         tax_rate_name = #{taxRateName,jdbcType=VARCHAR},
       </if>
+      <if test="calculateBase != null" >
+        calculate_base = #{calculateBase,jdbcType=DECIMAL},
+      </if>
+      <if test="calculationFormula != null" >
+        calculation_formula = #{calculationFormula,jdbcType=VARCHAR},
+      </if>
+      <if test="taxesBurden != null" >
+        taxes_burden = #{taxesBurden,jdbcType=VARCHAR},
+      </if>
       <if test="price != null" >
         price = #{price,jdbcType=DECIMAL},
       </if>
@@ -313,26 +361,26 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="mainId != null" >
-        main_id = #{mainId,jdbcType=INTEGER},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisItem" >
     update tb_scheme_liquidation_analysis_item
-    set judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
+    set main_id = #{mainId,jdbcType=INTEGER},
+      judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       tax_rate_id = #{taxRateId,jdbcType=INTEGER},
       tax_rate_value = #{taxRateValue,jdbcType=VARCHAR},
       calculation_method = #{calculationMethod,jdbcType=INTEGER},
       tax_rate_name = #{taxRateName,jdbcType=VARCHAR},
+      calculate_base = #{calculateBase,jdbcType=DECIMAL},
+      calculation_formula = #{calculationFormula,jdbcType=VARCHAR},
+      taxes_burden = #{taxesBurden,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
       remark = #{remark,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      main_id = #{mainId,jdbcType=INTEGER}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

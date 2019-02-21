@@ -27,6 +27,11 @@
                         <tr>
                             <th class="hidden-xs">物业类型</th>
                             <th class="hidden-xs">税率</th>
+
+                            <th class="hidden-xs">计算基数</th>
+                            <th class="hidden-xs">计算公式</th>
+                            <th class="hidden-xs">税费负担方</th>
+
                             <th class="hidden-xs">备注</th>
                             <th class="hidden-xs">商业</th>
                             <th class="hidden-xs">操作</th>
@@ -36,7 +41,10 @@
                         <tr>
                             <td class="hidden-xs">面积(平方米)</td>
                             <td class="hidden-xs">/</td>
-                            <td class="hidden-xs"></td>
+                            <td class="hidden-xs">/</td>
+                            <td class="hidden-xs">/</td>
+                            <td class="hidden-xs">/</td>
+                            <td class="hidden-xs">/</td>
                             <td class="hidden-xs" id="evaluationArea">
                                 ${judgeObject.evaluationArea}
                             </td>
@@ -44,7 +52,10 @@
                         <tr>
                             <td class="hidden-xs">评估价(元)</td>
                             <td class="hidden-xs">/</td>
-                            <td class="hidden-xs"></td>
+                            <td class="hidden-xs">/</td>
+                            <td class="hidden-xs">/</td>
+                            <td class="hidden-xs">/</td>
+                            <td class="hidden-xs">/</td>
                             <td class="hidden-xs" id="evaluationPrice">
                                 ${judgeObject.price}
                             </td>
@@ -55,7 +66,7 @@
                         </tbody>
                         <tbody>
                         <tr>
-                            <td class='hidden-xs' colspan='3' style='text-align:center;'>合计费用</td>
+                            <td class='hidden-xs' colspan='6' style='text-align:center;'>合计费用</td>
                             <td class='hidden-xs'>
                                 <label class="form-control" name="total"></label>
                             </td>
@@ -138,6 +149,9 @@
             analysisItem.id = $(this).find('[name=id]').val();
             analysisItem.price = $(this).find('[name^=price]').val();
             analysisItem.remark = $(this).find('[name^=remark]').val();
+            analysisItem.calculateBase = $(this).find('[name^=calculateBase]').val();
+            analysisItem.calculationFormula = $(this).find('[name^=calculationFormula]').val();
+            analysisItem.taxesBurden = $(this).find('[name^=taxesBurden]').val();
             data.analysisItemList.push(analysisItem);
         })
         return data;
@@ -169,10 +183,22 @@
                         } else {
                             html += "<input type='text' required onblur='getThisPrice(this);' data-value='" + item.taxRateValue + "' name='taxRateValue_" + item.id + "' value='" + Number(item.taxRateValue * 100).toFixed(2) + "%' class='form-control x-percent'>";
                         }
+
+                        html += "<td class='hidden-xs'>";
+                        html += "<input type='text'  name='calculateBase_" + item.id + "' value='" + AssessCommon.toString(item.calculateBase) + "' class='form-control'>";
+                        html += "</td>";
+                        html += "<td class='hidden-xs'>";
+                        html += "<input type='text'  name='calculationFormula_" + item.id + "' value='" + AssessCommon.toString(item.calculationFormula) + "' class='form-control'>";
+                        html += "</td>";
+                        html += "<td class='hidden-xs'>";
+                        html += "<input type='text'  name='taxesBurden_" + item.id + "' value='" + AssessCommon.toString(item.taxesBurden) + "' class='form-control'>";
+                        html += "</td>";
+
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
                         html += "<input type='text'  name='remark_" + item.id + "' value='" + AssessCommon.toString(item.remark) + "' class='form-control'>";
                         html += "</td>";
+
                         html += "<td class='hidden-xs'>";
                         html += "<div class='x-valid'>";
                         html += "<input type='text' required  name='price_" + item.id + "' value='" + AssessCommon.toString(item.price) + "' onblur='getTotal()'  class='form-control' data-rule-number='true'>";

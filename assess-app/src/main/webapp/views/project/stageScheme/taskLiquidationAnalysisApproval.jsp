@@ -29,15 +29,24 @@
                         <tr>
                             <th class="hidden-xs">物业类型</th>
                             <th class="hidden-xs">税率</th>
+
+                            <th class="hidden-xs">计算基数</th>
+                            <th class="hidden-xs">计算公式</th>
+                            <th class="hidden-xs">税费负担方</th>
+
                             <th class="hidden-xs">备注</th>
                             <th class="hidden-xs">商业</th>
+                            <th class="hidden-xs">操作</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
                             <td class="hidden-xs">面积(平方米)</td>
                             <td class="hidden-xs">/</td>
-                            <td class="hidden-xs"></td>
+                            <td class="hidden-xs">/</td>
+                            <td class="hidden-xs">/</td>
+                            <td class="hidden-xs">/</td>
+                            <td class="hidden-xs">/</td>
                             <td class="hidden-xs" id="evaluationArea">
                                 ${judgeObject.evaluationArea}
                             </td>
@@ -45,7 +54,10 @@
                         <tr>
                             <td class="hidden-xs">评估价(元)</td>
                             <td class="hidden-xs">/</td>
-                            <td class="hidden-xs"></td>
+                            <td class="hidden-xs">/</td>
+                            <td class="hidden-xs">/</td>
+                            <td class="hidden-xs">/</td>
+                            <td class="hidden-xs">/</td>
                             <td class="hidden-xs" id="evaluationPrice">
                                 ${judgeObject.price}
                             </td>
@@ -56,7 +68,7 @@
                         </tbody>
                         <tbody>
                         <tr>
-                            <td class='hidden-xs' colspan='3' style='text-align:center;'>合计费用</td>
+                            <td class='hidden-xs' colspan='6' style='text-align:center;'>合计费用</td>
                             <td class='hidden-xs'>
                                 <label class="form-control" name="total">${master.total}</label>
                             </td>
@@ -109,6 +121,17 @@
                             html += Number(item.taxRateValue*100).toFixed(2)+"%";
                         }
                         html += "</td>";
+
+                        html += "<td class='hidden-xs'>";
+                        html +=  AssessCommon.toString(item.calculateBase);
+                        html += "</td>";
+                        html += "<td class='hidden-xs'>";
+                        html +=  AssessCommon.toString(item.calculationFormula);
+                        html += "</td>";
+                        html += "<td class='hidden-xs'>";
+                        html +=  AssessCommon.toString(item.taxesBurden);
+                        html += "</td>";
+
                         html += "<td class='hidden-xs'>";
                         html +=  AssessCommon.toString(item.remark);
                         html += "</td>";
