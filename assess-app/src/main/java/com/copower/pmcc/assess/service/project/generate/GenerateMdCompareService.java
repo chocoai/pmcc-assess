@@ -6,8 +6,6 @@ import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldCompareEnum;
 import com.copower.pmcc.assess.common.enums.MethodCompareFieldEnum;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
-import com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareItemDto;
@@ -29,6 +27,7 @@ import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
@@ -178,6 +177,9 @@ public class GenerateMdCompareService {
         if (fieldCompareEnum != null) {
             String title = fieldCompareEnum.getName();
             switch (fieldCompareEnum) {
+                case CASE_NUMBER:
+                    localPath = getCaseNumber(title, caseItemList.size());
+                    break;
                 case COMPARABLE_BASIS:
                     localPath = getTable(marketCompareItemDtos, caseItemList, title, "comparative.basis", "trading.status", false);
                     break;
@@ -189,6 +191,24 @@ public class GenerateMdCompareService {
                     break;
                 case ENTITY_CONDITION:
                     localPath = getTable(marketCompareItemDtos, caseItemList, title, "entity.condition", "", false);
+                    break;
+                case PROPERTY_RANGE:
+                    localPath = getComparePropertyRange(title, marketCompareItemDtos, caseItemList, "scope.property");
+                    break;
+                case PAYMENT_METHOD:
+                    localPath = getComparePropertyRange(title, marketCompareItemDtos, caseItemList, "payment.method");
+                    break;
+                case FINANCING_CONDITION:
+                    localPath = getComparePropertyRange(title, marketCompareItemDtos, caseItemList, "financing.conditions");
+                    break;
+                case TAX_BURDEN:
+                    localPath = getComparePropertyRange(title, marketCompareItemDtos, caseItemList, "tax.burden");
+                    break;
+                case TRANSACTION_MODIFICATION:
+                    localPath = getTransaction(title, caseItemList, "trading.transaction.situation");
+                    break;
+                case DATE_REVISION:
+                    localPath = getDateRevision(title, caseItemList);
                     break;
                 case MARKET_ADJUSTMENT:
                     localPath = getTable(marketCompareItemDtos, caseItemList, title, "comparative.basis", "", true);
@@ -205,18 +225,17 @@ public class GenerateMdCompareService {
                 case CALCULATION_RESULT:
                     localPath = getCalculationTable(title, evaluationItemList, caseItemList);
                     break;
-                case DATE_REVISION:
-                    localPath = getDateRevision(title, caseItemList);
-                    break;
-                case TRANSACTION_MODIFICATION:
-                    localPath = getTransaction(title, caseItemList);
-                    break;
                 case HOUSEPRICE_INDEX:
                     localPath = getHousepriceIndex(title, caseItemList);
                     break;
+                case COUNT_COURSE:
+                    localPath = getCountCourse(title, caseItemList, true);
+                    break;
+                case COUNT_RESULT:
+                    localPath = getCountCourse(title, caseItemList, false);
+                    break;
             }
         }
-
 
         return localPath;
     }
@@ -234,8 +253,9 @@ public class GenerateMdCompareService {
     public String getTable(List<MarketCompareItemDto> list, List<MdMarketCompareItem> caseItemList, String title, String fieldName, String fieldMore, Boolean isIndex) throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
+        //表格属性
+        setTableProperty(builder);
         String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        builder.writeln(title);
         List<DataSetUseField> cacheSetUseFieldList = dataSetUseFieldService.getCacheSetUseFieldList(fieldName);
         //表头
         builder.insertCell();
@@ -253,8 +273,6 @@ public class GenerateMdCompareService {
 
         //交易情况
         if (StringUtils.isNotBlank(fieldMore)) {
-            builder.writeln("交易情况");
-            //表头
             builder.insertCell();
             builder.writeln("项目");
             builder.insertCell();
@@ -269,8 +287,7 @@ public class GenerateMdCompareService {
             //生成表格
             GenerateTable(list, tradingFieldList, builder, caseItemList, isIndex);
         }
-        //表格属性
-        setTableProperty(builder);
+        builder.endTable();
         doc.save(localPath);
         return localPath;
     }
@@ -306,6 +323,39 @@ public class GenerateMdCompareService {
                 }
             }
         }
+
+        //计算指数表税率
+        if (isIndex) {
+            BigDecimal result = new BigDecimal("1");
+            builder.insertCell();
+            builder.writeln("比率");
+            for (MarketCompareItemDto item : list) {
+                for (DataSetUseField useField : tradingFieldList) {
+                    if (useField.getFieldName().equals(item.getName())) {
+                        result = result.multiply(new BigDecimal(String.valueOf(item.getRatio())));
+                    }
+                }
+            }
+            builder.insertCell();
+            builder.writeln(String.format("%.2f", result));
+
+            if (CollectionUtils.isNotEmpty(caseItemList)) {
+                for (MdMarketCompareItem caseItem : caseItemList) {
+                    BigDecimal temp = new BigDecimal("1");
+                    List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
+                    builder.insertCell();
+                    for (MarketCompareItemDto item2 : dtos) {
+                        for (DataSetUseField useField : tradingFieldList) {
+                            if (useField.getFieldName().equals(item2.getName())) {
+                                temp = temp.multiply(new BigDecimal(String.valueOf(item2.getRatio())));
+                            }
+                        }
+                    }
+                    builder.writeln(String.format("%.2f", temp));
+                }
+            }
+            builder.endRow();
+        }
     }
 
 
@@ -317,14 +367,18 @@ public class GenerateMdCompareService {
      * @param caseItemList        案列对象
      * @return
      */
-    public String getCalculationTable(String title, MdMarketCompareItem mdMarketCompareItem, List<MdMarketCompareItem> caseItemList) throws Exception {
+    public String getCalculationTable(String title, MdMarketCompareItem
+            mdMarketCompareItem, List<MdMarketCompareItem> caseItemList) throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        builder.writeln(title);
+        //表格属性
+        setTableProperty(builder);
         //表头
         builder.insertCell();
         builder.writeln("项目");
+        builder.insertCell();
+        builder.writeln("估价对象");
         for (MdMarketCompareItem caseItem : caseItemList) {
             builder.insertCell();
             builder.writeln(caseItem.getName());
@@ -334,6 +388,7 @@ public class GenerateMdCompareService {
         if (CollectionUtils.isNotEmpty(caseItemList)) {
             builder.insertCell();
             builder.writeln("比准价格");
+            builder.insertCell();
             for (MdMarketCompareItem caseItem : caseItemList) {
                 builder.insertCell();
                 if (!StringUtils.isEmpty(caseItem.getSpecificPrice())) {
@@ -345,6 +400,7 @@ public class GenerateMdCompareService {
             builder.endRow();
             builder.insertCell();
             builder.writeln("修正差额");
+            builder.insertCell();
             for (MdMarketCompareItem caseItem : caseItemList) {
                 builder.insertCell();
                 if (!StringUtils.isEmpty(caseItem.getCorrectionDifference())) {
@@ -356,6 +412,7 @@ public class GenerateMdCompareService {
             builder.endRow();
             builder.insertCell();
             builder.writeln("案例差异");
+            builder.insertCell();
             for (MdMarketCompareItem caseItem : caseItemList) {
                 builder.insertCell();
                 if (!StringUtils.isEmpty(caseItem.getCaseDifference())) {
@@ -367,6 +424,7 @@ public class GenerateMdCompareService {
             builder.endRow();
             builder.insertCell();
             builder.writeln("权重");
+            builder.insertCell();
             for (MdMarketCompareItem caseItem : caseItemList) {
                 builder.insertCell();
                 if (!StringUtils.isEmpty(caseItem.getWeight())) {
@@ -378,6 +436,7 @@ public class GenerateMdCompareService {
             builder.endRow();
             builder.insertCell();
             builder.writeln("权重描述");
+            builder.insertCell();
             for (MdMarketCompareItem caseItem : caseItemList) {
                 builder.insertCell();
                 if (!StringUtils.isEmpty(caseItem.getWeightDescription())) {
@@ -397,9 +456,8 @@ public class GenerateMdCompareService {
             builder.writeln("空");
         }
         builder.endRow();
-        //表格属性
-        setTableProperty(builder);
 
+        builder.endTable();
         doc.save(localPath);
         return localPath;
     }
@@ -414,19 +472,33 @@ public class GenerateMdCompareService {
     public String getDateRevision(String title, List<MdMarketCompareItem> caseItemList) throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
+        builder.getFont().setSize(14);
+        builder.getFont().setName("仿宋");
         String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        StringBuilder content = new StringBuilder();
+        StringBuilder normal = new StringBuilder();
+        StringBuilder abnormality = new StringBuilder();
         for (MdMarketCompareItem item : caseItemList) {
-            if (!StringUtils.isEmpty(item.getTradingTimeExplain())) {
-                content.append(item.getTradingTimeExplain());
+            if (StringUtils.isEmpty(item.getTradingTimeExplain())) {
+                normal.append(item.getName() + "、");
+            } else {
+                abnormality.append(item.getName() + "修正过，修正内容为" + item.getTradingTimeExplain() + ",");
             }
         }
-        if (!StringUtils.isEmpty(content)) {
-            builder.writeln(content.toString());
-        } else {
-            builder.writeln("不存在期日修正");
+        String normalContent = new String();
+        String abnormalityContent = new String();
+        if (!StringUtils.isEmpty(normal)) {
+            normalContent = normal.deleteCharAt(normal.length() - 1).toString();
         }
-
+        if (!StringUtils.isEmpty(abnormality)) {
+            abnormalityContent = abnormality.deleteCharAt(abnormality.length() - 1).toString();
+        }
+        if (!StringUtils.isEmpty(abnormality) && !StringUtils.isEmpty(normal)) {
+            builder.write("根据所掌握的资料，" + normalContent + "均为近期交易，故不需进行修正。" + abnormalityContent + "。");
+        } else if (StringUtils.isEmpty(abnormality) && !StringUtils.isEmpty(normal)) {
+            builder.write("根据所掌握的资料，" + normalContent + "均为近期交易，故不需进行修正。");
+        } else {
+            builder.write("根据所掌握的资料" + abnormalityContent + "。");
+        }
 
         doc.save(localPath);
         return localPath;
@@ -440,32 +512,45 @@ public class GenerateMdCompareService {
      * @param caseItemList 案列对象
      * @return
      */
-    public String getTransaction(String title, List<MdMarketCompareItem> caseItemList) throws Exception {
+    public String getTransaction(String title, List<MdMarketCompareItem> caseItemList, String fieldName) throws
+            Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
+        builder.getFont().setSize(14);
+        builder.getFont().setName("仿宋");
         String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        StringBuilder content = new StringBuilder();
+        DataSetUseField cacheSetUseFieldList = dataSetUseFieldService.getCacheSetUseFieldByFieldName(fieldName);
+        StringBuilder normal = new StringBuilder();
+        StringBuilder abnormality = new StringBuilder();
         if (CollectionUtils.isNotEmpty(caseItemList)) {
             for (MdMarketCompareItem item : caseItemList) {
-                BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
-                BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(item.getPlanDetailsId());
-                basicHouseTrading.setApplyId(basicApply.getId());
-                List<BasicHouseTrading> basicHouseTradings = basicHouseTradingService.basicHouseTradingList(basicHouseTrading);
-                if (CollectionUtils.isNotEmpty(basicHouseTradings)) {
-                    basicHouseTrading = basicHouseTradings.get(0);
-                    BaseDataDic dic = baseDataDicService.getCacheDataDicById(basicHouseTrading.getTransactionSituation());
-                    if ("不正常".equals(dic.getName())) {
-                        content.append(basicHouseTrading.getDescriptionContent());
+                List<MarketCompareItemDto> dtos = JSON.parseArray(item.getJsonContent(), MarketCompareItemDto.class);
+                for (MarketCompareItemDto caseItem : dtos) {
+                    if (cacheSetUseFieldList.getFieldName().equals(caseItem.getName())) {
+                        if ("正常".equals(caseItem.getValue())) {
+                            normal.append(item.getName() + "、");
+                        } else {
+                            abnormality.append(item.getName() + "、");
+                        }
                     }
                 }
             }
         }
-        if (!StringUtils.isEmpty(content)) {
-            builder.writeln(content.toString());
-        } else {
-            builder.writeln("不存在交易情况修正");
+        String normalContent = new String();
+        String abnormalityContent = new String();
+        if (!StringUtils.isEmpty(normal)) {
+            normalContent = normal.deleteCharAt(normal.length() - 1).toString();
         }
-
+        if (!StringUtils.isEmpty(abnormality)) {
+            abnormalityContent = abnormality.deleteCharAt(abnormality.length() - 1).toString();
+        }
+        if (!StringUtils.isEmpty(abnormality) && !StringUtils.isEmpty(normal)) {
+            builder.write("根据所掌握的资料，" + normalContent + "为正常交易，无需进行交易情况修正。" + abnormalityContent + "为不正常交易，需进行交易情况修正。");
+        } else if (StringUtils.isEmpty(abnormality) && !StringUtils.isEmpty(normal)) {
+            builder.write("根据所掌握的资料，" + normalContent + "均为正常交易，无需进行交易情况修正。");
+        } else {
+            builder.write("根据所掌握的资料，" + normalContent + "均为不正常交易，需进行交易情况修正。");
+        }
 
         doc.save(localPath);
         return localPath;
@@ -481,6 +566,8 @@ public class GenerateMdCompareService {
     public String getHousepriceIndex(String title, List<MdMarketCompareItem> caseItemList) throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
+        //表格属性
+        setTableProperty(builder);
         builder.writeln(title);
         //表头
         builder.insertCell();
@@ -522,17 +609,142 @@ public class GenerateMdCompareService {
                 }
             }
         }
-        //表格属性
-        setTableProperty(builder);
+
+        builder.endTable();
         doc.save(localPath);
         return localPath;
     }
 
 
+    /**
+     * 案例个数
+     *
+     * @param title 标题
+     * @param size  案列个数
+     * @return
+     */
+    public String getCaseNumber(String title, Integer size) throws Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        builder.getFont().setSize(14);
+        builder.getFont().setName("仿宋");
+        builder.write("共" + size.toString() + "个，情况详见下表：");
+        String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+
+        doc.save(localPath);
+        return localPath;
+    }
+
+
+    /**
+     * 财产范围
+     *
+     * @param title                 标题
+     * @param caseItemList          案列对象
+     * @param marketCompareItemDtos 估价对象
+     * @return
+     */
+    public String getComparePropertyRange(String
+                                                  title, List<MarketCompareItemDto> marketCompareItemDtos, List<MdMarketCompareItem> caseItemList, String
+                                                  fieldName) throws Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        builder.getFont().setSize(14);
+        builder.getFont().setName("仿宋");
+        DataSetUseField cacheSetUseFieldList = dataSetUseFieldService.getCacheSetUseFieldByFieldName(fieldName);
+        String propertyRange = new String();
+        for (MarketCompareItemDto item : marketCompareItemDtos) {
+            if (cacheSetUseFieldList.getFieldName().equals(item.getName())) {
+                propertyRange = item.getValue();
+            }
+        }
+        StringBuilder accordance = new StringBuilder();
+        StringBuilder difference = new StringBuilder();
+        if (CollectionUtils.isNotEmpty(caseItemList)) {
+            for (MdMarketCompareItem item : caseItemList) {
+                List<MarketCompareItemDto> dtos = JSON.parseArray(item.getJsonContent(), MarketCompareItemDto.class);
+                for (MarketCompareItemDto caseItem : dtos) {
+                    if (cacheSetUseFieldList.getFieldName().equals(caseItem.getName())) {
+                        if (propertyRange.equals(caseItem.getValue())) {
+                            accordance.append(item.getName() + "、");
+                        } else {
+                            difference.append(item.getName() + "为" + caseItem.getValue() + ",");
+                        }
+                    }
+                }
+            }
+        }
+        String accordanceContent = new String();
+        String differenceContent = new String();
+        if (!StringUtils.isEmpty(accordance)) {
+            accordanceContent = accordance.deleteCharAt(accordance.length() - 1).toString();
+        }
+        if (!StringUtils.isEmpty(difference)) {
+            differenceContent = difference.deleteCharAt(difference.length() - 1).toString();
+        }
+        if (!StringUtils.isEmpty(difference) && !StringUtils.isEmpty(accordance)) {
+            builder.write("统一" + cacheSetUseFieldList.getName() + "： 估价对象与" + accordanceContent + "为" + propertyRange + "，" + differenceContent + "。");
+        } else if (StringUtils.isEmpty(difference) && !StringUtils.isEmpty(accordance)) {
+            builder.write("统一" + cacheSetUseFieldList.getName() + "： 估价对象与" + accordanceContent + "为" + propertyRange + "，已统一。");
+        } else {
+            builder.write("统一" + cacheSetUseFieldList.getName() + "： 估价对象为" + propertyRange + "，" + differenceContent + "。");
+        }
+
+        doc.save(localPath);
+        return localPath;
+    }
+
+
+    /**
+     * 测算结果
+     *
+     * @param title        标题
+     * @param caseItemList 案列对象
+     * @param isCourse     是否过程
+     * @return
+     */
+    public String getCountCourse(String title, List<MdMarketCompareItem> caseItemList, boolean isCourse) throws
+            Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        builder.getFont().setSize(14);
+        builder.getFont().setName("仿宋");
+        String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        StringBuilder content = new StringBuilder();
+        BigDecimal num = new BigDecimal("0");
+        content.append("(");
+        if (CollectionUtils.isNotEmpty(caseItemList)) {
+            for (MdMarketCompareItem item : caseItemList) {
+                if (!StringUtils.isEmpty(item.getWeight())) {
+                    BigDecimal temp = new BigDecimal(item.getSpecificPrice()).multiply(new BigDecimal(item.getWeight()));
+                    num = num.add(temp);
+                    content.append(item.getSpecificPrice() + "*" + item.getWeight() + "+");
+                } else {
+                    num = num.add(new BigDecimal(item.getSpecificPrice()));
+                    content.append(item.getSpecificPrice() + "+");
+                }
+            }
+        }
+        num = num.divide(new BigDecimal(String.valueOf(caseItemList.size())));
+        String result = String.format("%.2f", num);
+        content.deleteCharAt(content.length() - 1);
+        content.append(")").append("÷").append(caseItemList.size()).append("=").append(result);
+        if (isCourse) {
+            builder.write("比较价格:" + content.toString() + "元/㎡;");
+        } else {
+            builder.write("即,估价对象房地产的单价为" + result + "元/㎡。");
+        }
+
+        doc.save(localPath);
+        return localPath;
+    }
 
 
     //设置表格属性
     public void setTableProperty(DocumentBuilder builder) throws Exception {
+        builder.getFont().setSize(9);
+        builder.getFont().setName("仿宋");
         //设置表格边框的宽度
         builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
         builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
@@ -544,7 +756,7 @@ public class GenerateMdCompareService {
         builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
         //上下居中
         builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
-        builder.endTable();
+
     }
 
 }

@@ -11,11 +11,17 @@ import java.util.List;
  * @Description:报告模板字段
  */
 public enum BaseReportFieldCompareEnum {
+    CASE_NUMBER("", "案例个数", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+
     COMPARABLE_BASIS("", "比较法委估对象可比基础", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     LOCATION_CONDITION("", "比较法估价对象区位状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     RIGHTS_INTERESTS("", "比较法估价对象权益状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     ENTITY_CONDITION("", "比较法估价对象实体状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
+    PROPERTY_RANGE("", "比较法财产范围", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    PAYMENT_METHOD("", "比较法付款方式", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    FINANCING_CONDITION("", "比较法融资条件", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    TAX_BURDEN("", "比较法税费负担", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     TRANSACTION_MODIFICATION("", "比较法交易情况修正", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     DATE_REVISION("", "比较法期日修正", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
@@ -24,6 +30,8 @@ public enum BaseReportFieldCompareEnum {
     EQUITY_INDEX("", "比较法估价对象权益指数表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     ENTITY_INDEX("", "比较法估价对象实体指数表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     CALCULATION_RESULT("", "比较法测算结果表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    COUNT_COURSE("", "比较法测算过程", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    COUNT_RESULT("", "比较法测算结果", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
 
     HOUSEPRICE_INDEX("", "比较法房价指数表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
     ;
