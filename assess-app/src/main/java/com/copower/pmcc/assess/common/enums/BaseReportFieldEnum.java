@@ -145,6 +145,7 @@ public enum BaseReportFieldEnum {
 
 
     judgeSummarySheet("", "估价汇总表"),
+    EquityStatusValuatedObject("", "估价对象权属状况表"),
     //土地证
     judgeObjectLandUseCertificateSheet("", "土地使用权登记状况"),
 

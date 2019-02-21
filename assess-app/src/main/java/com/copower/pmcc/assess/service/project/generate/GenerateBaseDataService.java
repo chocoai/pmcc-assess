@@ -1783,7 +1783,7 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 估价对象权益状况
+     * 估价对象权属状况表
      *
      * @return
      * @throws Exception
@@ -1827,8 +1827,6 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        builder.writeln("1、房屋及土地权属登记状况");
-        builder.writeln("根据估价委托方提供的估价对象《不动产权证》复印件，估价对象房屋权属状况见下表：");
         if (!objectDeclareRealtyRealEstateCertVoMap.isEmpty()) {
             final int colMax = 11;
             Table table = builder.startTable();
@@ -1850,27 +1848,57 @@ public class GenerateBaseDataService {
             for (Map.Entry<SchemeJudgeObject, DeclareRealtyRealEstateCertVo> realEstateCertVoEntry : objectDeclareRealtyRealEstateCertVoMap.entrySet()) {
                 for (int j = 0; j < colMax; j++) {
                     builder.insertCell();
-                    if (j == 0)
-                        builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getKey().getNumber()) ? realEstateCertVoEntry.getKey().getNumber() : ""));
-                    if (j == 1)
-                        builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getCertName()) ? realEstateCertVoEntry.getValue().getCertName() : ""));
-                    if (j == 2)
-                        builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getOwnership()) ? realEstateCertVoEntry.getValue().getOwnership() : ""));
-                    if (j == 3)
-                        builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getPublicSituation()) ? realEstateCertVoEntry.getValue().getPublicSituation() : ""));
-                    if (j == 4)
-                        builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getBeLocated()) ? realEstateCertVoEntry.getValue().getBeLocated() : ""));
-                    if (j == 5)
-                        builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getPurpose()) ? baseDataDicService.getNameById(realEstateCertVoEntry.getValue().getPurpose()) : ""));
-                    if (j == 6)
-                        builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getUseEndDate().toString()) ? DateUtils.format(realEstateCertVoEntry.getValue().getUseEndDate(), DateUtils.DATE_CHINESE_PATTERN) : ""));
-                    if (j == 7)
-                        builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getFloorCount().toString()) ? realEstateCertVoEntry.getValue().getFloorCount().toString() : ""));
+                    if (j == 0) {
+                        if (StringUtils.isNotBlank(realEstateCertVoEntry.getKey().getNumber())) {
+                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getKey().getNumber()) ? realEstateCertVoEntry.getKey().getNumber() : ""));
+                        }
+                    }
+                    if (j == 1) {
+                        if (StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getCertName())) {
+                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getCertName()) ? realEstateCertVoEntry.getValue().getCertName() : ""));
+                        }
+                    }
+                    if (j == 2) {
+                        if (StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getOwnership())) {
+                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getOwnership()) ? realEstateCertVoEntry.getValue().getOwnership() : ""));
+                        }
+                    }
+                    if (j == 3) {
+                        if (StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getPublicSituation())) {
+                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getPublicSituation()) ? realEstateCertVoEntry.getValue().getPublicSituation() : ""));
+                        }
+                    }
+                    if (j == 4) {
+                        if (StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getBeLocated())) {
+                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getBeLocated()) ? realEstateCertVoEntry.getValue().getBeLocated() : ""));
+                        }
+                    }
+                    if (j == 5) {
+                        if (StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getPurpose())) {
+                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getPurpose()) ? baseDataDicService.getNameById(realEstateCertVoEntry.getValue().getPurpose()) : ""));
+                        }
+                    }
+                    if (j == 6) {
+                        if (realEstateCertVoEntry.getValue().getUseEndDate() != null) {
+                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getUseEndDate().toString()) ? DateUtils.format(realEstateCertVoEntry.getValue().getUseEndDate(), DateUtils.DATE_CHINESE_PATTERN) : ""));
+                        }
+                    }
+                    if (j == 7) {
+                        if (realEstateCertVoEntry.getValue().getFloorCount() != null) {
+                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getFloorCount().toString()) ? realEstateCertVoEntry.getValue().getFloorCount().toString() : ""));
+                        }
+                    }
                     if (j == 8) builder.writeln(String.format("%s", "无"));
-                    if (j == 9)
-                        builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getApportionmentArea().toString()) ? realEstateCertVoEntry.getValue().getApportionmentArea().toString() : ""));
-                    if (j == 10)
-                        builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getFloorArea().toString()) ? realEstateCertVoEntry.getValue().getFloorArea().toString() : ""));
+                    if (j == 9) {
+                        if (realEstateCertVoEntry.getValue().getApportionmentArea() != null) {
+                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getApportionmentArea().toString()) ? realEstateCertVoEntry.getValue().getApportionmentArea().toString() : ""));
+                        }
+                    }
+                    if (j == 10) {
+                        if (realEstateCertVoEntry.getValue().getFloorArea() != null) {
+                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getFloorArea().toString()) ? realEstateCertVoEntry.getValue().getFloorArea().toString() : ""));
+                        }
+                    }
                 }
                 builder.endRow();
             }
@@ -1887,72 +1915,6 @@ public class GenerateBaseDataService {
             builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
             builder.endTable();
         }
-        //规划条件
-        Set<String> planningConditions = Sets.newHashSet();
-        //所有权
-        Set<String> ownerships = Sets.newHashSet();
-        //共有权情况
-        Set<String> coOwnership = Sets.newHashSet();
-        //租赁或占用情况
-        Set<String> rentalPossessionDesc = Sets.newHashSet();
-        //拖欠工程款情况
-        Set<String> statutoryOptimumReimbursement = Sets.newHashSet();
-        if (CollectionUtils.isNotEmpty(projectPhases) && CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (ProjectPhase projectPhase : projectPhases) {
-                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                    ownerships.add(schemeJudgeObject.getOwnership());
-                    ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(getProjectId());
-                    query.setProjectPhaseId(projectPhase.getId());
-                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                        for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                            GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
-                            if (generateBaseExamineService.getBasicApply().getId() != null && generateBaseExamineService.getBasicApply().getId().intValue() != 0) {
-                                StringBuilder stringBuilder = new StringBuilder(128);
-                                BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
-                                if (landStateVo != null) {
-                                    if (StringUtils.isNotBlank(landStateVo.getPlotRatio())) {
-                                        stringBuilder.append("容积率%").append(landStateVo.getPlotRatio());
-                                    }
-                                    if (StringUtils.isNotBlank(landStateVo.getBuildingDensity())) {
-                                        stringBuilder.append("建筑密度%").append(landStateVo.getBuildingDensity());
-                                    }
-                                    if (StringUtils.isNotBlank(landStateVo.getGreenSpaceRate())) {
-                                        stringBuilder.append("绿地率%").append(landStateVo.getGreenSpaceRate());
-                                    }
-                                }
-                                if (StringUtils.isNotBlank(stringBuilder.toString())) {
-                                    planningConditions.add(stringBuilder.toString());
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        coOwnership.add("独自所有");
-        rentalPossessionDesc.add(getRentalPossessionDesc());
-        statutoryOptimumReimbursement.add(getStatutoryOptimumReimbursement());
-
-        builder.writeln("2、用途:");
-        builder.writeln(String.format("%s%s", getSeparationCertificateUses(), getPracticalUse()));
-        builder.writeln("3、规划条件:");
-        builder.writeln(String.format("%s", toSetString(planningConditions)));
-        builder.writeln("4、所有权:");
-        builder.writeln(String.format("%s", toSetString(ownerships)));
-        builder.writeln("5、共有权情况:");
-        builder.writeln(String.format("%s", toSetString(coOwnership)));
-        builder.writeln("6、用益物权设立情况:暂无");
-        builder.writeln("7、担保物权设立情况:暂无");
-        builder.writeln("8、租赁或占用情况:");
-        builder.writeln(String.format("%s", toSetString(rentalPossessionDesc)));
-        builder.writeln("9、拖欠工程款情况:");
-        builder.writeln(String.format("%s", toSetString(statutoryOptimumReimbursement)));
-        builder.writeln("10、权属清晰情况:权属清晰");
-        builder.writeln(String.format("%s%s", "11、其他:", getInventoryRight()));
-
         doc.save(localPath);
         return localPath;
     }
@@ -2232,14 +2194,41 @@ public class GenerateBaseDataService {
             for (Map.Entry<SchemeJudgeObject, Integer> integerEntry : judgeObjectIntegerMap.entrySet()) {
                 for (int j = 0; j < colMax; j++) {
                     builder.insertCell();
-                    if (j == 0) builder.writeln(String.format("%s%s", "估价对象", integerEntry.getKey().getNumber()));
-                    //抵押 == >取法定优先受偿款(万元)
+                    if (j == 0) {
+                        builder.writeln(integerEntry.getKey().getName());
+                    }
                     if (Objects.equal(getSchemeAreaGroup().getEntrustPurpose(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId())) {
-                        //抵押价值金额
-                        //schemeReimbursementService.getFullDescription(schemeJudgeObject.getId());
+                        //抵押=总价-法定
+                        SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByPlanDetailsId(integerEntry.getValue());
+                        if (schemeReimbursement != null) {
+                            if (schemeReimbursement.getKnowTotalPrice() != null) {
+                                if (j == 9) builder.writeln(schemeReimbursement.getKnowTotalPrice().toString());
+                            }
+                            if (integerEntry.getKey().getPrice() != null && integerEntry.getKey().getEvaluationArea() != null) {
+                                BigDecimal totol = integerEntry.getKey().getPrice().multiply(integerEntry.getKey().getEvaluationArea());
+                                if (totol != null && schemeReimbursement.getKnowTotalPrice() != null) {
+                                    BigDecimal mortgage = totol.subtract(schemeReimbursement.getKnowTotalPrice());
+                                    if (j == 10) builder.writeln(mortgage.toString());
+                                }
+                            }
+                        }
 
                     } else {
-
+                        GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(integerEntry.getValue());
+                        if (j == 1) builder.writeln(integerEntry.getKey().getSeat());
+                        if (j == 2) builder.writeln(integerEntry.getKey().getCertUse());
+                        if (j == 3) builder.writeln(integerEntry.getKey().getPracticalUse());
+                        if (j == 4)
+                            builder.writeln(generateBaseExamineService.getBasicBuilding().getFloorCount().toString());
+                        if (j == 5) builder.writeln(generateBaseExamineService.getBasicHouse().getFloor());
+                        if (j == 6) builder.writeln(integerEntry.getKey().getEvaluationArea().toString());
+                        if (j == 7) builder.writeln(integerEntry.getKey().getPrice().toString());
+                        if (j == 8) {
+                            if (integerEntry.getKey().getPrice() != null && integerEntry.getKey().getEvaluationArea() != null) {
+                                BigDecimal total = integerEntry.getKey().getPrice().multiply(integerEntry.getKey().getEvaluationArea());
+                                builder.writeln(total.toString());
+                            }
+                        }
                     }
                 }
                 builder.endRow();
