@@ -20,6 +20,8 @@
     <result column="room_number" property="roomNumber" jdbcType="VARCHAR" />
     <result column="cert_use" property="certUse" jdbcType="VARCHAR" />
     <result column="practical_use" property="practicalUse" jdbcType="VARCHAR" />
+    <result column="land_cert_use" property="landCertUse" jdbcType="VARCHAR" />
+    <result column="land_practical_use" property="landPracticalUse" jdbcType="VARCHAR" />
     <result column="public_situation" property="publicSituation" jdbcType="VARCHAR" />
     <result column="floor_area" property="floorArea" jdbcType="DECIMAL" />
     <result column="area_group_id" property="areaGroupId" jdbcType="INTEGER" />
@@ -95,9 +97,9 @@
   <sql id="Base_Column_List" >
     id, project_id, data_table_name, data_table_id, province, city, district, name, ownership, 
     seat, street_number, attached_number, building_number, unit, floor, room_number, 
-    cert_use, practical_use, public_situation, floor_area, area_group_id, house_use_end_date, 
-    land_use_end_date, inventory_content_key, price, assess_area, already_out_area, bis_generate_all, 
-    creator, gmt_created, gmt_modified
+    cert_use, practical_use, land_cert_use, land_practical_use, public_situation, floor_area, 
+    area_group_id, house_use_end_date, land_use_end_date, inventory_content_key, price, 
+    assess_area, already_out_area, bis_generate_all, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecordExample" >
     select
@@ -138,23 +140,23 @@
       name, ownership, seat, 
       street_number, attached_number, building_number, 
       unit, floor, room_number, 
-      cert_use, practical_use, public_situation, 
-      floor_area, area_group_id, house_use_end_date, 
-      land_use_end_date, inventory_content_key, 
-      price, assess_area, already_out_area, 
-      bis_generate_all, creator, gmt_created, 
-      gmt_modified)
+      cert_use, practical_use, land_cert_use, 
+      land_practical_use, public_situation, floor_area, 
+      area_group_id, house_use_end_date, land_use_end_date, 
+      inventory_content_key, price, assess_area, 
+      already_out_area, bis_generate_all, creator, 
+      gmt_created, gmt_modified)
     values (#{projectId,jdbcType=INTEGER}, #{dataTableName,jdbcType=VARCHAR}, #{dataTableId,jdbcType=INTEGER}, 
       #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, #{seat,jdbcType=VARCHAR}, 
       #{streetNumber,jdbcType=VARCHAR}, #{attachedNumber,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=VARCHAR}, 
       #{unit,jdbcType=VARCHAR}, #{floor,jdbcType=VARCHAR}, #{roomNumber,jdbcType=VARCHAR}, 
-      #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, #{publicSituation,jdbcType=VARCHAR}, 
-      #{floorArea,jdbcType=DECIMAL}, #{areaGroupId,jdbcType=INTEGER}, #{houseUseEndDate,jdbcType=TIMESTAMP}, 
-      #{landUseEndDate,jdbcType=TIMESTAMP}, #{inventoryContentKey,jdbcType=VARCHAR}, 
-      #{price,jdbcType=DECIMAL}, #{assessArea,jdbcType=DECIMAL}, #{alreadyOutArea,jdbcType=DECIMAL}, 
-      #{bisGenerateAll,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, #{landCertUse,jdbcType=VARCHAR}, 
+      #{landPracticalUse,jdbcType=VARCHAR}, #{publicSituation,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, 
+      #{areaGroupId,jdbcType=INTEGER}, #{houseUseEndDate,jdbcType=TIMESTAMP}, #{landUseEndDate,jdbcType=TIMESTAMP}, 
+      #{inventoryContentKey,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{assessArea,jdbcType=DECIMAL}, 
+      #{alreadyOutArea,jdbcType=DECIMAL}, #{bisGenerateAll,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecord" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -212,6 +214,12 @@
       </if>
       <if test="practicalUse != null" >
         practical_use,
+      </if>
+      <if test="landCertUse != null" >
+        land_cert_use,
+      </if>
+      <if test="landPracticalUse != null" >
+        land_practical_use,
       </if>
       <if test="publicSituation != null" >
         public_situation,
@@ -304,6 +312,12 @@
       </if>
       <if test="practicalUse != null" >
         #{practicalUse,jdbcType=VARCHAR},
+      </if>
+      <if test="landCertUse != null" >
+        #{landCertUse,jdbcType=VARCHAR},
+      </if>
+      <if test="landPracticalUse != null" >
+        #{landPracticalUse,jdbcType=VARCHAR},
       </if>
       <if test="publicSituation != null" >
         #{publicSituation,jdbcType=VARCHAR},
@@ -409,6 +423,12 @@
       <if test="record.practicalUse != null" >
         practical_use = #{record.practicalUse,jdbcType=VARCHAR},
       </if>
+      <if test="record.landCertUse != null" >
+        land_cert_use = #{record.landCertUse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landPracticalUse != null" >
+        land_practical_use = #{record.landPracticalUse,jdbcType=VARCHAR},
+      </if>
       <if test="record.publicSituation != null" >
         public_situation = #{record.publicSituation,jdbcType=VARCHAR},
       </if>
@@ -473,6 +493,8 @@
       room_number = #{record.roomNumber,jdbcType=VARCHAR},
       cert_use = #{record.certUse,jdbcType=VARCHAR},
       practical_use = #{record.practicalUse,jdbcType=VARCHAR},
+      land_cert_use = #{record.landCertUse,jdbcType=VARCHAR},
+      land_practical_use = #{record.landPracticalUse,jdbcType=VARCHAR},
       public_situation = #{record.publicSituation,jdbcType=VARCHAR},
       floor_area = #{record.floorArea,jdbcType=DECIMAL},
       area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
@@ -544,6 +566,12 @@
       <if test="practicalUse != null" >
         practical_use = #{practicalUse,jdbcType=VARCHAR},
       </if>
+      <if test="landCertUse != null" >
+        land_cert_use = #{landCertUse,jdbcType=VARCHAR},
+      </if>
+      <if test="landPracticalUse != null" >
+        land_practical_use = #{landPracticalUse,jdbcType=VARCHAR},
+      </if>
       <if test="publicSituation != null" >
         public_situation = #{publicSituation,jdbcType=VARCHAR},
       </if>
@@ -605,6 +633,8 @@
       room_number = #{roomNumber,jdbcType=VARCHAR},
       cert_use = #{certUse,jdbcType=VARCHAR},
       practical_use = #{practicalUse,jdbcType=VARCHAR},
+      land_cert_use = #{landCertUse,jdbcType=VARCHAR},
+      land_practical_use = #{landPracticalUse,jdbcType=VARCHAR},
       public_situation = #{publicSituation,jdbcType=VARCHAR},
       floor_area = #{floorArea,jdbcType=DECIMAL},
       area_group_id = #{areaGroupId,jdbcType=INTEGER},

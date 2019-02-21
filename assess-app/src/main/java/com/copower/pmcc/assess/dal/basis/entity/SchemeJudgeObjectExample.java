@@ -1086,6 +1086,146 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
+        public Criteria andLandCertUseIsNull() {
+            addCriterion("land_cert_use is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseIsNotNull() {
+            addCriterion("land_cert_use is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseEqualTo(String value) {
+            addCriterion("land_cert_use =", value, "landCertUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseNotEqualTo(String value) {
+            addCriterion("land_cert_use <>", value, "landCertUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseGreaterThan(String value) {
+            addCriterion("land_cert_use >", value, "landCertUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseGreaterThanOrEqualTo(String value) {
+            addCriterion("land_cert_use >=", value, "landCertUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseLessThan(String value) {
+            addCriterion("land_cert_use <", value, "landCertUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseLessThanOrEqualTo(String value) {
+            addCriterion("land_cert_use <=", value, "landCertUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseLike(String value) {
+            addCriterion("land_cert_use like", value, "landCertUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseNotLike(String value) {
+            addCriterion("land_cert_use not like", value, "landCertUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseIn(List<String> values) {
+            addCriterion("land_cert_use in", values, "landCertUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseNotIn(List<String> values) {
+            addCriterion("land_cert_use not in", values, "landCertUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseBetween(String value1, String value2) {
+            addCriterion("land_cert_use between", value1, value2, "landCertUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseNotBetween(String value1, String value2) {
+            addCriterion("land_cert_use not between", value1, value2, "landCertUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandPracticalUseIsNull() {
+            addCriterion("land_practical_use is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandPracticalUseIsNotNull() {
+            addCriterion("land_practical_use is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandPracticalUseEqualTo(String value) {
+            addCriterion("land_practical_use =", value, "landPracticalUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandPracticalUseNotEqualTo(String value) {
+            addCriterion("land_practical_use <>", value, "landPracticalUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandPracticalUseGreaterThan(String value) {
+            addCriterion("land_practical_use >", value, "landPracticalUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandPracticalUseGreaterThanOrEqualTo(String value) {
+            addCriterion("land_practical_use >=", value, "landPracticalUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandPracticalUseLessThan(String value) {
+            addCriterion("land_practical_use <", value, "landPracticalUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandPracticalUseLessThanOrEqualTo(String value) {
+            addCriterion("land_practical_use <=", value, "landPracticalUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandPracticalUseLike(String value) {
+            addCriterion("land_practical_use like", value, "landPracticalUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandPracticalUseNotLike(String value) {
+            addCriterion("land_practical_use not like", value, "landPracticalUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandPracticalUseIn(List<String> values) {
+            addCriterion("land_practical_use in", values, "landPracticalUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandPracticalUseNotIn(List<String> values) {
+            addCriterion("land_practical_use not in", values, "landPracticalUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandPracticalUseBetween(String value1, String value2) {
+            addCriterion("land_practical_use between", value1, value2, "landPracticalUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandPracticalUseNotBetween(String value1, String value2) {
+            addCriterion("land_practical_use not between", value1, value2, "landPracticalUse");
+            return (Criteria) this;
+        }
+
         public Criteria andSetUseIsNull() {
             addCriterion("set_use is null");
             return (Criteria) this;

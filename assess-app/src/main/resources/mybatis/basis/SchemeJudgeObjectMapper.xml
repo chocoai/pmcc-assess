@@ -17,6 +17,8 @@
     <result column="seat" property="seat" jdbcType="VARCHAR" />
     <result column="cert_use" property="certUse" jdbcType="VARCHAR" />
     <result column="practical_use" property="practicalUse" jdbcType="VARCHAR" />
+    <result column="land_cert_use" property="landCertUse" jdbcType="VARCHAR" />
+    <result column="land_practical_use" property="landPracticalUse" jdbcType="VARCHAR" />
     <result column="set_use" property="setUse" jdbcType="INTEGER" />
     <result column="best_use" property="bestUse" jdbcType="INTEGER" />
     <result column="floor_area" property="floorArea" jdbcType="DECIMAL" />
@@ -97,9 +99,10 @@
   <sql id="Base_Column_List" >
     id, pid, project_id, area_group_id, original_area_group_id, declare_record_id, number, 
     original_number, split_number, name, cert_name, ownership, seat, cert_use, practical_use, 
-    set_use, best_use, floor_area, evaluation_area, price, original_price, rental_possession_desc, 
-    collateral_found, liquid_ratio, liquid_ratio_explain, bis_split, bis_merge, bis_enable, 
-    bis_set_function, sorting, creator, gmt_created, gmt_modified
+    land_cert_use, land_practical_use, set_use, best_use, floor_area, evaluation_area, 
+    price, original_price, rental_possession_desc, collateral_found, liquid_ratio, liquid_ratio_explain, 
+    bis_split, bis_merge, bis_enable, bis_set_function, sorting, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObjectExample" >
     select
@@ -139,24 +142,26 @@
       original_area_group_id, declare_record_id, number, 
       original_number, split_number, name, 
       cert_name, ownership, seat, 
-      cert_use, practical_use, set_use, 
-      best_use, floor_area, evaluation_area, 
-      price, original_price, rental_possession_desc, 
-      collateral_found, liquid_ratio, liquid_ratio_explain, 
-      bis_split, bis_merge, bis_enable, 
-      bis_set_function, sorting, creator, 
-      gmt_created, gmt_modified)
+      cert_use, practical_use, land_cert_use, 
+      land_practical_use, set_use, best_use, 
+      floor_area, evaluation_area, price, 
+      original_price, rental_possession_desc, collateral_found, 
+      liquid_ratio, liquid_ratio_explain, bis_split, 
+      bis_merge, bis_enable, bis_set_function, 
+      sorting, creator, gmt_created, 
+      gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{areaGroupId,jdbcType=INTEGER}, 
       #{originalAreaGroupId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, 
       #{originalNumber,jdbcType=VARCHAR}, #{splitNumber,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{certName,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, #{seat,jdbcType=VARCHAR}, 
-      #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, #{setUse,jdbcType=INTEGER}, 
-      #{bestUse,jdbcType=INTEGER}, #{floorArea,jdbcType=DECIMAL}, #{evaluationArea,jdbcType=DECIMAL}, 
-      #{price,jdbcType=DECIMAL}, #{originalPrice,jdbcType=DECIMAL}, #{rentalPossessionDesc,jdbcType=VARCHAR}, 
-      #{collateralFound,jdbcType=VARCHAR}, #{liquidRatio,jdbcType=VARCHAR}, #{liquidRatioExplain,jdbcType=VARCHAR}, 
-      #{bisSplit,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, 
-      #{bisSetFunction,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, #{landCertUse,jdbcType=VARCHAR}, 
+      #{landPracticalUse,jdbcType=VARCHAR}, #{setUse,jdbcType=INTEGER}, #{bestUse,jdbcType=INTEGER}, 
+      #{floorArea,jdbcType=DECIMAL}, #{evaluationArea,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, 
+      #{originalPrice,jdbcType=DECIMAL}, #{rentalPossessionDesc,jdbcType=VARCHAR}, #{collateralFound,jdbcType=VARCHAR}, 
+      #{liquidRatio,jdbcType=VARCHAR}, #{liquidRatioExplain,jdbcType=VARCHAR}, #{bisSplit,jdbcType=BIT}, 
+      #{bisMerge,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, #{bisSetFunction,jdbcType=BIT}, 
+      #{sorting,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -205,6 +210,12 @@
       </if>
       <if test="practicalUse != null" >
         practical_use,
+      </if>
+      <if test="landCertUse != null" >
+        land_cert_use,
+      </if>
+      <if test="landPracticalUse != null" >
+        land_practical_use,
       </if>
       <if test="setUse != null" >
         set_use,
@@ -303,6 +314,12 @@
       </if>
       <if test="practicalUse != null" >
         #{practicalUse,jdbcType=VARCHAR},
+      </if>
+      <if test="landCertUse != null" >
+        #{landCertUse,jdbcType=VARCHAR},
+      </if>
+      <if test="landPracticalUse != null" >
+        #{landPracticalUse,jdbcType=VARCHAR},
       </if>
       <if test="setUse != null" >
         #{setUse,jdbcType=INTEGER},
@@ -414,6 +431,12 @@
       <if test="record.practicalUse != null" >
         practical_use = #{record.practicalUse,jdbcType=VARCHAR},
       </if>
+      <if test="record.landCertUse != null" >
+        land_cert_use = #{record.landCertUse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landPracticalUse != null" >
+        land_practical_use = #{record.landPracticalUse,jdbcType=VARCHAR},
+      </if>
       <if test="record.setUse != null" >
         set_use = #{record.setUse,jdbcType=INTEGER},
       </if>
@@ -490,6 +513,8 @@
       seat = #{record.seat,jdbcType=VARCHAR},
       cert_use = #{record.certUse,jdbcType=VARCHAR},
       practical_use = #{record.practicalUse,jdbcType=VARCHAR},
+      land_cert_use = #{record.landCertUse,jdbcType=VARCHAR},
+      land_practical_use = #{record.landPracticalUse,jdbcType=VARCHAR},
       set_use = #{record.setUse,jdbcType=INTEGER},
       best_use = #{record.bestUse,jdbcType=INTEGER},
       floor_area = #{record.floorArea,jdbcType=DECIMAL},
@@ -556,6 +581,12 @@
       </if>
       <if test="practicalUse != null" >
         practical_use = #{practicalUse,jdbcType=VARCHAR},
+      </if>
+      <if test="landCertUse != null" >
+        land_cert_use = #{landCertUse,jdbcType=VARCHAR},
+      </if>
+      <if test="landPracticalUse != null" >
+        land_practical_use = #{landPracticalUse,jdbcType=VARCHAR},
       </if>
       <if test="setUse != null" >
         set_use = #{setUse,jdbcType=INTEGER},
@@ -630,6 +661,8 @@
       seat = #{seat,jdbcType=VARCHAR},
       cert_use = #{certUse,jdbcType=VARCHAR},
       practical_use = #{practicalUse,jdbcType=VARCHAR},
+      land_cert_use = #{landCertUse,jdbcType=VARCHAR},
+      land_practical_use = #{landPracticalUse,jdbcType=VARCHAR},
       set_use = #{setUse,jdbcType=INTEGER},
       best_use = #{bestUse,jdbcType=INTEGER},
       floor_area = #{floorArea,jdbcType=DECIMAL},

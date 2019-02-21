@@ -34,6 +34,10 @@ public class SchemeJudgeObject {
 
     private String practicalUse;
 
+    private String landCertUse;
+
+    private String landPracticalUse;
+
     private Integer setUse;
 
     private Integer bestUse;
@@ -188,6 +192,22 @@ public class SchemeJudgeObject {
 
     public void setPracticalUse(String practicalUse) {
         this.practicalUse = practicalUse == null ? null : practicalUse.trim();
+    }
+
+    public String getLandCertUse() {
+        return landCertUse;
+    }
+
+    public void setLandCertUse(String landCertUse) {
+        this.landCertUse = landCertUse == null ? null : landCertUse.trim();
+    }
+
+    public String getLandPracticalUse() {
+        return landPracticalUse;
+    }
+
+    public void setLandPracticalUse(String landPracticalUse) {
+        this.landPracticalUse = landPracticalUse == null ? null : landPracticalUse.trim();
     }
 
     public Integer getSetUse() {
