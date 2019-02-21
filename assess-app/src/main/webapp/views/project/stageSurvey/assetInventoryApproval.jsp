@@ -63,14 +63,17 @@
                             </div>
                         </div>
                     </form>
-
-                    <div class="x_title collapse-link">
-                        <h2>
-                            <small>清查内容</small>
-                        </h2>
-                        <div class="clearfix"></div>
-                    </div>
-
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
+                    <h3>清查内容</h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
                     <table class="table" id="tb_List">
                         <thead>
                         <tr>
@@ -83,6 +86,7 @@
                             <th style="width: 10%">证明文件附件</th>
                             <th style="width: 5%">证明人</th>
                             <th style="width: 6%">调查时间</th>
+                            <th style="width: 6%">确认一致</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -124,18 +128,25 @@
                                             <fmt:formatDate value="${item.surveyTime}" pattern="yyyy-MM-dd"/>
                                         </label>
                                     </td>
+                                    <td>
+                                        <label class="form-control">${item.sureConsistent}</label>
+                                    </td>
                                 </c:if>
                             </tr>
                         </c:forEach>
                         </tbody>
                     </table>
-
-                    <div class="x_title">
-                        <h2>
-                            <small>他项权利</small>
-                        </h2>
-                        <div class="clearfix"></div>
-                    </div>
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
+                    <h3>他项权利</h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
                     <table class="table table-bordered" id="tb_inventory_right_list">
                         <!-- cerare document add ajax data-->
                     </table>
@@ -276,6 +287,14 @@
                 </div>
                 <div class="form-group">
                     <div class="x-valid">
+                        <label class="col-sm-2 control-label">备注</label>
+                        <div class="col-sm-10">
+                            <label class="form-control" data-name="remark"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="x-valid">
                         <label class="col-sm-2 control-label">
                             附件
                         </label>
@@ -284,6 +303,11 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
             </div>
         </div>
     </div>

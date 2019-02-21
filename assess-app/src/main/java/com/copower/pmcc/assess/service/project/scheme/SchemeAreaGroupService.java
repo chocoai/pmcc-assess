@@ -1,17 +1,25 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.BaseConstant;
+import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeAreaGroupDao;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -19,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -32,11 +41,19 @@ public class SchemeAreaGroupService {
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
+    private DeclareRecordDao declareRecordDao;
+    @Autowired
+    private ProjectInfoService projectInfoService;
+    @Autowired
     private SchemeAreaGroupDao schemeAreaGroupDao;
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
     private ErpAreaService erpAreaService;
+    @Autowired
+    private SurveyAssetInventoryService surveyAssetInventoryService;
+    @Autowired
+    private SurveyAssetInventoryRightService surveyAssetInventoryRightService;
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
 
@@ -53,6 +70,135 @@ public class SchemeAreaGroupService {
     public List<SchemeAreaGroup> getAreaGroupList(Integer projectId) {
         List<SchemeAreaGroup> schemeAreaGroupList = schemeAreaGroupDao.getSchemeAreaGroupByProjectId(projectId);
         return schemeAreaGroupList;
+    }
+
+    /**
+     * 申报记录信息按区域分组
+     *
+     * @param declareRecords
+     * @return
+     */
+    public List<SchemeAreaGroup> groupDeclareRecord(List<DeclareRecord> declareRecords) {
+        if (CollectionUtils.isEmpty(declareRecords)) return null;
+        //1.查看区域信息
+        HashSet<String> hashSet = Sets.newHashSet();
+        String areaKey = "";
+        for (DeclareRecord declareRecord : declareRecords) {
+            areaKey = "";
+            if (StringUtils.isNotBlank(declareRecord.getProvince())) {
+                areaKey += declareRecord.getProvince() + "_";
+            }
+            if (StringUtils.isNotBlank(declareRecord.getCity())) {
+                areaKey += declareRecord.getCity() + "_";
+            }
+            if (StringUtils.isNotBlank(declareRecord.getDistrict())) {
+                areaKey += declareRecord.getDistrict();
+            }
+            if (!hashSet.contains(areaKey)) {
+                hashSet.add(areaKey);
+            }
+        }
+        if (hashSet.isEmpty()) return null;
+        List<SchemeAreaGroup> schemeAreaGroups = Lists.newArrayList();
+        hashSet.forEach(p -> {
+            SchemeAreaGroup schemeAreaGroup = new SchemeAreaGroup();
+            schemeAreaGroup.setDistrict("");
+            String[] areaIds = p.split("_");
+            if (areaIds.length > 2)
+                schemeAreaGroup.setDistrict(areaIds[2]);
+            if (areaIds.length > 1)
+                schemeAreaGroup.setCity(areaIds[1]);
+            if (areaIds.length > 0)
+                schemeAreaGroup.setProvince(areaIds[0]);
+            schemeAreaGroups.add(schemeAreaGroup);
+        });
+        return schemeAreaGroups;
+    }
+
+    /**
+     * 获取申报信息的区域分组
+     *
+     * @param projectId
+     * @return
+     */
+    public List<SchemeAreaGroupVo> getSchemeAreaGroup(Integer projectId) {
+        List<SchemeAreaGroup> voList = this.getAreaGroupList(projectId);
+        if (CollectionUtils.isNotEmpty(voList))
+            return LangUtils.transform(voList, o -> this.getSchemeAreaGroupVo(o));
+        List<DeclareRecord> declareRecords = declareRecordDao.getDeclareRecordByProjectId(projectId);
+        List<SchemeAreaGroup> areaGroups = groupDeclareRecord(declareRecords);
+        if (CollectionUtils.isNotEmpty(areaGroups)) {
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+            List<DeclareRecord> removeList = Lists.newArrayList();
+            for (SchemeAreaGroup areaGroup : areaGroups) {
+                String areaFullName = erpAreaService.getAreaFullName(areaGroup.getProvince(), areaGroup.getCity(), areaGroup.getDistrict());
+                areaGroup.setAreaName(areaFullName);
+                areaGroup.setProjectId(projectId);
+                areaGroup.setValueTimePoint(projectInfo.getValuationDate());
+                areaGroup.setEntrustPurpose(projectInfo.getEntrustPurpose());
+                areaGroup.setRemarkEntrustPurpose(projectInfo.getRemarkEntrustPurpose());
+                areaGroup.setValueDefinition(projectInfo.getValueType());
+                areaGroup.setRemarkEntrustPurpose(projectInfo.getRemarkEntrustPurpose());
+                areaGroup.setPid(0);
+                areaGroup.setCreator(commonService.thisUserAccount());
+                this.add(areaGroup);
+                int i = 1;
+                //初始化估价对象
+                for (DeclareRecord declareRecord : declareRecords) {
+                    boolean isSameProvince = StringUtils.equals(declareRecord.getProvince(), areaGroup.getProvince());
+                    boolean isSameCity = StringUtils.equals(declareRecord.getCity(), areaGroup.getCity());
+                    boolean isSameDistrict = StringUtils.equals(declareRecord.getDistrict(), areaGroup.getDistrict());
+                    if (isSameProvince && isSameCity && isSameDistrict) {
+                        SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
+                        schemeJudgeObject.setProjectId(projectId);
+                        schemeJudgeObject.setDeclareRecordId(declareRecord.getId());
+                        schemeJudgeObject.setNumber(String.valueOf(i));
+                        schemeJudgeObject.setCreator(commonService.thisUserAccount());
+                        schemeJudgeObject.setAreaGroupId(areaGroup.getId());
+                        schemeJudgeObject.setOriginalAreaGroupId(areaGroup.getId());
+                        schemeJudgeObject.setFloorArea(declareRecord.getFloorArea());
+                        schemeJudgeObject.setName(String.format("%s%s", i, BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
+                        schemeJudgeObject.setCertName(declareRecord.getName());
+                        schemeJudgeObject.setOwnership(declareRecord.getOwnership());
+                        schemeJudgeObject.setSeat(declareRecord.getSeat());
+                        schemeJudgeObject.setCertUse(declareRecord.getCertUse());
+                        schemeJudgeObject.setPracticalUse(declareRecord.getPracticalUse());
+                        //获取到房屋中的出租占用情况描述
+                        BasicHouse basicHouse = schemeJudgeObjectService.getBasicHouseByDeclareId(declareRecord.getId());
+                        if (basicHouse != null) {
+                            schemeJudgeObject.setRentalPossessionDesc(basicHouse.getDescription());
+                        }
+                        //取得他权中的担保权备注信息
+                        SurveyAssetInventory assetInventory = surveyAssetInventoryService.getDataByDeclareId(declareRecord.getId());
+                        List<SurveyAssetInventoryRight> inventoryRights = surveyAssetInventoryRightService.surveyAssetInventoryRights(assetInventory.getPlanDetailId());
+                        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE_HOUSE_GUARANTEE);
+                        if (baseDataDic != null && CollectionUtils.isNotEmpty(inventoryRights)) {
+                            StringBuilder stringBuilder = new StringBuilder();
+                            for (SurveyAssetInventoryRight inventoryRight : inventoryRights) {
+                                if(baseDataDic.getId().equals(inventoryRight.getCategory())){
+                                    stringBuilder.append(inventoryRight.getRemark());
+                                }
+                            }
+                            schemeJudgeObject.setCollateralFound(stringBuilder.toString());
+                        }
+
+                        schemeJudgeObject.setPid(0);
+                        schemeJudgeObject.setBisSplit(false);
+                        schemeJudgeObject.setSorting(i);
+                        schemeJudgeObject.setCreator(commonService.thisUserAccount());
+                        schemeJudgeObjectService.addSchemeJudgeObject(schemeJudgeObject);
+                        //反写申报数据的区域id
+                        declareRecord.setAreaGroupId(areaGroup.getId());
+                        declareRecordDao.updateDeclareRecord(declareRecord);
+
+                        removeList.add(declareRecord);//已被添加到区域的数据下次循环移除掉
+                        i++;
+                    }
+                }
+            }
+        }
+        voList = this.getAreaGroupList(projectId);
+        return LangUtils.transform(voList, o -> this.getSchemeAreaGroupVo(o));
     }
 
     /**

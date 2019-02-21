@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
@@ -74,16 +75,16 @@ public class SchemeProgrammeController {
     public ModelAndView index(Integer projectId, Integer planId) {
         String view = "/project/stageScheme/programmeIndex";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        List<SchemeAreaGroupVo> areaGroups = declareRecordService.getSchemeAreaGroup(projectId);//获取分组信息
+        List<SchemeAreaGroupVo> areaGroups = schemeAreaGroupService.getSchemeAreaGroup(projectId);//获取分组信息
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("areaGroups", areaGroups);
-        modelAndView.addObject("bestUseList", dataBestUseDescriptionService.dataBestUseDescriptionList(projectInfoVo.getProjectTypeId(),projectInfoVo.getProjectCategoryId()));
+        modelAndView.addObject("bestUseList", dataBestUseDescriptionService.dataBestUseDescriptionList(projectInfoVo.getProjectTypeId(), projectInfoVo.getProjectCategoryId()));
         modelAndView.addObject("setUseList", dataSetUseFieldService.getCacheSetUseFieldListByPid(0));
         modelAndView.addObject("dataDicMethodList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD));
-        modelAndView.addObject("valueTypes",baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE));//价值类型
-        modelAndView.addObject("entrustmentPurposes",baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE));//委托目的
-        modelAndView.addObject("valueConnotations",baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROGRAMME_VALUE_CONNOTATION));//价值内涵
+        modelAndView.addObject("valueTypes", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE));//价值类型
+        modelAndView.addObject("entrustmentPurposes", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE));//委托目的
+        modelAndView.addObject("valueConnotations", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROGRAMME_VALUE_CONNOTATION));//价值内涵
 
         modelAndView.addObject("evaluationMethodMap", evaluationMethodService.getEvaluationMethodMap());
         modelAndView.addObject("evaluationThinkingMap", evaluationThinkingService.getEvaluationThinkingMap());
@@ -97,11 +98,11 @@ public class SchemeProgrammeController {
     public ModelAndView view(Integer projectId, Integer planId) {
         String view = "/project/stageScheme/programmeView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        List<SchemeAreaGroupVo> areaGroups = declareRecordService.getSchemeAreaGroup(projectId);//获取分组信息
+        List<SchemeAreaGroupVo> areaGroups = schemeAreaGroupService.getSchemeAreaGroup(projectId);//获取分组信息
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("areaGroups", areaGroups);
-        modelAndView.addObject("bestUseList", dataBestUseDescriptionService.dataBestUseDescriptionList(projectInfoVo.getProjectTypeId(),projectInfoVo.getProjectCategoryId()));
+        modelAndView.addObject("bestUseList", dataBestUseDescriptionService.dataBestUseDescriptionList(projectInfoVo.getProjectTypeId(), projectInfoVo.getProjectCategoryId()));
         modelAndView.addObject("setUseList", baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_PRACTICAL_USE));
         modelAndView.addObject("dataDicMethodList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD));
 
@@ -289,10 +290,33 @@ public class SchemeProgrammeController {
     }
 
     @ResponseBody
-    @PostMapping(name = "更新出租占用情况", value = "/updateRentalPossessionDesc")
-    public HttpResult updateRentalPossessionDesc(Integer id,String rentalPossessionDesc) {
+    @RequestMapping(value = "/getJugdeObjectById", name = "获取估价对象信息", method = RequestMethod.GET)
+    public HttpResult getJugdeObjectById(Integer judgeObjectId) {
         try {
-            schemeJudgeObjectService.updateRentalPossessionDesc(id,rentalPossessionDesc);
+            return HttpResult.newCorrectResult(schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId));
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+            return HttpResult.newErrorResult("获取估价对象信息异常");
+        }
+    }
+
+    @ResponseBody
+    @PostMapping(name = "更新估价对象信息", value = "/updateSchemeJudgeObject")
+    public HttpResult updateSchemeJudgeObject(SchemeJudgeObject schemeJudgeObject) {
+        try {
+            schemeJudgeObjectService.updateSchemeJudgeObject(schemeJudgeObject);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error("更新估价对象信息", e);
+            return HttpResult.newErrorResult("更新估价对象信息异常");
+        }
+    }
+
+    @ResponseBody
+    @PostMapping(name = "更新出租占用情况", value = "/updateRentalPossessionDesc")
+    public HttpResult updateRentalPossessionDesc(Integer id, String rentalPossessionDesc) {
+        try {
+            schemeJudgeObjectService.updateRentalPossessionDesc(id, rentalPossessionDesc);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("更新出租占用情况", e);

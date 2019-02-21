@@ -361,7 +361,8 @@ public class SchemeJudgeObjectService {
         StringBuilder numberBuilder = new StringBuilder();
         BigDecimal floorAreaTotal = new BigDecimal("0");
         BigDecimal evaluationAreaTotal = new BigDecimal("0");
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder rpdBuilder = new StringBuilder();
+        StringBuilder collateralBuilder = new StringBuilder();
         List<String> ownershipList = Lists.newArrayList();
         List<String> seatList = Lists.newArrayList();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
@@ -375,7 +376,9 @@ public class SchemeJudgeObjectService {
             if (schemeJudgeObject.getEvaluationArea() != null)
                 evaluationAreaTotal = evaluationAreaTotal.add(schemeJudgeObject.getEvaluationArea());
             if (StringUtils.isNotBlank(schemeJudgeObject.getRentalPossessionDesc()))
-                stringBuilder.append(schemeJudgeObject.getRentalPossessionDesc()).append("\r\n");
+                rpdBuilder.append(schemeJudgeObject.getRentalPossessionDesc()).append("\r\n");
+            if (StringUtils.isNotBlank(schemeJudgeObject.getCollateralFound()))
+                collateralBuilder.append(schemeJudgeObject.getCollateralFound()).append("\r\n");
             ownershipList.add(schemeJudgeObject.getOwnership());
             seatList.add(schemeJudgeObject.getSeat());
         }
@@ -388,7 +391,8 @@ public class SchemeJudgeObjectService {
         mergeJudgeObject.setSeat(publicService.fusinString(seatList));
         mergeJudgeObject.setFloorArea(floorAreaTotal);
         mergeJudgeObject.setEvaluationArea(evaluationAreaTotal);
-        mergeJudgeObject.setRentalPossessionDesc(stringBuilder.toString());
+        mergeJudgeObject.setRentalPossessionDesc(rpdBuilder.toString());
+        mergeJudgeObject.setCollateralFound(collateralBuilder.toString());
         mergeJudgeObject.setBisSplit(false);
         mergeJudgeObject.setBisEnable(true);
         mergeJudgeObject.setBisMerge(true);

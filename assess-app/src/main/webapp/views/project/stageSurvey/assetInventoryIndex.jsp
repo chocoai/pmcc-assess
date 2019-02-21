@@ -105,13 +105,18 @@
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
+                    <h3>清查内容</h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
                     <form id="frm_asset_inventory_content" class="form-horizontal">
-                        <div class="x_title collapse-link">
-                            <h2>
-                                <small>清查内容</small>
-                            </h2>
-                            <div class="clearfix"></div>
-                        </div>
                         <table class="table" id="tb_surveyList">
                             <thead>
                             <tr>
@@ -196,7 +201,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="x-valid show-hide" style="display: ${item.sureConsistent eq '一致'?'none':'block'}">
+                                        <div class="x-valid show-hide" style="display: ${item.areConsistent eq '一致'?'none':'block'}">
                                             <select class="form-control" name="sureConsistent${item.id}" required>
                                                 <option value=""></option>
                                                 <option value="一致">一致</option>
@@ -219,13 +224,17 @@
                             </tbody>
                         </table>
                     </form>
-                    <div class="x_title ">
-                        <h2>
-                            <small>他项权利</small>
-                        </h2>
-                        <div class="clearfix"></div>
-                    </div>
-                    <p>
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
+                    <h3>他项权利</h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
                     <div class="btn-group">
                         <button type="button" class="btn btn-success" onclick="addData()"
                                 data-toggle="modal" href="#divBox"> 新增
@@ -245,7 +254,6 @@
                             </li>
                         </ul>
                     </div>
-                    </p>
                     <table class="table table-bordered" id="tb_List">
                         <!-- cerare document add ajax data-->
                     </table>
@@ -336,7 +344,6 @@
                             </label>
                             <div class="col-sm-4">
                                 <select class="form-control" required id="category" name="category">
-
                                 </select>
                             </div>
                         </div>
@@ -344,19 +351,17 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                他权证编号<span class="symbol required"></span>
+                                他权证编号
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" placeholder="他权证编号" required
-                                       id="number" name="number"
-                                       class="form-control">
+                                <input type="text" placeholder="他权证编号" id="number" name="number" class="form-control">
                             </div>
                         </div>
                         <div class="x-valid">
-                            <label class="col-sm-2 control-label">登记日期<span class="symbol required"></span></label>
+                            <label class="col-sm-2 control-label">登记日期</label>
                             <div class="col-sm-4">
                                 <input placeholder="登记日期" id="registerDate" name="registerDate"
-                                       data-date-format="yyyy-mm-dd" required
+                                       data-date-format="yyyy-mm-dd"
                                        class="form-control date-picker dbdate" readonly="readonly">
                             </div>
                         </div>
@@ -365,21 +370,18 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                义务人<span class="symbol required"></span>
+                                义务人
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" placeholder="义务人" required
-                                       id="obligor" name="obligor"
-                                       class="form-control">
+                                <input type="text" placeholder="义务人" id="obligor" name="obligor" class="form-control">
                             </div>
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                权利人<span class="symbol required"></span>
+                                权利人
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" placeholder="权利人" required
-                                       id="obligee" name="obligee" class="form-control">
+                                <input type="text" placeholder="权利人" id="obligee" name="obligee" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -653,6 +655,7 @@
             item.credential = $(tr).find('[name^="credential"]').val(); //证明文件
             item.voucher = $(tr).find('[name^="voucher"]').val(); //证明人
             item.surveyTime = $(tr).find('[name^="surveyTime"]').val(); //查勘时间
+            item.sureConsistent = $(tr).find('[name^="sureConsistent"]').val();   //确认一致
             item.projectId = ${projectPlanDetails.projectId};
             item.planDetailId = ${projectPlanDetails.id};
             item.id = $(tr).find('[name="id"]').val();    //id

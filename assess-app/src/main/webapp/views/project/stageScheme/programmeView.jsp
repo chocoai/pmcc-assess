@@ -87,7 +87,7 @@
                                 </div>
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        委托目的描述
+                                        价值类型的描述
                                     </label>
                                     <div class="col-sm-2">
                                         <label class="form-control">${item.valueDefinitionDesc}</label>
@@ -397,6 +397,26 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        备注
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <label class="form-control" data-name="remark"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        附件
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <div id="_inventoryRightFile"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -450,6 +470,70 @@
         </div>
     </div>
 </div>
+<!--查看委估对象其它信息-->
+<div id="modal_other_info" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">其它信息</h3>
+            </div>
+            <div class="modal-body">
+                <form id="frm_other_info" class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                变现比率
+                            </label>
+                            <div class="col-sm-10">
+                                <label class="form-control" name="liquidRatio"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                变现比率说明
+                            </label>
+                            <div class="col-sm-10">
+                                <label class="form-control" name="liquidRatioExplain"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                担保物设立情况
+                            </label>
+                            <div class="col-sm-10">
+                                <label class="form-control" name="collateralFound"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                出租占用情况
+                            </label>
+                            <div class="col-sm-10">
+                                <label class="form-control" name="rentalPossessionDesc"></label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--动态字段-->
 <script type="text/html" id="dynamicFieldHtml">
     <label class="col-sm-2 control-label">
@@ -492,9 +576,9 @@
         <td><label class="form-control">{evaluationArea}</label></td>
         <td>
             <a href="javascript://" onclick="setEvaluationMethod(this);"
-               class="btn btn-xs btn-success judge-method tooltips">评估方法</a>
-            <a href="javascript://" title="出租或占用情况描述" onclick="programme.viewRentalPossessionDesc(this);"
-               class="btn btn-xs btn-success judge-description tooltips">描述</a>
+               class="btn btn-xs btn-primary judge-method tooltips">评估方法</a>
+            <a href="javascript://" title="其它信息" onclick="programme.viewOtherInfo(this);"
+               class="btn btn-xs btn-primary judge-other tooltips">其它信息</a>
         </td>
     </tr>
 </script>
@@ -617,6 +701,14 @@
         $("#viewInventoryRightModal").find('[data-name=registerDate]').text(formatDate(row.registerDate, false));
         $("#viewInventoryRightModal").find('[data-name=beginDate]').text(formatDate(row.beginDate, false));
         $("#viewInventoryRightModal").find('[data-name=endDate]').text(formatDate(row.endDate, false));
+        FileUtils.getFileShows({
+            target: "inventoryRightFile",
+            formData: {
+                tableName: AssessDBKey.SurveyAssetInventoryRight,
+                tableId: row.id
+            },
+            deleteFlag: false
+        });
         $("#viewInventoryRightModal").modal();
     };
 
@@ -638,6 +730,25 @@
             programme.viewExamineInfo(tr.find('[data-name=declareId]').val());
         }
     };
+
+    //查看其它信息
+    programme.viewOtherInfo = function (_this) {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/schemeProgramme/getJugdeObjectById',
+            type: 'get',
+            data: {
+                judgeObjectId: $(_this).closest('tr').find("[data-name=id]").val()
+            },
+            success: function (result) {
+                if (result.ret) {
+                    $("#frm_other_info").clearAll().initForm(result.data);
+                    $("#modal_other_info").modal();
+                } else {
+                    toastr.error(result.errmsg);
+                }
+            }
+        })
+    }
 
     //查看委估对象调查信息
     programme.viewExamineInfo = function (declareId) {

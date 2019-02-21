@@ -191,10 +191,10 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                押金利率<span class="symbol required"></span>
+                                押金利率(一年期定期存款利率)<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="depositRate" placeholder="押金利率" class="form-control x-percent"
+                                <input type="text" name="depositRate" placeholder="押金利率(一年期定期存款利率)" class="form-control x-percent"
                                        required="required">
                             </div>
                         </div>

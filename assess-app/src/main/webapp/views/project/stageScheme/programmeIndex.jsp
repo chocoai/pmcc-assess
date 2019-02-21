@@ -150,7 +150,8 @@
                                         价值类型描述
                                     </label>
                                     <div class="col-sm-2">
-                                        <input type="text" class="form-control" name="valueDefinitionDesc" placeholder="价值类型描述" value="${item.valueConnotationDesc}">
+                                        <input type="text" class="form-control" name="valueDefinitionDesc"
+                                               placeholder="价值类型描述" value="${item.valueConnotationDesc}">
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -172,7 +173,8 @@
                                         价值内涵描述
                                     </label>
                                     <div class="col-sm-2">
-                                        <input type="text" class="form-control" name="valueConnotationDesc" placeholder="价值内涵描述" value="${item.valueConnotationDesc}">
+                                        <input type="text" class="form-control" name="valueConnotationDesc"
+                                               placeholder="价值内涵描述" value="${item.valueConnotationDesc}">
                                     </div>
                                 </div>
                             </div>
@@ -391,6 +393,73 @@
         </div>
     </div>
 </div>
+<div id="modal_other_info" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">其它信息</h3>
+            </div>
+            <div class="modal-body">
+                <form id="frm_other_info" class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                变现比率
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" placeholder="变现比率" name="liquidRatio" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                变现比率说明
+                            </label>
+                            <div class="col-sm-10">
+                                <textarea name="liquidRatioExplain" class="form-control"
+                                          placeholder="变现比率说明"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                担保物设立情况
+                            </label>
+                            <div class="col-sm-10">
+                                <textarea name="collateralFound" class="form-control" placeholder="担保物设立情况"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                出租占用情况
+                            </label>
+                            <div class="col-sm-10">
+                                <textarea name="rentalPossessionDesc" class="form-control"
+                                          placeholder="出租占用情况"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary" onclick="programme.saveOtherInfo();">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <!--查看他项权利信息-->
 <div id="viewInventoryRightModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -500,6 +569,16 @@
                                     <label class="col-sm-2 control-label">结束日期</label>
                                     <div class="col-sm-4">
                                         <label class="form-control" data-name="endDate"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        备注
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <label class="form-control" data-name="remark"></label>
                                     </div>
                                 </div>
                             </div>
@@ -635,8 +714,8 @@
                class="btn btn-xs btn-warning judge-merge-cancel tooltips">取消合并</a>
             <a href="javascript://" title="评估方法" onclick="setEvaluationMethod(this);"
                class="btn btn-xs btn-success judge-method tooltips">方法</a>
-            <a href="javascript://" title="出租或占用情况描述" onclick="programme.updateRentalPossessionDesc(this);"
-               class="btn btn-xs btn-success judge-description tooltips">描述</a>
+            <a href="javascript://" title="其它信息" onclick="programme.editOtherInfo(this);"
+               class="btn btn-xs btn-success judge-other tooltips">其它信息</a>
         </td>
     </tr>
 </script>
@@ -655,18 +734,6 @@
             <div class="modal-body">
                 <form id="frm_inventory_right" class="form-horizontal">
                     <input type="hidden" name="id" value="0">
-                    <div class="form-group border-bottom-line">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                附件
-                            </label>
-                            <div class="col-sm-10">
-                                <input id="inventoryRightFile" type="file" multiple="false">
-                                <div id="_inventoryRightFile"></div>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
@@ -696,19 +763,17 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                他权证编号<span class="symbol required"></span>
+                                他权证编号
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" placeholder="他权证编号" required
-                                       id="number" name="number"
-                                       class="form-control">
+                                <input type="text" placeholder="他权证编号" id="number" name="number" class="form-control">
                             </div>
                         </div>
                         <div class="x-valid">
-                            <label class="col-sm-2 control-label">登记日期<span class="symbol required"></span></label>
+                            <label class="col-sm-2 control-label">登记日期</label>
                             <div class="col-sm-4">
                                 <input placeholder="登记日期" id="registerDate" name="registerDate"
-                                       data-date-format="yyyy-mm-dd" required
+                                       data-date-format="yyyy-mm-dd"
                                        class="form-control date-picker dbdate" readonly="readonly">
                             </div>
                         </div>
@@ -717,21 +782,18 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                义务人<span class="symbol required"></span>
+                                义务人
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" placeholder="义务人" required
-                                       id="obligor" name="obligor"
-                                       class="form-control">
+                                <input type="text" placeholder="义务人" id="obligor" name="obligor" class="form-control">
                             </div>
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                权利人<span class="symbol required"></span>
+                                权利人
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" placeholder="权利人" required
-                                       id="obligee" name="obligee" class="form-control">
+                                <input type="text" placeholder="权利人" id="obligee" name="obligee" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -790,6 +852,25 @@
                                 <input placeholder="结束日期" id="endDate"
                                        name="endDate" data-date-format="yyyy-mm-dd"
                                        class="form-control date-picker dbdate" readonly="readonly">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">备注</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" name="remark"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                附件
+                            </label>
+                            <div class="col-sm-10">
+                                <input id="inventoryRightFile" type="file" multiple="false">
+                                <div id="_inventoryRightFile"></div>
                             </div>
                         </div>
                     </div>
@@ -1334,6 +1415,14 @@
         $("#viewInventoryRightModal").find('[data-name=registerDate]').text(formatDate(row.registerDate, false));
         $("#viewInventoryRightModal").find('[data-name=beginDate]').text(formatDate(row.beginDate, false));
         $("#viewInventoryRightModal").find('[data-name=endDate]').text(formatDate(row.endDate, false));
+        FileUtils.getFileShows({
+            target: "inventoryRightFile",
+            formData: {
+                tableName: AssessDBKey.SurveyAssetInventoryRight,
+                tableId: row.id
+            },
+            deleteFlag: false
+        });
         $("#viewInventoryRightModal").modal();
     };
 
@@ -1421,7 +1510,6 @@
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success tooltips" data-placement="top"  onclick="programme.editInventoryRight(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top"  onclick="programme.viewInventoryRightInfo(' + index + ')"><i class="fa fa-search fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
@@ -1492,6 +1580,45 @@
             },
             deleteFlag: true
         });
+    }
+
+    //编辑其它信息
+    programme.editOtherInfo = function (_this) {
+        Loading.progressShow();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/schemeProgramme/getJugdeObjectById',
+            type: 'get',
+            data: {
+                judgeObjectId: $(_this).closest('tr').find("[data-name=id]").val()
+            },
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    $("#frm_other_info").clearAll().initForm(result.data);
+                    $("#modal_other_info").modal();
+                } else {
+                    toastr.error(result.errmsg);
+                }
+            }
+        })
+    }
+
+    //保存其它信息
+    programme.saveOtherInfo = function () {
+        Loading.progressShow();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/schemeProgramme/updateSchemeJudgeObject',
+            data: formParams("frm_other_info"),
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success('保存成功');
+                    $("#modal_other_info").modal('hide');
+                } else {
+                    toastr.error(result.errmsg);
+                }
+            }
+        })
     }
 
     //调整描述内容
