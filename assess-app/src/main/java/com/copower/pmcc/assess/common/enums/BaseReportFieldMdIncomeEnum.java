@@ -18,7 +18,7 @@ public enum BaseReportFieldMdIncomeEnum implements Serializable {
     MonthRentalIncome("月租金",""),
     MonthNumber("月份数",""),
     Rentals("有效出租率",""),
-    RentalIncome("租金收入",""),
+    RentalIncome("月租金收入",""),
 
     OtherIncomeContents("其它收入内容",""),
     OtherIncome("其它收入",""),
@@ -36,16 +36,16 @@ public enum BaseReportFieldMdIncomeEnum implements Serializable {
     ManagemenRemark("管理费用说明",""),
 
     ReplacementValue("重置价格",""),
-    ReplacementCost("重置成本",""),
+    ReplacementCost("收益法重置成本",""),//重置成本
 
     MaintenanceCostRatio("维修保养费率",""),
     LandUseTax("土地使用税",""),
     ManagementCost("管理费",""),
 
-    InsurancePremium("保险费",""),
+    InsurancePremium("收益法保险费率",""),//保险费
     InsurancePremium1("年保费",""),
 
-    LandTaxFees("土地使用税费",""),
+    LandTaxFees("收益法土地使用税",""),//土地使用税费
     AnnualOperatingCost("年运营费",""),
     AnnualNetIncome("年净收益",""),
     IncomePrice("单价",""),

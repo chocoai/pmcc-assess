@@ -44,9 +44,9 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * @Auther: zch
- * @Date: 2019/2/12 16:43
- * @Description:收益法报告字段处理
+ * @author: zch
+ * @date: 2019/2/12 16:43
+ * @description:收益法报告字段处理
  */
 public class GenerateMdIncomeService {
     private Integer miId;
@@ -249,10 +249,14 @@ public class GenerateMdIncomeService {
         }
         //替换
         if (!textMap.isEmpty()) {
-            AsposeUtils.replaceTextToFile(localPath, textMap);
+            AsposeUtils.replaceText(localPath, textMap);
         }
         if (!bookmarkMap.isEmpty()) {
             AsposeUtils.replaceBookmark(localPath, bookmarkMap, true);
+        }
+        if (!fileMap.isEmpty()) {
+            AsposeUtils.replaceTextToFile(localPath, fileMap);
+            AsposeUtils.replaceBookmarkToFile(localPath, fileMap);
         }
         return localPath;
     }

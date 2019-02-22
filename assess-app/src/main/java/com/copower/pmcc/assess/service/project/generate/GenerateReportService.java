@@ -88,7 +88,6 @@ public class GenerateReportService {
         if (count > 0) {
             return;
         }
-
         List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordByProjectId(projectId);
         if (CollectionUtils.isNotEmpty(declareRecords)) {
             GenerateReportRecord generateReportRecord = null;
@@ -277,7 +276,9 @@ public class GenerateReportService {
                                 }
                                 //(书签)
                                 if (com.google.common.base.Objects.equal(replaceEnum.getKey(), BaseReportFieldReplaceEnum.BOOKMARK.getKey())) {
-                                    bookmarkMap.put(wordKey, value);
+                                    if (StringUtils.isNotBlank(value)) {
+                                        bookmarkMap.put(wordKey, value);
+                                    }
                                 }
                                 //(书签替换附件)
                                 if (Objects.equal(replaceEnum.getKey(), BaseReportFieldReplaceEnum.BOOKMARK_FILE.getKey())) {
@@ -285,7 +286,6 @@ public class GenerateReportService {
                                         bookmarkFileMap.put(wordKey, value);
                                     } else {
                                         logger.error(String.format("word模板:%s%s", ChineseToPy.getFullSpell(wordKey), "替换失败!"), new Exception());
-                                        logger.info(System.getProperty("file.encoding"));
                                     }
                                 }
                             }
@@ -518,6 +518,13 @@ public class GenerateReportService {
                             BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                             if (baseReportField != null) {
                                 replaceReportPutValue(name, qualificationDto.getCertificateEffectiveDate(), bookmarkAndRegex.getType(), false, mapSet);
+                            }
+                        }
+                        //房地产估价机构信息
+                        if (Objects.equal(BaseReportFieldEnum.XIEHE_organizationInfo.getName(), name)) {
+                            BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                            replaceReportPutValue(name, generateBaseDataService.getXIEHE_organizationInfo(qualificationDto), bookmarkAndRegex.getType(), false, mapSet);
+                            if (baseReportField != null) {
                             }
                         }
                     }
@@ -881,6 +888,13 @@ public class GenerateReportService {
                                     replaceReportPutValue(name, generateBaseDataService.getEvaluationPriceCateGoryTotalOne(), bookmarkAndRegex.getType(), false, mapSet);
                                 }
                             }
+                            //估价对象的总价
+                            if (Objects.equal(BaseReportFieldEnum.TotalValueValuationObject.getName(), name)) {
+                                BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                                replaceReportPutValue(name, generateBaseDataService.getTotalValueValuationObject(), bookmarkAndRegex.getType(), false, mapSet);
+                                if (baseReportField != null) {
+                                }
+                            }
                         }
                     }
                     //选择估价方法
@@ -1093,6 +1107,14 @@ public class GenerateReportService {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
                             replaceReportPutValue(name, generateBaseDataService.getPrincipal(), bookmarkAndRegex.getType(), false, mapSet);
+                        }
+                    }
+
+                    // 估价委托人信息
+                    if (Objects.equal(BaseReportFieldEnum.PrincipalInfo.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getPrincipalInfo(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
                         }
                     }
 
