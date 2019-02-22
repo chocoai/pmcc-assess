@@ -46,6 +46,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -54,10 +55,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 估价对象
@@ -193,6 +191,21 @@ public class SchemeJudgeObjectService {
                 }
             }
             judgeObjectVoList.add(schemeJudgeObjectVo);
+        }
+        if (CollectionUtils.isNotEmpty(judgeObjectVoList)) {
+            //根据楼层编号和房号排序
+            judgeObjectVoList.sort((o1, o2) -> {
+                int result = 0;
+                if (NumberUtils.isNumber(o1.getFloor()) && NumberUtils.isNumber(o2.getFloor())) {
+                    result = Integer.compare(NumberUtils.toInt(o1.getFloor()), NumberUtils.toInt(o2.getFloor()));
+                }
+                if (result == 0) {//如果楼层相同再根据房号判断
+                    if (NumberUtils.isNumber(o1.getRoomNumber()) && NumberUtils.isNumber(o2.getRoomNumber())) {
+                        result = Integer.compare(NumberUtils.toInt(o1.getRoomNumber()), NumberUtils.toInt(o2.getRoomNumber()));
+                    }
+                }
+                return result;
+            });
         }
         return judgeObjectVoList;
     }
