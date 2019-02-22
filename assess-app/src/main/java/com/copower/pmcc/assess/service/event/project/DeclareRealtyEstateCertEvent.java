@@ -19,13 +19,11 @@ public class DeclareRealtyEstateCertEvent extends ProjectTaskEvent {
     private DeclareApplyService declareApplyService;
 
     @Override
-    public void processFinishExecute(ProcessExecution processExecution)throws  Exception {
-        super.processFinishExecute(processExecution);
+    public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         DeclareApply declareApply = declareApplyService.getDeclareApplyByProcessInsId(processExecution.getProcessInstanceId());
-        if (declareApply == null) {
-            return;
+        if (declareApply != null) {
+            declareApplyService.writeToDeclareRecord(declareApply);
         }
-        declareApplyService.writeToDeclareRecord(declareApply);
-
+        super.processFinishExecute(processExecution);//数据写入record记录表中后再执行进入下阶段
     }
 }

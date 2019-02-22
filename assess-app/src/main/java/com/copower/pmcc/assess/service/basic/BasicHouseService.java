@@ -733,40 +733,34 @@ public class BasicHouseService {
 
         }
         if (CollectionUtils.isNotEmpty(damagedDegreeList)) {
-            taskExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        for (CaseHouseDamagedDegree caseHouseDamagedDegree : damagedDegreeList) {
-                            BasicHouseDamagedDegree basicHouseDamagedDegree = new BasicHouseDamagedDegree();
-                            BeanUtils.copyProperties(caseHouseDamagedDegree, basicHouseDamagedDegree);
-                            basicHouseDamagedDegree.setId(null);
-                            basicHouseDamagedDegree.setHouseId(basicHouse.getId());
-                            basicHouseDamagedDegree.setCreator(commonService.thisUserAccount());
-                            basicHouseDamagedDegree.setGmtCreated(null);
-                            basicHouseDamagedDegree.setGmtModified(null);
-                            basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(basicHouseDamagedDegree);
-                            List<CaseHouseDamagedDegreeDetail> damagedDegreeDetailList = caseHouseDamagedDegreeService.getDamagedDegreeDetails(caseHouseDamagedDegree.getId());
-                            if (CollectionUtils.isNotEmpty(damagedDegreeDetailList)) {
-                                for (CaseHouseDamagedDegreeDetail caseHouseDamagedDegreeDetail : damagedDegreeDetailList) {
-                                    BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail = new BasicHouseDamagedDegreeDetail();
-                                    BeanUtils.copyProperties(caseHouseDamagedDegreeDetail, basicHouseDamagedDegreeDetail);
-                                    basicHouseDamagedDegreeDetail.setDamagedDegreeId(basicHouseDamagedDegree.getId());
-                                    basicHouseDamagedDegreeDetail.setId(null);
-                                    basicHouseDamagedDegreeDetail.setHouseId(basicHouse.getId());
-                                    basicHouseDamagedDegreeDetail.setCreator(commonService.thisUserAccount());
-                                    basicHouseDamagedDegreeDetail.setGmtCreated(null);
-                                    basicHouseDamagedDegreeDetail.setGmtModified(null);
-                                    basicHouseDamagedDegreeService.saveAndUpdateDamagedDegreeDetail(basicHouseDamagedDegreeDetail);
-                                }
-                            }
+            try {
+                for (CaseHouseDamagedDegree caseHouseDamagedDegree : damagedDegreeList) {
+                    BasicHouseDamagedDegree basicHouseDamagedDegree = new BasicHouseDamagedDegree();
+                    BeanUtils.copyProperties(caseHouseDamagedDegree, basicHouseDamagedDegree);
+                    basicHouseDamagedDegree.setId(null);
+                    basicHouseDamagedDegree.setHouseId(basicHouse.getId());
+                    basicHouseDamagedDegree.setCreator(commonService.thisUserAccount());
+                    basicHouseDamagedDegree.setGmtCreated(null);
+                    basicHouseDamagedDegree.setGmtModified(null);
+                    basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(basicHouseDamagedDegree);
+                    List<CaseHouseDamagedDegreeDetail> damagedDegreeDetailList = caseHouseDamagedDegreeService.getDamagedDegreeDetails(caseHouseDamagedDegree.getId());
+                    if (CollectionUtils.isNotEmpty(damagedDegreeDetailList)) {
+                        for (CaseHouseDamagedDegreeDetail caseHouseDamagedDegreeDetail : damagedDegreeDetailList) {
+                            BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail = new BasicHouseDamagedDegreeDetail();
+                            BeanUtils.copyProperties(caseHouseDamagedDegreeDetail, basicHouseDamagedDegreeDetail);
+                            basicHouseDamagedDegreeDetail.setDamagedDegreeId(basicHouseDamagedDegree.getId());
+                            basicHouseDamagedDegreeDetail.setId(null);
+                            basicHouseDamagedDegreeDetail.setHouseId(basicHouse.getId());
+                            basicHouseDamagedDegreeDetail.setCreator(commonService.thisUserAccount());
+                            basicHouseDamagedDegreeDetail.setGmtCreated(null);
+                            basicHouseDamagedDegreeDetail.setGmtModified(null);
+                            basicHouseDamagedDegreeService.saveAndUpdateDamagedDegreeDetail(basicHouseDamagedDegreeDetail);
                         }
-                    } catch (Exception e1) {
-
                     }
                 }
-            });
-
+            } catch (Exception e1) {
+                logger.error(e1.getMessage(),e1);
+            }
         }
         return objectMap;
     }
