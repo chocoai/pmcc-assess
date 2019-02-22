@@ -125,7 +125,7 @@ public class SchemeAreaGroupService {
         List<SchemeAreaGroup> voList = this.getAreaGroupList(projectId);
         if (CollectionUtils.isNotEmpty(voList))
             return LangUtils.transform(voList, o -> this.getSchemeAreaGroupVo(o));
-        List<DeclareRecord> declareRecords = declareRecordDao.getDeclareRecordByProjectId(projectId);
+        List<DeclareRecord> declareRecords = declareRecordDao.getDeclareRecordListByProjectId(projectId);
         List<SchemeAreaGroup> areaGroups = groupDeclareRecord(declareRecords);
         if (CollectionUtils.isNotEmpty(areaGroups)) {
             ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);

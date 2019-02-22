@@ -32,6 +32,10 @@ public class MdIncomeLeaseCost {
 
     private String useTaxParameter;
 
+    private BigDecimal transactionTaxeFeeRatio;
+
+    private String transactionTaxeFeeExplain;
+
     private String creator;
 
     private Date gmtCreated;
@@ -148,6 +152,22 @@ public class MdIncomeLeaseCost {
 
     public void setUseTaxParameter(String useTaxParameter) {
         this.useTaxParameter = useTaxParameter == null ? null : useTaxParameter.trim();
+    }
+
+    public BigDecimal getTransactionTaxeFeeRatio() {
+        return transactionTaxeFeeRatio;
+    }
+
+    public void setTransactionTaxeFeeRatio(BigDecimal transactionTaxeFeeRatio) {
+        this.transactionTaxeFeeRatio = transactionTaxeFeeRatio;
+    }
+
+    public String getTransactionTaxeFeeExplain() {
+        return transactionTaxeFeeExplain;
+    }
+
+    public void setTransactionTaxeFeeExplain(String transactionTaxeFeeExplain) {
+        this.transactionTaxeFeeExplain = transactionTaxeFeeExplain == null ? null : transactionTaxeFeeExplain.trim();
     }
 
     public String getCreator() {

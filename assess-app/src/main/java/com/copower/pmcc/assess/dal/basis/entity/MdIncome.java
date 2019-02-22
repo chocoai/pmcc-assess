@@ -28,6 +28,10 @@ public class MdIncome {
 
     private Integer rewardRateId;
 
+    private BigDecimal houseRemainingYear;
+
+    private BigDecimal landRemainingYear;
+
     private String creator;
 
     private Date gmtCreated;
@@ -128,6 +132,22 @@ public class MdIncome {
 
     public void setRewardRateId(Integer rewardRateId) {
         this.rewardRateId = rewardRateId;
+    }
+
+    public BigDecimal getHouseRemainingYear() {
+        return houseRemainingYear;
+    }
+
+    public void setHouseRemainingYear(BigDecimal houseRemainingYear) {
+        this.houseRemainingYear = houseRemainingYear;
+    }
+
+    public BigDecimal getLandRemainingYear() {
+        return landRemainingYear;
+    }
+
+    public void setLandRemainingYear(BigDecimal landRemainingYear) {
+        this.landRemainingYear = landRemainingYear;
     }
 
     public String getCreator() {

@@ -16,6 +16,8 @@
     <result column="insurance_premium_ratio" property="insurancePremiumRatio" jdbcType="DECIMAL" />
     <result column="land_use_tax" property="landUseTax" jdbcType="DECIMAL" />
     <result column="use_tax_parameter" property="useTaxParameter" jdbcType="VARCHAR" />
+    <result column="transaction_taxe_fee_ratio" property="transactionTaxeFeeRatio" jdbcType="DECIMAL" />
+    <result column="transaction_taxe_fee_explain" property="transactionTaxeFeeExplain" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -81,7 +83,8 @@
   <sql id="Base_Column_List" >
     id, income_id, section_id, replacement_value, management_cost, management_cost_ratio, 
     maintenance, maintenance_cost_ratio, additional, additional_ratio, insurance_premium, 
-    insurance_premium_ratio, land_use_tax, use_tax_parameter, creator, gmt_created, gmt_modified
+    insurance_premium_ratio, land_use_tax, use_tax_parameter, transaction_taxe_fee_ratio, 
+    transaction_taxe_fee_explain, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseCostExample" >
     select
@@ -121,14 +124,16 @@
       management_cost, management_cost_ratio, maintenance, 
       maintenance_cost_ratio, additional, additional_ratio, 
       insurance_premium, insurance_premium_ratio, 
-      land_use_tax, use_tax_parameter, creator, 
-      gmt_created, gmt_modified)
+      land_use_tax, use_tax_parameter, transaction_taxe_fee_ratio, 
+      transaction_taxe_fee_explain, creator, gmt_created, 
+      gmt_modified)
     values (#{incomeId,jdbcType=INTEGER}, #{sectionId,jdbcType=INTEGER}, #{replacementValue,jdbcType=DECIMAL}, 
       #{managementCost,jdbcType=VARCHAR}, #{managementCostRatio,jdbcType=DECIMAL}, #{maintenance,jdbcType=VARCHAR}, 
       #{maintenanceCostRatio,jdbcType=DECIMAL}, #{additional,jdbcType=VARCHAR}, #{additionalRatio,jdbcType=DECIMAL}, 
       #{insurancePremium,jdbcType=VARCHAR}, #{insurancePremiumRatio,jdbcType=DECIMAL}, 
-      #{landUseTax,jdbcType=DECIMAL}, #{useTaxParameter,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{landUseTax,jdbcType=DECIMAL}, #{useTaxParameter,jdbcType=VARCHAR}, #{transactionTaxeFeeRatio,jdbcType=DECIMAL}, 
+      #{transactionTaxeFeeExplain,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseCost" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -174,6 +179,12 @@
       </if>
       <if test="useTaxParameter != null" >
         use_tax_parameter,
+      </if>
+      <if test="transactionTaxeFeeRatio != null" >
+        transaction_taxe_fee_ratio,
+      </if>
+      <if test="transactionTaxeFeeExplain != null" >
+        transaction_taxe_fee_explain,
       </if>
       <if test="creator != null" >
         creator,
@@ -224,6 +235,12 @@
       </if>
       <if test="useTaxParameter != null" >
         #{useTaxParameter,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionTaxeFeeRatio != null" >
+        #{transactionTaxeFeeRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="transactionTaxeFeeExplain != null" >
+        #{transactionTaxeFeeExplain,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -287,6 +304,12 @@
       <if test="record.useTaxParameter != null" >
         use_tax_parameter = #{record.useTaxParameter,jdbcType=VARCHAR},
       </if>
+      <if test="record.transactionTaxeFeeRatio != null" >
+        transaction_taxe_fee_ratio = #{record.transactionTaxeFeeRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="record.transactionTaxeFeeExplain != null" >
+        transaction_taxe_fee_explain = #{record.transactionTaxeFeeExplain,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -317,6 +340,8 @@
       insurance_premium_ratio = #{record.insurancePremiumRatio,jdbcType=DECIMAL},
       land_use_tax = #{record.landUseTax,jdbcType=DECIMAL},
       use_tax_parameter = #{record.useTaxParameter,jdbcType=VARCHAR},
+      transaction_taxe_fee_ratio = #{record.transactionTaxeFeeRatio,jdbcType=DECIMAL},
+      transaction_taxe_fee_explain = #{record.transactionTaxeFeeExplain,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -366,6 +391,12 @@
       <if test="useTaxParameter != null" >
         use_tax_parameter = #{useTaxParameter,jdbcType=VARCHAR},
       </if>
+      <if test="transactionTaxeFeeRatio != null" >
+        transaction_taxe_fee_ratio = #{transactionTaxeFeeRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="transactionTaxeFeeExplain != null" >
+        transaction_taxe_fee_explain = #{transactionTaxeFeeExplain,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -393,6 +424,8 @@
       insurance_premium_ratio = #{insurancePremiumRatio,jdbcType=DECIMAL},
       land_use_tax = #{landUseTax,jdbcType=DECIMAL},
       use_tax_parameter = #{useTaxParameter,jdbcType=VARCHAR},
+      transaction_taxe_fee_ratio = #{transactionTaxeFeeRatio,jdbcType=DECIMAL},
+      transaction_taxe_fee_explain = #{transactionTaxeFeeExplain,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

@@ -2,12 +2,8 @@ package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
-import com.copower.pmcc.assess.service.ErpAreaService;
-import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
-import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
-import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +18,7 @@ import java.util.List;
 public class DeclareRecordService {
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
-    private SchemeJudgeObjectService schemeJudgeObjectService;
-    @Autowired
     private DeclareRecordDao declareRecordDao;
-    @Autowired
-    private CommonService commonService;
-    @Autowired
-    private SchemeAreaGroupService schemeAreaGroupService;
-    @Autowired
-    private ErpAreaService erpAreaService;
-    @Autowired
-    private ProjectInfoService projectInfoService;
 
 
     public Integer saveAndUpdateDeclareRecord(DeclareRecord declareRecord) throws BusinessException {
@@ -49,7 +35,7 @@ public class DeclareRecordService {
 
 
     public List<DeclareRecord> getDeclareRecordByProjectId(Integer projectId) {
-        List<DeclareRecord> declareRecords = declareRecordDao.getDeclareRecordByProjectId(projectId);
+        List<DeclareRecord> declareRecords = declareRecordDao.getDeclareRecordListByProjectId(projectId);
         return declareRecords;
     }
 
@@ -57,5 +43,9 @@ public class DeclareRecordService {
         return declareRecordDao.getDeclareRecordById(id);
     }
 
+    public List<DeclareRecord> getDeclareRecordListByIds(List<Integer> ids) {
+        if (CollectionUtils.isEmpty(ids)) return null;
+        return declareRecordDao.getDeclareRecordListByIds(ids);
+    }
 
 }

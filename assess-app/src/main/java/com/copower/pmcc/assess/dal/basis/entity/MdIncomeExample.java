@@ -866,6 +866,126 @@ public class MdIncomeExample {
             return (Criteria) this;
         }
 
+        public Criteria andHouseRemainingYearIsNull() {
+            addCriterion("house_remaining_year is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseRemainingYearIsNotNull() {
+            addCriterion("house_remaining_year is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseRemainingYearEqualTo(BigDecimal value) {
+            addCriterion("house_remaining_year =", value, "houseRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseRemainingYearNotEqualTo(BigDecimal value) {
+            addCriterion("house_remaining_year <>", value, "houseRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseRemainingYearGreaterThan(BigDecimal value) {
+            addCriterion("house_remaining_year >", value, "houseRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseRemainingYearGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("house_remaining_year >=", value, "houseRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseRemainingYearLessThan(BigDecimal value) {
+            addCriterion("house_remaining_year <", value, "houseRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseRemainingYearLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("house_remaining_year <=", value, "houseRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseRemainingYearIn(List<BigDecimal> values) {
+            addCriterion("house_remaining_year in", values, "houseRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseRemainingYearNotIn(List<BigDecimal> values) {
+            addCriterion("house_remaining_year not in", values, "houseRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseRemainingYearBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("house_remaining_year between", value1, value2, "houseRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseRemainingYearNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("house_remaining_year not between", value1, value2, "houseRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearIsNull() {
+            addCriterion("land_remaining_year is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearIsNotNull() {
+            addCriterion("land_remaining_year is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearEqualTo(BigDecimal value) {
+            addCriterion("land_remaining_year =", value, "landRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearNotEqualTo(BigDecimal value) {
+            addCriterion("land_remaining_year <>", value, "landRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearGreaterThan(BigDecimal value) {
+            addCriterion("land_remaining_year >", value, "landRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_remaining_year >=", value, "landRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearLessThan(BigDecimal value) {
+            addCriterion("land_remaining_year <", value, "landRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_remaining_year <=", value, "landRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearIn(List<BigDecimal> values) {
+            addCriterion("land_remaining_year in", values, "landRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearNotIn(List<BigDecimal> values) {
+            addCriterion("land_remaining_year not in", values, "landRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_remaining_year between", value1, value2, "landRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_remaining_year not between", value1, value2, "landRemainingYear");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

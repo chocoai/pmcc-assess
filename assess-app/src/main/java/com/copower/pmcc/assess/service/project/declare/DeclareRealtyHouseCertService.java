@@ -416,10 +416,15 @@ public class DeclareRealtyHouseCertService {
             declareRecord.setRoomNumber(oo.getRoomNumber());
             declareRecord.setCertUse(baseDataDicService.getNameById(oo.getPlanningUse()));
             declareRecord.setFloorArea(oo.getEvidenceArea());
-            declareRecord.setLandUseEndDate(oo.getUseEndDate());
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
             declareRecord.setPublicSituation(baseDataDicService.getNameById(oo.getPublicSituation()));
             declareRecord.setCreator(declareApply.getCreator());
+            //写入土地证的证载用途
+            DeclareRealtyLandCert realtyLandCert = declareRealtyLandCertDao.getDeclareRealtyLandCertById(oo.getPid());
+            if (realtyLandCert != null) {
+                declareRecord.setLandCertUse(baseDataDicService.getNameById(realtyLandCert.getPurpose()));
+                declareRecord.setLandUseEndDate(realtyLandCert.getTerminationDate());
+            }
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
             } catch (Exception e1) {

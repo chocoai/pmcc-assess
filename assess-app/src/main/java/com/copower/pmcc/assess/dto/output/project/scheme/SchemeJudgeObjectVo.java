@@ -9,6 +9,8 @@ public class SchemeJudgeObjectVo extends SchemeJudgeObject {
     private String setUseName;
     private String bestUseName;
     private String coefficient;
+    private String floor;
+    private String roomNumber;
 
     public String getSetUseName() {
         return setUseName;
@@ -32,5 +34,21 @@ public class SchemeJudgeObjectVo extends SchemeJudgeObject {
 
     public void setCoefficient(String coefficient) {
         this.coefficient = coefficient;
+    }
+
+    public String getFloor() {
+        return floor;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor;
+    }
+
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
     }
 }

@@ -27,6 +27,7 @@ import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -101,6 +102,8 @@ public class SchemeJudgeObjectService {
     private DataBestUseDescriptionService dataBestUseDescriptionService;
     @Autowired
     private DataSetUseFieldService dataSetUseFieldService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
 
     public boolean addSchemeJudgeObject(SchemeJudgeObject schemeJudgeObject) {
         return schemeJudgeObjectDao.addSchemeJudgeObject(schemeJudgeObject);
@@ -177,15 +180,21 @@ public class SchemeJudgeObjectService {
         schemeJudgeObject.setPid(pid);
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
         if (CollectionUtils.isEmpty(judgeObjectList)) return null;
-
-        List<SchemeJudgeObjectVo> judgeObjectVos = LangUtils.transform(judgeObjectList, o -> {
+        List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordListByIds(LangUtils.transform(judgeObjectList, o -> o.getDeclareRecordId()));
+        List<SchemeJudgeObjectVo> judgeObjectVoList = Lists.newArrayList();
+        for (SchemeJudgeObject judgeObject : judgeObjectList) {
             SchemeJudgeObjectVo schemeJudgeObjectVo = new SchemeJudgeObjectVo();
-            BeanUtils.copyProperties(o, schemeJudgeObjectVo);
-            //取得调整因素信息
-            schemeJudgeObjectVo.setCoefficient(getCoefficientByDeclareId(o.getDeclareRecordId()));
-            return schemeJudgeObjectVo;
-        });
-        return judgeObjectVos;
+            BeanUtils.copyProperties(judgeObject, schemeJudgeObjectVo);
+            schemeJudgeObjectVo.setCoefficient(getCoefficientByDeclareId(judgeObject.getDeclareRecordId()));
+            for (DeclareRecord declareRecord : declareRecords) {
+                if (declareRecord.getId().equals(judgeObject.getDeclareRecordId())) {
+                    schemeJudgeObjectVo.setFloor(declareRecord.getFloor());
+                    schemeJudgeObjectVo.setRoomNumber(declareRecord.getRoomNumber());
+                }
+            }
+            judgeObjectVoList.add(schemeJudgeObjectVo);
+        }
+        return judgeObjectVoList;
     }
 
     public String getCoefficientByDeclareId(Integer declareId) {
@@ -199,7 +208,7 @@ public class SchemeJudgeObjectService {
                 } else {
                     coefficient.append(schemeSurePriceFactor.getCoefficient().multiply(new BigDecimal("100")).setScale(2)).append("%");
                 }
-                coefficient.append(";");
+                coefficient.append(";\r\n");
             }
             return coefficient.toString();
         }

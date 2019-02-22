@@ -175,7 +175,7 @@
                             </label>
                             <div class="col-sm-4">
                                 <input type="text" name="deposit" data-rule-digits="true" placeholder="押金"
-                                       class="form-control" required="required">
+                                     onblur="lease.computeOtherIncome(this);"  class="form-control" required="required">
                             </div>
                         </div>
                         <div class="x-valid">
@@ -194,7 +194,8 @@
                                 押金利率(一年期定期存款利率)<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="depositRate" placeholder="押金利率(一年期定期存款利率)" class="form-control x-percent"
+                                <input type="text" name="depositRate" placeholder="押金利率(一年期定期存款利率)"
+                                       onblur="lease.computeOtherIncome(this);" class="form-control x-percent"
                                        required="required">
                             </div>
                         </div>
@@ -214,7 +215,7 @@
                                 其他收入<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="otherIncome" placeholder="其他收入" data-rule-digits="true"
+                                <input type="text" name="otherIncome" placeholder="其他收入" data-rule-number="true"
                                        class="form-control" required="required">
                             </div>
                         </div>
@@ -319,6 +320,26 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                交易税费<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="transactionTaxeFeeRatio" placeholder="交易税费"
+                                       class="form-control x-percent" required="required">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                交易税费说明<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="transactionTaxeFeeExplain" placeholder="交易税费说明"
+                                       class="form-control" required="required">
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -341,7 +362,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">成本</h3>
+                <h3 class="modal-title">参数</h3>
             </div>
             <div class="modal-body">
                 <form id="frm_lease_parameter" class="form-horizontal">
@@ -499,13 +520,8 @@
     lease.loadLeaseList = function () {
         var cols = [];
         cols.push({
-            field: 'beginDate', title: '开始时间', formatter: function (value, row, index) {
-                return formatDate(row.beginDate, false);
-            }
-        });
-        cols.push({
-            field: 'endDate', title: '结束时间', formatter: function (value, row, index) {
-                return formatDate(row.endDate, false);
+            field: 'beginDate', title: '时间段', formatter: function (value, row, index) {
+                return formatDate(row.beginDate, false)+"至"+formatDate(row.endDate, false);
             }
         });
         cols.push({field: 'rentalIncome', title: '月租金收入'});
@@ -517,7 +533,7 @@
         cols.push({field: 'monthNumber', title: '全年月份数'});
         cols.push({field: 'deposit', title: '押金'});
         cols.push({
-            field: 'depositRate', title: '押金利率', formatter: function (value, row, index) {
+            field: 'depositRate', title: '押金利率(一年定期存款利率)', formatter: function (value, row, index) {
                 return AssessCommon.pointToPercent(value);
             }
         });
@@ -598,36 +614,37 @@
     lease.loadLeaseCostList = function () {
         var cols = [];
         cols.push({
-            field: 'beginDate', title: '开始时间', formatter: function (value, row, index) {
-                return formatDate(row.beginDate, false);
+            field: 'beginDate', title: '时间段', formatter: function (value, row, index) {
+                return formatDate(row.beginDate, false)+"至"+formatDate(row.endDate, false);
             }
         });
         cols.push({
-            field: 'endDate', title: '结束时间', formatter: function (value, row, index) {
-                return formatDate(row.endDate, false);
+            field: 'managementCostRatio', title: '管理费率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
             }
         });
+        cols.push({field: 'replacementValue', title: '重置价格'});
         cols.push({
-            field: 'managementCostRatio', title: '管理费', formatter: function (value, row, index) {
+            field: 'maintenanceCostRatio', title: '维修保养费率', formatter: function (value, row, index) {
                 return AssessCommon.pointToPercent(value);
             }
         });
         cols.push({
-            field: 'maintenanceCostRatio', title: '维修保养费', formatter: function (value, row, index) {
+            field: 'additionalRatio', title: '租赁税费率', formatter: function (value, row, index) {
                 return AssessCommon.pointToPercent(value);
             }
         });
         cols.push({
-            field: 'additionalRatio', title: '租赁税费', formatter: function (value, row, index) {
-                return AssessCommon.pointToPercent(value);
-            }
-        });
-        cols.push({
-            field: 'insurancePremiumRatio', title: '保险费', formatter: function (value, row, index) {
+            field: 'insurancePremiumRatio', title: '保险费率', formatter: function (value, row, index) {
                 return AssessCommon.pointToPercent(value);
             }
         });
         cols.push({field: 'landUseTax', title: '土地使用税'});
+        cols.push({
+            field: 'transactionTaxeFeeRatio', title: '交易税费率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -697,13 +714,8 @@
     lease.loadLeaseParameterList = function () {
         var cols = [];
         cols.push({
-            field: 'beginDate', title: '开始时间', formatter: function (value, row, index) {
-                return formatDate(row.beginDate, false);
-            }
-        });
-        cols.push({
-            field: 'endDate', title: '结束时间', formatter: function (value, row, index) {
-                return formatDate(row.endDate, false);
+            field: 'beginDate', title: '时间段', formatter: function (value, row, index) {
+                return formatDate(row.beginDate, false)+"至"+formatDate(row.endDate, false);
             }
         });
         cols.push({
@@ -793,6 +805,19 @@
 </script>
 <%--测算--%>
 <script type="text/javascript">
+    //计算其它收入
+    lease.computeOtherIncome = function (_this) {
+        //押金*押金利率
+        var form = $(_this).closest('form');
+        var deposit = form.find('[name=deposit]').val();
+        var depositRate = form.find('[name=depositRate]').attr('data-value');
+        if (AssessCommon.isNumber(deposit) && AssessCommon.isNumber(depositRate)) {
+            deposit = parseFloat(deposit);
+            depositRate = parseFloat(depositRate);
+            form.find('[name=otherIncome]').val((deposit*depositRate).toFixed(2));
+        }
+    }
+
     //计算净收益
     lease.computeNetProfit = function () {
         $("#leaseResultBody").find('tr').each(function () {

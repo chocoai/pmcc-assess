@@ -60,13 +60,13 @@
                         </tr>
                         <tr class="treegrid-2-4 treegrid-parent-2">
                             <td>投资带来的优惠</td>
-                            <td></td>
+                            <td data-type="minus"></td>
                         </tr>
                         <tr class="treegrid-2-4-1 treegrid-parent-2-4">
                             <td>易与获得融资的好处</td>
                             <td>
                                 <input type="hidden" name="name" value="financingAdvantage">
-                                <input placeholder='百分比' type='text' class='x-percent' name='ratio'>
+                                <input placeholder='百分比' type='text' data-type="minus" class='x-percent' name='ratio'>
                             </td>
                             <td>
                                 <input placeholder='备注' type='text' name='remark'>
@@ -76,7 +76,7 @@
                             <td>所得税抵扣的好处</td>
                             <td>
                                 <input type="hidden" name="name" value="taxDeductionAdvantage">
-                                <input placeholder='百分比' type='text' class='x-percent' name='ratio'>
+                                <input placeholder='百分比' type='text'  class='x-percent' name='ratio'>
                             </td>
                             <td>
                                 <input placeholder='备注' type='text' name='remark'>
@@ -167,9 +167,9 @@
     rewardRateFunc.getValue = function (node) {
         var val;
         if ($(node).treegrid('isLeaf')) {
-            val = $(node).find(':text').val();
+            val = $(node).find(':text').attr('data-value');
         } else {
-            val = $(node).find('td:eq(1)').text();
+            val = AssessCommon.percentToPoint($(node).find('td:eq(1)').text());
         }
         return val;
     }
@@ -215,12 +215,21 @@
             var childNodes = $(parentNode).treegrid('getChildNodes');
             var result = 0;
             childNodes.each(function () {
-                var val = rewardRateFunc.getValue(this);
-                if (val) {
+                var val = 0;
+                var dataType = null;
+                if ($(this).treegrid('isLeaf')) {
+                    val = $(this).find(':text').attr('data-value');
+                } else {
+                    dataType = $(this).find('td:eq(1)').attr('data-type');
+                    val = AssessCommon.percentToPoint($(this).find('td:eq(1)').text());
+                }
+                if (dataType == "minus") {
+                    result += parseFloat(-val);
+                } else {
                     result += parseFloat(val);
                 }
             })
-            $(parentNode).find('td:eq(1)').text(result.toFixed(2) + "%")
+            $(parentNode).find('td:eq(1)').text(AssessCommon.pointToPercent(result));
             rewardRateFunc.rewardRateRecursion(parentNode);
         }
 
@@ -230,10 +239,10 @@
         rootNodes.each(function () {
             var val = rewardRateFunc.getValue(this);
             if (val) {
-                result += parseFloat(val.replace(/%$/, ''));
+                result += parseFloat(val);
             }
         })
-        $('#frm_reward_rate').find('[name=resultValue]').text(result.toFixed(2) + "%");
+        $('#frm_reward_rate').find('[name=resultValue]').text(AssessCommon.pointToPercent(result));
     }
 
 </script>

@@ -251,9 +251,10 @@ public class DeclareRealtyRealEstateCertService {
             declareRecord.setUnit(oo.getUnit());
             declareRecord.setFloor(oo.getFloor());
             declareRecord.setRoomNumber(oo.getRoomNumber());
-            declareRecord.setCertUse(baseDataDicService.getNameById(oo.getPurpose()));
+            declareRecord.setCertUse(baseDataDicService.getNameById(oo.getPlanningUse()));
             declareRecord.setFloorArea(oo.getEvidenceArea());
-            declareRecord.setLandUseEndDate(oo.getUseEndDate());
+            declareRecord.setLandCertUse(baseDataDicService.getNameById(oo.getPurpose()));
+            declareRecord.setLandUseEndDate(oo.getTerminationDate());
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
             declareRecord.setCreator(declareApply.getCreator());
             try {

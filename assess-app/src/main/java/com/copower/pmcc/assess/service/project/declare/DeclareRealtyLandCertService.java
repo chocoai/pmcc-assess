@@ -284,7 +284,6 @@ public class DeclareRealtyLandCertService {
     }
 
 
-
     public Integer saveAndUpdateDeclareRealtyLandCert(DeclareRealtyLandCert declareRealtyLandCert) {
         if (declareRealtyLandCert.getId() == null) {
             declareRealtyLandCert.setCreator(commonService.thisUserAccount());
@@ -312,7 +311,7 @@ public class DeclareRealtyLandCertService {
         return vo;
     }
 
-    public List<DeclareRealtyLandCertVo> getList(Integer planDetailsId){
+    public List<DeclareRealtyLandCertVo> getList(Integer planDetailsId) {
         List<DeclareRealtyLandCert> declareRealtyLandCerts = declareRealtyLandCertDao.getList(planDetailsId);
         List<DeclareRealtyLandCertVo> vos = Lists.newArrayList();
         if (!ObjectUtils.isEmpty(declareRealtyLandCerts)) {
@@ -418,11 +417,16 @@ public class DeclareRealtyLandCertService {
             declareRecord.setUnit(oo.getUnit());
             declareRecord.setFloor(oo.getFloor());
             declareRecord.setRoomNumber(oo.getRoomNumber());
-            declareRecord.setCertUse(baseDataDicService.getNameById(oo.getPurpose()));
+            declareRecord.setLandCertUse(baseDataDicService.getNameById(oo.getPurpose()));
             declareRecord.setFloorArea(oo.getUseRightArea());
             declareRecord.setLandUseEndDate(oo.getTerminationDate());
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
             declareRecord.setCreator(declareApply.getCreator());
+            //写入房产证的证载用途
+            DeclareRealtyHouseCert realtyHouseCert = declareRealtyHouseCertDao.getDeclareRealtyHouseCertById(oo.getPid());
+            if (realtyHouseCert != null) {
+                declareRecord.setCertUse(baseDataDicService.getNameById(realtyHouseCert.getPublicSituation()));
+            }
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
             } catch (Exception e1) {

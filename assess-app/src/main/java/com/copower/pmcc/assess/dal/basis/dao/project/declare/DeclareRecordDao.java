@@ -30,9 +30,13 @@ public class DeclareRecordDao {
         List<DeclareRecord> declareRecords = mapper.selectByExample(example);
         return declareRecords;
     }
+    public List<DeclareRecord> getDeclareRecordListByIds(List<Integer> ids) {
+        DeclareRecordExample example = new DeclareRecordExample();
+        example.createCriteria().andIdIn(ids);
+        return mapper.selectByExample(example);
+    }
 
-
-    public List<DeclareRecord> getDeclareRecordByProjectId(Integer projectId) {
+    public List<DeclareRecord> getDeclareRecordListByProjectId(Integer projectId) {
         DeclareRecordExample example = new DeclareRecordExample();
         example.createCriteria().andProjectIdEqualTo(projectId);
         example.setOrderByClause("seat");

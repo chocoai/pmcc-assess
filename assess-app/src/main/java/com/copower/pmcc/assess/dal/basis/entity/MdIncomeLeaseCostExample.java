@@ -996,6 +996,136 @@ public class MdIncomeLeaseCostExample {
             return (Criteria) this;
         }
 
+        public Criteria andTransactionTaxeFeeRatioIsNull() {
+            addCriterion("transaction_taxe_fee_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeRatioIsNotNull() {
+            addCriterion("transaction_taxe_fee_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeRatioEqualTo(BigDecimal value) {
+            addCriterion("transaction_taxe_fee_ratio =", value, "transactionTaxeFeeRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeRatioNotEqualTo(BigDecimal value) {
+            addCriterion("transaction_taxe_fee_ratio <>", value, "transactionTaxeFeeRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeRatioGreaterThan(BigDecimal value) {
+            addCriterion("transaction_taxe_fee_ratio >", value, "transactionTaxeFeeRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("transaction_taxe_fee_ratio >=", value, "transactionTaxeFeeRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeRatioLessThan(BigDecimal value) {
+            addCriterion("transaction_taxe_fee_ratio <", value, "transactionTaxeFeeRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("transaction_taxe_fee_ratio <=", value, "transactionTaxeFeeRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeRatioIn(List<BigDecimal> values) {
+            addCriterion("transaction_taxe_fee_ratio in", values, "transactionTaxeFeeRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeRatioNotIn(List<BigDecimal> values) {
+            addCriterion("transaction_taxe_fee_ratio not in", values, "transactionTaxeFeeRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("transaction_taxe_fee_ratio between", value1, value2, "transactionTaxeFeeRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("transaction_taxe_fee_ratio not between", value1, value2, "transactionTaxeFeeRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainIsNull() {
+            addCriterion("transaction_taxe_fee_explain is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainIsNotNull() {
+            addCriterion("transaction_taxe_fee_explain is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainEqualTo(String value) {
+            addCriterion("transaction_taxe_fee_explain =", value, "transactionTaxeFeeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainNotEqualTo(String value) {
+            addCriterion("transaction_taxe_fee_explain <>", value, "transactionTaxeFeeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainGreaterThan(String value) {
+            addCriterion("transaction_taxe_fee_explain >", value, "transactionTaxeFeeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainGreaterThanOrEqualTo(String value) {
+            addCriterion("transaction_taxe_fee_explain >=", value, "transactionTaxeFeeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainLessThan(String value) {
+            addCriterion("transaction_taxe_fee_explain <", value, "transactionTaxeFeeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainLessThanOrEqualTo(String value) {
+            addCriterion("transaction_taxe_fee_explain <=", value, "transactionTaxeFeeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainLike(String value) {
+            addCriterion("transaction_taxe_fee_explain like", value, "transactionTaxeFeeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainNotLike(String value) {
+            addCriterion("transaction_taxe_fee_explain not like", value, "transactionTaxeFeeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainIn(List<String> values) {
+            addCriterion("transaction_taxe_fee_explain in", values, "transactionTaxeFeeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainNotIn(List<String> values) {
+            addCriterion("transaction_taxe_fee_explain not in", values, "transactionTaxeFeeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainBetween(String value1, String value2) {
+            addCriterion("transaction_taxe_fee_explain between", value1, value2, "transactionTaxeFeeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainNotBetween(String value1, String value2) {
+            addCriterion("transaction_taxe_fee_explain not between", value1, value2, "transactionTaxeFeeExplain");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

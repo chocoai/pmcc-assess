@@ -58,7 +58,7 @@ public class SchemeSurePriceFactorService {
             if (factor.getType().equals(ComputeDataTypeEnum.ABSOLUTE.getId())) {
                 resultPrice = resultPrice.add(factor.getCoefficient());
             } else {
-                resultPrice = resultPrice.multiply(factor.getCoefficient());
+                resultPrice = resultPrice.multiply(factor.getCoefficient().add(new BigDecimal("1")));
             }
             factor.setDeclareId(schemeJudgeObject.getDeclareRecordId());
             factor.setCreator(commonService.thisUserAccount());
