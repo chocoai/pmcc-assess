@@ -13,7 +13,6 @@ import java.util.List;
 public enum BaseReportFieldEnum {
     ReportNumber("", "文号"),
     ValuationProjectName("", "估价项目名称"),
-    PRINCIPAL("", "估价委托人"),
     ReportIssuanceDate("", "报告出具日期"),
     ValueType("", "价值类型"),
     ValueTypeDesc("", "价值类型描述"),
@@ -52,7 +51,9 @@ public enum BaseReportFieldEnum {
     /*
     ---------------------------------------------------------------------------------------------------
      */
+    PRINCIPAL("", "估价委托人"),
     PrincipalAddress("", "委托人地址"),
+    PrincipalInfo("", "估价委托人信息"),
     PrincipalLegalRepresentative("", "委托人法定代表人"),
     /*
     ---------------------------------------------------------------------------------------------------
@@ -60,6 +61,7 @@ public enum BaseReportFieldEnum {
     RegisteredRealEstateValuer("", "注册房产估价师"),
     RegisteredRealEstateValuerAndNumber("", "注册房产估价师及注册号"),
 
+    XIEHE_organizationInfo("", "房地产估价机构信息"),
     XIEHE_organizationName("", "机构名称"),
     XIEHE_RealEstateValuationAgency("", "房地产估价机构"),
     XIEHE_organizationAddress("", "机构住所"),
@@ -90,6 +92,7 @@ public enum BaseReportFieldEnum {
     SelectionValuationMethod("", "选择估价方法"),
     EvaluationPriceCateGory("", "分类评估单价"),
     EvaluationAreaCateGory("", "分类评估面积"),
+    TotalValueValuationObject("", "估价对象的总价"),
     EvaluationPriceCateGoryTotal("", "分类评估总价"),
     EvaluationExpression("", "分类评估单价计算试"),
     EvaluationMethodResult("", "分类评估方法结果"),

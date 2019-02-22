@@ -3,15 +3,16 @@ package com.copower.pmcc.assess.common;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
  * @Auther: zch
  * @Date: 2019/1/23 09:33
- * @Description:
+ * @Description:阿拉伯数字转换中文数字
  */
-public class CnNumberUtils {
+public class CnNumberUtils implements Serializable {
 
     private final static Logger logger = LoggerFactory.getLogger(CnNumberUtils.class);
     //阿拉伯数字对应大写中文数字
@@ -32,6 +33,26 @@ public class CnNumberUtils {
      */
     public static String toUppercase(Double num) {
         return toUppercase(String.valueOf(num));
+    }
+
+    /**
+     * 强制保留2位
+     * 转换成中文大写金额（最高支持万亿和两位小数）
+     *
+     * @param num
+     * @return
+     */
+    public static String toUppercaseSubstring(String num) {
+        String[] strNumArray = num.split("\\.");
+        if (strNumArray.length == 2) {
+            String number = strNumArray[1];
+            if (number.length() > 2) {
+                number = number.substring(0, 2);
+            }
+            return toUppercase(String.format("%s.%s", strNumArray[0], number));
+        } else {
+            return toUppercase(String.format("%s", strNumArray[0]));
+        }
     }
 
     /**
