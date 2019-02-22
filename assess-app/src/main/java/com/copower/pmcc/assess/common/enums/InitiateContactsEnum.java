@@ -4,7 +4,7 @@ package com.copower.pmcc.assess.common.enums;
  * Created by 13426 on 2018/5/7.
  */
 public enum InitiateContactsEnum {
-    CONSIGNOR(1,"委托人"),POSSESSOR(2, "占有人"), UNIT_INFORMATION(3, "报告使用单位");
+    CONSIGNOR(1, "委托人"), POSSESSOR(2, "占有人"), UNIT_INFORMATION(3, "报告使用单位"), legalPerson(1, "法人"), naturalPerson(0, "自然人");
     private String name;
     private Integer id;
 
