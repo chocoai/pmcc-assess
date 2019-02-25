@@ -109,7 +109,7 @@
                         业务类型<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <select name="businessType" required="required" class="form-control search-select select2 businessType">
+                        <select name="businessType" required="required" class="form-control businessType">
                             <c:if test="${projectInfo.unitInformationVo.businessType != null}">
                                 <option value="${projectInfo.unitInformationVo.businessType}" selected="selected">${projectInfo.unitInformationVo.businessType}</option>
                             </c:if>
@@ -122,7 +122,7 @@
                         评估类型<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <select name="assessType" required="required" class="form-control search-select select2 assessType">
+                        <select name="assessType" required="required" class="form-control  assessType">
                             <c:if test="${projectInfo.unitInformationVo.assessType != null}">
                                 <option value="${projectInfo.unitInformationVo.assessType}" selected="selected">${projectInfo.unitInformationVo.assessType}</option>
                             </c:if>
