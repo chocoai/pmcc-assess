@@ -138,7 +138,7 @@
                 if (!commonDeclareApplyModel.isNotBlank(floor)) {
                     floor = "";
                 } else {
-                    floor = floor + "楼";
+                    floor = floor + "层";
                 }
                 if (!commonDeclareApplyModel.isNotBlank(roomNumber)) {
                     roomNumber = "";
@@ -248,7 +248,7 @@
                 if (!commonDeclareApplyModel.isNotBlank(floor)) {
                     floor = "";
                 } else {
-                    floor = floor + "楼";
+                    floor = floor + "层";
                 }
                 if (!commonDeclareApplyModel.isNotBlank(roomNumber)) {
                     roomNumber = "";
@@ -349,7 +349,7 @@
                 if (!commonDeclareApplyModel.isNotBlank(floor)) {
                     floor = "";
                 } else {
-                    floor = floor + "楼";
+                    floor = floor + "层";
                 }
                 if (!commonDeclareApplyModel.isNotBlank(roomNumber)) {
                     roomNumber = "";
@@ -1589,7 +1589,7 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">房屋所有权人3<span
+                <label class="col-sm-1 control-label">房屋所有权人<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <input type="text"
