@@ -156,4 +156,20 @@ public class SchemeSupportInfoService {
             }
         }
     }
+
+
+    /**
+     * 根据名称获取内容信息
+     * @param areaId
+     * @param name
+     * @return
+     */
+    public String getContentByName(Integer areaId,String name){
+        SchemeSupportInfo where=new SchemeSupportInfo();
+        where.setAreaId(areaId);
+        where.setName(name);
+        List<SchemeSupportInfo> detailList = schemeSupportInfoDao.getSupportInfoList(where);
+        if(CollectionUtils.isEmpty(detailList)) return "";
+        return detailList.get(0).getContent();
+    }
 }

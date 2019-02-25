@@ -161,4 +161,19 @@ public class CompileReportService {
             }
         }
     }
+
+    /**
+     * 根据名称获取内容信息
+     * @param areaId
+     * @param name
+     * @return
+     */
+    public String getContentByName(Integer areaId,String name){
+        CompileReportDetail where=new CompileReportDetail();
+        where.setAreaId(areaId);
+        where.setName(name);
+        List<CompileReportDetail> detailList = compileReportDetailDao.getReportDetailList(where);
+        if(CollectionUtils.isEmpty(detailList)) return "";
+        return detailList.get(0).getContent();
+    }
 }
