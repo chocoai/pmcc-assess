@@ -21,13 +21,23 @@
                 <div class="col-sm-3">
                     <div class="input-group">
                         <input type="text" id="txt_building_search" data-rule-maxlength="100" placeholder="楼栋号" required="required"
-                               name="buildingNumber" class="form-control" onblur="$(this).val($(this).val().replace('栋',''));">
+                               name="buildingNumber" class="form-control" onblur="buildingNumberBlur(this);">
                         <span class="input-group-btn">
                             <div onclick="buildingCommon.mapMarker();" class="btn btn-info"><i
                                     class="fa fa-map-marker"></i> 标注</div>
                         </span>
                     </div>
                 </div>
+                <script type="text/javascript">
+                    function buildingNumberBlur(_this) {
+                        $(_this).val($(_this).val().replace('栋',''));
+                        var buildingNameElement = $(_this).closest('.form-group').find('[name=buildingName]');
+                        console.log(buildingNameElement.val());
+                        if(!buildingNameElement.val()){
+                            buildingNameElement.val($(_this).val()+'栋');
+                        }
+                    }
+                </script>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">

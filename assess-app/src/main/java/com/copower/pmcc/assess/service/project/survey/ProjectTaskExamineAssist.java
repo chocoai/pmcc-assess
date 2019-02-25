@@ -309,7 +309,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
                 surveySceneExplore.setProcessInsId(projectPlanDetails.getProcessInsId());
                 surveySceneExploreService.saveSurveySceneExplore(surveySceneExplore);
             }
-            basicHouseService.addHouse(null, basicApply.getId());
+            basicHouseService.addHouseAndTrading(null, basicApply.getId());
         }
         if (surveySceneExplore != null) {
             modelAndView.addObject("surveySceneExplore", surveySceneExplore);

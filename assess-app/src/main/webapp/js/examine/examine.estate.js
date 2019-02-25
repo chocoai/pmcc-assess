@@ -155,6 +155,32 @@
                 estateCommon.estateLandStateForm.find('select.landUseCategory').empty().html(html).trigger('change');
             });
         });
+
+        //土地开发程度为熟地时选择几通几平
+        estateCommon.estateLandStateForm.find('select.developmentDegree').off('change').on('change', function () {
+            $("#developmentDegreeContentContainer").empty();
+            var key = $(this).find("option:selected").attr('key');
+            if (key == AssessDicKey.estateDevelopment_degreePrepared_land) {
+                AssessCommon.loadDataDicByPid($(this).val(), '', function (html, resultData) {
+                    if (resultData) {
+                        var resultHtml = '';
+                        var array = [];
+                        if (data.basicEstateLandState.developmentDegreeContent) {
+                            array = data.basicEstateLandState.developmentDegreeContent.split(',');
+                        }
+                        $.each(resultData, function (i, item) {
+                            resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
+                            if ($.inArray(item.id.toString(), array) > -1) {
+                                resultHtml += ' checked="checked" ';
+                            }
+                            resultHtml += ' id="developmentDegreeContent' + item.id + '" name="developmentDegreeContent" value="' + item.id + '">';
+                            resultHtml += '<label for="developmentDegreeContent' + item.id + '">' + item.name + '</label></span>';
+                        })
+                        $("#developmentDegreeContentContainer").html(resultHtml);
+                    }
+                })
+            }
+        });
     };
 
     /**
