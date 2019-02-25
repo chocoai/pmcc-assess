@@ -988,6 +988,41 @@ public class GenerateReportService {
                         if (baseReportField != null) {
                         }
                     }
+                    //他权信息公示
+                    if (Objects.equal(BaseReportFieldEnum.HisRightInfoPublicity.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getHisRightInfoPublicity(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //他权类别
+                    if (Objects.equal(BaseReportFieldEnum.HisRightType.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getHisRightType(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //担保物权设立情况
+                    if (Objects.equal(BaseReportFieldEnum.collateralFound.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getCollateralFound(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //最佳利用描述
+                    if (Objects.equal(BaseReportFieldEnum.OptimumUtilizationDescription.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getOptimumUtilizationDescription(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //法定优先受偿款金额
+                    if (Objects.equal(BaseReportFieldEnum.StatutoryPriorityAmount.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getStatutoryPriorityAmount(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
                     //房屋所有权登记状况表
                     if (Objects.equal(BaseReportFieldEnum.HousingOwnershipRegistrationStatementSheet.getName(), name)) {
                         replaceReportPutValue(name, generateBaseDataService.getHousingOwnershipRegistrationStatementSheet(), bookmarkAndRegex.getType(), true, mapSet);

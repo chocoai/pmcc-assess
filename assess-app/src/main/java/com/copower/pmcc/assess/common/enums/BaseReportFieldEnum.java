@@ -107,6 +107,9 @@ public enum BaseReportFieldEnum {
     ReportingCategories("", "报告类别"),
 
 
+    OptimumUtilizationDescription("", "最佳利用描述"),
+    StatutoryPriorityAmount("", "法定优先受偿款金额"),
+    collateralFound("", "担保物权设立情况"),
     ComputationProcess("", "计算过程"),
     UnitPriceAdjustmentTable("", "单价调整表"),
     SelectionApplicationParameters("", "参数选取与应用"),

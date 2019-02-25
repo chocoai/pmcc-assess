@@ -27,6 +27,7 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportService;
+import com.copower.pmcc.assess.service.data.DataHisRightInfoPublicityService;
 import com.copower.pmcc.assess.service.data.DataQualificationService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.data.EvaluationMethodService;
@@ -108,6 +109,7 @@ public class GenerateBaseDataService {
     private MdMarketCompareService mdMarketCompareService;
     private DeclareRealtyHouseCertService declareRealtyHouseCertService;
     private DeclareRealtyRealEstateCertService declareRealtyRealEstateCertService;
+    private DataHisRightInfoPublicityService dataHisRightInfoPublicityService;
 
     //构造器必须传入的参数
     private Integer projectId;
@@ -2165,6 +2167,194 @@ public class GenerateBaseDataService {
             stringBuilder.append("无");
         }
         return stringBuilder.toString().trim();
+    }
+
+    /**
+     * 他权类别
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getHisRightType() throws Exception {
+        StringBuilder stringBuilder = new StringBuilder(24);
+        Set<String> stringSet = Sets.newHashSet();
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, getProjectInfo().getProjectCategoryId());
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (projectPhase != null) {
+            if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                    ProjectPlanDetails query = new ProjectPlanDetails();
+                    query.setProjectId(getProjectId());
+                    query.setProjectPhaseId(projectPhase.getId());
+                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
+                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+                        for (int j = 0; j < projectPlanDetailsList.size(); j++) {
+                            ProjectPlanDetails projectPlanDetails = projectPlanDetailsList.get(j);
+                            List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightService.surveyAssetInventoryRights(projectPlanDetails.getId());
+                            if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
+                                for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
+                                    if (inventoryRight.getCategory() != null) {
+                                        stringSet.add(baseDataDicService.getNameById(inventoryRight.getCategory()));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (CollectionUtils.isNotEmpty(stringSet)) {
+            List<String> stringList = Lists.newArrayList(stringSet);
+            for (int i = 0; i < stringList.size(); i++) {
+                stringBuilder.append(stringList.get(i));
+                if (i == stringList.size() - 1) {
+                    stringBuilder.append(";");
+                } else {
+                    stringBuilder.append(",");
+                }
+            }
+        } else {
+            stringBuilder.append(" ");
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
+     * 担保物权设立情况
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getCollateralFound() throws Exception {
+        StringBuilder stringBuilder = new StringBuilder(24);
+        Set<String> stringSet = Sets.newHashSet();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                if (StringUtils.isNotBlank(schemeJudgeObject.getCollateralFound())) {
+                    stringSet.add(schemeJudgeObject.getCollateralFound());
+                }
+            }
+        }
+        if (CollectionUtils.isNotEmpty(stringSet)) {
+            List<String> stringList = Lists.newArrayList(stringSet);
+            for (int i = 0; i < stringList.size(); i++) {
+                stringBuilder.append(stringList.get(i));
+                if (i == stringList.size() - 1) {
+                    stringBuilder.append(";");
+                } else {
+                    stringBuilder.append(",");
+                }
+            }
+        } else {
+            stringBuilder.append(" ");
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
+     * 最佳利用描述
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getOptimumUtilizationDescription() throws Exception {
+        StringBuilder stringBuilder = new StringBuilder(24);
+        Set<String> stringSet = Sets.newHashSet();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                if (schemeJudgeObject.getBestUse() != null) {
+                    stringSet.add(baseDataDicService.getNameById(schemeJudgeObject.getBestUse()));
+                }
+            }
+        }
+        if (CollectionUtils.isNotEmpty(stringSet)) {
+            List<String> stringList = Lists.newArrayList(stringSet);
+            for (int i = 0; i < stringList.size(); i++) {
+                stringBuilder.append(stringList.get(i));
+                if (i == stringList.size() - 1) {
+                    stringBuilder.append(";");
+                } else {
+                    stringBuilder.append(",");
+                }
+            }
+        } else {
+            stringBuilder.append(" ");
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
+     * 法定优先受偿款金额
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getStatutoryPriorityAmount() throws Exception {
+        StringBuilder stringBuilder = new StringBuilder(24);
+        Set<String> stringSet = Sets.newHashSet();
+        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
+                getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
+                .stream()
+                .filter(projectPhaseVo -> {
+                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
+                        return true;
+                    }
+                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
+                        return true;
+                    }
+                    if (Objects.equal(AssessPhaseKeyConstant.REIMBURSEMENT, projectPhaseVo.getPhaseKey())) {
+                        return true;
+                    }
+                    return false;
+                }).collect(Collectors.toList());
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        Map<SchemeJudgeObject, Integer> judgeObjectIntegerMap = Maps.newHashMap();
+        if (CollectionUtils.isNotEmpty(projectPhases)) {
+            for (ProjectPhase projectPhase : projectPhases) {
+                if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+                    for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                        ProjectPlanDetails query = new ProjectPlanDetails();
+                        query.setProjectId(getProjectId());
+                        query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+                        query.setProjectPhaseId(projectPhase.getId());
+                        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
+                        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+                            for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
+                                GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
+                                if (generateBaseExamineService.getBasicApply().getId() != null && generateBaseExamineService.getBasicApply().getId().intValue() != 0) {
+                                    judgeObjectIntegerMap.put(schemeJudgeObject, projectPlanDetails.getId());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (!judgeObjectIntegerMap.isEmpty()) {
+            for (Map.Entry<SchemeJudgeObject, Integer> integerEntry : judgeObjectIntegerMap.entrySet()) {
+                SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByPlanDetailsId(integerEntry.getValue());
+                if (schemeReimbursement != null && schemeReimbursement.getKnowTotalPrice() != null) {
+                    stringSet.add(schemeReimbursement.getKnowTotalPrice().toString());
+                }
+            }
+        }
+        if (CollectionUtils.isNotEmpty(stringSet)) {
+            List<String> stringList = Lists.newArrayList(stringSet);
+            for (int i = 0; i < stringList.size(); i++) {
+                stringBuilder.append(stringList.get(i));
+                if (i == stringList.size() - 1) {
+                    stringBuilder.append(";");
+                } else {
+                    stringBuilder.append(",");
+                }
+            }
+        } else {
+            stringBuilder.append(" ");
+        }
+        return stringBuilder.toString();
     }
 
     /**
@@ -4782,6 +4972,32 @@ public class GenerateBaseDataService {
     }
 
     /**
+     * 他权信息公示
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getHisRightInfoPublicity() throws Exception {
+        DataHisRightInfoPublicity dataHisRightInfoPublicity = null;
+        SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
+        Integer areaId = null;
+        if (StringUtils.isNotBlank(schemeAreaGroup.getDistrict())) {
+            areaId = Integer.parseInt(schemeAreaGroup.getDistrict());
+        } else {
+            if (StringUtils.isNotBlank(schemeAreaGroup.getCity())) {
+                areaId = Integer.parseInt(schemeAreaGroup.getCity());
+            }
+        }
+        if (areaId != null) {
+            dataHisRightInfoPublicity = dataHisRightInfoPublicityService.getContent(areaId);
+        }
+        if (dataHisRightInfoPublicity != null) {
+            return dataHisRightInfoPublicity.getContent();
+        }
+        return "";
+    }
+
+    /**
      * 功能描述: 申报所启用表单类型
      *
      * @param:
@@ -4889,6 +5105,7 @@ public class GenerateBaseDataService {
         this.mdMarketCompareService = SpringContextUtils.getBean(MdMarketCompareService.class);
         this.declareRealtyHouseCertService = SpringContextUtils.getBean(DeclareRealtyHouseCertService.class);
         this.declareRealtyRealEstateCertService = SpringContextUtils.getBean(DeclareRealtyRealEstateCertService.class);
+        this.dataHisRightInfoPublicityService = SpringContextUtils.getBean(DataHisRightInfoPublicityService.class);
     }
 
     private String toSetString(Set<String> stringSet) {
