@@ -165,8 +165,8 @@
                     if (resultData) {
                         var resultHtml = '';
                         var array = [];
-                        if (data.basicEstateLandState.developmentDegreeContent) {
-                            array = data.basicEstateLandState.developmentDegreeContent.split(',');
+                        if (data.land.developmentDegreeContent) {
+                            array = data.land.developmentDegreeContent.split(',');
                         }
                         $.each(resultData, function (i, item) {
                             resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
