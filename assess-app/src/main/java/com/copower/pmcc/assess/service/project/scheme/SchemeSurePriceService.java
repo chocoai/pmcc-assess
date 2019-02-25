@@ -76,6 +76,17 @@ public class SchemeSurePriceService {
         return schemeSurePriceDao.getSchemeSurePrice(where);
     }
 
+    public SchemeSurePrice getSchemeSurePriceBySchemeJudgeObjectId(Integer schemeJudgeObjectId){
+        SchemeSurePrice where = new SchemeSurePrice();
+        where.setJudgeObjectId(schemeJudgeObjectId);
+        List<SchemeSurePrice> schemeSurePriceList = schemeSurePriceDao.getSurePriceList(where);
+        if (CollectionUtils.isNotEmpty(schemeSurePriceList)){
+            return schemeSurePriceList.get(0);
+        }else {
+            return null;
+        }
+    }
+
 
     /**
      * 获取单价确定明细数据

@@ -815,11 +815,25 @@ public class GenerateReportService {
                             replaceReportPutValue(name, generateBaseDataService.getAssessmentMethods(), bookmarkAndRegex.getType(), false, mapSet);
                         }
                     }
+                    //估价对象评估方法
+                    if (Objects.equal(BaseReportFieldEnum.EvaluationMethodValuationObject.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getEvaluationMethodValuationObject(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
                     //土地他项权利情况
                     if (Objects.equal(BaseReportFieldEnum.inventoryRight.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
                             replaceReportPutValue(name, generateBaseDataService.getInventoryRight(), bookmarkAndRegex.getType(), false, mapSet);
+                        }
+                    }
+                    //他权有无租赁权
+                    if (Objects.equal(BaseReportFieldEnum.HisRightHasLease.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getHisRightHasLease(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
                         }
                     }
                     //土地使用管制
@@ -855,6 +869,27 @@ public class GenerateReportService {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
                             replaceReportPutValue(name, generateBaseDataService.getValueTimePointRemark(), bookmarkAndRegex.getType(), false, mapSet);
+                        }
+                    }
+                    //申报所启用表单类型
+                    if (Objects.equal(BaseReportFieldEnum.TypesFormEnabledDeclarationOffice.getName(), name) || Objects.equal(BaseReportFieldEnum.DecalreFormTypeAll.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getTypesFormEnabledDeclarationOffice(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //税费负担
+                    if (Objects.equal(BaseReportFieldEnum.TaxBurden.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getTaxBurden(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //付款方式
+                    if (Objects.equal(BaseReportFieldEnum.PaymentMethod.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getPaymentMethod(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
                         }
                     }
                     //估价技术思路
@@ -909,13 +944,6 @@ public class GenerateReportService {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
                             replaceReportPutValue(name, generateBaseDataService.getEvaluationExpression(), bookmarkAndRegex.getType(), false, mapSet);
-                        }
-                    }
-                    //分类评估方法结果
-                    if (Objects.equal(BaseReportFieldEnum.EvaluationMethodResult.getName(), name)) {
-                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                        if (baseReportField != null) {
-                            //                        replaceReportPutValue(name, generateBaseDataService.getEvaluationMethodResult(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT),bookmarkAndRegex.getType(), true, mapSet);
                         }
                     }
                     //权重说明
@@ -1058,7 +1086,14 @@ public class GenerateReportService {
                     if (Objects.equal(BaseReportFieldEnum.EvaluationMethodResult.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
-                            //                        replaceReportPutValue(name, generateBaseDataService.getEvaluationMethodResult(AssessDataDicKeyConstant.REPORT_TYPE_RESULT),bookmarkAndRegex.getType(), true, mapSet);
+                            replaceReportPutValue(name, generateBaseDataService.getEvaluationMethodResult(), bookmarkAndRegex.getType(), true, mapSet);
+                        }
+                    }
+                    //单价调整表
+                    if (Objects.equal(BaseReportFieldEnum.UnitPriceAdjustmentTable.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getUnitPriceAdjustmentTable(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
                         }
                     }
 
