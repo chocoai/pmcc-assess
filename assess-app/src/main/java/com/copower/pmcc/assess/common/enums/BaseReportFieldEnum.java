@@ -25,6 +25,7 @@ public enum BaseReportFieldEnum {
     LandUseRightType("", "土地使用权类型"),
     PowerPerson("", "权利人"),//
     BuildingStructureCategory("", "建筑结构类别"),//new 建筑结构类别
+    TypesFormEnabledDeclarationOffice("", "申报所启用表单类型"),
     ValueTimePoint("", "价值时点"),
     dateValue("", "估价时点"),
     ValueTimePointRemark("", "价值时点说明"),
@@ -88,6 +89,7 @@ public enum BaseReportFieldEnum {
     rentalPossessionDesc("", "出租或占用情况"),
     HouseType("", "房产类型"),
 
+    EvaluationMethodValuationObject("", "估价对象评估方法"),
     EvaluationThink("", "估价技术思路"),
     SelectionValuationMethod("", "选择估价方法"),
     EvaluationPriceCateGory("", "分类评估单价"),
@@ -106,9 +108,12 @@ public enum BaseReportFieldEnum {
 
 
     ComputationProcess("", "计算过程"),
+    UnitPriceAdjustmentTable("", "单价调整表"),
     SelectionApplicationParameters("", "参数选取与应用"),
     StatusBuildingRightsInterests("", "建筑物权益状况"),
     theGeneralIdeaOfThisEvaluationAndTheSelectionOfEvaluationMethods("", "本次估价的总体思路和评估方法的选取"),
+    TaxBurden("", "税费负担"),
+    PaymentMethod("", "付款方式"),
 
     CostAssistApplyReason("", "成本法适用原因"),
     CostAssistNotApplicableReason("", "成本法不适用原因"),
