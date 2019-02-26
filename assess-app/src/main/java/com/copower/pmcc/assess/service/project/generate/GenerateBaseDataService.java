@@ -19,7 +19,6 @@ import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.dto.output.data.DataQualificationVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
-import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyHouseCertVo;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyRealEstateCertVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
@@ -207,7 +206,7 @@ public class GenerateBaseDataService {
         if (StringUtils.isNotBlank(this.wordNumber)) {
             return wordNumber;
         } else {
-            return errorStr;
+            return "";
         }
     }
 
@@ -244,7 +243,7 @@ public class GenerateBaseDataService {
         if (StringUtils.isNotBlank(this.principal)) {
             return principal;
         } else {
-            return errorStr;
+            return "";
         }
     }
 
@@ -703,7 +702,7 @@ public class GenerateBaseDataService {
         if (StringUtils.isNotBlank(builder.toString())) {
             return builder.toString();
         }
-        return errorStr;
+        return "";
     }
 
     /**
@@ -726,7 +725,7 @@ public class GenerateBaseDataService {
         if (StringUtils.isNotBlank(builder.toString())) {
             return builder.toString();
         }
-        return errorStr;
+        return "";
     }
 
     /**
@@ -930,7 +929,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getUnitPriceAdjustmentTable() throws Exception {
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         List<SchemeJudgeObjectVo> schemeJudgeObjectList = getSchemeJudgeObjectList().stream().map(schemeJudgeObject -> {
@@ -990,7 +989,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getEvaluationMethodResult() throws Exception {
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
@@ -1131,7 +1130,7 @@ public class GenerateBaseDataService {
             BigDecimal decimal = area.multiply(price);
             return String.format("%s", decimal.toString());
         }
-        return errorStr;
+        return "";
     }
 
     /**
@@ -1164,7 +1163,7 @@ public class GenerateBaseDataService {
     public String getLiquidationAnalysis(String title) throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
-        String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath(title);
         for (SchemeJudgeObject judgeObject : this.getSchemeJudgeObjectList()) {
             createLiquidationAnalysisTable(builder, judgeObject);
         }
@@ -1435,7 +1434,7 @@ public class GenerateBaseDataService {
         if (StringUtils.isNotBlank(builder.toString())) {
             return builder.toString();
         }
-        return errorStr;
+        return "";
     }
 
     /**
@@ -1458,7 +1457,7 @@ public class GenerateBaseDataService {
         if (StringUtils.isNotBlank(builder.toString())) {
             return builder.toString();
         }
-        return errorStr;
+        return "";
     }
 
     /**
@@ -1706,7 +1705,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getPrincipleBasisHypothesis(SchemeSupportTypeEnum schemeSupportTypeEnum) throws Exception {
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = new DocumentBuilder(document);
         List<SchemeSupportInfo> schemeSupportInfoList = schemeSupportInfoService.getSupportInfoListByAreaId(getAreaId(), schemeSupportTypeEnum);
@@ -1730,7 +1729,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getReportAnalysis(String type) throws Exception {
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = new DocumentBuilder(document);
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(type);
@@ -1959,19 +1958,6 @@ public class GenerateBaseDataService {
         return "";
     }
 
-    /**
-     * 多个委估对象 显示
-     *
-     * @param str
-     * @return
-     */
-    public String moreJudgeObject(String str, String s) {
-        if (StringUtils.isBlank(str) || StringUtils.isBlank(s)) {
-            return "";
-        } else {
-            return String.format("1,3号委估对象%s2号委估对象%s", str, s);
-        }
-    }
 
     /**
      * 实际用途
@@ -3292,7 +3278,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/26 16:25
      */
     public String getDeterminationMarketValueValuationObject() throws Exception {
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
@@ -3432,43 +3418,31 @@ public class GenerateBaseDataService {
     public String getEquityStatusValuatedObjects() throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
-        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
-                .stream()
-                .filter(projectPhaseVo -> {
-                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    return false;
-                }).collect(Collectors.toList());
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         Map<SchemeJudgeObject, DeclareRealtyRealEstateCertVo> objectDeclareRealtyRealEstateCertVoMap = Maps.newHashMap();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList().stream().filter(schemeJudgeObject -> {
-            if (schemeJudgeObject.getDeclareRecordId() == null) {
-                return false;
-            }
-            if (schemeJudgeObject.getDeclareRecordId().equals(0)) {
-                return false;
-            }
-            return true;
-        }).collect(Collectors.toList());
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-                if (declareRecord != null) {
-                    if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), declareRecord.getDataTableName())) {
-                        DeclareRealtyRealEstateCert declareRealtyRealEstateCert = declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertById(declareRecord.getDataTableId());
-                        if (declareRealtyRealEstateCert != null) {
-                            objectDeclareRealtyRealEstateCertVoMap.put(schemeJudgeObject, declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertVo(declareRealtyRealEstateCert));
+                if (schemeJudgeObject.getDeclareRecordId() != null && schemeJudgeObject.getDeclareRecordId().intValue() != 0) {
+                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+                    if (declareRecord != null) {
+                        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), declareRecord.getDataTableName())) {
+                            if (declareRecord.getDataTableId() != null) {
+                                DeclareRealtyRealEstateCert declareRealtyRealEstateCert = declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertById(declareRecord.getDataTableId());
+                                if (declareRealtyRealEstateCert != null) {
+                                    try {
+                                        objectDeclareRealtyRealEstateCertVoMap.put(schemeJudgeObject, declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertVo(declareRealtyRealEstateCert));
+                                    } catch (Exception e) {
+
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-        if (!objectDeclareRealtyRealEstateCertVoMap.isEmpty()) {
+        if (!objectDeclareRealtyRealEstateCertVoMap.isEmpty() ) {
             final int colMax = 11;
             Table table = builder.startTable();
             for (int j = 0; j < colMax; j++) {
@@ -3601,7 +3575,7 @@ public class GenerateBaseDataService {
         }
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
         Table table = builder.startTable();
         int num = 2;
@@ -3815,7 +3789,7 @@ public class GenerateBaseDataService {
         }
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
-        String localPath = String.format("%s\\报告模板1%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath("报告模板1");
         builder.writeln("估价结果一览表");
         Table table = builder.startTable();
         final int colMax = 11;
@@ -4072,7 +4046,7 @@ public class GenerateBaseDataService {
         }
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         builder.writeln("房屋所有权登记状况表");
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
         Table table = builder.startTable();
@@ -4234,7 +4208,7 @@ public class GenerateBaseDataService {
     public String getJudgeObjectAreaStatusSheet() throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
                 getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
                 .stream()
@@ -4634,7 +4608,7 @@ public class GenerateBaseDataService {
     public String getJudgeObjectLandStateSheet() throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
                 getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
                 .stream()
@@ -4779,7 +4753,7 @@ public class GenerateBaseDataService {
     public String getJudgeBuildLandStateSheet() throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
                 getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
                 .stream()
@@ -5056,7 +5030,7 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         builder.writeln("汇总表");
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         builder.writeln("估价结果汇总表");
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
@@ -5337,7 +5311,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getJUDGEOBJECTPRINCIPALCOPYSHEET() throws Exception {
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         new Document().save(localPath);
         SysAttachmentDto sysAttachmentDto = schemeReportFileService.getProjectProxyFileList(getProjectId());
         if (sysAttachmentDto != null) {
@@ -5359,7 +5333,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getEstimatedObjectLocationDiagram() throws Exception {
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = new DocumentBuilder(document);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
@@ -5385,7 +5359,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getValuation_Target_Live_Photos() throws Exception {
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = new DocumentBuilder(document);
         List<SchemeJudgeObject> schemeJudgeObjectFullList = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(this.getAreaId());
@@ -5422,7 +5396,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getCopies_the_Ownership_Certificate_the_Valuation_Object() throws Exception {
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = new DocumentBuilder(document);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
@@ -5450,7 +5424,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getSpecial_documentation_referenced_in_valuation() throws Exception {
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = new DocumentBuilder(document);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
@@ -5504,7 +5478,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getCopyBusinessLicenseRealEstateValuationAgency() throws Exception {
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         new Document().save(localPath);
         AdCompanyQualificationDto adCompanyQualificationDto = getCompanyQualificationForLicense();
         if (adCompanyQualificationDto != null) {
@@ -5536,7 +5510,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getCopyQualificationCertificateRealEstateValuationInstitution() throws Exception {
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         new Document().save(localPath);
         AdCompanyQualificationDto adCompanyQualificationDto = getCompanyQualificationForPractising();
         if (adCompanyQualificationDto != null) {
@@ -5569,7 +5543,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getRegisteredRealEstateValuerValuationInstitution(String str) throws Exception {
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         new Document().save(localPath);
         List<String> images = Lists.newArrayList();
         String[] strings = str.split(",");
@@ -5816,6 +5790,19 @@ public class GenerateBaseDataService {
             }
         }
         return builder.toString();
+    }
+
+    private String getLocalPath() {
+        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        return localPath;
+    }
+
+    private String getLocalPath(String title) {
+        if (StringUtils.isEmpty(title)) {
+            return getLocalPath();
+        }
+        String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        return localPath;
     }
 
 
