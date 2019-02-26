@@ -1691,16 +1691,6 @@
             color="#6f5499" size="10"/>
 
         <div class="form-group">
-           <%-- <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    登记时间
-                </label>
-                <div class="col-sm-3">
-                    <input placeholder="登记时间"
-                           name="registrationTime" data-date-format="yyyy-mm-dd"
-                           class="form-control date-picker dbdate roomTime">
-                </div>
-            </div>--%>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">房屋性质</label>
                 <div class="col-sm-3">
@@ -1853,22 +1843,10 @@
                 <label class="col-sm-1 control-label">取得价格</label>
                 <div class="col-sm-3">
                     <input type="text"
-                           placeholder="取得价格" name="acquisitionPrice" class="form-control">
+                           placeholder="取得价格" name="acquisitionPrice" class="form-control" data-rule-maxlength="100"
+                           data-rule-number='true' required="required">
                 </div>
             </div>
-          <%--  <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    使用权类型
-                </label>
-                <div class="col-sm-3">
-                    <select name="useRightType"
-                            class="form-control search-select select2 useRightType">
-                        <option value="请选择">请选择</option>
-                        <option value="划拨" name="useRightType">划拨</option>
-                        <option value="出证" name="useRightType">出证</option>
-                    </select>
-                </div>
-            </div>--%>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     终止日期
@@ -2021,14 +1999,6 @@
                            required="required">
                 </div>
             </div>
-            <%--  <div class="x-valid">
-                  <label class="col-sm-1 control-label">共有情况<span class="symbol required"></span></label>
-                  <div class="col-sm-3">
-                      <select required="required" name="publicSituation"
-                              class="form-control search-select select2 publicSituation">
-                      </select>
-                  </div>
-              </div>--%>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">建筑面积<span class="symbol required"></span></label>
                 <div class="col-sm-3">
@@ -2036,6 +2006,13 @@
                            placeholder="建筑面积(数字)" name="floorArea" class="form-control"
                            data-rule-maxlength="100" data-rule-number='true'
                            required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">房屋性质</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="房屋性质" name="nature" class="form-control">
                 </div>
             </div>
         </div>
@@ -2113,26 +2090,6 @@
             color="#6f5499" size="10"/>
 
         <div class="form-group">
-            <%--<div class="x-valid">--%>
-            <%--<label class="col-sm-1 control-label">--%>
-            <%--登记时间<span class="symbol required"></span>--%>
-            <%--</label>--%>
-            <%--<div class="col-sm-3">--%>
-            <%--<input placeholder="登记时间"--%>
-            <%--name="registrationTime" data-date-format="yyyy-mm-dd"--%>
-            <%--class="form-control date-picker dbdate roomTime" required="required">--%>
-            <%--</div>--%>
-            <%--</div>--%>
-            <%--<div class="x-valid">--%>
-            <%--<label class="col-sm-1 control-label">--%>
-            <%--登记日期<span class="symbol required"></span>--%>
-            <%--</label>--%>
-            <%--<div class="col-sm-3">--%>
-            <%--<input placeholder="登记日期"--%>
-            <%--name="registrationDate" data-date-format="yyyy-mm-dd"--%>
-            <%--class="form-control date-picker dbdate roomTime" required="required">--%>
-            <%--</div>--%>
-            <%--</div>--%>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">规划用途<span class="symbol required"></span></label>
                 <div class="col-sm-3">
@@ -2238,13 +2195,6 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="附记其它" name="otherNote" class="form-control">
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">房屋性质</label>
-                <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="房屋性质" name="nature" class="form-control">
                 </div>
             </div>
             <div class="x-valid">
@@ -2490,8 +2440,8 @@
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <input type="text"
-                           placeholder="取得价格" name="acquisitionPrice" class="form-control"
-                           required="required">
+                           placeholder="取得价格" name="acquisitionPrice" class="form-control" data-rule-maxlength="100"
+                           data-rule-number='true' required="required">
                 </div>
             </div>
             <%--<div class="x-valid">

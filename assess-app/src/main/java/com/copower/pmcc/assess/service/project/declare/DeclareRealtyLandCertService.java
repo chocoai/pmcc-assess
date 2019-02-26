@@ -40,6 +40,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -351,6 +352,14 @@ public class DeclareRealtyLandCertService {
         }
         DeclareRealtyLandCertVo vo = new DeclareRealtyLandCertVo();
         BeanUtils.copyProperties(declareRealtyLandCert, vo);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        vo.setTerminationDateFmt(sdf.format(declareRealtyLandCert.getTerminationDate()));
+        if (NumberUtils.isNumber(declareRealtyLandCert.getType())) {
+            vo.setTypeName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyLandCert.getType())));
+        }
+        if (NumberUtils.isNumber(declareRealtyLandCert.getPurpose())) {
+            vo.setPurposeName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyLandCert.getPurpose())));
+        }
         if (StringUtils.isNotBlank(declareRealtyLandCert.getProvince())) {
             if (NumberUtils.isNumber(declareRealtyLandCert.getProvince())) {
                 //省

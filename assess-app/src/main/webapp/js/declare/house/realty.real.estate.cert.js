@@ -301,10 +301,6 @@ declareRealtyRealEstateCert.saveAndUpdateData = function () {
             $("#" + declareRealtyRealEstateCert.config.frm).find("input[name='useEndDate']").after(html.replace(/for/g,"useEndDate"));
             return false;
         }
-        if (!data.publicArea){
-            $("#" + declareRealtyRealEstateCert.config.frm).find("input[name='publicArea']").after(html.replace(/for/g,"publicArea"));
-            return false;
-        }
     }
     $.ajax({
         type: "POST",
