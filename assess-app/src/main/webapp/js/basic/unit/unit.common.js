@@ -144,7 +144,7 @@
 
     //楼栋标注
     unitCommon.mapMarker = function (readonly) {
-        var contentUrl = getContextPath() + '/map/mapMarkerEstate?estateName=' + unitCommon.getEstateName();
+        var contentUrl = getContextPath() + '/map/mapMarkerEstate?estateName=' + + estateCommon.getEstateName();
         if (readonly != true) {
             contentUrl += '&click=unitCommon.addMarker';
         }
@@ -166,7 +166,7 @@
     //添加标注
     unitCommon.addMarker = function (lng, lat) {
         $.ajax({
-            url: getContextPath() + '/basicEstateTagging/addBasicUnitTagging',
+            url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
             data: {
                 applyId: basicCommon.getApplyId(),
                 type: 'unit',
