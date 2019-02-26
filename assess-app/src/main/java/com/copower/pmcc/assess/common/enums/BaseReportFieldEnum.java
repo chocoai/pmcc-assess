@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @Auther: zch
- * @Date: 2019/1/15 14:30
- * @Description:报告模板字段
+ * @auther: zch
+ * @date: 2019/1/15 14:30
+ * @description:报告模板字段
  */
 public enum BaseReportFieldEnum {
     ReportNumber("", "文号"),
@@ -37,7 +37,12 @@ public enum BaseReportFieldEnum {
     JudgeBuildResultSurveySheet("", "估价结果一览表"),
     HisRightInfoPublicity("", "他权信息公示"),//new 他权信息公示
     HisRightType("", "他权类别"),//new 他权类别
+    RightOther("", "他权其它"),
+    ThereAnyOtherRight("", "有无他项权"),
     AssetInventoryAgreement("", "资产清查一致说明"),//new 资产清查一致说明
+    ActualAddressAssetInventory("", "资产清查实际地址"),
+    CertificateAssetInventory("", "资产清查证明人"),
+    AssetInventoryConfirmConsistency("", "资产清查确认一致"),
     ExpertWorkOverview("", "外聘专家工作概况"),//new 外聘专家工作概况 ps最后才处理
     BusinessScope("", "经营范围"),//new 经营范围
     StatementPurposeEntrustment("", "委托目的描述"),
@@ -45,10 +50,10 @@ public enum BaseReportFieldEnum {
     JudgeObjectLandStateSheet("", "估价土地实体状况"),
     JudgeBuildLandStateSheet("", "估价建筑物实体状况"),
 
-    HisRightDeclare("","他项权申报"),//new 他项权申报;当该区域下有他项权信息并且填写了他权号，则将该文字显示出来前面加、号，否则先为空串
-    BestUseDesc("","最佳利用描述"),//new 最佳利用描述
-    DecalreFormTypeAll("","申报启用表单类型"),//new 申报启用表单类型; 比如 房产证、土地证、不动产证
-    HisRightHasLease("","他权有无租赁权"),//new 他权有无租赁权
+    HisRightDeclare("", "他项权申报"),//new 他项权申报;当该区域下有他项权信息并且填写了他权号，则将该文字显示出来前面加、号，否则先为空串
+    BestUseDesc("", "最佳利用描述"),//new 最佳利用描述
+    DecalreFormTypeAll("", "申报启用表单类型"),//new 申报启用表单类型; 比如 房产证、土地证、不动产证
+    HisRightHasLease("", "他权有无租赁权"),//new 他权有无租赁权
     /*
     ---------------------------------------------------------------------------------------------------
      */
@@ -76,6 +81,8 @@ public enum BaseReportFieldEnum {
      */
 
 
+    DeterminationMarketValueValuationObject("", "估价对象市场价值的确定"),
+    Co_ownership("", "共有权情况"),
     Location("", "区位"),
     notPowerPerson("", "非权利人"),//(区位)
     ValueConnotation("", "价值内涵"),
@@ -83,15 +90,16 @@ public enum BaseReportFieldEnum {
     AssessArea("", "评估面积"),
 
 
-
     SetUse("", "设定用途"),
     LandUseControl("", "土地使用管制"),
     rentalPossessionDesc("", "出租或占用情况"),
     HouseType("", "房产类型"),
 
+    GeneralTemplateTechnicalIdea("", "技术思路通用模板"),
     EvaluationMethodValuationObject("", "估价对象评估方法"),
     EvaluationThink("", "估价技术思路"),
-    SelectionValuationMethod("", "选择估价方法"),
+    SelectionValuationMethod("", "估价对象选择估价方法"),
+    UnitPriceValuator("", "估价对象的单价"),
     EvaluationPriceCateGory("", "分类评估单价"),
     EvaluationAreaCateGory("", "分类评估面积"),
     TotalValueValuationObject("", "估价对象的总价"),
@@ -109,10 +117,11 @@ public enum BaseReportFieldEnum {
 
     OptimumUtilizationDescription("", "最佳利用描述"),
     StatutoryPriorityAmount("", "法定优先受偿款金额"),
+    StatutoryPriorityAmountTotal("", "法定优先受偿款总金额"),
     collateralFound("", "担保物权设立情况"),
     ComputationProcess("", "计算过程"),
     UnitPriceAdjustmentTable("", "单价调整表"),
-    SelectionApplicationParameters("", "参数选取与应用"),
+    SelectionApplicationParameters("", "相关参数选取与应用"),
     StatusBuildingRightsInterests("", "建筑物权益状况"),
     theGeneralIdeaOfThisEvaluationAndTheSelectionOfEvaluationMethods("", "本次估价的总体思路和评估方法的选取"),
     TaxBurden("", "税费负担"),
@@ -154,8 +163,6 @@ public enum BaseReportFieldEnum {
 
 
     HousingOwnershipRegistrationStatementSheet("", "房屋所有权登记状况"),
-
-
 
 
     judgeSummarySheet("", "估价汇总表"),

@@ -29,6 +29,8 @@ public class EvaluationMethodDao {//evaluationMethodDao
 
     public List<DataEvaluationMethod> getMethodAllList() {
         DataEvaluationMethodExample example = new DataEvaluationMethodExample();
+        DataEvaluationMethodExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
         return evaluationMethodMapper.selectByExample(example);
     }
 
