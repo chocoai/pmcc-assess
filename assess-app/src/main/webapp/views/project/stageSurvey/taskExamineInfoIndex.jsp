@@ -115,6 +115,9 @@
                         </button>
                         <c:choose>
                             <c:when test="${projectPhase.bisUseBox eq false}">
+                                <button id="btn_submit" class="btn btn-success" onclick="saveData();">
+                                    保存<i style="margin-left: 10px"></i>
+                                </button>
                                 <button id="btn_submit" class="btn btn-success" onclick="submit(false);">
                                     直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                                 </button>
@@ -234,6 +237,40 @@
         houseCommon.autocompleteStart();
 
     });
+
+    function saveData() {
+        //数据校验
+        if (!basicCommon.valid()){
+            return false;
+        }
+        var formData = basicCommon.getFormData();
+
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/ProjectTaskExamine/saveData",
+            data: {
+                formData: JSON.stringify(formData),
+                projectDetailsId:${projectPlanDetails.id},
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    Alert("保存数据成功!", 1, null, function () {
+
+                    });
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    }
 </script>
 </html>
 

@@ -122,31 +122,17 @@
                                         "isParent": true
                                     }]);
                                     treeObj = $.fn.zTree.getZTreeObj("ztree3");
+                                    getContent(treeNode.id);
                                 }
                                 var parentZNode = treeObj.getNodeByParam("id", treeNode.id, null);//获取指定父节点
                                 newNode = treeObj.addNodes(parentZNode, jsondata, false);
+
                             }
                         }
                     });
                 } else {
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/dataHisRightInfoPublicity/getContent",
-                        data: {
-                            areaId: treeNode.id
-                        },
-                        success: function (result) {
-                            if (result.ret) {
-                                if (result.data) {
-                                    $("#content").val(result.data.content);
-                                } else {
-                                    $("#content").val("");
-                                }
-                                $("#frm_dataHisRightInfoPublicity").show();
-                            } else {
-                                Alert(result.errmsg);
-                            }
-                        }
-                    })
+
+                    getContent(treeNode.id);
                 }
 
             }
@@ -175,10 +161,9 @@
             var data = formParams("frm_dataHisRightInfoPublicity");
             data.province = zTreeObj.getSelectedNodes()[0].id;
             data.city = zTreeObj2.getSelectedNodes()[0].id;
-            if (zTreeObj3) {
+            if (zTreeObj3.getSelectedNodes()[0]) {
                 data.district = zTreeObj3.getSelectedNodes()[0].id;
             }
-            console.log(data)
             $.ajax({
                 url: "${pageContext.request.contextPath}/dataHisRightInfoPublicity/saveAndUpdateDataHisRightInfoPublicity",
                 data: data,
@@ -194,6 +179,29 @@
                 }
             })
         }
+    }
+
+    //获取信息
+    function getContent(areaId) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/dataHisRightInfoPublicity/getContent",
+            data: {
+                areaId: areaId
+            },
+            success: function (result) {
+                if (result.ret) {
+                    if (result.data) {
+                        $("#content").val(result.data.content);
+                    } else {
+                        $("#content").val("");
+                    }
+                    $("#frm_dataHisRightInfoPublicity").show();
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+
     }
 
 </script>

@@ -40,6 +40,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -345,8 +346,14 @@ public class DeclareRealtyHouseCertService {
         }
         DeclareRealtyHouseCertVo vo = new DeclareRealtyHouseCertVo();
         BeanUtils.copyProperties(declareRealtyHouseCert, vo);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        vo.setUseEndDateFmt(sdf.format(declareRealtyHouseCert.getUseEndDate()));
+        vo.setUseStartDateFmt(sdf.format(declareRealtyHouseCert.getUseStartDate()));
         if (NumberUtils.isNumber(declareRealtyHouseCert.getPlanningUse())) {
             vo.setPlanningUseName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyHouseCert.getPlanningUse())));
+        }
+        if (NumberUtils.isNumber(declareRealtyHouseCert.getType())) {
+            vo.setTypeName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyHouseCert.getType())));
         }
         if (StringUtils.isNotBlank(declareRealtyHouseCert.getProvince())) {
             if (NumberUtils.isNumber(declareRealtyHouseCert.getProvince())) {

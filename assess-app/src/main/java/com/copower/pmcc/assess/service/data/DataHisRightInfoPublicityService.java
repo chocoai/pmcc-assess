@@ -8,6 +8,7 @@ import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,16 +42,26 @@ public class DataHisRightInfoPublicityService {
         DataHisRightInfoPublicity infoPublicity = new DataHisRightInfoPublicity();
         infoPublicity.setCity(dataHisRightInfoPublicity.getCity());
         infoPublicity.setProvince(dataHisRightInfoPublicity.getProvince());
-        infoPublicity.setDistrict(dataHisRightInfoPublicity.getDistrict());
-        List<DataHisRightInfoPublicity> listObject = dataHisRightInfoPublicityDao.getListObject(infoPublicity);
-        if(CollectionUtils.isNotEmpty(listObject)){
+        List<DataHisRightInfoPublicity> listObject = new ArrayList<>();
+        if (StringUtils.isNotBlank(dataHisRightInfoPublicity.getDistrict())) {
+            infoPublicity.setDistrict(dataHisRightInfoPublicity.getDistrict());
+            listObject = dataHisRightInfoPublicityDao.getListObject(infoPublicity);
+        }
+        List<DataHisRightInfoPublicity> districtObject = dataHisRightInfoPublicityDao.getCityContent(dataHisRightInfoPublicity.getCity());
+        if (CollectionUtils.isNotEmpty(listObject)) {
             infoPublicity = listObject.get(0);
             infoPublicity.setContent(dataHisRightInfoPublicity.getContent());
             return dataHisRightInfoPublicityDao.updateObject(infoPublicity);
-        }else {
+        } else if (StringUtils.isEmpty(dataHisRightInfoPublicity.getDistrict()) && CollectionUtils.isNotEmpty(districtObject)) {
+            infoPublicity = districtObject.get(0);
+            infoPublicity.setContent(dataHisRightInfoPublicity.getContent());
+            return dataHisRightInfoPublicityDao.updateObject(infoPublicity);
+        } else {
             dataHisRightInfoPublicity.setCreator(processControllerComponent.getThisUser());
             return dataHisRightInfoPublicityDao.addObject(dataHisRightInfoPublicity);
         }
+
+
     }
 
 
@@ -88,19 +99,50 @@ public class DataHisRightInfoPublicityService {
     }
 
     public DataHisRightInfoPublicity getContent(Integer areaId) {
-        DataHisRightInfoPublicity city = new DataHisRightInfoPublicity();
-        city.setCity(String.valueOf(areaId));
-        List<DataHisRightInfoPublicity> cityObject = dataHisRightInfoPublicityDao.getListObject(city);
-        if (CollectionUtils.isNotEmpty(cityObject)) {
-            return cityObject.get(0);
-        }
+        //是否与区匹配
         DataHisRightInfoPublicity district = new DataHisRightInfoPublicity();
         district.setDistrict(String.valueOf(areaId));
         List<DataHisRightInfoPublicity> districtObject = dataHisRightInfoPublicityDao.getListObject(district);
         if (CollectionUtils.isNotEmpty(districtObject)) {
             return districtObject.get(0);
         }
+        //是否与市匹配
+        List<DataHisRightInfoPublicity> cityObject = dataHisRightInfoPublicityDao.getCityContent(String.valueOf(areaId));
+        if (CollectionUtils.isNotEmpty(cityObject)) {
+            return cityObject.get(0);
+        }
         return null;
     }
+
+
+
+    /**
+     *通过省市区id获取他权信息
+     *
+     * @param province 省id
+     * @param city  市id
+     * @param district 区id
+     *
+     */
+    public DataHisRightInfoPublicity getDataHisRightInfoPublicity(String province, String city, String district) {
+        //是否与区匹配
+        if (StringUtils.isNotBlank(district)) {
+            DataHisRightInfoPublicity infoPublicity = new DataHisRightInfoPublicity();
+            infoPublicity.setProvince(province);
+            infoPublicity.setCity(city);
+            infoPublicity.setDistrict(district);
+            List<DataHisRightInfoPublicity> districtObject = dataHisRightInfoPublicityDao.getListObject(infoPublicity);
+            if (CollectionUtils.isNotEmpty(districtObject)) {
+                return districtObject.get(0);
+            }
+        }
+        //是否与市匹配
+        List<DataHisRightInfoPublicity> cityObject = dataHisRightInfoPublicityDao.getCityContent(city);
+        if (CollectionUtils.isNotEmpty(cityObject)) {
+            return cityObject.get(0);
+        }
+        return null;
+    }
+
 
 }

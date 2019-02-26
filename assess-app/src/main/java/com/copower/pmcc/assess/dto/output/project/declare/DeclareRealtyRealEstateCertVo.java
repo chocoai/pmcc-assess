@@ -13,6 +13,51 @@ public class DeclareRealtyRealEstateCertVo extends DeclareRealtyRealEstateCert {
     private String districtName;
     private String fileViewName;
     private String planningUseName;
+    private String typeName;
+    private String purposeName;
+    private String terminationDateFmt;
+    private String useEndDateFmt;
+    private String useStartDateFmt;
+
+    public String getTerminationDateFmt() {
+        return terminationDateFmt;
+    }
+
+    public void setTerminationDateFmt(String terminationDateFmt) {
+        this.terminationDateFmt = terminationDateFmt;
+    }
+
+    public String getUseEndDateFmt() {
+        return useEndDateFmt;
+    }
+
+    public void setUseEndDateFmt(String useEndDateFmt) {
+        this.useEndDateFmt = useEndDateFmt;
+    }
+
+    public String getUseStartDateFmt() {
+        return useStartDateFmt;
+    }
+
+    public void setUseStartDateFmt(String useStartDateFmt) {
+        this.useStartDateFmt = useStartDateFmt;
+    }
+
+    public String getPurposeName() {
+        return purposeName;
+    }
+
+    public void setPurposeName(String purposeName) {
+        this.purposeName = purposeName;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
 
     public String getProvinceName() {
         return provinceName;

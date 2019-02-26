@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.dao.data;
 
+import com.alibaba.dubbo.common.utils.StringUtils;
 import com.copower.pmcc.assess.dal.basis.entity.DataHisRightInfoPublicity;
 import com.copower.pmcc.assess.dal.basis.entity.DataHisRightInfoPublicityExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataHisRightInfoPublicityMapper;
@@ -21,6 +22,16 @@ import java.util.List;
 public class DataHisRightInfoPublicityDao {
     @Autowired
     private DataHisRightInfoPublicityMapper dataHisRightInfoPublicityMapper;
+
+    public List<DataHisRightInfoPublicity> getCityContent(String areaId) {
+        DataHisRightInfoPublicityExample example = new DataHisRightInfoPublicityExample();
+        DataHisRightInfoPublicityExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotEmpty(areaId)) {
+            criteria.andCityEqualTo(areaId);
+        }
+        criteria.andDistrictIsNull();
+        return dataHisRightInfoPublicityMapper.selectByExample(example);
+    }
 
     public List<DataHisRightInfoPublicity> getListObject(DataHisRightInfoPublicity dataHisRightInfoPublicity) {
         DataHisRightInfoPublicityExample example = new DataHisRightInfoPublicityExample();

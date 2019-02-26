@@ -8,6 +8,8 @@ package com.copower.pmcc.assess.common.enums;
 public enum CalculationMethodNameEnum {
     MdIncome("收益法"),
     MdCompare("市场比较法"),
+    MdCost("成本法"),
+    MdDevelopment("假设开发法"),
     ;
     private String name;
 

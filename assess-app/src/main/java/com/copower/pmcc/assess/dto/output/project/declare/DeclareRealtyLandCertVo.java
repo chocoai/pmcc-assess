@@ -12,6 +12,33 @@ public class DeclareRealtyLandCertVo extends DeclareRealtyLandCert {
     private String cityName;
     private String districtName;
     private String fileViewName;
+    private String typeName;
+    private String terminationDateFmt;
+    private String purposeName;
+
+    public String getPurposeName() {
+        return purposeName;
+    }
+
+    public void setPurposeName(String purposeName) {
+        this.purposeName = purposeName;
+    }
+
+    public String getTerminationDateFmt() {
+        return terminationDateFmt;
+    }
+
+    public void setTerminationDateFmt(String terminationDateFmt) {
+        this.terminationDateFmt = terminationDateFmt;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
 
     public String getProvinceName() {
         return provinceName;
