@@ -280,14 +280,13 @@ public class MdMarketCompareService {
     /**
      * 获取所有案例信息
      *
-     * @param declareId
      * @return
      */
-    public List<ProjectPlanDetails> getCaseAll(Integer declareId, Integer projectId) {
+    public List<ProjectPlanDetails> getCaseAll(Integer projectId) {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY, projectInfo.getProjectCategoryId());
         ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
-        projectPlanDetails.setDeclareRecordId(declareId);
+        projectPlanDetails.setProjectId(projectId);
         projectPlanDetails.setProjectPhaseId(projectPhase.getId());
         projectPlanDetails.setBisStart(true);
         List<ProjectPlanDetails> detailsList = projectPlanDetailsDao.getListObject(projectPlanDetails);

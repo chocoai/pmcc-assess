@@ -41,7 +41,7 @@ public class MarketCompareController {
         if (marketCompare == null) {
             marketCompare = mdMarketCompareService.initExplore(judgeObject);
         }
-        List<ProjectPlanDetails> caseAll = mdMarketCompareService.getCaseAll(judgeObject.getDeclareRecordId(), judgeObject.getProjectId());
+        List<ProjectPlanDetails> caseAll = mdMarketCompareService.getCaseAll(judgeObject.getProjectId());
         modelAndView.addObject("casesAllJSON", JSON.toJSONString(caseAll));
         MdMarketCompareItem evaluationObject = mdMarketCompareService.getEvaluationListByMcId(marketCompare.getId());
         modelAndView.addObject("marketCompareJSON", JSON.toJSONString(marketCompare));
@@ -65,7 +65,7 @@ public class MarketCompareController {
     public HttpResult getInitParam(Integer mcId,Integer judgeObjectId) {
         try {
             SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
-            List<ProjectPlanDetails> caseAll = mdMarketCompareService.getCaseAll(judgeObject.getDeclareRecordId(), judgeObject.getProjectId());
+            List<ProjectPlanDetails> caseAll = mdMarketCompareService.getCaseAll(judgeObject.getProjectId());
             MdCompareInitParamVo mdCompareInitParamVo = new MdCompareInitParamVo();
             mdCompareInitParamVo.setMcId(mcId);
             mdCompareInitParamVo.setMarketCompare(mdMarketCompareService.getMdMarketCompare(mcId));

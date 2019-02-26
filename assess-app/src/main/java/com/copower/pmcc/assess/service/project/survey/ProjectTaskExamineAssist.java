@@ -258,9 +258,11 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         if (basicEstate == null) {
             basicEstate = new BasicEstate();
             basicEstate.setApplyId(basicApply.getId());
-            basicEstate.setProvince(declareRecord.getProvince());
-            basicEstate.setCity(declareRecord.getCity());
-            basicEstate.setDistrict(declareRecord.getDistrict());
+            if (declareRecord != null) {
+                basicEstate.setProvince(declareRecord.getProvince());
+                basicEstate.setCity(declareRecord.getCity());
+                basicEstate.setDistrict(declareRecord.getDistrict());
+            }
             basicEstateService.saveAndUpdateBasicEstate(basicEstate);
             landState = new BasicEstateLandState();
             landState.setEstateId(basicEstate.getId());
