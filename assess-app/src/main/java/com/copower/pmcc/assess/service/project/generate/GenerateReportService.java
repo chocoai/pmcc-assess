@@ -527,6 +527,13 @@ public class GenerateReportService {
                             if (baseReportField != null) {
                             }
                         }
+                        //经营范围
+                        if (Objects.equal(BaseReportFieldEnum.BusinessScope.getName(), name)) {
+                            BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                            replaceReportPutValue(name, generateBaseDataService.getBusinessScope(qualificationDto), bookmarkAndRegex.getType(), false, mapSet);
+                            if (baseReportField != null) {
+                            }
+                        }
                     }
                     //注册房产估价师
                     if (Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuer.getName(), name)) {
@@ -567,6 +574,20 @@ public class GenerateReportService {
                     if (Objects.equal(BaseReportFieldEnum.CapitalizationAmount.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         replaceReportPutValue(name, generateBaseDataService.getCapitalizationAmount(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //外聘专家工作概况
+                    if (Objects.equal(BaseReportFieldEnum.ExpertWorkOverview.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getExpertWorkOverview(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //共有权情况
+                    if (Objects.equal(BaseReportFieldEnum.Co_ownership.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getCo_ownership(), bookmarkAndRegex.getType(), false, mapSet);
                         if (baseReportField != null) {
                         }
                     }
@@ -822,6 +843,13 @@ public class GenerateReportService {
                         if (baseReportField != null) {
                         }
                     }
+                    //技术思路通用模板
+                    if (Objects.equal(BaseReportFieldEnum.GeneralTemplateTechnicalIdea.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getGeneralTemplateTechnicalIdea(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
                     //土地他项权利情况
                     if (Objects.equal(BaseReportFieldEnum.inventoryRight.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
@@ -899,44 +927,46 @@ public class GenerateReportService {
                             replaceReportPutValue(name, generateBaseDataService.getEvaluationThink(), bookmarkAndRegex.getType(), false, mapSet);
                         }
                     }
-                    if (true) {
-                        List<SchemeJudgeObject> schemeJudgeObjectList = generateBaseDataService.getSchemeJudgeObjectList();
-                        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-                            //分类评估单价
-                            if (Objects.equal(BaseReportFieldEnum.EvaluationPriceCateGory.getName(), name)) {
-                                BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                                if (baseReportField != null) {
-                                    replaceReportPutValue(name, generateBaseDataService.getEvaluationPriceCateGoryOne(), bookmarkAndRegex.getType(), false, mapSet);
-                                }
-                            }
-                            //分类评估面积
-                            if (Objects.equal(BaseReportFieldEnum.EvaluationAreaCateGory.getName(), name)) {
-                                BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                                if (baseReportField != null) {
-                                    replaceReportPutValue(name, generateBaseDataService.getEvaluationAreaCateGoryOne(), bookmarkAndRegex.getType(), false, mapSet);
-                                }
-                            }
-                            //分类评估总价
-                            if (Objects.equal(BaseReportFieldEnum.EvaluationPriceCateGoryTotal.getName(), name)) {
-                                BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                                if (baseReportField != null) {
-                                    replaceReportPutValue(name, generateBaseDataService.getEvaluationPriceCateGoryTotalOne(), bookmarkAndRegex.getType(), false, mapSet);
-                                }
-                            }
-                            //估价对象的总价
-                            if (Objects.equal(BaseReportFieldEnum.TotalValueValuationObject.getName(), name)) {
-                                BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                                replaceReportPutValue(name, generateBaseDataService.getTotalValueValuationObject(), bookmarkAndRegex.getType(), false, mapSet);
-                                if (baseReportField != null) {
-                                }
-                            }
-                        }
-                    }
-                    //选择估价方法
-                    if (Objects.equal(BaseReportFieldEnum.SelectionValuationMethod.getName(), name)) {
+                    //分类评估单价
+                    if (Objects.equal(BaseReportFieldEnum.EvaluationPriceCateGory.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
-                            replaceReportPutValue(name, generateBaseDataService.getSelectionValuationMethod(), bookmarkAndRegex.getType(), false, mapSet);
+                            replaceReportPutValue(name, generateBaseDataService.getEvaluationPriceCateGoryOne(), bookmarkAndRegex.getType(), false, mapSet);
+                        }
+                    }
+                    //分类评估面积
+                    if (Objects.equal(BaseReportFieldEnum.EvaluationAreaCateGory.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        if (baseReportField != null) {
+                            replaceReportPutValue(name, generateBaseDataService.getEvaluationAreaCateGoryOne(), bookmarkAndRegex.getType(), false, mapSet);
+                        }
+                    }
+                    //分类评估总价
+                    if (Objects.equal(BaseReportFieldEnum.EvaluationPriceCateGoryTotal.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        if (baseReportField != null) {
+                            replaceReportPutValue(name, generateBaseDataService.getEvaluationPriceCateGoryTotalOne(), bookmarkAndRegex.getType(), false, mapSet);
+                        }
+                    }
+                    //估价对象的总价
+                    if (Objects.equal(BaseReportFieldEnum.TotalValueValuationObject.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getTotalValueValuationObject(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //估价对象的单价
+                    if (Objects.equal(BaseReportFieldEnum.UnitPriceValuator.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getUnitPriceValuator(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //估价对象选择估价方法
+                    if (Objects.equal(BaseReportFieldEnum.SelectionValuationMethod.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getSelectionValuationMethod(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
                         }
                     }
                     //分类评估单价计算式
@@ -1002,6 +1032,20 @@ public class GenerateReportService {
                         if (baseReportField != null) {
                         }
                     }
+                    //有无他项权
+                    if (Objects.equal(BaseReportFieldEnum.ThereAnyOtherRight.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getThereAnyOtherRight(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //他权其它
+                    if (Objects.equal(BaseReportFieldEnum.RightOther.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getRightOther(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
                     //担保物权设立情况
                     if (Objects.equal(BaseReportFieldEnum.collateralFound.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
@@ -1013,6 +1057,41 @@ public class GenerateReportService {
                     if (Objects.equal(BaseReportFieldEnum.OptimumUtilizationDescription.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         replaceReportPutValue(name, generateBaseDataService.getOptimumUtilizationDescription(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //资产清查实际地址
+                    if (Objects.equal(BaseReportFieldEnum.ActualAddressAssetInventory.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getActualAddressAssetInventory(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //资产清查证明人
+                    if (Objects.equal(BaseReportFieldEnum.CertificateAssetInventory.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getCertificateAssetInventory(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //资产清查确认一致
+                    if (Objects.equal(BaseReportFieldEnum.AssetInventoryConfirmConsistency.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getAssetInventoryConfirmConsistency(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //资产清查一致说明
+                    if (Objects.equal(BaseReportFieldEnum.AssetInventoryAgreement.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getAssetInventoryAgreement(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //法定优先受偿款总金额
+                    if (Objects.equal(BaseReportFieldEnum.StatutoryPriorityAmountTotal.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getStatutoryPriorityAmountTotal(), bookmarkAndRegex.getType(), false, mapSet);
                         if (baseReportField != null) {
                         }
                     }
@@ -1078,17 +1157,20 @@ public class GenerateReportService {
                             }
                         }
                     }
-                    //参数选取与应用
+                    //相关参数选取与应用
                     if (Objects.equal(BaseReportFieldEnum.SelectionApplicationParameters.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                        SysAttachmentDto query = new SysAttachmentDto();
+                        replaceReportPutValue(name, generateBaseDataService.getSelectionApplicationParameters(), bookmarkAndRegex.getType(), false, mapSet);
                         if (baseReportField != null) {
-                            query.setTableId(baseReportField.getId());
-                            query.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportField.class));
-                            List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
-                            if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-                                replaceReportPutValue(name, generateBaseDataService.getSelectionApplicationParameters(sysAttachmentDtoList.get(0)), bookmarkAndRegex.getType(), true, mapSet);
-                            }
+
+                        }
+                    }
+                    //估价对象市场价值的确定
+                    if (Objects.equal(BaseReportFieldEnum.DeterminationMarketValueValuationObject.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getDeterminationMarketValueValuationObject(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+
                         }
                     }
                     //建筑物权益状况
