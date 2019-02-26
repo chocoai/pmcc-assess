@@ -1,10 +1,18 @@
 package com.copower.pmcc.assess.test;
 
 
+import com.aspose.words.Document;
+import com.aspose.words.DocumentBuilder;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.google.common.collect.Lists;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.sql.*;
+import java.util.List;
 
 /**
  * 描述:
@@ -94,5 +102,31 @@ public class Test {
         } catch (SQLException e){
             e.printStackTrace();
         }
+    }
+
+    //图片插入到word测试
+    @org.junit.Test
+    public void imageInsertWordTest() throws Exception {
+        List<String> list= Lists.newArrayList();
+        list.add("D:\\test\\1.jpg");
+        list.add("D:\\test\\2.jpg");
+        list.add("D:\\test\\1.jpg");
+        list.add("D:\\test\\2.jpg");
+        list.add("D:\\test\\1.jpg");
+        list.add("D:\\test\\2.jpg");
+        list.add("D:\\test\\1.jpg");
+        list.add("D:\\test\\2.jpg");
+        list.add("D:\\test\\1.jpg");
+        Document document = new Document();
+        DocumentBuilder builder = new DocumentBuilder(document);
+        for (String imgPath : list) {
+            File file = new File(imgPath);
+            BufferedImage sourceImg = ImageIO.read(new FileInputStream(file));
+            builder.insertImage(imgPath,
+                    sourceImg.getWidth() > 400 ? 400 : sourceImg.getWidth(),
+                    sourceImg.getHeight() > 500 ? 500 : sourceImg.getHeight());
+            builder.write(" ");//为图片设置间隔
+        }
+        document.save("D:\\test\\2.doc");
     }
 }
