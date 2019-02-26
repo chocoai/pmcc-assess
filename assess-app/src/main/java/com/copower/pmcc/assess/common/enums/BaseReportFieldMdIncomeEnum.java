@@ -12,10 +12,30 @@ import java.util.List;
  * @Description:报告模板字段(收益法)
  */
 public enum BaseReportFieldMdIncomeEnum implements Serializable {
+    AAA1("收益法申报产权证类型",""),
+    AAA12("收益法设定用途",""),
+    AAA13("收益法土地终止日期",""),
+    AAA14("收益法价值时点",""),
+    AAA15("收益法剩余土地使用年限",""),
+    AAA16("收益法竣工时间",""),
+    AAA17("收益法已使用年限",""),
+    AAA18("收益法建筑结构类别",""),
+    AAA19("收益法经济耐用年限",""),
+    AAA20("收益法房产剩余年限",""),
+    AAA21("收益法收益年限",""),
+    AAA22("收益法中的比较法",""),
+    MonthRentalIncome("收益法月租金收入",""),
+    Tenancyrestriction("收益法租赁限制说明",""),
+    AAA23("收益法区域城市",""),
+    AAA24("收益法评估面积",""),
+    AAA25("收益法其他收入说明",""),
+    RestrictionExplain("收益法出租率说明",""),
+    AAA27("收益法设定用途",""),
+
+
+
     RentGrowthForecast("租金增值预测",""),
     EntrustedInformation("委托资料",""),
-    RestrictionExplain("出租率说明",""),
-    MonthRentalIncome("月租金",""),
     MonthNumber("月份数",""),
     Rentals("有效出租率",""),
     RentalIncome("月租金收入",""),
@@ -51,10 +71,8 @@ public enum BaseReportFieldMdIncomeEnum implements Serializable {
     IncomePrice("单价",""),
 
     RemunerationRateSheet("报酬率测算表",""),
-    IncomeMethodPriceCalculatingSheet("收益法价格测算表",""),
-
-
-    Tenancyrestriction("租约限制","");
+    IncomeMethodPriceCalculatingSheet("收益法价格测算表","")
+    ;
     private String key;
 
     private String name;
