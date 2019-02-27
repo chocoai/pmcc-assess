@@ -48,6 +48,8 @@ public class DeclareRealtyHouseCert {
 
     private String planningUse;
 
+    private String housingStructure;
+
     private String floorArea;
 
     private String location;
@@ -260,6 +262,14 @@ public class DeclareRealtyHouseCert {
 
     public void setPlanningUse(String planningUse) {
         this.planningUse = planningUse == null ? null : planningUse.trim();
+    }
+
+    public String getHousingStructure() {
+        return housingStructure;
+    }
+
+    public void setHousingStructure(String housingStructure) {
+        this.housingStructure = housingStructure == null ? null : housingStructure.trim();
     }
 
     public String getFloorArea() {

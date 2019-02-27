@@ -147,7 +147,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="层高(数字)" data-rule-number='true'
-                           name="floorHeight" class="form-control" required="required">
+                           name="floorHeight" class="form-control">
                 </div>
             </div>
             <div class="x-valid">

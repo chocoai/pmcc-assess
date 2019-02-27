@@ -87,8 +87,7 @@
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">证明文件<span
-                                        class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">证明文件</label>
                                 <div class="col-sm-3">
                                     <input id="checkOriginalFile" type="file" multiple="false">
                                     <div id="_checkOriginalFile"></div>

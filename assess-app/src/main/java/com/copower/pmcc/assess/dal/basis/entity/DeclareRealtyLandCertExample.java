@@ -1546,6 +1546,76 @@ public class DeclareRealtyLandCertExample {
             return (Criteria) this;
         }
 
+        public Criteria andHousingStructureIsNull() {
+            addCriterion("housing_structure is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureIsNotNull() {
+            addCriterion("housing_structure is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureEqualTo(String value) {
+            addCriterion("housing_structure =", value, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureNotEqualTo(String value) {
+            addCriterion("housing_structure <>", value, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureGreaterThan(String value) {
+            addCriterion("housing_structure >", value, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureGreaterThanOrEqualTo(String value) {
+            addCriterion("housing_structure >=", value, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureLessThan(String value) {
+            addCriterion("housing_structure <", value, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureLessThanOrEqualTo(String value) {
+            addCriterion("housing_structure <=", value, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureLike(String value) {
+            addCriterion("housing_structure like", value, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureNotLike(String value) {
+            addCriterion("housing_structure not like", value, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureIn(List<String> values) {
+            addCriterion("housing_structure in", values, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureNotIn(List<String> values) {
+            addCriterion("housing_structure not in", values, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureBetween(String value1, String value2) {
+            addCriterion("housing_structure between", value1, value2, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureNotBetween(String value1, String value2) {
+            addCriterion("housing_structure not between", value1, value2, "housingStructure");
+            return (Criteria) this;
+        }
+
         public Criteria andGraphNumberIsNull() {
             addCriterion("graph_number is null");
             return (Criteria) this;

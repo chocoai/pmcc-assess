@@ -24,6 +24,7 @@
     <result column="nature" property="nature" jdbcType="VARCHAR" />
     <result column="floor_count" property="floorCount" jdbcType="VARCHAR" />
     <result column="planning_use" property="planningUse" jdbcType="VARCHAR" />
+    <result column="housing_structure" property="housingStructure" jdbcType="VARCHAR" />
     <result column="floor_area" property="floorArea" jdbcType="VARCHAR" />
     <result column="location" property="location" jdbcType="VARCHAR" />
     <result column="evidence_area" property="evidenceArea" jdbcType="DECIMAL" />
@@ -105,9 +106,9 @@
   <sql id="Base_Column_List" >
     id, pid, plan_details_id, cert_name, province, city, district, type, number, ownership, 
     public_situation, be_located, street_number, attached_number, building_number, unit, 
-    floor, room_number, registration_time, nature, floor_count, planning_use, floor_area, 
-    location, evidence_area, inner_area, other, land_number, land_acquisition, use_start_date, 
-    use_end_date, public_area, other_note, registration_authority, land_registration_date, 
+    floor, room_number, registration_time, nature, floor_count, planning_use, housing_structure, 
+    floor_area, location, evidence_area, inner_area, other, land_number, land_acquisition, 
+    use_start_date, use_end_date, public_area, other_note, registration_authority, land_registration_date, 
     registration_date, declare_type, enable, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCertExample" >
@@ -151,13 +152,14 @@
       attached_number, building_number, unit, 
       floor, room_number, registration_time, 
       nature, floor_count, planning_use, 
-      floor_area, location, evidence_area, 
-      inner_area, other, land_number, 
-      land_acquisition, use_start_date, use_end_date, 
-      public_area, other_note, registration_authority, 
-      land_registration_date, registration_date, 
-      declare_type, enable, creator, 
-      gmt_created, gmt_modified)
+      housing_structure, floor_area, location, 
+      evidence_area, inner_area, other, 
+      land_number, land_acquisition, use_start_date, 
+      use_end_date, public_area, other_note, 
+      registration_authority, land_registration_date, 
+      registration_date, declare_type, enable, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{certName,jdbcType=VARCHAR}, 
       #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
       #{type,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
@@ -165,13 +167,14 @@
       #{attachedNumber,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, 
       #{floor,jdbcType=VARCHAR}, #{roomNumber,jdbcType=VARCHAR}, #{registrationTime,jdbcType=TIMESTAMP}, 
       #{nature,jdbcType=VARCHAR}, #{floorCount,jdbcType=VARCHAR}, #{planningUse,jdbcType=VARCHAR}, 
-      #{floorArea,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{evidenceArea,jdbcType=DECIMAL}, 
-      #{innerArea,jdbcType=VARCHAR}, #{other,jdbcType=VARCHAR}, #{landNumber,jdbcType=VARCHAR}, 
-      #{landAcquisition,jdbcType=VARCHAR}, #{useStartDate,jdbcType=TIMESTAMP}, #{useEndDate,jdbcType=TIMESTAMP}, 
-      #{publicArea,jdbcType=DECIMAL}, #{otherNote,jdbcType=VARCHAR}, #{registrationAuthority,jdbcType=VARCHAR}, 
-      #{landRegistrationDate,jdbcType=TIMESTAMP}, #{registrationDate,jdbcType=TIMESTAMP}, 
-      #{declareType,jdbcType=VARCHAR}, #{enable,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{housingStructure,jdbcType=VARCHAR}, #{floorArea,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, 
+      #{evidenceArea,jdbcType=DECIMAL}, #{innerArea,jdbcType=VARCHAR}, #{other,jdbcType=VARCHAR}, 
+      #{landNumber,jdbcType=VARCHAR}, #{landAcquisition,jdbcType=VARCHAR}, #{useStartDate,jdbcType=TIMESTAMP}, 
+      #{useEndDate,jdbcType=TIMESTAMP}, #{publicArea,jdbcType=DECIMAL}, #{otherNote,jdbcType=VARCHAR}, 
+      #{registrationAuthority,jdbcType=VARCHAR}, #{landRegistrationDate,jdbcType=TIMESTAMP}, 
+      #{registrationDate,jdbcType=TIMESTAMP}, #{declareType,jdbcType=VARCHAR}, #{enable,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCert" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -241,6 +244,9 @@
       </if>
       <if test="planningUse != null" >
         planning_use,
+      </if>
+      <if test="housingStructure != null" >
+        housing_structure,
       </if>
       <if test="floorArea != null" >
         floor_area,
@@ -363,6 +369,9 @@
       </if>
       <if test="planningUse != null" >
         #{planningUse,jdbcType=VARCHAR},
+      </if>
+      <if test="housingStructure != null" >
+        #{housingStructure,jdbcType=VARCHAR},
       </if>
       <if test="floorArea != null" >
         #{floorArea,jdbcType=VARCHAR},
@@ -498,6 +507,9 @@
       <if test="record.planningUse != null" >
         planning_use = #{record.planningUse,jdbcType=VARCHAR},
       </if>
+      <if test="record.housingStructure != null" >
+        housing_structure = #{record.housingStructure,jdbcType=VARCHAR},
+      </if>
       <if test="record.floorArea != null" >
         floor_area = #{record.floorArea,jdbcType=VARCHAR},
       </if>
@@ -584,6 +596,7 @@
       nature = #{record.nature,jdbcType=VARCHAR},
       floor_count = #{record.floorCount,jdbcType=VARCHAR},
       planning_use = #{record.planningUse,jdbcType=VARCHAR},
+      housing_structure = #{record.housingStructure,jdbcType=VARCHAR},
       floor_area = #{record.floorArea,jdbcType=VARCHAR},
       location = #{record.location,jdbcType=VARCHAR},
       evidence_area = #{record.evidenceArea,jdbcType=DECIMAL},
@@ -673,6 +686,9 @@
       <if test="planningUse != null" >
         planning_use = #{planningUse,jdbcType=VARCHAR},
       </if>
+      <if test="housingStructure != null" >
+        housing_structure = #{housingStructure,jdbcType=VARCHAR},
+      </if>
       <if test="floorArea != null" >
         floor_area = #{floorArea,jdbcType=VARCHAR},
       </if>
@@ -756,6 +772,7 @@
       nature = #{nature,jdbcType=VARCHAR},
       floor_count = #{floorCount,jdbcType=VARCHAR},
       planning_use = #{planningUse,jdbcType=VARCHAR},
+      housing_structure = #{housingStructure,jdbcType=VARCHAR},
       floor_area = #{floorArea,jdbcType=VARCHAR},
       location = #{location,jdbcType=VARCHAR},
       evidence_area = #{evidenceArea,jdbcType=DECIMAL},

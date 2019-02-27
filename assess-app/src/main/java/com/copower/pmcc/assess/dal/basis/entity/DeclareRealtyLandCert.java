@@ -46,6 +46,8 @@ public class DeclareRealtyLandCert {
 
     private String purpose;
 
+    private String housingStructure;
+
     private String graphNumber;
 
     private String useRightType;
@@ -242,6 +244,14 @@ public class DeclareRealtyLandCert {
 
     public void setPurpose(String purpose) {
         this.purpose = purpose == null ? null : purpose.trim();
+    }
+
+    public String getHousingStructure() {
+        return housingStructure;
+    }
+
+    public void setHousingStructure(String housingStructure) {
+        this.housingStructure = housingStructure == null ? null : housingStructure.trim();
     }
 
     public String getGraphNumber() {

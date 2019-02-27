@@ -38,7 +38,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            房间类型
+                                            房间类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
                                             <select required="required" name="roomType"
@@ -48,7 +48,7 @@
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            面积
+                                            面积<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" placeholder="面积" name="area" data-rule-number='true'
@@ -60,44 +60,40 @@
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label"
                                                title="层高通常指下层地板面或楼板面到上层楼板面之间的距离。层高减去楼板的厚度或结构层的高度的差,叫做净高。出于降低成本、节约建材和节约土地等考虑,一般住宅层高都在28米左右">
-                                            层高(m)
+                                            层高(m)<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" data-rule-number="true" placeholder="层高(m)"
-                                                   name="layerHeight" class="form-control">
+                                                   name="layerHeight" class="form-control" required>
                                         </div>
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label"
                                                title="层高通常指下层地板面或楼板面到上层楼板面之间的距离。层高减去楼板的厚度或结构层的高度的差,叫做净高。出于降低成本、节约建材和节约土地等考虑,一般住宅层高都在28米左右">
-                                            净高(m)
+                                            净高(m)<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" data-rule-number="true" placeholder="净高(m)"
-                                                   name="clearHeight"
-                                                   class="form-control"
-                                            >
+                                            <input type="text" data-rule-number="true" placeholder="净高(m)" name="clearHeight" class="form-control" required>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            开间/宽(m)
+                                            开间/宽(m)<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" data-rule-number="true" placeholder="开间/宽(m)"
-                                                   name="opening" class="form-control"
-                                            >
+                                                   name="opening" class="form-control" required>
                                         </div>
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            进深/长(m)
+                                            进深/长(m)<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" data-rule-number="true" placeholder="进深/长(m)"
-                                                   name="depth" class="form-control">
+                                                   name="depth" class="form-control" required>
                                         </div>
                                     </div>
                                 </div>
@@ -107,8 +103,7 @@
                                             通风
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="通风" name="aeration" class="form-control"
-                                                   required="required">
+                                            <input type="text" placeholder="通风" name="aeration" class="form-control">
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -116,8 +111,7 @@
                                             日照
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="日照" name="sunshine" class="form-control"
-                                                   required="required">
+                                            <input type="text" placeholder="日照" name="sunshine" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -127,8 +121,7 @@
                                             采光
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="采光" name="lighting" class="form-control"
-                                                   required="required">
+                                            <input type="text" placeholder="采光" name="lighting" class="form-control">
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -136,8 +129,7 @@
                                             隔音
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="隔音" name="soundInsulation"
-                                                   class="form-control" required="required">
+                                            <input type="text" placeholder="隔音" name="soundInsulation" class="form-control">
                                         </div>
                                     </div>
                                 </div>
