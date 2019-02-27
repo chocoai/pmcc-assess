@@ -80,7 +80,7 @@ var AssessDicKey = {}
 AssessDicKey.projectDeclareHouseCertificateType = "project.declare.house.certificate.type";//房产证类型
 AssessDicKey.projectDeclareCommonSituation = "project.declare.common.situation";//共有情况
 AssessDicKey.projectDeclareLandCertificateType = "project.declare.land.certificate.type";//土地证类型
-AssessDicKey.projectDeclareUseRightType = "project.declare.use.right.type";//使用权类型
+AssessDicKey.projectDeclareUseRightType = "project.declare.use.right.type";//权利性质
 
 //基础数据
 AssessDicKey.dataTaxRateAllocation = "data.tax.rate.allocation";//税率配置

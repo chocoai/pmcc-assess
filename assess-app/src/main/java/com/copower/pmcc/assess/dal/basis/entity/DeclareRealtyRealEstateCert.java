@@ -50,6 +50,8 @@ public class DeclareRealtyRealEstateCert {
 
     private String planningUse;
 
+    private String housingStructure;
+
     private Integer floorCount;
 
     private BigDecimal floorArea;
@@ -288,6 +290,14 @@ public class DeclareRealtyRealEstateCert {
 
     public void setPlanningUse(String planningUse) {
         this.planningUse = planningUse == null ? null : planningUse.trim();
+    }
+
+    public String getHousingStructure() {
+        return housingStructure;
+    }
+
+    public void setHousingStructure(String housingStructure) {
+        this.housingStructure = housingStructure == null ? null : housingStructure.trim();
     }
 
     public Integer getFloorCount() {
