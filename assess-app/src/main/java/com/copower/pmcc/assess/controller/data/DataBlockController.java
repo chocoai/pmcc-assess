@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicHouseDamagedDegreeService;
+import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.data.DataDamagedDegreeService;
 import com.copower.pmcc.assess.service.project.generate.GenerateMdCompareService;
@@ -40,6 +41,8 @@ public class DataBlockController extends BaseController {
     private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
     @Autowired
     private DataDamagedDegreeService dataDamagedDegreeService;
+    @Autowired
+    private PublicBasicService publicBasicService;
 
     @RequestMapping(value = "/view", name = "转到index页面 ", method = {RequestMethod.GET})
     public ModelAndView index() {
@@ -158,6 +161,16 @@ public class DataBlockController extends BaseController {
         }
     }
 
-
+    @ResponseBody
+    @RequestMapping(value = "/flowWrite", method = {RequestMethod.POST}, name = "写入案例")
+    public HttpResult flowWrite(String processInsId) {
+        try {
+            publicBasicService.flowWrite(processInsId);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            log.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("写入案例异常");
+        }
+    }
 
 }
