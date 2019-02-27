@@ -136,10 +136,6 @@ public class GenerateMdIncomeService {
             if (Objects.equal(name, BaseReportFieldMdIncomeEnum.Rentals.getName())) {
                 this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getRentals());
             }
-            //租金收入
-            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.RentalIncome.getName())) {
-                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getRentalIncome());
-            }
 
             //其它收入内容/其它收入
             if (Objects.equal(name, BaseReportFieldMdIncomeEnum.OtherIncomeContents.getName())) {
@@ -185,9 +181,6 @@ public class GenerateMdIncomeService {
 
             //重置成本/重置价格
             if (Objects.equal(name, BaseReportFieldMdIncomeEnum.ReplacementCost.getName())) {
-                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getReplacementValue());
-            }
-            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.ReplacementValue.getName())) {
                 this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getReplacementValue());
             }
 

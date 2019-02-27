@@ -30,18 +30,37 @@ public enum BaseReportFieldMdIncomeEnum implements Serializable {
     AAA24("收益法评估面积",""),
     AAA25("收益法其他收入说明",""),
     RestrictionExplain("收益法出租率说明",""),
-    AAA27("收益法设定用途",""),
+    AAA28("收益法押金说明",""),
+    Rentals("收益法出租率",""),
+    OtherIncome("收益法其它收入",""),
+    ReplacementCost("收益法重置成本",""),
+    MaintenanceCostRatio("收益法维修保养费率",""),
+    ManagementCost("收益法管理费率",""),
+    InsurancePremium("收益法保险费率",""),//保险费
+    AAA29("收益法租赁税费",""),
+    AAA30("收益法房产税",""),
+    AAA31("收益法印花税",""),
+    AAA32("收益法合计税费",""),
+    AAA33("收益法土地使用税",""),
+    AAA34("收益法交易费率",""),
+    AAA35("收益法年有效毛收入",""),
+    AnnualOperatingCost("收益法年运营费",""),
+    AnnualNetIncome("收益法年净收益",""),
+    RentGrowthForecast("收益法租金增长率",""),
+    AAA36("收益法机会成本说明",""),
+    AAA37("收益法投资风险补偿",""),
+    AAA38("收益法管理负担补偿",""),
+    AAA39("收益法缺乏流动性补偿",""),
+    AAA40("收益法投资带来的优惠",""),
+    AAA41("收益法报酬率",""),
+    IncomePrice("收益法测算价格",""),
 
+    //------------------------------------------------------
 
-
-    RentGrowthForecast("租金增值预测",""),
     EntrustedInformation("委托资料",""),
     MonthNumber("月份数",""),
-    Rentals("有效出租率",""),
-    RentalIncome("月租金收入",""),
 
     OtherIncomeContents("其它收入内容",""),
-    OtherIncome("其它收入",""),
 
     YearDeposit("年押金",""),
     AnnualDepositIncome("年押金收入",""),
@@ -55,20 +74,15 @@ public enum BaseReportFieldMdIncomeEnum implements Serializable {
 
     ManagemenRemark("管理费用说明",""),
 
-    ReplacementValue("重置价格",""),
-    ReplacementCost("收益法重置成本",""),//重置成本
 
-    MaintenanceCostRatio("维修保养费率",""),
     LandUseTax("土地使用税",""),
-    ManagementCost("管理费",""),
 
-    InsurancePremium("收益法保险费率",""),//保险费
+
+
     InsurancePremium1("年保费",""),
 
     LandTaxFees("收益法土地使用税",""),//土地使用税费
-    AnnualOperatingCost("年运营费",""),
-    AnnualNetIncome("年净收益",""),
-    IncomePrice("单价",""),
+
 
     RemunerationRateSheet("报酬率测算表",""),
     IncomeMethodPriceCalculatingSheet("收益法价格测算表","")
