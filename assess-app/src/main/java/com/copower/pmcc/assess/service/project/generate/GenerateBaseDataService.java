@@ -549,6 +549,600 @@ public class GenerateBaseDataService {
     }
 
     /**
+     * 功能描述: 替代原则
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 11:06
+     */
+    public String getSubstitutionPrinciple() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = schemeSupportInfoService.getContentByName(getAreaId(), BaseReportFieldEnum.SubstitutionPrinciple.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 未定事项假设
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 14:46
+     */
+    public String getUncertaintyAssumption() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = schemeSupportInfoService.getContentByName(getAreaId(), BaseReportFieldEnum.UncertaintyAssumption.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 背离事实假设
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 14:47
+     */
+    public String getDeviationFromFactualAssumptions() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = schemeSupportInfoService.getContentByName(getAreaId(), BaseReportFieldEnum.DeviationFromFactualAssumptions.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 不相一致假设
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 14:48
+     */
+    public String getInconsistentHypothesis() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = schemeSupportInfoService.getContentByName(getAreaId(), BaseReportFieldEnum.InconsistentHypothesis.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 依据不足假设
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 14:51
+     */
+    public String getInsufficientHypothesis() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = schemeSupportInfoService.getContentByName(getAreaId(), BaseReportFieldEnum.InsufficientHypothesis.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 变现分析通用性
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 14:58
+     */
+    public String getUniversalityLiquidityAnalysis() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.UniversalityLiquidityAnalysis.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 变现分析独立使用性
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:00
+     */
+    public String getIndependentUsabilityCashFlowAnalysis() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.IndependentUsabilityCashFlowAnalysis.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 变现分析可分割转让性
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:00
+     */
+    public String getLiquidityAnalysisSeparableTransferability() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.LiquidityAnalysisSeparableTransferability.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 变现分析房地产区位
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:00
+     */
+    public String getCashAnalysisRealEstateLocation() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.CashAnalysisRealEstateLocation.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 变现分析房地产开发程度
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:00
+     */
+    public String getCashAnalysisDegreeRealEstateDevelopment() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.CashAnalysisDegreeRealEstateDevelopment.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+
+    /**
+     * 功能描述: 变现分析房地产价值大小
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:00
+     */
+    public String getCashAnalysisValueRealEstate() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.CashAnalysisValueRealEstate.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 变现分析房地产市场状况
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:00
+     */
+    public String getCashAnalysisRealEstateMarket() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.CashAnalysisRealEstateMarket.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 变现分析其他
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:00
+     */
+    public String getCashAnalysisOthers() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.CashAnalysisOthers.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 变现拍卖底价规定
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:00
+     */
+    public String getBasePriceRegulationCashAuction() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.BasePriceRegulationCashAuction.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 变现时间长短
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:00
+     */
+    public String getHowLongLiquidationTime() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.HowLongLiquidationTime.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 变现综合分析
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:00
+     */
+    public String getCash_inComprehensiveAnalysis() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.Cash_inComprehensiveAnalysis.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 风险相邻物业抵押影响
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:00
+     */
+    public String getTheImpactMortgageRiskyNeighbouringProperty() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.TheImpactMortgageRiskyNeighbouringProperty.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 风险租赁影响
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:00
+     */
+    public String getImpactRiskLeasingy() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.ImpactRiskLeasing.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 风险整体变现影响
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:00
+     */
+    public String getOverallLiquidityImpactRisk() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.OverallLiquidityImpactRisk.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 风险不可抗力影响
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:00
+     */
+    public String getRiskForceMajeureEffect() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.RiskForceMajeureEffect.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 风险政策变化影响
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:00
+     */
+    public String getImpactRiskPolicyChange() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.ImpactRiskPolicyChange.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 风险抵押物特殊事件影响
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:00
+     */
+    public String getImpactSpecialEventsRiskMortgage() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.ImpactSpecialEventsRiskMortgage.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 风险抵押物使用不当
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:00
+     */
+    public String getImproperUseRiskCollaterale() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.ImproperUseRiskCollateral.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 风险抵押物功能及替代物
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:00
+     */
+    public String getFunctionsSubstitutesRiskMortgage() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.FunctionsSubstitutesRiskMortgage.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 风险抵押物环境影响
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:00
+     */
+    public String getEnvironmentalImpactRiskMortgage() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.EnvironmentalImpactRiskMortgage.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 风险抵押期间因抵押物原因而引起的房地产信贷风险关注点
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:00
+     */
+    public String getConcernRealEstateCreditRiskCausedMortgageReasonsDuringRiskMortgagePeriod() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.ConcernRealEstateCreditRiskCausedMortgageReasonsDuringRiskMortgagePeriod.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 风险区域规划、城市发展战略、城市规划、土地利用对房地产的影响
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:00
+     */
+    public String getThreeMajorRiskPlanning() throws Exception {
+        //存在换行符必须使用模板
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.ThreeMajorRiskPlanning.getName());
+        String localPath = getLocalPath();
+        if (StringUtils.isNotBlank(content)) {
+            builder.writeln(content);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 功能描述: 变现比率
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:17
+     */
+    public String getLiquidRatios() throws Exception {
+        //LiquidRatios
+        return "2%";
+    }
+
+    /**
+     * 功能描述: 出具报告城市
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 15:17
+     */
+    public String getReportCity() throws Exception {
+        //ReportCity
+        return getSchemeAreaGroup().getAreaName();
+    }
+
+    /**
      * 抵押价值总金额
      *
      * @return
@@ -3442,7 +4036,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        if (!objectDeclareRealtyRealEstateCertVoMap.isEmpty() ) {
+        if (!objectDeclareRealtyRealEstateCertVoMap.isEmpty()) {
             final int colMax = 11;
             Table table = builder.startTable();
             for (int j = 0; j < colMax; j++) {
@@ -5792,7 +6386,7 @@ public class GenerateBaseDataService {
         return builder.toString();
     }
 
-    private String getLocalPath() {
+    public String getLocalPath() {
         String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
         return localPath;
     }

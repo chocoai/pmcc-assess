@@ -610,6 +610,215 @@ public class GenerateReportService {
                             }
                         }
                     }
+
+
+                    //替代原则
+                    if (Objects.equal(BaseReportFieldEnum.SubstitutionPrinciple.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getSubstitutionPrinciple(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //未定事项假设
+                    if (Objects.equal(BaseReportFieldEnum.UncertaintyAssumption.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getUncertaintyAssumption(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //背离事实假设
+                    if (Objects.equal(BaseReportFieldEnum.DeviationFromFactualAssumptions.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getDeviationFromFactualAssumptions(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //不相一致假设
+                    if (Objects.equal(BaseReportFieldEnum.InconsistentHypothesis.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getInconsistentHypothesis(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+
+
+                    //变现分析通用性
+                    if (Objects.equal(BaseReportFieldEnum.UniversalityLiquidityAnalysis.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getUniversalityLiquidityAnalysis(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //变现分析独立使用性
+                    if (Objects.equal(BaseReportFieldEnum.IndependentUsabilityCashFlowAnalysis.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getIndependentUsabilityCashFlowAnalysis(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //变现分析可分割转让性
+                    if (Objects.equal(BaseReportFieldEnum.LiquidityAnalysisSeparableTransferability.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getLiquidityAnalysisSeparableTransferability(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //变现分析房地产区位
+                    if (Objects.equal(BaseReportFieldEnum.CashAnalysisRealEstateLocation.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getCashAnalysisRealEstateLocation(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //变现分析房地产开发程度
+                    if (Objects.equal(BaseReportFieldEnum.CashAnalysisDegreeRealEstateDevelopment.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getCashAnalysisDegreeRealEstateDevelopment(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //变现分析房地产价值大小
+                    if (Objects.equal(BaseReportFieldEnum.CashAnalysisValueRealEstate.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getCashAnalysisValueRealEstate(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //变现分析房地产市场状况
+                    if (Objects.equal(BaseReportFieldEnum.CashAnalysisRealEstateMarket.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getCashAnalysisRealEstateMarket(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //变现分析其他
+                    if (Objects.equal(BaseReportFieldEnum.CashAnalysisOthers.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getCashAnalysisOthers(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //变现拍卖底价规定
+                    if (Objects.equal(BaseReportFieldEnum.BasePriceRegulationCashAuction.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getBasePriceRegulationCashAuction(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //变现时间长短
+                    if (Objects.equal(BaseReportFieldEnum.HowLongLiquidationTime.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getHowLongLiquidationTime(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //变现综合分析
+                    if (Objects.equal(BaseReportFieldEnum.Cash_inComprehensiveAnalysis.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getCash_inComprehensiveAnalysis(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //风险区域规划、城市发展战略、城市规划、土地利用对房地产的影响
+                    if (Objects.equal(BaseReportFieldEnum.ThreeMajorRiskPlanning.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getThreeMajorRiskPlanning(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //风险相邻物业抵押影响
+                    if (Objects.equal(BaseReportFieldEnum.TheImpactMortgageRiskyNeighbouringProperty.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getTheImpactMortgageRiskyNeighbouringProperty(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //风险租赁影响
+                    if (Objects.equal(BaseReportFieldEnum.ImpactRiskLeasing.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getImpactRiskLeasingy(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //风险整体变现影响
+                    if (Objects.equal(BaseReportFieldEnum.OverallLiquidityImpactRisk.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getOverallLiquidityImpactRisk(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //风险不可抗力影响
+                    if (Objects.equal(BaseReportFieldEnum.RiskForceMajeureEffect.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getRiskForceMajeureEffect(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //风险政策变化影响
+                    if (Objects.equal(BaseReportFieldEnum.ImpactRiskPolicyChange.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getImpactRiskPolicyChange(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //风险抵押物特殊事件影响
+                    if (Objects.equal(BaseReportFieldEnum.ImpactSpecialEventsRiskMortgage.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getImpactSpecialEventsRiskMortgage(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //风险抵押物使用不当
+                    if (Objects.equal(BaseReportFieldEnum.ImproperUseRiskCollateral.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getImproperUseRiskCollaterale(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //风险抵押物功能及替代物
+                    if (Objects.equal(BaseReportFieldEnum.FunctionsSubstitutesRiskMortgage.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getFunctionsSubstitutesRiskMortgage(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //风险抵押物环境影响
+                    if (Objects.equal(BaseReportFieldEnum.EnvironmentalImpactRiskMortgage.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getEnvironmentalImpactRiskMortgage(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //风险抵押期间因抵押物原因而引起的房地产信贷风险关注点
+                    if (Objects.equal(BaseReportFieldEnum.ConcernRealEstateCreditRiskCausedMortgageReasonsDuringRiskMortgagePeriod.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getConcernRealEstateCreditRiskCausedMortgageReasonsDuringRiskMortgagePeriod(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //变现比率
+                    if (Objects.equal(BaseReportFieldEnum.LiquidRatios.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getLiquidRatios(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //出具报告城市
+                    if (Objects.equal(BaseReportFieldEnum.ReportCity.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getReportCity(), bookmarkAndRegex.getType(), false, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+
+
+                    //依据不足假设
+                    if (Objects.equal(BaseReportFieldEnum.InsufficientHypothesis.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getInsufficientHypothesis(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
                     //假设开发法适用原因
                     if (Objects.equal(BaseReportFieldEnum.DevelopmentAssistApplyReason.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);

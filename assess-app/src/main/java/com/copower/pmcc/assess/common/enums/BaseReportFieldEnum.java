@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @auther: zch
+ * @author: zch
  * @date: 2019/1/15 14:30
  * @description:报告模板字段
  */
@@ -159,7 +159,38 @@ public enum BaseReportFieldEnum {
     ANALYSIS_CATEGORY_LIQUIDITY("", "变现能力分析"),
     ANALYSIS_CATEGORY_RISK("", "风险提示"),
 
+    UniversalityLiquidityAnalysis("", "变现分析通用性"),
+    IndependentUsabilityCashFlowAnalysis("", "变现分析独立使用性"),
+    LiquidityAnalysisSeparableTransferability("", "变现分析可分割转让性"),
+    CashAnalysisRealEstateLocation("", "变现分析房地产区位"),
+    CashAnalysisDegreeRealEstateDevelopment("", "变现分析房地产开发程度"),
+    CashAnalysisValueRealEstate("", "变现分析房地产价值大小"),
+    CashAnalysisRealEstateMarket("", "变现分析房地产市场状况"),
+    CashAnalysisOthers("", "变现分析其他"),
+    BasePriceRegulationCashAuction("", "变现拍卖底价规定"),
+    HowLongLiquidationTime("", "变现时间长短"),
+    LiquidRatios("", "变现比率"),//未知
+    ReportCity("", "出具报告城市"),
+    Cash_inComprehensiveAnalysis("", "变现综合分析"),
+    ThreeMajorRiskPlanning("", "风险区域规划、城市发展战略、城市规划、土地利用对房地产的影响"),
+    TheImpactMortgageRiskyNeighbouringProperty("", "风险相邻物业抵押影响"),
+    ImpactRiskLeasing("", "风险租赁影响"),
+    OverallLiquidityImpactRisk("", "风险整体变现影响"),
+    RiskForceMajeureEffect("", "风险不可抗力影响"),
+    ImpactRiskPolicyChange("", "风险政策变化影响"),
+    ImpactSpecialEventsRiskMortgage("", "风险抵押物特殊事件影响"),
+    ImproperUseRiskCollateral("", "风险抵押物使用不当"),
+    FunctionsSubstitutesRiskMortgage("", "风险抵押物功能及替代物"),
+    EnvironmentalImpactRiskMortgage("", "风险抵押物环境影响"),
+    ConcernRealEstateCreditRiskCausedMortgageReasonsDuringRiskMortgagePeriod("", "风险抵押期间因抵押物原因而引起的房地产信贷风险关注点"),
+
     AssistanceStaff("", "协助工作人员"),
+
+    SubstitutionPrinciple("", "替代原则"),
+    UncertaintyAssumption("", "未定事项假设"),
+    DeviationFromFactualAssumptions("", "背离事实假设"),
+    InconsistentHypothesis("", "不相一致假设"),
+    InsufficientHypothesis("", "依据不足假设"),
 
 
     HousingOwnershipRegistrationStatementSheet("", "房屋所有权登记状况"),
