@@ -12,14 +12,14 @@ import java.util.List;
  * @description:报告模板字段(收益法)
  */
 public enum BaseReportFieldMdIncomeEnum implements Serializable {
-    AAA1("收益法申报产权证类型",""),// 房产证、不动产证
-    AAA12("收益法设定用途",""),//方案中设定用途
-    AAA13("收益法土地终止日期",""),//土地证终止日期
-    AAA14("收益法价值时点",""),//方案价值时点
-    AAA15("收益法剩余土地使用年限",""),
-    AAA16("收益法竣工时间",""),//楼栋竣工时间
-    AAA17("收益法已使用年限",""),//价值时点-竣工时间
-    AAA18("收益法建筑结构类别",""),//楼栋建筑结构类别
+    PropertyRightCertificateIncomeLaw("收益法申报产权证类型",""),// 房产证、不动产证
+    IncomeSetUse("收益法设定用途",""),//方案中设定用途
+    TerminationDateLand("收益法土地终止日期",""),//土地证终止日期
+    AAA14("收益法价值时点",""),//方案价值时点 (无法取得)
+    IncomeSurplusLandUseYear("收益法剩余土地使用年限",""),
+    IncomeCompletionTime("收益法竣工时间",""),//楼栋竣工时间
+    AAA17("收益法已使用年限",""),//价值时点-竣工时间 (无法取得)
+    IncomebuildingStructureType("收益法建筑结构类别",""),//楼栋建筑结构类别
     AAA19("收益法经济耐用年限",""),//楼栋建筑使用年限
     AAA20("收益法房产剩余年限",""),
     AAA21("收益法收益年限",""),//收益法房产剩余年限 收益法剩余土地使用年限 中最小值

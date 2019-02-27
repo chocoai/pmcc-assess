@@ -1125,8 +1125,30 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:17
      */
     public String getLiquidRatios() throws Exception {
-        //LiquidRatios
-        return "2%";
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        StringBuilder stringBuilder = new StringBuilder(24);
+        Set<String> stringSet = Sets.newHashSet();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            schemeJudgeObjectList.stream().forEach(schemeJudgeObject -> {
+                if (StringUtils.isNotBlank(schemeJudgeObject.getLiquidRatio())) {
+                    stringSet.add(String.format("%s:%s", schemeJudgeObject.getName(), schemeJudgeObject.getLiquidRatio()));
+                }
+            });
+        }
+        if (CollectionUtils.isNotEmpty(stringSet)) {
+            List<String> stringList = Lists.newArrayList(stringSet);
+            for (int i = 0; i < stringList.size(); i++) {
+                stringBuilder.append(stringList.get(i));
+                if (i == stringList.size() - 1) {
+                    stringBuilder.append(";");
+                } else {
+                    stringBuilder.append(",");
+                }
+            }
+        } else {
+            stringBuilder.append(" ");
+        }
+        return stringBuilder.toString();
     }
 
     /**

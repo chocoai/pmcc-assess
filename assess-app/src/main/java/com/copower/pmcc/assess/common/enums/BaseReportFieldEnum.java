@@ -170,7 +170,7 @@ public enum BaseReportFieldEnum  implements Serializable{
     CashAnalysisOthers("", "变现分析其他"),
     BasePriceRegulationCashAuction("", "变现拍卖底价规定"),
     HowLongLiquidationTime("", "变现时间长短"),
-    LiquidRatios("", "变现比率"),//未知
+    LiquidRatios("", "变现比率"),//
     ReportCity("", "出具报告城市"),
     Cash_inComprehensiveAnalysis("", "变现综合分析"),
     ThreeMajorRiskPlanning("", "风险区域规划、城市发展战略、城市规划、土地利用对房地产的影响"),

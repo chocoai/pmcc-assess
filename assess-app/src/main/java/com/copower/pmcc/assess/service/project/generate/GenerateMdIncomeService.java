@@ -6,6 +6,7 @@ import com.aspose.words.*;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldMdIncomeEnum;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldReplaceEnum;
+import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeLeaseCostDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeLeaseDao;
@@ -16,10 +17,14 @@ import com.copower.pmcc.assess.dto.output.method.MdIncomeLeaseCostVo;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeLeaseVo;
 import com.copower.pmcc.assess.service.ToolRewardRateService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.method.MdIncomeDateSectionService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -64,6 +69,10 @@ public class GenerateMdIncomeService {
     private MdIncomeLeaseDao mdIncomeLeaseDao;
     private MdIncomeLeaseCostDao mdIncomeLeaseCostDao;
     private ToolRewardRateService toolRewardRateService;
+    private SchemeJudgeObjectService schemeJudgeObjectService;
+    private DeclareRecordService declareRecordService;
+    private DeclareRealtyLandCertService declareRealtyLandCertService;
+    private BaseDataDicService baseDataDicService;
 
     public MdIncome getMdIncome() {
         return mdIncomeService.getIncomeById(miId);
@@ -240,6 +249,31 @@ public class GenerateMdIncomeService {
             if (Objects.equal(name, BaseReportFieldMdIncomeEnum.EntrustedInformation.getName())) {
                 this.putValue(false, false, false, textMap, bookmarkMap, fileMap, name, null);
             }
+
+            //收益法申报产权证类型
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.PropertyRightCertificateIncomeLaw.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getPropertyRightCertificateIncomeLaw());
+            }
+            //收益法设定用途
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeSetUse.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeSetUse());
+            }
+            //收益法土地终止日期
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.TerminationDateLand.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getTerminationDateLand());
+            }
+            //收益法剩余土地使用年限
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeSurplusLandUseYear.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeSurplusLandUseYear());
+            }
+            //收益法竣工时间
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeCompletionTime.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeCompletionTime());
+            }
+            //收益法建筑结构类别
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomebuildingStructureType.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomebuildingStructureType());
+            }
         }
         //替换
         if (!textMap.isEmpty()) {
@@ -281,6 +315,136 @@ public class GenerateMdIncomeService {
         if (fileFlag) {
             fileMap.put(key, value);
         }
+    }
+
+    /**
+     * 功能描述: 收益法建筑结构类别
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 18:18
+     */
+    public String getIncomebuildingStructureType() throws Exception {
+        if (getSchemeInfo().getPlanDetailsId() != null) {
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(getSchemeInfo().getPlanDetailsId());
+            if (generateBaseExamineService.getBasicApply() != null && generateBaseExamineService.getBasicApply().getId() != null) {
+                if (generateBaseExamineService.getBasicBuilding() != null && generateBaseExamineService.getBasicBuilding().getId() != null) {
+                    if (generateBaseExamineService.getBasicBuilding().getBuildingStructureType() != null) {
+                        return baseDataDicService.getNameById(generateBaseExamineService.getBasicBuilding().getBuildingStructureType());
+                    }
+                }
+            }
+        }
+        return "";
+    }
+
+    /**
+     * 功能描述: 收益法竣工时间
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 18:10
+     */
+    public String getIncomeCompletionTime() throws Exception {
+        if (getSchemeInfo().getPlanDetailsId() != null) {
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(getSchemeInfo().getPlanDetailsId());
+            if (generateBaseExamineService.getBasicApply() != null && generateBaseExamineService.getBasicApply().getId() != null) {
+                if (generateBaseExamineService.getBasicBuilding() != null && generateBaseExamineService.getBasicBuilding().getId() != null) {
+                    if (generateBaseExamineService.getBasicBuilding().getBeCompletedTime() != null) {
+                        return DateUtils.format(generateBaseExamineService.getBasicBuilding().getBeCompletedTime(), DateUtils.DATE_CHINESE_PATTERN);
+                    }
+                }
+            }
+        }
+        return "";
+    }
+
+    /**
+     * 功能描述: 收益法剩余土地使用年限
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 18:05
+     */
+    public String getIncomeSurplusLandUseYear() throws Exception {
+        MdIncome income = getMdIncome();
+        if (income.getLandRemainingYear() != null) {
+            return income.getLandRemainingYear().toString();
+        }
+        return "";
+    }
+
+    /**
+     * 功能描述: 收益法土地终止日期
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 17:44
+     */
+    public String getTerminationDateLand() throws Exception {
+        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
+        if (schemeJudgeObject.getDeclareRecordId() != null) {
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+            if (declareRecord != null) {
+                if (declareRecord.getDataTableName().equals(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class))) {
+                    DeclareRealtyLandCert declareRealtyLandCert = declareRealtyLandCertService.getDeclareRealtyLandCertById(declareRecord.getDataTableId());
+                    if (declareRealtyLandCert != null && declareRealtyLandCert.getTerminationDate() != null) {
+                        return DateUtils.format(declareRealtyLandCert.getTerminationDate(), DateUtils.DATE_CHINESE_PATTERN);
+                    }
+                }
+            }
+        }
+        return "";
+    }
+
+    /**
+     * 功能描述: 收益法设定用途
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 17:35
+     */
+    public String getIncomeSetUse() throws Exception {
+        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
+        if (schemeJudgeObject.getSetUse() != null) {
+            DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
+            if (dataSetUseField != null) {
+                return dataSetUseField.getName();
+            }
+        }
+        return "";
+    }
+
+    /**
+     * 功能描述: 收益法申报产权证类型
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2019/2/27 17:21
+     */
+    public String getPropertyRightCertificateIncomeLaw() throws Exception {
+        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
+        if (schemeJudgeObject.getDeclareRecordId() != null) {
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+            if (declareRecord != null) {
+                if (declareRecord.getDataTableName().equals(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class))) {
+                    return DeclareTypeEnum.LAND.getKey();
+                }
+                if (declareRecord.getDataTableName().equals(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class))) {
+                    return DeclareTypeEnum.HOUSE.getKey();
+                }
+                if (declareRecord.getDataTableName().equals(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class))) {
+                    return DeclareTypeEnum.RealEstate.getKey();
+                }
+            }
+        }
+        return "";
     }
 
 
@@ -1343,6 +1507,17 @@ public class GenerateMdIncomeService {
         return schemeInfo;
     }
 
+    public SchemeJudgeObject getSchemeJudgeObject() {
+        SchemeJudgeObject schemeJudgeObject = null;
+        if (getSchemeInfo().getJudgeObjectId() != null) {
+            schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(getSchemeInfo().getJudgeObjectId());
+        }
+        if (schemeJudgeObject == null) {
+            schemeJudgeObject = new SchemeJudgeObject();
+        }
+        return schemeJudgeObject;
+    }
+
     public GenerateMdIncomeService(SchemeInfo schemeInfo, Integer projectId, Integer areaId) {
         this.miId = schemeInfo.getMethodDataId();
         this.schemeInfo = schemeInfo;
@@ -1357,6 +1532,10 @@ public class GenerateMdIncomeService {
         this.mdIncomeLeaseDao = SpringContextUtils.getBean(MdIncomeLeaseDao.class);
         this.mdIncomeLeaseCostDao = SpringContextUtils.getBean(MdIncomeLeaseCostDao.class);
         this.toolRewardRateService = SpringContextUtils.getBean(ToolRewardRateService.class);
+        this.schemeJudgeObjectService = SpringContextUtils.getBean(SchemeJudgeObjectService.class);
+        this.declareRecordService = SpringContextUtils.getBean(DeclareRecordService.class);
+        this.declareRealtyLandCertService = SpringContextUtils.getBean(DeclareRealtyLandCertService.class);
+        this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
     }
 
 }
