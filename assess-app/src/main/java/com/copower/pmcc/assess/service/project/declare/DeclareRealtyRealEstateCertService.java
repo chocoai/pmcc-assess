@@ -184,6 +184,10 @@ public class DeclareRealtyRealEstateCertService {
         }
         DeclareRealtyRealEstateCertVo vo = new DeclareRealtyRealEstateCertVo();
         BeanUtils.copyProperties(declareRealtyRealEstateCert, vo);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        vo.setUseEndDateFmt(sdf.format(declareRealtyRealEstateCert.getUseEndDate()));
+        vo.setRegistrationTimeFmt(sdf.format(declareRealtyRealEstateCert.getRegistrationTime()));
+        vo.setUseStartDateFmt(sdf.format(declareRealtyRealEstateCert.getUseStartDate()));
         if (StringUtils.isNotBlank(declareRealtyRealEstateCert.getProvince())) {
             if (NumberUtils.isNumber(declareRealtyRealEstateCert.getProvince())) {
                 //省
@@ -229,6 +233,12 @@ public class DeclareRealtyRealEstateCertService {
         }
         if (NumberUtils.isNumber(declareRealtyRealEstateCert.getType())) {
             vo.setTypeName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyRealEstateCert.getType())));
+        }
+        if (NumberUtils.isNumber(declareRealtyRealEstateCert.getPublicSituation())) {
+            vo.setPublicSituationName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyRealEstateCert.getPublicSituation())));
+        }
+        if (NumberUtils.isNumber(declareRealtyRealEstateCert.getUseRightType())) {
+            vo.setUseRightTypeName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyRealEstateCert.getUseRightType())));
         }
         return vo;
     }

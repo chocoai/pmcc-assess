@@ -47,7 +47,7 @@ public class DeclareRealtyRealEstateCertDto {
 
     private String unit;
 
-    private Integer floor;
+    private String floor;
     @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date registrationTime;
 
@@ -105,6 +105,8 @@ public class DeclareRealtyRealEstateCertDto {
     private String realEstateUnitNumber;
     private String declareType;
     private String enable;
+
+    private String housingStructure;
 
     public Integer getId() {
         return id;
@@ -248,14 +250,6 @@ public class DeclareRealtyRealEstateCertDto {
 
     public void setUnit(String unit) {
         this.unit = unit;
-    }
-
-    public Integer getFloor() {
-        return floor;
-    }
-
-    public void setFloor(Integer floor) {
-        this.floor = floor;
     }
 
     public Date getRegistrationTime() {
@@ -488,5 +482,21 @@ public class DeclareRealtyRealEstateCertDto {
 
     public void setEnable(String enable) {
         this.enable = enable;
+    }
+
+    public String getFloor() {
+        return floor;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor;
+    }
+
+    public String getHousingStructure() {
+        return housingStructure;
+    }
+
+    public void setHousingStructure(String housingStructure) {
+        this.housingStructure = housingStructure;
     }
 }
