@@ -5695,15 +5695,15 @@ public class GenerateBaseDataService {
             MdMarketCompare mdMarketCompare = null;
             MdIncome mdIncome = null;
             if (true) {
-                Integer id = getSchemeInfoId(CalculationMethodNameEnum.MdCompare, schemeJudgeObjectList.get(j - 2));
-                if (id != null) {
-                    mdMarketCompare = mdMarketCompareService.getMdMarketCompare(id);
+                SchemeInfo schemeInfo = getSchemeInfoId(CalculationMethodNameEnum.MdCompare, schemeJudgeObjectList.get(j - 2));
+                if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
+                    mdMarketCompare = mdMarketCompareService.getMdMarketCompare(schemeInfo.getMethodDataId());
                 }
             }
             if (true) {
-                Integer id = getSchemeInfoId(CalculationMethodNameEnum.MdIncome, schemeJudgeObjectList.get(j - 2));
-                if (id != null) {
-                    mdIncome = mdIncomeService.getIncomeById(id);
+                SchemeInfo schemeInfo = getSchemeInfoId(CalculationMethodNameEnum.MdCompare, schemeJudgeObjectList.get(j - 2));
+                if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
+                    mdIncome = mdIncomeService.getIncomeById(schemeInfo.getMethodDataId());
                 }
             }
             int num = j % 2;
@@ -5862,39 +5862,55 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 收益法替换模板
+     * 收益法 替换并合并后的word
      *
      * @return
      * @throws Exception
      */
     public String getMdIncomeSheet() throws Exception {
-        Set<Integer> schemeInfoList = getSchemeInfoList(CalculationMethodNameEnum.MdIncome);
+        Set<SchemeInfo> schemeInfoList = getSchemeInfoList(CalculationMethodNameEnum.MdIncome);
+        String localPath = getLocalPath();
+        Document document = new Document();
         if (CollectionUtils.isNotEmpty(schemeInfoList)) {
-            //暂时取一个
-            GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfoList.stream().sorted(
-                    (a, b) -> a.compareTo(b)
-            ).findFirst().get(), getProjectId(), getAreaId());
-            String localPath = generateMdIncomeService.generateCompareFile();
-            return localPath;
+            for (SchemeInfo schemeInfo : schemeInfoList) {
+                if (schemeInfo.getMethodDataId() != null) {
+                    GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfo, getProjectId(), getAreaId());
+                    String temp = generateMdIncomeService.generateCompareFile();
+                    File file = new File(temp);
+                    if (file.isFile()) {
+                        document.appendDocument(new Document(temp), ImportFormatMode.KEEP_SOURCE_FORMATTING);
+                    }
+                }
+            }
         }
-        return null;
+        document.save(localPath, SaveFormat.DOC);
+        return localPath;
     }
 
     /**
-     * 市场比较法替换模板
+     * 市场比较法 替换并合并后的word
      *
      * @return
      * @throws Exception
      */
     public String getMdCompareSheet() throws Exception {
-        Set<Integer> schemeInfoList = getSchemeInfoList(CalculationMethodNameEnum.MdCompare);
+        Set<SchemeInfo> schemeInfoList = getSchemeInfoList(CalculationMethodNameEnum.MdCompare);
+        String localPath = getLocalPath();
+        Document document = new Document();
         if (CollectionUtils.isNotEmpty(schemeInfoList)) {
-            //暂时取一个
-            GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(schemeInfoList.stream().sorted((a, b) -> a.compareTo(b)).findFirst().get(), new Date(), getAreaId());
-            String s = generateMdCompareService.generateCompareFile();
-            return s;
+            for (SchemeInfo schemeInfo : schemeInfoList) {
+                if (schemeInfo.getMethodDataId() != null) {
+                    GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(schemeInfo.getMethodDataId(), new Date(), getAreaId());
+                    String temp = generateMdCompareService.generateCompareFile();
+                    File file = new File(temp);
+                    if (file.isFile()) {
+                        document.appendDocument(new Document(temp), ImportFormatMode.KEEP_SOURCE_FORMATTING);
+                    }
+                }
+            }
         }
-        return null;
+        document.save(localPath, SaveFormat.DOC);
+        return localPath;
     }
 
 
@@ -6182,11 +6198,11 @@ public class GenerateBaseDataService {
      * 获取如收益法,市场比较法，假设开发法，成本法等的id集合
      *
      * @param methodNameEnum
-     * @return
+     * @return Set<SchemeInfo>
      */
-    private Set<Integer> getSchemeInfoList(CalculationMethodNameEnum methodNameEnum) {
+    private Set<SchemeInfo> getSchemeInfoList(CalculationMethodNameEnum methodNameEnum) {
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        Set<Integer> schemeInfoList = Sets.newHashSet();
+        Set<SchemeInfo> schemeInfoList = Sets.newHashSet();
         DataEvaluationMethod dataEvaluationMethod = evaluationMethodService.getMethodAllList().stream().filter(oo -> {
             if (oo.getName().equals(methodNameEnum.getName())) {
                 return true;
@@ -6198,7 +6214,7 @@ public class GenerateBaseDataService {
                 if (dataEvaluationMethod != null) {
                     SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), dataEvaluationMethod.getMethod());
                     if (schemeInfo != null) {
-                        schemeInfoList.add(schemeInfo.getMethodDataId());
+                        schemeInfoList.add(schemeInfo);
                     }
                 }
             });
@@ -6211,9 +6227,9 @@ public class GenerateBaseDataService {
      *
      * @param methodNameEnum
      * @param schemeJudgeObject
-     * @return
+     * @return SchemeInfo
      */
-    private Integer getSchemeInfoId(CalculationMethodNameEnum methodNameEnum, SchemeJudgeObject schemeJudgeObject) {
+    private SchemeInfo getSchemeInfoId(CalculationMethodNameEnum methodNameEnum, SchemeJudgeObject schemeJudgeObject) {
         DataEvaluationMethod dataEvaluationMethod = evaluationMethodService.getMethodAllList().stream().filter(oo -> {
             if (oo.getName().equals(methodNameEnum.getName())) {
                 return true;
@@ -6223,7 +6239,7 @@ public class GenerateBaseDataService {
         if (dataEvaluationMethod != null) {
             SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), dataEvaluationMethod.getMethod());
             if (schemeInfo != null) {
-                return schemeInfo.getMethodDataId();
+                return schemeInfo;
             }
         }
         return null;

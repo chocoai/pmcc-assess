@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.common.enums;
 
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * @date: 2019/1/15 14:30
  * @description:报告模板字段
  */
-public enum BaseReportFieldEnum {
+public enum BaseReportFieldEnum  implements Serializable{
     ReportNumber("", "文号"),
     ValuationProjectName("", "估价项目名称"),
     ReportIssuanceDate("", "报告出具日期"),

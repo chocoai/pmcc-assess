@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @Auther: zch
- * @Date: 2019/2/14 16:11
- * @Description:报告模板字段(收益法)
+ * @author: zch
+ * @date: 2019/2/14 16:11
+ * @description:报告模板字段(收益法)
  */
 public enum BaseReportFieldMdIncomeEnum implements Serializable {
     AAA1("收益法申报产权证类型",""),// 房产证、不动产证

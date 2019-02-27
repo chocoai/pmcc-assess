@@ -594,11 +594,11 @@ public class GenerateReportService {
                     //收益法模板
                     if (Objects.equal(BaseReportFieldEnum.MdIncome.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        String s = generateBaseDataService.getMdIncomeSheet();
+                        if (StringUtils.isNotBlank(s)) {
+                            replaceReportPutValue(name, s, bookmarkAndRegex.getType(), true, mapSet);
+                        }
                         if (baseReportField != null) {
-                            String s = generateBaseDataService.getMdIncomeSheet();
-                            if (StringUtils.isNotBlank(s)) {
-                                replaceReportPutValue(name, s, bookmarkAndRegex.getType(), true, mapSet);
-                            }
                         }
                     }
                     //市场比较法模板

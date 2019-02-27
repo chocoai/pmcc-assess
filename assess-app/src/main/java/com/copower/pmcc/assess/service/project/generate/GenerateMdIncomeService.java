@@ -53,6 +53,7 @@ public class GenerateMdIncomeService {
     private Integer projectId;
     private Integer areaId;
     private Integer baseReportTemplateId;
+    private SchemeInfo schemeInfo;
 
     private MdIncomeService mdIncomeService;
     private CommonService commonService;
@@ -1338,9 +1339,13 @@ public class GenerateMdIncomeService {
         return str;
     }
 
+    public SchemeInfo getSchemeInfo() {
+        return schemeInfo;
+    }
 
-    public GenerateMdIncomeService(Integer miId, Integer projectId, Integer areaId) {
-        this.miId = miId;
+    public GenerateMdIncomeService(SchemeInfo schemeInfo, Integer projectId, Integer areaId) {
+        this.miId = schemeInfo.getMethodDataId();
+        this.schemeInfo = schemeInfo;
         this.projectId = projectId;
         this.areaId = areaId;
         this.mdIncomeService = SpringContextUtils.getBean(MdIncomeService.class);
