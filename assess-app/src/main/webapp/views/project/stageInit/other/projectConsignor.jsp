@@ -52,8 +52,7 @@
                     <div class="col-sm-3">
                         <input type="text" name="csSociologyCode"
                                value="${projectInfo.consignorVo.csSociologyCode}"
-                               placeholder="社会统一信用代码" class="form-control" data-rule-number='true' name="number"
-                               required="required">
+                               placeholder="社会统一信用代码" class="form-control"  name="number" required="required">
                     </div>
                 </div>
             </div>
