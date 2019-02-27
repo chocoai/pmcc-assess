@@ -107,12 +107,12 @@
                 if (commonDeclareApplyModel.isNotBlank(id)) {
                     AssessCommon.getDataDicInfo(id, function (data) {
                         if (commonDeclareApplyModel.isNotBlank(data)) {
-                            text = location + "不动产权证" + data.name + "第" + number + "号";
+                            text = location + "不动产权" + data.name + "第" + number + "号";
                             engine.find("input[name='certName']").val(text);
                         }
                     });
                 } else {
-                    text = location + "不动产权证" + id + "第" + number + "号";
+                    text = location + "不动产权" + id + "第" + number + "号";
                     engine.find("input[name='certName']").val(text);
                 }
             }
