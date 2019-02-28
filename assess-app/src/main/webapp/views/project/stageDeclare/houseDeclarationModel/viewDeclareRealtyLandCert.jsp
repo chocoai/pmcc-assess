@@ -85,7 +85,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
-                                            上传土地证附件<span class="symbol required"></span>
+                                            上传土地证附件
                                         </label>
                                         <div class="col-sm-5">
                                             <input id="declareRealtyLandCertFileId"

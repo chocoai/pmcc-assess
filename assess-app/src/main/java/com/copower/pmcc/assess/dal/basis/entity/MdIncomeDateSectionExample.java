@@ -416,52 +416,52 @@ public class MdIncomeDateSectionExample {
             return (Criteria) this;
         }
 
-        public Criteria andYearCountEqualTo(Integer value) {
+        public Criteria andYearCountEqualTo(BigDecimal value) {
             addCriterion("year_count =", value, "yearCount");
             return (Criteria) this;
         }
 
-        public Criteria andYearCountNotEqualTo(Integer value) {
+        public Criteria andYearCountNotEqualTo(BigDecimal value) {
             addCriterion("year_count <>", value, "yearCount");
             return (Criteria) this;
         }
 
-        public Criteria andYearCountGreaterThan(Integer value) {
+        public Criteria andYearCountGreaterThan(BigDecimal value) {
             addCriterion("year_count >", value, "yearCount");
             return (Criteria) this;
         }
 
-        public Criteria andYearCountGreaterThanOrEqualTo(Integer value) {
+        public Criteria andYearCountGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("year_count >=", value, "yearCount");
             return (Criteria) this;
         }
 
-        public Criteria andYearCountLessThan(Integer value) {
+        public Criteria andYearCountLessThan(BigDecimal value) {
             addCriterion("year_count <", value, "yearCount");
             return (Criteria) this;
         }
 
-        public Criteria andYearCountLessThanOrEqualTo(Integer value) {
+        public Criteria andYearCountLessThanOrEqualTo(BigDecimal value) {
             addCriterion("year_count <=", value, "yearCount");
             return (Criteria) this;
         }
 
-        public Criteria andYearCountIn(List<Integer> values) {
+        public Criteria andYearCountIn(List<BigDecimal> values) {
             addCriterion("year_count in", values, "yearCount");
             return (Criteria) this;
         }
 
-        public Criteria andYearCountNotIn(List<Integer> values) {
+        public Criteria andYearCountNotIn(List<BigDecimal> values) {
             addCriterion("year_count not in", values, "yearCount");
             return (Criteria) this;
         }
 
-        public Criteria andYearCountBetween(Integer value1, Integer value2) {
+        public Criteria andYearCountBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("year_count between", value1, value2, "yearCount");
             return (Criteria) this;
         }
 
-        public Criteria andYearCountNotBetween(Integer value1, Integer value2) {
+        public Criteria andYearCountNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("year_count not between", value1, value2, "yearCount");
             return (Criteria) this;
         }

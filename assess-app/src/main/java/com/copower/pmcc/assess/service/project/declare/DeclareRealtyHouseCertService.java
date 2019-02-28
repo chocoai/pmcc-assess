@@ -40,7 +40,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -346,14 +345,11 @@ public class DeclareRealtyHouseCertService {
         }
         DeclareRealtyHouseCertVo vo = new DeclareRealtyHouseCertVo();
         BeanUtils.copyProperties(declareRealtyHouseCert, vo);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        vo.setUseEndDateFmt(sdf.format(declareRealtyHouseCert.getUseEndDate()));
-        vo.setUseStartDateFmt(sdf.format(declareRealtyHouseCert.getUseStartDate()));
         if (NumberUtils.isNumber(declareRealtyHouseCert.getPlanningUse())) {
-            vo.setPlanningUseName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyHouseCert.getPlanningUse())));
+            vo.setPlanningUseName(baseDataDicService.getNameById(declareRealtyHouseCert.getPlanningUse()));
         }
         if (NumberUtils.isNumber(declareRealtyHouseCert.getType())) {
-            vo.setTypeName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyHouseCert.getType())));
+            vo.setTypeName(baseDataDicService.getNameById(declareRealtyHouseCert.getType()));
         }
         if (StringUtils.isNotBlank(declareRealtyHouseCert.getProvince())) {
             if (NumberUtils.isNumber(declareRealtyHouseCert.getProvince())) {
@@ -423,6 +419,8 @@ public class DeclareRealtyHouseCertService {
             declareRecord.setRoomNumber(oo.getRoomNumber());
             declareRecord.setCertUse(baseDataDicService.getNameById(oo.getPlanningUse()));
             declareRecord.setFloorArea(oo.getEvidenceArea());
+            declareRecord.setLandUseEndDate(oo.getUseEndDate());
+            declareRecord.setHousingStructure(oo.getHousingStructure());
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
             declareRecord.setPublicSituation(baseDataDicService.getNameById(oo.getPublicSituation()));
             declareRecord.setCreator(declareApply.getCreator());
@@ -430,7 +428,7 @@ public class DeclareRealtyHouseCertService {
             DeclareRealtyLandCert realtyLandCert = declareRealtyLandCertDao.getDeclareRealtyLandCertById(oo.getPid());
             if (realtyLandCert != null) {
                 declareRecord.setLandCertUse(baseDataDicService.getNameById(realtyLandCert.getPurpose()));
-                declareRecord.setLandUseEndDate(realtyLandCert.getTerminationDate());
+                declareRecord.setUseRightType(baseDataDicService.getNameById(realtyLandCert.getUseRightType()));
             }
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);

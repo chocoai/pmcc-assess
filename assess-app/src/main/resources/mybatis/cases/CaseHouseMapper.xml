@@ -6,7 +6,7 @@
     <result column="unit_id" property="unitId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
-    <result column="floor" property="floor" jdbcType="INTEGER" />
+    <result column="floor" property="floor" jdbcType="VARCHAR" />
     <result column="floor_desc" property="floorDesc" jdbcType="VARCHAR" />
     <result column="huxing_name" property="huxingName" jdbcType="VARCHAR" />
     <result column="new_huxing_name" property="newHuxingName" jdbcType="VARCHAR" />
@@ -128,7 +128,7 @@
       version, creator, gmt_created, 
       gmt_modified)
     values (#{unitId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{houseNumber,jdbcType=VARCHAR}, 
-      #{floor,jdbcType=INTEGER}, #{floorDesc,jdbcType=VARCHAR}, #{huxingName,jdbcType=VARCHAR}, 
+      #{floor,jdbcType=VARCHAR}, #{floorDesc,jdbcType=VARCHAR}, #{huxingName,jdbcType=VARCHAR}, 
       #{newHuxingName,jdbcType=VARCHAR}, #{certUse,jdbcType=INTEGER}, #{practicalUse,jdbcType=INTEGER}, 
       #{orientation,jdbcType=INTEGER}, #{area,jdbcType=DECIMAL}, #{rightInterestsRestriction,jdbcType=VARCHAR}, 
       #{useEnvironment,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{caseDate,jdbcType=TIMESTAMP}, 
@@ -210,7 +210,7 @@
         #{houseNumber,jdbcType=VARCHAR},
       </if>
       <if test="floor != null" >
-        #{floor,jdbcType=INTEGER},
+        #{floor,jdbcType=VARCHAR},
       </if>
       <if test="floorDesc != null" >
         #{floorDesc,jdbcType=VARCHAR},
@@ -281,7 +281,7 @@
         house_number = #{record.houseNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.floor != null" >
-        floor = #{record.floor,jdbcType=INTEGER},
+        floor = #{record.floor,jdbcType=VARCHAR},
       </if>
       <if test="record.floorDesc != null" >
         floor_desc = #{record.floorDesc,jdbcType=VARCHAR},
@@ -339,7 +339,7 @@
       unit_id = #{record.unitId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=INTEGER},
       house_number = #{record.houseNumber,jdbcType=VARCHAR},
-      floor = #{record.floor,jdbcType=INTEGER},
+      floor = #{record.floor,jdbcType=VARCHAR},
       floor_desc = #{record.floorDesc,jdbcType=VARCHAR},
       huxing_name = #{record.huxingName,jdbcType=VARCHAR},
       new_huxing_name = #{record.newHuxingName,jdbcType=VARCHAR},
@@ -372,7 +372,7 @@
         house_number = #{houseNumber,jdbcType=VARCHAR},
       </if>
       <if test="floor != null" >
-        floor = #{floor,jdbcType=INTEGER},
+        floor = #{floor,jdbcType=VARCHAR},
       </if>
       <if test="floorDesc != null" >
         floor_desc = #{floorDesc,jdbcType=VARCHAR},
@@ -427,7 +427,7 @@
     set unit_id = #{unitId,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
       house_number = #{houseNumber,jdbcType=VARCHAR},
-      floor = #{floor,jdbcType=INTEGER},
+      floor = #{floor,jdbcType=VARCHAR},
       floor_desc = #{floorDesc,jdbcType=VARCHAR},
       huxing_name = #{huxingName,jdbcType=VARCHAR},
       new_huxing_name = #{newHuxingName,jdbcType=VARCHAR},

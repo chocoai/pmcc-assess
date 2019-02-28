@@ -1606,6 +1606,146 @@ public class DeclareRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andUseRightTypeIsNull() {
+            addCriterion("use_right_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseRightTypeIsNotNull() {
+            addCriterion("use_right_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseRightTypeEqualTo(String value) {
+            addCriterion("use_right_type =", value, "useRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseRightTypeNotEqualTo(String value) {
+            addCriterion("use_right_type <>", value, "useRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseRightTypeGreaterThan(String value) {
+            addCriterion("use_right_type >", value, "useRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseRightTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("use_right_type >=", value, "useRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseRightTypeLessThan(String value) {
+            addCriterion("use_right_type <", value, "useRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseRightTypeLessThanOrEqualTo(String value) {
+            addCriterion("use_right_type <=", value, "useRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseRightTypeLike(String value) {
+            addCriterion("use_right_type like", value, "useRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseRightTypeNotLike(String value) {
+            addCriterion("use_right_type not like", value, "useRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseRightTypeIn(List<String> values) {
+            addCriterion("use_right_type in", values, "useRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseRightTypeNotIn(List<String> values) {
+            addCriterion("use_right_type not in", values, "useRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseRightTypeBetween(String value1, String value2) {
+            addCriterion("use_right_type between", value1, value2, "useRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseRightTypeNotBetween(String value1, String value2) {
+            addCriterion("use_right_type not between", value1, value2, "useRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureIsNull() {
+            addCriterion("housing_structure is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureIsNotNull() {
+            addCriterion("housing_structure is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureEqualTo(String value) {
+            addCriterion("housing_structure =", value, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureNotEqualTo(String value) {
+            addCriterion("housing_structure <>", value, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureGreaterThan(String value) {
+            addCriterion("housing_structure >", value, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureGreaterThanOrEqualTo(String value) {
+            addCriterion("housing_structure >=", value, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureLessThan(String value) {
+            addCriterion("housing_structure <", value, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureLessThanOrEqualTo(String value) {
+            addCriterion("housing_structure <=", value, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureLike(String value) {
+            addCriterion("housing_structure like", value, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureNotLike(String value) {
+            addCriterion("housing_structure not like", value, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureIn(List<String> values) {
+            addCriterion("housing_structure in", values, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureNotIn(List<String> values) {
+            addCriterion("housing_structure not in", values, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureBetween(String value1, String value2) {
+            addCriterion("housing_structure between", value1, value2, "housingStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousingStructureNotBetween(String value1, String value2) {
+            addCriterion("housing_structure not between", value1, value2, "housingStructure");
+            return (Criteria) this;
+        }
+
         public Criteria andAreaGroupIdIsNull() {
             addCriterion("area_group_id is null");
             return (Criteria) this;

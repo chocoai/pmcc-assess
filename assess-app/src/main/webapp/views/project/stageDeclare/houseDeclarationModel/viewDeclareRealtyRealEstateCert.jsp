@@ -70,7 +70,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
-                                            上传不动产证<span class="symbol required"></span>
+                                            上传不动产证
                                         </label>
                                         <div class="col-sm-5">
                                             <input id="declareRealtyRealEstateCertNewFileId"

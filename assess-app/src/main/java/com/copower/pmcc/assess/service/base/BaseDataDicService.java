@@ -332,7 +332,7 @@ public class BaseDataDicService {
      * @return
      */
     public String getNameById(Integer id) {
-        if (id == null) return "";
+        if (id == null || id <= 0) return "";
         BaseDataDic baseDataDic = this.getCacheDataDicById(id);
         if (baseDataDic == null) return "";
         return baseDataDic.getName();
@@ -362,18 +362,19 @@ public class BaseDataDicService {
 
     /**
      * 获取集合中对应名称
+     *
      * @param dataDicList
      * @param idString
      * @return
      */
-    public String getDataDicName(List<BaseDataDic> dataDicList,String idString){
+    public String getDataDicName(List<BaseDataDic> dataDicList, String idString) {
         StringBuilder result = new StringBuilder();
         if (StringUtils.isNotBlank(idString)) {
             String s = StringUtils.strip(idString, ",");
             List<Integer> integerList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(s));
             for (Integer integer : integerList) {
                 for (BaseDataDic baseDataDic : dataDicList) {
-                    if (integer.equals(baseDataDic.getId())){
+                    if (integer.equals(baseDataDic.getId())) {
                         result.append(baseDataDic.getName()).append(",");
                     }
                 }

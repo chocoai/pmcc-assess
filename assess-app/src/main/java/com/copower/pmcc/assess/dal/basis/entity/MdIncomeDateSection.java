@@ -14,7 +14,7 @@ public class MdIncomeDateSection {
 
     private Date endDate;
 
-    private Integer yearCount;
+    private BigDecimal yearCount;
 
     private BigDecimal incomeTotal;
 
@@ -80,11 +80,11 @@ public class MdIncomeDateSection {
         this.endDate = endDate;
     }
 
-    public Integer getYearCount() {
+    public BigDecimal getYearCount() {
         return yearCount;
     }
 
-    public void setYearCount(Integer yearCount) {
+    public void setYearCount(BigDecimal yearCount) {
         this.yearCount = yearCount;
     }
 

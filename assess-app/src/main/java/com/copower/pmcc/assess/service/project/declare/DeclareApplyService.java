@@ -7,6 +7,7 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by kings on 2018-5-10.
@@ -57,6 +58,7 @@ public class DeclareApplyService {
      * 数据写入到申报记录表中
      * @param declareApply
      */
+    @Transactional(rollbackFor = Exception.class)
     public void writeToDeclareRecord(DeclareApply declareApply){
         declareBuildEngineeringService.eventWriteDeclareApply(declareApply);
         declareBuildEquipmentInstallService.eventWriteDeclareApply(declareApply);

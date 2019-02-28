@@ -462,7 +462,7 @@ public class MdIncomeService {
         MdIncomeDateSection incomeDateSection = mdIncomeDateSectionDao.getDateSectionById(mdIncomeForecast.getSectionId());
         BigDecimal preYearAmount = null;//上一年金额
         BigDecimal totalAmount = new BigDecimal("0");//总金额
-        for (int i = 1; i <= incomeDateSection.getYearCount(); i++) {
+        for (int i = 1; i <= incomeDateSection.getYearCount().intValue(); i++) {
             MdIncomeForecastYear mdIncomeForecastYear = new MdIncomeForecastYear();
             mdIncomeForecastYear.setForecastId(mdIncomeForecast.getId());
             mdIncomeForecastYear.setType(mdIncomeForecast.getType());

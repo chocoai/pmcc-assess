@@ -48,6 +48,10 @@ public class DeclareRecord {
 
     private BigDecimal floorArea;
 
+    private String useRightType;
+
+    private String housingStructure;
+
     private Integer areaGroupId;
 
     private Date houseUseEndDate;
@@ -244,6 +248,22 @@ public class DeclareRecord {
 
     public void setFloorArea(BigDecimal floorArea) {
         this.floorArea = floorArea;
+    }
+
+    public String getUseRightType() {
+        return useRightType;
+    }
+
+    public void setUseRightType(String useRightType) {
+        this.useRightType = useRightType == null ? null : useRightType.trim();
+    }
+
+    public String getHousingStructure() {
+        return housingStructure;
+    }
+
+    public void setHousingStructure(String housingStructure) {
+        this.housingStructure = housingStructure == null ? null : housingStructure.trim();
     }
 
     public Integer getAreaGroupId() {

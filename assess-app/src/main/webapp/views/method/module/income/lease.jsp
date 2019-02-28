@@ -127,7 +127,7 @@
                             </label>
                             <div class="col-sm-4">
                                 <div class="input-group">
-                                    <input type="text" name="rentalIncome" placeholder="月租金收入" data-rule-digits="true"
+                                    <input type="text" name="rentalIncome" placeholder="月租金收入" data-rule-number="true"
                                            class="form-control" required="required">
                                     <span class="input-group-btn">
                                         <input type="button" class="btn btn-primary" value="市场比较法"
@@ -174,7 +174,7 @@
                                 押金<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="deposit" data-rule-digits="true" placeholder="押金"
+                                <input type="text" name="deposit" data-rule-number="true" placeholder="押金"
                                      onblur="lease.computeOtherIncome(this);"  class="form-control" required="required">
                             </div>
                         </div>

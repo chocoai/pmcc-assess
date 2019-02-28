@@ -366,52 +366,62 @@ public class CaseHouseExample {
             return (Criteria) this;
         }
 
-        public Criteria andFloorEqualTo(Integer value) {
+        public Criteria andFloorEqualTo(String value) {
             addCriterion("floor =", value, "floor");
             return (Criteria) this;
         }
 
-        public Criteria andFloorNotEqualTo(Integer value) {
+        public Criteria andFloorNotEqualTo(String value) {
             addCriterion("floor <>", value, "floor");
             return (Criteria) this;
         }
 
-        public Criteria andFloorGreaterThan(Integer value) {
+        public Criteria andFloorGreaterThan(String value) {
             addCriterion("floor >", value, "floor");
             return (Criteria) this;
         }
 
-        public Criteria andFloorGreaterThanOrEqualTo(Integer value) {
+        public Criteria andFloorGreaterThanOrEqualTo(String value) {
             addCriterion("floor >=", value, "floor");
             return (Criteria) this;
         }
 
-        public Criteria andFloorLessThan(Integer value) {
+        public Criteria andFloorLessThan(String value) {
             addCriterion("floor <", value, "floor");
             return (Criteria) this;
         }
 
-        public Criteria andFloorLessThanOrEqualTo(Integer value) {
+        public Criteria andFloorLessThanOrEqualTo(String value) {
             addCriterion("floor <=", value, "floor");
             return (Criteria) this;
         }
 
-        public Criteria andFloorIn(List<Integer> values) {
+        public Criteria andFloorLike(String value) {
+            addCriterion("floor like", value, "floor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorNotLike(String value) {
+            addCriterion("floor not like", value, "floor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorIn(List<String> values) {
             addCriterion("floor in", values, "floor");
             return (Criteria) this;
         }
 
-        public Criteria andFloorNotIn(List<Integer> values) {
+        public Criteria andFloorNotIn(List<String> values) {
             addCriterion("floor not in", values, "floor");
             return (Criteria) this;
         }
 
-        public Criteria andFloorBetween(Integer value1, Integer value2) {
+        public Criteria andFloorBetween(String value1, String value2) {
             addCriterion("floor between", value1, value2, "floor");
             return (Criteria) this;
         }
 
-        public Criteria andFloorNotBetween(Integer value1, Integer value2) {
+        public Criteria andFloorNotBetween(String value1, String value2) {
             addCriterion("floor not between", value1, value2, "floor");
             return (Criteria) this;
         }

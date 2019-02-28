@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,12 +50,14 @@ public class MdIncomeDateSectionService {
      */
     @Transactional
     public void saveDateSection(MdIncomeDateSection mdIncomeDateSection) {
+        int diffDays = DateUtils.diffDate(mdIncomeDateSection.getEndDate(), mdIncomeDateSection.getBeginDate());
+        BigDecimal yearCount = new BigDecimal(diffDays).divide(new BigDecimal(DateUtils.DAYS_PER_YEAR), 2, BigDecimal.ROUND_HALF_UP);
         if (mdIncomeDateSection.getId() != null && mdIncomeDateSection.getId() > 0) {
-            mdIncomeDateSection.setYearCount(DateUtils.diffDate(mdIncomeDateSection.getEndDate(), mdIncomeDateSection.getBeginDate()) / DateUtils.DAYS_PER_YEAR);
+            mdIncomeDateSection.setYearCount(yearCount);
             mdIncomeDateSectionDao.updateDateSection(mdIncomeDateSection);
         } else {
             mdIncomeDateSection.setCreator(commonService.thisUserAccount());
-            mdIncomeDateSection.setYearCount(DateUtils.diffDate(mdIncomeDateSection.getEndDate(), mdIncomeDateSection.getBeginDate()) / DateUtils.DAYS_PER_YEAR);
+            mdIncomeDateSection.setYearCount(yearCount);
             mdIncomeDateSectionDao.addDateSection(mdIncomeDateSection);
 
             if (mdIncomeDateSection.getOperationMode().equals(MethodIncomeOperationModeEnum.PROPRIETARY.getId())) {
@@ -153,7 +156,7 @@ public class MdIncomeDateSectionService {
         return vo;
     }
 
-    public List<MdIncomeDateSection> getMdIncomeDateSectionList(MdIncomeDateSection mdIncomeDateSection){
+    public List<MdIncomeDateSection> getMdIncomeDateSectionList(MdIncomeDateSection mdIncomeDateSection) {
         List<MdIncomeDateSection> sectionList = mdIncomeDateSectionDao.getDateSectionList(mdIncomeDateSection);
         return sectionList;
     }

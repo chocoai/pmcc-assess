@@ -81,7 +81,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
-                                            上传房产证<span class="symbol required"></span>
+                                            上传房产证
                                         </label>
                                         <div class="col-sm-5">
                                             <input id="declareRealtyHouseCertFileId" name="declareRealtyHouseCertFileId"
@@ -90,11 +90,6 @@
                                             <div id="_declareRealtyHouseCertFileId"></div>
                                         </div>
                                     </div>
-                                    <%--<div class="x-valid">--%>
-                                        <%--<div class="col-sm-5">--%>
-                                            <%--<label class="btn-primary btn" onclick="assessCommonHouse.distinguish()">房产证识别<i class="fa-info fa"></i></label>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
                                 </div>
                             </div>
                         </div>

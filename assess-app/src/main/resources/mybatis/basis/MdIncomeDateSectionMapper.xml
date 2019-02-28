@@ -7,7 +7,7 @@
     <result column="operation_mode" property="operationMode" jdbcType="INTEGER" />
     <result column="begin_date" property="beginDate" jdbcType="TIMESTAMP" />
     <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
-    <result column="year_count" property="yearCount" jdbcType="INTEGER" />
+    <result column="year_count" property="yearCount" jdbcType="DECIMAL" />
     <result column="income_total" property="incomeTotal" jdbcType="DECIMAL" />
     <result column="cost_total" property="costTotal" jdbcType="DECIMAL" />
     <result column="operating_profit" property="operatingProfit" jdbcType="DECIMAL" />
@@ -126,7 +126,7 @@
       creator, gmt_created, gmt_modified
       )
     values (#{incomeId,jdbcType=INTEGER}, #{operationMode,jdbcType=INTEGER}, #{beginDate,jdbcType=TIMESTAMP}, 
-      #{endDate,jdbcType=TIMESTAMP}, #{yearCount,jdbcType=INTEGER}, #{incomeTotal,jdbcType=DECIMAL}, 
+      #{endDate,jdbcType=TIMESTAMP}, #{yearCount,jdbcType=DECIMAL}, #{incomeTotal,jdbcType=DECIMAL}, 
       #{costTotal,jdbcType=DECIMAL}, #{operatingProfit,jdbcType=DECIMAL}, #{netProfit,jdbcType=VARCHAR}, 
       #{rentalGrowthRate,jdbcType=DECIMAL}, #{rentalGrowthRateExplain,jdbcType=VARCHAR}, 
       #{correctionFactor,jdbcType=DECIMAL}, #{presentValueFactor,jdbcType=DECIMAL}, #{incomePrice,jdbcType=DECIMAL}, 
@@ -205,7 +205,7 @@
         #{endDate,jdbcType=TIMESTAMP},
       </if>
       <if test="yearCount != null" >
-        #{yearCount,jdbcType=INTEGER},
+        #{yearCount,jdbcType=DECIMAL},
       </if>
       <if test="incomeTotal != null" >
         #{incomeTotal,jdbcType=DECIMAL},
@@ -270,7 +270,7 @@
         end_date = #{record.endDate,jdbcType=TIMESTAMP},
       </if>
       <if test="record.yearCount != null" >
-        year_count = #{record.yearCount,jdbcType=INTEGER},
+        year_count = #{record.yearCount,jdbcType=DECIMAL},
       </if>
       <if test="record.incomeTotal != null" >
         income_total = #{record.incomeTotal,jdbcType=DECIMAL},
@@ -320,7 +320,7 @@
       operation_mode = #{record.operationMode,jdbcType=INTEGER},
       begin_date = #{record.beginDate,jdbcType=TIMESTAMP},
       end_date = #{record.endDate,jdbcType=TIMESTAMP},
-      year_count = #{record.yearCount,jdbcType=INTEGER},
+      year_count = #{record.yearCount,jdbcType=DECIMAL},
       income_total = #{record.incomeTotal,jdbcType=DECIMAL},
       cost_total = #{record.costTotal,jdbcType=DECIMAL},
       operating_profit = #{record.operatingProfit,jdbcType=DECIMAL},
@@ -353,7 +353,7 @@
         end_date = #{endDate,jdbcType=TIMESTAMP},
       </if>
       <if test="yearCount != null" >
-        year_count = #{yearCount,jdbcType=INTEGER},
+        year_count = #{yearCount,jdbcType=DECIMAL},
       </if>
       <if test="incomeTotal != null" >
         income_total = #{incomeTotal,jdbcType=DECIMAL},
@@ -400,7 +400,7 @@
       operation_mode = #{operationMode,jdbcType=INTEGER},
       begin_date = #{beginDate,jdbcType=TIMESTAMP},
       end_date = #{endDate,jdbcType=TIMESTAMP},
-      year_count = #{yearCount,jdbcType=INTEGER},
+      year_count = #{yearCount,jdbcType=DECIMAL},
       income_total = #{incomeTotal,jdbcType=DECIMAL},
       cost_total = #{costTotal,jdbcType=DECIMAL},
       operating_profit = #{operatingProfit,jdbcType=DECIMAL},

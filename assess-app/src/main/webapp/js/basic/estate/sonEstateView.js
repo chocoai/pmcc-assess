@@ -2320,7 +2320,7 @@ var estateNetwork;
             if (!$("#" + estateNetwork.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(estateNetwork.prototype.config().frm);
+            var data = formParams(estateNetwork.prototype.config().frm,true);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath() + "/basicEstateNetwork/saveAndUpdateBasicEstateNetwork",

@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.dto.output.method;
 
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecast;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Date;
 public class MdIncomeForecastVo extends MdIncomeForecast {
     private Date beginDate;
     private Date endDate;
-    private Integer yearCount;
+    private BigDecimal yearCount;
 
     public Date getBeginDate() {
         return beginDate;
@@ -28,11 +29,11 @@ public class MdIncomeForecastVo extends MdIncomeForecast {
         this.endDate = endDate;
     }
 
-    public Integer getYearCount() {
+    public BigDecimal getYearCount() {
         return yearCount;
     }
 
-    public void setYearCount(Integer yearCount) {
+    public void setYearCount(BigDecimal yearCount) {
         this.yearCount = yearCount;
     }
 }
