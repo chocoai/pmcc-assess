@@ -543,8 +543,8 @@
     //验证登记与实际是否一致，如果不一致需填写相关内容
     function isAgreement(_this) {
         var tr = $(_this).closest('tr');
-        var registration = tr.find('[name^=registration]').val();//登记
-        var actual = tr.find('[name^=actual]').val();//实际
+        var registration = $.trim(tr.find('[name^=registration]').val());//登记
+        var actual = $.trim(tr.find('[name^=actual]').val());//实际
         if (AssessCommon.isNumber(registration) && AssessCommon.isNumber(actual)) {
             registration = parseFloat(registration);
             actual = parseFloat(actual);
