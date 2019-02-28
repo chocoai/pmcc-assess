@@ -1606,6 +1606,66 @@ public class DeclareRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andPracticalAreaIsNull() {
+            addCriterion("practical_area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticalAreaIsNotNull() {
+            addCriterion("practical_area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticalAreaEqualTo(BigDecimal value) {
+            addCriterion("practical_area =", value, "practicalArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticalAreaNotEqualTo(BigDecimal value) {
+            addCriterion("practical_area <>", value, "practicalArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticalAreaGreaterThan(BigDecimal value) {
+            addCriterion("practical_area >", value, "practicalArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticalAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("practical_area >=", value, "practicalArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticalAreaLessThan(BigDecimal value) {
+            addCriterion("practical_area <", value, "practicalArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticalAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("practical_area <=", value, "practicalArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticalAreaIn(List<BigDecimal> values) {
+            addCriterion("practical_area in", values, "practicalArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticalAreaNotIn(List<BigDecimal> values) {
+            addCriterion("practical_area not in", values, "practicalArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticalAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("practical_area between", value1, value2, "practicalArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticalAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("practical_area not between", value1, value2, "practicalArea");
+            return (Criteria) this;
+        }
+
         public Criteria andUseRightTypeIsNull() {
             addCriterion("use_right_type is null");
             return (Criteria) this;

@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -103,25 +104,24 @@ public class SurveyAssetInventoryService extends BaseService {
      * 反写申报记录数据的证载用途与实际用途
      * @param surveyAssetInventory
      */
-    public void writeBackDeclareRecord(SurveyAssetInventory surveyAssetInventory){
+    @Transactional(rollbackFor = Exception.class)
+    public void writeBackDeclareRecord(SurveyAssetInventory surveyAssetInventory) throws BusinessException {
         if (surveyAssetInventory != null) {
             List<SurveyAssetInventoryContent> contentList = surveyAssetInventoryContentService.getContentListByPlanDetailsId(surveyAssetInventory.getPlanDetailId());
-            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_USE);
-            if (CollectionUtils.isNotEmpty(contentList) && baseDataDic != null) {
+            if (CollectionUtils.isNotEmpty(contentList)){
+                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(surveyAssetInventory.getDeclareRecordId());
+                BaseDataDic useDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_USE);
+                BaseDataDic areaDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_AREA);
                 for (SurveyAssetInventoryContent content : contentList) {
-                    if (content.getInventoryContent().equals(baseDataDic.getId())) {
-                        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(surveyAssetInventory.getDeclareRecordId());
-                        if (declareRecord != null) {
-                            declareRecord.setCertUse(content.getRegistration());
-                            declareRecord.setPracticalUse(content.getActual());
-                            try {
-                                declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
-                            } catch (BusinessException e) {
-                                log.error(e.getMessage(), e);
-                            }
-                        }
+                    if(content.getInventoryContent().equals(useDic.getId())){
+                        declareRecord.setCertUse(content.getRegistration());
+                        declareRecord.setPracticalUse(content.getActual());
+                    }
+                    if(content.getInventoryContent().equals(areaDic.getId())&&StringUtils.isNotBlank(content.getActual())){
+                        declareRecord.setPracticalArea(new BigDecimal(content.getActual()));
                     }
                 }
+                declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
             }
         }
     }

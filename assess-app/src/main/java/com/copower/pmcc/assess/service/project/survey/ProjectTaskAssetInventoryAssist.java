@@ -73,6 +73,11 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
                             surveyAssetInventoryContent.setRegistration(declareRecord.getCertUse());
                         }
                         break;
+                    case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_STRUCTURE://登记结构与实际结构
+                        if (StringUtils.isNotBlank(declareRecord.getHousingStructure())) {
+                            surveyAssetInventoryContent.setRegistration(declareRecord.getHousingStructure());
+                        }
+                        break;
                     case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_AREA://登记面积与实际面积
                         if (declareRecord.getFloorArea() != null)
                             surveyAssetInventoryContent.setRegistration(String.valueOf(declareRecord.getFloorArea()));
@@ -140,7 +145,7 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
             SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByPlanDetailsId(projectPlanDetails.getId());
             surveyAssetInventoryService.writeBackDeclareRecord(surveyAssetInventory);
         } else {
-            bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, DeclareRealtyEstateCertEvent.class.getSimpleName());//修改监听器
+            bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveyAssetInventoryEvent.class.getSimpleName());//修改监听器
         }
     }
 

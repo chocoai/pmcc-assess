@@ -151,7 +151,7 @@
                                     </label>
                                     <div class="col-sm-2">
                                         <input type="text" class="form-control" name="valueDefinitionDesc"
-                                               placeholder="价值类型描述" value="${item.valueConnotationDesc}">
+                                               placeholder="价值类型描述" value="${item.valueDefinitionDesc}">
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -687,7 +687,6 @@
         <td>
             <div class="x-valid">
                 <select class="form-control" required data-name="bestUse" name="bestUse{id}">
-                    <option value="">--请选择--</option>
                     <c:forEach items="${bestUseList}" var="bestUse">
                         <option value="${bestUse.id}">${bestUse.name}</option>
                     </c:forEach>
@@ -981,7 +980,9 @@
                         //设值
                         var lastTr = tbody.find("tr:last");
                         lastTr.find('[data-name="setUse"]').val(item.setUse);
-                        lastTr.find('[data-name="bestUse"]').val(item.bestUse);
+                        if(item.bestUse){
+                            lastTr.find('[data-name="bestUse"]').val(item.bestUse);
+                        }
                         lastTr.find('td:last').find(item.bisSplit ? '.judge-split' : '.judge-remove').remove();
                         lastTr.find('td:last').find(item.bisMerge ? '.judge-merge' : '.judge-merge-cancel').remove();
                         if (item.bisSetFunction) {

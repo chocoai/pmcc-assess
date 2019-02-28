@@ -39,7 +39,7 @@ public class DeclareRecordDao {
     public List<DeclareRecord> getDeclareRecordListByProjectId(Integer projectId) {
         DeclareRecordExample example = new DeclareRecordExample();
         example.createCriteria().andProjectIdEqualTo(projectId);
-        example.setOrderByClause("seat");
+        example.setOrderByClause("id");
         return mapper.selectByExample(example);
     }
 

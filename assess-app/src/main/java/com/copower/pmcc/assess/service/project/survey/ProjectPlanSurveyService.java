@@ -12,7 +12,6 @@ import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -68,7 +67,7 @@ public class ProjectPlanSurveyService {
             projectPlanDetail.setPid(0);
             projectPlanDetail.setFirstPid(0);
             projectPlanDetail.setProjectPhaseId(caseProjectPhase.getId());
-            projectPlanDetail.setSorting(0);
+            projectPlanDetail.setSorting(10000);
             projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetail);
         }
         int i = 1;

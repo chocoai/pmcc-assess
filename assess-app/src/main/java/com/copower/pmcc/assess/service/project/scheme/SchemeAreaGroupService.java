@@ -121,6 +121,7 @@ public class SchemeAreaGroupService {
      * @param projectId
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     public List<SchemeAreaGroupVo> getSchemeAreaGroup(Integer projectId) {
         List<SchemeAreaGroup> voList = this.getAreaGroupList(projectId);
         if (CollectionUtils.isNotEmpty(voList))
@@ -138,7 +139,7 @@ public class SchemeAreaGroupService {
                 areaGroup.setEntrustPurpose(projectInfo.getEntrustPurpose());
                 areaGroup.setRemarkEntrustPurpose(projectInfo.getRemarkEntrustPurpose());
                 areaGroup.setValueDefinition(projectInfo.getValueType());
-                areaGroup.setRemarkEntrustPurpose(projectInfo.getRemarkEntrustPurpose());
+                areaGroup.setValueDefinitionDesc(projectInfo.getRemarkValueType());
                 areaGroup.setPid(0);
                 areaGroup.setCreator(commonService.thisUserAccount());
                 this.add(areaGroup);
@@ -163,6 +164,7 @@ public class SchemeAreaGroupService {
                         schemeJudgeObject.setSeat(declareRecord.getSeat());
                         schemeJudgeObject.setCertUse(declareRecord.getCertUse());
                         schemeJudgeObject.setPracticalUse(declareRecord.getPracticalUse());
+                        schemeJudgeObject.setEvaluationArea(declareRecord.getPracticalArea());
                         //获取到房屋中的出租占用情况描述
                         BasicHouse basicHouse = schemeJudgeObjectService.getBasicHouseByDeclareId(declareRecord.getId());
                         if (basicHouse != null) {
