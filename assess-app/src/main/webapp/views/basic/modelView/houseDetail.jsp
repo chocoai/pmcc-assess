@@ -72,7 +72,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">朝向</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicHouse.orientation}</label>
+                    <label class="form-control">${basicHouse.orientationName}</label>
                 </div>
             </div>
             <div class="x-valid">
