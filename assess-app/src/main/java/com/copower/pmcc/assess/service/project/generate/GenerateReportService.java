@@ -1525,6 +1525,7 @@ public class GenerateReportService {
         }
         list.add(preMapSet);
         list.add(mapSet);
+        System.gc();
         return list;
     }
 
