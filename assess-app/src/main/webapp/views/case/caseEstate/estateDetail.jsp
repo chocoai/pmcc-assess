@@ -429,6 +429,11 @@
             <%@include file="/views/case/caseEstate/caseMatchingMarket.jsp" %>
         </div>
 
+        <!-- 医养条件 -->
+        <div class="medical" style="display: ${hasMatchingMedicalData?'block':'none'};">
+            <%@include file="/views/case/caseEstate/caseMatchingMedical.jsp" %>
+        </div>
+
         <!-- 休闲娱乐 -->
         <div class="matchingRecreation" style="display: ${hasMatchingLeisurePlaceRecreation?'block':'none'};">
             <%@include file="/views/case/caseEstate/caseMatchingRecreation.jsp" %>
@@ -439,9 +444,9 @@
             <%@include file="/views/case/caseEstate/caseMatchingRestaurant.jsp" %>
         </div>
 
-        <!-- 医养条件 -->
-        <div class="medical" style="display: ${hasMatchingMedicalData?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseMatchingMedical.jsp" %>
+        <!-- 地铁 -->
+        <div class="metro" style="display: ${hasMatchingTrafficMetro?'block':'none'};">
+            <%@include file="/views/case/caseEstate/caseMatchingMetro.jsp" %>
         </div>
 
         <!-- 公交 -->
@@ -449,15 +454,9 @@
             <%@include file="/views/case/caseEstate/caseMatchingTransit.jsp" %>
         </div>
 
-        <!-- 地铁 -->
-        <div class="metro" style="display: ${hasMatchingTrafficMetro?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseMatchingMetro.jsp" %>
-        </div>
 
-        <!-- 交通枢纽 -->
-        <div class="trafficHub" style="display: ${hasMatchingTrafficTrafficHub?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseMatchingTrafficHub.jsp" %>
-        </div>
+
+
 
         <!-- 主干道 -->
         <div class="mainroad" style="display: ${hasMatchingTrafficMainRoad?'block':'none'};">
@@ -467,6 +466,11 @@
         <!-- 主要转换 -->
         <div class="mainconversion" style="display: ${hasMatchingTrafficMainConversion?'block':'none'};">
             <%@include file="/views/case/caseEstate/caseMatchingMainConversion.jsp" %>
+        </div>
+
+        <!-- 交通枢纽 -->
+        <div class="trafficHub" style="display: ${hasMatchingTrafficTrafficHub?'block':'none'};">
+            <%@include file="/views/case/caseEstate/caseMatchingTrafficHub.jsp" %>
         </div>
 
         <!-- 供水 -->

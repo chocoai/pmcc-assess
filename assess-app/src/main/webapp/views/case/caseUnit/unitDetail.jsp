@@ -37,11 +37,6 @@
             </div>
         </form>
 
-        <!-- 楼栋内装信息	 -->
-        <div style="display: ${hasUnitDecorateData?'block':'none'};">
-            <%@include file="/views/case/caseUnit/caseUnitDecorate.jsp" %>
-        </div>
-
         <!-- 户型信息 -->
         <div style="display: ${hasUnitHuxingData?'block':'none'};">
             <%@include file="/views/case/caseUnit/caseUnitHuxing.jsp" %>
@@ -50,6 +45,11 @@
         <!-- 电梯信息 -->
         <div style="display: ${hasUnitElevatorData?'block':'none'};">
             <%@include file="/views/case/caseUnit/caseUnitElevator.jsp" %>
+        </div>
+
+        <!-- 楼栋内装信息	 -->
+        <div style="display: ${hasUnitDecorateData?'block':'none'};">
+            <%@include file="/views/case/caseUnit/caseUnitDecorate.jsp" %>
         </div>
     </div>
 </div>

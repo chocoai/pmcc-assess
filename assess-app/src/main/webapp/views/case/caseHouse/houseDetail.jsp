@@ -358,19 +358,24 @@
     </div>
 
     <div class="x_content">
-        <!-- 房间 -->
-        <c:if test="${hasHouseRoomData}">
-            <%@include file="/views/case/caseHouse/caseHouseRoom.jsp" %>
-        </c:if>
-
         <!-- 临街 -->
         <c:if test="${hasHouseFaceStreetData}">
             <%@include file="/views/case/caseHouse/caseHouseFaceStreet.jsp" %>
         </c:if>
 
-        <!-- 房屋配套设备设施 -->
-        <c:if test="${hasHouseCorollaryEquipmentData}">
-            <%@include file="/views/case/caseHouse/caseHouseCorollaryEquipment.jsp" %>
+        <!-- 空调情况 -->
+        <c:if test="${hasHouseEquipmentAirConditioner}">
+            <%@include file="/views/case/caseHouse/caseHouseAirConditioner.jsp" %>
+        </c:if>
+
+        <!-- 新风情况 -->
+        <c:if test="${hasHouseEquipmentNewWind}">
+            <%@include file="/views/case/caseHouse/caseHouseNewWind.jsp" %>
+        </c:if>
+
+        <!-- 房屋供暖 -->
+        <c:if test="${hasHouseEquipmentHeating}">
+            <%@include file="/views/case/caseHouse/caseHouseHeating.jsp" %>
         </c:if>
 
         <!-- 电力通讯网络 -->
@@ -383,24 +388,19 @@
             <%@include file="/views/case/caseHouse/caseHouseWater.jsp" %>
         </c:if>
 
+        <!-- 房间 -->
+        <c:if test="${hasHouseRoomData}">
+            <%@include file="/views/case/caseHouse/caseHouseRoom.jsp" %>
+        </c:if>
+
         <!-- 排水 -->
         <c:if test="${hasHouseWaterDrainData}">
             <%@include file="/views/case/caseHouse/caseHouseWaterDrain.jsp" %>
         </c:if>
 
-        <!-- 新风情况 -->
-        <c:if test="${hasHouseEquipmentNewWind}">
-            <%@include file="/views/case/caseHouse/caseHouseNewWind.jsp" %>
-        </c:if>
-
-        <!-- 空调情况 -->
-        <c:if test="${hasHouseEquipmentAirConditioner}">
-            <%@include file="/views/case/caseHouse/caseHouseAirConditioner.jsp" %>
-        </c:if>
-
-        <!-- 房屋供暖 -->
-        <c:if test="${hasHouseEquipmentHeating}">
-            <%@include file="/views/case/caseHouse/caseHouseHeating.jsp" %>
+        <!-- 房屋配套设备设施 -->
+        <c:if test="${hasHouseCorollaryEquipmentData}">
+            <%@include file="/views/case/caseHouse/caseHouseCorollaryEquipment.jsp" %>
         </c:if>
 
         <!-- 房屋完损度 -->
