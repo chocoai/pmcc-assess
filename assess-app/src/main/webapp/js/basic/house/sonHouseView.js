@@ -74,7 +74,7 @@ var houseHeating;
             if (!$("#" + houseHeating.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(houseHeating.prototype.config().frm);
+            var data = formParams(houseHeating.prototype.config().frm,true);
             data.type = houseHeating.prototype.config().type;
             data.houseId = houseCommon.getHouseId();
             $.ajax({
@@ -208,7 +208,7 @@ var houseAirConditioner;
             if (!$("#" + houseAirConditioner.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(houseAirConditioner.prototype.config().frm);
+            var data = formParams(houseAirConditioner.prototype.config().frm,true);
             data.type = houseAirConditioner.prototype.config().type;
             data.houseId = houseCommon.getHouseId();
             $.ajax({
@@ -342,7 +342,7 @@ var houseNewWind;
             if (!$("#" + houseNewWind.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(houseNewWind.prototype.config().frm);
+            var data = formParams(houseNewWind.prototype.config().frm,true);
             data.type = houseNewWind.prototype.config().type;
             data.houseId = houseCommon.getHouseId();
             $.ajax({
@@ -475,7 +475,7 @@ var houseCorollaryEquipment;
             if (!$("#" + houseCorollaryEquipment.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(houseCorollaryEquipment.prototype.config().frm);
+            var data = formParams(houseCorollaryEquipment.prototype.config().frm,true);
             data.houseId = houseCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseCorollaryEquipment/saveAndUpdateBasicHouseCorollaryEquipment",
@@ -638,7 +638,7 @@ var houseFaceStreet;
             if (!$("#" + houseFaceStreet.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(houseFaceStreet.prototype.config().frm);
+            var data = formParams(houseFaceStreet.prototype.config().frm,true);
             data.houseId = houseCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseFaceStreet/saveAndUpdateBasicHouseFaceStreet",
@@ -810,7 +810,7 @@ var houseIntelligent;
             if (!$("#" + houseIntelligent.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(houseIntelligent.prototype.config().frm);
+            var data = formParams(houseIntelligent.prototype.config().frm,true);
             data.houseId = houseCommon.getHouseId();
             var tempArr = [];
             $.each(arr, function (i, n) {
@@ -1074,7 +1074,7 @@ var houseWater;
             if (!$("#" + houseWater.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(houseWater.prototype.config().frm);
+            var data = formParams(houseWater.prototype.config().frm,true);
             data.houseId = houseCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseWater/saveAndUpdateBasicHouseWater",
@@ -1460,7 +1460,7 @@ var houseRoom;
             if (!$("#" + houseRoom.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(houseRoom.prototype.config().frm);
+            var data = formParams(houseRoom.prototype.config().frm,true);
             data.houseId = houseCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseRoom/saveAndUpdateBasicHouseRoom",

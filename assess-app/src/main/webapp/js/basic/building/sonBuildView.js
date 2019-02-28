@@ -77,7 +77,7 @@ var buildingModelView;
                     if (!$("#" + buildingModelView.prototype.config().sonFrm).valid()) {
                         return false;
                     }
-                    var data = formParams(buildingModelView.prototype.config().sonFrm);
+                    var data = formParams(buildingModelView.prototype.config().sonFrm,true);
                     data.buildingId = buildingCommon.getBuildingId();
                     $.ajax({
                         url: getContextPath() + "/basicBuildingOutfit/saveAndUpdateBasicBuildingOutfit",
@@ -194,7 +194,7 @@ var buildingModelView;
                     if (!$("#" + buildingModelView.prototype.config().examineBuildingSurfaceFrm).valid()) {
                         return false;
                     }
-                    var data = formParams(buildingModelView.prototype.config().examineBuildingSurfaceFrm);
+                    var data = formParams(buildingModelView.prototype.config().examineBuildingSurfaceFrm,true);
                     data.buildingId = buildingCommon.getBuildingId();
                     $.ajax({
                         url: getContextPath() + "/basicBuildingSurface/saveAndUpdateBasicBuildingSurface",
@@ -298,7 +298,7 @@ var buildingModelView;
                     if (!$("#" + buildingModelView.prototype.config().examineBuildingMaintenanceFrm).valid()) {
                         return false;
                     }
-                    var data = formParams(buildingModelView.prototype.config().examineBuildingMaintenanceFrm);
+                    var data = formParams(buildingModelView.prototype.config().examineBuildingMaintenanceFrm,true);
                     data.buildingId = buildingCommon.getBuildingId();
                     $.ajax({
                         url: getContextPath() + "/basicBuildingMaintenance/saveAndUpdateBasicBuildingMaintenance",
@@ -412,7 +412,7 @@ var buildingModelView;
                     if (!$("#" + buildingModelView.prototype.config().examineBuildingFunctionFrm).valid()) {
                         return false;
                     }
-                    var data = formParams(buildingModelView.prototype.config().examineBuildingFunctionFrm);
+                    var data = formParams(buildingModelView.prototype.config().examineBuildingFunctionFrm,true);
                     data.buildingId = buildingCommon.getBuildingId();
                     $.ajax({
                         url: getContextPath() + "/basicBuildingFunction/saveAndUpdateBasicBuildingFunction",
