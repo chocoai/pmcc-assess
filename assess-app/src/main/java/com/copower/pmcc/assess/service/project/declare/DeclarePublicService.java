@@ -129,11 +129,11 @@ public class DeclarePublicService {
         }
         String located = PoiUtils.getCellValue(row.getCell(7));
         if (StringUtils.isNotBlank(located)) {
-            String reg = "(?<=区)[.\\s\\S]*?(?=号)";//街道号
+            String reg = "^.*?号";//街道号
             Pattern p = Pattern.compile(reg);
             Matcher m = p.matcher(located);
             while (m.find()) {
-                oo.setStreetNumber(m.group());
+                oo.setStreetNumber(m.group().substring(0,m.group().length()-1));
             }
 
             reg = "(?<=附)(\\d+)";//匹配附后面的数字

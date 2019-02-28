@@ -140,6 +140,7 @@ public class BasicHouseRoomService {
         BasicHouseRoomVo vo = new BasicHouseRoomVo();
         BeanUtils.copyProperties(basicHouseRoom, vo);
         vo.setRoomTypeName(baseDataDicService.getNameById(basicHouseRoom.getRoomType()));
+        vo.setOrientationName(baseDataDicService.getNameById(basicHouseRoom.getOrientation()));
         return vo;
     }
 

@@ -147,32 +147,39 @@
                 }
                 if (!commonDeclareApplyModel.isNotBlank(streetNumber)) {
                     streetNumber = "";
+                } else {
+                    var char = streetNumber.charAt(streetNumber.length - 1)
+                    if (char != "号") {
+                        streetNumber = streetNumber + "号";
+                    }
                 }
                 if (!commonDeclareApplyModel.isNotBlank(attachedNumber)) {
                     attachedNumber = "";
                 } else {
-                    attachedNumber = "附" + attachedNumber;
+                    attachedNumber = "附" + attachedNumber + "号";
                 }
                 if (!commonDeclareApplyModel.isNotBlank(buildingNumber)) {
                     buildingNumber = "";
                 } else {
                     buildingNumber = buildingNumber + "栋";
                 }
-                if (commonDeclareApplyModel.isNotBlank(district)) {
-                    AssessCommon.getAreaById(district, function (data) {
-                        if (!commonDeclareApplyModel.isNotBlank(data)) {
-                            district = "";
-                        } else {
-                            district = data.name;
-                        }
-                        text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                        engine.find("input[name='beLocated']").val(text);
-                    });
-                } else {
-                    district = "";
-                    text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                    engine.find("input[name='beLocated']").val(text);
-                }
+                /* if (commonDeclareApplyModel.isNotBlank(district)) {
+                     AssessCommon.getAreaById(district, function (data) {
+                         if (!commonDeclareApplyModel.isNotBlank(data)) {
+                             district = "";
+                         } else {
+                             district = data.name;
+                         }
+                         text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
+                         engine.find("input[name='beLocated']").val(text);
+                     });
+                 } else {
+                     district = "";
+                     text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
+                     engine.find("input[name='beLocated']").val(text);
+                 }*/
+                text = streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
+                engine.find("input[name='beLocated']").val(text);
             }
         },
         getRealEstateColumn: function () {
@@ -1853,8 +1860,9 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">取得价格</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="取得价格" name="acquisitionPrice" class="form-control" data-rule-maxlength="100"
-                           data-rule-number='true' >
+                    <input type="text" placeholder="取得价格" name="acquisitionPrice" class="form-control"
+                           data-rule-maxlength="100"
+                           data-rule-number='true'>
                 </div>
             </div>
         </div>
@@ -1971,7 +1979,8 @@
                     登记日期
                 </label>
                 <div class="col-sm-3">
-                    <input placeholder="登记日期" name="registrationDate" data-date-format="yyyy-mm-dd" class="form-control date-picker dbdate roomTime" >
+                    <input placeholder="登记日期" name="registrationDate" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime">
                 </div>
             </div>
         </div>
@@ -2270,7 +2279,8 @@
                     登记日期
                 </label>
                 <div class="col-sm-3">
-                    <input placeholder="登记日期" name="registrationDate" data-date-format="yyyy-mm-dd" class="form-control date-picker dbdate roomTime" >
+                    <input placeholder="登记日期" name="registrationDate" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime">
                 </div>
             </div>
         </div>
@@ -2323,7 +2333,8 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="单元(数字)" name="unit" class="form-control"
-                           data-rule-maxlength="100" data-rule-number='true' onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
+                           data-rule-maxlength="100" data-rule-number='true'
+                           onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
                 </div>
             </div>
             <div class="x-valid">
@@ -2331,7 +2342,8 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="楼层(数字)" name="floor" class="form-control"
-                           data-rule-maxlength="100" data-rule-number='true' onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
+                           data-rule-maxlength="100" data-rule-number='true'
+                           onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
                 </div>
             </div>
             <div class="x-valid">
@@ -2399,7 +2411,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="取得价格" name="acquisitionPrice" class="form-control" data-rule-maxlength="100"
-                           data-rule-number='true' >
+                           data-rule-number='true'>
                 </div>
             </div>
         </div>

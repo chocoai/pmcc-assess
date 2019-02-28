@@ -68,7 +68,7 @@ var unitDecorate;
             if (!$("#" + unitDecorate.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(unitDecorate.prototype.config().frm);
+            var data = formParams(unitDecorate.prototype.config().frm,true);
             data.unitId = unitCommon.getUnitId();
             $.ajax({
                 url: getContextPath() + "/basicUnitDecorate/saveAndUpdateBasicUnitDecorate",
@@ -208,7 +208,7 @@ var unitHuxing;
                 return false;
             }
 
-            var data = formParams(unitHuxing.prototype.config().frm);
+            var data = formParams(unitHuxing.prototype.config().frm,true);
             data.unitId = unitCommon.getUnitId();
             data.houseCategory = unitHuxing.prototype.rule("get", data);
             var key = $("#" + unitHuxing.prototype.config().frm).find('select.type').find('option:selected').attr('key');
@@ -472,7 +472,7 @@ var unitElevator;
             if (!$("#" + unitElevator.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(unitElevator.prototype.config().frm);
+            var data = formParams(unitElevator.prototype.config().frm,true);
             data.unitId = unitCommon.getUnitId();
             $.ajax({
                 url: getContextPath() + "/basicUnitElevator/saveAndUpdateBasicUnitElevator",

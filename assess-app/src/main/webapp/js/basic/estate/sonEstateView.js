@@ -76,7 +76,7 @@ var matchingMainConversion;
             if (!$("#" + matchingMainConversion.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(matchingMainConversion.prototype.config().frm);
+            var data = formParams(matchingMainConversion.prototype.config().frm,true);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath() + "/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
@@ -207,7 +207,7 @@ var matchingMainRoad;
             if (!$("#" + matchingMainRoad.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(matchingMainRoad.prototype.config().frm);
+            var data = formParams(matchingMainRoad.prototype.config().frm,true);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath() + "/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
@@ -375,7 +375,7 @@ var matchingMetro;
             if (!$("#" + matchingMetro.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(matchingMetro.prototype.config().frm);
+            var data = formParams(matchingMetro.prototype.config().frm,true);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath() + "/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
@@ -569,7 +569,7 @@ var matchingTrafficHub;//交通枢纽信息
             if (!$("#" + matchingTrafficHub.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(matchingTrafficHub.prototype.config().frm);
+            var data = formParams(matchingTrafficHub.prototype.config().frm,true);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath() + "/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
@@ -741,7 +741,7 @@ var matchingTransit;
             if (!$("#" + matchingTransit.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(matchingTransit.prototype.config().frm);
+            var data = formParams(matchingTransit.prototype.config().frm,true);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath() + "/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
@@ -934,7 +934,7 @@ var matchingMedical;//医疗
             if (!$("#" + matchingMedical.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(matchingMedical.prototype.config().frm);
+            var data = formParams(matchingMedical.prototype.config().frm,true);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath() + "/basicMatchingMedical/saveAndUpdateBasicMatchingMedical",
@@ -1069,7 +1069,7 @@ var matchingMaterial;
             if (!$("#" + matchingMaterial.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(matchingMaterial.prototype.config().frm);
+            var data = formParams(matchingMaterial.prototype.config().frm,true);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath() + "/basicMatchingMaterial/saveAndUpdateBasicMatchingMaterial",
@@ -1244,7 +1244,7 @@ var matchingMarket; //商场
             if (!$("#" + matchingMarket.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(matchingMarket.prototype.config().frm);
+            var data = formParams(matchingMarket.prototype.config().frm,true);
             data.estateId = estateCommon.getEstateId();
             data.type = matchingMarket.prototype.config().type;
             $.ajax({
@@ -1459,7 +1459,7 @@ var matchingRestaurant;//餐饮
             if (!$("#" + matchingRestaurant.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(matchingRestaurant.prototype.config().frm);
+            var data = formParams(matchingRestaurant.prototype.config().frm,true);
             data.estateId = estateCommon.getEstateId();
             data.type = matchingRestaurant.prototype.config().type;
             $.ajax({
@@ -1674,7 +1674,7 @@ var matchingRecreation;//娱乐
             if (!$("#" + matchingRecreation.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(matchingRecreation.prototype.config().frm);
+            var data = formParams(matchingRecreation.prototype.config().frm,true);
             data.estateId = estateCommon.getEstateId();
             data.type = matchingRecreation.prototype.config().type;
             $.ajax({
@@ -1874,7 +1874,7 @@ var matchingFinance;
             if (!$("#" + matchingFinance.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(matchingFinance.prototype.config().frm);
+            var data = formParams(matchingFinance.prototype.config().frm,true);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath() + "/basicMatchingFinance/saveAndUpdateBasicMatchingFinance",
@@ -2013,7 +2013,7 @@ var matchingEnvironment;
             if (!$("#" + matchingEnvironment.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(matchingEnvironment.prototype.config().frm);
+            var data = formParams(matchingEnvironment.prototype.config().frm,true);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath() + "/basicMatchingEnvironment/saveAndUpdateBasicMatchingEnvironment",
@@ -2179,7 +2179,7 @@ var matchingEducation;
             if (!$("#" + matchingEducation.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(matchingEducation.prototype.config().frm);
+            var data = formParams(matchingEducation.prototype.config().frm,true);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath() + "/basicMatchingEducation/saveAndUpdateBasicMatchingEducation",
@@ -2450,7 +2450,7 @@ var estateParking;
             if (!$("#" + estateParking.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(estateParking.prototype.config().frm);
+            var data = formParams(estateParking.prototype.config().frm,true);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath() + "/basicEstateParking/saveAndUpdateBasicEstateParking",
@@ -2609,7 +2609,7 @@ var estateSupplyWater;
             if (!$("#" + estateSupplyWater.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(estateSupplyWater.prototype.config().frm);
+            var data = formParams(estateSupplyWater.prototype.config().frm,true);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath() + "/basicEstateSupply/saveAndUpdateBasicEstateSupply",
@@ -2747,7 +2747,7 @@ var estateDrainWater;
             if (!$("#" + estateDrainWater.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(estateDrainWater.prototype.config().frm);
+            var data = formParams(estateDrainWater.prototype.config().frm,true);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath() + "/basicEstateSupply/saveAndUpdateBasicEstateSupply",
@@ -2885,7 +2885,7 @@ var estateSupplyPower;
             if (!$("#" + estateSupplyPower.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(estateSupplyPower.prototype.config().frm);
+            var data = formParams(estateSupplyPower.prototype.config().frm,true);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath() + "/basicEstateSupply/saveAndUpdateBasicEstateSupply",
@@ -3022,7 +3022,7 @@ var estateSupplyHeating;
             if (!$("#" + estateSupplyHeating.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(estateSupplyHeating.prototype.config().frm);
+            var data = formParams(estateSupplyHeating.prototype.config().frm,true);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath() + "/basicEstateSupply/saveAndUpdateBasicEstateSupply",
@@ -3159,7 +3159,7 @@ var estateSupplyGas;
             if (!$("#" + estateSupplyGas.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(estateSupplyGas.prototype.config().frm);
+            var data = formParams(estateSupplyGas.prototype.config().frm,true);
             data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath() + "/basicEstateSupply/saveAndUpdateBasicEstateSupply",
