@@ -20,6 +20,26 @@
     </div>
 </div>
 
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>
+            建筑功能
+        </h4>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content collapse">
+        <div>
+            <table class="table table-bordered" id="examineBuildingFunctionList">
+                <!-- cerare document add ajax data-->
+            </table>
+        </div>
+    </div>
+</div>
+
 <c:if test="${caseBuilding.type eq 1}">
     <div class="x_panel">
         <div class="x_title collapse-link">
@@ -61,25 +81,7 @@
     </div>
 </c:if>
 
-<div class="x_panel">
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i
-                    class="fa fa-chevron-up"></i></a></li>
-        </ul>
-        <h4>
-            建筑功能
-        </h4>
-        <div class="clearfix"></div>
-    </div>
-    <div class="x_content collapse">
-        <div>
-            <table class="table table-bordered" id="examineBuildingFunctionList">
-                <!-- cerare document add ajax data-->
-            </table>
-        </div>
-    </div>
-</div>
+
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/case/case.common.js"></script>
 <script type="application/javascript">
     var buildingModel;
