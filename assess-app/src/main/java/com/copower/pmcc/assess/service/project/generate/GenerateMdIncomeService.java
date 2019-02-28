@@ -6,6 +6,7 @@ import com.aspose.words.*;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldMdIncomeEnum;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldReplaceEnum;
+import com.copower.pmcc.assess.common.enums.CalculationMethodNameEnum;
 import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeLeaseCostDao;
@@ -13,18 +14,22 @@ import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeLeaseDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.generate.BookmarkAndRegexDto;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
+import com.copower.pmcc.assess.dto.output.data.DataTaxRateAllocationVo;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeLeaseCostVo;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeLeaseVo;
 import com.copower.pmcc.assess.service.ToolRewardRateService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
-import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
+import com.copower.pmcc.assess.service.data.*;
 import com.copower.pmcc.assess.service.method.MdIncomeDateSectionService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -39,11 +44,10 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import java.io.File;
 import java.math.BigDecimal;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -57,7 +61,6 @@ public class GenerateMdIncomeService {
     private Integer miId;
     private Integer projectId;
     private Integer areaId;
-    private Integer baseReportTemplateId;
     private SchemeInfo schemeInfo;
 
     private MdIncomeService mdIncomeService;
@@ -73,15 +76,29 @@ public class GenerateMdIncomeService {
     private DeclareRecordService declareRecordService;
     private DeclareRealtyLandCertService declareRealtyLandCertService;
     private BaseDataDicService baseDataDicService;
+    private SchemeAreaGroupService schemeAreaGroupService;
+    private SurveyCommonService surveyCommonService;
+    private DataBuildingNewRateService dataBuildingNewRateService;
+    private EvaluationMethodService evaluationMethodService;
+    private SchemeInfoService schemeInfoService;
+    private DataTaxRateAllocationService dataTaxRateAllocationService;
+    private DataMethodFormulaService dataMethodFormulaService;
 
-    public MdIncome getMdIncome() {
-        return mdIncomeService.getIncomeById(miId);
-    }
-
-    private GenerateMdIncomeService() {
-
-    }
-
+    private final String name = "name";
+    private final String ratio = "ratio";
+    private final String remark = "remark";
+    //机会成本
+    private final String opportunityCost = "opportunityCost";
+    //投资风险补偿
+    private final String riskCompensation = "riskCompensation";
+    //管理负担补偿
+    private final String manageCompensation = "manageCompensation";
+    //缺乏流动性补偿
+    private final String liquidCompensation = "liquidCompensation";
+    //易与获得融资的好处
+    private final String financingAdvantage = "financingAdvantage";
+    //所得税抵扣的好处
+    private final String taxDeductionAdvantage = "taxDeductionAdvantage";
 
     /**
      * 获取替换后的报告模板
@@ -130,7 +147,7 @@ public class GenerateMdIncomeService {
             if (Objects.equal(name, BaseReportFieldMdIncomeEnum.RentGrowthForecast.getName())) {
                 this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getRentGrowthForecast());
             }
-            //出租率说明
+            //出租率说明 / 收益法出租率说明
             if (Objects.equal(name, BaseReportFieldMdIncomeEnum.RestrictionExplain.getName())) {
                 this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getRestrictionExplain());
             }
@@ -154,6 +171,10 @@ public class GenerateMdIncomeService {
             if (Objects.equal(name, BaseReportFieldMdIncomeEnum.OtherIncome.getName())) {
                 this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getOtherIncome());
             }
+            //收益法其他收入说明
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.OtherIncomeExplain.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getOtherIncomeExplain());
+            }
 
             //年押金收入/年押金
             if (Objects.equal(name, BaseReportFieldMdIncomeEnum.YearDeposit.getName())) {
@@ -161,6 +182,10 @@ public class GenerateMdIncomeService {
             }
             if (Objects.equal(name, BaseReportFieldMdIncomeEnum.AnnualDepositIncome.getName())) {
                 this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getYearDeposit());
+            }
+            //收益法押金说明
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeDepositExplain.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeDepositExplain());
             }
 
             //一年期定期存款利率
@@ -198,13 +223,22 @@ public class GenerateMdIncomeService {
             if (Objects.equal(name, BaseReportFieldMdIncomeEnum.MaintenanceCostRatio.getName())) {
                 this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMaintenanceCostRatio());
             }
-            //土地使用税
+            //收益法土地使用税
             if (Objects.equal(name, BaseReportFieldMdIncomeEnum.LandUseTax.getName())) {
                 this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getLandUseTax());
             }
-            //管理费
+            //收益法土地使用税费
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.LandTaxFees.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getLandTaxFees());
+            }
+            //收益法管理费率
             if (Objects.equal(name, BaseReportFieldMdIncomeEnum.ManagementCost.getName())) {
                 this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getManagementCost());
+            }
+
+            //收益法租赁税费
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeAdditionalRatio.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeAdditionalRatio());
             }
 
             //保险费/年保费
@@ -215,10 +249,6 @@ public class GenerateMdIncomeService {
                 this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getInsurancePremium());
             }
 
-            //土地使用税费
-            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.LandTaxFees.getName())) {
-                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getLandTaxFees());
-            }
             //年运营费
             if (Objects.equal(name, BaseReportFieldMdIncomeEnum.AnnualOperatingCost.getName())) {
                 this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getAnnualOperatingCost());
@@ -241,9 +271,9 @@ public class GenerateMdIncomeService {
                 this.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getIncomeMethodPriceCalculating());
             }
 
-            //租约限制
-            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.Tenancyrestriction.getName())) {
-                this.putValue(false, false, false, textMap, bookmarkMap, fileMap, name, null);
+            //收益法租赁限制说明
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.TenancyrestrictionRemark.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getTenancyrestrictionReamrk());
             }
             //委托资料
             if (Objects.equal(name, BaseReportFieldMdIncomeEnum.EntrustedInformation.getName())) {
@@ -273,6 +303,85 @@ public class GenerateMdIncomeService {
             //收益法建筑结构类别
             if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomebuildingStructureType.getName())) {
                 this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomebuildingStructureType());
+            }
+            //收益法价值时点
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeValuePoint.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeValuePoint());
+            }
+            //收益法已使用年限
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeUsedLife.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeUsedLife());
+            }
+            //收益法经济耐用年限
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeBuildEconomicLife.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeBuildEconomicLife());
+            }
+            //收益法房产剩余年限
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeHouseSurplusYear.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeHouseSurplusYear());
+            }
+            //收益法收益年限
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeYears.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeYears());
+            }
+            //收益法中的比较法
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeGetMdCompare.getName())) {
+                String path = getIncomeGetMdCompare();
+                if (StringUtils.isNotBlank(path)) {
+                    this.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, path);
+                }
+            }
+            //收益法区域城市
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeRegionalCities.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeRegionalCities());
+            }
+            //收益法评估面积
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeAssessmentArea.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeAssessmentArea());
+            }
+            //收益法房产税
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomePropertyTax.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomePropertyTax());
+            }
+            //收益法印花税
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomestampTax.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomestampTax());
+            }
+            //收益法交易费率
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeTransactionTax.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeTransactionTax());
+            }
+            //收益法合计税费
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeAggregateTaxesFees.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeAggregateTaxesFees());
+            }
+            //收益法公式
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeMethodFormula.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeMethodFormula());
+            }
+            //收益法报酬率
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomePayBack.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomePayBack());
+            }
+            //收益法机会成本说明
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeOpportunityCostReamrk.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeOpportunityCostReamrk());
+            }
+            //收益法投资风险补偿
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeRiskCompensation.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeRiskCompensation());
+            }
+            //收益法管理负担补偿
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeManageCompensation.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeManageCompensation());
+            }
+            //收益法缺乏流动性补偿
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeLiquidCompensation.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeLiquidCompensation());
+            }
+            //收益法投资带来的优惠
+            if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeFinancingAdvantage.getName())) {
+                this.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeFinancingAdvantage());
             }
         }
         //替换
@@ -318,6 +427,82 @@ public class GenerateMdIncomeService {
     }
 
     /**
+     * 功能描述: 收益法区域城市
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/2/28 14:26
+     */
+    public String getIncomeRegionalCities() throws Exception {
+        String s = getSchemeAreaGroup().getAreaName();
+        if (StringUtils.isNotBlank(s)) {
+            return s;
+        }
+        return " ";
+    }
+
+    /**
+     * 功能描述: 收益法房产税
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/2/28 15:31
+     */
+    public String getIncomePropertyTax() throws Exception {
+        List<DataTaxRateAllocationVo> dataTaxRateAllocationVoList = dataTaxRateAllocationService.landLevels(new DataTaxRateAllocation());
+        if (CollectionUtils.isNotEmpty(dataTaxRateAllocationVoList)) {
+            for (DataTaxRateAllocationVo taxRateAllocationVo : dataTaxRateAllocationVoList) {
+                if (Objects.equal("房产税", taxRateAllocationVo.getTypeName())) {
+                    if (taxRateAllocationVo.getTaxRate() != null) {
+                        return taxRateAllocationVo.getTaxRate().toString();
+                    }
+                }
+            }
+        }
+        return " ";
+    }
+
+    /**
+     * 功能描述: 印花税
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/2/28 15:38
+     */
+    public String getIncomestampTax() throws Exception {
+        List<DataTaxRateAllocationVo> dataTaxRateAllocationVoList = dataTaxRateAllocationService.landLevels(new DataTaxRateAllocation());
+        if (CollectionUtils.isNotEmpty(dataTaxRateAllocationVoList)) {
+            for (DataTaxRateAllocationVo taxRateAllocationVo : dataTaxRateAllocationVoList) {
+                if (Objects.equal("印花税", taxRateAllocationVo.getTypeName())) {
+                    if (taxRateAllocationVo.getTaxRate() != null) {
+                        return taxRateAllocationVo.getTaxRate().toString();
+                    }
+                }
+            }
+        }
+        return " ";
+    }
+
+    /**
+     * 功能描述: 收益法评估面积
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/2/28 14:31
+     */
+    public String getIncomeAssessmentArea() throws Exception {
+        java.math.BigDecimal bigDecimal = getSchemeJudgeObject().getEvaluationArea();
+        if (bigDecimal != null) {
+            return bigDecimal.toString();
+        }
+        return " ";
+    }
+
+    /**
      * 功能描述: 收益法建筑结构类别
      *
      * @param:
@@ -328,15 +513,15 @@ public class GenerateMdIncomeService {
     public String getIncomebuildingStructureType() throws Exception {
         if (getSchemeInfo().getPlanDetailsId() != null) {
             GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(getSchemeInfo().getPlanDetailsId());
-            if (generateBaseExamineService.getBasicApply() != null && generateBaseExamineService.getBasicApply().getId() != null) {
-                if (generateBaseExamineService.getBasicBuilding() != null && generateBaseExamineService.getBasicBuilding().getId() != null) {
+            if (generateBaseExamineService.getBasicApply() != null) {
+                if (generateBaseExamineService.getBasicBuilding() != null) {
                     if (generateBaseExamineService.getBasicBuilding().getBuildingStructureType() != null) {
                         return baseDataDicService.getNameById(generateBaseExamineService.getBasicBuilding().getBuildingStructureType());
                     }
                 }
             }
         }
-        return "";
+        return " ";
     }
 
     /**
@@ -350,15 +535,81 @@ public class GenerateMdIncomeService {
     public String getIncomeCompletionTime() throws Exception {
         if (getSchemeInfo().getPlanDetailsId() != null) {
             GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(getSchemeInfo().getPlanDetailsId());
-            if (generateBaseExamineService.getBasicApply() != null && generateBaseExamineService.getBasicApply().getId() != null) {
-                if (generateBaseExamineService.getBasicBuilding() != null && generateBaseExamineService.getBasicBuilding().getId() != null) {
+            if (generateBaseExamineService.getBasicApply() != null) {
+                if (generateBaseExamineService.getBasicBuilding() != null) {
                     if (generateBaseExamineService.getBasicBuilding().getBeCompletedTime() != null) {
                         return DateUtils.format(generateBaseExamineService.getBasicBuilding().getBeCompletedTime(), DateUtils.DATE_CHINESE_PATTERN);
                     }
                 }
             }
         }
-        return "";
+        return " ";
+    }
+
+    /**
+     * 功能描述: 收益法已使用年限
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/2/28 10:34
+     */
+    public String getIncomeUsedLife() throws Exception {
+        SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
+        if (getSchemeInfo().getPlanDetailsId() != null && schemeAreaGroup.getValueTimePoint() != null) {
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(getSchemeInfo().getPlanDetailsId());
+            if (generateBaseExamineService.getBasicApply() != null) {
+                if (generateBaseExamineService.getBasicBuilding() != null) {
+                    if (generateBaseExamineService.getBasicBuilding().getBeCompletedTime() != null) {
+                        Date date = DateUtils.addYear(schemeAreaGroup.getValueTimePoint(), -DateUtils.getYear(generateBaseExamineService.getBasicBuilding().getBeCompletedTime()));
+                        return String.format("%d", DateUtils.getYear(date));
+                    }
+                }
+            }
+        }
+        return " ";
+    }
+
+    /**
+     * 功能描述: 收益法经济耐用年限
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/2/28 13:41
+     */
+    public String getIncomeBuildEconomicLife() throws Exception {
+        SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
+        if (getSchemeInfo().getPlanDetailsId() != null && schemeAreaGroup.getValueTimePoint() != null) {
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(getSchemeInfo().getPlanDetailsId());
+            if (generateBaseExamineService.getBasicApply() != null) {
+                if (generateBaseExamineService.getBasicBuilding() != null) {
+                    if (generateBaseExamineService.getBasicBuilding().getResidenceUseYear() != null) {
+                        try {//可能会有值但是找不到数据实体(后期更改配置数据的情况)允许异常
+                            return dataBuildingNewRateService.getByiDdataBuildingNewRate(generateBaseExamineService.getBasicBuilding().getResidenceUseYear()).getBuildingStructure();
+                        } catch (Exception e) {
+                        }
+                    }
+                }
+            }
+        }
+        return " ";
+    }
+
+    /**
+     * 功能描述: 收益法价值时点
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/2/28 10:27
+     */
+    public String getIncomeValuePoint() throws Exception {
+        SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
+        if (schemeAreaGroup.getValueTimePoint() != null) {
+            return DateUtils.formatDate(schemeAreaGroup.getValueTimePoint(), DateUtils.DATETIME_PATTERN);
+        }
+        return " ";
     }
 
     /**
@@ -371,10 +622,137 @@ public class GenerateMdIncomeService {
      */
     public String getIncomeSurplusLandUseYear() throws Exception {
         MdIncome income = getMdIncome();
+        SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
         if (income.getLandRemainingYear() != null) {
             return income.getLandRemainingYear().toString();
+        } else {
+            if (getSchemeJudgeObject().getDeclareRecordId() != null) {
+                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(getSchemeJudgeObject().getDeclareRecordId());
+                if (declareRecord != null) {
+                    if (getSchemeInfo().getPlanDetailsId() != null && schemeAreaGroup.getValueTimePoint() != null) {
+                        BigDecimal landSurplusYear = mdIncomeService.getLandSurplusYear(declareRecord.getLandUseEndDate(), schemeAreaGroup.getValueTimePoint());
+                        if (landSurplusYear != null) {
+                            return landSurplusYear.toString();
+                        }
+                    }
+                }
+            }
         }
-        return "";
+        return " ";
+    }
+
+    /**
+     * 功能描述: 收益法房产剩余年限
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/2/28 13:54
+     */
+    public String getIncomeHouseSurplusYear() throws Exception {
+        MdIncome income = getMdIncome();
+        SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
+        if (income.getLandRemainingYear() != null) {
+            return income.getLandRemainingYear().toString();
+        } else {
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(getSchemeInfo().getPlanDetailsId());
+            if (generateBaseExamineService.getBasicApply() != null) {
+                if (generateBaseExamineService.getBasicBuilding() != null) {
+                    if (generateBaseExamineService.getBasicBuilding().getBeCompletedTime() != null) {
+                        BigDecimal houseSurplusYear = mdIncomeService.getHouseSurplusYear(generateBaseExamineService.getBasicBuilding().getBeCompletedTime(), schemeAreaGroup.getValueTimePoint(), surveyCommonService.getBuildingUsableYear(generateBaseExamineService.getBasicApply(), generateBaseExamineService.getBasicBuilding()));
+                        if (houseSurplusYear != null) {
+                            return houseSurplusYear.toString();
+                        }
+                    }
+                }
+            }
+        }
+        return " ";
+    }
+
+    /**
+     * 功能描述: 收益法收益年限
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/2/28 14:01
+     */
+    public String getIncomeYears() throws Exception {
+        String a = getIncomeSurplusLandUseYear();
+        String b = getIncomeHouseSurplusYear();
+        if (a.trim().length() == 0 && b.trim().length() == 0) {
+            return " ";
+        } else if (a.trim().length() == 0) {
+            return " ";
+        } else if (b.trim().length() == 0) {
+            return " ";
+        } else {
+            BigDecimal houseSurplusYear = new BigDecimal(b);
+            BigDecimal landSurplusYear = new BigDecimal(a);
+            BigDecimal compare = houseSurplusYear.max(landSurplusYear);
+            return compare.toString();
+        }
+    }
+
+    /**
+     * 功能描述: 收益法中的比较法
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/2/28 14:13
+     */
+    public String getIncomeGetMdCompare() throws Exception {
+        DataEvaluationMethod dataEvaluationMethod = evaluationMethodService.getMethodAllList().stream().filter(oo -> {
+            if (oo.getName().equals(CalculationMethodNameEnum.MdCompare.getName())) {
+                return true;
+            }
+            return false;
+        }).findFirst().get();
+        if (dataEvaluationMethod != null) {
+            SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(getSchemeJudgeObject().getId(), dataEvaluationMethod.getMethod());
+            if (schemeInfo != null) {
+                if (schemeInfo.getMethodDataId() != null) {
+                    try {
+                        GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(schemeInfo.getMethodDataId(), new Date(), areaId);
+                        String temp = generateMdCompareService.generateCompareFile();
+                        File file = new File(temp);
+                        if (file.isFile()) {
+                            return temp;
+                        }
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 功能描述: 收益法公式
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/2/28 16:37
+     */
+    public String getIncomeMethodFormula() throws Exception {
+        DataEvaluationMethod dataEvaluationMethod = evaluationMethodService.getMethodAllList().stream().filter(dataEvaluation -> {
+            if (Objects.equal(CalculationMethodNameEnum.MdIncome.getName(), dataEvaluation.getName())) {
+                return true;
+            }
+            return false;
+        }).findFirst().get();
+        if (dataEvaluationMethod != null) {
+            List<DataMethodFormula> dataMethodFormulaList = dataMethodFormulaService.getDataMethodFormulaList(dataEvaluationMethod.getMethod());
+            if (CollectionUtils.isNotEmpty(dataMethodFormulaList)) {
+                if (StringUtils.isNotBlank(dataMethodFormulaList.get(0).getFormula())) {
+                    return dataMethodFormulaList.get(0).getFormula();
+                }
+            }
+        }
+        return " ";
     }
 
     /**
@@ -398,7 +776,7 @@ public class GenerateMdIncomeService {
                 }
             }
         }
-        return "";
+        return " ";
     }
 
     /**
@@ -417,7 +795,7 @@ public class GenerateMdIncomeService {
                 return dataSetUseField.getName();
             }
         }
-        return "";
+        return " ";
     }
 
     /**
@@ -444,7 +822,7 @@ public class GenerateMdIncomeService {
                 }
             }
         }
-        return "";
+        return " ";
     }
 
 
@@ -455,7 +833,7 @@ public class GenerateMdIncomeService {
      * @throws Exception
      */
     public String getRentGrowthForecast() throws Exception {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(24);
         List<MdIncomeDateSection> mdIncomeDateSectionList = getMdIncomeDateSectionList();
         if (CollectionUtils.isNotEmpty(mdIncomeDateSectionList)) {
             mdIncomeDateSectionList.stream().filter(mdIncomeDateSection -> mdIncomeDateSection.getIncomeId() != null).forEach(mdIncomeDateSection -> {
@@ -471,6 +849,9 @@ public class GenerateMdIncomeService {
                 }
             });
         }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
         return builder.toString();
     }
 
@@ -481,7 +862,11 @@ public class GenerateMdIncomeService {
      * @throws Exception
      */
     public String getRestrictionExplain() throws Exception {
-        return getMdIncome().getRestrictionExplain();
+        String s = getMdIncome().getRestrictionExplain();
+        if (StringUtils.isNotBlank(s)) {
+            return s;
+        }
+        return " ";
     }
 
     /**
@@ -490,7 +875,7 @@ public class GenerateMdIncomeService {
      * @return
      */
     public String getMonthRentalIncome() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(24);
         MdIncomeLease query = new MdIncomeLease();
         query.setIncomeId(miId);
         List<MdIncomeLeaseVo> mdIncomeLeaseList = mdIncomeLeaseDao.getIncomeLeaseList(query).stream()
@@ -513,6 +898,9 @@ public class GenerateMdIncomeService {
                 builder.append(";");
             });
         }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
         return builder.toString();
     }
 
@@ -522,7 +910,7 @@ public class GenerateMdIncomeService {
      * @return
      */
     public String getMonthNumber() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(24);
         MdIncomeLease query = new MdIncomeLease();
         query.setIncomeId(miId);
         List<MdIncomeLeaseVo> mdIncomeLeaseList = mdIncomeLeaseDao.getIncomeLeaseList(query).stream()
@@ -545,6 +933,9 @@ public class GenerateMdIncomeService {
                 builder.append(";");
             });
         }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
         return builder.toString();
     }
 
@@ -554,7 +945,7 @@ public class GenerateMdIncomeService {
      * @return
      */
     public String getRentals() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(24);
         MdIncomeLease query = new MdIncomeLease();
         query.setIncomeId(miId);
         List<MdIncomeLeaseVo> mdIncomeLeaseList = mdIncomeLeaseDao.getIncomeLeaseList(query).stream()
@@ -577,6 +968,9 @@ public class GenerateMdIncomeService {
                 builder.append(";");
             });
         }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
         return builder.toString();
     }
 
@@ -586,7 +980,7 @@ public class GenerateMdIncomeService {
      * @return
      */
     public String getOtherIncome() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(24);
         MdIncomeLease query = new MdIncomeLease();
         query.setIncomeId(miId);
         List<MdIncomeLeaseVo> mdIncomeLeaseList = mdIncomeLeaseDao.getIncomeLeaseList(query).stream()
@@ -609,6 +1003,47 @@ public class GenerateMdIncomeService {
                 builder.append(";");
             });
         }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
+        return builder.toString();
+    }
+
+    /**
+     * 功能描述: 收益法其他收入说明
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/2/28 14:38
+     */
+    public String getOtherIncomeExplain() throws Exception {
+        StringBuilder builder = new StringBuilder(24);
+        MdIncomeLease query = new MdIncomeLease();
+        query.setIncomeId(miId);
+        List<MdIncomeLeaseVo> mdIncomeLeaseList = mdIncomeLeaseDao.getIncomeLeaseList(query).stream()
+                .map(mdIncomeLease -> mdIncomeService.getMdIncomeLeaseVo(mdIncomeLease)).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(mdIncomeLeaseList)) {
+            mdIncomeLeaseList.stream().filter(mdIncomeLease -> {
+                if (mdIncomeLease.getBeginDate() == null || mdIncomeLease.getEndDate() == null) {
+                    return false;
+                }
+                if (mdIncomeLease.getOtherIncome() == null) {
+                    return false;
+                }
+                return true;
+            }).forEach(mdIncomeLease -> {
+                builder.append(DateUtils.format(mdIncomeLease.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN));
+                builder.append("-");
+                builder.append(DateUtils.format(mdIncomeLease.getEndDate(), DateUtils.DATE_CHINESE_PATTERN));
+                builder.append(":");
+                builder.append(mdIncomeLease.getOtherIncomeRemark());
+                builder.append(";");
+            });
+        }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
         return builder.toString();
     }
 
@@ -618,7 +1053,7 @@ public class GenerateMdIncomeService {
      * @return
      */
     public String getRentalIncome() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(24);
         MdIncomeLease query = new MdIncomeLease();
         query.setIncomeId(miId);
         List<MdIncomeLeaseVo> mdIncomeLeaseList = mdIncomeLeaseDao.getIncomeLeaseList(query).stream().map(mdIncomeLease -> mdIncomeService.getMdIncomeLeaseVo(mdIncomeLease)).collect(Collectors.toList());
@@ -648,6 +1083,9 @@ public class GenerateMdIncomeService {
                 builder.append(";");
             });
         }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
         return builder.toString();
     }
 
@@ -657,7 +1095,7 @@ public class GenerateMdIncomeService {
      * @return
      */
     public String getYearDeposit() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(24);
         MdIncomeLease query = new MdIncomeLease();
         query.setIncomeId(miId);
         List<MdIncomeLeaseVo> mdIncomeLeaseList = mdIncomeLeaseDao.getIncomeLeaseList(query).stream()
@@ -680,6 +1118,84 @@ public class GenerateMdIncomeService {
                 builder.append(";");
             });
         }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
+        return builder.toString();
+    }
+
+    /**
+     * 功能描述: 收益法押金说明
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/2/28 14:44
+     */
+    public String getIncomeDepositExplain() throws Exception {
+        StringBuilder builder = new StringBuilder(24);
+        MdIncomeLease query = new MdIncomeLease();
+        query.setIncomeId(miId);
+        List<MdIncomeLeaseVo> mdIncomeLeaseList = mdIncomeLeaseDao.getIncomeLeaseList(query).stream()
+                .map(mdIncomeLease -> mdIncomeService.getMdIncomeLeaseVo(mdIncomeLease)).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(mdIncomeLeaseList)) {
+            mdIncomeLeaseList.stream().filter(mdIncomeLease -> {
+                if (mdIncomeLease.getBeginDate() == null || mdIncomeLease.getEndDate() == null) {
+                    return false;
+                }
+                if (mdIncomeLease.getDeposit() == null) {
+                    return false;
+                }
+                return true;
+            }).forEach(mdIncomeLease -> {
+                builder.append(DateUtils.format(mdIncomeLease.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN));
+                builder.append("-");
+                builder.append(DateUtils.format(mdIncomeLease.getEndDate(), DateUtils.DATE_CHINESE_PATTERN));
+                builder.append(":");
+                builder.append(mdIncomeLease.getDepositRemark());
+                builder.append(";");
+            });
+        }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
+        return builder.toString();
+    }
+
+    /**
+     * 功能描述: 收益法租赁限制说明
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/2/28 16:28
+     */
+    public String getTenancyrestrictionReamrk() throws Exception {
+        StringBuilder builder = new StringBuilder(24);
+        MdIncomeLeaseCost query = new MdIncomeLeaseCost();
+        query.setIncomeId(miId);
+        List<MdIncomeLeaseCostVo> leaseVoList = mdIncomeLeaseCostDao.getLeaseCostList(query).stream().map(mdIncomeLeaseCost -> mdIncomeService.getMdIncomeLeaseCostVo(mdIncomeLeaseCost)).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(leaseVoList)) {
+            leaseVoList.stream().filter(mdIncomeLeaseCostVo -> {
+                if (mdIncomeLeaseCostVo.getBeginDate() == null || mdIncomeLeaseCostVo.getEndDate() == null) {
+                    return false;
+                }
+                if (StringUtils.isNotBlank(mdIncomeLeaseCostVo.getAdditional())) {
+                    return false;
+                }
+                return true;
+            }).forEach(mdIncomeLeaseCostVo -> {
+                builder.append(DateUtils.format(mdIncomeLeaseCostVo.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN));
+                builder.append("-");
+                builder.append(DateUtils.format(mdIncomeLeaseCostVo.getEndDate(), DateUtils.DATE_CHINESE_PATTERN));
+                builder.append(":");
+                builder.append(mdIncomeLeaseCostVo.getAdditional());
+                builder.append(";");
+            });
+        }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
         return builder.toString();
     }
 
@@ -689,7 +1205,7 @@ public class GenerateMdIncomeService {
      * @return
      */
     public String getYearDepositRate() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(24);
         MdIncomeLease query = new MdIncomeLease();
         query.setIncomeId(miId);
         List<MdIncomeLeaseVo> mdIncomeLeaseList = mdIncomeLeaseDao.getIncomeLeaseList(query).stream()
@@ -712,6 +1228,9 @@ public class GenerateMdIncomeService {
                 builder.append(";");
             });
         }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
         return builder.toString();
     }
 
@@ -721,7 +1240,7 @@ public class GenerateMdIncomeService {
      * @return
      */
     public String getRentInterestIncome() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(24);
         MdIncomeLease query = new MdIncomeLease();
         query.setIncomeId(miId);
         List<MdIncomeLeaseVo> mdIncomeLeaseList = mdIncomeLeaseDao.getIncomeLeaseList(query).stream()
@@ -745,6 +1264,9 @@ public class GenerateMdIncomeService {
                 builder.append(";");
             });
         }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
         return builder.toString();
     }
 
@@ -763,7 +1285,7 @@ public class GenerateMdIncomeService {
      * @return
      */
     public String getIncomeTotal() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(24);
         List<MdIncomeDateSection> mdIncomeDateSectionList = getMdIncomeDateSectionList();
         if (CollectionUtils.isNotEmpty(mdIncomeDateSectionList)) {
             mdIncomeDateSectionList.stream().filter(mdIncomeDateSection -> mdIncomeDateSection.getIncomeId() != null).forEach(mdIncomeDateSection -> {
@@ -776,6 +1298,9 @@ public class GenerateMdIncomeService {
                     builder.append(";");
                 }
             });
+        }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
         }
         return builder.toString();
     }
@@ -795,7 +1320,7 @@ public class GenerateMdIncomeService {
      * @return
      */
     public String getReplacementValue() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(24);
         MdIncomeLeaseCost query = new MdIncomeLeaseCost();
         query.setIncomeId(miId);
         List<MdIncomeLeaseCostVo> leaseVoList = mdIncomeLeaseCostDao.getLeaseCostList(query).stream().map(mdIncomeLeaseCost -> mdIncomeService.getMdIncomeLeaseCostVo(mdIncomeLeaseCost)).collect(Collectors.toList());
@@ -814,6 +1339,9 @@ public class GenerateMdIncomeService {
                 builder.append(";");
             });
         }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
         return builder.toString();
     }
 
@@ -823,7 +1351,7 @@ public class GenerateMdIncomeService {
      * @return
      */
     public String getMaintenanceCostRatio() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(24);
         MdIncomeLeaseCost query = new MdIncomeLeaseCost();
         query.setIncomeId(miId);
         List<MdIncomeLeaseCostVo> leaseVoList = mdIncomeLeaseCostDao.getLeaseCostList(query).stream().map(mdIncomeLeaseCost -> mdIncomeService.getMdIncomeLeaseCostVo(mdIncomeLeaseCost)).collect(Collectors.toList());
@@ -842,6 +1370,9 @@ public class GenerateMdIncomeService {
                 builder.append(";");
             });
         }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
         return builder.toString();
     }
 
@@ -851,7 +1382,7 @@ public class GenerateMdIncomeService {
      * @return
      */
     public String getMaintenance() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(24);
         MdIncomeLeaseCost query = new MdIncomeLeaseCost();
         query.setIncomeId(miId);
         List<MdIncomeLeaseCostVo> leaseVoList = mdIncomeLeaseCostDao.getLeaseCostList(query).stream().map(mdIncomeLeaseCost -> mdIncomeService.getMdIncomeLeaseCostVo(mdIncomeLeaseCost)).collect(Collectors.toList());
@@ -870,6 +1401,9 @@ public class GenerateMdIncomeService {
                 builder.append(";");
             });
         }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
         return builder.toString();
     }
 
@@ -879,7 +1413,7 @@ public class GenerateMdIncomeService {
      * @return
      */
     public String getLandUseTax() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(24);
         MdIncomeLeaseCost query = new MdIncomeLeaseCost();
         query.setIncomeId(miId);
         List<MdIncomeLeaseCostVo> leaseVoList = mdIncomeLeaseCostDao.getLeaseCostList(query).stream().map(mdIncomeLeaseCost -> mdIncomeService.getMdIncomeLeaseCostVo(mdIncomeLeaseCost)).collect(Collectors.toList());
@@ -898,6 +1432,88 @@ public class GenerateMdIncomeService {
                 builder.append(";");
             });
         }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
+        return builder.toString();
+    }
+
+    /**
+     * 功能描述: 收益法交易费率
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/2/28 15:55
+     */
+    public String getIncomeTransactionTax() throws Exception {
+        StringBuilder builder = new StringBuilder(24);
+        MdIncomeLeaseCost query = new MdIncomeLeaseCost();
+        query.setIncomeId(miId);
+        List<MdIncomeLeaseCostVo> leaseVoList = mdIncomeLeaseCostDao.getLeaseCostList(query).stream().map(mdIncomeLeaseCost -> mdIncomeService.getMdIncomeLeaseCostVo(mdIncomeLeaseCost)).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(leaseVoList)) {
+            leaseVoList.stream().filter(mdIncomeLeaseCostVo -> {
+                if (mdIncomeLeaseCostVo.getBeginDate() == null || mdIncomeLeaseCostVo.getEndDate() == null || mdIncomeLeaseCostVo.getTransactionTaxeFeeRatio() == null) {
+                    return false;
+                }
+                return true;
+            }).forEach(mdIncomeLeaseCostVo -> {
+                builder.append(DateUtils.format(mdIncomeLeaseCostVo.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN));
+                builder.append("-");
+                builder.append(DateUtils.format(mdIncomeLeaseCostVo.getEndDate(), DateUtils.DATE_CHINESE_PATTERN));
+                builder.append(":");
+                builder.append(mdIncomeLeaseCostVo.getTransactionTaxeFeeRatio().toString());
+                builder.append(";");
+            });
+        }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
+        return builder.toString();
+    }
+
+    /**
+     * 功能描述: 收益法合计税费
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/2/28 16:01
+     */
+    public String getIncomeAggregateTaxesFees() throws Exception {
+        //收益法印花税
+        String a = getIncomestampTax();
+        //收益法房产税
+        String b = getIncomePropertyTax();
+        StringBuilder builder = new StringBuilder(24);
+        MdIncomeLeaseCost query = new MdIncomeLeaseCost();
+        query.setIncomeId(miId);
+        List<MdIncomeLeaseCostVo> leaseVoList = mdIncomeLeaseCostDao.getLeaseCostList(query).stream().map(mdIncomeLeaseCost -> mdIncomeService.getMdIncomeLeaseCostVo(mdIncomeLeaseCost)).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(leaseVoList)) {
+            if (NumberUtils.isNumber(a) && NumberUtils.isNumber(b)) {
+                leaseVoList.stream().filter(mdIncomeLeaseCostVo -> {
+                    if (mdIncomeLeaseCostVo.getBeginDate() == null || mdIncomeLeaseCostVo.getEndDate() == null) {
+                        return false;
+                    }
+                    //租赁税费比率
+                    if (mdIncomeLeaseCostVo.getAdditionalRatio() == null) {
+                        return false;
+                    }
+                    return true;
+                }).forEach(mdIncomeLeaseCostVo -> {
+                    builder.append(DateUtils.format(mdIncomeLeaseCostVo.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN));
+                    builder.append("-");
+                    builder.append(DateUtils.format(mdIncomeLeaseCostVo.getEndDate(), DateUtils.DATE_CHINESE_PATTERN));
+                    builder.append(":");
+                    java.math.BigDecimal bigDecimal = mdIncomeLeaseCostVo.getAdditionalRatio().add(new BigDecimal(a)).add(new BigDecimal(b));
+                    builder.append(bigDecimal.toString());
+                    builder.append(";");
+                });
+            }
+        }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
         return builder.toString();
     }
 
@@ -906,7 +1522,7 @@ public class GenerateMdIncomeService {
      * @return
      */
     public String getLandTaxFees() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(24);
         MdIncomeLeaseCost query = new MdIncomeLeaseCost();
         query.setIncomeId(miId);
         List<MdIncomeLeaseCostVo> leaseVoList = mdIncomeLeaseCostDao.getLeaseCostList(query).stream().map(mdIncomeLeaseCost -> mdIncomeService.getMdIncomeLeaseCostVo(mdIncomeLeaseCost)).collect(Collectors.toList());
@@ -934,6 +1550,9 @@ public class GenerateMdIncomeService {
                 builder.append(";");
             });
         }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
         return builder.toString();
     }
 
@@ -944,7 +1563,7 @@ public class GenerateMdIncomeService {
      */
     public String getAnnualOperatingCost() {
         List<MdIncomeDateSection> dateSectionList = getMdIncomeDateSectionList();
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(24);
         if (CollectionUtils.isNotEmpty(dateSectionList)) {
             dateSectionList.stream().filter(mdIncomeDateSection -> {
                 if (mdIncomeDateSection.getBeginDate() == null || mdIncomeDateSection.getEndDate() == null) {
@@ -963,6 +1582,9 @@ public class GenerateMdIncomeService {
                 builder.append(";");
             });
         }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
         return builder.toString();
     }
 
@@ -973,7 +1595,7 @@ public class GenerateMdIncomeService {
      */
     public String getAnnualNetIncome() {
         List<MdIncomeDateSection> dateSectionList = getMdIncomeDateSectionList();
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(24);
         if (CollectionUtils.isNotEmpty(dateSectionList)) {
             dateSectionList.stream().filter(mdIncomeDateSection -> {
                 if (mdIncomeDateSection.getBeginDate() == null || mdIncomeDateSection.getEndDate() == null) {
@@ -992,6 +1614,9 @@ public class GenerateMdIncomeService {
                 builder.append(";");
             });
         }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
         return builder.toString();
     }
 
@@ -1001,7 +1626,7 @@ public class GenerateMdIncomeService {
      * @return
      */
     public String getInsurancePremium() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(24);
         MdIncomeLeaseCost query = new MdIncomeLeaseCost();
         query.setIncomeId(miId);
         List<MdIncomeLeaseCostVo> leaseVoList = mdIncomeLeaseCostDao.getLeaseCostList(query).stream().map(mdIncomeLeaseCost -> mdIncomeService.getMdIncomeLeaseCostVo(mdIncomeLeaseCost)).collect(Collectors.toList());
@@ -1020,16 +1645,19 @@ public class GenerateMdIncomeService {
                 builder.append(";");
             });
         }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
         return builder.toString();
     }
 
     /**
-     * 管理费
+     * 管理费率
      *
      * @return
      */
     public String getManagementCost() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(24);
         MdIncomeLeaseCost query = new MdIncomeLeaseCost();
         query.setIncomeId(miId);
         List<MdIncomeLeaseCostVo> leaseVoList = mdIncomeLeaseCostDao.getLeaseCostList(query).stream().map(mdIncomeLeaseCost -> mdIncomeService.getMdIncomeLeaseCostVo(mdIncomeLeaseCost)).collect(Collectors.toList());
@@ -1047,18 +1675,262 @@ public class GenerateMdIncomeService {
                 builder.append("-");
                 builder.append(DateUtils.format(mdIncomeLeaseCostVo.getEndDate(), DateUtils.DATE_CHINESE_PATTERN));
                 builder.append(":");
-                MdIncomeDateSection mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
-                if (mdIncomeDateSection != null) {
-                    if (mdIncomeDateSection.getIncomeTotal() != null) {
-                        BigDecimal temp = mdIncomeLeaseCostVo.getManagementCostRatio().multiply(mdIncomeDateSection.getIncomeTotal());
-                        builder.append(temp.toString());
-                    }
-                }
+                builder.append(mdIncomeLeaseCostVo.getManagementCostRatio().toString());
+//                MdIncomeDateSection mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
+//                if (mdIncomeDateSection != null) {
+//                    if (mdIncomeDateSection.getIncomeTotal() != null) {
+//                        BigDecimal temp = mdIncomeLeaseCostVo.getManagementCostRatio().multiply(mdIncomeDateSection.getIncomeTotal());
+//                        builder.append(temp.toString());
+//                    }
+//                }
                 builder.append(";");
             });
         }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
         return builder.toString();
     }
+
+    /**
+     * 功能描述: 收益法租赁税费
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/2/28 15:24
+     */
+    public String getIncomeAdditionalRatio() throws Exception {
+        StringBuilder builder = new StringBuilder(24);
+        MdIncomeLeaseCost query = new MdIncomeLeaseCost();
+        query.setIncomeId(miId);
+        List<MdIncomeLeaseCostVo> leaseVoList = mdIncomeLeaseCostDao.getLeaseCostList(query).stream().map(mdIncomeLeaseCost -> mdIncomeService.getMdIncomeLeaseCostVo(mdIncomeLeaseCost)).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(leaseVoList)) {
+            leaseVoList.stream().filter(mdIncomeLeaseCostVo -> {
+                if (mdIncomeLeaseCostVo.getBeginDate() == null || mdIncomeLeaseCostVo.getEndDate() == null) {
+                    return false;
+                }
+                if (mdIncomeLeaseCostVo.getAdditionalRatio() == null) {
+                    return false;
+                }
+                return true;
+            }).forEach(mdIncomeLeaseCostVo -> {
+                builder.append(DateUtils.format(mdIncomeLeaseCostVo.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN));
+                builder.append("-");
+                builder.append(DateUtils.format(mdIncomeLeaseCostVo.getEndDate(), DateUtils.DATE_CHINESE_PATTERN));
+                builder.append(":");
+                builder.append(mdIncomeLeaseCostVo.getAdditionalRatio().toString());
+//                MdIncomeDateSection mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
+//                if (mdIncomeDateSection != null) {
+//                    if (mdIncomeDateSection.getIncomeTotal() != null) {
+//                        BigDecimal temp = mdIncomeLeaseCostVo.getAdditionalRatio().multiply(mdIncomeDateSection.getIncomeTotal());
+//                        builder.append(temp.toString());
+//                    }
+//                }
+                builder.append(";");
+            });
+        }
+        if (StringUtils.isEmpty(builder.toString())) {
+            builder.append(" ");
+        }
+        return builder.toString();
+    }
+
+    /**
+     * 功能描述: 收益法报酬率
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/2/28 16:56
+     */
+    public String getIncomePayBack() throws Exception {
+        ToolRewardRate toolRewardRate = toolRewardRateService.getToolRewardRateById(getMdIncome().getRewardRateId());
+        if (toolRewardRate != null) {
+            if (StringUtils.isNotBlank(toolRewardRate.getResultValue())) {
+                return toolRewardRate.getResultValue();
+            }
+        }
+        return " ";
+    }
+
+    /**
+     * 功能描述: 收益法机会成本说明
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/2/28 17:09
+     */
+    public String getIncomeOpportunityCostReamrk() throws Exception {
+        ToolRewardRate toolRewardRate = toolRewardRateService.getToolRewardRateById(getMdIncome().getRewardRateId());
+        if (toolRewardRate != null && StringUtils.isNotBlank(toolRewardRate.getParameterValue())) {
+            try {
+                JSONArray jsonArray = JSONObject.parseArray(toolRewardRate.getParameterValue());
+                if (CollectionUtils.isNotEmpty(jsonArray)) {
+                    Object object = jsonArray.stream().filter(o -> {
+                        JSONObject jsonObject = (JSONObject) o;
+                        if (jsonObject != null) {
+                            if (jsonObject.size() > 0) {
+                                String text = jsonObject.getString(name);
+                                if (Objects.equal(text, opportunityCost)) {
+                                    return true;
+                                }
+                            }
+                        }
+                        return false;
+                    }).findFirst().get();
+                    if (object != null) {
+                        JSONObject jsonObject = (JSONObject) object;
+                        return jsonObject.getString(remark);
+                    }
+                }
+            } catch (Exception e) {
+            }
+        }
+        return " ";
+    }
+
+    //收益法投资风险补偿
+    public String getIncomeRiskCompensation() throws Exception {
+        ToolRewardRate toolRewardRate = toolRewardRateService.getToolRewardRateById(getMdIncome().getRewardRateId());
+        if (toolRewardRate != null && StringUtils.isNotBlank(toolRewardRate.getParameterValue())) {
+            try {
+                JSONArray jsonArray = JSONObject.parseArray(toolRewardRate.getParameterValue());
+                if (CollectionUtils.isNotEmpty(jsonArray)) {
+                    Object object = jsonArray.stream().filter(o -> {
+                        JSONObject jsonObject = (JSONObject) o;
+                        if (jsonObject != null) {
+                            if (jsonObject.size() > 0) {
+                                String text = jsonObject.getString(name);
+                                if (Objects.equal(text, riskCompensation)) {
+                                    return true;
+                                }
+                            }
+                        }
+                        return false;
+                    }).findFirst().get();
+                    if (object != null) {
+                        JSONObject jsonObject = (JSONObject) object;
+                        String text = jsonObject.getString(ratio);
+                        if(NumberUtils.isNumber(text)){
+                            double d = Double.parseDouble(text);
+                            d = d *100;
+                            return Double.toString(d);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+            }
+        }
+        return " ";
+    }
+
+    //收益法管理负担补偿
+    public String getIncomeManageCompensation() throws Exception {
+        ToolRewardRate toolRewardRate = toolRewardRateService.getToolRewardRateById(getMdIncome().getRewardRateId());
+        if (toolRewardRate != null && StringUtils.isNotBlank(toolRewardRate.getParameterValue())) {
+            try {
+                JSONArray jsonArray = JSONObject.parseArray(toolRewardRate.getParameterValue());
+                if (CollectionUtils.isNotEmpty(jsonArray)) {
+                    Object object = jsonArray.stream().filter(o -> {
+                        JSONObject jsonObject = (JSONObject) o;
+                        if (jsonObject != null) {
+                            if (jsonObject.size() > 0) {
+                                String text = jsonObject.getString(name);
+                                if (Objects.equal(text, manageCompensation)) {
+                                    return true;
+                                }
+                            }
+                        }
+                        return false;
+                    }).findFirst().get();
+                    if (object != null) {
+                        JSONObject jsonObject = (JSONObject) object;
+                        String text = jsonObject.getString(ratio);
+                        if(NumberUtils.isNumber(text)){
+                            double d = Double.parseDouble(text);
+                            d = d *100;
+                            return Double.toString(d);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+            }
+        }
+        return " ";
+    }
+
+    //收益法缺乏流动性补偿
+    public String getIncomeLiquidCompensation() throws Exception {
+        ToolRewardRate toolRewardRate = toolRewardRateService.getToolRewardRateById(getMdIncome().getRewardRateId());
+        if (toolRewardRate != null && StringUtils.isNotBlank(toolRewardRate.getParameterValue())) {
+            try {
+                JSONArray jsonArray = JSONObject.parseArray(toolRewardRate.getParameterValue());
+                if (CollectionUtils.isNotEmpty(jsonArray)) {
+                    Object object = jsonArray.stream().filter(o -> {
+                        JSONObject jsonObject = (JSONObject) o;
+                        if (jsonObject != null) {
+                            if (jsonObject.size() > 0) {
+                                String text = jsonObject.getString(name);
+                                if (Objects.equal(text, liquidCompensation)) {
+                                    return true;
+                                }
+                            }
+                        }
+                        return false;
+                    }).findFirst().get();
+                    if (object != null) {
+                        JSONObject jsonObject = (JSONObject) object;
+                        String text = jsonObject.getString(ratio);
+                        if(NumberUtils.isNumber(text)){
+                            double d = Double.parseDouble(text);
+                            d = d *100;
+                            return Double.toString(d);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+            }
+        }
+        return " ";
+    }
+
+    //收益法投资带来的优惠
+    public String getIncomeFinancingAdvantage() throws Exception {
+        ToolRewardRate toolRewardRate = toolRewardRateService.getToolRewardRateById(getMdIncome().getRewardRateId());
+        if (toolRewardRate != null && StringUtils.isNotBlank(toolRewardRate.getParameterValue())) {
+            try {
+                JSONArray jsonArray = JSONObject.parseArray(toolRewardRate.getParameterValue());
+                if (CollectionUtils.isNotEmpty(jsonArray)) {
+                    Object object = jsonArray.stream().filter(o -> {
+                        JSONObject jsonObject = (JSONObject) o;
+                        if (jsonObject != null) {
+                            if (jsonObject.size() > 0) {
+                                String text = jsonObject.getString(name);
+                                if (Objects.equal(text, financingAdvantage)) {
+                                    return true;
+                                }
+                            }
+                        }
+                        return false;
+                    }).findFirst().get();
+                    if (object != null) {
+                        JSONObject jsonObject = (JSONObject) object;
+                        String text = jsonObject.getString(ratio);
+                        if(NumberUtils.isNumber(text)){
+                            double d = Double.parseDouble(text);
+                            d = d *100;
+                            return Double.toString(d);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+            }
+        }
+        return " ";
+    }
+
 
     /**
      * 报酬率测算表
@@ -1067,20 +1939,11 @@ public class GenerateMdIncomeService {
      * @throws Exception
      */
     public String getRemunerationRateSheet() throws Exception {
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = new DocumentBuilder(document);
         builder.writeln("报酬率测算表");
         ToolRewardRate toolRewardRate = toolRewardRateService.getToolRewardRateById(getMdIncome().getRewardRateId());
-        final String name = "name";
-        final String ratio = "ratio";
-        final String remark = "remark";
-        final String opportunityCost = "opportunityCost";
-        final String riskCompensation = "riskCompensation";
-        final String manageCompensation = "manageCompensation";
-        final String liquidCompensation = "liquidCompensation";
-        final String financingAdvantage = "financingAdvantage";
-        final String taxDeductionAdvantage = "taxDeductionAdvantage";
         List<Map<String, JSONObject>> mapList = Lists.newArrayList();
         if (toolRewardRate != null && StringUtils.isNotBlank(toolRewardRate.getParameterValue())) {
             JSONArray jsonArray = JSONObject.parseArray(toolRewardRate.getParameterValue());
@@ -1349,7 +2212,7 @@ public class GenerateMdIncomeService {
      * @throws Exception
      */
     public String getIncomeMethodPriceCalculating() throws Exception {
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = new DocumentBuilder(document);
         builder.writeln("收益法价格测算表");
@@ -1467,7 +2330,7 @@ public class GenerateMdIncomeService {
         if (price != null) {
             return price.toString();
         }
-        return "";
+        return " ";
     }
 
     private List<MdIncomeDateSection> getMdIncomeDateSectionList() {
@@ -1518,6 +2381,10 @@ public class GenerateMdIncomeService {
         return schemeJudgeObject;
     }
 
+    public SchemeAreaGroup getSchemeAreaGroup() {
+        return schemeAreaGroupService.get(areaId);
+    }
+
     public GenerateMdIncomeService(SchemeInfo schemeInfo, Integer projectId, Integer areaId) {
         this.miId = schemeInfo.getMethodDataId();
         this.schemeInfo = schemeInfo;
@@ -1536,6 +2403,24 @@ public class GenerateMdIncomeService {
         this.declareRecordService = SpringContextUtils.getBean(DeclareRecordService.class);
         this.declareRealtyLandCertService = SpringContextUtils.getBean(DeclareRealtyLandCertService.class);
         this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
+        this.schemeAreaGroupService = SpringContextUtils.getBean(SchemeAreaGroupService.class);
+        this.surveyCommonService = SpringContextUtils.getBean(SurveyCommonService.class);
+        this.dataBuildingNewRateService = SpringContextUtils.getBean(DataBuildingNewRateService.class);
+        this.evaluationMethodService = SpringContextUtils.getBean(EvaluationMethodService.class);
+        this.schemeInfoService = SpringContextUtils.getBean(SchemeInfoService.class);
+        this.dataTaxRateAllocationService = SpringContextUtils.getBean(DataTaxRateAllocationService.class);
+        this.dataMethodFormulaService = SpringContextUtils.getBean(DataMethodFormulaService.class);
     }
 
+    public MdIncome getMdIncome() {
+        return mdIncomeService.getIncomeById(miId);
+    }
+
+    private GenerateMdIncomeService() {
+    }
+
+    private String getLocalPath() {
+        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        return localPath;
+    }
 }
