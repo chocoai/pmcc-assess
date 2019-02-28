@@ -715,7 +715,7 @@
 
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    登记日期<span class="symbol required"></span>
+                    登记日期</span>
                 </label>
                 <div class="col-sm-3">
                     <%--<label class="form-control" name="registrationTime"></label>--%>

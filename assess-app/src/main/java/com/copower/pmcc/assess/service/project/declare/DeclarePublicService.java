@@ -22,6 +22,8 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by kings on 2018-5-9.
@@ -46,18 +48,29 @@ public class DeclarePublicService {
      * @param builder
      * @param row
      * @param i
-     * @param land_uses
      * @return
      * @throws Exception
      */
-    public boolean realEstateCert(DeclareRealtyRealEstateCert oo, StringBuilder builder, Row row, int i, List<BaseDataDic> land_uses) throws Exception {
+    public boolean realEstateCert(DeclareRealtyRealEstateCert oo, StringBuilder builder, Row row, int i) throws Exception {
         List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_HOUSE_CATEGORY);
+
+        //共有情况
+        List<BaseDataDic> publicSituations = baseDataDicService.getCacheDataDicList("project.declare.common.situation");
+        //房屋用途
+        List<BaseDataDic> planningUses = baseDataDicService.getCacheDataDicList("examine.house.load.utility");
+        //土地用途
+        List<BaseDataDic> purposes = baseDataDicService.getCacheDataDicList("estate.land_use");
+        //权利性质
+        List<BaseDataDic> useRightTypes = baseDataDicService.getCacheDataDicList("project.declare.use.right.type");
+        //权利类型
+        List<BaseDataDic> types = baseDataDicService.getCacheDataDicList("project.declare.land.certificate.type");
+
         //省
-        String provinceName = PoiUtils.getCellValue(row.getCell(40));
+        String provinceName = PoiUtils.getCellValue(row.getCell(0));
         //市
-        String cityName = PoiUtils.getCellValue(row.getCell(41));
+        String cityName = PoiUtils.getCellValue(row.getCell(1));
         //县或者区
-        String districtName = PoiUtils.getCellValue(row.getCell(42));
+        String districtName = PoiUtils.getCellValue(row.getCell(2));
         oo.setProvince(provinceName);
         oo.setCity(cityName);
         oo.setDistrict(districtName);
@@ -76,183 +89,200 @@ public class DeclarePublicService {
         if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))) {
             oo.setDistrict(map.get("district"));
         }
-        //验证基础字典中数据
-        String purpose = PoiUtils.getCellValue(row.getCell(31));
-        BaseDataDic typeDic = baseDataDicService.getDataDicByName(land_uses, purpose);
-        if (typeDic == null) {
-            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(用途)", i));
-            return false;
-        } else {
-            purpose = String.valueOf(typeDic.getId());
-        }
-        //用途
-        oo.setPurpose(purpose);
         //权证号
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(0)))) {
-            oo.setCertName(PoiUtils.getCellValue(row.getCell(0)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(3)))) {
+            oo.setCertName(PoiUtils.getCellValue(row.getCell(3)));
         }
-        //所在地
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(1)))) {
-            oo.setLocation(PoiUtils.getCellValue(row.getCell(1)));
+
+        String cerName = PoiUtils.getCellValue(row.getCell(3));
+        if (StringUtils.isNotBlank(cerName)) {
+            String[] strings = cerName.replace("不动产权第", ",").replace("号", ",").split(",");
+            oo.setLocation(strings[0]);
+            oo.setNumber(strings[1]);
         }
-        //编号
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(2)))) {
-            oo.setNumber(PoiUtils.getCellValue(row.getCell(2)));
-        }
-        //类型
-        String type = PoiUtils.getCellValue(row.getCell(3));
-        inner:
-        if (StringUtils.isNotBlank(type)) {
-            if (!ObjectUtils.isEmpty(baseProjectClassifies)) {
-                for (BaseProjectClassify baseProjectClassify : baseProjectClassifies) {
-                    if (Objects.equal(type, baseProjectClassify.getName())) {
-                        oo.setType(baseProjectClassify.getId().toString());
-                        break inner;
-                    }
-                }
-                builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致", i));
-                return false;
-            }
-        }
+
         //房屋所有权人
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(4)))) {
             oo.setOwnership(PoiUtils.getCellValue(row.getCell(4)));
         }
-        //共有情况
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(5)))) {
-            oo.setPublicSituation(PoiUtils.getCellValue(row.getCell(5)));
+
+
+        //验证基础字典中数据
+        String publicSituation = PoiUtils.getCellValue(row.getCell(5));
+        BaseDataDic typeDic = baseDataDicService.getDataDicByName(publicSituations, publicSituation);
+        if (typeDic == null) {
+            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(共有情况)", i));
+            return false;
+        } else {
+            publicSituation = String.valueOf(typeDic.getId());
         }
-        //建筑面积
+        //共有情况
+        oo.setPublicSituation(publicSituation);
+
+        //登记日期
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(6)))) {
-            oo.setFloorArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(6))));
+            oo.setRegistrationTime(DateUtils.parse(PoiUtils.getCellValue(row.getCell(6))));
         }
         //房屋坐落
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(7)))) {
             oo.setBeLocated(PoiUtils.getCellValue(row.getCell(7)));
         }
-        //街道号
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(8)))) {
-            oo.setStreetNumber(PoiUtils.getCellValue(row.getCell(8)));
+        String located = PoiUtils.getCellValue(row.getCell(7));
+        if (StringUtils.isNotBlank(located)) {
+            String reg = "(?<=区)[.\\s\\S]*?(?=号)";//街道号
+            Pattern p = Pattern.compile(reg);
+            Matcher m = p.matcher(located);
+            while (m.find()) {
+                oo.setStreetNumber(m.group());
+            }
+
+            reg = "(?<=附)(\\d+)";//匹配附后面的数字
+            p = Pattern.compile(reg);
+            m = p.matcher(located);
+            while (m.find()) {
+                oo.setAttachedNumber(m.group());
+            }
+
+            reg = "(\\d+)(?=栋)";//匹配栋前面的数字
+            p = Pattern.compile(reg);
+            m = p.matcher(located);
+            while (m.find()) {
+                oo.setBuildingNumber(m.group());
+            }
+
+            reg = "(\\d+)(?=单元)";//匹配单元前面的数字
+            p = Pattern.compile(reg);
+            m = p.matcher(located);
+            while (m.find()) {
+                oo.setUnit(m.group());
+            }
+
+            reg = "(\\d+)(?=层)";//匹配层前面的数字
+            p = Pattern.compile(reg);
+            m = p.matcher(located);
+            while (m.find()) {
+                oo.setFloor(m.group());
+            }
+
+            reg = "(\\d+)(?=号)";//匹配号前面的数字
+            p = Pattern.compile(reg);
+            m = p.matcher(located);
+            while (m.find()) {
+                oo.setRoomNumber(m.group(m.groupCount()));
+            }
         }
-        //附号
+
+        //验证基础字典中数据
+        String planningUse = PoiUtils.getCellValue(row.getCell(8));
+        typeDic = baseDataDicService.getDataDicByName(planningUses, planningUse);
+        if (typeDic == null) {
+            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(房屋用途)", i));
+            return false;
+        } else {
+            planningUse = String.valueOf(typeDic.getId());
+        }
+        //房屋用途
+        oo.setPlanningUse(planningUse);
+
+        //房屋结构
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(9)))) {
-            oo.setAttachedNumber(PoiUtils.getCellValue(row.getCell(9)));
-        }
-        //栋号
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(10)))) {
-            oo.setBuildingNumber(PoiUtils.getCellValue(row.getCell(10)));
-        }
-        //单元
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(11)))) {
-            oo.setUnit(PoiUtils.getCellValue(row.getCell(11)));
-        }
-        //楼层
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(12)))) {
-            oo.setFloor(PoiUtils.getCellValue(row.getCell(12)));
-        }
-        //房号
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(13)))) {
-            oo.setRoomNumber(PoiUtils.getCellValue(row.getCell(13)));
-        }
-        //登记时间
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(14)))) {
-            oo.setRegistrationTime(DateUtils.parse(PoiUtils.getCellValue(row.getCell(14))));
+            oo.setHousingStructure(PoiUtils.getCellValue(row.getCell(9)));
         }
         //房屋性质
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(15)))) {
-            oo.setNature(PoiUtils.getCellValue(row.getCell(15)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(10)))) {
+            oo.setNature(PoiUtils.getCellValue(row.getCell(10)));
         }
-        //规划用途
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(16)))) {
-            oo.setPlanningUse(PoiUtils.getCellValue(row.getCell(16)));
-        }
-        //总层数
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(17)))) {
-            oo.setFloorCount(Integer.parseInt(PoiUtils.getCellValue(row.getCell(17))));
+        //建筑面积
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(11)))) {
+            oo.setFloorArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(11))));
         }
         //证载面积
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(18)))) {
-            oo.setEvidenceArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(18))));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(12)))) {
+            oo.setEvidenceArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(12))));
         }
         //套内面积
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(19)))) {
-            oo.setInnerArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(19))));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(13)))) {
+            oo.setInnerArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(13))));
         }
-        //其它
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(20)))) {
-            oo.setOther(PoiUtils.getCellValue(row.getCell(20)));
-        }
-        //土地证号
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(21)))) {
-            oo.setLandNumber(PoiUtils.getCellValue(row.getCell(21)));
-        }
-        //土地取得方式
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(22)))) {
-            oo.setLandAcquisition(PoiUtils.getCellValue(row.getCell(22)));
-        }
-        //土地使用年限起
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(23)))) {
-            oo.setUseStartDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(23))));
-        }
-        //土地使用年限止
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(24)))) {
-            oo.setUseEndDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(24))));
-        }
-        //公摊面积
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(25)))) {
-            oo.setPublicArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(25))));
-        }
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(26)))) {
-            oo.setOtherNote(PoiUtils.getCellValue(row.getCell(26)));
+        //总层数
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(14)))) {
+            oo.setFloorCount(Integer.parseInt(PoiUtils.getCellValue(row.getCell(14))));
         }
         //登记机关
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(27)))) {
-            oo.setRegistrationAuthority(PoiUtils.getCellValue(row.getCell(27)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(15)))) {
+            oo.setRegistrationAuthority(PoiUtils.getCellValue(row.getCell(15)));
         }
-        //登记日期
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(28)))) {
-            oo.setRegistrationDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(28))));
+        //其它
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(16)))) {
+            oo.setOther(PoiUtils.getCellValue(row.getCell(16)));
         }
-        //地号
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(29)))) {
-            oo.setLandNumber(PoiUtils.getCellValue(row.getCell(29)));
+        //附件其它
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(17)))) {
+            oo.setOtherNote(PoiUtils.getCellValue(row.getCell(17)));
         }
-        //图号
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(30)))) {
-            oo.setGraphNumber(PoiUtils.getCellValue(row.getCell(30)));
+
+        //验证基础字典中数据
+        String purpose = PoiUtils.getCellValue(row.getCell(18));
+        typeDic = baseDataDicService.getDataDicByName(purposes, purpose);
+        if (typeDic == null) {
+            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(土地用途)", i));
+            return false;
+        } else {
+            purpose = String.valueOf(typeDic.getId());
+        }
+        //土地用途
+        oo.setPurpose(purpose);
+
+
+        //验证基础字典中数据
+        String useRightType = PoiUtils.getCellValue(row.getCell(19));
+        typeDic = baseDataDicService.getDataDicByName(useRightTypes, useRightType);
+        if (typeDic == null) {
+            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(权利性质)", i));
+            return false;
+        } else {
+            useRightType = String.valueOf(typeDic.getId());
+        }
+        //权利性质
+        oo.setUseRightType(useRightType);
+
+        //验证基础字典中数据
+        String type = PoiUtils.getCellValue(row.getCell(20));
+        typeDic = baseDataDicService.getDataDicByName(types, type);
+        if (typeDic == null) {
+            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(权利类型)", i));
+            return false;
+        } else {
+            type = String.valueOf(typeDic.getId());
+        }
+        //权利类型
+        oo.setType(type);
+
+        //土地使用年限起
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(21)))) {
+            oo.setUseStartDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(21))));
+        }
+        //土地使用年限止
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(22)))) {
+            oo.setUseEndDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(22))));
+        }
+        //共用宗地面积
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(23)))) {
+            oo.setUseRightArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(23))));
+        }
+        //公摊面积
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(24)))) {
+            oo.setApportionmentArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(24))));
         }
         //取得价格
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(32)))) {
-            oo.setAcquisitionPrice(new BigDecimal(PoiUtils.getCellValue(row.getCell(32))));
-        }
-        //使用权类型
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(33)))) {
-            oo.setUseRightType(PoiUtils.getCellValue(row.getCell(33)));
-        }
-        //终止日期
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(34)))) {
-            oo.setTerminationDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(34))));
-        }
-        //使用权面积
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(35)))) {
-            oo.setUseRightArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(35))));
-        }
-        //面积
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(36)))) {
-            oo.setAcreage(new BigDecimal(PoiUtils.getCellValue(row.getCell(36))));
-        }
-        //分摊面积
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(37)))) {
-            oo.setApportionmentArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(37))));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(25)))) {
+            oo.setAcquisitionPrice(new BigDecimal(PoiUtils.getCellValue(row.getCell(25))));
         }
         //记事
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(38)))) {
-            oo.setMemo(PoiUtils.getCellValue(row.getCell(38)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(26)))) {
+            oo.setMemo(PoiUtils.getCellValue(row.getCell(26)));
         }
-        //不动产单元号
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(39)))) {
-            oo.setRealEstateUnitNumber(PoiUtils.getCellValue(row.getCell(39)));
-        }
+
         return true;
     }
 
@@ -293,7 +323,6 @@ public class DeclarePublicService {
         } else {
             purpose = String.valueOf(typeDic.getId());
         }
-        //用途
         declareRealtyLandCert.setPurpose(purpose);
         if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))) {
             declareRealtyLandCert.setProvince(map.get("province"));
@@ -327,7 +356,7 @@ public class DeclarePublicService {
                 builder.append(String.format("\n第%s行异常：类型(国用/集用)不一致", i));
                 return false;
             }
-        }else {
+        } else {
             builder.append(String.format("\n第%s行异常：类型(国用/集用)不一致", i));
         }
         //土地使用权人

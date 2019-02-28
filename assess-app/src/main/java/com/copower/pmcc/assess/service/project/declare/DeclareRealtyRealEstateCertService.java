@@ -68,10 +68,10 @@ public class DeclareRealtyRealEstateCertService {
     public String importData(DeclareRealtyRealEstateCert declareRealtyRealEstateCert, MultipartFile multipartFile) throws Exception {
         String declareType = null;
         List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE);
-        if (!ObjectUtils.isEmpty(baseProjectClassifies)){
-            for (BaseProjectClassify baseProjectClassify:baseProjectClassifies){
-                if (Objects.equal(baseProjectClassify.getName(), DeclareTypeEnum.RealEstate.getKey())){
-                    declareType = String.format("%d",baseProjectClassify.getId());
+        if (!ObjectUtils.isEmpty(baseProjectClassifies)) {
+            for (BaseProjectClassify baseProjectClassify : baseProjectClassifies) {
+                if (Objects.equal(baseProjectClassify.getName(), DeclareTypeEnum.RealEstate.getKey())) {
+                    declareType = String.format("%d", baseProjectClassify.getId());
                 }
             }
         }
@@ -96,9 +96,9 @@ public class DeclareRealtyRealEstateCertService {
         //工作表的第一行
         row = sheet.getRow(0);
         //总列数
-        int colLength = row.getPhysicalNumberOfCells() !=0?row.getPhysicalNumberOfCells():row.getLastCellNum();
+        int colLength = row.getPhysicalNumberOfCells() != 0 ? row.getPhysicalNumberOfCells() : row.getLastCellNum();
         //总行数
-        int rowLength = sheet.getPhysicalNumberOfRows()!=0?sheet.getPhysicalNumberOfRows():sheet.getLastRowNum() ;
+        int rowLength = sheet.getPhysicalNumberOfRows() != 0 ? sheet.getPhysicalNumberOfRows() : sheet.getLastRowNum();
         rowLength = rowLength - startRowNumber;
         if (rowLength == 0) {
             builder.append("没有数据!");
@@ -112,7 +112,7 @@ public class DeclareRealtyRealEstateCertService {
             DeclareRealtyRealEstateCert oo = null;
             try {
                 row = sheet.getRow(i);
-                if (row==null){
+                if (row == null) {
                     builder.append(String.format("\n第%s行异常：%s", i, "没有数据"));
                     continue;
                 }
@@ -121,7 +121,7 @@ public class DeclareRealtyRealEstateCertService {
                 oo.setPlanDetailsId(declareRealtyRealEstateCert.getPlanDetailsId());
                 oo.setEnable(DeclareTypeEnum.Enable.getKey());
                 //excel处理
-                if (!declarePoiHelp.realEstateCert(oo,builder,row,i,land_uses)){
+                if (!declarePoiHelp.realEstateCert(oo, builder, row, i)) {
                     continue;
                 }
             } catch (Exception e) {
@@ -179,15 +179,19 @@ public class DeclareRealtyRealEstateCertService {
     }
 
     public DeclareRealtyRealEstateCertVo getDeclareRealtyRealEstateCertVo(DeclareRealtyRealEstateCert declareRealtyRealEstateCert) {
-        if (declareRealtyRealEstateCert == null){
-            return  null;
+        if (declareRealtyRealEstateCert == null) {
+            return null;
         }
         DeclareRealtyRealEstateCertVo vo = new DeclareRealtyRealEstateCertVo();
         BeanUtils.copyProperties(declareRealtyRealEstateCert, vo);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         vo.setUseEndDateFmt(sdf.format(declareRealtyRealEstateCert.getUseEndDate()));
-        vo.setRegistrationTimeFmt(sdf.format(declareRealtyRealEstateCert.getRegistrationTime()));
-        vo.setUseStartDateFmt(sdf.format(declareRealtyRealEstateCert.getUseStartDate()));
+        if (declareRealtyRealEstateCert.getRegistrationTime() != null) {
+            vo.setRegistrationTimeFmt(sdf.format(declareRealtyRealEstateCert.getRegistrationTime()));
+        }
+        if (declareRealtyRealEstateCert.getUseStartDate() != null) {
+            vo.setUseStartDateFmt(sdf.format(declareRealtyRealEstateCert.getUseStartDate()));
+        }
         if (StringUtils.isNotBlank(declareRealtyRealEstateCert.getProvince())) {
             if (NumberUtils.isNumber(declareRealtyRealEstateCert.getProvince())) {
                 //省
@@ -208,7 +212,7 @@ public class DeclareRealtyRealEstateCertService {
             if (NumberUtils.isNumber(declareRealtyRealEstateCert.getDistrict())) {
                 //县或者县
                 vo.setDistrictName(erpAreaService.getSysAreaName(declareRealtyRealEstateCert.getDistrict()));
-            }else {
+            } else {
                 vo.setDistrictName(declareRealtyRealEstateCert.getDistrict());
             }
         }
@@ -243,7 +247,7 @@ public class DeclareRealtyRealEstateCertService {
         return vo;
     }
 
-    public void eventWriteDeclareApply(DeclareApply declareApply){
+    public void eventWriteDeclareApply(DeclareApply declareApply) {
         DeclareRecord declareRecord = null;
         if (declareApply == null) {
             return;
@@ -254,7 +258,7 @@ public class DeclareRealtyRealEstateCertService {
         List<DeclareRealtyRealEstateCert> lists = declareRealtyRealEstateCertDao.getDeclareRealtyRealEstateCertList(query);
         for (DeclareRealtyRealEstateCert oo : lists) {
             declareRecord = new DeclareRecord();
-            BeanUtils.copyProperties(oo,declareRecord);
+            BeanUtils.copyProperties(oo, declareRecord);
             declareRecord.setId(null);
             declareRecord.setProjectId(declareApply.getProjectId());
             declareRecord.setDataTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class));
@@ -277,11 +281,10 @@ public class DeclareRealtyRealEstateCertService {
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
             } catch (Exception e1) {
-                logger.error("写入失败!",e1);
+                logger.error("写入失败!", e1);
             }
         }
     }
-
 
 
 }
