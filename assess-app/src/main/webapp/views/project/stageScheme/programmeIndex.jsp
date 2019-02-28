@@ -971,8 +971,8 @@
                         }
                         html = html.replace(/{name}/g, item.name == undefined ? "" : item.name);
                         html = html.replace(/{declareId}/g, item.declareRecordId == undefined ? "" : item.declareRecordId);
-                        html = html.replace(/{ownership}/g, item.ownership == undefined ? "" : AssessCommon.substring(item.ownership, 10));
-                        html = html.replace(/{seat}/g, item.seat == undefined ? "" : AssessCommon.substring(item.seat, 20));
+                        html = html.replace(/{ownership}/g, item.ownership == undefined ? "" : AssessCommon.substring(item.ownership, 100));
+                        html = html.replace(/{seat}/g, item.seat == undefined ? "" : AssessCommon.substring(item.seat, 100));
                         html = html.replace(/{certUse}/g, item.certUse == undefined ? "" : item.certUse);
                         html = html.replace(/{practicalUse}/g, item.practicalUse == undefined ? "" : item.practicalUse);
                         html = html.replace(/{floorArea}/g, item.floorArea == undefined ? "" : item.floorArea);

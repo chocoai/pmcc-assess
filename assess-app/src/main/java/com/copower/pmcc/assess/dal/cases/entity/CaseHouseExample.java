@@ -416,6 +416,76 @@ public class CaseHouseExample {
             return (Criteria) this;
         }
 
+        public Criteria andFloorDescIsNull() {
+            addCriterion("floor_desc is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescIsNotNull() {
+            addCriterion("floor_desc is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescEqualTo(String value) {
+            addCriterion("floor_desc =", value, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescNotEqualTo(String value) {
+            addCriterion("floor_desc <>", value, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescGreaterThan(String value) {
+            addCriterion("floor_desc >", value, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescGreaterThanOrEqualTo(String value) {
+            addCriterion("floor_desc >=", value, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescLessThan(String value) {
+            addCriterion("floor_desc <", value, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescLessThanOrEqualTo(String value) {
+            addCriterion("floor_desc <=", value, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescLike(String value) {
+            addCriterion("floor_desc like", value, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescNotLike(String value) {
+            addCriterion("floor_desc not like", value, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescIn(List<String> values) {
+            addCriterion("floor_desc in", values, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescNotIn(List<String> values) {
+            addCriterion("floor_desc not in", values, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescBetween(String value1, String value2) {
+            addCriterion("floor_desc between", value1, value2, "floorDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorDescNotBetween(String value1, String value2) {
+            addCriterion("floor_desc not between", value1, value2, "floorDesc");
+            return (Criteria) this;
+        }
+
         public Criteria andHuxingNameIsNull() {
             addCriterion("huxing_name is null");
             return (Criteria) this;

@@ -7,6 +7,7 @@
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
     <result column="floor" property="floor" jdbcType="INTEGER" />
+    <result column="floor_desc" property="floorDesc" jdbcType="VARCHAR" />
     <result column="huxing_name" property="huxingName" jdbcType="VARCHAR" />
     <result column="new_huxing_name" property="newHuxingName" jdbcType="VARCHAR" />
     <result column="cert_use" property="certUse" jdbcType="INTEGER" />
@@ -81,9 +82,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, unit_id, type, house_number, floor, huxing_name, new_huxing_name, cert_use, practical_use, 
-    orientation, area, right_interests_restriction, use_environment, description, case_date, 
-    version, creator, gmt_created, gmt_modified
+    id, unit_id, type, house_number, floor, floor_desc, huxing_name, new_huxing_name, 
+    cert_use, practical_use, orientation, area, right_interests_restriction, use_environment, 
+    description, case_date, version, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseExample" >
     select
@@ -120,19 +121,19 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_case_house (unit_id, type, house_number, 
-      floor, huxing_name, new_huxing_name, 
-      cert_use, practical_use, orientation, 
-      area, right_interests_restriction, use_environment, 
-      description, case_date, version, 
-      creator, gmt_created, gmt_modified
-      )
+      floor, floor_desc, huxing_name, 
+      new_huxing_name, cert_use, practical_use, 
+      orientation, area, right_interests_restriction, 
+      use_environment, description, case_date, 
+      version, creator, gmt_created, 
+      gmt_modified)
     values (#{unitId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{houseNumber,jdbcType=VARCHAR}, 
-      #{floor,jdbcType=INTEGER}, #{huxingName,jdbcType=VARCHAR}, #{newHuxingName,jdbcType=VARCHAR}, 
-      #{certUse,jdbcType=INTEGER}, #{practicalUse,jdbcType=INTEGER}, #{orientation,jdbcType=INTEGER}, 
-      #{area,jdbcType=DECIMAL}, #{rightInterestsRestriction,jdbcType=VARCHAR}, #{useEnvironment,jdbcType=INTEGER}, 
-      #{description,jdbcType=VARCHAR}, #{caseDate,jdbcType=TIMESTAMP}, #{version,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{floor,jdbcType=INTEGER}, #{floorDesc,jdbcType=VARCHAR}, #{huxingName,jdbcType=VARCHAR}, 
+      #{newHuxingName,jdbcType=VARCHAR}, #{certUse,jdbcType=INTEGER}, #{practicalUse,jdbcType=INTEGER}, 
+      #{orientation,jdbcType=INTEGER}, #{area,jdbcType=DECIMAL}, #{rightInterestsRestriction,jdbcType=VARCHAR}, 
+      #{useEnvironment,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{caseDate,jdbcType=TIMESTAMP}, 
+      #{version,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouse" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -151,6 +152,9 @@
       </if>
       <if test="floor != null" >
         floor,
+      </if>
+      <if test="floorDesc != null" >
+        floor_desc,
       </if>
       <if test="huxingName != null" >
         huxing_name,
@@ -207,6 +211,9 @@
       </if>
       <if test="floor != null" >
         #{floor,jdbcType=INTEGER},
+      </if>
+      <if test="floorDesc != null" >
+        #{floorDesc,jdbcType=VARCHAR},
       </if>
       <if test="huxingName != null" >
         #{huxingName,jdbcType=VARCHAR},
@@ -276,6 +283,9 @@
       <if test="record.floor != null" >
         floor = #{record.floor,jdbcType=INTEGER},
       </if>
+      <if test="record.floorDesc != null" >
+        floor_desc = #{record.floorDesc,jdbcType=VARCHAR},
+      </if>
       <if test="record.huxingName != null" >
         huxing_name = #{record.huxingName,jdbcType=VARCHAR},
       </if>
@@ -330,6 +340,7 @@
       type = #{record.type,jdbcType=INTEGER},
       house_number = #{record.houseNumber,jdbcType=VARCHAR},
       floor = #{record.floor,jdbcType=INTEGER},
+      floor_desc = #{record.floorDesc,jdbcType=VARCHAR},
       huxing_name = #{record.huxingName,jdbcType=VARCHAR},
       new_huxing_name = #{record.newHuxingName,jdbcType=VARCHAR},
       cert_use = #{record.certUse,jdbcType=INTEGER},
@@ -362,6 +373,9 @@
       </if>
       <if test="floor != null" >
         floor = #{floor,jdbcType=INTEGER},
+      </if>
+      <if test="floorDesc != null" >
+        floor_desc = #{floorDesc,jdbcType=VARCHAR},
       </if>
       <if test="huxingName != null" >
         huxing_name = #{huxingName,jdbcType=VARCHAR},
@@ -414,6 +428,7 @@
       type = #{type,jdbcType=INTEGER},
       house_number = #{houseNumber,jdbcType=VARCHAR},
       floor = #{floor,jdbcType=INTEGER},
+      floor_desc = #{floorDesc,jdbcType=VARCHAR},
       huxing_name = #{huxingName,jdbcType=VARCHAR},
       new_huxing_name = #{newHuxingName,jdbcType=VARCHAR},
       cert_use = #{certUse,jdbcType=INTEGER},

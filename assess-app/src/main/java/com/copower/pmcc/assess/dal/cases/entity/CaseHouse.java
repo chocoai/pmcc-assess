@@ -14,6 +14,8 @@ public class CaseHouse {
 
     private Integer floor;
 
+    private String floorDesc;
+
     private String huxingName;
 
     private String newHuxingName;
@@ -80,6 +82,14 @@ public class CaseHouse {
 
     public void setFloor(Integer floor) {
         this.floor = floor;
+    }
+
+    public String getFloorDesc() {
+        return floorDesc;
+    }
+
+    public void setFloorDesc(String floorDesc) {
+        this.floorDesc = floorDesc == null ? null : floorDesc.trim();
     }
 
     public String getHuxingName() {
