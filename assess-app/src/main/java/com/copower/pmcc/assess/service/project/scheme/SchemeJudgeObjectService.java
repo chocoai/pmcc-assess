@@ -363,10 +363,9 @@ public class SchemeJudgeObjectService {
      * @param ids
      */
     @Transactional
-    public void mergeJudge(String ids) throws BusinessException {
+    public void mergeJudge(String ids,Integer standardJudgeId) throws BusinessException {
         //1.循环需要合并的委估对象，将委估对象编号、权证号、所有权人、坐落、证载面积、评估面积等信息进行合并；其它信息取第一个权证信息
         //2.添加出合并委估对象，将参与合并的委估对象pid设置为新委估对象id，参与合并的委估对象设置为不可用
-
         //先验证如果不是同一区域的委估对象，则不允许合并
 
         List<Integer> judgeIds = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
@@ -374,7 +373,7 @@ public class SchemeJudgeObjectService {
         if (CollectionUtils.isEmpty(judgeObjectList) || judgeObjectList.size() <= 1)
             throw new BusinessException("参与合并的委估对象至少为两个");
         SchemeJudgeObject mergeJudgeObject = new SchemeJudgeObject();
-        BeanUtils.copyProperties(judgeObjectList.get(0), mergeJudgeObject);
+        BeanUtils.copyProperties(schemeJudgeObjectDao.getSchemeJudgeObject(standardJudgeId), mergeJudgeObject);
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             if (!mergeJudgeObject.getAreaGroupId().equals(schemeJudgeObject.getAreaGroupId()))
                 throw new BusinessException("参与合并的委估对象必须属于同一区域");
@@ -415,6 +414,7 @@ public class SchemeJudgeObjectService {
         mergeJudgeObject.setEvaluationArea(evaluationAreaTotal);
         mergeJudgeObject.setRentalPossessionDesc(rpdBuilder.toString());
         mergeJudgeObject.setCollateralFound(collateralBuilder.toString());
+        mergeJudgeObject.setStandardJudgeId(standardJudgeId);
         mergeJudgeObject.setBisSplit(false);
         mergeJudgeObject.setBisEnable(true);
         mergeJudgeObject.setBisMerge(true);
@@ -659,9 +659,9 @@ public class SchemeJudgeObjectService {
      * @param declareId
      * @return
      */
-    public BasicHouse getBasicHouseByDeclareId(Integer declareId) {
+    public BasicHouse getBasicHouseByDeclareId(Integer declareId, Integer categoryId) {
         try {
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE);
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE,categoryId);
             ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetails(declareId, projectPhase.getId());
             BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetails.getId());
             BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());

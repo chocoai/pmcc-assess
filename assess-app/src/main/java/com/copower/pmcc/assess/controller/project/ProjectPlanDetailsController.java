@@ -54,4 +54,16 @@ public class ProjectPlanDetailsController {
             return HttpResult.newErrorResult("调整责任人异常");
         }
     }
+
+    @ResponseBody
+    @PostMapping(name = "任务信息粘贴", value = "/taskPaste")
+    public HttpResult taskPaste(Integer copyPlanDetailsId, String pastePlanDetailsIds) {
+        try {
+            projectPlanDetailsService.taskPaste(copyPlanDetailsId, pastePlanDetailsIds);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error("调整责任人", e);
+            return HttpResult.newErrorResult("调整责任人异常");
+        }
+    }
 }

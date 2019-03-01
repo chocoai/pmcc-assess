@@ -175,9 +175,9 @@ public class SchemeProgrammeController {
 
     @ResponseBody
     @PostMapping(name = "委估对象合并", value = "/mergeJudge")
-    public HttpResult mergeJudge(String ids) {
+    public HttpResult mergeJudge(String ids,Integer standardJudgeId) {
         try {
-            schemeJudgeObjectService.mergeJudge(ids);
+            schemeJudgeObjectService.mergeJudge(ids,standardJudgeId);
             return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());

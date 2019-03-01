@@ -180,26 +180,26 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">交易时间<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">交易时间${empty surveyCaseStudy?"":'<span class="symbol required"></span>'} </label>
                 <div class="col-sm-3">
-                    <input required="required" placeholder="交易时间"
+                    <input placeholder="交易时间" ${empty surveyCaseStudy?"":'required'}
                            name="tradingTime" data-date-format="yyyy-mm-dd"
                            class="form-control date-picker dbdate tradingTime"
                            value="<fmt:formatDate value='${basicHouseTrading.tradingTime}' pattern='yyyy-MM-dd'/>">
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">交易总价（元）<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">交易总价（元）${empty surveyCaseStudy?"":'<span class="symbol required"></span>'} </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="交易总价（元）" class="form-control" name="tradingTotalPrice" required
-                           value="${basicHouseTrading.tradingTotalPrice}">
+                    <input type="text" placeholder="交易总价（元）" class="form-control" name="tradingTotalPrice"
+                    ${empty surveyCaseStudy?"":'required'} value="${basicHouseTrading.tradingTotalPrice}">
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">交易单价（元）<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">交易单价（元）${empty surveyCaseStudy?"":'<span class="symbol required"></span>'} </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="交易单价（元）" class="form-control" name="tradingUnitPrice" required
-                           value="${basicHouseTrading.tradingUnitPrice}">
+                    <input type="text" placeholder="交易单价（元）" class="form-control" name="tradingUnitPrice"
+                    ${empty surveyCaseStudy?"":'required'} value="${basicHouseTrading.tradingUnitPrice}">
                 </div>
             </div>
         </div>

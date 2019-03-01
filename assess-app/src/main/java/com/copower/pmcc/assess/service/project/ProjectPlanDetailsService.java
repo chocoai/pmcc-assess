@@ -1,14 +1,13 @@
 package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
 import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
@@ -82,6 +81,8 @@ public class ProjectPlanDetailsService {
     private ProjectInfoService projectInfoService;
     @Autowired
     private ProjectWorkStageService projectWorkStageService;
+    @Autowired
+    private SurveyAssetInventoryService surveyAssetInventoryService;
 
     public ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
         return projectPlanDetailsDao.getProjectPlanDetailsById(id);
@@ -105,7 +106,7 @@ public class ProjectPlanDetailsService {
         projectPlanDetails.setDeclareRecordId(declareId);
         projectPlanDetails.setProjectPhaseId(projectPhaseId);
         List<ProjectPlanDetails> planDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetails);
-        if(CollectionUtils.isEmpty(planDetailsList)) return null;
+        if (CollectionUtils.isEmpty(planDetailsList)) return null;
         return planDetailsList.get(0);
     }
 
@@ -519,6 +520,47 @@ public class ProjectPlanDetailsService {
         if (projectTask != null) {
             projectTask.setUserAccount(newExecuteUser);
             bpmRpcProjectTaskService.updateProjectTask(projectTask);
+        }
+    }
+
+    /**
+     * 任务粘贴
+     *
+     * @param copyPlanDetailsId
+     * @param pastePlanDetailsIds
+     */
+    public void taskPaste(Integer copyPlanDetailsId, String pastePlanDetailsIds) throws BusinessException {
+        //1.被复制的任务必须是叶子节点 2.目前只支持资产清查，现场查勘案例调查可被复制
+        //3.被粘贴的任务必须是还未开始的任务 4.被粘贴的任务必须与被复制数据的工作事项一致
+        //5.被粘贴的任务也必须是叶子节点
+        if (copyPlanDetailsId == null)
+            throw new BusinessException("无复制项信息");
+        if (StringUtils.isBlank(pastePlanDetailsIds))
+            throw new BusinessException("无粘贴项信息");
+        List<Integer> pasteIdList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(pastePlanDetailsIds));
+        if (CollectionUtils.isEmpty(pasteIdList)) return;
+        ProjectPlanDetails copyPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(copyPlanDetailsId);
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(copyPlanDetails.getProjectId());
+        if (copyPlanDetails == null || copyPlanDetails.getBisLastLayer() == Boolean.FALSE) return;
+        ProjectPhase inventoryPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
+        ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE, projectInfo.getProjectCategoryId());
+        ProjectPhase caseStudyPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE, projectInfo.getProjectCategoryId());
+        if (copyPlanDetails.getProjectPhaseId().equals(inventoryPhase.getId())
+                || copyPlanDetails.getProjectPhaseId().equals(sceneExplorePhase.getId())
+                || copyPlanDetails.getProjectPhaseId().equals(caseStudyPhase.getId())) {
+            for (Integer integer : pasteIdList) {
+                ProjectPlanDetails planDetails = projectPlanDetailsDao.getProjectPlanDetailsById(integer);
+                if (planDetails.getBisLastLayer() == Boolean.TRUE && planDetails.getProjectPhaseId().equals(copyPlanDetails.getProjectPhaseId())) {
+                    //资产清查数据复制
+                    if (planDetails.getProjectPhaseId().equals(inventoryPhase.getId())) {
+                        surveyAssetInventoryService.copyAssetInventory(copyPlanDetailsId,integer);
+                    }
+                    //现场查勘案例调查数据复制
+                    if (planDetails.getProjectPhaseId().equals(sceneExplorePhase.getId()) || planDetails.getProjectPhaseId().equals(caseStudyPhase.getId())) {
+
+                    }
+                }
+            }
         }
     }
 }

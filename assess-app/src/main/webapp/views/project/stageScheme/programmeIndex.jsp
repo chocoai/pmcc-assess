@@ -161,7 +161,6 @@
                                     <div class="col-sm-2">
                                         <select name="valueConnotation" class="form-control search-select select2"
                                                 multiple="multiple" required>
-                                            <option value="">-请选择-</option>
                                             <c:forEach items="${valueConnotations}" var="valueConnotation">
                                                 <option value="${valueConnotation.id}">${valueConnotation.name}</option>
                                             </c:forEach>
@@ -930,7 +929,7 @@
         //区域合并项html
         areaItemHtml: '<li data-areaGroupId="{areaGroupId}"> <p> <label>{areaName}</label> <a href="javascript://" onclick="programme.mergeItemRemove(this);" class="btn btn-xs btn-warning tooltips" style="float: right;"><i class="fa fa-minus fa-white" ></i></a> </p> </li>',
         //委估对象合并项html
-        judgeItemHtml: '<li data-judgeId="{judgeId}"> <p> <label>{name}</label> <a href="javascript://" onclick="programme.mergeItemRemove(this);" class="btn btn-xs btn-warning tooltips" style="float: right;"><i class="fa fa-minus fa-white" ></i></a> </p> </li>',
+        judgeItemHtml: '<li data-judgeId="{judgeId}"> <p> <label onclick="programme.setStandardJudge(this);">{mergeNumber}号估价对象</label> <a href="javascript://" onclick="programme.mergeItemRemove(this);" class="btn btn-xs btn-warning tooltips" style="float: right;"><i class="fa fa-minus fa-white" ></i></a> </p> </li>',
         currJudgeMethodButton: undefined //当前评估方法button
     };
 
@@ -980,7 +979,7 @@
                         //设值
                         var lastTr = tbody.find("tr:last");
                         lastTr.find('[data-name="setUse"]').val(item.setUse);
-                        if(item.bestUse){
+                        if (item.bestUse) {
                             lastTr.find('[data-name="bestUse"]').val(item.bestUse);
                         }
                         lastTr.find('td:last').find(item.bisSplit ? '.judge-split' : '.judge-remove').remove();
@@ -1156,8 +1155,16 @@
 
     //委估对象合并
     programme.mergeJudge = function (_this) {
+        //先验证该行数据是否填写正确及完整
+        var $form = $(_this).closest('form');
+        var $tr = $(_this).closest('tr');
+        var passFlag = $form.validate().element($tr.find('[data-name=setUse]'));
+        if (!passFlag) return false;
+        passFlag = $form.validate().element($tr.find('[data-name=evaluationArea]'));
+        if (!passFlag) return false;
+
         programme.saveProgrammeArea($(_this).closest('.area_panel'));
-        var name = $(_this).closest('tr').find('[data-name="seat"]').find('span').text();
+        var mergeNumber = $(_this).closest('tr').find('[data-name="mergeNumber"]').text();
         var judgeId = $(_this).closest('tr').find('[data-name="id"]').val();
         var html = programme.config.judgeItemHtml;
         if (programme.config.judgePopIndex <= 0) {
@@ -1169,13 +1176,15 @@
                 area: ['420px', '300px'], //宽高
                 content: '<ul id="judge-merge-ul" class="to_do"></ul>',
                 yes: function (index, layero) {
-                    programme.mergeJudgeSubmit(_this, $(_this).closest('.area_panel'));
+                    programme.saveProgrammeAll(function () {
+                        programme.mergeJudgeSubmit(_this, $(_this).closest('.area_panel'));
+                    });
                 },
                 end: function () {
                     programme.config.judgePopIndex = 0;
                 },
                 success: function () {
-                    $("#judge-merge-ul").prepend(html.replace(/{name}/g, name).replace(/{judgeId}/g, judgeId));
+                    $("#judge-merge-ul").prepend(html.replace(/{mergeNumber}/g, mergeNumber).replace(/{judgeId}/g, judgeId));
                 }
             });
         } else {
@@ -1188,7 +1197,7 @@
                 }
             })
             if (!isExist) {
-                $("#judge-merge-ul").prepend(html.replace(/{name}/g, name).replace(/{judgeId}/g, judgeId));
+                $("#judge-merge-ul").prepend(html.replace(/{mergeNumber}/g, mergeNumber).replace(/{judgeId}/g, judgeId));
             }
         }
     };
@@ -1196,14 +1205,23 @@
     //委估对象合并提交
     programme.mergeJudgeSubmit = function (_this, panel) {
         var judgeIdArray = [];
+        var standardJudgeId = null;
         $("#judge-merge-ul").find('li').each(function () {
             judgeIdArray.push($(this).attr('data-judgeId'));
+            if ($(this).attr('data-standard-flag') == 'true') {
+                standardJudgeId = $(this).attr('data-judgeId');
+            }
         })
+        if (!standardJudgeId) {
+            Alert('参与合并的估价对象中未设置标准房地产');
+            return false;
+        }
         Loading.progressShow();
         $.ajax({
             url: '${pageContext.request.contextPath}/schemeProgramme/mergeJudge',
             data: {
-                ids: judgeIdArray.join()
+                ids: judgeIdArray.join(),
+                standardJudgeId: standardJudgeId
             },
             type: "post",
             dataType: "json",
@@ -1283,6 +1301,14 @@
         return data;
     };
 
+    //设置合并的估价对象
+    programme.setStandardJudge = function (_this) {
+        $(_this).closest('ul').find('li').removeAttr('data-standard-flag').removeAttr('data-standard-explain');
+        $(_this).closest('ul').find('label').css('color', '');
+        $(_this).closest('li').attr('data-standard-flag', 'true');
+        $(_this).css('color', 'red');
+    }
+
     //保存区域下方案
     programme.saveProgrammeArea = function (areaPanel) {
         $.ajax({
@@ -1303,7 +1329,7 @@
     };
 
     //保存区域下方案
-    programme.saveProgrammeAll = function (_this) {
+    programme.saveProgrammeAll = function (callback) {
         var data = [];
         $(".area_panel").each(function () {
             data.push(programme.getProgrammeAreaData($(this)));
@@ -1319,7 +1345,11 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    if (callback) {
+                        callback();
+                    } else {
+                        toastr.success('保存成功');
+                    }
                 } else {
                     Alert("保存成功失败:" + result.errmsg);
                 }

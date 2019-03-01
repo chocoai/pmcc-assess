@@ -1866,6 +1866,136 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
+        public Criteria andStandardJudgeIdIsNull() {
+            addCriterion("standard_judge_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdIsNotNull() {
+            addCriterion("standard_judge_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdEqualTo(Integer value) {
+            addCriterion("standard_judge_id =", value, "standardJudgeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdNotEqualTo(Integer value) {
+            addCriterion("standard_judge_id <>", value, "standardJudgeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdGreaterThan(Integer value) {
+            addCriterion("standard_judge_id >", value, "standardJudgeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("standard_judge_id >=", value, "standardJudgeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdLessThan(Integer value) {
+            addCriterion("standard_judge_id <", value, "standardJudgeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdLessThanOrEqualTo(Integer value) {
+            addCriterion("standard_judge_id <=", value, "standardJudgeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdIn(List<Integer> values) {
+            addCriterion("standard_judge_id in", values, "standardJudgeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdNotIn(List<Integer> values) {
+            addCriterion("standard_judge_id not in", values, "standardJudgeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdBetween(Integer value1, Integer value2) {
+            addCriterion("standard_judge_id between", value1, value2, "standardJudgeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("standard_judge_id not between", value1, value2, "standardJudgeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeExplainIsNull() {
+            addCriterion("standard_judge_explain is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeExplainIsNotNull() {
+            addCriterion("standard_judge_explain is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeExplainEqualTo(String value) {
+            addCriterion("standard_judge_explain =", value, "standardJudgeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeExplainNotEqualTo(String value) {
+            addCriterion("standard_judge_explain <>", value, "standardJudgeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeExplainGreaterThan(String value) {
+            addCriterion("standard_judge_explain >", value, "standardJudgeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeExplainGreaterThanOrEqualTo(String value) {
+            addCriterion("standard_judge_explain >=", value, "standardJudgeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeExplainLessThan(String value) {
+            addCriterion("standard_judge_explain <", value, "standardJudgeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeExplainLessThanOrEqualTo(String value) {
+            addCriterion("standard_judge_explain <=", value, "standardJudgeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeExplainLike(String value) {
+            addCriterion("standard_judge_explain like", value, "standardJudgeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeExplainNotLike(String value) {
+            addCriterion("standard_judge_explain not like", value, "standardJudgeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeExplainIn(List<String> values) {
+            addCriterion("standard_judge_explain in", values, "standardJudgeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeExplainNotIn(List<String> values) {
+            addCriterion("standard_judge_explain not in", values, "standardJudgeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeExplainBetween(String value1, String value2) {
+            addCriterion("standard_judge_explain between", value1, value2, "standardJudgeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeExplainNotBetween(String value1, String value2) {
+            addCriterion("standard_judge_explain not between", value1, value2, "standardJudgeExplain");
+            return (Criteria) this;
+        }
+
         public Criteria andBisSplitIsNull() {
             addCriterion("bis_split is null");
             return (Criteria) this;
