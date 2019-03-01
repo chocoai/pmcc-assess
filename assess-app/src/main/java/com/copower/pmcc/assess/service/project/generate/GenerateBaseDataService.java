@@ -223,7 +223,6 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getScopePropertyExplain() throws Exception {
-        StringBuilder stringBuilder = new StringBuilder(24);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
                 projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
@@ -256,12 +255,8 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        stringBuilder.append(" ");
-        if (CollectionUtils.isNotEmpty(stringSet)) {
-            stringSet.stream().forEach(s -> stringBuilder.append(s).append(","));
-            stringBuilder.append(".");
-        }
-        return stringBuilder.toString();
+        String s = toSetString(stringSet);
+        return s;
     }
 
     /**
@@ -270,23 +265,17 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getBuildingAndAssessArea() {
-        StringBuilder stringBuilder = new StringBuilder(24);
+        Set<String> stringSet = Sets.newHashSet();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
                 if (schemeJudgeObjectList.get(i).getEvaluationArea() != null) {
-                    stringBuilder.append(schemeJudgeObjectList.get(i).getEvaluationArea().toString()).append("㎡");
-                    if (i == schemeJudgeObjectList.size() - 1) {
-                        stringBuilder.append(";");
-                    } else {
-                        stringBuilder.append(",");
-                    }
+                    stringSet.add(String.format("%s:%s㎡", getSchemeJudgeObjectShowName(schemeJudgeObjectList.get(i)), schemeJudgeObjectList.get(i).getEvaluationArea().toString()));
                 }
             }
-        } else {
-            stringBuilder.append(" ");
         }
-        return stringBuilder.toString();
+        String s = toSetString(stringSet);
+        return s;
     }
 
     /**
@@ -296,7 +285,6 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getSeat() throws Exception {
-        StringBuilder stringBuilder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
                 projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
@@ -326,13 +314,7 @@ public class GenerateBaseDataService {
                                 BasicEstate basicEstate = generateBaseExamineService.getEstate();
                                 if (basicEstate != null) {
                                     if (StringUtils.isNotBlank(basicEstate.getStreet()) && StringUtils.isNotBlank(basicEstate.getName())) {
-                                        stringBuilder.append(schemeJudgeObject.getNumber());
-                                        if (schemeJudgeObject.getSplitNumber() != null) {
-                                            stringBuilder.append("-").append(schemeJudgeObject.getSplitNumber());
-                                        }
-                                        stringBuilder.append("号");
-                                        stringBuilder.append(",");
-                                        stringSet.add(String.format("%s%s", basicEstate.getStreet(), basicEstate.getName()));
+                                        stringSet.add(String.format("%s:%s%s", getSchemeJudgeObjectShowName(schemeJudgeObject), basicEstate.getStreet(), basicEstate.getName()));
                                     }
                                 }
                             }
@@ -341,23 +323,8 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        if (StringUtils.isNotBlank(stringBuilder.toString())) {
-            stringBuilder.append("委估对象");
-        }
-        if (CollectionUtils.isNotEmpty(stringSet)) {
-            List<String> stringList = Lists.newArrayList(stringSet);
-            for (int i = 0; i < stringList.size(); i++) {
-                if (StringUtils.isNotBlank(stringList.get(i))) {
-                    stringBuilder.append(stringList.get(i));
-                    if (i == stringList.size() - 1) {
-                        stringBuilder.append(";");
-                    } else {
-                        stringBuilder.append(",");
-                    }
-                }
-            }
-        }
-        return stringBuilder.toString();
+        String s = toSetString(stringSet);
+        return s;
     }
 
     /**
@@ -419,20 +386,6 @@ public class GenerateBaseDataService {
 
 
     /**
-     * 大写金额
-     *
-     * @return
-     */
-    public String getCapitalizationAmount() {
-        String price = getTotalRealEstatePrice();
-        if (NumberUtils.isNumber(price)) {
-            return CnNumberUtils.toUppercaseSubstring(price);
-        } else {
-            return "";
-        }
-    }
-
-    /**
      * 外聘专家工作概况
      *
      * @return
@@ -449,7 +402,6 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getCo_ownership() throws Exception {
-        StringBuilder stringBuilder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
         List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
         List<DeclareRealtyRealEstateCert> declareRealtyRealEstateCertList = Lists.newArrayList();
@@ -478,20 +430,8 @@ public class GenerateBaseDataService {
                 }
             });
         }
-        if (CollectionUtils.isNotEmpty(stringSet)) {
-            List<String> stringList = Lists.newArrayList(stringSet);
-            for (int i = 0; i < stringList.size(); i++) {
-                stringBuilder.append(stringList.get(i));
-                if (i == stringList.size() - 1) {
-                    stringBuilder.append(";");
-                } else {
-                    stringBuilder.append(",");
-                }
-            }
-        } else {
-            stringBuilder.append(" ");
-        }
-        return stringBuilder.toString();
+        String s = toSetString(stringSet);
+        return s;
     }
 
     /**
@@ -738,8 +678,6 @@ public class GenerateBaseDataService {
         //存在换行符必须使用模板
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        builder.getFont().setName(AsposeUtils.SongStyleFontName);
-        builder.getFont().setSize(14);
         String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.CashAnalysisRealEstateMarket.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
@@ -761,7 +699,6 @@ public class GenerateBaseDataService {
         //存在换行符必须使用模板
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        builder.getFont().setName(AsposeUtils.ImitationSongGB2312FontName);
         String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.CashAnalysisOthers.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
@@ -1080,24 +1017,12 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             schemeJudgeObjectList.stream().forEach(schemeJudgeObject -> {
                 if (StringUtils.isNotBlank(schemeJudgeObject.getLiquidRatio())) {
-                    stringSet.add(String.format("%s:%s", schemeJudgeObject.getName(), schemeJudgeObject.getLiquidRatio()));
+                    stringSet.add(String.format("%s:%s", getSchemeJudgeObjectShowName(schemeJudgeObject), schemeJudgeObject.getLiquidRatio()));
                 }
             });
         }
-        if (CollectionUtils.isNotEmpty(stringSet)) {
-            List<String> stringList = Lists.newArrayList(stringSet);
-            for (int i = 0; i < stringList.size(); i++) {
-                stringBuilder.append(stringList.get(i));
-                if (i == stringList.size() - 1) {
-                    stringBuilder.append(";");
-                } else {
-                    stringBuilder.append(",");
-                }
-            }
-        } else {
-            stringBuilder.append(" ");
-        }
-        return stringBuilder.toString();
+        String s = toSetString(stringSet);
+        return s;
     }
 
     /**
@@ -1109,8 +1034,12 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:17
      */
     public String getReportCity() throws Exception {
-        //ReportCity
-        return getSchemeAreaGroup().getAreaName();
+        String reportCity = getSchemeAreaGroup().getAreaName();
+        if (StringUtils.isNotBlank(reportCity)) {
+            return reportCity;
+        } else {
+            return " ";
+        }
     }
 
     /**
@@ -1123,8 +1052,7 @@ public class GenerateBaseDataService {
          * 慢揾英雄泪，相离处世家 ....
          * 没缘法转眼分离栅
          */
-        StringBuilder builder = new StringBuilder(24);
-        Set<BigDecimal> bigDecimalSet = Sets.newHashSet();
+        Set<String> stringSet = Sets.newHashSet();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
                 projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
@@ -1145,25 +1073,15 @@ public class GenerateBaseDataService {
                         SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByPlanDetailsId(projectPlanDetails.getId());
                         if (schemeReimbursement != null) {
                             if (schemeReimbursement.getMortgageTotalPrice() != null) {
-                                bigDecimalSet.add(schemeReimbursement.getMortgageTotalPrice());
+                                stringSet.add(schemeReimbursement.getMortgageTotalPrice().toString());
                             }
                         }
                     }
                 }
             }
         }
-        if (CollectionUtils.isNotEmpty(bigDecimalSet)) {
-            List<BigDecimal> bigDecimalList = Lists.newArrayList(bigDecimalSet);
-            for (int i = 0; i < bigDecimalList.size(); i++) {
-                builder.append(bigDecimalList.get(i).toString());
-                if (i != bigDecimalList.size() - 1) {
-                    builder.append(",");
-                }
-            }
-        } else {
-            builder.append(" ");
-        }
-        return builder.toString();
+        String s = toSetString(stringSet);
+        return s;
     }
 
     /**
@@ -1172,8 +1090,8 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getTotalAmountMortgageValueCapitalization() {
-        StringBuilder builder = new StringBuilder(24);
         Set<BigDecimal> bigDecimalSet = Sets.newHashSet();
+        Set<String> stringSet = Sets.newHashSet();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
                 projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
@@ -1204,15 +1122,11 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(bigDecimalSet)) {
             List<BigDecimal> bigDecimalList = Lists.newArrayList(bigDecimalSet);
             for (int i = 0; i < bigDecimalList.size(); i++) {
-                builder.append(CnNumberUtils.toUppercaseSubstring(bigDecimalList.get(i).toString()));
-                if (i != bigDecimalList.size() - 1) {
-                    builder.append(",");
-                }
+                stringSet.add(CnNumberUtils.toUppercaseSubstring(bigDecimalList.get(i).toString()));
             }
-        } else {
-            builder.append(" ");
         }
-        return builder.toString();
+        String s = toSetString(stringSet);
+        return s;
     }
 
     /**
@@ -1221,7 +1135,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getValuationProjectName() throws Exception {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(24);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
                 projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
@@ -1300,21 +1214,17 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getSeparationCertificateUses() throws Exception {
-        StringBuilder builder = new StringBuilder(24);
+        Set<String> stringSet = Sets.newHashSet();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
                 if (StringUtils.isNotBlank(schemeJudgeObjectList.get(i).getCertUse())) {
-                    builder.append(schemeJudgeObjectList.get(i).getName()).append(schemeJudgeObjectList.get(i).getCertUse());
-                    if (i == schemeJudgeObjectList.size() - 1) {
-                        builder.append(";");
-                    } else {
-                        builder.append(",");
-                    }
+                    stringSet.add(String.format("%s:%s", getSchemeJudgeObjectShowName(schemeJudgeObjectList.get(i)), schemeJudgeObjectList.get(i).getCertUse()));
                 }
             }
         }
-        return builder.toString();
+        String s = toSetString(stringSet);
+        return s;
     }
 
 
@@ -1325,32 +1235,18 @@ public class GenerateBaseDataService {
      */
     public String getEvaluationPriceCateGoryOne() {
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        StringBuilder builder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
                 if (schemeJudgeObjectList.get(i).getPrice() != null) {
                     if (NumberUtils.isNumber(schemeJudgeObjectList.get(i).getPrice().toString())) {
-                        stringSet.add(String.format("%s:%s", schemeJudgeObjectList.get(i).getName(), schemeJudgeObjectList.get(i).getPrice().toString()));
+                        stringSet.add(String.format("%s:%s", getSchemeJudgeObjectShowName(schemeJudgeObjectList.get(i)), schemeJudgeObjectList.get(i).getPrice().toString()));
                     }
                 }
             }
         }
-        if (CollectionUtils.isNotEmpty(stringSet)) {
-            List<String> stringList = Lists.newArrayList(stringSet);
-            for (int i = 0; i < stringList.size(); i++) {
-                builder.append(stringList.get(i));
-                if (i == stringList.size() - 1) {
-                    builder.append(";");
-                } else {
-                    builder.append(",");
-                }
-            }
-        }
-        if (StringUtils.isEmpty(builder.toString())) {
-            builder.append(" ");
-        }
-        return builder.toString();
+        String s = toSetString(stringSet);
+        return s;
     }
 
     /**
@@ -1396,32 +1292,18 @@ public class GenerateBaseDataService {
      */
     public String getEvaluationAreaCateGoryOne() {
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        StringBuilder builder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
                 if (schemeJudgeObjectList.get(i).getPrice() != null) {
                     if (NumberUtils.isNumber(schemeJudgeObjectList.get(i).getEvaluationArea().toString())) {
-                        stringSet.add(String.format("%s:%s", schemeJudgeObjectList.get(i).getName(), schemeJudgeObjectList.get(i).getEvaluationArea().toString()));
+                        stringSet.add(String.format("%s:%s", getSchemeJudgeObjectShowName(schemeJudgeObjectList.get(i)), schemeJudgeObjectList.get(i).getEvaluationArea().toString()));
                     }
                 }
             }
         }
-        if (CollectionUtils.isNotEmpty(stringSet)) {
-            List<String> stringList = Lists.newArrayList(stringSet);
-            for (int i = 0; i < stringList.size(); i++) {
-                builder.append(stringList.get(i));
-                if (i == stringList.size() - 1) {
-                    builder.append(";");
-                } else {
-                    builder.append(",");
-                }
-            }
-        }
-        if (StringUtils.isEmpty(builder.toString())) {
-            builder.append(" ");
-        }
-        return builder.toString();
+        String s = toSetString(stringSet);
+        return s;
     }
 
     /**
@@ -1431,20 +1313,19 @@ public class GenerateBaseDataService {
      */
     public String getTotalValueValuationObject() {
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        BigDecimal temp = new BigDecimal(0);
+        Set<String> stringSet = Sets.newHashSet();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (schemeJudgeObject.getEvaluationArea() != null && schemeJudgeObject.getPrice() != null) {
                     if (NumberUtils.isNumber(schemeJudgeObject.getEvaluationArea().toString()) && NumberUtils.isNumber(schemeJudgeObject.getPrice().toString())) {
-                        BigDecimal bigDecimalA = new BigDecimal(schemeJudgeObject.getEvaluationArea().toString());
-                        BigDecimal bigDecimalB = new BigDecimal(schemeJudgeObject.getPrice().toString());
-                        BigDecimal bigDecimal = bigDecimalA.multiply(bigDecimalB);
-                        temp = bigDecimal.add(temp);
+                        BigDecimal bigDecimal = schemeJudgeObject.getEvaluationArea().multiply(schemeJudgeObject.getPrice());
+                        stringSet.add(String.format("%s:%s", getSchemeJudgeObjectShowName(schemeJudgeObject), bigDecimal.toString()));
                     }
                 }
             }
         }
-        return temp.toString();
+        String s = toSetString(stringSet);
+        return s;
     }
 
 
@@ -1454,27 +1335,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getEvaluationPriceCateGoryTotalOne() {
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        StringBuilder builder = new StringBuilder(24);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                if (schemeJudgeObjectList.get(i).getEvaluationArea() != null && schemeJudgeObjectList.get(i).getPrice() != null) {
-                    if (NumberUtils.isNumber(schemeJudgeObjectList.get(i).getEvaluationArea().toString()) && NumberUtils.isNumber(schemeJudgeObjectList.get(i).getPrice().toString())) {
-                        BigDecimal bigDecimalA = new BigDecimal(schemeJudgeObjectList.get(i).getEvaluationArea().toString());
-                        BigDecimal bigDecimalB = new BigDecimal(schemeJudgeObjectList.get(i).getPrice().toString());
-                        BigDecimal bigDecimal = bigDecimalA.multiply(bigDecimalB);
-                        builder.append(schemeJudgeObjectList.get(i).getName()).append(":");
-                        builder.append(bigDecimal.toString());
-                        if (i == schemeJudgeObjectList.size() - 1) {
-                            builder.append(";");
-                        } else {
-                            builder.append(",");
-                        }
-                    }
-                }
-            }
-        }
-        return builder.toString();
+        return this.getTotalValueValuationObject();
     }
 
 
@@ -1648,7 +1509,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getWeightSpecification() {
-        StringBuilder builder = new StringBuilder();
+        Set<String> stringSet = Sets.newHashSet();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
@@ -1659,17 +1520,13 @@ public class GenerateBaseDataService {
                 if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
                     SchemeSurePrice schemeSurePrice = schemeSurePriceService.getSurePriceByPlanDetailsId(projectPlanDetailsList.get(0).getId());
                     if (schemeSurePrice != null) {
-                        builder.append(schemeSurePrice.getWeightExplain());
-                        if (i == schemeJudgeObjectList.size() - 1) {
-                            builder.append(";");
-                        } else {
-                            builder.append(",");
-                        }
+                        stringSet.add(String.format("%s:%s", getSchemeJudgeObjectShowName(schemeJudgeObjectList.get(i)), schemeSurePrice.getWeightExplain()));
                     }
                 }
             }
         }
-        return builder.toString();
+        String s = toSetString(stringSet);
+        return s;
     }
 
     /**
@@ -1678,24 +1535,44 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getTotalRealEstatePrice() {
+        Set<String> stringSet = Sets.newHashSet();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        BigDecimal area = new BigDecimal(0);
-        BigDecimal price = new BigDecimal(0);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (schemeJudgeObject.getEvaluationArea() != null && schemeJudgeObject.getPrice() != null) {
                     if (NumberUtils.isNumber(schemeJudgeObject.getEvaluationArea().toString()) && NumberUtils.isNumber(schemeJudgeObject.getPrice().toString())) {
-                        area = area.add(schemeJudgeObject.getEvaluationArea());
-                        price = price.add(schemeJudgeObject.getPrice());
+                        BigDecimal bigDecimal = schemeJudgeObject.getEvaluationArea().multiply(schemeJudgeObject.getPrice());
+                        stringSet.add(String.format("%s:%s", getSchemeJudgeObjectShowName(schemeJudgeObject), bigDecimal.toString()));
                     }
                 }
             }
         }
-        if (area.doubleValue() > 0 && price.doubleValue() > 0) {
-            BigDecimal decimal = area.multiply(price);
-            return String.format("%s", decimal.toString());
+        String s = toSetString(stringSet);
+        return s;
+    }
+
+    /**
+     * 大写金额
+     *
+     * @return
+     */
+    public String getCapitalizationAmount() {
+        Set<String> stringSet = Sets.newHashSet();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                if (schemeJudgeObject.getEvaluationArea() != null && schemeJudgeObject.getPrice() != null) {
+                    if (NumberUtils.isNumber(schemeJudgeObject.getEvaluationArea().toString()) && NumberUtils.isNumber(schemeJudgeObject.getPrice().toString())) {
+                        BigDecimal bigDecimal = schemeJudgeObject.getEvaluationArea().multiply(schemeJudgeObject.getPrice());
+                        if (NumberUtils.isNumber(bigDecimal.toString())) {
+                            stringSet.add(String.format("%s:%s", getSchemeJudgeObjectShowName(schemeJudgeObject), CnNumberUtils.toUppercaseSubstring(bigDecimal.toString())));
+                        }
+                    }
+                }
+            }
         }
-        return "";
+        String s = toSetString(stringSet);
+        return s;
     }
 
     /**
@@ -1705,18 +1582,14 @@ public class GenerateBaseDataService {
      */
     public String getStatutoryOptimumReimbursement() {
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        StringBuilder builder = new StringBuilder();
+        Set<String> stringSet = Sets.newHashSet();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                builder.append(schemeJudgeObjectList.get(i).getName()).append(schemeReimbursementService.getFullDescription(schemeJudgeObjectList.get(i).getId()));
-                if (i == schemeJudgeObjectList.size() - 1) {
-                    builder.append(";");
-                } else {
-                    builder.append(",");
-                }
+                stringSet.add(String.format("%s:%s", getSchemeJudgeObjectShowName(schemeJudgeObjectList.get(i)), schemeReimbursementService.getFullDescription(schemeJudgeObjectList.get(i).getId())));
             }
         }
-        return builder.toString();
+        String s = toSetString(stringSet);
+        return s;
     }
 
     /**
@@ -1822,34 +1695,24 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getAssessmentMethods() {
-        StringBuilder builder = new StringBuilder(24);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         Set<String> stringSet = Sets.newHashSet();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            StringBuilder builder = new StringBuilder(24);
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
+                    builder.append(getSchemeJudgeObjectShowName(schemeJudgeObject)).append(":");
                     for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
-                        stringSet.add(String.format("%s", schemeJudgeFunction.getName()));
+                        builder.append("评估方法-").append(schemeJudgeFunction.getName());
                     }
                 }
+                stringSet.add(builder.toString());
+                builder.delete(0, builder.toString().length());
             }
         }
-        List<String> stringList = Lists.newArrayList(stringSet);
-        if (CollectionUtils.isNotEmpty(stringList)) {
-            for (int i = 0; i < stringList.size(); i++) {
-                builder.append(stringList.get(i));
-                if (i == stringList.size() - 1) {
-                    builder.append(";");
-                } else {
-                    builder.append(",");
-                }
-            }
-        }
-        if (StringUtils.isEmpty(builder.toString())) {
-            builder.append(" ");
-        }
-        return builder.toString();
+        String s = toSetString(stringSet);
+        return s;
     }
 
     /**
@@ -1859,34 +1722,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getEvaluationMethodValuationObject() throws Exception {
-        StringBuilder builder = new StringBuilder(24);
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        Set<String> stringSet = Sets.newHashSet();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
-                if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                    for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
-                        stringSet.add(String.format("%s%s", schemeJudgeObject.getName(), schemeJudgeFunction.getName()));
-                    }
-                }
-            }
-        }
-        List<String> stringList = Lists.newArrayList(stringSet);
-        if (CollectionUtils.isNotEmpty(stringList)) {
-            for (int i = 0; i < stringList.size(); i++) {
-                builder.append(stringList.get(i));
-                if (i == stringList.size() - 1) {
-                    builder.append(";");
-                } else {
-                    builder.append(",");
-                }
-            }
-        }
-        if (StringUtils.isEmpty(builder.toString())) {
-            builder.append(" ");
-        }
-        return builder.toString();
+        return getAssessmentMethods();
     }
 
     /**
@@ -1905,7 +1741,7 @@ public class GenerateBaseDataService {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                    builder.append(schemeJudgeObject.getName()).append("");
+                    builder.append(getSchemeJudgeObjectShowName(schemeJudgeObject)).append("");
                     for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
                         if (StringUtils.isNotBlank(schemeJudgeFunction.getThinking()) && schemeJudgeFunction.getBisApplicable()) {
                             builder.append(schemeJudgeFunction.getName()).append("思路:");
@@ -1917,21 +1753,8 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        List<String> stringList = Lists.newArrayList(stringSet);
-        if (CollectionUtils.isNotEmpty(stringList)) {
-            for (int i = 0; i < stringList.size(); i++) {
-                builder.append(stringList.get(i));
-                if (i == stringList.size() - 1) {
-                    builder.append(";");
-                } else {
-                    builder.append(",");
-                }
-            }
-        }
-        if (StringUtils.isEmpty(builder.toString())) {
-            builder.append(" ");
-        }
-        return builder.toString();
+        String s = toSetString(stringSet);
+        return s;
     }
 
     /**
@@ -1947,7 +1770,7 @@ public class GenerateBaseDataService {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                    builder.append(schemeJudgeObject.getName()).append("");
+                    builder.append(getSchemeJudgeObjectShowName(schemeJudgeObject));
                     for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
                         if (StringUtils.isNotBlank(schemeJudgeFunction.getApplicableReason())) {
                             builder.append(schemeJudgeFunction.getName()).append("估价方法:");
@@ -1959,21 +1782,8 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        List<String> stringList = Lists.newArrayList(stringSet);
-        if (CollectionUtils.isNotEmpty(stringList)) {
-            for (int i = 0; i < stringList.size(); i++) {
-                builder.append(stringList.get(i));
-                if (i == stringList.size() - 1) {
-                    builder.append(";");
-                } else {
-                    builder.append(",");
-                }
-            }
-        }
-        if (StringUtils.isEmpty(builder.toString())) {
-            builder.append(" ");
-        }
-        return builder.toString();
+        String s = toSetString(stringSet);
+        return s;
     }
 
     /**
@@ -1987,19 +1797,16 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
             List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
+            builder.append(getSchemeJudgeObjectShowName(schemeJudgeObject));
             if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
-                    builder.append(schemeJudgeFunction.getName());
-                }
-            }
-            if (schemeJudgeFunctionList.size() > 1) {
+                builder.append(":").append(schemeJudgeFunctionList.get(0).getName());
                 builder.append("等");
             }
         }
         if (StringUtils.isNotBlank(builder.toString())) {
             return builder.toString();
         }
-        return "";
+        return " ";
     }
 
     /**
@@ -6349,8 +6156,8 @@ public class GenerateBaseDataService {
 
     private String toSetString(Set<String> stringSet) {
         StringBuilder builder = new StringBuilder(24);
-        List<String> stringList = Lists.newArrayList(stringSet);
-        if (CollectionUtils.isNotEmpty(stringList)) {
+        if (CollectionUtils.isNotEmpty(stringSet)) {
+            List<String> stringList = Lists.newArrayList(stringSet);
             for (int i = 0; i < stringList.size(); i++) {
                 if (StringUtils.isNotBlank(stringList.get(i))) {
                     builder.append(stringList.get(i));
@@ -6361,6 +6168,8 @@ public class GenerateBaseDataService {
                     }
                 }
             }
+        } else {
+            return " ";
         }
         return builder.toString();
     }
