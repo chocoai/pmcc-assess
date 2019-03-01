@@ -124,7 +124,7 @@ public class DeclareRealtyHouseCertService {
                     builder.append(String.format("\n第%s行异常：%s", i, "没有数据"));
                     continue;
                 }
-                if (!declarePoiHelp.land(landCert, builder, row, i, land_uses)) {
+                if (!declarePoiHelp.land(landCert, builder, row, i)) {
                     continue;
                 }
                 //不启用 (说明是关联数据)

@@ -263,7 +263,7 @@ public class DeclareRealtyLandCertService {
                     builder.append(String.format("\n第%s行异常：%s", i, "没有数据"));
                     continue;
                 }
-                if (!declarePoiHelp.land(oo, builder, row, i, land_uses)) {
+                if (!declarePoiHelp.land(oo, builder, row, i)) {
                     continue;
                 }
             } catch (Exception e) {
