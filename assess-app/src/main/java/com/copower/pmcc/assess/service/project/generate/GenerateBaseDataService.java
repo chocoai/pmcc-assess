@@ -80,8 +80,6 @@ public class GenerateBaseDataService {
     private SchemeJudgeFunctionService schemeJudgeFunctionService;
     private SchemeAreaGroupService schemeAreaGroupService;
     private ProjectNumberRecordService projectNumberRecordService;
-    private BaseReportService baseReportService;
-    private ProjectInfoService projectInfoService;
     private BaseDataDicService baseDataDicService;
     private BaseAttachmentService baseAttachmentService;
     private ProjectPlanDetailsService projectPlanDetailsService;
@@ -110,23 +108,21 @@ public class GenerateBaseDataService {
     private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
     private DataMethodFormulaService dataMethodFormulaService;
 
-    //构造器必须传入的参数
+    /**
+     * 构造器必须传入的参数
+     */
     private Integer projectId;
     private Integer areaId;
-    private Integer baseReportTemplateId;
-    private ProjectPlan projectPlan;
-
-    //中间变量
-    private SchemeAreaGroup schemeAreaGroup = null;
     private BaseReportTemplate baseReportTemplate;
     private ProjectInfoVo projectInfo = null;
+
+    /**
+     * 中间变量
+     */
+    private SchemeAreaGroup schemeAreaGroup = null;
     private List<SchemeJudgeObject> schemeJudgeObjectList = null;
 
     //===========================================获取的值===============================
-    //文号
-    private String wordNumber;
-    //委托人
-    private String principal;
     //评估面积
     private BigDecimal assessArea = null;
     //评估方法
@@ -163,27 +159,6 @@ public class GenerateBaseDataService {
     private Date reportIssuanceDate = new Date();
 
 
-    /**
-     * 获取区域信息(组)
-     *
-     * @return
-     */
-    public SchemeAreaGroup getSchemeAreaGroup() {
-        if (schemeAreaGroup != null) {
-            return schemeAreaGroup;
-        }
-        if (this.schemeAreaGroup != null) {
-            return this.schemeAreaGroup;
-        } else {
-            SchemeAreaGroup areaGroup = schemeAreaGroupService.get(getAreaId());
-            if (areaGroup == null) {
-                areaGroup = new SchemeAreaGroup();
-            }
-            this.schemeAreaGroup = areaGroup;
-        }
-        return schemeAreaGroup;
-    }
-
     public Date getReportIssuanceDate() {
         return reportIssuanceDate;
     }
@@ -194,41 +169,17 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getWordNumber() {
-        if (StringUtils.isEmpty(wordNumber)) {
-            try {
-                String number = projectNumberRecordService.getReportNumber(this.getProjectId(), areaId, this.getBaseReportTemplate().getReportType());
-                this.wordNumber = number;
-            } catch (BusinessException e) {
-                logger.error("获取文号异常", e);
+        try {
+            String number = projectNumberRecordService.getReportNumber(projectId, areaId, this.baseReportTemplate.getReportType());
+            if (StringUtils.isNotBlank(number)) {
+                return number;
             }
-
+        } catch (BusinessException e) {
+            logger.error("获取文号异常", e);
         }
-        if (StringUtils.isNotBlank(this.wordNumber)) {
-            return wordNumber;
-        } else {
-            return "";
-        }
+        return " ";
     }
 
-    public BaseReportTemplate getBaseReportTemplate() {
-        if (baseReportTemplate == null) {
-            BaseReportTemplate reportTemplate = baseReportService.getBaseReportTemplateById(baseReportTemplateId);
-            this.baseReportTemplate = reportTemplate;
-        }
-        return baseReportTemplate;
-    }
-
-    public Integer getProjectId() {
-        return projectId;
-    }
-
-    public ProjectPlan getProjectPlan() {
-        return projectPlan;
-    }
-
-    public Integer getAreaId() {
-        return areaId;
-    }
 
     /**
      * 委托人
@@ -236,14 +187,11 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getPrincipal() {
-        if (StringUtils.isBlank(principal)) {
-            String principalStr = StringUtils.isNotBlank(getProjectInfo().getConsignorVo().getCsName()) ? getProjectInfo().getConsignorVo().getCsName() : getProjectInfo().getConsignorVo().getCsEntrustmentUnit();
-            this.principal = principalStr;
-        }
-        if (StringUtils.isNotBlank(this.principal)) {
-            return principal;
+        String principalStr = StringUtils.isNotBlank(projectInfo.getConsignorVo().getCsName()) ? projectInfo.getConsignorVo().getCsName() : projectInfo.getConsignorVo().getCsEntrustmentUnit();
+        if (StringUtils.isNotBlank(principalStr)) {
+            return principalStr;
         } else {
-            return "";
+            return " ";
         }
     }
 
@@ -254,16 +202,16 @@ public class GenerateBaseDataService {
      */
     public String getPrincipalInfo() {
         StringBuilder stringBuilder = new StringBuilder(24);
-        if (Objects.equal(getProjectInfo().getConsignorVo().getCsType(), InitiateContactsEnum.legalPerson.getId())) {
-            stringBuilder.append("名称:").append(getProjectInfo().getConsignorVo().getCsEntrustmentUnitName()).append(";");
-            stringBuilder.append("统一社会信用代码:").append(getProjectInfo().getConsignorVo().getCsSociologyCode()).append(";");
-            stringBuilder.append("住所:").append(getProjectInfo().getConsignorVo().getCsAddress()).append("");
-            stringBuilder.append("法定代表人:").append(getProjectInfo().getConsignorVo().getCsLegalRepresentative()).append("");
+        if (Objects.equal(projectInfo.getConsignorVo().getCsType(), InitiateContactsEnum.legalPerson.getId())) {
+            stringBuilder.append("名称:").append(projectInfo.getConsignorVo().getCsEntrustmentUnitName()).append(";");
+            stringBuilder.append("统一社会信用代码:").append(projectInfo.getConsignorVo().getCsSociologyCode()).append(";");
+            stringBuilder.append("住所:").append(projectInfo.getConsignorVo().getCsAddress()).append("");
+            stringBuilder.append("法定代表人:").append(projectInfo.getConsignorVo().getCsLegalRepresentative()).append("");
         }
-        if (Objects.equal(getProjectInfo().getConsignorVo().getCsType(), InitiateContactsEnum.naturalPerson.getId())) {
-            stringBuilder.append("姓名:").append(getProjectInfo().getConsignorVo().getCsName()).append(";");
-            stringBuilder.append("身份证号:").append(getProjectInfo().getConsignorVo().getCsIdcard()).append(";");
-            stringBuilder.append("地址:").append(getProjectInfo().getConsignorVo().getCsAddress()).append("");
+        if (Objects.equal(projectInfo.getConsignorVo().getCsType(), InitiateContactsEnum.naturalPerson.getId())) {
+            stringBuilder.append("姓名:").append(projectInfo.getConsignorVo().getCsName()).append(";");
+            stringBuilder.append("身份证号:").append(projectInfo.getConsignorVo().getCsIdcard()).append(";");
+            stringBuilder.append("地址:").append(projectInfo.getConsignorVo().getCsAddress()).append("");
         }
         return stringBuilder.toString();
     }
@@ -278,7 +226,7 @@ public class GenerateBaseDataService {
         StringBuilder stringBuilder = new StringBuilder(24);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
+                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
                 .filter(projectPhaseVo -> {
                     if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
@@ -293,7 +241,7 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(projectPhases) && CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (ProjectPhase projectPhase : projectPhases) {
                 ProjectPlanDetails query = new ProjectPlanDetails();
-                query.setProjectId(getProjectId());
+                query.setProjectId(projectId);
                 query.setProjectPhaseId(projectPhase.getId());
                 List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
                 if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
@@ -351,7 +299,7 @@ public class GenerateBaseDataService {
         StringBuilder stringBuilder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
+                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
                 .filter(projectPhaseVo -> {
                     if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
@@ -367,7 +315,7 @@ public class GenerateBaseDataService {
             for (ProjectPhase projectPhase : projectPhases) {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                     ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(getProjectId());
+                    query.setProjectId(projectId);
                     query.setProjectPhaseId(projectPhase.getId());
                     query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                     List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
@@ -418,7 +366,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getPrincipalAddress() {
-        String str = getProjectInfo().getConsignorVo().getCsAddress();
+        String str = projectInfo.getConsignorVo().getCsAddress();
         if (StringUtils.isNotBlank(str)) {
             return str;
         } else {
@@ -432,7 +380,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getPrincipalLegalRepresentative() {
-        String str = getProjectInfo().getConsignorVo().getCsLegalRepresentative();
+        String str = projectInfo.getConsignorVo().getCsLegalRepresentative();
         if (StringUtils.isNotBlank(str)) {
             return str;
         } else {
@@ -440,35 +388,33 @@ public class GenerateBaseDataService {
         }
     }
 
-    /**
-     * 获取项目info
-     *
-     * @return
-     */
-    public ProjectInfoVo getProjectInfo() {
-        if (this.projectInfo != null) {
-            return this.projectInfo;
-        } else {
-            if (projectInfo == null) {
-                ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(getProjectId()));
-                this.projectInfo = projectInfoVo;
-            }
-        }
-        return projectInfo;
-    }
 
-    public BigDecimal getAssessArea() {
+    //评估面积
+    public String getAssessArea() {
+        StringBuilder stringBuilder = new StringBuilder(24);
+        Set<String> stringSet = Sets.newHashSet();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        BigDecimal bigDecimal = new BigDecimal(0);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                bigDecimal = bigDecimal.add(schemeJudgeObject.getEvaluationArea());
+                if (schemeJudgeObject.getEvaluationArea() != null) {
+                    stringSet.add(String.format("%s:%s", schemeJudgeObject.getName(), schemeJudgeObject.getEvaluationArea().toString()));
+                }
             }
-            assessArea = bigDecimal;
-        } else {
-            return new BigDecimal(0.0d);
         }
-        return assessArea;
+        if (CollectionUtils.isNotEmpty(stringSet)) {
+            List<String> stringList = Lists.newArrayList(stringSet);
+            for (int i = 0; i < stringList.size(); i++) {
+                stringBuilder.append(stringList.get(i));
+                if (i == stringList.size() - 1) {
+                    stringBuilder.append(";");
+                } else {
+                    stringBuilder.append(",");
+                }
+            }
+        } else {
+            stringBuilder.append(" ");
+        }
+        return stringBuilder.toString();
     }
 
 
@@ -505,7 +451,7 @@ public class GenerateBaseDataService {
     public String getCo_ownership() throws Exception {
         StringBuilder stringBuilder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
-        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(getProjectId());
+        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
         List<DeclareRealtyRealEstateCert> declareRealtyRealEstateCertList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(declareRecordList)) {
             List<DeclareRecord> declareRecords = declareRecordList.stream().filter(declareRecord -> {
@@ -559,8 +505,8 @@ public class GenerateBaseDataService {
     public String getSubstitutionPrinciple() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = schemeSupportInfoService.getContentByName(getAreaId(), BaseReportFieldEnum.SubstitutionPrinciple.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = schemeSupportInfoService.getContentByName(areaId, BaseReportFieldEnum.SubstitutionPrinciple.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -580,8 +526,8 @@ public class GenerateBaseDataService {
     public String getUncertaintyAssumption() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = schemeSupportInfoService.getContentByName(getAreaId(), BaseReportFieldEnum.UncertaintyAssumption.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = schemeSupportInfoService.getContentByName(areaId, BaseReportFieldEnum.UncertaintyAssumption.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -601,8 +547,8 @@ public class GenerateBaseDataService {
     public String getDeviationFromFactualAssumptions() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = schemeSupportInfoService.getContentByName(getAreaId(), BaseReportFieldEnum.DeviationFromFactualAssumptions.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = schemeSupportInfoService.getContentByName(areaId, BaseReportFieldEnum.DeviationFromFactualAssumptions.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -622,8 +568,8 @@ public class GenerateBaseDataService {
     public String getInconsistentHypothesis() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = schemeSupportInfoService.getContentByName(getAreaId(), BaseReportFieldEnum.InconsistentHypothesis.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = schemeSupportInfoService.getContentByName(areaId, BaseReportFieldEnum.InconsistentHypothesis.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -643,8 +589,8 @@ public class GenerateBaseDataService {
     public String getInsufficientHypothesis() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = schemeSupportInfoService.getContentByName(getAreaId(), BaseReportFieldEnum.InsufficientHypothesis.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = schemeSupportInfoService.getContentByName(areaId, BaseReportFieldEnum.InsufficientHypothesis.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -664,8 +610,8 @@ public class GenerateBaseDataService {
     public String getUniversalityLiquidityAnalysis() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.UniversalityLiquidityAnalysis.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.UniversalityLiquidityAnalysis.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -685,8 +631,8 @@ public class GenerateBaseDataService {
     public String getIndependentUsabilityCashFlowAnalysis() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.IndependentUsabilityCashFlowAnalysis.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.IndependentUsabilityCashFlowAnalysis.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -706,8 +652,8 @@ public class GenerateBaseDataService {
     public String getLiquidityAnalysisSeparableTransferability() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.LiquidityAnalysisSeparableTransferability.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.LiquidityAnalysisSeparableTransferability.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -727,8 +673,8 @@ public class GenerateBaseDataService {
     public String getCashAnalysisRealEstateLocation() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.CashAnalysisRealEstateLocation.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.CashAnalysisRealEstateLocation.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -748,8 +694,8 @@ public class GenerateBaseDataService {
     public String getCashAnalysisDegreeRealEstateDevelopment() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.CashAnalysisDegreeRealEstateDevelopment.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.CashAnalysisDegreeRealEstateDevelopment.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -770,8 +716,8 @@ public class GenerateBaseDataService {
     public String getCashAnalysisValueRealEstate() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.CashAnalysisValueRealEstate.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.CashAnalysisValueRealEstate.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -791,8 +737,10 @@ public class GenerateBaseDataService {
     public String getCashAnalysisRealEstateMarket() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.CashAnalysisRealEstateMarket.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        builder.getFont().setName(AsposeUtils.SongStyleFontName);
+        builder.getFont().setSize(14);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.CashAnalysisRealEstateMarket.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -812,8 +760,9 @@ public class GenerateBaseDataService {
     public String getCashAnalysisOthers() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.CashAnalysisOthers.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        builder.getFont().setName(AsposeUtils.ImitationSongGB2312FontName);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.CashAnalysisOthers.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -833,8 +782,8 @@ public class GenerateBaseDataService {
     public String getBasePriceRegulationCashAuction() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.BasePriceRegulationCashAuction.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.BasePriceRegulationCashAuction.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -854,8 +803,8 @@ public class GenerateBaseDataService {
     public String getHowLongLiquidationTime() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.HowLongLiquidationTime.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.HowLongLiquidationTime.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -875,8 +824,8 @@ public class GenerateBaseDataService {
     public String getCash_inComprehensiveAnalysis() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.Cash_inComprehensiveAnalysis.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.Cash_inComprehensiveAnalysis.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -896,8 +845,8 @@ public class GenerateBaseDataService {
     public String getTheImpactMortgageRiskyNeighbouringProperty() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.TheImpactMortgageRiskyNeighbouringProperty.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.TheImpactMortgageRiskyNeighbouringProperty.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -917,8 +866,8 @@ public class GenerateBaseDataService {
     public String getImpactRiskLeasingy() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.ImpactRiskLeasing.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.ImpactRiskLeasing.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -938,8 +887,8 @@ public class GenerateBaseDataService {
     public String getOverallLiquidityImpactRisk() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.OverallLiquidityImpactRisk.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.OverallLiquidityImpactRisk.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -959,8 +908,8 @@ public class GenerateBaseDataService {
     public String getRiskForceMajeureEffect() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.RiskForceMajeureEffect.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.RiskForceMajeureEffect.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -980,8 +929,8 @@ public class GenerateBaseDataService {
     public String getImpactRiskPolicyChange() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.ImpactRiskPolicyChange.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.ImpactRiskPolicyChange.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -1001,8 +950,8 @@ public class GenerateBaseDataService {
     public String getImpactSpecialEventsRiskMortgage() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.ImpactSpecialEventsRiskMortgage.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.ImpactSpecialEventsRiskMortgage.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -1022,8 +971,8 @@ public class GenerateBaseDataService {
     public String getImproperUseRiskCollaterale() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.ImproperUseRiskCollateral.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.ImproperUseRiskCollateral.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -1043,8 +992,8 @@ public class GenerateBaseDataService {
     public String getFunctionsSubstitutesRiskMortgage() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.FunctionsSubstitutesRiskMortgage.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.FunctionsSubstitutesRiskMortgage.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -1064,8 +1013,8 @@ public class GenerateBaseDataService {
     public String getEnvironmentalImpactRiskMortgage() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.EnvironmentalImpactRiskMortgage.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.EnvironmentalImpactRiskMortgage.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -1085,8 +1034,8 @@ public class GenerateBaseDataService {
     public String getConcernRealEstateCreditRiskCausedMortgageReasonsDuringRiskMortgagePeriod() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.ConcernRealEstateCreditRiskCausedMortgageReasonsDuringRiskMortgagePeriod.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.ConcernRealEstateCreditRiskCausedMortgageReasonsDuringRiskMortgagePeriod.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -1106,8 +1055,8 @@ public class GenerateBaseDataService {
     public String getThreeMajorRiskPlanning() throws Exception {
         //存在换行符必须使用模板
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String content = compileReportService.getContentByName(getAreaId(), BaseReportFieldEnum.ThreeMajorRiskPlanning.getName());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.ThreeMajorRiskPlanning.getName());
         String localPath = getLocalPath();
         if (StringUtils.isNotBlank(content)) {
             builder.writeln(content);
@@ -1177,7 +1126,7 @@ public class GenerateBaseDataService {
         StringBuilder builder = new StringBuilder(24);
         Set<BigDecimal> bigDecimalSet = Sets.newHashSet();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
+                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
                 .filter(projectPhaseVo -> {
                     if (Objects.equal(AssessPhaseKeyConstant.REIMBURSEMENT, projectPhaseVo.getPhaseKey())) {
@@ -1188,7 +1137,7 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(projectPhases)) {
             for (ProjectPhase projectPhase : projectPhases) {
                 ProjectPlanDetails query = new ProjectPlanDetails();
-                query.setProjectId(getProjectId());
+                query.setProjectId(projectId);
                 query.setProjectPhaseId(projectPhase.getId());
                 List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
                 if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
@@ -1226,7 +1175,7 @@ public class GenerateBaseDataService {
         StringBuilder builder = new StringBuilder(24);
         Set<BigDecimal> bigDecimalSet = Sets.newHashSet();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
+                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
                 .filter(projectPhaseVo -> {
                     if (Objects.equal(AssessPhaseKeyConstant.REIMBURSEMENT, projectPhaseVo.getPhaseKey())) {
@@ -1237,7 +1186,7 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(projectPhases)) {
             for (ProjectPhase projectPhase : projectPhases) {
                 ProjectPlanDetails query = new ProjectPlanDetails();
-                query.setProjectId(getProjectId());
+                query.setProjectId(projectId);
                 query.setProjectPhaseId(projectPhase.getId());
                 List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
                 if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
@@ -1275,7 +1224,7 @@ public class GenerateBaseDataService {
         StringBuilder builder = new StringBuilder();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
+                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
                 .filter(projectPhaseVo -> {
                     if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
@@ -1290,7 +1239,7 @@ public class GenerateBaseDataService {
             ProjectPhase projectPhaseScene = projectPhases.get(0);
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
             ProjectPlanDetails query = new ProjectPlanDetails();
-            query.setProjectId(getProjectId());
+            query.setProjectId(projectId);
             query.setProjectPhaseId(projectPhaseScene.getId());
             query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
             List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
@@ -1547,7 +1496,7 @@ public class GenerateBaseDataService {
     public String getUnitPriceAdjustmentTable() throws Exception {
         String localPath = getLocalPath();
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         List<SchemeJudgeObjectVo> schemeJudgeObjectList = getSchemeJudgeObjectList().stream().map(schemeJudgeObject -> {
             return schemeJudgeObjectService.getSchemeJudgeObjectVo(schemeJudgeObject);
         }).collect(Collectors.toList());
@@ -1607,7 +1556,7 @@ public class GenerateBaseDataService {
     public String getEvaluationMethodResult() throws Exception {
         String localPath = getLocalPath();
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -1704,7 +1653,7 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
                 ProjectPlanDetails query = new ProjectPlanDetails();
-                query.setProjectId(getProjectId());
+                query.setProjectId(projectId);
                 query.setDeclareRecordId(schemeJudgeObjectList.get(i).getDeclareRecordId());
                 List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
                 if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
@@ -1778,7 +1727,7 @@ public class GenerateBaseDataService {
      */
     public String getLiquidationAnalysis(String title) throws Exception {
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath(title);
         for (SchemeJudgeObject judgeObject : this.getSchemeJudgeObjectList()) {
             createLiquidationAnalysisTable(builder, judgeObject);
@@ -2082,7 +2031,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getStatementPurposeEntrustment() {
-        if (getProjectInfo() != null) {
+        if (projectInfo != null) {
             this.statementPurposeEntrustment = getSchemeAreaGroup().getRemarkEntrustPurpose();
         }
         if (StringUtils.isNotBlank(this.statementPurposeEntrustment)) {
@@ -2246,8 +2195,8 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getSurveyExamineCreate() throws Exception {
-        List<ProjectPhaseVo> projectPhaseVoList = projectPhaseService.queryProjectPhaseByCategory(getProjectInfo().getProjectTypeId(),
-                getProjectInfo().getProjectCategoryId(), null).stream().filter(projectPhaseVo -> {
+        List<ProjectPhaseVo> projectPhaseVoList = projectPhaseService.queryProjectPhaseByCategory(projectInfo.getProjectTypeId(),
+                projectInfo.getProjectCategoryId(), null).stream().filter(projectPhaseVo -> {
             //查勘通过
             if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
                 return true;
@@ -2262,7 +2211,7 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(projectPhaseVoList)) {
             projectPhaseVoList.stream().forEach(projectPhaseVo -> {
                 ProjectPlanDetails query = new ProjectPlanDetails();
-                query.setProjectId(getProjectId());
+                query.setProjectId(projectId);
                 query.setProjectPhaseId(projectPhaseVo.getId());
                 List<ProjectPlanDetails> projectPlanDetailss = projectPlanDetailsService.getProjectDetails(query);
                 if (CollectionUtils.isNotEmpty(projectPlanDetailss)) {
@@ -2310,7 +2259,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getHomeWorkStartTime() {
-        return DateUtils.format(getProjectInfo().getGmtCreated(), DateUtils.DATE_CHINESE_PATTERN);
+        return DateUtils.format(projectInfo.getGmtCreated(), DateUtils.DATE_CHINESE_PATTERN);
     }
 
     /**
@@ -2323,8 +2272,8 @@ public class GenerateBaseDataService {
     public String getPrincipleBasisHypothesis(SchemeSupportTypeEnum schemeSupportTypeEnum) throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
-        DocumentBuilder builder = new DocumentBuilder(document);
-        List<SchemeSupportInfo> schemeSupportInfoList = schemeSupportInfoService.getSupportInfoListByAreaId(getAreaId(), schemeSupportTypeEnum);
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
+        List<SchemeSupportInfo> schemeSupportInfoList = schemeSupportInfoService.getSupportInfoListByAreaId(areaId, schemeSupportTypeEnum);
         if (CollectionUtils.isNotEmpty(schemeSupportInfoList)) {
             int i = 1;
             for (SchemeSupportInfo schemeSupportInfo : schemeSupportInfoList) {
@@ -2347,9 +2296,9 @@ public class GenerateBaseDataService {
     public String getReportAnalysis(String type) throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
-        DocumentBuilder builder = new DocumentBuilder(document);
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(type);
-        List<CompileReportDetail> compileReportDetailList = compileReportService.getCompileReportDetailList(getAreaId(), baseDataDic.getId());
+        List<CompileReportDetail> compileReportDetailList = compileReportService.getCompileReportDetailList(areaId, baseDataDic.getId());
         if (CollectionUtils.isNotEmpty(compileReportDetailList)) {
             int i = 1;
             for (CompileReportDetail compileReportDetail : compileReportDetailList) {
@@ -2371,8 +2320,8 @@ public class GenerateBaseDataService {
      */
     public String getAssistanceStaff(String str) {
         String[] ids = str.split(",");
-        List<ProjectPhaseVo> projectPhaseVos = projectPhaseService.queryProjectPhaseByCategory(getProjectInfo().getProjectTypeId(),
-                getProjectInfo().getProjectCategoryId(), null).stream().filter(projectPhaseVo -> {
+        List<ProjectPhaseVo> projectPhaseVos = projectPhaseService.queryProjectPhaseByCategory(projectInfo.getProjectTypeId(),
+                projectInfo.getProjectCategoryId(), null).stream().filter(projectPhaseVo -> {
             if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
                 return true;
             }
@@ -2390,7 +2339,7 @@ public class GenerateBaseDataService {
                     if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
                         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
                         ProjectPlanDetails query = new ProjectPlanDetails();
-                        query.setProjectId(getProjectId());
+                        query.setProjectId(projectId);
                         query.setProjectPhaseId(projectPhaseScene.getId());
                         query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                         List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
@@ -2482,6 +2431,9 @@ public class GenerateBaseDataService {
             }
         } catch (Exception e1) {
             logger.error("权利人拼接异常!");
+        }
+        if (StringUtils.isNotBlank(builder.toString())) {
+            builder.append(" ");
         }
         return builder.toString();
     }
@@ -2612,7 +2564,7 @@ public class GenerateBaseDataService {
         StringBuilder builder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
+                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
                 .filter(projectPhaseVo -> {
                     if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
@@ -2628,7 +2580,7 @@ public class GenerateBaseDataService {
             for (ProjectPhase projectPhase : projectPhases) {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                     ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(getProjectId());
+                    query.setProjectId(projectId);
                     query.setProjectPhaseId(projectPhase.getId());
                     query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                     List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
@@ -2673,7 +2625,7 @@ public class GenerateBaseDataService {
         StringBuilder builder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
+                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
                 .filter(projectPhaseVo -> {
                     if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
@@ -2689,7 +2641,7 @@ public class GenerateBaseDataService {
             for (ProjectPhase projectPhase : projectPhases) {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                     ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(getProjectId());
+                    query.setProjectId(projectId);
                     query.setProjectPhaseId(projectPhase.getId());
                     query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                     List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
@@ -2734,7 +2686,7 @@ public class GenerateBaseDataService {
         StringBuilder builder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
+                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
                 .filter(projectPhaseVo -> {
                     if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
@@ -2750,7 +2702,7 @@ public class GenerateBaseDataService {
             for (ProjectPhase projectPhase : projectPhases) {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                     ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(getProjectId());
+                    query.setProjectId(projectId);
                     query.setProjectPhaseId(projectPhase.getId());
                     query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                     List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
@@ -2884,14 +2836,14 @@ public class GenerateBaseDataService {
     public String getInventoryRight() {
         StringBuilder stringBuilder = new StringBuilder();
         try {
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, getProjectInfo().getProjectCategoryId());
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
             List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
             if (projectPhase != null) {
                 if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
                     for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
                         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(i);
                         ProjectPlanDetails query = new ProjectPlanDetails();
-                        query.setProjectId(getProjectId());
+                        query.setProjectId(projectId);
                         query.setProjectPhaseId(projectPhase.getId());
                         query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                         List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
@@ -2929,7 +2881,7 @@ public class GenerateBaseDataService {
         StringBuilder stringBuilder = new StringBuilder(24);
         final String temp = "他权有无租赁权:";
         stringBuilder.append(temp);
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, getProjectInfo().getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE_HOUSE_LEASEHOLD);
         if (projectPhase != null) {
@@ -2937,7 +2889,7 @@ public class GenerateBaseDataService {
                 inner:
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                     ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(getProjectId());
+                    query.setProjectId(projectId);
                     query.setProjectPhaseId(projectPhase.getId());
                     query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                     List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
@@ -2975,14 +2927,14 @@ public class GenerateBaseDataService {
     public String getThereAnyOtherRight() throws Exception {
         StringBuilder stringBuilder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, getProjectInfo().getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (projectPhase != null) {
             if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                     boolean flag = false;
                     ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(getProjectId());
+                    query.setProjectId(projectId);
                     query.setProjectPhaseId(projectPhase.getId());
                     query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                     List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
@@ -3032,13 +2984,13 @@ public class GenerateBaseDataService {
     public String getHisRightType() throws Exception {
         StringBuilder stringBuilder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, getProjectInfo().getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (projectPhase != null) {
             if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                     ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(getProjectId());
+                    query.setProjectId(projectId);
                     query.setProjectPhaseId(projectPhase.getId());
                     query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                     List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
@@ -3083,13 +3035,13 @@ public class GenerateBaseDataService {
     public String getRightOther() throws Exception {
         StringBuilder stringBuilder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, getProjectInfo().getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (projectPhase != null) {
             if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                     ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(getProjectId());
+                    query.setProjectId(projectId);
                     query.setProjectPhaseId(projectPhase.getId());
                     query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                     List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
@@ -3138,13 +3090,13 @@ public class GenerateBaseDataService {
     public String getActualAddressAssetInventory() throws Exception {
         StringBuilder stringBuilder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, getProjectInfo().getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (projectPhase != null) {
             if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                     ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(getProjectId());
+                    query.setProjectId(projectId);
                     query.setProjectPhaseId(projectPhase.getId());
                     query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                     List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
@@ -3192,13 +3144,13 @@ public class GenerateBaseDataService {
     public String getCertificateAssetInventory() throws Exception {
         StringBuilder stringBuilder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, getProjectInfo().getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (projectPhase != null) {
             if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                     ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(getProjectId());
+                    query.setProjectId(projectId);
                     query.setProjectPhaseId(projectPhase.getId());
                     query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                     List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
@@ -3246,13 +3198,13 @@ public class GenerateBaseDataService {
     public String getAssetInventoryConfirmConsistency() throws Exception {
         StringBuilder stringBuilder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, getProjectInfo().getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (projectPhase != null) {
             if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                     ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(getProjectId());
+                    query.setProjectId(projectId);
                     query.setProjectPhaseId(projectPhase.getId());
                     query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                     List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
@@ -3300,13 +3252,13 @@ public class GenerateBaseDataService {
     public String getAssetInventoryAgreement() throws Exception {
         StringBuilder stringBuilder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, getProjectInfo().getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (projectPhase != null) {
             if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                     ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(getProjectId());
+                    query.setProjectId(projectId);
                     query.setProjectPhaseId(projectPhase.getId());
                     query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                     List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
@@ -3417,7 +3369,7 @@ public class GenerateBaseDataService {
      */
     public String getStatutoryPriorityAmountTotal() throws Exception {
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
+                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
                 .filter(projectPhaseVo -> {
                     if (Objects.equal(AssessPhaseKeyConstant.REIMBURSEMENT, projectPhaseVo.getPhaseKey())) {
@@ -3432,7 +3384,7 @@ public class GenerateBaseDataService {
                 if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
                     for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                         ProjectPlanDetails query = new ProjectPlanDetails();
-                        query.setProjectId(getProjectId());
+                        query.setProjectId(projectId);
                         query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                         query.setProjectPhaseId(projectPhase.getId());
                         List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
@@ -3468,7 +3420,7 @@ public class GenerateBaseDataService {
         StringBuilder stringBuilder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
+                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
                 .filter(projectPhaseVo -> {
                     if (Objects.equal(AssessPhaseKeyConstant.REIMBURSEMENT, projectPhaseVo.getPhaseKey())) {
@@ -3483,7 +3435,7 @@ public class GenerateBaseDataService {
                 if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
                     for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                         ProjectPlanDetails query = new ProjectPlanDetails();
-                        query.setProjectId(getProjectId());
+                        query.setProjectId(projectId);
                         query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                         query.setProjectPhaseId(projectPhase.getId());
                         List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
@@ -3896,7 +3848,7 @@ public class GenerateBaseDataService {
     public String getDeterminationMarketValueValuationObject() throws Exception {
         String localPath = getLocalPath();
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
@@ -3914,7 +3866,7 @@ public class GenerateBaseDataService {
                     stringBuilder.append("试算结果均能反映估价对象市场价值，");
                     //权重说明
                     ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(getProjectId());
+                    query.setProjectId(projectId);
                     query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                     List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
                     if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
@@ -4033,7 +3985,7 @@ public class GenerateBaseDataService {
      */
     public String getEquityStatusValuatedObjects() throws Exception {
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
         Map<SchemeJudgeObject, DeclareRealtyRealEstateCertVo> objectDeclareRealtyRealEstateCertVoMap = Maps.newHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
@@ -4169,7 +4121,7 @@ public class GenerateBaseDataService {
      */
     public String getjudgeObjectLandUseCertificateSheet() throws Exception {
         List<DeclareRealtyLandCertVo> declareRealtyLandCertVoList = Lists.newArrayList();
-        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(getProjectId());
+        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
         if (CollectionUtils.isNotEmpty(declareRecordList)) {
             List<DeclareRecord> declareRecords = declareRecordList.stream().filter(declareRecord -> {
                 if (declareRecord.getDataTableName().equals(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class))) {
@@ -4190,7 +4142,7 @@ public class GenerateBaseDataService {
             }
         }
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
         Table table = builder.startTable();
@@ -4366,7 +4318,7 @@ public class GenerateBaseDataService {
      */
     public String getjudgeBuildResultSurveySheet() throws Exception {
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
+                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
                 .filter(projectPhaseVo -> {
                     if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
@@ -4387,7 +4339,7 @@ public class GenerateBaseDataService {
                 if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
                     for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                         ProjectPlanDetails query = new ProjectPlanDetails();
-                        query.setProjectId(getProjectId());
+                        query.setProjectId(projectId);
                         query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                         query.setProjectPhaseId(projectPhase.getId());
                         List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
@@ -4404,7 +4356,7 @@ public class GenerateBaseDataService {
             }
         }
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath("报告模板1");
         builder.writeln("估价结果一览表");
         Table table = builder.startTable();
@@ -4502,7 +4454,7 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 ProjectPlanDetails query = new ProjectPlanDetails();
-                query.setProjectId(getProjectId());
+                query.setProjectId(projectId);
                 query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                 List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
                 if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
@@ -4661,7 +4613,7 @@ public class GenerateBaseDataService {
             }
         }
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
         builder.writeln("房屋所有权登记状况表");
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
@@ -4823,10 +4775,10 @@ public class GenerateBaseDataService {
      */
     public String getJudgeObjectAreaStatusSheet() throws Exception {
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
+                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
                 .filter(projectPhaseVo -> {
                     if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
@@ -4893,7 +4845,7 @@ public class GenerateBaseDataService {
                     for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
                         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(i);
                         ProjectPlanDetails query = new ProjectPlanDetails();
-                        query.setProjectId(getProjectId());
+                        query.setProjectId(projectId);
                         query.setProjectPhaseId(projectPhaseScene.getId());
                         query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                         List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
@@ -5223,10 +5175,10 @@ public class GenerateBaseDataService {
      */
     public String getJudgeObjectLandStateSheet() throws Exception {
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
+                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
                 .filter(projectPhaseVo -> {
                     if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
@@ -5263,7 +5215,7 @@ public class GenerateBaseDataService {
                     for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
                         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(i);
                         ProjectPlanDetails query = new ProjectPlanDetails();
-                        query.setProjectId(getProjectId());
+                        query.setProjectId(projectId);
                         query.setProjectPhaseId(projectPhaseScene.getId());
                         query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                         List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
@@ -5368,10 +5320,10 @@ public class GenerateBaseDataService {
      */
     public String getJudgeBuildLandStateSheet() throws Exception {
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                getProjectInfo().getProjectTypeId(), getProjectInfo().getProjectCategoryId(), null)
+                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
                 .filter(projectPhaseVo -> {
                     if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
@@ -5414,7 +5366,7 @@ public class GenerateBaseDataService {
                     for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
                         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(i);
                         ProjectPlanDetails query = new ProjectPlanDetails();
-                        query.setProjectId(getProjectId());
+                        query.setProjectId(projectId);
                         query.setProjectPhaseId(projectPhaseScene.getId());
                         query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                         List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
@@ -5644,7 +5596,7 @@ public class GenerateBaseDataService {
      */
     public String getJudgeSummarySheet() throws Exception {
         Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         builder.writeln("汇总表");
         String localPath = getLocalPath();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
@@ -5896,7 +5848,7 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(schemeInfoList)) {
             for (SchemeInfo schemeInfo : schemeInfoList) {
                 if (schemeInfo.getMethodDataId() != null) {
-                    GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfo, getProjectId(), getAreaId());
+                    GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfo, projectId, areaId);
                     String temp = generateMdIncomeService.generateCompareFile();
                     File file = new File(temp);
                     if (file.isFile()) {
@@ -5922,7 +5874,7 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(schemeInfoList)) {
             for (SchemeInfo schemeInfo : schemeInfoList) {
                 if (schemeInfo.getMethodDataId() != null) {
-                    GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(schemeInfo.getMethodDataId(), new Date(), getAreaId());
+                    GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(schemeInfo.getMethodDataId(), new Date(), areaId);
                     String temp = generateMdCompareService.generateCompareFile();
                     File file = new File(temp);
                     if (file.isFile()) {
@@ -5945,7 +5897,7 @@ public class GenerateBaseDataService {
     public String getJUDGEOBJECTPRINCIPALCOPYSHEET() throws Exception {
         String localPath = getLocalPath();
         new Document().save(localPath);
-        SysAttachmentDto sysAttachmentDto = schemeReportFileService.getProjectProxyFileList(getProjectId());
+        SysAttachmentDto sysAttachmentDto = schemeReportFileService.getProjectProxyFileList(projectId);
         if (sysAttachmentDto != null) {
             String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
             List<String> images = Lists.newArrayList();
@@ -5967,7 +5919,7 @@ public class GenerateBaseDataService {
     public String getEstimatedObjectLocationDiagram() throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
-        DocumentBuilder builder = new DocumentBuilder(document);
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
@@ -5993,8 +5945,8 @@ public class GenerateBaseDataService {
     public String getValuation_Target_Live_Photos() throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
-        DocumentBuilder builder = new DocumentBuilder(document);
-        List<SchemeJudgeObject> schemeJudgeObjectFullList = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(this.getAreaId());
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
+        List<SchemeJudgeObject> schemeJudgeObjectFullList = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(this.areaId);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectFullList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectFullList) {
                 List<SchemeReportFileItem> sysAttachmentDtoList = schemeReportFileService.getLiveSituationSelect(schemeJudgeObject.getId());
@@ -6030,9 +5982,9 @@ public class GenerateBaseDataService {
     public String getCopies_the_Ownership_Certificate_the_Valuation_Object() throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
-        DocumentBuilder builder = new DocumentBuilder(document);
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        Map<Integer, List<SysAttachmentDto>> ownershipCertFileList = schemeReportFileService.getOwnershipCertFileList(getAreaId());
+        Map<Integer, List<SysAttachmentDto>> ownershipCertFileList = schemeReportFileService.getOwnershipCertFileList(areaId);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 List<SysAttachmentDto> sysAttachmentDtoList = ownershipCertFileList.get(schemeJudgeObject.getId());
@@ -6058,11 +6010,11 @@ public class GenerateBaseDataService {
     public String getSpecial_documentation_referenced_in_valuation() throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
-        DocumentBuilder builder = new DocumentBuilder(document);
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            Map<Integer, List<SysAttachmentDto>> inventoryAddressFileList = schemeReportFileService.getInventoryAddressFileList(getAreaId());
-            Map<Integer, List<SysAttachmentDto>> reimbursementFileList = schemeReportFileService.getReimbursementFileList(getAreaId());
+            Map<Integer, List<SysAttachmentDto>> inventoryAddressFileList = schemeReportFileService.getInventoryAddressFileList(areaId);
+            Map<Integer, List<SysAttachmentDto>> reimbursementFileList = schemeReportFileService.getReimbursementFileList(areaId);
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 //1.先取地址不一致附件与法定优先受偿款附件
                 List<SysAttachmentDto> addressFileList = inventoryAddressFileList.get(schemeJudgeObject.getId());
@@ -6086,7 +6038,7 @@ public class GenerateBaseDataService {
             }
         }
         //2.取得自定义的附件
-        List<SchemeReportFileCustom> reportFileCustomList = schemeReportFileService.getReportFileCustomList(getAreaId());
+        List<SchemeReportFileCustom> reportFileCustomList = schemeReportFileService.getReportFileCustomList(areaId);
         if (CollectionUtils.isNotEmpty(reportFileCustomList)) {
             for (SchemeReportFileCustom schemeReportFileCustom : reportFileCustomList) {
                 List<SysAttachmentDto> fileList = schemeReportFileService.getCustomFileList(schemeReportFileCustom.getId());
@@ -6274,23 +6226,12 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getHisRightInfoPublicity() throws Exception {
-        DataHisRightInfoPublicity dataHisRightInfoPublicity = null;
         SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
-        Integer areaId = null;
-        if (StringUtils.isNotBlank(schemeAreaGroup.getDistrict())) {
-            areaId = Integer.parseInt(schemeAreaGroup.getDistrict());
-        } else {
-            if (StringUtils.isNotBlank(schemeAreaGroup.getCity())) {
-                areaId = Integer.parseInt(schemeAreaGroup.getCity());
-            }
-        }
-        if (areaId != null) {
-            dataHisRightInfoPublicity = dataHisRightInfoPublicityService.getContent(areaId);
-        }
+        DataHisRightInfoPublicity dataHisRightInfoPublicity = dataHisRightInfoPublicityService.getDataHisRightInfoPublicity(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict());
         if (dataHisRightInfoPublicity != null) {
             return dataHisRightInfoPublicity.getContent();
         }
-        return "";
+        return " ";
     }
 
     /**
@@ -6302,7 +6243,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/25 10:09
      */
     public String getTypesFormEnabledDeclarationOffice() throws Exception {
-        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(getProjectId());
+        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
         List<DeclareRealtyLandCert> declareRealtyLandCertList = Lists.newArrayList();
         List<DeclareRealtyHouseCert> declareRealtyHouseCertList = Lists.newArrayList();
         List<DeclareRealtyRealEstateCert> declareRealtyRealEstateCertList = Lists.newArrayList();
@@ -6352,30 +6293,18 @@ public class GenerateBaseDataService {
     }
 
 
-    public List<SchemeJudgeObject> getSchemeJudgeObjectList() {
-        if (CollectionUtils.isEmpty(this.schemeJudgeObjectList)) {
-            this.schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(this.getSchemeAreaGroup().getId());
-        }
-        return this.schemeJudgeObjectList;
-    }
-
-    public GenerateBaseExamineService getGenerateBaseExamineService(Integer planDetailsId) {
-        return new GenerateBaseExamineService(planDetailsId);
-    }
-
     private GenerateBaseDataService() {
     }
 
-    public GenerateBaseDataService(Integer projectId, Integer areaId, Integer baseReportTemplateId, ProjectPlan projectPlan) {
-        this.projectPlan = projectPlan;
-        this.projectId = projectId;
+    public GenerateBaseDataService(ProjectInfoVo projectInfoVo, Integer areaId, BaseReportTemplate baseReportTemplate, ProjectPlan projectPlan) {
+        this.projectId = projectInfoVo.getId();
+        this.projectInfo = projectInfoVo;
         this.areaId = areaId;
-        this.baseReportTemplateId = baseReportTemplateId;
+        this.baseReportTemplate = baseReportTemplate;
+        //注入bean
         this.schemeJudgeObjectService = SpringContextUtils.getBean(SchemeJudgeObjectService.class);
         this.schemeAreaGroupService = SpringContextUtils.getBean(SchemeAreaGroupService.class);
         this.projectNumberRecordService = SpringContextUtils.getBean(ProjectNumberRecordService.class);
-        this.baseReportService = SpringContextUtils.getBean(BaseReportService.class);
-        this.projectInfoService = SpringContextUtils.getBean(ProjectInfoService.class);
         this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
         this.schemeJudgeFunctionService = SpringContextUtils.getBean(SchemeJudgeFunctionService.class);
         this.baseAttachmentService = SpringContextUtils.getBean(BaseAttachmentService.class);
@@ -6404,6 +6333,18 @@ public class GenerateBaseDataService {
         this.dataHisRightInfoPublicityService = SpringContextUtils.getBean(DataHisRightInfoPublicityService.class);
         this.surveyAssetInventoryContentService = SpringContextUtils.getBean(SurveyAssetInventoryContentService.class);
         this.dataMethodFormulaService = SpringContextUtils.getBean(DataMethodFormulaService.class);
+
+        //必须在bean之后
+        SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
+        if (areaGroup == null) {
+            areaGroup = new SchemeAreaGroup();
+        }
+        this.schemeAreaGroup = areaGroup;
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaId);
+        if (CollectionUtils.isEmpty(judgeObjectList)) {
+            judgeObjectList = new ArrayList<SchemeJudgeObject>(0);
+        }
+        this.schemeJudgeObjectList = judgeObjectList;
     }
 
     private String toSetString(Set<String> stringSet) {
@@ -6437,5 +6378,85 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
+    /**
+     * 功能描述: 委估对象名称显示
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/3/1 10:34
+     */
+    private String getSchemeJudgeObjectShowName(SchemeJudgeObject schemeJudgeObject) {
+        StringBuilder stringBuilder = new StringBuilder(24);
+        if (schemeJudgeObject == null) {
+            return "";
+        }
+        if (StringUtils.isNotBlank(schemeJudgeObject.getNumber())) {
+            String[] strings = schemeJudgeObject.getNumber().split(",");
+            //显示委估对象最多3个
+            final int max = 3;
+            if (strings.length > 3) {
+                //合并委估对象大于了3个以上的情况
+                for (int i = 0; i < max; i++) {
+                    stringBuilder.append(strings[i]);
+                    if (i != max - 1) {
+                        stringBuilder.append(",");
+                    }
+                }
+            } else {
+                stringBuilder.append(schemeJudgeObject.getNumber());
+                //拆分情况
+                if (schemeJudgeObject.getSplitNumber() != null) {
+                    stringBuilder.append("-").append(schemeJudgeObject.getSplitNumber());
+                }
+            }
+            stringBuilder.append("号");
+            if (strings.length > 3) stringBuilder.append("等");
+            stringBuilder.append("委估对象");
+        }
+        if (StringUtils.isEmpty(stringBuilder.toString())) {
+            if (StringUtils.isNotBlank(schemeJudgeObject.getName())) {
+                stringBuilder.append(schemeJudgeObject.getName());
+            } else {
+                stringBuilder.append(" ");
+            }
+        }
+        return stringBuilder.toString();
+    }
 
+    /**
+     * 功能描述: 设置默认字体
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/3/1 14:32
+     */
+    private DocumentBuilder getDefaultDocumentBuilderSetting(Document doc) throws Exception {
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        AsposeUtils.setDefaultFontSettings(builder);
+        return builder;
+    }
+
+    /**
+     * 获取区域信息(组)
+     *
+     * @return
+     */
+    public SchemeAreaGroup getSchemeAreaGroup() {
+        return schemeAreaGroup;
+    }
+
+    /**
+     * 委估对象列表
+     *
+     * @return
+     */
+    public List<SchemeJudgeObject> getSchemeJudgeObjectList() {
+        return this.schemeJudgeObjectList;
+    }
+
+    public GenerateBaseExamineService getGenerateBaseExamineService(Integer planDetailsId) {
+        return new GenerateBaseExamineService(planDetailsId);
+    }
 }

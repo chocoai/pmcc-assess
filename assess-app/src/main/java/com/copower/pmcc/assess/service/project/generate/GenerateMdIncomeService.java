@@ -122,7 +122,7 @@ public class GenerateMdIncomeService {
         if (bookmarkCollection.getCount() >= 1) {
             for (int i = 0; i < bookmarkCollection.getCount(); i++) {
                 BookmarkAndRegexDto regexDto = new BookmarkAndRegexDto();
-                regexDto.setChineseName(getChinese(bookmarkCollection.get(i).getName())).setName(bookmarkCollection.get(i).getName()).setType(BaseReportFieldReplaceEnum.BOOKMARK.getKey());
+                regexDto.setChineseName(AsposeUtils.getChinese(bookmarkCollection.get(i).getName())).setName(bookmarkCollection.get(i).getName()).setType(BaseReportFieldReplaceEnum.BOOKMARK.getKey());
                 bookmarkAndRegexDtoHashSet.add(regexDto);
             }
         }
@@ -1941,7 +1941,7 @@ public class GenerateMdIncomeService {
     public String getRemunerationRateSheet() throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
-        DocumentBuilder builder = new DocumentBuilder(document);
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         builder.writeln("报酬率测算表");
         ToolRewardRate toolRewardRate = toolRewardRateService.getToolRewardRateById(getMdIncome().getRewardRateId());
         List<Map<String, JSONObject>> mapList = Lists.newArrayList();
@@ -2214,7 +2214,7 @@ public class GenerateMdIncomeService {
     public String getIncomeMethodPriceCalculating() throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
-        DocumentBuilder builder = new DocumentBuilder(document);
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         builder.writeln("收益法价格测算表");
         Table table = builder.startTable();
         final int startRow = 1;
@@ -2350,21 +2350,6 @@ public class GenerateMdIncomeService {
         return stringList;
     }
 
-    /**
-     * 利用 ascii 码 配合正则 提取中文
-     *
-     * @param paramValue
-     * @return
-     */
-    public String getChinese(String paramValue) {
-        String regex = "([\u4e00-\u9fa5]+)";
-        String str = "";
-        Matcher matcher = Pattern.compile(regex).matcher(paramValue);
-        while (matcher.find()) {
-            str += matcher.group(0);
-        }
-        return str;
-    }
 
     public SchemeInfo getSchemeInfo() {
         return schemeInfo;
@@ -2414,6 +2399,20 @@ public class GenerateMdIncomeService {
 
     public MdIncome getMdIncome() {
         return mdIncomeService.getIncomeById(miId);
+    }
+
+    /**
+     * 功能描述: 设置默认字体
+     *
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/3/1 14:32
+     */
+    private DocumentBuilder getDefaultDocumentBuilderSetting(Document doc) throws Exception {
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        AsposeUtils.setDefaultFontSettings(builder);
+        return builder;
     }
 
     private GenerateMdIncomeService() {

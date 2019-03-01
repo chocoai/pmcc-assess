@@ -11,10 +11,12 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.generate.GenerateReportDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.generate.BookmarkAndRegexDto;
+import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
 import com.copower.pmcc.assess.service.base.BaseReportService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
@@ -46,6 +48,8 @@ import java.util.regex.Pattern;
  */
 @Service
 public class GenerateReportService {
+    @Autowired
+    private ProjectInfoService projectInfoService;
     @Autowired
     private GenerateReportDao generateReportDao;
     @Autowired
@@ -324,7 +328,8 @@ public class GenerateReportService {
         Set<Map<String, Map<BaseReportFieldReplaceEnum, String>>> preMapSet = Sets.newHashSet();
         Set<Map<String, Map<BaseReportFieldReplaceEnum, String>>> mapSet = Sets.newHashSet();
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportGeneration.getProjectPlanId());
-        GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(generateReportGeneration.getProjectId(), generateReportGeneration.getAreaGroupId(), baseReportTemplate.getId(), projectPlan);
+        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(generateReportGeneration.getProjectId()));
+        GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, generateReportGeneration.getAreaGroupId(), baseReportTemplate, projectPlan);
         Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet = Sets.newHashSet();
         //获取待替换文本的集合
         List<String> regexS = specialTreatment(AsposeUtils.getRegexList(document, null));
@@ -333,7 +338,7 @@ public class GenerateReportService {
         if (bookmarkCollection.getCount() >= 1) {
             for (int i = 0; i < bookmarkCollection.getCount(); i++) {
                 BookmarkAndRegexDto regexDto = new BookmarkAndRegexDto();
-                regexDto.setChineseName(getChinese(bookmarkCollection.get(i).getName())).setName(bookmarkCollection.get(i).getName()).setType(BaseReportFieldReplaceEnum.BOOKMARK.getKey());
+                regexDto.setChineseName(AsposeUtils.getChinese(bookmarkCollection.get(i).getName())).setName(bookmarkCollection.get(i).getName()).setType(BaseReportFieldReplaceEnum.BOOKMARK.getKey());
                 bookmarkAndRegexDtoHashSet.add(regexDto);
             }
         }
@@ -1006,7 +1011,7 @@ public class GenerateReportService {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
                             if (baseReportField != null) {
-                                replaceReportPutValue(name, generateBaseDataService.getAssessArea().toString(), bookmarkAndRegex.getType(), false, mapSet);
+                                replaceReportPutValue(name, generateBaseDataService.getAssessArea(), bookmarkAndRegex.getType(), false, mapSet);
                             }
                         }
                     }
@@ -1575,22 +1580,5 @@ public class GenerateReportService {
         }
         return stringList;
     }
-
-    /**
-     * 利用 ascii 码 配合正则 提取中文
-     *
-     * @param paramValue
-     * @return
-     */
-    public String getChinese(String paramValue) {
-        String regex = "([\u4e00-\u9fa5]+)";
-        String str = "";
-        Matcher matcher = Pattern.compile(regex).matcher(paramValue);
-        while (matcher.find()) {
-            str += matcher.group(0);
-        }
-        return str;
-    }
-
 
 }

@@ -224,12 +224,12 @@
                 if (commonDeclareApplyModel.isNotBlank(id)) {
                     AssessCommon.getDataDicInfo(id, function (data) {
                         if (commonDeclareApplyModel.isNotBlank(data)) {
-                            text = location + "房权证" + data.name + "字地" + number + "号";
+                            text = location + data.name + "字地" + number + "号";
                             engine.find("input[name='certName']").val(text);
                         }
                     });
                 } else {
-                    text = location + "房权证" + id + "字地" + number + "号";
+                    text = location + id + "字地" + number + "号";
                     engine.find("input[name='certName']").val(text);
                 }
             }
@@ -264,18 +264,23 @@
                 }
                 if (!commonDeclareApplyModel.isNotBlank(streetNumber)) {
                     streetNumber = "";
+                } else {
+                    var char = streetNumber.charAt(streetNumber.length - 1)
+                    if (char != "号") {
+                        streetNumber = streetNumber + "号";
+                    }
                 }
                 if (!commonDeclareApplyModel.isNotBlank(attachedNumber)) {
                     attachedNumber = "";
                 } else {
-                    attachedNumber = "附" + attachedNumber;
+                    attachedNumber = "附" + attachedNumber + "号";
                 }
                 if (!commonDeclareApplyModel.isNotBlank(buildingNumber)) {
                     buildingNumber = "";
                 } else {
                     buildingNumber = buildingNumber + "栋";
                 }
-                if (commonDeclareApplyModel.isNotBlank(district)) {
+               /* if (commonDeclareApplyModel.isNotBlank(district)) {
                     AssessCommon.getAreaById(district, function (data) {
                         if (!commonDeclareApplyModel.isNotBlank(data)) {
                             district = "";
@@ -289,7 +294,9 @@
                     district = "";
                     text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
                     engine.find("input[name='beLocated']").val(text);
-                }
+                }*/
+                text = streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
+                engine.find("input[name='beLocated']").val(text);
             }
         },
         getHouseColumn: function () {
@@ -365,18 +372,24 @@
                 }
                 if (!commonDeclareApplyModel.isNotBlank(streetNumber)) {
                     streetNumber = "";
+                } else {
+                    var char = streetNumber.charAt(streetNumber.length - 1)
+                    if (char != "号") {
+                        streetNumber = streetNumber + "号";
+                    }
                 }
                 if (!commonDeclareApplyModel.isNotBlank(attachedNumber)) {
                     attachedNumber = "";
                 } else {
-                    attachedNumber = "附" + attachedNumber;
+                    attachedNumber = "附" + attachedNumber + "号";
+
                 }
                 if (!commonDeclareApplyModel.isNotBlank(buildingNumber)) {
                     buildingNumber = "";
                 } else {
                     buildingNumber = buildingNumber + "栋";
                 }
-                if (commonDeclareApplyModel.isNotBlank(district)) {
+               /* if (commonDeclareApplyModel.isNotBlank(district)) {
                     AssessCommon.getAreaById(district, function (data) {
                         if (!commonDeclareApplyModel.isNotBlank(data)) {
                             district = "";
@@ -390,7 +403,9 @@
                     district = "";
                     text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
                     engine.find("input[name='beLocated']").val(text);
-                }
+                }*/
+                text = streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
+                engine.find("input[name='beLocated']").val(text);
             }
         },
         getHtml: function () {
