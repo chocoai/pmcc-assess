@@ -119,7 +119,11 @@ public class GenerateReportService {
         if (StringUtils.isEmpty(ids) || generateReportGeneration.getProjectPlanId() == null) {
             return;
         }
-        generateReportGeneration.setId(0);
+        if (generateReportGeneration.getId() == null || generateReportGeneration.getId().intValue()==0){
+            generateReportGenerationService.addGenerateReportGeneration(generateReportGeneration);
+        }else {
+            generateReportGenerationService.updateGenerateReportGeneration(generateReportGeneration);
+        }
         String[] strings = ids.split(",");
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportGeneration.getProjectPlanId());
         if (projectPlan == null) {

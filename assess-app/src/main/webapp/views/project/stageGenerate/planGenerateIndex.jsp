@@ -93,13 +93,21 @@
                                             </div>
                                         </div>
                                         <div class="x-valid">
-                                            <label class="col-sm-1 control-label">估价师<span
-                                                    class="symbol required"></span></label>
-                                            <div class="col-sm-3">
-                                                <select name="realEstateAppraiser" multiple="multiple"
-                                                        class="form-control search-select select2"
-                                                        required="required">
-                                                </select>
+                                            <div>
+                                                <label class="col-sm-1 control-label">
+                                                    资质类型<span class="symbol required"></span>
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control" name="qualificationType"
+                                                            onchange="onChange(this)">
+                                                        <option value="">--请选择--</option>
+                                                        <c:if test="${not empty qualificationTypes}">
+                                                            <c:forEach items="${qualificationTypes}" var="itemA">
+                                                                <option value="${itemA.key}">${itemA.value}</option>
+                                                            </c:forEach>
+                                                        </c:if>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -130,21 +138,13 @@
                                             </div>
                                         </div>
                                         <div class="x-valid">
-                                            <div>
-                                                <label class="col-sm-1 control-label">
-                                                    资质类型<span class="symbol required"></span>
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <select class="form-control" name="qualificationType"
-                                                            onchange="onChange(this)">
-                                                        <option value="">--请选择--</option>
-                                                        <c:if test="${not empty qualificationTypes}">
-                                                            <c:forEach items="${qualificationTypes}" var="itemA">
-                                                                <option value="${itemA.key}">${itemA.value}</option>
-                                                            </c:forEach>
-                                                        </c:if>
-                                                    </select>
-                                                </div>
+                                            <label class="col-sm-1 control-label">估价师<span
+                                                    class="symbol required"></span></label>
+                                            <div class="col-sm-3">
+                                                <select name="realEstateAppraiser" multiple="multiple"
+                                                        class="form-control search-select select2"
+                                                        required="required">
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
