@@ -14,12 +14,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.List;
 
 /**
  * Created by kings on 2018-6-6.
  */
 public class AsposeUtils {
+    /**
+     * 仿宋_GB2312
+     */
+    public static String ImitationSongGB2312FontName = "仿宋_GB2312";
+    /**
+     * 宋体
+     */
+    public static String SongStyleFontName = "宋体";
+    /**
+     * 微软雅黑
+     */
+    public static String MicrosoftYaHei = "微软雅黑";
+    /**
+     * 黑体
+     */
+    public static String BlackLetter = "黑体";
     private static final Logger logger = LoggerFactory.getLogger(AsposeUtils.class);
     //根据书签替换word 内容
 
@@ -32,6 +47,34 @@ public class AsposeUtils {
     public static FieldCollection getFieldCollection(Document doc) throws Exception {
         return doc.getRange().getFields();
     }
+
+    /**
+     * 利用 ascii 码 配合正则 提取中文
+     *
+     * @param paramValue
+     * @return
+     */
+    public static String getChinese(String paramValue) {
+        String regex = "([\u4e00-\u9fa5]+)";
+        String str = "";
+        Matcher matcher = Pattern.compile(regex).matcher(paramValue);
+        while (matcher.find()) {
+            str += matcher.group(0);
+        }
+        return str;
+    }
+
+    /**
+     * 字体样式默认设置
+     *
+     * @param builder
+     * @throws Exception
+     */
+    public static void setDefaultFontSettings(DocumentBuilder builder) throws Exception {
+        builder.getFont().setName(ImitationSongGB2312FontName);
+        builder.getFont().setSize(14.5);
+    }
+
 
     /**
      * 根据正则表达式 获取匹配的字符串集合
@@ -261,7 +304,7 @@ public class AsposeUtils {
             shape.setWidth(width);
             shape.setHeight(height);
             builder.insertNode(shape);
-            builder.insertImage(images.get(i),width,height);
+            builder.insertImage(images.get(i), width, height);
         }
         doc.save(filePath);
     }

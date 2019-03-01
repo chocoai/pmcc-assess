@@ -125,21 +125,19 @@ public class DataHisRightInfoPublicityService {
      *
      */
     public DataHisRightInfoPublicity getDataHisRightInfoPublicity(String province, String city, String district) {
-        //是否与区匹配
-        if (StringUtils.isNotBlank(district)) {
-            DataHisRightInfoPublicity infoPublicity = new DataHisRightInfoPublicity();
-            infoPublicity.setProvince(province);
-            infoPublicity.setCity(city);
-            infoPublicity.setDistrict(district);
-            List<DataHisRightInfoPublicity> districtObject = dataHisRightInfoPublicityDao.getListObject(infoPublicity);
-            if (CollectionUtils.isNotEmpty(districtObject)) {
-                return districtObject.get(0);
-            }
+        //district不必判断(example:北京市)
+        if (StringUtils.isEmpty(province) || StringUtils.isEmpty(city)){
+            return null;
         }
-        //是否与市匹配
-        List<DataHisRightInfoPublicity> cityObject = dataHisRightInfoPublicityDao.getCityContent(city);
-        if (CollectionUtils.isNotEmpty(cityObject)) {
-            return cityObject.get(0);
+        DataHisRightInfoPublicity infoPublicity = new DataHisRightInfoPublicity();
+        infoPublicity.setProvince(province);
+        infoPublicity.setCity(city);
+        if (StringUtils.isNotBlank(district)){
+            infoPublicity.setDistrict(district);
+        }
+        List<DataHisRightInfoPublicity> districtObject = dataHisRightInfoPublicityDao.getListObject(infoPublicity);
+        if (CollectionUtils.isNotEmpty(districtObject)) {
+            return districtObject.get(0);
         }
         return null;
     }
