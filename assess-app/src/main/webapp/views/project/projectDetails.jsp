@@ -129,6 +129,12 @@
                                             </div>
                                         </c:if>
                                     </div>
+                                    <a href="javascript://" class="btn btn-xs btn-warning"
+                                       onclick="projectDetails.taskCopy(${plan.id});"><i
+                                            class="fa fa-copy"></i> 复制</a><label id="lbl_copy_${plan.id}"></label>
+                                    <a href="javascript://" class="btn btn-xs btn-warning"
+                                       onclick="projectDetails.taskPaste(${plan.id});"><i
+                                            class="fa fa-paste"></i> 粘贴</a>
                                     <p>
                                     <table id="plan_task_list${plan.id}" class="table table-bordered"></table>
                                     </p>
@@ -237,10 +243,13 @@
                 lines: true,
                 autoRowHeight: false,
                 fitColumns: false,
+                checkOnSelect: false,
+                singleSelect: false,
                 width: 'auto',
                 method: "get",
                 rownumbers: true,
                 columns: [[
+                    {field: 'cbx', title: 'id', checkbox: true},
                     {
                         field: 'projectPhaseName',
                         align: 'left',
@@ -510,6 +519,48 @@
                     }
                 }
             });
+        },
+
+        //工作事项复制
+        taskCopy: function (planId) {
+            var rows = $('#plan_task_list' + planId).treegrid("getChecked");
+            if (rows && rows.length > 0) {
+                if (rows.length == 1) {
+                    $('#lbl_copy_' + planId).text(rows[0].name).attr('data-planDetailsId', rows[0].id);
+                } else {
+                    Alert('只能选择一行数据作为复制数据');
+                }
+            } else {
+                Alert('请选择需要复制的行数据');
+            }
+        },
+
+        //工作事项粘贴
+        taskPaste: function (planId) {
+            var copyPlanDetailsId = $('#lbl_copy_' + planId).attr('data-planDetailsId');
+            var rows = $('#plan_task_list' + planId).treegrid("getChecked");
+            if (rows && rows.length > 0) {
+                var pastePlanDetailsIdArray = [];
+                $.each(rows, function (i, item) {
+                    pastePlanDetailsIdArray.push(item.id);
+                })
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/projectPlanDetails/updateExecuteUser',
+                    data: {
+                        copyPlanDetailsId: copyPlanDetailsId,
+                        pastePlanDetailsIds: pastePlanDetailsIdArray.join()
+                    },
+                    success: function (result) {
+                        if(result.ret){
+                            Alert("粘贴完成");
+                        }else{
+                            Alert(result.errmsg);
+                        }
+                    }
+                })
+            } else {
+                Alert('请选择需要粘贴的行数据');
+            }
         }
     };
 

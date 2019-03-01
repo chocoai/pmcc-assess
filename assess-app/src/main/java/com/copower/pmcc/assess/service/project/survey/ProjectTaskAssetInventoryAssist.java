@@ -39,8 +39,6 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private SurveyAssetInventoryContentDao surveyAssetInventoryContentDao;
-    @Autowired
     private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
     @Autowired
     private DeclareRecordService declareRecordService;
@@ -52,41 +50,8 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/assetInventoryIndex", "", 0, "0", "");
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
-        List<BaseDataDic> inventoryContentList = baseDataDicService.getCacheDataDicList(declareRecord.getInventoryContentKey());
-        Collections.sort(inventoryContentList, Comparator.comparing(BaseDataDic::getSorting).reversed());//降序排列
         List<BaseDataDic> inventoryRightTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE);
-        List<SurveyAssetInventoryContent> list = surveyAssetInventoryContentDao.getSurveyAssetInventoryContent(projectPlanDetails.getId());
-        if (CollectionUtils.isEmpty(list)) {
-            for (BaseDataDic baseDataDic : inventoryContentList) {
-                Integer projectId = projectPlanDetails.getProjectId();
-                SurveyAssetInventoryContent surveyAssetInventoryContent = new SurveyAssetInventoryContent();
-                surveyAssetInventoryContent.setProjectId(projectId);
-                surveyAssetInventoryContent.setPlanDetailsId(projectPlanDetails.getId());
-                surveyAssetInventoryContent.setInventoryContent(baseDataDic.getId());
-                switch (baseDataDic.getFieldName()) {
-                    case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS://登记地址与实际地址
-                    case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS://房产证与土地证证载地址
-                        surveyAssetInventoryContent.setRegistration(declareRecord.getSeat());
-                        break;
-                    case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_USE://登记用途与实际用途
-                        if (StringUtils.isNotBlank(declareRecord.getCertUse())) {
-                            surveyAssetInventoryContent.setRegistration(declareRecord.getCertUse());
-                        }
-                        break;
-                    case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_STRUCTURE://登记结构与实际结构
-                        if (StringUtils.isNotBlank(declareRecord.getHousingStructure())) {
-                            surveyAssetInventoryContent.setRegistration(declareRecord.getHousingStructure());
-                        }
-                        break;
-                    case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_AREA://登记面积与实际面积
-                        if (declareRecord.getFloorArea() != null)
-                            surveyAssetInventoryContent.setRegistration(String.valueOf(declareRecord.getFloorArea()));
-                        break;
-                }
-                surveyAssetInventoryContentDao.save(surveyAssetInventoryContent);
-            }
-            list = surveyAssetInventoryContentDao.getSurveyAssetInventoryContent(projectPlanDetails.getId());
-        }
+        List<SurveyAssetInventoryContent> list = surveyAssetInventoryContentService.initAssetInventoryContent(projectPlanDetails, declareRecord);
         SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("surveyAssetInventory", surveyAssetInventory);
         List<SurveyAssetInventoryContentVo> surveyAssetInventoryContentVos = surveyAssetInventoryContentService.getVoList(list);
@@ -128,10 +93,9 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
         modelAndView.addObject("thisUserInfo", processControllerComponent.getThisUserInfo());    //当前操作用户信息
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
-
         SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("surveyAssetInventory", surveyAssetInventory);
-        List<SurveyAssetInventoryContent> surveyAssetInventoryContents = surveyAssetInventoryContentDao.getSurveyAssetInventoryContent(surveyAssetInventory.getPlanDetailId());
+        List<SurveyAssetInventoryContent> surveyAssetInventoryContents = surveyAssetInventoryContentService.initAssetInventoryContent(projectPlanDetails,declareRecord);
         List<SurveyAssetInventoryContentVo> surveyAssetInventoryContentVos = surveyAssetInventoryContentService.getVoList(surveyAssetInventoryContents);
         modelAndView.addObject("surveyAssetInventoryContentVos", surveyAssetInventoryContentVos);
         List<BaseDataDic> inventoryRightTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE);

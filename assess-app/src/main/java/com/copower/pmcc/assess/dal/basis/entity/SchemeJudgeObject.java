@@ -58,6 +58,10 @@ public class SchemeJudgeObject {
 
     private String liquidRatioExplain;
 
+    private Integer standardJudgeId;
+
+    private String standardJudgeExplain;
+
     private Boolean bisSplit;
 
     private Boolean bisMerge;
@@ -288,6 +292,22 @@ public class SchemeJudgeObject {
 
     public void setLiquidRatioExplain(String liquidRatioExplain) {
         this.liquidRatioExplain = liquidRatioExplain == null ? null : liquidRatioExplain.trim();
+    }
+
+    public Integer getStandardJudgeId() {
+        return standardJudgeId;
+    }
+
+    public void setStandardJudgeId(Integer standardJudgeId) {
+        this.standardJudgeId = standardJudgeId;
+    }
+
+    public String getStandardJudgeExplain() {
+        return standardJudgeExplain;
+    }
+
+    public void setStandardJudgeExplain(String standardJudgeExplain) {
+        this.standardJudgeExplain = standardJudgeExplain == null ? null : standardJudgeExplain.trim();
     }
 
     public Boolean getBisSplit() {

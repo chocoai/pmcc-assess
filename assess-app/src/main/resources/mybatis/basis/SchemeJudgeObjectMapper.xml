@@ -29,6 +29,8 @@
     <result column="collateral_found" property="collateralFound" jdbcType="VARCHAR" />
     <result column="liquid_ratio" property="liquidRatio" jdbcType="VARCHAR" />
     <result column="liquid_ratio_explain" property="liquidRatioExplain" jdbcType="VARCHAR" />
+    <result column="standard_judge_id" property="standardJudgeId" jdbcType="INTEGER" />
+    <result column="standard_judge_explain" property="standardJudgeExplain" jdbcType="VARCHAR" />
     <result column="bis_split" property="bisSplit" jdbcType="BIT" />
     <result column="bis_merge" property="bisMerge" jdbcType="BIT" />
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
@@ -101,8 +103,8 @@
     original_number, split_number, name, cert_name, ownership, seat, cert_use, practical_use, 
     land_cert_use, land_practical_use, set_use, best_use, floor_area, evaluation_area, 
     price, original_price, rental_possession_desc, collateral_found, liquid_ratio, liquid_ratio_explain, 
-    bis_split, bis_merge, bis_enable, bis_set_function, sorting, creator, gmt_created, 
-    gmt_modified
+    standard_judge_id, standard_judge_explain, bis_split, bis_merge, bis_enable, bis_set_function, 
+    sorting, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObjectExample" >
     select
@@ -146,10 +148,11 @@
       land_practical_use, set_use, best_use, 
       floor_area, evaluation_area, price, 
       original_price, rental_possession_desc, collateral_found, 
-      liquid_ratio, liquid_ratio_explain, bis_split, 
-      bis_merge, bis_enable, bis_set_function, 
-      sorting, creator, gmt_created, 
-      gmt_modified)
+      liquid_ratio, liquid_ratio_explain, standard_judge_id, 
+      standard_judge_explain, bis_split, bis_merge, 
+      bis_enable, bis_set_function, sorting, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{pid,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{areaGroupId,jdbcType=INTEGER}, 
       #{originalAreaGroupId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, 
       #{originalNumber,jdbcType=VARCHAR}, #{splitNumber,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
@@ -158,10 +161,11 @@
       #{landPracticalUse,jdbcType=VARCHAR}, #{setUse,jdbcType=INTEGER}, #{bestUse,jdbcType=INTEGER}, 
       #{floorArea,jdbcType=DECIMAL}, #{evaluationArea,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, 
       #{originalPrice,jdbcType=DECIMAL}, #{rentalPossessionDesc,jdbcType=VARCHAR}, #{collateralFound,jdbcType=VARCHAR}, 
-      #{liquidRatio,jdbcType=VARCHAR}, #{liquidRatioExplain,jdbcType=VARCHAR}, #{bisSplit,jdbcType=BIT}, 
-      #{bisMerge,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, #{bisSetFunction,jdbcType=BIT}, 
-      #{sorting,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{liquidRatio,jdbcType=VARCHAR}, #{liquidRatioExplain,jdbcType=VARCHAR}, #{standardJudgeId,jdbcType=INTEGER}, 
+      #{standardJudgeExplain,jdbcType=VARCHAR}, #{bisSplit,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, 
+      #{bisEnable,jdbcType=BIT}, #{bisSetFunction,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -246,6 +250,12 @@
       </if>
       <if test="liquidRatioExplain != null" >
         liquid_ratio_explain,
+      </if>
+      <if test="standardJudgeId != null" >
+        standard_judge_id,
+      </if>
+      <if test="standardJudgeExplain != null" >
+        standard_judge_explain,
       </if>
       <if test="bisSplit != null" >
         bis_split,
@@ -350,6 +360,12 @@
       </if>
       <if test="liquidRatioExplain != null" >
         #{liquidRatioExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="standardJudgeId != null" >
+        #{standardJudgeId,jdbcType=INTEGER},
+      </if>
+      <if test="standardJudgeExplain != null" >
+        #{standardJudgeExplain,jdbcType=VARCHAR},
       </if>
       <if test="bisSplit != null" >
         #{bisSplit,jdbcType=BIT},
@@ -467,6 +483,12 @@
       <if test="record.liquidRatioExplain != null" >
         liquid_ratio_explain = #{record.liquidRatioExplain,jdbcType=VARCHAR},
       </if>
+      <if test="record.standardJudgeId != null" >
+        standard_judge_id = #{record.standardJudgeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.standardJudgeExplain != null" >
+        standard_judge_explain = #{record.standardJudgeExplain,jdbcType=VARCHAR},
+      </if>
       <if test="record.bisSplit != null" >
         bis_split = #{record.bisSplit,jdbcType=BIT},
       </if>
@@ -525,6 +547,8 @@
       collateral_found = #{record.collateralFound,jdbcType=VARCHAR},
       liquid_ratio = #{record.liquidRatio,jdbcType=VARCHAR},
       liquid_ratio_explain = #{record.liquidRatioExplain,jdbcType=VARCHAR},
+      standard_judge_id = #{record.standardJudgeId,jdbcType=INTEGER},
+      standard_judge_explain = #{record.standardJudgeExplain,jdbcType=VARCHAR},
       bis_split = #{record.bisSplit,jdbcType=BIT},
       bis_merge = #{record.bisMerge,jdbcType=BIT},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
@@ -618,6 +642,12 @@
       <if test="liquidRatioExplain != null" >
         liquid_ratio_explain = #{liquidRatioExplain,jdbcType=VARCHAR},
       </if>
+      <if test="standardJudgeId != null" >
+        standard_judge_id = #{standardJudgeId,jdbcType=INTEGER},
+      </if>
+      <if test="standardJudgeExplain != null" >
+        standard_judge_explain = #{standardJudgeExplain,jdbcType=VARCHAR},
+      </if>
       <if test="bisSplit != null" >
         bis_split = #{bisSplit,jdbcType=BIT},
       </if>
@@ -673,6 +703,8 @@
       collateral_found = #{collateralFound,jdbcType=VARCHAR},
       liquid_ratio = #{liquidRatio,jdbcType=VARCHAR},
       liquid_ratio_explain = #{liquidRatioExplain,jdbcType=VARCHAR},
+      standard_judge_id = #{standardJudgeId,jdbcType=INTEGER},
+      standard_judge_explain = #{standardJudgeExplain,jdbcType=VARCHAR},
       bis_split = #{bisSplit,jdbcType=BIT},
       bis_merge = #{bisMerge,jdbcType=BIT},
       bis_enable = #{bisEnable,jdbcType=BIT},

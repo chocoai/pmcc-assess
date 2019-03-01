@@ -211,9 +211,8 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LOCATION.getKey(), stringBuilder.toString()));
                             break;
                         case OFFICE_CONCENTRATION://办公集聚度
-                            //取得交通枢纽信息
-                            if (CollectionUtils.isNotEmpty(trafficList)) {
-                                stringBuilder = new StringBuilder();
+                            stringBuilder = new StringBuilder();
+                            if (CollectionUtils.isNotEmpty(trafficList)) {//取得交通枢纽信息
                                 for (BasicMatchingTraffic examineMatchingTraffic : trafficList) {
                                     if (StringUtils.equals(examineMatchingTraffic.getType(), ExamineMatchingTrafficTypeEnum.TrafficHub.getName())) {
                                         stringBuilder.append(examineMatchingTraffic.getName());
@@ -221,8 +220,8 @@ public class MdMarketCompareFieldService extends BaseService {
                                         stringBuilder.append("；");
                                     }
                                 }
-                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.OFFICE_CONCENTRATION.getKey(), stringBuilder.toString()));
                             }
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.OFFICE_CONCENTRATION.getKey(), stringBuilder.toString()));
                             break;
                         case BUILDING://楼栋
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.BUILDING.getKey(), examineBuilding.getBuildingName()));
@@ -234,8 +233,8 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.ORIENTATION.getKey(), baseDataDicService.getNameById(examineHouse.getOrientation())));
                             break;
                         case TRAFFIC_CONDITIONS://交通条件
+                            stringBuilder = new StringBuilder();
                             if (CollectionUtils.isNotEmpty(trafficList)) {
-                                stringBuilder = new StringBuilder();
                                 for (BasicMatchingTraffic examineMatchingTraffic : trafficList) {
                                     if (!StringUtils.equals(examineMatchingTraffic.getType(), ExamineMatchingTrafficTypeEnum.TrafficHub.getName())) {
                                         stringBuilder.append(examineMatchingTraffic.getName());
@@ -243,8 +242,8 @@ public class MdMarketCompareFieldService extends BaseService {
                                         stringBuilder.append("；");
                                     }
                                 }
-                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRAFFIC_CONDITIONS.getKey(), stringBuilder.toString()));
                             }
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRAFFIC_CONDITIONS.getKey(), stringBuilder.toString()));
                             break;
                         case URBAN_INFRASTRUCTURE://城市基础设施
                             stringBuilder = new StringBuilder();

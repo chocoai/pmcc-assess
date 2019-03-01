@@ -78,10 +78,10 @@ public class ProjectCenterService {
         if (!processControllerComponent.userIsAdmin(processControllerComponent.getThisUser())) {
             //如果是超级管理员，跳过权限过滤
             //根据当前登录人所处部门确定，只能查看当前部门及下级部门的项目数据
-            Integer currDepartmentId = processControllerComponent.getThisUserInfo().getDepartmentId();
-            orgIds = Lists.newArrayList(currDepartmentId);
-            List<Integer> departmentChildenIds = erpRpcDepartmentService.getDepartmentChildenIds(currDepartmentId);
-            orgIds.addAll(departmentChildenIds);
+//            Integer currDepartmentId = processControllerComponent.getThisUserInfo().getDepartmentId();
+//            orgIds = Lists.newArrayList(currDepartmentId);
+//            List<Integer> departmentChildenIds = erpRpcDepartmentService.getDepartmentChildenIds(currDepartmentId);
+//            orgIds.addAll(departmentChildenIds);
         }
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());

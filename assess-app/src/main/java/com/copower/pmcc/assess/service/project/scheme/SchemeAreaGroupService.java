@@ -166,7 +166,7 @@ public class SchemeAreaGroupService {
                         schemeJudgeObject.setPracticalUse(declareRecord.getPracticalUse());
                         schemeJudgeObject.setEvaluationArea(declareRecord.getPracticalArea());
                         //获取到房屋中的出租占用情况描述
-                        BasicHouse basicHouse = schemeJudgeObjectService.getBasicHouseByDeclareId(declareRecord.getId());
+                        BasicHouse basicHouse = schemeJudgeObjectService.getBasicHouseByDeclareId(declareRecord.getId(),projectInfo.getProjectCategoryId());
                         if (basicHouse != null) {
                             schemeJudgeObject.setRentalPossessionDesc(basicHouse.getDescription());
                         }
