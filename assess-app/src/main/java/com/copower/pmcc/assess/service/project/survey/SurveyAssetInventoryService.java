@@ -167,6 +167,7 @@ public class SurveyAssetInventoryService extends BaseService {
                 BeanUtils.copyProperties(inventoryRight, targetRight);
                 targetRight.setCertName(targetDeclareRecord.getName());
                 targetRight.setId(null);
+                targetRight.setPlanDetailsId(targetPlanDetailsId);
                 targetRight.setCreator(commonService.thisUserAccount());
                 targetRight.setGmtCreated(null);
                 targetRight.setGmtModified(null);

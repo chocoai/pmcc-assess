@@ -545,7 +545,7 @@
                     pastePlanDetailsIdArray.push(item.id);
                 })
                 $.ajax({
-                    url: '${pageContext.request.contextPath}/projectPlanDetails/updateExecuteUser',
+                    url: '${pageContext.request.contextPath}/projectPlanDetails/taskPaste',
                     data: {
                         copyPlanDetailsId: copyPlanDetailsId,
                         pastePlanDetailsIds: pastePlanDetailsIdArray.join()

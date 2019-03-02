@@ -10,15 +10,20 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
+import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
+import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -110,6 +115,8 @@ public class BasicApplyTransferService {
     private BasicHouseDamagedDegreeDao basicHouseDamagedDegreeDao;
     @Autowired
     private BasicApplyDao basicApplyDao;
+    @Autowired
+    private CommonService commonService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -1010,4 +1017,63 @@ public class BasicApplyTransferService {
         return null;
     }
 
+    /**
+     * @param sourcePlanDetailsId
+     * @param targetPlanDetailsId
+     * @return
+     * @throws Exception
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public BasicApply copyForExamine(Integer sourcePlanDetailsId, Integer targetPlanDetailsId) throws Exception {
+        BasicApply sourceBasicApply = basicApplyService.getBasicApplyByPlanDetailsId(sourcePlanDetailsId);
+        if (sourceBasicApply == null)
+            throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
+        BasicApply targetBasicApply = basicApplyService.getBasicApplyByPlanDetailsId(targetPlanDetailsId);
+        if (targetBasicApply != null) {
+            //先清除數據
+            basicEstateService.clearInvalidData(targetBasicApply.getId());
+            basicBuildingService.clearInvalidData(targetBasicApply.getId());
+            basicUnitService.clearInvalidData(targetBasicApply.getId());
+            basicHouseService.clearInvalidData(targetBasicApply.getId());
+            basicEstateTaggingService.clearInvalidData(targetBasicApply.getId());
+            basicApplyService.deleteBasicApply(targetBasicApply.getId());
+        }
+        targetBasicApply = new BasicApply();
+        BeanUtils.copyProperties(sourceBasicApply, targetBasicApply);
+        targetBasicApply.setPlanDetailsId(targetPlanDetailsId);
+        targetBasicApply.setStatus(ProjectStatusEnum.STARTAPPLY.getKey());
+        targetBasicApply.setCreator(commonService.thisUserAccount());
+        targetBasicApply.setGmtCreated(new Date());
+        targetBasicApply.setGmtModified(new Date());
+        basicApplyService.saveBasicApply(targetBasicApply);
+
+        //取数据
+        BasicEstate basicEstateOld = publicBasicService.getBasicEstateByAppId(sourceBasicApply.getId());
+        BasicEstateLandState basicEstateLandStateOld = publicBasicService.getEstateLandStateByAppId(sourceBasicApply.getId());
+        BasicBuilding basicBuildingOld = publicBasicService.getBasicBuildingByAppId(sourceBasicApply.getId());
+        BasicUnit basicUnitOld = publicBasicService.getBasicUnitByAppId(sourceBasicApply.getId());
+        BasicHouse basicHouseOld = publicBasicService.getBasicHouseVoByAppId(sourceBasicApply.getId());
+        BasicHouseTrading basicTradingOld = publicBasicService.getBasicHouseTradingByAppId(sourceBasicApply.getId());
+
+        //处理楼盘
+        BasicEstate basicEstateNew = this.copyBasicEstate(targetBasicApply.getId(), basicEstateOld, basicEstateLandStateOld);
+        Integer estateId = basicEstateNew.getId();
+        this.copyBasicTagging(EstateTaggingTypeEnum.ESTATE, sourceBasicApply.getId(), targetBasicApply.getId());
+
+        //处理楼栋
+        BasicBuilding basicBuilding = this.copyBasicBuilding(targetBasicApply.getId(), basicBuildingOld, estateId);
+        Integer buildingMainId = basicBuilding.getId();
+        this.copyBasicTagging(EstateTaggingTypeEnum.BUILDING, sourceBasicApply.getId(), targetBasicApply.getId());
+
+        //处理单元
+        BasicUnit basicUnit = this.copyBasicUnit(targetBasicApply.getId(), basicUnitOld, buildingMainId);
+        Integer unitId = basicUnit.getId();
+        this.copyBasicTagging(EstateTaggingTypeEnum.UNIT, sourceBasicApply.getId(), targetBasicApply.getId());
+
+        //处理房屋
+        BasicHouse basicHouse = this.copyBasicHouse(targetBasicApply.getId(), basicHouseOld, basicTradingOld, unitId);
+        this.copyBasicTagging(EstateTaggingTypeEnum.HOUSE, sourceBasicApply.getId(), targetBasicApply.getId());
+
+        return targetBasicApply;
+    }
 }

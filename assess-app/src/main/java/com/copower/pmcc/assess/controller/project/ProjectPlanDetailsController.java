@@ -62,8 +62,8 @@ public class ProjectPlanDetailsController {
             projectPlanDetailsService.taskPaste(copyPlanDetailsId, pastePlanDetailsIds);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            logger.error("调整责任人", e);
-            return HttpResult.newErrorResult("调整责任人异常");
+            logger.error("项目详情粘贴数据", e);
+            return HttpResult.newErrorResult("粘贴数据异常");
         }
     }
 }
