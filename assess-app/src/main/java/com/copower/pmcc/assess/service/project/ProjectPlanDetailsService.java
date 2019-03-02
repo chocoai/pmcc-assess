@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project;
 
+import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
@@ -10,6 +11,8 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.basic.BasicApplyTransferService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
+import com.copower.pmcc.assess.service.project.survey.SurveyExamineInfoService;
+import com.copower.pmcc.assess.service.project.survey.SurveyExamineTaskService;
 import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
@@ -87,6 +90,10 @@ public class ProjectPlanDetailsService {
     private SurveyAssetInventoryService surveyAssetInventoryService;
     @Autowired
     private BasicApplyTransferService basicApplyTransferService;
+    @Autowired
+    private SurveyExamineTaskService surveyExamineTaskService;
+    @Autowired
+    private SurveyExamineInfoService surveyExamineInfoService;
 
     public ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
         return projectPlanDetailsDao.getProjectPlanDetailsById(id);
@@ -533,7 +540,6 @@ public class ProjectPlanDetailsService {
      * @param copyPlanDetailsId
      * @param pastePlanDetailsIds
      */
-    @Transactional(rollbackFor = Exception.class)
     public void taskPaste(Integer copyPlanDetailsId, String pastePlanDetailsIds) throws Exception {
         //1.被复制的任务必须是叶子节点 2.目前只支持资产清查，现场查勘案例调查可被复制
         //3.被粘贴的任务必须是还未开始的任务 4.被粘贴的任务必须与被复制数据的工作事项一致
@@ -548,41 +554,36 @@ public class ProjectPlanDetailsService {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(copyPlanDetails.getProjectId());
         if (copyPlanDetails == null || copyPlanDetails.getBisLastLayer() == Boolean.FALSE) return;
         ProjectPhase inventoryPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
-        ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
+        ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
+        ProjectPhase sceneExploreChaildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
         ProjectPhase caseStudyPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
-        if (copyPlanDetails.getProjectPhaseId().equals(inventoryPhase.getId())
-                || copyPlanDetails.getProjectPhaseId().equals(sceneExplorePhase.getId())
-                || copyPlanDetails.getProjectPhaseId().equals(caseStudyPhase.getId())) {
-            for (Integer integer : pasteIdList) {
+        for (Integer integer : pasteIdList) {
+            try {
                 if (integer.equals(copyPlanDetailsId)) continue;
                 ProjectPlanDetails planDetails = projectPlanDetailsDao.getProjectPlanDetailsById(integer);
                 if (planDetails == null) continue;
+                if (StringUtils.isBlank(planDetails.getExecuteUserAccount())) continue;
+                if (planDetails.getProjectPhaseId().equals(sceneExplorePhase.getId())) { //现场查勘父级
+                    //查看有无子项，无子项先生成子项，有子项则跳过
+                    List<ProjectPlanDetails> detailsList = projectPlanDetailsDao.getProjectPlanDetailsByPid(planDetails.getId());
+                    if(CollectionUtils.isNotEmpty(detailsList)) continue;
+                    SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(copyPlanDetails.getPid());
+                    surveyExamineTaskService.examineTaskAssignment(planDetails.getId(), surveyExamineInfo.getExamineFormType(), ExamineTypeEnum.EXPLORE);
+                    basicApplyTransferService.copyForExamine(copyPlanDetails.getPid(), planDetails.getId());
+                }
+
+                if (planDetails.getExecuteUserAccount().equals(commonService.thisUserAccount())) continue;
                 if (!ProcessStatusEnum.NOPROCESS.getValue().equals(planDetails.getStatus())) continue;
-                if(StringUtils.isBlank(planDetails.getExecuteUserAccount()))continue;
-                if(planDetails.getExecuteUserAccount().equals(commonService.thisUserAccount())) continue;
                 //资产清查数据复制
                 if (planDetails.getProjectPhaseId().equals(inventoryPhase.getId())) {
                     surveyAssetInventoryService.copyAssetInventory(copyPlanDetailsId, integer);
                 }
-
-
-
-
-                if (StringUtils.isNotBlank(planDetails.getExecuteUserAccount())) {
-                    if (planDetails.getBisLastLayer() == Boolean.TRUE && planDetails.getProjectPhaseId().equals(copyPlanDetails.getProjectPhaseId())) {
-                        //现场查勘案例调查数据复制
-                        if (planDetails.getProjectPhaseId().equals(sceneExplorePhase.getId())) {
-
-                        }
-                        if (planDetails.getProjectPhaseId().equals(caseStudyPhase.getId())) {
-                            try {
-                                basicApplyTransferService.copyForExamine(copyPlanDetails.getPid(), planDetails.getPid());
-                            } catch (Exception e) {
-                                logger.error(e.getMessage(), e);
-                            }
-                        }
-                    }
+                //现场查勘案例调查数据复制
+                if (planDetails.getProjectPhaseId().equals(sceneExploreChaildPhase.getId()) || planDetails.getProjectPhaseId().equals(caseStudyPhase.getId())) {
+                    basicApplyTransferService.copyForExamine(copyPlanDetails.getPid(), planDetails.getPid());
                 }
+            } catch (BusinessException e) {
+                logger.error(e.getMessage(), e);
             }
         }
     }

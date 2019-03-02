@@ -1030,13 +1030,7 @@ public class BasicApplyTransferService {
             throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
         BasicApply targetBasicApply = basicApplyService.getBasicApplyByPlanDetailsId(targetPlanDetailsId);
         if (targetBasicApply != null) {
-            //先清除數據
-            basicEstateService.clearInvalidData(targetBasicApply.getId());
-            basicBuildingService.clearInvalidData(targetBasicApply.getId());
-            basicUnitService.clearInvalidData(targetBasicApply.getId());
-            basicHouseService.clearInvalidData(targetBasicApply.getId());
-            basicEstateTaggingService.clearInvalidData(targetBasicApply.getId());
-            basicApplyService.deleteBasicApply(targetBasicApply.getId());
+            basicApplyService.deleteBasicApply(targetBasicApply.getId());  //先清除數據
         }
         targetBasicApply = new BasicApply();
         BeanUtils.copyProperties(sourceBasicApply, targetBasicApply);
