@@ -140,7 +140,7 @@
                                     <td>
                                         <div class="x-valid">
                                             <input type="text" data-rule-maxlength="50" placeholder="登记" required
-                                                   id="registration${item.id}" onkeyup="isAgreement(this);"
+                                                   id="registration${item.id}" onchange="isAgreement(this);"
                                                    name="registration${item.id}"
                                                    class="form-control " value="${item.registration}">
                                         </div>
@@ -148,7 +148,7 @@
                                     <td>
                                         <div class="x-valid">
                                             <input type="text" data-rule-maxlength="50" placeholder="实际" required
-                                                   id="actual${item.id}" onkeyup="isAgreement(this);"
+                                                   id="actual${item.id}" onchange="isAgreement(this);"
                                                    name="actual${item.id}"
                                                    class="form-control " value="${item.actual}">
                                         </div>

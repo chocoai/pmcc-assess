@@ -56,4 +56,10 @@ public class SurveyAssetInventoryRightDao {
         int i = surveyAssetInventoryRightMapper.deleteByPrimaryKey(id);
         return i > 0;
     }
+
+    public int deleteByPlanDetailsId(Integer planDetailsId) {
+        SurveyAssetInventoryRightExample example = new SurveyAssetInventoryRightExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        return surveyAssetInventoryRightMapper.deleteByExample(example);
+    }
 }

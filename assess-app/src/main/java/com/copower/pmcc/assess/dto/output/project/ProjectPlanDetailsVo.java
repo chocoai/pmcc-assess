@@ -29,6 +29,10 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
 
     private Boolean canReplay;//是否允许重启
 
+    private Boolean canCopy;//是否允许复制
+
+    private Boolean canPaste;//是否允许粘贴
+
     private List<KeyValueDto> tasks;
 
     public String get_parentId() {
@@ -93,6 +97,22 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
 
     public void setCanReplay(Boolean canReplay) {
         this.canReplay = canReplay;
+    }
+
+    public Boolean getCanCopy() {
+        return canCopy;
+    }
+
+    public void setCanCopy(Boolean canCopy) {
+        this.canCopy = canCopy;
+    }
+
+    public Boolean getCanPaste() {
+        return canPaste;
+    }
+
+    public void setCanPaste(Boolean canPaste) {
+        this.canPaste = canPaste;
     }
 
     public List<KeyValueDto> getTasks() {

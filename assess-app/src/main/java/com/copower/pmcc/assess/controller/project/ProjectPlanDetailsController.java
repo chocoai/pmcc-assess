@@ -57,9 +57,9 @@ public class ProjectPlanDetailsController {
 
     @ResponseBody
     @PostMapping(name = "任务信息粘贴", value = "/taskPaste")
-    public HttpResult taskPaste(Integer copyPlanDetailsId, String pastePlanDetailsIds) {
+    public HttpResult taskPaste(Integer copyPlanDetailsId, Integer pastePlanDetailsId) {
         try {
-            projectPlanDetailsService.taskPaste(copyPlanDetailsId, pastePlanDetailsIds);
+            projectPlanDetailsService.taskPaste(copyPlanDetailsId, pastePlanDetailsId);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("项目详情粘贴数据", e);

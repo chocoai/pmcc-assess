@@ -245,6 +245,14 @@ public class ProjectPlanDetailsService {
         } catch (BpmException e) {
             logger.error("计划任务获取流程任务异常", e);
         }
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        ProjectPhase inventoryPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
+        ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
+        ProjectPhase sceneExploreChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
+        ProjectPhase caseStudyChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
+        List<Integer> phaseIds = Lists.newArrayList(inventoryPhase.getId(), sceneExploreChildPhase.getId(), caseStudyChildPhase.getId());
+        List<Integer> phaseFullIds = Lists.newArrayList(phaseIds);
+        phaseFullIds.add(sceneExplorePhase.getId());
         String viewUrl = String.format("/%s/ProjectTask/projectTaskDetailsById?planDetailsId=", applicationConstant.getAppKey());
         //判断任务是否结束，如果结束只能查看详情
         for (ProjectPlanDetailsVo projectPlanDetailsVo : projectPlanDetailsVos) {
@@ -264,6 +272,11 @@ public class ProjectPlanDetailsService {
                                     if (responsibilityDto.getUserAccount().contains(commonService.thisUserAccount())) {
                                         String executeUrl = String.format(responsibilityDto.getUrl().contains("?") ? "%s&responsibilityId=%s" : "%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId());
                                         projectPlanDetailsVo.setExcuteUrl(executeUrl);
+
+                                        //设置粘贴
+                                        if (phaseFullIds.contains(projectPlanDetailsVo.getProjectPhaseId())) {
+                                            projectPlanDetailsVo.setCanPaste(true);
+                                        }
                                     }
                                 }
                             }
@@ -302,6 +315,10 @@ public class ProjectPlanDetailsService {
                 if (projectPhase != null) {
                     projectPlanDetailsVo.setCanReplay(projectPhase.getBisCanReturn());
                 }
+            }
+            //设置复制
+            if (projectPlanDetailsVo.getBisLastLayer() == Boolean.TRUE && phaseIds.contains(projectPlanDetailsVo.getProjectPhaseId())) {
+                projectPlanDetailsVo.setCanCopy(true);
             }
         }
         return projectPlanDetailsVos;
@@ -538,52 +555,38 @@ public class ProjectPlanDetailsService {
      * 任务粘贴
      *
      * @param copyPlanDetailsId
-     * @param pastePlanDetailsIds
+     * @param pastePlanDetailsId
      */
-    public void taskPaste(Integer copyPlanDetailsId, String pastePlanDetailsIds) throws Exception {
+    public void taskPaste(Integer copyPlanDetailsId, Integer pastePlanDetailsId) throws Exception {
         //1.被复制的任务必须是叶子节点 2.目前只支持资产清查，现场查勘案例调查可被复制
         //3.被粘贴的任务必须是还未开始的任务 4.被粘贴的任务必须与被复制数据的工作事项一致
         //5.被粘贴的任务也必须是叶子节点
-        if (copyPlanDetailsId == null)
-            throw new BusinessException("无复制项信息");
-        if (StringUtils.isBlank(pastePlanDetailsIds))
-            throw new BusinessException("无粘贴项信息");
-        List<Integer> pasteIdList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(pastePlanDetailsIds));
-        if (CollectionUtils.isEmpty(pasteIdList)) return;
+        if (copyPlanDetailsId == null || pastePlanDetailsId == null)
+            throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         ProjectPlanDetails copyPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(copyPlanDetailsId);
+        ProjectPlanDetails pastePlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(pastePlanDetailsId);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(copyPlanDetails.getProjectId());
-        if (copyPlanDetails == null || copyPlanDetails.getBisLastLayer() == Boolean.FALSE) return;
         ProjectPhase inventoryPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
         ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
-        ProjectPhase sceneExploreChaildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
-        ProjectPhase caseStudyPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
-        for (Integer integer : pasteIdList) {
-            try {
-                if (integer.equals(copyPlanDetailsId)) continue;
-                ProjectPlanDetails planDetails = projectPlanDetailsDao.getProjectPlanDetailsById(integer);
-                if (planDetails == null) continue;
-                if (StringUtils.isBlank(planDetails.getExecuteUserAccount())) continue;
-                if (planDetails.getProjectPhaseId().equals(sceneExplorePhase.getId())) { //现场查勘父级
+        ProjectPhase sceneExploreChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
+        ProjectPhase caseStudyChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
+        List<Integer> commonPhaseIds = Lists.newArrayList(sceneExploreChildPhase.getId(), caseStudyChildPhase.getId());
+        //資產清查
+        if (copyPlanDetails.getProjectPhaseId().equals(inventoryPhase.getId()) && pastePlanDetails.getProjectPhaseId().equals(inventoryPhase.getId())) {
+            surveyAssetInventoryService.copyAssetInventory(copyPlanDetailsId, pastePlanDetailsId);
+        }
+        //現場查勘案例調查
+        if (commonPhaseIds.contains(copyPlanDetails.getProjectPhaseId())) {
+            if (commonPhaseIds.contains(pastePlanDetails.getProjectPhaseId())) {
+                basicApplyTransferService.copyForExamine(copyPlanDetails.getPid(), pastePlanDetails.getPid());
+            }
+            if (pastePlanDetails.getProjectPhaseId().equals(sceneExplorePhase.getId())) {
                     //查看有无子项，无子项先生成子项，有子项则跳过
-                    List<ProjectPlanDetails> detailsList = projectPlanDetailsDao.getProjectPlanDetailsByPid(planDetails.getId());
-                    if(CollectionUtils.isNotEmpty(detailsList)) continue;
+                    List<ProjectPlanDetails> detailsList = projectPlanDetailsDao.getProjectPlanDetailsByPid(pastePlanDetails.getId());
+                    if (CollectionUtils.isNotEmpty(detailsList)) return;
                     SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(copyPlanDetails.getPid());
-                    surveyExamineTaskService.examineTaskAssignment(planDetails.getId(), surveyExamineInfo.getExamineFormType(), ExamineTypeEnum.EXPLORE);
-                    basicApplyTransferService.copyForExamine(copyPlanDetails.getPid(), planDetails.getId());
-                }
-
-                if (planDetails.getExecuteUserAccount().equals(commonService.thisUserAccount())) continue;
-                if (!ProcessStatusEnum.NOPROCESS.getValue().equals(planDetails.getStatus())) continue;
-                //资产清查数据复制
-                if (planDetails.getProjectPhaseId().equals(inventoryPhase.getId())) {
-                    surveyAssetInventoryService.copyAssetInventory(copyPlanDetailsId, integer);
-                }
-                //现场查勘案例调查数据复制
-                if (planDetails.getProjectPhaseId().equals(sceneExploreChaildPhase.getId()) || planDetails.getProjectPhaseId().equals(caseStudyPhase.getId())) {
-                    basicApplyTransferService.copyForExamine(copyPlanDetails.getPid(), planDetails.getPid());
-                }
-            } catch (BusinessException e) {
-                logger.error(e.getMessage(), e);
+                    surveyExamineTaskService.examineTaskAssignment(pastePlanDetails.getId(), surveyExamineInfo.getExamineFormType(), ExamineTypeEnum.EXPLORE);
+                    basicApplyTransferService.copyForExamine(copyPlanDetails.getPid(), pastePlanDetails.getId());
             }
         }
     }

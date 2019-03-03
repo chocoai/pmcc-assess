@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -146,7 +147,8 @@ public class SurveyAssetInventoryService extends BaseService {
         SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryDao.getDataByPlanDetailsId(sourcePlanDetailsId);
         if (surveyAssetInventory == null) return;
         ProjectPlanDetails targetPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(targetPlanDetailsId);
-        SurveyAssetInventory target = new SurveyAssetInventory();
+        SurveyAssetInventory target = surveyAssetInventoryDao.getDataByPlanDetailsId(targetPlanDetailsId);
+        target = target == null ? new SurveyAssetInventory() : target;
         target.setProjectId(surveyAssetInventory.getProjectId());
         target.setPlanDetailId(targetPlanDetailsId);
         target.setDeclareRecordId(targetPlanDetails.getDeclareRecordId());
@@ -158,8 +160,27 @@ public class SurveyAssetInventoryService extends BaseService {
         target.setCreator(commonService.thisUserAccount());
         surveyAssetInventoryDao.save(target);
 
+        //處理附件
+        SysAttachmentDto where = new SysAttachmentDto();
+        where.setTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetInventory.class));
+        where.setTableId(surveyAssetInventory.getId());
+        List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(where);
+        if(CollectionUtils.isNotEmpty(attachmentList)){
+            where.setTableId(target.getId());
+            baseAttachmentService.deleteAttachmentByDto(where);
+            where.setTableName(null);
+            for (SysAttachmentDto dto : attachmentList) {
+                try {
+                    baseAttachmentService.copyFtpAttachment(dto.getId(),where);
+                } catch (Exception e) {
+                    log.error(e.getMessage(),e);
+                }
+            }
+        }
+
         DeclareRecord targetDeclareRecord = declareRecordService.getDeclareRecordById(targetPlanDetails.getDeclareRecordId());
         //复制他权
+        surveyAssetInventoryRightDao.deleteByPlanDetailsId(targetPlanDetailsId);
         List<SurveyAssetInventoryRight> inventoryRights = surveyAssetInventoryRightDao.getListByPlanDetailsId(sourcePlanDetailsId);
         if (CollectionUtils.isNotEmpty(inventoryRights)) {
             for (SurveyAssetInventoryRight inventoryRight : inventoryRights) {

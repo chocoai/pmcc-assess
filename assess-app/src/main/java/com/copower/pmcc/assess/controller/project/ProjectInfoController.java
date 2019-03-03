@@ -255,8 +255,8 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/getPlanDetailListByPlanId", name = "取得阶段工作成果", method = RequestMethod.GET)
-    public BootstrapTableVo getPlanDetailListByPlanId(Integer projecId, Integer planId) {
-        List<ProjectPlanDetailsVo> projectPlanDetailsVos = projectPlanDetailsService.getPlanDetailListByPlanId(projecId, planId);
+    public BootstrapTableVo getPlanDetailListByPlanId(Integer projectId, Integer planId) {
+        List<ProjectPlanDetailsVo> projectPlanDetailsVos = projectPlanDetailsService.getPlanDetailListByPlanId(projectId, planId);
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         bootstrapTableVo.setTotal((long) projectPlanDetailsVos.size());
         bootstrapTableVo.setRows(projectPlanDetailsVos);

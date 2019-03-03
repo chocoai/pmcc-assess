@@ -101,7 +101,7 @@
                         <%--状态说明  fa-ellipsis-h 进行中  fa-power-off 结束 fa-external-link待提交 fa-edit待审批---%>
                         <div class="tab-content">
                             <c:forEach items="${projectPlanList}" var="plan">
-                                <div class="tab-pane fade " id="tab_plan_${plan.id}">
+                                <div class="tab-panel fade " id="tab_plan_${plan.id}">
                                     <div id="plan_item_${plan.id}" class="col-md-3 col-sm-3 col-xs-3 col-sm-offset-1">
                                         <c:if test="${not empty plan.planDisplayUrl and plan.bisAutoComplete eq false}">
                                             <div class="btn-group">
@@ -129,12 +129,6 @@
                                             </div>
                                         </c:if>
                                     </div>
-                                    <a href="javascript://" class="btn btn-xs btn-warning"
-                                       onclick="projectDetails.taskCopy(${plan.id});"><i
-                                            class="fa fa-copy"></i> 复制</a><label id="lbl_copy_${plan.id}"></label>
-                                    <a href="javascript://" class="btn btn-xs btn-warning"
-                                       onclick="projectDetails.taskPaste(${plan.id});"><i
-                                            class="fa fa-paste"></i> 粘贴</a>
                                     <p>
                                     <table id="plan_task_list${plan.id}" class="table table-bordered"></table>
                                     </p>
@@ -249,12 +243,11 @@
                 method: "get",
                 rownumbers: true,
                 columns: [[
-                    {field: 'cbx', title: 'id', checkbox: true},
                     {
                         field: 'projectPhaseName',
                         align: 'left',
                         title: '工作内容',
-                        width: '20%',
+                        width: '30%',
                         formatter: function (value, row) {
                             var s = value;
                             if (row.bisNew) {
@@ -301,22 +294,26 @@
                         formatter: function (value, row) {
                             var s = "";
                             if (!row.bisStart && row.bisLastLayer && '${isPM}' == 'true') {
-                                s += " <a onclick='projectDetails.updateExecuteUser(\"" + row.id + "\")' href='javascript://' data-placement='top' data-original-title='调整责任人' class='btn btn-xs btn-primary tooltips' ><i class='fa fa-user fa-white'></i></a>";
+                                s += " <a onclick='projectDetails.updateExecuteUser(\"" + row.id + "\")' href='javascript://' title='调整责任人' class='btn btn-xs btn-primary tooltips' ><i class='fa fa-user fa-white'></i></a>";
                             }
                             if (row.excuteUrl) {
                                 var btnClass = 'btn-success';
                                 if (/processInsId/.test(row.excuteUrl)) {
                                     btnClass = 'btn-primary';
                                 }
-                                s += " <a onclick='projectDetails.taskOpenWin(\"" + row.excuteUrl + "\")' href='javascript://' data-placement='top' data-original-title='处理' class='btn btn-xs " + btnClass + " tooltips' ><i class='fa fa-arrow-right fa-white'></i></a>";
+                                s += " <a onclick='projectDetails.taskOpenWin(\"" + row.excuteUrl + "\")' href='javascript://' title='处理' class='btn btn-xs " + btnClass + " tooltips' ><i class='fa fa-arrow-right fa-white'></i></a>";
                             } else if (row.displayUrl) {
                                 if (row.canReplay) {
-                                    s += " <a href='javascript://' onclick='projectDetails.replyTask(" + row.id + ")' data-placement='top' data-original-title='任务打回' class='btn btn-xs btn-primary tooltips' ><i class='fa fa-reply fa-white'></i></a>";
+                                    s += " <a href='javascript://' onclick='projectDetails.replyTask(" + row.id + ")' title='任务打回' class='btn btn-xs btn-primary tooltips' ><i class='fa fa-reply fa-white'></i></a>";
                                 }
-                                s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                                s += " <a target='_blank' href='" + row.displayUrl + "' title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
                             }
-                            //如果项目结束并且任务为现场查勘或案例调查，可申请将数据写入到案例库中
-
+                            if (row.canCopy) {
+                                s += " <a href='javascript://' onclick='projectDetails.taskCopy(this," + row.id + ");' title='复制' class='btn btn-xs btn-warning btn-copy' ><i class='fa fa-copy fa-white'></i> <span>复制</span></a>";
+                            }
+                            if (row.canPaste) {
+                                s += " <a href='javascript://' onclick='projectDetails.taskPaste(this," + row.id + ");' title='粘贴' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-paste fa-white'></i> <span>粘贴</span></a>";
+                            }
                             return s;
                         }
                     }
@@ -522,45 +519,40 @@
         },
 
         //工作事项复制
-        taskCopy: function (planId) {
-            var rows = $('#plan_task_list' + planId).treegrid("getChecked");
-            if (rows && rows.length > 0) {
-                if (rows.length == 1) {
-                    $('#lbl_copy_' + planId).text(rows[0].name).attr('data-planDetailsId', rows[0].id);
-                } else {
-                    Alert('只能选择一行数据作为复制数据');
-                }
-            } else {
-                Alert('请选择需要复制的行数据');
-            }
+        taskCopy: function (_this, id) {
+            $(_this).closest('.tab-panel').find('.btn-copy').each(function () {
+                $(this).removeAttr('data-planDetailsId').find('span').text('复制');
+            });
+            $(_this).attr('data-planDetailsId', id).find('span').text('已被复制');
         },
 
         //工作事项粘贴
-        taskPaste: function (planId) {
-            var copyPlanDetailsId = $('#lbl_copy_' + planId).attr('data-planDetailsId');
-            var rows = $('#plan_task_list' + planId).treegrid("getChecked");
-            if (rows && rows.length > 0) {
-                var pastePlanDetailsIdArray = [];
-                $.each(rows, function (i, item) {
-                    pastePlanDetailsIdArray.push(item.id);
-                })
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/projectPlanDetails/taskPaste',
-                    data: {
-                        copyPlanDetailsId: copyPlanDetailsId,
-                        pastePlanDetailsIds: pastePlanDetailsIdArray.join()
-                    },
-                    success: function (result) {
-                        if(result.ret){
-                            Alert("粘贴完成");
-                        }else{
-                            Alert(result.errmsg);
-                        }
-                    }
-                })
-            } else {
-                Alert('请选择需要粘贴的行数据');
+        taskPaste: function (_this, id) {
+            var copyPlanDetailsId = $(_this).closest('.tab-panel').find('.btn-copy[data-planDetailsId]').attr('data-planDetailsId');
+            if(!copyPlanDetailsId){
+                Alert('請選擇複製對象');
+                return false;
             }
+            if (id == copyPlanDetailsId) {
+                Alert('無法粘貼自己');
+                return false;
+            }
+            Loading.progressShow();
+            $.ajax({
+                url: '${pageContext.request.contextPath}/projectPlanDetails/taskPaste',
+                data: {
+                    copyPlanDetailsId: copyPlanDetailsId,
+                    pastePlanDetailsId: id
+                },
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        Alert("粘贴完成");
+                    } else {
+                        Alert(result.errmsg);
+                    }
+                }
+            })
         }
     };
 
