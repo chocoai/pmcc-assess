@@ -5,13 +5,10 @@ import com.aspose.words.*;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.sql.*;
+import java.util.List;
 import java.util.List;
 
 /**
@@ -150,4 +147,6 @@ public class Test {
         table.setBorders(0, 0, Color.white);
         document.save("D:\\test\\2.doc");
     }
+
+
 }

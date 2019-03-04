@@ -405,4 +405,39 @@ public class AsposeUtils {
         }
     }
 
+    /**
+     * 图片插入到word中
+     * @param imgPathList
+     * @param colCount
+     * @param wordPath
+     * @throws Exception
+     */
+    public void imageInsertToWrod(List<String> imgPathList,Integer colCount,String wordPath) throws Exception {
+        Document document = new Document();
+        DocumentBuilder builder = new DocumentBuilder(document);
+        Table table = builder.startTable();
+        int rowLength = imgPathList.size()%colCount>0?(imgPathList.size()/colCount)+1:imgPathList.size()/colCount;//列数
+        Integer index = 0;
+        for (int j = 0; j < rowLength; j++) {
+            for (int k = 0; k < colCount; k++) {
+                builder.insertCell();
+                index = j * colCount + k;
+                if (index < imgPathList.size()) {
+                    builder.insertImage(imgPathList.get(index), RelativeHorizontalPosition.MARGIN, 40,
+                            RelativeVerticalPosition.MARGIN, 10, 150, 150, WrapType.SQUARE);
+                    //设置样式
+                    builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
+                    builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
+                    builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
+                    builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
+                    builder.getCellFormat().setWidth(200);
+                    builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+                    builder.getRowFormat().setAlignment(RowAlignment.CENTER);
+                }
+            }
+            builder.endRow();
+        }
+        table.setBorders(0, 0, Color.white);
+        document.save(wordPath);
+    }
 }
