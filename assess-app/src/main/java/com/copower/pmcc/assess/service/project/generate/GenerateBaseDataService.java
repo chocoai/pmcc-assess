@@ -1423,7 +1423,7 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 int row = 0;
-                builder.writeln(schemeJudgeObject.getName());
+                builder.writeln(getSchemeJudgeObjectShowName(schemeJudgeObject));
                 Table table = builder.startTable();
                 for (int i = 0; i < 3; i++) {
                     builder.insertCell();
@@ -1610,7 +1610,7 @@ public class GenerateBaseDataService {
     }
 
     public void createLiquidationAnalysisTable(DocumentBuilder builder, SchemeJudgeObject judgeObject) throws Exception {
-        builder.writeln(judgeObject.getName());
+        builder.writeln(getSchemeJudgeObjectShowName(judgeObject));
         //表头
         builder.insertCell();
         builder.writeln("物业类型");
@@ -4039,7 +4039,7 @@ public class GenerateBaseDataService {
                 for (int j = 0; j < colMax; j++) {
                     builder.insertCell();
                     if (j == 0) {
-                        builder.writeln(integerEntry.getKey().getName());
+                        builder.writeln(getSchemeJudgeObjectShowName(integerEntry.getKey()));
                     }
                     if (Objects.equal(getSchemeAreaGroup().getEntrustPurpose(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId())) {
                         //抵押=总价-法定
@@ -5275,7 +5275,7 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 汇总表
+     * 估价结果汇总表
      *
      * @return
      * @throws Exception
@@ -5373,7 +5373,6 @@ public class GenerateBaseDataService {
                         builder.insertCell();
                         switch (k) {
                             case 0:
-//                                builder.writeln(String.format("委估对象%s", schemeJudgeObjectList.get(j - 2).getNumber()));
                                 builder.writeln(getSchemeJudgeObjectShowName(schemeJudgeObjectList.get(j - 2)));
                                 mergeCellModelList.add(new MergeCellModel(j, 0, j + 1, 0));
                                 break;

@@ -132,9 +132,6 @@ public class GenerateReportService {
         sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportGeneration.class));
         sysAttachmentDto.setCreater(processControllerComponent.getThisUser());
         List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
-        if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-            sysAttachmentDtoList.stream().forEach(attachmentDto -> baseAttachmentService.deleteAttachmentByDto(attachmentDto));
-        }
         //必要的(否则垃圾会越来越多)
         File file = new File(baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()));
         if (file.isDirectory()) {
@@ -163,7 +160,7 @@ public class GenerateReportService {
                         //获取替换后得报告文件路径 ==>
                         String path = this.fullReportPath(baseReportTemplate, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
                         if (StringUtils.isNotBlank(path)) {
-                            this.createSysAttachment(path, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
+                            this.createSysAttachment(path, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT, sysAttachmentDtoList);
                         }
                     }
                 }
@@ -173,7 +170,7 @@ public class GenerateReportService {
                     if (baseReportTemplate != null) {
                         String path = this.fullReportPath(baseReportTemplate, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY);
                         if (StringUtils.isNotBlank(path)) {
-                            this.createSysAttachment(path, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY);
+                            this.createSysAttachment(path, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY, sysAttachmentDtoList);
                         }
                     }
                 }
@@ -183,7 +180,7 @@ public class GenerateReportService {
                     if (baseReportTemplate != null) {
                         String path = this.fullReportPath(baseReportTemplate, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
                         if (StringUtils.isNotBlank(path)) {
-                            this.createSysAttachment(path, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
+                            this.createSysAttachment(path, generateReportGeneration, AssessDataDicKeyConstant.REPORT_TYPE_RESULT, sysAttachmentDtoList);
                         }
                     }
                 }
@@ -197,7 +194,7 @@ public class GenerateReportService {
      * @param path
      * @return
      */
-    private void createSysAttachment(String path, GenerateReportGeneration generateReportGeneration, String reportType) throws Exception {
+    private void createSysAttachment(String path, GenerateReportGeneration generateReportGeneration, String reportType, List<SysAttachmentDto> sysAttachmentDtoList) throws Exception {
         if (StringUtils.isEmpty(path)) {
             return;
         }
@@ -221,6 +218,13 @@ public class GenerateReportService {
         sysAttachmentDto.setFilePath(ftpBasePath);
         sysAttachmentDto.setFtpFileName(ftpFileName);
         ftpUtilsExtense.uploadFilesToFTP(ftpBasePath, new FileInputStream(file.getPath()), ftpFileName);
+        if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
+            sysAttachmentDtoList.stream().forEach(attachmentDto -> {
+                if (Objects.equal(attachmentDto.getFieldsName(), sysAttachmentDto.getFieldsName())) {
+                    baseAttachmentService.deleteAttachmentByDto(attachmentDto);
+                }
+            });
+        }
         baseAttachmentService.addAttachment(sysAttachmentDto);
     }
 
