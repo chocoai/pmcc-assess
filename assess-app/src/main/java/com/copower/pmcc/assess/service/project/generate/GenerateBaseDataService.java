@@ -5523,54 +5523,58 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 收益法 替换并合并后的word
+     * 功能描述: 估价对象详细测算过程
      *
-     * @return
-     * @throws Exception
+     * @param:
+     * @return:
+     * @author: zch
+     * @date: 2019/3/4 10:30
      */
-    public String getMdIncomeSheet() throws Exception {
-        Set<SchemeInfo> schemeInfoList = getSchemeInfoList(CalculationMethodNameEnum.MdIncome);
+    public String getDetailedCalculationProcessValuationObject() throws Exception {
         String localPath = getLocalPath();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         Document document = new Document();
-        if (CollectionUtils.isNotEmpty(schemeInfoList)) {
-            for (SchemeInfo schemeInfo : schemeInfoList) {
-                if (schemeInfo.getMethodDataId() != null) {
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
+        Map<String, String> map = Maps.newHashMap();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                builder.writeln(getSchemeJudgeObjectShowName(schemeJudgeObject));
+                SchemeInfo schemeInfo = null;
+                //市场比较法
+                builder.writeln(CalculationMethodNameEnum.MdCompare.getName());
+                schemeInfo = getSchemeInfoId(CalculationMethodNameEnum.MdCompare, schemeJudgeObject);
+                if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
+                    GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(schemeInfo.getMethodDataId(), new Date(), areaId);
+                    try {
+                        String temp = generateMdCompareService.generateCompareFile();
+                        File file = new File(temp);
+                        if (file.isFile()) {
+                            String key = String.format("%s%s%s", getSchemeJudgeObjectShowName(schemeJudgeObject), CalculationMethodNameEnum.MdCompare.getName(), UUID.randomUUID().toString());
+                            map.put(key, temp);
+                            builder.writeln(key);
+                        }
+                    } catch (Exception e) {
+                    }
+                }
+                //收益法
+                builder.writeln(CalculationMethodNameEnum.MdIncome.getName());
+                schemeInfo = getSchemeInfoId(CalculationMethodNameEnum.MdIncome, schemeJudgeObject);
+                if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfo, projectId, areaId);
                     String temp = generateMdIncomeService.generateCompareFile();
                     File file = new File(temp);
                     if (file.isFile()) {
-                        document.appendDocument(new Document(temp), ImportFormatMode.KEEP_SOURCE_FORMATTING);
+                        String key = String.format("%s%s%s", getSchemeJudgeObjectShowName(schemeJudgeObject), CalculationMethodNameEnum.MdIncome.getName(), UUID.randomUUID().toString());
+                        map.put(key, temp);
+                        builder.writeln(key);
                     }
                 }
             }
         }
         document.save(localPath, SaveFormat.DOC);
-        return localPath;
-    }
-
-    /**
-     * 市场比较法 替换并合并后的word
-     *
-     * @return
-     * @throws Exception
-     */
-    public String getMdCompareSheet() throws Exception {
-        Set<SchemeInfo> schemeInfoList = getSchemeInfoList(CalculationMethodNameEnum.MdCompare);
-        String localPath = getLocalPath();
-        Document document = new Document();
-        if (CollectionUtils.isNotEmpty(schemeInfoList)) {
-            for (SchemeInfo schemeInfo : schemeInfoList) {
-                if (schemeInfo.getMethodDataId() != null) {
-                    GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(schemeInfo.getMethodDataId(), new Date(), areaId);
-                    String temp = generateMdCompareService.generateCompareFile();
-                    File file = new File(temp);
-                    if (file.isFile()) {
-                        document.appendDocument(new Document(temp), ImportFormatMode.KEEP_SOURCE_FORMATTING);
-                    }
-                }
-            }
+        if (!map.isEmpty()) {
+            AsposeUtils.replaceTextToFile(localPath, map);
         }
-        document.save(localPath, SaveFormat.DOC);
         return localPath;
     }
 
@@ -5845,33 +5849,6 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
-    /**
-     * 获取如收益法,市场比较法，假设开发法，成本法等的id集合
-     *
-     * @param methodNameEnum
-     * @return Set<SchemeInfo>
-     */
-    private Set<SchemeInfo> getSchemeInfoList(CalculationMethodNameEnum methodNameEnum) {
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        Set<SchemeInfo> schemeInfoList = Sets.newHashSet();
-        DataEvaluationMethod dataEvaluationMethod = evaluationMethodService.getMethodAllList().stream().filter(oo -> {
-            if (oo.getName().equals(methodNameEnum.getName())) {
-                return true;
-            }
-            return false;
-        }).findFirst().get();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            schemeJudgeObjectList.stream().forEach(schemeJudgeObject -> {
-                if (dataEvaluationMethod != null) {
-                    SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), dataEvaluationMethod.getMethod());
-                    if (schemeInfo != null) {
-                        schemeInfoList.add(schemeInfo);
-                    }
-                }
-            });
-        }
-        return schemeInfoList;
-    }
 
     /**
      * 获取如收益法,市场比较法，假设开发法，成本法等的id

@@ -40,8 +40,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by kings on 2018-5-23.
@@ -119,9 +117,9 @@ public class GenerateReportService {
         if (StringUtils.isEmpty(ids) || generateReportGeneration.getProjectPlanId() == null) {
             return;
         }
-        if (generateReportGeneration.getId() == null || generateReportGeneration.getId().intValue()==0){
+        if (generateReportGeneration.getId() == null || generateReportGeneration.getId().intValue() == 0) {
             generateReportGenerationService.addGenerateReportGeneration(generateReportGeneration);
-        }else {
+        } else {
             generateReportGenerationService.updateGenerateReportGeneration(generateReportGeneration);
         }
         String[] strings = ids.split(",");
@@ -191,7 +189,6 @@ public class GenerateReportService {
                 }
             }
         }
-        generateReportGenerationService.updateGenerateReportGeneration(generateReportGeneration);
     }
 
     /**
@@ -600,23 +597,11 @@ public class GenerateReportService {
                         if (baseReportField != null) {
                         }
                     }
-                    //收益法模板
-                    if (Objects.equal(BaseReportFieldEnum.MdIncome.getName(), name)) {
+                    //估价对象详细测算过程( 收益法 , 市场比较法)
+                    if (Objects.equal(BaseReportFieldEnum.DetailedCalculationProcessValuationObject.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                        String s = generateBaseDataService.getMdIncomeSheet();
-                        if (StringUtils.isNotBlank(s)) {
-                            replaceReportPutValue(name, s, bookmarkAndRegex.getType(), true, mapSet);
-                        }
+                        replaceReportPutValue(name, generateBaseDataService.getDetailedCalculationProcessValuationObject(), bookmarkAndRegex.getType(), true, mapSet);
                         if (baseReportField != null) {
-                        }
-                    }
-                    //市场比较法模板
-                    if (Objects.equal(BaseReportFieldEnum.MdCompare.getName(), name)) {
-                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                        if (baseReportField != null) {
-                            if (false) {
-                                replaceReportPutValue(name, generateBaseDataService.getMdCompareSheet(), bookmarkAndRegex.getType(), true, mapSet);
-                            }
                         }
                     }
 

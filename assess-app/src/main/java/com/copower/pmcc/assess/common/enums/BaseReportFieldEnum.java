@@ -217,8 +217,9 @@ public enum BaseReportFieldEnum  implements Serializable{
     SummaryEvaluationMethod("", "评估方法总括"),
     AssessmentMethods("", "评估方法分述"),
 
-    MdIncome("", "收益法字段"),
-    MdCompare("", "市场比较法字段");
+    DetailedCalculationProcessValuationObject("", "估价对象详细测算过程"),
+    MdIncome("", "收益法"),
+    MdCompare("", "市场比较法");
 
     private String key;
 
