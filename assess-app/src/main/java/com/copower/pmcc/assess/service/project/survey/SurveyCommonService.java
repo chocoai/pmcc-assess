@@ -175,14 +175,7 @@ public class SurveyCommonService {
         //更新内容
         SurveyExamineTask surveyExamineTask = new SurveyExamineTask();
         surveyExamineTask.setTaskStatus(projectStatusEnum.getKey());
-
         surveyExamineTaskService.updateSurveyExamineTask(surveyExamineTask, where);
-
-        if (surveyExamineTaskService.getRuningTaskCount(planDetailsId) <= 0) {
-            ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-            planDetails.setStatus(ProcessStatusEnum.FINISH.getValue());
-            projectPlanDetailsService.updateProjectPlanDetails(planDetails);
-        }
     }
 
     /**

@@ -119,13 +119,8 @@ public class SurveyAssetInventoryService extends BaseService {
             List<SurveyAssetInventoryContent> contentList = surveyAssetInventoryContentService.getContentListByPlanDetailsId(surveyAssetInventory.getPlanDetailId());
             if (CollectionUtils.isNotEmpty(contentList)) {
                 DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(surveyAssetInventory.getDeclareRecordId());
-                BaseDataDic useDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_USE);
                 BaseDataDic areaDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_AREA);
                 for (SurveyAssetInventoryContent content : contentList) {
-                    if (content.getInventoryContent().equals(useDic.getId())) {
-                        declareRecord.setCertUse(content.getRegistration());
-                        declareRecord.setPracticalUse(content.getActual());
-                    }
                     if (content.getInventoryContent().equals(areaDic.getId()) && StringUtils.isNotBlank(content.getActual())) {
                         declareRecord.setPracticalArea(new BigDecimal(content.getActual()));
                     }

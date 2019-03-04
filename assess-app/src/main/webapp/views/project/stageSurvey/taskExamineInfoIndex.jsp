@@ -109,14 +109,14 @@
 
             <div class="x_panel">
                 <div class="x_content">
-                    <div class="col-sm-4 col-sm-offset-5">
+                    <div style="text-align: center;">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                            取消
+                            取消<i style="margin-left: 10px" class="fa fa-close"></i>
                         </button>
                         <c:choose>
                             <c:when test="${projectPhase.bisUseBox eq false}">
-                                <button id="btn_submit" class="btn btn-success" onclick="saveData();">
-                                    保存<i style="margin-left: 10px"></i>
+                                <button id="btn_submit" class="btn btn-warning" onclick="saveData();">
+                                    保存<i style="margin-left: 10px" class="fa fa-save"></i>
                                 </button>
                                 <button id="btn_submit" class="btn btn-success" onclick="submit(false);">
                                     直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>

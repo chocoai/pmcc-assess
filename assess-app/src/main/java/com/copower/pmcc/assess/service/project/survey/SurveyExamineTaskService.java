@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.dto.input.project.survey.SurveyExamineTaskDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
 import com.copower.pmcc.assess.service.PublicService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.data.DataExamineTaskService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -19,6 +20,7 @@ import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
@@ -96,6 +98,10 @@ public class SurveyExamineTaskService {
     private SurveyExamineTaskService surveyExamineTaskService;
     @Autowired
     private BasicApplyService basicApplyService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     /**
      * 获取调查任务
@@ -389,9 +395,10 @@ public class SurveyExamineTaskService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void examineTaskAssignment(Integer planDetailsId, String examineFormType, ExamineTypeEnum examineTypeEnum) throws BusinessException {
-        if(this.checkAssignmentTask(planDetailsId)){
+        if (this.checkAssignmentTask(planDetailsId)) {
             throw new BusinessException("请不要重复添加");
-        };
+        }
+        ;
         ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         ProjectWorkStage workStage = projectWorkStageService.cacheProjectWorkStage(planDetails.getProjectWorkStageId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());
@@ -633,31 +640,7 @@ public class SurveyExamineTaskService {
         BasicHouse basicHouse = null;
         BasicHouseTrading basicTrading = null;
         String survey = jsonObject.getString("survey");
-        //案例
-        if (examineTypeEnum.getId().equals(ExamineTypeEnum.CASE.getId())) {
-            surveyCaseStudy = JSONObject.parseObject(survey, SurveyCaseStudy.class);
-            surveyCaseStudy.setProcessInsId(projectPlanDetails.getProcessInsId());
-            surveyCaseStudy.setJsonContent(formData);
-            surveyCaseStudyService.updateSurveyCaseStudy(surveyCaseStudy);
 
-            if (StringUtils.isNotBlank(jsonObject.getString("basicTrading"))) {
-                basicTrading = JSONObject.parseObject(jsonObject.getString("basicTrading"), BasicHouseTrading.class);
-                if (basicTrading != null) {
-                    basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading);
-                }
-            }
-        }
-        //查勘
-        if (examineTypeEnum.getId().equals(ExamineTypeEnum.EXPLORE.getId())) {
-            surveySceneExplore = JSONObject.parseObject(survey, SurveySceneExplore.class);
-            surveySceneExplore.setProcessInsId(projectPlanDetails.getProcessInsId());
-            surveySceneExplore.setJsonContent(formData);
-            surveySceneExploreService.updateSurveySceneExplore(surveySceneExplore);
-        }
-
-        if (StringUtils.isNotBlank(jsonObject.getString("basicApply"))) {
-            BasicApply basicApply = JSONObject.parseObject(jsonObject.getString("basicApply"), BasicApply.class);
-        }
         if (StringUtils.isNotBlank(jsonObject.getString("basicEstate"))) {
             basicEstate = JSONObject.parseObject(jsonObject.getString("basicEstate"), BasicEstate.class);
             if (basicEstate != null) {
@@ -688,7 +671,6 @@ public class SurveyExamineTaskService {
                 basicHouseService.saveAndUpdateBasicHouse(basicHouse);
             }
         }
-
         if (StringUtils.isNotBlank(jsonObject.getString("basicDamagedDegree"))) {
             List<BasicHouseDamagedDegree> damagedDegreeList = JSONObject.parseArray(jsonObject.getString("basicDamagedDegree"), BasicHouseDamagedDegree.class);
             if (!org.springframework.util.CollectionUtils.isEmpty(damagedDegreeList)) {
@@ -698,15 +680,50 @@ public class SurveyExamineTaskService {
             }
         }
 
+        //案例
+        if (examineTypeEnum.getId().equals(ExamineTypeEnum.CASE.getId())) {
+            surveyCaseStudy = JSONObject.parseObject(survey, SurveyCaseStudy.class);
+            surveyCaseStudy.setProcessInsId(projectPlanDetails.getProcessInsId());
+            surveyCaseStudy.setJsonContent(formData);
+            surveyCaseStudyService.updateSurveyCaseStudy(surveyCaseStudy);
+
+            if (StringUtils.isNotBlank(jsonObject.getString("basicTrading"))) {
+                basicTrading = JSONObject.parseObject(jsonObject.getString("basicTrading"), BasicHouseTrading.class);
+                if (basicTrading != null) {
+                    basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading);
+                }
+            }
+        }
+
+        //查勘
+        if (examineTypeEnum.getId().equals(ExamineTypeEnum.EXPLORE.getId())) {
+            surveySceneExplore = JSONObject.parseObject(survey, SurveySceneExplore.class);
+            surveySceneExplore.setProcessInsId(projectPlanDetails.getProcessInsId());
+            surveySceneExplore.setJsonContent(formData);
+            surveySceneExploreService.updateSurveySceneExplore(surveySceneExplore);
+            //需将土地实际用途、房屋证载用途、实际用途、楼层、房号反写到申报记录表中
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
+            if (declareRecord != null) {
+                if (basicEstateLandState != null)
+                    declareRecord.setLandPracticalUse(baseDataDicService.getNameById(basicEstateLandState.getLandUseType()));
+                if (basicHouse != null) {
+                    declareRecord.setCertUse(baseDataDicService.getNameById(basicHouse.getCertUse()));
+                    declareRecord.setPracticalUse(baseDataDicService.getNameById(basicHouse.getPracticalUse()));
+                    declareRecord.setFloor(basicHouse.getFloor());
+                    declareRecord.setRoomNumber(basicHouse.getHouseNumber());
+                }
+                declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+            }
+        }
     }
 
 
     //检查是否添加任务
-    public boolean checkAssignmentTask(Integer planDetailsId){
+    public boolean checkAssignmentTask(Integer planDetailsId) {
         ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
         projectPlanDetails.setPid(planDetailsId);
         List<ProjectPlanDetailsVo> list = projectPlanDetailsService.getProjectDetailsTask(projectPlanDetails);
-        if(CollectionUtils.isNotEmpty(list)){
+        if (CollectionUtils.isNotEmpty(list)) {
             return true;
         }
         return false;

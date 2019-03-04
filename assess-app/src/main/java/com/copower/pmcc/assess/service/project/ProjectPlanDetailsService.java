@@ -468,7 +468,7 @@ public class ProjectPlanDetailsService {
         List<ProjectPlanDetails> planDetailsList = getPlanDetailsListRecursion(planDetailsId, false);
         if (CollectionUtils.isEmpty(planDetailsList)) return true;
         for (ProjectPlanDetails projectPlanDetails : planDetailsList) {
-            if (!StringUtils.equals(projectPlanDetails.getStatus(), ProcessStatusEnum.FINISH.getValue()))
+            if (projectPlanDetails.getBisLastLayer() == Boolean.TRUE && !StringUtils.equals(projectPlanDetails.getStatus(), ProcessStatusEnum.FINISH.getValue()))
                 return false;
         }
         return true;
@@ -581,12 +581,12 @@ public class ProjectPlanDetailsService {
                 basicApplyTransferService.copyForExamine(copyPlanDetails.getPid(), pastePlanDetails.getPid());
             }
             if (pastePlanDetails.getProjectPhaseId().equals(sceneExplorePhase.getId())) {
-                    //查看有无子项，无子项先生成子项，有子项则跳过
-                    List<ProjectPlanDetails> detailsList = projectPlanDetailsDao.getProjectPlanDetailsByPid(pastePlanDetails.getId());
-                    if (CollectionUtils.isNotEmpty(detailsList)) return;
-                    SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(copyPlanDetails.getPid());
-                    surveyExamineTaskService.examineTaskAssignment(pastePlanDetails.getId(), surveyExamineInfo.getExamineFormType(), ExamineTypeEnum.EXPLORE);
-                    basicApplyTransferService.copyForExamine(copyPlanDetails.getPid(), pastePlanDetails.getId());
+                //查看有无子项，无子项先生成子项，有子项则跳过
+                List<ProjectPlanDetails> detailsList = projectPlanDetailsDao.getProjectPlanDetailsByPid(pastePlanDetails.getId());
+                if (CollectionUtils.isNotEmpty(detailsList)) return;
+                SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(copyPlanDetails.getPid());
+                surveyExamineTaskService.examineTaskAssignment(pastePlanDetails.getId(), surveyExamineInfo.getExamineFormType(), ExamineTypeEnum.EXPLORE);
+                basicApplyTransferService.copyForExamine(copyPlanDetails.getPid(), pastePlanDetails.getId());
             }
         }
     }

@@ -101,7 +101,7 @@
                         <%--状态说明  fa-ellipsis-h 进行中  fa-power-off 结束 fa-external-link待提交 fa-edit待审批---%>
                         <div class="tab-content">
                             <c:forEach items="${projectPlanList}" var="plan">
-                                <div class="tab-panel fade " id="tab_plan_${plan.id}">
+                                <div class="tab-pane fade " id="tab_plan_${plan.id}">
                                     <div id="plan_item_${plan.id}" class="col-md-3 col-sm-3 col-xs-3 col-sm-offset-1">
                                         <c:if test="${not empty plan.planDisplayUrl and plan.bisAutoComplete eq false}">
                                             <div class="btn-group">
@@ -130,6 +130,7 @@
                                         </c:if>
                                     </div>
                                     <p>
+                                        <input type="hidden" name="copyPlanDetailsId">
                                     <table id="plan_task_list${plan.id}" class="table table-bordered"></table>
                                     </p>
                                 </div>
@@ -144,6 +145,13 @@
     </div>
 </div>
 </body>
+<div id="plan_task_list_toolbar" style="padding:5px;height:auto;display: none;">
+    <div>
+        <button type="button" onclick="projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());" class="btn btn-success btn-xs">
+            <i class='fa fa-refresh fa-white'></i> 刷新
+        </button>
+    </div>
+</div>
 <script type="text/html" id="planItemHtml">
     <div class="btn-group">
         <div class="btn btn-sm btn-primary">计划编制</div>
@@ -242,6 +250,7 @@
                 width: 'auto',
                 method: "get",
                 rownumbers: true,
+                toolbar: "#plan_task_list_toolbar",
                 columns: [[
                     {
                         field: 'projectPhaseName',
@@ -309,15 +318,21 @@
                                 s += " <a target='_blank' href='" + row.displayUrl + "' title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
                             }
                             if (row.canCopy) {
-                                s += " <a href='javascript://' onclick='projectDetails.taskCopy(this," + row.id + ");' title='复制' class='btn btn-xs btn-warning btn-copy' ><i class='fa fa-copy fa-white'></i> <span>复制</span></a>";
+                                s += " <a href='javascript://' onclick='projectDetails.taskCopy(this," + row.id + ");' data-planDetailsId='"+row.id+"' title='复制' class='btn btn-xs btn-warning btn-copy' ><i class='fa fa-copy fa-white'></i> <span>复制</span></a>";
                             }
                             if (row.canPaste) {
-                                s += " <a href='javascript://' onclick='projectDetails.taskPaste(this," + row.id + ");' title='粘贴' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-paste fa-white'></i> <span>粘贴</span></a>";
+                                s += " <a href='javascript://' onclick='projectDetails.taskPaste(this," + row.id + ");' data-planDetailsId='"+row.id+"' title='粘贴' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-paste fa-white'></i> <span>粘贴</span></a>";
                             }
                             return s;
                         }
                     }
-                ]]
+                ]],
+                onLoadSuccess: function () {
+                    var copyPlanDetailsId = $('#tab_plan_' + defaults.planId).find('[name=copyPlanDetailsId]').val();
+                    if (copyPlanDetailsId) {
+                        $('#tab_plan_' + defaults.planId).find('.btn-copy[data-planDetailsId='+copyPlanDetailsId+']').find('span').text('已被复制');
+                    }
+                }
             });
         },
 
@@ -520,21 +535,22 @@
 
         //工作事项复制
         taskCopy: function (_this, id) {
-            $(_this).closest('.tab-panel').find('.btn-copy').each(function () {
-                $(this).removeAttr('data-planDetailsId').find('span').text('复制');
+            $(_this).closest('.tab-pane').find('.btn-copy').each(function () {
+                $(this).find('span').text('复制');
             });
-            $(_this).attr('data-planDetailsId', id).find('span').text('已被复制');
+            $(_this).find('span').text('已被复制');
+            $(_this).closest('.tab-pane').find('[name=copyPlanDetailsId]').val(id);
         },
 
         //工作事项粘贴
         taskPaste: function (_this, id) {
-            var copyPlanDetailsId = $(_this).closest('.tab-panel').find('.btn-copy[data-planDetailsId]').attr('data-planDetailsId');
-            if(!copyPlanDetailsId){
-                Alert('請選擇複製對象');
+            var copyPlanDetailsId = $(_this).closest('.tab-pane').find('[name=copyPlanDetailsId]').val();
+            if (!copyPlanDetailsId) {
+                Alert('请选择复制对象');
                 return false;
             }
             if (id == copyPlanDetailsId) {
-                Alert('無法粘貼自己');
+                Alert('无法粘贴自己');
                 return false;
             }
             Loading.progressShow();
@@ -547,6 +563,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
+                        projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
                         Alert("粘贴完成");
                     } else {
                         Alert(result.errmsg);

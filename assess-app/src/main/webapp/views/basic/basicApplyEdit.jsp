@@ -24,7 +24,7 @@
             <%@include file="/views/basic/basicIndexCommon.jsp" %>
             <div class="x_panel">
                 <div class="x_content">
-                    <div class="col-sm-5 col-sm-offset-5">
+                    <div style="text-align: center;">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
