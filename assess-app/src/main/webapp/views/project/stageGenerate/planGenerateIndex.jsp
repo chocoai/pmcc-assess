@@ -70,6 +70,7 @@
                             <div class="x_content collapse">
                                 <form class="form-horizontal" id="groupForm${item.id}">
                                     <input type="hidden" name="areaGroupId" value="${item.id}">
+                                    <input type="hidden" name="id">
                                     <div class="form-group">
                                         <div class="x-valid">
                                             <label class="col-sm-1 control-label">
@@ -340,6 +341,8 @@
         }
         $("#" + frm).find("input[name='reportIssuanceDate']").val(formatDate(info.reportIssuanceDate));
         $("#" + frm).find("input[name='homeWorkEndTime']").val(formatDate(info.homeWorkEndTime));
+        $("#" + frm).find("select[name='qualificationType']").val(info.qualificationType).attr("selected",true);
+        $("#" + frm).find("input[name='id']").val(info.id);
         $.each(schemeReportGenerationFileControlIdArray, function (i, n) {
             fileShow(n + "" + areaGroupId, false, info.id);
         });

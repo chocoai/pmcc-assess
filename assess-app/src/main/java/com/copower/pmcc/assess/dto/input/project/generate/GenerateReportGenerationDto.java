@@ -12,20 +12,26 @@ import java.util.Date;
  */
 public class GenerateReportGenerationDto implements Serializable {
     private Integer id;
-    private Integer projectPlanId;
+
     private Integer projectId;
-    @DateTimeFormat( pattern = "yyyy-MM-dd" )
+
+    private Integer projectPlanId;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date investigationsStartDate;
-    @DateTimeFormat( pattern = "yyyy-MM-dd" )
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date investigationsEndDate;
-    @DateTimeFormat( pattern = "yyyy-MM-dd" )
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date reportIssuanceDate;
-    @DateTimeFormat( pattern = "yyyy-MM-dd" )
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date homeWorkEndTime;
-    private String qualificationType;
+
     private String realEstateAppraiser;
 
+    private String qualificationType;
+
     private Integer areaGroupId;
+
+    private String creator;
 
     public Integer getId() {
         return id;
@@ -41,6 +47,14 @@ public class GenerateReportGenerationDto implements Serializable {
 
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
+    }
+
+    public Integer getProjectPlanId() {
+        return projectPlanId;
+    }
+
+    public void setProjectPlanId(Integer projectPlanId) {
+        this.projectPlanId = projectPlanId;
     }
 
     public Date getInvestigationsStartDate() {
@@ -83,6 +97,14 @@ public class GenerateReportGenerationDto implements Serializable {
         this.realEstateAppraiser = realEstateAppraiser;
     }
 
+    public String getQualificationType() {
+        return qualificationType;
+    }
+
+    public void setQualificationType(String qualificationType) {
+        this.qualificationType = qualificationType;
+    }
+
     public Integer getAreaGroupId() {
         return areaGroupId;
     }
@@ -91,19 +113,11 @@ public class GenerateReportGenerationDto implements Serializable {
         this.areaGroupId = areaGroupId;
     }
 
-    public Integer getProjectPlanId() {
-        return projectPlanId;
+    public String getCreator() {
+        return creator;
     }
 
-    public void setProjectPlanId(Integer projectPlanId) {
-        this.projectPlanId = projectPlanId;
-    }
-
-    public String getQualificationType() {
-        return qualificationType;
-    }
-
-    public void setQualificationType(String qualificationType) {
-        this.qualificationType = qualificationType;
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 }
