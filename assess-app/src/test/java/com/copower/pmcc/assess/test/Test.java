@@ -124,8 +124,9 @@ public class Test {
 
         Table table = builder.startTable();
 
-        int rowLength = 3;//行数
-        int colLength = list.size()%rowLength>0?(list.size()/rowLength)+1:list.size()/rowLength;//列数
+
+        int colLength = 2;//列数
+        int rowLength = list.size()%colLength>0?(list.size()/colLength)+1:list.size()/colLength;//列数
         Integer index = 0;
         for (int j = 0; j < rowLength; j++) {
             for (int k = 0; k < colLength; k++) {
