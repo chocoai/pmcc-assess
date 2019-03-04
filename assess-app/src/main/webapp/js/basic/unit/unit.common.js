@@ -95,7 +95,6 @@
                     unitCommon.unitForm.initForm(result.data,function () {
                         //附件显示
                         $.each(unitCommon.unitFileControlIdArray, function (i, item) {
-                            alert(item);
                             unitCommon.fileShow(item);
                         })
                     });
