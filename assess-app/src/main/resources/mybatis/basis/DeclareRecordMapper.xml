@@ -32,9 +32,8 @@
     <result column="land_use_end_date" property="landUseEndDate" jdbcType="TIMESTAMP" />
     <result column="inventory_content_key" property="inventoryContentKey" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="DECIMAL" />
-    <result column="assess_area" property="assessArea" jdbcType="DECIMAL" />
-    <result column="already_out_area" property="alreadyOutArea" jdbcType="DECIMAL" />
-    <result column="bis_generate_all" property="bisGenerateAll" jdbcType="BIT" />
+    <result column="bis_part_in" property="bisPartIn" jdbcType="BIT" />
+    <result column="bis_generate" property="bisGenerate" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -102,8 +101,8 @@
     seat, street_number, attached_number, building_number, unit, floor, room_number, 
     cert_use, practical_use, land_cert_use, land_practical_use, public_situation, floor_area, 
     practical_area, use_right_type, housing_structure, area_group_id, house_use_end_date, 
-    land_use_end_date, inventory_content_key, price, assess_area, already_out_area, bis_generate_all, 
-    creator, gmt_created, gmt_modified
+    land_use_end_date, inventory_content_key, price, bis_part_in, bis_generate, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecordExample" >
     select
@@ -148,9 +147,9 @@
       land_practical_use, public_situation, floor_area, 
       practical_area, use_right_type, housing_structure, 
       area_group_id, house_use_end_date, land_use_end_date, 
-      inventory_content_key, price, assess_area, 
-      already_out_area, bis_generate_all, creator, 
-      gmt_created, gmt_modified)
+      inventory_content_key, price, bis_part_in, 
+      bis_generate, creator, gmt_created, 
+      gmt_modified)
     values (#{projectId,jdbcType=INTEGER}, #{dataTableName,jdbcType=VARCHAR}, #{dataTableId,jdbcType=INTEGER}, 
       #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, #{seat,jdbcType=VARCHAR}, 
@@ -160,9 +159,9 @@
       #{landPracticalUse,jdbcType=VARCHAR}, #{publicSituation,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, 
       #{practicalArea,jdbcType=DECIMAL}, #{useRightType,jdbcType=VARCHAR}, #{housingStructure,jdbcType=VARCHAR}, 
       #{areaGroupId,jdbcType=INTEGER}, #{houseUseEndDate,jdbcType=TIMESTAMP}, #{landUseEndDate,jdbcType=TIMESTAMP}, 
-      #{inventoryContentKey,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{assessArea,jdbcType=DECIMAL}, 
-      #{alreadyOutArea,jdbcType=DECIMAL}, #{bisGenerateAll,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{inventoryContentKey,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{bisPartIn,jdbcType=BIT}, 
+      #{bisGenerate,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecord" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -257,14 +256,11 @@
       <if test="price != null" >
         price,
       </if>
-      <if test="assessArea != null" >
-        assess_area,
+      <if test="bisPartIn != null" >
+        bis_part_in,
       </if>
-      <if test="alreadyOutArea != null" >
-        already_out_area,
-      </if>
-      <if test="bisGenerateAll != null" >
-        bis_generate_all,
+      <if test="bisGenerate != null" >
+        bis_generate,
       </if>
       <if test="creator != null" >
         creator,
@@ -364,14 +360,11 @@
       <if test="price != null" >
         #{price,jdbcType=DECIMAL},
       </if>
-      <if test="assessArea != null" >
-        #{assessArea,jdbcType=DECIMAL},
+      <if test="bisPartIn != null" >
+        #{bisPartIn,jdbcType=BIT},
       </if>
-      <if test="alreadyOutArea != null" >
-        #{alreadyOutArea,jdbcType=DECIMAL},
-      </if>
-      <if test="bisGenerateAll != null" >
-        #{bisGenerateAll,jdbcType=BIT},
+      <if test="bisGenerate != null" >
+        #{bisGenerate,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -483,14 +476,11 @@
       <if test="record.price != null" >
         price = #{record.price,jdbcType=DECIMAL},
       </if>
-      <if test="record.assessArea != null" >
-        assess_area = #{record.assessArea,jdbcType=DECIMAL},
+      <if test="record.bisPartIn != null" >
+        bis_part_in = #{record.bisPartIn,jdbcType=BIT},
       </if>
-      <if test="record.alreadyOutArea != null" >
-        already_out_area = #{record.alreadyOutArea,jdbcType=DECIMAL},
-      </if>
-      <if test="record.bisGenerateAll != null" >
-        bis_generate_all = #{record.bisGenerateAll,jdbcType=BIT},
+      <if test="record.bisGenerate != null" >
+        bis_generate = #{record.bisGenerate,jdbcType=BIT},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -538,9 +528,8 @@
       land_use_end_date = #{record.landUseEndDate,jdbcType=TIMESTAMP},
       inventory_content_key = #{record.inventoryContentKey,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=DECIMAL},
-      assess_area = #{record.assessArea,jdbcType=DECIMAL},
-      already_out_area = #{record.alreadyOutArea,jdbcType=DECIMAL},
-      bis_generate_all = #{record.bisGenerateAll,jdbcType=BIT},
+      bis_part_in = #{record.bisPartIn,jdbcType=BIT},
+      bis_generate = #{record.bisGenerate,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -638,14 +627,11 @@
       <if test="price != null" >
         price = #{price,jdbcType=DECIMAL},
       </if>
-      <if test="assessArea != null" >
-        assess_area = #{assessArea,jdbcType=DECIMAL},
+      <if test="bisPartIn != null" >
+        bis_part_in = #{bisPartIn,jdbcType=BIT},
       </if>
-      <if test="alreadyOutArea != null" >
-        already_out_area = #{alreadyOutArea,jdbcType=DECIMAL},
-      </if>
-      <if test="bisGenerateAll != null" >
-        bis_generate_all = #{bisGenerateAll,jdbcType=BIT},
+      <if test="bisGenerate != null" >
+        bis_generate = #{bisGenerate,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -690,9 +676,8 @@
       land_use_end_date = #{landUseEndDate,jdbcType=TIMESTAMP},
       inventory_content_key = #{inventoryContentKey,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
-      assess_area = #{assessArea,jdbcType=DECIMAL},
-      already_out_area = #{alreadyOutArea,jdbcType=DECIMAL},
-      bis_generate_all = #{bisGenerateAll,jdbcType=BIT},
+      bis_part_in = #{bisPartIn,jdbcType=BIT},
+      bis_generate = #{bisGenerate,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

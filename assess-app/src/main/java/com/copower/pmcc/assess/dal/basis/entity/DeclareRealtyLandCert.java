@@ -72,6 +72,8 @@ public class DeclareRealtyLandCert {
 
     private String enable;
 
+    private Boolean bisRecord;
+
     private String creator;
 
     private Date gmtCreated;
@@ -348,6 +350,14 @@ public class DeclareRealtyLandCert {
 
     public void setEnable(String enable) {
         this.enable = enable == null ? null : enable.trim();
+    }
+
+    public Boolean getBisRecord() {
+        return bisRecord;
+    }
+
+    public void setBisRecord(Boolean bisRecord) {
+        this.bisRecord = bisRecord;
     }
 
     public String getCreator() {

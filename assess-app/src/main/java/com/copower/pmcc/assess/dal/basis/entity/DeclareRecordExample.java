@@ -2116,183 +2116,123 @@ public class DeclareRecordExample {
             return (Criteria) this;
         }
 
-        public Criteria andAssessAreaIsNull() {
-            addCriterion("assess_area is null");
+        public Criteria andBisPartInIsNull() {
+            addCriterion("bis_part_in is null");
             return (Criteria) this;
         }
 
-        public Criteria andAssessAreaIsNotNull() {
-            addCriterion("assess_area is not null");
+        public Criteria andBisPartInIsNotNull() {
+            addCriterion("bis_part_in is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAssessAreaEqualTo(BigDecimal value) {
-            addCriterion("assess_area =", value, "assessArea");
+        public Criteria andBisPartInEqualTo(Boolean value) {
+            addCriterion("bis_part_in =", value, "bisPartIn");
             return (Criteria) this;
         }
 
-        public Criteria andAssessAreaNotEqualTo(BigDecimal value) {
-            addCriterion("assess_area <>", value, "assessArea");
+        public Criteria andBisPartInNotEqualTo(Boolean value) {
+            addCriterion("bis_part_in <>", value, "bisPartIn");
             return (Criteria) this;
         }
 
-        public Criteria andAssessAreaGreaterThan(BigDecimal value) {
-            addCriterion("assess_area >", value, "assessArea");
+        public Criteria andBisPartInGreaterThan(Boolean value) {
+            addCriterion("bis_part_in >", value, "bisPartIn");
             return (Criteria) this;
         }
 
-        public Criteria andAssessAreaGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("assess_area >=", value, "assessArea");
+        public Criteria andBisPartInGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_part_in >=", value, "bisPartIn");
             return (Criteria) this;
         }
 
-        public Criteria andAssessAreaLessThan(BigDecimal value) {
-            addCriterion("assess_area <", value, "assessArea");
+        public Criteria andBisPartInLessThan(Boolean value) {
+            addCriterion("bis_part_in <", value, "bisPartIn");
             return (Criteria) this;
         }
 
-        public Criteria andAssessAreaLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("assess_area <=", value, "assessArea");
+        public Criteria andBisPartInLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_part_in <=", value, "bisPartIn");
             return (Criteria) this;
         }
 
-        public Criteria andAssessAreaIn(List<BigDecimal> values) {
-            addCriterion("assess_area in", values, "assessArea");
+        public Criteria andBisPartInIn(List<Boolean> values) {
+            addCriterion("bis_part_in in", values, "bisPartIn");
             return (Criteria) this;
         }
 
-        public Criteria andAssessAreaNotIn(List<BigDecimal> values) {
-            addCriterion("assess_area not in", values, "assessArea");
+        public Criteria andBisPartInNotIn(List<Boolean> values) {
+            addCriterion("bis_part_in not in", values, "bisPartIn");
             return (Criteria) this;
         }
 
-        public Criteria andAssessAreaBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("assess_area between", value1, value2, "assessArea");
+        public Criteria andBisPartInBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_part_in between", value1, value2, "bisPartIn");
             return (Criteria) this;
         }
 
-        public Criteria andAssessAreaNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("assess_area not between", value1, value2, "assessArea");
+        public Criteria andBisPartInNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_part_in not between", value1, value2, "bisPartIn");
             return (Criteria) this;
         }
 
-        public Criteria andAlreadyOutAreaIsNull() {
-            addCriterion("already_out_area is null");
+        public Criteria andBisGenerateIsNull() {
+            addCriterion("bis_generate is null");
             return (Criteria) this;
         }
 
-        public Criteria andAlreadyOutAreaIsNotNull() {
-            addCriterion("already_out_area is not null");
+        public Criteria andBisGenerateIsNotNull() {
+            addCriterion("bis_generate is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAlreadyOutAreaEqualTo(BigDecimal value) {
-            addCriterion("already_out_area =", value, "alreadyOutArea");
+        public Criteria andBisGenerateEqualTo(Boolean value) {
+            addCriterion("bis_generate =", value, "bisGenerate");
             return (Criteria) this;
         }
 
-        public Criteria andAlreadyOutAreaNotEqualTo(BigDecimal value) {
-            addCriterion("already_out_area <>", value, "alreadyOutArea");
+        public Criteria andBisGenerateNotEqualTo(Boolean value) {
+            addCriterion("bis_generate <>", value, "bisGenerate");
             return (Criteria) this;
         }
 
-        public Criteria andAlreadyOutAreaGreaterThan(BigDecimal value) {
-            addCriterion("already_out_area >", value, "alreadyOutArea");
+        public Criteria andBisGenerateGreaterThan(Boolean value) {
+            addCriterion("bis_generate >", value, "bisGenerate");
             return (Criteria) this;
         }
 
-        public Criteria andAlreadyOutAreaGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("already_out_area >=", value, "alreadyOutArea");
+        public Criteria andBisGenerateGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_generate >=", value, "bisGenerate");
             return (Criteria) this;
         }
 
-        public Criteria andAlreadyOutAreaLessThan(BigDecimal value) {
-            addCriterion("already_out_area <", value, "alreadyOutArea");
+        public Criteria andBisGenerateLessThan(Boolean value) {
+            addCriterion("bis_generate <", value, "bisGenerate");
             return (Criteria) this;
         }
 
-        public Criteria andAlreadyOutAreaLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("already_out_area <=", value, "alreadyOutArea");
+        public Criteria andBisGenerateLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_generate <=", value, "bisGenerate");
             return (Criteria) this;
         }
 
-        public Criteria andAlreadyOutAreaIn(List<BigDecimal> values) {
-            addCriterion("already_out_area in", values, "alreadyOutArea");
+        public Criteria andBisGenerateIn(List<Boolean> values) {
+            addCriterion("bis_generate in", values, "bisGenerate");
             return (Criteria) this;
         }
 
-        public Criteria andAlreadyOutAreaNotIn(List<BigDecimal> values) {
-            addCriterion("already_out_area not in", values, "alreadyOutArea");
+        public Criteria andBisGenerateNotIn(List<Boolean> values) {
+            addCriterion("bis_generate not in", values, "bisGenerate");
             return (Criteria) this;
         }
 
-        public Criteria andAlreadyOutAreaBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("already_out_area between", value1, value2, "alreadyOutArea");
+        public Criteria andBisGenerateBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_generate between", value1, value2, "bisGenerate");
             return (Criteria) this;
         }
 
-        public Criteria andAlreadyOutAreaNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("already_out_area not between", value1, value2, "alreadyOutArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisGenerateAllIsNull() {
-            addCriterion("bis_generate_all is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisGenerateAllIsNotNull() {
-            addCriterion("bis_generate_all is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisGenerateAllEqualTo(Boolean value) {
-            addCriterion("bis_generate_all =", value, "bisGenerateAll");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisGenerateAllNotEqualTo(Boolean value) {
-            addCriterion("bis_generate_all <>", value, "bisGenerateAll");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisGenerateAllGreaterThan(Boolean value) {
-            addCriterion("bis_generate_all >", value, "bisGenerateAll");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisGenerateAllGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("bis_generate_all >=", value, "bisGenerateAll");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisGenerateAllLessThan(Boolean value) {
-            addCriterion("bis_generate_all <", value, "bisGenerateAll");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisGenerateAllLessThanOrEqualTo(Boolean value) {
-            addCriterion("bis_generate_all <=", value, "bisGenerateAll");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisGenerateAllIn(List<Boolean> values) {
-            addCriterion("bis_generate_all in", values, "bisGenerateAll");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisGenerateAllNotIn(List<Boolean> values) {
-            addCriterion("bis_generate_all not in", values, "bisGenerateAll");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisGenerateAllBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_generate_all between", value1, value2, "bisGenerateAll");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisGenerateAllNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_generate_all not between", value1, value2, "bisGenerateAll");
+        public Criteria andBisGenerateNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_generate not between", value1, value2, "bisGenerate");
             return (Criteria) this;
         }
 

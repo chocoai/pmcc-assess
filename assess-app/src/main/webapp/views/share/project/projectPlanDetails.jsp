@@ -40,21 +40,6 @@
             </div>
             <div class="form-group">
                 <label class="col-sm-1 control-label">
-                    工作模板
-                </label>
-                <div class="col-sm-5">
-                    <div>
-                        <c:forEach var="item" items="${projectPhaseWorkTemplate}">
-                            <div class='alert alert-success'
-                                 style='width: 18%;float: left;padding: 5px;margin-bottom: 10px;margin-left: 10px;'>
-                                <i class='fa fa-download' onclick='downAttachments(${item.id})'
-                                   style='margin-right: 5px;font-size: 15px;cursor: pointer;'></i>
-                                <a onclick='showAttachment(${item.id},"${item.fileExtension}")'>${item.fileName}</a>
-                            </div>
-                        </c:forEach>
-                    </div>
-                </div>
-                <label class="col-sm-1 control-label">
                     工作程序模板
                 </label>
                 <div class="col-sm-5">
@@ -66,14 +51,6 @@
                             <a onclick='showAttachment(${item.id},"${item.fileExtension}")'>${item.fileName}</a>
                         </div>
                     </c:forEach>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-1 control-label">
-                    成果说明
-                </label>
-                <div class="col-sm-11">
-                    <label class="form-control">${projectPlanDetails.planRemarks}</label>
                 </div>
             </div>
             <c:if test="${not empty projectPlanDetails.returnDetailsReason}">

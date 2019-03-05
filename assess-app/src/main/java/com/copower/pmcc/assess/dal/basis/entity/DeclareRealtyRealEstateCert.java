@@ -102,11 +102,13 @@ public class DeclareRealtyRealEstateCert {
 
     private String realEstateUnitNumber;
 
-    private Date gmtModified;
+    private Boolean bisRecord;
+
+    private String creator;
 
     private Date gmtCreated;
 
-    private String creator;
+    private Date gmtModified;
 
     public Integer getId() {
         return id;
@@ -500,12 +502,20 @@ public class DeclareRealtyRealEstateCert {
         this.realEstateUnitNumber = realEstateUnitNumber == null ? null : realEstateUnitNumber.trim();
     }
 
-    public Date getGmtModified() {
-        return gmtModified;
+    public Boolean getBisRecord() {
+        return bisRecord;
     }
 
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
+    public void setBisRecord(Boolean bisRecord) {
+        this.bisRecord = bisRecord;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
     }
 
     public Date getGmtCreated() {
@@ -516,11 +526,11 @@ public class DeclareRealtyRealEstateCert {
         this.gmtCreated = gmtCreated;
     }
 
-    public String getCreator() {
-        return creator;
+    public Date getGmtModified() {
+        return gmtModified;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
     }
 }

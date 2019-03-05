@@ -64,11 +64,9 @@ public class DeclareRecord {
 
     private BigDecimal price;
 
-    private BigDecimal assessArea;
+    private Boolean bisPartIn;
 
-    private BigDecimal alreadyOutArea;
-
-    private Boolean bisGenerateAll;
+    private Boolean bisGenerate;
 
     private String creator;
 
@@ -316,28 +314,20 @@ public class DeclareRecord {
         this.price = price;
     }
 
-    public BigDecimal getAssessArea() {
-        return assessArea;
+    public Boolean getBisPartIn() {
+        return bisPartIn;
     }
 
-    public void setAssessArea(BigDecimal assessArea) {
-        this.assessArea = assessArea;
+    public void setBisPartIn(Boolean bisPartIn) {
+        this.bisPartIn = bisPartIn;
     }
 
-    public BigDecimal getAlreadyOutArea() {
-        return alreadyOutArea;
+    public Boolean getBisGenerate() {
+        return bisGenerate;
     }
 
-    public void setAlreadyOutArea(BigDecimal alreadyOutArea) {
-        this.alreadyOutArea = alreadyOutArea;
-    }
-
-    public Boolean getBisGenerateAll() {
-        return bisGenerateAll;
-    }
-
-    public void setBisGenerateAll(Boolean bisGenerateAll) {
-        this.bisGenerateAll = bisGenerateAll;
+    public void setBisGenerate(Boolean bisGenerate) {
+        this.bisGenerate = bisGenerate;
     }
 
     public String getCreator() {

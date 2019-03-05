@@ -1856,6 +1856,66 @@ public class ProjectPlanDetailsExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisRestartIsNull() {
+            addCriterion("bis_restart is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRestartIsNotNull() {
+            addCriterion("bis_restart is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRestartEqualTo(Boolean value) {
+            addCriterion("bis_restart =", value, "bisRestart");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRestartNotEqualTo(Boolean value) {
+            addCriterion("bis_restart <>", value, "bisRestart");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRestartGreaterThan(Boolean value) {
+            addCriterion("bis_restart >", value, "bisRestart");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRestartGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_restart >=", value, "bisRestart");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRestartLessThan(Boolean value) {
+            addCriterion("bis_restart <", value, "bisRestart");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRestartLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_restart <=", value, "bisRestart");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRestartIn(List<Boolean> values) {
+            addCriterion("bis_restart in", values, "bisRestart");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRestartNotIn(List<Boolean> values) {
+            addCriterion("bis_restart not in", values, "bisRestart");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRestartBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_restart between", value1, value2, "bisRestart");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRestartNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_restart not between", value1, value2, "bisRestart");
+            return (Criteria) this;
+        }
+
         public Criteria andDeclareRecordIdIsNull() {
             addCriterion("declare_record_id is null");
             return (Criteria) this;

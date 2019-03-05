@@ -190,7 +190,7 @@
                                     <th style="width: 10%">证载用途</th>
                                     <th style="width: 10%">实际用途</th>
                                     <th style="width: 10%">设定用途</th>
-                                    <th style="width: 10%">最佳利用描述</th>
+                                    <th style="width: 10%">最佳利用方式</th>
                                     <th style="width: 5%">证载面积</th>
                                     <th style="width: 5%">评估面积</th>
                                     <th style="width: 10%">操作</th>

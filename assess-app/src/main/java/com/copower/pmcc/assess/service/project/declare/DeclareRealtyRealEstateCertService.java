@@ -255,6 +255,7 @@ public class DeclareRealtyRealEstateCertService {
         DeclareRealtyRealEstateCert query = new DeclareRealtyRealEstateCert();
         query.setPlanDetailsId(declareApply.getPlanDetailsId());
         query.setEnable(DeclareTypeEnum.Enable.getKey());
+        query.setBisRecord(false);
         List<DeclareRealtyRealEstateCert> lists = declareRealtyRealEstateCertDao.getDeclareRealtyRealEstateCertList(query);
         for (DeclareRealtyRealEstateCert oo : lists) {
             declareRecord = new DeclareRecord();
@@ -280,8 +281,11 @@ public class DeclareRealtyRealEstateCertService {
             declareRecord.setLandUseEndDate(oo.getUseEndDate());
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
             declareRecord.setCreator(declareApply.getCreator());
+            declareRecord.setBisPartIn(true);
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+                oo.setBisRecord(true);
+                declareRealtyRealEstateCertDao.updateDeclareRealtyRealEstateCert(oo);
             } catch (Exception e1) {
                 logger.error("写入失败!", e1);
             }

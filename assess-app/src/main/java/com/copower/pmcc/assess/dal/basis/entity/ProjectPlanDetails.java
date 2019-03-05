@@ -60,6 +60,8 @@ public class ProjectPlanDetails {
 
     private Boolean bisLastLayer;
 
+    private Boolean bisRestart;
+
     private Integer declareRecordId;
 
     private Integer judgeObjectId;
@@ -294,6 +296,14 @@ public class ProjectPlanDetails {
 
     public void setBisLastLayer(Boolean bisLastLayer) {
         this.bisLastLayer = bisLastLayer;
+    }
+
+    public Boolean getBisRestart() {
+        return bisRestart;
+    }
+
+    public void setBisRestart(Boolean bisRestart) {
+        this.bisRestart = bisRestart;
     }
 
     public Integer getDeclareRecordId() {

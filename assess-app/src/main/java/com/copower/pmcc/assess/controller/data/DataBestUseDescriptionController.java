@@ -27,20 +27,20 @@ public class DataBestUseDescriptionController {
     @Autowired
     private DataBestUseDescriptionService dataBestUseDescriptionService;
 
-    @RequestMapping(value = "/Index", name = "最佳利用描述查看 ")
+    @RequestMapping(value = "/Index", name = "最佳利用方式查看 ")
     public ModelAndView index() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataBestUseDescription");
         return modelAndView;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getBestUseDescription", name = "取得最佳利用描述", method = RequestMethod.GET)
+    @RequestMapping(value = "/getBestUseDescription", name = "取得最佳利用方式", method = RequestMethod.GET)
     public BootstrapTableVo getBestUseDescription(@RequestParam(value = "name") String name) {
         return dataBestUseDescriptionService.getBestUseListVo(name);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/addBestUseDescription", name = "新增最佳利用描述", method = RequestMethod.POST)
+    @RequestMapping(value = "/addBestUseDescription", name = "新增最佳利用方式", method = RequestMethod.POST)
     public HttpResult addBestUseDescription(DataBestUseDescription dataBestUseDescription) {
         try {
             if (dataBestUseDescription.getId() != null && dataBestUseDescription.getId() != 0) {
@@ -57,7 +57,7 @@ public class DataBestUseDescriptionController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/deleteBestUseDescription", name = "删除最佳利用描述", method = RequestMethod.POST)
+    @RequestMapping(value = "/deleteBestUseDescription", name = "删除最佳利用方式", method = RequestMethod.POST)
     public HttpResult deleteBestUseDescription(@RequestParam(value = "id") Integer id) {
         dataBestUseDescriptionService.deleteDataBestUseDescription(id);
         return HttpResult.newCorrectResult();

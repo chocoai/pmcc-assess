@@ -15,21 +15,6 @@ public class DeclareRecordDao {
     @Autowired
     private DeclareRecordMapper mapper;
 
-
-    /*所有记录*/
-    public List<DeclareRecord> queryAll(Integer projectID){
-        DeclareRecordExample example = new DeclareRecordExample();
-        example.createCriteria().andProjectIdEqualTo(projectID);
-        List<DeclareRecord> declareRecords = mapper.selectByExample(example);
-        return declareRecords;
-    }
-
-    public List<DeclareRecord> queryDeclareRecords(){
-        DeclareRecordExample example = new DeclareRecordExample();
-        example.createCriteria().andProvinceIsNotNull();
-        List<DeclareRecord> declareRecords = mapper.selectByExample(example);
-        return declareRecords;
-    }
     public List<DeclareRecord> getDeclareRecordListByIds(List<Integer> ids) {
         DeclareRecordExample example = new DeclareRecordExample();
         example.createCriteria().andIdIn(ids);
@@ -39,6 +24,13 @@ public class DeclareRecordDao {
     public List<DeclareRecord> getDeclareRecordListByProjectId(Integer projectId) {
         DeclareRecordExample example = new DeclareRecordExample();
         example.createCriteria().andProjectIdEqualTo(projectId);
+        example.setOrderByClause("id");
+        return mapper.selectByExample(example);
+    }
+
+    public List<DeclareRecord> getDeclareRecordList(Integer projectId,Boolean bisGenerate) {
+        DeclareRecordExample example = new DeclareRecordExample();
+        example.createCriteria().andProjectIdEqualTo(projectId).andBisGenerateEqualTo(bisGenerate);
         example.setOrderByClause("id");
         return mapper.selectByExample(example);
     }

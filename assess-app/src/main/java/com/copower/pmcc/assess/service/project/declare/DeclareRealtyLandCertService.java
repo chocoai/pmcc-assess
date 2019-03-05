@@ -409,6 +409,7 @@ public class DeclareRealtyLandCertService {
         DeclareRealtyLandCert query = new DeclareRealtyLandCert();
         query.setPlanDetailsId(declareApply.getPlanDetailsId());
         query.setEnable(DeclareTypeEnum.Enable.getKey());
+        query.setBisRecord(false);
         List<DeclareRealtyLandCert> lists = declareRealtyLandCertDao.getDeclareRealtyLandCertList(query);
         for (DeclareRealtyLandCert oo : lists) {
             declareRecord = new DeclareRecord();
@@ -432,6 +433,7 @@ public class DeclareRealtyLandCertService {
             declareRecord.setLandUseEndDate(oo.getTerminationDate());
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
             declareRecord.setCreator(declareApply.getCreator());
+            declareRecord.setBisPartIn(true);
             //写入房产证的证载用途
             DeclareRealtyHouseCert realtyHouseCert = declareRealtyHouseCertDao.getDeclareRealtyHouseCertById(oo.getPid());
             if (realtyHouseCert != null) {
@@ -440,6 +442,8 @@ public class DeclareRealtyLandCertService {
             }
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+                oo.setBisRecord(true);
+                declareRealtyLandCertDao.updateDeclareRealtyLandCert(oo);
             } catch (Exception e1) {
                 logger.error("写入失败!", e1);
             }

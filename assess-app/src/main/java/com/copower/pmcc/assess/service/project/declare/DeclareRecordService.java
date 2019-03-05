@@ -39,6 +39,11 @@ public class DeclareRecordService {
         return declareRecords;
     }
 
+    public List<DeclareRecord> getDeclareRecordList(Integer projectId,Boolean bisGenerate) {
+        List<DeclareRecord> declareRecords = declareRecordDao.getDeclareRecordList(projectId,bisGenerate);
+        return declareRecords;
+    }
+
     public DeclareRecord getDeclareRecordById(Integer id) {
         return declareRecordDao.getDeclareRecordById(id);
     }

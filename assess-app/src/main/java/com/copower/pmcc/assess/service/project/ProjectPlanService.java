@@ -107,6 +107,15 @@ public class ProjectPlanService {
         return projectPlanDao.getProjectPlanByStatus(Lists.newArrayList(projectId), status);
     }
 
+    public ProjectPlan getProjectPlan(Integer projectId, Integer stageSort) {
+        ProjectPlan where = new ProjectPlan();
+        where.setProjectId(projectId);
+        where.setStageSort(stageSort);
+        List<ProjectPlan> projectPlans = projectPlanDao.getProjectPlan(where);
+        if (CollectionUtils.isNotEmpty(projectPlans)) return projectPlans.get(0);
+        return null;
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public Boolean initProjectPlanDetails(Integer planId) throws BusinessException {
         ProjectPlan projectPlan = projectPlanDao.getProjectPlanById(planId);
