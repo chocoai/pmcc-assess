@@ -774,38 +774,30 @@ public class ProjectPlanService {
     }
 
     /**
-     * 拷贝目录
+     * 重启阶段计划
      *
-     * @param planDetailsId
-     * @param recursion
+     * @param planId
+     * @param reason
      */
-    public void copyPlanDetails(Integer planDetailsId, Boolean recursion) {
-        ProjectPlanDetails planDetails = projectPlanDetailsDao.getProjectPlanDetailsById(planDetailsId);
-        if (planDetails != null) {
-            planDetails.setSorting(planDetails.getSorting().intValue() + 1);
-            planDetails.setId(null);
-            projectPlanDetailsDao.addProjectPlanDetails(planDetails);
-        }
-        if (recursion) {//如果是递归拷贝则不断循环获取下级的数据
-            copyPlanDetailsRecursion(planDetailsId, planDetails.getId());
-        }
-    }
+    @Transactional(rollbackFor = Exception.class)
+    public void replyProjectPlan(Integer planId, String reason) throws BusinessException {
+        ProjectPlan projectPlan = this.getProjectplanById(planId);
+        if (projectPlan == null) return;
 
-    /**
-     * 递归拷贝
-     *
-     * @param planDetailsId
-     */
-    private void copyPlanDetailsRecursion(Integer planDetailsId, Integer pid) {
-        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getProjectPlanDetailsByPid(planDetailsId);
-        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-            for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                Integer sourcePlanDetailsId = projectPlanDetails.getId();
-                projectPlanDetails.setId(null);
-                projectPlanDetails.setPid(pid);
-                projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
-                copyPlanDetailsRecursion(sourcePlanDetailsId, projectPlanDetails.getId());
-            }
+        projectPlan.setProjectStatus(ProjectStatusEnum.PLAN.getKey());
+        projectPlan.setRestartReason(reason);
+        projectPlan.setProcessInsId("-1");
+        projectPlan.setBisRestart(true);
+        projectPlanDao.updateProjectPlan(projectPlan);
+
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
+        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
+        String userAccounts = projectWorkStageService.getWorkStageUserAccounts(projectPlan.getWorkStageId(), projectPlan.getProjectId());
+        if (StringUtils.isNotBlank(userAccounts)) {
+            List<String> strings = FormatUtils.transformString2List(userAccounts);
+            strings.forEach(o -> saveProjectPlanResponsibility(projectPlan, o, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.NEWPLAN));
+        } else {
+            throw new BusinessException(projectWorkStage.getWorkStageName() + "阶段没有配置相应的责任人");
         }
     }
 

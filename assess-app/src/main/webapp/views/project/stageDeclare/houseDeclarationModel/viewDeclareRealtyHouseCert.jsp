@@ -14,7 +14,9 @@
                          data-toggle="modal"> 新增
                     </div>
                     <div type="button" class="btn btn-primary" onclick="assessCommonHouse.editHouse()"> 编辑</div>
-                    <div type="button" class="btn btn-primary" onclick="assessCommonHouse.deleteHouse()"> 删除</div>
+                    <c:if test="${projectPlanDetails.bisRestart ne true}">
+                        <div type="button" class="btn btn-primary" onclick="assessCommonHouse.deleteHouse()"> 删除</div>
+                    </c:if>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入房产证

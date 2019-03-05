@@ -26,6 +26,55 @@
             </div>
             <div class="clearfix"></div>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    </ul>
+                    <h3>权证信息</h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content collapse">
+                    <form id="declare_record_form" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">
+                                权证号
+                            </label>
+                            <div class="col-sm-2">
+                                <input type="text" data-rule-maxlength="50" placeholder="权证号"  name="name" class="form-control">
+                            </div>
+                            <label class="col-sm-1 control-label">
+                                坐落
+                            </label>
+                            <div class="col-sm-2">
+                                <input type="text" data-rule-maxlength="50" placeholder="坐落"  name="seat" class="form-control">
+                            </div>
+                            <label class="col-sm-1 control-label">
+                                是否上报告
+                            </label>
+                            <div class="col-sm-2">
+                                <select class="form-control" name="bisPartIn">
+                                    <option value="">-请选择-</option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <button type="button" class="btn btn-primary"
+                                        onclick="programme.loadDeclareRecordList();">
+                                    查询
+                                </button>
+                                <button type="button" class="btn btn-primary"
+                                        onclick="dataObjFun.loadDataList()">
+                                    生成方案数据
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+                    <table class="table table-bordered" id="tb_declare_record_list"></table>
+                </div>
+            </div>
 
             <c:forEach items="${areaGroups}" var="item">
                 <div class="x_panel area_panel">
@@ -892,6 +941,7 @@
         $(".area_panel .x_title").each(function () {
             $(this).trigger('click');
         })
+        programme.loadDeclareRecordList();
         programme.loadInventoryRightList();
 
         //阻止合并按钮的冒泡
@@ -1525,6 +1575,79 @@
             }
         });
     };
+
+    //加载权证信息
+    programme.loadDeclareRecordList = function () {
+        var cols = [];
+        cols.push({field: 'name', title: '权证号'});
+        cols.push({field: 'seat', title: '坐落'});
+        cols.push({field: 'certUse', title: '证载用途'});
+        cols.push({field: 'practicalUse', title: '实际用途'});
+        cols.push({field: 'floorArea', title: '面积'});
+        cols.push({
+            field: 'bisPartIn', title: '是否上报告', formatter: function (value, row, index) {
+                if (value == true) {
+                    return "是";
+                } else {
+                    return "否";
+                }
+            }
+        });
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top"  onclick="programme.addOrRemoveDeclareRecord(' + row.id + ',true);" ><i class="fa fa-add fa-white"></i>添加</a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top"  onclick="programme.addOrRemoveDeclareRecord(' + row.id + ',false);" ><i class="fa fa-remove fa-white"></i>移除</a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#tb_declare_record_list").bootstrapTable('destroy');
+        TableInit("tb_declare_record_list", "${pageContext.request.contextPath}/declareRecord/getDeclareRecordList", cols, {
+            projectId: '${projectInfo.id}'
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $(".tooltips").tooltip();   //提示
+            }
+        });
+    };
+
+    //添加或移除申报记录数据
+    programme.addOrRemoveDeclareRecord = function (id, bisPartIn) {
+        var idArray = [];
+        if (id) {
+            idArray.push(id);
+        } else {
+
+        }
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/declareRecord/addOrRemoveDeclareRecord",
+            type: "post",
+            dataType: "json",
+            data: {
+                ids: idArray.join(),
+                bisPartIn: bisPartIn
+            },
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success('操作成功');
+                    programme.loadDeclareRecordList();
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
 
     //加载他项权利
     programme.loadInventoryRightList = function () {

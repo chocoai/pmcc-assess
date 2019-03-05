@@ -945,6 +945,76 @@ public class ProjectPlanExample {
             return (Criteria) this;
         }
 
+        public Criteria andRestartReasonIsNull() {
+            addCriterion("restart_reason is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestartReasonIsNotNull() {
+            addCriterion("restart_reason is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestartReasonEqualTo(String value) {
+            addCriterion("restart_reason =", value, "restartReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestartReasonNotEqualTo(String value) {
+            addCriterion("restart_reason <>", value, "restartReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestartReasonGreaterThan(String value) {
+            addCriterion("restart_reason >", value, "restartReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestartReasonGreaterThanOrEqualTo(String value) {
+            addCriterion("restart_reason >=", value, "restartReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestartReasonLessThan(String value) {
+            addCriterion("restart_reason <", value, "restartReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestartReasonLessThanOrEqualTo(String value) {
+            addCriterion("restart_reason <=", value, "restartReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestartReasonLike(String value) {
+            addCriterion("restart_reason like", value, "restartReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestartReasonNotLike(String value) {
+            addCriterion("restart_reason not like", value, "restartReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestartReasonIn(List<String> values) {
+            addCriterion("restart_reason in", values, "restartReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestartReasonNotIn(List<String> values) {
+            addCriterion("restart_reason not in", values, "restartReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestartReasonBetween(String value1, String value2) {
+            addCriterion("restart_reason between", value1, value2, "restartReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestartReasonNotBetween(String value1, String value2) {
+            addCriterion("restart_reason not between", value1, value2, "restartReason");
+            return (Criteria) this;
+        }
+
         public Criteria andBisRestartIsNull() {
             addCriterion("bis_restart is null");
             return (Criteria) this;

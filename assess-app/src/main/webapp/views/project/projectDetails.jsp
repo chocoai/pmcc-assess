@@ -106,14 +106,14 @@
                                         <c:if test="${not empty plan.planDisplayUrl and plan.bisAutoComplete eq false}">
                                             <div class="btn-group">
                                                 <c:if test="${empty plan.planExecutUrl}">
-                                                    <div class="btn btn-sm btn-primary">计划编制</div>
-                                                    <div class="btn btn-sm btn-warning" data-placement="top"
-                                                         data-toggle="tooltip" data-original-title="查看"
-                                                         onclick="window.open('${plan.planDisplayUrl}')"><i
-                                                            class="fa fa-search"></i></div>
+                                                    <div class="btn btn-sm btn-dark">计划编制</div>
+                                                    <div class="btn btn-sm btn-warning" data-placement="top" data-toggle="tooltip" data-original-title="重启"
+                                                         onclick=""><i class="fa fa-reply"></i></div>
+                                                    <div class="btn btn-sm btn-warning" data-placement="top" data-toggle="tooltip" data-original-title="查看"
+                                                         onclick="window.open('${plan.planDisplayUrl}')"><i class="fa fa-search"></i></div>
                                                 </c:if>
                                                 <c:if test="${not empty plan.planExecutUrl}">
-                                                    <div class="btn btn-sm btn-primary">计划编制</div>
+                                                    <div class="btn btn-sm btn-dark">计划编制</div>
                                                     <div class="btn btn-sm btn-default" data-placement="top"
                                                          data-toggle="tooltip"
                                                          data-original-title="责任人">${plan.planExecutor}
@@ -154,7 +154,7 @@
 </div>
 <script type="text/html" id="planItemHtml">
     <div class="btn-group">
-        <div class="btn btn-sm btn-primary">计划编制</div>
+        <div class="btn btn-sm btn-dark">计划编制</div>
         <div class="btn btn-sm btn-default" data-placement="top" data-toggle="tooltip"
              data-original-title="责任人">{planExecutor}
         </div>
@@ -166,7 +166,9 @@
 </script>
 <script type="text/html" id="planItemViewHtml">
     <div class="btn-group">
-        <div class="btn btn-sm btn-primary">计划编制</div>
+        <div class="btn btn-sm btn-dark">计划编制</div>
+        <div class="btn btn-sm btn-primary" data-placement="top" data-toggle="tooltip" data-original-title="重启"
+             onclick="projectDetails.replyPlan('{planId}');"><i class="fa fa-reply"></i></div>
         <div class="btn btn-sm btn-warning" data-placement="top"
              data-toggle="tooltip" data-original-title="查看"
              onclick="window.open('{planDisplayUrl}')"><i class="fa fa-search"></i></div>
@@ -213,7 +215,8 @@
                                     .replace(/{planExecutUrl}/g, result.data.planExecutUrl)
                                     .replace(/{btnClass}/g, result.data.processInsId == "-1" ? "success" : "primary");
                             } else {
-                                html = $('#planItemViewHtml').html().replace(/{planDisplayUrl}/g, result.data.planDisplayUrl);
+                                html = $('#planItemViewHtml').html().replace(/{planId}/g, planId)
+                                    .replace(/{planDisplayUrl}/g, result.data.planDisplayUrl);
                             }
                             $('#plan_item_' + planId).append(html);
                         }
@@ -313,7 +316,7 @@
                                 s += " <a onclick='projectDetails.taskOpenWin(\"" + row.excuteUrl + "\")' href='javascript://' title='处理' class='btn btn-xs " + btnClass + " tooltips' ><i class='fa fa-arrow-right fa-white'></i></a>";
                             } else if (row.displayUrl) {
                                 if (row.canReplay) {
-                                    s += " <a href='javascript://' onclick='projectDetails.replyTask(" + row.id + ")' title='任务打回' class='btn btn-xs btn-primary tooltips' ><i class='fa fa-reply fa-white'></i></a>";
+                                    s += " <a href='javascript://' onclick='projectDetails.replyTask(" + row.id + ")' title='重启' class='btn btn-xs btn-primary tooltips' ><i class='fa fa-reply fa-white'></i></a>";
                                 }
                                 s += " <a target='_blank' href='" + row.displayUrl + "' title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
                             }
@@ -484,6 +487,28 @@
             })
         },
 
+        //重启计划
+        replyPlan: function (planId) {
+            layer.prompt({title: '输入重启计划的原因', formType: 2}, function (val, index) {
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/ProjectPlan/replyProjectPlan',
+                    data: {
+                        planId: planId,
+                        reason: val
+                    },
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('计划重启成功');
+                            projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
+                            layer.close(index);
+                        } else {
+                            toastr.info(result.errmsg);
+                        }
+                    }
+                })
+            });
+        },
+
         //重启任务
         replyTask: function (planDetailsId) {
             layer.prompt({title: '输入重启任务的原因', formType: 2}, function (val, index) {
@@ -499,7 +524,7 @@
                             projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
                             layer.close(index);
                         } else {
-                            Alert(result.errmsg);
+                            toastr.info(result.errmsg);
                         }
                     }
                 })

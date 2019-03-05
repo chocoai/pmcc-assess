@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_panel">
     <div class="x_title collapse-link">
@@ -14,8 +13,13 @@
                     <button type="button" class="btn btn-success" onclick="declareRealtyRealEstateCert.showAddModel()"
                             data-toggle="modal"> 新增
                     </button>
-                    <div type="button" class="btn btn-primary" onclick="declareRealtyRealEstateCert.editData()"> 编辑</div>
-                    <div type="button" class="btn btn-primary" onclick="declareRealtyRealEstateCert.deleteData()"> 删除</div>
+                    <div type="button" class="btn btn-primary" onclick="declareRealtyRealEstateCert.editData()"> 编辑
+                    </div>
+                    <c:if test="${projectPlanDetails.bisRestart ne true}">
+                        <div type="button" class="btn btn-primary" onclick="declareRealtyRealEstateCert.deleteData()">
+                            删除
+                        </div>
+                    </c:if>
                 </div>
 
                 <div class="btn-group">

@@ -14,7 +14,9 @@
                             data-toggle="modal"> 新增
                     </button>
                     <div type="button" class="btn btn-primary" onclick="assessCommonLand.editLand()"> 编辑</div>
-                    <div type="button" class="btn btn-primary" onclick="assessCommonLand.deleteLand()"> 删除</div>
+                    <c:if test="${projectPlanDetails.bisRestart ne true}">
+                        <div type="button" class="btn btn-primary" onclick="assessCommonLand.deleteLand()"> 删除</div>
+                    </c:if>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入土地证数据
@@ -80,7 +82,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
-                                <input type="hidden" name="id">
+                            <input type="hidden" name="id">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">

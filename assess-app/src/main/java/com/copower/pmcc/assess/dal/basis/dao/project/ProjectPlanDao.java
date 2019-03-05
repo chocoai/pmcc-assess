@@ -28,7 +28,7 @@ public class ProjectPlanDao {
 
     public List<ProjectPlan> getProjectPlanList(Integer projectId) {
         ProjectPlanExample example = new ProjectPlanExample();
-        example.createCriteria().andProjectIdEqualTo(projectId).andBisRestartEqualTo(false);
+        example.createCriteria().andProjectIdEqualTo(projectId);
         example.setOrderByClause(" stage_sort");
         return projectPlanMapper.selectByExample(example);
     }
