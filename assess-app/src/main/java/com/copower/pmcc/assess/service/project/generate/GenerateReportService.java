@@ -1375,7 +1375,7 @@ public class GenerateReportService {
                     //相关参数选取与应用
                     if (Objects.equal(BaseReportFieldEnum.SelectionApplicationParameters.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                        replaceReportPutValue(name, generateBaseDataService.getSelectionApplicationParameters(), bookmarkAndRegex.getType(), false, mapSet);
+                        replaceReportPutValue(name, generateBaseDataService.getSelectionApplicationParameters(), bookmarkAndRegex.getType(), true, mapSet);
                         if (baseReportField != null) {
 
                         }
