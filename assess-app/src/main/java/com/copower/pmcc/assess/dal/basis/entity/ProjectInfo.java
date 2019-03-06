@@ -25,7 +25,11 @@ public class ProjectInfo {
 
     private Integer entrustPurpose;
 
+    private String remarkEntrustPurpose;
+
     private Integer valueType;
+
+    private String remarkValueType;
 
     private Integer departmentId;
 
@@ -39,25 +43,27 @@ public class ProjectInfo {
 
     private String processInsId;
 
+    private String propertyScope;
+
+    private String scopeInclude;
+
+    private String scopeNotInclude;
+
     private String status;
 
     private String projectStatus;
 
     private Integer publicProjectId;
 
-    private String remarkEntrustPurpose;
+    private String assignProcessInsId;
 
-    private String remarkValueType;
+    private String assignStatus;
 
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String assignProcessInsId;
-
-    private String assignStatus;
 
     public Integer getId() {
         return id;
@@ -147,12 +153,28 @@ public class ProjectInfo {
         this.entrustPurpose = entrustPurpose;
     }
 
+    public String getRemarkEntrustPurpose() {
+        return remarkEntrustPurpose;
+    }
+
+    public void setRemarkEntrustPurpose(String remarkEntrustPurpose) {
+        this.remarkEntrustPurpose = remarkEntrustPurpose == null ? null : remarkEntrustPurpose.trim();
+    }
+
     public Integer getValueType() {
         return valueType;
     }
 
     public void setValueType(Integer valueType) {
         this.valueType = valueType;
+    }
+
+    public String getRemarkValueType() {
+        return remarkValueType;
+    }
+
+    public void setRemarkValueType(String remarkValueType) {
+        this.remarkValueType = remarkValueType == null ? null : remarkValueType.trim();
     }
 
     public Integer getDepartmentId() {
@@ -203,6 +225,30 @@ public class ProjectInfo {
         this.processInsId = processInsId == null ? null : processInsId.trim();
     }
 
+    public String getPropertyScope() {
+        return propertyScope;
+    }
+
+    public void setPropertyScope(String propertyScope) {
+        this.propertyScope = propertyScope == null ? null : propertyScope.trim();
+    }
+
+    public String getScopeInclude() {
+        return scopeInclude;
+    }
+
+    public void setScopeInclude(String scopeInclude) {
+        this.scopeInclude = scopeInclude == null ? null : scopeInclude.trim();
+    }
+
+    public String getScopeNotInclude() {
+        return scopeNotInclude;
+    }
+
+    public void setScopeNotInclude(String scopeNotInclude) {
+        this.scopeNotInclude = scopeNotInclude == null ? null : scopeNotInclude.trim();
+    }
+
     public String getStatus() {
         return status;
     }
@@ -227,20 +273,20 @@ public class ProjectInfo {
         this.publicProjectId = publicProjectId;
     }
 
-    public String getRemarkEntrustPurpose() {
-        return remarkEntrustPurpose;
+    public String getAssignProcessInsId() {
+        return assignProcessInsId;
     }
 
-    public void setRemarkEntrustPurpose(String remarkEntrustPurpose) {
-        this.remarkEntrustPurpose = remarkEntrustPurpose == null ? null : remarkEntrustPurpose.trim();
+    public void setAssignProcessInsId(String assignProcessInsId) {
+        this.assignProcessInsId = assignProcessInsId == null ? null : assignProcessInsId.trim();
     }
 
-    public String getRemarkValueType() {
-        return remarkValueType;
+    public String getAssignStatus() {
+        return assignStatus;
     }
 
-    public void setRemarkValueType(String remarkValueType) {
-        this.remarkValueType = remarkValueType == null ? null : remarkValueType.trim();
+    public void setAssignStatus(String assignStatus) {
+        this.assignStatus = assignStatus == null ? null : assignStatus.trim();
     }
 
     public String getCreator() {
@@ -265,21 +311,5 @@ public class ProjectInfo {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getAssignProcessInsId() {
-        return assignProcessInsId;
-    }
-
-    public void setAssignProcessInsId(String assignProcessInsId) {
-        this.assignProcessInsId = assignProcessInsId == null ? null : assignProcessInsId.trim();
-    }
-
-    public String getAssignStatus() {
-        return assignStatus;
-    }
-
-    public void setAssignStatus(String assignStatus) {
-        this.assignStatus = assignStatus == null ? null : assignStatus.trim();
     }
 }

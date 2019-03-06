@@ -89,6 +89,32 @@
             </div>
         </div>
         <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">评估范围</label>
+                <div class="col-sm-3">
+                    <input name="propertyScope"
+                           class="form-control"
+                           placeholder="评估范围" value="${projectInfo.propertyScope}"/>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">评估包括</label>
+                <div class="col-sm-3">
+                    <input name="scopeInclude"
+                           class="form-control"
+                           placeholder="评估包括" value="${projectInfo.scopeInclude}"/>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">评估不包括</label>
+                <div class="col-sm-3">
+                    <input name="scopeNotInclude"
+                           class="form-control"
+                           placeholder="评估不包括" value="${projectInfo.scopeNotInclude}"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
 
             <div class="x-valid">
                 <label class="col-sm-1 control-label">项目经理<span class="symbol required"></span></label>
@@ -97,7 +123,8 @@
                         <input type="hidden" name="userAccountManager"
                                value="${projectInfo.projectMemberVo.userAccountManager}">
                         <input type="text" class="form-control" readonly="readonly" name="userAccountManagerName"
-                            required onclick="objProject.selectUserAccountManager(this);"  value="${projectInfo.projectMemberVo.userAccountManagerName}">
+                               required onclick="objProject.selectUserAccountManager(this);"
+                               value="${projectInfo.projectMemberVo.userAccountManagerName}">
                         <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
@@ -121,7 +148,8 @@
                         <input type="hidden" name="userAccountMember"
                                value="${projectInfo.projectMemberVo.userAccountMember}">
                         <input type="text" class="form-control" readonly="readonly" name="userAccountMemberName"
-                              onclick="objProject.selectUserAccountMember(this);" value="${projectInfo.projectMemberVo.userAccountMemberName}">
+                               onclick="objProject.selectUserAccountMember(this);"
+                               value="${projectInfo.projectMemberVo.userAccountMemberName}">
                         <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"

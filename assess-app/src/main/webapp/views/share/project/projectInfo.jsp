@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html lang="en" class="no-js">
@@ -69,6 +68,23 @@
                     <div class="col-sm-3">
                         <label class="form-control">${projectInfo.departmentName}</label>
                     </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">评估范围</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${projectInfo.propertyScope}</label></div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">评估包括</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${projectInfo.scopeInclude}</label></div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">评估不包括</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${projectInfo.scopeNotInclude}</label></div>
                 </div>
             </div>
             <div class="form-group">
@@ -421,7 +437,8 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="x-valid" style="display: ${empty projectInfo.unitInformationVo.businessType?'none':'block'}">
+                    <div class="x-valid"
+                         style="display: ${empty projectInfo.unitInformationVo.businessType?'none':'block'}">
                         <label class="col-sm-1 control-label">
                             业务类型<span class="symbol required"></span>
                         </label>
@@ -430,7 +447,8 @@
                         </div>
                     </div>
 
-                    <div class="x-valid" style="display: ${empty projectInfo.unitInformationVo.assessType?'none':'block'}">
+                    <div class="x-valid"
+                         style="display: ${empty projectInfo.unitInformationVo.assessType?'none':'block'}">
                         <label class="col-sm-1 control-label">
                             评估类型<span class="symbol required"></span>
                         </label>
@@ -499,7 +517,7 @@
         TableInit(tb_List, "${pageContext.request.contextPath}/initiateContacts/getBootstrapTableVo", cols, {
             cPid: cPid,
             cType: cType,
-            approval:true
+            approval: true
         }, {
             showColumns: false,
             showRefresh: false,
@@ -558,7 +576,7 @@
     $(document).ready(function () {
         loadInitContactsList("${projectInfo.consignorVo.id}", config.CONSIGNOR.table, config.CONSIGNOR.nodeKey);
         loadInitContactsList("${projectInfo.possessorVo.id}", config.POSSESSOR.table, config.POSSESSOR.nodeKey);
-        loadInitContactsList('${projectInfo.unitInformationVo.id}',config.UNIT_INFORMATION.table, config.UNIT_INFORMATION.nodeKey);
+        loadInitContactsList('${projectInfo.unitInformationVo.id}', config.UNIT_INFORMATION.table, config.UNIT_INFORMATION.nodeKey);
 
     });
 </script>

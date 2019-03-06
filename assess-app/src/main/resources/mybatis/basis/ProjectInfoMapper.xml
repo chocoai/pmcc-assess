@@ -13,23 +13,26 @@
     <result column="district" property="district" jdbcType="VARCHAR" />
     <result column="valuation_date" property="valuationDate" jdbcType="TIMESTAMP" />
     <result column="entrust_purpose" property="entrustPurpose" jdbcType="INTEGER" />
+    <result column="remark_entrust_purpose" property="remarkEntrustPurpose" jdbcType="VARCHAR" />
     <result column="value_type" property="valueType" jdbcType="INTEGER" />
+    <result column="remark_value_type" property="remarkValueType" jdbcType="VARCHAR" />
     <result column="department_id" property="departmentId" jdbcType="INTEGER" />
     <result column="remarks" property="remarks" jdbcType="VARCHAR" />
     <result column="complete_date_plan" property="completeDatePlan" jdbcType="TIMESTAMP" />
     <result column="complete_date_actual" property="completeDateActual" jdbcType="TIMESTAMP" />
     <result column="complete_date_start" property="completeDateStart" jdbcType="TIMESTAMP" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
+    <result column="property_scope" property="propertyScope" jdbcType="VARCHAR" />
+    <result column="scope_include" property="scopeInclude" jdbcType="VARCHAR" />
+    <result column="scope_not_include" property="scopeNotInclude" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="project_status" property="projectStatus" jdbcType="VARCHAR" />
     <result column="public_project_id" property="publicProjectId" jdbcType="INTEGER" />
-    <result column="remark_entrust_purpose" property="remarkEntrustPurpose" jdbcType="VARCHAR" />
-    <result column="remark_value_type" property="remarkValueType" jdbcType="VARCHAR" />
+    <result column="assign_process_ins_id" property="assignProcessInsId" jdbcType="VARCHAR" />
+    <result column="assign_status" property="assignStatus" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="assign_process_ins_id" property="assignProcessInsId" jdbcType="VARCHAR" />
-    <result column="assign_status" property="assignStatus" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -91,10 +94,11 @@
   </sql>
   <sql id="Base_Column_List" >
     id, project_class_id, project_type_id, project_category_id, project_name, urgency, 
-    province, city, district, valuation_date, entrust_purpose, value_type, department_id, 
-    remarks, complete_date_plan, complete_date_actual, complete_date_start, process_ins_id, 
-    status, project_status, public_project_id, remark_entrust_purpose, remark_value_type, 
-    creator, gmt_created, gmt_modified, assign_process_ins_id, assign_status
+    province, city, district, valuation_date, entrust_purpose, remark_entrust_purpose, 
+    value_type, remark_value_type, department_id, remarks, complete_date_plan, complete_date_actual, 
+    complete_date_start, process_ins_id, property_scope, scope_include, scope_not_include, 
+    status, project_status, public_project_id, assign_process_ins_id, assign_status, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectInfoExample" >
     select
@@ -133,23 +137,25 @@
     insert into tb_project_info (project_class_id, project_type_id, project_category_id, 
       project_name, urgency, province, 
       city, district, valuation_date, 
-      entrust_purpose, value_type, department_id, 
-      remarks, complete_date_plan, complete_date_actual, 
-      complete_date_start, process_ins_id, status, 
-      project_status, public_project_id, remark_entrust_purpose, 
-      remark_value_type, creator, gmt_created, 
-      gmt_modified, assign_process_ins_id, assign_status
-      )
+      entrust_purpose, remark_entrust_purpose, value_type, 
+      remark_value_type, department_id, remarks, 
+      complete_date_plan, complete_date_actual, 
+      complete_date_start, process_ins_id, property_scope, 
+      scope_include, scope_not_include, status, 
+      project_status, public_project_id, assign_process_ins_id, 
+      assign_status, creator, gmt_created, 
+      gmt_modified)
     values (#{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, #{projectCategoryId,jdbcType=INTEGER}, 
       #{projectName,jdbcType=VARCHAR}, #{urgency,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{valuationDate,jdbcType=TIMESTAMP}, 
-      #{entrustPurpose,jdbcType=INTEGER}, #{valueType,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, 
-      #{remarks,jdbcType=VARCHAR}, #{completeDatePlan,jdbcType=TIMESTAMP}, #{completeDateActual,jdbcType=TIMESTAMP}, 
-      #{completeDateStart,jdbcType=TIMESTAMP}, #{processInsId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{projectStatus,jdbcType=VARCHAR}, #{publicProjectId,jdbcType=INTEGER}, #{remarkEntrustPurpose,jdbcType=VARCHAR}, 
-      #{remarkValueType,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{assignProcessInsId,jdbcType=VARCHAR}, #{assignStatus,jdbcType=VARCHAR}
-      )
+      #{entrustPurpose,jdbcType=INTEGER}, #{remarkEntrustPurpose,jdbcType=VARCHAR}, #{valueType,jdbcType=INTEGER}, 
+      #{remarkValueType,jdbcType=VARCHAR}, #{departmentId,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, 
+      #{completeDatePlan,jdbcType=TIMESTAMP}, #{completeDateActual,jdbcType=TIMESTAMP}, 
+      #{completeDateStart,jdbcType=TIMESTAMP}, #{processInsId,jdbcType=VARCHAR}, #{propertyScope,jdbcType=VARCHAR}, 
+      #{scopeInclude,jdbcType=VARCHAR}, #{scopeNotInclude,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{projectStatus,jdbcType=VARCHAR}, #{publicProjectId,jdbcType=INTEGER}, #{assignProcessInsId,jdbcType=VARCHAR}, 
+      #{assignStatus,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectInfo" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -187,8 +193,14 @@
       <if test="entrustPurpose != null" >
         entrust_purpose,
       </if>
+      <if test="remarkEntrustPurpose != null" >
+        remark_entrust_purpose,
+      </if>
       <if test="valueType != null" >
         value_type,
+      </if>
+      <if test="remarkValueType != null" >
+        remark_value_type,
       </if>
       <if test="departmentId != null" >
         department_id,
@@ -208,6 +220,15 @@
       <if test="processInsId != null" >
         process_ins_id,
       </if>
+      <if test="propertyScope != null" >
+        property_scope,
+      </if>
+      <if test="scopeInclude != null" >
+        scope_include,
+      </if>
+      <if test="scopeNotInclude != null" >
+        scope_not_include,
+      </if>
       <if test="status != null" >
         status,
       </if>
@@ -217,11 +238,11 @@
       <if test="publicProjectId != null" >
         public_project_id,
       </if>
-      <if test="remarkEntrustPurpose != null" >
-        remark_entrust_purpose,
+      <if test="assignProcessInsId != null" >
+        assign_process_ins_id,
       </if>
-      <if test="remarkValueType != null" >
-        remark_value_type,
+      <if test="assignStatus != null" >
+        assign_status,
       </if>
       <if test="creator != null" >
         creator,
@@ -231,12 +252,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified,
-      </if>
-      <if test="assignProcessInsId != null" >
-        assign_process_ins_id,
-      </if>
-      <if test="assignStatus != null" >
-        assign_status,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -270,8 +285,14 @@
       <if test="entrustPurpose != null" >
         #{entrustPurpose,jdbcType=INTEGER},
       </if>
+      <if test="remarkEntrustPurpose != null" >
+        #{remarkEntrustPurpose,jdbcType=VARCHAR},
+      </if>
       <if test="valueType != null" >
         #{valueType,jdbcType=INTEGER},
+      </if>
+      <if test="remarkValueType != null" >
+        #{remarkValueType,jdbcType=VARCHAR},
       </if>
       <if test="departmentId != null" >
         #{departmentId,jdbcType=INTEGER},
@@ -291,6 +312,15 @@
       <if test="processInsId != null" >
         #{processInsId,jdbcType=VARCHAR},
       </if>
+      <if test="propertyScope != null" >
+        #{propertyScope,jdbcType=VARCHAR},
+      </if>
+      <if test="scopeInclude != null" >
+        #{scopeInclude,jdbcType=VARCHAR},
+      </if>
+      <if test="scopeNotInclude != null" >
+        #{scopeNotInclude,jdbcType=VARCHAR},
+      </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
       </if>
@@ -300,11 +330,11 @@
       <if test="publicProjectId != null" >
         #{publicProjectId,jdbcType=INTEGER},
       </if>
-      <if test="remarkEntrustPurpose != null" >
-        #{remarkEntrustPurpose,jdbcType=VARCHAR},
+      <if test="assignProcessInsId != null" >
+        #{assignProcessInsId,jdbcType=VARCHAR},
       </if>
-      <if test="remarkValueType != null" >
-        #{remarkValueType,jdbcType=VARCHAR},
+      <if test="assignStatus != null" >
+        #{assignStatus,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -314,12 +344,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="assignProcessInsId != null" >
-        #{assignProcessInsId,jdbcType=VARCHAR},
-      </if>
-      <if test="assignStatus != null" >
-        #{assignStatus,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -365,8 +389,14 @@
       <if test="record.entrustPurpose != null" >
         entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
       </if>
+      <if test="record.remarkEntrustPurpose != null" >
+        remark_entrust_purpose = #{record.remarkEntrustPurpose,jdbcType=VARCHAR},
+      </if>
       <if test="record.valueType != null" >
         value_type = #{record.valueType,jdbcType=INTEGER},
+      </if>
+      <if test="record.remarkValueType != null" >
+        remark_value_type = #{record.remarkValueType,jdbcType=VARCHAR},
       </if>
       <if test="record.departmentId != null" >
         department_id = #{record.departmentId,jdbcType=INTEGER},
@@ -386,6 +416,15 @@
       <if test="record.processInsId != null" >
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       </if>
+      <if test="record.propertyScope != null" >
+        property_scope = #{record.propertyScope,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scopeInclude != null" >
+        scope_include = #{record.scopeInclude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scopeNotInclude != null" >
+        scope_not_include = #{record.scopeNotInclude,jdbcType=VARCHAR},
+      </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
       </if>
@@ -395,11 +434,11 @@
       <if test="record.publicProjectId != null" >
         public_project_id = #{record.publicProjectId,jdbcType=INTEGER},
       </if>
-      <if test="record.remarkEntrustPurpose != null" >
-        remark_entrust_purpose = #{record.remarkEntrustPurpose,jdbcType=VARCHAR},
+      <if test="record.assignProcessInsId != null" >
+        assign_process_ins_id = #{record.assignProcessInsId,jdbcType=VARCHAR},
       </if>
-      <if test="record.remarkValueType != null" >
-        remark_value_type = #{record.remarkValueType,jdbcType=VARCHAR},
+      <if test="record.assignStatus != null" >
+        assign_status = #{record.assignStatus,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -409,12 +448,6 @@
       </if>
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.assignProcessInsId != null" >
-        assign_process_ins_id = #{record.assignProcessInsId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.assignStatus != null" >
-        assign_status = #{record.assignStatus,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -434,23 +467,26 @@
       district = #{record.district,jdbcType=VARCHAR},
       valuation_date = #{record.valuationDate,jdbcType=TIMESTAMP},
       entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
+      remark_entrust_purpose = #{record.remarkEntrustPurpose,jdbcType=VARCHAR},
       value_type = #{record.valueType,jdbcType=INTEGER},
+      remark_value_type = #{record.remarkValueType,jdbcType=VARCHAR},
       department_id = #{record.departmentId,jdbcType=INTEGER},
       remarks = #{record.remarks,jdbcType=VARCHAR},
       complete_date_plan = #{record.completeDatePlan,jdbcType=TIMESTAMP},
       complete_date_actual = #{record.completeDateActual,jdbcType=TIMESTAMP},
       complete_date_start = #{record.completeDateStart,jdbcType=TIMESTAMP},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      property_scope = #{record.propertyScope,jdbcType=VARCHAR},
+      scope_include = #{record.scopeInclude,jdbcType=VARCHAR},
+      scope_not_include = #{record.scopeNotInclude,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
       project_status = #{record.projectStatus,jdbcType=VARCHAR},
       public_project_id = #{record.publicProjectId,jdbcType=INTEGER},
-      remark_entrust_purpose = #{record.remarkEntrustPurpose,jdbcType=VARCHAR},
-      remark_value_type = #{record.remarkValueType,jdbcType=VARCHAR},
+      assign_process_ins_id = #{record.assignProcessInsId,jdbcType=VARCHAR},
+      assign_status = #{record.assignStatus,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      assign_process_ins_id = #{record.assignProcessInsId,jdbcType=VARCHAR},
-      assign_status = #{record.assignStatus,jdbcType=VARCHAR}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -488,8 +524,14 @@
       <if test="entrustPurpose != null" >
         entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
       </if>
+      <if test="remarkEntrustPurpose != null" >
+        remark_entrust_purpose = #{remarkEntrustPurpose,jdbcType=VARCHAR},
+      </if>
       <if test="valueType != null" >
         value_type = #{valueType,jdbcType=INTEGER},
+      </if>
+      <if test="remarkValueType != null" >
+        remark_value_type = #{remarkValueType,jdbcType=VARCHAR},
       </if>
       <if test="departmentId != null" >
         department_id = #{departmentId,jdbcType=INTEGER},
@@ -509,6 +551,15 @@
       <if test="processInsId != null" >
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
       </if>
+      <if test="propertyScope != null" >
+        property_scope = #{propertyScope,jdbcType=VARCHAR},
+      </if>
+      <if test="scopeInclude != null" >
+        scope_include = #{scopeInclude,jdbcType=VARCHAR},
+      </if>
+      <if test="scopeNotInclude != null" >
+        scope_not_include = #{scopeNotInclude,jdbcType=VARCHAR},
+      </if>
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
       </if>
@@ -518,11 +569,11 @@
       <if test="publicProjectId != null" >
         public_project_id = #{publicProjectId,jdbcType=INTEGER},
       </if>
-      <if test="remarkEntrustPurpose != null" >
-        remark_entrust_purpose = #{remarkEntrustPurpose,jdbcType=VARCHAR},
+      <if test="assignProcessInsId != null" >
+        assign_process_ins_id = #{assignProcessInsId,jdbcType=VARCHAR},
       </if>
-      <if test="remarkValueType != null" >
-        remark_value_type = #{remarkValueType,jdbcType=VARCHAR},
+      <if test="assignStatus != null" >
+        assign_status = #{assignStatus,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -532,12 +583,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="assignProcessInsId != null" >
-        assign_process_ins_id = #{assignProcessInsId,jdbcType=VARCHAR},
-      </if>
-      <if test="assignStatus != null" >
-        assign_status = #{assignStatus,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -554,23 +599,26 @@
       district = #{district,jdbcType=VARCHAR},
       valuation_date = #{valuationDate,jdbcType=TIMESTAMP},
       entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
+      remark_entrust_purpose = #{remarkEntrustPurpose,jdbcType=VARCHAR},
       value_type = #{valueType,jdbcType=INTEGER},
+      remark_value_type = #{remarkValueType,jdbcType=VARCHAR},
       department_id = #{departmentId,jdbcType=INTEGER},
       remarks = #{remarks,jdbcType=VARCHAR},
       complete_date_plan = #{completeDatePlan,jdbcType=TIMESTAMP},
       complete_date_actual = #{completeDateActual,jdbcType=TIMESTAMP},
       complete_date_start = #{completeDateStart,jdbcType=TIMESTAMP},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      property_scope = #{propertyScope,jdbcType=VARCHAR},
+      scope_include = #{scopeInclude,jdbcType=VARCHAR},
+      scope_not_include = #{scopeNotInclude,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       project_status = #{projectStatus,jdbcType=VARCHAR},
       public_project_id = #{publicProjectId,jdbcType=INTEGER},
-      remark_entrust_purpose = #{remarkEntrustPurpose,jdbcType=VARCHAR},
-      remark_value_type = #{remarkValueType,jdbcType=VARCHAR},
+      assign_process_ins_id = #{assignProcessInsId,jdbcType=VARCHAR},
+      assign_status = #{assignStatus,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      assign_process_ins_id = #{assignProcessInsId,jdbcType=VARCHAR},
-      assign_status = #{assignStatus,jdbcType=VARCHAR}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
