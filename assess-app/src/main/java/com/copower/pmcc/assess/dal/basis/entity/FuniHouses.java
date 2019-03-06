@@ -57,6 +57,8 @@ public class FuniHouses {
 
     private String lpjj;
 
+    private Boolean complete;
+
     public Integer getId() {
         return id;
     }
@@ -279,5 +281,13 @@ public class FuniHouses {
 
     public void setLpjj(String lpjj) {
         this.lpjj = lpjj == null ? null : lpjj.trim();
+    }
+
+    public Boolean getComplete() {
+        return complete;
+    }
+
+    public void setComplete(Boolean complete) {
+        this.complete = complete;
     }
 }

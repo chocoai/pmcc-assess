@@ -136,6 +136,17 @@ public class TaskCaseAssignService {
     public void addTaskCaseAssignReturnId(TaskCaseAssign taskCaseAssign) {
         taskCaseAssign.setCreator(processControllerComponent.getThisUser());
         if (taskCaseAssignDao.addObject(taskCaseAssign)) {
+            //修改参考楼盘信息
+            String[] ids = taskCaseAssign.getLpbh().split(",");
+            FuniHouses funiHouses = new FuniHouses();
+            if (ids != null && ids.length > 0) {
+                for (String FuniHousesId : ids) {
+                    funiHouses = funiHousesDao.getFuniHouses(Integer.valueOf(FuniHousesId));
+                    funiHouses.setComplete(true);
+                    funiHousesDao.editFuniHouses(funiHouses);
+                }
+            }
+
             TaskCaseAssignVo vo = getTaskCaseAssignVo(taskCaseAssign);
             String projectName = vo.getLpmc();
             //添加任务
@@ -161,6 +172,17 @@ public class TaskCaseAssignService {
      * @throws BusinessException
      */
     public boolean deleteTaskCaseAssign(Integer id) throws BusinessException {
+        TaskCaseAssign taskCaseAssign = taskCaseAssignDao.getSingleObject(id);
+        //修改参考楼盘信息
+        String[] ids = taskCaseAssign.getLpbh().split(",");
+        FuniHouses funiHouses = new FuniHouses();
+        if (ids != null && ids.length > 0) {
+            for (String FuniHousesId : ids) {
+                funiHouses = funiHousesDao.getFuniHouses(Integer.valueOf(FuniHousesId));
+                funiHouses.setComplete(false);
+                funiHousesDao.editFuniHouses(funiHouses);
+            }
+        }
         //删除待提交任务
         bpmRpcProjectTaskService.deleteProjectTaskByProjectid(applicationConstant.getAppKey(), id);
         return taskCaseAssignDao.deleteObject(id);

@@ -130,7 +130,7 @@ public class TaskCaseAssignController {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         FuniHouses funiHouses = new FuniHouses();
-        List<FuniHouses> funiHousesList = funiHousesDao.getFuniHousesList(funiHouses, "");
+        List<FuniHouses> funiHousesList = funiHousesDao.getNotCompleteList(funiHouses);
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(CollectionUtils.isEmpty(funiHousesList) ? new ArrayList<FuniHouses>() : funiHousesList);
         return bootstrapTableVo;

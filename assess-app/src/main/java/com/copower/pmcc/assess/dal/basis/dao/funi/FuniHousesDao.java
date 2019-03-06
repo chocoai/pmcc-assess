@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * 描述:
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2018/6/12
  * @time: 15:04
  */
@@ -32,6 +32,17 @@ public class FuniHousesDao {
         if (StringUtils.isNotBlank(search)) {
             criteria.andLpmcLike(search);
         }
+        MybatisUtils.convertObj2Criteria(funiHouses, criteria);
+        example.setOrderByClause(" id desc");
+        List<FuniHouses> funiHousess = funiHousesMapper.selectByExample(example);
+        return funiHousess;
+    }
+
+    public List<FuniHouses> getNotCompleteList(FuniHouses funiHouses) {
+        FuniHousesExample example = new FuniHousesExample();
+        FuniHousesExample.Criteria criteria = example.createCriteria();
+        //未进行任务分配的
+        criteria.andCompleteEqualTo(false);
         MybatisUtils.convertObj2Criteria(funiHouses, criteria);
         example.setOrderByClause(" id desc");
         List<FuniHouses> funiHousess = funiHousesMapper.selectByExample(example);

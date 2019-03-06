@@ -1993,6 +1993,66 @@ public class FuniHousesExample {
             addCriterion("lpjj not between", value1, value2, "lpjj");
             return (Criteria) this;
         }
+
+        public Criteria andCompleteIsNull() {
+            addCriterion("complete is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompleteIsNotNull() {
+            addCriterion("complete is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompleteEqualTo(Boolean value) {
+            addCriterion("complete =", value, "complete");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompleteNotEqualTo(Boolean value) {
+            addCriterion("complete <>", value, "complete");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompleteGreaterThan(Boolean value) {
+            addCriterion("complete >", value, "complete");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompleteGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("complete >=", value, "complete");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompleteLessThan(Boolean value) {
+            addCriterion("complete <", value, "complete");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompleteLessThanOrEqualTo(Boolean value) {
+            addCriterion("complete <=", value, "complete");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompleteIn(List<Boolean> values) {
+            addCriterion("complete in", values, "complete");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompleteNotIn(List<Boolean> values) {
+            addCriterion("complete not in", values, "complete");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompleteBetween(Boolean value1, Boolean value2) {
+            addCriterion("complete between", value1, value2, "complete");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompleteNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("complete not between", value1, value2, "complete");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
