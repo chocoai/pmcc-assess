@@ -29,6 +29,8 @@ public class ProjectPlan {
 
     private String approvalStatus;
 
+    private String restartReason;
+
     private Boolean bisRestart;
 
     private Boolean bisAutoComplete;
@@ -145,6 +147,14 @@ public class ProjectPlan {
 
     public void setApprovalStatus(String approvalStatus) {
         this.approvalStatus = approvalStatus == null ? null : approvalStatus.trim();
+    }
+
+    public String getRestartReason() {
+        return restartReason;
+    }
+
+    public void setRestartReason(String restartReason) {
+        this.restartReason = restartReason == null ? null : restartReason.trim();
     }
 
     public Boolean getBisRestart() {

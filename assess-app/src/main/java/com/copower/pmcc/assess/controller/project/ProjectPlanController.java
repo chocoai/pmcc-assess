@@ -376,11 +376,11 @@ public class ProjectPlanController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/copyPlanDetails", name = "拷贝计划详细内容", method = RequestMethod.POST)
-    public HttpResult copyPlanDetails(Integer planDetailsId) {
+    @RequestMapping(value = "/replyProjectPlan", name = "重启阶段计划", method = RequestMethod.POST)
+    public HttpResult replyProjectPlan(Integer planId, String reason) {
         try {
-            projectPlanService.copyPlanDetails(planDetailsId, true);
-        } catch (Exception e) {
+            projectPlanService.replyProjectPlan(planId,reason);
+        } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();

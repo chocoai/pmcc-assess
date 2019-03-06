@@ -489,8 +489,22 @@ public class ProjectPlanDetailsService {
      *
      * @param planId
      */
+    @Transactional(rollbackFor = Exception.class)
     public void deletePlanDetailsByPlanId(Integer planId) {
-        projectPlanDetailsDao.deletePlanDetailsByPlanId(planId);
+        //删除任务的同时，需删除待提交任务，需删除待提交的流程
+        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
+        if (CollectionUtils.isNotEmpty(planDetailsList)) {
+            for (ProjectPlanDetails projectPlanDetails : planDetailsList) {
+                if (ProcessStatusEnum.RUN.getValue().equals(projectPlanDetails.getStatus())) {
+                    bpmRpcProjectTaskService.deleteProjectTaskByPlanDetailsId(applicationConstant.getAppKey(),projectPlanDetails.getId());
+                    if(StringUtils.isNotBlank(projectPlanDetails.getProcessInsId())&&!projectPlanDetails.getProcessInsId().equals("0")){
+                        bpmRpcActivitiProcessManageService.closeProcess(projectPlanDetails.getProcessInsId());
+                    }
+                } else {
+                    projectPlanDetailsDao.deleteProjectPlanDetails(projectPlanDetails.getId());
+                }
+            }
+        }
     }
 
     /**
@@ -513,6 +527,7 @@ public class ProjectPlanDetailsService {
         projectPlanDetails.setBisStart(false);
         projectPlanDetails.setProcessInsId("0");
         projectPlanDetails.setActualHours(null);
+        projectPlanDetails.setBisRestart(true);
         projectPlanDetailsDao.updateProjectPlanDetailsAndNull(projectPlanDetails);
 
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());

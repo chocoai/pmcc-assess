@@ -15,6 +15,7 @@
     <result column="process_ins_id_approval" property="processInsIdApproval" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="approval_status" property="approvalStatus" jdbcType="VARCHAR" />
+    <result column="restart_reason" property="restartReason" jdbcType="VARCHAR" />
     <result column="bis_restart" property="bisRestart" jdbcType="BIT" />
     <result column="bis_auto_complete" property="bisAutoComplete" jdbcType="BIT" />
     <result column="finish_date" property="finishDate" jdbcType="TIMESTAMP" />
@@ -84,8 +85,8 @@
   <sql id="Base_Column_List" >
     id, project_id, process_ins_id, work_stage_id, stage_sort, category_id, plan_name, 
     plan_remarks, project_plan_start, project_plan_end, process_ins_id_approval, status, 
-    approval_status, bis_restart, bis_auto_complete, finish_date, project_status, specific_gravity, 
-    creator, created
+    approval_status, restart_reason, bis_restart, bis_auto_complete, finish_date, project_status, 
+    specific_gravity, creator, created
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPlanExample" >
     select
@@ -125,16 +126,16 @@
       stage_sort, category_id, plan_name, 
       plan_remarks, project_plan_start, project_plan_end, 
       process_ins_id_approval, status, approval_status, 
-      bis_restart, bis_auto_complete, finish_date, 
-      project_status, specific_gravity, creator, 
-      created)
+      restart_reason, bis_restart, bis_auto_complete, 
+      finish_date, project_status, specific_gravity, 
+      creator, created)
     values (#{projectId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, #{workStageId,jdbcType=INTEGER}, 
       #{stageSort,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{planName,jdbcType=VARCHAR}, 
       #{planRemarks,jdbcType=VARCHAR}, #{projectPlanStart,jdbcType=TIMESTAMP}, #{projectPlanEnd,jdbcType=TIMESTAMP}, 
       #{processInsIdApproval,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{approvalStatus,jdbcType=VARCHAR}, 
-      #{bisRestart,jdbcType=BIT}, #{bisAutoComplete,jdbcType=BIT}, #{finishDate,jdbcType=TIMESTAMP}, 
-      #{projectStatus,jdbcType=VARCHAR}, #{specificGravity,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{created,jdbcType=TIMESTAMP})
+      #{restartReason,jdbcType=VARCHAR}, #{bisRestart,jdbcType=BIT}, #{bisAutoComplete,jdbcType=BIT}, 
+      #{finishDate,jdbcType=TIMESTAMP}, #{projectStatus,jdbcType=VARCHAR}, #{specificGravity,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPlan" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -177,6 +178,9 @@
       </if>
       <if test="approvalStatus != null" >
         approval_status,
+      </if>
+      <if test="restartReason != null" >
+        restart_reason,
       </if>
       <if test="bisRestart != null" >
         bis_restart,
@@ -236,6 +240,9 @@
       </if>
       <if test="approvalStatus != null" >
         #{approvalStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="restartReason != null" >
+        #{restartReason,jdbcType=VARCHAR},
       </if>
       <if test="bisRestart != null" >
         #{bisRestart,jdbcType=BIT},
@@ -308,6 +315,9 @@
       <if test="record.approvalStatus != null" >
         approval_status = #{record.approvalStatus,jdbcType=VARCHAR},
       </if>
+      <if test="record.restartReason != null" >
+        restart_reason = #{record.restartReason,jdbcType=VARCHAR},
+      </if>
       <if test="record.bisRestart != null" >
         bis_restart = #{record.bisRestart,jdbcType=BIT},
       </if>
@@ -349,6 +359,7 @@
       process_ins_id_approval = #{record.processInsIdApproval,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
       approval_status = #{record.approvalStatus,jdbcType=VARCHAR},
+      restart_reason = #{record.restartReason,jdbcType=VARCHAR},
       bis_restart = #{record.bisRestart,jdbcType=BIT},
       bis_auto_complete = #{record.bisAutoComplete,jdbcType=BIT},
       finish_date = #{record.finishDate,jdbcType=TIMESTAMP},
@@ -399,6 +410,9 @@
       <if test="approvalStatus != null" >
         approval_status = #{approvalStatus,jdbcType=VARCHAR},
       </if>
+      <if test="restartReason != null" >
+        restart_reason = #{restartReason,jdbcType=VARCHAR},
+      </if>
       <if test="bisRestart != null" >
         bis_restart = #{bisRestart,jdbcType=BIT},
       </if>
@@ -437,6 +451,7 @@
       process_ins_id_approval = #{processInsIdApproval,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       approval_status = #{approvalStatus,jdbcType=VARCHAR},
+      restart_reason = #{restartReason,jdbcType=VARCHAR},
       bis_restart = #{bisRestart,jdbcType=BIT},
       bis_auto_complete = #{bisAutoComplete,jdbcType=BIT},
       finish_date = #{finishDate,jdbcType=TIMESTAMP},
