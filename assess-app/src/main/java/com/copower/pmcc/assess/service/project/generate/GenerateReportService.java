@@ -5,6 +5,7 @@ import com.aspose.words.Document;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldEnum;
+import com.copower.pmcc.assess.common.enums.BaseReportFieldMdIncomeEnum;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldReplaceEnum;
 import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
@@ -556,7 +557,7 @@ public class GenerateReportService {
                     if (Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuerAndNumber.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
-                            replaceReportPutValue(name, String.format("%s及%s", generateBaseDataService.getRegisteredRealEstateValuer(generateReportGeneration.getRealEstateAppraiser()), generateBaseDataService.getRegistrationNumber(generateReportGeneration.getRealEstateAppraiser())), bookmarkAndRegex.getType(), false, mapSet);
+                            replaceReportPutValue(name, String.format("%s 注册号 %s", generateBaseDataService.getRegisteredRealEstateValuer(generateReportGeneration.getRealEstateAppraiser()), generateBaseDataService.getRegistrationNumber(generateReportGeneration.getRealEstateAppraiser())), bookmarkAndRegex.getType(), false, mapSet);
                         }
                     }
                     //注册房产估价师 注册号
@@ -605,6 +606,13 @@ public class GenerateReportService {
                     if (Objects.equal(BaseReportFieldEnum.DetailedCalculationProcessValuationObject.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         replaceReportPutValue(name, generateBaseDataService.getDetailedCalculationProcessValuationObject(), bookmarkAndRegex.getType(), true, mapSet);
+                        if (baseReportField != null) {
+                        }
+                    }
+                    //收益法租赁限制说明
+                    if (Objects.equal(BaseReportFieldMdIncomeEnum.TenancyrestrictionRemark.getName(), name)) {
+                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getTenancyrestrictionRemark(), bookmarkAndRegex.getType(), false, mapSet);
                         if (baseReportField != null) {
                         }
                     }
@@ -1026,7 +1034,7 @@ public class GenerateReportService {
                     if (Objects.equal(BaseReportFieldEnum.EvaluationMethod.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
-                            replaceReportPutValue(name, generateBaseDataService.getSummaryEvaluationMethod(), bookmarkAndRegex.getType(), false, mapSet);
+                            replaceReportPutValue(name, generateBaseDataService.getEvaluationMethodValuationObject(), bookmarkAndRegex.getType(), false, mapSet);
                         }
                     }
                     //评估方法总括
