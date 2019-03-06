@@ -11,13 +11,7 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <form class="form-horizontal" id="declareApplyForm">
-                <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
-                <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
-                <div id="declareApplyFormHTML">
 
-                </div>
-            </form>
             <!-- 申报各种类型的html视图 -->
             <%@include file="/views/project/stageDeclare/declareApplyModel.jsp" %>
             <!-- 房产证 -->
@@ -37,17 +31,44 @@
             </div>
             <div class="x_panel">
                 <div class="x_content form-horizontal">
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-md-1 col-sm-1 col-xs-12 control-label">
-                                估价委托书
-                            </label>
-                            <div class="col-md-5 col-sm-5 col-xs-12">
-                                <input id="project_proxy" name="project_proxy" type="file" multiple="false">
-                                <div id="_project_proxy"></div>
+                    <form class="form-horizontal" id="declareApplyForm">
+                        <input type="hidden" name="id" value="${declare.id}">
+                        <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+                        <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
+                        <div id="declareApplyFormHTML">
+
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">委托单位</label>
+                                <div class="col-sm-3">
+                                    <input name="client" class="form-control" placeholder="委托单位"
+                                           required value='${declare.client}' />
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">完成时限</label>
+                                <div class="col-sm-3">
+                                    <input required="required" placeholder="完成时限" id="dateLimit"
+                                           name="dateLimit" data-date-format="yyyy-mm-dd" required
+                                           class="form-control date-picker dbdate" readonly="readonly"
+                                           value="<fmt:formatDate value='${declare.dateLimit}' pattern='yyyy-MM-dd'/>">
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-md-1 col-sm-1 col-xs-12 control-label">
+                                    估价委托书
+                                </label>
+                                <div class="col-md-5 col-sm-5 col-xs-12">
+                                    <input id="project_proxy" name="project_proxy" type="file" multiple="false">
+                                    <div id="_project_proxy"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
                 </div>
             </div>
             <div class="x_panel">
@@ -229,11 +250,16 @@
 
     //提交表单
     function submitForm(mustUseBox) {
+        if (!$("#" +config.declare.frm).valid()) {
+            return false;
+        }
+        var formData = formParams(config.declare.frm);
+
         if ("${processInsId}" != "0") {
-            submitEditToServer("");
+            submitEditToServer(JSON.stringify(formData));
         }
         else {
-            submitToServer("", mustUseBox);
+            submitToServer(JSON.stringify(formData), mustUseBox);
         }
     }
 

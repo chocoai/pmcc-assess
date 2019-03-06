@@ -1,7 +1,9 @@
 package com.copower.pmcc.assess.service.project.declare;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
+import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareApplyDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -40,6 +42,8 @@ public class DeclarePublicService {
     private DeclareApplyService declareApplyService;
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+    @Autowired
+    private DeclareApplyDao declareApplyDao;
 
     /**
      * 不动产
@@ -890,8 +894,8 @@ public class DeclarePublicService {
      * @throws BusinessException
      * @throws BpmException
      */
-    public void applyCommitTask(ProjectPlanDetails projectPlanDetails, String processInsId) throws BusinessException, BpmException {
-        DeclareApply declareApply = new DeclareApply();
+    public void applyCommitTask(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
+        DeclareApply declareApply = JSONObject.parseObject(formData, DeclareApply.class);
         declareApply.setProjectId(projectPlanDetails.getProjectId());
         declareApply.setPlanDetailsId(projectPlanDetails.getId());
         declareApply.setProcessInsId(processInsId);
@@ -903,4 +907,17 @@ public class DeclarePublicService {
             bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, DeclareRealtyEstateCertEvent.class.getSimpleName());
         }
     }
+
+    public void editCommitTask(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
+        DeclareApply declareApply = JSONObject.parseObject(formData, DeclareApply.class);
+        declareApply.setProjectId(projectPlanDetails.getProjectId());
+        declareApply.setPlanDetailsId(projectPlanDetails.getId());
+        declareApply.setProcessInsId(processInsId);
+        declareApplyService.saveDeclareApply(declareApply);
+    }
+
+    public DeclareApply getDeclareApplyByProcessInsId(String processInsId) {
+        return declareApplyDao.getDeclareApplyByProcessInsId(processInsId);
+    }
+
 }

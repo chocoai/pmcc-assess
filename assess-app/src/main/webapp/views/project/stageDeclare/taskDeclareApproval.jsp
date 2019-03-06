@@ -78,6 +78,21 @@
                 <div class="x_content form-horizontal">
                     <div class="form-group">
                         <div class="x-valid">
+                            <label class="col-sm-1 control-label">委托单位</label>
+                            <div class="col-sm-3">
+                                <label class="form-control">${declare.client}</label>
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">完成时限</label>
+                            <div class="col-sm-3">
+                                <label class="form-control"><fmt:formatDate value='${declare.dateLimit}'
+                                                                            pattern='yyyy-MM-dd'/></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
                             <label class="col-md-1 col-sm-1 col-xs-12 control-label">
                                 估价委托书
                             </label>

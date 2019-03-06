@@ -66,7 +66,7 @@ public class ProjectTaskDeclareBuildingAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
-        declarePublicService.applyCommitTask(projectPlanDetails, processInsId);
+        declarePublicService.applyCommitTask(projectPlanDetails, processInsId, formData);
     }
 
 

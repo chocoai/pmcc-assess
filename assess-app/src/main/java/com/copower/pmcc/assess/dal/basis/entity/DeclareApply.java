@@ -13,6 +13,10 @@ public class DeclareApply {
 
     private String applyType;
 
+    private String client;
+
+    private Date dateLimit;
+
     private String status;
 
     private String creator;
@@ -59,6 +63,22 @@ public class DeclareApply {
 
     public void setApplyType(String applyType) {
         this.applyType = applyType == null ? null : applyType.trim();
+    }
+
+    public String getClient() {
+        return client;
+    }
+
+    public void setClient(String client) {
+        this.client = client == null ? null : client.trim();
+    }
+
+    public Date getDateLimit() {
+        return dateLimit;
+    }
+
+    public void setDateLimit(Date dateLimit) {
+        this.dateLimit = dateLimit;
     }
 
     public String getStatus() {

@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.declare;
 
+import com.copower.pmcc.assess.dal.basis.entity.DeclareApply;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.ErpAreaService;
@@ -30,6 +31,11 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareIndex", "", 0, "0", "");
+        DeclareApply declare = declarePublicService.getDeclareApplyByProcessInsId(projectPlanDetails.getProcessInsId());
+        if(declare == null){
+            declare = new DeclareApply();
+        }
+        modelAndView.addObject("declare",declare);
         modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
         modelAndView.addObject("projectPlanDetails",projectPlanDetails);
         return modelAndView;
@@ -38,6 +44,8 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareApproval", processInsId, boxId, taskId, agentUserAccount);
+        DeclareApply declare = declarePublicService.getDeclareApplyByProcessInsId(projectPlanDetails.getProcessInsId());
+        modelAndView.addObject("declare",declare);
         modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
         modelAndView.addObject("projectPlanDetails",projectPlanDetails);
         return modelAndView;
@@ -46,6 +54,8 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareIndex", processInsId, boxId, taskId, agentUserAccount);
+        DeclareApply declare = declarePublicService.getDeclareApplyByProcessInsId(projectPlanDetails.getProcessInsId());
+        modelAndView.addObject("declare",declare);
         modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
         modelAndView.addObject("projectPlanDetails",projectPlanDetails);
         return modelAndView;
@@ -59,6 +69,8 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        DeclareApply declare = declarePublicService.getDeclareApplyByProcessInsId(projectPlanDetails.getProcessInsId());
+        modelAndView.addObject("declare",declare);
         modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
         modelAndView.addObject("projectPlanDetails",projectPlanDetails);
         return modelAndView;
@@ -66,7 +78,7 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
-        declarePublicService.applyCommitTask(projectPlanDetails, processInsId);
+        declarePublicService.applyCommitTask(projectPlanDetails, processInsId, formData);
     }
 
     @Override
@@ -76,6 +88,6 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-
+        declarePublicService.editCommitTask(projectPlanDetails, processInsId, formData);
     }
 }

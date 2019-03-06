@@ -82,6 +82,23 @@
             </div>
             <div class="form-group">
                 <div class="x-valid">
+                    <label class="col-sm-1 control-label">评估范围</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${projectInfo.propertyScope}</label></div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">评估包括</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${projectInfo.scopeInclude}</label></div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">评估不包括</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${projectInfo.scopeNotInclude}</label></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="x-valid">
                     <label class="col-sm-1 control-label">项目经理</label>
                     <div class="col-sm-3">
                         <label class="form-control">${projectInfo.projectMemberVo.userAccountManagerName}</label>

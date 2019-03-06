@@ -425,6 +425,136 @@ public class DeclareApplyExample {
             return (Criteria) this;
         }
 
+        public Criteria andClientIsNull() {
+            addCriterion("client is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClientIsNotNull() {
+            addCriterion("client is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClientEqualTo(String value) {
+            addCriterion("client =", value, "client");
+            return (Criteria) this;
+        }
+
+        public Criteria andClientNotEqualTo(String value) {
+            addCriterion("client <>", value, "client");
+            return (Criteria) this;
+        }
+
+        public Criteria andClientGreaterThan(String value) {
+            addCriterion("client >", value, "client");
+            return (Criteria) this;
+        }
+
+        public Criteria andClientGreaterThanOrEqualTo(String value) {
+            addCriterion("client >=", value, "client");
+            return (Criteria) this;
+        }
+
+        public Criteria andClientLessThan(String value) {
+            addCriterion("client <", value, "client");
+            return (Criteria) this;
+        }
+
+        public Criteria andClientLessThanOrEqualTo(String value) {
+            addCriterion("client <=", value, "client");
+            return (Criteria) this;
+        }
+
+        public Criteria andClientLike(String value) {
+            addCriterion("client like", value, "client");
+            return (Criteria) this;
+        }
+
+        public Criteria andClientNotLike(String value) {
+            addCriterion("client not like", value, "client");
+            return (Criteria) this;
+        }
+
+        public Criteria andClientIn(List<String> values) {
+            addCriterion("client in", values, "client");
+            return (Criteria) this;
+        }
+
+        public Criteria andClientNotIn(List<String> values) {
+            addCriterion("client not in", values, "client");
+            return (Criteria) this;
+        }
+
+        public Criteria andClientBetween(String value1, String value2) {
+            addCriterion("client between", value1, value2, "client");
+            return (Criteria) this;
+        }
+
+        public Criteria andClientNotBetween(String value1, String value2) {
+            addCriterion("client not between", value1, value2, "client");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateLimitIsNull() {
+            addCriterion("date_limit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateLimitIsNotNull() {
+            addCriterion("date_limit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateLimitEqualTo(Date value) {
+            addCriterion("date_limit =", value, "dateLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateLimitNotEqualTo(Date value) {
+            addCriterion("date_limit <>", value, "dateLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateLimitGreaterThan(Date value) {
+            addCriterion("date_limit >", value, "dateLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateLimitGreaterThanOrEqualTo(Date value) {
+            addCriterion("date_limit >=", value, "dateLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateLimitLessThan(Date value) {
+            addCriterion("date_limit <", value, "dateLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateLimitLessThanOrEqualTo(Date value) {
+            addCriterion("date_limit <=", value, "dateLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateLimitIn(List<Date> values) {
+            addCriterion("date_limit in", values, "dateLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateLimitNotIn(List<Date> values) {
+            addCriterion("date_limit not in", values, "dateLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateLimitBetween(Date value1, Date value2) {
+            addCriterion("date_limit between", value1, value2, "dateLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateLimitNotBetween(Date value1, Date value2) {
+            addCriterion("date_limit not between", value1, value2, "dateLimit");
+            return (Criteria) this;
+        }
+
         public Criteria andStatusIsNull() {
             addCriterion("status is null");
             return (Criteria) this;
