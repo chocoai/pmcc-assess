@@ -25,7 +25,9 @@ public enum BaseParameterEnum {
     PROJECT_MEMBER_CHANGE_PROCESS_KEY("project.member.change.process.key", "项目成员变更流程模型", "box"),
     PROJECT_DETAILS_RESTART_PROCESS_KEY("project.details.restart.process.key", "项目阶段重启流程模型", "box"),
 
-    CASE_BASE_INFO_APPLY_KEY("case.base.info.apply.key", "案例信息申请key", "box");
+    CASE_BASE_INFO_APPLY_KEY("case.base.info.apply.key", "案例信息申请key", "box"),
+
+    CASE_ASSIGN_APPLY_KEY("case.assign.apply.key", "案例信息补充申请key", "box");
 
     private String parameterKey;
     private String remarks;
