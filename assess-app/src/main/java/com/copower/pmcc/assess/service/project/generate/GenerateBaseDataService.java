@@ -73,7 +73,7 @@ import java.util.stream.Collectors;
 public class GenerateBaseDataService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    protected final String errorStr = "暂无数据";
+    protected final String errorStr = "无";
 
     //spring bean
     private SchemeJudgeObjectService schemeJudgeObjectService;
@@ -1448,35 +1448,86 @@ public class GenerateBaseDataService {
             }
             builder.endRow();
             for (SchemeJudgeObjectVo schemeJudgeObject : schemeJudgeObjectList) {
-                for (int i = 0; i < 5; i++) {
-                    builder.insertCell();
-                    if (i == 0) {
-                        if (StringUtils.isNotBlank(schemeJudgeObject.getName())) {
-                            builder.writeln(schemeJudgeObject.getName());
+                DeclareRecord declareRecord = null;
+                if (schemeJudgeObject.getBisMerge()) {
+                    List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getChildrenJudgeObject(schemeJudgeObject.getId());
+                    if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+                        for (SchemeJudgeObject judgeObject : judgeObjectList) {
+                            SchemeJudgeObjectVo judgeObjectVo = schemeJudgeObjectService.getSchemeJudgeObjectVo(judgeObject);
+                            if (schemeJudgeObject.getDeclareRecordId() != null) {
+                                declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
+                                if (declareRecord == null) {
+                                    declareRecord = new DeclareRecord();
+                                }
+                            }
+                            for (int i = 0; i < 5; i++) {
+                                builder.insertCell();
+                                if (i == 0) {
+                                    if (StringUtils.isNotBlank(declareRecord.getName())) {
+                                        builder.writeln(declareRecord.getName());
+                                    }
+                                }
+                                if (i == 1) {
+                                    if (StringUtils.isNotBlank(declareRecord.getFloor())) {
+                                        builder.writeln(declareRecord.getFloor());
+                                    }
+                                }
+                                if (i == 2) {
+                                    if (StringUtils.isNotBlank(declareRecord.getRoomNumber())) {
+                                        builder.writeln(declareRecord.getRoomNumber());
+                                    }
+                                }
+                                if (i == 3) {
+                                    if (declareRecord.getPrice() != null) {
+                                        builder.writeln(declareRecord.getPrice().toString());
+                                    }
+                                }
+                                if (i == 4) {
+                                    if (StringUtils.isNotBlank(judgeObjectVo.getCoefficient())) {
+                                        builder.writeln(judgeObjectVo.getCoefficient());
+                                    }
+                                }
+                            }
+                            builder.endRow();
                         }
                     }
-                    if (i == 1) {
-                        if (StringUtils.isNotBlank(schemeJudgeObject.getFloor())) {
-                            builder.writeln(schemeJudgeObject.getFloor());
+                } else {
+                    if (schemeJudgeObject.getDeclareRecordId() != null) {
+                        declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+                        if (declareRecord == null) {
+                            declareRecord = new DeclareRecord();
                         }
                     }
-                    if (i == 2) {
-                        if (StringUtils.isNotBlank(schemeJudgeObject.getRoomNumber())) {
-                            builder.writeln(schemeJudgeObject.getRoomNumber());
+                    for (int i = 0; i < 5; i++) {
+                        builder.insertCell();
+                        if (i == 0) {
+                            if (StringUtils.isNotBlank(declareRecord.getName())) {
+                                builder.writeln(declareRecord.getName());
+                            }
+                        }
+                        if (i == 1) {
+                            if (StringUtils.isNotBlank(declareRecord.getFloor())) {
+                                builder.writeln(declareRecord.getFloor());
+                            }
+                        }
+                        if (i == 2) {
+                            if (StringUtils.isNotBlank(declareRecord.getRoomNumber())) {
+                                builder.writeln(declareRecord.getRoomNumber());
+                            }
+                        }
+                        if (i == 3) {
+                            if (declareRecord.getPrice() != null) {
+                                builder.writeln(declareRecord.getPrice().toString());
+                            }
+                        }
+                        if (i == 4) {
+                            if (StringUtils.isNotBlank(schemeJudgeObject.getCoefficient())) {
+                                builder.writeln(schemeJudgeObject.getCoefficient());
+                            }
                         }
                     }
-                    if (i == 3) {
-                        if (schemeJudgeObject.getPrice() != null) {
-                            builder.writeln(schemeJudgeObject.getPrice().toString());
-                        }
-                    }
-                    if (i == 4) {
-                        if (StringUtils.isNotBlank(schemeJudgeObject.getCoefficient())) {
-                            builder.writeln(schemeJudgeObject.getCoefficient());
-                        }
-                    }
+                    builder.endRow();
                 }
-                builder.endRow();
             }
             builder.endTable();
         }
@@ -3661,70 +3712,67 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getSelectionApplicationParameters() throws Exception {
-        StringBuilder builder = new StringBuilder(24);
+        Document doc = new Document();
+        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
+        String localPath = getLocalPath();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        //市场比较法
-        Set<SchemeJudgeObject> mdCompare = Sets.newHashSet();
-        //收益法
-        Set<SchemeJudgeObject> mdIncome = Sets.newHashSet();
-        //假设开发法
-        Set<SchemeJudgeObject> mdDevelopment = Sets.newHashSet();
-        //成本法
-        Set<SchemeJudgeObject> mdCost = Sets.newHashSet();
+
+        DataEvaluationMethod dataEvaluationMethodMdCompare = evaluationMethodService.getMethodAllList().stream().filter(dataEvaluation -> {
+            if (Objects.equal(CalculationMethodNameEnum.MdCompare.getName(), dataEvaluation.getName())) {
+                return true;
+            }
+            return false;
+        }).findFirst().get();
+        DataEvaluationMethod dataEvaluationMethodMdIncome = evaluationMethodService.getMethodAllList().stream().filter(dataEvaluation -> {
+            if (Objects.equal(CalculationMethodNameEnum.MdIncome.getName(), dataEvaluation.getName())) {
+                return true;
+            }
+            return false;
+        }).findFirst().get();
+        DataMethodFormula compareFormula = null;
+        DataMethodFormula mdIncomeFormula = null;
+
+        if (dataEvaluationMethodMdCompare != null) {
+            List<DataMethodFormula> dataMethodFormulaList = dataMethodFormulaService.getDataMethodFormulaList(dataEvaluationMethodMdCompare.getMethod());
+            if (CollectionUtils.isNotEmpty(dataMethodFormulaList)) {
+                compareFormula = dataMethodFormulaList.get(0);
+            }
+        }
+        if (dataEvaluationMethodMdIncome != null) {
+            List<DataMethodFormula> dataMethodFormulaList = dataMethodFormulaService.getDataMethodFormulaList(dataEvaluationMethodMdIncome.getMethod());
+            if (CollectionUtils.isNotEmpty(dataMethodFormulaList)) {
+                mdIncomeFormula = dataMethodFormulaList.get(0);
+            }
+        }
+
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                documentBuilder.writeln(getSchemeJudgeObjectShowName(schemeJudgeObject));
                 List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
                     for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
                         if (Objects.equal(schemeJudgeFunction.getName(), CalculationMethodNameEnum.MdCompare.getName())) {
-                            mdCompare.add(schemeJudgeObject);
+                            documentBuilder.writeln(CalculationMethodNameEnum.MdCompare.getName());
+                            if (compareFormula != null && StringUtils.isNotBlank(compareFormula.getFormula())) {
+                                documentBuilder.writeln(String.format("%s:%s", "公式", compareFormula.getFormula()));
+                            } else {
+                                documentBuilder.writeln(String.format("%s:%s", "公式", "无"));
+                            }
                         }
                         if (Objects.equal(schemeJudgeFunction.getName(), CalculationMethodNameEnum.MdIncome.getName())) {
-                            mdIncome.add(schemeJudgeObject);
-                        }
-                        if (Objects.equal(schemeJudgeFunction.getName(), CalculationMethodNameEnum.MdDevelopment.getName())) {
-                            mdDevelopment.add(schemeJudgeObject);
-                        }
-                        if (Objects.equal(schemeJudgeFunction.getName(), CalculationMethodNameEnum.MdCost.getName())) {
-                            mdCost.add(schemeJudgeObject);
+                            documentBuilder.writeln(CalculationMethodNameEnum.MdIncome.getName());
+                            if (mdIncomeFormula != null && StringUtils.isNotBlank(mdIncomeFormula.getFormula())) {
+                                documentBuilder.writeln(String.format("%s:%s", "公式", mdIncomeFormula.getFormula()));
+                            } else {
+                                documentBuilder.writeln(String.format("%s:%s", "公式", "无"));
+                            }
                         }
                     }
                 }
             }
         }
-        if (CollectionUtils.isNotEmpty(mdCompare)) {
-            DataEvaluationMethod dataEvaluationMethod = evaluationMethodService.getMethodAllList().stream().filter(dataEvaluation -> {
-                if (Objects.equal(CalculationMethodNameEnum.MdCompare.getName(), dataEvaluation.getName())) {
-                    return true;
-                }
-                return false;
-            }).findFirst().get();
-            if (dataEvaluationMethod != null) {
-                List<DataMethodFormula> dataMethodFormulaList = dataMethodFormulaService.getDataMethodFormulaList(dataEvaluationMethod.getMethod());
-                if (CollectionUtils.isNotEmpty(dataMethodFormulaList)) {
-                    builder.append(dataEvaluationMethod.getName()).append(":");
-                    mdCompare.stream().forEach(schemeJudgeObject -> builder.append(getSchemeJudgeObjectShowName(schemeJudgeObject)));
-                    builder.append(";").append("公式:").append(dataMethodFormulaList.get(0).getFormula()).append(". ");
-                }
-            }
-        }
-        if (CollectionUtils.isNotEmpty(mdIncome)) {
-            DataEvaluationMethod dataEvaluationMethod = evaluationMethodService.getMethodAllList().stream().filter(dataEvaluation -> {
-                if (Objects.equal(CalculationMethodNameEnum.MdIncome.getName(), dataEvaluation.getName())) {
-                    return true;
-                }
-                return false;
-            }).findFirst().get();
-            if (dataEvaluationMethod != null) {
-                List<DataMethodFormula> dataMethodFormulaList = dataMethodFormulaService.getDataMethodFormulaList(dataEvaluationMethod.getMethod());
-                if (CollectionUtils.isNotEmpty(dataMethodFormulaList)) {
-                    builder.append(dataEvaluationMethod.getName()).append(":");
-                    mdIncome.stream().forEach(schemeJudgeObject -> builder.append(getSchemeJudgeObjectShowName(schemeJudgeObject)));
-                    builder.append(";").append("公式:").append(dataMethodFormulaList.get(0).getFormula()).append(". ");
-                }
-            }
-        }
-        return builder.toString();
+        doc.save(localPath);
+        return localPath;
     }
 
     /**
@@ -3737,24 +3785,27 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
-        Map<SchemeJudgeObject, DeclareRealtyRealEstateCertVo> objectDeclareRealtyRealEstateCertVoMap = Maps.newHashMap();
+        Map<SchemeJudgeObject, DeclareRecord> objectDeclareRealtyRealEstateCertVoMap = Maps.newHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                if (schemeJudgeObject.getDeclareRecordId() != null && schemeJudgeObject.getDeclareRecordId().intValue() != 0) {
-                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-                    if (declareRecord != null) {
-                        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), declareRecord.getDataTableName())) {
-                            if (declareRecord.getDataTableId() != null) {
-                                DeclareRealtyRealEstateCert declareRealtyRealEstateCert = declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertById(declareRecord.getDataTableId());
-                                if (declareRealtyRealEstateCert != null) {
-                                    try {
-                                        objectDeclareRealtyRealEstateCertVoMap.put(schemeJudgeObject, declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertVo(declareRealtyRealEstateCert));
-                                    } catch (Exception e) {
-
-                                    }
+                if (schemeJudgeObject.getBisMerge()) {
+                    List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getChildrenJudgeObject(schemeJudgeObject.getId());
+                    if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+                        for (SchemeJudgeObject judgeObject : judgeObjectList) {
+                            if (judgeObject.getDeclareRecordId() != null && schemeJudgeObject.getDeclareRecordId().intValue() != 0) {
+                                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
+                                if (declareRecord != null) {
+                                    objectDeclareRealtyRealEstateCertVoMap.put(judgeObject, declareRecord);
                                 }
                             }
+                        }
+                    }
+                } else {
+                    if (schemeJudgeObject.getDeclareRecordId() != null && schemeJudgeObject.getDeclareRecordId().intValue() != 0) {
+                        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+                        if (declareRecord != null) {
+                            objectDeclareRealtyRealEstateCertVoMap.put(schemeJudgeObject, declareRecord);
                         }
                     }
                 }
@@ -3766,7 +3817,7 @@ public class GenerateBaseDataService {
             for (int j = 0; j < colMax; j++) {
                 builder.insertCell();
                 if (j == 0) builder.writeln("估价对象");
-                if (j == 1) builder.writeln("不动产权证号");
+                if (j == 1) builder.writeln("产权证号");
                 if (j == 2) builder.writeln("权利人");
                 if (j == 3) builder.writeln("共有情况");
                 if (j == 4) builder.writeln("坐落");
@@ -3778,58 +3829,54 @@ public class GenerateBaseDataService {
                 if (j == 10) builder.writeln("建筑面积（㎡）");
             }
             builder.endRow();
-            for (Map.Entry<SchemeJudgeObject, DeclareRealtyRealEstateCertVo> realEstateCertVoEntry : objectDeclareRealtyRealEstateCertVoMap.entrySet()) {
+            for (Map.Entry<SchemeJudgeObject, DeclareRecord> realEstateCertVoEntry : objectDeclareRealtyRealEstateCertVoMap.entrySet()) {
                 for (int j = 0; j < colMax; j++) {
                     builder.insertCell();
                     if (j == 0) {
-                        if (StringUtils.isNotBlank(realEstateCertVoEntry.getKey().getNumber())) {
-                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getKey().getNumber()) ? realEstateCertVoEntry.getKey().getNumber() : ""));
-                        }
+                        builder.writeln(getSchemeJudgeObjectShowName(realEstateCertVoEntry.getKey()));
                     }
                     if (j == 1) {
-                        if (StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getCertName())) {
-                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getCertName()) ? realEstateCertVoEntry.getValue().getCertName() : ""));
+                        if (StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getName())) {
+                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getName()) ? realEstateCertVoEntry.getValue().getName() : errorStr));
                         }
                     }
                     if (j == 2) {
                         if (StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getOwnership())) {
-                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getOwnership()) ? realEstateCertVoEntry.getValue().getOwnership() : ""));
+                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getOwnership()) ? realEstateCertVoEntry.getValue().getOwnership() : errorStr));
                         }
                     }
                     if (j == 3) {
                         if (StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getPublicSituation())) {
-                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getPublicSituation()) ? realEstateCertVoEntry.getValue().getPublicSituation() : ""));
+                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getPublicSituation()) ? realEstateCertVoEntry.getValue().getPublicSituation() : errorStr));
                         }
                     }
                     if (j == 4) {
-                        if (StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getBeLocated())) {
-                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getBeLocated()) ? realEstateCertVoEntry.getValue().getBeLocated() : ""));
+                        if (StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getSeat())) {
+                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getSeat()) ? realEstateCertVoEntry.getValue().getSeat() : errorStr));
                         }
                     }
                     if (j == 5) {
-                        if (StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getPurpose())) {
-                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getPurpose()) ? baseDataDicService.getNameById(realEstateCertVoEntry.getValue().getPurpose()) : ""));
+                        if (StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getCertUse())) {
+                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getCertUse()) ? baseDataDicService.getNameById(realEstateCertVoEntry.getValue().getCertUse()) : errorStr));
                         }
                     }
                     if (j == 6) {
-                        if (realEstateCertVoEntry.getValue().getUseEndDate() != null) {
-                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getUseEndDate().toString()) ? DateUtils.format(realEstateCertVoEntry.getValue().getUseEndDate(), DateUtils.DATE_CHINESE_PATTERN) : ""));
+                        if (realEstateCertVoEntry.getValue().getLandUseEndDate() != null) {
+                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getLandUseEndDate().toString()) ? DateUtils.format(realEstateCertVoEntry.getValue().getLandUseEndDate(), DateUtils.DATE_CHINESE_PATTERN) : errorStr));
                         }
                     }
-                    if (j == 7) {
-                        if (realEstateCertVoEntry.getValue().getFloorCount() != null) {
-                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getFloorCount().toString()) ? realEstateCertVoEntry.getValue().getFloorCount().toString() : ""));
+                    if (j == 7) builder.writeln(String.format("%s", "无"));
+                    if (j == 8) {
+                        if (StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getFloor())) {
+                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getFloor()) ? realEstateCertVoEntry.getValue().getFloor() : errorStr));
                         }
                     }
-                    if (j == 8) builder.writeln(String.format("%s", "无"));
                     if (j == 9) {
-                        if (realEstateCertVoEntry.getValue().getApportionmentArea() != null) {
-                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getApportionmentArea().toString()) ? realEstateCertVoEntry.getValue().getApportionmentArea().toString() : ""));
-                        }
+                        builder.writeln(errorStr);
                     }
                     if (j == 10) {
-                        if (realEstateCertVoEntry.getValue().getFloorArea() != null) {
-                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getFloorArea().toString()) ? realEstateCertVoEntry.getValue().getFloorArea().toString() : ""));
+                        if (realEstateCertVoEntry.getValue().getPracticalArea() != null) {
+                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getPracticalArea().toString()) ? realEstateCertVoEntry.getValue().getPracticalArea().toString() : errorStr));
                         }
                     }
                 }
@@ -4593,6 +4640,7 @@ public class GenerateBaseDataService {
                     }
                     return false;
                 }).collect(Collectors.toList());
+        builder.writeln("估价对象区位状况表");
         if (CollectionUtils.isNotEmpty(projectPhases)) {
             for (ProjectPhase projectPhaseScene : projectPhases) {
                 if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -4958,6 +5006,7 @@ public class GenerateBaseDataService {
                                                     break;
                                             }
                                         }
+                                        builder.writeln();
                                     } catch (Exception e1) {
                                         //允许exception
                                     }
@@ -4994,6 +5043,7 @@ public class GenerateBaseDataService {
                     }
                     return false;
                 }).collect(Collectors.toList());
+        builder.writeln("估价土地实体状况表");
         if (CollectionUtils.isNotEmpty(projectPhases)) {
             for (ProjectPhase projectPhaseScene : projectPhases) {
                 if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -5101,6 +5151,7 @@ public class GenerateBaseDataService {
                                                     break;
                                             }
                                         }
+                                        builder.writeln();
                                     } catch (Exception e) {
                                     }
                                 }
@@ -5225,7 +5276,7 @@ public class GenerateBaseDataService {
                                             case 5:
                                                 String storeyHeight = "";
                                                 if (generateBaseExamineService.getBasicBuilding().getId() != null && generateBaseExamineService.getBasicBuilding() != null) {
-                                                    storeyHeight = String.format("%s:%s", getSchemeJudgeObjectShowName(schemeJudgeObject), generateBaseExamineService.getBasicBuilding().getFloorHeight().toString());
+                                                    storeyHeight = String.format("%s", generateBaseExamineService.getBasicBuilding().getFloorHeight().toString());
                                                 }
                                                 if (StringUtils.isNotBlank(storeyHeight)) {
                                                     builder.writeln(String.format("%d%s%s", (j + 1), "层高:", storeyHeight));
@@ -5240,7 +5291,6 @@ public class GenerateBaseDataService {
                                                     BaseDataDic practicalUseDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_HOUSE_PRACTICAL_USE_HOUSE);
                                                     if (practicalUseDic != null) {
                                                         String huxing = org.apache.commons.lang.StringUtils.isBlank(generateBaseExamineService.getBasicHouse().getNewHuxingName()) ? generateBaseExamineService.getBasicHouse().getHuxingName() : generateBaseExamineService.getBasicHouse().getNewHuxingName();
-                                                        stringBuilder.append(String.format("%s:", getSchemeJudgeObjectShowName(schemeJudgeObject)));
                                                         if (StringUtils.isNotBlank(huxing)) {
                                                             stringBuilder.append(huxing).append("；");
                                                         }
@@ -5347,7 +5397,6 @@ public class GenerateBaseDataService {
                                                             stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(elevator.getRunningSpeed()) ? "" : String.format("运行速度:%s；", elevator.getRunningSpeed()));
                                                         }
                                                     }
-                                                    stringBuilder.append("\r\n");
                                                     List<BasicHouseCorollaryEquipment> corollaryEquipmentList = generateBaseExamineService.getBasicHouseCorollaryEquipmentList();
                                                     if (CollectionUtils.isNotEmpty(corollaryEquipmentList)) {
                                                         for (BasicHouseCorollaryEquipment equipment : corollaryEquipmentList) {
@@ -5377,6 +5426,7 @@ public class GenerateBaseDataService {
                                                 break;
                                         }
                                     }
+                                    builder.writeln();
                                 }
                             }
                         }
@@ -6068,17 +6118,18 @@ public class GenerateBaseDataService {
                 });
             }
         }
-        StringBuilder stringBuilder = new StringBuilder(24);
+        Set<String> stringSet = Sets.newHashSet();
         if (CollectionUtils.isNotEmpty(declareRealtyHouseCertList)) {
-            stringBuilder.append(DeclareTypeEnum.HOUSE.getKey());
+            stringSet.add(String.format("《%s》",DeclareTypeEnum.HOUSE.getKey()));
         }
         if (CollectionUtils.isNotEmpty(declareRealtyLandCertList)) {
-            stringBuilder.append(",").append(DeclareTypeEnum.LAND.getKey());
+            stringSet.add(String.format("《%s》",DeclareTypeEnum.LAND.getKey()));
         }
         if (CollectionUtils.isNotEmpty(declareRealtyRealEstateCertList)) {
-            stringBuilder.append(",").append(DeclareTypeEnum.RealEstate.getKey());
+            stringSet.add(String.format("《%s》",DeclareTypeEnum.RealEstate.getKey()));
         }
-        return stringBuilder.toString();
+        String s = toSetString2(stringSet);
+        return s;
     }
 
 
