@@ -83,6 +83,35 @@
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
+                                        <label class="col-sm-2 control-label">省<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <select id="province" name="province"
+                                                    class="form-control search-select select2"
+                                                    required="required">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">市<span
+                                                class="symbol required"></span></label>
+                                        <div class="col-sm-2">
+                                            <select id="city" name="city" class="form-control search-select select2"
+                                                    required="required">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">县</label>
+                                        <div class="col-sm-2">
+                                            <select id="district" name="district"
+                                                    class="form-control search-select select2">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             名称<span class="symbol required"></span>
                                         </label>
@@ -189,6 +218,9 @@
     //加载 评估依据 数据列表
     function loadReportAnalysisList() {
         var cols = [];
+        cols.push({field: 'provinceName', title: '省'});
+        cols.push({field: 'cityName', title: '市'});
+        cols.push({field: 'districtName', title: '县'});
         cols.push({field: 'name', title: '名称'});
         cols.push({field: 'reportAnalysisTypeName', title: '类别'});
         cols.push({field: 'entrustmentPurposeName', title: '委托目的'});
@@ -196,7 +228,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="editReportAnalysis(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="editReportAnalysis(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="removeReportAnalysis(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
@@ -247,6 +279,14 @@
     //对新增 评估依据 数据处理
     function addReportAnalysis() {
         $("#frm").clearAll();
+        AssessCommon.initAreaInfo({
+            provinceTarget: $("#province"),
+            cityTarget: $("#city"),
+            districtTarget: $("#district"),
+            provinceValue: '',
+            cityValue: '',
+            districtValue: ''
+        })
         extractTemplateField();
     }
     //新增 评估依据 数据
@@ -276,12 +316,33 @@
         }
     }
     //评估依据 修改
-    function editReportAnalysis(index) {
-        var row = $("#tb_List").bootstrapTable('getData')[index];
-        $("#frm").clearAll().initForm(row);
-        AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='entrustmentPurpose']"), row.entrustmentPurpose.split(','));
-        extractTemplateField();
-        $('#divBox').modal();
+    function editReportAnalysis(id) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/reportAnalysis/get",
+            type: "get",
+            dataType: "json",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    $("#frm").clearAll();
+                    $("#frm").clearAll().initForm(result.data);
+                    AssessCommon.initAreaInfo({
+                        provinceTarget: $("#province"),
+                        cityTarget: $("#city"),
+                        districtTarget: $("#district"),
+                        provinceValue: result.data.province,
+                        cityValue: result.data.city,
+                        districtValue: result.data.district
+                    })
+                    extractTemplateField();
+                    AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='entrustmentPurpose']"), result.data.entrustmentPurpose.split(','));
+                    $('#divBox').modal();
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
     }
 
 

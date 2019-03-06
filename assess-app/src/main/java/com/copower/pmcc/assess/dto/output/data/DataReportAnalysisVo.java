@@ -5,6 +5,9 @@ import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis;
 public class DataReportAnalysisVo extends DataReportAnalysis {
     private String reportAnalysisTypeName;
     private String entrustmentPurposeName;
+    private String provinceName;
+    private String districtName;
+    private String cityName;
 
     public String getReportAnalysisTypeName() {
         return reportAnalysisTypeName;
@@ -20,5 +23,29 @@ public class DataReportAnalysisVo extends DataReportAnalysis {
 
     public void setEntrustmentPurposeName(String entrustmentPurposeName) {
         this.entrustmentPurposeName = entrustmentPurposeName;
+    }
+
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
+
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 }

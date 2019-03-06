@@ -3,6 +3,9 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataReportAnalysisMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="district" property="district" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="report_analysis_type" property="reportAnalysisType" jdbcType="INTEGER" />
     <result column="template" property="template" jdbcType="VARCHAR" />
@@ -71,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, report_analysis_type, template, entrustment_purpose, bis_modifiable, creator, 
-    gmt_created, gmt_modified
+    id, province, city, district, name, report_analysis_type, template, entrustment_purpose, 
+    bis_modifiable, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysisExample" >
     select
@@ -108,10 +111,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_report_analysis (name, report_analysis_type, template, 
+    insert into tb_data_report_analysis (province, city, district, 
+      name, report_analysis_type, template, 
       entrustment_purpose, bis_modifiable, creator, 
       gmt_created, gmt_modified)
-    values (#{name,jdbcType=VARCHAR}, #{reportAnalysisType,jdbcType=INTEGER}, #{template,jdbcType=VARCHAR}, 
+    values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{reportAnalysisType,jdbcType=INTEGER}, #{template,jdbcType=VARCHAR}, 
       #{entrustmentPurpose,jdbcType=VARCHAR}, #{bisModifiable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -121,6 +126,15 @@
     </selectKey>
     insert into tb_data_report_analysis
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="district != null" >
+        district,
+      </if>
       <if test="name != null" >
         name,
       </if>
@@ -147,6 +161,15 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=VARCHAR},
+      </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
@@ -185,6 +208,15 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.district != null" >
+        district = #{record.district,jdbcType=VARCHAR},
+      </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
@@ -217,6 +249,9 @@
   <update id="updateByExample" parameterType="map" >
     update tb_data_report_analysis
     set id = #{record.id,jdbcType=INTEGER},
+      province = #{record.province,jdbcType=VARCHAR},
+      city = #{record.city,jdbcType=VARCHAR},
+      district = #{record.district,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       report_analysis_type = #{record.reportAnalysisType,jdbcType=INTEGER},
       template = #{record.template,jdbcType=VARCHAR},
@@ -232,6 +267,15 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis" >
     update tb_data_report_analysis
     <set >
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        district = #{district,jdbcType=VARCHAR},
+      </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
@@ -261,7 +305,10 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis" >
     update tb_data_report_analysis
-    set name = #{name,jdbcType=VARCHAR},
+    set province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      district = #{district,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
       report_analysis_type = #{reportAnalysisType,jdbcType=INTEGER},
       template = #{template,jdbcType=VARCHAR},
       entrustment_purpose = #{entrustmentPurpose,jdbcType=VARCHAR},

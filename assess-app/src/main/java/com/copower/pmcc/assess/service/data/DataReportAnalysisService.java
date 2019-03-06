@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.dao.data.DataReportAnalysisDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis;
 import com.copower.pmcc.assess.dto.output.data.DataReportAnalysisVo;
+import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -33,6 +34,8 @@ public class DataReportAnalysisService {
     private DataReportAnalysisDao dataReportAnalysisDao;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private ErpAreaService erpAreaService;
 
     /**
      * 保存数据
@@ -105,6 +108,15 @@ public class DataReportAnalysisService {
         List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         if (StringUtils.isNotBlank(reportAnalysis.getEntrustmentPurpose())) {
             vo.setEntrustmentPurposeName(baseDataDicService.getDataDicName(purposeDicList, reportAnalysis.getEntrustmentPurpose()));
+        }
+        if (org.apache.commons.lang.StringUtils.isNotBlank(reportAnalysis.getProvince())) {
+            vo.setProvinceName(erpAreaService.getSysAreaName(reportAnalysis.getProvince()));//省
+        }
+        if (org.apache.commons.lang.StringUtils.isNotBlank(reportAnalysis.getCity())) {
+            vo.setCityName(erpAreaService.getSysAreaName(reportAnalysis.getCity()));//市或者县
+        }
+        if (org.apache.commons.lang.StringUtils.isNotBlank(reportAnalysis.getDistrict())) {
+            vo.setDistrictName(erpAreaService.getSysAreaName(reportAnalysis.getDistrict()));//县
         }
         return vo;
     }
