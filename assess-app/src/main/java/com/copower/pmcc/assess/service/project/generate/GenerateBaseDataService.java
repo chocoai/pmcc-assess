@@ -30,6 +30,7 @@ import com.copower.pmcc.assess.service.method.MdMarketCompareService;
 import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.SchemeReportFileService;
 import com.copower.pmcc.assess.service.project.compile.CompileReportService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
@@ -102,6 +103,7 @@ public class GenerateBaseDataService {
     private DataHisRightInfoPublicityService dataHisRightInfoPublicityService;
     private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
     private DataMethodFormulaService dataMethodFormulaService;
+    private GenerateCommonMethod generateCommonMethod;
 
     /**
      * 构造器必须传入的参数
@@ -273,96 +275,6 @@ public class GenerateBaseDataService {
         return s;
     }
 
-    /**
-     * 获取重复的集合
-     *
-     * @param declareRecordMapp
-     * @return
-     */
-    private List<SchemeJudgeObject> unionSchemeJudgeObject(Map<SchemeJudgeObject, DeclareRecord> declareRecordMapp) {
-        Set<SchemeJudgeObject> schemeJudgeObjectSet = Sets.newHashSet();
-        int num = 0;
-        if (!declareRecordMapp.isEmpty()) {
-            for (Map.Entry<SchemeJudgeObject, DeclareRecord> entry : declareRecordMapp.entrySet()) {
-                for (Map.Entry<SchemeJudgeObject, DeclareRecord> recordEntry : declareRecordMapp.entrySet()) {
-                    boolean floor = Objects.equal(recordEntry.getValue().getFloor(), entry.getValue().getFloor());
-                    boolean unit = Objects.equal(recordEntry.getValue().getFloor(), entry.getValue().getUnit());
-                    boolean buildingNumber = Objects.equal(recordEntry.getValue().getBuildingNumber(), entry.getValue().getBuildingNumber());
-                    boolean attachedNumber = Objects.equal(recordEntry.getValue().getAttachedNumber(), entry.getValue().getAttachedNumber());
-                    boolean streetNumber = Objects.equal(recordEntry.getValue().getStreetNumber(), entry.getValue().getStreetNumber());
-                    if (floor && unit && buildingNumber && attachedNumber && streetNumber) {
-                        if (!Objects.equal(recordEntry.getValue().getId(), entry.getValue().getId())) {
-                            if (num == 0) {
-                                schemeJudgeObjectSet.add(entry.getKey());
-                                num = 1;
-                            }
-                            schemeJudgeObjectSet.add(recordEntry.getKey());
-                        }
-                    }
-                }
-            }
-        }
-        return Lists.newArrayList(schemeJudgeObjectSet);
-    }
-
-    /**
-     * 数字转换
-     *
-     * @param roomNumber
-     * @return
-     */
-    private String convertNumber(List<Integer> roomNumber) {
-        if (CollectionUtils.isNotEmpty(roomNumber)) {
-            Collections.sort(roomNumber);
-            Integer[] ints = new Integer[roomNumber.size()];
-            for (int i = 0; i < roomNumber.size(); i++) {
-                ints[i] = roomNumber.get(i);
-            }
-            String text = this.convert(ints, 0);
-            text = text.substring(0, text.length() - 1);
-            return text;
-        }
-        return " ";
-    }
-
-    /**
-     * 获取连续的数字组合
-     *
-     * @param ints
-     * @param index
-     * @return
-     */
-    private String convert(Integer[] ints, int index) {
-        int end = index;
-        //结束条件，遍历完数组
-        if (ints.length == index) {
-            return "";
-        } else {
-            for (int i = index; i < ints.length; i++) {
-                if (i < ints.length - 1) {
-                    if (ints[i] + 1 == ints[i + 1]) {
-                        end = i;
-                    } else {
-                        if (i > index)
-                            end = end + 1;
-                        break;
-                    }
-                } else {
-                    if (end == ints.length - 2) {
-                        end = ints.length - 1;
-                        break;
-                    }
-                }
-            }
-            //相等说明不连续
-            if (index == end)
-                return ints[index] + "," + convert(ints, end + 1);
-                //连续
-            else
-                return ints[index] + "-" + ints[end] + "," + convert(ints, end + 1);
-
-        }
-    }
 
 
     /**
@@ -385,102 +297,77 @@ public class GenerateBaseDataService {
                     }
                     return false;
                 }).collect(Collectors.toList());
-        List<SchemeJudgeObject> schemeJudgeObjectList = Lists.newArrayList();
-        List<SchemeJudgeObject> schemeJudgeObjectsA = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectsA)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectsA) {
-                if (schemeJudgeObject.getBisMerge()) {
-                    List<SchemeJudgeObject> schemeJudgeObjects = schemeJudgeObjectService.getChildrenJudgeObject(schemeJudgeObject.getId());
-                    if (CollectionUtils.isNotEmpty(schemeJudgeObjects)) {
-                        schemeJudgeObjectList.addAll(schemeJudgeObjects);
-                    }
-                } else {
-                    schemeJudgeObjectList.add(schemeJudgeObject);
-                }
-            }
-        }
-        schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(schemeJudgeObject -> schemeJudgeObject.getDeclareRecordId() != null).collect(Collectors.toList());
-        Map<SchemeJudgeObject, DeclareRecord> declareRecordMap = Maps.newHashMap();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList());
+        StringBuilder builder = new StringBuilder(16);
+        Set<String> streetNumber = Sets.newHashSet();
+        Set<String> attachedNumber = Sets.newHashSet();
+        Set<String> buildingNumber = Sets.newHashSet();
+        Set<String> unit = Sets.newHashSet();
+        Set<String> floor = Sets.newHashSet();
+        Set<String> estateName = Sets.newHashSet();
+        List<SchemeJudgeObject> schemeJudgeObjectList1 = generateCommonMethod.unionSchemeJudgeObject(schemeJudgeObjectList);
+        //合并描述情况
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList1)) {
+            List<Integer> roomNumber = Lists.newArrayList();
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList1) {
                 DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
                 if (declareRecord != null) {
-                    declareRecordMap.put(schemeJudgeObject, declareRecord);
-                }
-            }
-        }
-        if (!declareRecordMap.isEmpty()) {
-            StringBuilder builder = new StringBuilder(16);
-            Set<String> streetNumber = Sets.newHashSet();
-            Set<String> attachedNumber = Sets.newHashSet();
-            Set<String> buildingNumber = Sets.newHashSet();
-            Set<String> unit = Sets.newHashSet();
-            Set<String> floor = Sets.newHashSet();
-            Set<String> estateName = Sets.newHashSet();
-            List<SchemeJudgeObject> schemeJudgeObjectList1 = unionSchemeJudgeObject(declareRecordMap);
-            //合并描述情况
-            if (CollectionUtils.isNotEmpty(schemeJudgeObjectList1)) {
-                List<Integer> roomNumber = Lists.newArrayList();
-                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList1) {
-                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-                    if (declareRecord != null) {
-                        if (NumberUtils.isNumber(declareRecord.getRoomNumber())) {
-                            roomNumber.add(NumberUtils.toInt(declareRecord.getRoomNumber()));
-                        }
-                        streetNumber.add(declareRecord.getStreetNumber());
-                        attachedNumber.add(declareRecord.getAttachedNumber());
-                        buildingNumber.add(declareRecord.getBuildingNumber());
-                        unit.add(declareRecord.getUnit());
-                        floor.add(declareRecord.getFloor());
-                        ProjectPlanDetails query = new ProjectPlanDetails();
-                        query.setProjectId(projectId);
-                        query.setProjectPhaseId(projectPhases.get(0).getId());
-                        query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                            GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetailsList.get(0).getId());
-                            if (generateBaseExamineService.getEstate().getId() != null) {
-                                estateName.add(generateBaseExamineService.getEstate().getName());
-                            }
-                        }
+                    if (NumberUtils.isNumber(declareRecord.getRoomNumber())) {
+                        roomNumber.add(NumberUtils.toInt(declareRecord.getRoomNumber()));
                     }
-                }
-                builder.append(toSetString2(streetNumber)).append("号");
-                builder.append(toSetString2(estateName));
-                builder.append("附").append(toSetString2(attachedNumber)).append("号")
-                        .append(toSetString2(buildingNumber)).append("栋")
-                        .append(toSetString2(unit)).append("单元")
-                        .append(toSetString2(floor)).append("层");
-                builder.append(convertNumber(roomNumber)).append("号");
-                stringSet.add(builder.toString());
-                builder.delete(0, builder.toString().length());
-            }
-            Collection<SchemeJudgeObject> schemeJudgeObjectList2 = CollectionUtils.subtract(schemeJudgeObjectList, schemeJudgeObjectList1);
-            //单独描述情况
-            if (CollectionUtils.isNotEmpty(schemeJudgeObjectList2)) {
-                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList2) {
-                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-                    builder.append(declareRecord.getStreetNumber()).append("号");
+                    streetNumber.add(declareRecord.getStreetNumber());
+                    attachedNumber.add(declareRecord.getAttachedNumber());
+                    buildingNumber.add(declareRecord.getBuildingNumber());
+                    unit.add(declareRecord.getUnit());
+                    floor.add(declareRecord.getFloor());
                     ProjectPlanDetails query = new ProjectPlanDetails();
                     query.setProjectId(projectId);
-                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                     query.setProjectPhaseId(projectPhases.get(0).getId());
+                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                     List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
                     if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
                         GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetailsList.get(0).getId());
                         if (generateBaseExamineService.getEstate().getId() != null) {
-                            builder.append(generateBaseExamineService.getEstate().getName());
+                            estateName.add(generateBaseExamineService.getEstate().getName());
                         }
                     }
-                    builder.append("附").append(declareRecord.getAttachedNumber()).append("号")
-                            .append(declareRecord.getBuildingNumber()).append("栋")
-                            .append(declareRecord.getUnit()).append("单元")
-                            .append(declareRecord.getFloor()).append("层")
-                            .append(declareRecord.getRoomNumber()).append("号");
-                    if (StringUtils.isNotBlank(builder.toString())) {
-                        stringSet.add(builder.toString());
-                        builder.delete(0, builder.toString().length());
+                }
+            }
+            builder.append(toSetString2(streetNumber)).append("号");
+            builder.append(toSetString2(estateName));
+            builder.append("附").append(toSetString2(attachedNumber)).append("号")
+                    .append(toSetString2(buildingNumber)).append("栋")
+                    .append(toSetString2(unit)).append("单元")
+                    .append(toSetString2(floor)).append("层");
+            builder.append(generateCommonMethod.convertNumber(roomNumber)).append("号");
+            stringSet.add(builder.toString());
+            builder.delete(0, builder.toString().length());
+        }
+        Collection<SchemeJudgeObject> schemeJudgeObjectList2 = CollectionUtils.subtract(schemeJudgeObjectList, schemeJudgeObjectList1);
+        //单独描述情况
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList2)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList2) {
+                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+                builder.append(declareRecord.getStreetNumber()).append("号");
+                ProjectPlanDetails query = new ProjectPlanDetails();
+                query.setProjectId(projectId);
+                query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+                query.setProjectPhaseId(projectPhases.get(0).getId());
+                List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
+                if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+                    GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetailsList.get(0).getId());
+                    if (generateBaseExamineService.getEstate().getId() != null) {
+                        builder.append(generateBaseExamineService.getEstate().getName());
                     }
+                }
+                builder.append("附").append(declareRecord.getAttachedNumber()).append("号")
+                        .append(declareRecord.getBuildingNumber()).append("栋")
+                        .append(declareRecord.getUnit()).append("单元")
+                        .append(declareRecord.getFloor()).append("层")
+                        .append(declareRecord.getRoomNumber()).append("号");
+                if (StringUtils.isNotBlank(builder.toString())) {
+                    stringSet.add(builder.toString());
+                    builder.delete(0, builder.toString().length());
                 }
             }
         }
@@ -1309,114 +1196,89 @@ public class GenerateBaseDataService {
                     }
                     return false;
                 }).collect(Collectors.toList());
-        List<SchemeJudgeObject> schemeJudgeObjectList = Lists.newArrayList();
-        List<SchemeJudgeObject> schemeJudgeObjectsA = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectsA)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectsA) {
-                if (schemeJudgeObject.getBisMerge()) {
-                    List<SchemeJudgeObject> schemeJudgeObjects = schemeJudgeObjectService.getChildrenJudgeObject(schemeJudgeObject.getId());
-                    if (CollectionUtils.isNotEmpty(schemeJudgeObjects)) {
-                        schemeJudgeObjectList.addAll(schemeJudgeObjects);
-                    }
-                } else {
-                    schemeJudgeObjectList.add(schemeJudgeObject);
-                }
-            }
-        }
-        schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(schemeJudgeObject -> schemeJudgeObject.getDeclareRecordId() != null).collect(Collectors.toList());
-        Map<SchemeJudgeObject, DeclareRecord> declareRecordMap = Maps.newHashMap();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList());
+        StringBuilder builder = new StringBuilder(16);
+        Set<String> streetNumber = Sets.newHashSet();
+        Set<String> attachedNumber = Sets.newHashSet();
+        Set<String> buildingNumber = Sets.newHashSet();
+        Set<String> unit = Sets.newHashSet();
+        Set<String> floor = Sets.newHashSet();
+        Set<String> estateName = Sets.newHashSet();
+        List<SchemeJudgeObject> schemeJudgeObjectList1 = generateCommonMethod.unionSchemeJudgeObject(schemeJudgeObjectList);
+        //合并描述情况
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList1)) {
+            List<Integer> roomNumber = Lists.newArrayList();
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList1) {
                 DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
                 if (declareRecord != null) {
-                    declareRecordMap.put(schemeJudgeObject, declareRecord);
-                }
-            }
-        }
-        if (!declareRecordMap.isEmpty()) {
-            StringBuilder builder = new StringBuilder(16);
-            Set<String> streetNumber = Sets.newHashSet();
-            Set<String> attachedNumber = Sets.newHashSet();
-            Set<String> buildingNumber = Sets.newHashSet();
-            Set<String> unit = Sets.newHashSet();
-            Set<String> floor = Sets.newHashSet();
-            Set<String> estateName = Sets.newHashSet();
-            List<SchemeJudgeObject> schemeJudgeObjectList1 = unionSchemeJudgeObject(declareRecordMap);
-            //合并描述情况
-            if (CollectionUtils.isNotEmpty(schemeJudgeObjectList1)) {
-                List<Integer> roomNumber = Lists.newArrayList();
-                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList1) {
-                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-                    if (declareRecord != null) {
-                        if (NumberUtils.isNumber(declareRecord.getRoomNumber())) {
-                            roomNumber.add(NumberUtils.toInt(declareRecord.getRoomNumber()));
-                        }
-                        streetNumber.add(declareRecord.getStreetNumber());
-                        attachedNumber.add(declareRecord.getAttachedNumber());
-                        buildingNumber.add(declareRecord.getBuildingNumber());
-                        unit.add(declareRecord.getUnit());
-                        floor.add(declareRecord.getFloor());
-                        ProjectPlanDetails query = new ProjectPlanDetails();
-                        query.setProjectId(projectId);
-                        query.setProjectPhaseId(projectPhases.get(0).getId());
-                        query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                            GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetailsList.get(0).getId());
-                            if (generateBaseExamineService.getEstate().getId() != null) {
-                                estateName.add(generateBaseExamineService.getEstate().getName());
-                            }
-                        }
+                    if (NumberUtils.isNumber(declareRecord.getRoomNumber())) {
+                        roomNumber.add(NumberUtils.toInt(declareRecord.getRoomNumber()));
                     }
-                }
-                builder.append(toSetString2(streetNumber)).append("号");
-                builder.append(toSetString2(estateName));
-                builder.append("附").append(toSetString2(attachedNumber)).append("号")
-                        .append(toSetString2(buildingNumber)).append("栋")
-                        .append(toSetString2(unit)).append("单元")
-                        .append(toSetString2(floor)).append("层");
-                builder.append(convertNumber(roomNumber)).append("号");
-                if (schemeJudgeObjectList1.get(0).getSetUse() != null) {
-                    DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObjectList1.get(0).getSetUse());
-                    if (dataSetUseField != null) {
-                        builder.append(dataSetUseField.getName()).append(";");
-                    }
-                }
-                stringSet.add(builder.toString());
-                builder.delete(0, builder.toString().length());
-            }
-            Collection<SchemeJudgeObject> schemeJudgeObjectList2 = CollectionUtils.subtract(schemeJudgeObjectList, schemeJudgeObjectList1);
-            //单独描述情况
-            if (CollectionUtils.isNotEmpty(schemeJudgeObjectList2)) {
-                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList2) {
-                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-                    builder.append(declareRecord.getStreetNumber()).append("号");
+                    streetNumber.add(declareRecord.getStreetNumber());
+                    attachedNumber.add(declareRecord.getAttachedNumber());
+                    buildingNumber.add(declareRecord.getBuildingNumber());
+                    unit.add(declareRecord.getUnit());
+                    floor.add(declareRecord.getFloor());
                     ProjectPlanDetails query = new ProjectPlanDetails();
                     query.setProjectId(projectId);
-                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                     query.setProjectPhaseId(projectPhases.get(0).getId());
+                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                     List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
                     if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
                         GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetailsList.get(0).getId());
                         if (generateBaseExamineService.getEstate().getId() != null) {
-                            builder.append(generateBaseExamineService.getEstate().getName());
+                            estateName.add(generateBaseExamineService.getEstate().getName());
                         }
                     }
-                    builder.append("附").append(declareRecord.getAttachedNumber()).append("号")
-                            .append(declareRecord.getBuildingNumber()).append("栋")
-                            .append(declareRecord.getUnit()).append("单元")
-                            .append(declareRecord.getFloor()).append("层")
-                            .append(declareRecord.getRoomNumber()).append("号");
-                    if (schemeJudgeObject.getSetUse() != null) {
-                        DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
-                        if (dataSetUseField != null) {
-                            builder.append(dataSetUseField.getName()).append(";");
-                        }
+                }
+            }
+            builder.append(toSetString2(streetNumber)).append("号");
+            builder.append(toSetString2(estateName));
+            builder.append("附").append(toSetString2(attachedNumber)).append("号")
+                    .append(toSetString2(buildingNumber)).append("栋")
+                    .append(toSetString2(unit)).append("单元")
+                    .append(toSetString2(floor)).append("层");
+            builder.append(generateCommonMethod.convertNumber(roomNumber)).append("号");
+            if (schemeJudgeObjectList1.get(0).getSetUse() != null) {
+                DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObjectList1.get(0).getSetUse());
+                if (dataSetUseField != null) {
+                    builder.append(dataSetUseField.getName()).append(";");
+                }
+            }
+            stringSet.add(builder.toString());
+            builder.delete(0, builder.toString().length());
+        }
+        Collection<SchemeJudgeObject> schemeJudgeObjectList2 = CollectionUtils.subtract(schemeJudgeObjectList, schemeJudgeObjectList1);
+        //单独描述情况
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList2)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList2) {
+                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+                builder.append(declareRecord.getStreetNumber()).append("号");
+                ProjectPlanDetails query = new ProjectPlanDetails();
+                query.setProjectId(projectId);
+                query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+                query.setProjectPhaseId(projectPhases.get(0).getId());
+                List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
+                if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+                    GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetailsList.get(0).getId());
+                    if (generateBaseExamineService.getEstate().getId() != null) {
+                        builder.append(generateBaseExamineService.getEstate().getName());
                     }
-                    if (StringUtils.isNotBlank(builder.toString())) {
-                        stringSet.add(builder.toString());
-                        builder.delete(0, builder.toString().length());
+                }
+                builder.append("附").append(declareRecord.getAttachedNumber()).append("号")
+                        .append(declareRecord.getBuildingNumber()).append("栋")
+                        .append(declareRecord.getUnit()).append("单元")
+                        .append(declareRecord.getFloor()).append("层")
+                        .append(declareRecord.getRoomNumber()).append("号");
+                if (schemeJudgeObject.getSetUse() != null) {
+                    DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
+                    if (dataSetUseField != null) {
+                        builder.append(dataSetUseField.getName()).append(";");
                     }
+                }
+                if (StringUtils.isNotBlank(builder.toString())) {
+                    stringSet.add(builder.toString());
+                    builder.delete(0, builder.toString().length());
                 }
             }
         }
@@ -6310,6 +6172,7 @@ public class GenerateBaseDataService {
         this.areaId = areaId;
         this.baseReportTemplate = baseReportTemplate;
         //注入bean
+        this.generateCommonMethod = SpringContextUtils.getBean(GenerateCommonMethod.class);
         this.schemeJudgeObjectService = SpringContextUtils.getBean(SchemeJudgeObjectService.class);
         this.schemeAreaGroupService = SpringContextUtils.getBean(SchemeAreaGroupService.class);
         this.projectNumberRecordService = SpringContextUtils.getBean(ProjectNumberRecordService.class);
@@ -6417,41 +6280,7 @@ public class GenerateBaseDataService {
      * @date: 2019/3/1 10:34
      */
     private String getSchemeJudgeObjectShowName(SchemeJudgeObject schemeJudgeObject) {
-        StringBuilder stringBuilder = new StringBuilder(24);
-        if (schemeJudgeObject == null) {
-            return "";
-        }
-        if (StringUtils.isNotBlank(schemeJudgeObject.getNumber())) {
-            String[] strings = schemeJudgeObject.getNumber().split(",");
-            //显示委估对象最多3个
-            final int max = 3;
-            if (strings.length > 3) {
-                //合并委估对象大于了3个以上的情况
-                for (int i = 0; i < max; i++) {
-                    stringBuilder.append(strings[i]);
-                    if (i != max - 1) {
-                        stringBuilder.append(",");
-                    }
-                }
-            } else {
-                stringBuilder.append(schemeJudgeObject.getNumber());
-                //拆分情况
-                if (schemeJudgeObject.getSplitNumber() != null) {
-                    stringBuilder.append("-").append(schemeJudgeObject.getSplitNumber());
-                }
-            }
-            stringBuilder.append("号");
-            if (strings.length > 3) stringBuilder.append("等");
-            stringBuilder.append("委估对象");
-        }
-        if (StringUtils.isEmpty(stringBuilder.toString())) {
-            if (StringUtils.isNotBlank(schemeJudgeObject.getName())) {
-                stringBuilder.append(schemeJudgeObject.getName());
-            } else {
-                stringBuilder.append(" ");
-            }
-        }
-        return stringBuilder.toString();
+        return generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject);
     }
 
     /**
