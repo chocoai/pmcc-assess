@@ -7,6 +7,7 @@
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="examine_type" property="examineType" jdbcType="INTEGER" />
     <result column="examine_form_type" property="examineFormType" jdbcType="VARCHAR" />
+    <result column="transaction_type" property="transactionType" jdbcType="INTEGER" />
     <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
     <result column="bis_assignment" property="bisAssignment" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -72,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, plan_details_id, examine_type, examine_form_type, declare_record_id, 
-    bis_assignment, creator, gmt_created, gmt_modified
+    id, project_id, plan_details_id, examine_type, examine_form_type, transaction_type, 
+    declare_record_id, bis_assignment, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyExamineInfoExample" >
     select
@@ -110,13 +111,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_survey_examine_info (project_id, plan_details_id, examine_type, 
-      examine_form_type, declare_record_id, bis_assignment, 
-      creator, gmt_created, gmt_modified
-      )
+      examine_form_type, transaction_type, declare_record_id, 
+      bis_assignment, creator, gmt_created, 
+      gmt_modified)
     values (#{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, 
-      #{examineFormType,jdbcType=VARCHAR}, #{declareRecordId,jdbcType=INTEGER}, #{bisAssignment,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{examineFormType,jdbcType=VARCHAR}, #{transactionType,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, 
+      #{bisAssignment,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyExamineInfo" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -135,6 +136,9 @@
       </if>
       <if test="examineFormType != null" >
         examine_form_type,
+      </if>
+      <if test="transactionType != null" >
+        transaction_type,
       </if>
       <if test="declareRecordId != null" >
         declare_record_id,
@@ -164,6 +168,9 @@
       </if>
       <if test="examineFormType != null" >
         #{examineFormType,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionType != null" >
+        #{transactionType,jdbcType=INTEGER},
       </if>
       <if test="declareRecordId != null" >
         #{declareRecordId,jdbcType=INTEGER},
@@ -206,6 +213,9 @@
       <if test="record.examineFormType != null" >
         examine_form_type = #{record.examineFormType,jdbcType=VARCHAR},
       </if>
+      <if test="record.transactionType != null" >
+        transaction_type = #{record.transactionType,jdbcType=INTEGER},
+      </if>
       <if test="record.declareRecordId != null" >
         declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       </if>
@@ -233,6 +243,7 @@
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       examine_type = #{record.examineType,jdbcType=INTEGER},
       examine_form_type = #{record.examineFormType,jdbcType=VARCHAR},
+      transaction_type = #{record.transactionType,jdbcType=INTEGER},
       declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       bis_assignment = #{record.bisAssignment,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -256,6 +267,9 @@
       </if>
       <if test="examineFormType != null" >
         examine_form_type = #{examineFormType,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionType != null" >
+        transaction_type = #{transactionType,jdbcType=INTEGER},
       </if>
       <if test="declareRecordId != null" >
         declare_record_id = #{declareRecordId,jdbcType=INTEGER},
@@ -281,6 +295,7 @@
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       examine_type = #{examineType,jdbcType=INTEGER},
       examine_form_type = #{examineFormType,jdbcType=VARCHAR},
+      transaction_type = #{transactionType,jdbcType=INTEGER},
       declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       bis_assignment = #{bisAssignment,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},

@@ -162,8 +162,7 @@ public class SchemeReportFileService extends BaseService {
      */
     public Integer selectLiveSituation(SchemeReportFileItem schemeReportFileItem) throws BusinessException {
         //验证是否重复选择
-        if (schemeReportFileItemDao.hasReportFileItem(schemeReportFileItem.getPlanDetailsId(),
-                schemeReportFileItem.getJudgeObjectId(), AssessUploadEnum.JUDGE_OBJECT_LIVE_SITUATION.getKey(), schemeReportFileItem.getAttachmentId()))
+        if (schemeReportFileItemDao.hasReportFileItem(schemeReportFileItem.getJudgeObjectId(), AssessUploadEnum.JUDGE_OBJECT_LIVE_SITUATION.getKey(), schemeReportFileItem.getAttachmentId()))
             throw new BusinessException("该图片已被选择");
         schemeReportFileItem.setType(AssessUploadEnum.JUDGE_OBJECT_LIVE_SITUATION.getKey());
         schemeReportFileItem.setCreator(commonService.thisUserAccount());

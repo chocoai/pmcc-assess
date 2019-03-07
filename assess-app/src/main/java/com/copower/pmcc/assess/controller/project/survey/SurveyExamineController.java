@@ -207,7 +207,7 @@ public class SurveyExamineController {
     @PostMapping(name = "现场查勘分派任务", value = "/examineTaskAssignment")
     public HttpResult examineTaskAssignment(Integer planDetailsId, String examineFormType) {
         try {
-            surveyExamineTaskService.examineTaskAssignment(planDetailsId, examineFormType, ExamineTypeEnum.EXPLORE);
+            surveyExamineTaskService.examineTaskAssignment(planDetailsId, examineFormType, ExamineTypeEnum.EXPLORE,null);
             return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());

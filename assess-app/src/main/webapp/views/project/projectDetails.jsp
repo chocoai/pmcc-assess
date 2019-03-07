@@ -83,13 +83,29 @@
                     </ul>
                     <h3>
                         工作成果
-                        <small>
-                            <input type="button" class="btn btn-xs btn-success" value="估价委托书及相关证明">
-                        </small>
                     </h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">估价委托书及相关证明</button>
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <c:forEach items="${areaGroupList}" var="item">
+                                <li><a target="_blank" href="${pageContext.request.contextPath}/projectReportFile/index?projectId=${projectInfo.id}&areaId=${item.id}">${item.areaName}</a>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" onclick="projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());" class="btn btn-primary">
+                            <i class='fa fa-refresh fa-white'></i> 刷新
+                        </button>
+                    </div>
+
                     <div role="tabpanel" data-example-id="togglable-tabs">
                         <ul class="nav nav-tabs bar_tabs plan_tab">
                             <c:forEach items="${projectPlanList}" var="plan">
@@ -150,13 +166,7 @@
     </div>
 </div>
 </body>
-<div id="plan_task_list_toolbar" style="padding:5px;height:auto;display: none;">
-    <div>
-        <button type="button" onclick="projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());" class="btn btn-success btn-xs">
-            <i class='fa fa-refresh fa-white'></i> 刷新
-        </button>
-    </div>
-</div>
+
 <script type="text/html" id="planItemHtml">
     <div class="btn-group">
         <div class="btn btn-sm btn-dark">计划编制</div>

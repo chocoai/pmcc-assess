@@ -605,7 +605,7 @@ public class ProjectPlanDetailsService {
                 List<ProjectPlanDetails> detailsList = projectPlanDetailsDao.getProjectPlanDetailsByPid(pastePlanDetails.getId());
                 if (CollectionUtils.isNotEmpty(detailsList)) return;
                 SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(copyPlanDetails.getPid());
-                surveyExamineTaskService.examineTaskAssignment(pastePlanDetails.getId(), surveyExamineInfo.getExamineFormType(), ExamineTypeEnum.EXPLORE);
+                surveyExamineTaskService.examineTaskAssignment(pastePlanDetails.getId(), surveyExamineInfo.getExamineFormType(), ExamineTypeEnum.EXPLORE,null);
                 basicApplyTransferService.copyForExamine(copyPlanDetails.getPid(), pastePlanDetails.getId());
             }
         }

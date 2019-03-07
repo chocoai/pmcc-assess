@@ -394,7 +394,7 @@ public class SurveyExamineTaskService {
      * @throws BusinessException
      */
     @Transactional(rollbackFor = Exception.class)
-    public void examineTaskAssignment(Integer planDetailsId, String examineFormType, ExamineTypeEnum examineTypeEnum) throws BusinessException {
+    public void examineTaskAssignment(Integer planDetailsId, String examineFormType, ExamineTypeEnum examineTypeEnum,Integer transactionType) throws BusinessException {
         if (this.checkAssignmentTask(planDetailsId)) {
             throw new BusinessException("请不要重复添加");
         }
@@ -429,6 +429,7 @@ public class SurveyExamineTaskService {
         surveyExamineInfo.setProjectId(planDetails.getProjectId());
         surveyExamineInfo.setPlanDetailsId(planDetails.getId());
         surveyExamineInfo.setExamineFormType(examineFormType);
+        surveyExamineInfo.setTransactionType(transactionType);
         surveyExamineInfo.setDeclareRecordId(planDetails.getDeclareRecordId());
         surveyExamineInfo.setBisAssignment(true);
         surveyExamineInfo.setCreator(commonService.thisUserAccount());
@@ -640,7 +641,7 @@ public class SurveyExamineTaskService {
         BasicHouse basicHouse = null;
         BasicHouseTrading basicTrading = null;
         String survey = jsonObject.getString("survey");
-
+        SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(projectPlanDetails.getId());
         if (StringUtils.isNotBlank(jsonObject.getString("basicEstate"))) {
             basicEstate = JSONObject.parseObject(jsonObject.getString("basicEstate"), BasicEstate.class);
             if (basicEstate != null) {
@@ -690,6 +691,9 @@ public class SurveyExamineTaskService {
             if (StringUtils.isNotBlank(jsonObject.getString("basicTrading"))) {
                 basicTrading = JSONObject.parseObject(jsonObject.getString("basicTrading"), BasicHouseTrading.class);
                 if (basicTrading != null) {
+                    if(surveyExamineInfo!=null){
+                        basicTrading.setTradingType(surveyExamineInfo.getTransactionType());
+                    }
                     basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading);
                 }
             }

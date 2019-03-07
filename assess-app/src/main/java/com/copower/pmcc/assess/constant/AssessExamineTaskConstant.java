@@ -106,6 +106,7 @@ public class AssessExamineTaskConstant {
     public static final String EXAMINE_HOUSE_TRANSACTION_SITUATION_ABNORMAL = "examine.house.transaction.situation.abnormal";//交易情况-非正常
     public static final String EXAMINE_HOUSE_PAYMENT_METHOD_INSTALLMENT = "examine.house.payment.method.installment";//付款方式-分期付款
     public static final String EXAMINE_HOUSE_INFORMATION_SOURCE_TYPE_OPEN = "examine.house.information.source.type.open";//信息来源类型-公开信息
+    public static final String EXAMINE_HOUSE_TRANSACTION_TYPE = "examine.house.transaction.type";//交易类型
     public static final String EXAMINE_HOUSE_TRANSACTION_TYPE_SELL = "examine.house.transaction.type.sell";//交易类型-出售
     public static final String EXAMINE_HOUSE_TRANSACTION_TYPE_LEASE = "examine.house.transaction.type.lease";//交易类型-出租
 }

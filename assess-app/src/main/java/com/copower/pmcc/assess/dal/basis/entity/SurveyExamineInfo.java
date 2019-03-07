@@ -13,6 +13,8 @@ public class SurveyExamineInfo {
 
     private String examineFormType;
 
+    private Integer transactionType;
+
     private Integer declareRecordId;
 
     private Boolean bisAssignment;
@@ -61,6 +63,14 @@ public class SurveyExamineInfo {
 
     public void setExamineFormType(String examineFormType) {
         this.examineFormType = examineFormType == null ? null : examineFormType.trim();
+    }
+
+    public Integer getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(Integer transactionType) {
+        this.transactionType = transactionType;
     }
 
     public Integer getDeclareRecordId() {

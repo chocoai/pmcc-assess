@@ -13,6 +13,7 @@ import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.change.ProjectFollowService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -56,6 +57,8 @@ public class ProjectInfoController {
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
     private HttpServletRequest request;
+    @Autowired
+    private SchemeAreaGroupService schemeAreaGroupService;
 
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view(Integer projectClassId, Integer projectTypeId, Integer projectCategoryId) {
@@ -218,6 +221,8 @@ public class ProjectInfoController {
         modelAndView.addObject("projectFollowFlog", projectFollow == null ? 0 : 1);
         //判断当前人是否为项目经理
         modelAndView.addObject("isPM", StringUtils.equals(projectMemberVo.getUserAccountManager(), processControllerComponent.getThisUser()));
+        //区域
+        modelAndView.addObject("areaGroupList", schemeAreaGroupService.getAreaGroupList(projectId));
         return modelAndView;
     }
 

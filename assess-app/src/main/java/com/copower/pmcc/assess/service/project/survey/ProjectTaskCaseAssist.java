@@ -2,10 +2,13 @@ package com.copower.pmcc.assess.service.project.survey;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudy;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.event.project.SurveyCaseStudyEvent;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -19,6 +22,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * 描述:
@@ -48,6 +53,8 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
     private SurveyCaseStudyService surveyCaseStudyService;
     @Autowired
     private DeclareRecordService declareRecordService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -78,6 +85,8 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
             //清空数据
             surveyExamineTaskService.deleteTaskByPlanDetailsId(projectPlanDetails.getId());
         }
+        List<BaseDataDic> transactionTypeList = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_TRANSACTION_TYPE);
+        modelAndView.addObject("transactionTypeList", transactionTypeList);
         modelAndView.addObject("surveyExamineInfo", surveyExamineInfo);
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
     }

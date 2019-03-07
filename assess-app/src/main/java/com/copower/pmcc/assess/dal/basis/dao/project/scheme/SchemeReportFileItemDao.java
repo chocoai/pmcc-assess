@@ -82,10 +82,10 @@ public class SchemeReportFileItemDao {
         return schemeReportFileItemMapper.deleteByPrimaryKey(id) > 0;
     }
 
-    public boolean hasReportFileItem(Integer planDetailsId, Integer judgeObjectId, String type, Integer attachmentId) {
+    public boolean hasReportFileItem(Integer judgeObjectId, String type, Integer attachmentId) {
         SchemeReportFileItemExample example = new SchemeReportFileItemExample();
         SchemeReportFileItemExample.Criteria criteria = example.createCriteria();
-        criteria.andPlanDetailsIdEqualTo(planDetailsId).andJudgeObjectIdEqualTo(judgeObjectId)
+        criteria.andJudgeObjectIdEqualTo(judgeObjectId)
                 .andTypeEqualTo(type).andAttachmentIdEqualTo(attachmentId);
         return schemeReportFileItemMapper.countByExample(example) > 0;
     }

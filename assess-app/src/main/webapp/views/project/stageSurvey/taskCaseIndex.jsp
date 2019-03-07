@@ -39,15 +39,18 @@
                         </button>
                         <c:choose>
                             <c:when test="${projectPhase.bisUseBox eq false}">
-                                <button id="btn_submit" class="btn btn-success" onclick="taskCaseIndex.checkAssignmentTask(false);">
+                                <button id="btn_submit" class="btn btn-success"
+                                        onclick="taskCaseIndex.checkAssignmentTask(false);">
                                     直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                                 </button>
-                                <button id="btn_submit" class="btn btn-primary" onclick="taskCaseIndex.checkAssignmentTask(true);">
+                                <button id="btn_submit" class="btn btn-primary"
+                                        onclick="taskCaseIndex.checkAssignmentTask(true);">
                                     提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                                 </button>
                             </c:when>
                             <c:otherwise>
-                                <button id="btn_submit" class="btn btn-success" onclick="taskCaseIndex.checkAssignmentTask();">
+                                <button id="btn_submit" class="btn btn-success"
+                                        onclick="taskCaseIndex.checkAssignmentTask();">
                                     提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                                 </button>
                             </c:otherwise>
@@ -100,7 +103,6 @@
 
     $(function () {
         taskCaseIndex.getCaseTaskList();
-        taskCaseIndex.loadDeclareCert();
     });
 
     //任务提交
@@ -135,7 +137,7 @@
             success: function (result) {
                 Loading.progressHide();
                 console.log("=====");
-                console.log(result.data+"=====");
+                console.log(result.data + "=====");
                 if (result.data) {
                     submit(mustUseBox);
                     $('#plan_details_modal').modal('hide');
@@ -225,9 +227,7 @@
     //获取案例任务可操作权限
     taskCaseIndex.getOperationHtml = function (status, id) {
         //none 可编辑、删除、分派 runing 查看 分派 finish 查看
-        var editHtml = "<a  data-placement='top' data-original-title='编辑' class='btn btn-xs btn-primary tooltips' target='_blank' onclick='taskCaseIndex.editCaseTask(" + id + ")'  ><i class='fa fa-edit fa-white'></i></a>";
         var deleteHtml = "<a  data-placement='top' data-original-title='删除' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskCaseIndex.deleteCaseTask(" + id + ")'><i class='fa fa-minus fa-white'></i></a>";
-        var assignmentHtml = "<a  data-placement='top' data-original-title='分派' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskCaseIndex.assignment(" + id + ")'><i class='fa fa-arrows-alt fa-white'></i></a>";
         assignmentHtml = "";
         var copyHtml = " <a href='javascript://;' onclick='taskCaseIndex.copyCaseStudy(" + id + ")' data-placement='top' data-original-title='复制案例' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-copy fa-white'></i></a>";
         copyHtml = "";
@@ -235,7 +235,7 @@
         var resultHtml = "";
         switch (status) {
             case "none":
-                resultHtml = editHtml + deleteHtml + assignmentHtml;
+                resultHtml = deleteHtml + assignmentHtml;
                 break
             case "runing":
                 resultHtml = viewHtml + assignmentHtml + copyHtml;
@@ -279,7 +279,7 @@
 
     //保存案例任务
     taskCaseIndex.saveCaseTask = function (id) {
-        if(!$("#frm_planDetails").valid()){
+        if (!$("#frm_planDetails").valid()) {
             return false;
         }
         var data = formParams('frm_planDetails');
@@ -289,6 +289,7 @@
             data: {
                 planDetailsId: "${projectPlanDetails.id}",
                 formData: JSON.stringify(data),
+                transactionType: data.transactionType,
                 examineFormType: data.examineFormType
             },
             type: "post",
@@ -441,26 +442,31 @@
     <div class="form-group">
         <div class="x-valid">
             <label class="col-sm-2 control-label">
-                案例名称
+                交易类型
             </label>
             <div class="col-sm-10">
                 <input type="hidden" id="planDetailsId" name="id"/>
                 <input type="hidden" id="pid" name="pid"/>
-                <input type="text" placeholder="案例名称" required maxlength="50"
-                       id="projectPhaseName" name="projectPhaseName"
-                       class="form-control" >
+                <select class="form-control" name="transactionType" required>
+                    <option value="">-请选择-</option>
+                    <c:forEach items="${transactionTypeList}" var="item">
+                        <option value="${item.id}">${item.name}</option>
+                    </c:forEach>
+                </select>
             </div>
         </div>
     </div>
     <div class="form-group" id="examineFormTypeList" style="display: none">
-        <label class="col-sm-2 control-label"></label>
         <div class="x-valid">
-            <c:forEach var="item" items="${examineFormTypeList}">
-            <span class="col-sm-4">
-            <input type="radio" id="examineFormType_${item.key}" name="examineFormType" value='${item.key}' required>
-            <label for="examineFormType_${item.key}">&nbsp;${item.value}</label>
-            </span>
-            </c:forEach>
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-10">
+                <c:forEach var="item" items="${examineFormTypeList}">
+                <span class="col-sm-4">
+                <input type="radio" id="examineFormType_${item.key}" name="examineFormType" value='${item.key}' required>
+                <label for="examineFormType_${item.key}">&nbsp;${item.value}</label>
+                </span>
+                </c:forEach>
+            </div>
         </div>
     </div>
 

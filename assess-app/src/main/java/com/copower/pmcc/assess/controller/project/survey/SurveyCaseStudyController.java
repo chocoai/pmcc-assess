@@ -1,25 +1,14 @@
 package com.copower.pmcc.assess.controller.project.survey;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
-import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.dal.basis.entity.DataExamineTask;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.SurveyExamineTask;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
-import com.copower.pmcc.assess.service.data.DataExamineTaskService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCaseStudyService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
-import com.copower.pmcc.assess.service.project.survey.SurveyExamineTaskService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,10 +45,10 @@ public class SurveyCaseStudyController {
 
     @ResponseBody
     @PostMapping(name = "保存案例任务,并且分派", value = "/saveCaseTask")
-    public HttpResult saveCaseTask(String formData, Integer planDetailsId, String examineFormType) {
+    public HttpResult saveCaseTask(String formData, Integer planDetailsId,Integer transactionType, String examineFormType) {
         try {
             ProjectPlanDetails projectPlanDetails = JSON.parseObject(formData, ProjectPlanDetails.class);
-            surveyCaseStudyService.saveCaseTask(projectPlanDetails, planDetailsId,examineFormType);
+            surveyCaseStudyService.saveCaseTask(projectPlanDetails, planDetailsId,transactionType,examineFormType);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("保存案例任务", e);
