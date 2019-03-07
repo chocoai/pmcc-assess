@@ -33,6 +33,12 @@ public class SchemeAreaGroup {
 
     private String valueConnotationDesc;
 
+    private Integer propertyScope;
+
+    private String scopeInclude;
+
+    private String scopeNotInclude;
+
     private Boolean bisEnable;
 
     private Boolean bisMerge;
@@ -161,6 +167,30 @@ public class SchemeAreaGroup {
 
     public void setValueConnotationDesc(String valueConnotationDesc) {
         this.valueConnotationDesc = valueConnotationDesc == null ? null : valueConnotationDesc.trim();
+    }
+
+    public Integer getPropertyScope() {
+        return propertyScope;
+    }
+
+    public void setPropertyScope(Integer propertyScope) {
+        this.propertyScope = propertyScope;
+    }
+
+    public String getScopeInclude() {
+        return scopeInclude;
+    }
+
+    public void setScopeInclude(String scopeInclude) {
+        this.scopeInclude = scopeInclude == null ? null : scopeInclude.trim();
+    }
+
+    public String getScopeNotInclude() {
+        return scopeNotInclude;
+    }
+
+    public void setScopeNotInclude(String scopeNotInclude) {
+        this.scopeNotInclude = scopeNotInclude == null ? null : scopeNotInclude.trim();
     }
 
     public Boolean getBisEnable() {

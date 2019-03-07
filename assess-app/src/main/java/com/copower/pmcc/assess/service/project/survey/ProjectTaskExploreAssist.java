@@ -46,9 +46,7 @@ public class ProjectTaskExploreAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExploreIndex", "", 0, "0", "");
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
-        SurveySceneExplore surveySceneExplore = surveySceneExploreService.initSceneExplore(projectPlanDetails.getProjectId(), projectPlanDetails.getId(), projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
-        modelAndView.addObject("surveySceneExplore", surveySceneExplore);
         modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
         return modelAndView;
     }

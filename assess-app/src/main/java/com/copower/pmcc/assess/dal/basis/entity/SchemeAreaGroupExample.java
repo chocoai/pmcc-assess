@@ -1095,6 +1095,206 @@ public class SchemeAreaGroupExample {
             return (Criteria) this;
         }
 
+        public Criteria andPropertyScopeIsNull() {
+            addCriterion("property_scope is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeIsNotNull() {
+            addCriterion("property_scope is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeEqualTo(Integer value) {
+            addCriterion("property_scope =", value, "propertyScope");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeNotEqualTo(Integer value) {
+            addCriterion("property_scope <>", value, "propertyScope");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeGreaterThan(Integer value) {
+            addCriterion("property_scope >", value, "propertyScope");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("property_scope >=", value, "propertyScope");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeLessThan(Integer value) {
+            addCriterion("property_scope <", value, "propertyScope");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeLessThanOrEqualTo(Integer value) {
+            addCriterion("property_scope <=", value, "propertyScope");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeIn(List<Integer> values) {
+            addCriterion("property_scope in", values, "propertyScope");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeNotIn(List<Integer> values) {
+            addCriterion("property_scope not in", values, "propertyScope");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeBetween(Integer value1, Integer value2) {
+            addCriterion("property_scope between", value1, value2, "propertyScope");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeNotBetween(Integer value1, Integer value2) {
+            addCriterion("property_scope not between", value1, value2, "propertyScope");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeIsNull() {
+            addCriterion("scope_include is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeIsNotNull() {
+            addCriterion("scope_include is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeEqualTo(String value) {
+            addCriterion("scope_include =", value, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeNotEqualTo(String value) {
+            addCriterion("scope_include <>", value, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeGreaterThan(String value) {
+            addCriterion("scope_include >", value, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeGreaterThanOrEqualTo(String value) {
+            addCriterion("scope_include >=", value, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeLessThan(String value) {
+            addCriterion("scope_include <", value, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeLessThanOrEqualTo(String value) {
+            addCriterion("scope_include <=", value, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeLike(String value) {
+            addCriterion("scope_include like", value, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeNotLike(String value) {
+            addCriterion("scope_include not like", value, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeIn(List<String> values) {
+            addCriterion("scope_include in", values, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeNotIn(List<String> values) {
+            addCriterion("scope_include not in", values, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeBetween(String value1, String value2) {
+            addCriterion("scope_include between", value1, value2, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeNotBetween(String value1, String value2) {
+            addCriterion("scope_include not between", value1, value2, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeIsNull() {
+            addCriterion("scope_not_include is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeIsNotNull() {
+            addCriterion("scope_not_include is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeEqualTo(String value) {
+            addCriterion("scope_not_include =", value, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeNotEqualTo(String value) {
+            addCriterion("scope_not_include <>", value, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeGreaterThan(String value) {
+            addCriterion("scope_not_include >", value, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeGreaterThanOrEqualTo(String value) {
+            addCriterion("scope_not_include >=", value, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeLessThan(String value) {
+            addCriterion("scope_not_include <", value, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeLessThanOrEqualTo(String value) {
+            addCriterion("scope_not_include <=", value, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeLike(String value) {
+            addCriterion("scope_not_include like", value, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeNotLike(String value) {
+            addCriterion("scope_not_include not like", value, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeIn(List<String> values) {
+            addCriterion("scope_not_include in", values, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeNotIn(List<String> values) {
+            addCriterion("scope_not_include not in", values, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeBetween(String value1, String value2) {
+            addCriterion("scope_not_include between", value1, value2, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeNotBetween(String value1, String value2) {
+            addCriterion("scope_not_include not between", value1, value2, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
         public Criteria andBisEnableIsNull() {
             addCriterion("bis_enable is null");
             return (Criteria) this;

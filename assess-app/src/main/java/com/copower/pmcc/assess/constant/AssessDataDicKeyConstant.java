@@ -64,6 +64,7 @@ public class AssessDataDicKeyConstant {
     public static final String MD_INCOME = "md.income"; //收益法
     public static final String MD_COST = "md.cost"; //成本法
     public static final String MD_DEVELOPMENT = "md.development"; //假设开发法
+    public static final String MD_STANDARD_ADJUSTMENT_PRICE = "md.standard.adjustment.price"; //标准价格调整法
 
     /*
      * 测算方法配置

@@ -41,13 +41,15 @@
                                 权证号
                             </label>
                             <div class="col-sm-2">
-                                <input type="text" data-rule-maxlength="50" placeholder="权证号"  name="name" class="form-control">
+                                <input type="text" data-rule-maxlength="50" placeholder="权证号" name="name"
+                                       class="form-control">
                             </div>
                             <label class="col-sm-1 control-label">
                                 坐落
                             </label>
                             <div class="col-sm-2">
-                                <input type="text" data-rule-maxlength="50" placeholder="坐落"  name="seat" class="form-control">
+                                <input type="text" data-rule-maxlength="50" placeholder="坐落" name="seat"
+                                       class="form-control">
                             </div>
                             <label class="col-sm-1 control-label">
                                 是否上报告
@@ -65,7 +67,7 @@
                                     查询
                                 </button>
                                 <button type="button" class="btn btn-primary"
-                                        onclick="dataObjFun.loadDataList()">
+                                        onclick="programme.generatorAreaGroup();">
                                     生成方案数据
                                 </button>
                             </div>
@@ -196,33 +198,29 @@
                                 </div>
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        价值类型描述
+                                        财产范围<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-2">
-                                        <input type="text" class="form-control" name="valueDefinitionDesc"
-                                               placeholder="价值类型描述" value="${item.valueDefinitionDesc}">
+                                        <input type="text" class="form-control" name="propertyScope"
+                                               placeholder="财产范围" value="${item.propertyScope}" required>
                                     </div>
                                 </div>
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        价值内涵<span class="symbol required"></span>
+                                        财产包括<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-2">
-                                        <select name="valueConnotation" class="form-control search-select select2"
-                                                multiple="multiple" required>
-                                            <c:forEach items="${valueConnotations}" var="valueConnotation">
-                                                <option value="${valueConnotation.id}">${valueConnotation.name}</option>
-                                            </c:forEach>
-                                        </select>
+                                        <input type="text" class="form-control" name="scopeInclude"
+                                               placeholder="财产包括" value="${item.scopeInclude}" required>
                                     </div>
                                 </div>
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        价值内涵描述
+                                        财产不包括
                                     </label>
                                     <div class="col-sm-2">
-                                        <input type="text" class="form-control" name="valueConnotationDesc"
-                                               placeholder="价值内涵描述" value="${item.valueConnotationDesc}">
+                                        <input type="text" class="form-control" name="scopeNotInclude"
+                                               placeholder="财产不包括" value="${item.scopeNotInclude}" required>
                                     </div>
                                 </div>
                             </div>
@@ -289,152 +287,104 @@
         </div>
     </div>
 </div>
-<div id="divBoxMethodExtend" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="modal_method_info" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">评估方法</h3>
+                <h3 class="modal-title">方法设置</h3>
             </div>
             <div class="modal-body">
-                <div class="" role="tabpanel" data-example-id="togglable-tabs">
-                    <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                        <c:forEach items="${dataDicMethodList}" var="item" varStatus="status">
-                            <li role="presentation" ${status.index==0?'class="active"':''} >
-                                <a href="#tab_content${item.id}" id="tab${item.id}" role="tab"
-                                   data-toggle="tab" aria-expanded="true">${item.name}</a>
-                            </li>
-                        </c:forEach>
-                    </ul>
-                    <div id="myTabContent" class="tab-content">
-                        <c:forEach items="${dataDicMethodList}" var="method" varStatus="status">
-                            <div role="tabpanel" class="tab-pane fade ${status.index==0?'active in':''} "
-                                 id="tab_content${method.id}"
-                                 aria-labelledby="home-tab">
-                                <form id="frm_method_${method.id}" class="form-horizontal" data-name="${method.name}">
-                                    <input type="hidden" name="id" value="0">
-                                    <input type="hidden" name="judgeObjectId">
-                                    <input type="hidden" name="name" value="${method.name}">
-                                    <input type="hidden" name="methodType" value="${method.id}">
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <div class="col-sm-10 col-sm-offset-2">
-                                                <span class="radio-inline">
-                                                <input type="radio" required onclick="applicableChange(this,true)"
-                                                       name="bisApplicable" id="rdoApplicable${method.id}" value="true">
-                                                <label for="rdoApplicable${method.id}">适用</label>
-                                                </span>
-
-                                                <span class="radio-inline">
-                                                <input type="radio" onclick="applicableChange(this,false)"
-                                                       name="bisApplicable" id="rdoNotApplicable${method.id}"
-                                                       value="false">
-                                                <label for="rdoNotApplicable${method.id}">不适用</label>
-                                                </span>
+                <form id="frm_method_info" class="form-horizontal">
+                    <input type="hidden" name="judgeObjectId">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th width="35%">基本方法</th>
+                                    <th>其它方法</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td id="baseMethodTd">
+                                        <c:forEach var="item" items="${baseMethodList}">
+                                            <div class="btn-group" style="margin: 10px;">
+                                                <button class="btn btn-sm btn-dark"
+                                                        type="button">${item.name}</button>
+                                                <button onclick="programmeMethod.selectUseBase(this);"
+                                                        data-use-flag="false" data-method-type="${item.id}"
+                                                        data-method-name="${item.name}"
+                                                        class="btn btn-sm btn-default btn-select-use"
+                                                        type="button" title="适用"><i
+                                                        class="fa fa-check"></i></button>
                                             </div>
+                                        </c:forEach>
+                                    </td>
+                                    <td id="otherMethodTd">
+                                        <c:forEach var="item" items="${otherMethodList}">
+                                            <div class="btn-group" style="margin: 10px;">
+                                                <button class="btn btn-sm btn-dark"
+                                                        type="button">${item.name}</button>
+                                                <button onclick="programmeMethod.selectUseOther(this);"
+                                                        data-use-flag="false" data-method-type="${item.id}"
+                                                        data-method-name="${item.name}"
+                                                        class="btn btn-sm btn-default btn-select-use"
+                                                        type="button" title="选用"><i
+                                                        class="fa fa-check"></i>
+                                                </button>
+                                            </div>
+                                        </c:forEach>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-sm-12">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th width="20%">适用方法</th>
+                                    <th width="20%">模板</th>
+                                    <th width="60%">适用原因</th>
+                                </tr>
+                                </thead>
+                                <tbody id="applicableTbody">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-sm-12">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th width="40%">不适用方法</th>
+                                    <th width="60%">不适用原因</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td id="notApplicableTd">
+                                    </td>
+                                    <td>
+                                        <div class="x-valid"><textarea class="form-control" id="notApplicableReason"
+                                                                       name="notApplicableReason" required></textarea>
                                         </div>
-                                    </div>
-                                    <div class="applicable" style="display: none;">
-                                        <div class="well">
-                                            <div class="form-group">
-                                                <label class="col-sm-2 control-label">
-                                                    方法模板
-                                                </label>
-                                                <div class="x-valid">
-                                                    <div class="col-sm-4">
-                                                        <select class="form-control" name="methodTemplate"
-                                                                onchange="evaluationMethodChange(this);">
-                                                            <option value="">-请选择-</option>
-                                                            <c:forEach items="${evaluationMethodMap.get(method.id)}"
-                                                                       var="evaluationMethod">
-                                                                <option value="${evaluationMethod.id}"
-                                                                        data-applicable="${evaluationMethod.applicableReason}"
-                                                                        data-not-applicable="${evaluationMethod.notApplicableReason}">
-                                                                        ${evaluationMethod.name}</option>
-                                                            </c:forEach>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group ">
-                                                <label class="col-sm-2 control-label">
-                                                    方法适用原因<span class="symbol required"></span>
-                                                </label>
-                                                <div class="x-valid">
-                                                    <div class="col-sm-10">
-                                        <textarea required placeholder="方法适用原因" name="applicableReason"
-                                                  class="form-control"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="applicableReason-field">
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="not-applicable" style="display: none;">
-                                        <div class="well">
-                                            <div class="form-group">
-                                                <label class="col-sm-2 control-label">
-                                                    方法不适用原因<span class="symbol required"></span>
-                                                </label>
-                                                <div class="x-valid">
-                                                    <div class="col-sm-10">
-                                        <textarea required placeholder="方法不适用原因" name="notApplicableReason"
-                                                  class="form-control"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="notApplicableReason-field"></div>
-                                        </div>
-
-                                    </div>
-                                    <div class="well thinkingWell" style="display: none;">
-                                        <div class="form-group">
-                                            <label class="col-sm-2 control-label">
-                                                思路模板
-                                            </label>
-                                            <div class="x-valid">
-                                                <div class="col-sm-4">
-                                                    <select class="form-control" name="thinkingTemplate"
-                                                            onchange="evaluationThinkingChange(this);">
-                                                        <option value="">-请选择-</option>
-                                                        <c:forEach items="${evaluationThinkingMap.get(method.id)}"
-                                                                   var="evaluationThinking">
-                                                            <option value="${evaluationThinking.id}"
-                                                                    data-templateContent="${evaluationThinking.templateContent}">${evaluationThinking.name}</option>
-                                                        </c:forEach>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-2 control-label">
-                                                评估思路<span class="symbol required"></span>
-                                            </label>
-                                            <div class="x-valid">
-                                                <div class="col-sm-10">
-                                                        <textarea required placeholder="评估思路"
-                                                                  name="thinking"
-                                                                  class="form-control"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="thinking-field"></div>
-                                    </div>
-                                </form>
-                            </div>
-                        </c:forEach>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button" class="btn btn-primary" onclick="savesEvaluationMethod()">
+                <button type="button" class="btn btn-primary" onclick=" programmeMethod.saveJudgeFunction();">
                     保存
                 </button>
             </div>
@@ -707,13 +657,6 @@
             <input type="hidden" data-name="rentalPossessionDesc" value="{rentalPossessionDesc}">
             <label class="form-control" data-name="mergeNumber">{mergeNumber}</label>
         </td>
-        <%--<td>--%>
-        <%--<label class="form-control" data-name="name">--%>
-        <%--<span>{name}</span>--%>
-        <%--<a href="javascript://" onclick="programme.viewJudgeInfo(this);"--%>
-        <%--class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>--%>
-        <%--</label>--%>
-        <%--</td>--%>
         <td>
             <label class="form-control" data-name="ownership">{ownership}
                 <a href="javascript://" onclick="programme.viewJudgeInfo(this);"
@@ -759,7 +702,7 @@
                class="btn btn-xs btn-warning judge-merge tooltips">合并</a>
             <a href="javascript://" onclick="programme.mergeJudgeCancel(this);"
                class="btn btn-xs btn-warning judge-merge-cancel tooltips">取消合并</a>
-            <a href="javascript://" title="评估方法" onclick="setEvaluationMethod(this);"
+            <a href="javascript://" title="评估方法" onclick="programmeMethod.setMethod(this);"
                class="btn btn-xs btn-success judge-method tooltips">方法</a>
             <a href="javascript://" title="其它信息" onclick="programme.editOtherInfo(this);"
                class="btn btn-xs btn-success judge-other tooltips">其它信息</a>
@@ -1596,7 +1539,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top"  onclick="programme.addOrRemoveDeclareRecord(' + row.id + ',true);" ><i class="fa fa-add fa-white"></i>添加</a>';
+                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top"  onclick="programme.addOrRemoveDeclareRecord(' + row.id + ',true);" ><i class="fa fa-add fa-white"></i>上报告</a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top"  onclick="programme.addOrRemoveDeclareRecord(' + row.id + ',false);" ><i class="fa fa-remove fa-white"></i>移除</a>';
                 str += '</div>';
                 return str;
@@ -1604,7 +1547,10 @@
         });
         $("#tb_declare_record_list").bootstrapTable('destroy');
         TableInit("tb_declare_record_list", "${pageContext.request.contextPath}/declareRecord/getDeclareRecordList", cols, {
-            projectId: '${projectInfo.id}'
+            projectId: '${projectInfo.id}',
+            name: $("#declare_record_form").find('[name=name]').val(),
+            seat: $("#declare_record_form").find('[name=seat]').val(),
+            bisPartIn: $("#declare_record_form").find('[name=bisPartIn]').val()
         }, {
             showColumns: false,
             showRefresh: false,
@@ -1647,6 +1593,33 @@
             }
         })
     }
+
+    //生成方案数据
+    programme.generatorAreaGroup = function () {
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/schemeProgramme/generatorAreaGroup",
+            type: "post",
+            dataType: "json",
+            data: {
+                projectId: '${projectInfo.id}'
+            },
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    Alert("数据生成成功", 2, null, function () {
+                        window.location.href = window.location.href;
+                    })
+                }
+                else {
+                    Alert(result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    };
 
 
     //加载他项权利
@@ -1806,259 +1779,172 @@
 
 </script>
 <script type="text/javascript">
-    /*
-     *------------------------------------------------------------------------------------------------------
-     *评估方法设置相关
-     *------------------------------------------------------------------------------------------------------
-     */
+    var programmeMethod = {};
 
-    //方法适用原因字段替换
-    function methodApplicableFieldReplace(_this) {
-        //1.先找到模板 2.再依次找到字段填写的信息
-        var tabPane = $(_this).closest(".tab-pane");
-        var template = tabPane.find('[name="methodTemplate"]').find('option:selected').attr("data-applicable");
-        tabPane.find('.applicableReason-field').find('input:text').each(function () {
-            if ($(this).val()) {
-                template = AssessCommon.replaceTemplate(template, $(this).attr('data-name'), $(this).val());
-            }
-        })
-        tabPane.find('[name="applicableReason"]').val(template);
-    }
-
-    //方法不适用原因字段替换
-    function methodNotApplicableFieldReplace(_this) {
-        var tabPane = $(_this).closest(".tab-pane");
-        var template = tabPane.find('[name="methodTemplate"]').find('option:selected').attr("data-not-applicable");
-        tabPane.find('.notApplicableReason-field').find('input:text').each(function () {
-            if ($(this).val()) {
-                template = AssessCommon.replaceTemplate(template, $(this).attr('data-name'), $(this).val());
-            }
-        })
-        tabPane.find('[name="notApplicableReason"]').val(template);
-    }
-
-    //思路字段替换
-    function thinkingFieldReplace(_this) {
-        var tabPane = $(_this).closest(".tab-pane");
-        var template = tabPane.find('[name="thinkingTemplate"]').find('option:selected').attr("data-templateContent");
-        tabPane.find('.thinking-field').find('input:text').each(function () {
-            if ($(this).val()) {
-                template = AssessCommon.replaceTemplate(template, $(this).attr('data-name'), $(this).val());
-            }
-        })
-        tabPane.find('[name="thinking"]').val(template);
-    }
-
-    //创建动态字段html
-    function createDynaicFieldHtml(fieldArray, functionName) {
-        if (fieldArray) {
-            var resultHtml = '<div class="form-group">';
-            $.each(fieldArray, function (i, item) {
-                if (i > 0 && i % 2 == 0) {
-                    resultHtml += '</div><div class="form-group">';
-                }
-                var templateHtml = $("#dynamicFieldHtml").html();
-                templateHtml = templateHtml.replace(/{name}/g, item).replace(/{functionName}/, functionName);
-                resultHtml += templateHtml;
-            })
-            resultHtml += '</div>';
-            return resultHtml;
-        } else {
-            return '';
-        }
-    }
-
-    //保存评估方法
-    function savesEvaluationMethod() {
-        //验证数据是否填写完整
-        var isPass = true;
-        $("#myTabContent").find('.tab-pane').find('form').each(function () {
-            if (!$(this).valid("请检查【" + $(this).attr('data-name') + "】是否填写完整！")) {
-                isPass = false;
-                return false;
-            }
-        });
-        if (!isPass) return false;
-        var judgeFunctionList = [];
-        $("#myTabContent").find('.tab-pane').each(function () {
-            var judgeFunction = {};
-            judgeFunction.id = $(this).find('[name="id"]').val();
-            judgeFunction.judgeObjectId = $(this).find('[name="judgeObjectId"]').val();
-            judgeFunction.name = $(this).find('[name="name"]').val();
-            judgeFunction.methodType = $(this).find('[name="methodType"]').val();
-            judgeFunction.bisApplicable = $(this).find('[name="bisApplicable"]:checked').val();
-            judgeFunction.applicableReason = $(this).find('[name="applicableReason"]').val();
-            judgeFunction.notApplicableReason = $(this).find('[name="notApplicableReason"]').val();
-            judgeFunction.thinking = $(this).find('[name="thinking"]').val();
-            judgeFunctionList.push(judgeFunction);
-        })
-        //检查各个方法数据是否填写完整
-        if (judgeFunctionList.length > 0) {
-            for (var i = 0; i < judgeFunctionList.length; i++) {
-                if (!methodHasWriteFull(judgeFunctionList[i])) {
-                    toastr.info("请检查【" + judgeFunctionList[i].name + "】是否填写完整！");
-                    return false;
-                }
-            }
-        }
-
-        $.ajax({
-            url: '${pageContext.request.contextPath}/schemeProgramme/saveJudgeFunction',
-            data: {
-                formData: JSON.stringify(judgeFunctionList)
-            },
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                if (result.ret) {
-                    toastr.success('评估方法保存成功');
-                    programme.config.currJudgeMethodButton.removeClass('btn-success').addClass('btn-primary');
-                    $('#divBoxMethodExtend').modal('hide');
-                } else {
-                    Alert("保存失败:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-            }
-        });
-    }
-
-    //方法信息是否填写完整
-    function methodHasWriteFull(judgeFunction) {
-        if (judgeFunction) {
-            if (judgeFunction.bisApplicable == undefined) return false;
-            if (judgeFunction.bisApplicable == 'true') {
-                if (!judgeFunction.applicableReason) return false;
-            } else {
-                if (!judgeFunction.notApplicableReason) return false;
-            }
-            if (!judgeFunction.thinking) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    //设置评估方法
-    function setEvaluationMethod(_this) {
+    programmeMethod.setMethod = function (_this) {
+        programmeMethod.clean();
         var judgeObjectId = $(_this).closest("tr").find('[data-name="id"]').val();
-        $("#myTabContent").find('[name="judgeObjectId"]').val(judgeObjectId);
-        programme.config.currJudgeMethodButton = $(_this);
-        //还原数据状态
-        cleanEvaluationMethod();
-        //如果该估计对象已经设置过评估方法，则将数据填充回去
         $.ajax({
-            url: '${pageContext.request.contextPath}/schemeProgramme/getSchemeJudgeFunctions',
+            url: '${pageContext.request.contextPath}/schemeProgramme/getJudgeFunction',
             data: {
                 judgeObjectId: judgeObjectId
             },
-            type: "get",
-            dataType: "json",
             success: function (result) {
                 if (result.ret && result.data) {
-                    $.each(result.data, function (i, item) {
-                        var methodTypeEle = $("#myTabContent").find('.tab-pane').find('[name="methodType"][value="' + item.methodType + '"]')
-                        var tabPane = $(methodTypeEle).closest(".tab-pane");
-                        tabPane.find('[name="id"]').val(item.id);
-                        if (item.bisApplicable) {
-                            tabPane.find('[name="bisApplicable"][value="true"]').prop('checked', true);
-                            tabPane.find('.applicable').show();
-                        } else {
-                            tabPane.find('[name="bisApplicable"][value="false"]').prop('checked', true);
-                            tabPane.find('.not-applicable').show();
-                        }
-                        tabPane.find('.thinkingWell').show();
-                        tabPane.find('[name="applicableReason"]').val(item.applicableReason);
-                        tabPane.find('[name="notApplicableReason"]').val(item.notApplicableReason);
-                        tabPane.find('[name="thinking"]').val(item.thinking);
+                    $('#notApplicableReason').val(result.data.notApplicableReason);
+                    $.each(result.data.judgeFunctions, function (i, item) {
+                        $("#frm_method_info").find('.btn-select-use[data-method-type=' + item.methodType + ']').trigger('click');
+                        $("#applicableTbody tr[data-method-type=" + item.methodType + "]").find('textarea').val(item.applicableReason);
                     })
                 }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
-        });
-        $("#divBoxMethodExtend").modal();
-    }
-
-    //清空
-    function cleanEvaluationMethod() {
-        $("#myTab").find('a:first').tab('show');
-        $("#myTabContent").find('form').each(function () {
-            $(this).clearValid();
         })
-        $("#myTabContent").find('[name="id"]').val('0');
-        $("#myTabContent").find('[name="bisApplicable"]').attr("checked", false);
-        $("#myTabContent").find('[name="applicableReason"]').val('');
-        $("#myTabContent").find('[name="notApplicableReason"]').val('');
-        $("#myTabContent").find('[name="thinking"]').val('');
-
-        $("#myTabContent").find('[name="methodTemplate"]').val('');
-        $("#myTabContent").find('[name="thinkingTemplate"]').val('');
-
-        $("#myTabContent").find('.applicable').hide();
-        $("#myTabContent").find('.not-applicable').hide();
-        $("#myTabContent").find('.thinkingWell').hide();
-        $("#myTabContent").find('.applicableReason-field').empty();
-        $("#myTabContent").find('.notApplicableReason-field').empty();
-        $("#myTabContent").find('.thinking-field').empty();
-
+        $("#frm_method_info").find('[name=judgeObjectId]').val(judgeObjectId);
+        $("#modal_method_info").modal();
     }
 
-    //评估方法模板选项change
-    function evaluationMethodChange(_this) {
-        var tabPane = $(_this).closest(".tab-pane");
-        var bisApplicable = tabPane.find('[name=bisApplicable]:checked').val();
-        var option = $(_this).find('option:selected');
-        tabPane.find('.applicableReason-field').empty();
-        tabPane.find('.notApplicableReason-field').empty();
-        if (bisApplicable == "true") {
-            tabPane.find('[name="applicableReason"]').val(option.attr("data-applicable"));
-            var fieldArray = AssessCommon.extractField(option.attr("data-applicable"));
-            if (fieldArray && fieldArray.length > 0) {
-                var html = createDynaicFieldHtml(fieldArray, 'methodApplicableFieldReplace');
-                tabPane.find('.applicableReason-field').append(html);
+    //基本方法选用
+    programmeMethod.selectUseBase = function (_this) {
+        //1.如果适用，添加适用tr，如果不适用移除适用tr
+        //2.自动找出不适用的方法
+        var useFlag = $(_this).attr('data-use-flag');
+        var methodType = $(_this).attr('data-method-type');
+        var methodName = $(_this).attr('data-method-name');
+        if (useFlag == 'false') {
+            var trHtml = '<tr data-method-type="' + methodType + '">';
+            trHtml += ' <td>' + methodName + '</td><td> <select class="form-control" onchange="programmeMethod.methodTempChange(this);"></select> </td>';
+            trHtml += '<td><div class="x-valid"> <textarea class="form-control" name="applicableReason' + methodType + '" required></textarea> </div></td></tr>';
+            $("#applicableTbody").append(trHtml);
+            programmeMethod.getMethodTemplate($("#applicableTbody").find('tr:last').find('select'), methodType);
+            //不适用方法中移除该项
+            var spans = $('#notApplicableTd span');
+            if (spans.length > 0) {
+                spans.each(function () {
+                    if ($(this).attr('data-method-type') == methodType) {
+                        $(this).remove();
+                    }
+                })
             }
-        } else if (bisApplicable == "false") {
-            tabPane.find('[name="notApplicableReason"]').val(option.attr("data-not-applicable"));
-            var fieldArray = AssessCommon.extractField(option.attr("data-not-applicable"));
-            if (fieldArray && fieldArray.length > 0) {
-                var html = createDynaicFieldHtml(fieldArray, 'methodNotApplicableFieldReplace');
-                tabPane.find('.notApplicableReason-field').append(html);
-            }
-        }
-    }
-
-    //评估思路模板选项change
-    function evaluationThinkingChange(_this) {
-        var tabPane = $(_this).closest(".tab-pane");
-        var option = $(_this).find('option:selected');
-        tabPane.find('.thinking-field').empty();
-        tabPane.find('[name="thinking"]').val(option.attr("data-templateContent"));
-        var fieldArray = AssessCommon.extractField(option.attr("data-templateContent"));
-        if (fieldArray && fieldArray.length > 0) {
-            var html = createDynaicFieldHtml(fieldArray, 'thinkingFieldReplace');
-            tabPane.find('.thinking-field').append(html);
-        }
-    }
-
-    //适用切换
-    function applicableChange(_this, isApplicable) {
-        var tabPane = $(_this).closest(".tab-pane");
-        var thisRadio = $(_this).find('input:radio');
-        thisRadio.attr('checked', true);
-        $(_this).closest('.btn-group').find('input:radio').not(thisRadio).attr('checked', false);
-        if (isApplicable) {
-            tabPane.find('.applicable').show();
-            tabPane.find('.not-applicable').hide();
         } else {
-            tabPane.find('.applicable').hide();
-            tabPane.find('.not-applicable').show();
+            $("#applicableTbody tr").each(function () {
+                if ($(this).attr('data-method-type') == methodType) {
+                    $(this).remove();
+                }
+            })
         }
-        tabPane.find('.thinkingWell').show();
+        $(_this).attr('data-use-flag', useFlag == 'false' ? true : false).toggleClass('btn-default').toggleClass('btn-success');
+        //自动获取不适用方法
+        $('#notApplicableTd').empty();
+        $("#baseMethodTd").find('.btn-select-use').each(function () {
+            if ($(this).attr('data-use-flag') == 'false') {
+                $('#notApplicableTd').append('<span style="margin: 10px;" data-method-type="' + $(this).attr('data-method-type') + '">' + $(this).attr('data-method-name') + '</span>');
+            }
+        })
     }
 
+    //其它方法选用
+    programmeMethod.selectUseOther = function (_this) {
+        var useFlag = $(_this).attr('data-use-flag');
+        $(_this).attr('data-use-flag', useFlag == 'false' ? true : false).toggleClass('btn-default').toggleClass('btn-success');
+    }
+
+    //获取方法模板数据
+    programmeMethod.getMethodTemplate = function ($element, methodType) {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/evaluationMethod/getMethodList',
+            type: 'get',
+            data: {
+                method: methodType
+            },
+            success: function (result) {
+                if (result.ret) {
+                    var html = '<option>-请选择-</option>';
+                    $.each(result.data, function (i, item) {
+                        html += ' <option value="' + item.id + '" data-applicableReason="' + item.applicableReason + '">' + item.name + '</option>';
+                    })
+                    $element.append(html);
+                }
+            }
+        })
+    }
+
+    //方法模板change
+    programmeMethod.methodTempChange = function (_this) {
+        $(_this).closest('tr').find('textarea').val($(_this).find('option:selected').attr('data-applicableReason'));
+    }
+
+    //获取保存的数据
+    programmeMethod.getMethodData = function () {
+        var data = {};
+        var judgeObjectId = $("#frm_method_info").find('[name=judgeObjectId]').val();
+        data.judgeObjectId = judgeObjectId;
+        data.notApplicableReason = $('#notApplicableReason').val();
+        data.judgeFunctions = [];
+        $("#applicableTbody tr").each(function () {
+            var judgeFunction = {};
+            judgeFunction.judgeObjectId = judgeObjectId;
+            judgeFunction.name = $(this).find('td:eq(0)').text();
+            judgeFunction.methodType = $(this).attr('data-method-type');
+            judgeFunction.bisApplicable = true;
+            judgeFunction.applicableReason = $(this).find('textarea').val();
+            data.judgeFunctions.push(judgeFunction);
+        })
+        $("#otherMethodTd").find('[data-use-flag=true]').each(function () {
+            var judgeFunction = {};
+            judgeFunction.judgeObjectId = judgeObjectId;
+            judgeFunction.name = $(this).attr('data-method-name');
+            judgeFunction.methodType = $(this).attr('data-method-type');
+            judgeFunction.bisApplicable = true;
+            data.judgeFunctions.push(judgeFunction);
+        })
+
+        $('#notApplicableTd').find('span').each(function () {
+            var judgeFunction = {};
+            judgeFunction.judgeObjectId = judgeObjectId;
+            judgeFunction.name = $(this).text();
+            judgeFunction.methodType = $(this).attr('data-method-type');
+            judgeFunction.bisApplicable = false;
+            data.judgeFunctions.push(judgeFunction);
+        })
+        return data;
+    }
+
+    //保存的数据
+    programmeMethod.saveJudgeFunction = function () {
+        if ($("#applicableTbody tr").length <= 0) {
+            Alert('还未选择适用的方法');
+            return false;
+        }
+        if (!$("#frm_method_info").valid()) {
+            return false;
+        }
+        var data = programmeMethod.getMethodData();
+        Loading.progressShow();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/schemeProgramme/saveJudgeFunction',
+            data: {
+                formData: JSON.stringify(data)
+            },
+            success: function (result) {
+                if (result.ret) {
+                    toastr.success('保存成功');
+                    Loading.progressHide();
+                    $("#modal_method_info").modal('hide');
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
+
+    //清空数据
+    programmeMethod.clean = function () {
+        $("#frm_method_info").find('[name=judgeObjectId]').val('');
+        $("#frm_method_info").find('.btn-select-use').attr('data-use-flag', false).addClass('btn-default').removeClass('btn-success');
+        $('#applicableTbody,#notApplicableTd').empty();
+        $('#notApplicableReason').val('');
+    }
 </script>
+
 
 

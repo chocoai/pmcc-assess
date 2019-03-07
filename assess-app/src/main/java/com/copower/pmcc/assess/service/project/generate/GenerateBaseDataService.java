@@ -30,6 +30,7 @@ import com.copower.pmcc.assess.service.method.MdMarketCompareService;
 import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.assess.service.project.compile.CompileReportService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
@@ -6288,13 +6289,13 @@ public class GenerateBaseDataService {
         }
         Set<String> stringSet = Sets.newHashSet();
         if (CollectionUtils.isNotEmpty(declareRealtyHouseCertList)) {
-            stringSet.add(String.format("《%s》", DeclareTypeEnum.HOUSE.getKey()));
+            stringSet.add(String.format("《%s》",DeclareTypeEnum.HOUSE.getKey()));
         }
         if (CollectionUtils.isNotEmpty(declareRealtyLandCertList)) {
-            stringSet.add(String.format("《%s》", DeclareTypeEnum.LAND.getKey()));
+            stringSet.add(String.format("《%s》",DeclareTypeEnum.LAND.getKey()));
         }
         if (CollectionUtils.isNotEmpty(declareRealtyRealEstateCertList)) {
-            stringSet.add(String.format("《%s》", DeclareTypeEnum.RealEstate.getKey()));
+            stringSet.add(String.format("《%s》",DeclareTypeEnum.RealEstate.getKey()));
         }
         String s = toSetString2(stringSet);
         return s;

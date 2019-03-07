@@ -5,7 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeReportFileCustom;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeReportFileItem;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeFunctionService;
-import com.copower.pmcc.assess.service.project.scheme.SchemeReportFileService;
+import com.copower.pmcc.assess.service.project.SchemeReportFileService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

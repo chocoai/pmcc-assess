@@ -8,22 +8,31 @@ import java.util.List;
  * Created by 13426 on 2018/5/21.
  */
 public class SchemeJudgeFunctionApplyDto {
-    private Integer judgeId;
-    private List<SchemeJudgeFunction> judgeFunctionList;
+    private Integer judgeObjectId;
+    private String notApplicableReason;
+    private List<SchemeJudgeFunction> judgeFunctions;
 
-    public Integer getJudgeId() {
-        return judgeId;
+    public Integer getJudgeObjectId() {
+        return judgeObjectId;
     }
 
-    public void setJudgeId(Integer judgeId) {
-        this.judgeId = judgeId;
+    public void setJudgeObjectId(Integer judgeObjectId) {
+        this.judgeObjectId = judgeObjectId;
     }
 
-    public List<SchemeJudgeFunction> getJudgeFunctionList() {
-        return judgeFunctionList;
+    public String getNotApplicableReason() {
+        return notApplicableReason;
     }
 
-    public void setJudgeFunctionList(List<SchemeJudgeFunction> judgeFunctionList) {
-        this.judgeFunctionList = judgeFunctionList;
+    public void setNotApplicableReason(String notApplicableReason) {
+        this.notApplicableReason = notApplicableReason;
+    }
+
+    public List<SchemeJudgeFunction> getJudgeFunctions() {
+        return judgeFunctions;
+    }
+
+    public void setJudgeFunctions(List<SchemeJudgeFunction> judgeFunctions) {
+        this.judgeFunctions = judgeFunctions;
     }
 }

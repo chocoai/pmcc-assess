@@ -46,6 +46,12 @@ public class SchemeJudgeObjectDao {
         return mapper.updateByExampleSelective(schemeJudgeObject, example) > 0;
     }
 
+    public boolean deleteJudgeObjectByAreaId(Integer areaGroupId) {
+        SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
+        example.createCriteria().andAreaGroupIdEqualTo(areaGroupId);
+        return mapper.deleteByExample(example) > 0;
+    }
+
     /**
      * 区域还原
      *

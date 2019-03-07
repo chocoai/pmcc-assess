@@ -117,27 +117,4 @@ public class SurveySceneExploreService {
         SurveySceneExplore surveySceneExplore = surveySceneExploreDao.getSurveySceneExplore(where);
         return surveySceneExplore;
     }
-
-    /**
-     * 初始化
-     *
-     * @param projectId
-     * @param planDetailsId
-     * @param declareId
-     */
-    public SurveySceneExplore initSceneExplore(Integer projectId, Integer planDetailsId, Integer declareId) {
-        SurveySceneExplore where = new SurveySceneExplore();
-        where.setProjectId(projectId);
-        where.setPlanDetailsId(planDetailsId);
-        SurveySceneExplore surveySceneExplore = surveySceneExploreDao.getSurveySceneExplore(where);
-        if (surveySceneExplore != null) return surveySceneExplore;
-        surveySceneExplore = new SurveySceneExplore();
-        surveySceneExplore.setProjectId(projectId);
-        surveySceneExplore.setPlanDetailsId(planDetailsId);
-        surveySceneExplore.setDeclareId(declareId);
-        surveySceneExplore.setJsonContent(surveyCommonService.getDeclareCertJson(projectId, declareId));
-        surveySceneExplore.setCreator(commonService.thisUserAccount());
-        surveySceneExploreDao.addSurveySceneExplore(surveySceneExplore);
-        return surveySceneExplore;
-    }
 }

@@ -87,26 +87,26 @@
                                 </div>
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        价值类型的描述
+                                        财产范围
                                     </label>
                                     <div class="col-sm-2">
-                                        <label class="form-control">${item.valueDefinitionDesc}</label>
+                                        <label class="form-control">${item.propertyScope}</label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        价值内涵
+                                        财产包括
                                     </label>
                                     <div class="col-sm-2">
-                                        <label class="form-control">${item.valueConnotationName}</label>
+                                        <label class="form-control">${item.scopeInclude}</label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        价值内涵描述
+                                        财产不包括
                                     </label>
                                     <div class="col-sm-2">
-                                        <label class="form-control">${item.valueConnotationDesc}</label>
+                                        <label class="form-control">${item.scopeNotInclude}</label>
                                     </div>
                                 </div>
                             </div>
@@ -143,7 +143,6 @@
                 </div>
                 <div class="x_content collapse">
                     <table class="table table-bordered" id="tb_inventory_right_list">
-                        <!-- cerare document add ajax data-->
                     </table>
                 </div>
             </div>
