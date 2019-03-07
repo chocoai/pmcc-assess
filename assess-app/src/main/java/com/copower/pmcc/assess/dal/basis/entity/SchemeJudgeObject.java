@@ -62,6 +62,8 @@ public class SchemeJudgeObject {
 
     private String standardJudgeExplain;
 
+    private String notApplicableReason;
+
     private Boolean bisSplit;
 
     private Boolean bisMerge;
@@ -308,6 +310,14 @@ public class SchemeJudgeObject {
 
     public void setStandardJudgeExplain(String standardJudgeExplain) {
         this.standardJudgeExplain = standardJudgeExplain == null ? null : standardJudgeExplain.trim();
+    }
+
+    public String getNotApplicableReason() {
+        return notApplicableReason;
+    }
+
+    public void setNotApplicableReason(String notApplicableReason) {
+        this.notApplicableReason = notApplicableReason == null ? null : notApplicableReason.trim();
     }
 
     public Boolean getBisSplit() {

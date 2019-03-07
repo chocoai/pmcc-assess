@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeFunctionApplyDto;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
@@ -14,6 +15,7 @@ import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.data.EvaluationMethodService;
 import com.copower.pmcc.assess.service.data.EvaluationThinkingService;
+import com.copower.pmcc.assess.service.method.MdCommonService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -70,6 +72,8 @@ public class SchemeProgrammeController {
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private DataSetUseFieldService dataSetUseFieldService;
+    @Autowired
+    private MdCommonService mdCommonService;
 
     @RequestMapping(value = "/index", name = "方案设置视图", method = {RequestMethod.GET})
     public ModelAndView index(Integer projectId, Integer planId) {
@@ -85,7 +89,8 @@ public class SchemeProgrammeController {
         modelAndView.addObject("valueTypes", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE));//价值类型
         modelAndView.addObject("entrustmentPurposes", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE));//委托目的
         modelAndView.addObject("valueConnotations", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROGRAMME_VALUE_CONNOTATION));//价值内涵
-
+        modelAndView.addObject("baseMethodList", mdCommonService.getBaseMethodList());//基本方法
+        modelAndView.addObject("otherMethodList", mdCommonService.getOtherMethodList());//其它方法
         modelAndView.addObject("evaluationMethodMap", evaluationMethodService.getEvaluationMethodMap());
         modelAndView.addObject("evaluationThinkingMap", evaluationThinkingService.getEvaluationThinkingMap());
         modelAndView.addObject("inventoryRightTypeList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE));
@@ -118,6 +123,18 @@ public class SchemeProgrammeController {
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @PostMapping(name = "生成方案数据", value = "/generatorAreaGroup")
+    public HttpResult generatorAreaGroup(Integer projectId) {
+        try {
+            schemeAreaGroupService.generatorAreaGroup(projectId);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error("生成方案数据", e);
+            return HttpResult.newErrorResult("生成方案数据异常");
         }
     }
 
@@ -175,9 +192,9 @@ public class SchemeProgrammeController {
 
     @ResponseBody
     @PostMapping(name = "委估对象合并", value = "/mergeJudge")
-    public HttpResult mergeJudge(String ids,Integer standardJudgeId) {
+    public HttpResult mergeJudge(String ids, Integer standardJudgeId) {
         try {
-            schemeJudgeObjectService.mergeJudge(ids,standardJudgeId);
+            schemeJudgeObjectService.mergeJudge(ids, standardJudgeId);
             return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
@@ -246,11 +263,22 @@ public class SchemeProgrammeController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/getJudgeFunction", name = "评估方法获取 ", method = RequestMethod.POST)
+    public HttpResult getJudgeFunction(Integer judgeObjectId) {
+        try {
+            return HttpResult.newCorrectResult(schemeJudgeFunctionService.getJudgeFunction(judgeObjectId));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/saveJudgeFunction", name = "评估方法保存 ", method = RequestMethod.POST)
     public HttpResult saveJudgeFunction(String formData) {
         try {
-            List<SchemeJudgeFunction> judgeFunctionList = JSON.parseArray(formData, SchemeJudgeFunction.class);
-            schemeJudgeFunctionService.saveJudgeFunction(judgeFunctionList);
+            SchemeJudgeFunctionApplyDto schemeJudgeFunctionApplyDto = JSON.parseObject(formData, SchemeJudgeFunctionApplyDto.class);
+            schemeJudgeFunctionService.saveJudgeFunction(schemeJudgeFunctionApplyDto);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
@@ -295,7 +323,7 @@ public class SchemeProgrammeController {
         try {
             return HttpResult.newCorrectResult(schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId));
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("获取估价对象信息异常");
         }
     }

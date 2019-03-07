@@ -1996,6 +1996,76 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
+        public Criteria andNotApplicableReasonIsNull() {
+            addCriterion("not_applicable_reason is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableReasonIsNotNull() {
+            addCriterion("not_applicable_reason is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableReasonEqualTo(String value) {
+            addCriterion("not_applicable_reason =", value, "notApplicableReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableReasonNotEqualTo(String value) {
+            addCriterion("not_applicable_reason <>", value, "notApplicableReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableReasonGreaterThan(String value) {
+            addCriterion("not_applicable_reason >", value, "notApplicableReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableReasonGreaterThanOrEqualTo(String value) {
+            addCriterion("not_applicable_reason >=", value, "notApplicableReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableReasonLessThan(String value) {
+            addCriterion("not_applicable_reason <", value, "notApplicableReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableReasonLessThanOrEqualTo(String value) {
+            addCriterion("not_applicable_reason <=", value, "notApplicableReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableReasonLike(String value) {
+            addCriterion("not_applicable_reason like", value, "notApplicableReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableReasonNotLike(String value) {
+            addCriterion("not_applicable_reason not like", value, "notApplicableReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableReasonIn(List<String> values) {
+            addCriterion("not_applicable_reason in", values, "notApplicableReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableReasonNotIn(List<String> values) {
+            addCriterion("not_applicable_reason not in", values, "notApplicableReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableReasonBetween(String value1, String value2) {
+            addCriterion("not_applicable_reason between", value1, value2, "notApplicableReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableReasonNotBetween(String value1, String value2) {
+            addCriterion("not_applicable_reason not between", value1, value2, "notApplicableReason");
+            return (Criteria) this;
+        }
+
         public Criteria andBisSplitIsNull() {
             addCriterion("bis_split is null");
             return (Criteria) this;

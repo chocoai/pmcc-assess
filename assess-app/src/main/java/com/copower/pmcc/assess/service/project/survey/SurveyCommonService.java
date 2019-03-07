@@ -285,29 +285,6 @@ public class SurveyCommonService {
         return buildingUsableYear;
     }
 
-
-    /**
-     * 获取初始化权证json数据
-     *
-     * @param projectId
-     * @param declareId
-     * @return
-     */
-    public String getDeclareCertJson(Integer projectId, Integer declareId) {
-        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
-        if (CollectionUtils.isEmpty(declareRecordList)) return null;
-        JSONArray jsonArray = new JSONArray();
-        for (DeclareRecord declareRecord : declareRecordList) {
-            if (declareRecord.getId().equals(declareId)) continue;
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("key", declareRecord.getId());
-            jsonObject.put("isChecked", false);
-            jsonObject.put("value", declareRecord.getName());
-            jsonArray.add(jsonObject);
-        }
-        return jsonArray.toJSONString();
-    }
-
     /**
      * 获取调查信息相关表
      *

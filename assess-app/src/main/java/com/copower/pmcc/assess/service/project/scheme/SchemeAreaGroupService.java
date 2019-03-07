@@ -5,12 +5,13 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeAreaGroupDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
@@ -39,7 +40,7 @@ public class SchemeAreaGroupService {
     @Autowired
     private CommonService commonService;
     @Autowired
-    private DeclareRecordService declareRecordService;
+    private SchemeJudgeObjectDao schemeJudgeObjectDao;
     @Autowired
     private DeclareRecordDao declareRecordDao;
     @Autowired
@@ -56,6 +57,8 @@ public class SchemeAreaGroupService {
     private SurveyAssetInventoryRightService surveyAssetInventoryRightService;
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
 
     public int add(SchemeAreaGroup schemeAreaGroup) {
         return schemeAreaGroupDao.add(schemeAreaGroup);
@@ -126,6 +129,49 @@ public class SchemeAreaGroupService {
         List<SchemeAreaGroup> voList = this.getAreaGroupList(projectId);
         if (CollectionUtils.isNotEmpty(voList))
             return LangUtils.transform(voList, o -> this.getSchemeAreaGroupVo(o));
+        return null;
+    }
+
+    /**
+     * 生成估价信息
+     *
+     * @param projectId
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void generatorAreaGroup(Integer projectId) {
+        //1.清除原相关数据 2.重新生成所有数据
+        //1.清除估价对象，清除区域,清除区域相关的工作事项
+        List<SchemeAreaGroup> areaGroupHistoryList = getAreaGroupList(projectId);
+        if (CollectionUtils.isNotEmpty(areaGroupHistoryList)) {
+            ProjectPlanDetails where = null;
+            List<ProjectPlanDetails> projectDetails = null;
+            for (SchemeAreaGroup schemeAreaGroup : areaGroupHistoryList) {
+                List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(schemeAreaGroup.getId());
+                if (CollectionUtils.isNotEmpty(judgeObjects)) {//清除估价对象下的任务
+                    for (SchemeJudgeObject judgeObject : judgeObjects) {
+                        where = new ProjectPlanDetails();
+                        where.setProjectId(projectId);
+                        where.setJudgeObjectId(judgeObject.getId());
+                        projectDetails = projectPlanDetailsService.getProjectDetails(where);
+                        if(CollectionUtils.isNotEmpty(projectDetails)){
+                            projectDetails.forEach(o->projectPlanDetailsService.deleteProjectPlanDetails(o));
+                        }
+                    }
+                    schemeJudgeObjectDao.deleteJudgeObjectByAreaId(schemeAreaGroup.getId());
+                }
+
+                //清除区域下工作任务
+                where = new ProjectPlanDetails();
+                where.setProjectId(projectId);
+                where.setAreaId(schemeAreaGroup.getId());
+                projectDetails = projectPlanDetailsService.getProjectDetails(where);
+                if(CollectionUtils.isNotEmpty(projectDetails)){
+                    projectDetails.forEach(o->projectPlanDetailsService.deleteProjectPlanDetails(o));
+                }
+                schemeAreaGroupDao.remove(schemeAreaGroup.getId());
+            }
+        }
+
         List<DeclareRecord> declareRecords = declareRecordDao.getDeclareRecordListByProjectId(projectId);
         List<SchemeAreaGroup> areaGroups = groupDeclareRecord(declareRecords);
         if (CollectionUtils.isNotEmpty(areaGroups)) {
@@ -140,6 +186,9 @@ public class SchemeAreaGroupService {
                 areaGroup.setRemarkEntrustPurpose(projectInfo.getRemarkEntrustPurpose());
                 areaGroup.setValueDefinition(projectInfo.getValueType());
                 areaGroup.setValueDefinitionDesc(projectInfo.getRemarkValueType());
+                areaGroup.setPropertyScope(1);
+                areaGroup.setScopeInclude(projectInfo.getScopeInclude());
+                areaGroup.setScopeNotInclude(projectInfo.getScopeNotInclude());
                 areaGroup.setPid(0);
                 areaGroup.setCreator(commonService.thisUserAccount());
                 this.add(areaGroup);
@@ -166,7 +215,7 @@ public class SchemeAreaGroupService {
                         schemeJudgeObject.setPracticalUse(declareRecord.getPracticalUse());
                         schemeJudgeObject.setEvaluationArea(declareRecord.getPracticalArea());
                         //获取到房屋中的出租占用情况描述
-                        BasicHouse basicHouse = schemeJudgeObjectService.getBasicHouseByDeclareId(declareRecord.getId(),projectInfo.getProjectCategoryId());
+                        BasicHouse basicHouse = schemeJudgeObjectService.getBasicHouseByDeclareId(declareRecord.getId(), projectInfo.getProjectCategoryId());
                         if (basicHouse != null) {
                             schemeJudgeObject.setRentalPossessionDesc(basicHouse.getDescription());
                         }
@@ -177,7 +226,7 @@ public class SchemeAreaGroupService {
                         if (baseDataDic != null && CollectionUtils.isNotEmpty(inventoryRights)) {
                             StringBuilder stringBuilder = new StringBuilder();
                             for (SurveyAssetInventoryRight inventoryRight : inventoryRights) {
-                                if(baseDataDic.getId().equals(inventoryRight.getCategory())){
+                                if (baseDataDic.getId().equals(inventoryRight.getCategory())) {
                                     stringBuilder.append(inventoryRight.getRemark());
                                 }
                             }
@@ -199,8 +248,6 @@ public class SchemeAreaGroupService {
                 }
             }
         }
-        voList = this.getAreaGroupList(projectId);
-        return LangUtils.transform(voList, o -> this.getSchemeAreaGroupVo(o));
     }
 
     /**

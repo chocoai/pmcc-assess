@@ -416,12 +416,24 @@ public class ProjectPlanDetailsService {
 
     public List<ProjectPlanDetails> getProjectDetails(ProjectPlanDetails projectPlanDetails) {
         List<ProjectPlanDetails> listObject = projectPlanDetailsDao.getListObject(projectPlanDetails);
-
         return listObject;
     }
 
     public void deleteProjectPlanDetails(Integer id) {
-        projectPlanDetailsDao.deleteProjectPlanDetails(id);
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(id);
+        deleteProjectPlanDetails(projectPlanDetails);
+    }
+
+    public void deleteProjectPlanDetails(ProjectPlanDetails projectPlanDetails) {
+        if(projectPlanDetails==null) return;
+        if (ProcessStatusEnum.RUN.getValue().equals(projectPlanDetails.getStatus())) {
+            bpmRpcProjectTaskService.deleteProjectTaskByPlanDetailsId(applicationConstant.getAppKey(),projectPlanDetails.getId());
+            if(StringUtils.isNotBlank(projectPlanDetails.getProcessInsId())&&!projectPlanDetails.getProcessInsId().equals("0")){
+                bpmRpcActivitiProcessManageService.closeProcess(projectPlanDetails.getProcessInsId());
+            }
+        } else {
+            projectPlanDetailsDao.deleteProjectPlanDetails(projectPlanDetails.getId());
+        }
     }
 
     /**
@@ -495,14 +507,7 @@ public class ProjectPlanDetailsService {
         List<ProjectPlanDetails> planDetailsList = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
         if (CollectionUtils.isNotEmpty(planDetailsList)) {
             for (ProjectPlanDetails projectPlanDetails : planDetailsList) {
-                if (ProcessStatusEnum.RUN.getValue().equals(projectPlanDetails.getStatus())) {
-                    bpmRpcProjectTaskService.deleteProjectTaskByPlanDetailsId(applicationConstant.getAppKey(),projectPlanDetails.getId());
-                    if(StringUtils.isNotBlank(projectPlanDetails.getProcessInsId())&&!projectPlanDetails.getProcessInsId().equals("0")){
-                        bpmRpcActivitiProcessManageService.closeProcess(projectPlanDetails.getProcessInsId());
-                    }
-                } else {
-                    projectPlanDetailsDao.deleteProjectPlanDetails(projectPlanDetails.getId());
-                }
+                deleteProjectPlanDetails(projectPlanDetails);
             }
         }
     }

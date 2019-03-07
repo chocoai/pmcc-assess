@@ -23,8 +23,14 @@ public class SchemeJudgeFunctionDao {
         return mapper.insertSelective(schemeJudgeFunction) == 1;
     }
 
-    public boolean removeSchemeJudgeFunction(Integer id) {
+    public boolean deleteSchemeJudgeFunction(Integer id) {
         return mapper.deleteByPrimaryKey(id) == 1;
+    }
+
+    public boolean deleteJudgeFunctionByJudgeId(Integer judgeObjectId) {
+        SchemeJudgeFunctionExample example = new SchemeJudgeFunctionExample();
+        example.createCriteria().andJudgeObjectIdEqualTo(judgeObjectId);
+        return mapper.deleteByExample(example) > 0;
     }
 
     public boolean updateSchemeJudgeFunction(SchemeJudgeFunction schemeJudgeFunction) {
@@ -37,7 +43,7 @@ public class SchemeJudgeFunctionDao {
 
     public List<SchemeJudgeFunction> getSchemeJudgeFunction(SchemeJudgeFunction schemeJudgeFunction) {
         SchemeJudgeFunctionExample example = new SchemeJudgeFunctionExample();
-        MybatisUtils.convertObj2Example(schemeJudgeFunction,example);
+        MybatisUtils.convertObj2Example(schemeJudgeFunction, example);
         List<SchemeJudgeFunction> schemeJudgeFunctions = mapper.selectByExample(example);
         return schemeJudgeFunctions;
     }

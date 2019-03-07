@@ -17,6 +17,9 @@
     <result column="value_definition_desc" property="valueDefinitionDesc" jdbcType="VARCHAR" />
     <result column="value_connotation" property="valueConnotation" jdbcType="VARCHAR" />
     <result column="value_connotation_desc" property="valueConnotationDesc" jdbcType="VARCHAR" />
+    <result column="property_scope" property="propertyScope" jdbcType="INTEGER" />
+    <result column="scope_include" property="scopeInclude" jdbcType="VARCHAR" />
+    <result column="scope_not_include" property="scopeNotInclude" jdbcType="VARCHAR" />
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
     <result column="bis_merge" property="bisMerge" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -84,8 +87,8 @@
   <sql id="Base_Column_List" >
     id, pid, project_id, province, city, district, area_name, value_time_point, time_point_explain, 
     entrust_purpose, remark_entrust_purpose, value_definition, value_definition_desc, 
-    value_connotation, value_connotation_desc, bis_enable, bis_merge, creator, gmt_created, 
-    gmt_modified
+    value_connotation, value_connotation_desc, property_scope, scope_include, scope_not_include, 
+    bis_enable, bis_merge, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroupExample" >
     select
@@ -126,7 +129,8 @@
       value_time_point, time_point_explain, entrust_purpose, 
       remark_entrust_purpose, value_definition, 
       value_definition_desc, value_connotation, 
-      value_connotation_desc, bis_enable, bis_merge, 
+      value_connotation_desc, property_scope, scope_include, 
+      scope_not_include, bis_enable, bis_merge, 
       creator, gmt_created, gmt_modified
       )
     values (#{pid,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
@@ -134,7 +138,8 @@
       #{valueTimePoint,jdbcType=TIMESTAMP}, #{timePointExplain,jdbcType=VARCHAR}, #{entrustPurpose,jdbcType=INTEGER}, 
       #{remarkEntrustPurpose,jdbcType=VARCHAR}, #{valueDefinition,jdbcType=INTEGER}, 
       #{valueDefinitionDesc,jdbcType=VARCHAR}, #{valueConnotation,jdbcType=VARCHAR}, 
-      #{valueConnotationDesc,jdbcType=VARCHAR}, #{bisEnable,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, 
+      #{valueConnotationDesc,jdbcType=VARCHAR}, #{propertyScope,jdbcType=INTEGER}, #{scopeInclude,jdbcType=VARCHAR}, 
+      #{scopeNotInclude,jdbcType=VARCHAR}, #{bisEnable,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -185,6 +190,15 @@
       </if>
       <if test="valueConnotationDesc != null" >
         value_connotation_desc,
+      </if>
+      <if test="propertyScope != null" >
+        property_scope,
+      </if>
+      <if test="scopeInclude != null" >
+        scope_include,
+      </if>
+      <if test="scopeNotInclude != null" >
+        scope_not_include,
       </if>
       <if test="bisEnable != null" >
         bis_enable,
@@ -244,6 +258,15 @@
       </if>
       <if test="valueConnotationDesc != null" >
         #{valueConnotationDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyScope != null" >
+        #{propertyScope,jdbcType=INTEGER},
+      </if>
+      <if test="scopeInclude != null" >
+        #{scopeInclude,jdbcType=VARCHAR},
+      </if>
+      <if test="scopeNotInclude != null" >
+        #{scopeNotInclude,jdbcType=VARCHAR},
       </if>
       <if test="bisEnable != null" >
         #{bisEnable,jdbcType=BIT},
@@ -316,6 +339,15 @@
       <if test="record.valueConnotationDesc != null" >
         value_connotation_desc = #{record.valueConnotationDesc,jdbcType=VARCHAR},
       </if>
+      <if test="record.propertyScope != null" >
+        property_scope = #{record.propertyScope,jdbcType=INTEGER},
+      </if>
+      <if test="record.scopeInclude != null" >
+        scope_include = #{record.scopeInclude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scopeNotInclude != null" >
+        scope_not_include = #{record.scopeNotInclude,jdbcType=VARCHAR},
+      </if>
       <if test="record.bisEnable != null" >
         bis_enable = #{record.bisEnable,jdbcType=BIT},
       </if>
@@ -353,6 +385,9 @@
       value_definition_desc = #{record.valueDefinitionDesc,jdbcType=VARCHAR},
       value_connotation = #{record.valueConnotation,jdbcType=VARCHAR},
       value_connotation_desc = #{record.valueConnotationDesc,jdbcType=VARCHAR},
+      property_scope = #{record.propertyScope,jdbcType=INTEGER},
+      scope_include = #{record.scopeInclude,jdbcType=VARCHAR},
+      scope_not_include = #{record.scopeNotInclude,jdbcType=VARCHAR},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       bis_merge = #{record.bisMerge,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -407,6 +442,15 @@
       <if test="valueConnotationDesc != null" >
         value_connotation_desc = #{valueConnotationDesc,jdbcType=VARCHAR},
       </if>
+      <if test="propertyScope != null" >
+        property_scope = #{propertyScope,jdbcType=INTEGER},
+      </if>
+      <if test="scopeInclude != null" >
+        scope_include = #{scopeInclude,jdbcType=VARCHAR},
+      </if>
+      <if test="scopeNotInclude != null" >
+        scope_not_include = #{scopeNotInclude,jdbcType=VARCHAR},
+      </if>
       <if test="bisEnable != null" >
         bis_enable = #{bisEnable,jdbcType=BIT},
       </if>
@@ -441,6 +485,9 @@
       value_definition_desc = #{valueDefinitionDesc,jdbcType=VARCHAR},
       value_connotation = #{valueConnotation,jdbcType=VARCHAR},
       value_connotation_desc = #{valueConnotationDesc,jdbcType=VARCHAR},
+      property_scope = #{propertyScope,jdbcType=INTEGER},
+      scope_include = #{scopeInclude,jdbcType=VARCHAR},
+      scope_not_include = #{scopeNotInclude,jdbcType=VARCHAR},
       bis_enable = #{bisEnable,jdbcType=BIT},
       bis_merge = #{bisMerge,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},

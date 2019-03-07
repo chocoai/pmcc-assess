@@ -186,29 +186,6 @@ public class SurveyCaseStudyService {
     }
 
     /**
-     * 初始化
-     *
-     * @param projectId
-     * @param planDetailsId
-     * @param declareId
-     */
-    public SurveyCaseStudy initCaseStudy(Integer projectId, Integer planDetailsId, Integer declareId) {
-        SurveyCaseStudy where = new SurveyCaseStudy();
-        where.setProjectId(projectId);
-        where.setPlanDetailsId(planDetailsId);
-        SurveyCaseStudy surveyCaseStudy = surveyCaseStudyDao.getSurveyCaseStudy(where);
-        if (surveyCaseStudy != null) return surveyCaseStudy;
-        surveyCaseStudy = new SurveyCaseStudy();
-        surveyCaseStudy.setProjectId(projectId);
-        surveyCaseStudy.setPlanDetailsId(planDetailsId);
-        surveyCaseStudy.setDeclareId(declareId);
-        surveyCaseStudy.setJsonContent(surveyCommonService.getDeclareCertJson(projectId, declareId));
-        surveyCaseStudy.setCreator(commonService.thisUserAccount());
-        surveyCaseStudyDao.addSurveyCaseStudy(surveyCaseStudy);
-        return surveyCaseStudy;
-    }
-
-    /**
      * 复制案例
      *
      * @param planDetailsId

@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project.scheme;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeFunctionDao;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeFunctionApplyDto;
 import com.copower.pmcc.erp.common.CommonService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class SchemeJudgeFunctionService {
 
     /**
      * 获取委估对象适用方法
+     *
      * @param judgeId
      * @return
      */
@@ -49,8 +51,8 @@ public class SchemeJudgeFunctionService {
     }
 
     @Transactional
-    public void changeFunctionContent(List<SchemeJudgeFunction> functionList){
-        if(CollectionUtils.isEmpty(functionList)) return;
+    public void changeFunctionContent(List<SchemeJudgeFunction> functionList) {
+        if (CollectionUtils.isEmpty(functionList)) return;
         for (SchemeJudgeFunction schemeJudgeFunction : functionList) {
             schemeJudgeFunctionDao.updateSchemeJudgeFunction(schemeJudgeFunction);
         }
@@ -65,30 +67,51 @@ public class SchemeJudgeFunctionService {
         return schemeJudgeFunctionDao.getSchemeJudgeFunction(id);
     }
 
-    public boolean removeSchemeJudgeFunction(Integer id) {
-        return schemeJudgeFunctionDao.removeSchemeJudgeFunction(id);
+    public boolean deleteSchemeJudgeFunction(Integer id) {
+        return schemeJudgeFunctionDao.deleteSchemeJudgeFunction(id);
+    }
+
+    /**
+     * 获取评估方法
+     *
+     * @param judgeObjectId
+     * @return
+     */
+    public SchemeJudgeFunctionApplyDto getJudgeFunction(Integer judgeObjectId) {
+        SchemeJudgeFunctionApplyDto schemeJudgeFunctionApplyDto = new SchemeJudgeFunctionApplyDto();
+        SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
+        if(judgeObject!=null){
+            schemeJudgeFunctionApplyDto.setNotApplicableReason(judgeObject.getNotApplicableReason());
+        }
+        schemeJudgeFunctionApplyDto.setJudgeFunctions(schemeJudgeFunctionService.getApplicableJudgeFunctions(judgeObjectId));
+        return schemeJudgeFunctionApplyDto;
     }
 
     /**
      * 保存评估方法
      *
-     * @param judgeFunctionList
+     * @param schemeJudgeFunctionApplyDto
      */
     @Transactional(rollbackFor = Exception.class)
-    public void saveJudgeFunction(List<SchemeJudgeFunction> judgeFunctionList) {
-        if (CollectionUtils.isNotEmpty(judgeFunctionList)) {
-            judgeFunctionList.forEach(p -> {
-                if (p.getId() != null && p.getId() > 0) {
-                    schemeJudgeFunctionService.updateSchemeJudgeFunction(p);
+    public void saveJudgeFunction(SchemeJudgeFunctionApplyDto schemeJudgeFunctionApplyDto) {
+        //先清除原数据
+        schemeJudgeFunctionDao.deleteJudgeFunctionByJudgeId(schemeJudgeFunctionApplyDto.getJudgeObjectId());
+
+        List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionApplyDto.getJudgeFunctions();
+        if (CollectionUtils.isNotEmpty(judgeFunctions)) {
+            for (SchemeJudgeFunction judgeFunction : judgeFunctions) {
+                if (judgeFunction.getId() != null && judgeFunction.getId() > 0) {
+                    schemeJudgeFunctionService.updateSchemeJudgeFunction(judgeFunction);
                 } else {
-                    p.setCreator(commonService.thisUserAccount());
-                    schemeJudgeFunctionService.addSchemeJudgeFunction(p);
+                    judgeFunction.setCreator(commonService.thisUserAccount());
+                    schemeJudgeFunctionService.addSchemeJudgeFunction(judgeFunction);
                 }
-            });
-            Integer judgeObjectId = judgeFunctionList.get(0).getJudgeObjectId();
+            }
+            Integer judgeObjectId = schemeJudgeFunctionApplyDto.getJudgeObjectId();
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
             if (schemeJudgeObject != null) {
                 schemeJudgeObject.setBisSetFunction(true);
+                schemeJudgeObject.setNotApplicableReason(schemeJudgeFunctionApplyDto.getNotApplicableReason());
                 schemeJudgeObjectService.updateSchemeJudgeObject(schemeJudgeObject);
             }
         }

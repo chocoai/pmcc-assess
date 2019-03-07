@@ -81,7 +81,12 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
-                    <h3>工作成果</h3>
+                    <h3>
+                        工作成果
+                        <small>
+                            <input type="button" class="btn btn-xs btn-success" value="估价委托书及相关证明">
+                        </small>
+                    </h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
