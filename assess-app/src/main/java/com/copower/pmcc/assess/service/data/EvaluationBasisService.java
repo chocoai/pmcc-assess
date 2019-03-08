@@ -98,11 +98,10 @@ public class EvaluationBasisService {
     /**
      * 根据委估目的及评估方法获取数据列表
      *
-     * @param method
      * @param purpose
      * @return
      */
-    public List<DataEvaluationBasis> getEnableBasisList(Integer type, Integer category, Integer method, Integer purpose) {
+    public List<DataEvaluationBasis> getEnableBasisList(Integer type, Integer category, Integer purpose) {
         String typeStr = new String();
         String categoryStr = new String();
         String methodStr = new String();
@@ -113,13 +112,10 @@ public class EvaluationBasisService {
         if (category != null && category > 0) {
             categoryStr = String.format(",%s,", category);
         }
-        if (method != null && method > 0) {
-            methodStr = String.format(",%s,", method);
-        }
         if (purpose != null && purpose > 0) {
             purposeStr = String.format(",%s,", purpose);
         }
-        return evaluationBasisDao.getEnableBasisList(typeStr, categoryStr, methodStr, purposeStr);
+        return evaluationBasisDao.getEnableBasisList(typeStr, categoryStr, purposeStr);
     }
 
 

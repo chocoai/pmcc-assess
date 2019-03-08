@@ -36,7 +36,7 @@ public class EvaluationBasisDao {
         return evaluationBasisMapper.selectByExample(example);
     }
 
-    public List<DataEvaluationBasis> getEnableBasisList(String type, String category, String method, String purpose) {
+    public List<DataEvaluationBasis> getEnableBasisList(String type, String category, String purpose) {
         DataEvaluationBasisExample example = new DataEvaluationBasisExample();
         DataEvaluationBasisExample.Criteria criteria = example.createCriteria();
         criteria.andBisEnableEqualTo(true);

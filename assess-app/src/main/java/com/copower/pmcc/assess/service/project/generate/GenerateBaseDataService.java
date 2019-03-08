@@ -2402,7 +2402,7 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        List<SchemeSupportInfo> schemeSupportInfoList = schemeSupportInfoService.getSupportInfoListByAreaId(areaId, schemeSupportTypeEnum);
+        List<SchemeSupportInfo> schemeSupportInfoList = schemeSupportInfoService.getSupportInfoListByAreaId(this.projectInfo, schemeSupportTypeEnum);
         if (CollectionUtils.isNotEmpty(schemeSupportInfoList)) {
             int i = 1;
             for (SchemeSupportInfo schemeSupportInfo : schemeSupportInfoList) {
