@@ -4,9 +4,11 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationThinkingDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationThinking;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationThinkingVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.method.MdCommonService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -15,8 +17,10 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -42,6 +46,8 @@ public class EvaluationThinkingService {
     private EvaluationThinkingDao evaluationThinkingDao;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private MdCommonService mdCommonService;
 
     /**
      * 保存数据
@@ -121,9 +127,9 @@ public class EvaluationThinkingService {
                 vo.setMethodStr(baseDataDicService.getDataDicName(methodDicList, thinking.getMethod()));
             }
         } catch (Exception e1) {
-            logger.error("exception:%s",e1.getMessage());
+            logger.error("exception:%s", e1.getMessage());
         }
-        vo.setTypeName(baseProjectClassifyService.getTypeAndCategoryName(thinking.getType(),thinking.getCategory()));
+        vo.setTypeName(baseProjectClassifyService.getTypeAndCategoryName(thinking.getType(), thinking.getCategory()));
         return vo;
     }
 
@@ -144,5 +150,72 @@ public class EvaluationThinkingService {
             }
         }
         return map;
+    }
+
+    /**
+     * 获取上报告的评估思路
+     *
+     * @param methodList
+     * @param projectInfo
+     * @return
+     */
+    public String getReportThinking(List<BaseDataDic> methodList, ProjectInfo projectInfo) {
+        /*
+        ①	先设立估价对象$(估价基准对象号)的市场价格为标准价，《以区域内类似房地产近期市场交易价格（比较法）》和《房地产未来预期收益（收益法）为导向综合》求取估价对象$(估价基准对象号)的市场价值。
+        ②	再通$(评估其他方法)对估价对象$(评价对象号)进行特定因素调整，得到其市场价值。
+        ③ $(委托目的特定评估思路)最后将估价对象的市场价值扣除估价师知悉的法定优先受偿款得到估价对象的抵押价值。
+         */
+        String compareExplain = "以区域内类似房地产近期市场交易价格";
+        String incomeExplain = "房地产未来预期收益";
+        String costExplain = "以房地产的重新开发建设成本";
+        String developmentExplain = "以房地产房地产预期未来收益，即开发后的价值减去后续开发的必要支出及应得的利润额";
+        StringBuilder stringBuilder = new StringBuilder();
+        //第一段内容： 当只有一个方法时，根据方法取得模板，当有多个方法时，如果有多个基础方法则合并描述
+        //第二段内容： 当方法中有其它方法，则用其它方法描述第二段
+        //第三段内容： 当只有项目委托目的为抵押的时候才有第三段内容
+        if (CollectionUtils.isEmpty(methodList)) return null;
+        if (projectInfo == null) return null;
+        StringBuilder firstDesc = new StringBuilder();//第一段描述
+        StringBuilder secondDesc = new StringBuilder();//第二段描述
+        StringBuilder thirdDesc = new StringBuilder();//第三段描述
+        List<BaseDataDic> baseMethodList = Lists.newArrayList();
+        List<BaseDataDic> baseOtherList = Lists.newArrayList();
+        for (BaseDataDic baseDataDic : methodList) {
+            if (mdCommonService.isBaseMethod(baseDataDic.getId()))
+                baseMethodList.add(baseDataDic);
+            if (mdCommonService.isOtherMethod(baseDataDic.getId()))
+                baseOtherList.add(baseDataDic);
+        }
+        if (baseMethodList.size() == 1) {
+            List<DataEvaluationThinking> thinkingList = evaluationThinkingDao.getThinkingListByMethod(String.valueOf(methodList.get(0).getId()));
+            if (CollectionUtils.isNotEmpty(thinkingList)) {
+                firstDesc.append("① ").append(thinkingList.get(0).getTemplateContent()).append("\r\n");
+            }
+        } else {
+            firstDesc.append("① 先设立估价对象$(估价基准对象号)的市场价格为标准价，");
+            String firstString = new String();
+            for (BaseDataDic baseDataDic : baseMethodList) {
+                if (mdCommonService.isCompareMethod(baseDataDic.getId()))
+                    firstString += compareExplain + "和";
+                if (mdCommonService.isIncomeMethod(baseDataDic.getId()))
+                    firstString += incomeExplain + "和";
+                if (mdCommonService.isCostMethod(baseDataDic.getId()))
+                    firstString += costExplain + "和";
+                if (mdCommonService.isDevelopmentMethod(baseDataDic.getId()))
+                    firstString += developmentExplain + "和";
+            }
+            firstDesc.append(StringUtils.strip(firstString, "和")).append("为导向综合求取估价对象$(估价基准对象号)的市场价值。").append("\r\n");
+        }
+        if (CollectionUtils.isNotEmpty(baseOtherList)) {
+            secondDesc.append(String.format("② 再通%s对估价对象$(评价对象号)进行特定因素调整，得到其市场价值。", baseOtherList.get(0).getName()));
+        }
+        if (projectInfo.getEntrustPurpose().equals(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE)) {
+            if(secondDesc.length()>0)
+                thirdDesc.append("③ ");
+            else
+                thirdDesc.append("② ");
+            thirdDesc.append("最后将估价对象的市场价值扣除估价师知悉的法定优先受偿款得到估价对象的抵押价值。");
+        }
+        return stringBuilder.append(firstDesc).append(secondDesc).append(thirdDesc).toString();
     }
 }

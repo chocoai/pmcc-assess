@@ -61,7 +61,7 @@ public class MdCommonService {
     public List<BaseDataDic> getOtherMethodList() {
         List<BaseDataDic> otherMethodList = Lists.newArrayList();
         List<BaseDataDic> allMethodList = getAllMethodList();
-        if(CollectionUtils.isEmpty(allMethodList)) return otherMethodList;
+        if (CollectionUtils.isEmpty(allMethodList)) return otherMethodList;
         for (BaseDataDic baseDataDic : allMethodList) {
             if (AssessDataDicKeyConstant.MD_MARKET_COMPARE.equals(baseDataDic.getFieldName())) {
                 continue;
@@ -78,5 +78,91 @@ public class MdCommonService {
             otherMethodList.add(baseDataDic);
         }
         return otherMethodList;
+    }
+
+    /**
+     * 是否为基本方法
+     *
+     * @param method
+     * @return
+     */
+    public Boolean isBaseMethod(Integer method) {
+        List<BaseDataDic> methodList = getBaseMethodList();
+        for (BaseDataDic baseDataDic : methodList) {
+            if (method.equals(baseDataDic.getId()))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * 是否为其它方法
+     *
+     * @param method
+     * @return
+     */
+    public Boolean isOtherMethod(Integer method) {
+        List<BaseDataDic> methodList = getOtherMethodList();
+        for (BaseDataDic baseDataDic : methodList) {
+            if (method.equals(baseDataDic.getId()))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * 是否为市场比较法
+     *
+     * @param method
+     * @return
+     */
+    public Boolean isCompareMethod(Integer method) {
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
+        if (baseDataDic != null && baseDataDic.getId().equals(method)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 是否为收益法
+     *
+     * @param method
+     * @return
+     */
+    public Boolean isIncomeMethod(Integer method) {
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME);
+        if (baseDataDic != null && baseDataDic.getId().equals(method)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 是否为成本法
+     *
+     * @param method
+     * @return
+     */
+    public Boolean isCostMethod(Integer method) {
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST);
+        if (baseDataDic != null && baseDataDic.getId().equals(method)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 是否为假设开发法
+     *
+     * @param method
+     * @return
+     */
+    public Boolean isDevelopmentMethod(Integer method) {
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_DEVELOPMENT);
+        if (baseDataDic != null && baseDataDic.getId().equals(method)) {
+            return true;
+        }
+        return false;
     }
 }
