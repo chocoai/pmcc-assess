@@ -958,18 +958,11 @@ public class GenerateReportService {
                             replaceReportPutValue(name, generateBaseDataService.getSetUse(), bookmarkAndRegex.getType(), false, mapSet);
                         }
                     }
-                    //证载用途
-                    if (Objects.equal(BaseReportFieldEnum.CertificationPurpose.getName(), name)) {
+                    //证载用途 / 证载用途分述
+                    if (Objects.equal(BaseReportFieldEnum.CertificationPurpose.getName(), name) || Objects.equal(BaseReportFieldEnum.SeparationCertificateUses.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getSeparationCertificateUses(), bookmarkAndRegex.getType(), false, mapSet);
                         if (baseReportField != null) {
-                            replaceReportPutValue(name, generateBaseDataService.getSeparationCertificateUses(), bookmarkAndRegex.getType(), false, mapSet);
-                        }
-                    }
-                    //证载用途分述
-                    if (Objects.equal(BaseReportFieldEnum.SeparationCertificateUses.getName(), name)) {
-                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                        if (baseReportField != null) {
-                            replaceReportPutValue(name, generateBaseDataService.getSeparationCertificateUses(), bookmarkAndRegex.getType(), false, mapSet);
                         }
                     }
                     //证载用途总括
@@ -1030,11 +1023,11 @@ public class GenerateReportService {
                             replaceReportPutValue(name, generateBaseDataService.getDelegatePurpose(), bookmarkAndRegex.getType(), false, mapSet);
                         }
                     }
-                    //评估方法
-                    if (Objects.equal(BaseReportFieldEnum.EvaluationMethod.getName(), name)) {
+                    //评估方法 ,估价对象评估方法
+                    if (Objects.equal(BaseReportFieldEnum.EvaluationMethod.getName(), name) || Objects.equal(BaseReportFieldEnum.EvaluationMethodValuationObject.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getEvaluationMethodValuationObject(), bookmarkAndRegex.getType(), false, mapSet);
                         if (baseReportField != null) {
-                            replaceReportPutValue(name, generateBaseDataService.getEvaluationMethodValuationObject(), bookmarkAndRegex.getType(), false, mapSet);
                         }
                     }
                     //评估方法总括
@@ -1049,13 +1042,6 @@ public class GenerateReportService {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
                             replaceReportPutValue(name, generateBaseDataService.getAssessmentMethods(), bookmarkAndRegex.getType(), false, mapSet);
-                        }
-                    }
-                    //估价对象评估方法
-                    if (Objects.equal(BaseReportFieldEnum.EvaluationMethodValuationObject.getName(), name)) {
-                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                        replaceReportPutValue(name, generateBaseDataService.getEvaluationMethodValuationObject(), bookmarkAndRegex.getType(), false, mapSet);
-                        if (baseReportField != null) {
                         }
                     }
                     //技术思路通用模板

@@ -37,6 +37,8 @@ public class GenerateCommonMethod {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
 
+    public final String SchemeJudgeObjectName = "委估对象" ;
+
     public String getSchemeJudgeObjectShowName(SchemeJudgeObject schemeJudgeObject) {
         StringBuilder stringBuilder = new StringBuilder(24);
         if (schemeJudgeObject == null) {
@@ -63,7 +65,7 @@ public class GenerateCommonMethod {
             }
             stringBuilder.append("号");
             if (strings.length > 3) stringBuilder.append("等");
-            stringBuilder.append("委估对象");
+            stringBuilder.append(SchemeJudgeObjectName);
         }
         if (StringUtils.isEmpty(stringBuilder.toString())) {
             if (StringUtils.isNotBlank(schemeJudgeObject.getName())) {
