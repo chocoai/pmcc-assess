@@ -188,16 +188,14 @@
                 success: function (result) {
                     if (result.ret) {
                         $("#" + dataValueDefinition.prototype.config().frm).clearAll();
+                        $("#template").val();
                         $("#" + dataValueDefinition.prototype.config().frm).initForm(result.data);
                         AssessCommon.checkboxToChecked($("#frmFather").find(":checkbox[name='entrustmentPurpose']"), result.data.entrustmentPurpose.split(','));
                         AssessCommon.checkboxToChecked($("#frmFather").find(":checkbox[name='valueType']"), result.data.valueType.split(','));
                         var content = result.data.template;
-                        if (content) {
-                            ue.addListener("ready", function () {
-                                // editor准备好之后才可以使用
-                                ue.setContent(content);
-                            });
-                        }
+                        setTimeout(function () {
+                            ue.setContent(content, false);
+                        }, 500);
                         $('#' + dataValueDefinition.prototype.config().box).modal("show");
                     }
                 },
