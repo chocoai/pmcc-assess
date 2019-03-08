@@ -63,4 +63,14 @@ public class DataBestUseDescriptionController {
         return HttpResult.newCorrectResult();
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/get", name = "获取", method = {RequestMethod.GET})
+    public HttpResult get(@RequestParam(value = "id") Integer id) {
+        try {
+            return HttpResult.newCorrectResult(dataBestUseDescriptionService.getBestUseDescriptionById(id));
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
 }

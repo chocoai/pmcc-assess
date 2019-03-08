@@ -103,7 +103,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <div class="btn btn-xs btn-success"
-                                                    onclick="appendHTML('',this)"><i
+                                                 onclick="appendHTML('',this)"><i
                                                     class="fa fa-plus"></i></div>
                                         </div>
                                     </div>
@@ -295,9 +295,6 @@
     //对新增 评估技术方法 数据处理
     function addDataDic() {
         $("#frm").clearAll();
-        //$("#frm").find('select.select2').val(null).trigger('change');
-        //$("#frm").find('select.category').trigger('change');
-        //$("#frm").find('[id^=select2-chosen]').text($("#frm").find('select.category').find('option[value="ff"]').text());
         extractApplicableField();
         extractNotApplicableField();
         reload();
@@ -345,20 +342,40 @@
     //评估技术方法 修改
     function editMethod(index) {
         var row = $("#tb_List").bootstrapTable('getData')[index];
-        $("#frm").clearAll();
-        $("#frm").initForm(row);
-        //$("#frm").find('select.type').trigger('change');
-        reload();
-        extractApplicableField();
-        extractNotApplicableField();
-        $('#divBox').modal();
+        var id = row.id;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/evaluationMethod/get",
+            type: "get",
+            dataType: "json",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    $("#frm").clearAll();
+                    $("#frm").clearAll().initForm(result.data);
+                    var type = result.data.type;
+                    var types = type.substring(1, type.length - 1).split(',');
+                    var category = result.data.category;
+                    var categorys = category.substring(1, category.length - 1).split(',');
+                    reload(types[0], categorys[0]);
+                    for (var i = 0; i < types.length - 1; i++) {
+                        appendHTML(types[i + 1], categorys[i + 1]);
+                    }
+                    extractApplicableField();
+                    extractNotApplicableField();
+                    $('#divBox').modal();
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
     }
 
 
     var num = 0;
 
     //类型
-    function getType(number) {
+    function getType(number, typeValue) {
         if (!number && number != 0) {
             number = num
         }
@@ -376,7 +393,9 @@
                             option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                         }
                         $("#frm").find('select.type' + number).html(option);
-
+                        if (typeValue) {
+                            $("#frm").find('select.type' + number).val([typeValue]).trigger('change');
+                        }
                     }
                 }
                 else {
@@ -390,7 +409,7 @@
     }
 
     //类别
-    function getCategory(number) {
+    function getCategory(number, categoryValue) {
         if (!number && number != 0) {
             number = num;
         }
@@ -414,7 +433,9 @@
                                 option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
                             $("#frm").find('select.category' + number).html(option);
-
+                            if (categoryValue) {
+                                $("#frm").find('select.category' + number).val([categoryValue]).trigger('change');
+                            }
                         }
                     }
                     else {
@@ -428,7 +449,7 @@
         });
     }
 
-    function appendHTML() {
+    function appendHTML(typeValue, categoryValue) {
         num++;
         var projectType = "type" + num;
         var projectCategory = "category" + num;
@@ -436,8 +457,8 @@
         $("#frm").find(".system").append(html);
         $("#frm").find("." + projectType).select2();
         $("#frm").find("." + projectCategory).select2();
-        getType();
-        getCategory();
+        getType(null, typeValue);
+        getCategory(null, categoryValue);
     }
 
     function createHTML(projectType, projectCategory) {
@@ -473,7 +494,7 @@
         getCategory(number);
     }
 
-    function reload() {
+    function reload(typeValue, categoryValue) {
         $("#frm").find(".system").empty();
         var html = "<div class='form-group' style='margin-top:8px;'>";
         html += "<label class='col-md-2 col-sm-2  control-label'>" + '项目类型' + "</label>";
@@ -495,10 +516,11 @@
         html += "</div>";
         html += "</div>";
         $("#frm").find(".system").append(html);
-        getType(0);
-        getCategory(0);
+        getType(0, typeValue);
+        getCategory(0, categoryValue);
         $("#frm").find(".type0").select2();
         $("#frm").find(".category0").select2();
+
     }
 
 

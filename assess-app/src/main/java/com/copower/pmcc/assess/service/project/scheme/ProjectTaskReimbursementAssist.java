@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project.scheme;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursement;
+import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
@@ -11,6 +12,8 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * 描述:
@@ -28,19 +31,14 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private SchemeReimbursementService schemeReimbursementService;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskReimbursementIndex", "", 0, "0", "");
-        SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByPlanDetailsId(projectPlanDetails.getId());
-        if (schemeReimbursement == null) {
-            schemeReimbursement = new SchemeReimbursement();
-            schemeReimbursement.setProjectId(projectPlanDetails.getProjectId());
-            schemeReimbursement.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
-            schemeReimbursement.setPlanDetailsId(projectPlanDetails.getId());
-            schemeReimbursementService.saveSchemeReimbursement(schemeReimbursement);
-        }
-        modelAndView.addObject("master", schemeReimbursement);
+        SchemeReimbursement master = schemeReimbursementService.applyInit(projectPlanDetails);
+        modelAndView.addObject("master", master);
         modelAndView.addObject("judgeObjectName", projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid()).getProjectPhaseName());
         return modelAndView;
     }
@@ -99,8 +97,7 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        SchemeReimbursement schemeReimbursement = JSON.parseObject(formData, SchemeReimbursement.class);
-        schemeReimbursementService.saveSchemeReimbursement(schemeReimbursement);
+        schemeReimbursementService.applyCommit(formData, processInsId);
     }
 
     @Override
@@ -110,7 +107,6 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        SchemeReimbursement schemeReimbursement = JSON.parseObject(formData, SchemeReimbursement.class);
-        schemeReimbursementService.saveSchemeReimbursement(schemeReimbursement);
+        schemeReimbursementService.applyCommit(formData, processInsId);
     }
 }

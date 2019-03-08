@@ -93,4 +93,8 @@ public class DataBestUseDescriptionService {
         return vo;
     }
 
+
+    public DataBestUseDescription getBestUseDescriptionById(Integer id) {
+            return dataBestUseDescriptionDao.getDataBestUseDescription(id);
+    }
 }

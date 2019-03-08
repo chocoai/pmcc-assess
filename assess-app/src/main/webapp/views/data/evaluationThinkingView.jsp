@@ -186,7 +186,6 @@
 
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
-   // var currCategory = undefined;
     $(function () {
         loadThinkingList();
 
@@ -300,18 +299,39 @@
     //评估技术思路 修改
     function editThinking(index) {
         var row = $("#tb_List").bootstrapTable('getData')[index];
-        $("#frm").clearAll();
-        $("#frm").initForm(row);
-        reload();
-        AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='method']"), row.method.split(','));
-        extractTemplateContentField();
-        $('#divBox').modal();
+        var id = row.id;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/evaluationThinking/get",
+            type: "get",
+            dataType: "json",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    $("#frm").clearAll();
+                    $("#frm").clearAll().initForm(result.data);
+                    var type = result.data.type;
+                    var types = type.substring(1,type.length-1).split(',');
+                    var category = result.data.category;
+                    var categorys = category.substring(1,category.length-1).split(',');
+                    reload(types[0],categorys[0]);
+                    for (var i = 0; i < types.length-1; i++) {
+                        appendHTML(types[i+1],categorys[i+1]);
+                    }
+                     AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='method']"), row.method.split(','));
+                     extractTemplateContentField();
+                    $('#divBox').modal();
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
     }
 
     var num = 0;
 
     //类型
-    function getType(number) {
+    function getType(number,typeValue) {
         if (!number && number != 0) {
             number = num
         }
@@ -329,7 +349,9 @@
                             option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                         }
                         $("#frm").find('select.type' + number).html(option);
-
+                        if(typeValue) {
+                            $("#frm").find('select.type' + number).val([typeValue]).trigger('change');
+                        }
                     }
                 }
                 else {
@@ -343,7 +365,7 @@
     }
 
     //类别
-    function getCategory(number) {
+    function getCategory(number,categoryValue) {
         if (!number && number != 0) {
             number = num;
         }
@@ -367,7 +389,9 @@
                                 option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
                             $("#frm").find('select.category' + number).html(option);
-
+                            if(categoryValue) {
+                                $("#frm").find('select.category' + number).val([categoryValue]).trigger('change');
+                            }
                         }
                     }
                     else {
@@ -381,7 +405,7 @@
         });
     }
 
-    function appendHTML() {
+    function appendHTML(typeValue,categoryValue) {
         num++;
         var projectType = "type" + num;
         var projectCategory = "category" + num;
@@ -389,8 +413,8 @@
         $("#frm").find(".system").append(html);
         $("#frm").find("." + projectType).select2();
         $("#frm").find("." + projectCategory).select2();
-        getType();
-        getCategory();
+        getType(null,typeValue);
+        getCategory(null,categoryValue);
     }
 
     function createHTML(projectType, projectCategory) {
@@ -426,7 +450,7 @@
         getCategory(number);
     }
 
-    function reload() {
+    function reload(typeValue,categoryValue) {
         $("#frm").find(".system").empty();
         var html = "<div class='form-group' style='margin-top:8px;'>";
         html += "<label class='col-md-2 col-sm-2  control-label'>" + '项目类型' + "</label>";
@@ -448,8 +472,8 @@
         html += "</div>";
         html += "</div>";
         $("#frm").find(".system").append(html);
-        getType(0);
-        getCategory(0);
+        getType(0,typeValue);
+        getCategory(0,categoryValue);
         $("#frm").find(".type0").select2();
         $("#frm").find(".category0").select2();
     }
