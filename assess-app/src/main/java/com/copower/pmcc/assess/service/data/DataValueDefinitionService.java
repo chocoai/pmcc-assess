@@ -66,11 +66,15 @@ public class DataValueDefinitionService {
         BeanUtils.copyProperties(dataValueDefinition, dataValueDefinitionVo);
         List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         List<BaseDataDic> valueTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE);
+        List<BaseDataDic> propertyScopes = baseDataDicService.getCacheDataDicList("examine.house.scope.property");
         if (StringUtils.isNotBlank(dataValueDefinition.getEntrustmentPurpose())) {
             dataValueDefinitionVo.setEntrustmentPurposeName(baseDataDicService.getDataDicName(purposeDicList, dataValueDefinition.getEntrustmentPurpose()));
         }
         if (StringUtils.isNotBlank(dataValueDefinition.getValueType())) {
             dataValueDefinitionVo.setValueTypeName(baseDataDicService.getDataDicName(valueTypeList, dataValueDefinition.getValueType()));
+        }
+        if (StringUtils.isNotBlank(dataValueDefinition.getPropertyScope())) {
+            dataValueDefinitionVo.setPropertyScopeName(baseDataDicService.getDataDicName(propertyScopes, dataValueDefinition.getPropertyScope()));
         }
         return dataValueDefinitionVo;
     }

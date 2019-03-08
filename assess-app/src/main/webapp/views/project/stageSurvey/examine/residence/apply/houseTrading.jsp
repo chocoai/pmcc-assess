@@ -22,12 +22,21 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">财产范围说明</label>
+                <label class="col-sm-1 control-label">范围包括</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="财产范围说明" name="scopePropertyExplain" class="form-control"
-                           value="${basicHouseTrading.scopePropertyExplain}">
+                    <input type="text" placeholder="范围包含" name="scopeInclude" class="form-control"
+                           value="${basicHouseTrading.scopeInclude}">
                 </div>
             </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">范围不包括</label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="范围不包含" name="scopeNotInclude" class="form-control"
+                           value="${basicHouseTrading.scopeNotInclude}">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">税费负担</label>
                 <div class="col-sm-3">
@@ -35,8 +44,6 @@
                     </select>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">交易情况</label>
                 <div class="col-sm-3">
@@ -44,6 +51,8 @@
                     </select>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div  id="abnormalTransaction" style="display: none;">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">说明事项类型</label>

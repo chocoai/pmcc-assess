@@ -37,8 +37,10 @@ public class DataValueDefinitionController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         List<BaseDataDic> valueTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE);
+        List<BaseDataDic> propertyScopes = baseDataDicService.getCacheDataDicList("examine.house.scope.property");
         modelAndView.addObject("purposeDicList", purposeDicList);
         modelAndView.addObject("valueTypeList", valueTypeList);
+        modelAndView.addObject("propertyScopes", propertyScopes);
         return modelAndView;
     }
 

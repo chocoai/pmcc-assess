@@ -159,26 +159,34 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">财产范围说明</label>
+                <label class="col-sm-1 control-label">范围包括</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicHouseTrading.scopePropertyExplain}</label>
+                    <label class="form-control">${basicHouseTrading.scopeInclude}</label>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">税费负担</label>
+                <label class="col-sm-1 control-label">范围不包括</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicHouseTrading.taxBurdenName}</label>
+                    <label class="form-control">${basicHouseTrading.scopeNotInclude}</label>
                 </div>
             </div>
         </div>
 
         <div class="form-group">
             <div class="x-valid">
+                <label class="col-sm-1 control-label">税费负担</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouseTrading.taxBurdenName}</label>
+                </div>
+            </div>
+            <div class="x-valid">
                 <label class="col-sm-1 control-label">交易情况</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouseTrading.transactionSituationName}</label>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <c:if test="${isHouseAbnormal eq true}">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">说明事项类型</label>

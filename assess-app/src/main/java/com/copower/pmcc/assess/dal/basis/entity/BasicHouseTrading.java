@@ -40,6 +40,10 @@ public class BasicHouseTrading {
 
     private Integer scopeProperty;
 
+    private String scopeInclude;
+
+    private String scopeNotInclude;
+
     private String scopePropertyExplain;
 
     private String downPaymentRatio;
@@ -206,6 +210,22 @@ public class BasicHouseTrading {
 
     public void setScopeProperty(Integer scopeProperty) {
         this.scopeProperty = scopeProperty;
+    }
+
+    public String getScopeInclude() {
+        return scopeInclude;
+    }
+
+    public void setScopeInclude(String scopeInclude) {
+        this.scopeInclude = scopeInclude == null ? null : scopeInclude.trim();
+    }
+
+    public String getScopeNotInclude() {
+        return scopeNotInclude;
+    }
+
+    public void setScopeNotInclude(String scopeNotInclude) {
+        this.scopeNotInclude = scopeNotInclude == null ? null : scopeNotInclude.trim();
     }
 
     public String getScopePropertyExplain() {

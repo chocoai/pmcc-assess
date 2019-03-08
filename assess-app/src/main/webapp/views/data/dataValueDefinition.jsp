@@ -93,10 +93,10 @@
             var cols = [];
             cols.push({field: 'entrustmentPurposeName', title: '委托目的'});
             cols.push({field: 'valueTypeName', title: '价值类型'});
-            cols.push({field: 'propertyScope', title: '评估财产范围'});
-            cols.push({field: 'scopeInclude', title: '范围包含'});
-            cols.push({field: 'scopeNotInclude', title: '范围不包含'});
-            cols.push({field: 'template', title: '范围不包含'});
+            cols.push({field: 'propertyScopeName', title: '评估财产范围'});
+            cols.push({field: 'scopeInclude', title: '范围包括'});
+            cols.push({field: 'scopeNotInclude', title: '范围不包括'});
+            cols.push({field: 'template', title: '模板'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -250,14 +250,22 @@
                                             评估财产范围<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input required type="text" class="form-control" name="propertyScope">
+                                            <select class="form-control" name="propertyScope">
+                                                <option value="">--请选择--</option>
+                                                <c:if test="${not empty propertyScopes}">
+                                                    <c:forEach items="${propertyScopes}" var="item">
+                                                        <option value="${item.id}">${item.name}</option>
+                                                    </c:forEach>
+                                                </c:if>
+                                            </select>
+                                            <%--<input required type="text" class="form-control" name="propertyScope">--%>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            范围包含<span class="symbol required"></span>
+                                            范围包括<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input required type="text" class="form-control" name="scopeInclude">
@@ -267,7 +275,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            范围不包含<span class="symbol required"></span>
+                                            范围不包括<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input required type="text" class="form-control" name="scopeNotInclude">
@@ -280,7 +288,7 @@
                                             模版<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="请填写模版" class="form-control" id="template"
+                                            <textarea placeholder="填写模版" class="form-control" id="template"
                                                       name="template" required="required"></textarea>
                                         </div>
                                     </div>
