@@ -54,10 +54,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.List;
@@ -67,10 +64,8 @@ import java.util.stream.Collectors;
  * Created by kings on 2019-1-16.
  */
 public class GenerateBaseDataService {
-
     private final Logger logger = LoggerFactory.getLogger(getClass());
     protected final String errorStr = "无";
-
     //spring bean
     private SchemeJudgeObjectService schemeJudgeObjectService;
     private SchemeJudgeFunctionService schemeJudgeFunctionService;
@@ -198,17 +193,45 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getPrincipalInfo() {
-        StringBuilder stringBuilder = new StringBuilder(24);
+        StringBuilder stringBuilder = new StringBuilder(16);
         if (Objects.equal(projectInfo.getConsignorVo().getCsType(), InitiateContactsEnum.legalPerson.getId())) {
-            stringBuilder.append("名称:").append(projectInfo.getConsignorVo().getCsEntrustmentUnitName()).append(";");
-            stringBuilder.append("统一社会信用代码:").append(projectInfo.getConsignorVo().getCsSociologyCode()).append(";");
-            stringBuilder.append("住所:").append(projectInfo.getConsignorVo().getCsAddress()).append("");
-            stringBuilder.append("法定代表人:").append(projectInfo.getConsignorVo().getCsLegalRepresentative()).append("");
+            String name = projectInfo.getConsignorVo().getCsEntrustmentUnitName();
+            if (StringUtils.isEmpty(name)){
+                name = "无" ;
+            }
+            stringBuilder.append("名称:").append(name).append(";");
+            String code = projectInfo.getConsignorVo().getCsSociologyCode() ;
+            if (StringUtils.isEmpty(code)){
+                code = "无" ;
+            }
+            stringBuilder.append("统一社会信用代码:").append(code).append(";");
+            String address = projectInfo.getConsignorVo().getCsAddress();
+            if (StringUtils.isEmpty(address)){
+                address = "无" ;
+            }
+            stringBuilder.append("住所:").append(address).append("");
+            String people = projectInfo.getConsignorVo().getCsLegalRepresentative() ;
+            if (StringUtils.isEmpty(people)){
+                people = "无" ;
+            }
+            stringBuilder.append("法定代表人:").append(people).append("");
         }
         if (Objects.equal(projectInfo.getConsignorVo().getCsType(), InitiateContactsEnum.naturalPerson.getId())) {
-            stringBuilder.append("姓名:").append(projectInfo.getConsignorVo().getCsName()).append(";");
-            stringBuilder.append("身份证号:").append(projectInfo.getConsignorVo().getCsIdcard()).append(";");
-            stringBuilder.append("地址:").append(projectInfo.getConsignorVo().getCsAddress()).append("");
+            String name = projectInfo.getConsignorVo().getCsName();
+            if (StringUtils.isEmpty(name)){
+                name = "无" ;
+            }
+            stringBuilder.append("姓名:").append(name).append(";");
+            String idCard = projectInfo.getConsignorVo().getCsIdcard() ;
+            if (StringUtils.isEmpty(idCard)){
+                idCard = "无" ;
+            }
+            stringBuilder.append("身份证号:").append(idCard).append(";");
+            String address = projectInfo.getConsignorVo().getCsAddress();
+            if (StringUtils.isEmpty(address)){
+                address = "无" ;
+            }
+            stringBuilder.append("地址:").append(address).append("");
         }
         return stringBuilder.toString();
     }
@@ -220,7 +243,9 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getScopePropertyExplain() throws Exception {
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        Set<String> stringSet = Sets.newHashSet();
+        StringBuilder stringBuilder = new StringBuilder(16);
+        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
                 projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
@@ -233,26 +258,51 @@ public class GenerateBaseDataService {
                     }
                     return false;
                 }).collect(Collectors.toList());
-        Set<String> stringSet = Sets.newHashSet();
-        if (CollectionUtils.isNotEmpty(projectPhases) && CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && CollectionUtils.isNotEmpty(projectPhases)) {
             for (ProjectPhase projectPhase : projectPhases) {
-                ProjectPlanDetails query = new ProjectPlanDetails();
-                query.setProjectId(projectId);
-                query.setProjectPhaseId(projectPhase.getId());
-                List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                    for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                        GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
-                        if (generateBaseExamineService.getBasicApply().getId() != null && generateBaseExamineService.getBasicApply().getId().intValue() != 0) {
-                            if (generateBaseExamineService.getBasicTrading() != null && StringUtils.isNotBlank(generateBaseExamineService.getBasicTrading().getScopePropertyExplain())) {
-                                stringSet.add(generateBaseExamineService.getBasicTrading().getScopePropertyExplain());
+                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                    ProjectPlanDetails query = new ProjectPlanDetails();
+                    query.setProjectId(projectId);
+                    query.setProjectPhaseId(projectPhase.getId());
+                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
+                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+                        for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
+                            GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
+                            if (generateBaseExamineService.getBasicApply().getId() != null && generateBaseExamineService.getBasicApply().getId().intValue() != 0) {
+                                if (StringUtils.isNotBlank(generateBaseExamineService.getBasicTrading().getScopePropertyExplain())) {
+                                    String temp = generateBaseExamineService.getBasicTrading().getScopePropertyExplain();
+                                    if (StringUtils.isNotBlank(temp)) {
+                                        List<Integer> integerList = stringListMap.get(temp);
+                                        if (CollectionUtils.isNotEmpty(integerList)) {
+                                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                                        } else {
+                                            integerList = Lists.newArrayList();
+                                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                                        }
+                                        stringListMap.put(temp, integerList);
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
         }
-        String s = toSetString(stringSet);
+        if (!stringListMap.isEmpty()) {
+            for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
+                if (entry.getValue().size() > 0) {
+                    stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append("号").append("委估对象").append(":").append(entry.getKey());
+                    stringSet.add(stringBuilder.toString());
+                    stringBuilder.delete(0, stringBuilder.toString().length());
+                }
+            }
+        }
+        String s = generateCommonMethod.toSetString(stringSet);
+        if (StringUtils.isEmpty(s.trim())){
+            s = errorStr;
+        }
         return s;
     }
 
@@ -262,19 +312,51 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getBuildingAndAssessArea() {
+        Set<BigDecimal> bigDecimalSet = Sets.newHashSet();
         Set<String> stringSet = Sets.newHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        StringBuilder stringBuilder = new StringBuilder(16);
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(schemeJudgeObject -> schemeJudgeObject.getEvaluationArea() != null).collect(Collectors.toList());
             for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                if (schemeJudgeObjectList.get(i).getEvaluationArea() != null) {
-                    stringSet.add(String.format("%s:%s㎡", getSchemeJudgeObjectShowName(schemeJudgeObjectList.get(i)), schemeJudgeObjectList.get(i).getEvaluationArea().toString()));
+                bigDecimalSet.add(schemeJudgeObjectList.get(i).getEvaluationArea());
+            }
+        }
+        Map<BigDecimal, List<Integer>> bigDecimalListHashMap = Maps.newHashMap();
+        if (CollectionUtils.isNotEmpty(bigDecimalSet)) {
+            for (BigDecimal s : bigDecimalSet) {
+                bigDecimalListHashMap.put(s, new ArrayList<Integer>(0));
+            }
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                BigDecimal key = null;
+                for (Map.Entry<BigDecimal, List<Integer>> entry : bigDecimalListHashMap.entrySet()) {
+                    if (Objects.equal(entry.getKey(), schemeJudgeObject.getEvaluationArea())) {
+                        key = entry.getKey();
+                        break;
+                    }
+                }
+                if (key != null) {
+                    //取出列表
+                    List<Integer> integerList = bigDecimalListHashMap.get(key);
+                    //添加进相同证载用途的列表中
+                    integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                    //更新回去
+                    bigDecimalListHashMap.put(key, integerList);
                 }
             }
         }
-        String s = toSetString(stringSet);
+        if (!bigDecimalListHashMap.isEmpty()) {
+            for (Map.Entry<BigDecimal, List<Integer>> entry : bigDecimalListHashMap.entrySet()) {
+                if (entry.getValue().size() > 0) {
+                    stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append("号").append("委估对象").append(":").append(entry.getKey().toString()).append("㎡");
+                    stringSet.add(stringBuilder.toString());
+                    stringBuilder.delete(0, stringBuilder.toString().length());
+                }
+            }
+        }
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
-
 
 
     /**
@@ -297,7 +379,7 @@ public class GenerateBaseDataService {
                     }
                     return false;
                 }).collect(Collectors.toList());
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList());
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), true);
         StringBuilder builder = new StringBuilder(16);
         Set<String> streetNumber = Sets.newHashSet();
         Set<String> attachedNumber = Sets.newHashSet();
@@ -333,12 +415,12 @@ public class GenerateBaseDataService {
                     }
                 }
             }
-            builder.append(toSetString2(streetNumber)).append("号");
-            builder.append(toSetString2(estateName));
-            builder.append("附").append(toSetString2(attachedNumber)).append("号")
-                    .append(toSetString2(buildingNumber)).append("栋")
-                    .append(toSetString2(unit)).append("单元")
-                    .append(toSetString2(floor)).append("层");
+            builder.append(generateCommonMethod.toSetString2(streetNumber)).append("号");
+            builder.append(generateCommonMethod.toSetString2(estateName));
+            builder.append("附").append(generateCommonMethod.toSetString2(attachedNumber)).append("号")
+                    .append(generateCommonMethod.toSetString2(buildingNumber)).append("栋")
+                    .append(generateCommonMethod.toSetString2(unit)).append("单元")
+                    .append(generateCommonMethod.toSetString2(floor)).append("层");
             builder.append(generateCommonMethod.convertNumber(roomNumber)).append("号");
             stringSet.add(builder.toString());
             builder.delete(0, builder.toString().length());
@@ -371,7 +453,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString2(stringSet);
+        String s = generateCommonMethod.toSetString2(stringSet);
         return s;
     }
 
@@ -451,34 +533,40 @@ public class GenerateBaseDataService {
      */
     public String getCo_ownership() throws Exception {
         Set<String> stringSet = Sets.newHashSet();
-        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
-        List<DeclareRealtyRealEstateCert> declareRealtyRealEstateCertList = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(declareRecordList)) {
-            List<DeclareRecord> declareRecords = declareRecordList.stream().filter(declareRecord -> {
-                if (declareRecord.getDataTableName().equals(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class))) {
-                    return true;
-                }
-                return false;
-            }).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(declareRecords)) {
-                declareRecords.stream().forEach(declareRecord -> {
-                    if (declareRecord.getDataTableId() != null) {
-                        DeclareRealtyRealEstateCert declareRealtyRealEstateCert = declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertById(declareRecord.getDataTableId());
-                        if (declareRealtyRealEstateCert != null) {
-                            declareRealtyRealEstateCertList.add(declareRealtyRealEstateCert);
+        StringBuilder stringBuilder = new StringBuilder(16);
+        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), true);
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+                if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getPublicSituation())) {
+                    String temp = declareRecord.getPublicSituation();
+                    if (StringUtils.isNotBlank(temp)) {
+                        List<Integer> integerList = stringListMap.get(temp);
+                        if (CollectionUtils.isNotEmpty(integerList)) {
+                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                        } else {
+                            integerList = Lists.newArrayList();
+                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
                         }
+                        stringListMap.put(temp, integerList);
                     }
-                });
+                }
             }
         }
-        if (CollectionUtils.isNotEmpty(declareRealtyRealEstateCertList)) {
-            declareRealtyRealEstateCertList.stream().forEach(declareRealtyRealEstateCert -> {
-                if (StringUtils.isNotBlank(declareRealtyRealEstateCert.getPublicSituation())) {
-                    stringSet.add(declareRealtyRealEstateCert.getPublicSituation());
+        if (!stringListMap.isEmpty()) {
+            for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
+                if (entry.getValue().size() > 0) {
+                    stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append("号").append("委估对象").append(":").append(entry.getKey());
+                    stringSet.add(stringBuilder.toString());
+                    stringBuilder.delete(0, stringBuilder.toString().length());
                 }
-            });
+            }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
+        if (StringUtils.isEmpty(s.trim())){
+            s = "无";
+        }
         return s;
     }
 
@@ -1069,7 +1157,7 @@ public class GenerateBaseDataService {
                 }
             });
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -1128,7 +1216,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -1173,7 +1261,7 @@ public class GenerateBaseDataService {
                 stringSet.add(CnNumberUtils.toUppercaseSubstring(bigDecimalList.get(i).toString()));
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -1196,7 +1284,7 @@ public class GenerateBaseDataService {
                     }
                     return false;
                 }).collect(Collectors.toList());
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList());
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), true);
         StringBuilder builder = new StringBuilder(16);
         Set<String> streetNumber = Sets.newHashSet();
         Set<String> attachedNumber = Sets.newHashSet();
@@ -1232,12 +1320,12 @@ public class GenerateBaseDataService {
                     }
                 }
             }
-            builder.append(toSetString2(streetNumber)).append("号");
-            builder.append(toSetString2(estateName));
-            builder.append("附").append(toSetString2(attachedNumber)).append("号")
-                    .append(toSetString2(buildingNumber)).append("栋")
-                    .append(toSetString2(unit)).append("单元")
-                    .append(toSetString2(floor)).append("层");
+            builder.append(generateCommonMethod.toSetString2(streetNumber)).append("号");
+            builder.append(generateCommonMethod.toSetString2(estateName));
+            builder.append("附").append(generateCommonMethod.toSetString2(attachedNumber)).append("号")
+                    .append(generateCommonMethod.toSetString2(buildingNumber)).append("栋")
+                    .append(generateCommonMethod.toSetString2(unit)).append("单元")
+                    .append(generateCommonMethod.toSetString2(floor)).append("层");
             builder.append(generateCommonMethod.convertNumber(roomNumber)).append("号");
             if (schemeJudgeObjectList1.get(0).getSetUse() != null) {
                 DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObjectList1.get(0).getSetUse());
@@ -1284,7 +1372,7 @@ public class GenerateBaseDataService {
         }
         String s = " ";
         if (getSchemeAreaGroup().getEntrustPurpose() != null) {
-            s = String.format("%s%s", toSetString2(stringSet), baseDataDicService.getNameById(getSchemeAreaGroup().getEntrustPurpose()));
+            s = String.format("%s%s", generateCommonMethod.toSetString2(stringSet), baseDataDicService.getNameById(getSchemeAreaGroup().getEntrustPurpose()));
         }
         return s;
     }
@@ -1320,15 +1408,48 @@ public class GenerateBaseDataService {
      */
     public String getSeparationCertificateUses() throws Exception {
         Set<String> stringSet = Sets.newHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        StringBuilder stringBuilder = new StringBuilder(16);
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(schemeJudgeObject -> StringUtils.isNotBlank(schemeJudgeObject.getCertUse())).collect(Collectors.toList());
             for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                if (StringUtils.isNotBlank(schemeJudgeObjectList.get(i).getCertUse())) {
-                    stringSet.add(String.format("%s:%s", getSchemeJudgeObjectShowName(schemeJudgeObjectList.get(i)), schemeJudgeObjectList.get(i).getCertUse()));
+                stringSet.add(String.format("%s", schemeJudgeObjectList.get(i).getCertUse()));
+            }
+        }
+        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
+        if (CollectionUtils.isNotEmpty(stringSet)) {
+            for (String s : stringSet) {
+                stringListMap.put(s, new ArrayList<Integer>(0));
+            }
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                String key = null;
+                for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
+                    if (Objects.equal(entry.getKey(), schemeJudgeObject.getCertUse())) {
+                        key = entry.getKey();
+                        break;
+                    }
+                }
+                if (StringUtils.isNotBlank(key)) {
+                    //取出列表
+                    List<Integer> integerList = stringListMap.get(key);
+                    //添加进相同证载用途的列表中
+                    integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                    //更新回去
+                    stringListMap.put(key, integerList);
                 }
             }
         }
-        String s = toSetString(stringSet);
+        stringSet.clear();
+        if (!stringListMap.isEmpty()) {
+            for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
+                if (entry.getValue().size() > 0) {
+                    stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append("号").append("委估对象").append(":").append(entry.getKey());
+                    stringSet.add(stringBuilder.toString());
+                    stringBuilder.delete(0, stringBuilder.toString().length());
+                }
+            }
+        }
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -1350,7 +1471,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -1407,7 +1528,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -1429,7 +1550,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -1681,7 +1802,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -1735,15 +1856,44 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getStatutoryOptimumReimbursement() {
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         Set<String> stringSet = Sets.newHashSet();
+        StringBuilder stringBuilder = new StringBuilder(16);
+        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                stringSet.add(String.format("%s:%s", getSchemeJudgeObjectShowName(schemeJudgeObjectList.get(i)), schemeReimbursementService.getFullDescription(schemeJudgeObjectList.get(i).getId())));
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                String temp = null;
+                try {
+                    temp = schemeReimbursementService.getFullDescription(schemeJudgeObject.getId());
+                } catch (Exception e) {
+                }
+                if (StringUtils.isNotBlank(temp)) {
+                    List<Integer> integerList = stringListMap.get(temp);
+                    if (CollectionUtils.isNotEmpty(integerList)) {
+                        integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                    } else {
+                        integerList = Lists.newArrayList();
+                        integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                    }
+                    stringListMap.put(temp, integerList);
+                }
             }
         }
-        String s = toSetString(stringSet);
+        if (!stringListMap.isEmpty()) {
+            for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
+                if (entry.getValue().size() > 0) {
+                    stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append("号").append("委估对象").append(":").append(entry.getKey());
+                    stringSet.add(stringBuilder.toString());
+                    stringBuilder.delete(0, stringBuilder.toString().length());
+                }
+            }
+        }
+        String s = generateCommonMethod.toSetString(stringSet);
+        if (StringUtils.isEmpty(s.trim())){
+            s = errorStr;
+        }
         return s;
+
     }
 
     /**
@@ -1865,7 +2015,7 @@ public class GenerateBaseDataService {
                 builder.delete(0, builder.toString().length());
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -1894,7 +2044,7 @@ public class GenerateBaseDataService {
                 builder.delete(0, builder.toString().length());
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -1926,7 +2076,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -1955,7 +2105,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -2007,7 +2157,7 @@ public class GenerateBaseDataService {
                 builder.delete(0, builder.toString().length());
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -2048,7 +2198,7 @@ public class GenerateBaseDataService {
                 return value;
             }
         }
-        return " ";
+        return errorStr;
     }
 
     //价值类型描述
@@ -2057,7 +2207,7 @@ public class GenerateBaseDataService {
         if (StringUtils.isNotBlank(value)) {
             return value;
         } else {
-            return " ";
+            return errorStr;
         }
     }
 
@@ -2215,7 +2365,7 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
             projectPlanDetailsList.stream().forEach(projectPlanDetails -> stringSet.add(projectPlanDetails.getExecuteUserAccount()));
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -2344,7 +2494,7 @@ public class GenerateBaseDataService {
                 });
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -2380,22 +2530,54 @@ public class GenerateBaseDataService {
      */
     public String getPowerPerson() {
         Set<String> stringSet = Sets.newHashSet();
-        try {
-            List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-            if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-                for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                    if (schemeJudgeObjectList.get(i).getDeclareRecordId() != null) {
-                        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObjectList.get(i).getDeclareRecordId());
-                        if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getOwnership())) {
-                            stringSet.add(String.format("%s:%s", getSchemeJudgeObjectShowName(schemeJudgeObjectList.get(i)), declareRecord.getOwnership()));
+        StringBuilder stringBuilder = new StringBuilder(16);
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), true);
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(schemeJudgeObject -> StringUtils.isNotBlank(schemeJudgeObject.getCertUse())).collect(Collectors.toList());
+            for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
+                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObjectList.get(i).getDeclareRecordId());
+                if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getOwnership())) {
+                    stringSet.add(String.format("%s", declareRecord.getOwnership()));
+                }
+            }
+        }
+        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
+        if (CollectionUtils.isNotEmpty(stringSet)) {
+            for (String s : stringSet) {
+                stringListMap.put(s, new ArrayList<Integer>(0));
+            }
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                String key = null;
+                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+                if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getOwnership())) {
+                    for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
+                        if (Objects.equal(entry.getKey(), declareRecord.getOwnership())) {
+                            key = entry.getKey();
+                            break;
                         }
+                    }
+                    if (StringUtils.isNotBlank(key)) {
+                        //取出列表
+                        List<Integer> integerList = stringListMap.get(key);
+                        //添加进相同证载用途的列表中
+                        integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                        //更新回去
+                        stringListMap.put(key, integerList);
                     }
                 }
             }
-        } catch (Exception e1) {
-            logger.error("权利人拼接异常!");
         }
-        String s = toSetString(stringSet);
+        stringSet.clear();
+        if (!stringListMap.isEmpty()) {
+            for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
+                if (entry.getValue().size() > 0) {
+                    stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append("号").append("委估对象").append(":").append(entry.getKey());
+                    stringSet.add(stringBuilder.toString());
+                    stringBuilder.delete(0, stringBuilder.toString().length());
+                }
+            }
+        }
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -2434,25 +2616,58 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getSetUse() {
-        StringBuilder stringBuilder = new StringBuilder(24);
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        Set<String> stringSet = Sets.newHashSet();
+        StringBuilder stringBuilder = new StringBuilder(16);
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
-            if (schemeJudgeObject.getSetUse() != null) {
-                DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
-                if (dataSetUseField != null) {
-                    stringBuilder.append(getSchemeJudgeObjectShowName(schemeJudgeObject)).append(":");
-                    stringBuilder.append(dataSetUseField.getName());
-                    if (schemeJudgeObjectList.size() > 1) {
-                        stringBuilder.append("等");
+            schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(schemeJudgeObject -> schemeJudgeObject.getSetUse() != null).collect(Collectors.toList());
+            for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
+                if (schemeJudgeObjectList.get(i).getSetUse() != null) {
+                    DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObjectList.get(i).getSetUse());
+                    if (dataSetUseField != null && StringUtils.isNotBlank(dataSetUseField.getName())) {
+                        stringSet.add(String.format("%s", dataSetUseField.getName()));
                     }
                 }
             }
-            if (StringUtils.isNotBlank(stringBuilder.toString())) {
-                return stringBuilder.toString();
+        }
+        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
+        if (CollectionUtils.isNotEmpty(stringSet)) {
+            for (String s : stringSet) {
+                stringListMap.put(s, new ArrayList<Integer>(0));
+            }
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                String key = null;
+                for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
+                    DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
+                    if (dataSetUseField != null && StringUtils.isNotBlank(dataSetUseField.getName())) {
+                        if (Objects.equal(entry.getKey(), dataSetUseField.getName())) {
+                            key = entry.getKey();
+                            break;
+                        }
+                    }
+                }
+                if (StringUtils.isNotBlank(key)) {
+                    //取出列表
+                    List<Integer> integerList = stringListMap.get(key);
+                    //添加进相同证载用途的列表中
+                    integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                    //更新回去
+                    stringListMap.put(key, integerList);
+                }
             }
         }
-        return " ";
+        stringSet.clear();
+        if (!stringListMap.isEmpty()) {
+            for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
+                if (entry.getValue().size() > 0) {
+                    stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append("号").append("委估对象").append(":").append(entry.getKey());
+                    stringSet.add(stringBuilder.toString());
+                    stringBuilder.delete(0, stringBuilder.toString().length());
+                }
+            }
+        }
+        String s = generateCommonMethod.toSetString(stringSet);
+        return s;
     }
 
 
@@ -2462,24 +2677,62 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getPracticalUse() {
-        StringBuilder builder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        StringBuilder stringBuilder = new StringBuilder(16);
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(schemeJudgeObject -> StringUtils.isNotBlank(schemeJudgeObject.getPracticalUse())).collect(Collectors.toList());
             for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                if (StringUtils.isNotBlank(schemeJudgeObjectList.get(i).getPracticalUse())) {
-                    builder.append(getSchemeJudgeObjectShowName(schemeJudgeObjectList.get(i))).append(":");
-                    if (NumberUtils.isNumber(schemeJudgeObjectList.get(i).getPracticalUse())) {
-                        builder.append(baseDataDicService.getNameById(schemeJudgeObjectList.get(i).getPracticalUse()));
-                    } else {
-                        builder.append(schemeJudgeObjectList.get(i).getPracticalUse());
+                if (NumberUtils.isNumber(schemeJudgeObjectList.get(i).getPracticalUse())) {
+                    String s = baseDataDicService.getNameById(schemeJudgeObjectList.get(i).getPracticalUse());
+                    if (StringUtils.isNotBlank(s)) {
+                        stringSet.add(s);
                     }
-                    stringSet.add(builder.toString());
-                    builder.delete(0, builder.toString().length());
+                } else {
+                    stringSet.add(schemeJudgeObjectList.get(i).getPracticalUse());
                 }
             }
         }
-        String s = toSetString(stringSet);
+        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
+        if (CollectionUtils.isNotEmpty(stringSet)) {
+            for (String s : stringSet) {
+                stringListMap.put(s, new ArrayList<Integer>(0));
+            }
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                String key = null;
+                for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
+                    String s = null;
+                    if (NumberUtils.isNumber(schemeJudgeObject.getPracticalUse())) {
+                        s = baseDataDicService.getNameById(schemeJudgeObject.getPracticalUse());
+                    } else {
+                        s = schemeJudgeObject.getPracticalUse();
+                    }
+                    if (Objects.equal(entry.getKey(), s)) {
+                        key = entry.getKey();
+                        break;
+                    }
+                }
+                if (StringUtils.isNotBlank(key)) {
+                    //取出列表
+                    List<Integer> integerList = stringListMap.get(key);
+                    //添加进相同证载用途的列表中
+                    integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                    //更新回去
+                    stringListMap.put(key, integerList);
+                }
+            }
+        }
+        stringSet.clear();
+        if (!stringListMap.isEmpty()) {
+            for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
+                if (entry.getValue().size() > 0) {
+                    stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append("号").append("委估对象").append(":").append(entry.getKey());
+                    stringSet.add(stringBuilder.toString());
+                    stringBuilder.delete(0, stringBuilder.toString().length());
+                }
+            }
+        }
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -2490,8 +2743,9 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getBuildingStructureCategory() throws Exception {
-        StringBuilder builder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
+        StringBuilder stringBuilder = new StringBuilder(16);
+        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
                 projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
@@ -2504,7 +2758,7 @@ public class GenerateBaseDataService {
                     }
                     return false;
                 }).collect(Collectors.toList());
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && CollectionUtils.isNotEmpty(projectPhases)) {
             for (ProjectPhase projectPhase : projectPhases) {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
@@ -2518,10 +2772,17 @@ public class GenerateBaseDataService {
                             GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
                             if (generateBaseExamineService.getBasicApply().getId() != null && generateBaseExamineService.getBasicApply().getId().intValue() != 0) {
                                 if (generateBaseExamineService.getBasicBuilding().getBuildingStructureCategory() != null) {
-                                    builder.append(getSchemeJudgeObjectShowName(schemeJudgeObject)).append(":");
-                                    builder.append(baseDataDicService.getNameById(generateBaseExamineService.getBasicBuilding().getBuildingStructureCategory()));
-                                    stringSet.add(builder.toString());
-                                    builder.delete(0, builder.toString().length());
+                                    String temp = baseDataDicService.getNameById(generateBaseExamineService.getBasicBuilding().getBuildingStructureCategory());
+                                    if (StringUtils.isNotBlank(temp)) {
+                                        List<Integer> integerList = stringListMap.get(temp);
+                                        if (CollectionUtils.isNotEmpty(integerList)) {
+                                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                                        } else {
+                                            integerList = Lists.newArrayList();
+                                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                                        }
+                                        stringListMap.put(temp, integerList);
+                                    }
                                 }
                             }
                         }
@@ -2529,7 +2790,16 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        if (!stringListMap.isEmpty()) {
+            for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
+                if (entry.getValue().size() > 0) {
+                    stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append("号").append("委估对象").append(":").append(entry.getKey());
+                    stringSet.add(stringBuilder.toString());
+                    stringBuilder.delete(0, stringBuilder.toString().length());
+                }
+            }
+        }
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -2540,8 +2810,9 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getTaxBurden() throws Exception {
-        StringBuilder builder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
+        StringBuilder stringBuilder = new StringBuilder(16);
+        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
                 projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
@@ -2554,7 +2825,7 @@ public class GenerateBaseDataService {
                     }
                     return false;
                 }).collect(Collectors.toList());
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && CollectionUtils.isNotEmpty(projectPhases)) {
             for (ProjectPhase projectPhase : projectPhases) {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
@@ -2568,10 +2839,17 @@ public class GenerateBaseDataService {
                             GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
                             if (generateBaseExamineService.getBasicApply().getId() != null && generateBaseExamineService.getBasicApply().getId().intValue() != 0) {
                                 if (generateBaseExamineService.getBasicTrading().getTaxBurden() != null) {
-                                    builder.append(getSchemeJudgeObjectShowName(schemeJudgeObject)).append(":");
-                                    builder.append(baseDataDicService.getNameById(generateBaseExamineService.getBasicTrading().getTaxBurden()));
-                                    stringSet.add(builder.toString());
-                                    builder.delete(0, builder.toString().length());
+                                    String temp = baseDataDicService.getNameById(generateBaseExamineService.getBasicTrading().getTaxBurden());
+                                    if (StringUtils.isNotBlank(temp)) {
+                                        List<Integer> integerList = stringListMap.get(temp);
+                                        if (CollectionUtils.isNotEmpty(integerList)) {
+                                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                                        } else {
+                                            integerList = Lists.newArrayList();
+                                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                                        }
+                                        stringListMap.put(temp, integerList);
+                                    }
                                 }
                             }
                         }
@@ -2579,7 +2857,19 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        if (!stringListMap.isEmpty()) {
+            for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
+                if (entry.getValue().size() > 0) {
+                    stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append("号").append("委估对象").append(":").append(entry.getKey());
+                    stringSet.add(stringBuilder.toString());
+                    stringBuilder.delete(0, stringBuilder.toString().length());
+                }
+            }
+        }
+        String s = generateCommonMethod.toSetString(stringSet);
+        if (StringUtils.isEmpty(s.trim())){
+            s = errorStr;
+        }
         return s;
     }
 
@@ -2590,8 +2880,9 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getPaymentMethod() throws Exception {
-        StringBuilder builder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
+        StringBuilder stringBuilder = new StringBuilder(16);
+        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
                 projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
@@ -2604,7 +2895,7 @@ public class GenerateBaseDataService {
                     }
                     return false;
                 }).collect(Collectors.toList());
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && CollectionUtils.isNotEmpty(projectPhases)) {
             for (ProjectPhase projectPhase : projectPhases) {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
@@ -2618,10 +2909,17 @@ public class GenerateBaseDataService {
                             GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
                             if (generateBaseExamineService.getBasicApply().getId() != null && generateBaseExamineService.getBasicApply().getId().intValue() != 0) {
                                 if (generateBaseExamineService.getBasicTrading().getPaymentMethod() != null) {
-                                    builder.append(getSchemeJudgeObjectShowName(schemeJudgeObject)).append(":");
-                                    builder.append(baseDataDicService.getNameById(generateBaseExamineService.getBasicTrading().getPaymentMethod()));
-                                    stringSet.add(builder.toString());
-                                    builder.delete(0, builder.toString().length());
+                                    String temp = baseDataDicService.getNameById(generateBaseExamineService.getBasicTrading().getPaymentMethod());
+                                    if (StringUtils.isNotBlank(temp)) {
+                                        List<Integer> integerList = stringListMap.get(temp);
+                                        if (CollectionUtils.isNotEmpty(integerList)) {
+                                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                                        } else {
+                                            integerList = Lists.newArrayList();
+                                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                                        }
+                                        stringListMap.put(temp, integerList);
+                                    }
                                 }
                             }
                         }
@@ -2629,7 +2927,19 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        if (!stringListMap.isEmpty()) {
+            for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
+                if (entry.getValue().size() > 0) {
+                    stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append("号").append("委估对象").append(":").append(entry.getKey());
+                    stringSet.add(stringBuilder.toString());
+                    stringBuilder.delete(0, stringBuilder.toString().length());
+                }
+            }
+        }
+        String s = generateCommonMethod.toSetString(stringSet);
+        if (StringUtils.isEmpty(s.trim())){
+            s = errorStr;
+        }
         return s;
     }
 
@@ -2691,7 +3001,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -2701,20 +3011,34 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getRentalPossessionDesc() {
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        StringBuilder stringBuilder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
+        StringBuilder stringBuilder = new StringBuilder(16);
+        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                if (StringUtils.isNotBlank(schemeJudgeObjectList.get(i).getRentalPossessionDesc())) {
-                    stringBuilder.append(getSchemeJudgeObjectShowName(schemeJudgeObjectList.get(i))).append(":");
-                    stringBuilder.append(schemeJudgeObjectList.get(i).getRentalPossessionDesc());
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                if (StringUtils.isNotBlank(schemeJudgeObject.getRentalPossessionDesc())) {
+                    List<Integer> integerList = stringListMap.get(schemeJudgeObject.getRentalPossessionDesc());
+                    if (CollectionUtils.isNotEmpty(integerList)) {
+                        integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                    } else {
+                        integerList = Lists.newArrayList();
+                        integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                    }
+                    stringListMap.put(schemeJudgeObject.getRentalPossessionDesc(), integerList);
+                }
+            }
+        }
+        if (!stringListMap.isEmpty()) {
+            for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
+                if (entry.getValue().size() > 0) {
+                    stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append("号").append("委估对象").append(":").append(entry.getKey());
                     stringSet.add(stringBuilder.toString());
                     stringBuilder.delete(0, stringBuilder.toString().length());
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -2848,7 +3172,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -2859,12 +3183,24 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getHisRightType() throws Exception {
-        StringBuilder stringBuilder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (projectPhase != null) {
-            if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+        StringBuilder stringBuilder = new StringBuilder(16);
+        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
+        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
+                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
+                .stream()
+                .filter(projectPhaseVo -> {
+                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
+                        return true;
+                    }
+                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
+                        return true;
+                    }
+                    return false;
+                }).collect(Collectors.toList());
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && CollectionUtils.isNotEmpty(projectPhases)) {
+            for (ProjectPhase projectPhase : projectPhases) {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                     ProjectPlanDetails query = new ProjectPlanDetails();
                     query.setProjectId(projectId);
@@ -2872,25 +3208,46 @@ public class GenerateBaseDataService {
                     query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                     List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
                     if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                        for (int j = 0; j < projectPlanDetailsList.size(); j++) {
-                            ProjectPlanDetails projectPlanDetails = projectPlanDetailsList.get(j);
+                        for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
+                            String temp = null;
                             List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightService.surveyAssetInventoryRights(projectPlanDetails.getId());
                             if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
                                 for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
                                     if (inventoryRight.getCategory() != null) {
-                                        stringBuilder.append(getSchemeJudgeObjectShowName(schemeJudgeObject)).append(":");
                                         stringBuilder.append(baseDataDicService.getNameById(inventoryRight.getCategory()));
-                                        stringSet.add(stringBuilder.toString());
+                                        temp = stringBuilder.toString();
                                         stringBuilder.delete(0, stringBuilder.toString().length());
                                     }
                                 }
+                            }
+                            if (StringUtils.isNotBlank(temp)) {
+                                List<Integer> integerList = stringListMap.get(temp);
+                                if (CollectionUtils.isNotEmpty(integerList)) {
+                                    integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                                } else {
+                                    integerList = Lists.newArrayList();
+                                    integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                                }
+                                stringListMap.put(temp, integerList);
                             }
                         }
                     }
                 }
             }
         }
-        String s = toSetString(stringSet);
+        if (!stringListMap.isEmpty()) {
+            for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
+                if (entry.getValue().size() > 0) {
+                    stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append("号").append("委估对象").append(":").append(entry.getKey());
+                    stringSet.add(stringBuilder.toString());
+                    stringBuilder.delete(0, stringBuilder.toString().length());
+                }
+            }
+        }
+        String s = generateCommonMethod.toSetString(stringSet);
+        if (StringUtils.isEmpty(s)){
+            s = errorStr;
+        }
         return s;
     }
 
@@ -2901,12 +3258,24 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getRightOther() throws Exception {
-        StringBuilder stringBuilder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (projectPhase != null) {
-            if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+        StringBuilder stringBuilder = new StringBuilder(16);
+        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
+        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
+                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
+                .stream()
+                .filter(projectPhaseVo -> {
+                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
+                        return true;
+                    }
+                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
+                        return true;
+                    }
+                    return false;
+                }).collect(Collectors.toList());
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && CollectionUtils.isNotEmpty(projectPhases)) {
+            for (ProjectPhase projectPhase : projectPhases) {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                     ProjectPlanDetails query = new ProjectPlanDetails();
                     query.setProjectId(projectId);
@@ -2914,29 +3283,50 @@ public class GenerateBaseDataService {
                     query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                     List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
                     if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                        for (int j = 0; j < projectPlanDetailsList.size(); j++) {
-                            ProjectPlanDetails projectPlanDetails = projectPlanDetailsList.get(j);
+                        for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
+                            String temp = null;
                             List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightService.surveyAssetInventoryRights(projectPlanDetails.getId());
                             if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
                                 for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
                                     if (inventoryRight.getCategory() != null) {
-                                        stringBuilder.append(getSchemeJudgeObjectShowName(schemeJudgeObject)).append(":");
                                         stringBuilder.append(baseDataDicService.getNameById(inventoryRight.getCategory()));
                                         stringBuilder.append("-").append(inventoryRight.getNumber());
                                         stringBuilder.append("-").append(inventoryRight.getCertName());
                                         stringBuilder.append("-").append(inventoryRight.getObligee());
                                         stringBuilder.append("-").append(inventoryRight.getObligor());
-                                        stringSet.add(stringBuilder.toString());
+                                        temp = stringBuilder.toString();
                                         stringBuilder.delete(0, stringBuilder.toString().length());
                                     }
                                 }
+                            }
+                            if (StringUtils.isNotBlank(temp)) {
+                                List<Integer> integerList = stringListMap.get(temp);
+                                if (CollectionUtils.isNotEmpty(integerList)) {
+                                    integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                                } else {
+                                    integerList = Lists.newArrayList();
+                                    integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                                }
+                                stringListMap.put(temp, integerList);
                             }
                         }
                     }
                 }
             }
         }
-        String s = toSetString(stringSet);
+        if (!stringListMap.isEmpty()) {
+            for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
+                if (entry.getValue().size() > 0) {
+                    stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append("号").append("委估对象").append(":").append(entry.getKey());
+                    stringSet.add(stringBuilder.toString());
+                    stringBuilder.delete(0, stringBuilder.toString().length());
+                }
+            }
+        }
+        String s = generateCommonMethod.toSetString(stringSet);
+        if (StringUtils.isEmpty(s)){
+            s = errorStr;
+        }
         return s;
     }
 
@@ -2981,7 +3371,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -3026,7 +3416,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -3071,7 +3461,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -3116,7 +3506,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -3127,20 +3517,34 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getCollateralFound() throws Exception {
-        StringBuilder stringBuilder = new StringBuilder(24);
         Set<String> stringSet = Sets.newHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        StringBuilder stringBuilder = new StringBuilder(16);
+        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (StringUtils.isNotBlank(schemeJudgeObject.getCollateralFound())) {
-                    stringBuilder.append(getSchemeJudgeObjectShowName(schemeJudgeObject)).append(":");
-                    stringBuilder.append(schemeJudgeObject.getCollateralFound());
+                    List<Integer> integerList = stringListMap.get(schemeJudgeObject.getCollateralFound());
+                    if (CollectionUtils.isNotEmpty(integerList)) {
+                        integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                    } else {
+                        integerList = Lists.newArrayList();
+                        integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                    }
+                    stringListMap.put(schemeJudgeObject.getCollateralFound(), integerList);
+                }
+            }
+        }
+        if (!stringListMap.isEmpty()) {
+            for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
+                if (entry.getValue().size() > 0) {
+                    stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append("号").append("委估对象").append(":").append(entry.getKey());
                     stringSet.add(stringBuilder.toString());
                     stringBuilder.delete(0, stringBuilder.toString().length());
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -3164,7 +3568,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -3263,7 +3667,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -3296,7 +3700,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -3329,7 +3733,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -3360,7 +3764,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -3394,7 +3798,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -3427,7 +3831,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -3458,7 +3862,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -3491,7 +3895,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -3524,7 +3928,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -3555,7 +3959,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -3588,7 +3992,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -3621,7 +4025,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -3652,7 +4056,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = toSetString(stringSet);
+        String s = generateCommonMethod.toSetString(stringSet);
         return s;
     }
 
@@ -4514,7 +4918,7 @@ public class GenerateBaseDataService {
                                 break;
                             case 3:
                                 builder.insertCell();
-                                builder.writeln(toSetString(a_0_3));
+                                builder.writeln(generateCommonMethod.toSetString(a_0_3));
                                 break;
                             default:
                                 builder.insertCell();
@@ -4532,7 +4936,7 @@ public class GenerateBaseDataService {
                                 break;
                             case 3:
                                 builder.insertCell();
-                                builder.writeln(toSetString(a_1_3));
+                                builder.writeln(generateCommonMethod.toSetString(a_1_3));
                                 break;
                             default:
                                 builder.insertCell();
@@ -4550,7 +4954,7 @@ public class GenerateBaseDataService {
                                 break;
                             case 3:
                                 builder.insertCell();
-                                builder.writeln(toSetString(a_2_3));
+                                builder.writeln(generateCommonMethod.toSetString(a_2_3));
                                 break;
                             default:
                                 builder.insertCell();
@@ -4568,7 +4972,7 @@ public class GenerateBaseDataService {
                                 break;
                             case 3:
                                 builder.insertCell();
-                                builder.writeln(toSetString(a_3_3));
+                                builder.writeln(generateCommonMethod.toSetString(a_3_3));
                                 break;
                             default:
                                 builder.insertCell();
@@ -4586,7 +4990,7 @@ public class GenerateBaseDataService {
                                 break;
                             case 3:
                                 builder.insertCell();
-                                builder.writeln(toSetString(a_4_3));
+                                builder.writeln(generateCommonMethod.toSetString(a_4_3));
                                 break;
                             default:
                                 builder.insertCell();
@@ -4604,7 +5008,7 @@ public class GenerateBaseDataService {
                                 break;
                             case 3:
                                 builder.insertCell();
-                                builder.writeln(toSetString(a_5_3));
+                                builder.writeln(generateCommonMethod.toSetString(a_5_3));
                                 break;
                             default:
                                 builder.insertCell();
@@ -4622,7 +5026,7 @@ public class GenerateBaseDataService {
                                 break;
                             case 3:
                                 builder.insertCell();
-                                builder.writeln(toSetString(a_6_3));
+                                builder.writeln(generateCommonMethod.toSetString(a_6_3));
                                 break;
                             default:
                                 builder.insertCell();
@@ -5734,7 +6138,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        return toSetString(stringSet);
+        return generateCommonMethod.toSetString(stringSet);
     }
 
     /**
@@ -5834,7 +6238,7 @@ public class GenerateBaseDataService {
                     builder.writeln(schemeJudgeObject.getName());
                     for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                        builderInsertImage(builder, imgPath);
+                        generateCommonMethod.builderInsertImage(builder, imgPath);
                     }
                 }
             }
@@ -5860,7 +6264,7 @@ public class GenerateBaseDataService {
                     builder.writeln(schemeJudgeObject.getName());
                     for (SchemeReportFileItem sysAttachmentDto : sysAttachmentDtoList) {
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getAttachmentId());
-                        builderInsertImage(builder, imgPath);
+                        generateCommonMethod.builderInsertImage(builder, imgPath);
                     }
                 }
             }
@@ -5888,7 +6292,7 @@ public class GenerateBaseDataService {
                     builder.writeln(schemeJudgeObject.getName());
                     for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                        builderInsertImage(builder, imgPath);
+                        generateCommonMethod.builderInsertImage(builder, imgPath);
                     }
                 }
             }
@@ -5921,14 +6325,14 @@ public class GenerateBaseDataService {
                     builder.writeln("地址不一致附件");
                     for (SysAttachmentDto sysAttachmentDto : addressFileList) {
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                        builderInsertImage(builder, imgPath);
+                        generateCommonMethod.builderInsertImage(builder, imgPath);
                     }
                 }
                 if (CollectionUtils.isNotEmpty(reimFileList)) {
                     builder.writeln("法定优先受偿款附件");
                     for (SysAttachmentDto sysAttachmentDto : reimFileList) {
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                        builderInsertImage(builder, imgPath);
+                        generateCommonMethod.builderInsertImage(builder, imgPath);
                     }
                 }
             }
@@ -5942,7 +6346,7 @@ public class GenerateBaseDataService {
                     builder.writeln(schemeReportFileCustom.getName());
                     for (SysAttachmentDto sysAttachmentDto : fileList) {
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                        builderInsertImage(builder, imgPath);
+                        generateCommonMethod.builderInsertImage(builder, imgPath);
                     }
                 }
             }
@@ -6158,7 +6562,7 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(declareRealtyRealEstateCertList)) {
             stringSet.add(String.format("《%s》", DeclareTypeEnum.RealEstate.getKey()));
         }
-        String s = toSetString2(stringSet);
+        String s = generateCommonMethod.toSetString2(stringSet);
         return s;
     }
 
@@ -6218,57 +6622,13 @@ public class GenerateBaseDataService {
         this.schemeJudgeObjectList = judgeObjectList;
     }
 
-    private String toSetString(Set<String> stringSet) {
-        StringBuilder builder = new StringBuilder(24);
-        if (CollectionUtils.isNotEmpty(stringSet)) {
-            List<String> stringList = Lists.newArrayList(stringSet);
-            for (int i = 0; i < stringList.size(); i++) {
-                if (StringUtils.isNotBlank(stringList.get(i))) {
-                    builder.append(stringList.get(i));
-                    if (stringList.size() != 1) {
-                        if (i == stringList.size() - 1) {
-                            builder.append(";");
-                        } else {
-                            builder.append(",");
-                        }
-                    }
-                }
-            }
-        } else {
-            return " ";
-        }
-        return builder.toString();
-    }
 
-    private String toSetString2(Set<String> stringSet) {
-        StringBuilder builder = new StringBuilder(24);
-        if (CollectionUtils.isNotEmpty(stringSet)) {
-            List<String> stringList = Lists.newArrayList(stringSet);
-            for (int i = 0; i < stringList.size(); i++) {
-                if (StringUtils.isNotBlank(stringList.get(i))) {
-                    builder.append(stringList.get(i));
-                    if (i != stringList.size() - 1 && stringList.size() != 1) {
-                        builder.append(",");
-                    }
-                }
-            }
-        } else {
-            return " ";
-        }
-        return builder.toString();
-    }
-
-    public String getLocalPath() {
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        return localPath;
+    private String getLocalPath() {
+        return generateCommonMethod.getLocalPath();
     }
 
     private String getLocalPath(String title) {
-        if (StringUtils.isEmpty(title)) {
-            return getLocalPath();
-        }
-        String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        return localPath;
+        return generateCommonMethod.getLocalPath(title);
     }
 
     /**
@@ -6297,23 +6657,6 @@ public class GenerateBaseDataService {
         return builder;
     }
 
-    /**
-     * 为图片设置间隔
-     *
-     * @param builder
-     * @param imgPath
-     * @throws Exception
-     */
-    private void builderInsertImage(DocumentBuilder builder, String imgPath) throws Exception {
-        if (StringUtils.isNotBlank(imgPath) && FileUtils.checkImgSuffix(imgPath)) {
-            File file = new File(imgPath);
-            BufferedImage sourceImg = ImageIO.read(new FileInputStream(file));
-            builder.insertImage(imgPath,
-                    sourceImg.getWidth() > 400 ? 400 : sourceImg.getWidth(),
-                    sourceImg.getHeight() > 500 ? 500 : sourceImg.getHeight());
-            builder.write(" ");
-        }
-    }
 
     /**
      * 获取区域信息(组)
