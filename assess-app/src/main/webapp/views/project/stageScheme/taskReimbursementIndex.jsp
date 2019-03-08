@@ -24,7 +24,7 @@
                 </div>
                 <div class="x_content">
                     <form id="master" class="form-horizontal">
-                        <div class="form-group">
+                        <%--<div class="form-group">
                             <label class="col-sm-1 control-label">
                                 假定未设立法定优先受偿权总价(元)
                             </label>
@@ -89,7 +89,23 @@
                                            value="${master.mortgageTotalPrice}" readonly>
                                 </div>
                             </div>
-                        </div>
+                        </div>--%>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th class="hidden-xs">估价对象</th>
+                                <th class="hidden-xs">假定未设立法定优先受偿权总价(元)</th>
+                                <th class="hidden-xs">已抵押担保的债权数额总价(元)</th>
+                                <th class="hidden-xs">拖欠的建设工程价款总价(元)</th>
+                                <th class="hidden-xs">其它法定优先受偿款总价(元)</th>
+                                <th class="hidden-xs">估价师知悉的法定优先受偿款总价(元)</th>
+                                <th class="hidden-xs">抵押价值总价(元)</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tbody_data_section">
+
+                            </tbody>
+                        </table>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-md-1 col-sm-1 col-xs-12 control-label">
@@ -102,7 +118,7 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="hidden" name="id" value="${master.id}">
+                            <input type="hidden" name="id" value="${master.id}">
                     </form>
                 </div>
             </div>
@@ -127,6 +143,7 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
     $(function () {
+        getItemHtml();
         FileUtils.uploadFiles({
             target: "apply_file",
             formData: {
@@ -155,7 +172,7 @@
         if (!$("#master").valid()) {
             return false;
         }
-        var formData = formParams("master");
+        var formData = getFormData() ;
 
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
@@ -165,20 +182,101 @@
         }
     }
 
-    function getTotal() {
-        var notSetUpTotalPrice = $("#master").find('[name=notSetUpTotalPrice]').val();
-        var mortgagedTotalPrice = $("#master").find('[name=mortgagedTotalPrice]').val();
-        var owedTotalPrice = $("#master").find('[name=owedTotalPrice]').val();
-        var otherTotalPrice = $("#master").find('[name=otherTotalPrice]').val();
+    function getTotal(id) {
+        var notSetUpTotalPriceEle = "notSetUpTotalPrice_"+id;
+        var mortgagedTotalPriceEle = "mortgagedTotalPrice_"+id;
+        var owedTotalPriceEle = "owedTotalPrice_"+id;
+        var otherTotalPriceEle = "otherTotalPrice_"+id;
+        var knowTotalPriceEle = "knowTotalPrice_"+id;
+        var mortgageTotalPriceEle = "mortgageTotalPrice_"+id;
+
+
+        var notSetUpTotalPrice = $("#master").find('[name="'+ notSetUpTotalPriceEle +'"]').val();
+        var mortgagedTotalPrice = $("#master").find('[name="'+ mortgagedTotalPriceEle +'"]').val();
+        var owedTotalPrice = $("#master").find('[name="'+ owedTotalPriceEle +'"]').val();
+        var otherTotalPrice = $("#master").find('[name="'+ otherTotalPriceEle +'"]').val();
         var knowTotalPrice = 0;
         if (mortgagedTotalPrice && owedTotalPrice && otherTotalPrice) {
             knowTotalPrice = Number(mortgagedTotalPrice) + Number(owedTotalPrice) + Number(otherTotalPrice);
-            $("#master").find('[name=knowTotalPrice]').val(Number(knowTotalPrice).toFixed(2));
+            $("#master").find('[name="'+ knowTotalPriceEle +'"]').val(Number(knowTotalPrice).toFixed(2));
         }
-        if(notSetUpTotalPrice&&mortgagedTotalPrice && owedTotalPrice && otherTotalPrice){
-            var mortgageTotalPrice = Number(notSetUpTotalPrice)-Number(knowTotalPrice);
-            $("#master").find('[name=mortgageTotalPrice]').val(Number(mortgageTotalPrice).toFixed(2));
+        if (notSetUpTotalPrice && mortgagedTotalPrice && owedTotalPrice && otherTotalPrice) {
+            var mortgageTotalPrice = Number(notSetUpTotalPrice) - Number(knowTotalPrice);
+            $("#master").find('[name="'+ mortgageTotalPriceEle +'"]').val(Number(mortgageTotalPrice).toFixed(2));
         }
+    }
+
+    function getItemHtml() {
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/schemeReimbursement/getSchemeReimbursementList",
+            data: {
+                masterId: "${master.id}"
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                $("#tbody_data_section").empty();
+                if (result.ret) {
+                    var html = "";
+                    $.each(result.data, function (i, item) {
+                        html += "<tr>";
+                        html += "<td class='hidden-xs'>";
+                        html += '<input type="hidden" name="id" value="' + item.id + '">';
+                        html += item.judgeObjectName;
+                        html += "</td>";
+                        html += "<td class='hidden-xs'>";
+                        html += "<input type='text' onblur='getTotal("+item.id+");'  name='notSetUpTotalPrice_" + item.id + "' value='" + Number(item.notSetUpTotalPrice).toFixed(2) + "' class='form-control'>";
+                        html += "</td>";
+                        html += "<td class='hidden-xs'>";
+                        html += "<input type='text' onblur='getTotal("+item.id+");' name='mortgagedTotalPrice_" + item.id + "' value='" + Number(item.mortgagedTotalPrice).toFixed(2) + "' class='form-control'>";
+                        html += "</td>";
+                        html += "<td class='hidden-xs'>";
+                        html += "<input type='text' onblur='getTotal("+item.id+");' name='owedTotalPrice_" + item.id + "' value='" + Number(item.owedTotalPrice).toFixed(2) + "' class='form-control'>";
+                        html += "</td>";
+                        html += "<td class='hidden-xs'>";
+                        html += "<input type='text' onblur='getTotal("+item.id+");'  name='otherTotalPrice_" + item.id + "' value='" + Number(item.otherTotalPrice).toFixed(2) + "' class='form-control'>";
+                        html += "</td>";
+
+                        html += "</td>";
+                        html += "<td class='hidden-xs'>";
+                        html += "<input type='text' readonly name='knowTotalPrice_" + item.id + "' value='" + Number(item.knowTotalPrice).toFixed(2) + "' class='form-control'>";
+                        html += "</td>";
+
+                        html += "<td class='hidden-xs'>";
+                        html += "<div class='x-valid'>";
+                        html += "<input type='text' readonly  name='mortgageTotalPrice_" + item.id + "' value='" + Number(item.mortgageTotalPrice).toFixed(2) + "' class='form-control'>";
+                        html += "</div>";
+                        html += "</td>";
+                        html += "</tr>";
+                    });
+
+                    $("#tbody_data_section").append(html);
+
+
+                }
+            }
+        });
+    }
+
+    //获取需要保存的数据
+    function getFormData() {
+        var data = {};
+        data.id = "${master.id}";
+        data.itemList = [];
+        $("#tbody_data_section").find('tr').each(function () {
+            var item = {};
+            item.id = $(this).find('[name=id]').val();
+            item.notSetUpTotalPrice = $(this).find('[name^=notSetUpTotalPrice]').val();
+            item.mortgagedTotalPrice = $(this).find('[name^=mortgagedTotalPrice]').val();
+            item.owedTotalPrice = $(this).find('[name^=owedTotalPrice]').val();
+            item.otherTotalPrice = $(this).find('[name^=otherTotalPrice]').val();
+            item.knowTotalPrice = $(this).find('[name^=knowTotalPrice]').val();
+            item.mortgageTotalPrice = $(this).find('[name^=mortgageTotalPrice]').val();
+            data.itemList.push(item);
+        })
+        return data;
     }
 </script>
 

@@ -24,48 +24,22 @@
                 </div>
                 <div class="x_content">
                     <div class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                假定未设立法定优先受偿权总价(元)
-                            </label>
-                            <div class="col-sm-5">
-                                <label class="form-control">${master.notSetUpTotalPrice}</label>
-                            </div>
-                            <label class="col-sm-1 control-label">
-                                已抵押担保的债权数额总价(元)
-                            </label>
-                            <div class="col-sm-5">
-                                <label class="form-control">${master.mortgagedTotalPrice}</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                拖欠的建设工程价款总价(元)
-                            </label>
-                            <div class="col-sm-5">
-                                <label class="form-control">${master.owedTotalPrice}</label>
-                            </div>
-                            <label class="col-sm-1 control-label">
-                                其它法定优先受偿款总价(元)
-                            </label>
-                            <div class="col-sm-5">
-                                <label class="form-control">${master.otherTotalPrice}</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                估价师知悉的法定优先受偿款总价(元)
-                            </label>
-                            <div class="col-sm-5">
-                                <label class="form-control">${master.knowTotalPrice}</label>
-                            </div>
-                            <label class="col-sm-1 control-label">
-                                抵押价值总价(元)
-                            </label>
-                            <div class="col-sm-5">
-                                <label class="form-control">${master.mortgageTotalPrice}</label>
-                            </div>
-                        </div>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th class="hidden-xs">估价对象</th>
+                                <th class="hidden-xs">假定未设立法定优先受偿权总价(元)</th>
+                                <th class="hidden-xs">已抵押担保的债权数额总价(元)</th>
+                                <th class="hidden-xs">拖欠的建设工程价款总价(元)</th>
+                                <th class="hidden-xs">其它法定优先受偿款总价(元)</th>
+                                <th class="hidden-xs">估价师知悉的法定优先受偿款总价(元)</th>
+                                <th class="hidden-xs">抵押价值总价(元)</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tbody_data_section">
+
+                            </tbody>
+                        </table>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-md-1 col-sm-1 col-xs-12 control-label">
@@ -90,6 +64,7 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
     $(function () {
+        getItemHtml();
         FileUtils.getFileShows({
             target: "apply_file",
             formData: {
@@ -103,6 +78,54 @@
 
     function saveform() {
         saveApprovalform("");
+    }
+
+    function getItemHtml() {
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/schemeReimbursement/getSchemeReimbursementList",
+            data: {
+                masterId: "${master.id}"
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                $("#tbody_data_section").empty();
+                if (result.ret) {
+                    var html = "";
+                    $.each(result.data, function (i, item) {
+                        html += "<tr>";
+                        html += "<td class='hidden-xs'>";
+                        html += item.judgeObjectName;
+                        html += "</td>";
+                        html += "<td class='hidden-xs'>";
+                        html += Number(item.notSetUpTotalPrice).toFixed(2);
+                        html += "</td>";
+                        html += "<td class='hidden-xs'>";
+                        html += Number(item.mortgagedTotalPrice).toFixed(2);
+                        html += "</td>";
+                        html += "<td class='hidden-xs'>";
+                        html += Number(item.owedTotalPrice).toFixed(2);
+                        html += "</td>";
+                        html += "<td class='hidden-xs'>";
+                        html += Number(item.otherTotalPrice).toFixed(2);
+                        html += "</td>";
+
+                        html += "</td>";
+                        html += "<td class='hidden-xs'>";
+                        html += Number(item.knowTotalPrice).toFixed(2);
+                        html += "</td>";
+
+                        html += "<td class='hidden-xs'>";
+                        html += Number(item.mortgageTotalPrice).toFixed(2);
+                        html += "</td>";
+                        html += "</tr>";
+                    });
+                    $("#tbody_data_section").append(html);
+                }
+            }
+        });
     }
 </script>
 </body>

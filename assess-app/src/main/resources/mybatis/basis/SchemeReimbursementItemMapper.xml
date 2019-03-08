@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.SchemeReimbursementItemMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementItem" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="judge_object_id" property="judgeObjectId" jdbcType="INTEGER" />
+    <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
+    <result column="not_set_up_unit_price" property="notSetUpUnitPrice" jdbcType="DECIMAL" />
+    <result column="not_set_up_total_price" property="notSetUpTotalPrice" jdbcType="DECIMAL" />
+    <result column="know_total_price" property="knowTotalPrice" jdbcType="DECIMAL" />
+    <result column="mortgaged_total_price" property="mortgagedTotalPrice" jdbcType="DECIMAL" />
+    <result column="owed_total_price" property="owedTotalPrice" jdbcType="DECIMAL" />
+    <result column="other_total_price" property="otherTotalPrice" jdbcType="DECIMAL" />
+    <result column="mortgage_unit_price" property="mortgageUnitPrice" jdbcType="DECIMAL" />
+    <result column="mortgage_total_price" property="mortgageTotalPrice" jdbcType="DECIMAL" />
+    <result column="master_id" property="masterId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, project_id, judge_object_id, plan_details_id, not_set_up_unit_price, not_set_up_total_price, 
+    know_total_price, mortgaged_total_price, owed_total_price, other_total_price, mortgage_unit_price, 
+    mortgage_total_price, master_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementItemExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_scheme_reimbursement_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_scheme_reimbursement_item
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_scheme_reimbursement_item
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementItemExample" >
+    delete from tb_scheme_reimbursement_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementItem" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_scheme_reimbursement_item (project_id, judge_object_id, plan_details_id, 
+      not_set_up_unit_price, not_set_up_total_price, 
+      know_total_price, mortgaged_total_price, owed_total_price, 
+      other_total_price, mortgage_unit_price, mortgage_total_price, 
+      master_id)
+    values (#{projectId,jdbcType=INTEGER}, #{judgeObjectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
+      #{notSetUpUnitPrice,jdbcType=DECIMAL}, #{notSetUpTotalPrice,jdbcType=DECIMAL}, 
+      #{knowTotalPrice,jdbcType=DECIMAL}, #{mortgagedTotalPrice,jdbcType=DECIMAL}, #{owedTotalPrice,jdbcType=DECIMAL}, 
+      #{otherTotalPrice,jdbcType=DECIMAL}, #{mortgageUnitPrice,jdbcType=DECIMAL}, #{mortgageTotalPrice,jdbcType=DECIMAL}, 
+      #{masterId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementItem" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_scheme_reimbursement_item
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="judgeObjectId != null" >
+        judge_object_id,
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id,
+      </if>
+      <if test="notSetUpUnitPrice != null" >
+        not_set_up_unit_price,
+      </if>
+      <if test="notSetUpTotalPrice != null" >
+        not_set_up_total_price,
+      </if>
+      <if test="knowTotalPrice != null" >
+        know_total_price,
+      </if>
+      <if test="mortgagedTotalPrice != null" >
+        mortgaged_total_price,
+      </if>
+      <if test="owedTotalPrice != null" >
+        owed_total_price,
+      </if>
+      <if test="otherTotalPrice != null" >
+        other_total_price,
+      </if>
+      <if test="mortgageUnitPrice != null" >
+        mortgage_unit_price,
+      </if>
+      <if test="mortgageTotalPrice != null" >
+        mortgage_total_price,
+      </if>
+      <if test="masterId != null" >
+        master_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="judgeObjectId != null" >
+        #{judgeObjectId,jdbcType=INTEGER},
+      </if>
+      <if test="planDetailsId != null" >
+        #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="notSetUpUnitPrice != null" >
+        #{notSetUpUnitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="notSetUpTotalPrice != null" >
+        #{notSetUpTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="knowTotalPrice != null" >
+        #{knowTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="mortgagedTotalPrice != null" >
+        #{mortgagedTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="owedTotalPrice != null" >
+        #{owedTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="otherTotalPrice != null" >
+        #{otherTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="mortgageUnitPrice != null" >
+        #{mortgageUnitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="mortgageTotalPrice != null" >
+        #{mortgageTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="masterId != null" >
+        #{masterId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementItemExample" resultType="java.lang.Integer" >
+    select count(*) from tb_scheme_reimbursement_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_scheme_reimbursement_item
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.judgeObjectId != null" >
+        judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.planDetailsId != null" >
+        plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.notSetUpUnitPrice != null" >
+        not_set_up_unit_price = #{record.notSetUpUnitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.notSetUpTotalPrice != null" >
+        not_set_up_total_price = #{record.notSetUpTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.knowTotalPrice != null" >
+        know_total_price = #{record.knowTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.mortgagedTotalPrice != null" >
+        mortgaged_total_price = #{record.mortgagedTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.owedTotalPrice != null" >
+        owed_total_price = #{record.owedTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.otherTotalPrice != null" >
+        other_total_price = #{record.otherTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.mortgageUnitPrice != null" >
+        mortgage_unit_price = #{record.mortgageUnitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.mortgageTotalPrice != null" >
+        mortgage_total_price = #{record.mortgageTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.masterId != null" >
+        master_id = #{record.masterId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_scheme_reimbursement_item
+    set id = #{record.id,jdbcType=INTEGER},
+      project_id = #{record.projectId,jdbcType=INTEGER},
+      judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
+      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      not_set_up_unit_price = #{record.notSetUpUnitPrice,jdbcType=DECIMAL},
+      not_set_up_total_price = #{record.notSetUpTotalPrice,jdbcType=DECIMAL},
+      know_total_price = #{record.knowTotalPrice,jdbcType=DECIMAL},
+      mortgaged_total_price = #{record.mortgagedTotalPrice,jdbcType=DECIMAL},
+      owed_total_price = #{record.owedTotalPrice,jdbcType=DECIMAL},
+      other_total_price = #{record.otherTotalPrice,jdbcType=DECIMAL},
+      mortgage_unit_price = #{record.mortgageUnitPrice,jdbcType=DECIMAL},
+      mortgage_total_price = #{record.mortgageTotalPrice,jdbcType=DECIMAL},
+      master_id = #{record.masterId,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementItem" >
+    update tb_scheme_reimbursement_item
+    <set >
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="judgeObjectId != null" >
+        judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="notSetUpUnitPrice != null" >
+        not_set_up_unit_price = #{notSetUpUnitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="notSetUpTotalPrice != null" >
+        not_set_up_total_price = #{notSetUpTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="knowTotalPrice != null" >
+        know_total_price = #{knowTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="mortgagedTotalPrice != null" >
+        mortgaged_total_price = #{mortgagedTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="owedTotalPrice != null" >
+        owed_total_price = #{owedTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="otherTotalPrice != null" >
+        other_total_price = #{otherTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="mortgageUnitPrice != null" >
+        mortgage_unit_price = #{mortgageUnitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="mortgageTotalPrice != null" >
+        mortgage_total_price = #{mortgageTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="masterId != null" >
+        master_id = #{masterId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementItem" >
+    update tb_scheme_reimbursement_item
+    set project_id = #{projectId,jdbcType=INTEGER},
+      judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      not_set_up_unit_price = #{notSetUpUnitPrice,jdbcType=DECIMAL},
+      not_set_up_total_price = #{notSetUpTotalPrice,jdbcType=DECIMAL},
+      know_total_price = #{knowTotalPrice,jdbcType=DECIMAL},
+      mortgaged_total_price = #{mortgagedTotalPrice,jdbcType=DECIMAL},
+      owed_total_price = #{owedTotalPrice,jdbcType=DECIMAL},
+      other_total_price = #{otherTotalPrice,jdbcType=DECIMAL},
+      mortgage_unit_price = #{mortgageUnitPrice,jdbcType=DECIMAL},
+      mortgage_total_price = #{mortgageTotalPrice,jdbcType=DECIMAL},
+      master_id = #{masterId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

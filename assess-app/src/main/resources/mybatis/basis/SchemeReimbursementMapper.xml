@@ -7,18 +7,18 @@
     <result column="judge_object_id" property="judgeObjectId" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
-    <result column="not_set_up_unit_price" property="notSetUpUnitPrice" jdbcType="DECIMAL" />
-    <result column="not_set_up_total_price" property="notSetUpTotalPrice" jdbcType="DECIMAL" />
-    <result column="know_total_price" property="knowTotalPrice" jdbcType="DECIMAL" />
-    <result column="mortgaged_total_price" property="mortgagedTotalPrice" jdbcType="DECIMAL" />
-    <result column="owed_total_price" property="owedTotalPrice" jdbcType="DECIMAL" />
-    <result column="other_total_price" property="otherTotalPrice" jdbcType="DECIMAL" />
-    <result column="mortgage_unit_price" property="mortgageUnitPrice" jdbcType="DECIMAL" />
-    <result column="mortgage_total_price" property="mortgageTotalPrice" jdbcType="DECIMAL" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="mortgage_total_price" property="mortgageTotalPrice" jdbcType="DECIMAL" />
+    <result column="mortgage_unit_price" property="mortgageUnitPrice" jdbcType="DECIMAL" />
+    <result column="other_total_price" property="otherTotalPrice" jdbcType="DECIMAL" />
+    <result column="owed_total_price" property="owedTotalPrice" jdbcType="DECIMAL" />
+    <result column="mortgaged_total_price" property="mortgagedTotalPrice" jdbcType="DECIMAL" />
+    <result column="know_total_price" property="knowTotalPrice" jdbcType="DECIMAL" />
+    <result column="not_set_up_total_price" property="notSetUpTotalPrice" jdbcType="DECIMAL" />
+    <result column="not_set_up_unit_price" property="notSetUpUnitPrice" jdbcType="DECIMAL" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -79,10 +79,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, judge_object_id, plan_details_id, process_ins_id, not_set_up_unit_price, 
-    not_set_up_total_price, know_total_price, mortgaged_total_price, owed_total_price, 
-    other_total_price, mortgage_unit_price, mortgage_total_price, status, creator, gmt_created, 
-    gmt_modified
+    id, project_id, judge_object_id, plan_details_id, process_ins_id, status, creator, 
+    gmt_created, gmt_modified, mortgage_total_price, mortgage_unit_price, other_total_price, 
+    owed_total_price, mortgaged_total_price, know_total_price, not_set_up_total_price, 
+    not_set_up_unit_price
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementExample" >
     select
@@ -119,17 +119,17 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_scheme_reimbursement (project_id, judge_object_id, plan_details_id, 
-      process_ins_id, not_set_up_unit_price, not_set_up_total_price, 
-      know_total_price, mortgaged_total_price, owed_total_price, 
-      other_total_price, mortgage_unit_price, mortgage_total_price, 
-      status, creator, gmt_created, 
-      gmt_modified)
+      process_ins_id, status, creator, 
+      gmt_created, gmt_modified, mortgage_total_price, 
+      mortgage_unit_price, other_total_price, owed_total_price, 
+      mortgaged_total_price, know_total_price, not_set_up_total_price, 
+      not_set_up_unit_price)
     values (#{projectId,jdbcType=INTEGER}, #{judgeObjectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
-      #{processInsId,jdbcType=VARCHAR}, #{notSetUpUnitPrice,jdbcType=DECIMAL}, #{notSetUpTotalPrice,jdbcType=DECIMAL}, 
-      #{knowTotalPrice,jdbcType=DECIMAL}, #{mortgagedTotalPrice,jdbcType=DECIMAL}, #{owedTotalPrice,jdbcType=DECIMAL}, 
-      #{otherTotalPrice,jdbcType=DECIMAL}, #{mortgageUnitPrice,jdbcType=DECIMAL}, #{mortgageTotalPrice,jdbcType=DECIMAL}, 
-      #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{processInsId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{mortgageTotalPrice,jdbcType=DECIMAL}, 
+      #{mortgageUnitPrice,jdbcType=DECIMAL}, #{otherTotalPrice,jdbcType=DECIMAL}, #{owedTotalPrice,jdbcType=DECIMAL}, 
+      #{mortgagedTotalPrice,jdbcType=DECIMAL}, #{knowTotalPrice,jdbcType=DECIMAL}, #{notSetUpTotalPrice,jdbcType=DECIMAL}, 
+      #{notSetUpUnitPrice,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursement" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -149,30 +149,6 @@
       <if test="processInsId != null" >
         process_ins_id,
       </if>
-      <if test="notSetUpUnitPrice != null" >
-        not_set_up_unit_price,
-      </if>
-      <if test="notSetUpTotalPrice != null" >
-        not_set_up_total_price,
-      </if>
-      <if test="knowTotalPrice != null" >
-        know_total_price,
-      </if>
-      <if test="mortgagedTotalPrice != null" >
-        mortgaged_total_price,
-      </if>
-      <if test="owedTotalPrice != null" >
-        owed_total_price,
-      </if>
-      <if test="otherTotalPrice != null" >
-        other_total_price,
-      </if>
-      <if test="mortgageUnitPrice != null" >
-        mortgage_unit_price,
-      </if>
-      <if test="mortgageTotalPrice != null" >
-        mortgage_total_price,
-      </if>
       <if test="status != null" >
         status,
       </if>
@@ -184,6 +160,30 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified,
+      </if>
+      <if test="mortgageTotalPrice != null" >
+        mortgage_total_price,
+      </if>
+      <if test="mortgageUnitPrice != null" >
+        mortgage_unit_price,
+      </if>
+      <if test="otherTotalPrice != null" >
+        other_total_price,
+      </if>
+      <if test="owedTotalPrice != null" >
+        owed_total_price,
+      </if>
+      <if test="mortgagedTotalPrice != null" >
+        mortgaged_total_price,
+      </if>
+      <if test="knowTotalPrice != null" >
+        know_total_price,
+      </if>
+      <if test="notSetUpTotalPrice != null" >
+        not_set_up_total_price,
+      </if>
+      <if test="notSetUpUnitPrice != null" >
+        not_set_up_unit_price,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -199,30 +199,6 @@
       <if test="processInsId != null" >
         #{processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="notSetUpUnitPrice != null" >
-        #{notSetUpUnitPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="notSetUpTotalPrice != null" >
-        #{notSetUpTotalPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="knowTotalPrice != null" >
-        #{knowTotalPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="mortgagedTotalPrice != null" >
-        #{mortgagedTotalPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="owedTotalPrice != null" >
-        #{owedTotalPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="otherTotalPrice != null" >
-        #{otherTotalPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="mortgageUnitPrice != null" >
-        #{mortgageUnitPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="mortgageTotalPrice != null" >
-        #{mortgageTotalPrice,jdbcType=DECIMAL},
-      </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
       </if>
@@ -234,6 +210,30 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mortgageTotalPrice != null" >
+        #{mortgageTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="mortgageUnitPrice != null" >
+        #{mortgageUnitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="otherTotalPrice != null" >
+        #{otherTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="owedTotalPrice != null" >
+        #{owedTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="mortgagedTotalPrice != null" >
+        #{mortgagedTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="knowTotalPrice != null" >
+        #{knowTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="notSetUpTotalPrice != null" >
+        #{notSetUpTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="notSetUpUnitPrice != null" >
+        #{notSetUpUnitPrice,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -261,30 +261,6 @@
       <if test="record.processInsId != null" >
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="record.notSetUpUnitPrice != null" >
-        not_set_up_unit_price = #{record.notSetUpUnitPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="record.notSetUpTotalPrice != null" >
-        not_set_up_total_price = #{record.notSetUpTotalPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="record.knowTotalPrice != null" >
-        know_total_price = #{record.knowTotalPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="record.mortgagedTotalPrice != null" >
-        mortgaged_total_price = #{record.mortgagedTotalPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="record.owedTotalPrice != null" >
-        owed_total_price = #{record.owedTotalPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="record.otherTotalPrice != null" >
-        other_total_price = #{record.otherTotalPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="record.mortgageUnitPrice != null" >
-        mortgage_unit_price = #{record.mortgageUnitPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="record.mortgageTotalPrice != null" >
-        mortgage_total_price = #{record.mortgageTotalPrice,jdbcType=DECIMAL},
-      </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
       </if>
@@ -296,6 +272,30 @@
       </if>
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mortgageTotalPrice != null" >
+        mortgage_total_price = #{record.mortgageTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.mortgageUnitPrice != null" >
+        mortgage_unit_price = #{record.mortgageUnitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.otherTotalPrice != null" >
+        other_total_price = #{record.otherTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.owedTotalPrice != null" >
+        owed_total_price = #{record.owedTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.mortgagedTotalPrice != null" >
+        mortgaged_total_price = #{record.mortgagedTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.knowTotalPrice != null" >
+        know_total_price = #{record.knowTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.notSetUpTotalPrice != null" >
+        not_set_up_total_price = #{record.notSetUpTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.notSetUpUnitPrice != null" >
+        not_set_up_unit_price = #{record.notSetUpUnitPrice,jdbcType=DECIMAL},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -309,18 +309,18 @@
       judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
-      not_set_up_unit_price = #{record.notSetUpUnitPrice,jdbcType=DECIMAL},
-      not_set_up_total_price = #{record.notSetUpTotalPrice,jdbcType=DECIMAL},
-      know_total_price = #{record.knowTotalPrice,jdbcType=DECIMAL},
-      mortgaged_total_price = #{record.mortgagedTotalPrice,jdbcType=DECIMAL},
-      owed_total_price = #{record.owedTotalPrice,jdbcType=DECIMAL},
-      other_total_price = #{record.otherTotalPrice,jdbcType=DECIMAL},
-      mortgage_unit_price = #{record.mortgageUnitPrice,jdbcType=DECIMAL},
-      mortgage_total_price = #{record.mortgageTotalPrice,jdbcType=DECIMAL},
       status = #{record.status,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      mortgage_total_price = #{record.mortgageTotalPrice,jdbcType=DECIMAL},
+      mortgage_unit_price = #{record.mortgageUnitPrice,jdbcType=DECIMAL},
+      other_total_price = #{record.otherTotalPrice,jdbcType=DECIMAL},
+      owed_total_price = #{record.owedTotalPrice,jdbcType=DECIMAL},
+      mortgaged_total_price = #{record.mortgagedTotalPrice,jdbcType=DECIMAL},
+      know_total_price = #{record.knowTotalPrice,jdbcType=DECIMAL},
+      not_set_up_total_price = #{record.notSetUpTotalPrice,jdbcType=DECIMAL},
+      not_set_up_unit_price = #{record.notSetUpUnitPrice,jdbcType=DECIMAL}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -340,30 +340,6 @@
       <if test="processInsId != null" >
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="notSetUpUnitPrice != null" >
-        not_set_up_unit_price = #{notSetUpUnitPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="notSetUpTotalPrice != null" >
-        not_set_up_total_price = #{notSetUpTotalPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="knowTotalPrice != null" >
-        know_total_price = #{knowTotalPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="mortgagedTotalPrice != null" >
-        mortgaged_total_price = #{mortgagedTotalPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="owedTotalPrice != null" >
-        owed_total_price = #{owedTotalPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="otherTotalPrice != null" >
-        other_total_price = #{otherTotalPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="mortgageUnitPrice != null" >
-        mortgage_unit_price = #{mortgageUnitPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="mortgageTotalPrice != null" >
-        mortgage_total_price = #{mortgageTotalPrice,jdbcType=DECIMAL},
-      </if>
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
       </if>
@@ -376,6 +352,30 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="mortgageTotalPrice != null" >
+        mortgage_total_price = #{mortgageTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="mortgageUnitPrice != null" >
+        mortgage_unit_price = #{mortgageUnitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="otherTotalPrice != null" >
+        other_total_price = #{otherTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="owedTotalPrice != null" >
+        owed_total_price = #{owedTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="mortgagedTotalPrice != null" >
+        mortgaged_total_price = #{mortgagedTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="knowTotalPrice != null" >
+        know_total_price = #{knowTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="notSetUpTotalPrice != null" >
+        not_set_up_total_price = #{notSetUpTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="notSetUpUnitPrice != null" >
+        not_set_up_unit_price = #{notSetUpUnitPrice,jdbcType=DECIMAL},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -385,18 +385,18 @@
       judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
-      not_set_up_unit_price = #{notSetUpUnitPrice,jdbcType=DECIMAL},
-      not_set_up_total_price = #{notSetUpTotalPrice,jdbcType=DECIMAL},
-      know_total_price = #{knowTotalPrice,jdbcType=DECIMAL},
-      mortgaged_total_price = #{mortgagedTotalPrice,jdbcType=DECIMAL},
-      owed_total_price = #{owedTotalPrice,jdbcType=DECIMAL},
-      other_total_price = #{otherTotalPrice,jdbcType=DECIMAL},
-      mortgage_unit_price = #{mortgageUnitPrice,jdbcType=DECIMAL},
-      mortgage_total_price = #{mortgageTotalPrice,jdbcType=DECIMAL},
       status = #{status,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      mortgage_total_price = #{mortgageTotalPrice,jdbcType=DECIMAL},
+      mortgage_unit_price = #{mortgageUnitPrice,jdbcType=DECIMAL},
+      other_total_price = #{otherTotalPrice,jdbcType=DECIMAL},
+      owed_total_price = #{owedTotalPrice,jdbcType=DECIMAL},
+      mortgaged_total_price = #{mortgagedTotalPrice,jdbcType=DECIMAL},
+      know_total_price = #{knowTotalPrice,jdbcType=DECIMAL},
+      not_set_up_total_price = #{notSetUpTotalPrice,jdbcType=DECIMAL},
+      not_set_up_unit_price = #{notSetUpUnitPrice,jdbcType=DECIMAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
