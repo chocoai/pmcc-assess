@@ -1272,12 +1272,9 @@
         data.remarkEntrustPurpose = $(areaPanel).find('[name="remarkEntrustPurpose"]').val();
 
         data.valueDefinition = $(areaPanel).find('[name="valueDefinition"]').val();
-        data.valueConnotation = $(areaPanel).find('[name="valueConnotation"]').val();
-        if (!data.valueConnotation) {
-            data.valueConnotation = [];
-        }
-        data.valueDefinitionDesc = $(areaPanel).find('[name="valueDefinitionDesc"]').val();
-        data.valueConnotationDesc = $(areaPanel).find('[name="valueConnotationDesc"]').val();
+        data.propertyScope = $(areaPanel).find('[name="propertyScope"]').val();
+        data.scopeInclude = $(areaPanel).find('[name="scopeInclude"]').val();
+        data.scopeNotInclude = $(areaPanel).find('[name="scopeNotInclude"]').val();
         data.schemeJudgeObjects = [];
 
         var trs = $(areaPanel).find(".table").find("tbody").find('tr');

@@ -1126,6 +1126,366 @@ public class MdIncomeLeaseCostExample {
             return (Criteria) this;
         }
 
+        public Criteria andPropertyTaxRatioIsNull() {
+            addCriterion("property_tax_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTaxRatioIsNotNull() {
+            addCriterion("property_tax_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTaxRatioEqualTo(BigDecimal value) {
+            addCriterion("property_tax_ratio =", value, "propertyTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTaxRatioNotEqualTo(BigDecimal value) {
+            addCriterion("property_tax_ratio <>", value, "propertyTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTaxRatioGreaterThan(BigDecimal value) {
+            addCriterion("property_tax_ratio >", value, "propertyTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTaxRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("property_tax_ratio >=", value, "propertyTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTaxRatioLessThan(BigDecimal value) {
+            addCriterion("property_tax_ratio <", value, "propertyTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTaxRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("property_tax_ratio <=", value, "propertyTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTaxRatioIn(List<BigDecimal> values) {
+            addCriterion("property_tax_ratio in", values, "propertyTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTaxRatioNotIn(List<BigDecimal> values) {
+            addCriterion("property_tax_ratio not in", values, "propertyTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTaxRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("property_tax_ratio between", value1, value2, "propertyTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTaxRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("property_tax_ratio not between", value1, value2, "propertyTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampDutyRatioIsNull() {
+            addCriterion("stamp_duty_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampDutyRatioIsNotNull() {
+            addCriterion("stamp_duty_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampDutyRatioEqualTo(BigDecimal value) {
+            addCriterion("stamp_duty_ratio =", value, "stampDutyRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampDutyRatioNotEqualTo(BigDecimal value) {
+            addCriterion("stamp_duty_ratio <>", value, "stampDutyRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampDutyRatioGreaterThan(BigDecimal value) {
+            addCriterion("stamp_duty_ratio >", value, "stampDutyRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampDutyRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("stamp_duty_ratio >=", value, "stampDutyRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampDutyRatioLessThan(BigDecimal value) {
+            addCriterion("stamp_duty_ratio <", value, "stampDutyRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampDutyRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("stamp_duty_ratio <=", value, "stampDutyRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampDutyRatioIn(List<BigDecimal> values) {
+            addCriterion("stamp_duty_ratio in", values, "stampDutyRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampDutyRatioNotIn(List<BigDecimal> values) {
+            addCriterion("stamp_duty_ratio not in", values, "stampDutyRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampDutyRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("stamp_duty_ratio between", value1, value2, "stampDutyRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andStampDutyRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("stamp_duty_ratio not between", value1, value2, "stampDutyRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalesTaxRatioIsNull() {
+            addCriterion("sales_tax_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalesTaxRatioIsNotNull() {
+            addCriterion("sales_tax_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalesTaxRatioEqualTo(BigDecimal value) {
+            addCriterion("sales_tax_ratio =", value, "salesTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalesTaxRatioNotEqualTo(BigDecimal value) {
+            addCriterion("sales_tax_ratio <>", value, "salesTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalesTaxRatioGreaterThan(BigDecimal value) {
+            addCriterion("sales_tax_ratio >", value, "salesTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalesTaxRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("sales_tax_ratio >=", value, "salesTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalesTaxRatioLessThan(BigDecimal value) {
+            addCriterion("sales_tax_ratio <", value, "salesTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalesTaxRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("sales_tax_ratio <=", value, "salesTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalesTaxRatioIn(List<BigDecimal> values) {
+            addCriterion("sales_tax_ratio in", values, "salesTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalesTaxRatioNotIn(List<BigDecimal> values) {
+            addCriterion("sales_tax_ratio not in", values, "salesTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalesTaxRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("sales_tax_ratio between", value1, value2, "salesTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalesTaxRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("sales_tax_ratio not between", value1, value2, "salesTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionTaxRatioIsNull() {
+            addCriterion("construction_tax_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionTaxRatioIsNotNull() {
+            addCriterion("construction_tax_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionTaxRatioEqualTo(BigDecimal value) {
+            addCriterion("construction_tax_ratio =", value, "constructionTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionTaxRatioNotEqualTo(BigDecimal value) {
+            addCriterion("construction_tax_ratio <>", value, "constructionTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionTaxRatioGreaterThan(BigDecimal value) {
+            addCriterion("construction_tax_ratio >", value, "constructionTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionTaxRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("construction_tax_ratio >=", value, "constructionTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionTaxRatioLessThan(BigDecimal value) {
+            addCriterion("construction_tax_ratio <", value, "constructionTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionTaxRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("construction_tax_ratio <=", value, "constructionTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionTaxRatioIn(List<BigDecimal> values) {
+            addCriterion("construction_tax_ratio in", values, "constructionTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionTaxRatioNotIn(List<BigDecimal> values) {
+            addCriterion("construction_tax_ratio not in", values, "constructionTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionTaxRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("construction_tax_ratio between", value1, value2, "constructionTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionTaxRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("construction_tax_ratio not between", value1, value2, "constructionTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocalEducationRatioIsNull() {
+            addCriterion("local_education_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocalEducationRatioIsNotNull() {
+            addCriterion("local_education_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocalEducationRatioEqualTo(BigDecimal value) {
+            addCriterion("local_education_ratio =", value, "localEducationRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocalEducationRatioNotEqualTo(BigDecimal value) {
+            addCriterion("local_education_ratio <>", value, "localEducationRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocalEducationRatioGreaterThan(BigDecimal value) {
+            addCriterion("local_education_ratio >", value, "localEducationRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocalEducationRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("local_education_ratio >=", value, "localEducationRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocalEducationRatioLessThan(BigDecimal value) {
+            addCriterion("local_education_ratio <", value, "localEducationRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocalEducationRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("local_education_ratio <=", value, "localEducationRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocalEducationRatioIn(List<BigDecimal> values) {
+            addCriterion("local_education_ratio in", values, "localEducationRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocalEducationRatioNotIn(List<BigDecimal> values) {
+            addCriterion("local_education_ratio not in", values, "localEducationRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocalEducationRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("local_education_ratio between", value1, value2, "localEducationRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocalEducationRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("local_education_ratio not between", value1, value2, "localEducationRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEducationRatioIsNull() {
+            addCriterion("education_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEducationRatioIsNotNull() {
+            addCriterion("education_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEducationRatioEqualTo(BigDecimal value) {
+            addCriterion("education_ratio =", value, "educationRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEducationRatioNotEqualTo(BigDecimal value) {
+            addCriterion("education_ratio <>", value, "educationRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEducationRatioGreaterThan(BigDecimal value) {
+            addCriterion("education_ratio >", value, "educationRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEducationRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("education_ratio >=", value, "educationRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEducationRatioLessThan(BigDecimal value) {
+            addCriterion("education_ratio <", value, "educationRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEducationRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("education_ratio <=", value, "educationRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEducationRatioIn(List<BigDecimal> values) {
+            addCriterion("education_ratio in", values, "educationRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEducationRatioNotIn(List<BigDecimal> values) {
+            addCriterion("education_ratio not in", values, "educationRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEducationRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("education_ratio between", value1, value2, "educationRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEducationRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("education_ratio not between", value1, value2, "educationRatio");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

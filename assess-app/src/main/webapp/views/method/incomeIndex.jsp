@@ -18,7 +18,7 @@
                         房产剩余使用年限
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control">${houseSurplusYear}</label>
+                        <input type="text" class="form-control" name="houseRemainingYear" readonly="readonly" value="${houseSurplusYear}">
                     </div>
                 </div>
                 <div class="x-valid">
@@ -26,7 +26,7 @@
                         土地剩余使用年限
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control">${landSurplusYear}</label>
+                        <input type="text" class="form-control" name="landRemainingYear" readonly="readonly" value="${landSurplusYear}">
                     </div>
                 </div>
             </div>

@@ -137,8 +137,7 @@ $(function () {
                 }
             }
         },
-        /*
-         *描述:小数转百分数,这里需要先用Number进行数据类型转换，然后去指定截取转换后的小数点后几位(按照四舍五入)，这里是截取一位，0.1266转换后会变成12.7%*/
+        //小数转百分比
         pointToPercent: function (value) {
             if (value && AssessCommon.isNumber(value)) {
                 return (parseFloat(value) * 100).toFixed(2) + "%";

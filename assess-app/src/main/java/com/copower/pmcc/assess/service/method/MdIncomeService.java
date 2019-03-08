@@ -863,52 +863,7 @@ public class MdIncomeService {
         return mdIncome;
     }
 
-    /**
-     * 获取租赁税费 房产税+印花税+增值税*(1+城建税+地方教育费附加+教育费附加)
-     *
-     * @param province
-     * @param city
-     * @param district
-     * @return
-     */
-    public BigDecimal getAdditionalRatio(String province, String city, String district) {
-        BigDecimal propertyTax = new BigDecimal("0");//房产税
-        BigDecimal stampDuty = new BigDecimal("0");//印花税
-        BigDecimal salesTax = new BigDecimal("0");//增值税
-        BigDecimal constructionTax = new BigDecimal("0");//城建税
-        BigDecimal localEducationTax = new BigDecimal("0");//地方教育费附加
-        BigDecimal educationFeePlus = new BigDecimal("0");//教育费附加
-        //房产税
-        DataTaxRateAllocation propertyTaxAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_PROPERTY_TAX);
-        if (propertyTaxAllocation != null)
-            propertyTax = propertyTaxAllocation.getTaxRate();
-        //印花税
-        propertyTaxAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_STAMP_DUTY);
-        if (propertyTaxAllocation != null)
-            stampDuty = propertyTaxAllocation.getTaxRate();
-        //增值税
-        propertyTaxAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_SALES_TAX);
-        if (propertyTaxAllocation != null)
-            salesTax = propertyTaxAllocation.getTaxRate();
-        //城建税
-        propertyTaxAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_CONSTRUCTION_TAX);
-        if (propertyTaxAllocation != null)
-            constructionTax = propertyTaxAllocation.getTaxRate();
-        //地方教育费附加
-        propertyTaxAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_LOCAL_EDUCATION_TAX_ADDITIONAL, province, city, district);
-        if (propertyTaxAllocation != null)
-            localEducationTax = propertyTaxAllocation.getTaxRate();
-        //教育费附加
-        propertyTaxAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_EDUCATION_FEE_PLUS);
-        if (propertyTaxAllocation != null)
-            educationFeePlus = propertyTaxAllocation.getTaxRate();
 
-        BigDecimal total = new BigDecimal("0");
-        total = total.add(propertyTax).add(stampDuty);
-        total = total.add(salesTax.multiply(new BigDecimal("1").add(constructionTax).add(localEducationTax).add(educationFeePlus)));
-        total = total.setScale(4, BigDecimal.ROUND_HALF_UP);
-        return total;
-    }
 
     /**
      * 获取土地剩余使用年限
@@ -920,7 +875,7 @@ public class MdIncomeService {
     public BigDecimal getLandSurplusYear(Date landUseEndDate, Date valueTimePoint) {
         if (landUseEndDate == null || valueTimePoint == null) return null;
         BigDecimal landSurplusYear = new BigDecimal(DateUtils.diffDate(landUseEndDate, valueTimePoint));
-        landSurplusYear = landSurplusYear.divide(new BigDecimal(DateUtils.DAYS_PER_YEAR), 2, BigDecimal.ROUND_HALF_DOWN);
+        landSurplusYear = landSurplusYear.divide(new BigDecimal(DateUtils.DAYS_PER_YEAR), 2, BigDecimal.ROUND_HALF_UP);
         return landSurplusYear;
     }
 
@@ -934,7 +889,7 @@ public class MdIncomeService {
      */
     public BigDecimal getHouseSurplusYear(Date completedTime, Date valueTimePoint, Integer canUseYear) {
         if (completedTime == null || valueTimePoint == null || canUseYear == null) return null;
-        BigDecimal usedYear = new BigDecimal(DateUtils.diffDate(valueTimePoint, completedTime)).divide(new BigDecimal(DateUtils.DAYS_PER_YEAR), 2, BigDecimal.ROUND_HALF_DOWN);
+        BigDecimal usedYear = new BigDecimal(DateUtils.diffDate(valueTimePoint, completedTime)).divide(new BigDecimal(DateUtils.DAYS_PER_YEAR), 2, BigDecimal.ROUND_HALF_UP);
         BigDecimal houseSurplusYear =new BigDecimal(canUseYear).subtract(usedYear);
         return houseSurplusYear;
     }

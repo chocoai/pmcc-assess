@@ -72,7 +72,7 @@ public class SurveyExamineController {
         }
         modelAndView.addObject("examineType", examineType);
         modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
-        SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(planDetailsId);
+        SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExamineInfoByPlanDetailsId(planDetailsId);
         if (surveyExamineInfo == null) {
             surveyExamineTaskService.deleteTaskByPlanDetailsId(planDetailsId);//清空数据
         }

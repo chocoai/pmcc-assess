@@ -138,27 +138,49 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
         if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
             mdIncome = mdIncomeService.getIncomeById(schemeInfo.getMethodDataId());
         }
+        modelAndView.addObject("mdIncome", mdIncome);
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(judgeObject.getAreaGroupId());
         modelAndView.addObject("judgeObject", judgeObject);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
         if (declareRecord != null) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(declareRecord.getId());
-            if(basicApply!=null){
+            if (basicApply != null) {
                 BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
                 BigDecimal houseSurplusYear = mdIncomeService.getHouseSurplusYear(basicBuilding.getBeCompletedTime(), areaGroup.getValueTimePoint(), surveyCommonService.getBuildingUsableYear(basicApply, basicBuilding));
-                modelAndView.addObject("houseSurplusYear",houseSurplusYear); //房产使用剩余年限
+                modelAndView.addObject("houseSurplusYear", houseSurplusYear); //房产使用剩余年限
             }
             //土地使用剩余年限
-            modelAndView.addObject("landSurplusYear", mdIncomeService.getLandSurplusYear(declareRecord.getLandUseEndDate(),areaGroup.getValueTimePoint()));
+            modelAndView.addObject("landSurplusYear", mdIncomeService.getLandSurplusYear(declareRecord.getLandUseEndDate(), areaGroup.getValueTimePoint()));
         }
         //取重置价格
         DataTaxRateAllocation taxRateAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_LAND_REPLACEMENT_VALUE, areaGroup.getProvince(), areaGroup.getCity(), null);
         if (taxRateAllocation != null)
             modelAndView.addObject("replacementValue", taxRateAllocation.getAmount());
-        //取租赁税费 房产税+印花税+增值税*(城建税+地方教育费附加+教育费附加)
-        modelAndView.addObject("additionalRatio", mdIncomeService.getAdditionalRatio(areaGroup.getProvince(), areaGroup.getCity(), null));
-        modelAndView.addObject("mdIncome", mdIncome);
+        //房产税率
+        taxRateAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_PROPERTY_TAX);
+        if (taxRateAllocation != null)
+            modelAndView.addObject("propertyTaxRatio", taxRateAllocation.getTaxRate());
+        //印花税率
+        taxRateAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_STAMP_DUTY);
+        if (taxRateAllocation != null)
+            modelAndView.addObject("stampDutyRatio", taxRateAllocation.getTaxRate());
+        //增值税率
+        taxRateAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_SALES_TAX);
+        if (taxRateAllocation != null)
+            modelAndView.addObject("salesTaxRatio", taxRateAllocation.getTaxRate());
+        //城建税率
+        taxRateAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_CONSTRUCTION_TAX);
+        if (taxRateAllocation != null)
+            modelAndView.addObject("constructionTaxRatio", taxRateAllocation.getTaxRate());
+        //地方教育费附加税率
+        taxRateAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_LOCAL_EDUCATION_TAX_ADDITIONAL, areaGroup.getProvince(), areaGroup.getCity(), null);
+        if (taxRateAllocation != null)
+            modelAndView.addObject("localEducationRatio", taxRateAllocation.getTaxRate());
+        //教育费附加税率
+        taxRateAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_EDUCATION_FEE_PLUS);
+        if (taxRateAllocation != null)
+            modelAndView.addObject("educationRatio", taxRateAllocation.getTaxRate());
     }
 
     /**

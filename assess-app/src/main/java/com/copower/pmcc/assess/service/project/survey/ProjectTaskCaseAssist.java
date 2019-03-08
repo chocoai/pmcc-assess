@@ -80,7 +80,7 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
         }
         modelAndView.addObject("examineType", examineType);
         modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
-        SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(projectPlanDetails.getId());
+        SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExamineInfoByPlanDetailsId(projectPlanDetails.getId());
         if (surveyExamineInfo == null) {
             //清空数据
             surveyExamineTaskService.deleteTaskByPlanDetailsId(projectPlanDetails.getId());

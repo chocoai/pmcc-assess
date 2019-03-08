@@ -10,7 +10,9 @@ import com.copower.pmcc.assess.dal.basis.dao.project.scheme.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeSurePriceApplyDto;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.method.MdCommonService;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,6 +51,8 @@ public class SchemeSurePriceService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private SchemeJudgeFunctionDao schemeJudgeFunctionDao;
+    @Autowired
+    private MdCommonService mdCommonService;
 
     /**
      * 保存确定单价信息
@@ -115,7 +119,10 @@ public class SchemeSurePriceService {
             functionWhere.setJudgeObjectId(judgeObjectId);
             List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionDao.getSchemeJudgeFunction(functionWhere);
             if (CollectionUtils.isNotEmpty(judgeFunctions)) {
-                for (SchemeJudgeFunction judgeFunction : judgeFunctions) {
+                List<BaseDataDic> baseMethodList = mdCommonService.getBaseMethodList();
+                List<Integer> methodTypeList=LangUtils.transform(baseMethodList,o->o.getId());
+                List<SchemeJudgeFunction> filter = LangUtils.filter(judgeFunctions, o -> methodTypeList.contains(o.getMethodType()));
+                for (SchemeJudgeFunction judgeFunction : filter) {
                     SchemeSurePriceItem schemeSurePriceItem = new SchemeSurePriceItem();
                     schemeSurePriceItem.setJudgeObjectId(judgeObjectId);
                     schemeSurePriceItem.setMethodType(judgeFunction.getMethodType());

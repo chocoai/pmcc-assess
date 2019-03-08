@@ -4,9 +4,6 @@ import com.copower.pmcc.assess.common.enums.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
-import com.copower.pmcc.assess.dal.basis.entity.BasicBuilding;
-import com.copower.pmcc.assess.dal.basis.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareItemDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
@@ -33,7 +30,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -180,15 +176,15 @@ public class MdMarketCompareService {
         if (CollectionUtils.isNotEmpty(planDetailsIdList)) {
             List<DataSetUseField> setUseFieldList = getSetUseFieldList();
             ProjectInfo projectInfo = null;
+            int i=1;
             for (Integer planDetailsId : planDetailsIdList) {
                 ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
                 MdMarketCompareItem mdMarketCompareItem = new MdMarketCompareItem();
                 mdMarketCompareItem.setMcId(mcId);
                 mdMarketCompareItem.setPlanDetailsId(planDetailsId);
-                mdMarketCompareItem.setName(projectPlanDetails.getProjectPhaseName());
+                mdMarketCompareItem.setName(String.format("案例%s",i));
                 mdMarketCompareItem.setType(ExamineTypeEnum.CASE.getId());
                 mdMarketCompareItem.setCreator(commonService.thisUserAccount());
-                mdMarketCompareItem.setInitialPrice(new BigDecimal("15000"));
                 mdMarketCompareItem.setMustAdjustPrice(false);
                 if (projectInfo == null)
                     projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
@@ -196,6 +192,7 @@ public class MdMarketCompareService {
                 //获取成新率相关参数
                 setResidueRatioParam(mdMarketCompareItem, planDetailsId, marketCompare.getValueTimePoint());
                 mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
+                i++;
             }
         }
     }

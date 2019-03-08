@@ -366,7 +366,16 @@ public class BasicHouseService {
         basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));
 
-        //添加房屋完损度
+        initDemagedDegree(basicHouse);
+        return objectMap;
+    }
+
+    /**
+     * 初始化房屋完损度
+     * @param basicHouse
+     * @throws Exception
+     */
+    public void initDemagedDegree(BasicHouse basicHouse) throws Exception {
         List<DataDamagedDegree> degreeList = dataDamagedDegreeService.getCacheDamagedDegreeListByPid(0);
         List<BasicHouseDamagedDegree> basicHouseDamagedDegrees = basicHouseDamagedDegreeService.getDamagedDegreeList(basicHouse.getId());
         if (CollectionUtils.isEmpty(basicHouseDamagedDegrees)) {
@@ -385,7 +394,6 @@ public class BasicHouseService {
                 }
             }
         }
-        return objectMap;
     }
 
     /**
@@ -792,51 +800,5 @@ public class BasicHouseService {
         for (SysAttachmentDto sysAttachmentDto : attachmentList) {
             baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
         }
-    }
-
-    /**
-     * 添加房屋
-     *
-     * @return
-     * @throws Exception
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> addHouse(String houseNumber, Integer applyId) throws Exception {
-        this.clearInvalidData(0);
-        Map<String, Object> objectMap = Maps.newHashMap();
-
-        BasicHouse basicHouse = null;
-        if (applyId == null || applyId.equals(0)) {
-            basicHouse = new BasicHouse();
-            basicHouse.setHouseNumber(houseNumber);
-
-            basicHouse.setApplyId(0);
-            basicHouse.setCreator(commonService.thisUserAccount());
-            basicHouseDao.addBasicHouse(basicHouse);
-        } else {
-            basicHouse = getHouseByApplyId(applyId);
-        }
-        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()), getBasicHouseVo(basicHouse));
-
-        //添加房屋完损度
-        List<DataDamagedDegree> degreeList = dataDamagedDegreeService.getCacheDamagedDegreeListByPid(0);
-        List<BasicHouseDamagedDegree> basicHouseDamagedDegrees = basicHouseDamagedDegreeService.getDamagedDegreeList(basicHouse.getId());
-        if (CollectionUtils.isEmpty(basicHouseDamagedDegrees)) {
-            if (!CollectionUtils.isEmpty(degreeList)) {
-                for (DataDamagedDegree degree : degreeList) {
-                    List<DataDamagedDegree> damagedDegreeList = dataDamagedDegreeService.getCacheDamagedDegreeListByPid(degree.getId());
-                    if (!CollectionUtils.isEmpty(damagedDegreeList)) {
-                        for (DataDamagedDegree damagedDegree : damagedDegreeList) {
-                            BasicHouseDamagedDegree basicHouseDamagedDegree = new BasicHouseDamagedDegreeVo();
-                            basicHouseDamagedDegree.setHouseId(basicHouse.getId());
-                            basicHouseDamagedDegree.setType(degree.getId());
-                            basicHouseDamagedDegree.setCategory(damagedDegree.getId());
-                            basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(basicHouseDamagedDegree);
-                        }
-                    }
-                }
-            }
-        }
-        return objectMap;
     }
 }

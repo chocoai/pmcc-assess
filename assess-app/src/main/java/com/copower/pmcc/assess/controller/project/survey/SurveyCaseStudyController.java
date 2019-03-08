@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.project.survey.SurveyCaseStudyService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
+import com.copower.pmcc.assess.service.project.survey.SurveyExamineTaskService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.google.common.collect.Lists;
@@ -31,6 +32,8 @@ public class SurveyCaseStudyController {
     private SurveyCommonService surveyCommonService;
     @Autowired
     private SurveyCaseStudyService surveyCaseStudyService;
+    @Autowired
+    private SurveyExamineTaskService surveyExamineTaskService;
 
 
     @ResponseBody
@@ -84,7 +87,7 @@ public class SurveyCaseStudyController {
     @PostMapping(name = "检查是否添加任务", value = "/checkAssignmentTask")
     public HttpResult checkAssignmentTask(Integer planDetailsId) {
         try {
-            return HttpResult.newCorrectResult(surveyCaseStudyService.checkAssignmentTask(planDetailsId));
+            return HttpResult.newCorrectResult(surveyExamineTaskService.checkAssignmentTask(planDetailsId));
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("操作异常");

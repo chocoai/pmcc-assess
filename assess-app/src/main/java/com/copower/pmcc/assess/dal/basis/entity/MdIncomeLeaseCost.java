@@ -36,6 +36,18 @@ public class MdIncomeLeaseCost {
 
     private String transactionTaxeFeeExplain;
 
+    private BigDecimal propertyTaxRatio;
+
+    private BigDecimal stampDutyRatio;
+
+    private BigDecimal salesTaxRatio;
+
+    private BigDecimal constructionTaxRatio;
+
+    private BigDecimal localEducationRatio;
+
+    private BigDecimal educationRatio;
+
     private String creator;
 
     private Date gmtCreated;
@@ -168,6 +180,54 @@ public class MdIncomeLeaseCost {
 
     public void setTransactionTaxeFeeExplain(String transactionTaxeFeeExplain) {
         this.transactionTaxeFeeExplain = transactionTaxeFeeExplain == null ? null : transactionTaxeFeeExplain.trim();
+    }
+
+    public BigDecimal getPropertyTaxRatio() {
+        return propertyTaxRatio;
+    }
+
+    public void setPropertyTaxRatio(BigDecimal propertyTaxRatio) {
+        this.propertyTaxRatio = propertyTaxRatio;
+    }
+
+    public BigDecimal getStampDutyRatio() {
+        return stampDutyRatio;
+    }
+
+    public void setStampDutyRatio(BigDecimal stampDutyRatio) {
+        this.stampDutyRatio = stampDutyRatio;
+    }
+
+    public BigDecimal getSalesTaxRatio() {
+        return salesTaxRatio;
+    }
+
+    public void setSalesTaxRatio(BigDecimal salesTaxRatio) {
+        this.salesTaxRatio = salesTaxRatio;
+    }
+
+    public BigDecimal getConstructionTaxRatio() {
+        return constructionTaxRatio;
+    }
+
+    public void setConstructionTaxRatio(BigDecimal constructionTaxRatio) {
+        this.constructionTaxRatio = constructionTaxRatio;
+    }
+
+    public BigDecimal getLocalEducationRatio() {
+        return localEducationRatio;
+    }
+
+    public void setLocalEducationRatio(BigDecimal localEducationRatio) {
+        this.localEducationRatio = localEducationRatio;
+    }
+
+    public BigDecimal getEducationRatio() {
+        return educationRatio;
+    }
+
+    public void setEducationRatio(BigDecimal educationRatio) {
+        this.educationRatio = educationRatio;
     }
 
     public String getCreator() {

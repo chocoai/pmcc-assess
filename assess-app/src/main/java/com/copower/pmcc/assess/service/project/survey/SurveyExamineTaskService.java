@@ -641,7 +641,6 @@ public class SurveyExamineTaskService {
         BasicHouse basicHouse = null;
         BasicHouseTrading basicTrading = null;
         String survey = jsonObject.getString("survey");
-        SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(projectPlanDetails.getId());
         if (StringUtils.isNotBlank(jsonObject.getString("basicEstate"))) {
             basicEstate = JSONObject.parseObject(jsonObject.getString("basicEstate"), BasicEstate.class);
             if (basicEstate != null) {
@@ -691,9 +690,6 @@ public class SurveyExamineTaskService {
             if (StringUtils.isNotBlank(jsonObject.getString("basicTrading"))) {
                 basicTrading = JSONObject.parseObject(jsonObject.getString("basicTrading"), BasicHouseTrading.class);
                 if (basicTrading != null) {
-                    if(surveyExamineInfo!=null){
-                        basicTrading.setTradingType(surveyExamineInfo.getTransactionType());
-                    }
                     basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading);
                 }
             }

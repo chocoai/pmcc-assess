@@ -604,7 +604,7 @@ public class ProjectPlanDetailsService {
                 //查看有无子项，无子项先生成子项，有子项则跳过
                 List<ProjectPlanDetails> detailsList = projectPlanDetailsDao.getProjectPlanDetailsByPid(pastePlanDetails.getId());
                 if (CollectionUtils.isNotEmpty(detailsList)) return;
-                SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(copyPlanDetails.getPid());
+                SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExamineInfoByPlanDetailsId(copyPlanDetails.getPid());
                 surveyExamineTaskService.examineTaskAssignment(pastePlanDetails.getId(), surveyExamineInfo.getExamineFormType(), ExamineTypeEnum.EXPLORE,null);
                 basicApplyTransferService.copyForExamine(copyPlanDetails.getPid(), pastePlanDetails.getId());
             }

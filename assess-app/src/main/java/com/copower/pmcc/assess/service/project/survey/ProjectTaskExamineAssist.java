@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -162,7 +163,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
      * @param modelAndView
      */
     private void setViewParam(String userAccount, ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
-        SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(projectPlanDetails.getPid());
+        SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExamineInfoByPlanDetailsId(projectPlanDetails.getPid());
         modelAndView.addObject("surveyExamineInfo", surveyExamineInfo);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
@@ -207,6 +208,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     private void setSurveyCaseStudyOrSurveySceneExploreValue(DeclareRecord declareRecord, ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) throws Exception {
         ExamineTypeEnum examineTypeEnum = ExamineTypeEnum.EXPLORE;
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
@@ -247,7 +249,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
         }
         if (basicApply == null) {
             basicApply = new BasicApply();
-            SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(projectPlanDetails.getPid());
+            SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExamineInfoByPlanDetailsId(projectPlanDetails.getPid());
             if (surveyExamineInfo != null) {
                 basicApply.setType(BasicApplyTypeEnum.getEnumByKey(surveyExamineInfo.getExamineFormType()).getId());
             }
@@ -286,6 +288,17 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
             basicHouse.setUnitId(basicUnit.getId());
             basicHouse.setApplyId(basicApply.getId());
             basicHouseService.saveAndUpdateBasicHouse(basicHouse);
+            //添加交易信息
+            SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExamineInfoByPlanDetailsId(projectPlanDetails.getPid());
+            basicHouseTrading = new BasicHouseTrading();
+            basicHouseTrading.setHouseId(basicHouse.getId());
+            basicHouseTrading.setApplyId(basicApply.getId());
+            if (surveyExamineInfo != null)
+                basicHouseTrading.setTradingType(surveyExamineInfo.getTransactionType());
+            basicHouseTrading.setCreator(commonService.thisUserAccount());
+            basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
+            //添加完损度信息
+            basicHouseService.initDemagedDegree(basicHouse);
         }
         //案例
         if (examineTypeEnum.getId().equals(ExamineTypeEnum.CASE.getId())) {
@@ -298,7 +311,6 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
                 surveyCaseStudy.setProcessInsId(projectPlanDetails.getProcessInsId());
                 surveyCaseStudyService.saveSurveyCaseStudy(surveyCaseStudy);
             }
-            basicHouseService.addHouseAndTrading(null, basicApply.getId());
         }
         //查勘
         if (examineTypeEnum.getId().equals(ExamineTypeEnum.EXPLORE.getId())) {
@@ -311,7 +323,6 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
                 surveySceneExplore.setProcessInsId(projectPlanDetails.getProcessInsId());
                 surveySceneExploreService.saveSurveySceneExplore(surveySceneExplore);
             }
-            basicHouseService.addHouseAndTrading(null, basicApply.getId());
         }
         if (surveySceneExplore != null) {
             modelAndView.addObject("surveySceneExplore", surveySceneExplore);

@@ -37,7 +37,7 @@ public class SurveyExamineInfoService {
 
     }
 
-    public SurveyExamineInfo getExploreByPlanDetailsId(Integer planDetailsId) {
+    public SurveyExamineInfo getExamineInfoByPlanDetailsId(Integer planDetailsId) {
         SurveyExamineInfo surveyExamineInfo= surveyExamineInfoDao.getExamineInfoByPlanDetailsId(planDetailsId);
         return surveyExamineInfo;
     }

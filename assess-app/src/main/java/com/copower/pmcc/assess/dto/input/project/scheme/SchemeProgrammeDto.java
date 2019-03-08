@@ -18,9 +18,9 @@ public class SchemeProgrammeDto {
     private Integer entrustmentPurpose;
     private String remarkEntrustPurpose;
     private Integer valueDefinition;
-    private String valueDefinitionDesc;
-    private String valueConnotation;
-    private String valueConnotationDesc;
+    private Integer propertyScope;
+    private String scopeInclude;
+    private String scopeNotInclude;
     List<SchemeJudgeObject> schemeJudgeObjects;
 
     public Integer getAreaGroupId() {
@@ -71,28 +71,28 @@ public class SchemeProgrammeDto {
         this.valueDefinition = valueDefinition;
     }
 
-    public String getValueDefinitionDesc() {
-        return valueDefinitionDesc;
+    public Integer getPropertyScope() {
+        return propertyScope;
     }
 
-    public void setValueDefinitionDesc(String valueDefinitionDesc) {
-        this.valueDefinitionDesc = valueDefinitionDesc;
+    public void setPropertyScope(Integer propertyScope) {
+        this.propertyScope = propertyScope;
     }
 
-    public String getValueConnotation() {
-        return valueConnotation;
+    public String getScopeInclude() {
+        return scopeInclude;
     }
 
-    public void setValueConnotation(String valueConnotation) {
-        this.valueConnotation = valueConnotation;
+    public void setScopeInclude(String scopeInclude) {
+        this.scopeInclude = scopeInclude;
     }
 
-    public String getValueConnotationDesc() {
-        return valueConnotationDesc;
+    public String getScopeNotInclude() {
+        return scopeNotInclude;
     }
 
-    public void setValueConnotationDesc(String valueConnotationDesc) {
-        this.valueConnotationDesc = valueConnotationDesc;
+    public void setScopeNotInclude(String scopeNotInclude) {
+        this.scopeNotInclude = scopeNotInclude;
     }
 
     public List<SchemeJudgeObject> getSchemeJudgeObjects() {

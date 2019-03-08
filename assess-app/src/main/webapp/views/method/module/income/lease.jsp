@@ -175,7 +175,8 @@
                             </label>
                             <div class="col-sm-4">
                                 <input type="text" name="deposit" data-rule-number="true" placeholder="押金"
-                                     onblur="lease.computeOtherIncome(this);"  class="form-control" required="required">
+                                       onblur="lease.computeOtherIncome(this);" class="form-control"
+                                       required="required">
                             </div>
                         </div>
                         <div class="x-valid">
@@ -260,10 +261,10 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                管理费<span class="symbol required"></span>
+                                管理费率<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="managementCostRatio" placeholder="管理费"
+                                <input type="text" name="managementCostRatio" placeholder="管理费率"
                                        class="form-control x-percent" required="required">
                             </div>
                         </div>
@@ -272,7 +273,7 @@
                                 重置价格<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="replacementValue" readonly="readonly" placeholder="重置价格"
+                                <input type="text" name="replacementValue" placeholder="重置价格"
                                        data-rule-number="true"
                                        class="form-control " required="required">
                             </div>
@@ -281,34 +282,44 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                维护保养费<span class="symbol required"></span>
+                                维护保养费率<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="maintenanceCostRatio" placeholder="维护保养费"
+                                <input type="text" name="maintenanceCostRatio" placeholder="维护保养费率"
                                        class="form-control x-percent" required="required">
                             </div>
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                租赁税费<span class="symbol required"></span>
+                                保险费率<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="additionalRatio" readonly="readonly" placeholder="租赁税费"
+                                <input type="text" name="insurancePremiumRatio" placeholder="保险费率"
                                        class="form-control x-percent" required="required">
                             </div>
                         </div>
-
                     </div>
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                保险费<span class="symbol required"></span>
+                                交易税费率<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="insurancePremiumRatio" placeholder="保险费"
+                                <input type="text" name="transactionTaxeFeeRatio" placeholder="交易税费率"
                                        class="form-control x-percent" required="required">
                             </div>
                         </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                交易税费说明<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="transactionTaxeFeeExplain" placeholder="交易税费说明"
+                                       class="form-control" required="required">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
                                 土地使用税<span class="symbol required"></span>
@@ -320,23 +331,77 @@
                             </div>
                         </div>
                     </div>
+                    <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+                        color="#6f5499" size="10"/>
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                交易税费<span class="symbol required"></span>
+                                房产税率
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="transactionTaxeFeeRatio" placeholder="交易税费"
-                                       class="form-control x-percent" required="required">
+                                <input type="text" name="propertyTaxRatio" placeholder="房产税率"
+                                       onblur="lease.computeAdditionalRatio(this);" class="form-control x-percent">
                             </div>
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                交易税费说明<span class="symbol required"></span>
+                                印花税率
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="transactionTaxeFeeExplain" placeholder="交易税费说明"
-                                       class="form-control" required="required">
+                                <input type="text" name="stampDutyRatio" placeholder="印花税率"
+                                       onblur="lease.computeAdditionalRatio(this);" class="form-control x-percent">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                增值税率
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="salesTaxRatio" placeholder="增值税率"
+                                       onblur="lease.computeAdditionalRatio(this);" class="form-control x-percent">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                城建税率
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="constructionTaxRatio" placeholder="城建税率"
+                                       onblur="lease.computeAdditionalRatio(this);" class="form-control x-percent">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                地方教育费附加税率
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="localEducationRatio" placeholder="地方教育费附加税率"
+                                       onblur="lease.computeAdditionalRatio(this);" class="form-control x-percent">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                教育费附加税率
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="educationRatio" placeholder="教育费附加税率"
+                                       onblur="lease.computeAdditionalRatio(this);" class="form-control x-percent">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                租赁税费率
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="additionalRatio" readonly="readonly" placeholder="租赁税费率"
+                                       class="form-control x-percent">
                             </div>
                         </div>
                     </div>
@@ -521,7 +586,7 @@
         var cols = [];
         cols.push({
             field: 'beginDate', title: '时间段', formatter: function (value, row, index) {
-                return formatDate(row.beginDate, false)+"至"+formatDate(row.endDate, false);
+                return formatDate(row.beginDate, false) + "至" + formatDate(row.endDate, false);
             }
         });
         cols.push({field: 'rentalIncome', title: '月租金收入'});
@@ -560,22 +625,51 @@
         });
     }
 
-
     //编辑成本信息
     lease.editLeaseCost = function (index) {
         var row = $("#tb_lease_cost_list").bootstrapTable('getData')[index];
-        $("#frm_lease_cost").clearAll();
-        $("#frm_lease_cost").initForm(row);
-        $("#frm_lease_cost").find('.x-percent').each(function () {
+        var form = $("#frm_lease_cost");
+        form.clearAll().initForm(row);
+        form.find('.x-percent').each(function () {
             $(this).attr('data-value', row[$(this).attr('name')]);
             AssessCommon.elementParsePercent($(this));
         })
-        //租赁税费特殊处理
-        var additionalRatioElement = $("#frm_lease_cost").find('[name=additionalRatio]');
-        additionalRatioElement.attr('data-value', '${additionalRatio}');
-        AssessCommon.elementParsePercent(additionalRatioElement);
         //重置价格特殊处理
-        $("#frm_lease_cost").find('[name=replacementValue]').val("${replacementValue}");
+        var $replacementValue = form.find('[name=replacementValue]');
+        if (!$replacementValue.val()) {
+            $replacementValue.val("${replacementValue}");
+        }
+        //房产税率
+        var $propertyTaxRatio = form.find('[name=propertyTaxRatio]');
+        if (!$propertyTaxRatio.attr('data-value')) {
+            AssessCommon.elementParsePercent($propertyTaxRatio.attr('data-value', "${propertyTaxRatio}"));
+        }
+        //印花税率
+        var $stampDutyRatio = form.find('[name=stampDutyRatio]');
+        if (!$stampDutyRatio.attr('data-value')) {
+            AssessCommon.elementParsePercent($stampDutyRatio.attr('data-value', "${stampDutyRatio}"));
+        }
+        //增值税率
+        var $salesTaxRatio = form.find('[name=salesTaxRatio]');
+        if (!$salesTaxRatio.attr('data-value')) {
+            AssessCommon.elementParsePercent($salesTaxRatio.attr('data-value', "${salesTaxRatio}"));
+        }
+        //城建税率
+        var $constructionTaxRatio = form.find('[name=constructionTaxRatio]');
+        if (!$constructionTaxRatio.attr('data-value')) {
+            AssessCommon.elementParsePercent($constructionTaxRatio.attr('data-value', "${constructionTaxRatio}"));
+        }
+        //地方教育费附加税率
+        var $localEducationRatio = form.find('[name=localEducationRatio]');
+        if (!$localEducationRatio.attr('data-value')) {
+            AssessCommon.elementParsePercent($localEducationRatio.attr('data-value', "${localEducationRatio}"));
+        }
+        //教育费附加税率
+        var $educationRatio = form.find('[name=educationRatio]');
+        if (!$educationRatio.attr('data-value')) {
+            AssessCommon.elementParsePercent($educationRatio.attr('data-value', "${educationRatio}"));
+        }
+        lease.computeAdditionalRatio($educationRatio);//计算一次租赁税费
         $('#modal_lease_cost').modal();
     }
 
@@ -615,7 +709,7 @@
         var cols = [];
         cols.push({
             field: 'beginDate', title: '时间段', formatter: function (value, row, index) {
-                return formatDate(row.beginDate, false)+"至"+formatDate(row.endDate, false);
+                return formatDate(row.beginDate, false) + "至" + formatDate(row.endDate, false);
             }
         });
         cols.push({
@@ -715,7 +809,7 @@
         var cols = [];
         cols.push({
             field: 'beginDate', title: '时间段', formatter: function (value, row, index) {
-                return formatDate(row.beginDate, false)+"至"+formatDate(row.endDate, false);
+                return formatDate(row.beginDate, false) + "至" + formatDate(row.endDate, false);
             }
         });
         cols.push({
@@ -779,11 +873,14 @@
         })
     }
 
+
     //获取表单内容
     lease.getData = function () {
         var formData = {};
         formData.mdIncome = {};
         formData.mdIncome.id = $("#frm_income").find('[name=id]').val();
+        formData.mdIncome.houseRemainingYear = $("#frm_income").find('[name=houseRemainingYear]').val();
+        formData.mdIncome.landRemainingYear = $("#frm_income").find('[name=landRemainingYear]').val();
         formData.mdIncome.name = $("#frm_income").find('[name=name]').val();
         formData.mdIncome.price = $("#leaseResult").find('[data-name=price]').text();
         formData.mdIncome.operationMode = $("#frm_income").find('[name=operationMode]:checked').val();
@@ -805,6 +902,25 @@
 </script>
 <%--测算--%>
 <script type="text/javascript">
+    //计算租赁税费 房产税+印花税+增值税*(1+城建税+地方教育费附加+教育费附加)
+    lease.computeAdditionalRatio = function (_this) {
+        var form = $(_this).closest('form');
+        var propertyTaxRatio = form.find('[name=propertyTaxRatio]').attr('data-value');
+        var stampDutyRatio = form.find('[name=stampDutyRatio]').attr('data-value');
+        var salesTaxRatio = form.find('[name=salesTaxRatio]').attr('data-value');
+        var constructionTaxRatio = form.find('[name=constructionTaxRatio]').attr('data-value');
+        var localEducationRatio = form.find('[name=localEducationRatio]').attr('data-value');
+        var educationRatio = form.find('[name=educationRatio]').attr('data-value');
+        propertyTaxRatio = AssessCommon.isNumber(propertyTaxRatio) ? parseFloat(propertyTaxRatio) : 0;//房产税费
+        stampDutyRatio = AssessCommon.isNumber(stampDutyRatio) ? parseFloat(stampDutyRatio) : 0;//印花税率
+        salesTaxRatio = AssessCommon.isNumber(salesTaxRatio) ? parseFloat(salesTaxRatio) : 0;//增值税率
+        constructionTaxRatio = AssessCommon.isNumber(constructionTaxRatio) ? parseFloat(constructionTaxRatio) : 0;//城建税率
+        localEducationRatio = AssessCommon.isNumber(localEducationRatio) ? parseFloat(localEducationRatio) : 0;//地方教育税附加税率
+        educationRatio = AssessCommon.isNumber(educationRatio) ? parseFloat(educationRatio) : 0;//教育费附加税率
+        var result = propertyTaxRatio + stampDutyRatio + salesTaxRatio * (1 + constructionTaxRatio + localEducationRatio + educationRatio);
+        AssessCommon.elementParsePercent(form.find('[name=additionalRatio]').attr('data-value', result.toFixed(4)));
+    }
+
     //计算其它收入
     lease.computeOtherIncome = function (_this) {
         //押金*押金利率
@@ -814,7 +930,7 @@
         if (AssessCommon.isNumber(deposit) && AssessCommon.isNumber(depositRate)) {
             deposit = parseFloat(deposit);
             depositRate = parseFloat(depositRate);
-            form.find('[name=otherIncome]').val((deposit*depositRate).toFixed(2));
+            form.find('[name=otherIncome]').val((deposit * depositRate).toFixed(2));
         }
     }
 

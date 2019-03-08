@@ -897,6 +897,8 @@
         var formData = {};
         formData.mdIncome = {};
         formData.mdIncome.id = $("#frm_income").find('[name=id]').val();
+        formData.mdIncome.houseRemainingYear = $("#frm_income").find('[name=houseRemainingYear]').val();
+        formData.mdIncome.landRemainingYear = $("#frm_income").find('[name=landRemainingYear]').val();
         formData.mdIncome.name = $("#frm_income").find('[name=name]').val();
         formData.mdIncome.area = $("#selfSupportResult").find('[data-name=area]').text();
         formData.mdIncome.price = $("#selfSupportResult").find('[data-name=price]').text();

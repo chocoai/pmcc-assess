@@ -4,7 +4,6 @@ import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyCaseStudyDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudy;
-import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
@@ -176,36 +175,6 @@ public class SurveyCaseStudyService {
             stringBuilder.append(surveyCommonService.getSynchronizeSql(tableName, planDetailsId, projectPlanDetails.getId(), projectPlanDetails.getDeclareRecordId()));
         }
         jdbcTemplate.execute(stringBuilder.toString());
-
-//        List<ProjectPlanDetails> childrenPlanDetailsList = projectPlanDetailsService.getChildrenPlanDetailsList(planDetailsId);
-//        if(CollectionUtils.isNotEmpty(childrenPlanDetailsList)){
-//
-//            for (ProjectPlanDetails planDetails : childrenPlanDetailsList) {
-//                planDetails.setId(null);
-//                planDetails.setPid(projectPlanDetails.getId());
-//                planDetails.setBisStart(false);
-//                planDetails.setProcessInsId("0");
-//                planDetails.setTaskSubmitTime(null);
-//                planDetails.setActualHours(null);
-//                planDetails.setStatus(ProcessStatusEnum.NOPROCESS.getName());
-//                planDetails.setCreator(commonService.thisUserAccount());
-//                projectPlanDetailsService.saveProjectPlanDetails(planDetails);
-//
-//            }
-//
-//        }
-
-        //关联附件信息
     }
 
-    //检查是否添加任务
-    public boolean checkAssignmentTask(Integer planDetailsId) {
-        ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
-        projectPlanDetails.setPid(planDetailsId);
-        List<ProjectPlanDetailsVo> list = projectPlanDetailsService.getProjectDetailsTask(projectPlanDetails);
-        if (CollectionUtils.isNotEmpty(list)) {
-            return true;
-        }
-        return false;
-    }
 }
