@@ -989,9 +989,9 @@ public class GenerateReportService {
                     //土地 实际用途
                     if (Objects.equal(BaseReportFieldEnum.PracticalUse.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getPracticalUse(), bookmarkAndRegex.getType(), false, mapSet);
                         if (baseReportField != null) {
                         }
-                        replaceReportPutValue(name, generateBaseDataService.getPracticalUse(), bookmarkAndRegex.getType(), false, mapSet);
                     }
                     //建筑结构类别
                     if (Objects.equal(BaseReportFieldEnum.BuildingStructureCategory.getName(), name)) {
@@ -1003,9 +1003,9 @@ public class GenerateReportService {
                     //土地使用权类型
                     if (Objects.equal(BaseReportFieldEnum.LandUseRightType.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getUseRightType(), bookmarkAndRegex.getType(), false, mapSet);
                         if (baseReportField != null) {
                         }
-                        replaceReportPutValue(name, generateBaseDataService.getUseRightType(), bookmarkAndRegex.getType(), false, mapSet);
                     }
                     //评估面积
                     if (Objects.equal(BaseReportFieldEnum.AssessArea.getName(), name)) {
@@ -1184,7 +1184,7 @@ public class GenerateReportService {
                         if (baseReportField != null) {
                         }
                     }
-                    //分类评估单价计算式
+                    //分类评估单价计算试
                     if (Objects.equal(BaseReportFieldEnum.EvaluationExpression.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
@@ -1215,8 +1215,8 @@ public class GenerateReportService {
                     //法定优先受偿款
                     if (Objects.equal(BaseReportFieldEnum.StatutoryOptimumReimbursement.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getStatutoryOptimumReimbursement(), bookmarkAndRegex.getType(), false, mapSet);
                         if (baseReportField != null) {
-                            replaceReportPutValue(name, generateBaseDataService.getStatutoryOptimumReimbursement(), bookmarkAndRegex.getType(), false, mapSet);
                         }
                     }
                     //抵押价值总金额
@@ -1391,15 +1391,7 @@ public class GenerateReportService {
                     //建筑物权益状况
                     if (Objects.equal(BaseReportFieldEnum.StatusBuildingRightsInterests.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                        SysAttachmentDto query = new SysAttachmentDto();
-                        if (baseReportField != null) {
-                            query.setTableId(baseReportField.getId());
-                            query.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportField.class));
-                            List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
-                            if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-                                //                            replaceReportPutValue(name, generateBaseDataService.getStatusBuildingRightsInterests(sysAttachmentDtoList.get(0)),bookmarkAndRegex.getType(), true, mapSet);
-                            }
-                        }
+
                     }
                     //本次估价的总体思路和评估方法的选取
                     if (Objects.equal(BaseReportFieldEnum.theGeneralIdeaOfThisEvaluationAndTheSelectionOfEvaluationMethods.getName(), name)) {

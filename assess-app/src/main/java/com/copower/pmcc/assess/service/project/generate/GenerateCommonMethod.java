@@ -1,7 +1,10 @@
 package com.copower.pmcc.assess.service.project.generate;
 
+import com.aspose.words.DocumentBuilder;
+import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.google.common.base.Objects;
@@ -12,6 +15,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -27,8 +34,10 @@ public class GenerateCommonMethod {
     private DeclareRecordService declareRecordService;
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
 
-    public String getSchemeJudgeObjectShowName(SchemeJudgeObject schemeJudgeObject){
+    public String getSchemeJudgeObjectShowName(SchemeJudgeObject schemeJudgeObject) {
         StringBuilder stringBuilder = new StringBuilder(24);
         if (schemeJudgeObject == null) {
             return "";
@@ -68,10 +77,11 @@ public class GenerateCommonMethod {
 
     /**
      * 获取合并的估价对象
+     *
      * @param schemeJudgeObjectsA
      * @return
      */
-    public List<SchemeJudgeObject> getByRootAndChildSchemeJudgeObjectList(List<SchemeJudgeObject> schemeJudgeObjectsA){
+    public List<SchemeJudgeObject> getByRootAndChildSchemeJudgeObjectList(List<SchemeJudgeObject> schemeJudgeObjectsA, boolean declareRecordFilter) {
         List<SchemeJudgeObject> schemeJudgeObjectList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectsA)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectsA) {
@@ -85,7 +95,9 @@ public class GenerateCommonMethod {
                 }
             }
         }
-        schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(schemeJudgeObject -> schemeJudgeObject.getDeclareRecordId() != null).collect(Collectors.toList());
+        if (declareRecordFilter) {
+            schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(schemeJudgeObject -> schemeJudgeObject.getDeclareRecordId() != null).collect(Collectors.toList());
+        }
         return schemeJudgeObjectList;
     }
 
@@ -153,15 +165,15 @@ public class GenerateCommonMethod {
     /**
      * 数字转换
      *
-     * @param roomNumber
+     * @param numbers
      * @return
      */
-    public String convertNumber(List<Integer> roomNumber) {
-        if (CollectionUtils.isNotEmpty(roomNumber)) {
-            Collections.sort(roomNumber);
-            Integer[] ints = new Integer[roomNumber.size()];
-            for (int i = 0; i < roomNumber.size(); i++) {
-                ints[i] = roomNumber.get(i);
+    public String convertNumber(List<Integer> numbers) {
+        if (CollectionUtils.isNotEmpty(numbers)) {
+            Collections.sort(numbers);
+            Integer[] ints = new Integer[numbers.size()];
+            for (int i = 0; i < numbers.size(); i++) {
+                ints[i] = numbers.get(i);
             }
             String text = this.convert(ints, 0);
             text = text.substring(0, text.length() - 1);
@@ -206,6 +218,77 @@ public class GenerateCommonMethod {
             else
                 return ints[index] + "-" + ints[end] + "," + convert(ints, end + 1);
 
+        }
+    }
+
+    public String toSetString(Set<String> stringSet) {
+        StringBuilder builder = new StringBuilder(24);
+        if (CollectionUtils.isNotEmpty(stringSet)) {
+            List<String> stringList = Lists.newArrayList(stringSet);
+            for (int i = 0; i < stringList.size(); i++) {
+                if (StringUtils.isNotBlank(stringList.get(i))) {
+                    builder.append(stringList.get(i));
+                    if (stringList.size() != 1) {
+                        if (i == stringList.size() - 1) {
+                            builder.append(" ");
+                        } else {
+                            builder.append(",");
+                        }
+                    }
+                }
+            }
+        } else {
+            return " ";
+        }
+        return builder.toString();
+    }
+
+    public String toSetString2(Set<String> stringSet) {
+        StringBuilder builder = new StringBuilder(24);
+        if (CollectionUtils.isNotEmpty(stringSet)) {
+            List<String> stringList = Lists.newArrayList(stringSet);
+            for (int i = 0; i < stringList.size(); i++) {
+                if (StringUtils.isNotBlank(stringList.get(i))) {
+                    builder.append(stringList.get(i));
+                    if (i != stringList.size() - 1 && stringList.size() != 1) {
+                        builder.append(",");
+                    }
+                }
+            }
+        } else {
+            return " ";
+        }
+        return builder.toString();
+    }
+
+    public String getLocalPath() {
+        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        return localPath;
+    }
+
+    public String getLocalPath(String title) {
+        if (StringUtils.isEmpty(title)) {
+            return getLocalPath();
+        }
+        String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        return localPath;
+    }
+
+    /**
+     * 为图片设置间隔
+     *
+     * @param builder
+     * @param imgPath
+     * @throws Exception
+     */
+    public void builderInsertImage(DocumentBuilder builder, String imgPath) throws Exception {
+        if (StringUtils.isNotBlank(imgPath) && FileUtils.checkImgSuffix(imgPath)) {
+            File file = new File(imgPath);
+            BufferedImage sourceImg = ImageIO.read(new FileInputStream(file));
+            builder.insertImage(imgPath,
+                    sourceImg.getWidth() > 400 ? 400 : sourceImg.getWidth(),
+                    sourceImg.getHeight() > 500 ? 500 : sourceImg.getHeight());
+            builder.write(" ");
         }
     }
 
