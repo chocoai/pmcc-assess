@@ -3190,10 +3190,7 @@ public class GenerateBaseDataService {
                 projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
                 .filter(projectPhaseVo -> {
-                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
+                    if (Objects.equal(AssessPhaseKeyConstant.ASSET_INVENTORY, projectPhaseVo.getPhaseKey())) {
                         return true;
                     }
                     return false;
@@ -3265,10 +3262,7 @@ public class GenerateBaseDataService {
                 projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
                 .filter(projectPhaseVo -> {
-                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
+                    if (Objects.equal(AssessPhaseKeyConstant.ASSET_INVENTORY, projectPhaseVo.getPhaseKey())) {
                         return true;
                     }
                     return false;
