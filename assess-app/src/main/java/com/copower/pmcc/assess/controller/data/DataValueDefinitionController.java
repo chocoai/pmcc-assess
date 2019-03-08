@@ -86,11 +86,7 @@ public class DataValueDefinitionController {
     @RequestMapping(value = "/saveAndUpdateDataValueDefinition", method = {RequestMethod.POST}, name = "保存")
     public HttpResult saveAndUpdate(DataValueDefinition dataValueDefinition) {
         try {
-            if (dataValueDefinition.getId() == null || dataValueDefinition.getId().equals(0)) {
-                dataValueDefinitionService.addDataValueDefinitionReturnId(dataValueDefinition);
-            } else {
-                dataValueDefinitionService.updateDataValueDefinition(dataValueDefinition);
-            }
+            dataValueDefinitionService.saveData(dataValueDefinition);
             return HttpResult.newCorrectResult("保存 success!");
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);

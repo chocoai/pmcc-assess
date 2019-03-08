@@ -74,10 +74,17 @@
 </body>
 
 <%@include file="/views/share/main_footer.jsp" %>
+<script type="text/javascript" charset="utf-8"
+        src="${pageContext.request.contextPath}/excludes/plugins/ueditor1_4_3_3/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8"
+        src="${pageContext.request.contextPath}/excludes/plugins/ueditor1_4_3_3/ueditor.all.js"></script>
+<script type="text/javascript" charset="utf-8"
+        src="${pageContext.request.contextPath}/excludes/plugins/ueditor1_4_3_3/lang/zh-cn/zh-cn.js"></script>
 <script type="text/javascript">
     $(function () {
         dataValueDefinition.prototype.loadDataDicList();
     });
+    var ue = UE.getEditor('template');
     var dataValueDefinition = function () {
 
     };
@@ -96,7 +103,6 @@
             cols.push({field: 'propertyScopeName', title: '评估财产范围'});
             cols.push({field: 'scopeInclude', title: '范围包括'});
             cols.push({field: 'scopeNotInclude', title: '范围不包括'});
-            cols.push({field: 'template', title: '模板'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -152,6 +158,7 @@
             var data = formParams(dataValueDefinition.prototype.config().frm);
             data.entrustmentPurpose = ',' + data.entrustmentPurpose + ',';
             data.valueType = ',' + data.valueType + ',';
+            data.template = ue.getContent();
             $.ajax({
                 url: "${pageContext.request.contextPath}/dataValueDefinition/saveAndUpdateDataValueDefinition",
                 type: "post",
@@ -184,6 +191,13 @@
                         $("#" + dataValueDefinition.prototype.config().frm).initForm(result.data);
                         AssessCommon.checkboxToChecked($("#frmFather").find(":checkbox[name='entrustmentPurpose']"), result.data.entrustmentPurpose.split(','));
                         AssessCommon.checkboxToChecked($("#frmFather").find(":checkbox[name='valueType']"), result.data.valueType.split(','));
+                        var content = result.data.template;
+                        if (content) {
+                            ue.addListener("ready", function () {
+                                // editor准备好之后才可以使用
+                                ue.setContent(content);
+                            });
+                        }
                         $('#' + dataValueDefinition.prototype.config().box).modal("show");
                     }
                 },
@@ -288,8 +302,9 @@
                                             模版<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="填写模版" class="form-control" id="template"
-                                                      name="template" required="required"></textarea>
+                                            <%--<textarea placeholder="填写模版" class="form-control" id="template"
+                                                      name="template" required="required"></textarea>--%>
+                                                <div style="width:99%;height:200px;" id="template"></div>
                                         </div>
                                     </div>
                                 </div>

@@ -1,10 +1,13 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.aspose.words.Document;
+import com.aspose.words.DocumentBuilder;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataValueDefinitionDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataValueDefinition;
 import com.copower.pmcc.assess.dto.output.data.DataValueDefinitionVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -22,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -32,6 +36,8 @@ public class DataValueDefinitionService {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
 
     public DataValueDefinitionVo getByDataValueDefinitionId(Integer id) {
         DataValueDefinition object = dataValueDefinitionDao.getSingleObject(id);
@@ -102,6 +108,22 @@ public class DataValueDefinitionService {
      */
     public boolean deleteDataValueDefinition(Integer id) throws BusinessException {
         return dataValueDefinitionDao.deleteObject(id);
+    }
+
+    public void saveData(DataValueDefinition dataValueDefinition) throws Exception {
+        //生成word
+        String localPath = String.format("%s\\价值定义%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        Document document = new Document();
+        DocumentBuilder builder = new DocumentBuilder(document);
+        String html = dataValueDefinition.getTemplate();//这是html文本
+        builder.insertHtml(html);
+        document.save(localPath);
+        if (dataValueDefinition.getId() == null || dataValueDefinition.getId().equals(0)) {
+            dataValueDefinitionDao.addObject(dataValueDefinition);
+        } else {
+            dataValueDefinitionDao.updateObject(dataValueDefinition);
+        }
+
     }
 
 }
