@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.aspose.words.CellVerticalAlignment;
-import com.aspose.words.Document;
 import com.aspose.words.DocumentBuilder;
 import com.aspose.words.ParagraphAlignment;
 import com.copower.pmcc.assess.common.AsposeUtils;
@@ -14,6 +13,7 @@ import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +43,35 @@ public class GenerateCommonMethod {
 
     public final String SchemeJudgeObjectName = "委估对象";
 
+    public String getSchemeJudgeObjectListShowName(Map<String, List<Integer>> stringListMap, String suffix) {
+        Set<String> stringSet = Sets.newHashSet();
+        StringBuilder stringBuilder = new StringBuilder(8);
+        Set<String> stringSetTemp = Sets.newHashSet();
+        if (!stringListMap.isEmpty()) {
+            for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
+                if (entry.getValue().size() > 0) {
+                    stringSet.add(this.convertNumber(entry.getValue()));
+                    stringSetTemp.add(entry.getKey());
+                }
+            }
+            List<String> stringList = Lists.newArrayList(stringSet);
+            stringSet.clear();
+            //排一次序
+            stringList.sort((o1, o2) -> {
+                int x = Integer.parseInt(o1.substring(0, 1));
+                int y = Integer.parseInt(o2.substring(0, 1));
+                return (x > y) ? -1 : ((x == y) ? 0 : 1);
+            });
+            stringSet = Sets.newHashSet(stringList);
+            stringBuilder.append(this.toSetStringMerge(stringSet, ","));
+            stringBuilder.append(this.SchemeJudgeObjectName);
+            stringBuilder.append(this.toSetStringSplitCommaSuffix(stringSetTemp, ",", suffix));
+        } else {
+            stringBuilder.append(" ");
+        }
+        return stringBuilder.toString();
+    }
+
     public String getSchemeJudgeObjectShowName(SchemeJudgeObject schemeJudgeObject) {
         StringBuilder stringBuilder = new StringBuilder(24);
         if (schemeJudgeObject == null) {
@@ -69,7 +98,7 @@ public class GenerateCommonMethod {
             }
             stringBuilder.append("号");
             if (strings.length > 3) stringBuilder.append("等");
-            stringBuilder.append(SchemeJudgeObjectName);
+//            stringBuilder.append(SchemeJudgeObjectName);
         }
         if (StringUtils.isEmpty(stringBuilder.toString())) {
             if (StringUtils.isNotBlank(schemeJudgeObject.getName())) {
@@ -239,23 +268,20 @@ public class GenerateCommonMethod {
         return toSetStringMerge(stringSet, null);
     }
 
-    public String getListByIndex(Set<String> stringSet, int index) {
-        if (CollectionUtils.isNotEmpty(stringSet)) {
-            List<String> stringList = Lists.newArrayList(stringSet);
-            if (stringList.size()-1 >= index){
-                return stringList.get(index);
-            }
-        }
-        return null;
+    public String toSetStringMerge(Set<String> stringSet, String split) {
+        return this.toSetStringSplitCommaSuffix(stringSet, split, null);
     }
 
-    public String toSetStringMerge(Set<String> stringSet, String split) {
+    public String toSetStringSplitCommaSuffix(Set<String> stringSet, String split, String suffix) {
         StringBuilder builder = new StringBuilder(16);
         if (CollectionUtils.isNotEmpty(stringSet)) {
             List<String> stringList = Lists.newArrayList(stringSet);
             for (int i = 0; i < stringList.size(); i++) {
                 if (StringUtils.isNotBlank(stringList.get(i))) {
                     builder.append(stringList.get(i));
+                    if (StringUtils.isNotBlank(suffix)) {
+                        builder.append(suffix);
+                    }
                     if (i != stringList.size() - 1 && stringList.size() != 1) {
                         if (StringUtils.isNotBlank(split)) {
                             builder.append(split);
@@ -267,6 +293,17 @@ public class GenerateCommonMethod {
             return " ";
         }
         return builder.toString();
+    }
+
+
+    public String getListByIndex(Set<String> stringSet, int index) {
+        if (CollectionUtils.isNotEmpty(stringSet)) {
+            List<String> stringList = Lists.newArrayList(stringSet);
+            if (stringList.size() - 1 >= index) {
+                return stringList.get(index);
+            }
+        }
+        return null;
     }
 
     public String getLocalPath() {

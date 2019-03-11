@@ -313,9 +313,12 @@
                     var retHtml = '<option value="" selected>-请选择-</option>';
                     $.each(result.data, function (i, item) {
                         retHtml += '<option key="' + item.qualificationTypeName + '" title="' + item.userAccountName + '" value="' + item.id + '"';
-                        if (item.id == realEstateAppraiser) {
-                            retHtml += 'selected="selected"';
-                        }
+                        var tempArr = realEstateAppraiser.split(",");
+                        $.each(tempArr,function (i,n) {
+                            if (item.id == n) {
+                                retHtml += 'selected="selected"';
+                            }
+                        });
                         retHtml += '>' + item.userAccountName + '</option>';
                     });
                     if (type) {
