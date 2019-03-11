@@ -136,4 +136,8 @@ public class EvaluationBasisService {
     }
 
 
+    public String getReportBasic(){
+
+        return null;
+    }
 }
