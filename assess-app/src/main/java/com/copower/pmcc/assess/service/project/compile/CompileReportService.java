@@ -182,8 +182,8 @@ public class CompileReportService {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < reportDetailList.size(); i++) {
             CompileReportDetail reportDetail = reportDetailList.get(i);
-            stringBuilder.append(String.format("%s、%s",i+1,reportDetail.getName())).append("\r\n");
-            stringBuilder.append(reportDetail.getContent()).append("\r\n");
+            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s",i+1,reportDetail.getName())).append("</p>");
+            stringBuilder.append("<p style=\"text-indent:2em\">").append(reportDetail.getTemplate()).append("</p>");
         }
         return stringBuilder.toString();
     }

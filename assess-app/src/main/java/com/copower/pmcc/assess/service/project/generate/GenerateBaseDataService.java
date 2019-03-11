@@ -485,7 +485,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetStringMerge(stringSet,null);
+        String s = generateCommonMethod.toSetStringMerge(stringSet, null);
         return s;
     }
 
@@ -1693,7 +1693,7 @@ public class GenerateBaseDataService {
                             if (i == 2) {
                                 if (schemeSurePriceItem.getWeight() != null) {
                                     java.math.BigDecimal bigDecimal = schemeSurePriceItem.getWeight().multiply(new BigDecimal(100));
-                                    builder.writeln(String.format("%s:%s",bigDecimal.toString(),"%"));
+                                    builder.writeln(String.format("%s:%s", bigDecimal.toString(), "%"));
                                 }
                             }
                         }
@@ -2278,15 +2278,24 @@ public class GenerateBaseDataService {
      */
     public String getPrincipleBasisHypothesis(SchemeSupportTypeEnum schemeSupportTypeEnum) throws Exception {
         if (projectInfo == null || schemeSupportTypeEnum == null) return "";
+        String result = "";
         switch (schemeSupportTypeEnum) {
             case HYPOTHESIS:
-                return evaluationHypothesisService.getReportHypothesis(this.projectInfo);
+                result = evaluationHypothesisService.getReportHypothesis(this.projectInfo);
+                break;
             case BASIS:
-                return evaluationBasisService.getReportBasic(this.projectInfo);
+                result= evaluationBasisService.getReportBasic(this.projectInfo);
+                break;
             case PRINCIPLE:
-                return evaluationPrincipleService.getReportPrinciple(this.projectInfo);
+                result = evaluationPrincipleService.getReportPrinciple(this.projectInfo);
+                break;
         }
-        return "";
+        String localPath = getLocalPath();
+        Document document = new Document();
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
+        builder.insertHtml(result,true);
+        document.save(localPath);
+        return localPath;
     }
 
     /**
@@ -2295,7 +2304,12 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getReportAnalysis(String type) throws Exception {
-        return compileReportService.getReportCompile(this.areaId,type);
+        String localPath = getLocalPath();
+        Document document = new Document();
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
+        builder.insertHtml(compileReportService.getReportCompile(this.areaId, type),true);
+        document.save(localPath);
+        return localPath;
     }
 
     /**
@@ -2607,7 +2621,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap,null);
+        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
         if (StringUtils.isEmpty(s.trim())) {
             s = errorStr;
         }
@@ -2668,7 +2682,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap,null);
+        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
         if (StringUtils.isEmpty(s.trim())) {
             s = errorStr;
         }
@@ -2737,7 +2751,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap,null);
+        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
         return s;
     }
 
@@ -2963,7 +2977,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap,null);
+        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
         if (StringUtils.isEmpty(s)) {
             s = errorStr;
         }
@@ -3094,7 +3108,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap,null);
+        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
         if (StringUtils.isEmpty(s.trim())) {
             s = errorStr;
         }
@@ -3700,7 +3714,7 @@ public class GenerateBaseDataService {
                             }
                             if (Objects.equal(schemeSurePriceItem.getMethodName(), CalculationMethodNameEnum.MdIncome.getName())) {
                                 java.math.BigDecimal bigDecimal = schemeSurePriceItem.getWeight().multiply(new BigDecimal(100));
-                                stringBuilder.append(schemeSurePriceItem.getTrialPrice().toString()).append("*").append(String.format("%s%s",bigDecimal.toString(),"%"));
+                                stringBuilder.append(schemeSurePriceItem.getTrialPrice().toString()).append("*").append(String.format("%s%s", bigDecimal.toString(), "%"));
                             }
                         }
                     }
@@ -4637,7 +4651,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getJudgeObjectAreaStatusSheet() throws Exception {
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(),true);
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), true);
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
@@ -5041,7 +5055,7 @@ public class GenerateBaseDataService {
      */
     public String getJudgeObjectLandStateSheet() throws Exception {
         Document doc = new Document();
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(),true);
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), true);
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
@@ -5185,7 +5199,7 @@ public class GenerateBaseDataService {
      */
     public String getJudgeBuildLandStateSheet() throws Exception {
         Document doc = new Document();
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(),true);
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), true);
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
@@ -6220,7 +6234,7 @@ public class GenerateBaseDataService {
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         String reportThinking = evaluationThinkingService.getReportThinking(Lists.newArrayList(hashSet), this.projectInfo);
-        builder.insertHtml(reportThinking,true);
+        builder.insertHtml(reportThinking, true);
         document.save(localPath);
         return localPath;
 

@@ -148,8 +148,8 @@ public class EvaluationPrincipleService {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < principleList.size(); i++) {
             DataEvaluationPrinciple basis = principleList.get(i);
-            stringBuilder.append(String.format("%s、%s",i+1,basis.getName())).append("\r\n");
-            stringBuilder.append(basis.getTemplate()).append("\r\n");
+            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s",i+1,basis.getName())).append("</p>");
+            stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
         }
         return stringBuilder.toString();
     }
