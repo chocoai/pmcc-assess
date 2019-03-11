@@ -1,9 +1,8 @@
 package com.copower.pmcc.assess.dal.basis.dao.data;
 
+import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationBasisExample;
 import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis;
 import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysisExample;
-import com.copower.pmcc.assess.dal.basis.entity.DataTaxRateAllocation;
-import com.copower.pmcc.assess.dal.basis.entity.DataTaxRateAllocationExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataReportAnalysisMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +23,10 @@ public class DataReportAnalysisDao {
 
 
     public boolean updateReportAnalysis(DataReportAnalysis evaluationReportAnalysis) {
-        return dataReportAnalysisMapper.updateByPrimaryKey(evaluationReportAnalysis) == 1;
+        DataReportAnalysisExample example = new DataReportAnalysisExample();
+        DataReportAnalysisExample.Criteria criteria = example.createCriteria();
+        criteria.andIdEqualTo(evaluationReportAnalysis.getId());
+        return dataReportAnalysisMapper.updateByExampleSelective(evaluationReportAnalysis,example) == 1;
     }
 
     public List<DataReportAnalysis> getReportAnalysisList(String name,Integer reportAnalysisType) {
@@ -65,11 +67,18 @@ public class DataReportAnalysisDao {
     }
 
     public boolean removeReportAnalysis(Integer id) {
-        return dataReportAnalysisMapper.deleteByPrimaryKey(id) == 1;
+        DataReportAnalysisExample example = new DataReportAnalysisExample();
+        DataReportAnalysisExample.Criteria criteria = example.createCriteria();
+        criteria.andIdEqualTo(id);
+        return dataReportAnalysisMapper.deleteByExample(example) == 1;
     }
 
     public DataReportAnalysis getReportAnalysis(Integer id) {
-        return dataReportAnalysisMapper.selectByPrimaryKey(id);
+        DataReportAnalysisExample example = new DataReportAnalysisExample();
+        DataReportAnalysisExample.Criteria criteria = example.createCriteria();
+        criteria.andIdEqualTo(id);
+        List<DataReportAnalysis> reportAnalyses = dataReportAnalysisMapper.selectByExample(example);
+        return reportAnalyses.get(0);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.dao.data;
 
+import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationBasisExample;
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationPrinciple;
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationPrincipleExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataEvaluationPrincipleMapper;
@@ -24,7 +25,10 @@ public class EvaluationPrincipleDao {
 
 
     public boolean updatePrinciple(DataEvaluationPrinciple evaluationPrinciple) {
-        return evaluationPrincipleMapper.updateByPrimaryKey(evaluationPrinciple) == 1;
+        DataEvaluationPrincipleExample example = new DataEvaluationPrincipleExample();
+        DataEvaluationPrincipleExample.Criteria criteria = example.createCriteria();
+        criteria.andIdEqualTo(evaluationPrinciple.getId());
+        return evaluationPrincipleMapper.updateByExampleSelective(evaluationPrinciple,example) == 1;
     }
 
     public List<DataEvaluationPrinciple> getPrincipleList(String name) {
@@ -52,10 +56,16 @@ public class EvaluationPrincipleDao {
     }
 
     public boolean removePrinciple(Integer id) {
-        return evaluationPrincipleMapper.deleteByPrimaryKey(id) == 1;
+        DataEvaluationPrincipleExample example = new DataEvaluationPrincipleExample();
+        DataEvaluationPrincipleExample.Criteria criteria = example.createCriteria();
+        criteria.andIdEqualTo(id);
+        return evaluationPrincipleMapper.deleteByExample(example) == 1;
     }
 
     public DataEvaluationPrinciple getPrinciple(Integer id) {
-        return evaluationPrincipleMapper.selectByPrimaryKey(id);
+        DataEvaluationPrincipleExample example = new DataEvaluationPrincipleExample();
+        DataEvaluationPrincipleExample.Criteria criteria = example.createCriteria();
+        criteria.andIdEqualTo(id);
+        return evaluationPrincipleMapper.selectByExample(example).get(0);
     }
 }

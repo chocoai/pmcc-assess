@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationBasis;
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationBasisExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataEvaluationBasisMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.aspectj.apache.bcel.generic.RET;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -24,7 +25,10 @@ public class EvaluationBasisDao {
 
 
     public boolean updateBasis(DataEvaluationBasis evaluationBasis) {
-        return evaluationBasisMapper.updateByPrimaryKey(evaluationBasis) == 1;
+        DataEvaluationBasisExample example = new DataEvaluationBasisExample();
+        DataEvaluationBasisExample.Criteria criteria = example.createCriteria();
+        criteria.andIdEqualTo(evaluationBasis.getId());
+        return evaluationBasisMapper.updateByExampleSelective(evaluationBasis, example) > 0;
     }
 
     public List<DataEvaluationBasis> getBasisList(String name) {
@@ -56,10 +60,17 @@ public class EvaluationBasisDao {
     }
 
     public boolean removeBasis(Integer id) {
-        return evaluationBasisMapper.deleteByPrimaryKey(id) == 1;
+        DataEvaluationBasisExample example = new DataEvaluationBasisExample();
+        DataEvaluationBasisExample.Criteria criteria = example.createCriteria();
+        criteria.andIdEqualTo(id);
+        return evaluationBasisMapper.deleteByExample(example) == 1;
     }
 
     public DataEvaluationBasis getBasis(Integer id) {
-        return evaluationBasisMapper.selectByPrimaryKey(id);
+        DataEvaluationBasisExample example = new DataEvaluationBasisExample();
+        DataEvaluationBasisExample.Criteria criteria = example.createCriteria();
+        criteria.andIdEqualTo(id);
+        List<DataEvaluationBasis> evaluationBases = evaluationBasisMapper.selectByExample(example);
+        return evaluationBases.get(0);
     }
 }

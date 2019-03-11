@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.dal.basis.dao.data;
 
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationHypothesis;
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationHypothesisExample;
+import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationPrincipleExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataEvaluationHypothesisMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,10 @@ public class EvaluationHypothesisDao {
 
 
     public boolean updateHypothesis(DataEvaluationHypothesis evaluationHypothesis) {
-        return evaluationHypothesisMapper.updateByPrimaryKey(evaluationHypothesis) == 1;
+        DataEvaluationHypothesisExample example = new DataEvaluationHypothesisExample();
+        DataEvaluationHypothesisExample.Criteria criteria = example.createCriteria();
+        criteria.andIdEqualTo(evaluationHypothesis.getId());
+        return evaluationHypothesisMapper.updateByExampleSelective(evaluationHypothesis,example) == 1;
     }
 
     public List<DataEvaluationHypothesis> getHypothesisList(String name) {
@@ -53,11 +57,17 @@ public class EvaluationHypothesisDao {
     }
 
     public boolean removeHypothesis(Integer id) {
-        return evaluationHypothesisMapper.deleteByPrimaryKey(id) == 1;
+        DataEvaluationHypothesisExample example = new DataEvaluationHypothesisExample();
+        DataEvaluationHypothesisExample.Criteria criteria = example.createCriteria();
+        criteria.andIdEqualTo(id);
+        return evaluationHypothesisMapper.deleteByExample(example) == 1;
     }
 
     public DataEvaluationHypothesis getHypothesis(Integer id) {
-        return evaluationHypothesisMapper.selectByPrimaryKey(id);
+        DataEvaluationHypothesisExample example = new DataEvaluationHypothesisExample();
+        DataEvaluationHypothesisExample.Criteria criteria = example.createCriteria();
+        criteria.andIdEqualTo(id);
+        return evaluationHypothesisMapper.selectByExample(example).get(0);
     }
 
 }
