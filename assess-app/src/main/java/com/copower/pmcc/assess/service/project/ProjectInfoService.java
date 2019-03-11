@@ -545,6 +545,9 @@ public class ProjectInfoService {
             //价值类型
             projectInfoVo.setValueTypeName(bidBaseDataDicService.getCacheDataDicById(projectInfo.getValueType()).getName());
         }
+        if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getPropertyScope())) {
+            projectInfoVo.setPropertyScopeName(bidBaseDataDicService.getCacheDataDicById(Integer.valueOf(projectInfo.getPropertyScope())).getName());
+        }
 
         if (projectInfo.getId() != null && projectInfo.getId().intValue() > 0) {
             InitiateConsignorVo consignorVo = consignorService.getDataByProjectId(projectInfo.getId());

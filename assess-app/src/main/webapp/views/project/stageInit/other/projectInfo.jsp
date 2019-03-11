@@ -92,9 +92,8 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">评估范围</label>
                 <div class="col-sm-3">
-                    <input name="propertyScope"
-                           class="form-control"
-                           placeholder="评估范围" value="${projectInfo.propertyScope}"/>
+                    <select name="propertyScope" class="form-control search-select select2 propertyScope" required="required">
+                    </select>
                 </div>
             </div>
             <div class="x-valid">

@@ -34,6 +34,7 @@ public class ProjectInfoVo extends ProjectInfo {
     private BaseProjectClassify baseProjectClassify;
     private String departmentName;
     private String valueTypeName;
+    private String propertyScopeName;
     private Integer finishPre;
     private List<ProjectResponsibilityDto> planWorkStages;
     private List<ProjectResponsibilityDto> taskWorkStages;
@@ -205,5 +206,13 @@ public class ProjectInfoVo extends ProjectInfo {
 
     public void setFinishPre(Integer finishPre) {
         this.finishPre = finishPre;
+    }
+
+    public String getPropertyScopeName() {
+        return propertyScopeName;
+    }
+
+    public void setPropertyScopeName(String propertyScopeName) {
+        this.propertyScopeName = propertyScopeName;
     }
 }
