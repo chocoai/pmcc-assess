@@ -117,7 +117,7 @@ public class EvaluationHypothesisService {
         if (purpose != null && purpose > 0) {
             purposeStr = String.format(",%s,", purpose);
         }
-        return evaluationHypothesisDao.getHypothesisList(typeStr,categoryStr, purposeStr);
+        return evaluationHypothesisDao.getEnableHypothesisList(typeStr,categoryStr, purposeStr);
     }
 
 
@@ -143,7 +143,14 @@ public class EvaluationHypothesisService {
      * @return
      */
     public String getReportHypothesis(ProjectInfo projectInfo){
-
-        return null;
+        List<DataEvaluationHypothesis> hypothesisList = this.getHypothesisList(projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), projectInfo.getEntrustPurpose());
+        if (CollectionUtils.isEmpty(hypothesisList)) return "";
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < hypothesisList.size(); i++) {
+            DataEvaluationHypothesis basis = hypothesisList.get(i);
+            stringBuilder.append(String.format("%s、%s",i+1,basis.getName())).append("\r\n");
+            stringBuilder.append(basis.getTemplate()).append("\r\n");
+        }
+        return stringBuilder.toString();
     }
 }

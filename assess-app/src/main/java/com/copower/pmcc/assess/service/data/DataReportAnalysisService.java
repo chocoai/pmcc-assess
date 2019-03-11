@@ -128,9 +128,9 @@ public class DataReportAnalysisService {
      * @param entrustmentPurpose
      * @return
      */
-    public List<DataReportAnalysis> getDataReportAnalysisList(Integer type, Integer entrustmentPurpose) {
+    public List<DataReportAnalysis> getDataReportAnalysisList(String province,String city,String district,Integer type, Integer entrustmentPurpose) {
         String entrustmentPurposeString = String.format(",%s,",entrustmentPurpose);
-        return dataReportAnalysisDao.getReportAnalysisList(type,entrustmentPurposeString);
+        return dataReportAnalysisDao.getReportAnalysisList(province,city,district,type,entrustmentPurposeString);
     }
 
 }

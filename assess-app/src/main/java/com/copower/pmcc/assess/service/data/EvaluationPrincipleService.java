@@ -17,6 +17,7 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -116,7 +117,7 @@ public class EvaluationPrincipleService {
         if (purpose != null && purpose > 0) {
             purposeStr = String.format(",%s,", purpose);
         }
-        return evaluationPrincipleDao.getPrincipleList(typeStr, categoryStr, purposeStr);
+        return evaluationPrincipleDao.getEnablePrincipleList(typeStr, categoryStr, purposeStr);
     }
 
 
@@ -142,7 +143,14 @@ public class EvaluationPrincipleService {
      * @return
      */
     public String getReportPrinciple(ProjectInfo projectInfo){
-
-        return null;
+        List<DataEvaluationPrinciple> principleList = getPrincipleList(projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), projectInfo.getEntrustPurpose());
+        if (CollectionUtils.isEmpty(principleList)) return "";
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < principleList.size(); i++) {
+            DataEvaluationPrinciple basis = principleList.get(i);
+            stringBuilder.append(String.format("%s、%s",i+1,basis.getName())).append("\r\n");
+            stringBuilder.append(basis.getTemplate()).append("\r\n");
+        }
+        return stringBuilder.toString();
     }
 }

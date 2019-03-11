@@ -38,15 +38,25 @@ public class DataReportAnalysisDao {
         return dataReportAnalysisMapper.selectByExample(example);
     }
 
-    public List<DataReportAnalysis> getReportAnalysisList(Integer reportAnalysisType,String entrustmentPurpose) {
+    public List<DataReportAnalysis> getReportAnalysisList(String province,String city,String district,Integer reportAnalysisType,String entrustmentPurpose) {
         DataReportAnalysisExample example = new DataReportAnalysisExample();
         DataReportAnalysisExample.Criteria criteria = example.createCriteria();
+        if(StringUtils.isNotBlank(province)){
+            criteria.andProvinceEqualTo(province);
+        }
+        if(StringUtils.isNotBlank(city)){
+            criteria.andCityEqualTo(city);
+        }
+        if(StringUtils.isNotBlank(province)){
+            criteria.andProvinceEqualTo(province);
+        }
         if(reportAnalysisType!=null){
             criteria.andReportAnalysisTypeEqualTo(reportAnalysisType);
         }
         if (StringUtils.isNotBlank(entrustmentPurpose)) {
             criteria.andEntrustmentPurposeLike(String.format("%%%s%%", entrustmentPurpose));
         }
+        example.setOrderByClause("sorting");
         return dataReportAnalysisMapper.selectByExample(example);
     }
 

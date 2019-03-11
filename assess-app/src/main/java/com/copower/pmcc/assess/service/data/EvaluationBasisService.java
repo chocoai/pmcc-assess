@@ -17,6 +17,7 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -132,18 +133,28 @@ public class EvaluationBasisService {
         if (StringUtils.isNotBlank(evaluationBasis.getEntrustmentPurpose())) {
             vo.setEntrustmentPurposeStr(baseDataDicService.getDataDicName(purposeDicList, evaluationBasis.getEntrustmentPurpose()));
         }
-        vo.setTypeName(baseProjectClassifyService.getTypeAndCategoryName(evaluationBasis.getType(),evaluationBasis.getCategory()));
+        vo.setTypeName(baseProjectClassifyService.getTypeAndCategoryName(evaluationBasis.getType(), evaluationBasis.getCategory()));
         return vo;
     }
 
 
     /**
      * 获取上报告内容
+     *
      * @param projectInfo
      * @return
      */
-    public String getReportBasic(ProjectInfo projectInfo){
-
-        return null;
+    public String getReportBasic(ProjectInfo projectInfo) {
+        //根据项目类型、委托目的按排序顺序获取数据
+        //获取到数据后根据对应的规则生成相关报告数据内容
+        List<DataEvaluationBasis> basisList = this.getEnableBasisList(projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), projectInfo.getEntrustPurpose());
+        if (CollectionUtils.isEmpty(basisList)) return "";
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < basisList.size(); i++) {
+            DataEvaluationBasis basis = basisList.get(i);
+            stringBuilder.append(String.format("%s、%s",i+1,basis.getName())).append("\r\n");
+            stringBuilder.append(basis.getTemplate()).append("\r\n");
+        }
+        return stringBuilder.toString();
     }
 }

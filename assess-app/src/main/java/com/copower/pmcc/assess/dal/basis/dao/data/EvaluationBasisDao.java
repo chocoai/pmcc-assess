@@ -50,6 +50,7 @@ public class EvaluationBasisDao {
         if (StringUtils.isNotBlank(purpose)) {
             criteria.andEntrustmentPurposeLike(String.format("%%%s%%", purpose));
         }
+        example.setOrderByClause("sorting");
         return evaluationBasisMapper.selectByExample(example);
     }
 

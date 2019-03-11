@@ -29,6 +29,7 @@ public class AssessDataDicKeyConstant {
     public static final String REPORT_ANALYSIS_CATEGORY = "report.analysis.category";  //报告分析类别
     public static final String REPORT_ANALYSIS_CATEGORY_LIQUIDITY = "report.analysis.category.liquidity";  //变现能力分析
     public static final String REPORT_ANALYSIS_CATEGORY_RISK = "report.analysis.category.risk";  //风险提示
+    public static final String REPORT_ANALYSIS_CATEGORY_MARKET = "rreport.analysis.category.market";  //市场背景描述与分析
 
     /*
      * 项目立项

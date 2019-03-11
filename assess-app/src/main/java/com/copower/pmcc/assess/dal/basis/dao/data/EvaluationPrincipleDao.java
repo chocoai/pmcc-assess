@@ -37,9 +37,9 @@ public class EvaluationPrincipleDao {
         return evaluationPrincipleMapper.selectByExample(example);
     }
 
-    public List<DataEvaluationPrinciple> getPrincipleList(String type, String category, String purpose) {
+    public List<DataEvaluationPrinciple> getEnablePrincipleList(String type, String category, String purpose) {
         DataEvaluationPrincipleExample example = new DataEvaluationPrincipleExample();
-        DataEvaluationPrincipleExample.Criteria criteria = example.createCriteria();
+        DataEvaluationPrincipleExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true);
         if (StringUtils.isNotBlank(type)) {
             criteria.andTypeLike(String.format("%%%s%%", type));
         }
@@ -49,6 +49,7 @@ public class EvaluationPrincipleDao {
         if (StringUtils.isNotBlank(purpose)) {
             criteria.andEntrustmentPurposeLike(String.format("%%%s%%", purpose));
         }
+        example.setOrderByClause("sorting");
         return evaluationPrincipleMapper.selectByExample(example);
     }
 

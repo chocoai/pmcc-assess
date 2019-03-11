@@ -140,7 +140,9 @@ public class CompileReportService {
         if (baseDataDic == null) return;
         ProjectPlanDetails areaPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(projectPlanDetails.getPid());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-        List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisService.getDataReportAnalysisList(baseDataDic.getId(), projectInfo.getEntrustPurpose());
+        SchemeAreaGroup areaGroup = schemeAreaGroupDao.get(projectPlanDetails.getAreaId());
+        List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisService.getDataReportAnalysisList(areaGroup.getProvince(), areaGroup.getCity(),
+                areaGroup.getDistrict(), baseDataDic.getId(), projectInfo.getEntrustPurpose());
         CompileReportDetail compileReportDetail = null;
         if (CollectionUtils.isNotEmpty(reportAnalysisList)) {
             for (DataReportAnalysis dataReportAnalysis : reportAnalysisList) {
@@ -163,17 +165,42 @@ public class CompileReportService {
     }
 
     /**
+     * 获取上报告的分析内容
+     *
+     * @param areaId
+     * @param reportAnalysisType
+     * @return
+     */
+    public String getReportCompile(Integer areaId, String reportAnalysisType) {
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(reportAnalysisType);
+        if (baseDataDic == null) return "";
+        CompileReportDetail where = new CompileReportDetail();
+        where.setAreaId(areaId);
+        where.setReportAnalysisType(baseDataDic.getId());
+        List<CompileReportDetail> reportDetailList = compileReportDetailDao.getReportDetailList(where);
+        if (CollectionUtils.isEmpty(reportDetailList)) return "";
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < reportDetailList.size(); i++) {
+            CompileReportDetail reportDetail = reportDetailList.get(i);
+            stringBuilder.append(String.format("%s、%s",i+1,reportDetail.getName())).append("\r\n");
+            stringBuilder.append(reportDetail.getContent()).append("\r\n");
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
      * 根据名称获取内容信息
+     *
      * @param areaId
      * @param name
      * @return
      */
-    public String getContentByName(Integer areaId,String name){
-        CompileReportDetail where=new CompileReportDetail();
+    public String getContentByName(Integer areaId, String name) {
+        CompileReportDetail where = new CompileReportDetail();
         where.setAreaId(areaId);
         where.setName(name);
         List<CompileReportDetail> detailList = compileReportDetailDao.getReportDetailList(where);
-        if(CollectionUtils.isEmpty(detailList)) return "";
+        if (CollectionUtils.isEmpty(detailList)) return "";
         return detailList.get(0).getContent();
     }
 }

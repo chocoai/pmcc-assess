@@ -38,9 +38,9 @@ public class EvaluationHypothesisDao {
         return evaluationHypothesisMapper.selectByExample(example);
     }
 
-    public List<DataEvaluationHypothesis> getHypothesisList(String type,String category,String purpose) {
+    public List<DataEvaluationHypothesis> getEnableHypothesisList(String type,String category,String purpose) {
         DataEvaluationHypothesisExample example = new DataEvaluationHypothesisExample();
-        DataEvaluationHypothesisExample.Criteria criteria = example.createCriteria();
+        DataEvaluationHypothesisExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true);
         if (StringUtils.isNotBlank(type)) {
             criteria.andTypeLike(String.format("%%%s%%", type));
         }
@@ -50,6 +50,7 @@ public class EvaluationHypothesisDao {
         if(StringUtils.isNotBlank(purpose)){
             criteria.andEntrustmentPurposeLike(String.format("%%%s%%",purpose));
         }
+        example.setOrderByClause("sorting");
         return evaluationHypothesisMapper.selectByExample(example);
     }
 
