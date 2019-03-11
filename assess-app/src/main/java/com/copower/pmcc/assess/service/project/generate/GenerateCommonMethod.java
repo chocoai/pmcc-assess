@@ -1,6 +1,10 @@
 package com.copower.pmcc.assess.service.project.generate;
 
+import com.aspose.words.CellVerticalAlignment;
+import com.aspose.words.Document;
 import com.aspose.words.DocumentBuilder;
+import com.aspose.words.ParagraphAlignment;
+import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
@@ -37,7 +41,7 @@ public class GenerateCommonMethod {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
 
-    public final String SchemeJudgeObjectName = "委估对象" ;
+    public final String SchemeJudgeObjectName = "委估对象";
 
     public String getSchemeJudgeObjectShowName(SchemeJudgeObject schemeJudgeObject) {
         StringBuilder stringBuilder = new StringBuilder(24);
@@ -223,37 +227,39 @@ public class GenerateCommonMethod {
         }
     }
 
-    public String toSetString(Set<String> stringSet) {
-        StringBuilder builder = new StringBuilder(24);
-        if (CollectionUtils.isNotEmpty(stringSet)) {
-            List<String> stringList = Lists.newArrayList(stringSet);
-            for (int i = 0; i < stringList.size(); i++) {
-                if (StringUtils.isNotBlank(stringList.get(i))) {
-                    builder.append(stringList.get(i));
-                    if (stringList.size() != 1) {
-                        if (i == stringList.size() - 1) {
-                            builder.append(" ");
-                        } else {
-                            builder.append(",");
-                        }
-                    }
-                }
-            }
-        } else {
-            return " ";
-        }
-        return builder.toString();
+    public String toSetStringSplitSpace(Set<String> stringSet) {
+        return toSetStringMerge(stringSet, " ");
     }
 
-    public String toSetString2(Set<String> stringSet) {
-        StringBuilder builder = new StringBuilder(24);
+    public String toSetStringSplitComma(Set<String> stringSet) {
+        return toSetStringMerge(stringSet, ",");
+    }
+
+    public String toSetStringSplitNull(Set<String> stringSet) {
+        return toSetStringMerge(stringSet, null);
+    }
+
+    public String getListByIndex(Set<String> stringSet, int index) {
+        if (CollectionUtils.isNotEmpty(stringSet)) {
+            List<String> stringList = Lists.newArrayList(stringSet);
+            if (stringList.size()-1 >= index){
+                return stringList.get(index);
+            }
+        }
+        return null;
+    }
+
+    public String toSetStringMerge(Set<String> stringSet, String split) {
+        StringBuilder builder = new StringBuilder(16);
         if (CollectionUtils.isNotEmpty(stringSet)) {
             List<String> stringList = Lists.newArrayList(stringSet);
             for (int i = 0; i < stringList.size(); i++) {
                 if (StringUtils.isNotBlank(stringList.get(i))) {
                     builder.append(stringList.get(i));
                     if (i != stringList.size() - 1 && stringList.size() != 1) {
-                        builder.append(",");
+                        if (StringUtils.isNotBlank(split)) {
+                            builder.append(split);
+                        }
                     }
                 }
             }
@@ -292,6 +298,33 @@ public class GenerateCommonMethod {
                     sourceImg.getHeight() > 500 ? 500 : sourceImg.getHeight());
             builder.write(" ");
         }
+    }
+
+    /**
+     * 设置表格属性
+     *
+     * @param builder
+     * @throws Exception
+     */
+    public void settingBuildingTable(DocumentBuilder builder) throws Exception {
+        builder.getFont().setSize(9);
+        builder.getFont().setName(AsposeUtils.ImitationSongGB2312FontName);
+        //设置表格边框的宽度
+        builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
+        builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
+        builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
+        builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
+        //设置具体宽度
+        builder.getCellFormat().setWidth(100);
+        //水平居中
+        builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+        //上下居中
+        builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+    }
+
+    public void setDefaultDocumentBuilderSetting(DocumentBuilder builder) throws Exception {
+        builder.getFont().setName(AsposeUtils.ImitationSongGB2312FontName);
+        builder.getFont().setSize(14.5);
     }
 
 }

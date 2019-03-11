@@ -264,7 +264,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         if (StringUtils.isEmpty(s.trim())) {
             s = errorStr;
         }
@@ -319,7 +319,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         if (StringUtils.isEmpty(s.trim())) {
             s = errorStr;
         }
@@ -383,12 +383,12 @@ public class GenerateBaseDataService {
                     }
                 }
             }
-            builder.append(generateCommonMethod.toSetString2(streetNumber)).append("号");
-            builder.append(generateCommonMethod.toSetString2(estateName));
-            builder.append("附").append(generateCommonMethod.toSetString2(attachedNumber)).append("号")
-                    .append(generateCommonMethod.toSetString2(buildingNumber)).append("栋")
-                    .append(generateCommonMethod.toSetString2(unit)).append("单元")
-                    .append(generateCommonMethod.toSetString2(floor)).append("层");
+            builder.append(generateCommonMethod.toSetStringSplitComma(streetNumber)).append("号");
+            builder.append(generateCommonMethod.toSetStringSplitComma(estateName));
+            builder.append("附").append(generateCommonMethod.toSetStringSplitComma(attachedNumber)).append("号")
+                    .append(generateCommonMethod.toSetStringSplitComma(buildingNumber)).append("栋")
+                    .append(generateCommonMethod.toSetStringSplitComma(unit)).append("单元")
+                    .append(generateCommonMethod.toSetStringSplitComma(floor)).append("层");
             builder.append(generateCommonMethod.convertNumber(roomNumber)).append("号");
             stringSet.add(builder.toString());
             builder.delete(0, builder.toString().length());
@@ -421,7 +421,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString2(stringSet);
+        String s = generateCommonMethod.toSetStringSplitComma(stringSet);
         if (StringUtils.isEmpty(s.trim())) {
             s = errorStr;
         }
@@ -476,7 +476,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         if (StringUtils.isEmpty(s.trim())) {
             s = errorStr;
         }
@@ -1088,7 +1088,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         if (StringUtils.isEmpty(s)) {
             s = errorStr;
         }
@@ -1150,7 +1150,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -1195,7 +1195,7 @@ public class GenerateBaseDataService {
                 stringSet.add(CnNumberUtils.toUppercaseSubstring(bigDecimalList.get(i).toString()));
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -1206,6 +1206,7 @@ public class GenerateBaseDataService {
      */
     public String getValuationProjectName() throws Exception {
         Set<String> stringSet = Sets.newHashSet();
+        final String STRING = "空";
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
                 projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
@@ -1241,62 +1242,148 @@ public class GenerateBaseDataService {
                     buildingNumber.add(declareRecord.getBuildingNumber());
                     unit.add(declareRecord.getUnit());
                     floor.add(declareRecord.getFloor());
-                    ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(projectId);
-                    query.setProjectPhaseId(projectPhases.get(0).getId());
-                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
+                    List<ProjectPlanDetails> projectPlanDetailsList = Lists.newArrayList();
+                    if (CollectionUtils.isNotEmpty(projectPhases)) {
+                        for (ProjectPhase projectPhase : projectPhases) {
+                            ProjectPlanDetails query = new ProjectPlanDetails();
+                            query.setProjectId(projectId);
+                            query.setProjectPhaseId(projectPhase.getId());
+                            query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+                            List<ProjectPlanDetails> projectDetails = projectPlanDetailsService.getProjectDetails(query);
+                            if (CollectionUtils.isNotEmpty(projectDetails)) {
+                                projectPlanDetailsList.addAll(projectDetails);
+                            }
+                        }
+                    }
                     if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                        GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetailsList.get(0).getId());
-                        if (generateBaseExamineService.getEstate().getId() != null) {
-                            estateName.add(generateBaseExamineService.getEstate().getName());
+                        for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
+                            GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
+                            if (generateBaseExamineService.getEstate().getId() != null) {
+                                if (StringUtils.isNotBlank(generateBaseExamineService.getEstate().getName())) {
+                                    estateName.add(generateBaseExamineService.getEstate().getName());
+                                }
+                            }
                         }
                     }
                 }
             }
-            builder.append(generateCommonMethod.toSetString2(streetNumber)).append("号");
-            builder.append(generateCommonMethod.toSetString2(estateName));
-            builder.append("附").append(generateCommonMethod.toSetString2(attachedNumber)).append("号")
-                    .append(generateCommonMethod.toSetString2(buildingNumber)).append("栋")
-                    .append(generateCommonMethod.toSetString2(unit)).append("单元")
-                    .append(generateCommonMethod.toSetString2(floor)).append("层");
-            builder.append(generateCommonMethod.convertNumber(roomNumber)).append("号");
+            if (CollectionUtils.isNotEmpty(streetNumber)) {
+                builder.append(generateCommonMethod.getListByIndex(streetNumber, 0)).append("号");
+            } else {
+                builder.append(STRING).append("号");
+            }
+            builder.append(generateCommonMethod.toSetStringMerge(estateName, "、"));
+            builder.append("附");
+            if (CollectionUtils.isNotEmpty(attachedNumber)) {
+                builder.append(generateCommonMethod.getListByIndex(attachedNumber, 0)).append("号");
+            } else {
+                builder.append(STRING).append("号");
+            }
+            if (CollectionUtils.isNotEmpty(buildingNumber)) {
+                builder.append(generateCommonMethod.getListByIndex(buildingNumber, 0)).append("栋");
+            } else {
+                builder.append(STRING).append("栋");
+            }
+            if (CollectionUtils.isNotEmpty(unit)) {
+                builder.append(generateCommonMethod.getListByIndex(unit, 0)).append("单元");
+            } else {
+                builder.append(STRING).append("单元");
+            }
+            if (CollectionUtils.isNotEmpty(floor)) {
+                builder.append(generateCommonMethod.getListByIndex(floor, 0)).append("层");
+            } else {
+                builder.append(STRING).append("层");
+            }
+            if (CollectionUtils.isNotEmpty(roomNumber)) {
+                builder.append(generateCommonMethod.convertNumber(roomNumber)).append("号");
+            } else {
+                builder.append(STRING).append("号");
+            }
             if (schemeJudgeObjectList1.get(0).getSetUse() != null) {
                 DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObjectList1.get(0).getSetUse());
                 if (dataSetUseField != null) {
-                    builder.append(dataSetUseField.getName()).append(";");
+                    builder.append(dataSetUseField.getName());
                 }
             }
+            builder.append(";");
             stringSet.add(builder.toString());
             builder.delete(0, builder.toString().length());
         }
-        Collection<SchemeJudgeObject> schemeJudgeObjectList2 = CollectionUtils.subtract(schemeJudgeObjectList, schemeJudgeObjectList1);
+        List<SchemeJudgeObject> schemeJudgeObjectList2 = Lists.newArrayList(CollectionUtils.subtract(schemeJudgeObjectList, schemeJudgeObjectList1));
         //单独描述情况
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList2)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList2) {
+            for (int i = 0; i < schemeJudgeObjectList2.size(); i++) {
+                SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList2.get(i);
                 DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-                builder.append(declareRecord.getStreetNumber()).append("号");
-                ProjectPlanDetails query = new ProjectPlanDetails();
-                query.setProjectId(projectId);
-                query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                query.setProjectPhaseId(projectPhases.get(0).getId());
-                List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                    GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetailsList.get(0).getId());
-                    if (generateBaseExamineService.getEstate().getId() != null) {
-                        builder.append(generateBaseExamineService.getEstate().getName());
+                if (declareRecord != null) {
+                    builder.append(declareRecord.getStreetNumber()).append("号");
+                }
+                List<ProjectPlanDetails> projectPlanDetailsList = Lists.newArrayList();
+                if (CollectionUtils.isNotEmpty(projectPhases)) {
+                    for (ProjectPhase projectPhase : projectPhases) {
+                        ProjectPlanDetails query = new ProjectPlanDetails();
+                        query.setProjectId(projectId);
+                        query.setProjectPhaseId(projectPhase.getId());
+                        query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+                        List<ProjectPlanDetails> projectDetails = projectPlanDetailsService.getProjectDetails(query);
+                        if (CollectionUtils.isNotEmpty(projectDetails)) {
+                            projectPlanDetailsList.addAll(projectDetails);
+                        }
                     }
                 }
-                builder.append("附").append(declareRecord.getAttachedNumber()).append("号")
-                        .append(declareRecord.getBuildingNumber()).append("栋")
-                        .append(declareRecord.getUnit()).append("单元")
-                        .append(declareRecord.getFloor()).append("层")
-                        .append(declareRecord.getRoomNumber()).append("号");
+                if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+                    Set<String> strings = Sets.newHashSet();
+                    for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
+                        GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
+                        if (generateBaseExamineService.getEstate().getId() != null) {
+                            if (StringUtils.isNotBlank(generateBaseExamineService.getEstate().getName())) {
+                                strings.add(generateBaseExamineService.getEstate().getName());
+                            }
+                        }
+                    }
+                    if (CollectionUtils.isNotEmpty(strings)) {
+                        builder.append(generateCommonMethod.toSetStringMerge(strings, "、"));
+                    }
+                }
+                builder.append("附");
+                if (StringUtils.isNotBlank(declareRecord.getAttachedNumber())){
+                    builder.append(declareRecord.getAttachedNumber());
+                }else {
+                    builder.append(STRING);
+                }
+                builder.append("号") ;
+                if (StringUtils.isNotBlank(declareRecord.getBuildingNumber())){
+                    builder.append(declareRecord.getBuildingNumber());
+                }else {
+                    builder.append(STRING);
+                }
+                builder.append("栋") ;
+                if (StringUtils.isNotBlank(declareRecord.getUnit())){
+                    builder.append(declareRecord.getUnit());
+                }else {
+                    builder.append(STRING);
+                }
+                builder.append("单元") ;
+                if (StringUtils.isNotBlank(declareRecord.getFloor())){
+                    builder.append(declareRecord.getFloor());
+                }else {
+                    builder.append(STRING);
+                }
+                builder.append("层") ;
+                if (StringUtils.isNotBlank(declareRecord.getRoomNumber())){
+                    builder.append(declareRecord.getRoomNumber());
+                }else {
+                    builder.append(STRING);
+                }
+                builder.append("号") ;
                 if (schemeJudgeObject.getSetUse() != null) {
                     DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
                     if (dataSetUseField != null) {
-                        builder.append(dataSetUseField.getName()).append(";");
+                        builder.append(dataSetUseField.getName());
                     }
+                }
+                if (i == schemeJudgeObjectList2.size() - 1) {
+                    builder.append(";");
                 }
                 if (StringUtils.isNotBlank(builder.toString())) {
                     stringSet.add(builder.toString());
@@ -1306,9 +1393,9 @@ public class GenerateBaseDataService {
         }
         String s = " ";
         if (getSchemeAreaGroup().getEntrustPurpose() != null) {
-            s = String.format("%s%s", generateCommonMethod.toSetString2(stringSet), baseDataDicService.getNameById(getSchemeAreaGroup().getEntrustPurpose()));
+            s = String.format("%s%s", generateCommonMethod.toSetStringMerge(stringSet,null), baseDataDicService.getNameById(getSchemeAreaGroup().getEntrustPurpose()));
         } else {
-            s = generateCommonMethod.toSetString2(stringSet);
+            s = generateCommonMethod.toSetStringSplitComma(stringSet);
         }
         return s;
     }
@@ -1363,7 +1450,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -1386,7 +1473,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -1420,6 +1507,7 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        generateCommonMethod.settingBuildingTable(builder);
         List<SchemeJudgeObjectVo> schemeJudgeObjectList = getSchemeJudgeObjectList().stream().map(schemeJudgeObject -> {
             return schemeJudgeObjectService.getSchemeJudgeObjectVo(schemeJudgeObject);
         }).collect(Collectors.toList());
@@ -1531,6 +1619,7 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        generateCommonMethod.settingBuildingTable(builder);
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -1638,7 +1727,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -1724,7 +1813,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         if (StringUtils.isEmpty(s.trim())) {
             s = errorStr;
         }
@@ -1741,6 +1830,7 @@ public class GenerateBaseDataService {
     public String getLiquidationAnalysis(String title) throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        generateCommonMethod.settingBuildingTable(builder);
         String localPath = getLocalPath(title);
         for (SchemeJudgeObject judgeObject : this.getSchemeJudgeObjectList()) {
             createLiquidationAnalysisTable(builder, judgeObject);
@@ -1845,7 +1935,7 @@ public class GenerateBaseDataService {
                 builder.delete(0, builder.toString().length());
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -1877,7 +1967,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -1906,7 +1996,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -2113,7 +2203,7 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
             projectPlanDetailsList.stream().forEach(projectPlanDetails -> stringSet.add(projectPlanDetails.getExecuteUserAccount()));
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -2242,7 +2332,7 @@ public class GenerateBaseDataService {
                 });
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -2325,7 +2415,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -2386,7 +2476,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -2452,7 +2542,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -2519,7 +2609,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -2586,7 +2676,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         if (StringUtils.isEmpty(s.trim())) {
             s = errorStr;
         }
@@ -2656,7 +2746,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         if (StringUtils.isEmpty(s.trim())) {
             s = errorStr;
         }
@@ -2736,7 +2826,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -2827,7 +2917,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -2896,7 +2986,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         if (StringUtils.isEmpty(s)) {
             s = errorStr;
         }
@@ -2972,7 +3062,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         if (StringUtils.isEmpty(s)) {
             s = errorStr;
         }
@@ -3076,7 +3166,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -3114,7 +3204,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -3155,7 +3245,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         if (StringUtils.isEmpty(s)) {
             s = errorStr;
         }
@@ -3257,7 +3347,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -3290,7 +3380,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -3323,7 +3413,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -3354,7 +3444,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -3388,7 +3478,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -3421,7 +3511,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -3452,7 +3542,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -3485,7 +3575,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -3518,7 +3608,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -3549,7 +3639,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -3582,7 +3672,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -3615,7 +3705,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -3646,7 +3736,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -3808,6 +3898,7 @@ public class GenerateBaseDataService {
     public String getEquityStatusValuatedObjects() throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        generateCommonMethod.settingBuildingTable(builder);
         String localPath = getLocalPath();
         Map<SchemeJudgeObject, DeclareRecord> objectDeclareRealtyRealEstateCertVoMap = Maps.newHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
@@ -3964,6 +4055,7 @@ public class GenerateBaseDataService {
         }
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        generateCommonMethod.settingBuildingTable(builder);
         String localPath = getLocalPath();
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
         Table table = builder.startTable();
@@ -4201,6 +4293,7 @@ public class GenerateBaseDataService {
         }
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        generateCommonMethod.settingBuildingTable(builder);
         String localPath = getLocalPath("报告模板1");
         builder.writeln("估价结果一览表");
         Table table = builder.startTable();
@@ -4489,6 +4582,7 @@ public class GenerateBaseDataService {
         }
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        generateCommonMethod.settingBuildingTable(builder);
         String localPath = getLocalPath();
         builder.writeln("房屋所有权登记状况表");
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
@@ -4508,7 +4602,7 @@ public class GenerateBaseDataService {
                                 break;
                             case 3:
                                 builder.insertCell();
-                                builder.writeln(generateCommonMethod.toSetString(a_0_3));
+                                builder.writeln(generateCommonMethod.toSetStringSplitSpace(a_0_3));
                                 break;
                             default:
                                 builder.insertCell();
@@ -4526,7 +4620,7 @@ public class GenerateBaseDataService {
                                 break;
                             case 3:
                                 builder.insertCell();
-                                builder.writeln(generateCommonMethod.toSetString(a_1_3));
+                                builder.writeln(generateCommonMethod.toSetStringSplitSpace(a_1_3));
                                 break;
                             default:
                                 builder.insertCell();
@@ -4544,7 +4638,7 @@ public class GenerateBaseDataService {
                                 break;
                             case 3:
                                 builder.insertCell();
-                                builder.writeln(generateCommonMethod.toSetString(a_2_3));
+                                builder.writeln(generateCommonMethod.toSetStringSplitSpace(a_2_3));
                                 break;
                             default:
                                 builder.insertCell();
@@ -4562,7 +4656,7 @@ public class GenerateBaseDataService {
                                 break;
                             case 3:
                                 builder.insertCell();
-                                builder.writeln(generateCommonMethod.toSetString(a_3_3));
+                                builder.writeln(generateCommonMethod.toSetStringSplitSpace(a_3_3));
                                 break;
                             default:
                                 builder.insertCell();
@@ -4580,7 +4674,7 @@ public class GenerateBaseDataService {
                                 break;
                             case 3:
                                 builder.insertCell();
-                                builder.writeln(generateCommonMethod.toSetString(a_4_3));
+                                builder.writeln(generateCommonMethod.toSetStringSplitSpace(a_4_3));
                                 break;
                             default:
                                 builder.insertCell();
@@ -4598,7 +4692,7 @@ public class GenerateBaseDataService {
                                 break;
                             case 3:
                                 builder.insertCell();
-                                builder.writeln(generateCommonMethod.toSetString(a_5_3));
+                                builder.writeln(generateCommonMethod.toSetStringSplitSpace(a_5_3));
                                 break;
                             default:
                                 builder.insertCell();
@@ -4616,7 +4710,7 @@ public class GenerateBaseDataService {
                                 break;
                             case 3:
                                 builder.insertCell();
-                                builder.writeln(generateCommonMethod.toSetString(a_6_3));
+                                builder.writeln(generateCommonMethod.toSetStringSplitSpace(a_6_3));
                                 break;
                             default:
                                 builder.insertCell();
@@ -5469,6 +5563,7 @@ public class GenerateBaseDataService {
     public String getJudgeSummarySheet() throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        generateCommonMethod.settingBuildingTable(builder);
         builder.writeln("汇总表");
         String localPath = getLocalPath();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
@@ -5725,7 +5820,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        return generateCommonMethod.toSetString(stringSet);
+        return generateCommonMethod.toSetStringSplitSpace(stringSet);
     }
 
     /**
@@ -6149,7 +6244,7 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(declareRealtyRealEstateCertList)) {
             stringSet.add(String.format("《%s》", DeclareTypeEnum.RealEstate.getKey()));
         }
-        String s = generateCommonMethod.toSetString2(stringSet);
+        String s = generateCommonMethod.toSetStringSplitComma(stringSet);
         return s;
     }
 
@@ -6233,7 +6328,7 @@ public class GenerateBaseDataService {
                 builder.delete(0, builder.toString().length());
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -6284,7 +6379,7 @@ public class GenerateBaseDataService {
                 builder.delete(0, builder.toString().length());
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -6316,7 +6411,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -6375,7 +6470,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        String s = generateCommonMethod.toSetString(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -6553,7 +6648,7 @@ public class GenerateBaseDataService {
      */
     private DocumentBuilder getDefaultDocumentBuilderSetting(Document doc) throws Exception {
         DocumentBuilder builder = new DocumentBuilder(doc);
-        AsposeUtils.setDefaultFontSettings(builder);
+        generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
         return builder;
     }
 
