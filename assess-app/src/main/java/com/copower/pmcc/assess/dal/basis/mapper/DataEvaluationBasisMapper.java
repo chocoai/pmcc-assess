@@ -10,21 +10,13 @@ public interface DataEvaluationBasisMapper {
 
     int deleteByExample(DataEvaluationBasisExample example);
 
-    int deleteByPrimaryKey(Integer id);
-
     int insert(DataEvaluationBasis record);
 
     int insertSelective(DataEvaluationBasis record);
 
     List<DataEvaluationBasis> selectByExample(DataEvaluationBasisExample example);
 
-    DataEvaluationBasis selectByPrimaryKey(Integer id);
-
     int updateByExampleSelective(@Param("record") DataEvaluationBasis record, @Param("example") DataEvaluationBasisExample example);
 
     int updateByExample(@Param("record") DataEvaluationBasis record, @Param("example") DataEvaluationBasisExample example);
-
-    int updateByPrimaryKeySelective(DataEvaluationBasis record);
-
-    int updateByPrimaryKey(DataEvaluationBasis record);
 }

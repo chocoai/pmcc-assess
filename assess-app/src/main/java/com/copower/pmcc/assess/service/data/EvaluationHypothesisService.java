@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationHypothesisDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationHypothesis;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationHypothesisVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
@@ -136,5 +137,13 @@ public class EvaluationHypothesisService {
         return vo;
     }
 
+    /**
+     * 获取上报告内容
+     * @param projectInfo
+     * @return
+     */
+    public String getReportHypothesis(ProjectInfo projectInfo){
 
+        return null;
+    }
 }

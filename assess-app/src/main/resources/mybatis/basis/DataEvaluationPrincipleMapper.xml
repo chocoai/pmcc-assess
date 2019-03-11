@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataEvaluationPrincipleMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationPrinciple" >
-    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="method" property="method" jdbcType="VARCHAR" />
     <result column="entrustment_purpose" property="entrustmentPurpose" jdbcType="VARCHAR" />
@@ -10,6 +10,7 @@
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="category" property="category" jdbcType="VARCHAR" />
     <result column="pub_date" property="pubDate" jdbcType="TIMESTAMP" />
+    <result column="sorting" property="sorting" jdbcType="INTEGER" />
     <result column="bis_modifiable" property="bisModifiable" jdbcType="BIT" />
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -75,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, method, entrustment_purpose, template, type, category, pub_date, bis_modifiable, 
-    bis_enable, creator, gmt_created, gmt_modified
+    id, name, method, entrustment_purpose, template, type, category, pub_date, sorting, 
+    bis_modifiable, bis_enable, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationPrincipleExample" >
     select
@@ -92,16 +93,6 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from tb_data_evaluation_principle
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_data_evaluation_principle
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
   <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationPrincipleExample" >
     delete from tb_data_evaluation_principle
     <if test="_parameter != null" >
@@ -114,14 +105,14 @@
     </selectKey>
     insert into tb_data_evaluation_principle (name, method, entrustment_purpose, 
       template, type, category, 
-      pub_date, bis_modifiable, bis_enable, 
-      creator, gmt_created, gmt_modified
-      )
+      pub_date, sorting, bis_modifiable, 
+      bis_enable, creator, gmt_created, 
+      gmt_modified)
     values (#{name,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{entrustmentPurpose,jdbcType=VARCHAR}, 
       #{template,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, 
-      #{pubDate,jdbcType=TIMESTAMP}, #{bisModifiable,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{pubDate,jdbcType=TIMESTAMP}, #{sorting,jdbcType=INTEGER}, #{bisModifiable,jdbcType=BIT}, 
+      #{bisEnable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationPrinciple" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -149,6 +140,9 @@
       </if>
       <if test="pubDate != null" >
         pub_date,
+      </if>
+      <if test="sorting != null" >
+        sorting,
       </if>
       <if test="bisModifiable != null" >
         bis_modifiable,
@@ -187,6 +181,9 @@
       </if>
       <if test="pubDate != null" >
         #{pubDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sorting != null" >
+        #{sorting,jdbcType=INTEGER},
       </if>
       <if test="bisModifiable != null" >
         #{bisModifiable,jdbcType=BIT},
@@ -238,6 +235,9 @@
       <if test="record.pubDate != null" >
         pub_date = #{record.pubDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.sorting != null" >
+        sorting = #{record.sorting,jdbcType=INTEGER},
+      </if>
       <if test="record.bisModifiable != null" >
         bis_modifiable = #{record.bisModifiable,jdbcType=BIT},
       </if>
@@ -268,6 +268,7 @@
       type = #{record.type,jdbcType=VARCHAR},
       category = #{record.category,jdbcType=VARCHAR},
       pub_date = #{record.pubDate,jdbcType=TIMESTAMP},
+      sorting = #{record.sorting,jdbcType=INTEGER},
       bis_modifiable = #{record.bisModifiable,jdbcType=BIT},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -276,63 +277,5 @@
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationPrinciple" >
-    update tb_data_evaluation_principle
-    <set >
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="method != null" >
-        method = #{method,jdbcType=VARCHAR},
-      </if>
-      <if test="entrustmentPurpose != null" >
-        entrustment_purpose = #{entrustmentPurpose,jdbcType=VARCHAR},
-      </if>
-      <if test="template != null" >
-        template = #{template,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="category != null" >
-        category = #{category,jdbcType=VARCHAR},
-      </if>
-      <if test="pubDate != null" >
-        pub_date = #{pubDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="bisModifiable != null" >
-        bis_modifiable = #{bisModifiable,jdbcType=BIT},
-      </if>
-      <if test="bisEnable != null" >
-        bis_enable = #{bisEnable,jdbcType=BIT},
-      </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationPrinciple" >
-    update tb_data_evaluation_principle
-    set name = #{name,jdbcType=VARCHAR},
-      method = #{method,jdbcType=VARCHAR},
-      entrustment_purpose = #{entrustmentPurpose,jdbcType=VARCHAR},
-      template = #{template,jdbcType=VARCHAR},
-      type = #{type,jdbcType=VARCHAR},
-      category = #{category,jdbcType=VARCHAR},
-      pub_date = #{pubDate,jdbcType=TIMESTAMP},
-      bis_modifiable = #{bisModifiable,jdbcType=BIT},
-      bis_enable = #{bisEnable,jdbcType=BIT},
-      creator = #{creator,jdbcType=VARCHAR},
-      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationPrincipleDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationPrinciple;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationPrincipleVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
@@ -135,4 +136,13 @@ public class EvaluationPrincipleService {
         return vo;
     }
 
+    /**
+     * 获取上报告内容
+     * @param projectInfo
+     * @return
+     */
+    public String getReportPrinciple(ProjectInfo projectInfo){
+
+        return null;
+    }
 }

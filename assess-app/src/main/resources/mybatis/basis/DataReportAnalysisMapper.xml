@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataReportAnalysisMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis" >
-    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="id" property="id" jdbcType="INTEGER" />
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="district" property="district" jdbcType="VARCHAR" />
@@ -10,6 +10,7 @@
     <result column="report_analysis_type" property="reportAnalysisType" jdbcType="INTEGER" />
     <result column="template" property="template" jdbcType="VARCHAR" />
     <result column="entrustment_purpose" property="entrustmentPurpose" jdbcType="VARCHAR" />
+    <result column="sorting" property="sorting" jdbcType="INTEGER" />
     <result column="bis_modifiable" property="bisModifiable" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -75,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, province, city, district, name, report_analysis_type, template, entrustment_purpose, 
-    bis_modifiable, creator, gmt_created, gmt_modified
+    sorting, bis_modifiable, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysisExample" >
     select
@@ -91,16 +92,6 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from tb_data_report_analysis
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_data_report_analysis
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
   <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysisExample" >
     delete from tb_data_report_analysis
     <if test="_parameter != null" >
@@ -113,12 +104,14 @@
     </selectKey>
     insert into tb_data_report_analysis (province, city, district, 
       name, report_analysis_type, template, 
-      entrustment_purpose, bis_modifiable, creator, 
-      gmt_created, gmt_modified)
+      entrustment_purpose, sorting, bis_modifiable, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{reportAnalysisType,jdbcType=INTEGER}, #{template,jdbcType=VARCHAR}, 
-      #{entrustmentPurpose,jdbcType=VARCHAR}, #{bisModifiable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{entrustmentPurpose,jdbcType=VARCHAR}, #{sorting,jdbcType=INTEGER}, #{bisModifiable,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -146,6 +139,9 @@
       </if>
       <if test="entrustmentPurpose != null" >
         entrustment_purpose,
+      </if>
+      <if test="sorting != null" >
+        sorting,
       </if>
       <if test="bisModifiable != null" >
         bis_modifiable,
@@ -181,6 +177,9 @@
       </if>
       <if test="entrustmentPurpose != null" >
         #{entrustmentPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="sorting != null" >
+        #{sorting,jdbcType=INTEGER},
       </if>
       <if test="bisModifiable != null" >
         #{bisModifiable,jdbcType=BIT},
@@ -229,6 +228,9 @@
       <if test="record.entrustmentPurpose != null" >
         entrustment_purpose = #{record.entrustmentPurpose,jdbcType=VARCHAR},
       </if>
+      <if test="record.sorting != null" >
+        sorting = #{record.sorting,jdbcType=INTEGER},
+      </if>
       <if test="record.bisModifiable != null" >
         bis_modifiable = #{record.bisModifiable,jdbcType=BIT},
       </if>
@@ -256,6 +258,7 @@
       report_analysis_type = #{record.reportAnalysisType,jdbcType=INTEGER},
       template = #{record.template,jdbcType=VARCHAR},
       entrustment_purpose = #{record.entrustmentPurpose,jdbcType=VARCHAR},
+      sorting = #{record.sorting,jdbcType=INTEGER},
       bis_modifiable = #{record.bisModifiable,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -263,59 +266,5 @@
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis" >
-    update tb_data_report_analysis
-    <set >
-      <if test="province != null" >
-        province = #{province,jdbcType=VARCHAR},
-      </if>
-      <if test="city != null" >
-        city = #{city,jdbcType=VARCHAR},
-      </if>
-      <if test="district != null" >
-        district = #{district,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="reportAnalysisType != null" >
-        report_analysis_type = #{reportAnalysisType,jdbcType=INTEGER},
-      </if>
-      <if test="template != null" >
-        template = #{template,jdbcType=VARCHAR},
-      </if>
-      <if test="entrustmentPurpose != null" >
-        entrustment_purpose = #{entrustmentPurpose,jdbcType=VARCHAR},
-      </if>
-      <if test="bisModifiable != null" >
-        bis_modifiable = #{bisModifiable,jdbcType=BIT},
-      </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis" >
-    update tb_data_report_analysis
-    set province = #{province,jdbcType=VARCHAR},
-      city = #{city,jdbcType=VARCHAR},
-      district = #{district,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
-      report_analysis_type = #{reportAnalysisType,jdbcType=INTEGER},
-      template = #{template,jdbcType=VARCHAR},
-      entrustment_purpose = #{entrustmentPurpose,jdbcType=VARCHAR},
-      bis_modifiable = #{bisModifiable,jdbcType=BIT},
-      creator = #{creator,jdbcType=VARCHAR},
-      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

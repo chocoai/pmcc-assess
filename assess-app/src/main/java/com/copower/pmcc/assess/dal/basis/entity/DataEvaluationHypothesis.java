@@ -19,6 +19,8 @@ public class DataEvaluationHypothesis {
 
     private Date pubDate;
 
+    private Integer sorting;
+
     private Boolean bisModifiable;
 
     private Boolean bisEnable;
@@ -91,6 +93,14 @@ public class DataEvaluationHypothesis {
 
     public void setPubDate(Date pubDate) {
         this.pubDate = pubDate;
+    }
+
+    public Integer getSorting() {
+        return sorting;
+    }
+
+    public void setSorting(Integer sorting) {
+        this.sorting = sorting;
     }
 
     public Boolean getBisModifiable() {

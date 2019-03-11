@@ -10,21 +10,13 @@ public interface DataEvaluationHypothesisMapper {
 
     int deleteByExample(DataEvaluationHypothesisExample example);
 
-    int deleteByPrimaryKey(Integer id);
-
     int insert(DataEvaluationHypothesis record);
 
     int insertSelective(DataEvaluationHypothesis record);
 
     List<DataEvaluationHypothesis> selectByExample(DataEvaluationHypothesisExample example);
 
-    DataEvaluationHypothesis selectByPrimaryKey(Integer id);
-
     int updateByExampleSelective(@Param("record") DataEvaluationHypothesis record, @Param("example") DataEvaluationHypothesisExample example);
 
     int updateByExample(@Param("record") DataEvaluationHypothesis record, @Param("example") DataEvaluationHypothesisExample example);
-
-    int updateByPrimaryKeySelective(DataEvaluationHypothesis record);
-
-    int updateByPrimaryKey(DataEvaluationHypothesis record);
 }
