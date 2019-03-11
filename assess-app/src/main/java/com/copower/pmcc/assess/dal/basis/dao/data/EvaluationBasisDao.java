@@ -25,10 +25,7 @@ public class EvaluationBasisDao {
 
 
     public boolean updateBasis(DataEvaluationBasis evaluationBasis) {
-        DataEvaluationBasisExample example = new DataEvaluationBasisExample();
-        DataEvaluationBasisExample.Criteria criteria = example.createCriteria();
-        criteria.andIdEqualTo(evaluationBasis.getId());
-        return evaluationBasisMapper.updateByExampleSelective(evaluationBasis, example) > 0;
+        return evaluationBasisMapper.updateByPrimaryKeySelective(evaluationBasis) > 0;
     }
 
     public List<DataEvaluationBasis> getBasisList(String name) {
@@ -50,9 +47,6 @@ public class EvaluationBasisDao {
         if (StringUtils.isNotBlank(category)) {
             criteria.andCategoryLike(String.format("%%%s%%", category));
         }
-//        if (StringUtils.isNotBlank(method)) {
-//            criteria.andMethodLike(String.format("%%%s%%", method));
-//        }
         if (StringUtils.isNotBlank(purpose)) {
             criteria.andEntrustmentPurposeLike(String.format("%%%s%%", purpose));
         }
@@ -60,17 +54,10 @@ public class EvaluationBasisDao {
     }
 
     public boolean removeBasis(Integer id) {
-        DataEvaluationBasisExample example = new DataEvaluationBasisExample();
-        DataEvaluationBasisExample.Criteria criteria = example.createCriteria();
-        criteria.andIdEqualTo(id);
-        return evaluationBasisMapper.deleteByExample(example) == 1;
+        return evaluationBasisMapper.deleteByPrimaryKey(id) == 1;
     }
 
     public DataEvaluationBasis getBasis(Integer id) {
-        DataEvaluationBasisExample example = new DataEvaluationBasisExample();
-        DataEvaluationBasisExample.Criteria criteria = example.createCriteria();
-        criteria.andIdEqualTo(id);
-        List<DataEvaluationBasis> evaluationBases = evaluationBasisMapper.selectByExample(example);
-        return evaluationBases.get(0);
+        return evaluationBasisMapper.selectByPrimaryKey(id);
     }
 }

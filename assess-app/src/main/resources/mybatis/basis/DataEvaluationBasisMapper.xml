@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataEvaluationBasisMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationBasis" >
-    <result column="id" property="id" jdbcType="INTEGER" />
+    <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="method" property="method" jdbcType="VARCHAR" />
     <result column="entrustment_purpose" property="entrustmentPurpose" jdbcType="VARCHAR" />
@@ -93,6 +93,16 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_data_evaluation_basis
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_data_evaluation_basis
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
   <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationBasisExample" >
     delete from tb_data_evaluation_basis
     <if test="_parameter != null" >
@@ -277,5 +287,67 @@
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationBasis" >
+    update tb_data_evaluation_basis
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null" >
+        method = #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustmentPurpose != null" >
+        entrustment_purpose = #{entrustmentPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="template != null" >
+        template = #{template,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null" >
+        category = #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="pubDate != null" >
+        pub_date = #{pubDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sorting != null" >
+        sorting = #{sorting,jdbcType=INTEGER},
+      </if>
+      <if test="bisModifiable != null" >
+        bis_modifiable = #{bisModifiable,jdbcType=BIT},
+      </if>
+      <if test="bisEnable != null" >
+        bis_enable = #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationBasis" >
+    update tb_data_evaluation_basis
+    set name = #{name,jdbcType=VARCHAR},
+      method = #{method,jdbcType=VARCHAR},
+      entrustment_purpose = #{entrustmentPurpose,jdbcType=VARCHAR},
+      template = #{template,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      category = #{category,jdbcType=VARCHAR},
+      pub_date = #{pubDate,jdbcType=TIMESTAMP},
+      sorting = #{sorting,jdbcType=INTEGER},
+      bis_modifiable = #{bisModifiable,jdbcType=BIT},
+      bis_enable = #{bisEnable,jdbcType=BIT},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

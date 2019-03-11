@@ -25,10 +25,7 @@ public class EvaluationPrincipleDao {
 
 
     public boolean updatePrinciple(DataEvaluationPrinciple evaluationPrinciple) {
-        DataEvaluationPrincipleExample example = new DataEvaluationPrincipleExample();
-        DataEvaluationPrincipleExample.Criteria criteria = example.createCriteria();
-        criteria.andIdEqualTo(evaluationPrinciple.getId());
-        return evaluationPrincipleMapper.updateByExampleSelective(evaluationPrinciple,example) == 1;
+        return evaluationPrincipleMapper.updateByPrimaryKeySelective(evaluationPrinciple) == 1;
     }
 
     public List<DataEvaluationPrinciple> getPrincipleList(String name) {
@@ -56,16 +53,10 @@ public class EvaluationPrincipleDao {
     }
 
     public boolean removePrinciple(Integer id) {
-        DataEvaluationPrincipleExample example = new DataEvaluationPrincipleExample();
-        DataEvaluationPrincipleExample.Criteria criteria = example.createCriteria();
-        criteria.andIdEqualTo(id);
-        return evaluationPrincipleMapper.deleteByExample(example) == 1;
+        return evaluationPrincipleMapper.deleteByPrimaryKey(id) == 1;
     }
 
     public DataEvaluationPrinciple getPrinciple(Integer id) {
-        DataEvaluationPrincipleExample example = new DataEvaluationPrincipleExample();
-        DataEvaluationPrincipleExample.Criteria criteria = example.createCriteria();
-        criteria.andIdEqualTo(id);
-        return evaluationPrincipleMapper.selectByExample(example).get(0);
+        return evaluationPrincipleMapper.selectByPrimaryKey(id);
     }
 }

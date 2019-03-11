@@ -26,10 +26,7 @@ public class EvaluationHypothesisDao {
 
 
     public boolean updateHypothesis(DataEvaluationHypothesis evaluationHypothesis) {
-        DataEvaluationHypothesisExample example = new DataEvaluationHypothesisExample();
-        DataEvaluationHypothesisExample.Criteria criteria = example.createCriteria();
-        criteria.andIdEqualTo(evaluationHypothesis.getId());
-        return evaluationHypothesisMapper.updateByExampleSelective(evaluationHypothesis,example) == 1;
+        return evaluationHypothesisMapper.updateByPrimaryKeySelective(evaluationHypothesis) == 1;
     }
 
     public List<DataEvaluationHypothesis> getHypothesisList(String name) {
@@ -57,17 +54,11 @@ public class EvaluationHypothesisDao {
     }
 
     public boolean removeHypothesis(Integer id) {
-        DataEvaluationHypothesisExample example = new DataEvaluationHypothesisExample();
-        DataEvaluationHypothesisExample.Criteria criteria = example.createCriteria();
-        criteria.andIdEqualTo(id);
-        return evaluationHypothesisMapper.deleteByExample(example) == 1;
+        return evaluationHypothesisMapper.deleteByPrimaryKey(id) == 1;
     }
 
     public DataEvaluationHypothesis getHypothesis(Integer id) {
-        DataEvaluationHypothesisExample example = new DataEvaluationHypothesisExample();
-        DataEvaluationHypothesisExample.Criteria criteria = example.createCriteria();
-        criteria.andIdEqualTo(id);
-        return evaluationHypothesisMapper.selectByExample(example).get(0);
+        return evaluationHypothesisMapper.selectByPrimaryKey(id);
     }
 
 }
