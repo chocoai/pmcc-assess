@@ -30,6 +30,17 @@ public class DeclareApplyDao {
         return null;
     }
 
+    public DeclareApply getDeclareApplyByProjectId(Integer projectId){
+        if(projectId==null) return null;
+        DeclareApplyExample example = new DeclareApplyExample();
+        DeclareApplyExample.Criteria criteria = example.createCriteria();
+        criteria.andProjectIdEqualTo(projectId);
+        List<DeclareApply> declareApplys = declareApplyMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(declareApplys))
+            return declareApplys.get(0);
+        return null;
+    }
+
     public boolean addDeclareApply(DeclareApply declareApply) {
         int i = declareApplyMapper.insert(declareApply);
         return i > 0;

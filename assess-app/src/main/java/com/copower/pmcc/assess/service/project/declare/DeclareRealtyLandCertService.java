@@ -360,6 +360,9 @@ public class DeclareRealtyLandCertService {
         if (NumberUtils.isNumber(declareRealtyLandCert.getPurpose())) {
             vo.setPurposeName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyLandCert.getPurpose())));
         }
+        if (NumberUtils.isNumber(declareRealtyLandCert.getUseRightType())) {
+            vo.setUseRightTypeName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyLandCert.getUseRightType())));
+        }
         if (StringUtils.isNotBlank(declareRealtyLandCert.getProvince())) {
             if (NumberUtils.isNumber(declareRealtyLandCert.getProvince())) {
                 //省

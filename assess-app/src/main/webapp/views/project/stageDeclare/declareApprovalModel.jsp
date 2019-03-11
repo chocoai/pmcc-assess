@@ -243,8 +243,6 @@
                 </div>
             </div>
         </div>
-        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
-            color="#6f5499" size="10"/>
 
         <div class="form-group">
             <div class="x-valid">
@@ -261,13 +259,16 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">房屋性质</label>
+                <label class="col-sm-1 control-label">
+                    登记日期<span class="symbol required"></span>
+                </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="nature"></label>
+                    <label class="form-control" name="registrationDate"></label>
                 </div>
             </div>
         </div>
-
+        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+            color="#6f5499" size="10"/>
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">房屋坐落</label>
@@ -330,6 +331,34 @@
                     <label class="form-control" name="planningUseName"></label>
                 </div>
             </div>
+
+              <div class="x-valid">
+               <label class="col-sm-1 control-label">房屋结构</label>
+               <div class="col-sm-3">
+                   <label class="form-control" name="housingStructure"></label>
+               </div>
+           </div>
+            <div class="x-valid">
+               <label class="col-sm-1 control-label">房屋性质</label>
+               <div class="col-sm-3">
+                   <label class="form-control" name="nature"></label>
+               </div>
+           </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">证载面积</label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="evidenceArea"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">套内面积</label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="innerArea"></label>
+                </div>
+            </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">总层数<span
                         class="symbol required"></span></label>
@@ -337,19 +366,30 @@
                     <label class="form-control" name="floorCount"></label>
                 </div>
             </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">证载面积</label>
-                <div class="col-sm-3">
-                    <label class="form-control" name="evidenceArea"></label>
-                </div>
-            </div>
         </div>
-
+        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+            color="#6f5499" size="10"/>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">套内面积</label>
+                <label class="col-sm-1 control-label">
+                    土地使用年限起<span class="symbol required"></span>
+                </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="innerArea"></label>
+                    <label class="form-control" name="useStartDate"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    土地使用年限止<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="useEndDate"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">公摊面积<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="publicArea"></label>
                 </div>
             </div>
         </div>
@@ -367,48 +407,22 @@
                     <label class="form-control" name="registrationAuthority"></label>
                 </div>
             </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    土地使用年限起<span class="symbol required"></span>
-                </label>
-                <div class="col-sm-3">
-                    <label class="form-control" name="useStartDateFmt"></label>
-                    <%--<input type="text" name="useStartDateFmt" class="form-control" readonly="readonly">--%>
-
-                </div>
-            </div>
         </div>
 
         <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    土地使用年限止<span class="symbol required"></span>
-                </label>
-                <div class="col-sm-3">
-                    <label class="form-control" name="useEndDateFmt"></label>
-                    <%--<input type="text" name="useEndDateFmt" class="form-control" readonly="readonly">--%>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">公摊面积<span class="symbol required"></span></label>
-                <div class="col-sm-3">
-                    <label class="form-control" name="publicArea"></label>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">附记其它</label>
-                <div class="col-sm-3">
-                    <label class="form-control" name="otherNote"></label>
-                </div>
-            </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">其它</label>
-                <div class="col-sm-3">
+                <div class="col-sm-11">
                     <label class="form-control" name="other"></label>
                 </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label">
+                房产证
+            </label>
+            <div class="col-sm-5">
+                <div id="_declareRealtyHouseCertFileId"></div>
             </div>
         </div>
     </div>
@@ -445,32 +459,6 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    所在地
-                </label>
-                <div class="col-sm-3">
-                    <label class="form-control" name="location"></label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    土地使用权人
-                </label>
-                <div class="col-sm-3">
-                    <label class="form-control" name="ownership"></label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    类型
-                </label>
-                <div class="col-sm-3">
-                    <label class="form-control" name="typeName"></label>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
                     土地权证号
                 </label>
                 <div class="col-sm-11">
@@ -481,12 +469,30 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
+                    所在地
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="location"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    类型
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="typeName"></label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
                     年份
                 </label>
                 <div class="col-sm-3">
                     <label class="form-control" name="year"></label>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     编号
@@ -494,6 +500,20 @@
                 <div class="col-sm-3">
                     <label class="form-control" name="number"></label>
                 </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    土地使用权人
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="ownership"></label>
+                </div>
+            </div>
+            <label class="col-sm-1 control-label">
+                登记日期<span class="symbol required"></span>
+            </label>
+            <div class="col-sm-3">
+                <label class="form-control" name="registrationDate"></label>
             </div>
         </div>
         <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
@@ -574,7 +594,7 @@
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    用途
+                    土地用途
                 </label>
                 <div class="col-sm-3">
                     <label class="form-control" name="purposeName"></label>
@@ -584,10 +604,11 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">取得价格<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">
+                    使用权类型
+                </label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="acquisitionPrice"></label>
+                    <label class="form-control" name="useRightTypeName"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -595,19 +616,17 @@
                     终止日期<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <%--<label class="form-control" name="terminationDate"></label>--%>
-                    <input type="text" name="terminationDateFmt" class="form-control" readonly="readonly">
+                    <label class="form-control" name="terminationDate"></label>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">登记机关<span
+                <label class="col-sm-1 control-label">取得价格<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="registrationAuthority"></label>
+                    <label class="form-control" name="acquisitionPrice"></label>
                 </div>
             </div>
         </div>
-
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">使用权面积<span
@@ -623,8 +642,14 @@
                     <label class="form-control" name="apportionmentArea"></label>
                 </div>
             </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">登记机关<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="registrationAuthority"></label>
+                </div>
+            </div>
         </div>
-
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">记事<span
@@ -632,6 +657,14 @@
                 <div class="col-sm-11">
                     <label class="form-control" name="memo"></label>
                 </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label">
+                土地证
+            </label>
+            <div class="col-sm-5">
+                <div id="_declareRealtyLandCertFileId"></div>
             </div>
         </div>
     </div>
@@ -689,13 +722,6 @@
                     <label class="form-control" name="number"></label>
                 </div>
             </div>
-            <%--<div class="x-valid">
-                <label class="col-sm-1 control-label">房产证类型<span
-                        class="symbol required"></span></label>
-                <div class="col-sm-3">
-                    <label class="form-control" name="typeName"></label>
-                </div>
-            </div>--%>
         </div>
 
         <div class="form-group">
@@ -919,7 +945,6 @@
                 </div>
             </div>
         </div>
-
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">记事<span
@@ -929,8 +954,14 @@
                 </div>
             </div>
         </div>
-
-
+        <div class="form-group">
+            <label class="col-sm-1 control-label">
+                不动产证
+            </label>
+            <div class="col-sm-5">
+                <div id="_declareRealtyRealEstateCertFileId"></div>
+            </div>
+        </div>
     </div>
 </script>
 

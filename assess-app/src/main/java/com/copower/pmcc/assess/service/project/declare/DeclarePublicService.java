@@ -899,6 +899,10 @@ public class DeclarePublicService {
         declareApply.setProjectId(projectPlanDetails.getProjectId());
         declareApply.setPlanDetailsId(projectPlanDetails.getId());
         declareApply.setProcessInsId(processInsId);
+        DeclareApply declare =this.getDeclareApplyByProjectId(projectPlanDetails.getProjectId());
+        if(declare !=null){
+            declareApply.setId(declare.getId());
+        }
         declareApplyService.saveDeclareApply(declareApply);
         if (org.apache.commons.lang3.StringUtils.isBlank(processInsId)) {
             declareApplyService.writeToDeclareRecord(declareApply);
@@ -913,6 +917,10 @@ public class DeclarePublicService {
         declareApply.setProjectId(projectPlanDetails.getProjectId());
         declareApply.setPlanDetailsId(projectPlanDetails.getId());
         declareApply.setProcessInsId(processInsId);
+        DeclareApply declare =this.getDeclareApplyByProjectId(projectPlanDetails.getProjectId());
+        if(declare !=null){
+            declareApply.setId(declare.getId());
+        }
         declareApplyService.saveDeclareApply(declareApply);
     }
 
@@ -920,4 +928,7 @@ public class DeclarePublicService {
         return declareApplyDao.getDeclareApplyByProcessInsId(processInsId);
     }
 
+    public DeclareApply getDeclareApplyByProjectId(Integer projectId) {
+        return declareApplyDao.getDeclareApplyByProjectId(projectId);
+    }
 }

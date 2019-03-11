@@ -89,6 +89,16 @@ public class DeclareRealtyHouseCertDto {
 
     private String creator;
 
+    private String housingStructure;
+
+    public String getHousingStructure() {
+        return housingStructure;
+    }
+
+    public void setHousingStructure(String housingStructure) {
+        this.housingStructure = housingStructure;
+    }
+
     public Integer getId() {
         return id;
     }
