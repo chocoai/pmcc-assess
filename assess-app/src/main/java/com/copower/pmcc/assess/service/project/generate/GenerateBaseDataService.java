@@ -6290,7 +6290,7 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getEvaluationThink() {
+    public String getEvaluationThink() throws Exception {
         HashSet<Integer> hashSet = Sets.newHashSet();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
@@ -6302,7 +6302,13 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        return evaluationThinkingService.getReportThinking(Lists.newArrayList(hashSet), this.projectInfo);
+        String localPath = getLocalPath();
+        Document document = new Document();
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
+        String reportThinking = evaluationThinkingService.getReportThinking(Lists.newArrayList(hashSet), this.projectInfo);
+        builder.insertHtml(reportThinking,true);
+        document.save(localPath);
+        return localPath;
 
         /*Set<String> stringSet = Sets.newHashSet();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();

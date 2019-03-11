@@ -175,7 +175,7 @@ public class EvaluationThinkingService {
         //第三段内容： 当只有项目委托目的为抵押的时候才有第三段内容
         if (CollectionUtils.isEmpty(methodTypeList)) return null;
         if (projectInfo == null) return null;
-        StringBuilder firstDesc = new StringBuilder();//第一段描述
+        StringBuilder firstDesc = new StringBuilder("<p style=\"text-indent:2em\">");//第一段描述
         StringBuilder secondDesc = new StringBuilder();//第二段描述
         StringBuilder thirdDesc = new StringBuilder();//第三段描述
         List<Integer> baseMethodList = Lists.newArrayList();
@@ -189,7 +189,7 @@ public class EvaluationThinkingService {
         if (baseMethodList.size() == 1) {
             List<DataEvaluationThinking> thinkingList = evaluationThinkingDao.getThinkingListByMethod(String.valueOf(methodTypeList.get(0)));
             if (CollectionUtils.isNotEmpty(thinkingList)) {
-                firstDesc.append("① ").append(thinkingList.get(0).getTemplateContent()).append("\r\n");
+                firstDesc.append("① ").append(thinkingList.get(0).getTemplateContent());
             }
         } else {
             firstDesc.append("① 先设立估价对象$(估价基准对象号)的市场价格为标准价，");
@@ -204,17 +204,21 @@ public class EvaluationThinkingService {
                 if (mdCommonService.isDevelopmentMethod(methodTyp))
                     firstString += developmentExplain + "和";
             }
-            firstDesc.append(StringUtils.strip(firstString, "和")).append("为导向综合求取估价对象$(估价基准对象号)的市场价值。").append("\r\n");
+            firstDesc.append(StringUtils.strip(firstString, "和")).append("为导向综合求取估价对象$(估价基准对象号)的市场价值。");
         }
+        firstDesc.append("</p>");
         if (CollectionUtils.isNotEmpty(baseOtherList)) {
-            secondDesc.append(String.format("② 再通%s对估价对象$(评价对象号)进行特定因素调整，得到其市场价值。", baseDataDicService.getNameById(baseOtherList.get(0))));
+            secondDesc.append("<p style=\"text-indent:2em\">").append(String.format("② 再通%s对估价对象$(评价对象号)进行特定因素调整，得到其市场价值。", baseDataDicService.getNameById(baseOtherList.get(0))));
+            secondDesc.append("</p>");
         }
-        if (projectInfo.getEntrustPurpose().equals(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE)) {
+        BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE);
+        if (dataDic != null && projectInfo.getEntrustPurpose().equals(dataDic.getId())) {
+            thirdDesc.append("<p style=\"text-indent:2em\">");
             if (secondDesc.length() > 0)
                 thirdDesc.append("③ ");
             else
                 thirdDesc.append("② ");
-            thirdDesc.append("最后将估价对象的市场价值扣除估价师知悉的法定优先受偿款得到估价对象的抵押价值。");
+            thirdDesc.append("最后将估价对象的市场价值扣除估价师知悉的法定优先受偿款得到估价对象的抵押价值。").append("</p>");
         }
         return stringBuilder.append(firstDesc).append(secondDesc).append(thirdDesc).toString();
     }

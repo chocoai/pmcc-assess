@@ -292,22 +292,22 @@ public class PoiTest {
         }
     }
 
-    public <F,T> List<T>  cacheList(String key, Class<T> t, Function<String, List<T>> function){
+    public <F, T> List<T> cacheList(String key, Class<T> t, Function<String, List<T>> function) {
         List<?> apply = function.apply(key);
         List<T> ts = (List<T>) apply;
-        return  ts;
+        return ts;
     }
 
     @Test
-    public void testFx(){
-        fxInfo fxInfo=new fxInfo("");
+    public void testFx() {
+        fxInfo fxInfo = new fxInfo("");
         System.out.print(fxInfo.getData());
         //fxTest(Lists.newArrayList("张三","李四123") ,o->o.length());
-        HashSet<String> ht=new HashSet<>();
+        HashSet<String> ht = new HashSet<>();
 
     }
 
-    private <F, T> void fxTest(List<F> list,Function<F, T> function) {
+    private <F, T> void fxTest(List<F> list, Function<F, T> function) {
         for (F f : list) {
             T t = function.apply(f);
             System.out.print(t);
@@ -315,20 +315,26 @@ public class PoiTest {
 
     }
 
-    public class fxInfo<T extends String>{
+    public class fxInfo<T extends String> {
         private T data;
 
-        public fxInfo(T t){
-            this.data=t;
+        public fxInfo(T t) {
+            this.data = t;
         }
 
-        public T getData(){
-            return  data;
+        public T getData() {
+            return data;
         }
 
     }
 
-
+    @Test
+    public void testReplace() throws Exception {
+        String tempDir = "D:\\IdeaProjects\\pmcc-assess\\assess-app\\target\\pmcc-assess\\temporary\\20190311\\858484e801d94def834858eb7bd75478.doc";
+        Map<String, String> textMap = Maps.newHashMap();
+        textMap.put("${估价技术思路}","测试数据");
+        AsposeUtils.replaceText(tempDir, textMap);
+    }
 }
 
 

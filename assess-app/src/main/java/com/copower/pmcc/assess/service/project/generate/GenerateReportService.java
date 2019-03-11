@@ -1124,8 +1124,8 @@ public class GenerateReportService {
                     //估价技术思路
                     if (Objects.equal(BaseReportFieldEnum.EvaluationThink.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                        replaceReportPutValue(name, generateBaseDataService.getEvaluationThink(), bookmarkAndRegex.getType(), true, mapSet);
                         if (baseReportField != null) {
-                            replaceReportPutValue(name, generateBaseDataService.getEvaluationThink(), bookmarkAndRegex.getType(), false, mapSet);
                         }
                     }
                     //分类评估单价
