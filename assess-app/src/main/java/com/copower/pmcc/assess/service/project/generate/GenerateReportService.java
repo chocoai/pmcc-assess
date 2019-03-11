@@ -400,35 +400,35 @@ public class GenerateReportService {
                     if (Objects.equal(BaseReportFieldEnum.EVALUATION_HYPOTHESIS.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
-                            replaceReportPutValue(name, generateBaseDataService.getPrincipleBasisHypothesis(SchemeSupportTypeEnum.HYPOTHESIS), bookmarkAndRegex.getType(), true, preMapSet);
+                            replaceReportPutValue(name, generateBaseDataService.getPrincipleBasisHypothesis(SchemeSupportTypeEnum.HYPOTHESIS), bookmarkAndRegex.getType(), false, preMapSet);
                         }
                     }
                     //评估依据
                     if (Objects.equal(BaseReportFieldEnum.EVALUATION_BASIS.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
-                            replaceReportPutValue(name, generateBaseDataService.getPrincipleBasisHypothesis(SchemeSupportTypeEnum.BASIS), bookmarkAndRegex.getType(), true, preMapSet);
+                            replaceReportPutValue(name, generateBaseDataService.getPrincipleBasisHypothesis(SchemeSupportTypeEnum.BASIS), bookmarkAndRegex.getType(), false, preMapSet);
                         }
                     }
                     //评估原则
                     if (Objects.equal(BaseReportFieldEnum.EVALUATION_PRINCIPLE.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
-                            replaceReportPutValue(name, generateBaseDataService.getPrincipleBasisHypothesis(SchemeSupportTypeEnum.PRINCIPLE), bookmarkAndRegex.getType(), true, preMapSet);
+                            replaceReportPutValue(name, generateBaseDataService.getPrincipleBasisHypothesis(SchemeSupportTypeEnum.PRINCIPLE), bookmarkAndRegex.getType(), false, preMapSet);
                         }
                     }
                     //变现能力分析
                     if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_LIQUIDITY.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
-                            replaceReportPutValue(name, generateBaseDataService.getReportAnalysis(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_LIQUIDITY), bookmarkAndRegex.getType(), true, preMapSet);
+                            replaceReportPutValue(name, generateBaseDataService.getReportAnalysis(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_LIQUIDITY), bookmarkAndRegex.getType(), false, preMapSet);
                         }
                     }
                     //风险提示
                     if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_RISK.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
-                            replaceReportPutValue(name, generateBaseDataService.getReportAnalysis(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_RISK), bookmarkAndRegex.getType(), true, preMapSet);
+                            replaceReportPutValue(name, generateBaseDataService.getReportAnalysis(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_RISK), bookmarkAndRegex.getType(), false, preMapSet);
                         }
                     }
                     //作业结束时间

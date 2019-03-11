@@ -155,11 +155,11 @@ public class EvaluationThinkingService {
     /**
      * 获取上报告的评估思路
      *
-     * @param methodList
+     * @param methodTypeList
      * @param projectInfo
      * @return
      */
-    public String getReportThinking(List<BaseDataDic> methodList, ProjectInfo projectInfo) {
+    public String getReportThinking(List<Integer> methodTypeList, ProjectInfo projectInfo) {
         /*
         ①	先设立估价对象$(估价基准对象号)的市场价格为标准价，《以区域内类似房地产近期市场交易价格（比较法）》和《房地产未来预期收益（收益法）为导向综合》求取估价对象$(估价基准对象号)的市场价值。
         ②	再通$(评估其他方法)对估价对象$(评价对象号)进行特定因素调整，得到其市场价值。
@@ -173,44 +173,44 @@ public class EvaluationThinkingService {
         //第一段内容： 当只有一个方法时，根据方法取得模板，当有多个方法时，如果有多个基础方法则合并描述
         //第二段内容： 当方法中有其它方法，则用其它方法描述第二段
         //第三段内容： 当只有项目委托目的为抵押的时候才有第三段内容
-        if (CollectionUtils.isEmpty(methodList)) return null;
+        if (CollectionUtils.isEmpty(methodTypeList)) return null;
         if (projectInfo == null) return null;
         StringBuilder firstDesc = new StringBuilder();//第一段描述
         StringBuilder secondDesc = new StringBuilder();//第二段描述
         StringBuilder thirdDesc = new StringBuilder();//第三段描述
-        List<BaseDataDic> baseMethodList = Lists.newArrayList();
-        List<BaseDataDic> baseOtherList = Lists.newArrayList();
-        for (BaseDataDic baseDataDic : methodList) {
-            if (mdCommonService.isBaseMethod(baseDataDic.getId()))
-                baseMethodList.add(baseDataDic);
-            if (mdCommonService.isOtherMethod(baseDataDic.getId()))
-                baseOtherList.add(baseDataDic);
+        List<Integer> baseMethodList = Lists.newArrayList();
+        List<Integer> baseOtherList = Lists.newArrayList();
+        for (Integer methodType : methodTypeList) {
+            if (mdCommonService.isBaseMethod(methodType))
+                baseMethodList.add(methodType);
+            if (mdCommonService.isOtherMethod(methodType))
+                baseOtherList.add(methodType);
         }
         if (baseMethodList.size() == 1) {
-            List<DataEvaluationThinking> thinkingList = evaluationThinkingDao.getThinkingListByMethod(String.valueOf(methodList.get(0).getId()));
+            List<DataEvaluationThinking> thinkingList = evaluationThinkingDao.getThinkingListByMethod(String.valueOf(methodTypeList.get(0)));
             if (CollectionUtils.isNotEmpty(thinkingList)) {
                 firstDesc.append("① ").append(thinkingList.get(0).getTemplateContent()).append("\r\n");
             }
         } else {
             firstDesc.append("① 先设立估价对象$(估价基准对象号)的市场价格为标准价，");
             String firstString = new String();
-            for (BaseDataDic baseDataDic : baseMethodList) {
-                if (mdCommonService.isCompareMethod(baseDataDic.getId()))
+            for (Integer methodTyp : baseMethodList) {
+                if (mdCommonService.isCompareMethod(methodTyp))
                     firstString += compareExplain + "和";
-                if (mdCommonService.isIncomeMethod(baseDataDic.getId()))
+                if (mdCommonService.isIncomeMethod(methodTyp))
                     firstString += incomeExplain + "和";
-                if (mdCommonService.isCostMethod(baseDataDic.getId()))
+                if (mdCommonService.isCostMethod(methodTyp))
                     firstString += costExplain + "和";
-                if (mdCommonService.isDevelopmentMethod(baseDataDic.getId()))
+                if (mdCommonService.isDevelopmentMethod(methodTyp))
                     firstString += developmentExplain + "和";
             }
             firstDesc.append(StringUtils.strip(firstString, "和")).append("为导向综合求取估价对象$(估价基准对象号)的市场价值。").append("\r\n");
         }
         if (CollectionUtils.isNotEmpty(baseOtherList)) {
-            secondDesc.append(String.format("② 再通%s对估价对象$(评价对象号)进行特定因素调整，得到其市场价值。", baseOtherList.get(0).getName()));
+            secondDesc.append(String.format("② 再通%s对估价对象$(评价对象号)进行特定因素调整，得到其市场价值。", baseDataDicService.getNameById(baseOtherList.get(0))));
         }
         if (projectInfo.getEntrustPurpose().equals(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE)) {
-            if(secondDesc.length()>0)
+            if (secondDesc.length() > 0)
                 thirdDesc.append("③ ");
             else
                 thirdDesc.append("② ");

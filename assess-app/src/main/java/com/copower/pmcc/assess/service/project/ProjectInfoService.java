@@ -536,17 +536,17 @@ public class ProjectInfoService {
         }
         //紧急程度
         if (projectInfo.getUrgency() != null) {
-            projectInfoVo.setUrgencyName(bidBaseDataDicService.getCacheDataDicById(projectInfo.getUrgency()).getName());
+            projectInfoVo.setUrgencyName(bidBaseDataDicService.getNameById(projectInfo.getUrgency()));
         }
         if (projectInfo.getDepartmentId() != null) {
             projectInfoVo.setDepartmentName(getDepartmentDto(projectInfo.getDepartmentId()).getName());
         }
         if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getValueType())) {
             //价值类型
-            projectInfoVo.setValueTypeName(bidBaseDataDicService.getCacheDataDicById(projectInfo.getValueType()).getName());
+            projectInfoVo.setValueTypeName(bidBaseDataDicService.getNameById(projectInfo.getValueType()));
         }
         if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getPropertyScope())) {
-            projectInfoVo.setPropertyScopeName(bidBaseDataDicService.getCacheDataDicById(Integer.valueOf(projectInfo.getPropertyScope())).getName());
+            projectInfoVo.setPropertyScopeName(bidBaseDataDicService.getNameById(projectInfo.getPropertyScope()));
         }
 
         if (projectInfo.getId() != null && projectInfo.getId().intValue() > 0) {

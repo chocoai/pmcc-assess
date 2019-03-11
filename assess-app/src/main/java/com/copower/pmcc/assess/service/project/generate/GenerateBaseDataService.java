@@ -100,6 +100,11 @@ public class GenerateBaseDataService {
     private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
     private DataMethodFormulaService dataMethodFormulaService;
     private GenerateCommonMethod generateCommonMethod;
+    private EvaluationThinkingService evaluationThinkingService;
+    private EvaluationBasisService evaluationBasisService;
+    private EvaluationHypothesisService evaluationHypothesisService;
+    private EvaluationPrincipleService evaluationPrincipleService;
+
     /**
      * 构造器必须传入的参数
      */
@@ -1346,36 +1351,36 @@ public class GenerateBaseDataService {
                     }
                 }
                 builder.append("附");
-                if (StringUtils.isNotBlank(declareRecord.getAttachedNumber())){
+                if (StringUtils.isNotBlank(declareRecord.getAttachedNumber())) {
                     builder.append(declareRecord.getAttachedNumber());
-                }else {
+                } else {
                     builder.append(STRING);
                 }
-                builder.append("号") ;
-                if (StringUtils.isNotBlank(declareRecord.getBuildingNumber())){
+                builder.append("号");
+                if (StringUtils.isNotBlank(declareRecord.getBuildingNumber())) {
                     builder.append(declareRecord.getBuildingNumber());
-                }else {
+                } else {
                     builder.append(STRING);
                 }
-                builder.append("栋") ;
-                if (StringUtils.isNotBlank(declareRecord.getUnit())){
+                builder.append("栋");
+                if (StringUtils.isNotBlank(declareRecord.getUnit())) {
                     builder.append(declareRecord.getUnit());
-                }else {
+                } else {
                     builder.append(STRING);
                 }
-                builder.append("单元") ;
-                if (StringUtils.isNotBlank(declareRecord.getFloor())){
+                builder.append("单元");
+                if (StringUtils.isNotBlank(declareRecord.getFloor())) {
                     builder.append(declareRecord.getFloor());
-                }else {
+                } else {
                     builder.append(STRING);
                 }
-                builder.append("层") ;
-                if (StringUtils.isNotBlank(declareRecord.getRoomNumber())){
+                builder.append("层");
+                if (StringUtils.isNotBlank(declareRecord.getRoomNumber())) {
                     builder.append(declareRecord.getRoomNumber());
-                }else {
+                } else {
                     builder.append(STRING);
                 }
-                builder.append("号") ;
+                builder.append("号");
                 if (schemeJudgeObject.getSetUse() != null) {
                     DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
                     if (dataSetUseField != null) {
@@ -1393,7 +1398,7 @@ public class GenerateBaseDataService {
         }
         String s = " ";
         if (getSchemeAreaGroup().getEntrustPurpose() != null) {
-            s = String.format("%s%s", generateCommonMethod.toSetStringMerge(stringSet,null), baseDataDicService.getNameById(getSchemeAreaGroup().getEntrustPurpose()));
+            s = String.format("%s%s", generateCommonMethod.toSetStringMerge(stringSet, null), baseDataDicService.getNameById(getSchemeAreaGroup().getEntrustPurpose()));
         } else {
             s = generateCommonMethod.toSetStringSplitComma(stringSet);
         }
@@ -2237,22 +2242,16 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getPrincipleBasisHypothesis(SchemeSupportTypeEnum schemeSupportTypeEnum) throws Exception {
-        String localPath = getLocalPath();
-        Document document = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        List<SchemeSupportInfo> schemeSupportInfoList = schemeSupportInfoService.getSupportInfoListByAreaId(this.projectInfo, schemeSupportTypeEnum);
-        if (CollectionUtils.isNotEmpty(schemeSupportInfoList)) {
-            int i = 1;
-            for (SchemeSupportInfo schemeSupportInfo : schemeSupportInfoList) {
-                if (StringUtils.isNotBlank(schemeSupportInfo.getContent())) {
-                    builder.insertHtml(String.format("<h5>%s.%s</h5>", i, schemeSupportInfo.getName()));
-                    builder.writeln(schemeSupportInfo.getContent());
-                    i++;
-                }
-            }
+        if (projectInfo == null || schemeSupportTypeEnum == null) return "";
+        switch (schemeSupportTypeEnum) {
+            case HYPOTHESIS:
+                return evaluationHypothesisService.getReportHypothesis(this.projectInfo);
+            case BASIS:
+                return evaluationBasisService.getReportBasic(this.projectInfo);
+            case PRINCIPLE:
+                return evaluationPrincipleService.getReportPrinciple(this.projectInfo);
         }
-        document.save(localPath);
-        return localPath;
+        return "";
     }
 
     /**
@@ -2261,23 +2260,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getReportAnalysis(String type) throws Exception {
-        String localPath = getLocalPath();
-        Document document = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(type);
-        List<CompileReportDetail> compileReportDetailList = compileReportService.getCompileReportDetailList(areaId, baseDataDic.getId());
-        if (CollectionUtils.isNotEmpty(compileReportDetailList)) {
-            int i = 1;
-            for (CompileReportDetail compileReportDetail : compileReportDetailList) {
-                if (StringUtils.isNotBlank(compileReportDetail.getContent())) {
-                    builder.insertHtml(String.format("<h5>%s.%s</h5>", i, compileReportDetail.getName()));
-                    builder.writeln(compileReportDetail.getContent());
-                    i++;
-                }
-            }
-        }
-        document.save(localPath);
-        return localPath;
+        return compileReportService.getReportCompile(this.areaId,type);
     }
 
     /**
@@ -6307,9 +6290,21 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    @Deprecated
     public String getEvaluationThink() {
-        Set<String> stringSet = Sets.newHashSet();
+        HashSet<Integer> hashSet = Sets.newHashSet();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
+                if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
+                    for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
+                        hashSet.add(schemeJudgeFunction.getMethodType());
+                    }
+                }
+            }
+        }
+        return evaluationThinkingService.getReportThinking(Lists.newArrayList(hashSet), this.projectInfo);
+
+        /*Set<String> stringSet = Sets.newHashSet();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         StringBuilder builder = new StringBuilder(24);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -6329,7 +6324,7 @@ public class GenerateBaseDataService {
             }
         }
         String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
-        return s;
+        return s;*/
     }
 
     /**
@@ -6603,6 +6598,10 @@ public class GenerateBaseDataService {
         this.dataHisRightInfoPublicityService = SpringContextUtils.getBean(DataHisRightInfoPublicityService.class);
         this.surveyAssetInventoryContentService = SpringContextUtils.getBean(SurveyAssetInventoryContentService.class);
         this.dataMethodFormulaService = SpringContextUtils.getBean(DataMethodFormulaService.class);
+        this.evaluationThinkingService = SpringContextUtils.getBean(EvaluationThinkingService.class);
+        this.evaluationBasisService = SpringContextUtils.getBean(EvaluationBasisService.class);
+        this.evaluationHypothesisService = SpringContextUtils.getBean(EvaluationHypothesisService.class);
+        this.evaluationPrincipleService = SpringContextUtils.getBean(EvaluationPrincipleService.class);
 
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
