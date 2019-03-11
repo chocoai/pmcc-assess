@@ -11,9 +11,11 @@
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
 
-        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.168.2.206:3306/pmcc_assess?serverTimezone=Asia/Shanghai&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;failOverReadOnly=false&amp;zeroDateTimeBehavior=convertToNull&amp;allowMultiQueries=true"
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://192.168.2.206:3306/pmcc_assess?serverTimezone=Asia/Shanghai"
                         userId="root" password="123456">
+            <property name="useInformationSchema" value="true"></property>
+            <property name="remarks" value="true"></property>
         </jdbcConnection>
 
         <javaTypeResolver>

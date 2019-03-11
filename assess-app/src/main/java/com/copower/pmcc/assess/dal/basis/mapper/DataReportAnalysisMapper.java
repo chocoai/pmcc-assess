@@ -10,13 +10,21 @@ public interface DataReportAnalysisMapper {
 
     int deleteByExample(DataReportAnalysisExample example);
 
+    int deleteByPrimaryKey(Integer id);
+
     int insert(DataReportAnalysis record);
 
     int insertSelective(DataReportAnalysis record);
 
     List<DataReportAnalysis> selectByExample(DataReportAnalysisExample example);
 
+    DataReportAnalysis selectByPrimaryKey(Integer id);
+
     int updateByExampleSelective(@Param("record") DataReportAnalysis record, @Param("example") DataReportAnalysisExample example);
 
     int updateByExample(@Param("record") DataReportAnalysis record, @Param("example") DataReportAnalysisExample example);
+
+    int updateByPrimaryKeySelective(DataReportAnalysis record);
+
+    int updateByPrimaryKey(DataReportAnalysis record);
 }

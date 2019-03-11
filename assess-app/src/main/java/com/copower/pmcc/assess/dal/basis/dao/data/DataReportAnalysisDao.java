@@ -23,10 +23,7 @@ public class DataReportAnalysisDao {
 
 
     public boolean updateReportAnalysis(DataReportAnalysis evaluationReportAnalysis) {
-        DataReportAnalysisExample example = new DataReportAnalysisExample();
-        DataReportAnalysisExample.Criteria criteria = example.createCriteria();
-        criteria.andIdEqualTo(evaluationReportAnalysis.getId());
-        return dataReportAnalysisMapper.updateByExampleSelective(evaluationReportAnalysis,example) == 1;
+        return dataReportAnalysisMapper.updateByPrimaryKeySelective(evaluationReportAnalysis) == 1;
     }
 
     public List<DataReportAnalysis> getReportAnalysisList(String name,Integer reportAnalysisType) {
@@ -67,18 +64,11 @@ public class DataReportAnalysisDao {
     }
 
     public boolean removeReportAnalysis(Integer id) {
-        DataReportAnalysisExample example = new DataReportAnalysisExample();
-        DataReportAnalysisExample.Criteria criteria = example.createCriteria();
-        criteria.andIdEqualTo(id);
-        return dataReportAnalysisMapper.deleteByExample(example) == 1;
+        return dataReportAnalysisMapper.deleteByPrimaryKey(id) == 1;
     }
 
     public DataReportAnalysis getReportAnalysis(Integer id) {
-        DataReportAnalysisExample example = new DataReportAnalysisExample();
-        DataReportAnalysisExample.Criteria criteria = example.createCriteria();
-        criteria.andIdEqualTo(id);
-        List<DataReportAnalysis> reportAnalyses = dataReportAnalysisMapper.selectByExample(example);
-        return reportAnalyses.get(0);
+        return dataReportAnalysisMapper.selectByPrimaryKey(id);
     }
 
 }
