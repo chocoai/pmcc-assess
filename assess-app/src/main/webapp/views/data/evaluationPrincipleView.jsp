@@ -181,14 +181,15 @@
                                             模板<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="请填写模板" class="form-control" id="template"
+                                           <%-- <textarea placeholder="请填写模板" class="form-control" id="template"
                                                       name="template" required="required"
                                                       onkeyup="extractTemplateField()">
 
                                             </textarea>
                                             <div class="template-field">
 
-                                            </div>
+                                            </div>--%>
+                                                <div style="width:99%;height:200px;" id="template"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -219,27 +220,25 @@
         loadPrincipleList();
 
     })
-
+    var ue = UE.getEditor('template');
     //提取字段
-    function extractTemplateField() {
-        var text = $("#template").val();
-        $('.template-field').empty();
-        var fieldArray = AssessCommon.extractField(text);
-        if (fieldArray && fieldArray.length > 0) {
-            var html = '';
-            $.each(fieldArray, function (i, item) {
-                field = fieldArray;
-                html += '<span class="label label-default">' + item + '</span> ';
-            })
-            $('.template-field').append(html);
-        }
-    }
+    // function extractTemplateField() {
+    //     var text = $("#template").val();
+    //     $('.template-field').empty();
+    //     var fieldArray = AssessCommon.extractField(text);
+    //     if (fieldArray && fieldArray.length > 0) {
+    //         var html = '';
+    //         $.each(fieldArray, function (i, item) {
+    //             field = fieldArray;
+    //             html += '<span class="label label-default">' + item + '</span> ';
+    //         })
+    //         $('.template-field').append(html);
+    //     }
+    // }
     //加载 评估原则 数据列表
     function loadPrincipleList() {
         var cols = [];
-        cols.push({field: 'name', title: '名称', formatter: function (value, row, index) {
-            return '<span title="'+row.template+'">'+value+'</span>';
-        }});
+        cols.push({field: 'name', title: '名称'});
         cols.push({field: 'typeName', title: '项目类型'});
         cols.push({field: 'entrustmentPurposeStr', title: '委托目的'});
         cols.push({
@@ -296,7 +295,7 @@
     //对新增 评估原则 数据处理
     function addPrinciple() {
         $("#frm").clearAll();
-        extractTemplateField();
+        //extractTemplateField();
         reload();
     }
     //新增 评估原则 数据
@@ -313,6 +312,7 @@
         })
         data.type = type;//方便like查询
         data.category = category;//方便like查询
+        data.template = ue.getContent();
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/evaluationPrinciple/save",
@@ -359,7 +359,11 @@
                         appendHTML(types[i + 1], categorys[i + 1]);
                     }
                     AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='entrustmentPurpose']"),row.entrustmentPurpose.split(','));
-                    extractTemplateField();
+                    //extractTemplateField();
+                    var content = result.data.template;
+                    setTimeout(function () {
+                        ue.setContent(content, false);
+                    }, 500);
                     $('#divBox').modal();
                 }
             },

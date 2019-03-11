@@ -144,9 +144,10 @@
                                             描述
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="描述" class="form-control" id="description" name="description">
+                                            <%--<textarea placeholder="描述" class="form-control" id="description" name="description">
 
-                                            </textarea>
+                                            </textarea>--%>
+                                                <div style="width:99%;height:200px;" id="description"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -175,6 +176,7 @@
     $(function () {
         loadDataDicList();
     })
+    var ue = UE.getEditor('description');
     //加载 最佳利用 数据列表
     function loadDataDicList() {
         var cols = [];
@@ -241,6 +243,7 @@
         var data = formParams("frm");
         data.type = ',' + data.type + ',';//方便like查询
         data.category = ',' + data.category + ',';//方便like查询
+        data.description = ue.getContent();
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/bestUse/addBestUseDescription",
@@ -285,6 +288,10 @@
                     for (var i = 0; i < types.length - 1; i++) {
                         appendHTML(types[i + 1], categorys[i + 1]);
                     }
+                    var content = result.data.description;
+                    setTimeout(function () {
+                        ue.setContent(content, false);
+                    }, 500);
                     $('#divBox').modal();
                 }
             },

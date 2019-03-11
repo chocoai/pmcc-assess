@@ -169,12 +169,14 @@
                                             模版<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="请填写模版" class="form-control" id="template"
+                                            <%--<textarea placeholder="请填写模版" class="form-control" id="template"
                                                       name="template" required="required"
                                                       onkeyup="extractTemplateField()"></textarea>
                                             <div class="template-field">
 
-                                            </div>
+                                            </div>--%>
+                                                <div style="width:99%;height:200px;" id="template"></div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -200,20 +202,21 @@
     $(function () {
         loadReportAnalysisList();
     })
+    var ue = UE.getEditor('template');
     //提取字段
-    function extractTemplateField() {
-        var text = $("#template").val();
-        $('.template-field').empty();
-        var fieldArray = AssessCommon.extractField(text);
-        if (fieldArray && fieldArray.length > 0) {
-            var html = '';
-            $.each(fieldArray, function (i, item) {
-                field = fieldArray;
-                html += '<span class="label label-default">' + item + '</span> ';
-            })
-            $('.template-field').append(html);
-        }
-    }
+    // function extractTemplateField() {
+    //     var text = $("#template").val();
+    //     $('.template-field').empty();
+    //     var fieldArray = AssessCommon.extractField(text);
+    //     if (fieldArray && fieldArray.length > 0) {
+    //         var html = '';
+    //         $.each(fieldArray, function (i, item) {
+    //             field = fieldArray;
+    //             html += '<span class="label label-default">' + item + '</span> ';
+    //         })
+    //         $('.template-field').append(html);
+    //     }
+    // }
 
     //加载 评估依据 数据列表
     function loadReportAnalysisList() {
@@ -287,12 +290,13 @@
             cityValue: '',
             districtValue: ''
         })
-        extractTemplateField();
+        //extractTemplateField();
     }
     //新增 评估依据 数据
     function saveReportAnalysis() {
         var data = formParams("frm");
         data.entrustmentPurpose = ',' + data.entrustmentPurpose + ',';//方便like查询
+        data.template = ue.getContent();
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/reportAnalysis/save",
@@ -334,8 +338,12 @@
                         cityValue: result.data.city,
                         districtValue: result.data.district
                     })
-                    extractTemplateField();
+                    //extractTemplateField();
                     AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='entrustmentPurpose']"), result.data.entrustmentPurpose.split(','));
+                    var content = result.data.template;
+                    setTimeout(function () {
+                        ue.setContent(content, false);
+                    }, 500);
                     $('#divBox').modal();
                 }
             },

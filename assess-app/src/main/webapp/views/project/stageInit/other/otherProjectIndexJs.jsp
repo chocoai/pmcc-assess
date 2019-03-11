@@ -289,6 +289,9 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.value_type, item.valueType, function (html, data) {
                 $("#" + objProject.config.info.frm).find("select.valueType").empty().html(html).trigger('change');
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.property_scope, item.propertyScope, function (html, data) {
+                $("#" + objProject.config.info.frm).find("select.propertyScope").empty().html(html).trigger('change');
+            });
             AssessCommon.loadDataDicByKey(AssessDicKey.dataEntrustmentPurpose, item.entrustPurpose, function (html, data) {
                 $("#" + objProject.config.info.frm).find("select.entrustPurpose").empty().html(html).trigger('change');
             });
