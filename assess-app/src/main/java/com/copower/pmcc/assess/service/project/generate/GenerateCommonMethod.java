@@ -324,6 +324,45 @@ public class GenerateCommonMethod {
     }
 
     /**
+     * 填充值
+     *
+     * @param text
+     * @param bookmark
+     * @param textMap
+     * @param bookmarkMap
+     * @param key
+     * @param value
+     */
+    public void putValue(boolean text, boolean bookmark, boolean fileFlag, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, String key, String value) {
+        if (StringUtils.isEmpty(value)) {
+            return;
+        }
+        if (StringUtils.isEmpty(key)) {
+            return;
+        }
+        if (text) {
+            textMap.put(String.format("${%s}", key), value);
+        }
+        if (bookmark) {
+            bookmarkMap.put(key, value);
+        }
+        if (fileFlag) {
+            fileMap.put( String.format("${%s}", key), value);
+        }
+    }
+
+    public List<String> specialTreatment(List<String> strings) {
+        List<String> stringList = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(strings)) {
+            for (String s : strings) {
+                String temp = s.substring(2, s.length() - 1);
+                stringList.add(temp);
+            }
+        }
+        return stringList;
+    }
+
+    /**
      * 为图片设置间隔
      *
      * @param builder

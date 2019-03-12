@@ -1847,6 +1847,44 @@ public class GenerateBaseDataService {
 
     }
 
+    public String getHotTip() throws Exception {
+        StringBuilder stringBuilder = new StringBuilder(16);
+        StringBuffer stringBuffer = new StringBuffer(8);
+        Document doc = new Document();
+        String localPath = getLocalPath(UUID.randomUUID().toString());
+        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
+        int length = 3;
+        if (StringUtils.isNotBlank(getCertificateAssetInventory().trim())) {
+            length = 4;
+        }
+        for (int i = 0; i < length; i++) {
+            if (i == 0) {
+                String oneContent = "本函内容摘自估价报告，欲了解本次估价项目全面情况，请详见估价结果报告，报告使用时请特别关注估价假设和限制条件内容。";
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, oneContent)).append("</p>");
+            }
+            if (i == 1) {
+                String oneContent = "根据委托人介绍及估价人员在${他权信息公示}，${他权类别}估价对象已设定抵押权。";
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, oneContent)).append("</p>");
+            }
+            if (length == 4) {
+                if (i == 2) {
+                    stringBuffer.append("估价对象现场查勘地址为").append(getAssetInventoryCommon("actual")).append("。");
+                    stringBuffer.append("本次评估根据委托方提供的由").append(getAssetInventoryCommon("voucher")).append("出具的《证明》，");
+                    stringBuffer.append("本次以上地址为").append(getAssetInventoryCommon("sureConsistent")).append("同一地址。");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, stringBuffer.toString())).append("</p>");
+                    stringBuilder.delete(0,stringBuffer.toString().length());
+                }
+            }
+            if (i == length - 1) {
+                String oneContent = "根据估价委托人提供的《法定优先受偿款情况说明》，估价对象于价值时点已设定抵押权，本次评估是抵押权存续期间的房地产估价（同行续贷），经过沟通，抵押权人已经知晓法定优先受偿款对估价对象价值的影响，且并不需要我们在抵押价值中予以扣除法定优先受偿款，故本报告假设估价对象在价值时点法定优先受偿款为0元（大写：人民币零元整），在此提请报告使用人加以关注。";
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, oneContent)).append("</p>");
+            }
+        }
+        documentBuilder.insertHtml(stringBuilder.toString(),true);
+        doc.save(localPath);
+        return localPath;
+    }
+
     /**
      * 变现分析表
      *
@@ -2124,7 +2162,7 @@ public class GenerateBaseDataService {
             }
         }
         stringBuilder.append("</p>");
-        documentBuilder.insertHtml(stringBuilder.toString(),true);
+        documentBuilder.insertHtml(stringBuilder.toString(), true);
         document.save(localPath);
         return localPath;
     }
