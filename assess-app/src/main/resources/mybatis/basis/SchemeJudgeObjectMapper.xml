@@ -19,6 +19,8 @@
     <result column="practical_use" property="practicalUse" jdbcType="VARCHAR" />
     <result column="land_cert_use" property="landCertUse" jdbcType="VARCHAR" />
     <result column="land_practical_use" property="landPracticalUse" jdbcType="VARCHAR" />
+    <result column="land_use_end_date" property="landUseEndDate" jdbcType="TIMESTAMP" />
+    <result column="land_remaining_year" property="landRemainingYear" jdbcType="DECIMAL" />
     <result column="set_use" property="setUse" jdbcType="INTEGER" />
     <result column="best_use" property="bestUse" jdbcType="INTEGER" />
     <result column="floor_area" property="floorArea" jdbcType="DECIMAL" />
@@ -102,10 +104,11 @@
   <sql id="Base_Column_List" >
     id, pid, project_id, area_group_id, original_area_group_id, declare_record_id, number, 
     original_number, split_number, name, cert_name, ownership, seat, cert_use, practical_use, 
-    land_cert_use, land_practical_use, set_use, best_use, floor_area, evaluation_area, 
-    price, original_price, rental_possession_desc, collateral_found, liquid_ratio, liquid_ratio_explain, 
-    standard_judge_id, standard_judge_explain, not_applicable_reason, bis_split, bis_merge, 
-    bis_enable, bis_set_function, sorting, creator, gmt_created, gmt_modified
+    land_cert_use, land_practical_use, land_use_end_date, land_remaining_year, set_use, 
+    best_use, floor_area, evaluation_area, price, original_price, rental_possession_desc, 
+    collateral_found, liquid_ratio, liquid_ratio_explain, standard_judge_id, standard_judge_explain, 
+    not_applicable_reason, bis_split, bis_merge, bis_enable, bis_set_function, sorting, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObjectExample" >
     select
@@ -146,9 +149,10 @@
       original_number, split_number, name, 
       cert_name, ownership, seat, 
       cert_use, practical_use, land_cert_use, 
-      land_practical_use, set_use, best_use, 
-      floor_area, evaluation_area, price, 
-      original_price, rental_possession_desc, collateral_found, 
+      land_practical_use, land_use_end_date, land_remaining_year, 
+      set_use, best_use, floor_area, 
+      evaluation_area, price, original_price, 
+      rental_possession_desc, collateral_found, 
       liquid_ratio, liquid_ratio_explain, standard_judge_id, 
       standard_judge_explain, not_applicable_reason, 
       bis_split, bis_merge, bis_enable, 
@@ -159,9 +163,10 @@
       #{originalNumber,jdbcType=VARCHAR}, #{splitNumber,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{certName,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, #{seat,jdbcType=VARCHAR}, 
       #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, #{landCertUse,jdbcType=VARCHAR}, 
-      #{landPracticalUse,jdbcType=VARCHAR}, #{setUse,jdbcType=INTEGER}, #{bestUse,jdbcType=INTEGER}, 
-      #{floorArea,jdbcType=DECIMAL}, #{evaluationArea,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, 
-      #{originalPrice,jdbcType=DECIMAL}, #{rentalPossessionDesc,jdbcType=VARCHAR}, #{collateralFound,jdbcType=VARCHAR}, 
+      #{landPracticalUse,jdbcType=VARCHAR}, #{landUseEndDate,jdbcType=TIMESTAMP}, #{landRemainingYear,jdbcType=DECIMAL}, 
+      #{setUse,jdbcType=INTEGER}, #{bestUse,jdbcType=INTEGER}, #{floorArea,jdbcType=DECIMAL}, 
+      #{evaluationArea,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{originalPrice,jdbcType=DECIMAL}, 
+      #{rentalPossessionDesc,jdbcType=VARCHAR}, #{collateralFound,jdbcType=VARCHAR}, 
       #{liquidRatio,jdbcType=VARCHAR}, #{liquidRatioExplain,jdbcType=VARCHAR}, #{standardJudgeId,jdbcType=INTEGER}, 
       #{standardJudgeExplain,jdbcType=VARCHAR}, #{notApplicableReason,jdbcType=VARCHAR}, 
       #{bisSplit,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, 
@@ -221,6 +226,12 @@
       </if>
       <if test="landPracticalUse != null" >
         land_practical_use,
+      </if>
+      <if test="landUseEndDate != null" >
+        land_use_end_date,
+      </if>
+      <if test="landRemainingYear != null" >
+        land_remaining_year,
       </if>
       <if test="setUse != null" >
         set_use,
@@ -334,6 +345,12 @@
       </if>
       <if test="landPracticalUse != null" >
         #{landPracticalUse,jdbcType=VARCHAR},
+      </if>
+      <if test="landUseEndDate != null" >
+        #{landUseEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="landRemainingYear != null" >
+        #{landRemainingYear,jdbcType=DECIMAL},
       </if>
       <if test="setUse != null" >
         #{setUse,jdbcType=INTEGER},
@@ -460,6 +477,12 @@
       <if test="record.landPracticalUse != null" >
         land_practical_use = #{record.landPracticalUse,jdbcType=VARCHAR},
       </if>
+      <if test="record.landUseEndDate != null" >
+        land_use_end_date = #{record.landUseEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.landRemainingYear != null" >
+        land_remaining_year = #{record.landRemainingYear,jdbcType=DECIMAL},
+      </if>
       <if test="record.setUse != null" >
         set_use = #{record.setUse,jdbcType=INTEGER},
       </if>
@@ -547,6 +570,8 @@
       practical_use = #{record.practicalUse,jdbcType=VARCHAR},
       land_cert_use = #{record.landCertUse,jdbcType=VARCHAR},
       land_practical_use = #{record.landPracticalUse,jdbcType=VARCHAR},
+      land_use_end_date = #{record.landUseEndDate,jdbcType=TIMESTAMP},
+      land_remaining_year = #{record.landRemainingYear,jdbcType=DECIMAL},
       set_use = #{record.setUse,jdbcType=INTEGER},
       best_use = #{record.bestUse,jdbcType=INTEGER},
       floor_area = #{record.floorArea,jdbcType=DECIMAL},
@@ -622,6 +647,12 @@
       </if>
       <if test="landPracticalUse != null" >
         land_practical_use = #{landPracticalUse,jdbcType=VARCHAR},
+      </if>
+      <if test="landUseEndDate != null" >
+        land_use_end_date = #{landUseEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="landRemainingYear != null" >
+        land_remaining_year = #{landRemainingYear,jdbcType=DECIMAL},
       </if>
       <if test="setUse != null" >
         set_use = #{setUse,jdbcType=INTEGER},
@@ -707,6 +738,8 @@
       practical_use = #{practicalUse,jdbcType=VARCHAR},
       land_cert_use = #{landCertUse,jdbcType=VARCHAR},
       land_practical_use = #{landPracticalUse,jdbcType=VARCHAR},
+      land_use_end_date = #{landUseEndDate,jdbcType=TIMESTAMP},
+      land_remaining_year = #{landRemainingYear,jdbcType=DECIMAL},
       set_use = #{setUse,jdbcType=INTEGER},
       best_use = #{bestUse,jdbcType=INTEGER},
       floor_area = #{floorArea,jdbcType=DECIMAL},

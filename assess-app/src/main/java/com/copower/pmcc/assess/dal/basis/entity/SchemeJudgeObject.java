@@ -38,6 +38,10 @@ public class SchemeJudgeObject {
 
     private String landPracticalUse;
 
+    private Date landUseEndDate;
+
+    private BigDecimal landRemainingYear;
+
     private Integer setUse;
 
     private Integer bestUse;
@@ -214,6 +218,22 @@ public class SchemeJudgeObject {
 
     public void setLandPracticalUse(String landPracticalUse) {
         this.landPracticalUse = landPracticalUse == null ? null : landPracticalUse.trim();
+    }
+
+    public Date getLandUseEndDate() {
+        return landUseEndDate;
+    }
+
+    public void setLandUseEndDate(Date landUseEndDate) {
+        this.landUseEndDate = landUseEndDate;
+    }
+
+    public BigDecimal getLandRemainingYear() {
+        return landRemainingYear;
+    }
+
+    public void setLandRemainingYear(BigDecimal landRemainingYear) {
+        this.landRemainingYear = landRemainingYear;
     }
 
     public Integer getSetUse() {

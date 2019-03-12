@@ -1226,6 +1226,126 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
+        public Criteria andLandUseEndDateIsNull() {
+            addCriterion("land_use_end_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateIsNotNull() {
+            addCriterion("land_use_end_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateEqualTo(Date value) {
+            addCriterion("land_use_end_date =", value, "landUseEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateNotEqualTo(Date value) {
+            addCriterion("land_use_end_date <>", value, "landUseEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateGreaterThan(Date value) {
+            addCriterion("land_use_end_date >", value, "landUseEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("land_use_end_date >=", value, "landUseEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateLessThan(Date value) {
+            addCriterion("land_use_end_date <", value, "landUseEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateLessThanOrEqualTo(Date value) {
+            addCriterion("land_use_end_date <=", value, "landUseEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateIn(List<Date> values) {
+            addCriterion("land_use_end_date in", values, "landUseEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateNotIn(List<Date> values) {
+            addCriterion("land_use_end_date not in", values, "landUseEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateBetween(Date value1, Date value2) {
+            addCriterion("land_use_end_date between", value1, value2, "landUseEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateNotBetween(Date value1, Date value2) {
+            addCriterion("land_use_end_date not between", value1, value2, "landUseEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearIsNull() {
+            addCriterion("land_remaining_year is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearIsNotNull() {
+            addCriterion("land_remaining_year is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearEqualTo(BigDecimal value) {
+            addCriterion("land_remaining_year =", value, "landRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearNotEqualTo(BigDecimal value) {
+            addCriterion("land_remaining_year <>", value, "landRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearGreaterThan(BigDecimal value) {
+            addCriterion("land_remaining_year >", value, "landRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_remaining_year >=", value, "landRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearLessThan(BigDecimal value) {
+            addCriterion("land_remaining_year <", value, "landRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_remaining_year <=", value, "landRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearIn(List<BigDecimal> values) {
+            addCriterion("land_remaining_year in", values, "landRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearNotIn(List<BigDecimal> values) {
+            addCriterion("land_remaining_year not in", values, "landRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_remaining_year between", value1, value2, "landRemainingYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRemainingYearNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_remaining_year not between", value1, value2, "landRemainingYear");
+            return (Criteria) this;
+        }
+
         public Criteria andSetUseIsNull() {
             addCriterion("set_use is null");
             return (Criteria) this;
