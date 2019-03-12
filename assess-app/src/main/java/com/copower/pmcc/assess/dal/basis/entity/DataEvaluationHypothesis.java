@@ -19,6 +19,8 @@ public class DataEvaluationHypothesis {
 
     private Date pubDate;
 
+    private String fieldName;
+
     private Integer sorting;
 
     private Boolean bisModifiable;
@@ -93,6 +95,14 @@ public class DataEvaluationHypothesis {
 
     public void setPubDate(Date pubDate) {
         this.pubDate = pubDate;
+    }
+
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName == null ? null : fieldName.trim();
     }
 
     public Integer getSorting() {

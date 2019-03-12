@@ -1,36 +1,38 @@
 package com.copower.pmcc.assess.common.enums;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Created by 13426 on 2018/5/25.
  */
 public enum SchemeSupportTypeEnum {
-    HYPOTHESIS(0, "评估假设"),//假设
-    PRINCIPLE(1, "评估原则"),//原则
-    BASIS(2, "评估依据");
-    private int id;
+    HYPOTHESIS("hypothesis", "评估假设"),//假设
+    PRINCIPLE("principle", "评估原则"),//原则
+    BASIS("basis", "评估依据");//依据
+    private String key;
     private String name;
 
-    SchemeSupportTypeEnum(int id, String name) {
-        this.id = id;
+    SchemeSupportTypeEnum(String key, String name) {
+        this.key = key;
         this.name = name;
     }
 
     // name替换id
-    public static String getName(int id) {
+    public static String getName(String key) {
         for (SchemeSupportTypeEnum c : SchemeSupportTypeEnum.values()) {
-            if (c.getId() == id) {
+            if (StringUtils.equals(c.getKey(),key)) {
                 return c.name;
             }
         }
         return null;
     }
 
-    public Integer getId() {
-        return id;
+    public String getKey() {
+        return key;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getName() {

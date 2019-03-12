@@ -141,7 +141,7 @@ public class SchemeSupportInfoService {
                 schemeSupportInfo.setCreator(commonService.thisUserAccount());
                 schemeSupportInfo.setName(evaluationBasis.getName());
                 schemeSupportInfo.setTemplate(evaluationBasis.getTemplate());
-                schemeSupportInfo.setSupportType(SchemeSupportTypeEnum.BASIS.getId());
+                //schemeSupportInfo.setSupportType(SchemeSupportTypeEnum.BASIS.getId());
                 schemeSupportInfo.setSupportTypeName(SchemeSupportTypeEnum.BASIS.getName());
                 schemeSupportInfo.setBisModifiable(evaluationBasis.getBisModifiable());
                 if (evaluationBasis.getBisModifiable() == Boolean.FALSE) {
@@ -160,7 +160,7 @@ public class SchemeSupportInfoService {
                 schemeSupportInfo.setCreator(commonService.thisUserAccount());
                 schemeSupportInfo.setName(evaluationHypothesis.getName());
                 schemeSupportInfo.setTemplate(evaluationHypothesis.getTemplate());
-                schemeSupportInfo.setSupportType(SchemeSupportTypeEnum.HYPOTHESIS.getId());
+                //schemeSupportInfo.setSupportType(SchemeSupportTypeEnum.HYPOTHESIS.getId());
                 schemeSupportInfo.setSupportTypeName(SchemeSupportTypeEnum.HYPOTHESIS.getName());
                 schemeSupportInfo.setBisModifiable(evaluationHypothesis.getBisModifiable());
                 if (evaluationHypothesis.getBisModifiable() == Boolean.FALSE) {
@@ -179,7 +179,7 @@ public class SchemeSupportInfoService {
                 schemeSupportInfo.setCreator(commonService.thisUserAccount());
                 schemeSupportInfo.setName(evaluationPrinciple.getName());
                 schemeSupportInfo.setTemplate(evaluationPrinciple.getTemplate());
-                schemeSupportInfo.setSupportType(SchemeSupportTypeEnum.PRINCIPLE.getId());
+                //schemeSupportInfo.setSupportType(SchemeSupportTypeEnum.PRINCIPLE.getId());
                 schemeSupportInfo.setSupportTypeName(SchemeSupportTypeEnum.PRINCIPLE.getName());
                 schemeSupportInfo.setBisModifiable(evaluationPrinciple.getBisModifiable());
                 if (evaluationPrinciple.getBisModifiable() == Boolean.FALSE) {

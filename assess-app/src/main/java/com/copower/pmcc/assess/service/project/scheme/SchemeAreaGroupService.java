@@ -153,8 +153,8 @@ public class SchemeAreaGroupService {
                         where.setProjectId(projectId);
                         where.setJudgeObjectId(judgeObject.getId());
                         projectDetails = projectPlanDetailsService.getProjectDetails(where);
-                        if(CollectionUtils.isNotEmpty(projectDetails)){
-                            projectDetails.forEach(o->projectPlanDetailsService.deleteProjectPlanDetails(o));
+                        if (CollectionUtils.isNotEmpty(projectDetails)) {
+                            projectDetails.forEach(o -> projectPlanDetailsService.deleteProjectPlanDetails(o));
                         }
                     }
                     schemeJudgeObjectDao.deleteJudgeObjectByAreaId(schemeAreaGroup.getId());
@@ -165,8 +165,8 @@ public class SchemeAreaGroupService {
                 where.setProjectId(projectId);
                 where.setAreaId(schemeAreaGroup.getId());
                 projectDetails = projectPlanDetailsService.getProjectDetails(where);
-                if(CollectionUtils.isNotEmpty(projectDetails)){
-                    projectDetails.forEach(o->projectPlanDetailsService.deleteProjectPlanDetails(o));
+                if (CollectionUtils.isNotEmpty(projectDetails)) {
+                    projectDetails.forEach(o -> projectPlanDetailsService.deleteProjectPlanDetails(o));
                 }
                 schemeAreaGroupDao.remove(schemeAreaGroup.getId());
             }
@@ -186,7 +186,7 @@ public class SchemeAreaGroupService {
                 areaGroup.setRemarkEntrustPurpose(projectInfo.getRemarkEntrustPurpose());
                 areaGroup.setValueDefinition(projectInfo.getValueType());
                 areaGroup.setValueDefinitionDesc(projectInfo.getRemarkValueType());
-                areaGroup.setPropertyScope(1);
+                areaGroup.setPropertyScope(Integer.valueOf(StringUtils.defaultString(projectInfo.getPropertyScope(), "0")));
                 areaGroup.setScopeInclude(projectInfo.getScopeInclude());
                 areaGroup.setScopeNotInclude(projectInfo.getScopeNotInclude());
                 areaGroup.setPid(0);
