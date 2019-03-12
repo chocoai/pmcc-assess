@@ -310,7 +310,7 @@
             dataType: "json",
             success: function (result) {
                 if (result.ret && result.data) {
-                    var retHtml = '<option value="" selected>-请选择-</option>';
+                    var retHtml = '';
                     $.each(result.data, function (i, item) {
                         retHtml += '<option key="' + item.qualificationTypeName + '" title="' + item.userAccountName + '" value="' + item.id + '"';
                         var tempArr = realEstateAppraiser.split(",");
