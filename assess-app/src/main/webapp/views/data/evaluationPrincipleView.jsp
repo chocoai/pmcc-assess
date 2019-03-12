@@ -220,7 +220,17 @@
         loadPrincipleList();
 
     })
-    var ue = UE.getEditor('template');
+    var ue = UE.getEditor('template', {
+        toolbars: [
+            ['source','autotypeset','bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
+        ],
+        zIndex: 11009,
+        initialFrameHeight: 220,
+        elementPathEnabled: false,//是否启用元素路径，默认是true显示
+        wordCount: false, //是否开启字数统计
+        autoHeightEnabled: false,
+        autoFloatEnabled: true
+    });
     //提取字段
     // function extractTemplateField() {
     //     var text = $("#template").val();
