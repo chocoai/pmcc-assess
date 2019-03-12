@@ -7,7 +7,7 @@
 <div class="x_content">
     <div class="x_title">
         <h3>
-            楼栋基本信息
+            楼栋基本信息111
         </h3>
         <div class="clearfix"></div>
     </div>
@@ -82,8 +82,6 @@
                     </c:if>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     户型区间
@@ -92,6 +90,8 @@
                     <input type="text" placeholder="户型区间" name="unitInterval" class="form-control">
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     物业费
@@ -110,8 +110,6 @@
                            data-rule-number='true' class="form-control">
                 </div>
             </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     建筑高度
@@ -121,6 +119,8 @@
                            name="buildingHeight" class="form-control">
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     建筑面积
@@ -139,8 +139,6 @@
                            name="coverAnArea" class="form-control">
                 </div>
             </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     层高
@@ -150,6 +148,8 @@
                            name="floorHeight" class="form-control">
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     进深
@@ -168,9 +168,6 @@
                            name="landUseYear" class="form-control">
                 </div>
             </div>
-        </div>
-
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     开盘时间
@@ -181,6 +178,8 @@
                            class="form-control date-picker dbdate openTime">
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     交房时间
@@ -189,6 +188,15 @@
                     <input placeholder="交房时间"
                            name="roomTime" data-date-format="yyyy-mm-dd"
                            class="form-control date-picker dbdate roomTime">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    竣工时间获取方式
+                </label>
+                <div class="col-sm-3">
+                    <select name="completedTimeType" required class="form-control completedTimeType search-select select2">
+                    </select>
                 </div>
             </div>
             <div class="x-valid">
@@ -202,7 +210,6 @@
                 </div>
             </div>
         </div>
-
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
