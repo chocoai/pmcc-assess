@@ -213,6 +213,10 @@ public class SchemeAreaGroupService {
                         schemeJudgeObject.setSeat(declareRecord.getSeat());
                         schemeJudgeObject.setCertUse(declareRecord.getCertUse());
                         schemeJudgeObject.setPracticalUse(declareRecord.getPracticalUse());
+                        if(declareRecord.getLandUseEndDate()!=null){
+                            schemeJudgeObject.setLandUseEndDate(declareRecord.getLandUseEndDate());
+                            //计算出土地剩余年限
+                        }
                         schemeJudgeObject.setEvaluationArea(declareRecord.getPracticalArea());
                         //获取到房屋中的出租占用情况描述
                         BasicHouse basicHouse = schemeJudgeObjectService.getBasicHouseByDeclareId(declareRecord.getId(), projectInfo.getProjectCategoryId());
