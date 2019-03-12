@@ -62,6 +62,8 @@ public enum BaseReportFieldEnum implements Serializable {
     PrincipalAddress("", "委托人地址"),
     PrincipalInfo("", "估价委托人信息"),
     PrincipalLegalRepresentative("", "委托人法定代表人"),
+    PrincipalDescribe("", "估价对象描述"),
+    HotTip("", "特别提示"),
     /*
     ---------------------------------------------------------------------------------------------------
      */

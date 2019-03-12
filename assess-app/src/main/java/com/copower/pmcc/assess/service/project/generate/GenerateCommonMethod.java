@@ -55,7 +55,6 @@ public class GenerateCommonMethod {
                 }
             }
             List<String> stringList = Lists.newArrayList(stringSet);
-            stringSet.clear();
             //排一次序
             stringList.sort((o1, o2) -> {
                 int x = Integer.parseInt(o1.substring(0, 1));
@@ -63,8 +62,10 @@ public class GenerateCommonMethod {
                 return (x > y) ? -1 : ((x == y) ? 0 : 1);
             });
             stringSet = Sets.newHashSet(stringList);
-            stringBuilder.append(this.toSetStringMerge(stringSet, ","));
-            stringBuilder.append(this.SchemeJudgeObjectName);
+            if (stringList.size() > 1) {
+                stringBuilder.append(this.toSetStringMerge(stringSet, ","));
+                stringBuilder.append(this.SchemeJudgeObjectName);
+            }
             stringBuilder.append(this.toSetStringSplitCommaSuffix(stringSetTemp, ",", suffix));
         } else {
             stringBuilder.append(" ");
@@ -97,8 +98,12 @@ public class GenerateCommonMethod {
                 }
             }
             stringBuilder.append("号");
-            if (strings.length > 3) stringBuilder.append("等");
-//            stringBuilder.append(SchemeJudgeObjectName);
+            if (strings.length > 3) {
+                stringBuilder.append("等");
+            }
+            if (false) {
+                stringBuilder.append(SchemeJudgeObjectName);
+            }
         }
         if (StringUtils.isEmpty(stringBuilder.toString())) {
             if (StringUtils.isNotBlank(schemeJudgeObject.getName())) {
@@ -125,9 +130,8 @@ public class GenerateCommonMethod {
                     if (CollectionUtils.isNotEmpty(schemeJudgeObjects)) {
                         schemeJudgeObjectList.addAll(schemeJudgeObjects);
                     }
-                } else {
-                    schemeJudgeObjectList.add(schemeJudgeObject);
                 }
+                schemeJudgeObjectList.add(schemeJudgeObject);
             }
         }
         if (declareRecordFilter) {
@@ -317,6 +321,45 @@ public class GenerateCommonMethod {
         }
         String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
         return localPath;
+    }
+
+    /**
+     * 填充值
+     *
+     * @param text
+     * @param bookmark
+     * @param textMap
+     * @param bookmarkMap
+     * @param key
+     * @param value
+     */
+    public void putValue(boolean text, boolean bookmark, boolean fileFlag, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, String key, String value) {
+        if (StringUtils.isEmpty(value)) {
+            return;
+        }
+        if (StringUtils.isEmpty(key)) {
+            return;
+        }
+        if (text) {
+            textMap.put(String.format("${%s}", key), value);
+        }
+        if (bookmark) {
+            bookmarkMap.put(key, value);
+        }
+        if (fileFlag) {
+            fileMap.put( String.format("${%s}", key), value);
+        }
+    }
+
+    public List<String> specialTreatment(List<String> strings) {
+        List<String> stringList = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(strings)) {
+            for (String s : strings) {
+                String temp = s.substring(2, s.length() - 1);
+                stringList.add(temp);
+            }
+        }
+        return stringList;
     }
 
     /**
