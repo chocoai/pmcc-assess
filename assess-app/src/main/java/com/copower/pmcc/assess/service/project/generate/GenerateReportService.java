@@ -557,7 +557,7 @@ public class GenerateReportService {
                     if (Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuerAndNumber.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                         if (baseReportField != null) {
-                            replaceReportPutValue(name, String.format("%s 注册号 %s", generateBaseDataService.getRegisteredRealEstateValuer(generateReportGeneration.getRealEstateAppraiser()), generateBaseDataService.getRegistrationNumber(generateReportGeneration.getRealEstateAppraiser())), bookmarkAndRegex.getType(), false, mapSet);
+                            replaceReportPutValue(name,generateBaseDataService.getRegisteredRealEstateValuerAndNumber(generateReportGeneration) , bookmarkAndRegex.getType(), true, mapSet);
                         }
                     }
                     //注册房产估价师 注册号
@@ -1373,11 +1373,6 @@ public class GenerateReportService {
                         if (baseReportField != null) {
 
                         }
-                    }
-                    //建筑物权益状况
-                    if (Objects.equal(BaseReportFieldEnum.StatusBuildingRightsInterests.getName(), name)) {
-                        BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-
                     }
                     //本次估价的总体思路和评估方法的选取
                     if (Objects.equal(BaseReportFieldEnum.theGeneralIdeaOfThisEvaluationAndTheSelectionOfEvaluationMethods.getName(), name)) {

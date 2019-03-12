@@ -55,7 +55,6 @@ public class GenerateCommonMethod {
                 }
             }
             List<String> stringList = Lists.newArrayList(stringSet);
-            stringSet.clear();
             //排一次序
             stringList.sort((o1, o2) -> {
                 int x = Integer.parseInt(o1.substring(0, 1));
@@ -63,8 +62,10 @@ public class GenerateCommonMethod {
                 return (x > y) ? -1 : ((x == y) ? 0 : 1);
             });
             stringSet = Sets.newHashSet(stringList);
-            stringBuilder.append(this.toSetStringMerge(stringSet, ","));
-            stringBuilder.append(this.SchemeJudgeObjectName);
+            if (stringList.size() > 1) {
+                stringBuilder.append(this.toSetStringMerge(stringSet, ","));
+                stringBuilder.append(this.SchemeJudgeObjectName);
+            }
             stringBuilder.append(this.toSetStringSplitCommaSuffix(stringSetTemp, ",", suffix));
         } else {
             stringBuilder.append(" ");
@@ -97,8 +98,12 @@ public class GenerateCommonMethod {
                 }
             }
             stringBuilder.append("号");
-            if (strings.length > 3) stringBuilder.append("等");
-//            stringBuilder.append(SchemeJudgeObjectName);
+            if (strings.length > 3) {
+                stringBuilder.append("等");
+            }
+            if (false) {
+                stringBuilder.append(SchemeJudgeObjectName);
+            }
         }
         if (StringUtils.isEmpty(stringBuilder.toString())) {
             if (StringUtils.isNotBlank(schemeJudgeObject.getName())) {
@@ -125,9 +130,8 @@ public class GenerateCommonMethod {
                     if (CollectionUtils.isNotEmpty(schemeJudgeObjects)) {
                         schemeJudgeObjectList.addAll(schemeJudgeObjects);
                     }
-                } else {
-                    schemeJudgeObjectList.add(schemeJudgeObject);
                 }
+                schemeJudgeObjectList.add(schemeJudgeObject);
             }
         }
         if (declareRecordFilter) {
