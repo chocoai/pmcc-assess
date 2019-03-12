@@ -60,6 +60,9 @@
         AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_structure, data.buildingStructureType, function (html, data) {
             buildingCommon.buildingForm.find('select.buildingStructureType').empty().html(html).trigger('change');
         });
+        AssessCommon.loadDataDicByKey(AssessDicKey.completed_time_type, data.completedTimeType, function (html, data) {
+            buildingCommon.buildingForm.find('select.completedTimeType').empty().html(html).trigger('change');
+        });
 
         //建筑使用寿命 ---
         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_building_residence_data, data.residenceUseYear, function (html, data) {

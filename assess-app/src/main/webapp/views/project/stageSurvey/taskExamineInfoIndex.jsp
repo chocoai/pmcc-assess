@@ -111,7 +111,7 @@
                 <div class="x_content">
                     <div style="text-align: center;">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                            取消<i style="margin-left: 10px" class="fa fa-close"></i>
+                            取<i style="margin-left: 10px" class="fa fa-close"></i>
                         </button>
                         <c:choose>
                             <c:when test="${projectPhase.bisUseBox eq false}">
@@ -220,6 +220,9 @@
 
         houseCommon.detail(basicCommon.getApplyId(), function (data) {
             houseCommon.initForm(data);
+
+            //房屋评估范围
+            getProjectInfo("${projectPlanDetails.projectId}");
         });
 
         //启动自动填充控件
@@ -270,6 +273,34 @@
                 Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         });
+    }
+
+    function getProjectInfo(projectId){
+        $.ajax({
+            url: "${pageContext.request.contextPath}/ProjectTaskExamine/getProjectInfo",
+            type: "post",
+            dataType: "json",
+            data: {
+                projectId:projectId,
+            },
+            success: function (result) {
+                if (result.ret) {
+                    if(result.data){
+                        var propertyScope = result.data.propertyScope;
+                        houseCommon.houseTradingForm.find("input[name='scopeInclude']").val(result.data.scopeInclude);
+                        houseCommon.houseTradingForm.find("input[name='scopeNotInclude']").val(result.data.scopeNotInclude);
+                        houseCommon.houseTradingForm.find("select.scopeProperty").val(propertyScope).trigger('change');
+                        console.log("1====")
+                    }
+                }
+                else {
+                    toastr.warning(result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
     }
 </script>
 </html>

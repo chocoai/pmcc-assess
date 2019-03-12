@@ -1,7 +1,9 @@
 package com.copower.pmcc.assess.controller.project;
 
 import com.copower.pmcc.assess.controller.BaseController;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.survey.SurveyExamineTaskService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -25,6 +27,8 @@ public class ProjectTaskExamineController extends BaseController {
     private SurveyExamineTaskService surveyExamineTaskService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     @ResponseBody
     @RequestMapping(value = "/saveData", name = "保存数据", method = RequestMethod.POST)
@@ -39,4 +43,15 @@ public class ProjectTaskExamineController extends BaseController {
         return HttpResult.newCorrectResult();
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/getProjectInfo", name = "取得项目信息", method = RequestMethod.POST)
+    public HttpResult getProjectInfo(Integer projectId) {
+        try {
+            ProjectInfo projectInfoById = projectInfoService.getProjectInfoById(projectId);
+            return HttpResult.newCorrectResult(projectInfoById);
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+            return HttpResult.newErrorResult("取得项目信息异常");
+        }
+    }
 }

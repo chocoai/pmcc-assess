@@ -69,8 +69,6 @@
                     </c:if>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     户型区间
@@ -79,6 +77,8 @@
                     <label class="form-control" name="unitInterval">${basicBuilding.unitInterval}</label>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     物业费
@@ -95,8 +95,6 @@
                     <label class="form-control" name="facilitiesUseFee">${basicBuilding.facilitiesUseFee}</label>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     建筑高度
@@ -105,6 +103,8 @@
                     <label class="form-control" name="buildingHeight">${basicBuilding.buildingHeight}</label>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     建筑面积
@@ -121,8 +121,6 @@
                     <label class="form-control" name="coverAnArea">${basicBuilding.coverAnArea}</label>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     层高
@@ -131,6 +129,8 @@
                     <label class="form-control" name="floorHeight">${basicBuilding.floorHeight}</label>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     进深
@@ -147,9 +147,6 @@
                     <label class="form-control" name="landUseYear">${basicBuilding.landUseYear}</label>
                 </div>
             </div>
-        </div>
-
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     开盘时间
@@ -158,9 +155,11 @@
                     <label class="form-control dbdate" name="openTime">
                         <fmt:formatDate
                                 value='${basicBuilding.openTime}' pattern='yyyy-MM-dd'/>
-                        </label>
+                    </label>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     交房时间
@@ -174,6 +173,14 @@
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
+                    竣工时间获取方式
+                </label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="completedTimeTypeName">${basicBuilding.completedTimeTypeName}</label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
                     竣工时间
                 </label>
                 <div class="col-sm-3">
@@ -183,7 +190,6 @@
                 </div>
             </div>
         </div>
-
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">

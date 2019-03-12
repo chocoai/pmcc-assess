@@ -430,11 +430,11 @@
     function generateReport(areaId, item) {
         var formId = $(item).closest("form").attr("id");
         var data = formParams(formId);
-        // if (data.realEstateAppraiser) {
-        // } else {
-        //     toastr.success('估价师必须选择');
-        //     return false;
-        // }
+        if (data.realEstateAppraiser) {
+        } else {
+            toastr.success('估价师必须选择');
+            return false;
+        }
         var item = $("#frm_content").find("[name=reportType]:checked");
         var ids = '';
         if (item.size() < 1) {

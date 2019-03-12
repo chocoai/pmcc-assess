@@ -46,6 +46,8 @@ public class BasicBuilding {
 
     private Date roomTime;
 
+    private Integer completedTimeType;
+
     private Date beCompletedTime;
 
     private BigDecimal floorHeight;
@@ -232,6 +234,14 @@ public class BasicBuilding {
 
     public void setRoomTime(Date roomTime) {
         this.roomTime = roomTime;
+    }
+
+    public Integer getCompletedTimeType() {
+        return completedTimeType;
+    }
+
+    public void setCompletedTimeType(Integer completedTimeType) {
+        this.completedTimeType = completedTimeType;
     }
 
     public Date getBeCompletedTime() {

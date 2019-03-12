@@ -1426,6 +1426,66 @@ public class BasicBuildingExample {
             return (Criteria) this;
         }
 
+        public Criteria andCompletedTimeTypeIsNull() {
+            addCriterion("completed_time_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletedTimeTypeIsNotNull() {
+            addCriterion("completed_time_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletedTimeTypeEqualTo(Integer value) {
+            addCriterion("completed_time_type =", value, "completedTimeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletedTimeTypeNotEqualTo(Integer value) {
+            addCriterion("completed_time_type <>", value, "completedTimeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletedTimeTypeGreaterThan(Integer value) {
+            addCriterion("completed_time_type >", value, "completedTimeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletedTimeTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("completed_time_type >=", value, "completedTimeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletedTimeTypeLessThan(Integer value) {
+            addCriterion("completed_time_type <", value, "completedTimeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletedTimeTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("completed_time_type <=", value, "completedTimeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletedTimeTypeIn(List<Integer> values) {
+            addCriterion("completed_time_type in", values, "completedTimeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletedTimeTypeNotIn(List<Integer> values) {
+            addCriterion("completed_time_type not in", values, "completedTimeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletedTimeTypeBetween(Integer value1, Integer value2) {
+            addCriterion("completed_time_type between", value1, value2, "completedTimeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletedTimeTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("completed_time_type not between", value1, value2, "completedTimeType");
+            return (Criteria) this;
+        }
+
         public Criteria andBeCompletedTimeIsNull() {
             addCriterion("be_completed_time is null");
             return (Criteria) this;

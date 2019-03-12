@@ -16,10 +16,19 @@ public class BasicBuildingVo extends BasicBuilding {
     private String buildingStructureCategoryName;
     private String propertyCategoryName;
     private String propertyTypeName;
+    private String completedTimeTypeName;
 
     private String residenceUseYearName;
 
     private String industryUseYearName;
+
+    public String getCompletedTimeTypeName() {
+        return completedTimeTypeName;
+    }
+
+    public void setCompletedTimeTypeName(String completedTimeTypeName) {
+        this.completedTimeTypeName = completedTimeTypeName;
+    }
 
     public String getOpenTimeName() {
         return openTimeName;

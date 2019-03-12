@@ -145,6 +145,7 @@ AssessDicKey.examine_building_maintenance_type = "examine.building.maintenance.t
 AssessDicKey.examine_building_maintenance_category = "examine.building.maintenance.category";//围护结构分类
 AssessDicKey.examine_building_materialquality = "examine.building.maintenance.materialQuality";//围护结构材质
 AssessDicKey.examine_building_function_type = "building.function.type";//建筑功能类型
+AssessDicKey.completed_time_type = "completed.time.type";//建筑功能类型
 
 //单元
 AssessDicKey.examineUnitInteriorDecorationPart = "unit.interior.decoration.part";//内装装修部位
