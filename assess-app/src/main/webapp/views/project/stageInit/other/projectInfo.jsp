@@ -34,7 +34,7 @@
                 <label class="col-sm-1 control-label">委托目的<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <select name="entrustPurpose" class="form-control search-select select2 entrustPurpose"
-                            required="required">
+                            required="required" onchange="getValueDefinition();">
                     </select>
                 </div>
             </div>
@@ -51,7 +51,8 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">价值类型<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select name="valueType" class="form-control search-select select2 valueType" required="required">
+                    <select name="valueType" class="form-control search-select select2 valueType" required="required"
+                            onchange="getValueDefinition();">
                     </select>
                 </div>
             </div>
@@ -187,3 +188,43 @@
         </div>
     </form>
 </div>
+<script type="text/javascript">
+    function getValueDefinition(){
+        var entrustPurpose = $("#" + objProject.config.info.frm).find("select.entrustPurpose").find("option:selected").val();
+        var valueType = $("#" + objProject.config.info.frm).find("select.valueType").find("option:selected").val();
+        if(entrustPurpose && valueType){
+            entrustPurpose = ","+entrustPurpose+",";
+            valueType = ","+valueType+",";
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectInfo/getValueDefinition",
+                type: "post",
+                dataType: "json",
+                data: {
+                    entrustPurpose:entrustPurpose,
+                    valueType:valueType
+                },
+                success: function (result) {
+                    if (result.ret) {
+                      if(result.data){
+                          $("#" + objProject.config.info.frm).find("select.propertyScope").val([result.data.propertyScope]).trigger('change');
+                          $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val(result.data.scopeInclude);
+                          $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val(result.data.scopeNotInclude);
+                      }else{
+                          $("#" + objProject.config.info.frm).find("select.propertyScope").val(null).trigger("change");;
+                          $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val("");
+                          $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val("");
+
+                      }
+                    }
+                    else {
+                        toastr.warning(result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+
+        }
+    }
+</script>

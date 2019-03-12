@@ -126,4 +126,10 @@ public class DataValueDefinitionService {
 
     }
 
+    public DataValueDefinition getValueDefinition(String entrustPurpose, String valueType){
+        DataValueDefinition dataValueDefinition = new DataValueDefinition();
+        dataValueDefinition.setEntrustmentPurpose(entrustPurpose);
+        dataValueDefinition.setValueType(valueType);
+        return dataValueDefinitionDao.getSingleObject(dataValueDefinition);
+    }
 }

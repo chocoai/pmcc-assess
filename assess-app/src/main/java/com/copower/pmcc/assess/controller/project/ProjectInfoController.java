@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.project;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
+import com.copower.pmcc.assess.dal.basis.entity.DataValueDefinition;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectFollow;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
@@ -9,6 +10,7 @@ import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.data.DataValueDefinitionService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
@@ -59,6 +61,8 @@ public class ProjectInfoController {
     private HttpServletRequest request;
     @Autowired
     private SchemeAreaGroupService schemeAreaGroupService;
+    @Autowired
+    private DataValueDefinitionService dataValueDefinitionService;
 
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view(Integer projectClassId, Integer projectTypeId, Integer projectCategoryId) {
@@ -277,6 +281,18 @@ public class ProjectInfoController {
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
             return HttpResult.newErrorResult("取得计划编制信息异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getValueDefinition", name = "取得价值定义信息", method = RequestMethod.POST)
+    public HttpResult getValueDefinition(String entrustPurpose, String valueType) {
+        try {
+            DataValueDefinition valueDefinition = dataValueDefinitionService.getValueDefinition(entrustPurpose, valueType);
+            return HttpResult.newCorrectResult(valueDefinition);
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+            return HttpResult.newErrorResult("取得价值定义信息异常");
         }
     }
 }
