@@ -272,6 +272,12 @@ public class SurveyCommonService {
         return buildingUsableYear;
     }
 
+    /**
+     * 获取房产经济耐用年限
+     * @param basicApply
+     * @param basicBuilding
+     * @return
+     */
     public Integer getBuildingUsableYear(BasicApply basicApply, BasicBuilding basicBuilding) {
         Integer buildingUsableYear = 0;
         if (basicApply == null || basicBuilding == null) return buildingUsableYear;
