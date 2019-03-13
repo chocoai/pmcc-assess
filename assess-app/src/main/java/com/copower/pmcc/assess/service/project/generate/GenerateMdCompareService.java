@@ -26,6 +26,8 @@ import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -57,6 +59,8 @@ public class GenerateMdCompareService {
     private SchemeAreaGroupService schemeAreaGroupService;
     private SchemeJudgeObjectService schemeJudgeObjectService;
     private DataHousePriceIndexDao dataHousePriceIndexDao;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private GenerateCommonMethod generateCommonMethod;
 
     private GenerateMdCompareService() {
     }
@@ -76,6 +80,7 @@ public class GenerateMdCompareService {
         this.dataHousePriceIndexDao = SpringContextUtils.getBean(DataHousePriceIndexDao.class);
         this.schemeAreaGroupService = SpringContextUtils.getBean(SchemeAreaGroupService.class);
         this.schemeJudgeObjectService = SpringContextUtils.getBean(SchemeJudgeObjectService.class);
+        this.generateCommonMethod = SpringContextUtils.getBean(GenerateCommonMethod.class);
         getEvaluationItemList();
     }
 
@@ -131,32 +136,35 @@ public class GenerateMdCompareService {
 
     //生成文件
     public String generateCompareFile() throws Exception {
-        // 1.先找到模板文件
-        // 2.下载模板文件到本地
-        // 3.找出模板文件中的书签或者文本key
-        // 4.依次寻找并生成替换数据
-        // 5.将数据替换到模板中并返回替换好的文件路径
         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByFieldName(AssessReportFieldConstant.COMPARE_TEMPLATE);
         List<SysAttachmentDto> dtoList = baseAttachmentService.getByField_tableId(baseReportField.getId(), null, FormatUtils.entityNameConvertToTableName(BaseReportField.class));
-        if (CollectionUtils.isEmpty(dtoList))
+        if (CollectionUtils.isEmpty(dtoList)) {
             throw new BusinessException("模板文件未找到");
+        }
         String localPath = baseAttachmentService.downloadFtpFileToLocal(dtoList.get(0).getId());
         Document document = new Document(localPath);
         Map<String, String> textMap = AsposeUtils.getRegexExtendList(document);
-
-        if (textMap != null && textMap.size() > 0) {//文本替换
-            for (Map.Entry<String, String> entry : textMap.entrySet()) {
-                textMap.put(entry.getKey(), this.getValueByKey(entry.getValue()));
-            }
-            AsposeUtils.replaceTextToFile(localPath, textMap);
-        }
         BookmarkCollection bookmarks = AsposeUtils.getBookmarks(document);
-        if (bookmarks != null) {//书签替换
-            Map<String, String> bookmarkMap = Maps.newHashMap();
-            for (Bookmark bookmark : bookmarks) {
-                bookmarkMap.put(bookmark.getName(), this.getValueByKey(bookmark.getName()));
+
+        try {
+            //文本替换
+            if (textMap != null && textMap.size() > 0) {
+                for (Map.Entry<String, String> entry : textMap.entrySet()) {
+                    textMap.put(entry.getKey(), this.getValueByKey(entry.getValue()));
+                }
+                AsposeUtils.replaceTextToFile(localPath, textMap);
             }
-            AsposeUtils.replaceBookmark(localPath, bookmarkMap, true);
+            //书签替换
+            if (bookmarks != null) {
+                Map<String, String> bookmarkMap = Maps.newHashMap();
+                for (Bookmark bookmark : bookmarks) {
+                    bookmarkMap.put(bookmark.getName(), this.getValueByKey(bookmark.getName()));
+                }
+                AsposeUtils.replaceBookmark(localPath, bookmarkMap, true);
+            }
+        } catch (Exception e) {
+            String error = e.getMessage();
+            logger.error(error,e);
         }
         return localPath;
     }
@@ -173,7 +181,7 @@ public class GenerateMdCompareService {
         MdMarketCompareItem evaluationItemList = getEvaluationItemList();
         List<MarketCompareItemDto> marketCompareItemDtos = JSON.parseArray(evaluationItemList.getJsonContent(), MarketCompareItemDto.class);
         List<MdMarketCompareItem> caseItemList = getCaseItemList();
-        String localPath = "";
+        String localPath = null;
         if (fieldCompareEnum != null) {
             String title = fieldCompareEnum.getName();
             switch (fieldCompareEnum) {
@@ -236,7 +244,6 @@ public class GenerateMdCompareService {
                     break;
             }
         }
-
         return localPath;
     }
 
@@ -255,7 +262,7 @@ public class GenerateMdCompareService {
         DocumentBuilder builder = new DocumentBuilder(doc);
         //表格属性
         setTableProperty(builder);
-        String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = generateCommonMethod.getLocalPath();
         List<DataSetUseField> cacheSetUseFieldList = dataSetUseFieldService.getCacheSetUseFieldList(fieldName);
         //表头
         builder.insertCell();
@@ -338,7 +345,6 @@ public class GenerateMdCompareService {
             }
             builder.insertCell();
             builder.writeln(String.format("%.2f", result));
-
             if (CollectionUtils.isNotEmpty(caseItemList)) {
                 for (MdMarketCompareItem caseItem : caseItemList) {
                     BigDecimal temp = new BigDecimal("1");
@@ -371,7 +377,7 @@ public class GenerateMdCompareService {
             mdMarketCompareItem, List<MdMarketCompareItem> caseItemList) throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
-        String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        String localPath = generateCommonMethod.getLocalPath();
         //表格属性
         setTableProperty(builder);
         //表头
@@ -384,7 +390,6 @@ public class GenerateMdCompareService {
             builder.writeln(caseItem.getName());
         }
         builder.endRow();
-
         if (CollectionUtils.isNotEmpty(caseItemList)) {
             builder.insertCell();
             builder.writeln("比准价格");
@@ -456,7 +461,6 @@ public class GenerateMdCompareService {
             builder.writeln("空");
         }
         builder.endRow();
-
         builder.endTable();
         doc.save(localPath);
         return localPath;
@@ -472,9 +476,8 @@ public class GenerateMdCompareService {
     public String getDateRevision(String title, List<MdMarketCompareItem> caseItemList) throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
-        builder.getFont().setSize(14);
-        builder.getFont().setName("仿宋");
-        String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        generateCommonMethod.settingBuildingTable(builder);
+        String localPath = generateCommonMethod.getLocalPath();
         StringBuilder normal = new StringBuilder();
         StringBuilder abnormality = new StringBuilder();
         for (MdMarketCompareItem item : caseItemList) {
@@ -499,7 +502,6 @@ public class GenerateMdCompareService {
         } else {
             builder.write("根据所掌握的资料" + abnormalityContent + "。");
         }
-
         doc.save(localPath);
         return localPath;
     }
@@ -516,9 +518,8 @@ public class GenerateMdCompareService {
             Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
-        builder.getFont().setSize(14);
-        builder.getFont().setName("仿宋");
-        String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        generateCommonMethod.settingBuildingTable(builder);
+        String localPath = generateCommonMethod.getLocalPath();
         DataSetUseField cacheSetUseFieldList = dataSetUseFieldService.getCacheSetUseFieldByFieldName(fieldName);
         StringBuilder normal = new StringBuilder();
         StringBuilder abnormality = new StringBuilder();
@@ -609,7 +610,6 @@ public class GenerateMdCompareService {
                 }
             }
         }
-
         builder.endTable();
         doc.save(localPath);
         return localPath;
@@ -626,11 +626,9 @@ public class GenerateMdCompareService {
     public String getCaseNumber(String title, Integer size) throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
-        builder.getFont().setSize(14);
-        builder.getFont().setName("仿宋");
+        generateCommonMethod.settingBuildingTable(builder);
         builder.write("共" + size.toString() + "个，情况详见下表：");
-        String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-
+        String localPath = generateCommonMethod.getLocalPath();
         doc.save(localPath);
         return localPath;
     }
@@ -649,9 +647,8 @@ public class GenerateMdCompareService {
                                                   fieldName) throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
-        String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        builder.getFont().setSize(14);
-        builder.getFont().setName("仿宋");
+        String localPath = generateCommonMethod.getLocalPath();
+        generateCommonMethod.settingBuildingTable(builder);
         DataSetUseField cacheSetUseFieldList = dataSetUseFieldService.getCacheSetUseFieldByFieldName(fieldName);
         String propertyRange = new String();
         for (MarketCompareItemDto item : marketCompareItemDtos) {
@@ -708,9 +705,8 @@ public class GenerateMdCompareService {
             Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
-        builder.getFont().setSize(14);
-        builder.getFont().setName("仿宋");
-        String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
+        generateCommonMethod.settingBuildingTable(builder);
+        String localPath = generateCommonMethod.getLocalPath();
         StringBuilder content = new StringBuilder();
         BigDecimal num = new BigDecimal("0");
         content.append("(");
@@ -743,20 +739,7 @@ public class GenerateMdCompareService {
 
     //设置表格属性
     public void setTableProperty(DocumentBuilder builder) throws Exception {
-        builder.getFont().setSize(9);
-        builder.getFont().setName("仿宋");
-        //设置表格边框的宽度
-        builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
-        builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
-        builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
-        builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
-        //设置具体宽度
-        builder.getCellFormat().setWidth(100);
-        //水平居中
-        builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
-        //上下居中
-        builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
-
+        generateCommonMethod.settingBuildingTable(builder);
     }
 
 }

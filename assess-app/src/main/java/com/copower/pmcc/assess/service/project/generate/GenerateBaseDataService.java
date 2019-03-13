@@ -213,56 +213,20 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getScopePropertyExplain() throws Exception {
-        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
-                .stream()
-                .filter(projectPhaseVo -> {
-                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    return false;
-                }).collect(Collectors.toList());
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && CollectionUtils.isNotEmpty(projectPhases)) {
-            for (ProjectPhase projectPhase : projectPhases) {
-                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                    ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(projectId);
-                    query.setProjectPhaseId(projectPhase.getId());
-                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                        for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                            GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
-                            if (generateBaseExamineService.getBasicApply().getId() != null && generateBaseExamineService.getBasicApply().getId().intValue() != 0) {
-                                if (StringUtils.isNotBlank(generateBaseExamineService.getBasicTrading().getScopePropertyExplain())) {
-                                    String key = generateBaseExamineService.getBasicTrading().getScopePropertyExplain();
-                                    if (StringUtils.isNotBlank(key)) {
-                                        List<Integer> integerList = stringListMap.get(key);
-                                        if (CollectionUtils.isNotEmpty(integerList)) {
-                                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                                        } else {
-                                            integerList = Lists.newArrayList();
-                                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                                        }
-                                        stringListMap.put(key, integerList);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        StringBuffer stringBuffer = new StringBuffer(16);
+        if (getSchemeAreaGroup().getPropertyScope() != null){
+            stringBuffer.append(baseDataDicService.getNameById(getSchemeAreaGroup().getPropertyScope()));
         }
-        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
-        if (StringUtils.isEmpty(s.trim())) {
-            s = errorStr;
+        if (StringUtils.isNotBlank(getSchemeAreaGroup().getScopeInclude())){
+            stringBuffer.append(getSchemeAreaGroup().getScopeInclude());
         }
-        return s;
+        if (StringUtils.isNotBlank(getSchemeAreaGroup().getScopeNotInclude())){
+            stringBuffer.append(getSchemeAreaGroup().getScopeNotInclude());
+        }
+        if (StringUtils.isEmpty(stringBuffer.toString())){
+            stringBuffer.append(errorStr);
+        }
+        return stringBuffer.toString();
     }
 
     /**
@@ -1230,6 +1194,9 @@ public class GenerateBaseDataService {
                         }
                     }
                 }
+            }
+            if (decimal.doubleValue() > 0){
+                decimal = decimal.divide(new BigDecimal(10000));
             }
         }
         decimal = decimal.setScale(2, BigDecimal.ROUND_HALF_DOWN);
@@ -3223,16 +3190,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        if (!stringListMap.isEmpty()) {
-            for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
-                if (entry.getValue().size() > 0) {
-                    stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append("号").append(generateCommonMethod.SchemeJudgeObjectName).append(":").append(entry.getKey());
-                    stringSet.add(stringBuilder.toString());
-                    stringBuilder.delete(0, stringBuilder.toString().length());
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
+        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap,"");
         if (StringUtils.isEmpty(s)) {
             s = errorStr;
         }
@@ -3282,6 +3240,9 @@ public class GenerateBaseDataService {
                 if (schemeReimbursement != null && schemeReimbursement.getKnowTotalPrice() != null) {
                     bigDecimal = bigDecimal.add(schemeReimbursement.getKnowTotalPrice());
                 }
+            }
+            if (bigDecimal.doubleValue() > 0){
+                bigDecimal = bigDecimal.divide(new BigDecimal(10000));
             }
         }
         return bigDecimal.toString();
