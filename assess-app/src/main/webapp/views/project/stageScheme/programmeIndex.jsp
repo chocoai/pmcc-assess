@@ -201,8 +201,9 @@
                                         财产范围<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-2">
-                                        <input type="text" class="form-control" name="propertyScope"
-                                               placeholder="财产范围" value="${item.propertyScope}" required>
+                                        <select class="form-control" name="propertyScope" required></select>
+                                        <%--<input type="text" class="form-control" name="propertyScope"--%>
+                                               <%--placeholder="财产范围" value="${item.propertyScope}" required>--%>
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -234,9 +235,11 @@
                                         <%--<th style="width: 10%">权证号</th>--%>
                                     <th style="width: 5%">所有权人</th>
                                     <th style="width: 15%">坐落</th>
-                                    <th style="width: 10%">证载用途</th>
-                                    <th style="width: 10%">实际用途</th>
-                                    <th style="width: 10%">设定用途</th>
+                                    <th style="width: 6%">终止日期</th>
+                                    <th style="width: 6%">剩余年限</th>
+                                    <th style="width: 6%">证载用途</th>
+                                    <th style="width: 6%">实际用途</th>
+                                    <th style="width: 6%">设定用途</th>
                                     <th style="width: 10%">最佳利用方式</th>
                                     <th style="width: 5%">证载面积</th>
                                     <th style="width: 5%">评估面积</th>
@@ -250,6 +253,9 @@
                         <script type="text/javascript">
                             $(function () {
                                 programme.setValueConnotation(${item.id}, '${item.valueConnotation}');
+                                AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseScopeProperty, '${item.propertyScope}', function (html, data) {
+                                    $("#frmJudgeObject${item.id}").find("[name=propertyScope]").empty().html(html);
+                                });
                             })
                         </script>
                     </div>
@@ -663,6 +669,8 @@
                    class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>
             </label></td>
         <td><label class="form-control" data-name="seat"><span>{seat}</span></label></td>
+        <td><label class="form-control" data-name="landUseEndDate"><span>{landUseEndDate}</span></label></td>
+        <td><label class="form-control" data-name="landRemainingYear"><span>{landRemainingYear}</span></label></td>
         <td><label class="form-control" data-name="certUse">{certUse}</label></td>
         <td><label class="form-control" data-name="practicalUse">{practicalUse}</label></td>
         <td>
@@ -964,6 +972,8 @@
                         html = html.replace(/{declareId}/g, item.declareRecordId == undefined ? "" : item.declareRecordId);
                         html = html.replace(/{ownership}/g, item.ownership == undefined ? "" : AssessCommon.substring(item.ownership, 100));
                         html = html.replace(/{seat}/g, item.seat == undefined ? "" : AssessCommon.substring(item.seat, 100));
+                        html = html.replace(/{landUseEndDate}/g, item.landUseEndDate == undefined ? "" : formatDate(item.landUseEndDate));
+                        html = html.replace(/{landRemainingYear}/g, item.landRemainingYear == undefined ? "" : item.landRemainingYear);
                         html = html.replace(/{certUse}/g, item.certUse == undefined ? "" : item.certUse);
                         html = html.replace(/{practicalUse}/g, item.practicalUse == undefined ? "" : item.practicalUse);
                         html = html.replace(/{floorArea}/g, item.floorArea == undefined ? "" : item.floorArea);
