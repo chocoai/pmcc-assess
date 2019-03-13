@@ -254,16 +254,26 @@ public class GenerateReportService {
             if (bookmarkCollection.getCount() >= 1) {
                 for (int i = 0; i < bookmarkCollection.getCount(); i++) {
                     BookmarkAndRegexDto regexDto = new BookmarkAndRegexDto();
-                    regexDto.setChineseName(AsposeUtils.getChinese(bookmarkCollection.get(i).getName())).setName(bookmarkCollection.get(i).getName()).setType(BaseReportFieldReplaceEnum.BOOKMARK.getKey());
+                    String name = AsposeUtils.getChinese(bookmarkCollection.get(i).getName());
+                    if (StringUtils.isEmpty(name)) {
+                        name = bookmarkCollection.get(i).getName();
+                    }
+                    regexDto.setName(name).setChineseName(name).setType(BaseReportFieldReplaceEnum.TEXT.getKey());
                     bookmarkAndRegexDtoHashSet.add(regexDto);
                 }
             }
             if (CollectionUtils.isNotEmpty(regexS)) {
                 for (String name : regexS) {
                     BookmarkAndRegexDto regexDto = new BookmarkAndRegexDto();
-                    regexDto.setChineseName(null).setName(name).setType(BaseReportFieldReplaceEnum.TEXT.getKey());
+                    regexDto.setName(name).setChineseName(name).setType(BaseReportFieldReplaceEnum.TEXT.getKey());
                     bookmarkAndRegexDtoHashSet.add(regexDto);
                 }
+            }
+            //由于模板变动某些数据提取不到,直接再次把枚举的所有数据填充一次(必须的特别市2019-03-12之后描述委估对象方式变化了,变为后台直接整段话描述)
+            for (BaseReportFieldEnum baseReportFieldEnum : BaseReportFieldEnum.values()) {
+                BookmarkAndRegexDto regexDto = new BookmarkAndRegexDto();
+                regexDto.setName(baseReportFieldEnum.getName()).setChineseName(baseReportFieldEnum.getName()).setType(BaseReportFieldReplaceEnum.TEXT.getKey());
+                bookmarkAndRegexDtoHashSet.add(regexDto);
             }
             ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportGeneration.getProjectPlanId());
             ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(generateReportGeneration.getProjectId()));
@@ -291,6 +301,9 @@ public class GenerateReportService {
         for (BookmarkAndRegexDto bookmarkAndRegex : bookmarkAndRegexDtoHashSet) {
             try {
                 String name = StringUtils.isNotBlank(bookmarkAndRegex.getChineseName()) ? bookmarkAndRegex.getChineseName() : bookmarkAndRegex.getName();
+                if (StringUtils.isEmpty(name)) {
+                    continue;
+                }
                 //文号
                 if (Objects.equal(BaseReportFieldEnum.ReportNumber.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
@@ -1025,11 +1038,25 @@ public class GenerateReportService {
                     if (baseReportField != null) {
                     }
                 }
+                //评估基准日
+                if (Objects.equal(BaseReportFieldEnum.ValueTimePoint2.getName(), name)) {
+                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValueTimePoint());
+                    if (baseReportField != null) {
+                    }
+                }
                 //价值时点说明
                 if (Objects.equal(BaseReportFieldEnum.ValueTimePointRemark.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     if (baseReportField != null) {
                         generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValueTimePointRemark());
+                    }
+                }
+                //评估基准日说明
+                if (Objects.equal(BaseReportFieldEnum.ValueTimePointRemark2.getName(), name)) {
+                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValueTimePointRemark());
+                    if (baseReportField != null) {
                     }
                 }
                 //申报所启用表单类型
@@ -1297,6 +1324,13 @@ public class GenerateReportService {
                     if (baseReportField != null) {
                     }
                 }
+                //估价对象描述
+                if (Objects.equal(BaseReportFieldEnum.PrincipalDescribe.getName(), name)) {
+                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipalDescribe());
+                    if (baseReportField != null) {
+                    }
+                }
                 //本次估价的总体思路和评估方法的选取
                 if (Objects.equal(BaseReportFieldEnum.theGeneralIdeaOfThisEvaluationAndTheSelectionOfEvaluationMethods.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
@@ -1424,15 +1458,15 @@ public class GenerateReportService {
 
     private String replaceWord(String localPath, Map<String, String> textMap, Map<String, String> preMap, Map<String, String> bookmarkMap, Map<String, String> fileMap) throws Exception {
         //替换
+        if (!fileMap.isEmpty()) {
+            AsposeUtils.replaceTextToFile(localPath, fileMap);
+            AsposeUtils.replaceText(localPath, textMap);
+        }
         if (!textMap.isEmpty()) {
             AsposeUtils.replaceText(localPath, textMap);
         }
         if (!bookmarkMap.isEmpty()) {
             AsposeUtils.replaceBookmark(localPath, bookmarkMap, true);
-        }
-        if (!fileMap.isEmpty()) {
-            AsposeUtils.replaceTextToFile(localPath, fileMap);
-            AsposeUtils.replaceText(localPath, textMap);
         }
         if (!preMap.isEmpty()) {
             AsposeUtils.replaceText(localPath, preMap);

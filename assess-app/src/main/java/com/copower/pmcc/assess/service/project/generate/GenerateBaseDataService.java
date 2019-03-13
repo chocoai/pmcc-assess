@@ -1872,7 +1872,7 @@ public class GenerateBaseDataService {
                     stringBuffer.append("本次评估根据委托方提供的由").append(getAssetInventoryCommon("voucher")).append("出具的《证明》，");
                     stringBuffer.append("本次以上地址为").append(getAssetInventoryCommon("sureConsistent")).append("同一地址。");
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, stringBuffer.toString())).append("</p>");
-                    stringBuilder.delete(0,stringBuffer.toString().length());
+                    stringBuffer.delete(0, stringBuffer.toString().length());
                 }
             }
             if (i == length - 1) {
@@ -1880,7 +1880,7 @@ public class GenerateBaseDataService {
                 stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, oneContent)).append("</p>");
             }
         }
-        documentBuilder.insertHtml(stringBuilder.toString(),true);
+        documentBuilder.insertHtml(stringBuilder.toString(), true);
         doc.save(localPath);
         return localPath;
     }
@@ -2695,8 +2695,6 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getPaymentMethod() throws Exception {
-        Set<String> stringSet = Sets.newHashSet();
-        StringBuilder stringBuilder = new StringBuilder(16);
         Map<String, List<Integer>> stringListMap = Maps.newHashMap();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
                 projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
@@ -2756,12 +2754,31 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getUseRightType() {
-        String value = getPracticalUse();
-        if (StringUtils.isNotBlank(value.trim())) {
-            return value;
-        } else {
-            return errorStr;
+        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), true);
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)){
+            for (SchemeJudgeObject schemeJudgeObject:schemeJudgeObjectList){
+                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+                if(declareRecord != null){
+                    String temp = declareRecord.getUseRightType();
+                    if (StringUtils.isNotBlank(temp)) {
+                        List<Integer> integerList = stringListMap.get(temp);
+                        if (CollectionUtils.isNotEmpty(integerList)) {
+                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                        } else {
+                            integerList = Lists.newArrayList();
+                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
+                        }
+                        stringListMap.put(temp, integerList);
+                    }
+                }
+            }
         }
+        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
+        if (StringUtils.isEmpty(s.trim())) {
+            s = errorStr;
+        }
+        return s;
     }
 
     /**
@@ -6219,6 +6236,113 @@ public class GenerateBaseDataService {
         }
         String s = generateCommonMethod.toSetStringSplitComma(stringSet);
         return s;
+    }
+
+    /**
+     * 估价对象描述
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getPrincipalDescribe() throws Exception {
+        String localPath = getLocalPath();
+        Document document = new Document();
+        StringBuilder stringBuilder = new StringBuilder(16);
+        StringBuffer buffer = new StringBuffer(8);
+        DocumentBuilder documentBuilder = new DocumentBuilder(document);
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), true);
+        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
+                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
+                .stream()
+                .filter(projectPhaseVo -> {
+                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
+                        return true;
+                    }
+                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
+                        return true;
+                    }
+                    return false;
+                }).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(projectPhases) && CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (ProjectPhase projectPhaseScene : projectPhases) {
+                for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
+                    SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(i);
+                    ProjectPlanDetails query = new ProjectPlanDetails();
+                    query.setProjectId(projectId);
+                    query.setProjectPhaseId(projectPhaseScene.getId());
+                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
+                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList) && declareRecord != null) {
+                        for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
+                            GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
+                            if (generateBaseExamineService.getBasicApply().getId() != null) {
+                                try {
+                                    buffer.append(generateBaseExamineService.getEstate().getName());
+                                    buffer.append(declareRecord.getSeat());
+                                    buffer.append(",");
+                                    DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
+                                    buffer.append(BaseReportFieldEnum.SetUse.getName());
+                                    if (dataSetUseField != null) {
+                                        buffer.append(dataSetUseField.getName());
+                                    } else {
+                                        buffer.append("无");
+                                    }
+                                    String practicaluse = null;
+                                    if (NumberUtils.isNumber(schemeJudgeObjectList.get(i).getPracticalUse())) {
+                                        practicaluse = baseDataDicService.getNameById(schemeJudgeObjectList.get(i).getPracticalUse());
+                                    } else {
+                                        practicaluse = schemeJudgeObjectList.get(i).getPracticalUse();
+                                    }
+                                    if (StringUtils.isEmpty(practicaluse)) {
+                                        practicaluse = "无";
+                                    }
+                                    buffer.append(",").append(BaseReportFieldEnum.PracticalUse.getName()).append(practicaluse);
+                                    buffer.append(",").append("建筑面积");
+                                    if (declareRecord.getFloorArea() != null) {
+                                        buffer.append(declareRecord.getFloorArea().toString());
+                                    }else {
+                                        buffer.append("无");
+                                    }
+                                    buffer.append(",").append("评估面积");
+                                    if (schemeJudgeObject.getEvaluationArea() != null){
+                                        buffer.append(schemeJudgeObject.getEvaluationArea().toString());
+                                    }else {
+                                        buffer.append("无");
+                                    }
+                                    buffer.append(",").append(BaseReportFieldEnum.LandUseRightType.getName());
+                                    if (StringUtils.isNotBlank(declareRecord.getUseRightType())){
+                                        buffer.append(declareRecord.getUseRightType());
+                                    }else {
+                                        buffer.append("无");
+                                    }
+                                    buffer.append(",").append(BaseReportFieldEnum.PowerPerson.getName());
+                                    if (StringUtils.isNotBlank(declareRecord.getOwnership())){
+                                        buffer.append(declareRecord.getOwnership());
+                                    }else {
+                                        buffer.append("无");
+                                    }
+                                    String buildingStructureCategoryName = null;
+                                    if (generateBaseExamineService.getBasicBuilding() != null && generateBaseExamineService.getBasicBuilding().getBuildingStructureCategory() != null){
+                                        buildingStructureCategoryName = baseDataDicService.getNameById(generateBaseExamineService.getBasicBuilding().getBuildingStructureCategory());
+                                    }
+                                    if (StringUtils.isEmpty(buildingStructureCategoryName)) {
+                                        buildingStructureCategoryName = "无";
+                                    }
+                                    buffer.append(",").append("房屋结构").append(buildingStructureCategoryName);
+                                } catch (Exception e) {
+                                }
+                            }
+                        }
+                        stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, buffer.toString())).append("</p>");
+                        buffer.delete(0, buffer.toString().length());
+                    }
+                }
+            }
+        }
+        documentBuilder.insertHtml(stringBuilder.toString(), true);
+        document.save(localPath);
+        return localPath;
     }
 
 

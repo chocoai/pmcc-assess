@@ -12,10 +12,17 @@
     <result column="bis_check_original" property="bisCheckOriginal" jdbcType="BIT" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="special_case" property="specialCase" jdbcType="VARCHAR" />
-    <result column="location" property="location" jdbcType="CHAR" />
+    <result column="rim_is_normal" property="rimIsNormal" jdbcType="VARCHAR" />
+    <result column="abnormality" property="abnormality" jdbcType="VARCHAR" />
+    <result column="entity_is_damage" property="entityIsDamage" jdbcType="VARCHAR" />
+    <result column="damage_remark" property="damageRemark" jdbcType="VARCHAR" />
+    <result column="transfer_limit" property="transferLimit" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory" extends="BaseResultMap" >
+    <result column="location" property="location" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -77,8 +84,28 @@
   </sql>
   <sql id="Base_Column_List" >
     id, project_id, plan_detail_id, process_ins_id, declare_record_id, evaluator, check_date, 
-    bis_check_original, remark, special_case, location, creator, gmt_created, gmt_modified
+    bis_check_original, remark, special_case, rim_is_normal, abnormality, entity_is_damage, 
+    damage_remark, transfer_limit, creator, gmt_created, gmt_modified
   </sql>
+  <sql id="Blob_Column_List" >
+    location
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_survey_asset_inventory
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryExample" >
     select
     <if test="distinct" >
@@ -93,9 +120,11 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from tb_survey_asset_inventory
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -116,13 +145,17 @@
     insert into tb_survey_asset_inventory (project_id, plan_detail_id, process_ins_id, 
       declare_record_id, evaluator, check_date, 
       bis_check_original, remark, special_case, 
-      location, creator, gmt_created, 
-      gmt_modified)
+      rim_is_normal, abnormality, entity_is_damage, 
+      damage_remark, transfer_limit, creator, 
+      gmt_created, gmt_modified, location
+      )
     values (#{projectId,jdbcType=INTEGER}, #{planDetailId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
       #{declareRecordId,jdbcType=INTEGER}, #{evaluator,jdbcType=VARCHAR}, #{checkDate,jdbcType=TIMESTAMP}, 
       #{bisCheckOriginal,jdbcType=BIT}, #{remark,jdbcType=VARCHAR}, #{specialCase,jdbcType=VARCHAR}, 
-      #{location,jdbcType=CHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{rimIsNormal,jdbcType=VARCHAR}, #{abnormality,jdbcType=VARCHAR}, #{entityIsDamage,jdbcType=VARCHAR}, 
+      #{damageRemark,jdbcType=VARCHAR}, #{transferLimit,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{location,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -157,8 +190,20 @@
       <if test="specialCase != null" >
         special_case,
       </if>
-      <if test="location != null" >
-        location,
+      <if test="rimIsNormal != null" >
+        rim_is_normal,
+      </if>
+      <if test="abnormality != null" >
+        abnormality,
+      </if>
+      <if test="entityIsDamage != null" >
+        entity_is_damage,
+      </if>
+      <if test="damageRemark != null" >
+        damage_remark,
+      </if>
+      <if test="transferLimit != null" >
+        transfer_limit,
       </if>
       <if test="creator != null" >
         creator,
@@ -168,6 +213,9 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified,
+      </if>
+      <if test="location != null" >
+        location,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -198,8 +246,20 @@
       <if test="specialCase != null" >
         #{specialCase,jdbcType=VARCHAR},
       </if>
-      <if test="location != null" >
-        #{location,jdbcType=CHAR},
+      <if test="rimIsNormal != null" >
+        #{rimIsNormal,jdbcType=VARCHAR},
+      </if>
+      <if test="abnormality != null" >
+        #{abnormality,jdbcType=VARCHAR},
+      </if>
+      <if test="entityIsDamage != null" >
+        #{entityIsDamage,jdbcType=VARCHAR},
+      </if>
+      <if test="damageRemark != null" >
+        #{damageRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="transferLimit != null" >
+        #{transferLimit,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -209,6 +269,9 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -251,8 +314,20 @@
       <if test="record.specialCase != null" >
         special_case = #{record.specialCase,jdbcType=VARCHAR},
       </if>
-      <if test="record.location != null" >
-        location = #{record.location,jdbcType=CHAR},
+      <if test="record.rimIsNormal != null" >
+        rim_is_normal = #{record.rimIsNormal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.abnormality != null" >
+        abnormality = #{record.abnormality,jdbcType=VARCHAR},
+      </if>
+      <if test="record.entityIsDamage != null" >
+        entity_is_damage = #{record.entityIsDamage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.damageRemark != null" >
+        damage_remark = #{record.damageRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.transferLimit != null" >
+        transfer_limit = #{record.transferLimit,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -263,7 +338,35 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.location != null" >
+        location = #{record.location,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update tb_survey_asset_inventory
+    set id = #{record.id,jdbcType=INTEGER},
+      project_id = #{record.projectId,jdbcType=INTEGER},
+      plan_detail_id = #{record.planDetailId,jdbcType=INTEGER},
+      process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
+      evaluator = #{record.evaluator,jdbcType=VARCHAR},
+      check_date = #{record.checkDate,jdbcType=TIMESTAMP},
+      bis_check_original = #{record.bisCheckOriginal,jdbcType=BIT},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      special_case = #{record.specialCase,jdbcType=VARCHAR},
+      rim_is_normal = #{record.rimIsNormal,jdbcType=VARCHAR},
+      abnormality = #{record.abnormality,jdbcType=VARCHAR},
+      entity_is_damage = #{record.entityIsDamage,jdbcType=VARCHAR},
+      damage_remark = #{record.damageRemark,jdbcType=VARCHAR},
+      transfer_limit = #{record.transferLimit,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      location = #{record.location,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -280,7 +383,11 @@
       bis_check_original = #{record.bisCheckOriginal,jdbcType=BIT},
       remark = #{record.remark,jdbcType=VARCHAR},
       special_case = #{record.specialCase,jdbcType=VARCHAR},
-      location = #{record.location,jdbcType=CHAR},
+      rim_is_normal = #{record.rimIsNormal,jdbcType=VARCHAR},
+      abnormality = #{record.abnormality,jdbcType=VARCHAR},
+      entity_is_damage = #{record.entityIsDamage,jdbcType=VARCHAR},
+      damage_remark = #{record.damageRemark,jdbcType=VARCHAR},
+      transfer_limit = #{record.transferLimit,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -318,8 +425,20 @@
       <if test="specialCase != null" >
         special_case = #{specialCase,jdbcType=VARCHAR},
       </if>
-      <if test="location != null" >
-        location = #{location,jdbcType=CHAR},
+      <if test="rimIsNormal != null" >
+        rim_is_normal = #{rimIsNormal,jdbcType=VARCHAR},
+      </if>
+      <if test="abnormality != null" >
+        abnormality = #{abnormality,jdbcType=VARCHAR},
+      </if>
+      <if test="entityIsDamage != null" >
+        entity_is_damage = #{entityIsDamage,jdbcType=VARCHAR},
+      </if>
+      <if test="damageRemark != null" >
+        damage_remark = #{damageRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="transferLimit != null" >
+        transfer_limit = #{transferLimit,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -330,7 +449,32 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory" >
+    update tb_survey_asset_inventory
+    set project_id = #{projectId,jdbcType=INTEGER},
+      plan_detail_id = #{planDetailId,jdbcType=INTEGER},
+      process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      declare_record_id = #{declareRecordId,jdbcType=INTEGER},
+      evaluator = #{evaluator,jdbcType=VARCHAR},
+      check_date = #{checkDate,jdbcType=TIMESTAMP},
+      bis_check_original = #{bisCheckOriginal,jdbcType=BIT},
+      remark = #{remark,jdbcType=VARCHAR},
+      special_case = #{specialCase,jdbcType=VARCHAR},
+      rim_is_normal = #{rimIsNormal,jdbcType=VARCHAR},
+      abnormality = #{abnormality,jdbcType=VARCHAR},
+      entity_is_damage = #{entityIsDamage,jdbcType=VARCHAR},
+      damage_remark = #{damageRemark,jdbcType=VARCHAR},
+      transfer_limit = #{transferLimit,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      location = #{location,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory" >
@@ -344,7 +488,11 @@
       bis_check_original = #{bisCheckOriginal,jdbcType=BIT},
       remark = #{remark,jdbcType=VARCHAR},
       special_case = #{specialCase,jdbcType=VARCHAR},
-      location = #{location,jdbcType=CHAR},
+      rim_is_normal = #{rimIsNormal,jdbcType=VARCHAR},
+      abnormality = #{abnormality,jdbcType=VARCHAR},
+      entity_is_damage = #{entityIsDamage,jdbcType=VARCHAR},
+      damage_remark = #{damageRemark,jdbcType=VARCHAR},
+      transfer_limit = #{transferLimit,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

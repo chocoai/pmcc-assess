@@ -745,73 +745,353 @@ public class SurveyAssetInventoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andLocationIsNull() {
-            addCriterion("location is null");
+        public Criteria andRimIsNormalIsNull() {
+            addCriterion("rim_is_normal is null");
             return (Criteria) this;
         }
 
-        public Criteria andLocationIsNotNull() {
-            addCriterion("location is not null");
+        public Criteria andRimIsNormalIsNotNull() {
+            addCriterion("rim_is_normal is not null");
             return (Criteria) this;
         }
 
-        public Criteria andLocationEqualTo(String value) {
-            addCriterion("location =", value, "location");
+        public Criteria andRimIsNormalEqualTo(String value) {
+            addCriterion("rim_is_normal =", value, "rimIsNormal");
             return (Criteria) this;
         }
 
-        public Criteria andLocationNotEqualTo(String value) {
-            addCriterion("location <>", value, "location");
+        public Criteria andRimIsNormalNotEqualTo(String value) {
+            addCriterion("rim_is_normal <>", value, "rimIsNormal");
             return (Criteria) this;
         }
 
-        public Criteria andLocationGreaterThan(String value) {
-            addCriterion("location >", value, "location");
+        public Criteria andRimIsNormalGreaterThan(String value) {
+            addCriterion("rim_is_normal >", value, "rimIsNormal");
             return (Criteria) this;
         }
 
-        public Criteria andLocationGreaterThanOrEqualTo(String value) {
-            addCriterion("location >=", value, "location");
+        public Criteria andRimIsNormalGreaterThanOrEqualTo(String value) {
+            addCriterion("rim_is_normal >=", value, "rimIsNormal");
             return (Criteria) this;
         }
 
-        public Criteria andLocationLessThan(String value) {
-            addCriterion("location <", value, "location");
+        public Criteria andRimIsNormalLessThan(String value) {
+            addCriterion("rim_is_normal <", value, "rimIsNormal");
             return (Criteria) this;
         }
 
-        public Criteria andLocationLessThanOrEqualTo(String value) {
-            addCriterion("location <=", value, "location");
+        public Criteria andRimIsNormalLessThanOrEqualTo(String value) {
+            addCriterion("rim_is_normal <=", value, "rimIsNormal");
             return (Criteria) this;
         }
 
-        public Criteria andLocationLike(String value) {
-            addCriterion("location like", value, "location");
+        public Criteria andRimIsNormalLike(String value) {
+            addCriterion("rim_is_normal like", value, "rimIsNormal");
             return (Criteria) this;
         }
 
-        public Criteria andLocationNotLike(String value) {
-            addCriterion("location not like", value, "location");
+        public Criteria andRimIsNormalNotLike(String value) {
+            addCriterion("rim_is_normal not like", value, "rimIsNormal");
             return (Criteria) this;
         }
 
-        public Criteria andLocationIn(List<String> values) {
-            addCriterion("location in", values, "location");
+        public Criteria andRimIsNormalIn(List<String> values) {
+            addCriterion("rim_is_normal in", values, "rimIsNormal");
             return (Criteria) this;
         }
 
-        public Criteria andLocationNotIn(List<String> values) {
-            addCriterion("location not in", values, "location");
+        public Criteria andRimIsNormalNotIn(List<String> values) {
+            addCriterion("rim_is_normal not in", values, "rimIsNormal");
             return (Criteria) this;
         }
 
-        public Criteria andLocationBetween(String value1, String value2) {
-            addCriterion("location between", value1, value2, "location");
+        public Criteria andRimIsNormalBetween(String value1, String value2) {
+            addCriterion("rim_is_normal between", value1, value2, "rimIsNormal");
             return (Criteria) this;
         }
 
-        public Criteria andLocationNotBetween(String value1, String value2) {
-            addCriterion("location not between", value1, value2, "location");
+        public Criteria andRimIsNormalNotBetween(String value1, String value2) {
+            addCriterion("rim_is_normal not between", value1, value2, "rimIsNormal");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbnormalityIsNull() {
+            addCriterion("abnormality is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbnormalityIsNotNull() {
+            addCriterion("abnormality is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbnormalityEqualTo(String value) {
+            addCriterion("abnormality =", value, "abnormality");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbnormalityNotEqualTo(String value) {
+            addCriterion("abnormality <>", value, "abnormality");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbnormalityGreaterThan(String value) {
+            addCriterion("abnormality >", value, "abnormality");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbnormalityGreaterThanOrEqualTo(String value) {
+            addCriterion("abnormality >=", value, "abnormality");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbnormalityLessThan(String value) {
+            addCriterion("abnormality <", value, "abnormality");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbnormalityLessThanOrEqualTo(String value) {
+            addCriterion("abnormality <=", value, "abnormality");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbnormalityLike(String value) {
+            addCriterion("abnormality like", value, "abnormality");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbnormalityNotLike(String value) {
+            addCriterion("abnormality not like", value, "abnormality");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbnormalityIn(List<String> values) {
+            addCriterion("abnormality in", values, "abnormality");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbnormalityNotIn(List<String> values) {
+            addCriterion("abnormality not in", values, "abnormality");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbnormalityBetween(String value1, String value2) {
+            addCriterion("abnormality between", value1, value2, "abnormality");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbnormalityNotBetween(String value1, String value2) {
+            addCriterion("abnormality not between", value1, value2, "abnormality");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityIsDamageIsNull() {
+            addCriterion("entity_is_damage is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityIsDamageIsNotNull() {
+            addCriterion("entity_is_damage is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityIsDamageEqualTo(String value) {
+            addCriterion("entity_is_damage =", value, "entityIsDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityIsDamageNotEqualTo(String value) {
+            addCriterion("entity_is_damage <>", value, "entityIsDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityIsDamageGreaterThan(String value) {
+            addCriterion("entity_is_damage >", value, "entityIsDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityIsDamageGreaterThanOrEqualTo(String value) {
+            addCriterion("entity_is_damage >=", value, "entityIsDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityIsDamageLessThan(String value) {
+            addCriterion("entity_is_damage <", value, "entityIsDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityIsDamageLessThanOrEqualTo(String value) {
+            addCriterion("entity_is_damage <=", value, "entityIsDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityIsDamageLike(String value) {
+            addCriterion("entity_is_damage like", value, "entityIsDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityIsDamageNotLike(String value) {
+            addCriterion("entity_is_damage not like", value, "entityIsDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityIsDamageIn(List<String> values) {
+            addCriterion("entity_is_damage in", values, "entityIsDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityIsDamageNotIn(List<String> values) {
+            addCriterion("entity_is_damage not in", values, "entityIsDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityIsDamageBetween(String value1, String value2) {
+            addCriterion("entity_is_damage between", value1, value2, "entityIsDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntityIsDamageNotBetween(String value1, String value2) {
+            addCriterion("entity_is_damage not between", value1, value2, "entityIsDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andDamageRemarkIsNull() {
+            addCriterion("damage_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDamageRemarkIsNotNull() {
+            addCriterion("damage_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDamageRemarkEqualTo(String value) {
+            addCriterion("damage_remark =", value, "damageRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDamageRemarkNotEqualTo(String value) {
+            addCriterion("damage_remark <>", value, "damageRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDamageRemarkGreaterThan(String value) {
+            addCriterion("damage_remark >", value, "damageRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDamageRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("damage_remark >=", value, "damageRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDamageRemarkLessThan(String value) {
+            addCriterion("damage_remark <", value, "damageRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDamageRemarkLessThanOrEqualTo(String value) {
+            addCriterion("damage_remark <=", value, "damageRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDamageRemarkLike(String value) {
+            addCriterion("damage_remark like", value, "damageRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDamageRemarkNotLike(String value) {
+            addCriterion("damage_remark not like", value, "damageRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDamageRemarkIn(List<String> values) {
+            addCriterion("damage_remark in", values, "damageRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDamageRemarkNotIn(List<String> values) {
+            addCriterion("damage_remark not in", values, "damageRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDamageRemarkBetween(String value1, String value2) {
+            addCriterion("damage_remark between", value1, value2, "damageRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDamageRemarkNotBetween(String value1, String value2) {
+            addCriterion("damage_remark not between", value1, value2, "damageRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferLimitIsNull() {
+            addCriterion("transfer_limit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferLimitIsNotNull() {
+            addCriterion("transfer_limit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferLimitEqualTo(String value) {
+            addCriterion("transfer_limit =", value, "transferLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferLimitNotEqualTo(String value) {
+            addCriterion("transfer_limit <>", value, "transferLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferLimitGreaterThan(String value) {
+            addCriterion("transfer_limit >", value, "transferLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferLimitGreaterThanOrEqualTo(String value) {
+            addCriterion("transfer_limit >=", value, "transferLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferLimitLessThan(String value) {
+            addCriterion("transfer_limit <", value, "transferLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferLimitLessThanOrEqualTo(String value) {
+            addCriterion("transfer_limit <=", value, "transferLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferLimitLike(String value) {
+            addCriterion("transfer_limit like", value, "transferLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferLimitNotLike(String value) {
+            addCriterion("transfer_limit not like", value, "transferLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferLimitIn(List<String> values) {
+            addCriterion("transfer_limit in", values, "transferLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferLimitNotIn(List<String> values) {
+            addCriterion("transfer_limit not in", values, "transferLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferLimitBetween(String value1, String value2) {
+            addCriterion("transfer_limit between", value1, value2, "transferLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferLimitNotBetween(String value1, String value2) {
+            addCriterion("transfer_limit not between", value1, value2, "transferLimit");
             return (Criteria) this;
         }
 

@@ -28,8 +28,10 @@ public enum BaseReportFieldEnum implements Serializable {
     BuildingStructureCategory("", "建筑结构类别"),//new 建筑结构类别
     TypesFormEnabledDeclarationOffice("", "申报所启用表单类型"),
     ValueTimePoint("", "价值时点"),
+    ValueTimePoint2("", "评估基准日"),
     dateValue("", "估价时点"),
     ValueTimePointRemark("", "价值时点说明"),
+    ValueTimePointRemark2("", "评估基准日说明"),
     EvaluationMethod("", "评估方法"),//方案中选择使用的方法，只描述一次
     TotalRealEstatePrice("", "房地产总价"),
     CapitalizationAmount("", "房地产总价大写金额"),

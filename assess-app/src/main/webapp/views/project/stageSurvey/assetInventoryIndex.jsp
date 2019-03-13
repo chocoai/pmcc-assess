@@ -200,7 +200,8 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="x-valid show-hide" style="display: ${item.areConsistent eq '一致'?'none':'block'}">
+                                        <div class="x-valid show-hide"
+                                             style="display: ${item.areConsistent eq '一致'?'none':'block'}">
                                             <select class="form-control" name="sureConsistent${item.id}" required>
                                                 <option value=""></option>
                                                 <option value="一致">一致</option>
@@ -220,6 +221,60 @@
                                     })
                                 </script>
                             </c:forEach>
+                            <tr>
+                                <td>
+                                    周边环境是否正常
+                                </td>
+                                <td>
+                                    <div class="x-valid">
+                                        <select class="form-control" id="rimIsNormal" name="rimIsNormal" required
+                                                onchange="showRemark()">
+                                            <option value="" selected>请选择</option>
+                                            <option value="正常">正常</option>
+                                            <option value="不正常">不正常</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td colspan="8">
+                                    <div style="display:none" id="showAbnormality">
+                                        <div class="x-valid">
+                                            <input type="text" placeholder="原因" name="abnormality" id="abnormality"
+                                                   class="form-control " value="${surveyAssetInventory.abnormality}">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    实物状况是否损坏
+                                </td>
+                                <td>
+                                    <div class="x-valid">
+                                        <select class="form-control" name="entityIsDamage" id="entityIsDamage"
+                                                onchange="showRemark()">
+                                            <option value="" selected>请选择</option>
+                                            <option value="损坏">损坏</option>
+                                            <option value="未损坏">未损坏</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td colspan="8">
+                                    <div style="display:none" id="showDamageRemark">
+                                        <div class="x-valid">
+                                            <input type="text" placeholder="原因" name="damageRemark" id="damageRemark"
+                                                   class="form-control " value="${surveyAssetInventory.damageRemark}">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>转让限制</td>
+                                <td colspan="9">
+                                    <textarea placeholder="转让限制" name="transferLimit" id="transferLimit"
+                                              class="form-control"
+                                              value="${surveyAssetInventory.transferLimit}"></textarea>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </form>
@@ -538,6 +593,14 @@
                 loadInventoryRightFile($("#frm_inventory_right").find('[name=id]').val());
             }
         });
+        if ("${surveyAssetInventory}") {
+            $("#transferLimit").val("${surveyAssetInventory.transferLimit}");
+            $("#damageRemark").val("${surveyAssetInventory.damageRemark}");
+            $("#entityIsDamage").val("${surveyAssetInventory.entityIsDamage}");
+            $("#abnormality").val("${surveyAssetInventory.abnormality}");
+            $("#rimIsNormal").val("${surveyAssetInventory.rimIsNormal}");
+            showRemark();
+        }
     });
 
     //验证登记与实际是否一致，如果不一致需填写相关内容
@@ -662,6 +725,11 @@
         });
         var data = {};
         data.surveyAssetInventory = formParams("frm_asset");//评估人员 核对时间
+        data.surveyAssetInventory.transferLimit = $("#transferLimit").val();
+        data.surveyAssetInventory.rimIsNormal = $("#rimIsNormal").val();
+        data.surveyAssetInventory.entityIsDamage = $("#entityIsDamage").val();
+        data.surveyAssetInventory.abnormality = $("#abnormality").val();
+        data.surveyAssetInventory.damageRemark = $("#damageRemark").val();
         data.assetInventoryContentList = dataItem;
         data.surveyAssetInventory.specialCase = $("#specialCase").val();
         return data;
@@ -716,6 +784,7 @@
         $("#frm_inventory_right").find('[name=id]').val(0);
         loadInventoryRightFile(0);
     }
+
     //他权保存
     function saveData() {
         var data = formParams("frm_inventory_right");
@@ -746,6 +815,7 @@
             })
         }
     }
+
     //他权修改
     function editData(index) {
         var row = $("#tb_List").bootstrapTable('getData')[index];
@@ -760,6 +830,7 @@
         loadInventoryRightFile(row.id);
         $('#divBox').modal();
     }
+
     //他权删除
     function delData(id) {
         Alert("确认要删除么？", 2, null, function () {
@@ -819,6 +890,20 @@
 
     }
 
+    function showRemark() {
+        if ($("#rimIsNormal").val() == "不正常") {
+            $("#showAbnormality").show();
+        } else {
+            $("#abnormality").val("");
+            $("#showAbnormality").hide();
+        }
+        if ($("#entityIsDamage").val() == "损坏") {
+            $("#showDamageRemark").show();
+        } else {
+            $("#damageRemark").val("");
+            $("#showDamageRemark").hide();
+        }
+    }
 </script>
 
 </html>

@@ -66,6 +66,8 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/assetInventoryApproval", processInsId, boxId, taskId, agentUserAccount);
+        SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByPlanDetailsId(projectPlanDetails.getId());
+        modelAndView.addObject("surveyAssetInventory", surveyAssetInventory);
         setModelViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
@@ -73,6 +75,8 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/assetInventoryIndex", processInsId, boxId, taskId, agentUserAccount);
+        SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByPlanDetailsId(projectPlanDetails.getId());
+        modelAndView.addObject("surveyAssetInventory", surveyAssetInventory);
         setModelViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
