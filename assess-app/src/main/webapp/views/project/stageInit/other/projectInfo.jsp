@@ -57,10 +57,10 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">价值类型备注</label>
+                <label class="col-sm-1 control-label">价值定义</label>
                 <div class="col-sm-3">
                     <input name="remarkValueType" class="form-control"
-                           placeholder="价值类型备注" value="${projectInfo.remarkValueType}"/>
+                           placeholder="价值定义" value="${projectInfo.remarkValueType}"/>
                 </div>
             </div>
             <div class="x-valid">
@@ -206,13 +206,18 @@
                 success: function (result) {
                     if (result.ret) {
                       if(result.data){
+                          var s = result.data.template;
+                          var content=s.replace(/<[^>]+>/g,"");
+                          console.log(content);
                           $("#" + objProject.config.info.frm).find("select.propertyScope").val([result.data.propertyScope]).trigger('change');
                           $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val(result.data.scopeInclude);
                           $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val(result.data.scopeNotInclude);
+                          $("#" + objProject.config.info.frm).find("input[name='remarkValueType']").val(content);
                       }else{
                           $("#" + objProject.config.info.frm).find("select.propertyScope").val(null).trigger("change");;
                           $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val("");
                           $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val("");
+                          $("#" + objProject.config.info.frm).find("input[name='remarkValueType']").val("");
 
                       }
                     }

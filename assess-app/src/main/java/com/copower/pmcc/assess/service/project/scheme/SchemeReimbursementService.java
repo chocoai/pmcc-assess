@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReimbursementDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReimbursementItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursement;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementItem;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeReimbursementDto;
@@ -36,6 +37,12 @@ public class SchemeReimbursementService {
     public SchemeReimbursement getDataByPlanDetailsId(Integer planDetailsId) {
         SchemeReimbursement where = new SchemeReimbursement();
         where.setPlanDetailsId(planDetailsId);
+        return schemeReimbursementDao.getSchemeReimbursement(where);
+    }
+
+    public SchemeReimbursement getDataByProcessInsId(String processInsId) {
+        SchemeReimbursement where = new SchemeReimbursement();
+        where.setProcessInsId(processInsId);
         return schemeReimbursementDao.getSchemeReimbursement(where);
     }
 
@@ -135,6 +142,15 @@ public class SchemeReimbursementService {
                 schemeReimbursementItem.setMasterId(master.getId());
                 schemeReimbursementItemDao.addObject(schemeReimbursementItem);
             }
+        }
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
+        if(schemeJudgeObject != null){
+            SchemeReimbursementItem schemeReimbursementItem = new SchemeReimbursementItem();
+            schemeReimbursementItem.setProjectId(projectPlanDetails.getProjectId());
+            schemeReimbursementItem.setJudgeObjectId(schemeReimbursementItem.getId());
+            schemeReimbursementItem.setPlanDetailsId(projectPlanDetails.getId());
+            schemeReimbursementItem.setMasterId(master.getId());
+            schemeReimbursementItemDao.addObject(schemeReimbursementItem);
         }
         return master;
     }
