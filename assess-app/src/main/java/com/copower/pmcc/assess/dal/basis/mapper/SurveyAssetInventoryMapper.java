@@ -16,15 +16,21 @@ public interface SurveyAssetInventoryMapper {
 
     int insertSelective(SurveyAssetInventory record);
 
+    List<SurveyAssetInventory> selectByExampleWithBLOBs(SurveyAssetInventoryExample example);
+
     List<SurveyAssetInventory> selectByExample(SurveyAssetInventoryExample example);
 
     SurveyAssetInventory selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") SurveyAssetInventory record, @Param("example") SurveyAssetInventoryExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") SurveyAssetInventory record, @Param("example") SurveyAssetInventoryExample example);
+
     int updateByExample(@Param("record") SurveyAssetInventory record, @Param("example") SurveyAssetInventoryExample example);
 
     int updateByPrimaryKeySelective(SurveyAssetInventory record);
+
+    int updateByPrimaryKeyWithBLOBs(SurveyAssetInventory record);
 
     int updateByPrimaryKey(SurveyAssetInventory record);
 }

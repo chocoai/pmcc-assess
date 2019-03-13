@@ -23,13 +23,23 @@ public class SurveyAssetInventory {
 
     private String specialCase;
 
-    private String location;
+    private String rimIsNormal;
+
+    private String abnormality;
+
+    private String entityIsDamage;
+
+    private String damageRemark;
+
+    private String transferLimit;
 
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private String location;
 
     public Integer getId() {
         return id;
@@ -111,12 +121,44 @@ public class SurveyAssetInventory {
         this.specialCase = specialCase == null ? null : specialCase.trim();
     }
 
-    public String getLocation() {
-        return location;
+    public String getRimIsNormal() {
+        return rimIsNormal;
     }
 
-    public void setLocation(String location) {
-        this.location = location == null ? null : location.trim();
+    public void setRimIsNormal(String rimIsNormal) {
+        this.rimIsNormal = rimIsNormal == null ? null : rimIsNormal.trim();
+    }
+
+    public String getAbnormality() {
+        return abnormality;
+    }
+
+    public void setAbnormality(String abnormality) {
+        this.abnormality = abnormality == null ? null : abnormality.trim();
+    }
+
+    public String getEntityIsDamage() {
+        return entityIsDamage;
+    }
+
+    public void setEntityIsDamage(String entityIsDamage) {
+        this.entityIsDamage = entityIsDamage == null ? null : entityIsDamage.trim();
+    }
+
+    public String getDamageRemark() {
+        return damageRemark;
+    }
+
+    public void setDamageRemark(String damageRemark) {
+        this.damageRemark = damageRemark == null ? null : damageRemark.trim();
+    }
+
+    public String getTransferLimit() {
+        return transferLimit;
+    }
+
+    public void setTransferLimit(String transferLimit) {
+        this.transferLimit = transferLimit == null ? null : transferLimit.trim();
     }
 
     public String getCreator() {
@@ -141,5 +183,13 @@ public class SurveyAssetInventory {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location == null ? null : location.trim();
     }
 }

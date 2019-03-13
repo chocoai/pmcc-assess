@@ -111,7 +111,7 @@
                 <div class="x_content">
                     <div style="text-align: center;">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                            取<i style="margin-left: 10px" class="fa fa-close"></i>
+                            取消<i style="margin-left: 10px" class="fa fa-close"></i>
                         </button>
                         <c:choose>
                             <c:when test="${projectPhase.bisUseBox eq false}">
