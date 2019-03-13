@@ -16,6 +16,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -133,6 +134,13 @@ public class GenerateCommonMethod {
                 }
                 schemeJudgeObjectList.add(schemeJudgeObject);
             }
+        }
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)){
+            schemeJudgeObjectList.stream().sorted( (a,b) -> {
+                Integer n1 = NumberUtils.toInt(a.getNumber().substring(0,1));
+                Integer n2 = NumberUtils.toInt(a.getNumber().substring(0,1));
+                return n1.compareTo(n2);
+            });
         }
         if (declareRecordFilter) {
             schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(schemeJudgeObject -> schemeJudgeObject.getDeclareRecordId() != null).collect(Collectors.toList());
