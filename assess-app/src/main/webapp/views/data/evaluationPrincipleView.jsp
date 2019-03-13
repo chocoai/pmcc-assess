@@ -80,7 +80,8 @@
                                             名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" name="name" id="name" placeholder="名称"
+                                            <input type="text" class="form-control" name="name" id="name"
+                                                   placeholder="名称"
                                                    required="required">
                                         </div>
                                     </div>
@@ -144,7 +145,8 @@
                                         <div class="col-sm-10" id="entrustmentPurpose">
                                             <c:forEach items="${purposeDicList}" var="item">
                                                 <span class="checkbox-inline">
-                                                <input type="checkbox" required id="entrustmentPurpose${item.id}" name="entrustmentPurpose" value="${item.id}"
+                                                <input type="checkbox" required id="entrustmentPurpose${item.id}"
+                                                       name="entrustmentPurpose" value="${item.id}"
                                                        class="form-inline">
                                                     <label for="entrustmentPurpose${item.id}">${item.name}</label>
                                                 </span>
@@ -155,45 +157,32 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            发布日期
+                                            key值<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-5">
-                                            <input type="text" data-date-format="yyyy-mm-dd"
-                                                   placeholder="发布日期" name="pubDate"
-                                                   class="form-control date-picker dbdate">
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" name="fieldName" placeholder="key值"
+                                                   required="required">
                                         </div>
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            是否修改
+                                            排序<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-3">
-                                            <label class="radio-inline">
-                                                <input type="checkbox" id="bisModifiable" name="bisModifiable" value="true"
-                                                       checked="checked">
-                                            </label>
+                                        <div class="col-sm-2">
+                                            <input type="text" class="form-control" name="sorting" placeholder="排序"
+                                                   required="required" data-rule-number='true'>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            模板<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                           <%-- <textarea placeholder="请填写模板" class="form-control" id="template"
-                                                      name="template" required="required"
-                                                      onkeyup="extractTemplateField()">
-
-                                            </textarea>
-                                            <div class="template-field">
-
-                                            </div>--%>
-                                                <div style="width:99%;height:200px;" id="template"></div>
-                                        </div>
-                                    </div>
+                                    <p id="detailToolbar">
+                                        <button type="button" class="btn btn-success" onclick="addDetailObject()"> 新增子模板
+                                        </button>
+                                    </p>
+                                    <table id="tbDetailList"
+                                           class="table table-striped jambo_table bulk_action table-bordered">
+                                    </table>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -222,7 +211,7 @@
     })
     var ue = UE.getEditor('template', {
         toolbars: [
-            ['source','autotypeset','bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
+            ['source', 'autotypeset', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
         ],
         zIndex: 11009,
         initialFrameHeight: 220,
@@ -231,20 +220,7 @@
         autoHeightEnabled: false,
         autoFloatEnabled: true
     });
-    //提取字段
-    // function extractTemplateField() {
-    //     var text = $("#template").val();
-    //     $('.template-field').empty();
-    //     var fieldArray = AssessCommon.extractField(text);
-    //     if (fieldArray && fieldArray.length > 0) {
-    //         var html = '';
-    //         $.each(fieldArray, function (i, item) {
-    //             field = fieldArray;
-    //             html += '<span class="label label-default">' + item + '</span> ';
-    //         })
-    //         $('.template-field').append(html);
-    //     }
-    // }
+
     //加载 评估原则 数据列表
     function loadPrincipleList() {
         var cols = [];
@@ -307,7 +283,9 @@
         $("#frm").clearAll();
         //extractTemplateField();
         reload();
+        loadDetailList('0');
     }
+
     //新增 评估原则 数据
     function savePrinciple() {
         var data = formParams("frm");
@@ -322,7 +300,7 @@
         })
         data.type = type;//方便like查询
         data.category = category;//方便like查询
-        data.template = ue.getContent();
+
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/evaluationPrinciple/save",
@@ -347,6 +325,7 @@
             })
         }
     }
+
     //评估原则 修改
     function editPrinciple(index) {
         var row = $("#tb_List").bootstrapTable('getData')[index];
@@ -368,13 +347,142 @@
                     for (var i = 0; i < types.length - 1; i++) {
                         appendHTML(types[i + 1], categorys[i + 1]);
                     }
-                    AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='entrustmentPurpose']"),row.entrustmentPurpose.split(','));
+                    AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='entrustmentPurpose']"), row.entrustmentPurpose.split(','));
                     //extractTemplateField();
+                    // var content = result.data.template;
+                    // setTimeout(function () {
+                    //     ue.setContent(content, false);
+                    // }, 500);
+                    loadDetailList(id);
+                    $('#divBox').modal();
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
+
+    //新增子模板
+    function addDetailObject() {
+        $("#frmDetail").clearAll();
+        $("#id_detail").val("0");
+        $('#detailModal').modal();
+    }
+
+    //加载列表数据
+    function loadDetailList(id) {
+        var cols = [];
+        cols.push({field: 'typeName', title: '类型'});
+        cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'fieldName', title: 'key值'});
+        cols.push({
+            field: 'opt', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success" href="javascript://;" onclick="editDetailOject(' + index + ')" ><i class="fa fa-edit">编辑</i></a>';
+                str += '<a class="btn btn-xs btn-warning" href="javascript://" onclick="delDetailObject(' + row.id + ')"><i class="fa fa-trash-o"></i>删除</a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#tbDetailList").bootstrapTable('destroy');
+        TableInit("tbDetailList", "${pageContext.request.contextPath}/dataReportTemplateItem/getDataReportTemplateItemList?masterId=" + id, cols, {}, {
+            toolbar: "#detailToolbar",
+            showColumns: false,
+            showRefresh: false,
+            search: false
+        });
+    }
+
+    //保存模板明细
+    function savePrincipleItem() {
+        if ($("#frmDetail").valid()) {
+            Loading.progressShow();
+            var data = formParams("frmDetail");
+            data.masterId = $("#id").val();
+            data.template = ue.getContent();
+            console.log(data);
+            $.ajax({
+                url: "${pageContext.request.contextPath}/dataReportTemplateItem/saveAndUpdateDataReportTemplateItem",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        $('#detailModal').modal('hide');
+                        $('#tbDetailList').bootstrapTable("refresh");
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }
+    }
+
+    //删除明细
+    function delDetailObject(id) {
+        var masterId = $("#id").val();
+        Alert("确认要删除么？", 2, null, function () {
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/dataReportTemplateItem/deleteDataReportTemplateItemById",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        if (masterId) {
+                            loadDetailList(masterId);
+                        }else{
+                            loadDetailList('0');
+                        }
+                    }
+                    else {
+                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        })
+    }
+
+    //修改明细
+    function editDetailOject(index) {
+        var row = $("#tbDetailList").bootstrapTable('getData')[index];
+        var masterId = $("#id").val();
+        var id = row.id;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/dataReportTemplateItem/getDataReportTemplateItemById",
+            type: "get",
+            dataType: "json",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    $("#frmDetail").clearAll();
+                    $("#frmDetail").clearAll().initForm(result.data);
                     var content = result.data.template;
                     setTimeout(function () {
                         ue.setContent(content, false);
                     }, 500);
-                    $('#divBox').modal();
+                    if (masterId) {
+                        loadDetailList(masterId);
+                    }else{
+                        loadDetailList('0');
+                    }
+                    $('#detailModal').modal();
                 }
             },
             error: function (result) {
@@ -537,5 +645,92 @@
 
 </script>
 
+<div id="detailModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">子模板</h3>
+            </div>
+            <form id="frmDetail" class="form-horizontal">
+                <input type="hidden" id="id_detail" name="id" value="0">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            名称<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" name="name" placeholder="名称"
+                                                   required="required">
+                                        </div>
+                                    </div>
+                                    <%--<div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            类型<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <select id='type' name='type' required class='form-control'>
+                                                <option value="">--请选择--</option>
+                                                <c:forEach var="item" items="${types}">
+                                                    <option value="${item.key}">${item.value}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>--%>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            key值<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" name="fieldName" placeholder="key值"
+                                                   required="required">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            排序<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" name="sorting" placeholder="排序"
+                                                   required="required" data-rule-number='true'>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            模板<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+
+                                            <div style="width:99%;height:200px;" id="template"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="savePrincipleItem()">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 </html>

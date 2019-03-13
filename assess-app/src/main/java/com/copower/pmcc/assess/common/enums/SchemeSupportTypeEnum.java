@@ -1,6 +1,10 @@
 package com.copower.pmcc.assess.common.enums;
 
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by 13426 on 2018/5/25.
@@ -25,6 +29,17 @@ public enum SchemeSupportTypeEnum {
             }
         }
         return null;
+    }
+
+    public static List<KeyValueDto> getSchemeSupportTypeEnumList() {
+        List<KeyValueDto> keyValueDtos = new ArrayList<>();
+        for (SchemeSupportTypeEnum e : SchemeSupportTypeEnum.values()) {
+            KeyValueDto keyValueDto = new KeyValueDto();
+            keyValueDto.setKey(String.valueOf(e.getKey()));
+            keyValueDto.setValue(e.getName());
+            keyValueDtos.add(keyValueDto);
+        }
+        return keyValueDtos;
     }
 
     public String getKey() {
