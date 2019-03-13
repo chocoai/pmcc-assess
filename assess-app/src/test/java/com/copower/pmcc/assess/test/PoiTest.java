@@ -12,8 +12,11 @@ import com.copower.pmcc.assess.dto.input.project.scheme.SchemeMarketCompareApply
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -334,6 +337,58 @@ public class PoiTest {
         Map<String, String> textMap = Maps.newHashMap();
         textMap.put("${估价技术思路}","测试数据");
         AsposeUtils.replaceText(tempDir, textMap);
+    }
+
+    @Test
+    public void testMerge(){
+        List<String> list= Lists.newArrayList();
+        list.add("附22号1栋1单元1层1号");
+        list.add("附22号2栋1单元3层2号");
+        //list.add("附22号1栋1单元1层1号");
+        System.out.print(fusinString(list));
+    }
+
+    /**
+     * 最小单元融合字符串
+     *
+     * @param list
+     * @return
+     */
+    public String fusinString(List<String> list) {
+        if (CollectionUtils.isEmpty(list)) return null;
+        //xx楼盘1栋2单元1011号
+        //xx楼盘2栋2单元1011号
+        if (list.size() == 1) return list.get(0);
+        String samePart = list.get(0);//以第一个字符串作为基础
+        for (String s : list) {
+            samePart = getSamePart(samePart, s);
+        }
+        //samePart 如果后面为数字则去掉数字
+        samePart = samePart.replaceAll("\\d+$", "");
+        StringBuilder resultBuilder = new StringBuilder(samePart);
+        for (String s : list) {
+            resultBuilder.append(s.replace(samePart, "")).append(",");
+        }
+        return resultBuilder.deleteCharAt(resultBuilder.length() - 1).toString();
+    }
+
+    /**
+     * @param var1
+     * @param var2
+     * @return
+     */
+    public String getSamePart(String var1, String var2) {
+        if (StringUtils.isBlank(var1) || StringUtils.isBlank(var2)) return "";
+        int length = var1.length() > var2.length() ? var2.length() : var1.length();
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            if (var1.charAt(i) == var2.charAt(i)) {
+                result.append(var1.charAt(i));
+            } else {
+                break;
+            }
+        }
+        return result.toString();
     }
 }
 

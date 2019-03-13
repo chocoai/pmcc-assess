@@ -140,7 +140,7 @@ public class CompileReportService {
         if (baseDataDic == null) return;
         ProjectPlanDetails areaPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(projectPlanDetails.getPid());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-        SchemeAreaGroup areaGroup = schemeAreaGroupDao.get(projectPlanDetails.getAreaId());
+        SchemeAreaGroup areaGroup = schemeAreaGroupDao.get(areaPlanDetails.getAreaId());
         List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisService.getDataReportAnalysisList(areaGroup.getProvince(), areaGroup.getCity(),
                 areaGroup.getDistrict(), baseDataDic.getId(), projectInfo.getEntrustPurpose());
         CompileReportDetail compileReportDetail = null;

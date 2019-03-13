@@ -1984,16 +1984,11 @@ public class GenerateBaseDataService {
         List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
         Set<String> stringSet = Sets.newHashSet();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            Set<String> stringSet2 = Sets.newHashSet();
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
                     for (int i = 0; i < schemeJudgeFunctionList.size(); i++) {
-                        stringSet2.add(schemeJudgeFunctionList.get(i).getName());
-                    }
-                    if (CollectionUtils.isNotEmpty(stringSet2)) {
-                        stringSet.add(generateCommonMethod.toSetStringMerge(stringSet2, ","));
-                        stringSet2.clear();
+                        stringSet.add(schemeJudgeFunctionList.get(i).getName());
                     }
                 }
             }

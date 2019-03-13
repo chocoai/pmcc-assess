@@ -47,8 +47,8 @@ public class DataReportAnalysisDao {
         if(StringUtils.isNotBlank(city)){
             criteria.andCityEqualTo(city);
         }
-        if(StringUtils.isNotBlank(province)){
-            criteria.andProvinceEqualTo(province);
+        if(StringUtils.isNotBlank(district)){
+            criteria.andDistrictEqualTo(district);
         }
         if(reportAnalysisType!=null){
             criteria.andReportAnalysisTypeEqualTo(reportAnalysisType);
