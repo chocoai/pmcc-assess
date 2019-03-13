@@ -3,9 +3,6 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataTaxRateAllocationMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataTaxRateAllocation" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="district" property="district" jdbcType="VARCHAR" />
@@ -14,9 +11,12 @@
     <result column="tax_rate" property="taxRate" jdbcType="DECIMAL" />
     <result column="amount" property="amount" jdbcType="DECIMAL" />
     <result column="bis_national_unity" property="bisNationalUnity" jdbcType="BIT" />
-    <result column="calculate_base" property="calculateBase" jdbcType="DECIMAL" />
+    <result column="calculate_base" property="calculateBase" jdbcType="VARCHAR" />
     <result column="calculation_formula" property="calculationFormula" jdbcType="VARCHAR" />
     <result column="taxes_burden" property="taxesBurden" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -77,8 +77,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, creator, gmt_created, gmt_modified, province, city, district, type, ex_explain, 
-    tax_rate, amount, bis_national_unity, calculate_base, calculation_formula, taxes_burden
+    id, province, city, district, type, ex_explain, tax_rate, amount, bis_national_unity, 
+    calculate_base, calculation_formula, taxes_burden, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataTaxRateAllocationExample" >
     select
@@ -114,16 +114,16 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_tax_rate_allocation (creator, gmt_created, gmt_modified, 
-      province, city, district, 
+    insert into tb_data_tax_rate_allocation (province, city, district, 
       type, ex_explain, tax_rate, 
       amount, bis_national_unity, calculate_base, 
-      calculation_formula, taxes_burden)
-    values (#{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
+      calculation_formula, taxes_burden, creator, 
+      gmt_created, gmt_modified)
+    values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
       #{type,jdbcType=INTEGER}, #{exExplain,jdbcType=VARCHAR}, #{taxRate,jdbcType=DECIMAL}, 
-      #{amount,jdbcType=DECIMAL}, #{bisNationalUnity,jdbcType=BIT}, #{calculateBase,jdbcType=DECIMAL}, 
-      #{calculationFormula,jdbcType=VARCHAR}, #{taxesBurden,jdbcType=VARCHAR})
+      #{amount,jdbcType=DECIMAL}, #{bisNationalUnity,jdbcType=BIT}, #{calculateBase,jdbcType=VARCHAR}, 
+      #{calculationFormula,jdbcType=VARCHAR}, #{taxesBurden,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataTaxRateAllocation" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -131,15 +131,6 @@
     </selectKey>
     insert into tb_data_tax_rate_allocation
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="creator != null" >
-        creator,
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created,
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified,
-      </if>
       <if test="province != null" >
         province,
       </if>
@@ -173,17 +164,17 @@
       <if test="taxesBurden != null" >
         taxes_burden,
       </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
+        creator,
       </if>
       <if test="gmtCreated != null" >
-        #{gmtCreated,jdbcType=TIMESTAMP},
+        gmt_created,
       </if>
       <if test="gmtModified != null" >
-        #{gmtModified,jdbcType=TIMESTAMP},
+        gmt_modified,
       </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="province != null" >
         #{province,jdbcType=VARCHAR},
       </if>
@@ -209,13 +200,22 @@
         #{bisNationalUnity,jdbcType=BIT},
       </if>
       <if test="calculateBase != null" >
-        #{calculateBase,jdbcType=DECIMAL},
+        #{calculateBase,jdbcType=VARCHAR},
       </if>
       <if test="calculationFormula != null" >
         #{calculationFormula,jdbcType=VARCHAR},
       </if>
       <if test="taxesBurden != null" >
         #{taxesBurden,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -230,15 +230,6 @@
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gmtCreated != null" >
-        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.gmtModified != null" >
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
       <if test="record.province != null" >
         province = #{record.province,jdbcType=VARCHAR},
@@ -265,13 +256,22 @@
         bis_national_unity = #{record.bisNationalUnity,jdbcType=BIT},
       </if>
       <if test="record.calculateBase != null" >
-        calculate_base = #{record.calculateBase,jdbcType=DECIMAL},
+        calculate_base = #{record.calculateBase,jdbcType=VARCHAR},
       </if>
       <if test="record.calculationFormula != null" >
         calculation_formula = #{record.calculationFormula,jdbcType=VARCHAR},
       </if>
       <if test="record.taxesBurden != null" >
         taxes_burden = #{record.taxesBurden,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -281,9 +281,6 @@
   <update id="updateByExample" parameterType="map" >
     update tb_data_tax_rate_allocation
     set id = #{record.id,jdbcType=INTEGER},
-      creator = #{record.creator,jdbcType=VARCHAR},
-      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
       district = #{record.district,jdbcType=VARCHAR},
@@ -292,9 +289,12 @@
       tax_rate = #{record.taxRate,jdbcType=DECIMAL},
       amount = #{record.amount,jdbcType=DECIMAL},
       bis_national_unity = #{record.bisNationalUnity,jdbcType=BIT},
-      calculate_base = #{record.calculateBase,jdbcType=DECIMAL},
+      calculate_base = #{record.calculateBase,jdbcType=VARCHAR},
       calculation_formula = #{record.calculationFormula,jdbcType=VARCHAR},
-      taxes_burden = #{record.taxesBurden,jdbcType=VARCHAR}
+      taxes_burden = #{record.taxesBurden,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -302,15 +302,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataTaxRateAllocation" >
     update tb_data_tax_rate_allocation
     <set >
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
       <if test="province != null" >
         province = #{province,jdbcType=VARCHAR},
       </if>
@@ -336,7 +327,7 @@
         bis_national_unity = #{bisNationalUnity,jdbcType=BIT},
       </if>
       <if test="calculateBase != null" >
-        calculate_base = #{calculateBase,jdbcType=DECIMAL},
+        calculate_base = #{calculateBase,jdbcType=VARCHAR},
       </if>
       <if test="calculationFormula != null" >
         calculation_formula = #{calculationFormula,jdbcType=VARCHAR},
@@ -344,15 +335,21 @@
       <if test="taxesBurden != null" >
         taxes_burden = #{taxesBurden,jdbcType=VARCHAR},
       </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataTaxRateAllocation" >
     update tb_data_tax_rate_allocation
-    set creator = #{creator,jdbcType=VARCHAR},
-      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      province = #{province,jdbcType=VARCHAR},
+    set province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},
@@ -360,9 +357,12 @@
       tax_rate = #{taxRate,jdbcType=DECIMAL},
       amount = #{amount,jdbcType=DECIMAL},
       bis_national_unity = #{bisNationalUnity,jdbcType=BIT},
-      calculate_base = #{calculateBase,jdbcType=DECIMAL},
+      calculate_base = #{calculateBase,jdbcType=VARCHAR},
       calculation_formula = #{calculationFormula,jdbcType=VARCHAR},
-      taxes_burden = #{taxesBurden,jdbcType=VARCHAR}
+      taxes_burden = #{taxesBurden,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

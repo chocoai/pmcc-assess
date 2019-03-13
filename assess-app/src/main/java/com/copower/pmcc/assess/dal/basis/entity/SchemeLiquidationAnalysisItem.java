@@ -20,7 +20,7 @@ public class SchemeLiquidationAnalysisItem {
 
     private String taxRateName;
 
-    private BigDecimal calculateBase;
+    private String calculateBase;
 
     private String calculationFormula;
 
@@ -100,12 +100,12 @@ public class SchemeLiquidationAnalysisItem {
         this.taxRateName = taxRateName == null ? null : taxRateName.trim();
     }
 
-    public BigDecimal getCalculateBase() {
+    public String getCalculateBase() {
         return calculateBase;
     }
 
-    public void setCalculateBase(BigDecimal calculateBase) {
-        this.calculateBase = calculateBase;
+    public void setCalculateBase(String calculateBase) {
+        this.calculateBase = calculateBase == null ? null : calculateBase.trim();
     }
 
     public String getCalculationFormula() {

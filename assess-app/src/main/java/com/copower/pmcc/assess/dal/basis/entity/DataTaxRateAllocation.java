@@ -6,12 +6,6 @@ import java.util.Date;
 public class DataTaxRateAllocation {
     private Integer id;
 
-    private String creator;
-
-    private Date gmtCreated;
-
-    private Date gmtModified;
-
     private String province;
 
     private String city;
@@ -28,11 +22,17 @@ public class DataTaxRateAllocation {
 
     private Boolean bisNationalUnity;
 
-    private BigDecimal calculateBase;
+    private String calculateBase;
 
     private String calculationFormula;
 
     private String taxesBurden;
+
+    private String creator;
+
+    private Date gmtCreated;
+
+    private Date gmtModified;
 
     public Integer getId() {
         return id;
@@ -40,30 +40,6 @@ public class DataTaxRateAllocation {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    public Date getGmtCreated() {
-        return gmtCreated;
-    }
-
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
     }
 
     public String getProvince() {
@@ -130,12 +106,12 @@ public class DataTaxRateAllocation {
         this.bisNationalUnity = bisNationalUnity;
     }
 
-    public BigDecimal getCalculateBase() {
+    public String getCalculateBase() {
         return calculateBase;
     }
 
-    public void setCalculateBase(BigDecimal calculateBase) {
-        this.calculateBase = calculateBase;
+    public void setCalculateBase(String calculateBase) {
+        this.calculateBase = calculateBase == null ? null : calculateBase.trim();
     }
 
     public String getCalculationFormula() {
@@ -152,5 +128,29 @@ public class DataTaxRateAllocation {
 
     public void setTaxesBurden(String taxesBurden) {
         this.taxesBurden = taxesBurden == null ? null : taxesBurden.trim();
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
     }
 }

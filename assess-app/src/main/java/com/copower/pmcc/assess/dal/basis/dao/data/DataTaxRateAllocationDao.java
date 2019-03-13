@@ -37,19 +37,13 @@ public class DataTaxRateAllocationDao {
     public void removeDataTaxRateAllocation(DataTaxRateAllocation dataHousePriceIndex) {
         DataTaxRateAllocationExample example = new DataTaxRateAllocationExample();
         MybatisUtils.convertObj2Example(dataHousePriceIndex, example);
-        try {
-            dataHousePriceIndexMapper.deleteByExample(example);
-        } catch (Exception e1) {
-            try {
-                throw new SQLException("exception");
-            } catch (SQLException e) {
-            }
-        }
+        dataHousePriceIndexMapper.deleteByExample(example);
     }
 
     public List<DataTaxRateAllocation> getDataTaxRateAllocationList(DataTaxRateAllocation dataHousePriceIndex) {
         DataTaxRateAllocationExample example = new DataTaxRateAllocationExample();
         MybatisUtils.convertObj2Example(dataHousePriceIndex, example);
+        example.setOrderByClause("bis_national_unity desc,province,city");
         return dataHousePriceIndexMapper.selectByExample(example);
     }
 

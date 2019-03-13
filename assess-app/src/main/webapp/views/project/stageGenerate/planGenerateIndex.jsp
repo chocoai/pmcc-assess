@@ -313,12 +313,14 @@
                     var retHtml = '';
                     $.each(result.data, function (i, item) {
                         retHtml += '<option key="' + item.qualificationTypeName + '" title="' + item.userAccountName + '" value="' + item.id + '"';
-                        var tempArr = realEstateAppraiser.split(",");
-                        $.each(tempArr,function (i,n) {
-                            if (item.id == n) {
-                                retHtml += 'selected="selected"';
-                            }
-                        });
+                        if(realEstateAppraiser){
+                            var tempArr = realEstateAppraiser.split(",");
+                            $.each(tempArr,function (i,n) {
+                                if (item.id == n) {
+                                    retHtml += 'selected="selected"';
+                                }
+                            });
+                        }
                         retHtml += '>' + item.userAccountName + '</option>';
                     });
                     if (type) {

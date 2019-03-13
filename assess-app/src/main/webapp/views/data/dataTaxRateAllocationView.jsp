@@ -119,7 +119,7 @@
                 }
             });
             cols.push({field: 'amount', title: '金额'});
-            cols.push({field: 'calculateBase', title: '计算基数'});
+            cols.push({field: 'calculateBase', title: '计算基数', width: '20%'});
             cols.push({field: 'calculationFormula', title: '计算公式'});
             cols.push({field: 'taxesBurden', title: '税费负担方'});
             cols.push({field: 'exExplain', title: '说明'});
@@ -236,8 +236,8 @@
                     if (result.ret) {
                         $("#" + dataProperty.prototype.config().frm).clearAll();
                         $("#" + dataProperty.prototype.config().frm).initForm(result.data);
-                        $("#" + dataProperty.prototype.config().frm).find('[name=bisNationalUnity]').select2('val',result.data.bisNationalUnity+'').trigger('change');
-                        if(!result.data.bisNationalUnity){
+                        $("#" + dataProperty.prototype.config().frm).find('[name=bisNationalUnity]').select2('val', result.data.bisNationalUnity + '').trigger('change');
+                        if (!result.data.bisNationalUnity) {
                             AssessCommon.initAreaInfo({
                                 provinceTarget: $("#province"),
                                 cityTarget: $("#city"),
@@ -373,8 +373,8 @@
                                         <label class="col-sm-1 control-label">计算基数<span
                                                 class="symbol required"></span></label>
                                         <div class="col-sm-3">
-                                            <input type="text" data-rule-number='true' class="form-control"
-                                                   name="calculateBase" placeholder="计算基数(数字)">
+                                            <input type="text" class="form-control" name="calculateBase"
+                                                   placeholder="计算基数">
                                         </div>
                                     </div>
                                     <div class="x-valid">

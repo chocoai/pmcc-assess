@@ -616,52 +616,62 @@ public class SchemeLiquidationAnalysisItemExample {
             return (Criteria) this;
         }
 
-        public Criteria andCalculateBaseEqualTo(BigDecimal value) {
+        public Criteria andCalculateBaseEqualTo(String value) {
             addCriterion("calculate_base =", value, "calculateBase");
             return (Criteria) this;
         }
 
-        public Criteria andCalculateBaseNotEqualTo(BigDecimal value) {
+        public Criteria andCalculateBaseNotEqualTo(String value) {
             addCriterion("calculate_base <>", value, "calculateBase");
             return (Criteria) this;
         }
 
-        public Criteria andCalculateBaseGreaterThan(BigDecimal value) {
+        public Criteria andCalculateBaseGreaterThan(String value) {
             addCriterion("calculate_base >", value, "calculateBase");
             return (Criteria) this;
         }
 
-        public Criteria andCalculateBaseGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andCalculateBaseGreaterThanOrEqualTo(String value) {
             addCriterion("calculate_base >=", value, "calculateBase");
             return (Criteria) this;
         }
 
-        public Criteria andCalculateBaseLessThan(BigDecimal value) {
+        public Criteria andCalculateBaseLessThan(String value) {
             addCriterion("calculate_base <", value, "calculateBase");
             return (Criteria) this;
         }
 
-        public Criteria andCalculateBaseLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andCalculateBaseLessThanOrEqualTo(String value) {
             addCriterion("calculate_base <=", value, "calculateBase");
             return (Criteria) this;
         }
 
-        public Criteria andCalculateBaseIn(List<BigDecimal> values) {
+        public Criteria andCalculateBaseLike(String value) {
+            addCriterion("calculate_base like", value, "calculateBase");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculateBaseNotLike(String value) {
+            addCriterion("calculate_base not like", value, "calculateBase");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculateBaseIn(List<String> values) {
             addCriterion("calculate_base in", values, "calculateBase");
             return (Criteria) this;
         }
 
-        public Criteria andCalculateBaseNotIn(List<BigDecimal> values) {
+        public Criteria andCalculateBaseNotIn(List<String> values) {
             addCriterion("calculate_base not in", values, "calculateBase");
             return (Criteria) this;
         }
 
-        public Criteria andCalculateBaseBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andCalculateBaseBetween(String value1, String value2) {
             addCriterion("calculate_base between", value1, value2, "calculateBase");
             return (Criteria) this;
         }
 
-        public Criteria andCalculateBaseNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andCalculateBaseNotBetween(String value1, String value2) {
             addCriterion("calculate_base not between", value1, value2, "calculateBase");
             return (Criteria) this;
         }

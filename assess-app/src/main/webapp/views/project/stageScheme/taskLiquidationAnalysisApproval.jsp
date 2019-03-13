@@ -30,7 +30,7 @@
                             <th class="hidden-xs">物业类型</th>
                             <th class="hidden-xs">税率</th>
 
-                            <th class="hidden-xs">计算基数</th>
+                            <th class="hidden-xs" style="width: 20%;">计算基数</th>
                             <th class="hidden-xs">计算公式</th>
                             <th class="hidden-xs">税费负担方</th>
 
