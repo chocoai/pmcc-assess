@@ -134,6 +134,43 @@
                                 </c:if>
                             </tr>
                         </c:forEach>
+                        <tr>
+                            <td>
+                                周边环境是否正常
+                            </td>
+                            <td>
+                                <label class="form-control">${surveyAssetInventory.rimIsNormal}
+                                </label>
+                            </td>
+                            <td colspan="8">
+                                <div style="display:none" id="showAbnormality_d">
+                                    <label class="form-control">${surveyAssetInventory.abnormality}</label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                实物状况是否损坏
+                            </td>
+                            <td>
+                                <label class="form-control">${surveyAssetInventory.entityIsDamage}
+                                </label>
+
+                            </td>
+                            <td colspan="8">
+                                <div style="display:none" id="showDamageRemark_d">
+                                    <label class="form-control">${surveyAssetInventory.damageRemark}
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>转让限制</td>
+                            <td colspan="9">
+                                <label class="form-control">${surveyAssetInventory.transferLimit}
+                                </label>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -336,6 +373,10 @@
             },
             deleteFlag: false
         })
+
+        if ("${surveyAssetInventory}") {
+            showRemark();
+        }
     })
 
     //显示附件通用
@@ -407,6 +448,19 @@
         $("#viewInventoryRightModal").modal();
 
     };
+
+    function showRemark() {
+        if ("${surveyAssetInventory.rimIsNormal}" == "不正常") {
+            $("#showAbnormality_d").show();
+        } else {
+            $("#showAbnormality_d").hide();
+        }
+        if ("${surveyAssetInventory.entityIsDamage}" == "损坏") {
+            $("#showDamageRemark_d").show();
+        } else {
+            $("#showDamageRemark_d").hide();
+        }
+    }
 </script>
 </body>
 </html>

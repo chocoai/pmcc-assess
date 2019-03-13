@@ -7,7 +7,7 @@
 <div class="x_content">
     <div class="x_title">
         <h3>
-            楼栋基本信息111
+            楼栋基本信息
         </h3>
         <div class="clearfix"></div>
     </div>

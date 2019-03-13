@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightService;
@@ -59,6 +60,8 @@ public class SchemeAreaGroupService {
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private MdIncomeService mdIncomeService;
 
     public int add(SchemeAreaGroup schemeAreaGroup) {
         return schemeAreaGroupDao.add(schemeAreaGroup);
@@ -216,6 +219,7 @@ public class SchemeAreaGroupService {
                         if(declareRecord.getLandUseEndDate()!=null){
                             schemeJudgeObject.setLandUseEndDate(declareRecord.getLandUseEndDate());
                             //计算出土地剩余年限
+                            schemeJudgeObject.setLandRemainingYear(mdIncomeService.getLandSurplusYear(declareRecord.getLandUseEndDate(), areaGroup.getValueTimePoint()));
                         }
                         schemeJudgeObject.setEvaluationArea(declareRecord.getPracticalArea());
                         //获取到房屋中的出租占用情况描述
@@ -366,6 +370,7 @@ public class SchemeAreaGroupService {
         BeanUtils.copyProperties(schemeAreaGroup, schemeAreaGroupVo);
         schemeAreaGroupVo.setEntrustPurposeName(baseDataDicService.getNameById(schemeAreaGroup.getEntrustPurpose()));
         schemeAreaGroupVo.setValueDefinitionName(baseDataDicService.getNameById(schemeAreaGroup.getValueDefinition()));
+        schemeAreaGroupVo.setPropertyScopeName(baseDataDicService.getNameById(schemeAreaGroup.getPropertyScope()));
         if (StringUtils.isNotBlank(schemeAreaGroup.getValueConnotation())) {
             List<String> list = JSON.parseArray(schemeAreaGroup.getValueConnotation(), String.class);
             if (CollectionUtils.isNotEmpty(list)) {
