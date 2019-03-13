@@ -7,6 +7,9 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseDamagedDegreeDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitHuxingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
+import com.copower.pmcc.assess.service.PublicService;
+import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -117,6 +120,10 @@ public class BasicApplyTransferService {
     private BasicApplyDao basicApplyDao;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private PublicService publicService;
+    @Autowired
+    private DdlMySqlAssist ddlMySqlAssist;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -191,7 +198,6 @@ public class BasicApplyTransferService {
         List<BasicEstateNetwork> basicEstateNetworkList = null;
         List<BasicEstateParking> basicEstateParkingList = null;
         List<BasicEstateSupply> basicEstateSupplyList = null;
-        List<BasicEstateTagging> basicEstateTaggingList = null;
         List<BasicMatchingEducation> basicMatchingEducationList = null;
         List<BasicMatchingEnvironment> basicMatchingEnvironmentList = null;
         List<BasicMatchingFinance> basicMatchingFinanceList = null;
@@ -338,6 +344,14 @@ public class BasicApplyTransferService {
                 basicEstateNetworkService.saveAndUpdateBasicEstateNetwork(basicEstateNetwork);
             }
         }
+        //同步通信网络sql
+        SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class));
+        synchronousDataDto.setWhereSql("estate_id=1");
+        publicService.getSynchronousSql(synchronousDataDto);
+
+        ddlMySqlAssist.customTableDdl("");//执行sql
     }
 
     private void copyBasicParking(List<BasicEstateParking> basicEstateParkingList, BasicEstate basicEstateNew) throws Exception {

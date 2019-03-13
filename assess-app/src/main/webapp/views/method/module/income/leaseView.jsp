@@ -213,6 +213,161 @@
     </div>
 </div>
 
+<div id="modal_lease_cost" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">成本</h3>
+            </div>
+            <div class="modal-body">
+                <form id="frm_lease_cost" class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="sectionId">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                管理费率
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="form-control v-percent" name="managementCostRatio"></label>
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                重置价格
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="form-control" name="replacementValue"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                维护保养费率
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="form-control v-percent" name="maintenanceCostRatio"></label>
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                保险费率
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="form-control v-percent" name="insurancePremiumRatio"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                交易税费率
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="form-control v-percent" name="transactionTaxeFeeRatio"></label>
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                交易税费说明
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="form-control" name="transactionTaxeFeeExplain"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                土地使用税
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="form-control" name="landUseTax"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+                        color="#6f5499" size="10"/>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                房产税率
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="form-control v-percent" name="propertyTaxRatio"></label>
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                印花税率
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="form-control v-percent" name="stampDutyRatio"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                增值税率
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="form-control v-percent" name="salesTaxRatio"></label>
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                城建税率
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="form-control v-percent" name="constructionTaxRatio"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                地方教育费附加税率
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="form-control v-percent" name="localEducationRatio"></label>
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                教育费附加税率
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="form-control v-percent" name="educationRatio"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                租赁税费率
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="form-control v-percent" name="additionalRatio"></label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/html" id="leaseResultHtml">
     <tr data-id="{id}">
         <td>
@@ -234,8 +389,8 @@
     var lease = {};
 
 
-    //编辑收入信息
-    lease.viewLease = function (index) {
+    //查看收入信息
+    lease.viewLeaseIncome = function (index) {
         var row = $("#tb_lease_income_list").bootstrapTable('getData')[index];
         $("#frm_lease_income").find('label').each(function () {
             if($(this).hasClass('v-percent')){
@@ -247,17 +402,25 @@
         $('#modal_lease_income').modal();
     }
 
+    //查看成本信息
+    lease.viewLeaseCost = function (index) {
+        var row = $("#tb_lease_cost_list").bootstrapTable('getData')[index];
+        $("#frm_lease_cost").find('label').each(function () {
+            if($(this).hasClass('v-percent')){
+                $(this).text(AssessCommon.pointToPercent(row[$(this).attr('name')]) );
+            }else{
+                $(this).text(row[$(this).attr('name')]);
+            }
+        })
+        $('#modal_lease_cost').modal();
+    }
+
     //加载收入列表信息
     lease.loadLeaseList = function () {
         var cols = [];
         cols.push({
-            field: 'beginDate', title: '开始时间', formatter: function (value, row, index) {
-                return formatDate(row.beginDate, false);
-            }
-        });
-        cols.push({
-            field: 'endDate', title: '结束时间', formatter: function (value, row, index) {
-                return formatDate(row.endDate, false);
+            field: 'beginDate', title: '时间段', formatter: function (value, row, index) {
+                return formatDate(row.beginDate, false) + "至" + formatDate(row.endDate, false);
             }
         });
         cols.push({field: 'rentalIncome', title: '月租金收入'});
@@ -277,7 +440,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看" onclick="lease.viewLease(' + index + ');" ><i class="fa fa-search fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看" onclick="lease.viewLeaseIncome(' + index + ');" ><i class="fa fa-search fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
@@ -295,36 +458,12 @@
         });
     }
 
-
-    //编辑成本信息
-    lease.editLeaseCost = function (index) {
-        var row = $("#tb_lease_cost_list").bootstrapTable('getData')[index];
-        $("#frm_lease_cost").clearAll();
-        $("#frm_lease_cost").initForm(row);
-        $("#frm_lease_cost").find('.x-percent').each(function () {
-            $(this).attr('data-value', row[$(this).attr('name')]);
-            AssessCommon.elementParsePercent($(this));
-        })
-        //租赁税费特殊处理
-        var additionalRatioElement = $("#frm_lease_cost").find('[name=additionalRatio]');
-        additionalRatioElement.attr('data-value', '${additionalRatio}');
-        AssessCommon.elementParsePercent(additionalRatioElement);
-        //重置价格特殊处理
-        $("#frm_lease_cost").find('[name=replacementValue]').val("${replacementValue}");
-        $('#modal_lease_cost').modal();
-    }
-
     //加载成本列表信息
     lease.loadLeaseCostList = function () {
         var cols = [];
         cols.push({
-            field: 'beginDate', title: '开始时间', formatter: function (value, row, index) {
-                return formatDate(row.beginDate, false);
-            }
-        });
-        cols.push({
-            field: 'endDate', title: '结束时间', formatter: function (value, row, index) {
-                return formatDate(row.endDate, false);
+            field: 'beginDate', title: '时间段', formatter: function (value, row, index) {
+                return formatDate(row.beginDate, false) + "至" + formatDate(row.endDate, false);
             }
         });
         cols.push({
@@ -349,6 +488,14 @@
             }
         });
         cols.push({field: 'landUseTax', title: '土地使用税'});
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看" onclick="lease.viewLeaseCost(' + index + ');" ><i class="fa fa-search fa-white"></i></a>';
+                str += '</div>';
+                return str;
+            }
+        });
         $("#tb_lease_cost_list").bootstrapTable('destroy');
         TableInit("tb_lease_cost_list", "${pageContext.request.contextPath}/income/getLeaseCostList", cols, {
             incomeId: incomeIndex.getInComeId()
@@ -379,13 +526,8 @@
     lease.loadLeaseParameterList = function () {
         var cols = [];
         cols.push({
-            field: 'beginDate', title: '开始时间', formatter: function (value, row, index) {
-                return formatDate(row.beginDate, false);
-            }
-        });
-        cols.push({
-            field: 'endDate', title: '结束时间', formatter: function (value, row, index) {
-                return formatDate(row.endDate, false);
+            field: 'beginDate', title: '时间段', formatter: function (value, row, index) {
+                return formatDate(row.beginDate, false) + "至" + formatDate(row.endDate, false);
             }
         });
         cols.push({
@@ -393,6 +535,7 @@
                 return AssessCommon.pointToPercent(value);
             }
         });
+        cols.push({field: 'landUseTax', title: '增长率说明'});
         $("#tb_lease_parameter_list").bootstrapTable('destroy');
         TableInit("tb_lease_parameter_list", "${pageContext.request.contextPath}/income/getDateSectionList", cols, {
             operationMode: incomeIndex.getOperationMode(),
