@@ -65,11 +65,6 @@ public class BasicHouseIntelligentController {
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
     public BootstrapTableVo getBootstrapTableVo(BasicHouseIntelligent basicHouseIntelligent, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
         try {
-            if (basicHouseIntelligent != null){
-                if (!approval) {
-                    basicHouseIntelligent.setCreator(commonService.thisUserAccount());
-                }
-            }
             return basicHouseIntelligentService.getBootstrapTableVo(basicHouseIntelligent);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);

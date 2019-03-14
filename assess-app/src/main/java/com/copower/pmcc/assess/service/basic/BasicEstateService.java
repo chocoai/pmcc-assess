@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.*;
@@ -116,6 +117,8 @@ public class BasicEstateService {
     private BasicEstateLandStateService basicEstateLandStateService;
     @Autowired
     private CaseEstateTaggingService caseEstateTaggingService;
+    @Autowired
+    private DdlMySqlAssist ddlMySqlAssist;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -231,130 +234,23 @@ public class BasicEstateService {
         List<BasicEstate> estateList = basicEstateDao.basicEstateList(where);
         if (CollectionUtils.isEmpty(estateList)) return;
         BasicEstate estate = estateList.get(0);
-        BasicEstateLandState estateLandState = basicEstateLandStateDao.getLandStateByEstateId(estate.getId());
 
-        BasicEstateNetwork queryBasicEstateNetwork = new BasicEstateNetwork();
-        BasicEstateParking queryBasicEstateParking = new BasicEstateParking();
-        BasicEstateSupply queryBasicEstateSupply = new BasicEstateSupply();
-        BasicMatchingEducation queryBasicMatchingEducation = new BasicMatchingEducation();
-        BasicMatchingEnvironment queryBasicMatchingEnvironment = new BasicMatchingEnvironment();
-        BasicMatchingFinance queryBasicMatchingFinance = new BasicMatchingFinance();
-        BasicMatchingLeisurePlace queryBasicMatchingLeisurePlace = new BasicMatchingLeisurePlace();
-        BasicMatchingMaterial queryBasicMatchingMaterial = new BasicMatchingMaterial();
-        BasicMatchingMedical queryBasicMatchingMedical = new BasicMatchingMedical();
-        BasicMatchingTraffic queryBasicMatchingTraffic = new BasicMatchingTraffic();
-        SysAttachmentDto querySysAttachmentDto = new SysAttachmentDto();
+        StringBuilder sqlBulder = new StringBuilder();
+        String baseSql = "delete from %s where estate_id=%s";
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class), estate.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateParking.class), estate.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateSupply.class), estate.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingEducation.class), estate.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingEnvironment.class), estate.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingFinance.class), estate.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingLeisurePlace.class), estate.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingMaterial.class), estate.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingMedical.class), estate.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingTraffic.class), estate.getId())).append(";");
 
-        queryBasicMatchingTraffic.setEstateId(estate.getId());
-        queryBasicMatchingMedical.setEstateId(estate.getId());
-        queryBasicMatchingMaterial.setEstateId(estate.getId());
-        queryBasicMatchingLeisurePlace.setEstateId(estate.getId());
-        queryBasicMatchingFinance.setEstateId(estate.getId());
-        queryBasicMatchingEnvironment.setEstateId(estate.getId());
-        queryBasicMatchingEducation.setEstateId(estate.getId());
-        queryBasicEstateNetwork.setEstateId(estate.getId());
-        queryBasicEstateParking.setEstateId(estate.getId());
-        queryBasicEstateSupply.setEstateId(estate.getId());
-        querySysAttachmentDto.setTableId(estate.getId());
-
-
-        queryBasicMatchingTraffic.setCreator(commonService.thisUserAccount());
-        queryBasicMatchingMedical.setCreator(commonService.thisUserAccount());
-        queryBasicMatchingMaterial.setCreator(commonService.thisUserAccount());
-        queryBasicMatchingLeisurePlace.setCreator(commonService.thisUserAccount());
-        queryBasicMatchingFinance.setCreator(commonService.thisUserAccount());
-        queryBasicMatchingEnvironment.setCreator(commonService.thisUserAccount());
-        queryBasicMatchingEducation.setCreator(commonService.thisUserAccount());
-        queryBasicEstateNetwork.setCreator(commonService.thisUserAccount());
-        queryBasicEstateParking.setCreator(commonService.thisUserAccount());
-        queryBasicEstateSupply.setCreator(commonService.thisUserAccount());
-        querySysAttachmentDto.setCreater(commonService.thisUserAccount());
-
-        List<BasicEstateNetwork> basicEstateNetworkList = null;
-        List<BasicEstateParking> basicEstateParkingList = null;
-        List<BasicEstateSupply> basicEstateSupplyList = null;
-        List<BasicMatchingEducation> basicMatchingEducationList = null;
-        List<BasicMatchingEnvironment> basicMatchingEnvironmentList = null;
-        List<BasicMatchingFinance> basicMatchingFinanceList = null;
-        List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList = null;
-        List<BasicMatchingMaterial> basicMatchingMaterialList = null;
-        List<BasicMatchingMedical> basicMatchingMedicalList = null;
-        List<BasicMatchingTraffic> basicMatchingTrafficList = null;
-        List<SysAttachmentDto> sysAttachmentDtoList = null;
-
-        basicEstateNetworkList = basicEstateNetworkService.basicEstateNetworkList(queryBasicEstateNetwork);
-        basicEstateParkingList = basicEstateParkingService.basicEstateParkingList(queryBasicEstateParking);
-        basicEstateSupplyList = basicEstateSupplyService.basicEstateSupplyList(queryBasicEstateSupply);
-        basicMatchingEducationList = basicMatchingEducationService.basicMatchingEducationList(queryBasicMatchingEducation);
-        basicMatchingEnvironmentList = basicMatchingEnvironmentService.basicMatchingEnvironmentList(queryBasicMatchingEnvironment);
-        basicMatchingFinanceList = basicMatchingFinanceService.basicMatchingFinanceList(queryBasicMatchingFinance);
-        basicMatchingLeisurePlaceList = basicMatchingLeisurePlaceService.basicMatchingLeisurePlaceList(queryBasicMatchingLeisurePlace);
-        basicMatchingMaterialList = basicMatchingMaterialService.basicMatchingMaterialList(queryBasicMatchingMaterial);
-        basicMatchingMedicalList = basicMatchingMedicalService.basicMatchingMedicalList(queryBasicMatchingMedical);
-        basicMatchingTrafficList = basicMatchingTrafficService.basicMatchingTrafficList(queryBasicMatchingTraffic);
-
-        sysAttachmentDtoList = baseAttachmentService.getAttachmentList(querySysAttachmentDto);
-
-        if (!ObjectUtils.isEmpty(basicEstateNetworkList)) {
-            for (BasicEstateNetwork oo : basicEstateNetworkList) {
-                basicEstateNetworkService.deleteBasicEstateNetwork(oo.getId());
-            }
-        }
-        if (!ObjectUtils.isEmpty(basicEstateParkingList)) {
-            for (BasicEstateParking oo : basicEstateParkingList) {
-                basicEstateParkingService.deleteBasicEstateParking(oo.getId());
-            }
-        }
-        if (!ObjectUtils.isEmpty(basicEstateSupplyList)) {
-            for (BasicEstateSupply oo : basicEstateSupplyList) {
-                basicEstateSupplyService.deleteBasicEstateSupply(oo.getId());
-            }
-        }
-        if (!ObjectUtils.isEmpty(basicMatchingEducationList)) {
-            for (BasicMatchingEducation oo : basicMatchingEducationList) {
-                basicMatchingEducationService.deleteBasicMatchingEducation(oo.getId());
-            }
-        }
-        if (!ObjectUtils.isEmpty(basicMatchingEnvironmentList)) {
-            for (BasicMatchingEnvironment oo : basicMatchingEnvironmentList) {
-                basicMatchingEnvironmentService.deleteBasicMatchingEnvironment(oo.getId());
-            }
-        }
-        if (!ObjectUtils.isEmpty(basicMatchingFinanceList)) {
-            for (BasicMatchingFinance oo : basicMatchingFinanceList) {
-                basicMatchingFinanceService.deleteBasicMatchingFinance(oo.getId());
-            }
-        }
-        if (!ObjectUtils.isEmpty(basicMatchingLeisurePlaceList)) {
-            for (BasicMatchingLeisurePlace oo : basicMatchingLeisurePlaceList) {
-                basicMatchingLeisurePlaceService.deleteBasicMatchingLeisurePlace(oo.getId());
-            }
-        }
-        if (!ObjectUtils.isEmpty(basicMatchingMaterialList)) {
-            for (BasicMatchingMaterial oo : basicMatchingMaterialList) {
-                basicMatchingMaterialService.deleteBasicMatchingMaterial(oo.getId());
-            }
-        }
-        if (!ObjectUtils.isEmpty(basicMatchingMedicalList)) {
-            for (BasicMatchingMedical oo : basicMatchingMedicalList) {
-                basicMatchingMedicalService.deleteBasicMatchingMedical(oo.getId());
-            }
-        }
-        if (!ObjectUtils.isEmpty(basicMatchingTrafficList)) {
-            for (BasicMatchingTraffic oo : basicMatchingTrafficList) {
-                basicMatchingTrafficService.deleteBasicMatchingTraffic(oo.getId());
-            }
-        }
-        if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
-            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                baseAttachmentService.deleteAttachment(sysAttachmentDto.getId());
-            }
-        }
-
-        if (estateLandState != null) {
-            basicEstateLandStateDao.deleteBasicEstateLandState(estateLandState.getId());//删除土地信息
-        }
-        basicEstateDao.deleteBasicEstate(estate.getId());//删除楼盘信息
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateLandState.class), estate.getId())).append(";");
+        sqlBulder.append(String.format("delete from %s where id=%s", FormatUtils.entityNameConvertToTableName(BasicEstate.class), estate.getId())).append(";");
+        ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
     /**
@@ -755,7 +651,7 @@ public class BasicEstateService {
             public void run() {
                 try {
                     List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-                    copyTaggingFromCase(caseEstateTaggings,applyId);
+                    copyTaggingFromCase(caseEstateTaggings, applyId);
                 } catch (Exception e1) {
                     logger.error("", e1);
                 }

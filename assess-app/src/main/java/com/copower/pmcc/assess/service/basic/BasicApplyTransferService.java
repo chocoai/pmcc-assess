@@ -11,22 +11,23 @@ import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.google.common.collect.Maps;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -35,49 +36,21 @@ import java.util.List;
 @Service
 public class BasicApplyTransferService {
     @Autowired
-    private BasicEstateNetworkService basicEstateNetworkService;
-    @Autowired
     private BasicApplyService basicApplyService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private BasicHouseService basicHouseService;
     @Autowired
-    private BasicBuildingFunctionService basicBuildingFunctionService;
-    @Autowired
-    private BasicBuildingMaintenanceService basicBuildingMaintenanceService;
-    @Autowired
-    private BasicBuildingOutfitService basicBuildingOutfitService;
-    @Autowired
-    private BasicBuildingSurfaceService basicBuildingSurfaceService;
-    @Autowired
     private BasicUnitService basicUnitService;
-    @Autowired
-    private BasicUnitDecorateService basicUnitDecorateService;
-    @Autowired
-    private BasicUnitElevatorService basicUnitElevatorService;
     @Autowired
     private BasicUnitHuxingService basicUnitHuxingService;
     @Autowired
     private BasicUnitHuxingDao basicUnitHuxingDao;
     @Autowired
-    private BasicHouseTradingSellService basicHouseTradingSellService;
-    @Autowired
-    private BasicHouseWaterDrainService basicHouseWaterDrainService;
-    @Autowired
-    private BasicHouseTradingLeaseService basicHouseTradingLeaseService;
-    @Autowired
     private BasicHouseRoomService basicHouseRoomService;
     @Autowired
     private BasicHouseRoomDecorateService basicHouseRoomDecorateService;
-    @Autowired
-    private BasicHouseEquipmentService basicHouseEquipmentService;
-    @Autowired
-    private BasicHouseFaceStreetService basicHouseFaceStreetService;
-    @Autowired
-    private BasicHouseIntelligentService basicHouseIntelligentService;
-    @Autowired
-    private BasicHouseWaterService basicHouseWaterService;
     @Autowired
     private BasicHouseCorollaryEquipmentService basicHouseCorollaryEquipmentService;
     @Autowired
@@ -89,29 +62,9 @@ public class BasicApplyTransferService {
     @Autowired
     private BasicEstateParkingService basicEstateParkingService;
     @Autowired
-    private BasicEstateSupplyService basicEstateSupplyService;
-    @Autowired
-    private BasicEstateTaggingService basicEstateTaggingService;
-    @Autowired
-    private BasicMatchingTrafficService basicMatchingTrafficService;
-    @Autowired
-    private BasicMatchingMedicalService basicMatchingMedicalService;
-    @Autowired
-    private BasicMatchingLeisurePlaceService basicMatchingLeisurePlaceService;
-    @Autowired
-    private BasicMatchingMaterialService basicMatchingMaterialService;
-    @Autowired
-    private BasicMatchingFinanceService basicMatchingFinanceService;
-    @Autowired
-    private BasicMatchingEnvironmentService basicMatchingEnvironmentService;
-    @Autowired
-    private BasicMatchingEducationService basicMatchingEducationService;
-    @Autowired
     private BasicBuildingService basicBuildingService;
     @Autowired
     private PublicBasicService publicBasicService;
-    @Autowired
-    private DataBlockService dataBlockService;
     @Autowired
     private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
     @Autowired
@@ -145,20 +98,13 @@ public class BasicApplyTransferService {
             basicEstateNew.setGmtModified(null);
             basicEstateService.saveAndUpdateBasicEstate(basicEstateNew);
 
-            List<SysAttachmentDto> sysAttachmentDtoList = null;
-            SysAttachmentDto query = new SysAttachmentDto();
-            query.setTableId(basicEstateOld.getId());
-            query.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
-            sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
-            if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
-                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                    SysAttachmentDto attachmentDto = new SysAttachmentDto();
-                    attachmentDto.setTableId(basicEstateNew.getId());
-                    attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
-                    baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
-                }
-            }
+            SysAttachmentDto example = new SysAttachmentDto();
+            example.setTableId(basicEstateOld.getId());
+            example.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
 
+            SysAttachmentDto attachmentDto = new SysAttachmentDto();
+            attachmentDto.setTableId(basicEstateNew.getId());
+            baseAttachmentService.copyFtpAttachments(example,attachmentDto);
             if (basicEstateLandStateOld != null) {
                 BasicEstateLandState basicEstateLandStateNew = new BasicEstateLandState();
                 BeanUtils.copyProperties(basicEstateLandStateOld, basicEstateLandStateNew);
@@ -170,188 +116,65 @@ public class BasicApplyTransferService {
                 basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandStateNew);
             }
         }
-
-        BasicEstateNetwork queryBasicEstateNetworkoOld = new BasicEstateNetwork();
         BasicEstateParking queryBasicEstateParkingOld = new BasicEstateParking();
-        BasicEstateSupply queryBasicEstateSupplyOld = new BasicEstateSupply();
-        BasicMatchingEducation queryBasicMatchingEducationOld = new BasicMatchingEducation();
-        BasicMatchingEnvironment queryBasicMatchingEnvironmentOld = new BasicMatchingEnvironment();
-        BasicMatchingFinance queryBasicMatchingFinanceOld = new BasicMatchingFinance();
-        BasicMatchingLeisurePlace queryBasicMatchingLeisurePlaceOld = new BasicMatchingLeisurePlace();
-        BasicMatchingMaterial queryBasicMatchingMaterialOld = new BasicMatchingMaterial();
-        BasicMatchingMedical queryBasicMatchingMedicalOld = new BasicMatchingMedical();
-        BasicMatchingTraffic queryBasicMatchingTrafficOld = new BasicMatchingTraffic();
-
         if (basicEstateOld.getId() != null) {
-            queryBasicEstateNetworkoOld.setEstateId(basicEstateOld.getId());
             queryBasicEstateParkingOld.setEstateId(basicEstateOld.getId());
-            queryBasicEstateSupplyOld.setEstateId(basicEstateOld.getId());
-            queryBasicMatchingTrafficOld.setEstateId(basicEstateOld.getId());
-            queryBasicMatchingMedicalOld.setEstateId(basicEstateOld.getId());
-            queryBasicMatchingMaterialOld.setEstateId(basicEstateOld.getId());
-            queryBasicMatchingLeisurePlaceOld.setEstateId(basicEstateOld.getId());
-            queryBasicMatchingFinanceOld.setEstateId(basicEstateOld.getId());
-            queryBasicMatchingEnvironmentOld.setEstateId(basicEstateOld.getId());
-            queryBasicMatchingEducationOld.setEstateId(basicEstateOld.getId());
         }
 
-        List<BasicEstateNetwork> basicEstateNetworkList = null;
         List<BasicEstateParking> basicEstateParkingList = null;
-        List<BasicEstateSupply> basicEstateSupplyList = null;
-        List<BasicMatchingEducation> basicMatchingEducationList = null;
-        List<BasicMatchingEnvironment> basicMatchingEnvironmentList = null;
-        List<BasicMatchingFinance> basicMatchingFinanceList = null;
-        List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList = null;
-        List<BasicMatchingMaterial> basicMatchingMaterialList = null;
-        List<BasicMatchingMedical> basicMatchingMedicalList = null;
-        List<BasicMatchingTraffic> basicMatchingTrafficList = null;
-
-        basicEstateNetworkList = basicEstateNetworkService.basicEstateNetworkList(queryBasicEstateNetworkoOld);
         basicEstateParkingList = basicEstateParkingService.basicEstateParkingList(queryBasicEstateParkingOld);
-        basicEstateSupplyList = basicEstateSupplyService.basicEstateSupplyList(queryBasicEstateSupplyOld);
-
-        basicMatchingEducationList = basicMatchingEducationService.basicMatchingEducationList(queryBasicMatchingEducationOld);
-        basicMatchingEnvironmentList = basicMatchingEnvironmentService.basicMatchingEnvironmentList(queryBasicMatchingEnvironmentOld);
-        basicMatchingFinanceList = basicMatchingFinanceService.basicMatchingFinanceList(queryBasicMatchingFinanceOld);
-        basicMatchingLeisurePlaceList = basicMatchingLeisurePlaceService.basicMatchingLeisurePlaceList(queryBasicMatchingLeisurePlaceOld);
-        basicMatchingMaterialList = basicMatchingMaterialService.basicMatchingMaterialList(queryBasicMatchingMaterialOld);
-        basicMatchingMedicalList = basicMatchingMedicalService.basicMatchingMedicalList(queryBasicMatchingMedicalOld);
-        basicMatchingTrafficList = basicMatchingTrafficService.basicMatchingTrafficList(queryBasicMatchingTrafficOld);
         if (basicEstateNew != null) {
             if (basicEstateNew.getId() != null) {
-                this.copyBasicNetwork(basicEstateNetworkList, basicEstateNew);
                 this.copyBasicParking(basicEstateParkingList, basicEstateNew);
-                this.copyBasicSupply(basicEstateSupplyList, basicEstateNew);
-                this.copyBasicTraffic(basicMatchingTrafficList, basicEstateNew);
-                this.copyBasicMedical(basicMatchingMedicalList, basicEstateNew);
-                this.copyBasicMaterial(basicMatchingMaterialList, basicEstateNew);
-                this.copyBasicLeisurePlace(basicMatchingLeisurePlaceList, basicEstateNew);
-                this.copyBasicFinance(basicMatchingFinanceList, basicEstateNew);
-                this.copyBasicEnvironment(basicMatchingEnvironmentList, basicEstateNew);
-                this.copyBasicEducation(basicMatchingEducationList, basicEstateNew);
+
+                StringBuilder sqlBuilder = new StringBuilder();
+                SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+                HashMap<String, String> map = Maps.newHashMap();
+                map.put("estate_id", String.valueOf(basicEstateNew.getId()));
+                map.put("creator", commonService.thisUserAccount());
+                synchronousDataDto.setFieldDefaultValue(map);
+                synchronousDataDto.setWhereSql("estate_id=" + basicEstateOld.getId());
+                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class));
+                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class));
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//通信网络sql
+
+                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateSupply.class));
+                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateSupply.class));
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//供应信息sql
+
+                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingTraffic.class));
+                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingTraffic.class));
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//交通信息sql
+
+                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingMedical.class));
+                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingMedical.class));
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//医养信息sql
+
+                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingMaterial.class));
+                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingMaterial.class));
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//原材料信息sql
+
+                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingLeisurePlace.class));
+                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingLeisurePlace.class));
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//休闲场所信息sql
+
+                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingFinance.class));
+                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingFinance.class));
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//金融服务信息sql
+
+                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingEnvironment.class));
+                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingEnvironment.class));
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//环境因素信息sql
+
+                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingEducation.class));
+                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingEducation.class));
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//教育信息sql
+
+                sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.ESTATE, basicEstateOld.getApplyId(), appId));
+                ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
             }
         }
         return basicEstateNew;
-    }
-
-    private void copyBasicTraffic(List<BasicMatchingTraffic> basicMatchingTrafficList, BasicEstate basicEstateNew) throws Exception {
-        if (!ObjectUtils.isEmpty(basicMatchingTrafficList)) {
-            for (BasicMatchingTraffic oo : basicMatchingTrafficList) {
-                BasicMatchingTraffic basicMatchingTraffic = new BasicMatchingTraffic();
-                BeanUtils.copyProperties(oo, basicMatchingTraffic);
-                basicMatchingTraffic.setId(null);
-                basicMatchingTraffic.setGmtCreated(null);
-                basicMatchingTraffic.setGmtModified(null);
-                basicMatchingTraffic.setEstateId(basicEstateNew.getId());
-                basicMatchingTrafficService.saveAndUpdateBasicMatchingTraffic(basicMatchingTraffic);
-            }
-        }
-    }
-
-    private void copyBasicMedical(List<BasicMatchingMedical> basicMatchingMedicalList, BasicEstate basicEstateNew) throws Exception {
-        if (!ObjectUtils.isEmpty(basicMatchingMedicalList)) {
-            for (BasicMatchingMedical oo : basicMatchingMedicalList) {
-                BasicMatchingMedical basicMatchingMedical = new BasicMatchingMedical();
-                BeanUtils.copyProperties(oo, basicMatchingMedical);
-                basicMatchingMedical.setId(null);
-                basicMatchingMedical.setGmtCreated(null);
-                basicMatchingMedical.setGmtModified(null);
-                basicMatchingMedical.setEstateId(basicEstateNew.getId());
-                basicMatchingMedicalService.saveAndUpdateBasicMatchingMedical(basicMatchingMedical);
-            }
-        }
-    }
-
-    private void copyBasicMaterial(List<BasicMatchingMaterial> basicMatchingMaterialList, BasicEstate basicEstateNew) throws Exception {
-        if (!ObjectUtils.isEmpty(basicMatchingMaterialList)) {
-            for (BasicMatchingMaterial oo : basicMatchingMaterialList) {
-                BasicMatchingMaterial basicMatchingMaterial = new BasicMatchingMaterial();
-                BeanUtils.copyProperties(oo, basicMatchingMaterial);
-                basicMatchingMaterial.setId(null);
-                basicMatchingMaterial.setGmtCreated(null);
-                basicMatchingMaterial.setGmtModified(null);
-                basicMatchingMaterial.setEstateId(basicEstateNew.getId());
-                basicMatchingMaterialService.saveAndUpdateBasicMatchingMaterial(basicMatchingMaterial);
-            }
-        }
-    }
-
-    private void copyBasicLeisurePlace(List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList, BasicEstate basicEstateNew) throws Exception {
-        if (!ObjectUtils.isEmpty(basicMatchingLeisurePlaceList)) {
-            for (BasicMatchingLeisurePlace oo : basicMatchingLeisurePlaceList) {
-                BasicMatchingLeisurePlace basicMatchingLeisurePlace = new BasicMatchingLeisurePlace();
-                BeanUtils.copyProperties(oo, basicMatchingLeisurePlace);
-                basicMatchingLeisurePlace.setId(null);
-                basicMatchingLeisurePlace.setGmtCreated(null);
-                basicMatchingLeisurePlace.setGmtModified(null);
-                basicMatchingLeisurePlace.setEstateId(basicEstateNew.getId());
-                basicMatchingLeisurePlaceService.saveAndUpdateBasicMatchingLeisurePlace(basicMatchingLeisurePlace);
-            }
-        }
-    }
-
-    private void copyBasicFinance(List<BasicMatchingFinance> basicMatchingFinanceList, BasicEstate basicEstateNew) throws Exception {
-        if (!ObjectUtils.isEmpty(basicMatchingFinanceList)) {
-            for (BasicMatchingFinance oo : basicMatchingFinanceList) {
-                BasicMatchingFinance basicMatchingFinance = new BasicMatchingFinance();
-                BeanUtils.copyProperties(oo, basicMatchingFinance);
-                basicMatchingFinance.setId(null);
-                basicMatchingFinance.setGmtCreated(null);
-                basicMatchingFinance.setGmtModified(null);
-                basicMatchingFinance.setEstateId(basicEstateNew.getId());
-                basicMatchingFinanceService.saveAndUpdateBasicMatchingFinance(basicMatchingFinance);
-            }
-        }
-    }
-
-    private void copyBasicEnvironment(List<BasicMatchingEnvironment> basicMatchingEnvironmentList, BasicEstate basicEstateNew) throws Exception {
-        if (!ObjectUtils.isEmpty(basicMatchingEnvironmentList)) {
-            for (BasicMatchingEnvironment oo : basicMatchingEnvironmentList) {
-                BasicMatchingEnvironment basicMatchingEnvironment = new BasicMatchingEnvironment();
-                BeanUtils.copyProperties(oo, basicMatchingEnvironment);
-                basicMatchingEnvironment.setId(null);
-                basicMatchingEnvironment.setGmtCreated(null);
-                basicMatchingEnvironment.setGmtModified(null);
-                basicMatchingEnvironment.setEstateId(basicEstateNew.getId());
-                basicMatchingEnvironmentService.saveAndUpdateBasicMatchingEnvironment(basicMatchingEnvironment);
-            }
-        }
-    }
-
-    private void copyBasicEducation(List<BasicMatchingEducation> basicMatchingEducationList, BasicEstate basicEstateNew) throws Exception {
-        if (!ObjectUtils.isEmpty(basicMatchingEducationList)) {
-            for (BasicMatchingEducation oo : basicMatchingEducationList) {
-                BasicMatchingEducation basicMatchingEducation = new BasicMatchingEducation();
-                BeanUtils.copyProperties(oo, basicMatchingEducation);
-                basicMatchingEducation.setId(null);
-                basicMatchingEducation.setGmtCreated(null);
-                basicMatchingEducation.setGmtModified(null);
-                basicMatchingEducation.setEstateId(basicEstateNew.getId());
-                basicMatchingEducationService.saveAndUpdateBasicMatchingEducation(basicMatchingEducation);
-            }
-        }
-    }
-
-    private void copyBasicNetwork(List<BasicEstateNetwork> basicEstateNetworkList, BasicEstate basicEstateNew) throws Exception {
-        if (!ObjectUtils.isEmpty(basicEstateNetworkList)) {
-            for (BasicEstateNetwork oo : basicEstateNetworkList) {
-                BasicEstateNetwork basicEstateNetwork = new BasicEstateNetwork();
-                BeanUtils.copyProperties(oo, basicEstateNetwork);
-                basicEstateNetwork.setId(null);
-                basicEstateNetwork.setGmtCreated(null);
-                basicEstateNetwork.setGmtModified(null);
-                basicEstateNetwork.setEstateId(basicEstateNew.getId());
-                basicEstateNetworkService.saveAndUpdateBasicEstateNetwork(basicEstateNetwork);
-            }
-        }
-        //同步通信网络sql
-        SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
-        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class));
-        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class));
-        synchronousDataDto.setWhereSql("estate_id=1");
-        publicService.getSynchronousSql(synchronousDataDto);
-
-        ddlMySqlAssist.customTableDdl("");//执行sql
     }
 
     private void copyBasicParking(List<BasicEstateParking> basicEstateParkingList, BasicEstate basicEstateNew) throws Exception {
@@ -382,49 +205,9 @@ public class BasicApplyTransferService {
         }
     }
 
-    private void copyBasicSupply(List<BasicEstateSupply> basicEstateSupplyList, BasicEstate basicEstateNew) throws Exception {
-        if (!ObjectUtils.isEmpty(basicEstateSupplyList)) {
-            for (BasicEstateSupply oo : basicEstateSupplyList) {
-                BasicEstateSupply basicEstateSupply = new BasicEstateSupply();
-                BeanUtils.copyProperties(oo, basicEstateSupply);
-                basicEstateSupply.setId(null);
-                basicEstateSupply.setGmtCreated(null);
-                basicEstateSupply.setGmtModified(null);
-                basicEstateSupply.setEstateId(basicEstateNew.getId());
-                basicEstateSupplyService.saveAndUpdateBasicEstateSupply(basicEstateSupply);
-            }
-        }
-    }
 
     /**
-     * 标记回写
-     *
-     * @param typeEnum
-     * @param dataIdOld
-     * @param dataIdNew
-     * @throws Exception
-     */
-    private void copyBasicTagging(EstateTaggingTypeEnum typeEnum, Integer dataIdOld, Integer dataIdNew) throws Exception {
-        BasicEstateTagging query = new BasicEstateTagging();
-        query.setApplyId(dataIdOld);
-        query.setType(typeEnum.getKey());
-        List<BasicEstateTagging> basicEstateTaggingList = basicEstateTaggingService.getBasicEstateTaggingList(query);
-        if (!ObjectUtils.isEmpty(basicEstateTaggingList)) {
-            for (BasicEstateTagging oo : basicEstateTaggingList) {
-                BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
-                BeanUtils.copyProperties(oo, basicEstateTagging);
-                basicEstateTagging.setId(null);
-                basicEstateTagging.setGmtCreated(null);
-                basicEstateTagging.setGmtModified(null);
-                basicEstateTagging.setApplyId(dataIdNew);
-                basicEstateTagging.setType(typeEnum.getKey());
-                basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);
-            }
-        }
-    }
-
-    /**
-     * 主楼栋 复制
+     * 楼栋复制
      *
      * @param buildingOld
      * @param estateId
@@ -442,107 +225,45 @@ public class BasicApplyTransferService {
             basicBuildingNew.setGmtModified(null);
             basicBuildingService.saveAndUpdateBasicBuilding(basicBuildingNew);
 
-            List<SysAttachmentDto> sysAttachmentDtoList = null;
-            List<BasicBuildingOutfit> outfitList = null;
-            List<BasicBuildingSurface> surfaceList = null;
-            List<BasicBuildingMaintenance> maintenanceList = null;
-            List<BasicBuildingFunction> functionList = null;
-            //-----------------------------||---------------------------
-            BasicBuildingOutfit queryOutfit = new BasicBuildingOutfit();
-            BasicBuildingSurface querySurface = new BasicBuildingSurface();
-            BasicBuildingMaintenance queryMaintenance = new BasicBuildingMaintenance();
-            BasicBuildingFunction queryFunction = new BasicBuildingFunction();
-            SysAttachmentDto queryFile = new SysAttachmentDto();
+            SysAttachmentDto example = new SysAttachmentDto();
+            example.setTableId(buildingOld.getId());
+            example.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
 
-            queryFunction.setBuildingId(buildingOld.getId());
-            queryMaintenance.setBuildingId(buildingOld.getId());
-            querySurface.setBuildingId(buildingOld.getId());
-            queryOutfit.setBuildingId(buildingOld.getId());
-            queryFile.setTableId(buildingOld.getId());
-            queryFile.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+            SysAttachmentDto attachmentDto = new SysAttachmentDto();
+            attachmentDto.setTableId(basicBuildingNew.getId());
+            baseAttachmentService.copyFtpAttachments(example,attachmentDto);
 
-            sysAttachmentDtoList = baseAttachmentService.getAttachmentList(queryFile);
-            outfitList = basicBuildingOutfitService.basicBuildingOutfitList(queryOutfit);
-            surfaceList = basicBuildingSurfaceService.basicBuildingSurfaceList(querySurface);
-            maintenanceList = basicBuildingMaintenanceService.basicBuildingMaintenanceList(queryMaintenance);
-            functionList = basicBuildingFunctionService.basicBuildingFunctionList(queryFunction);
+            StringBuilder sqlBuilder = new StringBuilder();
+            SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+            HashMap<String, String> map = Maps.newHashMap();
+            map.put("building_id", String.valueOf(basicBuildingNew.getId()));
+            map.put("creator", commonService.thisUserAccount());
+            synchronousDataDto.setFieldDefaultValue(map);
+            synchronousDataDto.setWhereSql("building_id=" + buildingOld.getId());
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//楼栋外装sql
 
-            if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
-                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                    SysAttachmentDto attachmentDto = new SysAttachmentDto();
-                    attachmentDto.setTableId(basicBuildingNew.getId());
-                    attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-                    baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
-                }
-            }
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//维护结构sql
 
-            this.copyBasicBuildingOutfit(outfitList, basicBuildingNew);
-            this.copyBasicBuildingMaintenance(maintenanceList, basicBuildingNew);
-            this.copyBasicBuildingSurface(surfaceList, basicBuildingNew);
-            this.copyBasicBuildingFunction(functionList, basicBuildingNew);
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//层面结构sql
+
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//建筑功能sql
+
+            sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.BUILDING, buildingOld.getApplyId(), appId));
+            ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         }
         return basicBuildingNew;
     }
 
-
-    private void copyBasicBuildingOutfit(List<BasicBuildingOutfit> list, BasicBuilding basicBuildingNew) throws Exception {
-        if (!ObjectUtils.isEmpty(list)) {
-            for (BasicBuildingOutfit oo : list) {
-                BasicBuildingOutfit basicBuildingOutfit = new BasicBuildingOutfit();
-                BeanUtils.copyProperties(oo, basicBuildingOutfit);
-                basicBuildingOutfit.setId(null);
-                basicBuildingOutfit.setGmtCreated(null);
-                basicBuildingOutfit.setGmtModified(null);
-                basicBuildingOutfit.setBuildingId(basicBuildingNew.getId());
-                basicBuildingOutfitService.saveAndUpdateBasicBuildingOutfit(basicBuildingOutfit);
-            }
-        }
-    }
-
-    private void copyBasicBuildingMaintenance(List<BasicBuildingMaintenance> list, BasicBuilding basicBuildingNew) throws Exception {
-        if (!ObjectUtils.isEmpty(list)) {
-            for (BasicBuildingMaintenance oo : list) {
-                BasicBuildingMaintenance basicBuildingMaintenance = new BasicBuildingMaintenance();
-                BeanUtils.copyProperties(oo, basicBuildingMaintenance);
-                basicBuildingMaintenance.setId(null);
-                basicBuildingMaintenance.setGmtCreated(null);
-                basicBuildingMaintenance.setGmtModified(null);
-                basicBuildingMaintenance.setBuildingId(basicBuildingNew.getId());
-                basicBuildingMaintenanceService.saveAndUpdateBasicBuildingMaintenance(basicBuildingMaintenance);
-            }
-        }
-    }
-
-    private void copyBasicBuildingSurface(List<BasicBuildingSurface> list, BasicBuilding basicBuildingNew) throws Exception {
-        if (!ObjectUtils.isEmpty(list)) {
-            for (BasicBuildingSurface oo : list) {
-                BasicBuildingSurface basicBuildingSurface = new BasicBuildingSurface();
-                BeanUtils.copyProperties(oo, basicBuildingSurface);
-                basicBuildingSurface.setId(null);
-                basicBuildingSurface.setGmtCreated(null);
-                basicBuildingSurface.setGmtModified(null);
-                basicBuildingSurface.setBuildingId(basicBuildingNew.getId());
-                basicBuildingSurfaceService.saveAndUpdateBasicBuildingSurface(basicBuildingSurface);
-            }
-        }
-    }
-
-    private void copyBasicBuildingFunction(List<BasicBuildingFunction> list, BasicBuilding basicBuildingNew) throws Exception {
-        if (!ObjectUtils.isEmpty(list)) {
-            for (BasicBuildingFunction oo : list) {
-                BasicBuildingFunction basicBuildingFunction = new BasicBuildingFunction();
-                BeanUtils.copyProperties(oo, basicBuildingFunction);
-                basicBuildingFunction.setId(null);
-                basicBuildingFunction.setGmtCreated(null);
-                basicBuildingFunction.setGmtModified(null);
-                basicBuildingFunction.setBuildingId(basicBuildingNew.getId());
-                basicBuildingFunctionService.saveAndUpdateBasicBuildingFunction(basicBuildingFunction);
-            }
-        }
-    }
-
     /**
-     * 单元 复制
+     * 单元复制
      *
      * @param unitOld
      * @param basicBuildingId
@@ -561,84 +282,59 @@ public class BasicApplyTransferService {
             basicUnitService.saveAndUpdateBasicUnit(basicUnitNew);
         }
         BasicUnitHuxing queryBasicUnitHuxing = new BasicUnitHuxing();
-        BasicUnitElevator queryBasicUnitElevator = new BasicUnitElevator();
-        BasicUnitDecorate queryBasicUnitDecorate = new BasicUnitDecorate();
         if (unitOld != null) {
             if (unitOld.getId() != null) {
                 queryBasicUnitHuxing.setUnitId(unitOld.getId());
-                queryBasicUnitElevator.setUnitId(unitOld.getId());
-                queryBasicUnitDecorate.setUnitId(unitOld.getId());
             }
         }
         List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingDao.basicUnitHuxingList(queryBasicUnitHuxing);
-        List<BasicUnitElevator> basicUnitElevatorList = basicUnitElevatorService.basicUnitElevatorList(queryBasicUnitElevator);
-        List<BasicUnitDecorate> basicUnitDecorateList = basicUnitDecorateService.basicUnitDecorateList(queryBasicUnitDecorate);
         if (basicUnitNew != null) {
             if (basicUnitNew.getId() != null) {
-                this.copyBasicDecorate(basicUnitDecorateList, basicUnitNew);
                 this.copyBasicHuxing(basicUnitHuxingList, basicUnitNew);
-                this.copyBasicElevator(basicUnitElevatorList, basicUnitNew);
+
+                StringBuilder sqlBuilder = new StringBuilder();
+                SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+                HashMap<String, String> map = Maps.newHashMap();
+                map.put("unit_id", String.valueOf(basicUnitNew.getId()));
+                map.put("creator", commonService.thisUserAccount());
+                synchronousDataDto.setFieldDefaultValue(map);
+                synchronousDataDto.setWhereSql("unit_id=" + unitOld.getId());
+                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
+                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//楼栋内装sql
+
+                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
+                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//配备电梯sql
+
+                sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.UNIT, unitOld.getApplyId(), appId));
+                ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
             }
         }
         return basicUnitNew;
     }
 
-    public void copyBasicDecorate(List<BasicUnitDecorate> basicUnitDecorateList, BasicUnit basicUnitNew) throws Exception {
-        if (!ObjectUtils.isEmpty(basicUnitDecorateList)) {
-            for (BasicUnitDecorate oo : basicUnitDecorateList) {
-                BasicUnitDecorate basicUnitDecorate = new BasicUnitDecorate();
-                BeanUtils.copyProperties(oo, basicUnitDecorate);
-                basicUnitDecorate.setId(null);
-                basicUnitDecorate.setGmtCreated(null);
-                basicUnitDecorate.setGmtModified(null);
-                basicUnitDecorate.setUnitId(basicUnitNew.getId());
-                basicUnitDecorateService.saveAndUpdateBasicUnitDecorate(basicUnitDecorate);
-            }
-        }
-    }
-
     public void copyBasicHuxing(List<BasicUnitHuxing> basicUnitHuxingList, BasicUnit basicUnitNew) throws Exception {
         if (!ObjectUtils.isEmpty(basicUnitHuxingList)) {
-            for (BasicUnitHuxing oo : basicUnitHuxingList) {
+            for (BasicUnitHuxing unitHuxing : basicUnitHuxingList) {
                 BasicUnitHuxing basicUnitHuxing = new BasicUnitHuxing();
-                BeanUtils.copyProperties(oo, basicUnitHuxing);
+                BeanUtils.copyProperties(unitHuxing, basicUnitHuxing);
                 basicUnitHuxing.setId(null);
                 basicUnitHuxing.setGmtCreated(null);
                 basicUnitHuxing.setGmtModified(null);
                 basicUnitHuxing.setUnitId(basicUnitNew.getId());
                 basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing);
 
-                List<SysAttachmentDto> sysAttachmentDtoList = null;
-                SysAttachmentDto query = new SysAttachmentDto();
-                query.setTableId(oo.getId());
-                query.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
-                sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
-                if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
-                    for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                        SysAttachmentDto attachmentDto = new SysAttachmentDto();
-                        attachmentDto.setTableId(basicUnitHuxing.getId());
-                        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
-                        baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
-                    }
-                }
+                SysAttachmentDto example = new SysAttachmentDto();
+                example.setTableId(unitHuxing.getId());
+                example.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
+
+                SysAttachmentDto attachmentDto = new SysAttachmentDto();
+                attachmentDto.setTableId(basicUnitNew.getId());
+                baseAttachmentService.copyFtpAttachments(example,attachmentDto);
             }
         }
     }
-
-    public void copyBasicElevator(List<BasicUnitElevator> basicUnitElevatorList, BasicUnit basicUnitNew) throws Exception {
-        if (!ObjectUtils.isEmpty(basicUnitElevatorList)) {
-            for (BasicUnitElevator oo : basicUnitElevatorList) {
-                BasicUnitElevator basicUnitElevator = new BasicUnitElevator();
-                BeanUtils.copyProperties(oo, basicUnitElevator);
-                basicUnitElevator.setId(null);
-                basicUnitElevator.setGmtCreated(null);
-                basicUnitElevator.setGmtModified(null);
-                basicUnitElevator.setUnitId(basicUnitNew.getId());
-                basicUnitElevatorService.saveAndUpdateBasicUnitElevator(basicUnitElevator);
-            }
-        }
-    }
-
 
     /**
      * 房屋 复制
@@ -649,7 +345,6 @@ public class BasicApplyTransferService {
      * @throws Exception
      */
     public BasicHouse copyBasicHouse(Integer appId, BasicHouse houseOld, BasicHouseTrading tradingOld, Integer unitId) throws Exception {
-
         BasicHouse basicHouseNew = new BasicHouse();
         BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
         if (houseOld != null) {
@@ -671,80 +366,74 @@ public class BasicApplyTransferService {
                 basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
             }
         }
-
-
-        List<BasicHouseTradingSell> basicHouseTradingSellList = null;
-        List<BasicHouseTradingLease> basicHouseTradingLeaseList = null;
         List<BasicHouseRoom> basicHouseRoomList = null;
-        List<BasicHouseWater> basicHouseWaterList = null;
-        List<BasicHouseIntelligent> basicHouseIntelligentList = null;
-        List<BasicHouseFaceStreet> basicHouseFaceStreetList = null;
-        List<BasicHouseEquipment> basicHouseEquipmentList = null;
         List<BasicHouseCorollaryEquipment> basicHouseCorollaryEquipmentList = null;
-        List<SysAttachmentDto> sysAttachmentDtoList = null;
-        List<BasicHouseWaterDrain> basicHouseWaterDrainList = null;
+
         List<BasicHouseDamagedDegree> basicHouseDamagedDegreeList = null;
-
-        BasicHouseTradingSell querySell = new BasicHouseTradingSell();
-        BasicHouseTradingLease queryLease = new BasicHouseTradingLease();
         BasicHouseRoom queryRoom = new BasicHouseRoom();
-        BasicHouseWater queryBasicHouseWater = new BasicHouseWater();
-        BasicHouseIntelligent queryBasicHouseIntelligent = new BasicHouseIntelligent();
-        BasicHouseFaceStreet queryBasicHouseFaceStreet = new BasicHouseFaceStreet();
-        BasicHouseEquipment queryBasicHouseEquipment = new BasicHouseEquipment();
         BasicHouseCorollaryEquipment queryBasicHouseCorollaryEquipment = new BasicHouseCorollaryEquipment();
-        BasicHouseWaterDrain queryWaterDrain = new BasicHouseWaterDrain();
         BasicHouseDamagedDegree queryHouseDamagedDegree = new BasicHouseDamagedDegree();
-        SysAttachmentDto queryFile = new SysAttachmentDto();
 
-        if (houseOld != null) {
-            if (houseOld.getId() != null) {
-                queryLease.setHouseId(houseOld.getId());
-                querySell.setHouseId(houseOld.getId());
-                queryRoom.setHouseId(houseOld.getId());
-                queryBasicHouseWater.setHouseId(houseOld.getId());
-                queryBasicHouseIntelligent.setHouseId(houseOld.getId());
-                queryBasicHouseFaceStreet.setHouseId(houseOld.getId());
-                queryBasicHouseEquipment.setHouseId(houseOld.getId());
-                queryBasicHouseCorollaryEquipment.setHouseId(houseOld.getId());
-                queryFile.setTableId(houseOld.getId());
-                queryWaterDrain.setHouseId(houseOld.getId());
-                queryHouseDamagedDegree.setHouseId(houseOld.getId());
-                queryFile.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
-            }
+        if (houseOld != null&&houseOld.getId() != null) {
+            queryRoom.setHouseId(houseOld.getId());
+            queryBasicHouseCorollaryEquipment.setHouseId(houseOld.getId());
+            queryHouseDamagedDegree.setHouseId(houseOld.getId());
         }
 
-        sysAttachmentDtoList = baseAttachmentService.getAttachmentList(queryFile);
-        basicHouseTradingSellList = basicHouseTradingSellService.basicHouseTradingSells(querySell);
-        basicHouseTradingLeaseList = basicHouseTradingLeaseService.basicHouseTradingLeaseList(queryLease);
+        SysAttachmentDto example = new SysAttachmentDto();
+        example.setTableId(houseOld.getId());
+        example.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
+        SysAttachmentDto attachmentDto = new SysAttachmentDto();
+        attachmentDto.setTableId(basicHouseNew.getId());
+        baseAttachmentService.copyFtpAttachments(example,attachmentDto);
+
         basicHouseRoomList = basicHouseRoomService.basicHouseRoomList(queryRoom);
-        basicHouseWaterList = basicHouseWaterService.basicHouseWaterList(queryBasicHouseWater);
-        basicHouseIntelligentList = basicHouseIntelligentService.basicHouseIntelligentList(queryBasicHouseIntelligent);
-        basicHouseFaceStreetList = basicHouseFaceStreetService.basicHouseFaceStreetList(queryBasicHouseFaceStreet);
-        basicHouseEquipmentList = basicHouseEquipmentService.basicHouseEquipmentList(queryBasicHouseEquipment);
         basicHouseCorollaryEquipmentList = basicHouseCorollaryEquipmentService.basicHouseCorollaryEquipmentList(queryBasicHouseCorollaryEquipment);
-        basicHouseWaterDrainList = basicHouseWaterDrainService.basicHouseWaterDrainList(queryWaterDrain);
         basicHouseDamagedDegreeList = basicHouseDamagedDegreeDao.getDamagedDegreeList(queryHouseDamagedDegree);
 
         if (basicHouseNew != null) {
             if (basicHouseNew.getId() != null) {
-                this.copyBasicSellAndLease(basicHouseTradingSellList, basicHouseTradingLeaseList, basicHouseNew);
                 this.copyBasicHouseRoom(basicHouseRoomList, basicHouseNew);
-                this.copyBasicWater(basicHouseWaterList, basicHouseNew);
-                this.copyBasicWaterDrain(basicHouseWaterDrainList, basicHouseNew);
-                this.copyBasicIntelligent(basicHouseIntelligentList, basicHouseNew);
-                this.copyBasicFaceStreet(basicHouseFaceStreetList, basicHouseNew);
-                this.copyBasicEquipment(basicHouseEquipmentList, basicHouseNew);
                 this.copyBasicCorollaryEquipment(basicHouseCorollaryEquipmentList, basicHouseNew);
                 this.copyBasicDamagedDegree(basicHouseDamagedDegreeList, basicHouseNew);
-                if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
-                    for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                        SysAttachmentDto attachmentDto = new SysAttachmentDto();
-                        attachmentDto.setTableId(basicHouseNew.getId());
-                        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
-                        baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
-                    }
-                }
+
+                StringBuilder sqlBuilder = new StringBuilder();
+                SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+                HashMap<String, String> map = Maps.newHashMap();
+                map.put("house_id", String.valueOf(basicHouseNew.getId()));
+                map.put("creator", commonService.thisUserAccount());
+                synchronousDataDto.setFieldDefaultValue(map);
+                synchronousDataDto.setWhereSql("house_id=" + houseOld.getId());
+                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class));
+                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class));
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//房屋出售sql
+
+                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class));
+                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class));
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//房屋出租sql
+
+                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseWater.class));
+                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseWater.class));
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//供水sql
+
+                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class));
+                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class));
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//排水sql
+
+                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class));
+                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class));
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//电力通讯网络sql
+
+                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class));
+                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class));
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//临路状况sql
+
+                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
+                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//设备sql
+
+                sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.UNIT, houseOld.getApplyId(), appId));
+                ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
             }
         }
 
@@ -764,136 +453,16 @@ public class BasicApplyTransferService {
                     basicHouseCorollaryEquipment.setHouseId(basicHouseNew.getId());
                     basicHouseCorollaryEquipmentService.saveAndUpdateBasicHouseCorollaryEquipment(basicHouseCorollaryEquipment);
 
-                    List<SysAttachmentDto> sysAttachmentDtoList = null;
-                    SysAttachmentDto queryFile = new SysAttachmentDto();
-                    queryFile.setTableId(oo.getId());
-                    queryFile.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class));
-                    sysAttachmentDtoList = baseAttachmentService.getAttachmentList(queryFile);
-                    if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
-                        for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                            SysAttachmentDto attachmentDto = new SysAttachmentDto();
-                            attachmentDto.setTableId(basicHouseCorollaryEquipment.getId());
-                            attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class));
-                            baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
-                        }
-                    }
+                    SysAttachmentDto example = new SysAttachmentDto();
+                    example.setTableId(oo.getId());
+                    example.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class));
+                    SysAttachmentDto attachmentDto = new SysAttachmentDto();
+                    attachmentDto.setTableId(basicHouseCorollaryEquipment.getId());
+                    baseAttachmentService.copyFtpAttachments(example,attachmentDto);
                 } catch (Exception e1) {
                     logger.error(e1.getMessage(), e1);
                 }
             });
-        }
-    }
-
-    private void copyBasicEquipment(List<BasicHouseEquipment> basicHouseEquipmentList, BasicHouse basicHouseNew) throws Exception {
-        if (!ObjectUtils.isEmpty(basicHouseEquipmentList)) {
-            basicHouseEquipmentList.forEach(oo -> {
-                try {
-                    BasicHouseEquipment basicHouseEquipment = new BasicHouseEquipment();
-                    BeanUtils.copyProperties(oo, basicHouseEquipment);
-                    basicHouseEquipment.setId(null);
-                    basicHouseEquipment.setGmtCreated(null);
-                    basicHouseEquipment.setGmtModified(null);
-                    basicHouseEquipment.setHouseId(basicHouseNew.getId());
-                    basicHouseEquipmentService.saveAndUpdateBasicHouseEquipment(basicHouseEquipment);
-                } catch (Exception e1) {
-                    logger.error(e1.getMessage(), e1);
-                }
-            });
-        }
-    }
-
-    private void copyBasicFaceStreet(List<BasicHouseFaceStreet> basicHouseFaceStreetList, BasicHouse basicHouseNew) throws Exception {
-        if (!ObjectUtils.isEmpty(basicHouseFaceStreetList)) {
-            basicHouseFaceStreetList.forEach(oo -> {
-                try {
-                    BasicHouseFaceStreet basicHouseFaceStreet = new BasicHouseFaceStreet();
-                    BeanUtils.copyProperties(oo, basicHouseFaceStreet);
-                    basicHouseFaceStreet.setId(null);
-                    basicHouseFaceStreet.setGmtCreated(null);
-                    basicHouseFaceStreet.setGmtModified(null);
-                    basicHouseFaceStreet.setHouseId(basicHouseNew.getId());
-                    basicHouseFaceStreetService.saveAndUpdateBasicHouseFaceStreet(basicHouseFaceStreet);
-                } catch (Exception e1) {
-                    logger.error(e1.getMessage(), e1);
-                }
-            });
-        }
-    }
-
-    private void copyBasicIntelligent(List<BasicHouseIntelligent> basicHouseIntelligentList, BasicHouse basicHouseNew) throws Exception {
-        if (!ObjectUtils.isEmpty(basicHouseIntelligentList)) {
-            basicHouseIntelligentList.forEach(oo -> {
-                try {
-                    BasicHouseIntelligent basicHouseIntelligent = new BasicHouseIntelligent();
-                    BeanUtils.copyProperties(oo, basicHouseIntelligent);
-                    basicHouseIntelligent.setId(null);
-                    basicHouseIntelligent.setGmtCreated(null);
-                    basicHouseIntelligent.setGmtModified(null);
-                    basicHouseIntelligent.setHouseId(basicHouseNew.getId());
-                    basicHouseIntelligentService.saveAndUpdateBasicHouseIntelligent(basicHouseIntelligent);
-                } catch (Exception e1) {
-                    logger.error(e1.getMessage(), e1);
-                }
-            });
-        }
-    }
-
-    private void copyBasicWater(List<BasicHouseWater> basicHouseWaterList, BasicHouse basicHouseNew) throws Exception {
-        if (!ObjectUtils.isEmpty(basicHouseWaterList)) {
-            basicHouseWaterList.forEach(oo -> {
-                try {
-                    BasicHouseWater basicHouseWater = new BasicHouseWater();
-                    BeanUtils.copyProperties(oo, basicHouseWater);
-                    basicHouseWater.setId(null);
-                    basicHouseWater.setGmtCreated(null);
-                    basicHouseWater.setGmtModified(null);
-                    basicHouseWater.setHouseId(basicHouseNew.getId());
-                    basicHouseWaterService.saveAndUpdateBasicHouseWater(basicHouseWater);
-                } catch (Exception e1) {
-                    logger.error(e1.getMessage(), e1);
-                }
-            });
-        }
-    }
-
-    private void copyBasicWaterDrain(List<BasicHouseWaterDrain> basicHouseWaterDrainList, BasicHouse basicHouseNew) throws Exception {
-        if (!ObjectUtils.isEmpty(basicHouseWaterDrainList)) {
-            for (BasicHouseWaterDrain houseWaterDrain : basicHouseWaterDrainList) {
-                BasicHouseWaterDrain basicHouseWaterDrain = new BasicHouseWaterDrain();
-                BeanUtils.copyProperties(houseWaterDrain, basicHouseWaterDrain);
-                basicHouseWaterDrain.setId(null);
-                basicHouseWaterDrain.setGmtCreated(null);
-                basicHouseWaterDrain.setGmtModified(null);
-                basicHouseWaterDrain.setHouseId(basicHouseNew.getId());
-                basicHouseWaterDrainService.saveAndUpdateBasicHouseWaterDrain(basicHouseWaterDrain);
-            }
-        }
-    }
-
-    private void copyBasicSellAndLease(List<BasicHouseTradingSell> basicHouseTradingSellList, List<BasicHouseTradingLease> basicHouseTradingLeaseList, BasicHouse basicHouseNew) throws Exception {
-        if (!ObjectUtils.isEmpty(basicHouseTradingSellList)) {
-            for (BasicHouseTradingSell oo : basicHouseTradingSellList) {
-                BasicHouseTradingSell basicHouseTradingSell = new BasicHouseTradingSell();
-                BeanUtils.copyProperties(oo, basicHouseTradingSell);
-                basicHouseTradingSell.setId(null);
-                basicHouseTradingSell.setGmtCreated(null);
-                basicHouseTradingSell.setGmtModified(null);
-                basicHouseTradingSell.setHouseId(basicHouseNew.getId());
-                basicHouseTradingSellService.saveAndUpdateBasicHouseTradingSell(basicHouseTradingSell);
-            }
-        }
-
-        if (!ObjectUtils.isEmpty(basicHouseTradingLeaseList)) {
-            for (BasicHouseTradingLease oo : basicHouseTradingLeaseList) {
-                BasicHouseTradingLease basicHouseTradingLease = null;
-                basicHouseTradingLease = new BasicHouseTradingLease();
-                BeanUtils.copyProperties(oo, basicHouseTradingLease);
-                basicHouseTradingLease.setId(null);
-                basicHouseTradingLease.setGmtCreated(null);
-                basicHouseTradingLease.setGmtModified(null);
-                basicHouseTradingLease.setHouseId(basicHouseNew.getId());
-                basicHouseTradingLeaseService.saveAndUpdateBasicHouseTradingLease(basicHouseTradingLease);
-            }
         }
     }
 
@@ -967,7 +536,7 @@ public class BasicApplyTransferService {
         basicApplycopy.setDraftFlag(true);
         List<BasicApply> list = basicApplyDao.getBasicApplyList(basicApplycopy);
         //是否存在已复制数据
-        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(list)) {
+        if (CollectionUtils.isNotEmpty(list)) {
             return list.get(0);
         }
         if (basicApply != null) {
@@ -983,34 +552,10 @@ public class BasicApplyTransferService {
             BasicHouse basicHouseOld = publicBasicService.getBasicHouseVoByAppId(basicApply.getId());
             BasicHouseTrading basicTradingOld = publicBasicService.getBasicHouseTradingByAppId(basicApply.getId());
 
-            //处理楼盘
-            BasicEstate basicEstateNew = this.copyBasicEstate(basicApplycopy.getId(), basicEstateOld, basicEstateLandStateOld);
-            Integer estateId = basicEstateNew.getId();
-            //回写版块到基础数据中
-            if (basicApply.getWriteBackBlockFlag() == Boolean.TRUE) {
-                DataBlock dataBlock = new DataBlock();
-                dataBlock.setProvince(basicEstateNew.getProvince());
-                dataBlock.setCity(basicEstateNew.getCity());
-                dataBlock.setDistrict(basicEstateNew.getDistrict());
-                dataBlock.setName(basicEstateNew.getName());
-                dataBlock.setCreator(basicEstateNew.getCreator());
-                dataBlockService.saveAndUpdateDataBlock(dataBlock);
-            }
-            this.copyBasicTagging(EstateTaggingTypeEnum.ESTATE, basicApply.getId(), basicApplycopy.getId());
-
-            //处理楼栋
-            BasicBuilding basicBuilding = this.copyBasicBuilding(basicApplycopy.getId(), basicBuildingOld, estateId);
-            Integer buildingMainId = basicBuilding.getId();
-            this.copyBasicTagging(EstateTaggingTypeEnum.BUILDING, basicApply.getId(), basicApplycopy.getId());
-
-            //处理单元
-            BasicUnit basicUnit = this.copyBasicUnit(basicApplycopy.getId(), basicUnitOld, buildingMainId);
-            Integer unitId = basicUnit.getId();
-            this.copyBasicTagging(EstateTaggingTypeEnum.UNIT, basicApply.getId(), basicApplycopy.getId());
-
-            //处理房屋
-            BasicHouse basicHouse = this.copyBasicHouse(basicApplycopy.getId(), basicHouseOld, basicTradingOld, unitId);
-            this.copyBasicTagging(EstateTaggingTypeEnum.HOUSE, basicApply.getId(), basicApplycopy.getId());
+            BasicEstate basicEstateNew = this.copyBasicEstate(basicApplycopy.getId(), basicEstateOld, basicEstateLandStateOld);//处理楼盘
+            BasicBuilding basicBuilding = this.copyBasicBuilding(basicApplycopy.getId(), basicBuildingOld, basicEstateNew.getId());//处理楼栋
+            BasicUnit basicUnit = this.copyBasicUnit(basicApplycopy.getId(), basicUnitOld, basicBuilding.getId());//处理单元
+            BasicHouse basicHouse = this.copyBasicHouse(basicApplycopy.getId(), basicHouseOld, basicTradingOld, basicUnit.getId());//处理房屋
 
             //补全数据
             basicApplycopy.setPlanDetailsId(null);
@@ -1057,32 +602,40 @@ public class BasicApplyTransferService {
         basicApplyService.saveBasicApply(targetBasicApply);
 
         //取数据
-        BasicEstate basicEstateOld = publicBasicService.getBasicEstateByAppId(sourceBasicApply.getId());
-        BasicEstateLandState basicEstateLandStateOld = publicBasicService.getEstateLandStateByAppId(sourceBasicApply.getId());
-        BasicBuilding basicBuildingOld = publicBasicService.getBasicBuildingByAppId(sourceBasicApply.getId());
-        BasicUnit basicUnitOld = publicBasicService.getBasicUnitByAppId(sourceBasicApply.getId());
-        BasicHouse basicHouseOld = publicBasicService.getBasicHouseVoByAppId(sourceBasicApply.getId());
-        BasicHouseTrading basicTradingOld = publicBasicService.getBasicHouseTradingByAppId(sourceBasicApply.getId());
+        BasicEstate basicEstateSource = publicBasicService.getBasicEstateByAppId(sourceBasicApply.getId());
+        BasicEstateLandState basicEstateLandStateSource = publicBasicService.getEstateLandStateByAppId(sourceBasicApply.getId());
+        BasicBuilding basicBuildingSource = publicBasicService.getBasicBuildingByAppId(sourceBasicApply.getId());
+        BasicUnit basicUnitSource = publicBasicService.getBasicUnitByAppId(sourceBasicApply.getId());
+        BasicHouse basicHouseSource = publicBasicService.getBasicHouseVoByAppId(sourceBasicApply.getId());
+        BasicHouseTrading basicTradingSource = publicBasicService.getBasicHouseTradingByAppId(sourceBasicApply.getId());
 
-        //处理楼盘
-        BasicEstate basicEstateNew = this.copyBasicEstate(targetBasicApply.getId(), basicEstateOld, basicEstateLandStateOld);
-        Integer estateId = basicEstateNew.getId();
-        this.copyBasicTagging(EstateTaggingTypeEnum.ESTATE, sourceBasicApply.getId(), targetBasicApply.getId());
-
-        //处理楼栋
-        BasicBuilding basicBuilding = this.copyBasicBuilding(targetBasicApply.getId(), basicBuildingOld, estateId);
-        Integer buildingMainId = basicBuilding.getId();
-        this.copyBasicTagging(EstateTaggingTypeEnum.BUILDING, sourceBasicApply.getId(), targetBasicApply.getId());
-
-        //处理单元
-        BasicUnit basicUnit = this.copyBasicUnit(targetBasicApply.getId(), basicUnitOld, buildingMainId);
-        Integer unitId = basicUnit.getId();
-        this.copyBasicTagging(EstateTaggingTypeEnum.UNIT, sourceBasicApply.getId(), targetBasicApply.getId());
-
-        //处理房屋
-        BasicHouse basicHouse = this.copyBasicHouse(targetBasicApply.getId(), basicHouseOld, basicTradingOld, unitId);
-        this.copyBasicTagging(EstateTaggingTypeEnum.HOUSE, sourceBasicApply.getId(), targetBasicApply.getId());
-
+        BasicEstate basicEstateNew = this.copyBasicEstate(targetBasicApply.getId(), basicEstateSource, basicEstateLandStateSource);//处理楼盘
+        BasicBuilding basicBuilding = this.copyBasicBuilding(targetBasicApply.getId(), basicBuildingSource, basicEstateNew.getId());//处理楼栋
+        BasicUnit basicUnit = this.copyBasicUnit(targetBasicApply.getId(), basicUnitSource, basicBuilding.getId());//处理单元
+        this.copyBasicHouse(targetBasicApply.getId(), basicHouseSource, basicTradingSource, basicUnit.getId());//处理房屋
         return targetBasicApply;
+    }
+
+
+    /**
+     * 标记复制
+     *
+     * @param typeEnum
+     * @param applyIdSource
+     * @param applyTarget
+     * @throws Exception
+     */
+    private String copyBasicTagging(EstateTaggingTypeEnum typeEnum, Integer applyIdSource, Integer applyTarget) throws Exception {
+        StringBuilder sqlBuilder = new StringBuilder();
+        SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+        synchronousDataDto.setWhereSql(String.format("apply_id=%s and type='%s'", applyIdSource, typeEnum.getKey()));
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateTagging.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateTagging.class));
+        HashMap<String, String> map = Maps.newHashMap();
+        map.put("apply_id", String.valueOf(applyTarget));
+        map.put("creator", commonService.thisUserAccount());
+        synchronousDataDto.setFieldDefaultValue(map);
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");
+        return sqlBuilder.toString();
     }
 }

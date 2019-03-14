@@ -65,11 +65,6 @@ public class BasicUnitDecorateController {
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
     public BootstrapTableVo getBootstrapTableVo(BasicUnitDecorate basicUnitDecorate, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
         try {
-            if (basicUnitDecorate != null){
-                if (!approval) {
-                    basicUnitDecorate.setCreator(commonService.thisUserAccount());
-                }
-            }
             return basicUnitDecorateService.getBootstrapTableVo(basicUnitDecorate);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);

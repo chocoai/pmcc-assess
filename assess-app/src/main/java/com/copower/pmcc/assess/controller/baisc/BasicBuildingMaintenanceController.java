@@ -65,11 +65,6 @@ public class BasicBuildingMaintenanceController {
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
     public BootstrapTableVo getBootstrapTableVo(BasicBuildingMaintenance basicBuildingMaintenance, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
         try {
-            if (basicBuildingMaintenance != null){
-                if (!approval) {
-                    basicBuildingMaintenance.setCreator(commonService.thisUserAccount());
-                }
-            }
             return basicBuildingMaintenanceService.getBootstrapTableVo(basicBuildingMaintenance);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);

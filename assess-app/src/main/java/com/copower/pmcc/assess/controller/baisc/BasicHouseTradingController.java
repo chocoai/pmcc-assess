@@ -65,11 +65,6 @@ public class BasicHouseTradingController {
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
     public BootstrapTableVo getBootstrapTableVo(BasicHouseTrading basicHouseTrading, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
         try {
-            if (basicHouseTrading != null){
-                if (!approval) {
-                    basicHouseTrading.setCreator(commonService.thisUserAccount());
-                }
-            }
             return basicHouseTradingService.getBootstrapTableVo(basicHouseTrading);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);

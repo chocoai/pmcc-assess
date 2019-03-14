@@ -3,12 +3,10 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitDao;
-import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
-import com.copower.pmcc.assess.dal.basis.entity.BasicUnitDecorate;
-import com.copower.pmcc.assess.dal.basis.entity.BasicUnitElevator;
-import com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.cases.CaseUnitHuxingVo;
+import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -64,7 +62,7 @@ public class BasicUnitService {
     @Autowired
     private CaseUnitDecorateService caseUnitDecorateService;
     @Autowired
-    private BasicEstateTaggingService basicEstateTaggingService;
+    private DdlMySqlAssist ddlMySqlAssist;
     @Autowired
     private CaseEstateTaggingService caseEstateTaggingService;
     @Autowired
@@ -153,49 +151,15 @@ public class BasicUnitService {
         List<BasicUnit> unitList = basicUnitDao.basicUnitList(where);
         if (CollectionUtils.isEmpty(unitList)) return;
         BasicUnit unit = unitList.get(0);
-        BasicUnitHuxing queryBasicUnitHuxing = new BasicUnitHuxing();
-        BasicUnitElevator queryBasicUnitElevator = new BasicUnitElevator();
-        BasicUnitDecorate queryBasicUnitDecorate = new BasicUnitDecorate();
 
-        queryBasicUnitHuxing.setUnitId(unit.getId());
-        queryBasicUnitElevator.setUnitId(unit.getId());
-        queryBasicUnitDecorate.setUnitId(unit.getId());
+        StringBuilder sqlBulder = new StringBuilder();
+        String baseSql = "delete from %s where unit_id=%s";
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class), unit.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class), unit.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class), unit.getId())).append(";");
 
-        queryBasicUnitHuxing.setCreator(commonService.thisUserAccount());
-        queryBasicUnitElevator.setCreator(commonService.thisUserAccount());
-        queryBasicUnitDecorate.setCreator(commonService.thisUserAccount());
-
-        List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingService.basicUnitHuxingList(queryBasicUnitHuxing);
-        List<BasicUnitElevator> basicUnitElevatorList = basicUnitElevatorService.basicUnitElevatorList(queryBasicUnitElevator);
-        List<BasicUnitDecorate> basicUnitDecorateList = basicUnitDecorateService.basicUnitDecorateList(queryBasicUnitDecorate);
-
-        if (!ObjectUtils.isEmpty(basicUnitHuxingList)) {
-            for (BasicUnitHuxing oo : basicUnitHuxingList) {
-                basicUnitHuxingService.deleteBasicUnitHuxing(oo.getId());
-                //删除户型相关附件
-                SysAttachmentDto query = new SysAttachmentDto();
-                query.setTableId(oo.getId());
-                query.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
-                List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
-                if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
-                    for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                        baseAttachmentService.deleteAttachment(sysAttachmentDto.getId());
-                    }
-                }
-            }
-        }
-        if (!ObjectUtils.isEmpty(basicUnitElevatorList)) {
-            for (BasicUnitElevator oo : basicUnitElevatorList) {
-                basicUnitElevatorService.deleteBasicUnitElevator(oo.getId());
-            }
-        }
-        if (!ObjectUtils.isEmpty(basicUnitDecorateList)) {
-            for (BasicUnitDecorate oo : basicUnitDecorateList) {
-                basicUnitDecorateService.deleteBasicUnitDecorate(oo.getId());
-            }
-        }
-
-        basicUnitDao.deleteBasicUnit(unit.getId());
+        sqlBulder.append(String.format("delete from %s where id=%s", FormatUtils.entityNameConvertToTableName(BasicUnit.class), unit.getId())).append(";");
+        ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
 

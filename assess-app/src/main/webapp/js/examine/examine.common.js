@@ -39,8 +39,7 @@ basicCommon.update = function (data, callback) {
 };
 
 basicCommon.getApplyId = function () {
-    var data = this.getSurveyJson();
-    return data.basicApplyId;
+    return basicCommon.basicApplyForm.find('[name=id]').val();
 };
 
 basicCommon.getPlanDetailsId = function () {

@@ -65,11 +65,6 @@ public class BasicEstateSupplyController {
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
     public BootstrapTableVo getBootstrapTableVo(BasicEstateSupply basicEstateSupply, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
         try {
-            if (basicEstateSupply != null){
-                if (!approval) {
-                    basicEstateSupply.setCreator(commonService.thisUserAccount());
-                }
-            }
             return basicEstateSupplyService.getBootstrapTableVo(basicEstateSupply);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);

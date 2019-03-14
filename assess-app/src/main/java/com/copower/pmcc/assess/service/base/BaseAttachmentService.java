@@ -9,6 +9,7 @@ import com.copower.pmcc.erp.common.utils.*;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.copower.pmcc.erp.constant.CacheConstant;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -228,6 +229,22 @@ public class BaseAttachmentService {
      */
     public SysAttachmentDto copyFtpAttachment(Integer attachmentId, SysAttachmentDto baseAttachment) throws Exception {
         return erpRpcAttachmentService.copyFtpAttachment(attachmentId, baseAttachment);
+    }
+
+    /**
+     * 拷贝FTP附件
+     *
+     * @param example
+     * @param sysAttachmentDto
+     * @return
+     */
+    public void copyFtpAttachments(SysAttachmentDto example, SysAttachmentDto sysAttachmentDto) throws Exception {
+        List<SysAttachmentDto> attachmentList = this.getAttachmentList(example);
+        if (CollectionUtils.isNotEmpty(attachmentList)) {
+            for (SysAttachmentDto dto : attachmentList) {
+                this.copyFtpAttachment(dto.getId(), sysAttachmentDto);
+            }
+        }
     }
 
     /**

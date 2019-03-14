@@ -67,16 +67,6 @@ public class BasicHouseTradingLeaseAndSellController {
             basicHouseTradingSell.setHouseId(0);
         }
         try {
-            if (basicHouseTradingSell != null){
-                if (!approval) {
-                    basicHouseTradingSell.setCreator(commonService.thisUserAccount());
-                }
-            }
-            if (basicHouseTradingLease != null){
-                if (!approval) {
-                    basicHouseTradingLease.setCreator(commonService.thisUserAccount());
-                }
-            }
             vo = basicHouseTradingLeaseAndSellDtoService.getVoList(type, basicHouseTradingLease, basicHouseTradingSell);
         } catch (Exception e1) {
             logger.error(e1.getMessage(),e1);

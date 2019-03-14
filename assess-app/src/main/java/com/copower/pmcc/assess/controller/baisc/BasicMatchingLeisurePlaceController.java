@@ -77,11 +77,6 @@ public class BasicMatchingLeisurePlaceController {
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
     public BootstrapTableVo getBootstrapTableVo(BasicMatchingLeisurePlace basicMatchingLeisurePlace, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval) {
         try {
-            if (basicMatchingLeisurePlace != null) {
-                if (!approval) {
-                    basicMatchingLeisurePlace.setCreator(commonService.thisUserAccount());
-                }
-            }
             return basicMatchingLeisurePlaceService.getBootstrapTableVo(basicMatchingLeisurePlace);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);

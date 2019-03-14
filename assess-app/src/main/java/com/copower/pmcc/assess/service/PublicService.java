@@ -195,13 +195,15 @@ public class PublicService {
             }
         }
 
-        if (synchronousDataDto.getFieldMapping() != null) {
+        if (synchronousDataDto.getFieldMapping() != null) {//自建对应关系
             resultMap.putAll(synchronousDataDto.getFieldMapping());
         }
 
         if (synchronousDataDto.getFieldDefaultValue() != null) {
             for (Map.Entry<String, String> stringEntry : synchronousDataDto.getFieldDefaultValue().entrySet()) {
-                resultMap.put(stringEntry.getKey(), String.format("'%s'", stringEntry.getValue()));
+                if (targeFieldList.contains(stringEntry.getKey())) {
+                    resultMap.put(stringEntry.getKey(), String.format("'%s'", stringEntry.getValue()));
+                }
             }
         }
         StringBuilder sourceBuilder = new StringBuilder();

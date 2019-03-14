@@ -77,11 +77,6 @@ public class BasicMatchingTrafficController {
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
     public BootstrapTableVo getBootstrapTableVo(BasicMatchingTraffic basicMatchingTraffic, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
         try {
-            if (basicMatchingTraffic != null){
-                if (!approval) {
-                    basicMatchingTraffic.setCreator(commonService.thisUserAccount());
-                }
-            }
             return basicMatchingTrafficService.getBootstrapTableVo(basicMatchingTraffic);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);

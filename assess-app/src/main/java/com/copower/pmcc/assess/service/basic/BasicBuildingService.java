@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
+import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.*;
@@ -73,6 +74,8 @@ public class BasicBuildingService {
     private CaseEstateTaggingService caseEstateTaggingService;
     @Autowired
     private DataBuildingNewRateService dataBuildingNewRateService;
+    @Autowired
+    private DdlMySqlAssist ddlMySqlAssist;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -157,7 +160,7 @@ public class BasicBuildingService {
      * @return
      * @throws Exception
      */
-    public BasicBuilding getBasicBuildingByApplyId(Integer applyId)  {
+    public BasicBuilding getBasicBuildingByApplyId(Integer applyId) {
         BasicBuilding where = new BasicBuilding();
         where.setApplyId(applyId);
         if (applyId == null || applyId == 0) {
@@ -189,11 +192,11 @@ public class BasicBuildingService {
         vo.setBuildingStructureTypeName(baseDataDicService.getNameById(basicBuilding.getBuildingStructureType()));
         vo.setBuildingStructureCategoryName(baseDataDicService.getNameById(basicBuilding.getBuildingStructureCategory()));
         vo.setResidenceUseYearName(baseDataDicService.getNameById(basicBuilding.getResidenceUseYear()));
-        if(basicBuilding.getCompletedTimeType() != null){
+        if (basicBuilding.getCompletedTimeType() != null) {
             vo.setCompletedTimeTypeName(baseDataDicService.getDataDicById(basicBuilding.getCompletedTimeType()).getName());
         }
-        if (basicBuilding.getIndustryUseYear() != null){
-            if (dataBuildingNewRateService.getByiDdataBuildingNewRate(basicBuilding.getIndustryUseYear()) != null){
+        if (basicBuilding.getIndustryUseYear() != null) {
+            if (dataBuildingNewRateService.getByiDdataBuildingNewRate(basicBuilding.getIndustryUseYear()) != null) {
                 vo.setIndustryUseYearName(dataBuildingNewRateService.getByiDdataBuildingNewRate(basicBuilding.getIndustryUseYear()).getBuildingStructure());
             }
         }
@@ -245,35 +248,15 @@ public class BasicBuildingService {
         if (CollectionUtils.isEmpty(basicBuildingList)) return;
         basicBuilding = basicBuildingList.get(0);
 
-        List<BasicBuildingFunction> basicBuildingFunctionList = null;
-        List<BasicBuildingMaintenance> basicBuildingMaintenanceList = null;
-        List<BasicBuildingOutfit> basicBuildingOutfitList = null;
-        List<BasicBuildingSurface> basicBuildingSurfaceList = null;
-        BasicBuildingSurface querySurface = new BasicBuildingSurface();
-        BasicBuildingFunction queryFunction = new BasicBuildingFunction();
-        BasicBuildingOutfit queryOutfit = new BasicBuildingOutfit();
-        BasicBuildingMaintenance queryMaintenance = new BasicBuildingMaintenance();
-        querySurface.setBuildingId(basicBuilding.getId());
-        queryFunction.setBuildingId(basicBuilding.getId());
-        queryOutfit.setBuildingId(basicBuilding.getId());
-        queryMaintenance.setBuildingId(basicBuilding.getId());
+        StringBuilder sqlBulder = new StringBuilder();
+        String baseSql = "delete from %s where building_id=%s";
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class), basicBuilding.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class), basicBuilding.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class), basicBuilding.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class), basicBuilding.getId())).append(";");
 
-        basicBuildingSurfaceList = basicBuildingSurfaceService.basicBuildingSurfaceList(querySurface);
-        basicBuildingFunctionList = basicBuildingFunctionService.basicBuildingFunctionList(queryFunction);
-        basicBuildingOutfitList = basicBuildingOutfitService.basicBuildingOutfitList(queryOutfit);
-        basicBuildingMaintenanceList = basicBuildingMaintenanceService.basicBuildingMaintenanceList(queryMaintenance);
-        for (BasicBuildingSurface oo : basicBuildingSurfaceList) {
-            basicBuildingSurfaceService.removeBasicBuildingSurface(oo);
-        }
-        for (BasicBuildingFunction oo : basicBuildingFunctionList) {
-            basicBuildingFunctionService.removeBasicBuildingFunction(oo);
-        }
-        for (BasicBuildingOutfit oo : basicBuildingOutfitList) {
-            basicBuildingOutfitService.removeBasicBuildingOutfit(oo);
-        }
-        for (BasicBuildingMaintenance oo : basicBuildingMaintenanceList) {
-            basicBuildingMaintenanceService.removeBasicBuildingMaintenance(oo);
-        }
+        sqlBulder.append(String.format("delete from %s where id=%s", FormatUtils.entityNameConvertToTableName(BasicBuilding.class), basicBuilding.getId())).append(";");
+        ddlMySqlAssist.customTableDdl(sqlBulder.toString());
 
         //清理附件
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
@@ -286,7 +269,6 @@ public class BasicBuildingService {
                 baseAttachmentService.deleteAttachment(oo.getId());
             }
         }
-        basicBuildingDao.deleteBasicBuilding(basicBuilding.getId());
     }
 
     /**
@@ -328,7 +310,7 @@ public class BasicBuildingService {
         caseEstateTagging.setDataId(caseBuildingId);
         caseEstateTagging.setType(EstateTaggingTypeEnum.BUILDING.getKey());
         List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-        basicEstateService.copyTaggingFromCase(caseEstateTaggings,applyId);
+        basicEstateService.copyTaggingFromCase(caseEstateTaggings, applyId);
 
         List<SysAttachmentDto> sysAttachmentDtoList = null;
         SysAttachmentDto queryFile = new SysAttachmentDto();

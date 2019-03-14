@@ -77,11 +77,6 @@ public class BasicMatchingFinanceController {
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
     public BootstrapTableVo getBootstrapTableVo(BasicMatchingFinance basicMatchingFinance,@RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
         try {
-            if (basicMatchingFinance != null){
-                if (!approval) {
-                    basicMatchingFinance.setCreator(commonService.thisUserAccount());
-                }
-            }
             return basicMatchingFinanceService.getBootstrapTableVo(basicMatchingFinance);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);

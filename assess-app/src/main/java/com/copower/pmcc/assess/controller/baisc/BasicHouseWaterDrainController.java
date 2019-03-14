@@ -48,11 +48,6 @@ public class BasicHouseWaterDrainController {
     @GetMapping(value = "/getBootstrapTableVo", name = "getBootstrapTableVo")
     public BootstrapTableVo getBootstrapTableVo(BasicHouseWaterDrain basicHouseWaterDrain, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval) {
         try {
-            if (basicHouseWaterDrain != null) {
-                if (!approval) {
-                    basicHouseWaterDrain.setCreator(commonService.thisUserAccount());
-                }
-            }
             return basicHouseWaterDrainService.getBootstrapTableVo(basicHouseWaterDrain);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);

@@ -77,11 +77,6 @@ public class BasicHouseRoomController {
             if (basicHouseRoom==null){
                 basicHouseRoom = new BasicHouseRoom();
             }
-            if (basicHouseRoom != null){
-                if (!approval) {
-                    basicHouseRoom.setCreator(commonService.thisUserAccount());
-                }
-            }
             BootstrapTableVo vo = basicHouseRoomService.getBootstrapTableVo(basicHouseRoom);
             return vo;
         } catch (Exception e) {
@@ -133,11 +128,6 @@ public class BasicHouseRoomController {
     @RequestMapping(value = "/getRoomDecorateBootstrapTableVo", method = {RequestMethod.GET}, name = "房间子类 列表")
     public BootstrapTableVo getRoomDecorateBootstrapTableVo(BasicHouseRoomDecorate basicHouseRoomDecorate, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
         try {
-            if (basicHouseRoomDecorate != null){
-                if (!approval) {
-                    basicHouseRoomDecorate.setCreator(commonService.thisUserAccount());
-                }
-            }
             BootstrapTableVo vo = basicHouseRoomDecorateService.getBootstrapTableVo(basicHouseRoomDecorate);
             return vo;
         } catch (Exception e) {

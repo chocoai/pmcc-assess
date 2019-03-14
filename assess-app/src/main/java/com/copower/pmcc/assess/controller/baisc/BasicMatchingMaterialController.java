@@ -65,11 +65,6 @@ public class BasicMatchingMaterialController {
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
     public BootstrapTableVo getBootstrapTableVo(BasicMatchingMaterial basicMatchingMaterial, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
         try {
-            if (basicMatchingMaterial != null){
-                if (!approval) {
-                    basicMatchingMaterial.setCreator(commonService.thisUserAccount());
-                }
-            }
             return basicMatchingMaterialService.getBootstrapTableVo(basicMatchingMaterial);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);

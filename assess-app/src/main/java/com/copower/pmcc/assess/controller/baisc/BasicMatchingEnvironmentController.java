@@ -65,11 +65,6 @@ public class BasicMatchingEnvironmentController {
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
     public BootstrapTableVo getBootstrapTableVo(BasicMatchingEnvironment basicMatchingEnvironment,@RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
         try {
-            if (basicMatchingEnvironment != null){
-                if (!approval) {
-                    basicMatchingEnvironment.setCreator(commonService.thisUserAccount());
-                }
-            }
             return basicMatchingEnvironmentService.getBootstrapTableVo(basicMatchingEnvironment);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);

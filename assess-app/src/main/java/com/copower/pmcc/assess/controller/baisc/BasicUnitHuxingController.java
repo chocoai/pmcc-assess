@@ -60,11 +60,6 @@ public class BasicUnitHuxingController {
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
     public BootstrapTableVo getBootstrapTableVo(BasicUnitHuxing basicUnitHuxing, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval) {
         try {
-            if (basicUnitHuxing != null) {
-                if (!approval) {
-                    basicUnitHuxing.setCreator(commonService.thisUserAccount());
-                }
-            }
             return basicUnitHuxingService.getBootstrapTableVo(basicUnitHuxing);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);

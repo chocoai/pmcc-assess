@@ -65,11 +65,6 @@ public class BasicBuildingOutfitController {
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
     public BootstrapTableVo getBootstrapTableVo(BasicBuildingOutfit basicBuildingOutfit, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
         try {
-            if (basicBuildingOutfit != null){
-                if (!approval) {
-                    basicBuildingOutfit.setCreator(commonService.thisUserAccount());
-                }
-            }
             return basicBuildingOutfitService.getBootstrapTableVo(basicBuildingOutfit);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);

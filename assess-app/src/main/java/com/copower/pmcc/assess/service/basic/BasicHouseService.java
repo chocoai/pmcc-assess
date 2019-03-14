@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingLeaseVo;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingSellVo;
+import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.*;
@@ -112,6 +113,8 @@ public class BasicHouseService {
     private CaseHouseDamagedDegreeService caseHouseDamagedDegreeService;
     @Autowired
     private ThreadPoolTaskExecutor taskExecutor;
+    @Autowired
+    private DdlMySqlAssist ddlMySqlAssist;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -215,84 +218,22 @@ public class BasicHouseService {
             return;
         }
         BasicHouse house = houseList.get(0);
-        BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(house.getId());
+        StringBuilder sqlBulder = new StringBuilder();
+        String baseSql = "delete from %s where house_id=%s";
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class), house.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class), house.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseRoom.class), house.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseWater.class), house.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class), house.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class), house.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class), house.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class), house.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseDamagedDegree.class), house.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseDamagedDegreeDetail.class), house.getId())).append(";");
 
-        List<SysAttachmentDto> sysAttachmentDtoList = null;
-
-        BasicHouseTradingSell querySell = new BasicHouseTradingSell();
-        BasicHouseTradingLease queryLease = new BasicHouseTradingLease();
-        BasicHouseRoom queryRoom = new BasicHouseRoom();
-        BasicHouseWater queryBasicHouseWater = new BasicHouseWater();
-        BasicHouseIntelligent queryBasicHouseIntelligent = new BasicHouseIntelligent();
-        BasicHouseFaceStreet queryBasicHouseFaceStreet = new BasicHouseFaceStreet();
-        BasicHouseEquipment queryBasicHouseEquipment = new BasicHouseEquipment();
-        BasicHouseCorollaryEquipment queryBasicHouseCorollaryEquipment = new BasicHouseCorollaryEquipment();
-        BasicHouseWaterDrain queryBasicHouseWaterDrain = new BasicHouseWaterDrain();
-        BasicHouseDamagedDegree queryBasicHouseDamagedDegree = new BasicHouseDamagedDegree();
-        BasicHouseDamagedDegreeDetail queryBasicHouseDamagedDegreeDetail = new BasicHouseDamagedDegreeDetail();
-
-        queryLease.setHouseId(house.getId());
-        querySell.setHouseId(house.getId());
-        queryRoom.setHouseId(house.getId());
-        queryBasicHouseWater.setHouseId(house.getId());
-        queryBasicHouseIntelligent.setHouseId(house.getId());
-        queryBasicHouseFaceStreet.setHouseId(house.getId());
-        queryBasicHouseEquipment.setHouseId(house.getId());
-        queryBasicHouseCorollaryEquipment.setHouseId(house.getId());
-        queryBasicHouseWaterDrain.setHouseId(house.getId());
-        queryBasicHouseDamagedDegree.setHouseId(house.getId());
-        queryBasicHouseDamagedDegreeDetail.setHouseId(house.getId());
-
-        basicHouseTradingSellService.deleteBasicHouseTradingSell(querySell);
-        basicHouseTradingLeaseService.deleteBasicHouseTradingLease(queryLease);
-        List<BasicHouseRoom> basicHouseRoomList = basicHouseRoomService.basicHouseRoomList(queryRoom);
-        basicHouseWaterService.deleteBasicHouseWater(queryBasicHouseWater);
-        basicHouseIntelligentService.deleteBasicHouseIntelligent(queryBasicHouseIntelligent);
-        basicHouseFaceStreetService.deleteBasicHouseFaceStreet(queryBasicHouseFaceStreet);
-        basicHouseEquipmentService.deleteBasicHouseEquipment(queryBasicHouseEquipment);
-        List<BasicHouseCorollaryEquipment> basicHouseCorollaryEquipmentList = basicHouseCorollaryEquipmentService.basicHouseCorollaryEquipmentList(queryBasicHouseCorollaryEquipment);
-        basicHouseWaterDrainService.deleteBasicHouseWaterDrain(queryBasicHouseWaterDrain);
-        basicHouseDamagedDegreeService.deleteDamagedDegree(queryBasicHouseDamagedDegree);
-        basicHouseDamagedDegreeService.deleteDamagedDegreeDetail(queryBasicHouseDamagedDegreeDetail);
-
-        if (!ObjectUtils.isEmpty(basicHouseRoomList)) {
-            basicHouseRoomList.forEach(oo -> {
-                try {
-                    basicHouseRoomService.deleteBasicHouseRoom(oo.getId());
-                } catch (Exception e1) {
-                    logger.error(e1.getMessage(), e1);
-                }
-            });
-        }
-
-        if (!ObjectUtils.isEmpty(basicHouseCorollaryEquipmentList)) {
-            basicHouseCorollaryEquipmentList.forEach(oo -> {
-                try {
-                    basicHouseCorollaryEquipmentService.deleteBasicHouseCorollaryEquipment(oo.getId());
-                } catch (Exception e1) {
-                    logger.error(e1.getMessage(), e1);
-                }
-            });
-        }
-
-        //清理附件
-        SysAttachmentDto queryFile = new SysAttachmentDto();
-        queryFile.setTableId(house.getId());
-        queryFile.setCreater(commonService.thisUserAccount());
-        queryFile.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
-        sysAttachmentDtoList = baseAttachmentService.getAttachmentList(queryFile);
-        if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
-            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                baseAttachmentService.deleteAttachment(sysAttachmentDto.getId());
-            }
-        }
-
-        if (houseTrading != null) {
-            //删除交易信息
-            basicHouseTradingService.deleteBasicHouseTrading(houseTrading.getId());
-        }
-        //删除房屋信息
-        basicHouseDao.deleteBasicHouse(house.getId());
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTrading.class), house.getId())).append(";");
+        sqlBulder.append(String.format("delete from %s where id=%s", FormatUtils.entityNameConvertToTableName(BasicHouse.class), house.getId())).append(";");
+        ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
     /**

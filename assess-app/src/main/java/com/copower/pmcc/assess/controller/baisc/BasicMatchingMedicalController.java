@@ -77,11 +77,6 @@ public class BasicMatchingMedicalController {
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
     public BootstrapTableVo getBootstrapTableVo(BasicMatchingMedical basicMatchingMedical, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
         try {
-            if (basicMatchingMedical != null){
-                if (!approval) {
-                    basicMatchingMedical.setCreator(commonService.thisUserAccount());
-                }
-            }
             return basicMatchingMedicalService.getBootstrapTableVo(basicMatchingMedical);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
