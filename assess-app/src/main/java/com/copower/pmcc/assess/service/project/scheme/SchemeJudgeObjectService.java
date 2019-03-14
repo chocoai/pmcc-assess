@@ -301,6 +301,12 @@ public class SchemeJudgeObjectService {
             if (bestUseDescription != null)
                 schemeJudgeObjectVo.setBestUseName(bestUseDescription.getName());
         }
+        if (schemeJudgeObjectVo.getDeclareRecordId() != null){
+            String s =  getCoefficientByDeclareId(schemeJudgeObjectVo.getDeclareRecordId());
+            if (StringUtils.isNotBlank(s)){
+                schemeJudgeObjectVo.setCoefficient(s);
+            }
+        }
         return schemeJudgeObjectVo;
     }
 

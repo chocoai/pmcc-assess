@@ -1300,15 +1300,7 @@ public class GenerateReportService {
                 //计算过程
                 if (Objects.equal(BaseReportFieldEnum.ComputationProcess.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    SysAttachmentDto query = new SysAttachmentDto();
-                    if (baseReportField != null) {
-                        query.setTableId(baseReportField.getId());
-                        query.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportField.class));
-                        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
-                        if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-                            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getComputationProcess(sysAttachmentDtoList.get(0)));
-                        }
-                    }
+
                 }
                 //相关参数选取与应用
                 if (Objects.equal(BaseReportFieldEnum.SelectionApplicationParameters.getName(), name)) {

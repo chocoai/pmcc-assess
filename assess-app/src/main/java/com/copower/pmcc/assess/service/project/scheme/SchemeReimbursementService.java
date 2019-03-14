@@ -14,6 +14,7 @@ import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -94,7 +95,7 @@ public class SchemeReimbursementService {
         schemeReimbursementItem.setJudgeObjectId(judgeObjectId);
         SchemeReimbursementItem object = schemeReimbursementItemDao.getSingleObject(schemeReimbursementItem);
         StringBuilder builder = new StringBuilder();
-        if (builder!=null) {
+        if (builder != null) {
             BigDecimal decimal = new BigDecimal("10000");
             builder.append(String.format("假定未设立法定优先受偿权总价%s万元,", (object.getNotSetUpTotalPrice().divide(decimal))));
             builder.append(String.format("已抵押担保的债权数额总价%s万元,", (object.getMortgagedTotalPrice().divide(decimal))));
@@ -118,7 +119,7 @@ public class SchemeReimbursementService {
                 schemeReimbursementDao.deleteSchemeReimbursement(item.getId());
                 //删除子表
                 List<SchemeReimbursementItemVo> schemeReimbursementItems = this.getItemByMasterId(item.getId());
-                for (SchemeReimbursementItemVo vo:schemeReimbursementItems) {
+                for (SchemeReimbursementItemVo vo : schemeReimbursementItems) {
                     schemeReimbursementItemDao.deleteObject(vo.getId());
                 }
             }
@@ -144,7 +145,7 @@ public class SchemeReimbursementService {
             }
         }
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-        if(schemeJudgeObject != null){
+        if (schemeJudgeObject != null) {
             SchemeReimbursementItem schemeReimbursementItem = new SchemeReimbursementItem();
             schemeReimbursementItem.setProjectId(projectPlanDetails.getProjectId());
             schemeReimbursementItem.setJudgeObjectId(schemeReimbursementItem.getId());
@@ -156,15 +157,23 @@ public class SchemeReimbursementService {
     }
 
     //获取明细
-    public  List<SchemeReimbursementItemVo> getItemByMasterId(Integer masterId){
+    public List<SchemeReimbursementItemVo> getItemByMasterId(Integer masterId) {
         SchemeReimbursementItem schemeReimbursementItem = new SchemeReimbursementItem();
         schemeReimbursementItem.setMasterId(masterId);
+        return findQueryBySchemeReimbursementItem(schemeReimbursementItem);
+    }
+
+    public List<SchemeReimbursementItemVo> findQueryBySchemeReimbursementItem(SchemeReimbursementItem schemeReimbursementItem) {
         List<SchemeReimbursementItemVo> vos = Lists.newArrayList();
-        List<SchemeReimbursementItem> list = schemeReimbursementItemDao.getListObject(schemeReimbursementItem);
-        if (CollectionUtils.isNotEmpty(list)) {
-            for (SchemeReimbursementItem item : list) {
-                vos.add(getSchemeReimbursementItemVo(item));
+        try {
+            List<SchemeReimbursementItem> list = schemeReimbursementItemDao.getListObject2(schemeReimbursementItem);
+            if (CollectionUtils.isNotEmpty(list)) {
+                for (SchemeReimbursementItem item : list) {
+                    vos.add(getSchemeReimbursementItemVo(item));
+                }
             }
+        } catch (Exception e) {
+            String error = e.getMessage();
         }
         return vos;
     }
