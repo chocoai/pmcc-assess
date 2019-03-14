@@ -56,7 +56,7 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskReimbursementApproval", processInsId, boxId, taskId, agentUserAccount);
-        SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByPlanDetailsId(projectPlanDetails.getId());
+        SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByProcessInsId(projectPlanDetails.getProcessInsId());
         modelAndView.addObject("master", schemeReimbursement);
         modelAndView.addObject("judgeObjectName", projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid()).getProjectPhaseName());
         return modelAndView;
@@ -75,7 +75,7 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskReimbursementIndex", processInsId, boxId, taskId, agentUserAccount);
-        SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByPlanDetailsId(projectPlanDetails.getId());
+        SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByProcessInsId(projectPlanDetails.getProcessInsId());
         modelAndView.addObject("master", schemeReimbursement == null ? new SchemeReimbursement() : schemeReimbursement);
         modelAndView.addObject("judgeObjectName", projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid()).getProjectPhaseName());
         return modelAndView;
@@ -89,7 +89,7 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskReimbursementApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-        SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByPlanDetailsId(projectPlanDetails.getId());
+        SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByProcessInsId(projectPlanDetails.getProcessInsId());
         modelAndView.addObject("master", schemeReimbursement);
         modelAndView.addObject("judgeObjectName", projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid()).getProjectPhaseName());
         return modelAndView;

@@ -1,11 +1,15 @@
 package com.copower.pmcc.assess.controller.data;
 
+import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataReportTemplateItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationPrinciple;
+import com.copower.pmcc.assess.dal.basis.entity.DataReportTemplateItem;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.EvaluationPrincipleService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
@@ -34,14 +38,25 @@ public class EvaluationPrincipleController {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private EvaluationPrincipleService evaluationPrincipleService;
+    @Autowired
+    private DataReportTemplateItemDao dataReportTemplateItemDao;
 
     @RequestMapping(value = "/view", name = "转到index页面")
     public ModelAndView index() {
+        List<KeyValueDto> types = SchemeSupportTypeEnum.getSchemeSupportTypeEnumList();
         List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD);
         List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/evaluationPrincipleView");
         modelAndView.addObject("methodDicList", methodDicList);
         modelAndView.addObject("purposeDicList", purposeDicList);
+        modelAndView.addObject("types", types);
+
+        DataReportTemplateItem dataReportTemplateItem = new DataReportTemplateItem();
+        dataReportTemplateItem.setMasterId(0);
+        List<DataReportTemplateItem> listObject = dataReportTemplateItemDao.getListObject(dataReportTemplateItem);
+        for (DataReportTemplateItem item :listObject) {
+            dataReportTemplateItemDao.deleteObject(item.getId());
+        }
         return modelAndView;
     }
 

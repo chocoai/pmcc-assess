@@ -2,9 +2,11 @@ package com.copower.pmcc.assess.service.data;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataReportTemplateItemDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationPrincipleDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationPrinciple;
+import com.copower.pmcc.assess.dal.basis.entity.DataReportTemplateItem;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationPrincipleVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -43,6 +45,8 @@ public class EvaluationPrincipleService {
     private EvaluationPrincipleDao evaluationPrincipleDao;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private DataReportTemplateItemDao dataReportTemplateItemDao;
 
     /**
      * 保存数据
@@ -56,6 +60,14 @@ public class EvaluationPrincipleService {
         } else {
             evaluationPrinciple.setCreator(commonService.thisUserAccount());
             evaluationPrincipleDao.addPrinciple(evaluationPrinciple);
+            //修改子模板
+            DataReportTemplateItem dataReportTemplateItem = new DataReportTemplateItem();
+            dataReportTemplateItem.setMasterId(0);
+            List<DataReportTemplateItem> listObject = dataReportTemplateItemDao.getListObject(dataReportTemplateItem);
+            for (DataReportTemplateItem item :listObject) {
+                item.setMasterId(evaluationPrinciple.getId());
+                dataReportTemplateItemDao.updateObject(item);
+            }
         }
     }
 

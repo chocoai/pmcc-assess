@@ -1,5 +1,8 @@
 package com.copower.pmcc.assess.dto.input;
 
+import com.copower.pmcc.assess.constant.BaseConstant;
+import com.google.common.collect.Lists;
+
 import java.util.List;
 import java.util.Map;
 
@@ -14,8 +17,14 @@ public class SynchronousDataDto {
     private String targeTable;//目标数据表
     private String whereSql;//查询条件语句
     private List<String> ignoreField;//忽略字段
-    private Map<String,String> fieldMapping;//字段特殊对应关系
-    private Map<String,String> fieldDefaultValue;//字段的默认值
+    private Map<String, String> fieldMapping;//字段特殊对应关系
+    private Map<String, String> fieldDefaultValue;//字段的默认值
+
+    public SynchronousDataDto() {
+        this.sourceDataBase = BaseConstant.DATABASE_PMCC_ASSESS;
+        this.targeDataBase = BaseConstant.DATABASE_PMCC_ASSESS;
+        this.ignoreField = Lists.newArrayList("id", "creator", "gmt_created", "gmt_modified");
+    }
 
     public String getSourceDataBase() {
         return sourceDataBase;

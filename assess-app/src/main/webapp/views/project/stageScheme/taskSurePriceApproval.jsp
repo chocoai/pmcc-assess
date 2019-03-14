@@ -77,6 +77,8 @@
                         <thead>
                         <tr>
                             <th width="20%">权证号</th>
+                            <th width="10%">楼层</th>
+                            <th width="10%">房号</th>
                             <th width="10%">价格</th>
                             <th width="50%">因素</th>
                         </tr>
@@ -85,6 +87,8 @@
                         <c:forEach items="${subJudgeObjectList}" var="item">
                             <tr data-id="${item.id}">
                                 <td>${item.name}</td>
+                                <td>${item.floor}</td>
+                                <td>${item.roomNumber}</td>
                                 <td data-name="price">${item.price}</td>
                                 <td data-name="coefficient">${item.coefficient}</td>
                             </tr>

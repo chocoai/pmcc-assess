@@ -260,6 +260,10 @@ public class GenerateMdCompareService {
     public String getTable(List<MarketCompareItemDto> list, List<MdMarketCompareItem> caseItemList, String title, String fieldName, String fieldMore, Boolean isIndex) throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
+        if(!isIndex) {
+            generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
+            builder.write(title);
+        }
         //表格属性
         setTableProperty(builder);
         String localPath = generateCommonMethod.getLocalPath();
@@ -280,16 +284,6 @@ public class GenerateMdCompareService {
 
         //交易情况
         if (StringUtils.isNotBlank(fieldMore)) {
-            builder.insertCell();
-            builder.writeln("项目");
-            builder.insertCell();
-            builder.writeln("估价对象");
-            for (MdMarketCompareItem caseItem : caseItemList) {
-                builder.insertCell();
-                builder.writeln(caseItem.getName());
-            }
-            builder.endRow();
-
             List<DataSetUseField> tradingFieldList = dataSetUseFieldService.getCacheSetUseFieldList(fieldMore);
             //生成表格
             GenerateTable(list, tradingFieldList, builder, caseItemList, isIndex);
@@ -476,7 +470,7 @@ public class GenerateMdCompareService {
     public String getDateRevision(String title, List<MdMarketCompareItem> caseItemList) throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
-        generateCommonMethod.settingBuildingTable(builder);
+        generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
         String localPath = generateCommonMethod.getLocalPath();
         StringBuilder normal = new StringBuilder();
         StringBuilder abnormality = new StringBuilder();
@@ -518,7 +512,7 @@ public class GenerateMdCompareService {
             Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
-        generateCommonMethod.settingBuildingTable(builder);
+        generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
         String localPath = generateCommonMethod.getLocalPath();
         DataSetUseField cacheSetUseFieldList = dataSetUseFieldService.getCacheSetUseFieldByFieldName(fieldName);
         StringBuilder normal = new StringBuilder();
@@ -626,7 +620,7 @@ public class GenerateMdCompareService {
     public String getCaseNumber(String title, Integer size) throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
-        generateCommonMethod.settingBuildingTable(builder);
+        generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
         builder.write("共" + size.toString() + "个，情况详见下表：");
         String localPath = generateCommonMethod.getLocalPath();
         doc.save(localPath);
@@ -642,13 +636,12 @@ public class GenerateMdCompareService {
      * @param marketCompareItemDtos 估价对象
      * @return
      */
-    public String getComparePropertyRange(String
-                                                  title, List<MarketCompareItemDto> marketCompareItemDtos, List<MdMarketCompareItem> caseItemList, String
+    public String getComparePropertyRange(String title, List<MarketCompareItemDto> marketCompareItemDtos, List<MdMarketCompareItem> caseItemList, String
                                                   fieldName) throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = generateCommonMethod.getLocalPath();
-        generateCommonMethod.settingBuildingTable(builder);
+        generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
         DataSetUseField cacheSetUseFieldList = dataSetUseFieldService.getCacheSetUseFieldByFieldName(fieldName);
         String propertyRange = new String();
         for (MarketCompareItemDto item : marketCompareItemDtos) {
@@ -685,7 +678,11 @@ public class GenerateMdCompareService {
         } else if (StringUtils.isEmpty(difference) && !StringUtils.isEmpty(accordance)) {
             builder.write("统一" + cacheSetUseFieldList.getName() + "： 估价对象与" + accordanceContent + "为" + propertyRange + "，已统一。");
         } else {
-            builder.write("统一" + cacheSetUseFieldList.getName() + "： 估价对象为" + propertyRange + "，" + differenceContent + "。");
+            if(!StringUtils.isEmpty(propertyRange)){
+                builder.write("统一" + cacheSetUseFieldList.getName() + "： 估价对象为" + propertyRange + "，" + differenceContent + "。");
+            }else{
+                builder.write("统一" + cacheSetUseFieldList.getName() + "：" + differenceContent + "。");
+            }
         }
 
         doc.save(localPath);
@@ -705,7 +702,7 @@ public class GenerateMdCompareService {
             Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
-        generateCommonMethod.settingBuildingTable(builder);
+        generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
         String localPath = generateCommonMethod.getLocalPath();
         StringBuilder content = new StringBuilder();
         BigDecimal num = new BigDecimal("0");

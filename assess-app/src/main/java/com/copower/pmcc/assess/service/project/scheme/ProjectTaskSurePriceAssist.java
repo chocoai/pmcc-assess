@@ -97,6 +97,7 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskSurePriceApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        modelAndView.addObject("schemeSurePrice", schemeSurePriceService.getSurePriceByPlanDetailsId(projectPlanDetails.getId()));
         modelAndView.addObject("judgeObjectName", projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid()).getProjectPhaseName());
         modelAndView.addObject("surePriceItemList", schemeSurePriceService.getSchemeSurePriceItemList(projectPlanDetails.getJudgeObjectId(), false));
         modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getListByPid(projectPlanDetails.getJudgeObjectId()));
