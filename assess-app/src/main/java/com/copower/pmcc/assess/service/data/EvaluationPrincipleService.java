@@ -2,11 +2,9 @@ package com.copower.pmcc.assess.service.data;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.dao.data.DataReportTemplateItemDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationPrincipleDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationPrinciple;
-import com.copower.pmcc.assess.dal.basis.entity.DataReportTemplateItem;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationPrincipleVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -46,7 +44,7 @@ public class EvaluationPrincipleService {
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
-    private DataReportTemplateItemDao dataReportTemplateItemDao;
+    private DataReportTemplateItemService dataReportTemplateItemService;
 
     /**
      * 保存数据
@@ -61,13 +59,7 @@ public class EvaluationPrincipleService {
             evaluationPrinciple.setCreator(commonService.thisUserAccount());
             evaluationPrincipleDao.addPrinciple(evaluationPrinciple);
             //修改子模板
-            DataReportTemplateItem dataReportTemplateItem = new DataReportTemplateItem();
-            dataReportTemplateItem.setMasterId(0);
-            List<DataReportTemplateItem> listObject = dataReportTemplateItemDao.getListObject(dataReportTemplateItem);
-            for (DataReportTemplateItem item :listObject) {
-                item.setMasterId(evaluationPrinciple.getId());
-                dataReportTemplateItemDao.updateObject(item);
-            }
+            dataReportTemplateItemService.templateItemToSetMasterId(evaluationPrinciple.getId());
         }
     }
 
@@ -151,16 +143,17 @@ public class EvaluationPrincipleService {
 
     /**
      * 获取上报告内容
+     *
      * @param projectInfo
      * @return
      */
-    public String getReportPrinciple(ProjectInfo projectInfo){
+    public String getReportPrinciple(ProjectInfo projectInfo) {
         List<DataEvaluationPrinciple> principleList = getPrincipleList(projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), projectInfo.getEntrustPurpose());
         if (CollectionUtils.isEmpty(principleList)) return "";
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < principleList.size(); i++) {
             DataEvaluationPrinciple basis = principleList.get(i);
-            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s",i+1,basis.getName())).append("</p>");
+            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, basis.getName())).append("</p>");
             stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
         }
         return stringBuilder.toString();

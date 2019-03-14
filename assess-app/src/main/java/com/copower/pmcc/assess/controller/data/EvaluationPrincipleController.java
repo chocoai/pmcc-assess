@@ -2,11 +2,9 @@ package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.dao.data.DataReportTemplateItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationPrinciple;
-import com.copower.pmcc.assess.dal.basis.entity.DataReportTemplateItem;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.data.DataReportTemplateItemService;
 import com.copower.pmcc.assess.service.data.EvaluationPrincipleService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
@@ -39,7 +37,7 @@ public class EvaluationPrincipleController {
     @Autowired
     private EvaluationPrincipleService evaluationPrincipleService;
     @Autowired
-    private DataReportTemplateItemDao dataReportTemplateItemDao;
+    private DataReportTemplateItemService dataReportTemplateItemService;
 
     @RequestMapping(value = "/view", name = "转到index页面")
     public ModelAndView index() {
@@ -51,12 +49,7 @@ public class EvaluationPrincipleController {
         modelAndView.addObject("purposeDicList", purposeDicList);
         modelAndView.addObject("types", types);
 
-        DataReportTemplateItem dataReportTemplateItem = new DataReportTemplateItem();
-        dataReportTemplateItem.setMasterId(0);
-        List<DataReportTemplateItem> listObject = dataReportTemplateItemDao.getListObject(dataReportTemplateItem);
-        for (DataReportTemplateItem item :listObject) {
-            dataReportTemplateItemDao.deleteObject(item.getId());
-        }
+        dataReportTemplateItemService.initClean();
         return modelAndView;
     }
 
@@ -72,7 +65,7 @@ public class EvaluationPrincipleController {
         try {
             return HttpResult.newCorrectResult(evaluationPrincipleService.getPrinciple(id));
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
@@ -83,7 +76,7 @@ public class EvaluationPrincipleController {
         try {
             evaluationPrincipleService.saveAndUpdate(formData);
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();

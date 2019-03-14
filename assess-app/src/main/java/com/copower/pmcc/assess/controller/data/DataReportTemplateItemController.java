@@ -66,7 +66,6 @@ public class DataReportTemplateItemController {
     public HttpResult saveAndUpdate(DataReportTemplateItem dataReportTemplateItem) {
         try {
             if (dataReportTemplateItem.getId() == null || dataReportTemplateItem.getId().equals(0)) {
-                dataReportTemplateItem.setMasterId(0);
                 dataReportTemplateItemService.addDataReportTemplateItemReturnId(dataReportTemplateItem);
             } else {
                 dataReportTemplateItemService.updateDataReportTemplateItem(dataReportTemplateItem);

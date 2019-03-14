@@ -89,4 +89,25 @@ public class DataReportTemplateItemService {
         return dataReportTemplateItemDao.deleteObject(id);
     }
 
+
+    //设置masterId
+    public void templateItemToSetMasterId(Integer masterId){
+        DataReportTemplateItem dataReportTemplateItem = new DataReportTemplateItem();
+        dataReportTemplateItem.setMasterId(0);
+        List<DataReportTemplateItem> listObject = dataReportTemplateItemDao.getListObject(dataReportTemplateItem);
+        for (DataReportTemplateItem item :listObject) {
+            item.setMasterId(masterId);
+            dataReportTemplateItemDao.updateObject(item);
+        }
+    }
+
+    //清除masterId为0的数据
+    public void initClean(){
+        DataReportTemplateItem dataReportTemplateItem = new DataReportTemplateItem();
+        dataReportTemplateItem.setMasterId(0);
+        List<DataReportTemplateItem> listObject = dataReportTemplateItemDao.getListObject(dataReportTemplateItem);
+        for (DataReportTemplateItem item :listObject) {
+            dataReportTemplateItemDao.deleteObject(item.getId());
+        }
+    }
 }
