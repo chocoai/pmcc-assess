@@ -27,6 +27,33 @@ public class SchemeReimbursementItemDao {
         MybatisUtils.convertObj2Example(schemeReimbursementItem, example);
         return schemeReimbursementItemMapper.selectByExample(example);
     }
+    public List<SchemeReimbursementItem> getListObject2(SchemeReimbursementItem schemeReimbursementItem) {
+        SchemeReimbursementItemExample example = new SchemeReimbursementItemExample();
+        SchemeReimbursementItemExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        if (schemeReimbursementItem.getId() != null){
+            criteria.andIdEqualTo(schemeReimbursementItem.getId());
+        }
+        if (schemeReimbursementItem.getJudgeObjectId() != null){
+            criteria.andJudgeObjectIdEqualTo(schemeReimbursementItem.getJudgeObjectId());
+        }
+        if (schemeReimbursementItem.getPlanDetailsId() != null){
+            criteria.andPlanDetailsIdEqualTo(schemeReimbursementItem.getPlanDetailsId());
+        }
+        if (schemeReimbursementItem.getMasterId() != null){
+            criteria.andMasterIdEqualTo(schemeReimbursementItem.getMasterId());
+        }
+        if (schemeReimbursementItem.getProjectId() != null){
+            criteria.andProjectIdEqualTo(schemeReimbursementItem.getProjectId());
+        }
+        if (schemeReimbursementItem.getNotSetUpUnitPrice() != null){
+            criteria.andNotSetUpUnitPriceEqualTo(schemeReimbursementItem.getNotSetUpUnitPrice());
+        }
+        if (schemeReimbursementItem.getKnowTotalPrice() != null){
+            criteria.andKnowTotalPriceEqualTo(schemeReimbursementItem.getKnowTotalPrice());
+        }
+        return schemeReimbursementItemMapper.selectByExample(example);
+    }
 
     public SchemeReimbursementItem getSingleObject(SchemeReimbursementItem schemeReimbursementItem) {
         SchemeReimbursementItemExample example = new SchemeReimbursementItemExample();

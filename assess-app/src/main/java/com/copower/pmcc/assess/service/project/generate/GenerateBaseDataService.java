@@ -236,32 +236,8 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getBuildingAndAssessArea() {
-        Map<BigDecimal, List<Integer>> bigDecimalListHashMap = Maps.newHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(schemeJudgeObject -> schemeJudgeObject.getEvaluationArea() != null).collect(Collectors.toList());
-            for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                BigDecimal key = schemeJudgeObjectList.get(i).getEvaluationArea();
-                if (key != null) {
-                    //取出列表
-                    List<Integer> integerList = bigDecimalListHashMap.get(key);
-                    if (CollectionUtils.isEmpty(integerList)) {
-                        integerList = Lists.newArrayList();
-                    }
-                    //添加进相同证载用途的列表中
-                    integerList.add(NumberUtils.toInt(schemeJudgeObjectList.get(i).getNumber()));
-                    //更新回去
-                    bigDecimalListHashMap.put(key, integerList);
-                }
-            }
-        }
-        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        if (!bigDecimalListHashMap.isEmpty()) {
-            for (Map.Entry<BigDecimal, List<Integer>> entry : bigDecimalListHashMap.entrySet()) {
-                stringListMap.put(entry.getKey().toString(), entry.getValue());
-            }
-        }
-        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, "㎡");
+        String s = generateCommonMethod.getBuildingAndAssessArea(schemeJudgeObjectList);
         if (StringUtils.isEmpty(s.trim())) {
             s = errorStr;
         }
@@ -476,15 +452,11 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-                if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getPublicSituation())) {
-                    String temp = declareRecord.getPublicSituation();
-                    if (StringUtils.isNotBlank(temp)) {
-                        List<Integer> integerList = stringListMap.get(temp);
-                        if (CollectionUtils.isEmpty(integerList)) {
-                            integerList = Lists.newArrayList();
-                        }
-                        integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                        stringListMap.put(temp, integerList);
+                if (declareRecord != null) {
+                    if (NumberUtils.isNumber(declareRecord.getPublicSituation())) {
+                        generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, baseDataDicService.getNameById(declareRecord.getPublicSituation()));
+                    } else {
+                        generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, declareRecord.getPublicSituation());
                     }
                 }
             }
@@ -505,16 +477,8 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 11:06
      */
     public String getSubstitutionPrinciple() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = schemeSupportInfoService.getContentByName(areaId, BaseReportFieldEnum.SubstitutionPrinciple.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(schemeSupportInfoService.getContentByName(areaId,
+                BaseReportFieldEnum.SubstitutionPrinciple.getName()));
     }
 
     /**
@@ -526,16 +490,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 14:46
      */
     public String getUncertaintyAssumption() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = schemeSupportInfoService.getContentByName(areaId, BaseReportFieldEnum.UncertaintyAssumption.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(schemeSupportInfoService.getContentByName(areaId, BaseReportFieldEnum.UncertaintyAssumption.getName()));
     }
 
     /**
@@ -547,16 +502,8 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 14:47
      */
     public String getDeviationFromFactualAssumptions() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = schemeSupportInfoService.getContentByName(areaId, BaseReportFieldEnum.DeviationFromFactualAssumptions.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(schemeSupportInfoService.getContentByName(areaId, BaseReportFieldEnum.DeviationFromFactualAssumptions.getName()));
+
     }
 
     /**
@@ -568,16 +515,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 14:48
      */
     public String getInconsistentHypothesis() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = schemeSupportInfoService.getContentByName(areaId, BaseReportFieldEnum.InconsistentHypothesis.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(schemeSupportInfoService.getContentByName(areaId, BaseReportFieldEnum.InconsistentHypothesis.getName()));
     }
 
     /**
@@ -589,16 +527,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 14:51
      */
     public String getInsufficientHypothesis() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = schemeSupportInfoService.getContentByName(areaId, BaseReportFieldEnum.InsufficientHypothesis.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(schemeSupportInfoService.getContentByName(areaId, BaseReportFieldEnum.InsufficientHypothesis.getName()));
     }
 
     /**
@@ -610,16 +539,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 14:58
      */
     public String getUniversalityLiquidityAnalysis() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.UniversalityLiquidityAnalysis.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.UniversalityLiquidityAnalysis.getName()));
     }
 
     /**
@@ -631,16 +551,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:00
      */
     public String getIndependentUsabilityCashFlowAnalysis() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.IndependentUsabilityCashFlowAnalysis.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.IndependentUsabilityCashFlowAnalysis.getName()));
     }
 
     /**
@@ -652,16 +563,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:00
      */
     public String getLiquidityAnalysisSeparableTransferability() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.LiquidityAnalysisSeparableTransferability.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.LiquidityAnalysisSeparableTransferability.getName()));
     }
 
     /**
@@ -673,16 +575,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:00
      */
     public String getCashAnalysisRealEstateLocation() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.CashAnalysisRealEstateLocation.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.CashAnalysisRealEstateLocation.getName()));
     }
 
     /**
@@ -694,16 +587,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:00
      */
     public String getCashAnalysisDegreeRealEstateDevelopment() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.CashAnalysisDegreeRealEstateDevelopment.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.CashAnalysisDegreeRealEstateDevelopment.getName()));
     }
 
 
@@ -716,16 +600,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:00
      */
     public String getCashAnalysisValueRealEstate() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.CashAnalysisValueRealEstate.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.CashAnalysisValueRealEstate.getName()));
     }
 
     /**
@@ -737,16 +612,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:00
      */
     public String getCashAnalysisRealEstateMarket() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.CashAnalysisRealEstateMarket.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.CashAnalysisRealEstateMarket.getName()));
     }
 
     /**
@@ -758,16 +624,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:00
      */
     public String getCashAnalysisOthers() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.CashAnalysisOthers.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.CashAnalysisOthers.getName()));
     }
 
     /**
@@ -779,16 +636,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:00
      */
     public String getBasePriceRegulationCashAuction() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.BasePriceRegulationCashAuction.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.BasePriceRegulationCashAuction.getName()));
     }
 
     /**
@@ -800,16 +648,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:00
      */
     public String getHowLongLiquidationTime() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.HowLongLiquidationTime.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.HowLongLiquidationTime.getName()));
     }
 
     /**
@@ -821,16 +660,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:00
      */
     public String getCash_inComprehensiveAnalysis() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.Cash_inComprehensiveAnalysis.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.Cash_inComprehensiveAnalysis.getName()));
     }
 
     /**
@@ -842,16 +672,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:00
      */
     public String getTheImpactMortgageRiskyNeighbouringProperty() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.TheImpactMortgageRiskyNeighbouringProperty.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.TheImpactMortgageRiskyNeighbouringProperty.getName()));
     }
 
     /**
@@ -863,16 +684,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:00
      */
     public String getImpactRiskLeasingy() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.ImpactRiskLeasing.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.ImpactRiskLeasing.getName()));
     }
 
     /**
@@ -884,16 +696,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:00
      */
     public String getOverallLiquidityImpactRisk() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.OverallLiquidityImpactRisk.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.OverallLiquidityImpactRisk.getName()));
     }
 
     /**
@@ -905,16 +708,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:00
      */
     public String getRiskForceMajeureEffect() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.RiskForceMajeureEffect.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.RiskForceMajeureEffect.getName()));
     }
 
     /**
@@ -926,16 +720,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:00
      */
     public String getImpactRiskPolicyChange() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.ImpactRiskPolicyChange.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.ImpactRiskPolicyChange.getName()));
     }
 
     /**
@@ -947,16 +732,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:00
      */
     public String getImpactSpecialEventsRiskMortgage() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.ImpactSpecialEventsRiskMortgage.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.ImpactSpecialEventsRiskMortgage.getName()));
     }
 
     /**
@@ -968,16 +744,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:00
      */
     public String getImproperUseRiskCollaterale() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.ImproperUseRiskCollateral.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.ImproperUseRiskCollateral.getName()));
     }
 
     /**
@@ -989,16 +756,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:00
      */
     public String getFunctionsSubstitutesRiskMortgage() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.FunctionsSubstitutesRiskMortgage.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.FunctionsSubstitutesRiskMortgage.getName()));
     }
 
     /**
@@ -1010,16 +768,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:00
      */
     public String getEnvironmentalImpactRiskMortgage() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.EnvironmentalImpactRiskMortgage.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.EnvironmentalImpactRiskMortgage.getName()));
     }
 
     /**
@@ -1031,16 +780,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:00
      */
     public String getConcernRealEstateCreditRiskCausedMortgageReasonsDuringRiskMortgagePeriod() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.ConcernRealEstateCreditRiskCausedMortgageReasonsDuringRiskMortgagePeriod.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.ConcernRealEstateCreditRiskCausedMortgageReasonsDuringRiskMortgagePeriod.getName()));
     }
 
     /**
@@ -1052,16 +792,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/27 15:00
      */
     public String getThreeMajorRiskPlanning() throws Exception {
-        //存在换行符必须使用模板
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        String content = compileReportService.getContentByName(areaId, BaseReportFieldEnum.ThreeMajorRiskPlanning.getName());
-        String localPath = getLocalPath();
-        if (StringUtils.isNotBlank(content)) {
-            builder.writeln(content);
-        }
-        doc.save(localPath);
-        return localPath;
+        return generateCommonMethod.writeStringInDocument(compileReportService.getContentByName(areaId, BaseReportFieldEnum.ThreeMajorRiskPlanning.getName()));
     }
 
     /**
@@ -1074,34 +805,13 @@ public class GenerateBaseDataService {
      */
     public String getLiquidRatios() throws Exception {
         List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
-        StringBuilder stringBuilder = new StringBuilder(16);
         Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        Set<String> stringSet = Sets.newHashSet();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                String temp = schemeJudgeObject.getLiquidRatio();
-                if (StringUtils.isNotBlank(temp)) {
-                    List<Integer> integerList = stringListMap.get(temp);
-                    if (CollectionUtils.isNotEmpty(integerList)) {
-                        integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                    } else {
-                        integerList = Lists.newArrayList();
-                        integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                    }
-                    stringListMap.put(temp, integerList);
-                }
+                generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, schemeJudgeObject.getLiquidRatio());
             }
         }
-        if (!stringListMap.isEmpty()) {
-            for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
-                if (entry.getValue().size() > 0) {
-                    stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append("号").append(generateCommonMethod.SchemeJudgeObjectName).append(":").append(entry.getKey());
-                    stringSet.add(stringBuilder.toString());
-                    stringBuilder.delete(0, stringBuilder.toString().length());
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
+        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, "");
         if (StringUtils.isEmpty(s)) {
             s = errorStr;
         }
@@ -1151,13 +861,24 @@ public class GenerateBaseDataService {
                     for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
                         SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByPlanDetailsId(projectPlanDetails.getId());
                         if (schemeReimbursement != null) {
-                            if (schemeReimbursement.getMortgageTotalPrice() != null) {
-                                decimal = decimal.add(schemeReimbursement.getMortgageTotalPrice());
+                            SchemeReimbursementItemVo select = new SchemeReimbursementItemVo();
+                            select.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
+                            select.setJudgeObjectId(schemeReimbursement.getJudgeObjectId());
+                            List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = schemeReimbursementService.findQueryBySchemeReimbursementItem(select);
+                            if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
+                                BigDecimal bigDecimal = new BigDecimal(0);
+                                for (SchemeReimbursementItemVo schemeReimbursementItemVo : schemeReimbursementItemVoList) {
+                                    bigDecimal = bigDecimal.add(schemeReimbursementItemVo.getKnowTotalPrice());
+                                }
+                                decimal = decimal.add(bigDecimal);
                             }
                         }
                     }
                 }
             }
+        }
+        if (decimal.doubleValue() > 0) {
+            decimal = decimal.divide(new BigDecimal(10000));
         }
         decimal = decimal.setScale(4, BigDecimal.ROUND_DOWN);
         return decimal.toString();
@@ -1189,15 +910,20 @@ public class GenerateBaseDataService {
                     for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
                         SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByPlanDetailsId(projectPlanDetails.getId());
                         if (schemeReimbursement != null) {
-                            if (schemeReimbursement.getMortgageTotalPrice() != null) {
-                                decimal = decimal.add(schemeReimbursement.getMortgageTotalPrice());
+                            SchemeReimbursementItemVo select = new SchemeReimbursementItemVo();
+                            select.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
+                            select.setJudgeObjectId(schemeReimbursement.getJudgeObjectId());
+                            List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = schemeReimbursementService.findQueryBySchemeReimbursementItem(select);
+                            if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
+                                BigDecimal bigDecimal = new BigDecimal(0);
+                                for (SchemeReimbursementItemVo schemeReimbursementItemVo : schemeReimbursementItemVoList) {
+                                    bigDecimal = bigDecimal.add(schemeReimbursementItemVo.getKnowTotalPrice());
+                                }
+                                decimal = decimal.add(bigDecimal);
                             }
                         }
                     }
                 }
-            }
-            if (decimal.doubleValue() > 0) {
-                decimal = decimal.divide(new BigDecimal(10000));
             }
         }
         decimal = decimal.setScale(2, BigDecimal.ROUND_HALF_DOWN);
@@ -1423,23 +1149,13 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(schemeJudgeObject -> StringUtils.isNotBlank(schemeJudgeObject.getCertUse())).collect(Collectors.toList());
             for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                String key = schemeJudgeObjectList.get(i).getCertUse();
-                if (StringUtils.isNotBlank(key)) {
-                    //取出列表
-                    List<Integer> integerList = stringListMap.get(key);
-                    if (CollectionUtils.isEmpty(integerList)) {
-                        integerList = Lists.newArrayList();
-                    }
-                    //添加进相同证载用途的列表中
-                    if (NumberUtils.isNumber(schemeJudgeObjectList.get(i).getNumber())) {
-                        integerList.add(NumberUtils.toInt(schemeJudgeObjectList.get(i).getNumber()));
-                        //更新回去
-                        stringListMap.put(key, integerList);
-                    }
-                }
+                generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObjectList.get(i), schemeJudgeObjectList.get(i).getCertUse());
             }
         }
         String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
+        if (StringUtils.isEmpty(s)) {
+            s = errorStr;
+        }
         return s;
     }
 
@@ -1457,7 +1173,8 @@ public class GenerateBaseDataService {
                 if (schemeJudgeObject.getEvaluationArea() != null && schemeJudgeObject.getPrice() != null) {
                     if (NumberUtils.isNumber(schemeJudgeObject.getEvaluationArea().toString()) && NumberUtils.isNumber(schemeJudgeObject.getPrice().toString())) {
                         BigDecimal bigDecimal = schemeJudgeObject.getEvaluationArea().multiply(schemeJudgeObject.getPrice());
-                        stringSet.add(String.format("%s:%s", getSchemeJudgeObjectShowName(schemeJudgeObject), bigDecimal.toString()));
+                        bigDecimal = bigDecimal.divide(new BigDecimal(10000));
+                        stringSet.add(String.format("%s:%s万元", getSchemeJudgeObjectShowName(schemeJudgeObject), bigDecimal.toString()));
                     }
                 }
             }
@@ -1497,7 +1214,7 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.settingBuildingTable(builder);
-        List<SchemeJudgeObjectVo> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(),true).stream().map(schemeJudgeObject -> {
+        List<SchemeJudgeObjectVo> schemeJudgeObjectList = getSchemeJudgeObjectList().stream().map(schemeJudgeObject -> {
             return schemeJudgeObjectService.getSchemeJudgeObjectVo(schemeJudgeObject);
         }).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -1635,13 +1352,7 @@ public class GenerateBaseDataService {
                     builder.endRow();
                     row++;
                 }
-                if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
-                    for (MergeCellModel mergeCellModel : mergeCellModelList) {
-                        Cell cellStartRange = table.getRows().get(mergeCellModel.getStartRowIndex()).getCells().get(mergeCellModel.getStartColumnIndex());
-                        Cell cellEndRange = table.getRows().get(mergeCellModel.getEndRowIndex()).getCells().get(mergeCellModel.getEndColumnIndex());
-                        AsposeUtils.mergeCells(cellStartRange, cellEndRange, table);
-                    }
-                }
+                generateCommonMethod.mergeCellTable(mergeCellModelList, table);
                 builder.endTable();
             }
         }
@@ -1728,12 +1439,13 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getStatutoryOptimumReimbursement() {
-        Set<String> stringSet = Sets.newHashSet();
-        StringBuilder stringBuilder = new StringBuilder(16);
         Map<String, List<Integer>> stringListMap = Maps.newHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                if (!NumberUtils.isNumber(schemeJudgeObject.getNumber())) {
+                    continue;
+                }
                 String temp = null;
                 try {
                     temp = schemeReimbursementService.getFullDescription(schemeJudgeObject.getId());
@@ -1751,21 +1463,11 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        if (!stringListMap.isEmpty()) {
-            for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
-                if (entry.getValue().size() > 0) {
-                    stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append("号").append(generateCommonMethod.SchemeJudgeObjectName).append(":").append(entry.getKey());
-                    stringSet.add(stringBuilder.toString());
-                    stringBuilder.delete(0, stringBuilder.toString().length());
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
+        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, "");
         if (StringUtils.isEmpty(s.trim())) {
             s = errorStr;
         }
         return s;
-
     }
 
     public String getHotTip() throws Exception {
@@ -2037,7 +1739,7 @@ public class GenerateBaseDataService {
      */
     public String getRegisteredRealEstateValuer(String str) {
         String[] strings = str.split(",");
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(8);
         for (String id : strings) {
             DataQualificationVo dataQualificationVo = dataQualificationService.getByDataQualificationId(Integer.parseInt(id));
             if (dataQualificationVo != null) {
@@ -2056,7 +1758,7 @@ public class GenerateBaseDataService {
     public String getRegisteredRealEstateValuerAndNumber(GenerateReportGeneration generateReportGeneration) throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
-        StringBuilder stringBuilder = new StringBuilder(16);
+        StringBuilder stringBuilder = new StringBuilder(8);
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(document);
         String[] strings = generateReportGeneration.getRealEstateAppraiser().split(",");
         stringBuilder.append("<p>");
@@ -2091,7 +1793,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getRegistrationNumber(String str) throws Exception {
-        StringBuilder builder = new StringBuilder(24);
+        StringBuilder builder = new StringBuilder(8);
         String[] strings = str.split(",");
         for (String id : strings) {
             DataQualificationVo dataQualificationVo = dataQualificationService.getByDataQualificationId(Integer.parseInt(id));
@@ -2209,7 +1911,6 @@ public class GenerateBaseDataService {
             });
         }
         Set<String> stringSet = Sets.newHashSet();
-        StringBuilder builder = new StringBuilder(24);
         if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
             projectPlanDetailsList.stream().forEach(projectPlanDetails -> stringSet.add(projectPlanDetails.getExecuteUserAccount()));
         }
@@ -2346,7 +2047,6 @@ public class GenerateBaseDataService {
     public String getValueImplication() {
         List<String> list = JSON.parseArray(getSchemeAreaGroup().getValueConnotation(), String.class);
         if (CollectionUtils.isEmpty(list)) return null;
-        List<Integer> integerList = FormatUtils.ListStringToListInteger(list);
         String result = new String();
         for (String s : list) {
             result += baseDataDicService.getNameById(s) + ",";
@@ -2369,28 +2069,8 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getPowerPerson() {
-        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), true);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(schemeJudgeObject -> StringUtils.isNotBlank(schemeJudgeObject.getCertUse())).collect(Collectors.toList());
-            for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObjectList.get(i).getDeclareRecordId());
-                if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getOwnership())) {
-                    String key = declareRecord.getOwnership();
-                    List<Integer> integerList = stringListMap.get(key);
-                    if (CollectionUtils.isEmpty(integerList)) {
-                        integerList = Lists.newArrayList();
-                    }
-                    integerList.add(NumberUtils.toInt(schemeJudgeObjectList.get(i).getNumber()));
-                    stringListMap.put(key, integerList);
-                }
-            }
-        }
-        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
-        if (StringUtils.isEmpty(s)) {
-            s = errorStr;
-        }
-        return s;
+        return generateCommonMethod.getPowerPerson(schemeJudgeObjectList);
     }
 
 
@@ -2400,57 +2080,11 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getSetUse() {
-        Set<String> stringSet = Sets.newHashSet();
-        StringBuilder stringBuilder = new StringBuilder(16);
         List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(schemeJudgeObject -> schemeJudgeObject.getSetUse() != null).collect(Collectors.toList());
-            for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                if (schemeJudgeObjectList.get(i).getSetUse() != null) {
-                    DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObjectList.get(i).getSetUse());
-                    if (dataSetUseField != null && StringUtils.isNotBlank(dataSetUseField.getName())) {
-                        stringSet.add(String.format("%s", dataSetUseField.getName()));
-                    }
-                }
-            }
+        String s = generateCommonMethod.getSetUses(schemeJudgeObjectList);
+        if (StringUtils.isEmpty(s.trim())) {
+            s = errorStr;
         }
-        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        if (CollectionUtils.isNotEmpty(stringSet)) {
-            for (String s : stringSet) {
-                stringListMap.put(s, new ArrayList<Integer>(0));
-            }
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                String key = null;
-                for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
-                    DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
-                    if (dataSetUseField != null && StringUtils.isNotBlank(dataSetUseField.getName())) {
-                        if (Objects.equal(entry.getKey(), dataSetUseField.getName())) {
-                            key = entry.getKey();
-                            break;
-                        }
-                    }
-                }
-                if (StringUtils.isNotBlank(key)) {
-                    //取出列表
-                    List<Integer> integerList = stringListMap.get(key);
-                    //添加进相同证载用途的列表中
-                    integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                    //更新回去
-                    stringListMap.put(key, integerList);
-                }
-            }
-        }
-        stringSet.clear();
-        if (!stringListMap.isEmpty()) {
-            for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
-                if (entry.getValue().size() > 0) {
-                    stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append("号").append(generateCommonMethod.SchemeJudgeObjectName).append(":").append(entry.getKey());
-                    stringSet.add(stringBuilder.toString());
-                    stringBuilder.delete(0, stringBuilder.toString().length());
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
@@ -2461,28 +2095,8 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getPracticalUse() {
-        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(schemeJudgeObject -> StringUtils.isNotBlank(schemeJudgeObject.getPracticalUse())).collect(Collectors.toList());
-            for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                String key = null;
-                if (NumberUtils.isNumber(schemeJudgeObjectList.get(i).getPracticalUse())) {
-                    key = baseDataDicService.getNameById(schemeJudgeObjectList.get(i).getPracticalUse());
-                } else {
-                    key = schemeJudgeObjectList.get(i).getPracticalUse();
-                }
-                if (StringUtils.isNotBlank(key)) {
-                    List<Integer> integerList = stringListMap.get(key);
-                    if (CollectionUtils.isEmpty(integerList)) {
-                        integerList = Lists.newArrayList();
-                    }
-                    integerList.add(NumberUtils.toInt(schemeJudgeObjectList.get(i).getNumber()));
-                    stringListMap.put(key, integerList);
-                }
-            }
-        }
-        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
+        String s = generateCommonMethod.getPracticalUse(schemeJudgeObjectList);
         if (StringUtils.isEmpty(s.trim())) {
             s = errorStr;
         }
@@ -2496,53 +2110,8 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getBuildingStructureCategory() throws Exception {
-        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
-                .stream()
-                .filter(projectPhaseVo -> {
-                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    return false;
-                }).collect(Collectors.toList());
         List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && CollectionUtils.isNotEmpty(projectPhases)) {
-            for (ProjectPhase projectPhase : projectPhases) {
-                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                    ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(projectId);
-                    query.setProjectPhaseId(projectPhase.getId());
-                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                        for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                            GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
-                            if (generateBaseExamineService.getBasicApply().getId() != null && generateBaseExamineService.getBasicApply().getId().intValue() != 0) {
-                                if (generateBaseExamineService.getBasicBuilding().getBuildingStructureCategory() != null) {
-                                    String key = baseDataDicService.getNameById(generateBaseExamineService.getBasicBuilding().getBuildingStructureCategory());
-                                    if (StringUtils.isNotBlank(key)) {
-                                        List<Integer> integerList = stringListMap.get(key);
-                                        if (CollectionUtils.isNotEmpty(integerList)) {
-                                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                                        } else {
-                                            integerList = Lists.newArrayList();
-                                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                                        }
-                                        stringListMap.put(key, integerList);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
-        return s;
+        return generateCommonMethod.getBuildingStructureCategory(schemeJudgeObjectList, projectInfo);
     }
 
     /**
@@ -2579,17 +2148,8 @@ public class GenerateBaseDataService {
                             GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
                             if (generateBaseExamineService.getBasicApply().getId() != null && generateBaseExamineService.getBasicApply().getId().intValue() != 0) {
                                 if (generateBaseExamineService.getBasicTrading().getTaxBurden() != null) {
-                                    String temp = baseDataDicService.getNameById(generateBaseExamineService.getBasicTrading().getTaxBurden());
-                                    if (StringUtils.isNotBlank(temp)) {
-                                        List<Integer> integerList = stringListMap.get(temp);
-                                        if (CollectionUtils.isNotEmpty(integerList)) {
-                                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                                        } else {
-                                            integerList = Lists.newArrayList();
-                                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                                        }
-                                        stringListMap.put(temp, integerList);
-                                    }
+                                    String key = baseDataDicService.getNameById(generateBaseExamineService.getBasicTrading().getTaxBurden());
+                                    generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, key);
                                 }
                             }
                         }
@@ -2638,17 +2198,8 @@ public class GenerateBaseDataService {
                             GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
                             if (generateBaseExamineService.getBasicApply().getId() != null && generateBaseExamineService.getBasicApply().getId().intValue() != 0) {
                                 if (generateBaseExamineService.getBasicTrading().getPaymentMethod() != null) {
-                                    String temp = baseDataDicService.getNameById(generateBaseExamineService.getBasicTrading().getPaymentMethod());
-                                    if (StringUtils.isNotBlank(temp)) {
-                                        List<Integer> integerList = stringListMap.get(temp);
-                                        if (CollectionUtils.isNotEmpty(integerList)) {
-                                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                                        } else {
-                                            integerList = Lists.newArrayList();
-                                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                                        }
-                                        stringListMap.put(temp, integerList);
-                                    }
+                                    String key = baseDataDicService.getNameById(generateBaseExamineService.getBasicTrading().getPaymentMethod());
+                                    generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, key);
                                 }
                             }
                         }
@@ -2670,31 +2221,8 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getUseRightType() {
-        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), true);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-                if (declareRecord != null) {
-                    String temp = declareRecord.getUseRightType();
-                    if (StringUtils.isNotBlank(temp)) {
-                        List<Integer> integerList = stringListMap.get(temp);
-                        if (CollectionUtils.isNotEmpty(integerList)) {
-                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                        } else {
-                            integerList = Lists.newArrayList();
-                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                        }
-                        stringListMap.put(temp, integerList);
-                    }
-                }
-            }
-        }
-        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
-        if (StringUtils.isEmpty(s.trim())) {
-            s = errorStr;
-        }
-        return s;
+        return generateCommonMethod.getUseRightType(schemeJudgeObjectList);
     }
 
     /**
@@ -2706,7 +2234,7 @@ public class GenerateBaseDataService {
         if (getSchemeAreaGroup().getValueTimePoint() != null) {
             return DateUtils.format(getSchemeAreaGroup().getValueTimePoint(), DateUtils.DATE_CHINESE_PATTERN);
         }
-        return " ";
+        return errorStr;
     }
 
     /**
@@ -2732,16 +2260,7 @@ public class GenerateBaseDataService {
         List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                if (StringUtils.isNotBlank(schemeJudgeObject.getRentalPossessionDesc())) {
-                    List<Integer> integerList = stringListMap.get(schemeJudgeObject.getRentalPossessionDesc());
-                    if (CollectionUtils.isNotEmpty(integerList)) {
-                        integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                    } else {
-                        integerList = Lists.newArrayList();
-                        integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                    }
-                    stringListMap.put(schemeJudgeObject.getRentalPossessionDesc(), integerList);
-                }
+                generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, schemeJudgeObject.getRentalPossessionDesc());
             }
         }
         String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
@@ -2849,7 +2368,6 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getHisRightType() throws Exception {
-        Set<String> stringSet = Sets.newHashSet();
         StringBuilder stringBuilder = new StringBuilder(16);
         Map<String, List<Integer>> stringListMap = Maps.newHashMap();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
@@ -2872,43 +2390,25 @@ public class GenerateBaseDataService {
                     List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
                     if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
                         for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                            String temp = null;
+                            String key = null;
                             List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightService.surveyAssetInventoryRights(projectPlanDetails.getId());
                             if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
                                 for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
                                     if (inventoryRight.getCategory() != null) {
                                         stringBuilder.append(baseDataDicService.getNameById(inventoryRight.getCategory()));
-                                        temp = stringBuilder.toString();
+                                        key = stringBuilder.toString();
                                         stringBuilder.delete(0, stringBuilder.toString().length());
                                     }
                                 }
                             }
-                            if (StringUtils.isNotBlank(temp)) {
-                                List<Integer> integerList = stringListMap.get(temp);
-                                if (CollectionUtils.isNotEmpty(integerList)) {
-                                    integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                                } else {
-                                    integerList = Lists.newArrayList();
-                                    integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                                }
-                                stringListMap.put(temp, integerList);
-                            }
+                            generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, key);
                         }
                     }
                 }
             }
         }
-        if (!stringListMap.isEmpty()) {
-            for (Map.Entry<String, List<Integer>> entry : stringListMap.entrySet()) {
-                if (entry.getValue().size() > 0) {
-                    stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append("号").append(generateCommonMethod.SchemeJudgeObjectName).append(":").append(entry.getKey());
-                    stringSet.add(stringBuilder.toString());
-                    stringBuilder.delete(0, stringBuilder.toString().length());
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
-        if (StringUtils.isEmpty(s)) {
+        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
+        if (StringUtils.isEmpty(s.trim())) {
             s = errorStr;
         }
         return s;
@@ -2943,7 +2443,7 @@ public class GenerateBaseDataService {
                     List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
                     if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
                         for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                            String temp = null;
+                            String key = null;
                             List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightService.surveyAssetInventoryRights(projectPlanDetails.getId());
                             if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
                                 for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
@@ -2953,28 +2453,19 @@ public class GenerateBaseDataService {
                                         stringBuilder.append("-").append(inventoryRight.getCertName());
                                         stringBuilder.append("-").append(inventoryRight.getObligee());
                                         stringBuilder.append("-").append(inventoryRight.getObligor());
-                                        temp = stringBuilder.toString();
+                                        key = stringBuilder.toString();
                                         stringBuilder.delete(0, stringBuilder.toString().length());
                                     }
                                 }
                             }
-                            if (StringUtils.isNotBlank(temp)) {
-                                List<Integer> integerList = stringListMap.get(temp);
-                                if (CollectionUtils.isNotEmpty(integerList)) {
-                                    integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                                } else {
-                                    integerList = Lists.newArrayList();
-                                    integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                                }
-                                stringListMap.put(temp, integerList);
-                            }
+                            generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, key);
                         }
                     }
                 }
             }
         }
         String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
-        if (StringUtils.isEmpty(s)) {
+        if (StringUtils.isEmpty(s.trim())) {
             s = errorStr;
         }
         return s;
@@ -3092,16 +2583,7 @@ public class GenerateBaseDataService {
         List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                if (StringUtils.isNotBlank(schemeJudgeObject.getCollateralFound())) {
-                    List<Integer> integerList = stringListMap.get(schemeJudgeObject.getCollateralFound());
-                    if (CollectionUtils.isNotEmpty(integerList)) {
-                        integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                    } else {
-                        integerList = Lists.newArrayList();
-                        integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                    }
-                    stringListMap.put(schemeJudgeObject.getCollateralFound(), integerList);
-                }
+                generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, schemeJudgeObject.getCollateralFound());
             }
         }
         String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
@@ -3118,29 +2600,18 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getOptimumUtilizationDescription() throws Exception {
-        StringBuilder stringBuilder = new StringBuilder(16);
-        Set<String> stringSet = Sets.newHashSet();
         List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
         Map<String, List<Integer>> stringListMap = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (schemeJudgeObject.getBestUse() != null) {
-                    String temp = baseDataDicService.getNameById(schemeJudgeObject.getBestUse());
-                    if (StringUtils.isNotBlank(temp)) {
-                        List<Integer> integerList = stringListMap.get(temp);
-                        if (CollectionUtils.isNotEmpty(integerList)) {
-                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                        } else {
-                            integerList = Lists.newArrayList();
-                            integerList.add(NumberUtils.toInt(schemeJudgeObject.getNumber()));
-                        }
-                        stringListMap.put(temp, integerList);
-                    }
+                    String key = baseDataDicService.getNameById(schemeJudgeObject.getBestUse());
+                    generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, key);
                 }
             }
         }
         String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, "");
-        if (StringUtils.isEmpty(s)) {
+        if (StringUtils.isEmpty(s.trim())) {
             s = errorStr;
         }
         return s;
@@ -3162,7 +2633,7 @@ public class GenerateBaseDataService {
                     }
                     return false;
                 }).collect(Collectors.toList());
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
         Map<SchemeJudgeObject, Integer> judgeObjectIntegerMap = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(projectPhases)) {
             for (ProjectPhase projectPhase : projectPhases) {
@@ -3182,12 +2653,22 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        java.math.BigDecimal bigDecimal = new BigDecimal(0);
+        BigDecimal bigDecimal = new BigDecimal(0);
         if (!judgeObjectIntegerMap.isEmpty()) {
             for (Map.Entry<SchemeJudgeObject, Integer> integerEntry : judgeObjectIntegerMap.entrySet()) {
                 SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByPlanDetailsId(integerEntry.getValue());
-                if (schemeReimbursement != null && schemeReimbursement.getKnowTotalPrice() != null) {
-                    bigDecimal = bigDecimal.add(schemeReimbursement.getKnowTotalPrice());
+                if (schemeReimbursement != null) {
+                    SchemeReimbursementItemVo query = new SchemeReimbursementItemVo();
+                    query.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
+                    query.setJudgeObjectId(schemeReimbursement.getJudgeObjectId());
+                    List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = schemeReimbursementService.findQueryBySchemeReimbursementItem(query);
+                    if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
+                        BigDecimal bigDecimal2 = new BigDecimal(0);
+                        for (SchemeReimbursementItemVo schemeReimbursementItemVo : schemeReimbursementItemVoList) {
+                            bigDecimal2 = bigDecimal2.add(schemeReimbursementItemVo.getNotSetUpTotalPrice());
+                        }
+                        bigDecimal = bigDecimal.add(bigDecimal2);
+                    }
                 }
             }
             if (bigDecimal.doubleValue() > 0) {
@@ -3196,7 +2677,6 @@ public class GenerateBaseDataService {
         }
         return bigDecimal.toString();
     }
-
 
     /**
      * 法定优先受偿款金额
@@ -3215,7 +2695,7 @@ public class GenerateBaseDataService {
                     }
                     return false;
                 }).collect(Collectors.toList());
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
         Map<SchemeJudgeObject, Integer> judgeObjectIntegerMap = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(projectPhases)) {
             for (ProjectPhase projectPhase : projectPhases) {
@@ -3238,8 +2718,18 @@ public class GenerateBaseDataService {
         if (!judgeObjectIntegerMap.isEmpty()) {
             for (Map.Entry<SchemeJudgeObject, Integer> integerEntry : judgeObjectIntegerMap.entrySet()) {
                 SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByPlanDetailsId(integerEntry.getValue());
-                if (schemeReimbursement != null && schemeReimbursement.getKnowTotalPrice() != null) {
-                    stringSet.add(String.format("%s:%s、", integerEntry.getKey().getName(), schemeReimbursement.getKnowTotalPrice().toString()));
+                if (schemeReimbursement != null) {
+                    SchemeReimbursementItemVo query = new SchemeReimbursementItemVo();
+                    query.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
+                    query.setJudgeObjectId(schemeReimbursement.getJudgeObjectId());
+                    List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = schemeReimbursementService.findQueryBySchemeReimbursementItem(query);
+                    if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
+                        BigDecimal bigDecimal = new BigDecimal(0);
+                        for (SchemeReimbursementItemVo schemeReimbursementItemVo : schemeReimbursementItemVoList) {
+                            bigDecimal = bigDecimal.add(schemeReimbursementItemVo.getNotSetUpTotalPrice());
+                        }
+                        stringSet.add(String.format("%s:%s、", integerEntry.getKey().getName(), bigDecimal.toString()));
+                    }
                 }
             }
         }
@@ -3256,31 +2746,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getDevelopmentAssistApplyReason() {
-        StringBuilder builder = new StringBuilder(24);
-        Set<String> stringSet = Sets.newHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
-                if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                    builder.append(String.format("%s:", getSchemeJudgeObjectShowName(schemeJudgeObject)));
-                    for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
-                        if (schemeJudgeFunction.getBisApplicable()) {
-                            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_DEVELOPMENT);
-                            if (baseDataDic != null) {
-                                if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
-                                    builder.append(schemeJudgeFunction.getApplicableReason()).append("-");
-                                }
-                            }
-                        }
-                    }
-                    stringSet.add(builder.toString());
-                    builder.delete(0, builder.toString().length());
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
-        return s;
+        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_DEVELOPMENT, false, true, false);
     }
 
     /**
@@ -3289,62 +2755,16 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getDevelopmentAssistNotApplicableReason() {
-        StringBuilder builder = new StringBuilder(24);
-        Set<String> stringSet = Sets.newHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
-                if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                    builder.append(String.format("%s:", getSchemeJudgeObjectShowName(schemeJudgeObject)));
-                    for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
-                        if (!schemeJudgeFunction.getBisApplicable()) {
-                            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_DEVELOPMENT);
-                            if (baseDataDic != null) {
-                                if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
-                                    builder.append(schemeJudgeFunction.getNotApplicableReason()).append("-");
-                                }
-                            }
-                        }
-                    }
-                    stringSet.add(builder.toString());
-                    builder.delete(0, builder.toString().length());
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
-        return s;
+        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_DEVELOPMENT, false, false, true);
     }
 
     /**
-     * 假设开发法不适用原因
+     * 假设开发法评估思路
      *
      * @return
      */
     public String getDevelopmentAssistThink() {
-        StringBuilder builder = new StringBuilder(24);
-        Set<String> stringSet = Sets.newHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
-                if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                    builder.append(String.format("%s:", getSchemeJudgeObjectShowName(schemeJudgeObject)));
-                    for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
-                        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_DEVELOPMENT);
-                        if (baseDataDic != null) {
-                            if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
-                                builder.append(schemeJudgeFunction.getThinking()).append("-");
-                            }
-                        }
-                    }
-                    stringSet.add(builder.toString());
-                    builder.delete(0, builder.toString().length());
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
-        return s;
+        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_DEVELOPMENT, true, false, false);
     }
 
 
@@ -3354,31 +2774,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getIncomeAssistApplyReason() {
-        StringBuilder builder = new StringBuilder(24);
-        Set<String> stringSet = Sets.newHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
-                if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                    builder.append(String.format("%s:", getSchemeJudgeObjectShowName(schemeJudgeObject)));
-                    for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
-                        if (schemeJudgeFunction.getBisApplicable()) {
-                            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME);
-                            if (baseDataDic != null) {
-                                if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
-                                    builder.append(schemeJudgeFunction.getApplicableReason()).append("-");
-                                }
-                            }
-                        }
-                    }
-                    stringSet.add(builder.toString());
-                    builder.delete(0, builder.toString().length());
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
-        return s;
+        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_INCOME, false, true, false);
     }
 
     /**
@@ -3387,31 +2783,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getIncomeAssistNotApplicableReason() {
-        StringBuilder builder = new StringBuilder(24);
-        Set<String> stringSet = Sets.newHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
-                if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                    builder.append(String.format("%s:", getSchemeJudgeObjectShowName(schemeJudgeObject)));
-                    for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
-                        if (!schemeJudgeFunction.getBisApplicable()) {
-                            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME);
-                            if (baseDataDic != null) {
-                                if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
-                                    builder.append(schemeJudgeFunction.getNotApplicableReason()).append("-");
-                                }
-                            }
-                        }
-                    }
-                    stringSet.add(builder.toString());
-                    builder.delete(0, builder.toString().length());
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
-        return s;
+        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_INCOME, false, false, true);
     }
 
     /**
@@ -3420,29 +2792,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getIncomeAssistThink() {
-        StringBuilder builder = new StringBuilder(24);
-        Set<String> stringSet = Sets.newHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
-                if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                    builder.append(String.format("%s:", getSchemeJudgeObjectShowName(schemeJudgeObject)));
-                    for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
-                        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME);
-                        if (baseDataDic != null) {
-                            if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
-                                builder.append(schemeJudgeFunction.getThinking()).append("-");
-                            }
-                        }
-                    }
-                    stringSet.add(builder.toString());
-                    builder.delete(0, builder.toString().length());
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
-        return s;
+        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_INCOME, true, false, false);
     }
 
     /**
@@ -3451,31 +2801,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getCompareAssistApplyReason() {
-        StringBuilder builder = new StringBuilder(24);
-        Set<String> stringSet = Sets.newHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
-                if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                    builder.append(String.format("%s:", getSchemeJudgeObjectShowName(schemeJudgeObject)));
-                    for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
-                        if (schemeJudgeFunction.getBisApplicable()) {
-                            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
-                            if (baseDataDic != null) {
-                                if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
-                                    builder.append(schemeJudgeFunction.getApplicableReason()).append("-");
-                                }
-                            }
-                        }
-                    }
-                    stringSet.add(builder.toString());
-                    builder.delete(0, builder.toString().length());
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
-        return s;
+        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_MARKET_COMPARE, false, true, false);
     }
 
     /**
@@ -3484,31 +2810,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getCompareAssistNotApplicableReason() {
-        StringBuilder builder = new StringBuilder(24);
-        Set<String> stringSet = Sets.newHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
-                if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                    builder.append(String.format("%s:", getSchemeJudgeObjectShowName(schemeJudgeObject)));
-                    for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
-                        if (!schemeJudgeFunction.getBisApplicable()) {
-                            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
-                            if (baseDataDic != null) {
-                                if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
-                                    builder.append(schemeJudgeFunction.getNotApplicableReason()).append("-");
-                                }
-                            }
-                        }
-                    }
-                    stringSet.add(builder.toString());
-                    builder.delete(0, builder.toString().length());
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
-        return s;
+        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_MARKET_COMPARE, false, false, true);
     }
 
     /**
@@ -3517,29 +2819,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getCompareAssistThink() {
-        StringBuilder builder = new StringBuilder(24);
-        Set<String> stringSet = Sets.newHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
-                if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                    builder.append(String.format("%s:", getSchemeJudgeObjectShowName(schemeJudgeObject)));
-                    for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
-                        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
-                        if (baseDataDic != null) {
-                            if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
-                                builder.append(schemeJudgeFunction.getThinking()).append("-");
-                            }
-                        }
-                    }
-                    stringSet.add(builder.toString());
-                    builder.delete(0, builder.toString().length());
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
-        return s;
+        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_MARKET_COMPARE, true, false, false);
     }
 
     /**
@@ -3548,31 +2828,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getCostAssistApplyReason() {
-        StringBuilder builder = new StringBuilder(24);
-        Set<String> stringSet = Sets.newHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
-                if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                    builder.append(String.format("%s:", getSchemeJudgeObjectShowName(schemeJudgeObject)));
-                    for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
-                        if (schemeJudgeFunction.getBisApplicable()) {
-                            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST);
-                            if (baseDataDic != null) {
-                                if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
-                                    builder.append(schemeJudgeFunction.getApplicableReason()).append("-");
-                                }
-                            }
-                        }
-                    }
-                    stringSet.add(builder.toString());
-                    builder.delete(0, builder.toString().length());
-                }
-            }
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
-        return s;
+        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_COST, false, true, false);
     }
 
     /**
@@ -3581,7 +2837,20 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getCostAssistNotApplicableReason() {
-        StringBuilder builder = new StringBuilder(24);
+        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_COST, false, false, true);
+    }
+
+    /**
+     * 成本法评估思路
+     *
+     * @return
+     */
+    public String getCostAssistThink() {
+        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_COST, true, false, false);
+    }
+
+    private String getAssistThinkAndApplicableReasonOrNotApplicableReason(String key, boolean think, boolean applicableReason, boolean notApplicableReason) {
+        StringBuilder builder = new StringBuilder(8);
         Set<String> stringSet = Sets.newHashSet();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -3590,10 +2859,16 @@ public class GenerateBaseDataService {
                 if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
                     builder.append(String.format("%s:", getSchemeJudgeObjectShowName(schemeJudgeObject)));
                     for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
-                        if (!schemeJudgeFunction.getBisApplicable()) {
-                            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST);
-                            if (baseDataDic != null) {
-                                if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
+                        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(key);
+                        if (baseDataDic != null) {
+                            if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
+                                if (think) {
+                                    builder.append(schemeJudgeFunction.getThinking()).append("-");
+                                }
+                                if (applicableReason) {
+                                    builder.append(schemeJudgeFunction.getApplicableReason()).append("-");
+                                }
+                                if (notApplicableReason) {
                                     builder.append(schemeJudgeFunction.getNotApplicableReason()).append("-");
                                 }
                             }
@@ -3605,51 +2880,12 @@ public class GenerateBaseDataService {
             }
         }
         String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
-        return s;
-    }
-
-    /**
-     * 成本法评估思路
-     *
-     * @return
-     */
-    public String getCostAssistThink() {
-        StringBuilder builder = new StringBuilder(24);
-        Set<String> stringSet = Sets.newHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
-                if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                    builder.append(String.format("%s:", getSchemeJudgeObjectShowName(schemeJudgeObject)));
-                    for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
-                        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST);
-                        if (baseDataDic != null) {
-                            if (Objects.equal(baseDataDic.getId(), schemeJudgeFunction.getMethodType())) {
-                                builder.append(schemeJudgeFunction.getThinking()).append("-");
-                            }
-                        }
-                    }
-                    stringSet.add(builder.toString());
-                    builder.delete(0, builder.toString().length());
-                }
-            }
+        if (StringUtils.isNotBlank(s.trim())) {
+            s = errorStr;
         }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         return s;
     }
 
-
-    /**
-     * 计算过程
-     *
-     * @return
-     * @throws Exception
-     */
-    public String getComputationProcess(SysAttachmentDto sysAttachmentDto) throws Exception {
-        String tempDir = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-        return tempDir;
-    }
 
     /**
      * 功能描述: 估价对象市场价值的确定
@@ -3805,7 +3041,7 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.settingBuildingTable(builder);
         String localPath = getLocalPath();
-        Map<SchemeJudgeObject, DeclareRecord> objectDeclareRealtyRealEstateCertVoMap = Maps.newHashMap();
+        LinkedHashMap<SchemeJudgeObject, DeclareRecord> objectDeclareRealtyRealEstateCertVoMap = Maps.newLinkedHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
@@ -3902,17 +3138,6 @@ public class GenerateBaseDataService {
                 }
                 builder.endRow();
             }
-            //设置表格边框的宽度
-            builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
-            builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
-            builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
-            builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
-            //设置具体宽度
-            builder.getCellFormat().setWidth(100);
-            //水平居中
-            builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
-            //上下居中
-            builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
             builder.endTable();
         }
         doc.save(localPath);
@@ -4116,13 +3341,7 @@ public class GenerateBaseDataService {
                 builder.endRow();
             }
         }
-        if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
-            for (MergeCellModel mergeCellModel : mergeCellModelList) {
-                Cell cellStartRange = table.getRows().get(mergeCellModel.getStartRowIndex()).getCells().get(mergeCellModel.getStartColumnIndex());
-                Cell cellEndRange = table.getRows().get(mergeCellModel.getEndRowIndex()).getCells().get(mergeCellModel.getEndColumnIndex());
-                AsposeUtils.mergeCells(cellStartRange, cellEndRange, table);
-            }
-        }
+        generateCommonMethod.mergeCellTable(mergeCellModelList, table);
         builder.endTable();
         doc.save(localPath);
         return localPath;
@@ -4151,14 +3370,13 @@ public class GenerateBaseDataService {
                     return false;
                 }).collect(Collectors.toList());
         List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), true);
-        Map<SchemeJudgeObject, Integer> judgeObjectIntegerMap = Maps.newHashMap();
+        LinkedHashMap<SchemeJudgeObject, Integer> judgeObjectIntegerMap = Maps.newLinkedHashMap();
         if (CollectionUtils.isNotEmpty(projectPhases)) {
             for (ProjectPhase projectPhase : projectPhases) {
                 if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
                     for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                         ProjectPlanDetails query = new ProjectPlanDetails();
                         query.setProjectId(projectId);
-                        query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                         query.setProjectPhaseId(projectPhase.getId());
                         List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
                         if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
@@ -4204,88 +3422,85 @@ public class GenerateBaseDataService {
                         builder.writeln(getSchemeJudgeObjectShowName(integerEntry.getKey()));
                     }
                     SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByPlanDetailsId(integerEntry.getValue());
-                    if (Objects.equal(getSchemeAreaGroup().getEntrustPurpose(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId()) && schemeReimbursement != null) {
+                    BigDecimal notSetUpTotalPrice = new BigDecimal(0);
+                    if (schemeReimbursement != null) {
                         //抵押=总价-法定
-                        List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = schemeReimbursementService.getItemByMasterId(schemeReimbursement.getId());
-                        BigDecimal notSetUpTotalPrice = new BigDecimal(0);
-                        if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
-                            for (SchemeReimbursementItemVo schemeReimbursementItemVo : schemeReimbursementItemVoList) {
-                                if (schemeReimbursementItemVo.getNotSetUpTotalPrice() != null) {
-                                    notSetUpTotalPrice = notSetUpTotalPrice.add(schemeReimbursementItemVo.getNotSetUpTotalPrice());
+                        if (Objects.equal(projectInfo.getEntrustPurpose(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId())) {
+                            SchemeReimbursementItemVo query = new SchemeReimbursementItemVo();
+                            query.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
+                            query.setJudgeObjectId(schemeReimbursement.getJudgeObjectId());
+                            List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = schemeReimbursementService.findQueryBySchemeReimbursementItem(query);
+                            if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
+                                for (SchemeReimbursementItemVo schemeReimbursementItemVo : schemeReimbursementItemVoList) {
+                                    if (schemeReimbursementItemVo.getNotSetUpTotalPrice() != null) {
+                                        notSetUpTotalPrice = notSetUpTotalPrice.add(schemeReimbursementItemVo.getNotSetUpTotalPrice());
+                                    }
                                 }
                             }
                         }
-                        if (j == 9) builder.writeln(notSetUpTotalPrice.toString());
+                    }
+                    if (j == 9) builder.writeln(notSetUpTotalPrice.toString());
+                    if (declareRecord.getPrice() != null && declareRecord.getPracticalArea() != null) {
+                        BigDecimal totol = declareRecord.getPrice().multiply(declareRecord.getPracticalArea());
+                        if (totol != null) {
+                            BigDecimal mortgage = totol.subtract(notSetUpTotalPrice);
+                            if (j == 10) {
+                                if (notSetUpTotalPrice.doubleValue() > 0) {
+                                    builder.writeln(mortgage.toString());
+                                } else {
+                                    builder.writeln("0");
+                                }
+                            }
+                        }
+                    }
+                    GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(integerEntry.getValue());
+                    if (j == 1) {
+                        if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getSeat())) {
+                            builder.writeln(declareRecord.getSeat());
+                        }
+                    }
+                    if (j == 2) {
+                        if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getCertUse())) {
+                            builder.writeln(declareRecord.getCertUse());
+                        }
+                    }
+                    if (j == 3) {
+                        if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getPracticalUse())) {
+                            builder.writeln(declareRecord.getPracticalUse());
+                        }
+                    }
+                    if (j == 4) {
+                        try {
+                            builder.writeln(generateBaseExamineService.getBasicBuilding().getFloorCount().toString());
+                        } catch (Exception e) {
+                            builder.writeln("0");
+                        }
+                    }
+                    if (j == 5) {
+                        if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getFloor())) {
+                            builder.writeln(declareRecord.getFloor());
+                        }
+                    }
+                    if (j == 6) {
+                        if (declareRecord != null && declareRecord.getPracticalArea() != null) {
+                            builder.writeln(declareRecord.getPracticalArea().toString());
+                        }
+                    }
+                    if (j == 7) {
+                        if (declareRecord != null && declareRecord.getPrice() != null) {
+                            builder.writeln(declareRecord.getPrice().toString());
+                        }
+                    }
+                    if (j == 8) {
                         if (declareRecord.getPrice() != null && declareRecord.getPracticalArea() != null) {
-                            BigDecimal totol = declareRecord.getPrice().multiply(declareRecord.getPracticalArea());
-                            if (totol != null ) {
-                                BigDecimal mortgage = totol.subtract(notSetUpTotalPrice);
-                                if (j == 10) builder.writeln(mortgage.toString());
-                            }
-                        }
-
-                    } else {
-                        GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(integerEntry.getValue());
-                        if (j == 1) {
-                            if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getSeat())) {
-                                builder.writeln(declareRecord.getSeat());
-                            }
-                        }
-                        if (j == 2) {
-                            if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getCertUse())) {
-                                builder.writeln(declareRecord.getCertUse());
-                            }
-                        }
-                        if (j == 3) {
-                            if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getPracticalUse())) {
-                                builder.writeln(declareRecord.getPracticalUse());
-                            }
-                        }
-                        if (j == 4) {
-                            try {
-                                builder.writeln(generateBaseExamineService.getBasicBuilding().getFloorCount().toString());
-                            } catch (Exception e) {
-                                builder.writeln("0");
-                            }
-                        }
-
-                        if (j == 5) {
-                            if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getFloor())) {
-                                builder.writeln(declareRecord.getFloor());
-                            }
-                        }
-                        if (j == 6) {
-                            if (declareRecord != null && declareRecord.getPracticalArea() != null) {
-                                builder.writeln(declareRecord.getPracticalArea().toString());
-                            }
-                        }
-                        if (j == 7) {
-                            if (declareRecord != null && declareRecord.getPrice() != null) {
-                                builder.writeln(declareRecord.getPrice().toString());
-                            }
-                        }
-                        if (j == 8) {
-                            if (declareRecord.getPrice() != null && declareRecord.getPracticalArea() != null) {
-                                BigDecimal total = declareRecord.getPrice().multiply(declareRecord.getPracticalArea());
-                                builder.writeln(total.toString());
-                            }
+                            BigDecimal total = declareRecord.getPrice().multiply(declareRecord.getPracticalArea());
+                            builder.writeln(total.toString());
                         }
                     }
                 }
                 builder.endRow();
             }
         }
-        //设置表格边框的宽度
-        builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
-        builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
-        builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
-        builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
-        //设置具体宽度
-        builder.getCellFormat().setWidth(100);
-        //水平居中
-        builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
-        //上下居中
-        builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
         builder.endTable();
         doc.save(localPath);
         return localPath;
@@ -4612,13 +3827,7 @@ public class GenerateBaseDataService {
             mergeCellModelList.add(new MergeCellModel(j, 1, j, 2));
             mergeCellModelList.add(new MergeCellModel(0, 0, 6, 0));
         }
-        if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
-            for (MergeCellModel mergeCellModel : mergeCellModelList) {
-                Cell cellStartRange = table.getRows().get(mergeCellModel.getStartRowIndex()).getCells().get(mergeCellModel.getStartColumnIndex());
-                Cell cellEndRange = table.getRows().get(mergeCellModel.getEndRowIndex()).getCells().get(mergeCellModel.getEndColumnIndex());
-                AsposeUtils.mergeCells(cellStartRange, cellEndRange, table);
-            }
-        }
+        generateCommonMethod.mergeCellTable(mergeCellModelList, table);
         builder.endTable();
         doc.save(localPath);
         return localPath;
@@ -5680,13 +4889,7 @@ public class GenerateBaseDataService {
                     break;
             }
         }
-        if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
-            for (MergeCellModel mergeCellModel : mergeCellModelList) {
-                Cell cellStartRange = table.getRows().get(mergeCellModel.getStartRowIndex()).getCells().get(mergeCellModel.getStartColumnIndex());
-                Cell cellEndRange = table.getRows().get(mergeCellModel.getEndRowIndex()).getCells().get(mergeCellModel.getEndColumnIndex());
-                AsposeUtils.mergeCells(cellStartRange, cellEndRange, table);
-            }
-        }
+        generateCommonMethod.mergeCellTable(mergeCellModelList, table);
         builder.endTable();
         doc.save(localPath);
         return localPath;
@@ -5768,7 +4971,6 @@ public class GenerateBaseDataService {
         }
         return localPath;
     }
-
 
     /**
      * 估价委托书复印件
@@ -6149,94 +5351,78 @@ public class GenerateBaseDataService {
         Document document = new Document();
         StringBuilder stringBuilder = new StringBuilder(16);
         StringBuffer buffer = new StringBuffer(8);
+        StringBuffer stringBuffer = new StringBuffer(8);
+        List<String> seats = Lists.newArrayList();
+        final String zero = "0";
         DocumentBuilder documentBuilder = new DocumentBuilder(document);
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), true);
-        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
-                .stream()
-                .filter(projectPhaseVo -> {
-                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
-                        return true;
+        LinkedHashMap<String, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getSchemeJudgeObjectLinkedHashMap(
+                generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), true),
+                projectInfo);
+        if (!linkedHashMap.isEmpty()) {
+            int i = 0;
+            for (Map.Entry<String, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
+                //楼盘名称
+                String estateName = entry.getKey();
+                List<SchemeJudgeObject> schemeJudgeObjectList = entry.getValue();
+                List<DeclareRecord> declareRecordList = Lists.newArrayList();
+                //当估价对象不存在的情况下不予以拼接
+                if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+                    schemeJudgeObjectList.stream().forEach(schemeJudgeObject -> declareRecordList.add(declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId())));
+                    if (CollectionUtils.isEmpty(declareRecordList)) {
+                        continue;
                     }
-                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    return false;
-                }).collect(Collectors.toList());
-        if (CollectionUtils.isNotEmpty(projectPhases) && CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (ProjectPhase projectPhaseScene : projectPhases) {
-                for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                    SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(i);
-                    ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(projectId);
-                    query.setProjectPhaseId(projectPhaseScene.getId());
-                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList) && declareRecord != null) {
-                        for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                            GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
-                            if (generateBaseExamineService.getBasicApply().getId() != null) {
-                                try {
-                                    buffer.append(generateBaseExamineService.getEstate().getName());
-                                    buffer.append(declareRecord.getSeat());
-                                    buffer.append(",");
-                                    DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
-                                    buffer.append(BaseReportFieldEnum.SetUse.getName());
-                                    if (dataSetUseField != null) {
-                                        buffer.append(dataSetUseField.getName());
-                                    } else {
-                                        buffer.append("无");
-                                    }
-                                    String practicaluse = null;
-                                    if (NumberUtils.isNumber(schemeJudgeObjectList.get(i).getPracticalUse())) {
-                                        practicaluse = baseDataDicService.getNameById(schemeJudgeObjectList.get(i).getPracticalUse());
-                                    } else {
-                                        practicaluse = schemeJudgeObjectList.get(i).getPracticalUse();
-                                    }
-                                    if (StringUtils.isEmpty(practicaluse)) {
-                                        practicaluse = "无";
-                                    }
-                                    buffer.append(",").append(BaseReportFieldEnum.PracticalUse.getName()).append(practicaluse);
-                                    buffer.append(",").append("建筑面积");
-                                    if (declareRecord.getFloorArea() != null) {
-                                        buffer.append(declareRecord.getFloorArea().toString());
-                                    } else {
-                                        buffer.append("无");
-                                    }
-                                    buffer.append(",").append("评估面积");
-                                    if (schemeJudgeObject.getEvaluationArea() != null) {
-                                        buffer.append(schemeJudgeObject.getEvaluationArea().toString());
-                                    } else {
-                                        buffer.append("无");
-                                    }
-                                    buffer.append(",").append(BaseReportFieldEnum.LandUseRightType.getName());
-                                    if (StringUtils.isNotBlank(declareRecord.getUseRightType())) {
-                                        buffer.append(declareRecord.getUseRightType());
-                                    } else {
-                                        buffer.append("无");
-                                    }
-                                    buffer.append(",").append(BaseReportFieldEnum.PowerPerson.getName());
-                                    if (StringUtils.isNotBlank(declareRecord.getOwnership())) {
-                                        buffer.append(declareRecord.getOwnership());
-                                    } else {
-                                        buffer.append("无");
-                                    }
-                                    String buildingStructureCategoryName = null;
-                                    if (generateBaseExamineService.getBasicBuilding() != null && generateBaseExamineService.getBasicBuilding().getBuildingStructureCategory() != null) {
-                                        buildingStructureCategoryName = baseDataDicService.getNameById(generateBaseExamineService.getBasicBuilding().getBuildingStructureCategory());
-                                    }
-                                    if (StringUtils.isEmpty(buildingStructureCategoryName)) {
-                                        buildingStructureCategoryName = "无";
-                                    }
-                                    buffer.append(",").append("房屋结构").append(buildingStructureCategoryName);
-                                } catch (Exception e) {
-                                }
-                            }
+                    declareRecordList.stream().forEach(declareRecord -> {
+                        if (StringUtils.isNotBlank(declareRecord.getAttachedNumber())) {
+                            stringBuffer.append("附").append(declareRecord.getAttachedNumber()).append("号");
                         }
-                        stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, buffer.toString())).append("</p>");
-                        buffer.delete(0, buffer.toString().length());
+                        if (StringUtils.isNotBlank(declareRecord.getBuildingNumber())) {
+                            stringBuffer.append(declareRecord.getBuildingNumber());
+                        } else {
+                            stringBuffer.append(zero);
+                        }
+                        stringBuffer.append("栋");
+                        if (StringUtils.isNotBlank(declareRecord.getUnit())) {
+                            stringBuffer.append(declareRecord.getUnit());
+                        } else {
+                            stringBuffer.append(zero);
+                        }
+                        stringBuffer.append("单元");
+                        if (StringUtils.isNotBlank(declareRecord.getFloor())) {
+                            stringBuffer.append(declareRecord.getFloor());
+                        } else {
+                            stringBuffer.append(zero);
+                        }
+                        stringBuffer.append("层");
+                        if (StringUtils.isNotBlank(declareRecord.getRoomNumber())) {
+                            stringBuffer.append(declareRecord.getRoomNumber());
+                        } else {
+                            stringBuffer.append(zero);
+                        }
+                        stringBuffer.append("号");
+                        seats.add(stringBuffer.toString());
+                        stringBuffer.delete(0, stringBuffer.toString().length());
+                    });
+                    buffer.append(estateName);
+                    if (CollectionUtils.isNotEmpty(seats)) {
+                        String s = publicService.fusinString(seats);
+                        if (StringUtils.isNotBlank(s)) {
+                            buffer.append(s);
+                        }
                     }
+                    seats.clear();
+                    buffer.append(",");
+                    //设定用途
+                    buffer.append(BaseReportFieldEnum.SetUse.getName()).append(generateCommonMethod.getSetUses(schemeJudgeObjectList));
+                    //实际用途
+                    buffer.append(",").append(BaseReportFieldEnum.PracticalUse.getName()).append(generateCommonMethod.getPracticalUse(schemeJudgeObjectList));
+                    buffer.append(",").append("建筑面积").append(generateCommonMethod.getBuildingAndAssessArea(schemeJudgeObjectList));
+                    buffer.append(",").append("评估面积").append(generateCommonMethod.getBuildingAndAssessArea(schemeJudgeObjectList));
+                    buffer.append(",").append(BaseReportFieldEnum.LandUseRightType.getName()).append(generateCommonMethod.getUseRightType(schemeJudgeObjectList));
+                    buffer.append(",").append(BaseReportFieldEnum.PowerPerson.getName()).append(generateCommonMethod.getPowerPerson(schemeJudgeObjectList));
+                    buffer.append(",").append("房屋结构").append(generateCommonMethod.getBuildingStructureCategory(schemeJudgeObjectList, projectInfo));
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, buffer.toString())).append("</p>");
+                    buffer.delete(0, buffer.toString().length());
+                    i++;
                 }
             }
         }
@@ -6323,28 +5509,6 @@ public class GenerateBaseDataService {
         builder.insertHtml(reportThinking, true);
         document.save(localPath);
         return localPath;
-
-        /*Set<String> stringSet = Sets.newHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        StringBuilder builder = new StringBuilder(24);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                builder.append(getSchemeJudgeObjectShowName(schemeJudgeObject));
-                List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
-                if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                    for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
-                        if (StringUtils.isNotBlank(schemeJudgeFunction.getThinking())) {
-                            builder.append("-思路:").append(schemeJudgeFunction.getThinking());
-                            builder.append(schemeJudgeFunction.getThinking());
-                        }
-                    }
-                }
-                stringSet.add(builder.toString());
-                builder.delete(0, builder.toString().length());
-            }
-        }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
-        return s;*/
     }
 
     /**
@@ -6517,30 +5681,20 @@ public class GenerateBaseDataService {
     //评估面积
     @Deprecated
     public String getAssessArea() {
-        StringBuilder stringBuilder = new StringBuilder(24);
-        Set<String> stringSet = Sets.newHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        Map<String, List<Integer>> stringListMap = Maps.newHashMap();
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), false);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (schemeJudgeObject.getEvaluationArea() != null) {
-                    stringSet.add(String.format("%s:%s", schemeJudgeObject.getName(), schemeJudgeObject.getEvaluationArea().toString()));
+                    generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, schemeJudgeObject.getEvaluationArea().toString());
                 }
             }
         }
-        if (CollectionUtils.isNotEmpty(stringSet)) {
-            List<String> stringList = Lists.newArrayList(stringSet);
-            for (int i = 0; i < stringList.size(); i++) {
-                stringBuilder.append(stringList.get(i));
-                if (i == stringList.size() - 1) {
-                    stringBuilder.append(";");
-                } else {
-                    stringBuilder.append(",");
-                }
-            }
-        } else {
-            stringBuilder.append(" ");
+        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
+        if (StringUtils.isNotBlank(s.trim())) {
+            s = errorStr;
         }
-        return stringBuilder.toString();
+        return s;
     }
 
     /**
@@ -6687,7 +5841,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public List<SchemeJudgeObject> getSchemeJudgeObjectList() {
-        return this.schemeJudgeObjectList;
+        return generateCommonMethod.getSortSchemeJudgeObject(this.schemeJudgeObjectList);
     }
 
     public GenerateBaseExamineService getGenerateBaseExamineService(Integer planDetailsId) {

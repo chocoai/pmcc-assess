@@ -344,7 +344,7 @@ public class PoiTest {
         List<String> list= Lists.newArrayList();
         list.add("附22号1栋1单元1层1号");
         list.add("附22号2栋1单元3层2号");
-        //list.add("附22号1栋1单元1层1号");
+        list.add("附212号1栋1单元1层1号");
         System.out.print(fusinString(list));
     }
 
