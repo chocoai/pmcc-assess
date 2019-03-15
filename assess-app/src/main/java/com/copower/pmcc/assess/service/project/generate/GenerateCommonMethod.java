@@ -61,12 +61,13 @@ public class GenerateCommonMethod {
 
     /**
      * 建筑结构类别
+     *
      * @param schemeJudgeObjectList
      * @param projectInfo
      * @return
      * @throws Exception
      */
-    public String getBuildingStructureCategory(List<SchemeJudgeObject> schemeJudgeObjectList,ProjectInfo projectInfo) throws Exception{
+    public String getBuildingStructureCategory(List<SchemeJudgeObject> schemeJudgeObjectList, ProjectInfo projectInfo) throws Exception {
         Map<String, List<Integer>> stringListMap = Maps.newHashMap();
         if (CollectionUtils.isEmpty(schemeJudgeObjectList)) {
             return null;
@@ -92,7 +93,7 @@ public class GenerateCommonMethod {
                 List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
                 if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
                     for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                        GenerateBaseExamineService generateBaseExamineService = new  GenerateBaseExamineService(projectPlanDetails.getId());
+                        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(projectPlanDetails.getId());
                         if (generateBaseExamineService.getBasicApply().getId() != null && generateBaseExamineService.getBasicApply().getId().intValue() != 0) {
                             if (generateBaseExamineService.getBasicBuilding().getBuildingStructureCategory() != null) {
                                 String key = baseDataDicService.getNameById(generateBaseExamineService.getBasicBuilding().getBuildingStructureCategory());
@@ -112,10 +113,11 @@ public class GenerateCommonMethod {
 
     /**
      * 权利人
+     *
      * @param schemeJudgeObjectList
      * @return
      */
-    public String getPowerPerson(List<SchemeJudgeObject> schemeJudgeObjectList){
+    public String getPowerPerson(List<SchemeJudgeObject> schemeJudgeObjectList) {
         Map<String, List<Integer>> stringListMap = Maps.newHashMap();
         if (CollectionUtils.isEmpty(schemeJudgeObjectList)) {
             return null;
@@ -136,6 +138,7 @@ public class GenerateCommonMethod {
 
     /**
      * 使用权类型
+     *
      * @param schemeJudgeObjectList
      * @return
      */
@@ -239,6 +242,14 @@ public class GenerateCommonMethod {
     }
 
 
+    /**
+     * 拼接
+     *
+     * @param schemeJudgeObjectList
+     * @param projectInfo
+     * @return
+     * @throws Exception
+     */
     public LinkedHashMap<String, List<SchemeJudgeObject>> getSchemeJudgeObjectLinkedHashMap(List<SchemeJudgeObject> schemeJudgeObjectList, ProjectInfo projectInfo) throws Exception {
         LinkedHashMap<String, List<SchemeJudgeObject>> linkedHashMap = Maps.newLinkedHashMap();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
@@ -253,37 +264,59 @@ public class GenerateCommonMethod {
                     }
                     return false;
                 }).collect(Collectors.toList());
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && CollectionUtils.isNotEmpty(projectPhases)) {
-            for (ProjectPhase projectPhase : projectPhases) {
-                for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                    ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(projectInfo.getId());
-                    query.setProjectPhaseId(projectPhase.getId());
-                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                    if (declareRecord != null && declareRecord.getBisPartIn()) {
-                        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                            for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                                GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(projectPlanDetails.getId());
-                                if (generateBaseExamineService.getBasicApply().getId() != null) {
-                                    String name = generateBaseExamineService.getEstate().getName();
-                                    if (StringUtils.isNotBlank(name)) {
-                                        name = String.format("%s%s号", name, declareRecord.getStreetNumber());
-                                        List<SchemeJudgeObject> judgeObjectList = linkedHashMap.get(name);
-                                        if (CollectionUtils.isEmpty(judgeObjectList)) {
-                                            judgeObjectList = Lists.newArrayList();
-                                        }
-                                        judgeObjectList.add(schemeJudgeObject);
-                                        linkedHashMap.put(name, judgeObjectList);
-                                    }
-                                }
-                            }
-                        }
+        if (CollectionUtils.isEmpty(schemeJudgeObjectList) || CollectionUtils.isEmpty(projectPhases)) {
+            return linkedHashMap;
+        }
+        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+            if (declareRecord == null) {
+                continue;
+            }
+            //是否可以出局报告
+            if (declareRecord.getBisPartIn()) {
+                String name = declareRecord.getStreetNumber();
+                if (StringUtils.isNotBlank(name)) {
+                    List<SchemeJudgeObject> judgeObjectList = linkedHashMap.get(name);
+                    if (CollectionUtils.isEmpty(judgeObjectList)) {
+                        judgeObjectList = Lists.newArrayList();
                     }
+                    judgeObjectList.add(schemeJudgeObject);
+                    judgeObjectList = this.removeDuplicate(judgeObjectList);
+                    linkedHashMap.put(name, judgeObjectList);
                 }
             }
         }
-        return linkedHashMap;
+        //再次重新拼接
+        LinkedHashMap<String, List<SchemeJudgeObject>> listLinkedHashMap = Maps.newLinkedHashMap();
+        if (!linkedHashMap.isEmpty()){
+            for (Map.Entry<String, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()){
+                String name = null;
+                ProjectPlanDetails query = new ProjectPlanDetails();
+                query.setProjectId(projectInfo.getId());
+                query.setProjectPhaseId(projectPhases.get(0).getId());
+                List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
+                if (CollectionUtils.isNotEmpty(projectPlanDetailsList)){
+                    for (ProjectPlanDetails projectPlanDetails:projectPlanDetailsList){
+                        //只找一个楼盘
+                        try {
+                            name = new GenerateBaseExamineService(projectPlanDetails.getId()).getEstate().getName();
+                        } catch (Exception e) {
+                            name = null;
+                        }
+                        if (StringUtils.isNotBlank(name)){
+                            break;
+                        }
+                    }
+                }
+                if (StringUtils.isNotBlank(name)){
+                    name =  String.format("%s%s号", name, entry.getKey());
+                    listLinkedHashMap.put(name,entry.getValue());
+                }else {
+                    continue;
+                }
+            }
+        }
+        return listLinkedHashMap;
     }
 
     public List<SchemeJudgeObject> getSortSchemeJudgeObject(List<SchemeJudgeObject> schemeJudgeObjectList) {
@@ -644,6 +677,22 @@ public class GenerateCommonMethod {
             }
         }
         return stringList;
+    }
+
+    /**
+     * list去重复元素
+     *
+     * @param list
+     * @return
+     */
+    public List removeDuplicate(List list) {
+        List listTemp = new ArrayList();
+        for (int i = 0; i < list.size(); i++) {
+            if (!listTemp.contains(list.get(i))) {
+                listTemp.add(list.get(i));
+            }
+        }
+        return listTemp;
     }
 
     /**
