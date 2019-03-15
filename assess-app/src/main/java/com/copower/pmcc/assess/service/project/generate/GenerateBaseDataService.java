@@ -1184,7 +1184,7 @@ public class GenerateBaseDataService {
                 stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, oneContent)).append("</p>");
             }
             if (i == 1) {
-                String oneContent = "根据委托人介绍及估价人员在${他权信息公示}，${他权类别}估价对象已设定抵押权。";
+                String oneContent = "根据委托人介绍及估价人员在${他权信息公示}，${抵押权委估对象}已设定抵押权。";
                 stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, oneContent)).append("</p>");
             }
             if (length == 4) {
