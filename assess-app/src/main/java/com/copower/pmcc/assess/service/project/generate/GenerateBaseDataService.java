@@ -1184,8 +1184,11 @@ public class GenerateBaseDataService {
                 stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, oneContent)).append("</p>");
             }
             if (i == 1) {
-                String oneContent = "根据委托人介绍及估价人员在${他权信息公示}，${抵押权委估对象}已设定抵押权。";
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, oneContent)).append("</p>");
+                String temp = getHisRightType();
+                if (!Objects.equal(temp,errorStr)){
+                    String oneContent = String.format("根据委托人介绍及估价人员在${他权信息公示}，%s 已设定抵押权。",temp);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, oneContent)).append("</p>");
+                }
             }
             if (length == 4) {
                 if (i == 2) {
@@ -2066,7 +2069,6 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getHisRightType() throws Exception {
-        StringBuilder stringBuilder = new StringBuilder(16);
         Map<String, List<Integer>> stringListMap = Maps.newHashMap();
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
                 projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
@@ -2093,9 +2095,10 @@ public class GenerateBaseDataService {
                             if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)) {
                                 for (SurveyAssetInventoryRight inventoryRight : surveyAssetInventoryRightList) {
                                     if (inventoryRight.getCategory() != null) {
-                                        stringBuilder.append(baseDataDicService.getNameById(inventoryRight.getCategory()));
-                                        key = stringBuilder.toString();
-                                        stringBuilder.delete(0, stringBuilder.toString().length());
+                                        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE);
+                                        if (Objects.equal(inventoryRight.getCategory(), baseDataDic.getId())) {
+                                            key = baseDataDic.getName();
+                                        }
                                     }
                                 }
                             }

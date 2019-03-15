@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.input.project.declare.DeclareSeatDto;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.enums.ProcessActivityEnum;
 import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
@@ -58,6 +59,8 @@ public class PublicService {
     private FtpUtilsExtense ftpUtilsExtense;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private GenerateCommonMethod generateCommonMethod;
 
     /**
      * 获取当前公司
@@ -289,6 +292,8 @@ public class PublicService {
      */
     public String fusinString(List<String> list) {
         if (CollectionUtils.isEmpty(list)) return null;
+        //去除重复
+        list = generateCommonMethod.removeDuplicate(list);
         //xx楼盘1栋2单元1011号
         //xx楼盘2栋2单元1011号
         if (list.size() == 1) return list.get(0);

@@ -2131,6 +2131,9 @@ public class GenerateMdIncomeService {
     }
 
     private void appendElement(StringBuilder builder, String content, Date start, Date end) {
+        if (StringUtils.isEmpty(content)){
+            return;
+        }
         List<MdIncomeDateSection> mdIncomeDateSectionList = getMdIncomeDateSectionList();
         long count = mdIncomeDateSectionList.stream().filter(mdIncomeDateSection -> {
             if (mdIncomeDateSection.getIncomeId() == null) {
