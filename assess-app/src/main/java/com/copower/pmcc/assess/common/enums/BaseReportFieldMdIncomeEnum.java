@@ -49,7 +49,7 @@ public enum BaseReportFieldMdIncomeEnum implements Serializable {
 
     GrossIncome("收益法年有效毛收入",""),
     IncomeTotal("总收入",""),
-    AnnualOperatingCost("收益法年运营费",""),
+    AnnualOperatingCost("收益法年营运费用",""),
     AnnualNetIncome("收益法年净收益",""),
     RentGrowthForecast("收益法租金增长率",""),
 

@@ -6,7 +6,6 @@ import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
-import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
@@ -14,6 +13,7 @@ import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -29,6 +29,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -241,7 +242,6 @@ public class GenerateCommonMethod {
         return localPath;
     }
 
-
     /**
      * 拼接
      *
@@ -288,30 +288,30 @@ public class GenerateCommonMethod {
         }
         //再次重新拼接
         LinkedHashMap<String, List<SchemeJudgeObject>> listLinkedHashMap = Maps.newLinkedHashMap();
-        if (!linkedHashMap.isEmpty()){
-            for (Map.Entry<String, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()){
+        if (!linkedHashMap.isEmpty()) {
+            for (Map.Entry<String, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
                 String name = null;
                 ProjectPlanDetails query = new ProjectPlanDetails();
                 query.setProjectId(projectInfo.getId());
                 query.setProjectPhaseId(projectPhases.get(0).getId());
                 List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                if (CollectionUtils.isNotEmpty(projectPlanDetailsList)){
-                    for (ProjectPlanDetails projectPlanDetails:projectPlanDetailsList){
+                if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+                    for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
                         //只找一个楼盘
                         try {
                             name = new GenerateBaseExamineService(projectPlanDetails.getId()).getEstate().getName();
                         } catch (Exception e) {
                             name = null;
                         }
-                        if (StringUtils.isNotBlank(name)){
+                        if (StringUtils.isNotBlank(name)) {
                             break;
                         }
                     }
                 }
-                if (StringUtils.isNotBlank(name)){
-                    name =  String.format("%s%s号", name, entry.getKey());
-                    listLinkedHashMap.put(name,entry.getValue());
-                }else {
+                if (StringUtils.isNotBlank(name)) {
+                    name = String.format("%s%s号", name, entry.getKey());
+                    listLinkedHashMap.put(name, entry.getValue());
+                } else {
                     continue;
                 }
             }
@@ -319,6 +319,11 @@ public class GenerateCommonMethod {
         return listLinkedHashMap;
     }
 
+    /**
+     * 基本排序
+     * @param schemeJudgeObjectList
+     * @return
+     */
     public List<SchemeJudgeObject> getSortSchemeJudgeObject(List<SchemeJudgeObject> schemeJudgeObjectList) {
         Ordering<SchemeJudgeObject> ordering = Ordering.from(new Comparator<SchemeJudgeObject>() {
             @Override
@@ -428,6 +433,15 @@ public class GenerateCommonMethod {
         return stringBuilder.toString();
     }
 
+    public String getPercentileSystem(BigDecimal bigDecimal){
+        if (bigDecimal == null){
+            return null;
+        }
+        bigDecimal= bigDecimal.multiply(new BigDecimal(100));
+        bigDecimal= bigDecimal.setScale(2,BigDecimal.ROUND_HALF_UP);
+        return String.format("%s%s",bigDecimal.toString(),"%");
+    }
+
     /**
      * 获取合并的估价对象
      *
@@ -457,66 +471,6 @@ public class GenerateCommonMethod {
         return objectList;
     }
 
-
-    /**
-     * 获取重复的集合
-     *
-     * @param schemeJudgeObjectList
-     * @return
-     */
-    public List<SchemeJudgeObject> unionSchemeJudgeObject(List<SchemeJudgeObject> schemeJudgeObjectList) {
-        if (CollectionUtils.isEmpty(schemeJudgeObjectList)) {
-            return new ArrayList<SchemeJudgeObject>(0);
-        }
-        StringBuilder builder = new StringBuilder(16);
-        Map<String, SchemeJudgeObject> schemeJudgeObjectMap = Maps.newHashMap();
-        //让重复的变成差集
-        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-            if (declareRecord != null) {
-                builder.append(declareRecord.getStreetNumber()).append("-").append(declareRecord.getFloor()).append("-");
-                builder.append(declareRecord.getUnit()).append("-").append(declareRecord.getBuildingNumber()).append("-");
-                builder.append(declareRecord.getAttachedNumber());
-                schemeJudgeObjectMap.put(builder.toString(), schemeJudgeObject);
-                builder.delete(0, builder.toString().length());
-            }
-        }
-        if (!schemeJudgeObjectMap.isEmpty()) {
-            List<SchemeJudgeObject> judgeObjectList = Lists.newArrayList();
-            for (Map.Entry<String, SchemeJudgeObject> objectEntry : schemeJudgeObjectMap.entrySet()) {
-                judgeObjectList.add(objectEntry.getValue());
-            }
-            if (CollectionUtils.isNotEmpty(judgeObjectList) && schemeJudgeObjectList.size() > judgeObjectList.size()) {
-                //得到差集
-                Collection<SchemeJudgeObject> collection = CollectionUtils.subtract(schemeJudgeObjectList, judgeObjectList);
-                if (CollectionUtils.isNotEmpty(collection)) {
-                    //重要:得到差集对象  ==> 获取带有特征的估价对象
-                    SchemeJudgeObject schemeJudgeObject = collection.stream().findFirst().get();
-                    DeclareRecord target = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-                    if (target != null) {
-                        List<SchemeJudgeObject> schemeJudgeObjects = Lists.newArrayList();
-                        for (SchemeJudgeObject judgeObject : schemeJudgeObjectList) {
-                            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
-                            if (declareRecord != null) {
-                                boolean streetNumber = com.google.common.base.Objects.equal(target.getStreetNumber(), declareRecord.getStreetNumber());
-                                boolean floor = com.google.common.base.Objects.equal(target.getFloor(), declareRecord.getFloor());
-                                boolean unit = com.google.common.base.Objects.equal(target.getUnit(), declareRecord.getUnit());
-                                boolean buildingNumber = com.google.common.base.Objects.equal(target.getBuildingNumber(), declareRecord.getBuildingNumber());
-                                boolean attachedNumber = Objects.equal(target.getAttachedNumber(), declareRecord.getAttachedNumber());
-                                if (streetNumber && floor && unit && buildingNumber && attachedNumber) {
-                                    schemeJudgeObjects.add(judgeObject);
-                                }
-                            }
-                        }
-                        if (CollectionUtils.isNotEmpty(schemeJudgeObjects)) {
-                            return schemeJudgeObjects;
-                        }
-                    }
-                }
-            }
-        }
-        return new ArrayList<SchemeJudgeObject>(0);
-    }
 
     /**
      * 数字转换
@@ -628,16 +582,14 @@ public class GenerateCommonMethod {
     }
 
     public String getLocalPath() {
-        String localPath = String.format("%s\\报告模板%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        return localPath;
+        return getLocalPath(null);
     }
 
     public String getLocalPath(String title) {
         if (StringUtils.isEmpty(title)) {
-            return getLocalPath();
+            title = String.format("%s%s","报告模板", DateUtils.format(new Date(),DateUtils.DATE_CHINESE_PATTERN));
         }
-        String localPath = String.format("%s\\" + title + "%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), UUID.randomUUID().toString(), ".doc");
-        return localPath;
+        return String.format("%s\\%s%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), title, UUID.randomUUID().toString(), ".doc");
     }
 
     /**
