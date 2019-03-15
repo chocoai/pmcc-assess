@@ -280,6 +280,14 @@ public class BasicApplyTransferService {
             basicUnitNew.setGmtCreated(null);
             basicUnitNew.setGmtModified(null);
             basicUnitService.saveAndUpdateBasicUnit(basicUnitNew);
+
+            //附件拷贝
+            SysAttachmentDto example = new SysAttachmentDto();
+            example.setTableId(unitOld.getId());
+            example.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
+            SysAttachmentDto attachmentDto = new SysAttachmentDto();
+            attachmentDto.setTableId(basicUnitNew.getId());
+            baseAttachmentService.copyFtpAttachments(example,attachmentDto);
         }
         BasicUnitHuxing queryBasicUnitHuxing = new BasicUnitHuxing();
         if (unitOld != null) {
@@ -288,28 +296,26 @@ public class BasicApplyTransferService {
             }
         }
         List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingDao.basicUnitHuxingList(queryBasicUnitHuxing);
-        if (basicUnitNew != null) {
-            if (basicUnitNew.getId() != null) {
-                this.copyBasicHuxing(basicUnitHuxingList, basicUnitNew);
+        if (basicUnitNew != null&&basicUnitNew.getId() != null) {
+            this.copyBasicHuxing(basicUnitHuxingList, basicUnitNew);
 
-                StringBuilder sqlBuilder = new StringBuilder();
-                SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
-                HashMap<String, String> map = Maps.newHashMap();
-                map.put("unit_id", String.valueOf(basicUnitNew.getId()));
-                map.put("creator", commonService.thisUserAccount());
-                synchronousDataDto.setFieldDefaultValue(map);
-                synchronousDataDto.setWhereSql("unit_id=" + unitOld.getId());
-                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
-                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
-                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//楼栋内装sql
+            StringBuilder sqlBuilder = new StringBuilder();
+            SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+            HashMap<String, String> map = Maps.newHashMap();
+            map.put("unit_id", String.valueOf(basicUnitNew.getId()));
+            map.put("creator", commonService.thisUserAccount());
+            synchronousDataDto.setFieldDefaultValue(map);
+            synchronousDataDto.setWhereSql("unit_id=" + unitOld.getId());
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//楼栋内装sql
 
-                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
-                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
-                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//配备电梯sql
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//配备电梯sql
 
-                sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.UNIT, unitOld.getApplyId(), appId));
-                ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
-            }
+            sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.UNIT, unitOld.getApplyId(), appId));
+            ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         }
         return basicUnitNew;
     }
@@ -391,52 +397,49 @@ public class BasicApplyTransferService {
         basicHouseCorollaryEquipmentList = basicHouseCorollaryEquipmentService.basicHouseCorollaryEquipmentList(queryBasicHouseCorollaryEquipment);
         basicHouseDamagedDegreeList = basicHouseDamagedDegreeDao.getDamagedDegreeList(queryHouseDamagedDegree);
 
-        if (basicHouseNew != null) {
-            if (basicHouseNew.getId() != null) {
-                this.copyBasicHouseRoom(basicHouseRoomList, basicHouseNew);
-                this.copyBasicCorollaryEquipment(basicHouseCorollaryEquipmentList, basicHouseNew);
-                this.copyBasicDamagedDegree(basicHouseDamagedDegreeList, basicHouseNew);
+        if (basicHouseNew != null&&basicHouseNew.getId() != null) {
+            this.copyBasicHouseRoom(basicHouseRoomList, basicHouseNew);
+            this.copyBasicCorollaryEquipment(basicHouseCorollaryEquipmentList, basicHouseNew);
+            this.copyBasicDamagedDegree(basicHouseDamagedDegreeList, basicHouseNew);
 
-                StringBuilder sqlBuilder = new StringBuilder();
-                SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
-                HashMap<String, String> map = Maps.newHashMap();
-                map.put("house_id", String.valueOf(basicHouseNew.getId()));
-                map.put("creator", commonService.thisUserAccount());
-                synchronousDataDto.setFieldDefaultValue(map);
-                synchronousDataDto.setWhereSql("house_id=" + houseOld.getId());
-                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class));
-                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class));
-                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//房屋出售sql
+            StringBuilder sqlBuilder = new StringBuilder();
+            SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+            HashMap<String, String> map = Maps.newHashMap();
+            map.put("house_id", String.valueOf(basicHouseNew.getId()));
+            map.put("creator", commonService.thisUserAccount());
+            synchronousDataDto.setFieldDefaultValue(map);
+            synchronousDataDto.setWhereSql("house_id=" + houseOld.getId());
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//房屋出售sql
 
-                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class));
-                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class));
-                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//房屋出租sql
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//房屋出租sql
 
-                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseWater.class));
-                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseWater.class));
-                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//供水sql
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseWater.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseWater.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//供水sql
 
-                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class));
-                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class));
-                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//排水sql
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//排水sql
 
-                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class));
-                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class));
-                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//电力通讯网络sql
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//电力通讯网络sql
 
-                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class));
-                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class));
-                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//临路状况sql
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//临路状况sql
 
-                synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
-                synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
-                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//设备sql
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//设备sql
 
-                sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.UNIT, houseOld.getApplyId(), appId));
-                ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
-            }
+            sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.UNIT, houseOld.getApplyId(), appId));
+            ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         }
-
         return basicHouseNew;
     }
 

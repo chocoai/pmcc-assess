@@ -3,18 +3,20 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandStateDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
+import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.assess.service.data.DataBlockService;
-import com.copower.pmcc.assess.service.data.DataDeveloperService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -50,7 +52,7 @@ import java.util.Map;
 @Service
 public class BasicEstateService {
     @Autowired
-    private DataDeveloperService dataDeveloperService;
+    private PublicService publicService;
     @Autowired
     private DataBlockService dataBlockService;
     @Autowired
@@ -237,19 +239,19 @@ public class BasicEstateService {
 
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "delete from %s where estate_id=%s";
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class), estate.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateParking.class), estate.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateSupply.class), estate.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingEducation.class), estate.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingEnvironment.class), estate.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingFinance.class), estate.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingLeisurePlace.class), estate.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingMaterial.class), estate.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingMedical.class), estate.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingTraffic.class), estate.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class), estate.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateParking.class), estate.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateSupply.class), estate.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingEducation.class), estate.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingEnvironment.class), estate.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingFinance.class), estate.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingLeisurePlace.class), estate.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingMaterial.class), estate.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingMedical.class), estate.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingTraffic.class), estate.getId()));
 
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateLandState.class), estate.getId())).append(";");
-        sqlBulder.append(String.format("delete from %s where id=%s", FormatUtils.entityNameConvertToTableName(BasicEstate.class), estate.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateLandState.class), estate.getId()));
+        sqlBulder.append(String.format("delete from %s where id=%s", FormatUtils.entityNameConvertToTableName(BasicEstate.class), estate.getId()));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
@@ -325,25 +327,21 @@ public class BasicEstateService {
      */
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> appWriteEstate(Integer caseEstateId, String estatePartInMode, Integer applyId) throws Exception {
-        this.clearInvalidData(0);
-        //清空此申请id下所有的楼盘数据
-        if (applyId != null) {
-            this.clearInvalidData(applyId);
-        }
         if (caseEstateId == null) {
             throw new BusinessException("null point");
         }
-        Map<String, Object> objectMap = new HashMap<String, Object>(2);
+        applyId = applyId == null ? 0 : applyId;
+        this.clearInvalidData(applyId);
 
+        Map<String, Object> objectMap = new HashMap<String, Object>(2);
         CaseEstate caseEstate = caseEstateService.getCaseEstateById(caseEstateId);
         if (caseEstate == null) {
             return objectMap;
         }
 
-
         BasicEstate basicEstate = new BasicEstate();
         BeanUtils.copyProperties(caseEstate, basicEstate);
-        basicEstate.setApplyId(applyId == null ? 0 : applyId);
+        basicEstate.setApplyId(applyId);
         basicEstate.setCreator(commonService.thisUserAccount());
         basicEstate.setGmtCreated(null);
         basicEstate.setGmtModified(null);
@@ -351,23 +349,16 @@ public class BasicEstateService {
             basicEstate.setName(null);
         }
         basicEstateDao.addBasicEstate(basicEstate);
-
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstate.class.getSimpleName()), getBasicEstateVo(basicEstate));
 
         //附件拷贝
-        List<SysAttachmentDto> sysAttachmentDtoList = null;
-        SysAttachmentDto query = new SysAttachmentDto();
-        query.setTableId(caseEstate.getId());
-        query.setTableName(FormatUtils.entityNameConvertToTableName(CaseEstate.class));
-        sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
-        if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
-            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                SysAttachmentDto attachmentDto = new SysAttachmentDto();
-                attachmentDto.setTableId(basicEstate.getId());
-                attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
-                baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
-            }
-        }
+        SysAttachmentDto example = new SysAttachmentDto();
+        example.setTableId(caseEstate.getId());
+        example.setTableName(FormatUtils.entityNameConvertToTableName(CaseEstate.class));
+        SysAttachmentDto attachmentDto = new SysAttachmentDto();
+        attachmentDto.setTableId(basicEstate.getId());
+        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+        baseAttachmentService.copyFtpAttachments(example, attachmentDto);
 
         CaseEstateLandState queryLandState = new CaseEstateLandState();
         queryLandState.setEstateId(caseEstateId);
@@ -381,282 +372,87 @@ public class BasicEstateService {
             basicEstateLandState.setGmtCreated(null);
             basicEstateLandState.setGmtModified(null);
             basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
-
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandState));
         }
 
-        CaseEstateParking estateParking = new CaseEstateParking();
-        estateParking.setEstateId(caseEstateId);
-        CaseEstateNetwork caseEstateNetwork = new CaseEstateNetwork();
-        caseEstateNetwork.setEstateId(caseEstateId);
-        CaseEstateSupply caseEstateSupply = new CaseEstateSupply();
-        caseEstateSupply.setEstateId(caseEstateId);
         CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
         caseEstateTagging.setDataId(caseEstateId);
         caseEstateTagging.setType(EstateTaggingTypeEnum.ESTATE.getKey());
-        CaseMatchingTraffic caseMatchingTraffic = new CaseMatchingTraffic();
-        caseMatchingTraffic.setEstateId(caseEstateId);
-        CaseMatchingMedical caseMatchingMedical = new CaseMatchingMedical();
-        caseMatchingMedical.setEstateId(caseEstateId);
-        CaseMatchingMaterial caseMatchingMaterial = new CaseMatchingMaterial();
-        caseMatchingMaterial.setEstateId(caseEstateId);
-        CaseMatchingLeisurePlace caseMatchingLeisurePlace = new CaseMatchingLeisurePlace();
-        caseMatchingLeisurePlace.setEstateId(caseEstateId);
-        CaseMatchingFinance caseMatchingFinance = new CaseMatchingFinance();
-        caseMatchingFinance.setEstateId(caseEstateId);
-        CaseMatchingEnvironment caseMatchingEnvironment = new CaseMatchingEnvironment();
-        caseMatchingEnvironment.setEstateId(caseEstateId);
-        CaseMatchingEducation caseMatchingEducation = new CaseMatchingEducation();
-        caseMatchingEducation.setEstateId(caseEstateId);
 
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<CaseMatchingTraffic> caseMatchingTraffics = caseMatchingTrafficService.getMatchingTrafficList(caseMatchingTraffic);
-                    if (!ObjectUtils.isEmpty(caseMatchingTraffics)) {
-                        for (CaseMatchingTraffic oo : caseMatchingTraffics) {
-                            BasicMatchingTraffic queryBasicMatchingTraffic = new BasicMatchingTraffic();
-                            BeanUtils.copyProperties(oo, queryBasicMatchingTraffic);
-                            queryBasicMatchingTraffic.setEstateId(basicEstate.getId());
-                            queryBasicMatchingTraffic.setId(null);
-                            queryBasicMatchingTraffic.setGmtCreated(null);
-                            queryBasicMatchingTraffic.setGmtModified(null);
-                            queryBasicMatchingTraffic.setCreator(commonService.thisUserAccount());
-                            basicMatchingTrafficService.saveAndUpdateBasicMatchingTraffic(queryBasicMatchingTraffic);
-                        }
-                    }
-                } catch (Exception e1) {
-                    logger.error("", e1);
-                }
-            }
-        });
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<CaseMatchingMedical> caseMatchingMedicals = caseMatchingMedicalService.getCaseMatchingMedicalList(caseMatchingMedical);
-                    if (!ObjectUtils.isEmpty(caseMatchingMedicals)) {
-                        for (CaseMatchingMedical oo : caseMatchingMedicals) {
-                            BasicMatchingMedical queryBasicMatchingMedical = new BasicMatchingMedical();
-                            BeanUtils.copyProperties(oo, queryBasicMatchingMedical);
-                            queryBasicMatchingMedical.setEstateId(basicEstate.getId());
-                            queryBasicMatchingMedical.setId(null);
-                            queryBasicMatchingMedical.setGmtCreated(null);
-                            queryBasicMatchingMedical.setGmtModified(null);
-                            queryBasicMatchingMedical.setCreator(commonService.thisUserAccount());
-                            basicMatchingMedicalService.saveAndUpdateBasicMatchingMedical(queryBasicMatchingMedical);
-                        }
-                    }
-                } catch (Exception e1) {
-                    logger.error("", e1);
-                }
-            }
-        });
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<CaseMatchingMaterial> caseMatchingMaterials = caseMatchingMaterialService.getCaseMatchingMaterialList(caseMatchingMaterial);
-                    if (!ObjectUtils.isEmpty(caseMatchingMaterials)) {
-                        for (CaseMatchingMaterial oo : caseMatchingMaterials) {
-                            BasicMatchingMaterial queryBasicMatchingMaterial = new BasicMatchingMaterial();
-                            BeanUtils.copyProperties(oo, queryBasicMatchingMaterial);
-                            queryBasicMatchingMaterial.setEstateId(basicEstate.getId());
-                            queryBasicMatchingMaterial.setId(null);
-                            queryBasicMatchingMaterial.setGmtCreated(null);
-                            queryBasicMatchingMaterial.setGmtModified(null);
-                            queryBasicMatchingMaterial.setCreator(commonService.thisUserAccount());
-                            basicMatchingMaterialService.saveAndUpdateBasicMatchingMaterial(queryBasicMatchingMaterial);
-                        }
-                    }
-                } catch (Exception e1) {
-                    logger.error("", e1);
-                }
-            }
-        });
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<CaseMatchingLeisurePlace> caseMatchingLeisurePlaces = caseMatchingLeisurePlaceService.getCaseMatchingLeisurePlaceList(caseMatchingLeisurePlace);
-                    if (!ObjectUtils.isEmpty(caseMatchingLeisurePlaces)) {
-                        for (CaseMatchingLeisurePlace oo : caseMatchingLeisurePlaces) {
-                            BasicMatchingLeisurePlace queryBasicMatchingLeisurePlace = new BasicMatchingLeisurePlace();
-                            BeanUtils.copyProperties(oo, queryBasicMatchingLeisurePlace);
-                            queryBasicMatchingLeisurePlace.setEstateId(basicEstate.getId());
-                            queryBasicMatchingLeisurePlace.setId(null);
-                            queryBasicMatchingLeisurePlace.setGmtCreated(null);
-                            queryBasicMatchingLeisurePlace.setGmtModified(null);
-                            queryBasicMatchingLeisurePlace.setCreator(commonService.thisUserAccount());
-                            basicMatchingLeisurePlaceService.saveAndUpdateBasicMatchingLeisurePlace(queryBasicMatchingLeisurePlace);
-                        }
-                    }
-                } catch (Exception e1) {
-                    logger.error("", e1);
-                }
-            }
-        });
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<CaseMatchingFinance> caseMatchingFinances = caseMatchingFinanceService.getCaseMatchingFinanceList(caseMatchingFinance);
-                    if (!ObjectUtils.isEmpty(caseMatchingFinances)) {
-                        for (CaseMatchingFinance oo : caseMatchingFinances) {
-                            BasicMatchingFinance queryBasicMatchingFinance = new BasicMatchingFinance();
-                            BeanUtils.copyProperties(oo, queryBasicMatchingFinance);
-                            queryBasicMatchingFinance.setEstateId(basicEstate.getId());
-                            queryBasicMatchingFinance.setId(null);
-                            queryBasicMatchingFinance.setGmtCreated(null);
-                            queryBasicMatchingFinance.setGmtModified(null);
-                            queryBasicMatchingFinance.setCreator(commonService.thisUserAccount());
-                            basicMatchingFinanceService.saveAndUpdateBasicMatchingFinance(queryBasicMatchingFinance);
-                        }
-                    }
-                } catch (Exception e1) {
-                    logger.error("", e1);
-                }
-            }
-        });
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<CaseMatchingEnvironment> caseMatchingEnvironments = caseMatchingEnvironmentService.getCaseMatchingEnvironmentList(caseMatchingEnvironment);
-                    if (!ObjectUtils.isEmpty(caseMatchingEnvironments)) {
-                        for (CaseMatchingEnvironment oo : caseMatchingEnvironments) {
-                            BasicMatchingEnvironment queryBasicMatchingEnvironment = new BasicMatchingEnvironment();
-                            BeanUtils.copyProperties(oo, queryBasicMatchingEnvironment);
-                            queryBasicMatchingEnvironment.setEstateId(basicEstate.getId());
-                            queryBasicMatchingEnvironment.setId(null);
-                            queryBasicMatchingEnvironment.setGmtCreated(null);
-                            queryBasicMatchingEnvironment.setGmtModified(null);
-                            queryBasicMatchingEnvironment.setCreator(commonService.thisUserAccount());
-                            basicMatchingEnvironmentService.saveAndUpdateBasicMatchingEnvironment(queryBasicMatchingEnvironment);
-                        }
-                    }
-                } catch (Exception e1) {
-                    logger.error("", e1);
-                }
-            }
-        });
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<CaseMatchingEducation> caseMatchingEducations = caseMatchingEducationService.getCaseMatchingEducationList(caseMatchingEducation);
-                    if (!ObjectUtils.isEmpty(caseMatchingEducations)) {
-                        for (CaseMatchingEducation oo : caseMatchingEducations) {
-                            BasicMatchingEducation queryBasicMatchingEducation = new BasicMatchingEducation();
-                            BeanUtils.copyProperties(oo, queryBasicMatchingEducation);
-                            queryBasicMatchingEducation.setEstateId(basicEstate.getId());
-                            queryBasicMatchingEducation.setId(null);
-                            queryBasicMatchingEducation.setCreator(commonService.thisUserAccount());
-                            queryBasicMatchingEducation.setGmtCreated(null);
-                            queryBasicMatchingEducation.setGmtModified(null);
-                            basicMatchingEducationService.saveAndUpdateBasicMatchingEducation(queryBasicMatchingEducation);
-                        }
-                    }
-                } catch (Exception e1) {
-                    logger.error("", e1);
-                }
-            }
-        });
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<CaseEstateParking> caseEstateParkings = caseEstateParkingService.getEstateParkingList(estateParking);
-                    if (!ObjectUtils.isEmpty(caseEstateParkings)) {
-                        for (CaseEstateParking caseEstateParking : caseEstateParkings) {
-                            BasicEstateParking queryBasicEstateParking = new BasicEstateParking();
-                            BeanCopyHelp.copyPropertiesIgnoreNull(caseEstateParking, queryBasicEstateParking);
-                            queryBasicEstateParking.setEstateId(basicEstate.getId());
-                            queryBasicEstateParking.setId(null);
-                            queryBasicEstateParking.setGmtCreated(null);
-                            queryBasicEstateParking.setGmtModified(null);
-                            queryBasicEstateParking.setCreator(commonService.thisUserAccount());
-                            Integer id = basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking);
-                            List<SysAttachmentDto> sysAttachmentDtoList = null;
-                            SysAttachmentDto query = new SysAttachmentDto();
-                            query.setTableId(caseEstateParking.getId());
-                            query.setTableName(FormatUtils.entityNameConvertToTableName(CaseEstateParking.class));
-                            sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
-                            if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
-                                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                                    SysAttachmentDto attachmentDto = new SysAttachmentDto();
-                                    attachmentDto.setTableId(id);
-                                    attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstateParking.class));
-                                    baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
-                                }
-                            }
-                        }
-                    }
-                } catch (Exception e1) {
-                    logger.error("", e1);
-                }
-            }
-        });
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<CaseEstateNetwork> caseEstateNetworks = caseEstateNetworkService.getEstateNetworkLists(caseEstateNetwork);
-                    if (!ObjectUtils.isEmpty(caseEstateNetworks)) {
-                        for (CaseEstateNetwork caseEstateNetwork1 : caseEstateNetworks) {
-                            BasicEstateNetwork queryBasicEstateNetwork = new BasicEstateNetwork();
-                            BeanCopyHelp.copyPropertiesIgnoreNull(caseEstateNetwork1, queryBasicEstateNetwork);
-                            queryBasicEstateNetwork.setEstateId(basicEstate.getId());
-                            queryBasicEstateNetwork.setId(null);
-                            queryBasicEstateNetwork.setGmtCreated(null);
-                            queryBasicEstateNetwork.setGmtModified(null);
-                            queryBasicEstateNetwork.setCreator(commonService.thisUserAccount());
-                            basicEstateNetworkService.saveAndUpdateBasicEstateNetwork(queryBasicEstateNetwork);
-                        }
-                    }
-                } catch (Exception e1) {
-                    logger.error("", e1);
-                }
-            }
-        });
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<CaseEstateSupply> caseEstateSupplies = caseEstateSupplyService.getCaseEstateSupplyList(caseEstateSupply);
-                    if (!ObjectUtils.isEmpty(caseEstateSupplies)) {
-                        for (CaseEstateSupply caseEstateSupply1 : caseEstateSupplies) {
-                            BasicEstateSupply queryBasicEstateSupply = new BasicEstateSupply();
-                            BeanCopyHelp.copyPropertiesIgnoreNull(caseEstateSupply1, queryBasicEstateSupply);
-                            queryBasicEstateSupply.setEstateId(basicEstate.getId());
-                            queryBasicEstateSupply.setId(null);
-                            queryBasicEstateSupply.setGmtCreated(null);
-                            queryBasicEstateSupply.setGmtModified(null);
-                            queryBasicEstateSupply.setCreator(commonService.thisUserAccount());
-                            basicEstateSupplyService.saveAndUpdateBasicEstateSupply(queryBasicEstateSupply);
-                        }
-                    }
-                } catch (Exception e1) {
-                    logger.error("", e1);
-                }
-            }
-        });
+        try {
+            CaseEstateParking estateParking = new CaseEstateParking();
+            estateParking.setEstateId(caseEstateId);
+            List<CaseEstateParking> caseEstateParkings = caseEstateParkingService.getEstateParkingList(estateParking);
+            if (!ObjectUtils.isEmpty(caseEstateParkings)) {
+                for (CaseEstateParking caseEstateParking : caseEstateParkings) {
+                    BasicEstateParking queryBasicEstateParking = new BasicEstateParking();
+                    BeanCopyHelp.copyPropertiesIgnoreNull(caseEstateParking, queryBasicEstateParking);
+                    queryBasicEstateParking.setEstateId(basicEstate.getId());
+                    queryBasicEstateParking.setId(null);
+                    queryBasicEstateParking.setGmtCreated(null);
+                    queryBasicEstateParking.setGmtModified(null);
+                    queryBasicEstateParking.setCreator(commonService.thisUserAccount());
+                    Integer id = basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking);
 
-        if (org.apache.commons.lang3.StringUtils.equals(estatePartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
-
+                    example = new SysAttachmentDto();
+                    example.setTableId(caseEstateParking.getId());
+                    example.setTableName(FormatUtils.entityNameConvertToTableName(CaseEstateParking.class));
+                    attachmentDto = new SysAttachmentDto();
+                    attachmentDto.setTableId(id);
+                    attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstateParking.class));
+                    baseAttachmentService.copyFtpAttachments(example, attachmentDto);
+                }
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
         }
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-                    copyTaggingFromCase(caseEstateTaggings, applyId);
-                } catch (Exception e1) {
-                    logger.error("", e1);
-                }
-            }
-        });
+
+        StringBuilder sqlBuilder = new StringBuilder();
+        SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+        HashMap<String, String> map = Maps.newHashMap();
+        map.put("estate_id", String.valueOf(basicEstate.getId()));
+        map.put("creator", commonService.thisUserAccount());
+        synchronousDataDto.setFieldDefaultValue(map);
+        synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
+        synchronousDataDto.setWhereSql("estate_id=" + caseEstate.getId());
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseEstateNetwork.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//通信网络sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseEstateSupply.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateSupply.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//供应信息sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseMatchingTraffic.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingTraffic.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//交通信息sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseMatchingMedical.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingMedical.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//医养信息sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseMatchingMaterial.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingMaterial.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//原材料信息sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseMatchingLeisurePlace.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingLeisurePlace.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//休闲场所信息sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseMatchingFinance.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingFinance.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//金融服务信息sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseMatchingEnvironment.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingEnvironment.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//环境因素信息sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseMatchingEducation.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingEducation.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//教育信息sql
+
+        sqlBuilder.append(this.copyTaggingFromCase(EstateTaggingTypeEnum.ESTATE, caseEstate.getId(), applyId));
+        ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         return objectMap;
     }
 
@@ -664,21 +460,24 @@ public class BasicEstateService {
     /**
      * 拷贝tagging数据
      *
-     * @param caseEstateTaggings
+     * @param typeEnum
+     * @param dataId
+     * @param applyId
+     * @return
      * @throws Exception
      */
-    public void copyTaggingFromCase(List<CaseEstateTagging> caseEstateTaggings, Integer applyId) throws Exception {
-        if (!ObjectUtils.isEmpty(caseEstateTaggings)) {
-            for (CaseEstateTagging caseEstateTagging : caseEstateTaggings) {
-                BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
-                BeanCopyHelp.copyPropertiesIgnoreNull(caseEstateTagging, basicEstateTagging);
-                basicEstateTagging.setApplyId(applyId == null ? 0 : applyId);
-                basicEstateTagging.setId(null);
-                basicEstateTagging.setGmtCreated(null);
-                basicEstateTagging.setGmtModified(null);
-                basicEstateTagging.setCreator(commonService.thisUserAccount());
-                basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);
-            }
-        }
+    public String copyTaggingFromCase(EstateTaggingTypeEnum typeEnum, Integer dataId, Integer applyId) throws Exception {
+        StringBuilder sqlBuilder = new StringBuilder();
+        SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+        synchronousDataDto.setWhereSql(String.format("data_id=%s and type='%s'", dataId, typeEnum.getKey()));
+        synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseEstateTagging.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateTagging.class));
+        HashMap<String, String> map = Maps.newHashMap();
+        map.put("apply_id", String.valueOf(applyId));
+        map.put("creator", commonService.thisUserAccount());
+        synchronousDataDto.setFieldDefaultValue(map);
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));
+        return sqlBuilder.toString();
     }
 }

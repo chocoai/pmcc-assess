@@ -27,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -169,55 +170,63 @@ public class PublicService {
      * @return
      */
     public String getSynchronousSql(SynchronousDataDto synchronousDataDto) {
-        String sqlTemplate = "select column_name from information_schema.columns where table_schema='%s' and table_name='%s'";
+        String format = null;
+        try {
+            String sqlTemplate = "select column_name from information_schema.columns where table_schema='%s' and table_name='%s'";
 
-        //获取源数据表的字段
-        List<Map<String, Object>> mapList = jdbcTemplate.queryForList(String.format(sqlTemplate, synchronousDataDto.getSourceDataBase(), synchronousDataDto.getSourceTable()));
-        List<String> sourceFieldList = Lists.newArrayList();
-        for (Map<String, Object> map : mapList) {
-            sourceFieldList.add(String.valueOf(map.get("column_name")));
-        }
-
-        //获取目标数据表的字段
-        mapList = jdbcTemplate.queryForList(String.format(sqlTemplate, synchronousDataDto.getTargeDataBase(), synchronousDataDto.getTargeTable()));
-        List<String> targeFieldList = Lists.newArrayList();
-        for (Map<String, Object> map : mapList) {
-            targeFieldList.add(String.valueOf(map.get("column_name")));
-        }
-
-        Map<String, String> resultMap = Maps.newHashMap();//字段对应关系map
-        if (CollectionUtils.isEmpty(targeFieldList)) return null;
-        for (String targetField : targeFieldList) {
-            if (CollectionUtils.isNotEmpty(synchronousDataDto.getIgnoreField()) && synchronousDataDto.getIgnoreField().contains(targetField))
-                continue;
-            if (CollectionUtils.isNotEmpty(sourceFieldList) && sourceFieldList.contains(targetField)) {
-                resultMap.put(targetField, targetField);
+            //获取源数据表的字段
+            List<Map<String, Object>> mapList = jdbcTemplate.queryForList(String.format(sqlTemplate, synchronousDataDto.getSourceDataBase(), synchronousDataDto.getSourceTable()));
+            List<String> sourceFieldList = Lists.newArrayList();
+            for (Map<String, Object> map : mapList) {
+                sourceFieldList.add(String.valueOf(map.get("column_name")));
             }
-        }
 
-        if (synchronousDataDto.getFieldMapping() != null) {//自建对应关系
-            resultMap.putAll(synchronousDataDto.getFieldMapping());
-        }
+            //获取目标数据表的字段
+            mapList = jdbcTemplate.queryForList(String.format(sqlTemplate, synchronousDataDto.getTargeDataBase(), synchronousDataDto.getTargeTable()));
+            List<String> targeFieldList = Lists.newArrayList();
+            for (Map<String, Object> map : mapList) {
+                targeFieldList.add(String.valueOf(map.get("column_name")));
+            }
 
-        if (synchronousDataDto.getFieldDefaultValue() != null) {
-            for (Map.Entry<String, String> stringEntry : synchronousDataDto.getFieldDefaultValue().entrySet()) {
-                if (targeFieldList.contains(stringEntry.getKey())) {
-                    resultMap.put(stringEntry.getKey(), String.format("'%s'", stringEntry.getValue()));
+            Map<String, String> resultMap = Maps.newHashMap();//字段对应关系map
+            if (CollectionUtils.isEmpty(targeFieldList)) return null;
+            for (String targetField : targeFieldList) {
+                if (CollectionUtils.isNotEmpty(synchronousDataDto.getIgnoreField()) && synchronousDataDto.getIgnoreField().contains(targetField))
+                    continue;
+                if (CollectionUtils.isNotEmpty(sourceFieldList) && sourceFieldList.contains(targetField)) {
+                    resultMap.put(targetField, targetField);
                 }
             }
-        }
-        StringBuilder sourceBuilder = new StringBuilder();
-        StringBuilder targetBuilder = new StringBuilder();
-        for (Map.Entry<String, String> entry : resultMap.entrySet()) {
-            targetBuilder.append(entry.getKey()).append(",");
-            sourceBuilder.append(entry.getValue()).append(",");
-        }
 
-        return String.format("INSERT INTO %s.%s(%s) SELECT %s FROM %s.%s WHERE %s",
-                synchronousDataDto.getTargeDataBase(), synchronousDataDto.getTargeTable(),
-                targetBuilder.deleteCharAt(targetBuilder.length() - 1).toString(), sourceBuilder.deleteCharAt(sourceBuilder.length() - 1).toString(),
-                synchronousDataDto.getSourceDataBase(), synchronousDataDto.getSourceTable(),
-                org.springframework.util.StringUtils.isEmpty(synchronousDataDto.getWhereSql()) ? "1=1" : synchronousDataDto.getWhereSql());
+            if (synchronousDataDto.getFieldMapping() != null) {//自建对应关系
+                resultMap.putAll(synchronousDataDto.getFieldMapping());
+            }
+
+            if (synchronousDataDto.getFieldDefaultValue() != null) {
+                for (Map.Entry<String, String> stringEntry : synchronousDataDto.getFieldDefaultValue().entrySet()) {
+                    if (targeFieldList.contains(stringEntry.getKey())) {
+                        resultMap.put(stringEntry.getKey(), String.format("'%s'", stringEntry.getValue()));
+                    }
+                }
+            }
+            StringBuilder sourceBuilder = new StringBuilder();
+            StringBuilder targetBuilder = new StringBuilder();
+            for (Map.Entry<String, String> entry : resultMap.entrySet()) {
+                targetBuilder.append(entry.getKey()).append(",");
+                sourceBuilder.append(entry.getValue()).append(",");
+            }
+
+            format = String.format("INSERT INTO %s.%s(%s) SELECT %s FROM %s.%s WHERE %s",
+                    synchronousDataDto.getTargeDataBase(), synchronousDataDto.getTargeTable(),
+                    targetBuilder.deleteCharAt(targetBuilder.length() - 1).toString(), sourceBuilder.deleteCharAt(sourceBuilder.length() - 1).toString(),
+                    synchronousDataDto.getSourceDataBase(), synchronousDataDto.getSourceTable(),
+                    org.springframework.util.StringUtils.isEmpty(synchronousDataDto.getWhereSql()) ? "1=1" : synchronousDataDto.getWhereSql());
+        } catch (DataAccessException e) {
+            log.error(e.getMessage(), e);
+            return "";
+        }
+        if (StringUtils.isBlank(format) || StringUtils.equalsIgnoreCase(format, "null")) return "";
+        return format + ";";
     }
 
     /**

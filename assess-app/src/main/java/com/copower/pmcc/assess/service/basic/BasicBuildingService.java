@@ -1,12 +1,14 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
+import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -22,6 +24,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +36,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -71,7 +75,7 @@ public class BasicBuildingService {
     @Autowired
     private CaseBuildingFunctionService caseBuildingFunctionService;
     @Autowired
-    private CaseEstateTaggingService caseEstateTaggingService;
+    private PublicService publicService;
     @Autowired
     private DataBuildingNewRateService dataBuildingNewRateService;
     @Autowired
@@ -250,12 +254,12 @@ public class BasicBuildingService {
 
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "delete from %s where building_id=%s";
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class), basicBuilding.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class), basicBuilding.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class), basicBuilding.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class), basicBuilding.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class), basicBuilding.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class), basicBuilding.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class), basicBuilding.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class), basicBuilding.getId()));
 
-        sqlBulder.append(String.format("delete from %s where id=%s", FormatUtils.entityNameConvertToTableName(BasicBuilding.class), basicBuilding.getId())).append(";");
+        sqlBulder.append(String.format("delete from %s where id=%s", FormatUtils.entityNameConvertToTableName(BasicBuilding.class), basicBuilding.getId()));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
 
         //清理附件
@@ -282,18 +286,16 @@ public class BasicBuildingService {
         if (caseBuildingId == null) {
             throw new Exception("null point");
         }
+        applyId = applyId == null ? 0 : applyId;
         //清理数据
-        this.clearInvalidData(0);
-        if (applyId != null) {
-            this.clearInvalidData(applyId);
-        }
+        this.clearInvalidData(applyId);
         CaseBuilding caseBuilding = caseBuildingService.getCaseBuildingById(caseBuildingId);
         if (caseBuilding == null) {
             return null;
         }
         BasicBuilding basicBuilding = new BasicBuilding();
         BeanUtils.copyProperties(caseBuilding, basicBuilding);
-        basicBuilding.setApplyId(applyId == null ? 0 : applyId);
+        basicBuilding.setApplyId(applyId);
         basicBuilding.setCreator(commonService.thisUserAccount());
         basicBuilding.setGmtCreated(null);
         basicBuilding.setGmtModified(null);
@@ -303,95 +305,41 @@ public class BasicBuildingService {
         }
         basicBuildingDao.addBasicBuilding(basicBuilding);
 
-        if (StringUtils.equals(buildingPartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
+        //附件拷贝
+        SysAttachmentDto example = new SysAttachmentDto();
+        example.setTableId(caseBuilding.getId());
+        example.setTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class));
+        SysAttachmentDto attachmentDto = new SysAttachmentDto();
+        attachmentDto.setTableId(basicBuilding.getId());
+        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+        baseAttachmentService.copyFtpAttachments(example,attachmentDto);
 
-        }
-        CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
-        caseEstateTagging.setDataId(caseBuildingId);
-        caseEstateTagging.setType(EstateTaggingTypeEnum.BUILDING.getKey());
-        List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-        basicEstateService.copyTaggingFromCase(caseEstateTaggings, applyId);
+        StringBuilder sqlBuilder = new StringBuilder();
+        SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+        HashMap<String, String> map = Maps.newHashMap();
+        map.put("building_id", String.valueOf(basicBuilding.getId()));
+        map.put("creator", commonService.thisUserAccount());
+        synchronousDataDto.setFieldDefaultValue(map);
+        synchronousDataDto.setWhereSql("building_id=" + caseBuilding.getId());
+        synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseBuildingOutfit.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//楼栋外装sql
 
-        List<SysAttachmentDto> sysAttachmentDtoList = null;
-        SysAttachmentDto queryFile = new SysAttachmentDto();
-        queryFile.setTableId(caseBuilding.getId());
-        queryFile.setTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class));
-        sysAttachmentDtoList = baseAttachmentService.getAttachmentList(queryFile);
-        //复制 临时附件
-        if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
-            for (SysAttachmentDto attachmentDto : sysAttachmentDtoList) {
-                SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-                sysAttachmentDto.setTableId(basicBuilding.getId());
-                sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-                baseAttachmentService.copyFtpAttachment(attachmentDto.getId(), sysAttachmentDto);
-            }
-        }
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseBuildingMaintenance.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//维护结构sql
 
-        CaseBuildingOutfit queryOutfit = new CaseBuildingOutfit();
-        CaseBuildingMaintenance queryMaintenance = new CaseBuildingMaintenance();
-        CaseBuildingSurface querySurface = new CaseBuildingSurface();
-        CaseBuildingFunction queryFunction = new CaseBuildingFunction();
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseBuildingSurface.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//层面结构sql
 
-        queryOutfit.setBuildingId(caseBuilding.getId());
-        queryMaintenance.setBuildingId(caseBuilding.getId());
-        querySurface.setBuildingId(caseBuilding.getId());
-        queryFunction.setBuildingId(caseBuilding.getId());
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseBuildingFunction.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//建筑功能sql
 
-
-        List<CaseBuildingOutfit> buildingOutfitList = caseBuildingOutfitService.getCaseBuildingOutfitList(queryOutfit);
-        List<CaseBuildingMaintenance> maintenanceList = caseBuildingMaintenanceService.getCaseBuildingMaintenanceList(queryMaintenance);
-        List<CaseBuildingSurface> surfaceList = caseBuildingSurfaceService.getCaseBuildingSurfaceList(querySurface);
-        List<CaseBuildingFunction> functionList = caseBuildingFunctionService.getCaseBuildingFunctionListO(queryFunction);
-
-
-        if (!ObjectUtils.isEmpty(buildingOutfitList)) {
-            for (CaseBuildingOutfit oo : buildingOutfitList) {
-                BasicBuildingOutfit basicBuildingOutfit = new BasicBuildingOutfit();
-                BeanCopyHelp.copyPropertiesIgnoreNull(oo, basicBuildingOutfit);
-                basicBuildingOutfit.setBuildingId(basicBuilding.getId());
-                basicBuildingOutfit.setId(null);
-                basicBuildingOutfit.setCreator(commonService.thisUserAccount());
-                basicBuildingOutfit.setGmtCreated(null);
-                basicBuildingOutfit.setGmtModified(null);
-                basicBuildingOutfitService.saveAndUpdateBasicBuildingOutfit(basicBuildingOutfit);
-            }
-        }
-        if (!ObjectUtils.isEmpty(maintenanceList)) {
-            for (CaseBuildingMaintenance oo : maintenanceList) {
-                BasicBuildingMaintenance basicBuildingMaintenance = new BasicBuildingMaintenance();
-                BeanCopyHelp.copyPropertiesIgnoreNull(oo, basicBuildingMaintenance);
-                basicBuildingMaintenance.setBuildingId(basicBuilding.getId());
-                basicBuildingMaintenance.setId(null);
-                basicBuildingMaintenance.setCreator(commonService.thisUserAccount());
-                basicBuildingMaintenance.setGmtCreated(null);
-                basicBuildingMaintenance.setGmtModified(null);
-                basicBuildingMaintenanceService.saveAndUpdateBasicBuildingMaintenance(basicBuildingMaintenance);
-            }
-        }
-        if (!ObjectUtils.isEmpty(surfaceList)) {
-            for (CaseBuildingSurface oo : surfaceList) {
-                BasicBuildingSurface basicBuildingSurface = new BasicBuildingSurface();
-                BeanCopyHelp.copyPropertiesIgnoreNull(oo, basicBuildingSurface);
-                basicBuildingSurface.setBuildingId(basicBuilding.getId());
-                basicBuildingSurface.setId(null);
-                basicBuildingSurface.setCreator(commonService.thisUserAccount());
-                basicBuildingSurface.setGmtCreated(null);
-                basicBuildingSurface.setGmtModified(null);
-                basicBuildingSurfaceService.saveAndUpdateBasicBuildingSurface(basicBuildingSurface);
-            }
-        }
-        if (!ObjectUtils.isEmpty(functionList)) {
-            for (CaseBuildingFunction oo : functionList) {
-                BasicBuildingFunction basicBuildingFunction = new BasicBuildingFunction();
-                BeanCopyHelp.copyPropertiesIgnoreNull(oo, basicBuildingFunction);
-                basicBuildingFunction.setBuildingId(basicBuilding.getId());
-                basicBuildingFunction.setId(null);
-                basicBuildingFunction.setCreator(commonService.thisUserAccount());
-                basicBuildingFunction.setGmtCreated(null);
-                basicBuildingFunction.setGmtModified(null);
-                basicBuildingFunctionService.saveAndUpdateBasicBuildingFunction(basicBuildingFunction);
-            }
-        }
+        sqlBuilder.append(basicEstateService.copyTaggingFromCase(EstateTaggingTypeEnum.BUILDING, caseBuilding.getId(), applyId));
+        ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         return basicBuilding;
     }
 

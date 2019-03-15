@@ -2,13 +2,14 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
+import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
-import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingLeaseVo;
-import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingSellVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -54,7 +55,7 @@ public class BasicHouseService {
     @Autowired
     private BasicHouseRoomService basicHouseRoomService;
     @Autowired
-    private CaseEstateTaggingService caseEstateTaggingService;
+    private PublicService publicService;
     @Autowired
     private BasicHouseTradingLeaseService basicHouseTradingLeaseService;
     @Autowired
@@ -220,19 +221,19 @@ public class BasicHouseService {
         BasicHouse house = houseList.get(0);
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "delete from %s where house_id=%s";
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class), house.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class), house.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseRoom.class), house.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseWater.class), house.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class), house.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class), house.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class), house.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class), house.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseDamagedDegree.class), house.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseDamagedDegreeDetail.class), house.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class), house.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class), house.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseRoom.class), house.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseWater.class), house.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class), house.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class), house.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class), house.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class), house.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseDamagedDegree.class), house.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseDamagedDegreeDetail.class), house.getId()));
 
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTrading.class), house.getId())).append(";");
-        sqlBulder.append(String.format("delete from %s where id=%s", FormatUtils.entityNameConvertToTableName(BasicHouse.class), house.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTrading.class), house.getId()));
+        sqlBulder.append(String.format("delete from %s where id=%s", FormatUtils.entityNameConvertToTableName(BasicHouse.class), house.getId()));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
@@ -348,10 +349,8 @@ public class BasicHouseService {
         if (caseHouseId == null) {
             throw new Exception("null ponit");
         }
-        this.clearInvalidData(0);
-        if (applyId != null) {
-            this.clearInvalidData(applyId);
-        }
+        applyId = applyId == null ? 0 : applyId;
+        this.clearInvalidData(applyId);
         Map<String, Object> objectMap = new HashMap<String, Object>(2);
         CaseHouse caseHouse = caseHouseService.getCaseHouseById(caseHouseId);
         if (caseHouse == null) {
@@ -359,7 +358,7 @@ public class BasicHouseService {
         }
         BasicHouse basicHouse = new BasicHouse();
         BeanUtils.copyProperties(caseHouse, basicHouse);
-        basicHouse.setApplyId(applyId == null ? 0 : applyId);
+        basicHouse.setApplyId(applyId);
         basicHouse.setCreator(commonService.thisUserAccount());
         basicHouse.setId(null);
         basicHouse.setGmtCreated(null);
@@ -386,301 +385,128 @@ public class BasicHouseService {
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));
         }
 
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
-                    caseEstateTagging.setDataId(caseHouseId);
-                    caseEstateTagging.setType(EstateTaggingTypeEnum.HOUSE.getKey());
-                    List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-                    basicEstateService.copyTaggingFromCase(caseEstateTaggings, applyId);
-                } catch (Exception e1) {
-                    logger.info("", e1);
-                }
-            }
-        });
+        //附件拷贝
+        SysAttachmentDto example = new SysAttachmentDto();
+        example.setTableId(caseHouse.getId());
+        example.setTableName(FormatUtils.entityNameConvertToTableName(CaseHouse.class));
+        SysAttachmentDto attachmentDto = new SysAttachmentDto();
+        attachmentDto.setTableId(basicHouse.getId());
+        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
+        baseAttachmentService.copyFtpAttachments(example,attachmentDto);
 
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                //附件拷贝
-                SysAttachmentDto queryFile = new SysAttachmentDto();
-                queryFile.setTableId(caseHouseId);
-                queryFile.setTableName(FormatUtils.entityNameConvertToTableName(CaseHouse.class));
-                try {
-                    List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(queryFile);
-                    if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
-                        for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                            SysAttachmentDto attachmentDto = new SysAttachmentDto();
-                            attachmentDto.setTableId(basicHouse.getId());
-                            attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
+
+
+        StringBuilder sqlBuilder = new StringBuilder();
+        SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+        HashMap<String, String> map = Maps.newHashMap();
+        map.put("house_id", String.valueOf(basicHouse.getId()));
+        map.put("creator", commonService.thisUserAccount());
+        synchronousDataDto.setFieldDefaultValue(map);
+        synchronousDataDto.setWhereSql("house_id=" + caseHouse.getId());
+        synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseHouseTradingSell.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//房屋出售sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseHouseTradingLease.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//房屋出租sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseHouseWater.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseWater.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//供水sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseHouseWaterDrain.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//排水sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseHouseIntelligent.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//电力通讯网络sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseHouseFaceStreet.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//临路状况sql
+
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseHouseEquipment.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//设备sql
+
+        sqlBuilder.append(basicEstateService.copyTaggingFromCase(EstateTaggingTypeEnum.HOUSE, caseHouse.getId(), applyId));
+        ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
+
+        CaseHouseRoom caseHouseRoom = new CaseHouseRoom();
+        caseHouseRoom.setHouseId(caseHouseId);
+        CaseHouseCorollaryEquipment caseHouseCorollaryEquipment = new CaseHouseCorollaryEquipment();
+        caseHouseCorollaryEquipment.setHouseId(caseHouseId);
+        List<CaseHouseRoom> caseHouseRooms = caseHouseRoomService.getCaseHouseRoomList(caseHouseRoom);
+        List<CaseHouseCorollaryEquipment> caseHouseCorollaryEquipments = caseHouseCorollaryEquipmentService.getCaseHouseCorollaryEquipmentList(caseHouseCorollaryEquipment);
+        List<CaseHouseDamagedDegree> damagedDegreeList = caseHouseDamagedDegreeService.getDamagedDegreeListByHouseId(caseHouseId);
+
+
+        if (!ObjectUtils.isEmpty(caseHouseRooms)) {
+            try {
+                for (CaseHouseRoom oo : caseHouseRooms) {
+                    BasicHouseRoom room = new BasicHouseRoom();
+                    BeanUtils.copyProperties(oo, room);
+                    room.setId(null);
+                    room.setHouseId(basicHouse.getId());
+                    room.setCreator(commonService.thisUserAccount());
+                    room.setGmtCreated(null);
+                    room.setGmtModified(null);
+                    basicHouseRoomService.saveAndUpdateBasicHouseRoom(room);
+                    CaseHouseRoomDecorate caseHouseRoomDecorate = new CaseHouseRoomDecorate();
+                    caseHouseRoomDecorate.setRoomId(oo.getId());
+                    List<CaseHouseRoomDecorate> caseHouseRoomDecorateList = caseHouseRoomDecorateService.getCaseHouseRoomDecorateList(caseHouseRoomDecorate);
+                    if (!ObjectUtils.isEmpty(caseHouseRoomDecorateList)) {
+                        for (CaseHouseRoomDecorate po : caseHouseRoomDecorateList) {
+                            BasicHouseRoomDecorate basicHouseRoomDecorate = new BasicHouseRoomDecorate();
+                            BeanUtils.copyProperties(po, basicHouseRoomDecorate);
+                            basicHouseRoomDecorate.setRoomId(room.getId());
+                            basicHouseRoomDecorate.setCreator(commonService.thisUserAccount());
+                            basicHouseRoomDecorate.setGmtCreated(null);
+                            basicHouseRoomDecorate.setGmtModified(null);
+                            basicHouseRoomDecorate.setId(null);
+                            basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                logger.error(e.getMessage(),e);
+            }
+        }
+
+
+
+        if (!ObjectUtils.isEmpty(caseHouseCorollaryEquipments)) {
+            try {
+                for (CaseHouseCorollaryEquipment oo : caseHouseCorollaryEquipments) {
+                    SysAttachmentDto query = new SysAttachmentDto();
+                    query.setTableId(oo.getId());
+                    query.setTableName(FormatUtils.entityNameConvertToTableName(CaseHouseCorollaryEquipment.class));
+                    List<SysAttachmentDto> sysAttachmentDtoList1 = baseAttachmentService.getAttachmentList(query);
+                    BasicHouseCorollaryEquipment po = new BasicHouseCorollaryEquipment();
+                    BeanUtils.copyProperties(oo, po);
+                    po.setId(null);
+                    po.setHouseId(basicHouse.getId());
+                    po.setCreator(commonService.thisUserAccount());
+                    po.setGmtCreated(null);
+                    po.setGmtModified(null);
+                    Integer id = basicHouseCorollaryEquipmentService.saveAndUpdateBasicHouseCorollaryEquipment(po);
+                    if (!ObjectUtils.isEmpty(sysAttachmentDtoList1)) {
+                        for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList1) {
+                            attachmentDto = new SysAttachmentDto();
+                            attachmentDto.setTableId(id);
+                            attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class));
                             baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
                         }
                     }
-                } catch (Exception e1) {
-                    logger.error(e1.getMessage(),e1);
                 }
+            } catch (Exception e) {
+                logger.error(e.getMessage(),e);
             }
-        });
-
-
-        CaseHouseTradingLease caseHouseTradingLease = new CaseHouseTradingLease();
-        caseHouseTradingLease.setHouseId(caseHouseId);
-        CaseHouseTradingSell caseHouseTradingSell = new CaseHouseTradingSell();
-        caseHouseTradingSell.setHouseId(caseHouseId);
-        CaseHouseRoom caseHouseRoom = new CaseHouseRoom();
-        caseHouseRoom.setHouseId(caseHouseId);
-
-        CaseHouseEquipment caseHouseEquipment = new CaseHouseEquipment();
-        caseHouseEquipment.setHouseId(caseHouseId);
-        CaseHouseFaceStreet caseHouseFaceStreet = new CaseHouseFaceStreet();
-        caseHouseFaceStreet.setHouseId(caseHouseId);
-        CaseHouseIntelligent caseHouseIntelligent = new CaseHouseIntelligent();
-        caseHouseIntelligent.setHouseId(caseHouseId);
-        CaseHouseWater caseHouseWater = new CaseHouseWater();
-        caseHouseWater.setHouseId(caseHouseId);
-        CaseHouseCorollaryEquipment caseHouseCorollaryEquipment = new CaseHouseCorollaryEquipment();
-        caseHouseCorollaryEquipment.setHouseId(caseHouseId);
-        CaseHouseWaterDrain caseHouseWaterDrain = new CaseHouseWaterDrain();
-        caseHouseWaterDrain.setHouseId(caseHouseId);
-
-        List<CaseHouseTradingSellVo> caseHouseTradingSellVos = caseHouseTradingSellService.caseHouseTradingSellList(caseHouseTradingSell, null);
-        List<CaseHouseTradingLeaseVo> caseHouseTradingLeaseVos = caseHouseTradingLeaseService.caseHouseTradingLeaseList(caseHouseTradingLease, null);
-        List<CaseHouseRoom> caseHouseRooms = caseHouseRoomService.getCaseHouseRoomList(caseHouseRoom);
-        List<CaseHouseEquipment> caseHouseEquipments = caseHouseEquipmentService.getCaseHouseEquipmentList(caseHouseEquipment);
-        List<CaseHouseFaceStreet> caseHouseFaceStreets = caseHouseFaceStreetService.getCaseHouseFaceStreetList(caseHouseFaceStreet);
-        List<CaseHouseIntelligent> caseHouseIntelligents = caseHouseIntelligentService.getCaseHouseIntelligentList(caseHouseIntelligent);
-        List<CaseHouseWater> caseHouseWaters = caseHouseWaterService.getCaseHouseWaterList(caseHouseWater);
-        List<CaseHouseCorollaryEquipment> caseHouseCorollaryEquipments = caseHouseCorollaryEquipmentService.getCaseHouseCorollaryEquipmentList(caseHouseCorollaryEquipment);
-        List<CaseHouseWaterDrain> caseHouseWaterDrainList = caseHouseWaterDrainService.getCaseHouseWaterDrainList(caseHouseWaterDrain);
-        List<CaseHouseDamagedDegree> damagedDegreeList = caseHouseDamagedDegreeService.getDamagedDegreeListByHouseId(caseHouseId);
-
-        if (!ObjectUtils.isEmpty(caseHouseTradingSellVos)) {
-            taskExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        for (CaseHouseTradingSellVo oo : caseHouseTradingSellVos) {
-                            BasicHouseTradingSell sell = new BasicHouseTradingSell();
-                            BeanUtils.copyProperties(oo, sell);
-                            sell.setId(null);
-                            sell.setHouseId(basicHouse.getId());
-                            sell.setCreator(commonService.thisUserAccount());
-                            sell.setGmtCreated(null);
-                            sell.setGmtModified(null);
-                            basicHouseTradingSellService.saveAndUpdateBasicHouseTradingSell(sell);
-                        }
-                    } catch (Exception e1) {
-
-                    }
-                }
-            });
-
         }
-        if (!ObjectUtils.isEmpty(caseHouseTradingLeaseVos)) {
-            taskExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        for (CaseHouseTradingLeaseVo oo : caseHouseTradingLeaseVos) {
-                            BasicHouseTradingLease lease = new BasicHouseTradingLease();
-                            BeanUtils.copyProperties(oo, lease);
-                            lease.setId(null);
-                            lease.setHouseId(basicHouse.getId());
-                            lease.setCreator(commonService.thisUserAccount());
-                            lease.setGmtCreated(null);
-                            lease.setGmtModified(null);
-                            basicHouseTradingLeaseService.saveAndUpdateBasicHouseTradingLease(lease);
-                        }
-                    } catch (Exception e1) {
 
-                    }
-                }
-            });
-
-        }
-        if (!ObjectUtils.isEmpty(caseHouseRooms)) {
-            taskExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        for (CaseHouseRoom oo : caseHouseRooms) {
-                            BasicHouseRoom room = new BasicHouseRoom();
-                            BeanUtils.copyProperties(oo, room);
-                            room.setId(null);
-                            room.setHouseId(basicHouse.getId());
-                            room.setCreator(commonService.thisUserAccount());
-                            room.setGmtCreated(null);
-                            room.setGmtModified(null);
-                            basicHouseRoomService.saveAndUpdateBasicHouseRoom(room);
-                            CaseHouseRoomDecorate caseHouseRoomDecorate = new CaseHouseRoomDecorate();
-                            caseHouseRoomDecorate.setRoomId(oo.getId());
-                            List<CaseHouseRoomDecorate> caseHouseRoomDecorateList = caseHouseRoomDecorateService.getCaseHouseRoomDecorateList(caseHouseRoomDecorate);
-                            if (!ObjectUtils.isEmpty(caseHouseRoomDecorateList)) {
-                                for (CaseHouseRoomDecorate po : caseHouseRoomDecorateList) {
-                                    BasicHouseRoomDecorate basicHouseRoomDecorate = new BasicHouseRoomDecorate();
-                                    BeanUtils.copyProperties(po, basicHouseRoomDecorate);
-                                    basicHouseRoomDecorate.setRoomId(room.getId());
-                                    basicHouseRoomDecorate.setCreator(commonService.thisUserAccount());
-                                    basicHouseRoomDecorate.setGmtCreated(null);
-                                    basicHouseRoomDecorate.setGmtModified(null);
-                                    basicHouseRoomDecorate.setId(null);
-                                    basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate);
-                                }
-                            }
-                        }
-                    } catch (Exception e1) {
-
-                    }
-                }
-            });
-
-        }
-        if (!ObjectUtils.isEmpty(caseHouseEquipments)) {
-            taskExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        for (CaseHouseEquipment oo : caseHouseEquipments) {
-                            BasicHouseEquipment po = new BasicHouseEquipment();
-                            BeanUtils.copyProperties(oo, po);
-                            po.setId(null);
-                            po.setHouseId(basicHouse.getId());
-                            po.setCreator(commonService.thisUserAccount());
-                            po.setGmtCreated(null);
-                            po.setGmtModified(null);
-                            basicHouseEquipmentService.saveAndUpdateBasicHouseEquipment(po);
-                        }
-                    } catch (Exception e1) {
-
-                    }
-                }
-            });
-
-        }
-        if (!ObjectUtils.isEmpty(caseHouseFaceStreets)) {
-            taskExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        for (CaseHouseFaceStreet oo : caseHouseFaceStreets) {
-                            BasicHouseFaceStreet po = new BasicHouseFaceStreet();
-                            BeanUtils.copyProperties(oo, po);
-                            po.setId(null);
-                            po.setHouseId(basicHouse.getId());
-                            po.setCreator(commonService.thisUserAccount());
-                            po.setGmtCreated(null);
-                            po.setGmtModified(null);
-                            basicHouseFaceStreetService.saveAndUpdateBasicHouseFaceStreet(po);
-                        }
-                    } catch (Exception e1) {
-
-                    }
-                }
-            });
-
-        }
-        if (!ObjectUtils.isEmpty(caseHouseIntelligents)) {
-            taskExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        for (CaseHouseIntelligent oo : caseHouseIntelligents) {
-                            BasicHouseIntelligent po = new BasicHouseIntelligent();
-                            BeanUtils.copyProperties(oo, po);
-                            po.setId(null);
-                            po.setHouseId(basicHouse.getId());
-                            po.setCreator(commonService.thisUserAccount());
-                            po.setGmtCreated(null);
-                            po.setGmtModified(null);
-                            basicHouseIntelligentService.saveAndUpdateBasicHouseIntelligent(po);
-                        }
-                    } catch (Exception e1) {
-
-                    }
-                }
-            });
-
-        }
-        if (!ObjectUtils.isEmpty(caseHouseWaters)) {
-            taskExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        for (CaseHouseWater oo : caseHouseWaters) {
-                            BasicHouseWater po = new BasicHouseWater();
-                            BeanUtils.copyProperties(oo, po);
-                            po.setId(null);
-                            po.setHouseId(basicHouse.getId());
-                            po.setCreator(commonService.thisUserAccount());
-                            po.setGmtCreated(null);
-                            po.setGmtModified(null);
-                            basicHouseWaterService.saveAndUpdateBasicHouseWater(po);
-                        }
-                    } catch (Exception e1) {
-
-                    }
-                }
-            });
-
-        }
-        if (!ObjectUtils.isEmpty(caseHouseCorollaryEquipments)) {
-            taskExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        for (CaseHouseCorollaryEquipment oo : caseHouseCorollaryEquipments) {
-                            SysAttachmentDto query = new SysAttachmentDto();
-                            query.setTableId(oo.getId());
-                            query.setTableName(FormatUtils.entityNameConvertToTableName(CaseHouseCorollaryEquipment.class));
-                            List<SysAttachmentDto> sysAttachmentDtoList1 = baseAttachmentService.getAttachmentList(query);
-                            BasicHouseCorollaryEquipment po = new BasicHouseCorollaryEquipment();
-                            BeanUtils.copyProperties(oo, po);
-                            po.setId(null);
-                            po.setHouseId(basicHouse.getId());
-                            po.setCreator(commonService.thisUserAccount());
-                            po.setGmtCreated(null);
-                            po.setGmtModified(null);
-                            Integer id = basicHouseCorollaryEquipmentService.saveAndUpdateBasicHouseCorollaryEquipment(po);
-                            if (!ObjectUtils.isEmpty(sysAttachmentDtoList1)) {
-                                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList1) {
-                                    SysAttachmentDto attachmentDto = new SysAttachmentDto();
-                                    attachmentDto.setTableId(id);
-                                    attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class));
-                                    baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
-                                }
-                            }
-                        }
-                    } catch (Exception e1) {
-
-                    }
-                }
-            });
-
-        }
-        if (!ObjectUtils.isEmpty(caseHouseWaterDrainList)) {
-            taskExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    caseHouseWaterDrainList.parallelStream().forEach(oo -> {
-                        try {
-                            BasicHouseWaterDrain basicHouseWaterDrain = new BasicHouseWaterDrain();
-                            BeanUtils.copyProperties(oo, basicHouseWaterDrain);
-                            basicHouseWaterDrain.setId(null);
-                            basicHouseWaterDrain.setHouseId(basicHouse.getId());
-                            basicHouseWaterDrain.setCreator(commonService.thisUserAccount());
-                            basicHouseWaterDrain.setGmtCreated(null);
-                            basicHouseWaterDrain.setGmtModified(null);
-                            basicHouseWaterDrainService.saveAndUpdateBasicHouseWaterDrain(basicHouseWaterDrain);
-                        } catch (Exception e1) {
-                            logger.error("", e1);
-                        }
-                    });
-                }
-            });
-
-        }
         if (CollectionUtils.isNotEmpty(damagedDegreeList)) {
             try {
                 for (CaseHouseDamagedDegree caseHouseDamagedDegree : damagedDegreeList) {

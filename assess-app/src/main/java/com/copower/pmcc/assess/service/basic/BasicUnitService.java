@@ -2,34 +2,40 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
+import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.output.cases.CaseUnitHuxingVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.cases.*;
+import com.copower.pmcc.assess.service.cases.CaseUnitHuxingService;
+import com.copower.pmcc.assess.service.cases.CaseUnitService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -46,30 +52,19 @@ public class BasicUnitService {
     @Autowired
     private BasicUnitHuxingService basicUnitHuxingService;
     @Autowired
-    private BasicUnitElevatorService basicUnitElevatorService;
-    @Autowired
-    private BasicUnitDecorateService basicUnitDecorateService;
+    private PublicService publicService;
     @Autowired
     private BasicUnitDao basicUnitDao;
-    @Autowired
-    private ThreadPoolTaskExecutor taskExecutor;
     @Autowired
     private CaseUnitHuxingService caseUnitHuxingService;
     @Autowired
     private CaseUnitService caseUnitService;
     @Autowired
-    private CaseUnitElevatorService caseUnitElevatorService;
-    @Autowired
-    private CaseUnitDecorateService caseUnitDecorateService;
-    @Autowired
     private DdlMySqlAssist ddlMySqlAssist;
-    @Autowired
-    private CaseEstateTaggingService caseEstateTaggingService;
     @Autowired
     private BasicEstateService basicEstateService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-
 
     /**
      * 获取数据
@@ -154,11 +149,11 @@ public class BasicUnitService {
 
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "delete from %s where unit_id=%s";
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class), unit.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class), unit.getId())).append(";");
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class), unit.getId())).append(";");
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class), unit.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class), unit.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class), unit.getId()));
 
-        sqlBulder.append(String.format("delete from %s where id=%s", FormatUtils.entityNameConvertToTableName(BasicUnit.class), unit.getId())).append(";");
+        sqlBulder.append(String.format("delete from %s where id=%s", FormatUtils.entityNameConvertToTableName(BasicUnit.class), unit.getId()));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
@@ -207,20 +202,18 @@ public class BasicUnitService {
      */
     @Transactional(rollbackFor = Exception.class)
     public BasicUnit appWriteUnit(Integer caseUnitId, String unitPartInMode, Integer applyId) throws Exception {
-        this.clearInvalidData(0);
         if (caseUnitId == null) {
-            throw new Exception("null point");
-        }
-        if (applyId != null) {
-            this.clearInvalidData(applyId);
+            throw new BusinessException("null point");
         }
         CaseUnit caseUnit = caseUnitService.getCaseUnitById(caseUnitId);
         if (caseUnit == null) {
-            return null;
+            throw new BusinessException("null point");
         }
+        applyId = applyId == null ? 0 : applyId;
+        this.clearInvalidData(applyId);
         BasicUnit basicUnit = new BasicUnit();
         BeanUtils.copyProperties(caseUnit, basicUnit);
-        basicUnit.setApplyId(applyId == null ? 0 : applyId);
+        basicUnit.setApplyId(applyId);
         basicUnit.setCreator(commonService.thisUserAccount());
         basicUnit.setGmtCreated(null);
         basicUnit.setGmtModified(null);
@@ -229,113 +222,63 @@ public class BasicUnitService {
         }
         basicUnitDao.addBasicUnit(basicUnit);
 
-        if (StringUtils.equals(unitPartInMode, BasicApplyPartInModeEnum.UPGRADE.getKey())) {
+        //附件拷贝
+        SysAttachmentDto example = new SysAttachmentDto();
+        example.setTableId(caseUnit.getId());
+        example.setTableName(FormatUtils.entityNameConvertToTableName(CaseUnit.class));
+        SysAttachmentDto attachmentDto = new SysAttachmentDto();
+        attachmentDto.setTableId(basicUnit.getId());
+        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
+        baseAttachmentService.copyFtpAttachments(example,attachmentDto);
 
+        try {
+            List<CaseUnitHuxingVo> caseUnitHuxingList = null;
+            CaseUnitHuxing query = new CaseUnitHuxing();
+            query.setUnitId(caseUnitId);
+            caseUnitHuxingList = caseUnitHuxingService.getCaseUnitHuxingList(query);
+            if (!ObjectUtils.isEmpty(caseUnitHuxingList)) {
+                for (CaseUnitHuxingVo caseUnitHuxing : caseUnitHuxingList) {
+                    BasicUnitHuxing basicUnitHuxing = new BasicUnitHuxing();
+                    BeanUtils.copyProperties(caseUnitHuxing, basicUnitHuxing);
+                    basicUnitHuxing.setUnitId(basicUnit.getId());
+                    basicUnitHuxing.setId(null);
+                    basicUnitHuxing.setGmtCreated(null);
+                    basicUnitHuxing.setGmtModified(null);
+                    Integer id = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing);
+
+                    //附件拷贝
+                    example = new SysAttachmentDto();
+                    example.setTableId(caseUnitHuxing.getId());
+                    example.setTableName(FormatUtils.entityNameConvertToTableName(CaseUnitHuxing.class));
+                    attachmentDto = new SysAttachmentDto();
+                    attachmentDto.setTableId(id);
+                    attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
+                    baseAttachmentService.copyFtpAttachments(example,attachmentDto);
+                }
+            }
+        } catch (Exception e) {
+            logger.info(e.getMessage(), e);
         }
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
-                    caseEstateTagging.setDataId(caseUnitId);
-                    caseEstateTagging.setType(EstateTaggingTypeEnum.UNIT.getKey());
-                    List<CaseEstateTagging> caseEstateTaggings = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-                    basicEstateService.copyTaggingFromCase(caseEstateTaggings, applyId);
-                } catch (Exception e1) {
-                    logger.info("", e1);
-                }
-            }
-        });
 
+        StringBuilder sqlBuilder = new StringBuilder();
+        SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+        HashMap<String, String> map = Maps.newHashMap();
+        map.put("unit_id", String.valueOf(basicUnit.getId()));
+        map.put("creator", commonService.thisUserAccount());
+        synchronousDataDto.setFieldDefaultValue(map);
+        synchronousDataDto.setWhereSql("unit_id=" + caseUnit.getId());
+        synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseUnitDecorate.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//楼栋内装sql
 
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<CaseUnitElevator> caseUnitHuxingList = null;
-                    CaseUnitElevator query = new CaseUnitElevator();
-                    query.setUnitId(caseUnitId);
-                    caseUnitHuxingList = caseUnitElevatorService.getUnitElevatorList(query);
-                    if (!ObjectUtils.isEmpty(caseUnitHuxingList)) {
-                        for (CaseUnitElevator caseUnitElevator : caseUnitHuxingList) {
-                            BasicUnitElevator basicUnitElevator = new BasicUnitElevator();
-                            BeanUtils.copyProperties(caseUnitElevator, basicUnitElevator);
-                            basicUnitElevator.setUnitId(basicUnit.getId());
-                            basicUnitElevator.setId(null);
-                            basicUnitElevator.setGmtCreated(null);
-                            basicUnitElevator.setGmtModified(null);
-                            basicUnitElevatorService.saveAndUpdateBasicUnitElevator(basicUnitElevator);
-                        }
-                    }
-                } catch (Exception e1) {
-                    logger.info("", e1);
-                }
-            }
-        });
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseUnitElevator.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//配备电梯sql
 
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<CaseUnitDecorate> caseUnitHuxingList = null;
-                    CaseUnitDecorate query = new CaseUnitDecorate();
-                    query.setUnitId(caseUnitId);
-                    caseUnitHuxingList = caseUnitDecorateService.getCaseUnitDecorateList(query);
-                    if (!ObjectUtils.isEmpty(caseUnitHuxingList)) {
-                        for (CaseUnitDecorate caseUnitDecorate : caseUnitHuxingList) {
-                            BasicUnitDecorate basicUnitDecorate = new BasicUnitDecorate();
-                            BeanUtils.copyProperties(caseUnitDecorate, basicUnitDecorate);
-                            basicUnitDecorate.setUnitId(basicUnit.getId());
-                            basicUnitDecorate.setId(null);
-                            basicUnitDecorate.setGmtCreated(null);
-                            basicUnitDecorate.setGmtModified(null);
-                            basicUnitDecorateService.saveAndUpdateBasicUnitDecorate(basicUnitDecorate);
-                        }
-                    }
-                } catch (Exception e1) {
-                    logger.info("", e1);
-                }
-            }
-        });
+        sqlBuilder.append(basicEstateService.copyTaggingFromCase(EstateTaggingTypeEnum.UNIT, caseUnit.getId(), applyId));
+        ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
 
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<CaseUnitHuxingVo> caseUnitHuxingList = null;
-                    CaseUnitHuxing query = new CaseUnitHuxing();
-                    query.setUnitId(caseUnitId);
-                    caseUnitHuxingList = caseUnitHuxingService.getCaseUnitHuxingList(query);
-                    if (!ObjectUtils.isEmpty(caseUnitHuxingList)) {
-                        for (CaseUnitHuxingVo caseUnitHuxing : caseUnitHuxingList) {
-                            BasicUnitHuxing basicUnitHuxing = new BasicUnitHuxing();
-                            BeanUtils.copyProperties(caseUnitHuxing, basicUnitHuxing);
-                            basicUnitHuxing.setUnitId(basicUnit.getId());
-                            basicUnitHuxing.setId(null);
-                            basicUnitHuxing.setGmtCreated(null);
-                            basicUnitHuxing.setGmtModified(null);
-                            Integer id = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing);
-
-                            List<SysAttachmentDto> sysAttachmentDtoList = null;
-                            SysAttachmentDto queryAttachment = new SysAttachmentDto();
-                            queryAttachment.setTableName(FormatUtils.entityNameConvertToTableName(CaseUnitHuxing.class));
-                            queryAttachment.setTableId(caseUnitHuxing.getId());
-                            sysAttachmentDtoList = baseAttachmentService.getAttachmentList(queryAttachment);
-                            if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
-                                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                                    SysAttachmentDto attachmentDto = new SysAttachmentDto();
-                                    attachmentDto.setTableId(id);
-                                    attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
-                                    baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
-                                }
-                            }
-                        }
-                    }
-                } catch (Exception e1) {
-                    logger.info("", e1);
-                }
-            }
-        });
         return basicUnit;
     }
 
