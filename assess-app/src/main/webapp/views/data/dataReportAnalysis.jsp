@@ -28,13 +28,13 @@
                             <div>
                                 <label class="col-sm-1 control-label">名称</label>
                                 <div class="col-sm-2">
-                                   <input type="text" id="queryName" class="form-control">
+                                    <input type="text" id="queryName" class="form-control">
                                 </div>
                             </div>
                             <div>
                                 <label class="col-sm-1 control-label">类别</label>
                                 <div class="col-sm-2">
-                                    <select  class="form-control" id="queryReportAnalysisType">
+                                    <select class="form-control" id="queryReportAnalysisType">
                                         <option value="">-请选择-</option>
                                         <c:forEach items="${reportAnalysisTypeList}" var="item">
                                             <option value="${item.id}">${item.name}</option>
@@ -126,7 +126,8 @@
                                             类别<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <select required class="form-control search-select select2" name="reportAnalysisType">
+                                            <select required class="form-control search-select select2"
+                                                    name="reportAnalysisType">
                                                 <option value="">请选择</option>
                                                 <c:forEach items="${reportAnalysisTypeList}" var="item">
                                                     <option value="${item.id}">${item.name}</option>
@@ -140,7 +141,8 @@
                                         </label>
                                         <div class="col-sm-4">
                                             <label class="radio-inline">
-                                                <input type="checkbox" id="bisModifiable" name="bisModifiable" value="true"
+                                                <input type="checkbox" id="bisModifiable" name="bisModifiable"
+                                                       value="true"
                                                        checked="checked">
                                             </label>
                                         </div>
@@ -175,7 +177,7 @@
                                             <div class="template-field">
 
                                             </div>--%>
-                                                <div style="width:99%;height:200px;" id="template"></div>
+                                            <div style="width:99%;height:200px;" id="template"></div>
 
                                         </div>
                                     </div>
@@ -221,12 +223,14 @@
     //加载 评估依据 数据列表
     function loadReportAnalysisList() {
         var cols = [];
-        cols.push({field: 'provinceName', title: '省'});
-        cols.push({field: 'cityName', title: '市'});
-        cols.push({field: 'districtName', title: '县'});
-        cols.push({field: 'name', title: '名称'});
-        cols.push({field: 'reportAnalysisTypeName', title: '类别'});
-        cols.push({field: 'entrustmentPurposeName', title: '委托目的'});
+        cols.push({
+            field: 'provinceName', title: '区域', formatter: function (value, row, index) {
+                return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName)
+            }
+        });
+        cols.push({field: 'name', title: '名称', width: '15%'});
+        cols.push({field: 'reportAnalysisTypeName', title: '类别', width: '8%'});
+        cols.push({field: 'entrustmentPurposeName', title: '委托目的', width: '15%'});
         cols.push({field: 'template', title: '模板', width: '40%'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
