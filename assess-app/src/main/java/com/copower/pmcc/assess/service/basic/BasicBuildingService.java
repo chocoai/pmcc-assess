@@ -253,13 +253,13 @@ public class BasicBuildingService {
         basicBuilding = basicBuildingList.get(0);
 
         StringBuilder sqlBulder = new StringBuilder();
-        String baseSql = "delete from %s where building_id=%s";
+        String baseSql = "delete from %s where building_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class), basicBuilding.getId()));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class), basicBuilding.getId()));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class), basicBuilding.getId()));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class), basicBuilding.getId()));
 
-        sqlBulder.append(String.format("delete from %s where id=%s", FormatUtils.entityNameConvertToTableName(BasicBuilding.class), basicBuilding.getId()));
+        sqlBulder.append(String.format("delete from %s where id=%s;", FormatUtils.entityNameConvertToTableName(BasicBuilding.class), basicBuilding.getId()));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
 
         //清理附件

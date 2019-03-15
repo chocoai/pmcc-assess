@@ -238,7 +238,7 @@ public class BasicEstateService {
         BasicEstate estate = estateList.get(0);
 
         StringBuilder sqlBulder = new StringBuilder();
-        String baseSql = "delete from %s where estate_id=%s";
+        String baseSql = "delete from %s where estate_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class), estate.getId()));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateParking.class), estate.getId()));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateSupply.class), estate.getId()));
@@ -251,7 +251,7 @@ public class BasicEstateService {
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingTraffic.class), estate.getId()));
 
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateLandState.class), estate.getId()));
-        sqlBulder.append(String.format("delete from %s where id=%s", FormatUtils.entityNameConvertToTableName(BasicEstate.class), estate.getId()));
+        sqlBulder.append(String.format("delete from %s where id=%s;", FormatUtils.entityNameConvertToTableName(BasicEstate.class), estate.getId()));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 

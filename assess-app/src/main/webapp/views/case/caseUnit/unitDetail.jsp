@@ -56,3 +56,19 @@
 
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/case/case.common.js"></script>
+<script type="text/javascript">
+    $(function () {
+        fileShow(AssessUploadKey.UNIT_APPEARANCE);
+    });
+    function fileShow(fieldsName) {
+        FileUtils.getFileShows({
+            target: fieldsName,
+            formData: {
+                fieldsName: fieldsName,
+                tableName: AssessDBKey.CaseUnit,
+                tableId: '${caseUnit.id}'
+            },
+            deleteFlag: false
+        })
+    }
+</script>

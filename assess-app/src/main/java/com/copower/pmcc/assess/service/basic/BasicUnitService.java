@@ -148,12 +148,12 @@ public class BasicUnitService {
         BasicUnit unit = unitList.get(0);
 
         StringBuilder sqlBulder = new StringBuilder();
-        String baseSql = "delete from %s where unit_id=%s";
+        String baseSql = "delete from %s where unit_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class), unit.getId()));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class), unit.getId()));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class), unit.getId()));
 
-        sqlBulder.append(String.format("delete from %s where id=%s", FormatUtils.entityNameConvertToTableName(BasicUnit.class), unit.getId()));
+        sqlBulder.append(String.format("delete from %s where id=%s;", FormatUtils.entityNameConvertToTableName(BasicUnit.class), unit.getId()));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 

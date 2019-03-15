@@ -220,7 +220,7 @@ public class BasicHouseService {
         }
         BasicHouse house = houseList.get(0);
         StringBuilder sqlBulder = new StringBuilder();
-        String baseSql = "delete from %s where house_id=%s";
+        String baseSql = "delete from %s where house_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class), house.getId()));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class), house.getId()));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseRoom.class), house.getId()));
@@ -233,7 +233,7 @@ public class BasicHouseService {
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseDamagedDegreeDetail.class), house.getId()));
 
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTrading.class), house.getId()));
-        sqlBulder.append(String.format("delete from %s where id=%s", FormatUtils.entityNameConvertToTableName(BasicHouse.class), house.getId()));
+        sqlBulder.append(String.format("delete from %s where id=%s;", FormatUtils.entityNameConvertToTableName(BasicHouse.class), house.getId()));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
