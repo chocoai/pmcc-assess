@@ -14,6 +14,7 @@
     <result column="practical_use" property="practicalUse" jdbcType="INTEGER" />
     <result column="orientation" property="orientation" jdbcType="INTEGER" />
     <result column="area" property="area" jdbcType="DECIMAL" />
+    <result column="research_type" property="researchType" jdbcType="INTEGER" />
     <result column="right_interests_restriction" property="rightInterestsRestriction" jdbcType="VARCHAR" />
     <result column="use_environment" property="useEnvironment" jdbcType="INTEGER" />
     <result column="description" property="description" jdbcType="VARCHAR" />
@@ -82,8 +83,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, apply_id, unit_id, house_number, floor, floor_desc, huxing_name, new_huxing_name, 
-    cert_use, practical_use, orientation, area, right_interests_restriction, use_environment, 
-    description, case_date, creator, gmt_created, gmt_modified
+    cert_use, practical_use, orientation, area, research_type, right_interests_restriction, 
+    use_environment, description, case_date, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseExample" >
     select
@@ -122,17 +123,17 @@
     insert into tb_basic_house (apply_id, unit_id, house_number, 
       floor, floor_desc, huxing_name, 
       new_huxing_name, cert_use, practical_use, 
-      orientation, area, right_interests_restriction, 
-      use_environment, description, case_date, 
-      creator, gmt_created, gmt_modified
-      )
+      orientation, area, research_type, 
+      right_interests_restriction, use_environment, 
+      description, case_date, creator, 
+      gmt_created, gmt_modified)
     values (#{applyId,jdbcType=INTEGER}, #{unitId,jdbcType=INTEGER}, #{houseNumber,jdbcType=VARCHAR}, 
       #{floor,jdbcType=VARCHAR}, #{floorDesc,jdbcType=VARCHAR}, #{huxingName,jdbcType=VARCHAR}, 
       #{newHuxingName,jdbcType=VARCHAR}, #{certUse,jdbcType=INTEGER}, #{practicalUse,jdbcType=INTEGER}, 
-      #{orientation,jdbcType=INTEGER}, #{area,jdbcType=DECIMAL}, #{rightInterestsRestriction,jdbcType=VARCHAR}, 
-      #{useEnvironment,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{caseDate,jdbcType=TIMESTAMP}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{orientation,jdbcType=INTEGER}, #{area,jdbcType=DECIMAL}, #{researchType,jdbcType=INTEGER}, 
+      #{rightInterestsRestriction,jdbcType=VARCHAR}, #{useEnvironment,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{caseDate,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouse" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -172,6 +173,9 @@
       </if>
       <if test="area != null" >
         area,
+      </if>
+      <if test="researchType != null" >
+        research_type,
       </if>
       <if test="rightInterestsRestriction != null" >
         right_interests_restriction,
@@ -228,6 +232,9 @@
       </if>
       <if test="area != null" >
         #{area,jdbcType=DECIMAL},
+      </if>
+      <if test="researchType != null" >
+        #{researchType,jdbcType=INTEGER},
       </if>
       <if test="rightInterestsRestriction != null" >
         #{rightInterestsRestriction,jdbcType=VARCHAR},
@@ -297,6 +304,9 @@
       <if test="record.area != null" >
         area = #{record.area,jdbcType=DECIMAL},
       </if>
+      <if test="record.researchType != null" >
+        research_type = #{record.researchType,jdbcType=INTEGER},
+      </if>
       <if test="record.rightInterestsRestriction != null" >
         right_interests_restriction = #{record.rightInterestsRestriction,jdbcType=VARCHAR},
       </if>
@@ -337,6 +347,7 @@
       practical_use = #{record.practicalUse,jdbcType=INTEGER},
       orientation = #{record.orientation,jdbcType=INTEGER},
       area = #{record.area,jdbcType=DECIMAL},
+      research_type = #{record.researchType,jdbcType=INTEGER},
       right_interests_restriction = #{record.rightInterestsRestriction,jdbcType=VARCHAR},
       use_environment = #{record.useEnvironment,jdbcType=INTEGER},
       description = #{record.description,jdbcType=VARCHAR},
@@ -384,6 +395,9 @@
       <if test="area != null" >
         area = #{area,jdbcType=DECIMAL},
       </if>
+      <if test="researchType != null" >
+        research_type = #{researchType,jdbcType=INTEGER},
+      </if>
       <if test="rightInterestsRestriction != null" >
         right_interests_restriction = #{rightInterestsRestriction,jdbcType=VARCHAR},
       </if>
@@ -421,6 +435,7 @@
       practical_use = #{practicalUse,jdbcType=INTEGER},
       orientation = #{orientation,jdbcType=INTEGER},
       area = #{area,jdbcType=DECIMAL},
+      research_type = #{researchType,jdbcType=INTEGER},
       right_interests_restriction = #{rightInterestsRestriction,jdbcType=VARCHAR},
       use_environment = #{useEnvironment,jdbcType=INTEGER},
       description = #{description,jdbcType=VARCHAR},

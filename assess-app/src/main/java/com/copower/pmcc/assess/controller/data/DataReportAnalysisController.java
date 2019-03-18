@@ -42,10 +42,8 @@ public class DataReportAnalysisController {
 
     @RequestMapping(value = "/view", name = "转到index页面")
     public ModelAndView index() {
-        List<BaseDataDic> reportAnalysisTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY);
         List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataReportAnalysis");
-        modelAndView.addObject("reportAnalysisTypeList", reportAnalysisTypeList);
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataReportAnalysisCashability");
         modelAndView.addObject("purposeDicList", purposeDicList);//所有省份
         dataReportTemplateItemService.initClean();
         return modelAndView;
@@ -53,8 +51,9 @@ public class DataReportAnalysisController {
 
     @ResponseBody
     @RequestMapping(value = "/list", name = "显示列表", method = RequestMethod.GET)
-    public BootstrapTableVo list(String name,Integer reportAnalysisType) {
-        return dataReportAnalysisService.getReportAnalysisList(name,reportAnalysisType);
+    public BootstrapTableVo list(String name) {
+        BaseDataDic cacheDataDicByFieldName = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_LIQUIDITY);
+        return dataReportAnalysisService.getReportAnalysisList(name,cacheDataDicByFieldName.getId());
     }
 
     @ResponseBody

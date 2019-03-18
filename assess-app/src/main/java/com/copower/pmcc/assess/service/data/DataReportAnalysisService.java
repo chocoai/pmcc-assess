@@ -49,11 +49,12 @@ public class DataReportAnalysisService {
         if (dataReportAnalysis.getId() != null && dataReportAnalysis.getId() > 0) {
             dataReportAnalysisDao.updateReportAnalysis(dataReportAnalysis);
         } else {
+            BaseDataDic cacheDataDicByFieldName = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_LIQUIDITY);
+            dataReportAnalysis.setReportAnalysisType(cacheDataDicByFieldName.getId());
             dataReportAnalysis.setCreator(commonService.thisUserAccount());
             dataReportAnalysisDao.addReportAnalysis(dataReportAnalysis);
             //修改子模板
-            dataReportTemplateItemService.templateItemToSetMasterId(dataReportAnalysis.getId(), SchemeSupportTypeEnum.REPORT_ANALYSIS.getKey());
-
+            dataReportTemplateItemService.templateItemToSetMasterId(dataReportAnalysis.getId(), SchemeSupportTypeEnum.REPORT_ANALYSIS_CASHABILITY.getKey());
         }
     }
 

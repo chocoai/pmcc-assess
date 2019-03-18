@@ -14,6 +14,15 @@ public class BasicHouseVo extends BasicHouse {
     private String huxingName;
     private String newsHuxingName;
     private String OrientationName;
+    private String researchTypeName;
+
+    public String getResearchTypeName() {
+        return researchTypeName;
+    }
+
+    public void setResearchTypeName(String researchTypeName) {
+        this.researchTypeName = researchTypeName;
+    }
 
     public String getUseEnvironmentName() {
         return useEnvironmentName;

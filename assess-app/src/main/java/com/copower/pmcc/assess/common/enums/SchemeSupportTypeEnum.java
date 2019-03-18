@@ -13,7 +13,9 @@ public enum SchemeSupportTypeEnum {
     HYPOTHESIS("hypothesis", "评估假设"),//假设
     PRINCIPLE("principle", "评估原则"),//原则
     BASIS("basis", "评估依据"),//依据
-    REPORT_ANALYSIS("report_analysis", "报告分析");//报告分析
+    REPORT_ANALYSIS_CASHABILITY("report_analysis_cashability", "变现能力分析"),//报告分析(变现能力分析)
+    REPORT_ANALYSIS_RISK("report_analysis_risk", "风险分析"),//报告分析(风险分析)
+    REPORT_ANALYSIS_BACKGROUND("report_analysis_background", "市场背景描述与分析");//报告分析(市场背景描述与分析)
     private String key;
     private String name;
 

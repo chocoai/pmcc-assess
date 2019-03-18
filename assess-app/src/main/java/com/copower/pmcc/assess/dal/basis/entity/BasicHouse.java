@@ -28,6 +28,8 @@ public class BasicHouse {
 
     private BigDecimal area;
 
+    private Integer researchType;
+
     private String rightInterestsRestriction;
 
     private Integer useEnvironment;
@@ -136,6 +138,14 @@ public class BasicHouse {
 
     public void setArea(BigDecimal area) {
         this.area = area;
+    }
+
+    public Integer getResearchType() {
+        return researchType;
+    }
+
+    public void setResearchType(Integer researchType) {
+        this.researchType = researchType;
     }
 
     public String getRightInterestsRestriction() {

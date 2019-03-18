@@ -19,6 +19,14 @@ public class DataReportAnalysis {
 
     private String entrustmentPurpose;
 
+    private Integer setUse;
+
+    private Integer relYear;
+
+    private Integer blockId;
+
+    private String blockName;
+
     private String fieldName;
 
     private Integer sorting;
@@ -93,6 +101,38 @@ public class DataReportAnalysis {
 
     public void setEntrustmentPurpose(String entrustmentPurpose) {
         this.entrustmentPurpose = entrustmentPurpose == null ? null : entrustmentPurpose.trim();
+    }
+
+    public Integer getSetUse() {
+        return setUse;
+    }
+
+    public void setSetUse(Integer setUse) {
+        this.setUse = setUse;
+    }
+
+    public Integer getRelYear() {
+        return relYear;
+    }
+
+    public void setRelYear(Integer relYear) {
+        this.relYear = relYear;
+    }
+
+    public Integer getBlockId() {
+        return blockId;
+    }
+
+    public void setBlockId(Integer blockId) {
+        this.blockId = blockId;
+    }
+
+    public String getBlockName() {
+        return blockName;
+    }
+
+    public void setBlockName(String blockName) {
+        this.blockName = blockName == null ? null : blockName.trim();
     }
 
     public String getFieldName() {
