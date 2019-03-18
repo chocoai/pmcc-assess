@@ -645,6 +645,256 @@ public class DataReportAnalysisExample {
             return (Criteria) this;
         }
 
+        public Criteria andSetUseIsNull() {
+            addCriterion("set_use is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseIsNotNull() {
+            addCriterion("set_use is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseEqualTo(Integer value) {
+            addCriterion("set_use =", value, "setUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseNotEqualTo(Integer value) {
+            addCriterion("set_use <>", value, "setUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseGreaterThan(Integer value) {
+            addCriterion("set_use >", value, "setUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseGreaterThanOrEqualTo(Integer value) {
+            addCriterion("set_use >=", value, "setUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseLessThan(Integer value) {
+            addCriterion("set_use <", value, "setUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseLessThanOrEqualTo(Integer value) {
+            addCriterion("set_use <=", value, "setUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseIn(List<Integer> values) {
+            addCriterion("set_use in", values, "setUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseNotIn(List<Integer> values) {
+            addCriterion("set_use not in", values, "setUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseBetween(Integer value1, Integer value2) {
+            addCriterion("set_use between", value1, value2, "setUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseNotBetween(Integer value1, Integer value2) {
+            addCriterion("set_use not between", value1, value2, "setUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelYearIsNull() {
+            addCriterion("rel_year is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelYearIsNotNull() {
+            addCriterion("rel_year is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelYearEqualTo(Integer value) {
+            addCriterion("rel_year =", value, "relYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelYearNotEqualTo(Integer value) {
+            addCriterion("rel_year <>", value, "relYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelYearGreaterThan(Integer value) {
+            addCriterion("rel_year >", value, "relYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelYearGreaterThanOrEqualTo(Integer value) {
+            addCriterion("rel_year >=", value, "relYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelYearLessThan(Integer value) {
+            addCriterion("rel_year <", value, "relYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelYearLessThanOrEqualTo(Integer value) {
+            addCriterion("rel_year <=", value, "relYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelYearIn(List<Integer> values) {
+            addCriterion("rel_year in", values, "relYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelYearNotIn(List<Integer> values) {
+            addCriterion("rel_year not in", values, "relYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelYearBetween(Integer value1, Integer value2) {
+            addCriterion("rel_year between", value1, value2, "relYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelYearNotBetween(Integer value1, Integer value2) {
+            addCriterion("rel_year not between", value1, value2, "relYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockIdIsNull() {
+            addCriterion("block_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockIdIsNotNull() {
+            addCriterion("block_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockIdEqualTo(Integer value) {
+            addCriterion("block_id =", value, "blockId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockIdNotEqualTo(Integer value) {
+            addCriterion("block_id <>", value, "blockId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockIdGreaterThan(Integer value) {
+            addCriterion("block_id >", value, "blockId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("block_id >=", value, "blockId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockIdLessThan(Integer value) {
+            addCriterion("block_id <", value, "blockId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockIdLessThanOrEqualTo(Integer value) {
+            addCriterion("block_id <=", value, "blockId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockIdIn(List<Integer> values) {
+            addCriterion("block_id in", values, "blockId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockIdNotIn(List<Integer> values) {
+            addCriterion("block_id not in", values, "blockId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockIdBetween(Integer value1, Integer value2) {
+            addCriterion("block_id between", value1, value2, "blockId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("block_id not between", value1, value2, "blockId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameIsNull() {
+            addCriterion("block_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameIsNotNull() {
+            addCriterion("block_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameEqualTo(String value) {
+            addCriterion("block_name =", value, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameNotEqualTo(String value) {
+            addCriterion("block_name <>", value, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameGreaterThan(String value) {
+            addCriterion("block_name >", value, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameGreaterThanOrEqualTo(String value) {
+            addCriterion("block_name >=", value, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameLessThan(String value) {
+            addCriterion("block_name <", value, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameLessThanOrEqualTo(String value) {
+            addCriterion("block_name <=", value, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameLike(String value) {
+            addCriterion("block_name like", value, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameNotLike(String value) {
+            addCriterion("block_name not like", value, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameIn(List<String> values) {
+            addCriterion("block_name in", values, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameNotIn(List<String> values) {
+            addCriterion("block_name not in", values, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameBetween(String value1, String value2) {
+            addCriterion("block_name between", value1, value2, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameNotBetween(String value1, String value2) {
+            addCriterion("block_name not between", value1, value2, "blockName");
+            return (Criteria) this;
+        }
+
         public Criteria andFieldNameIsNull() {
             addCriterion("field_name is null");
             return (Criteria) this;

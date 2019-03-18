@@ -10,6 +10,10 @@
     <result column="report_analysis_type" property="reportAnalysisType" jdbcType="INTEGER" />
     <result column="template" property="template" jdbcType="VARCHAR" />
     <result column="entrustment_purpose" property="entrustmentPurpose" jdbcType="VARCHAR" />
+    <result column="set_use" property="setUse" jdbcType="INTEGER" />
+    <result column="rel_year" property="relYear" jdbcType="INTEGER" />
+    <result column="block_id" property="blockId" jdbcType="INTEGER" />
+    <result column="block_name" property="blockName" jdbcType="VARCHAR" />
     <result column="field_name" property="fieldName" jdbcType="VARCHAR" />
     <result column="sorting" property="sorting" jdbcType="INTEGER" />
     <result column="bis_modifiable" property="bisModifiable" jdbcType="BIT" />
@@ -77,7 +81,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, province, city, district, name, report_analysis_type, template, entrustment_purpose, 
-    field_name, sorting, bis_modifiable, creator, gmt_created, gmt_modified
+    set_use, rel_year, block_id, block_name, field_name, sorting, bis_modifiable, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysisExample" >
     select
@@ -115,14 +120,16 @@
     </selectKey>
     insert into tb_data_report_analysis (province, city, district, 
       name, report_analysis_type, template, 
-      entrustment_purpose, field_name, sorting, 
-      bis_modifiable, creator, gmt_created, 
-      gmt_modified)
+      entrustment_purpose, set_use, rel_year, 
+      block_id, block_name, field_name, 
+      sorting, bis_modifiable, creator, 
+      gmt_created, gmt_modified)
     values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{reportAnalysisType,jdbcType=INTEGER}, #{template,jdbcType=VARCHAR}, 
-      #{entrustmentPurpose,jdbcType=VARCHAR}, #{fieldName,jdbcType=VARCHAR}, #{sorting,jdbcType=INTEGER}, 
-      #{bisModifiable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{entrustmentPurpose,jdbcType=VARCHAR}, #{setUse,jdbcType=INTEGER}, #{relYear,jdbcType=INTEGER}, 
+      #{blockId,jdbcType=INTEGER}, #{blockName,jdbcType=VARCHAR}, #{fieldName,jdbcType=VARCHAR}, 
+      #{sorting,jdbcType=INTEGER}, #{bisModifiable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -150,6 +157,18 @@
       </if>
       <if test="entrustmentPurpose != null" >
         entrustment_purpose,
+      </if>
+      <if test="setUse != null" >
+        set_use,
+      </if>
+      <if test="relYear != null" >
+        rel_year,
+      </if>
+      <if test="blockId != null" >
+        block_id,
+      </if>
+      <if test="blockName != null" >
+        block_name,
       </if>
       <if test="fieldName != null" >
         field_name,
@@ -191,6 +210,18 @@
       </if>
       <if test="entrustmentPurpose != null" >
         #{entrustmentPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="setUse != null" >
+        #{setUse,jdbcType=INTEGER},
+      </if>
+      <if test="relYear != null" >
+        #{relYear,jdbcType=INTEGER},
+      </if>
+      <if test="blockId != null" >
+        #{blockId,jdbcType=INTEGER},
+      </if>
+      <if test="blockName != null" >
+        #{blockName,jdbcType=VARCHAR},
       </if>
       <if test="fieldName != null" >
         #{fieldName,jdbcType=VARCHAR},
@@ -245,6 +276,18 @@
       <if test="record.entrustmentPurpose != null" >
         entrustment_purpose = #{record.entrustmentPurpose,jdbcType=VARCHAR},
       </if>
+      <if test="record.setUse != null" >
+        set_use = #{record.setUse,jdbcType=INTEGER},
+      </if>
+      <if test="record.relYear != null" >
+        rel_year = #{record.relYear,jdbcType=INTEGER},
+      </if>
+      <if test="record.blockId != null" >
+        block_id = #{record.blockId,jdbcType=INTEGER},
+      </if>
+      <if test="record.blockName != null" >
+        block_name = #{record.blockName,jdbcType=VARCHAR},
+      </if>
       <if test="record.fieldName != null" >
         field_name = #{record.fieldName,jdbcType=VARCHAR},
       </if>
@@ -278,6 +321,10 @@
       report_analysis_type = #{record.reportAnalysisType,jdbcType=INTEGER},
       template = #{record.template,jdbcType=VARCHAR},
       entrustment_purpose = #{record.entrustmentPurpose,jdbcType=VARCHAR},
+      set_use = #{record.setUse,jdbcType=INTEGER},
+      rel_year = #{record.relYear,jdbcType=INTEGER},
+      block_id = #{record.blockId,jdbcType=INTEGER},
+      block_name = #{record.blockName,jdbcType=VARCHAR},
       field_name = #{record.fieldName,jdbcType=VARCHAR},
       sorting = #{record.sorting,jdbcType=INTEGER},
       bis_modifiable = #{record.bisModifiable,jdbcType=BIT},
@@ -312,6 +359,18 @@
       <if test="entrustmentPurpose != null" >
         entrustment_purpose = #{entrustmentPurpose,jdbcType=VARCHAR},
       </if>
+      <if test="setUse != null" >
+        set_use = #{setUse,jdbcType=INTEGER},
+      </if>
+      <if test="relYear != null" >
+        rel_year = #{relYear,jdbcType=INTEGER},
+      </if>
+      <if test="blockId != null" >
+        block_id = #{blockId,jdbcType=INTEGER},
+      </if>
+      <if test="blockName != null" >
+        block_name = #{blockName,jdbcType=VARCHAR},
+      </if>
       <if test="fieldName != null" >
         field_name = #{fieldName,jdbcType=VARCHAR},
       </if>
@@ -342,6 +401,10 @@
       report_analysis_type = #{reportAnalysisType,jdbcType=INTEGER},
       template = #{template,jdbcType=VARCHAR},
       entrustment_purpose = #{entrustmentPurpose,jdbcType=VARCHAR},
+      set_use = #{setUse,jdbcType=INTEGER},
+      rel_year = #{relYear,jdbcType=INTEGER},
+      block_id = #{blockId,jdbcType=INTEGER},
+      block_name = #{blockName,jdbcType=VARCHAR},
       field_name = #{fieldName,jdbcType=VARCHAR},
       sorting = #{sorting,jdbcType=INTEGER},
       bis_modifiable = #{bisModifiable,jdbcType=BIT},
