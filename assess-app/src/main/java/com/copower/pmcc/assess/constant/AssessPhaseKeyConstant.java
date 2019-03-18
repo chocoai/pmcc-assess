@@ -14,6 +14,7 @@ public class AssessPhaseKeyConstant {
     public static final String SCENE_EXPLORE = "scene.explore";  //现场查勘事项
     public static final String CASE_STUDY = "case.study";  //案例事项
     public static final String ASSET_INVENTORY = "asset.inventory";  //资产清查
+    public static final String OTHER_RIGHT = "other.right";  //他项权利
     public static final String SURE_PRICE = "sure.price";  //确定单价
     public static final String LIQUIDATION_ANALYSIS = "liquidation.analysis";  //变现分析税费
     public static final String REIMBURSEMENT = "reimbursement";  //法定优先受偿款
