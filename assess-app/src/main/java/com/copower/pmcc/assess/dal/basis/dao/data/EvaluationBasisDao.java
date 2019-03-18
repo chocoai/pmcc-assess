@@ -34,6 +34,7 @@ public class EvaluationBasisDao {
         if (StringUtils.isNotBlank(name)) {
             criteria.andNameLike(String.format("%%%s%%", name));
         }
+        example.setOrderByClause("sorting");
         return evaluationBasisMapper.selectByExample(example);
     }
 

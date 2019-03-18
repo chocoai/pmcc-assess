@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationBasisDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -43,6 +44,8 @@ public class EvaluationBasisService {
     private EvaluationBasisDao evaluationBasisDao;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private DataReportTemplateItemService dataReportTemplateItemService;
 
     /**
      * 保存数据
@@ -56,6 +59,8 @@ public class EvaluationBasisService {
         } else {
             evaluationBasis.setCreator(commonService.thisUserAccount());
             evaluationBasisDao.addBasis(evaluationBasis);
+            //修改子模板
+            dataReportTemplateItemService.templateItemToSetMasterId(evaluationBasis.getId(), SchemeSupportTypeEnum.BASIS.getKey());
         }
     }
 
