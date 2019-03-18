@@ -55,25 +55,26 @@ public class ProjectPlanSurveyService {
         Integer workStageId = projectPlan.getWorkStageId();
         List<ProjectPhase> projectPhases = projectPhaseService.getCacheProjectPhaseByCategoryId(projectPlan.getCategoryId(), workStageId);
         List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordList(projectId, false);
-        //案例调查任务与项目挂钩
-        ProjectPhase caseProjectPhase = null;
+        //案例调查任务和他项权利任务与项目挂钩
         if (CollectionUtils.isEmpty(projectPhases)) return;
-        List<ProjectPhase> filter = LangUtils.filter(projectPhases, o -> StringUtils.equals(o.getPhaseKey(), AssessPhaseKeyConstant.CASE_STUDY));
-        if (CollectionUtils.isNotEmpty(filter)) {
+        List<ProjectPhase> filter = LangUtils.filter(projectPhases, o -> StringUtils.equals(o.getPhaseKey(), AssessPhaseKeyConstant.CASE_STUDY)
+                || StringUtils.equals(o.getPhaseKey(), AssessPhaseKeyConstant.OTHER_RIGHT));
+        if (CollectionUtils.isNotEmpty(filter)) {//案例调查任务
             projectPhases.removeAll(filter);
-            caseProjectPhase = filter.get(0);
-            ProjectPlanDetails projectPlanDetail = new ProjectPlanDetails();
-            projectPlanDetail.setProjectWorkStageId(workStageId);
-            projectPlanDetail.setPlanId(planId);
-            projectPlanDetail.setProjectId(projectId);
-            projectPlanDetail.setProjectPhaseName(caseProjectPhase.getProjectPhaseName());
-            projectPlanDetail.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-            projectPlanDetail.setPlanHours(caseProjectPhase.getPhaseTime());
-            projectPlanDetail.setPid(0);
-            projectPlanDetail.setFirstPid(0);
-            projectPlanDetail.setProjectPhaseId(caseProjectPhase.getId());
-            projectPlanDetail.setSorting(10000);
-            projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetail);
+            for (ProjectPhase projectPhase : filter) {
+                ProjectPlanDetails projectPlanDetail = new ProjectPlanDetails();
+                projectPlanDetail.setProjectWorkStageId(workStageId);
+                projectPlanDetail.setPlanId(planId);
+                projectPlanDetail.setProjectId(projectId);
+                projectPlanDetail.setProjectPhaseName(projectPhase.getProjectPhaseName());
+                projectPlanDetail.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+                projectPlanDetail.setPlanHours(projectPhase.getPhaseTime());
+                projectPlanDetail.setPid(0);
+                projectPlanDetail.setFirstPid(0);
+                projectPlanDetail.setProjectPhaseId(projectPhase.getId());
+                projectPlanDetail.setSorting(10000);
+                projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetail);
+            }
         }
         generatePlanDetails(planId, projectId, workStageId, projectPhases, declareRecords);
     }
