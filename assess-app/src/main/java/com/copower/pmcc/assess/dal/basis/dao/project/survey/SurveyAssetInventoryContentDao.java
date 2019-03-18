@@ -3,6 +3,8 @@ package com.copower.pmcc.assess.dal.basis.dao.project.survey;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryContent;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryContentExample;
 import com.copower.pmcc.assess.dal.basis.mapper.SurveyAssetInventoryContentMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -38,5 +40,13 @@ public class SurveyAssetInventoryContentDao {
     public boolean delete(Integer id) {
         int i = surveyAssetInventoryContentMapper.deleteByPrimaryKey(id);
         return i > 0;
+    }
+
+    public SurveyAssetInventoryContent getSingleObject(SurveyAssetInventoryContent surveyAssetInventoryContent) {
+        SurveyAssetInventoryContentExample example = new SurveyAssetInventoryContentExample();
+        MybatisUtils.convertObj2Example(surveyAssetInventoryContent, example);
+        List<SurveyAssetInventoryContent> list = surveyAssetInventoryContentMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(list)) return null;
+        return list.get(0);
     }
 }

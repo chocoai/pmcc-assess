@@ -39,12 +39,12 @@ public class DataReportTemplateItemService {
      *
      * @return
      */
-    public BootstrapTableVo getListVos(Integer masterId) {
+    public BootstrapTableVo getListVos(Integer masterId, String type) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         ArrayList<DataReportTemplateItemVo> vos = new ArrayList<>();
-        List<DataReportTemplateItem> dataReportTemplateItemList = dataReportTemplateItemDao.getListByMasterId(masterId);
+        List<DataReportTemplateItem> dataReportTemplateItemList = dataReportTemplateItemDao.getListByMasterId(masterId, type);
         if (CollectionUtils.isNotEmpty(dataReportTemplateItemList)) {
             for (DataReportTemplateItem item : dataReportTemplateItemList) {
                 vos.add(getDataReportTemplateItemVo(item));
@@ -91,9 +91,10 @@ public class DataReportTemplateItemService {
 
 
     //设置masterId
-    public void templateItemToSetMasterId(Integer masterId){
+    public void templateItemToSetMasterId(Integer masterId, String type){
         DataReportTemplateItem dataReportTemplateItem = new DataReportTemplateItem();
         dataReportTemplateItem.setMasterId(0);
+        dataReportTemplateItem.setType(type);
         List<DataReportTemplateItem> listObject = dataReportTemplateItemDao.getListObject(dataReportTemplateItem);
         for (DataReportTemplateItem item :listObject) {
             item.setMasterId(masterId);
@@ -109,5 +110,12 @@ public class DataReportTemplateItemService {
         for (DataReportTemplateItem item :listObject) {
             dataReportTemplateItemDao.deleteObject(item.getId());
         }
+    }
+
+    //通过feildName获取
+    public DataReportTemplateItem getDataReportTemplateByField(String fieldName) {
+        DataReportTemplateItem dataReportTemplateItem = new DataReportTemplateItem();
+        dataReportTemplateItem.setFieldName(fieldName);
+        return dataReportTemplateItemDao.getSingleObject(dataReportTemplateItem);
     }
 }

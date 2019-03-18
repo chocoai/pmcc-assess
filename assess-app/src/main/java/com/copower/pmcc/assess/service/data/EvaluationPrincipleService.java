@@ -1,14 +1,20 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.enums.CalculationMethodNameEnum;
+import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationPrincipleDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationPrinciple;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationPrincipleVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
+import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeFunctionService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -45,6 +51,17 @@ public class EvaluationPrincipleService {
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
     private DataReportTemplateItemService dataReportTemplateItemService;
+    @Autowired
+    private SchemeJudgeObjectDao schemeJudgeObjectDao;
+    @Autowired
+    private SchemeJudgeFunctionService schemeJudgeFunctionService;
+    @Autowired
+    private GenerateCommonMethod generateCommonMethod;
+    @Autowired
+    private SchemeInfoService schemeInfoService;
+    @Autowired
+    private MdIncomeDao mdIncomeDao;
+
 
     /**
      * 保存数据
@@ -59,7 +76,7 @@ public class EvaluationPrincipleService {
             evaluationPrinciple.setCreator(commonService.thisUserAccount());
             evaluationPrincipleDao.addPrinciple(evaluationPrinciple);
             //修改子模板
-            dataReportTemplateItemService.templateItemToSetMasterId(evaluationPrinciple.getId());
+            dataReportTemplateItemService.templateItemToSetMasterId(evaluationPrinciple.getId(),SchemeSupportTypeEnum.PRINCIPLE.getKey());
         }
     }
 
@@ -147,15 +164,111 @@ public class EvaluationPrincipleService {
      * @param projectInfo
      * @return
      */
-    public String getReportPrinciple(ProjectInfo projectInfo) {
+    public String getReportPrinciple(ProjectInfo projectInfo, Integer areaGroupId) {
         List<DataEvaluationPrinciple> principleList = getPrincipleList(projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), projectInfo.getEntrustPurpose());
         if (CollectionUtils.isEmpty(principleList)) return "";
         StringBuilder stringBuilder = new StringBuilder();
+
         for (int i = 0; i < principleList.size(); i++) {
             DataEvaluationPrinciple basis = principleList.get(i);
+
             stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, basis.getName())).append("</p>");
             stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
+
+            //代替原则
+            if (AssessReportFieldConstant.REPLACE_TEMPLATE.equals(basis.getFieldName())) {
+                //比较法
+                StringBuilder compare = new StringBuilder();
+                //成本法
+                StringBuilder cost = new StringBuilder();
+                //假设开发法
+                StringBuilder development = new StringBuilder();
+                //收益法自营
+                StringBuilder autotrophy = new StringBuilder();
+                //收益法出租
+                StringBuilder rent = new StringBuilder();
+
+
+                SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
+                schemeJudgeObject.setProjectId(projectInfo.getId());
+                schemeJudgeObject.setBisEnable(true);
+                schemeJudgeObject.setAreaGroupId(areaGroupId);
+                schemeJudgeObject.setPid(0);
+                List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
+                for (SchemeJudgeObject judgeObject : judgeObjectList) {
+                    List<SchemeJudgeFunction> applicableJudgeFunctions = schemeJudgeFunctionService.getApplicableJudgeFunctions(judgeObject.getId());
+                    for (SchemeJudgeFunction judgeFunction : applicableJudgeFunctions) {
+                        BaseDataDic dataDicById = baseDataDicService.getDataDicById(judgeFunction.getMethodType());
+                        String fieldName = dataDicById.getFieldName();
+                        switch (fieldName) {
+                            case AssessReportFieldConstant.MARKET_COMPARE:
+                                compare.append(judgeObject.getNumber()).append(",");
+                                break;
+                            case AssessReportFieldConstant.COST:
+                                cost.append(judgeObject.getNumber()).append(",");
+                                break;
+                            case AssessReportFieldConstant.DEVELOPMENT:
+                                development.append(judgeObject.getNumber()).append(",");
+                                break;
+                            case AssessReportFieldConstant.INCOME:
+                                SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(judgeFunction.getJudgeObjectId(), judgeFunction.getMethodType());
+                                MdIncome incomeById = mdIncomeDao.getIncomeById(schemeInfo.getMethodDataId());
+                                if(incomeById.getOperationMode()==0){
+                                    autotrophy.append(judgeObject.getNumber()).append(",");
+                                }else {
+                                    rent.append(judgeObject.getNumber()).append(",");
+                                }
+                                break;
+                        }
+
+                    }
+                }
+                if (StringUtils.isNotBlank(compare)) {
+                    String substitutionPrincipleName = getSubstitutionPrincipleName(compare.toString());
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.MARKET_COMPARE);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(CalculationMethodNameEnum.MdCompare.getName()).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)).append("</p>");
+                }
+                if (StringUtils.isNotBlank(cost)) {
+                    String substitutionPrincipleName = getSubstitutionPrincipleName(cost.toString());
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.COST);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(CalculationMethodNameEnum.MdCost.getName()).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)).append("</p>");
+                }
+                if (StringUtils.isNotBlank(development)) {
+                    String substitutionPrincipleName = getSubstitutionPrincipleName(development.toString());
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.DEVELOPMENT);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(CalculationMethodNameEnum.MdDevelopment.getName()).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)).append("</p>");
+                }
+                if (StringUtils.isNotBlank(autotrophy)) {
+                    String substitutionPrincipleName = getSubstitutionPrincipleName(autotrophy.toString());
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.INCOME_AUTOTROPHY);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(CalculationMethodNameEnum.MdIncomeAutotrophy.getName()).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)).append("</p>");
+                }
+                if (StringUtils.isNotBlank(rent)) {
+                    String substitutionPrincipleName = getSubstitutionPrincipleName(rent.toString());
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.INCOME_RENT);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(CalculationMethodNameEnum.MdIncomeRent.getName()).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)).append("</p>");
+                }
+
+            }
         }
         return stringBuilder.toString();
     }
+
+
+
+    public String getSubstitutionPrincipleName(String str){
+        String[] s = str.toString().split(",");
+        ArrayList<Integer> numbers = new ArrayList<>();
+        for (String item: s) {
+            numbers.add(Integer.valueOf(item));
+        }
+        return generateCommonMethod.convertNumber(numbers)+"号";
+    }
 }
+
+

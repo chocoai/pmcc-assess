@@ -157,16 +157,15 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            key值<span class="symbol required"></span>
+                                            key值
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" name="fieldName" placeholder="key值"
-                                                   required="required">
+                                            <input type="text" class="form-control" name="fieldName" placeholder="key值">
                                         </div>
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            排序<span class="symbol required"></span>
+                                            排序
                                         </label>
                                         <div class="col-sm-2">
                                             <input type="text" class="form-control" name="sorting" placeholder="排序"
@@ -214,6 +213,7 @@
         loadPrincipleList();
 
     })
+    var type = "principle";
     var ue = UE.getEditor('template', {
         toolbars: [
             ['source', 'autotypeset', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
@@ -367,11 +367,10 @@
 
     function showItemable() {
         var id = $("#id").val();
-        console.log(id);
         if(!id){
             id = 0;
         }
-        dataReportTemplateItem.prototype.showStartModel(id);
+        dataReportTemplateItem.prototype.showStartModel(id, type);
     }
 
     var num = 0;

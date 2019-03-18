@@ -36,11 +36,11 @@ public class DataReportTemplateItemController {
     }
 
     @RequestMapping(value = "/getDataReportTemplateItemList", method = {RequestMethod.GET}, name = "获取列表")
-    public BootstrapTableVo getDataReportTemplateItemList(Integer masterId) {
+    public BootstrapTableVo getDataReportTemplateItemList(Integer masterId,String type) {
         BootstrapTableVo vo = null;
         try {
             if(masterId != null) {
-                vo = dataReportTemplateItemService.getListVos(masterId);
+                vo = dataReportTemplateItemService.getListVos(masterId,type);
             }
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);

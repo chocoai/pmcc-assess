@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DataReportTemplateItemExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataReportTemplateItemMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -22,13 +23,17 @@ public class DataReportTemplateItemDao {
     @Autowired
     private DataReportTemplateItemMapper dataReportTemplateItemMapper;
 
-    public List<DataReportTemplateItem> getListByMasterId(Integer masterId) {
+    public List<DataReportTemplateItem> getListByMasterId(Integer masterId, String type) {
         DataReportTemplateItemExample example = new DataReportTemplateItemExample();
         DataReportTemplateItemExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
         if (masterId != null) {
             criteria.andMasterIdEqualTo(masterId);
         }
+        if(StringUtils.isNotBlank(type)){
+            criteria.andTypeLike(String.format("%%%s%%", type));
+        }
+        example.setOrderByClause("sorting");
         return dataReportTemplateItemMapper.selectByExample(example);
     }
 

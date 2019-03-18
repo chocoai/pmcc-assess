@@ -154,24 +154,19 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            发布日期
+                                            key值
                                         </label>
-                                        <div class="col-sm-5">
-                                            <input type="text" data-date-format="yyyy-mm-dd"
-                                                   placeholder="发布日期" name="pubDate"
-                                                   class="form-control date-picker dbdate">
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" name="fieldName" placeholder="key值">
                                         </div>
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            是否修改
+                                            排序
                                         </label>
-                                        <div class="col-sm-3">
-                                            <label class="radio-inline">
-                                                <input type="checkbox" id="bisModifiable" name="bisModifiable"
-                                                       value="true"
-                                                       checked="checked">
-                                            </label>
+                                        <div class="col-sm-2">
+                                            <input type="text" class="form-control" name="sorting" placeholder="排序"
+                                                   required="required" data-rule-number='true'>
                                         </div>
                                     </div>
                                 </div>
@@ -181,18 +176,15 @@
                                             模板<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <%--<textarea required placeholder="请填写模板" class="form-control"
-                                                      id="template" name="template" onkeyup="extractTemplateField()">
-
-                                            </textarea>
-                                            <div class="template-field">
-
-                                            </div>--%>
-                                                <div style="width:99%;height:200px;" id="template"></div>
+                                            <div style="width:99%;height:200px;" id="template"></div>
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-success"
+                                            onclick="showItemable()" data-toggle="modal"> 管理子模板
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -210,12 +202,14 @@
     </div>
 </div>
 
+<%@include file="/views/data/dataReportTemplateItem.jsp" %>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
     $(function () {
         loadHypothesisList();
 
     })
+    var type = "hypothesis";
     var ue = UE.getEditor('template', {
         toolbars: [
             ['source','autotypeset','bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
@@ -386,6 +380,13 @@
         })
     }
 
+    function showItemable() {
+        var id = $("#id").val();
+        if(!id){
+            id = 0;
+        }
+        dataReportTemplateItem.prototype.showStartModel(id, type);
+    }
 
     var num = 0;
 

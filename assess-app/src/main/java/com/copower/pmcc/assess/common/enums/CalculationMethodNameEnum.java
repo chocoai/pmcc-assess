@@ -7,6 +7,8 @@ package com.copower.pmcc.assess.common.enums;
  */
 public enum CalculationMethodNameEnum {
     MdIncome("收益法"),
+    MdIncomeRent("收益法(出租)"),
+    MdIncomeAutotrophy("收益法(自营)"),
     MdCompare("市场比较法"),
     MdCost("成本法"),
     MdDevelopment("假设开发法"),
