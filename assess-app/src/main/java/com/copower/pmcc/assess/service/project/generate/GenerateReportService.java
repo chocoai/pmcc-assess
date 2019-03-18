@@ -486,7 +486,7 @@ public class GenerateReportService {
                     //房地产估价机构信息
                     if (Objects.equal(BaseReportFieldEnum.XIEHE_organizationInfo.getName(), name)) {
                         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getXIEHE_organizationInfo(qualificationDto));
+                        generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getXIEHE_organizationInfo(qualificationDto));
                         if (baseReportField != null) {
                         }
                     }
@@ -1395,7 +1395,7 @@ public class GenerateReportService {
                 // 估价委托人信息
                 if (Objects.equal(BaseReportFieldEnum.PrincipalInfo.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipalInfo());
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipalInfo());
                     if (baseReportField != null) {
                     }
                 }

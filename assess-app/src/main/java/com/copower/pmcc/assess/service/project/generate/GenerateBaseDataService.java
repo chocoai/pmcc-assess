@@ -163,48 +163,52 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getPrincipalInfo() {
-        StringBuilder stringBuilder = new StringBuilder(16);
+    public String getPrincipalInfo()throws Exception {
+        String localPath = getLocalPath();
+        Document doc = new Document();
+        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
+        generateCommonMethod.setDefaultDocumentBuilderSetting(documentBuilder);
         if (Objects.equal(projectInfo.getConsignorVo().getCsType(), InitiateContactsEnum.legalPerson.getId())) {
             String name = projectInfo.getConsignorVo().getCsEntrustmentUnit();
             if (StringUtils.isEmpty(name)) {
                 name = "无";
             }
-            stringBuilder.append("名称:").append(name).append(";");
+            documentBuilder.writeln(String.format("%s:%s","名称",name));
             String code = projectInfo.getConsignorVo().getCsSociologyCode();
             if (StringUtils.isEmpty(code)) {
                 code = "无";
             }
-            stringBuilder.append("统一社会信用代码:").append(code).append(";");
+            documentBuilder.writeln(String.format("%s:%s","统一社会信用代码",code));
             String address = projectInfo.getConsignorVo().getCsAddress();
             if (StringUtils.isEmpty(address)) {
                 address = "无";
             }
-            stringBuilder.append("住所:").append(address).append("");
+            documentBuilder.writeln(String.format("%s:%s","住所",address));
             String people = projectInfo.getConsignorVo().getCsLegalRepresentative();
             if (StringUtils.isEmpty(people)) {
                 people = "无";
             }
-            stringBuilder.append("法定代表人:").append(people).append("");
+            documentBuilder.writeln(String.format("%s:%s","法定代表人",people));
         }
         if (Objects.equal(projectInfo.getConsignorVo().getCsType(), InitiateContactsEnum.naturalPerson.getId())) {
             String name = projectInfo.getConsignorVo().getCsName();
             if (StringUtils.isEmpty(name)) {
                 name = "无";
             }
-            stringBuilder.append("姓名:").append(name).append(";");
+            documentBuilder.writeln(String.format("%s:%s","姓名",name));
             String idCard = projectInfo.getConsignorVo().getCsIdcard();
             if (StringUtils.isEmpty(idCard)) {
                 idCard = "无";
             }
-            stringBuilder.append("身份证号:").append(idCard).append(";");
+            documentBuilder.writeln(String.format("%s:%s","身份证号",idCard));
             String address = projectInfo.getConsignorVo().getCsAddress();
             if (StringUtils.isEmpty(address)) {
                 address = "无";
             }
-            stringBuilder.append("地址:").append(address).append("");
+            documentBuilder.writeln(String.format("%s:%s","地址",address));
         }
-        return stringBuilder.toString();
+        doc.save(localPath);
+        return localPath;
     }
 
     /**
@@ -1184,11 +1188,10 @@ public class GenerateBaseDataService {
                 String oneContent = "本函内容摘自估价报告，欲了解本次估价项目全面情况，请详见估价结果报告，报告使用时请特别关注估价假设和限制条件内容。";
                 stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, oneContent)).append("</p>");
             }
-            Integer num = null;
             if (i == 1) {
                 String temp = getHisRightType();
                 if (Objects.equal(temp, errorStr)) {
-                    num = i;
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, "无")).append("</p>");
                 }else {
                     String oneContent = String.format("根据委托人介绍及估价人员在${他权信息公示}，%s 已设定抵押权。", temp);
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, oneContent)).append("</p>");
@@ -1205,10 +1208,7 @@ public class GenerateBaseDataService {
             }
             if (i == length - 1) {
                 String oneContent = "根据估价委托人提供的《法定优先受偿款情况说明》，估价对象于价值时点已设定抵押权，本次评估是抵押权存续期间的房地产估价（同行续贷），经过沟通，抵押权人已经知晓法定优先受偿款对估价对象价值的影响，且并不需要我们在抵押价值中予以扣除法定优先受偿款，故本报告假设估价对象在价值时点法定优先受偿款为0元（大写：人民币零元整），在此提请报告使用人加以关注。";
-                if (num == null) {
-                    num = i;
-                }
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", num.intValue()+1, oneContent)).append("</p>");
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i+1, oneContent)).append("</p>");
             }
         }
         documentBuilder.insertHtml(stringBuilder.toString(), true);
@@ -1529,16 +1529,20 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getXIEHE_organizationInfo(AdCompanyQualificationDto qualificationDto) throws Exception {
-        StringBuilder builder = new StringBuilder(24);
-        builder.append("机构名称:").append(qualificationDto.getOrganizationName()).append(";");
-        builder.append("住所:").append(qualificationDto.getOrganizationAddress()).append(";");
-        builder.append("法定代表人:").append(qualificationDto.getLegalRepresentative()).append(";");
-        builder.append("工商注册号:").append(qualificationDto.getRegisteredNo()).append(";");
-        builder.append("资质等级:").append(qualificationDto.getOrganizationRank()).append(";");
-        builder.append("资质证书编号:").append(qualificationDto.getCertificateNo()).append(";");
-        builder.append("资质证书有效期:").append(qualificationDto.getCertificateEffectiveDate()).append(";");
-        builder.append("经营范围:").append("评估房产").append("");
-        return builder.toString();
+        String localPath = getLocalPath();
+        Document doc = new Document();
+        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
+        generateCommonMethod.setDefaultDocumentBuilderSetting(documentBuilder);
+        documentBuilder.writeln(String.format("%s:%s","机构名称",qualificationDto.getOrganizationName()));
+        documentBuilder.writeln(String.format("%s:%s","住所",qualificationDto.getOrganizationAddress()));
+        documentBuilder.writeln(String.format("%s:%s","法定代表人",qualificationDto.getLegalRepresentative()));
+        documentBuilder.writeln(String.format("%s:%s","工商注册号",qualificationDto.getRegisteredNo()));
+        documentBuilder.writeln(String.format("%s:%s","资质等级",qualificationDto.getOrganizationRank()));
+        documentBuilder.writeln(String.format("%s:%s","资质证书编号",qualificationDto.getCertificateNo()));
+        documentBuilder.writeln(String.format("%s:%s","资质证书有效期",qualificationDto.getCertificateEffectiveDate()));
+        documentBuilder.writeln(String.format("%s:%s","经营范围","评估房产"));
+        doc.save(localPath);
+        return localPath;
     }
 
     /**
