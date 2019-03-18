@@ -3,7 +3,7 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.SchemeLiquidationAnalysisItemMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisItem" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="main_id" property="mainId" jdbcType="INTEGER" />
+    <result column="area_id" property="areaId" jdbcType="INTEGER" />
     <result column="judge_object_id" property="judgeObjectId" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="tax_rate_id" property="taxRateId" jdbcType="INTEGER" />
@@ -78,7 +78,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, main_id, judge_object_id, plan_details_id, tax_rate_id, tax_rate_value, calculation_method, 
+    id, area_id, judge_object_id, plan_details_id, tax_rate_id, tax_rate_value, calculation_method, 
     tax_rate_name, calculate_base, calculation_formula, taxes_burden, price, remark, 
     creator, gmt_created, gmt_modified
   </sql>
@@ -116,13 +116,13 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_scheme_liquidation_analysis_item (main_id, judge_object_id, plan_details_id, 
+    insert into tb_scheme_liquidation_analysis_item (area_id, judge_object_id, plan_details_id, 
       tax_rate_id, tax_rate_value, calculation_method, 
       tax_rate_name, calculate_base, calculation_formula, 
       taxes_burden, price, remark, 
       creator, gmt_created, gmt_modified
       )
-    values (#{mainId,jdbcType=INTEGER}, #{judgeObjectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
+    values (#{areaId,jdbcType=INTEGER}, #{judgeObjectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
       #{taxRateId,jdbcType=INTEGER}, #{taxRateValue,jdbcType=VARCHAR}, #{calculationMethod,jdbcType=INTEGER}, 
       #{taxRateName,jdbcType=VARCHAR}, #{calculateBase,jdbcType=VARCHAR}, #{calculationFormula,jdbcType=VARCHAR}, 
       #{taxesBurden,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, 
@@ -135,8 +135,8 @@
     </selectKey>
     insert into tb_scheme_liquidation_analysis_item
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="mainId != null" >
-        main_id,
+      <if test="areaId != null" >
+        area_id,
       </if>
       <if test="judgeObjectId != null" >
         judge_object_id,
@@ -182,8 +182,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="mainId != null" >
-        #{mainId,jdbcType=INTEGER},
+      <if test="areaId != null" >
+        #{areaId,jdbcType=INTEGER},
       </if>
       <if test="judgeObjectId != null" >
         #{judgeObjectId,jdbcType=INTEGER},
@@ -241,8 +241,8 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.mainId != null" >
-        main_id = #{record.mainId,jdbcType=INTEGER},
+      <if test="record.areaId != null" >
+        area_id = #{record.areaId,jdbcType=INTEGER},
       </if>
       <if test="record.judgeObjectId != null" >
         judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
@@ -294,7 +294,7 @@
   <update id="updateByExample" parameterType="map" >
     update tb_scheme_liquidation_analysis_item
     set id = #{record.id,jdbcType=INTEGER},
-      main_id = #{record.mainId,jdbcType=INTEGER},
+      area_id = #{record.areaId,jdbcType=INTEGER},
       judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       tax_rate_id = #{record.taxRateId,jdbcType=INTEGER},
@@ -316,8 +316,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisItem" >
     update tb_scheme_liquidation_analysis_item
     <set >
-      <if test="mainId != null" >
-        main_id = #{mainId,jdbcType=INTEGER},
+      <if test="areaId != null" >
+        area_id = #{areaId,jdbcType=INTEGER},
       </if>
       <if test="judgeObjectId != null" >
         judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
@@ -366,7 +366,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisItem" >
     update tb_scheme_liquidation_analysis_item
-    set main_id = #{mainId,jdbcType=INTEGER},
+    set area_id = #{areaId,jdbcType=INTEGER},
       judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       tax_rate_id = #{taxRateId,jdbcType=INTEGER},

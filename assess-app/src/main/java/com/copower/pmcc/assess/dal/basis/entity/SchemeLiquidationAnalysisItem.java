@@ -6,7 +6,7 @@ import java.util.Date;
 public class SchemeLiquidationAnalysisItem {
     private Integer id;
 
-    private Integer mainId;
+    private Integer areaId;
 
     private Integer judgeObjectId;
 
@@ -44,12 +44,12 @@ public class SchemeLiquidationAnalysisItem {
         this.id = id;
     }
 
-    public Integer getMainId() {
-        return mainId;
+    public Integer getAreaId() {
+        return areaId;
     }
 
-    public void setMainId(Integer mainId) {
-        this.mainId = mainId;
+    public void setAreaId(Integer areaId) {
+        this.areaId = areaId;
     }
 
     public Integer getJudgeObjectId() {

@@ -57,11 +57,4 @@ public class SchemeLiquidationAnalysisItemDao {
         return null;
     }
 
-
-    public List<SchemeLiquidationAnalysisItem> getSchemeLiquidationAnalysisItemList(Integer mainId) {
-        SchemeLiquidationAnalysisItemExample example = new SchemeLiquidationAnalysisItemExample();
-        example.createCriteria().andMainIdEqualTo(mainId);
-        List<SchemeLiquidationAnalysisItem> schemeLiquidationAnalysisItems = schemeLiquidationAnalysisItemMapper.selectByExample(example);
-        return schemeLiquidationAnalysisItems;
-    }
 }

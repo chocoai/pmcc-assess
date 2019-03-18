@@ -42,10 +42,10 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
             schemeLiquidationAnalysis = new SchemeLiquidationAnalysis();
             schemeLiquidationAnalysis.setProjectId(projectPlanDetails.getProjectId());
             schemeLiquidationAnalysis.setPlanDetailsId(projectPlanDetails.getId());
-            schemeLiquidationAnalysis.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
+            schemeLiquidationAnalysis.setAreaId(projectPlanDetails.getAreaId());
             schemeLiquidationAnalysisService.saveLiquidationAnalysis(schemeLiquidationAnalysis);
 
-            schemeLiquidationAnalysisService.initTaxAllocation(projectPlanDetails.getJudgeObjectId(),projectPlanDetails.getId());
+            schemeLiquidationAnalysisService.initTaxAllocation(projectPlanDetails.getAreaId(),projectPlanDetails.getId());
         }
         modelAndView.addObject("master",  schemeLiquidationAnalysis);
         modelAndView.addObject("judgeObject", schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId()));

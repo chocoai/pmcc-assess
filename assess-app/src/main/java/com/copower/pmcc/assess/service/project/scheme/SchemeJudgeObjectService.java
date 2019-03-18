@@ -301,9 +301,9 @@ public class SchemeJudgeObjectService {
             if (bestUseDescription != null)
                 schemeJudgeObjectVo.setBestUseName(bestUseDescription.getName());
         }
-        if (schemeJudgeObjectVo.getDeclareRecordId() != null){
-            String s =  getCoefficientByDeclareId(schemeJudgeObjectVo.getDeclareRecordId());
-            if (StringUtils.isNotBlank(s)){
+        if (schemeJudgeObjectVo.getDeclareRecordId() != null) {
+            String s = getCoefficientByDeclareId(schemeJudgeObjectVo.getDeclareRecordId());
+            if (StringUtils.isNotBlank(s)) {
                 schemeJudgeObjectVo.setCoefficient(s);
             }
         }
@@ -369,7 +369,7 @@ public class SchemeJudgeObjectService {
      * @param ids
      */
     @Transactional
-    public void mergeJudge(String ids,Integer standardJudgeId) throws BusinessException {
+    public void mergeJudge(String ids, Integer standardJudgeId) throws BusinessException {
         //1.循环需要合并的委估对象，将委估对象编号、权证号、所有权人、坐落、证载面积、评估面积等信息进行合并；其它信息取第一个权证信息
         //2.添加出合并委估对象，将参与合并的委估对象pid设置为新委估对象id，参与合并的委估对象设置为不可用
         //先验证如果不是同一区域的委估对象，则不允许合并
@@ -526,7 +526,7 @@ public class SchemeJudgeObjectService {
             String mortgageKey = baseDataDicService.getCacheDataDicById(projectInfo.getEntrustPurpose()).getFieldName();
             int i = 0;
             Map<Integer, ProjectPhase> phaseMap = getProjectPhaseMap(projectInfo.getProjectCategoryId());
-            List<ProjectPhase> judgeProjectPhases = Lists.newArrayList(phaseSurePrice);
+            List<ProjectPhase> judgeProjectPhases = Lists.newArrayList();
             if (StringUtils.equals(mortgageKey, AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE)) {//如果是抵押评估还需添加事项，变现分析税费、法定优先受偿款
                 judgeProjectPhases.add(phaseLiquidationAnalysis);
                 judgeProjectPhases.add(phaseReimbursement);
@@ -566,31 +566,36 @@ public class SchemeJudgeObjectService {
                         if (CollectionUtils.isNotEmpty(judgeFunctions)) {
                             for (SchemeJudgeFunction judgeFunction : judgeFunctions) {
                                 ProjectPhase projectPhase = phaseMap.get(judgeFunction.getMethodType());
-                                if(projectPhase!=null){
-                                    i = savePlanDetails(projectPlan, i, schemeJudgeObject, planDetails, projectPhase);
+                                if (projectPhase != null) {
+                                    i = savePlanDetails(projectPlan, i, null, schemeJudgeObject, planDetails, projectPhase);
+                                    i++;
                                 }
                             }
                         }
-                        if (CollectionUtils.isNotEmpty(judgeProjectPhases)) {
-                            for (ProjectPhase projectPhase : judgeProjectPhases) {
-                                i = savePlanDetails(projectPlan, i, schemeJudgeObject, planDetails, projectPhase);
-                            }
-                        }
+                        savePlanDetails(projectPlan, i, null, schemeJudgeObject, planDetails, phaseSurePrice);//确定单价
                         this.makeJudgeObjectPosition(Lists.newArrayList(schemeJudgeObject.getId()));
+                    }
+                }
+                if (CollectionUtils.isNotEmpty(judgeProjectPhases)) {
+                    for (ProjectPhase projectPhase : judgeProjectPhases) {
+                        savePlanDetails(projectPlan, i, schemeAreaGroup, null, projectPlanDetails, projectPhase);
                     }
                 }
             }
         }
     }
 
-    private int savePlanDetails(ProjectPlan projectPlan, int i, SchemeJudgeObject schemeJudgeObject, ProjectPlanDetails planDetails, ProjectPhase projectPhase) {
+    private int savePlanDetails(ProjectPlan projectPlan, int i, SchemeAreaGroup schemeAreaGroup, SchemeJudgeObject schemeJudgeObject, ProjectPlanDetails planDetails, ProjectPhase projectPhase) {
         ProjectPlanDetails details = new ProjectPlanDetails();
         details.setProjectWorkStageId(projectPlan.getWorkStageId());
         details.setPlanId(projectPlan.getId());
         details.setProjectId(projectPlan.getProjectId());
         details.setProjectPhaseName(projectPhase.getProjectPhaseName());
         details.setProjectPhaseId(projectPhase.getId());
-        details.setJudgeObjectId(schemeJudgeObject.getId());
+        if (schemeAreaGroup != null)
+            details.setAreaId(schemeAreaGroup.getId());
+        if (schemeJudgeObject != null)
+            details.setJudgeObjectId(schemeJudgeObject.getId());
         details.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
         details.setPid(planDetails.getId());
         details.setBisLastLayer(true);
@@ -643,7 +648,7 @@ public class SchemeJudgeObjectService {
      */
     public BasicHouse getBasicHouseByDeclareId(Integer declareId, Integer categoryId) {
         try {
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE,categoryId);
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, categoryId);
             ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetails(declareId, projectPhase.getId());
             BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetails.getId());
             BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
