@@ -92,6 +92,9 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonOrientation, data.basicHouse.orientation, function (html, data) {
                 houseCommon.houseForm.find("select.orientation").empty().html(html).trigger('change');
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseResearchType, data.basicHouse.researchType, function (html, data) {
+                houseCommon.houseForm.find("select.researchType").empty().html(html).trigger('change');
+            });
 
             //初始化上传控件
             $.each(houseCommon.houseFileControlIdArray, function (i, item) {

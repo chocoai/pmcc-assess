@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.ComputeDataTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeLiquidationAnalysisDao;
@@ -15,7 +14,6 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,14 +59,13 @@ public class SchemeLiquidationAnalysisService {
     /**
      * 初始化所有相关税费信息
      *
-     * @param judgeObjectId
+     * @param areaId
      * @param planDetailsId
      */
     @Transactional(rollbackFor = Exception.class)
-    public void initTaxAllocation(Integer judgeObjectId, Integer planDetailsId) {
-        SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
+    public void initTaxAllocation(Integer areaId, Integer planDetailsId) {
         SchemeLiquidationAnalysisItem analysisItem = new SchemeLiquidationAnalysisItem();
-        analysisItem.setJudgeObjectId(judgeObjectId);
+        analysisItem.setJudgeObjectId(areaId);
         analysisItem.setPlanDetailsId(planDetailsId);
         analysisItem.setCreator(commonService.thisUserAccount());
         //增值税
@@ -92,7 +89,7 @@ public class SchemeLiquidationAnalysisService {
         analysisItem.setTaxesBurden(allocationConstruction.getTaxesBurden());
         schemeLiquidationAnalysisItemDao.addSchemeLiquidationAnalysisItem(analysisItem);
         //地方教育税附加
-        SchemeAreaGroup areaGroup = schemeAreaGroupService.get(judgeObject.getAreaGroupId());
+        SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
         DataTaxRateAllocation localEducation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_LOCAL_EDUCATION_TAX_ADDITIONAL, areaGroup.getProvince(), areaGroup.getCity(), null);
         analysisItem.setTaxRateId(localEducation.getId());
         analysisItem.setTaxRateValue(String.valueOf(localEducation.getTaxRate()));
@@ -192,27 +189,6 @@ public class SchemeLiquidationAnalysisService {
                 }
             }
         }
-        //移除删掉的内容
-//        SchemeLiquidationAnalysisItem schemeLiquidationAnalysisItem = new SchemeLiquidationAnalysisItem();
-//        schemeLiquidationAnalysisItem.setPlanDetailsId(schemeLiquidationAnalysis.getPlanDetailsId());
-//        List<SchemeLiquidationAnalysisItem> objectList = schemeLiquidationAnalysisItemDao.getObjectList(schemeLiquidationAnalysisItem);
-//        Boolean flag = true;
-//        if(CollectionUtils.isNotEmpty(objectList)) {
-//            for (SchemeLiquidationAnalysisItem oldItem : objectList) {
-//                for (SchemeLiquidationAnalysisItem newItem : analysisItemList) {
-//                    if(newItem.getId()!=null) {
-//                        flag = true;
-//                        if(oldItem.getId()==newItem.getId()){
-//                            flag = false;
-//                            break;
-//                        }
-//                    }
-//                }
-//                if(flag) {
-//                    schemeLiquidationAnalysisItemDao.deleteSchemeLiquidationAnalysisItem(oldItem.getId());
-//                }
-//            }
-//        }
     }
 
     public SchemeLiquidationAnalysis getDataByPlanDetailsId(Integer planDetailsId) {
@@ -232,50 +208,6 @@ public class SchemeLiquidationAnalysisService {
     }
 
 
-    public void saveItem(SchemeAreaGroup areaGroup, JSONObject jsonObject, String type, ProjectPlanDetails projectPlanDetails, SchemeLiquidationAnalysis master) throws BusinessException {
-        DataTaxRateAllocation taxRate = dataTaxRateAllocationService.getTaxRateByKey(type);
-        if (areaGroup != null) {
-            taxRate = dataTaxRateAllocationService.getTaxRateByKey(type, areaGroup.getProvince(), areaGroup.getCity(), null);
-        }
-        ProjectTaskLiquidationAnalysisVo vo = getProjectTaskLiquidationAnalysisVo(taxRate, null);
-        String price = jsonObject.getString("price_" + vo.getType());
-        String remark = jsonObject.getString("remark_" + vo.getType());
-        String method = jsonObject.getString("calculationMethod_" + vo.getType());
-        SchemeLiquidationAnalysisItem exist = isExist(master.getId(), vo.getType());
-        if (exist == null) {
-            SchemeLiquidationAnalysisItem item = new SchemeLiquidationAnalysisItem();
-            item.setRemark(remark);
-            item.setPrice(new BigDecimal(price));
-            /*
-            item.setCalculationMethod(Integer.valueOf(method));
-            */
-            item.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
-            item.setPlanDetailsId(projectPlanDetails.getId());
-            item.setCreator(processControllerComponent.getThisUser());
-            item.setMainId(master.getId());
-            item.setTaxRateId(vo.getType());
-            item.setTaxRateName(vo.getTypeName());
-            if (vo.getTaxRate() != null) {
-                item.setTaxRateValue(vo.getTaxRate().multiply(new BigDecimal("100")).stripTrailingZeros().toString() + "%");
-            } else {
-                item.setTaxRateValue(vo.getAmount().toString() + "元/㎡");
-            }
-            schemeLiquidationAnalysisItemDao.addSchemeLiquidationAnalysisItem(item);
-        } else {
-            exist.setRemark(remark);
-            if (StringUtils.isNotBlank(price)) {
-                exist.setPrice(new BigDecimal(price));
-            }
-            schemeLiquidationAnalysisItemDao.editSchemeLiquidationAnalysisItem(exist);
-        }
 
-    }
-
-    public SchemeLiquidationAnalysisItem isExist(Integer mainId, Integer type) {
-        SchemeLiquidationAnalysisItem item = new SchemeLiquidationAnalysisItem();
-        item.setMainId(mainId);
-        item.setTaxRateId(type);
-        return schemeLiquidationAnalysisItemDao.getSchemeLiquidationAnalysisItem(item);
-    }
 
 }

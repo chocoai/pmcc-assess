@@ -876,6 +876,66 @@ public class BasicHouseExample {
             return (Criteria) this;
         }
 
+        public Criteria andResearchTypeIsNull() {
+            addCriterion("research_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andResearchTypeIsNotNull() {
+            addCriterion("research_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andResearchTypeEqualTo(Integer value) {
+            addCriterion("research_type =", value, "researchType");
+            return (Criteria) this;
+        }
+
+        public Criteria andResearchTypeNotEqualTo(Integer value) {
+            addCriterion("research_type <>", value, "researchType");
+            return (Criteria) this;
+        }
+
+        public Criteria andResearchTypeGreaterThan(Integer value) {
+            addCriterion("research_type >", value, "researchType");
+            return (Criteria) this;
+        }
+
+        public Criteria andResearchTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("research_type >=", value, "researchType");
+            return (Criteria) this;
+        }
+
+        public Criteria andResearchTypeLessThan(Integer value) {
+            addCriterion("research_type <", value, "researchType");
+            return (Criteria) this;
+        }
+
+        public Criteria andResearchTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("research_type <=", value, "researchType");
+            return (Criteria) this;
+        }
+
+        public Criteria andResearchTypeIn(List<Integer> values) {
+            addCriterion("research_type in", values, "researchType");
+            return (Criteria) this;
+        }
+
+        public Criteria andResearchTypeNotIn(List<Integer> values) {
+            addCriterion("research_type not in", values, "researchType");
+            return (Criteria) this;
+        }
+
+        public Criteria andResearchTypeBetween(Integer value1, Integer value2) {
+            addCriterion("research_type between", value1, value2, "researchType");
+            return (Criteria) this;
+        }
+
+        public Criteria andResearchTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("research_type not between", value1, value2, "researchType");
+            return (Criteria) this;
+        }
+
         public Criteria andRightInterestsRestrictionIsNull() {
             addCriterion("right_interests_restriction is null");
             return (Criteria) this;

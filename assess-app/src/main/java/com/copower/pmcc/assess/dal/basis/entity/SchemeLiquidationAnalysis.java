@@ -8,6 +8,8 @@ public class SchemeLiquidationAnalysis {
 
     private Integer projectId;
 
+    private Integer areaId;
+
     private Integer judgeObjectId;
 
     private Integer planDetailsId;
@@ -38,6 +40,14 @@ public class SchemeLiquidationAnalysis {
 
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
+    }
+
+    public Integer getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(Integer areaId) {
+        this.areaId = areaId;
     }
 
     public Integer getJudgeObjectId() {

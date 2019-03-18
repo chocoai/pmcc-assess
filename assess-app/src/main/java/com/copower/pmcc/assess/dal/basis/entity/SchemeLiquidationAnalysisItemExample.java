@@ -166,63 +166,63 @@ public class SchemeLiquidationAnalysisItemExample {
             return (Criteria) this;
         }
 
-        public Criteria andMainIdIsNull() {
-            addCriterion("main_id is null");
+        public Criteria andAreaIdIsNull() {
+            addCriterion("area_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdIsNotNull() {
-            addCriterion("main_id is not null");
+        public Criteria andAreaIdIsNotNull() {
+            addCriterion("area_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdEqualTo(Integer value) {
-            addCriterion("main_id =", value, "mainId");
+        public Criteria andAreaIdEqualTo(Integer value) {
+            addCriterion("area_id =", value, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdNotEqualTo(Integer value) {
-            addCriterion("main_id <>", value, "mainId");
+        public Criteria andAreaIdNotEqualTo(Integer value) {
+            addCriterion("area_id <>", value, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdGreaterThan(Integer value) {
-            addCriterion("main_id >", value, "mainId");
+        public Criteria andAreaIdGreaterThan(Integer value) {
+            addCriterion("area_id >", value, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("main_id >=", value, "mainId");
+        public Criteria andAreaIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("area_id >=", value, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdLessThan(Integer value) {
-            addCriterion("main_id <", value, "mainId");
+        public Criteria andAreaIdLessThan(Integer value) {
+            addCriterion("area_id <", value, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdLessThanOrEqualTo(Integer value) {
-            addCriterion("main_id <=", value, "mainId");
+        public Criteria andAreaIdLessThanOrEqualTo(Integer value) {
+            addCriterion("area_id <=", value, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdIn(List<Integer> values) {
-            addCriterion("main_id in", values, "mainId");
+        public Criteria andAreaIdIn(List<Integer> values) {
+            addCriterion("area_id in", values, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdNotIn(List<Integer> values) {
-            addCriterion("main_id not in", values, "mainId");
+        public Criteria andAreaIdNotIn(List<Integer> values) {
+            addCriterion("area_id not in", values, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdBetween(Integer value1, Integer value2) {
-            addCriterion("main_id between", value1, value2, "mainId");
+        public Criteria andAreaIdBetween(Integer value1, Integer value2) {
+            addCriterion("area_id between", value1, value2, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("main_id not between", value1, value2, "mainId");
+        public Criteria andAreaIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("area_id not between", value1, value2, "areaId");
             return (Criteria) this;
         }
 

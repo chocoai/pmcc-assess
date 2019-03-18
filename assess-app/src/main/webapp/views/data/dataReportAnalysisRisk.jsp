@@ -31,7 +31,7 @@
                                     <input type="text" id="queryName" class="form-control">
                                 </div>
                             </div>
-                            <div>
+                         <%--   <div>
                                 <label class="col-sm-1 control-label">类别</label>
                                 <div class="col-sm-2">
                                     <select class="form-control" id="queryReportAnalysisType">
@@ -41,7 +41,7 @@
                                         </c:forEach>
                                     </select>
                                 </div>
-                            </div>
+                            </div>--%>
                             <div class="col-sm-3">
                                 <button type="button" class="btn btn-primary" onclick="loadReportAnalysisList()">
                                     查询
@@ -73,7 +73,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">报告分析配置</h3>
+                <h3 class="modal-title">风险分析配置</h3>
             </div>
             <form id="frm" class="form-horizontal">
                 <input type="hidden" id="id" name="id">
@@ -83,56 +83,11 @@
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">省<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-2">
-                                            <select id="province" name="province"
-                                                    class="form-control search-select select2"
-                                                    required="required">
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">市<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-2">
-                                            <select id="city" name="city" class="form-control search-select select2"
-                                                    required="required">
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">县</label>
-                                        <div class="col-sm-2">
-                                            <select id="district" name="district"
-                                                    class="form-control search-select select2">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             名称<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10" id="method">
-                                            <input required type="text" class="form-control" name="name">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            类别<span class="symbol required"></span>
-                                        </label>
                                         <div class="col-sm-4">
-                                            <select required class="form-control search-select select2"
-                                                    name="reportAnalysisType">
-                                                <option value="">请选择</option>
-                                                <c:forEach items="${reportAnalysisTypeList}" var="item">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
-                                            </select>
+                                            <input required type="text" class="form-control" name="name">
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -142,8 +97,8 @@
                                         <div class="col-sm-4">
                                             <label class="radio-inline">
                                                 <input type="checkbox" id="bisModifiable" name="bisModifiable"
-                                                       value="true"
-                                                       checked="checked">
+                                                       value="true">
+                                                <input name="bisModifiable" type="hidden" value="false">
                                             </label>
                                         </div>
                                     </div>
@@ -222,7 +177,7 @@
     $(function () {
         loadReportAnalysisList();
     })
-    var type = "report_analysis";
+    var type = "report_analysis_risk";
     var ue = UE.getEditor('template', {
         toolbars: [
             ['source', 'autotypeset', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
@@ -238,13 +193,7 @@
     //加载 评估依据 数据列表
     function loadReportAnalysisList() {
         var cols = [];
-        cols.push({
-            field: 'provinceName', title: '区域', formatter: function (value, row, index) {
-                return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName)
-            }
-        });
         cols.push({field: 'name', title: '名称', width: '15%'});
-        cols.push({field: 'reportAnalysisTypeName', title: '类别', width: '8%'});
         cols.push({field: 'entrustmentPurposeName', title: '委托目的', width: '15%'});
         cols.push({field: 'template', title: '模板', width: '40%'});
         cols.push({
@@ -257,10 +206,8 @@
             }
         });
         $("#tb_List").bootstrapTable('destroy');
-        var reportAnalysisType = $("#queryReportAnalysisType").val();
-        TableInit("tb_List", "${pageContext.request.contextPath}/reportAnalysis/list", cols, {
+        TableInit("tb_List", "${pageContext.request.contextPath}/reportAnalysisRisk/list", cols, {
             name: $('#queryName').val(),
-            reportAnalysisType: reportAnalysisType
         }, {
             showColumns: false,
             showRefresh: false,
@@ -301,24 +248,20 @@
     //对新增 评估依据 数据处理
     function addReportAnalysis() {
         $("#frm").clearAll();
-        AssessCommon.initAreaInfo({
-            provinceTarget: $("#province"),
-            cityTarget: $("#city"),
-            districtTarget: $("#district"),
-            provinceValue: '',
-            cityValue: '',
-            districtValue: ''
-        })
-        //extractTemplateField();
+        $("#bisModifiable").prop("checked", true);
     }
     //新增 评估依据 数据
     function saveReportAnalysis() {
         var data = formParams("frm");
+        data.bisModifiable = true;
+        if(!$("#bisModifiable").prop("checked")){
+            data.bisModifiable = false;
+        }
         data.entrustmentPurpose = ',' + data.entrustmentPurpose + ',';//方便like查询
         data.template = ue.getContent();
         if ($("#frm").valid()) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/reportAnalysis/save",
+                url: "${pageContext.request.contextPath}/reportAnalysisRisk/save",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -349,15 +292,6 @@
                 if (result.ret) {
                     $("#frm").clearAll();
                     $("#frm").clearAll().initForm(result.data);
-                    AssessCommon.initAreaInfo({
-                        provinceTarget: $("#province"),
-                        cityTarget: $("#city"),
-                        districtTarget: $("#district"),
-                        provinceValue: result.data.province,
-                        cityValue: result.data.city,
-                        districtValue: result.data.district
-                    })
-                    //extractTemplateField();
                     AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='entrustmentPurpose']"), result.data.entrustmentPurpose.split(','));
                     var content = result.data.template;
                     setTimeout(function () {

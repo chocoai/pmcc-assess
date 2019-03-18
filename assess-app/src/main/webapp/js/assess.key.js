@@ -179,6 +179,7 @@ AssessDicKey.examineHousePaymentMethodLease = "examine.house.payment.method.leas
 AssessDicKey.examineHouseInformationSourceType = "examine.house.information.source.type";//信息来源类型
 AssessDicKey.examineHouseInformationSourceTypeOpen = "examine.house.information.source.type.open";//信息来源类型-公开信息
 AssessDicKey.examineHouseInformationSourceCategory = "examine.house.information.source.category";//信息来源类别
+AssessDicKey.examineHouseResearchType = "examine.house.research.type";//调查方式
 
 AssessDicKey.examine_house_room_part = "examine.house.room.part";//房间装修部位
 AssessDicKey.examine_house_room_material = "examine.house.room.material";//房间装修材料
