@@ -49,6 +49,7 @@ public enum BaseReportFieldEnum implements Serializable {
     ExpertWorkOverview("", "外聘专家工作概况"),//new 外聘专家工作概况 ps最后才处理
     BusinessScope("", "经营范围"),//new 经营范围
     StatementPurposeEntrustment("", "委托目的描述"),
+
     JudgeObjectAreaStatusSheet("", "估价对象区位状况"),
     JudgeObjectLandStateSheet("", "估价土地实体状况"),
     JudgeBuildLandStateSheet("", "估价建筑物实体状况"),

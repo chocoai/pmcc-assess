@@ -872,6 +872,7 @@ public class GenerateBaseDataService {
                     if (NumberUtils.isNumber(schemeJudgeObject.getEvaluationArea().toString()) && NumberUtils.isNumber(schemeJudgeObject.getPrice().toString())) {
                         BigDecimal bigDecimal = schemeJudgeObject.getEvaluationArea().multiply(schemeJudgeObject.getPrice());
                         bigDecimal = bigDecimal.divide(new BigDecimal(10000));
+                        bigDecimal = bigDecimal.setScale(4, BigDecimal.ROUND_HALF_UP);
                         stringSet.add(String.format("%s:%s万元", getSchemeJudgeObjectShowName(schemeJudgeObject), bigDecimal.toString()));
                     }
                 }
@@ -1183,10 +1184,13 @@ public class GenerateBaseDataService {
                 String oneContent = "本函内容摘自估价报告，欲了解本次估价项目全面情况，请详见估价结果报告，报告使用时请特别关注估价假设和限制条件内容。";
                 stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, oneContent)).append("</p>");
             }
+            Integer num = null;
             if (i == 1) {
                 String temp = getHisRightType();
-                if (!Objects.equal(temp,errorStr)){
-                    String oneContent = String.format("根据委托人介绍及估价人员在${他权信息公示}，%s 已设定抵押权。",temp);
+                if (Objects.equal(temp, errorStr)) {
+                    num = i;
+                }else {
+                    String oneContent = String.format("根据委托人介绍及估价人员在${他权信息公示}，%s 已设定抵押权。", temp);
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, oneContent)).append("</p>");
                 }
             }
@@ -1201,7 +1205,10 @@ public class GenerateBaseDataService {
             }
             if (i == length - 1) {
                 String oneContent = "根据估价委托人提供的《法定优先受偿款情况说明》，估价对象于价值时点已设定抵押权，本次评估是抵押权存续期间的房地产估价（同行续贷），经过沟通，抵押权人已经知晓法定优先受偿款对估价对象价值的影响，且并不需要我们在抵押价值中予以扣除法定优先受偿款，故本报告假设估价对象在价值时点法定优先受偿款为0元（大写：人民币零元整），在此提请报告使用人加以关注。";
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, oneContent)).append("</p>");
+                if (num == null) {
+                    num = i;
+                }
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", num.intValue()+1, oneContent)).append("</p>");
             }
         }
         documentBuilder.insertHtml(stringBuilder.toString(), true);
@@ -2436,7 +2443,7 @@ public class GenerateBaseDataService {
         }
         String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
         if (StringUtils.isEmpty(s.trim())) {
-            s = errorStr;
+            s = "0";
         }
         return s;
     }
@@ -3104,7 +3111,7 @@ public class GenerateBaseDataService {
             if (j == 3) builder.writeln("用途(实际)");
             if (j == 4) builder.writeln("房屋总层数");
             if (j == 5) builder.writeln("所在层数");
-            if (j == 6) builder.writeln("建筑面积");
+            if (j == 6) builder.writeln("建筑面积㎡");
             if (j == 7) builder.writeln("单价（元/㎡）");
             if (j == 8) builder.writeln("评估总价（万元）");
             if (j == 9) builder.writeln("法定优先受偿款(万元)");
@@ -3140,11 +3147,17 @@ public class GenerateBaseDataService {
                             }
                         }
                     }
+                    if (notSetUpTotalPrice.doubleValue() > 0) {
+                        notSetUpTotalPrice = notSetUpTotalPrice.divide(new BigDecimal(10000));
+                        notSetUpTotalPrice = notSetUpTotalPrice.setScale(4, BigDecimal.ROUND_HALF_UP);
+                    }
                     if (j == 9) builder.writeln(notSetUpTotalPrice.toString());
                     if (declareRecord.getPrice() != null && declareRecord.getPracticalArea() != null) {
                         BigDecimal totol = declareRecord.getPrice().multiply(declareRecord.getPracticalArea());
                         if (totol != null) {
                             BigDecimal mortgage = totol.subtract(notSetUpTotalPrice);
+                            mortgage = mortgage.divide(new BigDecimal(10000));
+                            mortgage = mortgage.setScale(4, BigDecimal.ROUND_HALF_UP);
                             if (j == 10) {
                                 if (notSetUpTotalPrice.doubleValue() > 0) {
                                     builder.writeln(mortgage.toString());
@@ -3195,6 +3208,8 @@ public class GenerateBaseDataService {
                     if (j == 8) {
                         if (declareRecord.getPrice() != null && declareRecord.getPracticalArea() != null) {
                             BigDecimal total = declareRecord.getPrice().multiply(declareRecord.getPracticalArea());
+                            total = total.divide(new BigDecimal(10000));
+                            total = total.setScale(4, BigDecimal.ROUND_HALF_UP);
                             builder.writeln(total.toString());
                         }
                     }
@@ -3552,7 +3567,7 @@ public class GenerateBaseDataService {
                         return true;
                     }
                     if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
-                        return true;
+                        return false;
                     }
                     return false;
                 }).collect(Collectors.toList());
@@ -3955,7 +3970,7 @@ public class GenerateBaseDataService {
                         return true;
                     }
                     if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
-                        return true;
+                        return false;
                     }
                     return false;
                 }).collect(Collectors.toList());
@@ -4099,7 +4114,7 @@ public class GenerateBaseDataService {
                         return true;
                     }
                     if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
-                        return true;
+                        return false;
                     }
                     return false;
                 }).collect(Collectors.toList());
@@ -5055,7 +5070,8 @@ public class GenerateBaseDataService {
         StringBuffer stringBuffer = new StringBuffer(8);
         List<String> seats = Lists.newArrayList();
         final String zero = "0";
-        DocumentBuilder documentBuilder = new DocumentBuilder(document);
+        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(document);
+        generateCommonMethod.setDefaultDocumentBuilderSetting(documentBuilder);
         LinkedHashMap<String, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getSchemeJudgeObjectLinkedHashMap(
                 generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), true),
                 projectInfo);
