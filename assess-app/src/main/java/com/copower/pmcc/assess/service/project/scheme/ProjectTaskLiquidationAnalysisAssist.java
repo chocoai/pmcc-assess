@@ -3,15 +3,17 @@ package com.copower.pmcc.assess.service.project.scheme;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysis;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeSurePrice;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 描述:
@@ -26,13 +28,11 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private SchemeJudgeObjectService schemeJudgeObjectService;
-    @Autowired
-    private SchemeSurePriceService schemeSurePriceService;
-    @Autowired
-    private ProjectPlanDetailsService projectPlanDetailsService;
+    private SchemeAreaGroupService schemeAreaGroupService;
     @Autowired
     private SchemeLiquidationAnalysisService schemeLiquidationAnalysisService;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -44,11 +44,9 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
             schemeLiquidationAnalysis.setPlanDetailsId(projectPlanDetails.getId());
             schemeLiquidationAnalysis.setAreaId(projectPlanDetails.getAreaId());
             schemeLiquidationAnalysisService.saveLiquidationAnalysis(schemeLiquidationAnalysis);
-
-            schemeLiquidationAnalysisService.initTaxAllocation(projectPlanDetails.getAreaId(),projectPlanDetails.getId());
+            schemeLiquidationAnalysisService.initTaxAllocation(projectPlanDetails.getAreaId(), projectPlanDetails.getId());
         }
-        modelAndView.addObject("master",  schemeLiquidationAnalysis);
-        modelAndView.addObject("judgeObject", schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId()));
+        modelAndView.addObject("master", schemeLiquidationAnalysis);
         return modelAndView;
     }
 
@@ -67,11 +65,6 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskLiquidationAnalysisApproval", processInsId, boxId, taskId, agentUserAccount);
         SchemeLiquidationAnalysis schemeLiquidationAnalysis = schemeLiquidationAnalysisService.getDataByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("master", schemeLiquidationAnalysis);
-        modelAndView.addObject("judgeObjectName", projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid()).getProjectPhaseName());
-        SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-        modelAndView.addObject("judgeObject", judgeObject);
-        SchemeSurePrice schemeSurePrice = schemeSurePriceService.getSurePriceByPlanDetailsId(projectPlanDetails.getId());
-        modelAndView.addObject("schemeSurePrice", schemeSurePrice);
         return modelAndView;
     }
 
@@ -90,11 +83,6 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskLiquidationAnalysisIndex", processInsId, boxId, taskId, agentUserAccount);
         SchemeLiquidationAnalysis schemeLiquidationAnalysis = schemeLiquidationAnalysisService.getDataByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("master", schemeLiquidationAnalysis);
-        modelAndView.addObject("judgeObjectName", projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid()).getProjectPhaseName());
-        SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-        modelAndView.addObject("judgeObject", judgeObject);
-        SchemeSurePrice schemeSurePrice = schemeSurePriceService.getSurePriceByPlanDetailsId(projectPlanDetails.getId());
-        modelAndView.addObject("schemeSurePrice", schemeSurePrice);
         return modelAndView;
     }
 
@@ -105,14 +93,9 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
 
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskLiquidationAnalysisApproval",projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskLiquidationAnalysisApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         SchemeLiquidationAnalysis schemeLiquidationAnalysis = schemeLiquidationAnalysisService.getDataByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("master", schemeLiquidationAnalysis);
-        modelAndView.addObject("judgeObjectName", projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid()).getProjectPhaseName());
-        SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-        modelAndView.addObject("judgeObject", judgeObject);
-        SchemeSurePrice schemeSurePrice = schemeSurePriceService.getSurePriceByPlanDetailsId(projectPlanDetails.getId());
-        modelAndView.addObject("schemeSurePrice", schemeSurePrice);
         return modelAndView;
     }
 
@@ -129,5 +112,19 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         schemeLiquidationAnalysisService.commit(formData, processInsId);
+    }
+
+    private void setModelParam(ModelAndView modelAndView, ProjectPlanDetails projectPlanDetails) {
+        modelAndView.addObject("areaGroup", schemeAreaGroupService.get(projectPlanDetails.getAreaId()));
+        List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(projectPlanDetails.getAreaId());
+        BigDecimal groupArea = new BigDecimal("0");
+        BigDecimal groupPrice = new BigDecimal("0");
+        //应该获取最终测算好的价格与面积
+        if (CollectionUtils.isNotEmpty(judgeObjects)) {
+            for (SchemeJudgeObject judgeObject : judgeObjects) {
+                groupArea = groupArea.add(judgeObject.getEvaluationArea());
+
+            }
+        }
     }
 }
