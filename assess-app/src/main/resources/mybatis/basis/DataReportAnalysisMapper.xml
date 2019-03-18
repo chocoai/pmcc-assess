@@ -10,6 +10,7 @@
     <result column="report_analysis_type" property="reportAnalysisType" jdbcType="INTEGER" />
     <result column="template" property="template" jdbcType="VARCHAR" />
     <result column="entrustment_purpose" property="entrustmentPurpose" jdbcType="VARCHAR" />
+    <result column="field_name" property="fieldName" jdbcType="VARCHAR" />
     <result column="sorting" property="sorting" jdbcType="INTEGER" />
     <result column="bis_modifiable" property="bisModifiable" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -76,7 +77,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, province, city, district, name, report_analysis_type, template, entrustment_purpose, 
-    sorting, bis_modifiable, creator, gmt_created, gmt_modified
+    field_name, sorting, bis_modifiable, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysisExample" >
     select
@@ -114,14 +115,14 @@
     </selectKey>
     insert into tb_data_report_analysis (province, city, district, 
       name, report_analysis_type, template, 
-      entrustment_purpose, sorting, bis_modifiable, 
-      creator, gmt_created, gmt_modified
-      )
+      entrustment_purpose, field_name, sorting, 
+      bis_modifiable, creator, gmt_created, 
+      gmt_modified)
     values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{reportAnalysisType,jdbcType=INTEGER}, #{template,jdbcType=VARCHAR}, 
-      #{entrustmentPurpose,jdbcType=VARCHAR}, #{sorting,jdbcType=INTEGER}, #{bisModifiable,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{entrustmentPurpose,jdbcType=VARCHAR}, #{fieldName,jdbcType=VARCHAR}, #{sorting,jdbcType=INTEGER}, 
+      #{bisModifiable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -149,6 +150,9 @@
       </if>
       <if test="entrustmentPurpose != null" >
         entrustment_purpose,
+      </if>
+      <if test="fieldName != null" >
+        field_name,
       </if>
       <if test="sorting != null" >
         sorting,
@@ -187,6 +191,9 @@
       </if>
       <if test="entrustmentPurpose != null" >
         #{entrustmentPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldName != null" >
+        #{fieldName,jdbcType=VARCHAR},
       </if>
       <if test="sorting != null" >
         #{sorting,jdbcType=INTEGER},
@@ -238,6 +245,9 @@
       <if test="record.entrustmentPurpose != null" >
         entrustment_purpose = #{record.entrustmentPurpose,jdbcType=VARCHAR},
       </if>
+      <if test="record.fieldName != null" >
+        field_name = #{record.fieldName,jdbcType=VARCHAR},
+      </if>
       <if test="record.sorting != null" >
         sorting = #{record.sorting,jdbcType=INTEGER},
       </if>
@@ -268,6 +278,7 @@
       report_analysis_type = #{record.reportAnalysisType,jdbcType=INTEGER},
       template = #{record.template,jdbcType=VARCHAR},
       entrustment_purpose = #{record.entrustmentPurpose,jdbcType=VARCHAR},
+      field_name = #{record.fieldName,jdbcType=VARCHAR},
       sorting = #{record.sorting,jdbcType=INTEGER},
       bis_modifiable = #{record.bisModifiable,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -301,6 +312,9 @@
       <if test="entrustmentPurpose != null" >
         entrustment_purpose = #{entrustmentPurpose,jdbcType=VARCHAR},
       </if>
+      <if test="fieldName != null" >
+        field_name = #{fieldName,jdbcType=VARCHAR},
+      </if>
       <if test="sorting != null" >
         sorting = #{sorting,jdbcType=INTEGER},
       </if>
@@ -328,6 +342,7 @@
       report_analysis_type = #{reportAnalysisType,jdbcType=INTEGER},
       template = #{template,jdbcType=VARCHAR},
       entrustment_purpose = #{entrustmentPurpose,jdbcType=VARCHAR},
+      field_name = #{fieldName,jdbcType=VARCHAR},
       sorting = #{sorting,jdbcType=INTEGER},
       bis_modifiable = #{bisModifiable,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},

@@ -19,6 +19,8 @@ public class DataReportAnalysis {
 
     private String entrustmentPurpose;
 
+    private String fieldName;
+
     private Integer sorting;
 
     private Boolean bisModifiable;
@@ -91,6 +93,14 @@ public class DataReportAnalysis {
 
     public void setEntrustmentPurpose(String entrustmentPurpose) {
         this.entrustmentPurpose = entrustmentPurpose == null ? null : entrustmentPurpose.trim();
+    }
+
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName == null ? null : fieldName.trim();
     }
 
     public Integer getSorting() {

@@ -12,7 +12,8 @@ import java.util.List;
 public enum SchemeSupportTypeEnum {
     HYPOTHESIS("hypothesis", "评估假设"),//假设
     PRINCIPLE("principle", "评估原则"),//原则
-    BASIS("basis", "评估依据");//依据
+    BASIS("basis", "评估依据"),//依据
+    REPORT_ANALYSIS("report_analysis", "报告分析");//报告分析
     private String key;
     private String name;
 
