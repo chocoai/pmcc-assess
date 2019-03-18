@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -19,11 +20,14 @@ public class ProjectTaskRightAssist implements ProjectTaskInterface {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private DeclareRecordService declareRecordService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskRightIndex", "", 0, "0", "");
-
+        modelAndView.addObject("projectPlanDetails",projectPlanDetails);
+        modelAndView.addObject("declareRecordList",declareRecordService.getDeclareRecordByProjectId(projectPlanDetails.getProjectId()));
         return modelAndView;
     }
 

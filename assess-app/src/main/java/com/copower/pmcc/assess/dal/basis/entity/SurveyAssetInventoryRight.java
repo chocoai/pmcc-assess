@@ -9,6 +9,8 @@ public class SurveyAssetInventoryRight {
 
     private Integer planDetailsId;
 
+    private Integer inventoryRightRecordId;
+
     private String certName;
 
     private Integer type;
@@ -65,6 +67,14 @@ public class SurveyAssetInventoryRight {
 
     public void setPlanDetailsId(Integer planDetailsId) {
         this.planDetailsId = planDetailsId;
+    }
+
+    public Integer getInventoryRightRecordId() {
+        return inventoryRightRecordId;
+    }
+
+    public void setInventoryRightRecordId(Integer inventoryRightRecordId) {
+        this.inventoryRightRecordId = inventoryRightRecordId;
     }
 
     public String getCertName() {

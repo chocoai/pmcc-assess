@@ -39,6 +39,7 @@ AssessDBKey.BasicHouseCorollaryEquipment = "tb_basic_house_corollary_equipment";
 AssessDBKey.SurveyAssetInventory = "tb_survey_asset_inventory";
 AssessDBKey.SurveyAssetInventoryContent = "tb_survey_asset_inventory_content";
 AssessDBKey.SurveyAssetInventoryRight = "tb_survey_asset_inventory_right";
+AssessDBKey.SurveyAssetInventoryRightRecord = "tb_survey_asset_inventory_right_record";
 
 AssessDBKey.SchemeJudgeObject = "tb_scheme_judge_object";
 AssessDBKey.SchemeReimbursement = "tb_scheme_reimbursement";

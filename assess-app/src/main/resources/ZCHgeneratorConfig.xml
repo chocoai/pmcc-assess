@@ -12,8 +12,10 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.168.2.206:3306/pmcc_assess"
+                        connectionURL="jdbc:mysql://192.168.2.206:3306/pmcc_assess?serverTimezone=Asia/Shanghai"
                         userId="root" password="123456">
+            <property name="useInformationSchema" value="true"></property>
+            <property name="remarks" value="true"></property>
         </jdbcConnection>
 
         <javaTypeResolver>
@@ -41,7 +43,7 @@
         <!-- 具体表 -->
 
 
-        <table tableName="tb_generate_report_generation" domainObjectName="GenerateReportGeneration">
+        <table tableName="tb_survey_asset_inventory_right" domainObjectName="SurveyAssetInventoryRight">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
