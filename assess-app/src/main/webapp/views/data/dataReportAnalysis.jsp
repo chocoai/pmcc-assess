@@ -142,8 +142,8 @@
                                         <div class="col-sm-4">
                                             <label class="radio-inline">
                                                 <input type="checkbox" id="bisModifiable" name="bisModifiable"
-                                                       value="true"
-                                                       checked="checked">
+                                                       value="true">
+                                                <input name="bisModifiable" type="hidden" value="false">
                                             </label>
                                         </div>
                                     </div>
@@ -309,11 +309,16 @@
             cityValue: '',
             districtValue: ''
         })
+        $("#bisModifiable").prop("checked", true);
         //extractTemplateField();
     }
     //新增 评估依据 数据
     function saveReportAnalysis() {
         var data = formParams("frm");
+        data.bisModifiable = true;
+        if(!$("#bisModifiable").prop("checked")){
+            data.bisModifiable = false;
+        }
         data.entrustmentPurpose = ',' + data.entrustmentPurpose + ',';//方便like查询
         data.template = ue.getContent();
         if ($("#frm").valid()) {
