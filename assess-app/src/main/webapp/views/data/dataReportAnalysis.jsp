@@ -168,19 +168,36 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            key值
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" name="fieldName" placeholder="key值">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            排序
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <input type="text" class="form-control" name="sorting" placeholder="排序"
+                                                   required="required" data-rule-number='true'>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             模版<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <%--<textarea placeholder="请填写模版" class="form-control" id="template"
-                                                      name="template" required="required"
-                                                      onkeyup="extractTemplateField()"></textarea>
-                                            <div class="template-field">
-
-                                            </div>--%>
                                             <div style="width:99%;height:200px;" id="template"></div>
-
                                         </div>
                                     </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-success"
+                                            onclick="showItemable()" data-toggle="modal"> 管理子模板
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -199,26 +216,24 @@
     </div>
 </div>
 
+<%@include file="/views/data/dataReportTemplateItem.jsp" %>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
     $(function () {
         loadReportAnalysisList();
     })
-    var ue = UE.getEditor('template');
-    //提取字段
-    // function extractTemplateField() {
-    //     var text = $("#template").val();
-    //     $('.template-field').empty();
-    //     var fieldArray = AssessCommon.extractField(text);
-    //     if (fieldArray && fieldArray.length > 0) {
-    //         var html = '';
-    //         $.each(fieldArray, function (i, item) {
-    //             field = fieldArray;
-    //             html += '<span class="label label-default">' + item + '</span> ';
-    //         })
-    //         $('.template-field').append(html);
-    //     }
-    // }
+    var type = "report_analysis";
+    var ue = UE.getEditor('template', {
+        toolbars: [
+            ['source', 'autotypeset', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
+        ],
+        zIndex: 11009,
+        initialFrameHeight: 220,
+        elementPathEnabled: false,//是否启用元素路径，默认是true显示
+        wordCount: false, //是否开启字数统计
+        autoHeightEnabled: false,
+        autoFloatEnabled: true
+    });
 
     //加载 评估依据 数据列表
     function loadReportAnalysisList() {
@@ -357,7 +372,13 @@
         })
     }
 
-
+    function showItemable() {
+        var id = $("#id").val();
+        if(!id){
+            id = 0;
+        }
+        dataReportTemplateItem.prototype.showStartModel(id, type);
+    }
 </script>
 
 

@@ -35,6 +35,7 @@ public class EvaluationHypothesisDao {
         if(StringUtils.isNotBlank(name)){
             criteria.andNameLike(String.format("%%%s%%",name));
         }
+        example.setOrderByClause("sorting");
         return evaluationHypothesisMapper.selectByExample(example);
     }
 

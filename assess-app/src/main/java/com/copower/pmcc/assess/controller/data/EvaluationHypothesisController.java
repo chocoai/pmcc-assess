@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationHypothesis;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.data.DataReportTemplateItemService;
 import com.copower.pmcc.assess.service.data.EvaluationHypothesisService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -34,6 +35,8 @@ public class EvaluationHypothesisController {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private EvaluationHypothesisService evaluationHypothesisService;
+    @Autowired
+    private DataReportTemplateItemService dataReportTemplateItemService;
 
     @RequestMapping(value = "/view", name = "转到index页面")
     public ModelAndView index() {
@@ -42,6 +45,7 @@ public class EvaluationHypothesisController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/evaluationHypothesisView");
         modelAndView.addObject("methodDicList", methodDicList);
         modelAndView.addObject("purposeDicList", purposeDicList);
+        dataReportTemplateItemService.initClean();
         return modelAndView;
     }
 

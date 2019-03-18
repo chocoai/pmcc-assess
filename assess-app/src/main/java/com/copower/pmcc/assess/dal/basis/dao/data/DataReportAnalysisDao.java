@@ -35,6 +35,7 @@ public class DataReportAnalysisDao {
         if(reportAnalysisType!=null){
             criteria.andReportAnalysisTypeEqualTo(reportAnalysisType);
         }
+        example.setOrderByClause("sorting");
         return dataReportAnalysisMapper.selectByExample(example);
     }
 

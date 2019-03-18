@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataReportAnalysisService;
+import com.copower.pmcc.assess.service.data.DataReportTemplateItemService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -35,6 +36,8 @@ public class DataReportAnalysisController {
     private DataReportAnalysisService dataReportAnalysisService;
     @Autowired
     private ErpAreaService erpAreaService;
+    @Autowired
+    private DataReportTemplateItemService dataReportTemplateItemService;
 
 
     @RequestMapping(value = "/view", name = "转到index页面")
@@ -44,6 +47,7 @@ public class DataReportAnalysisController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataReportAnalysis");
         modelAndView.addObject("reportAnalysisTypeList", reportAnalysisTypeList);
         modelAndView.addObject("purposeDicList", purposeDicList);//所有省份
+        dataReportTemplateItemService.initClean();
         return modelAndView;
     }
 

@@ -345,21 +345,21 @@ public class GenerateReportService {
                 if (Objects.equal(BaseReportFieldEnum.EVALUATION_HYPOTHESIS.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     if (baseReportField != null) {
-                        generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipleBasisHypothesis(SchemeSupportTypeEnum.HYPOTHESIS));
+                        generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipleBasisHypothesis(SchemeSupportTypeEnum.HYPOTHESIS,generateReportGeneration.getAreaGroupId()));
                     }
                 }
                 //评估依据
                 if (Objects.equal(BaseReportFieldEnum.EVALUATION_BASIS.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     if (baseReportField != null) {
-                        generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipleBasisHypothesis(SchemeSupportTypeEnum.BASIS));
+                        generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipleBasisHypothesis(SchemeSupportTypeEnum.BASIS, generateReportGeneration.getAreaGroupId()));
                     }
                 }
                 //评估原则
                 if (Objects.equal(BaseReportFieldEnum.EVALUATION_PRINCIPLE.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     if (baseReportField != null) {
-                        generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipleBasisHypothesis(SchemeSupportTypeEnum.PRINCIPLE));
+                        generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipleBasisHypothesis(SchemeSupportTypeEnum.PRINCIPLE,generateReportGeneration.getAreaGroupId()));
                     }
                 }
                 //变现能力分析

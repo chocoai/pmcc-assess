@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataReportAnalysisDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -36,6 +37,8 @@ public class DataReportAnalysisService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private ErpAreaService erpAreaService;
+    @Autowired
+    private DataReportTemplateItemService dataReportTemplateItemService;
 
     /**
      * 保存数据
@@ -48,6 +51,9 @@ public class DataReportAnalysisService {
         } else {
             dataReportAnalysis.setCreator(commonService.thisUserAccount());
             dataReportAnalysisDao.addReportAnalysis(dataReportAnalysis);
+            //修改子模板
+            dataReportTemplateItemService.templateItemToSetMasterId(dataReportAnalysis.getId(), SchemeSupportTypeEnum.REPORT_ANALYSIS.getKey());
+
         }
     }
 

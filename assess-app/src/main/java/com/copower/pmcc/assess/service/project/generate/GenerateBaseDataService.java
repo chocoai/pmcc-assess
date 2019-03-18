@@ -1659,18 +1659,18 @@ public class GenerateBaseDataService {
      * @return
      * @throws Exception
      */
-    public String getPrincipleBasisHypothesis(SchemeSupportTypeEnum schemeSupportTypeEnum) throws Exception {
+    public String getPrincipleBasisHypothesis(SchemeSupportTypeEnum schemeSupportTypeEnum, Integer areaId) throws Exception {
         if (projectInfo == null || schemeSupportTypeEnum == null) return "";
         String result = "";
         switch (schemeSupportTypeEnum) {
             case HYPOTHESIS:
-                result = evaluationHypothesisService.getReportHypothesis(this.projectInfo);
+                result = evaluationHypothesisService.getReportHypothesis(this.projectInfo, areaId);
                 break;
             case BASIS:
                 result = evaluationBasisService.getReportBasic(this.projectInfo);
                 break;
             case PRINCIPLE:
-                result = evaluationPrincipleService.getReportPrinciple(this.projectInfo);
+                result = evaluationPrincipleService.getReportPrinciple(this.projectInfo, areaId);
                 break;
         }
         String localPath = getLocalPath();

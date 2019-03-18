@@ -93,7 +93,7 @@
         });
     })
     var masterId = 0;
-
+    var masterType = "";
     var dataReportTemplateItem = function () {
 
     };
@@ -106,7 +106,7 @@
             data.frm = "dataReportTemplateItemFrm";
             return data;
         },
-        loadDataDicList: function (masterId) {
+        loadDataDicList: function (masterId,masterType) {
             var cols = [];
             cols.push({field: 'name', title: '名称'});
             cols.push({field: 'fieldName', title: 'key值'});
@@ -120,7 +120,7 @@
                 }
             });
             $("#" + dataReportTemplateItem.prototype.config().table).bootstrapTable('destroy');
-            TableInit(dataReportTemplateItem.prototype.config().table, "${pageContext.request.contextPath}/dataReportTemplateItem/getDataReportTemplateItemList?masterId=" + masterId, cols, {}, {
+            TableInit(dataReportTemplateItem.prototype.config().table, "${pageContext.request.contextPath}/dataReportTemplateItem/getDataReportTemplateItemList?masterId=" + masterId+"&type="+masterType, cols, {}, {
                 showColumns: false,
                 showRefresh: false,
                 search: false
@@ -138,7 +138,7 @@
                         Loading.progressHide();
                         if (result.ret) {
                             toastr.success('删除成功');
-                            dataReportTemplateItem.prototype.loadDataDicList(masterId);
+                            dataReportTemplateItem.prototype.loadDataDicList(masterId, masterType);
                         }
                         else {
                             Alert("删除数据失败，失败原因:" + result.errmsg);
@@ -159,10 +159,11 @@
             if (!$("#" + dataReportTemplateItem.prototype.config().frm).valid()) {
                 return false;
             }
-            console.log(masterId+"++++++");
+            console.log(masterType+"++++++");
             //var masterId = masterId;
             var data = formParams(dataReportTemplateItem.prototype.config().frm);
             data.masterId = masterId;
+            data.type = masterType;
             data.template = UE.getEditor('item_template').getContent();
             $.ajax({
                 url: "${pageContext.request.contextPath}/dataReportTemplateItem/saveAndUpdateDataReportTemplateItem",
@@ -173,7 +174,7 @@
                     if (result.ret) {
                         toastr.success('保存成功');
                         $('#' + dataReportTemplateItem.prototype.config().box).modal('hide');
-                        dataReportTemplateItem.prototype.loadDataDicList(masterId);
+                        dataReportTemplateItem.prototype.loadDataDicList(masterId, masterType);
                     }
                     else {
                         Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -206,9 +207,11 @@
                 }
             })
         },
-        showStartModel: function (id) {
+        showStartModel: function (id,type) {
             masterId = id;
-            dataReportTemplateItem.prototype.loadDataDicList(masterId)
+            masterType = type;
+            console.log(masterType+"========++++")
+            dataReportTemplateItem.prototype.loadDataDicList(masterId,masterType);
             $('#' + dataReportTemplateItem.prototype.config().startBox).modal("show");
         }
 
