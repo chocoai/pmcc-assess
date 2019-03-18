@@ -81,6 +81,12 @@
                     <label class="form-control">${basicHouse.area}</label>
                 </div>
             </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">调查方式<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouse.researchTypeName}</label>
+                </div>
+            </div>
         </div>
         <div class="form-group">
             <div class="x-valid">

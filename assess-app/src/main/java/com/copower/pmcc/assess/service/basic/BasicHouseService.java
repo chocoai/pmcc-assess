@@ -198,6 +198,9 @@ public class BasicHouseService {
         if (basicHouse.getOrientation() != null) {
             vo.setOrientationName(baseDataDicService.getNameById(basicHouse.getOrientation()));
         }
+        if (basicHouse.getResearchType() != null) {
+            vo.setResearchTypeName(baseDataDicService.getNameById(basicHouse.getResearchType()));
+        }
         return vo;
     }
 
