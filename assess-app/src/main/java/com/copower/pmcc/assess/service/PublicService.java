@@ -305,12 +305,13 @@ public class PublicService {
         samePart = samePart.replaceAll("\\d+$", "");
         StringBuilder resultBuilder = new StringBuilder(samePart);
         for (String s : list) {
-            resultBuilder.append(s.replace(samePart, "")).append(",");
+            resultBuilder.append(s.replace(samePart, "")).append("、");
         }
         return resultBuilder.deleteCharAt(resultBuilder.length() - 1).toString();
     }
 
     /**
+     * 获取两字符串相同部分
      * @param var1
      * @param var2
      * @return
