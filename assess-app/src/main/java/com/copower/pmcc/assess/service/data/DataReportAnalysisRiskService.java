@@ -44,4 +44,13 @@ public class DataReportAnalysisRiskService {
             dataReportTemplateItemService.templateItemToSetMasterId(dataReportAnalysis.getId(), SchemeSupportTypeEnum.REPORT_ANALYSIS_CATEGORY_RISK.getKey());
         }
     }
+
+    /**
+     * 获取上报告的风险提示数据
+     * @return
+     */
+    public String getReportRisk(){
+
+        return null;
+    }
 }

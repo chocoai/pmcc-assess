@@ -105,6 +105,8 @@ public class GenerateBaseDataService {
     private EvaluationBasisService evaluationBasisService;
     private EvaluationHypothesisService evaluationHypothesisService;
     private EvaluationPrincipleService evaluationPrincipleService;
+    private DataReportAnalysisService dataReportAnalysisService;
+    private DataReportAnalysisRiskService dataReportAnalysisRiskService;
 
     /**
      * 构造器必须传入的参数
@@ -1665,6 +1667,32 @@ public class GenerateBaseDataService {
                 break;
             case PRINCIPLE:
                 result = evaluationPrincipleService.getReportPrinciple(this.projectInfo, areaId);
+                break;
+        }
+        String localPath = getLocalPath();
+        Document document = new Document();
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
+        builder.insertHtml(result, true);
+        document.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 变现分析与风险提示
+     *
+     * @param schemeSupportTypeEnum
+     * @return
+     * @throws Exception
+     */
+    public String getLiquidityRisk(SchemeSupportTypeEnum schemeSupportTypeEnum, Integer areaId) throws Exception {
+        if (projectInfo == null || schemeSupportTypeEnum == null) return "";
+        String result = "";
+        switch (schemeSupportTypeEnum) {
+            case REPORT_ANALYSIS_CATEGORY_LIQUIDITY:
+                result = dataReportAnalysisService.getReportLiquidity();
+                break;
+            case REPORT_ANALYSIS_CATEGORY_RISK:
+                result = dataReportAnalysisRiskService.getReportRisk();
                 break;
         }
         String localPath = getLocalPath();
@@ -5488,6 +5516,8 @@ public class GenerateBaseDataService {
         this.evaluationBasisService = SpringContextUtils.getBean(EvaluationBasisService.class);
         this.evaluationHypothesisService = SpringContextUtils.getBean(EvaluationHypothesisService.class);
         this.evaluationPrincipleService = SpringContextUtils.getBean(EvaluationPrincipleService.class);
+        this.dataReportAnalysisService = SpringContextUtils.getBean(DataReportAnalysisService.class);
+        this.dataReportAnalysisRiskService = SpringContextUtils.getBean(DataReportAnalysisRiskService.class);
 
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);

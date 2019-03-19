@@ -65,12 +65,14 @@ public class DataReportAnalysisDao {
         DataReportAnalysisExample example = new DataReportAnalysisExample();
         DataReportAnalysisExample.Criteria criteria = example.createCriteria();
         criteria.andReportAnalysisTypeEqualTo(reportAnalysisType);
+        example.setOrderByClause("sorting");
         return dataReportAnalysisMapper.selectByExample(example);
     }
 
     public List<DataReportAnalysis> getDataReportAnalysisList(DataReportAnalysis dataReportAnalysis) {
         DataReportAnalysisExample example = new DataReportAnalysisExample();
         MybatisUtils.convertObj2Example(dataReportAnalysis, example);
+        example.setOrderByClause("sorting");
         return dataReportAnalysisMapper.selectByExample(example);
     }
 

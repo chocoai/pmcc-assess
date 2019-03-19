@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.dao.project.compile.CompileReportDao;
 import com.copower.pmcc.assess.dal.basis.entity.CompileReport;
 import com.copower.pmcc.assess.dal.basis.entity.CompileReportDetail;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.input.project.compile.CompileReportApplyDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
@@ -23,7 +22,7 @@ import java.util.List;
 
 
 @Component
-@WorkFlowAnnotation(desc = "报告编制成果")
+@WorkFlowAnnotation(desc = "市场背景描述与分析成果")
 public class ProjectTaskCompileAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
@@ -41,7 +40,6 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageCompile/taskCompileIndex", "", 0, "0", "");
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
         CompileReport compileReport = compileReportService.getCompileReportByPlanDetailsId(projectPlanDetails.getId());
         if (compileReport == null) {
             ProjectPlanDetails pPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid());
@@ -52,7 +50,7 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
             compileReport.setCreator(commonService.thisUserAccount());
             compileReportDao.addCompileReport(compileReport);
         }
-        compileReportService.initReportDetail(projectPlanDetails, projectPhase.getPhaseKey());
+        compileReportService.initReportDetail(projectPlanDetails);
         setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }

@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.compile;
 
 
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.compile.CompileReportDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.compile.CompileReportDetailDao;
@@ -10,6 +11,7 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataReportAnalysisService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -44,6 +46,8 @@ public class CompileReportService {
     private ProjectPlanDetailsDao projectPlanDetailsDao;
     @Autowired
     private ProjectInfoService projectInfoService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
 
     /**
      * 初始化计划信息
@@ -130,17 +134,20 @@ public class CompileReportService {
      * 初始化该任务所需要的分析信息
      *
      * @param projectPlanDetails
-     * @param phaseKey
      */
     @Transactional(rollbackFor = Exception.class)
-    public void initReportDetail(ProjectPlanDetails projectPlanDetails, String phaseKey) {
+    public void initReportDetail(ProjectPlanDetails projectPlanDetails) {
         int count = compileReportDetailDao.getCountByPlanDetailsId(projectPlanDetails.getId());
         if (count > 0) return;
-        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(phaseKey);
+        List<BaseDataDic> dataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_MARKET);
+        if(CollectionUtils.isEmpty(dataDicList)) return;
+        for (BaseDataDic baseDataDic : dataDicList) {//根据各种条件获取对应的模板数据
+
+        }
+
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(projectPhase.getPhaseKey());
         if (baseDataDic == null) return;
-        //根据key确定不同事项，从而确定不同的初始内容
-
-
         ProjectPlanDetails areaPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(projectPlanDetails.getPid());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         SchemeAreaGroup areaGroup = schemeAreaGroupDao.get(areaPlanDetails.getAreaId());
@@ -185,7 +192,7 @@ public class CompileReportService {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < reportDetailList.size(); i++) {
             CompileReportDetail reportDetail = reportDetailList.get(i);
-            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s",i+1,reportDetail.getName())).append("</p>");
+            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, reportDetail.getName())).append("</p>");
             stringBuilder.append("<p style=\"text-indent:2em\">").append(reportDetail.getTemplate()).append("</p>");
         }
         return stringBuilder.toString();

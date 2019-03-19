@@ -604,7 +604,7 @@
                     Loading.progressHide();
                     if (result.ret) {
                         projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
-                        Alert("粘贴完成");
+                        toastr.success("粘贴完成");
                     } else {
                         Alert(result.errmsg);
                     }

@@ -140,4 +140,12 @@ public class DataReportAnalysisService {
         return dataReportAnalysisDao.getReportAnalysisList(province,city,district,type,entrustmentPurposeString);
     }
 
+    /**
+     * 获取上报告的变现分析数据
+     * @return
+     */
+    public String getReportLiquidity(){
+
+        return null;
+    }
 }
