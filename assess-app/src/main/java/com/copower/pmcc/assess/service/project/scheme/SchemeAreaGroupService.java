@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 
@@ -216,7 +217,7 @@ public class SchemeAreaGroupService {
                         schemeJudgeObject.setSeat(declareRecord.getSeat());
                         schemeJudgeObject.setCertUse(declareRecord.getCertUse());
                         schemeJudgeObject.setPracticalUse(declareRecord.getPracticalUse());
-                        if(declareRecord.getLandUseEndDate()!=null){
+                        if (declareRecord.getLandUseEndDate() != null) {
                             schemeJudgeObject.setLandUseEndDate(declareRecord.getLandUseEndDate());
                             //计算出土地剩余年限
                             schemeJudgeObject.setLandRemainingYear(mdIncomeService.getLandSurplusYear(declareRecord.getLandUseEndDate(), areaGroup.getValueTimePoint()));
@@ -380,5 +381,41 @@ public class SchemeAreaGroupService {
             }
         }
         return schemeAreaGroupVo;
+    }
+
+    /**
+     * 获取区域下的评估面积
+     *
+     * @param judgeObjects
+     * @return
+     */
+    public BigDecimal getAreaEvaluateArea(List<SchemeJudgeObject> judgeObjects) {
+        BigDecimal result = new BigDecimal("0");
+        if (CollectionUtils.isNotEmpty(judgeObjects)) {
+            for (SchemeJudgeObject judgeObject : judgeObjects) {
+                if (judgeObject.getEvaluationArea() != null) {
+                    result = result.add(judgeObject.getEvaluationArea());
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 获取区域下的评估金额
+     *
+     * @param judgeObjects
+     * @return
+     */
+    public BigDecimal getAreaEvaluatePrice(List<SchemeJudgeObject> judgeObjects) {
+        BigDecimal result = new BigDecimal("0");
+        if (CollectionUtils.isNotEmpty(judgeObjects)) {
+            for (SchemeJudgeObject judgeObject : judgeObjects) {
+                if (judgeObject.getEvaluationArea() != null && judgeObject.getPrice() != null) {
+                    result = result.add(judgeObject.getEvaluationArea().multiply(judgeObject.getPrice()));
+                }
+            }
+        }
+        return result;
     }
 }

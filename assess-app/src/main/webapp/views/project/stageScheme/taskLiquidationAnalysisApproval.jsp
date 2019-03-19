@@ -19,7 +19,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>${judgeObject.name}</h3>
+                    <h3>${areaGroup.areaName}</h3>
                     <div class="clearfix"></div>
                 </div>
                 <form class="form-horizontal" id="master">
@@ -36,7 +36,6 @@
 
                             <th class="hidden-xs">备注</th>
                             <th class="hidden-xs">商业</th>
-                            <th class="hidden-xs">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -48,7 +47,7 @@
                             <td class="hidden-xs">/</td>
                             <td class="hidden-xs">/</td>
                             <td class="hidden-xs" id="evaluationArea">
-                                ${judgeObject.evaluationArea}
+                                ${groupArea}
                             </td>
                         </tr>
                         <tr>
@@ -59,7 +58,7 @@
                             <td class="hidden-xs">/</td>
                             <td class="hidden-xs">/</td>
                             <td class="hidden-xs" id="evaluationPrice">
-                                ${judgeObject.price}
+                                ${groupPrice}
                             </td>
                         </tr>
                         </tbody>

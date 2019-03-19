@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration>
     <classPathEntry
-            location="D:\Java\tools\lib\mysql\mysql-connector-java\5.1.23\mysql-connector-java-5.1.23.jar"/>
+            location="D:\Java\tools\lib\mysql\mysql-connector-java\8.0.15\mysql-connector-java-8.0.15.jar"/>
 
     <context id="ticket-pms">
 
@@ -11,7 +11,7 @@
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
 
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
                         connectionURL="jdbc:mysql://192.168.2.206:3306/pmcc_assess?serverTimezone=Asia/Shanghai"
                         userId="root" password="123456">
             <property name="useInformationSchema" value="true"></property>
@@ -41,8 +41,8 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_scheme_liquidation_analysis" domainObjectName="SchemeLiquidationAnalysis"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_scheme_liquidation_analysis_item" domainObjectName="SchemeLiquidationAnalysisItem"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <table tableName="tb_project_info" domainObjectName="ProjectInfo"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <!--<table tableName="tb_scheme_liquidation_analysis_item" domainObjectName="SchemeLiquidationAnalysisItem"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
         <!--<table tableName="tb_data_evaluation_hypothesis" domainObjectName="DataEvaluationHypothesis"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
         <!--<table tableName="tb_data_evaluation_principle" domainObjectName="DataEvaluationPrinciple"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
         <!--<table tableName="tb_data_report_template_item" domainObjectName="DataReportTemplateItem"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
