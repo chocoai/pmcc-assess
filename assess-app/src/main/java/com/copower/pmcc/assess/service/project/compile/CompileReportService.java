@@ -138,6 +138,9 @@ public class CompileReportService {
         if (count > 0) return;
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(phaseKey);
         if (baseDataDic == null) return;
+        //根据key确定不同事项，从而确定不同的初始内容
+
+
         ProjectPlanDetails areaPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(projectPlanDetails.getPid());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         SchemeAreaGroup areaGroup = schemeAreaGroupDao.get(areaPlanDetails.getAreaId());

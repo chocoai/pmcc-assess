@@ -136,39 +136,39 @@ public class BasicApplyTransferService {
                 synchronousDataDto.setWhereSql("estate_id=" + basicEstateOld.getId());
                 synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class));
                 synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class));
-                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//通信网络sql
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//通信网络sql
 
                 synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateSupply.class));
                 synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateSupply.class));
-                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//供应信息sql
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//供应信息sql
 
                 synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingTraffic.class));
                 synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingTraffic.class));
-                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//交通信息sql
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//交通信息sql
 
                 synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingMedical.class));
                 synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingMedical.class));
-                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//医养信息sql
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//医养信息sql
 
                 synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingMaterial.class));
                 synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingMaterial.class));
-                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//原材料信息sql
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//原材料信息sql
 
                 synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingLeisurePlace.class));
                 synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingLeisurePlace.class));
-                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//休闲场所信息sql
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//休闲场所信息sql
 
                 synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingFinance.class));
                 synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingFinance.class));
-                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//金融服务信息sql
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//金融服务信息sql
 
                 synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingEnvironment.class));
                 synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingEnvironment.class));
-                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//环境因素信息sql
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//环境因素信息sql
 
                 synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingEducation.class));
                 synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingEducation.class));
-                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//教育信息sql
+                sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//教育信息sql
 
                 sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.ESTATE, basicEstateOld.getApplyId(), appId));
                 ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
@@ -242,19 +242,19 @@ public class BasicApplyTransferService {
             synchronousDataDto.setWhereSql("building_id=" + buildingOld.getId());
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//楼栋外装sql
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//楼栋外装sql
 
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//维护结构sql
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//维护结构sql
 
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//层面结构sql
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//层面结构sql
 
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//建筑功能sql
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//建筑功能sql
 
             sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.BUILDING, buildingOld.getApplyId(), appId));
             ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
@@ -308,11 +308,11 @@ public class BasicApplyTransferService {
             synchronousDataDto.setWhereSql("unit_id=" + unitOld.getId());
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//楼栋内装sql
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//楼栋内装sql
 
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//配备电梯sql
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//配备电梯sql
 
             sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.UNIT, unitOld.getApplyId(), appId));
             ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
@@ -411,31 +411,31 @@ public class BasicApplyTransferService {
             synchronousDataDto.setWhereSql("house_id=" + houseOld.getId());
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//房屋出售sql
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//房屋出售sql
 
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//房屋出租sql
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//房屋出租sql
 
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseWater.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseWater.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//供水sql
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//供水sql
 
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//排水sql
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//排水sql
 
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//电力通讯网络sql
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//电力通讯网络sql
 
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//临路状况sql
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//临路状况sql
 
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");//设备sql
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//设备sql
 
             sqlBuilder.append(this.copyBasicTagging(EstateTaggingTypeEnum.UNIT, houseOld.getApplyId(), appId));
             ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
@@ -638,7 +638,7 @@ public class BasicApplyTransferService {
         map.put("apply_id", String.valueOf(applyTarget));
         map.put("creator", commonService.thisUserAccount());
         synchronousDataDto.setFieldDefaultValue(map);
-        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto)).append(";");
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));
         return sqlBuilder.toString();
     }
 }

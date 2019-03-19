@@ -111,15 +111,14 @@
         },
         loadDataDicList: function () {
             var cols = [];
+            cols.push({field: 'provinceName', title: '区域',formatter: function (value, row, index) {
+                return AssessCommon.getAreaFullName(row.provinceName,row.cityName,row.districtName);
+            }});
             cols.push({
                 field: 'yearMonthCalendar', title: '日期', formatter: function (value, row, index) {
                     return dataProperty.prototype.formatDate(row.yearMonthCalendar);
                 }
             });
-
-            cols.push({field: 'provinceName', title: '省'});
-            cols.push({field: 'cityName', title: '市'});
-            cols.push({field: 'districtName', title: '县'});
             cols.push({field: 'indexCalendar', title: '指数'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
