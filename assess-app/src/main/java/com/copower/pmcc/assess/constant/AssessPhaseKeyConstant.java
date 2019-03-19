@@ -18,6 +18,5 @@ public class AssessPhaseKeyConstant {
     public static final String SURE_PRICE = "sure.price";  //确定单价
     public static final String LIQUIDATION_ANALYSIS = "liquidation.analysis";  //变现分析税费
     public static final String REIMBURSEMENT = "reimbursement";  //法定优先受偿款
-    public static final String SUPPORT_INFO = "support.info";  //假设原则依据
-    public static final String REPORT_FILE = "report.file";  //报告附件
+    public static final String REPORT_ANALYSIS_CATEGORY_MARKET = "report.analysis.category.market";  //市场背景描述与分析
 }

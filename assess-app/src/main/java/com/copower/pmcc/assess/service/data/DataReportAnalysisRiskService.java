@@ -41,7 +41,16 @@ public class DataReportAnalysisRiskService {
             dataReportAnalysis.setCreator(commonService.thisUserAccount());
             dataReportAnalysisDao.addReportAnalysis(dataReportAnalysis);
             //修改子模板
-            dataReportTemplateItemService.templateItemToSetMasterId(dataReportAnalysis.getId(), SchemeSupportTypeEnum.REPORT_ANALYSIS_RISK.getKey());
+            dataReportTemplateItemService.templateItemToSetMasterId(dataReportAnalysis.getId(), SchemeSupportTypeEnum.REPORT_ANALYSIS_CATEGORY_RISK.getKey());
         }
+    }
+
+    /**
+     * 获取上报告的风险提示数据
+     * @return
+     */
+    public String getReportRisk(){
+
+        return null;
     }
 }

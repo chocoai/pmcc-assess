@@ -32,16 +32,15 @@
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">评估基准日</label>
-                    <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatDate value='${projectInfo.valuationDate}'
-                                                                    pattern='yyyy-MM-dd'/></label>
-                    </div>
-                </div>
-                <div class="x-valid">
                     <label class="col-sm-1 control-label">委托目的</label>
                     <div class="col-sm-3">
                         <label class="form-control">${projectInfo.entrustPurposeName}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">委托目的类别</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${projectInfo.entrustAimTypeName}</label>
                     </div>
                 </div>
                 <div class="x-valid">
@@ -99,6 +98,13 @@
                     <label class="col-sm-1 control-label">项目成员</label>
                     <div class="col-sm-3">
                         <label class="form-control">${projectInfo.projectMemberVo.userAccountMemberName}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">评估基准日</label>
+                    <div class="col-sm-3">
+                        <label class="form-control"><fmt:formatDate value='${projectInfo.valuationDate}'
+                                                                    pattern='yyyy-MM-dd'/></label>
                     </div>
                 </div>
             </div>

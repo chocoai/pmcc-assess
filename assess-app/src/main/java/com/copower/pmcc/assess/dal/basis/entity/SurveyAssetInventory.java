@@ -23,6 +23,14 @@ public class SurveyAssetInventory {
 
     private String specialCase;
 
+    private String segmentationLimit;
+
+    private String canUse;
+
+    private Integer application;
+
+    private String certificate;
+
     private String rimIsNormal;
 
     private String abnormality;
@@ -119,6 +127,38 @@ public class SurveyAssetInventory {
 
     public void setSpecialCase(String specialCase) {
         this.specialCase = specialCase == null ? null : specialCase.trim();
+    }
+
+    public String getSegmentationLimit() {
+        return segmentationLimit;
+    }
+
+    public void setSegmentationLimit(String segmentationLimit) {
+        this.segmentationLimit = segmentationLimit == null ? null : segmentationLimit.trim();
+    }
+
+    public String getCanUse() {
+        return canUse;
+    }
+
+    public void setCanUse(String canUse) {
+        this.canUse = canUse == null ? null : canUse.trim();
+    }
+
+    public Integer getApplication() {
+        return application;
+    }
+
+    public void setApplication(Integer application) {
+        this.application = application;
+    }
+
+    public String getCertificate() {
+        return certificate;
+    }
+
+    public void setCertificate(String certificate) {
+        this.certificate = certificate == null ? null : certificate.trim();
     }
 
     public String getRimIsNormal() {

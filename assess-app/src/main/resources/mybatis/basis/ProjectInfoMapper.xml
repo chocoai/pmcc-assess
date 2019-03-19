@@ -13,6 +13,7 @@
     <result column="district" property="district" jdbcType="VARCHAR" />
     <result column="valuation_date" property="valuationDate" jdbcType="TIMESTAMP" />
     <result column="entrust_purpose" property="entrustPurpose" jdbcType="INTEGER" />
+    <result column="entrust_aim_type" property="entrustAimType" jdbcType="INTEGER" />
     <result column="remark_entrust_purpose" property="remarkEntrustPurpose" jdbcType="VARCHAR" />
     <result column="value_type" property="valueType" jdbcType="INTEGER" />
     <result column="remark_value_type" property="remarkValueType" jdbcType="VARCHAR" />
@@ -94,7 +95,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, project_class_id, project_type_id, project_category_id, project_name, urgency, 
-    province, city, district, valuation_date, entrust_purpose, remark_entrust_purpose, 
+    province, city, district, valuation_date, entrust_purpose, entrust_aim_type, remark_entrust_purpose, 
     value_type, remark_value_type, department_id, remarks, complete_date_plan, complete_date_actual, 
     complete_date_start, process_ins_id, property_scope, scope_include, scope_not_include, 
     status, project_status, public_project_id, assign_process_ins_id, assign_status, 
@@ -137,9 +138,9 @@
     insert into tb_project_info (project_class_id, project_type_id, project_category_id, 
       project_name, urgency, province, 
       city, district, valuation_date, 
-      entrust_purpose, remark_entrust_purpose, value_type, 
-      remark_value_type, department_id, remarks, 
-      complete_date_plan, complete_date_actual, 
+      entrust_purpose, entrust_aim_type, remark_entrust_purpose, 
+      value_type, remark_value_type, department_id, 
+      remarks, complete_date_plan, complete_date_actual, 
       complete_date_start, process_ins_id, property_scope, 
       scope_include, scope_not_include, status, 
       project_status, public_project_id, assign_process_ins_id, 
@@ -148,9 +149,9 @@
     values (#{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, #{projectCategoryId,jdbcType=INTEGER}, 
       #{projectName,jdbcType=VARCHAR}, #{urgency,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{valuationDate,jdbcType=TIMESTAMP}, 
-      #{entrustPurpose,jdbcType=INTEGER}, #{remarkEntrustPurpose,jdbcType=VARCHAR}, #{valueType,jdbcType=INTEGER}, 
-      #{remarkValueType,jdbcType=VARCHAR}, #{departmentId,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, 
-      #{completeDatePlan,jdbcType=TIMESTAMP}, #{completeDateActual,jdbcType=TIMESTAMP}, 
+      #{entrustPurpose,jdbcType=INTEGER}, #{entrustAimType,jdbcType=INTEGER}, #{remarkEntrustPurpose,jdbcType=VARCHAR}, 
+      #{valueType,jdbcType=INTEGER}, #{remarkValueType,jdbcType=VARCHAR}, #{departmentId,jdbcType=INTEGER}, 
+      #{remarks,jdbcType=VARCHAR}, #{completeDatePlan,jdbcType=TIMESTAMP}, #{completeDateActual,jdbcType=TIMESTAMP}, 
       #{completeDateStart,jdbcType=TIMESTAMP}, #{processInsId,jdbcType=VARCHAR}, #{propertyScope,jdbcType=VARCHAR}, 
       #{scopeInclude,jdbcType=VARCHAR}, #{scopeNotInclude,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
       #{projectStatus,jdbcType=VARCHAR}, #{publicProjectId,jdbcType=INTEGER}, #{assignProcessInsId,jdbcType=VARCHAR}, 
@@ -192,6 +193,9 @@
       </if>
       <if test="entrustPurpose != null" >
         entrust_purpose,
+      </if>
+      <if test="entrustAimType != null" >
+        entrust_aim_type,
       </if>
       <if test="remarkEntrustPurpose != null" >
         remark_entrust_purpose,
@@ -284,6 +288,9 @@
       </if>
       <if test="entrustPurpose != null" >
         #{entrustPurpose,jdbcType=INTEGER},
+      </if>
+      <if test="entrustAimType != null" >
+        #{entrustAimType,jdbcType=INTEGER},
       </if>
       <if test="remarkEntrustPurpose != null" >
         #{remarkEntrustPurpose,jdbcType=VARCHAR},
@@ -389,6 +396,9 @@
       <if test="record.entrustPurpose != null" >
         entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
       </if>
+      <if test="record.entrustAimType != null" >
+        entrust_aim_type = #{record.entrustAimType,jdbcType=INTEGER},
+      </if>
       <if test="record.remarkEntrustPurpose != null" >
         remark_entrust_purpose = #{record.remarkEntrustPurpose,jdbcType=VARCHAR},
       </if>
@@ -467,6 +477,7 @@
       district = #{record.district,jdbcType=VARCHAR},
       valuation_date = #{record.valuationDate,jdbcType=TIMESTAMP},
       entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
+      entrust_aim_type = #{record.entrustAimType,jdbcType=INTEGER},
       remark_entrust_purpose = #{record.remarkEntrustPurpose,jdbcType=VARCHAR},
       value_type = #{record.valueType,jdbcType=INTEGER},
       remark_value_type = #{record.remarkValueType,jdbcType=VARCHAR},
@@ -523,6 +534,9 @@
       </if>
       <if test="entrustPurpose != null" >
         entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
+      </if>
+      <if test="entrustAimType != null" >
+        entrust_aim_type = #{entrustAimType,jdbcType=INTEGER},
       </if>
       <if test="remarkEntrustPurpose != null" >
         remark_entrust_purpose = #{remarkEntrustPurpose,jdbcType=VARCHAR},
@@ -599,6 +613,7 @@
       district = #{district,jdbcType=VARCHAR},
       valuation_date = #{valuationDate,jdbcType=TIMESTAMP},
       entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
+      entrust_aim_type = #{entrustAimType,jdbcType=INTEGER},
       remark_entrust_purpose = #{remarkEntrustPurpose,jdbcType=VARCHAR},
       value_type = #{valueType,jdbcType=INTEGER},
       remark_value_type = #{remarkValueType,jdbcType=VARCHAR},

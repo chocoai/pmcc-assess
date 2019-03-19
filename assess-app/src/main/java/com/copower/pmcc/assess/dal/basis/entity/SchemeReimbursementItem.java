@@ -1,11 +1,14 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class SchemeReimbursementItem {
     private Integer id;
 
     private Integer projectId;
+
+    private Integer masterId;
 
     private Integer judgeObjectId;
 
@@ -27,7 +30,11 @@ public class SchemeReimbursementItem {
 
     private BigDecimal mortgageTotalPrice;
 
-    private Integer masterId;
+    private String creator;
+
+    private Date gmtCreated;
+
+    private Date gmtModified;
 
     public Integer getId() {
         return id;
@@ -43,6 +50,14 @@ public class SchemeReimbursementItem {
 
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
+    }
+
+    public Integer getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(Integer masterId) {
+        this.masterId = masterId;
     }
 
     public Integer getJudgeObjectId() {
@@ -125,11 +140,27 @@ public class SchemeReimbursementItem {
         this.mortgageTotalPrice = mortgageTotalPrice;
     }
 
-    public Integer getMasterId() {
-        return masterId;
+    public String getCreator() {
+        return creator;
     }
 
-    public void setMasterId(Integer masterId) {
-        this.masterId = masterId;
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
     }
 }

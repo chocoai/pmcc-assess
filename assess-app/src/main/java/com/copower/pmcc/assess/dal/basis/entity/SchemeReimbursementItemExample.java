@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.dal.basis.entity;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SchemeReimbursementItemExample {
@@ -222,6 +223,66 @@ public class SchemeReimbursementItemExample {
 
         public Criteria andProjectIdNotBetween(Integer value1, Integer value2) {
             addCriterion("project_id not between", value1, value2, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdIsNull() {
+            addCriterion("master_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdIsNotNull() {
+            addCriterion("master_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdEqualTo(Integer value) {
+            addCriterion("master_id =", value, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdNotEqualTo(Integer value) {
+            addCriterion("master_id <>", value, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdGreaterThan(Integer value) {
+            addCriterion("master_id >", value, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("master_id >=", value, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdLessThan(Integer value) {
+            addCriterion("master_id <", value, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdLessThanOrEqualTo(Integer value) {
+            addCriterion("master_id <=", value, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdIn(List<Integer> values) {
+            addCriterion("master_id in", values, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdNotIn(List<Integer> values) {
+            addCriterion("master_id not in", values, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdBetween(Integer value1, Integer value2) {
+            addCriterion("master_id between", value1, value2, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("master_id not between", value1, value2, "masterId");
             return (Criteria) this;
         }
 
@@ -825,63 +886,193 @@ public class SchemeReimbursementItemExample {
             return (Criteria) this;
         }
 
-        public Criteria andMasterIdIsNull() {
-            addCriterion("master_id is null");
+        public Criteria andCreatorIsNull() {
+            addCriterion("creator is null");
             return (Criteria) this;
         }
 
-        public Criteria andMasterIdIsNotNull() {
-            addCriterion("master_id is not null");
+        public Criteria andCreatorIsNotNull() {
+            addCriterion("creator is not null");
             return (Criteria) this;
         }
 
-        public Criteria andMasterIdEqualTo(Integer value) {
-            addCriterion("master_id =", value, "masterId");
+        public Criteria andCreatorEqualTo(String value) {
+            addCriterion("creator =", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andMasterIdNotEqualTo(Integer value) {
-            addCriterion("master_id <>", value, "masterId");
+        public Criteria andCreatorNotEqualTo(String value) {
+            addCriterion("creator <>", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andMasterIdGreaterThan(Integer value) {
-            addCriterion("master_id >", value, "masterId");
+        public Criteria andCreatorGreaterThan(String value) {
+            addCriterion("creator >", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andMasterIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("master_id >=", value, "masterId");
+        public Criteria andCreatorGreaterThanOrEqualTo(String value) {
+            addCriterion("creator >=", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andMasterIdLessThan(Integer value) {
-            addCriterion("master_id <", value, "masterId");
+        public Criteria andCreatorLessThan(String value) {
+            addCriterion("creator <", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andMasterIdLessThanOrEqualTo(Integer value) {
-            addCriterion("master_id <=", value, "masterId");
+        public Criteria andCreatorLessThanOrEqualTo(String value) {
+            addCriterion("creator <=", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andMasterIdIn(List<Integer> values) {
-            addCriterion("master_id in", values, "masterId");
+        public Criteria andCreatorLike(String value) {
+            addCriterion("creator like", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andMasterIdNotIn(List<Integer> values) {
-            addCriterion("master_id not in", values, "masterId");
+        public Criteria andCreatorNotLike(String value) {
+            addCriterion("creator not like", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andMasterIdBetween(Integer value1, Integer value2) {
-            addCriterion("master_id between", value1, value2, "masterId");
+        public Criteria andCreatorIn(List<String> values) {
+            addCriterion("creator in", values, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andMasterIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("master_id not between", value1, value2, "masterId");
+        public Criteria andCreatorNotIn(List<String> values) {
+            addCriterion("creator not in", values, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorBetween(String value1, String value2) {
+            addCriterion("creator between", value1, value2, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotBetween(String value1, String value2) {
+            addCriterion("creator not between", value1, value2, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedIsNull() {
+            addCriterion("gmt_created is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedIsNotNull() {
+            addCriterion("gmt_created is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedEqualTo(Date value) {
+            addCriterion("gmt_created =", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedNotEqualTo(Date value) {
+            addCriterion("gmt_created <>", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedGreaterThan(Date value) {
+            addCriterion("gmt_created >", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedGreaterThanOrEqualTo(Date value) {
+            addCriterion("gmt_created >=", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedLessThan(Date value) {
+            addCriterion("gmt_created <", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedLessThanOrEqualTo(Date value) {
+            addCriterion("gmt_created <=", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedIn(List<Date> values) {
+            addCriterion("gmt_created in", values, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedNotIn(List<Date> values) {
+            addCriterion("gmt_created not in", values, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedBetween(Date value1, Date value2) {
+            addCriterion("gmt_created between", value1, value2, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedNotBetween(Date value1, Date value2) {
+            addCriterion("gmt_created not between", value1, value2, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedIsNull() {
+            addCriterion("gmt_modified is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedIsNotNull() {
+            addCriterion("gmt_modified is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedEqualTo(Date value) {
+            addCriterion("gmt_modified =", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedNotEqualTo(Date value) {
+            addCriterion("gmt_modified <>", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedGreaterThan(Date value) {
+            addCriterion("gmt_modified >", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedGreaterThanOrEqualTo(Date value) {
+            addCriterion("gmt_modified >=", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedLessThan(Date value) {
+            addCriterion("gmt_modified <", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedLessThanOrEqualTo(Date value) {
+            addCriterion("gmt_modified <=", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedIn(List<Date> values) {
+            addCriterion("gmt_modified in", values, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedNotIn(List<Date> values) {
+            addCriterion("gmt_modified not in", values, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedBetween(Date value1, Date value2) {
+            addCriterion("gmt_modified between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
+            addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
     }

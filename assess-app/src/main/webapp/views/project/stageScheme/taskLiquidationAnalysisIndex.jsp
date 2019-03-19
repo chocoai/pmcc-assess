@@ -17,7 +17,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>${judgeObject.name}</h3>
+                    <h3>${areaGroup.areaName}</h3>
                     <div class="clearfix"></div>
                 </div>
                 <form class="form-horizontal" id="master">
@@ -46,7 +46,7 @@
                             <td class="hidden-xs">/</td>
                             <td class="hidden-xs">/</td>
                             <td class="hidden-xs" id="evaluationArea">
-                                ${judgeObject.evaluationArea}
+                                ${groupArea}
                             </td>
                         </tr>
                         <tr>
@@ -57,7 +57,7 @@
                             <td class="hidden-xs">/</td>
                             <td class="hidden-xs">/</td>
                             <td class="hidden-xs" id="evaluationPrice">
-                                ${judgeObject.price}
+                                ${groupPrice}
                             </td>
                         </tr>
                         </tbody>

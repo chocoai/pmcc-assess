@@ -105,6 +105,8 @@ public class GenerateBaseDataService {
     private EvaluationBasisService evaluationBasisService;
     private EvaluationHypothesisService evaluationHypothesisService;
     private EvaluationPrincipleService evaluationPrincipleService;
+    private DataReportAnalysisService dataReportAnalysisService;
+    private DataReportAnalysisRiskService dataReportAnalysisRiskService;
 
     /**
      * 构造器必须传入的参数
@@ -118,6 +120,7 @@ public class GenerateBaseDataService {
      */
     private SchemeAreaGroup schemeAreaGroup = null;
     private List<SchemeJudgeObject> schemeJudgeObjectList = null;
+    private List<SchemeJudgeObject> schemeJudgeObjectFullList = null;
 
     //===========================================获取的值===============================
 
@@ -163,7 +166,7 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getPrincipalInfo()throws Exception {
+    public String getPrincipalInfo() throws Exception {
         String localPath = getLocalPath();
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
@@ -173,39 +176,39 @@ public class GenerateBaseDataService {
             if (StringUtils.isEmpty(name)) {
                 name = "无";
             }
-            documentBuilder.writeln(String.format("%s:%s","名称",name));
+            documentBuilder.writeln(String.format("%s:%s", "名称", name));
             String code = projectInfo.getConsignorVo().getCsSociologyCode();
             if (StringUtils.isEmpty(code)) {
                 code = "无";
             }
-            documentBuilder.writeln(String.format("%s:%s","统一社会信用代码",code));
+            documentBuilder.writeln(String.format("%s:%s", "统一社会信用代码", code));
             String address = projectInfo.getConsignorVo().getCsAddress();
             if (StringUtils.isEmpty(address)) {
                 address = "无";
             }
-            documentBuilder.writeln(String.format("%s:%s","住所",address));
+            documentBuilder.writeln(String.format("%s:%s", "住所", address));
             String people = projectInfo.getConsignorVo().getCsLegalRepresentative();
             if (StringUtils.isEmpty(people)) {
                 people = "无";
             }
-            documentBuilder.writeln(String.format("%s:%s","法定代表人",people));
+            documentBuilder.writeln(String.format("%s:%s", "法定代表人", people));
         }
         if (Objects.equal(projectInfo.getConsignorVo().getCsType(), InitiateContactsEnum.naturalPerson.getId())) {
             String name = projectInfo.getConsignorVo().getCsName();
             if (StringUtils.isEmpty(name)) {
                 name = "无";
             }
-            documentBuilder.writeln(String.format("%s:%s","姓名",name));
+            documentBuilder.writeln(String.format("%s:%s", "姓名", name));
             String idCard = projectInfo.getConsignorVo().getCsIdcard();
             if (StringUtils.isEmpty(idCard)) {
                 idCard = "无";
             }
-            documentBuilder.writeln(String.format("%s:%s","身份证号",idCard));
+            documentBuilder.writeln(String.format("%s:%s", "身份证号", idCard));
             String address = projectInfo.getConsignorVo().getCsAddress();
             if (StringUtils.isEmpty(address)) {
                 address = "无";
             }
-            documentBuilder.writeln(String.format("%s:%s","地址",address));
+            documentBuilder.writeln(String.format("%s:%s", "地址", address));
         }
         doc.save(localPath);
         return localPath;
@@ -757,7 +760,6 @@ public class GenerateBaseDataService {
                         if (schemeReimbursement != null) {
                             SchemeReimbursementItemVo select = new SchemeReimbursementItemVo();
                             select.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
-                            select.setJudgeObjectId(schemeReimbursement.getJudgeObjectId());
                             List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = schemeReimbursementService.findQueryBySchemeReimbursementItem(select);
                             if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
                                 BigDecimal bigDecimal = new BigDecimal(0);
@@ -806,7 +808,6 @@ public class GenerateBaseDataService {
                         if (schemeReimbursement != null) {
                             SchemeReimbursementItemVo select = new SchemeReimbursementItemVo();
                             select.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
-                            select.setJudgeObjectId(schemeReimbursement.getJudgeObjectId());
                             List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = schemeReimbursementService.findQueryBySchemeReimbursementItem(select);
                             if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
                                 BigDecimal bigDecimal = new BigDecimal(0);
@@ -1192,7 +1193,7 @@ public class GenerateBaseDataService {
                 String temp = getHisRightType();
                 if (Objects.equal(temp, errorStr)) {
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, "无")).append("</p>");
-                }else {
+                } else {
                     String oneContent = String.format("根据委托人介绍及估价人员在${他权信息公示}，%s 已设定抵押权。", temp);
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, oneContent)).append("</p>");
                 }
@@ -1208,7 +1209,7 @@ public class GenerateBaseDataService {
             }
             if (i == length - 1) {
                 String oneContent = "根据估价委托人提供的《法定优先受偿款情况说明》，估价对象于价值时点已设定抵押权，本次评估是抵押权存续期间的房地产估价（同行续贷），经过沟通，抵押权人已经知晓法定优先受偿款对估价对象价值的影响，且并不需要我们在抵押价值中予以扣除法定优先受偿款，故本报告假设估价对象在价值时点法定优先受偿款为0元（大写：人民币零元整），在此提请报告使用人加以关注。";
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i+1, oneContent)).append("</p>");
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, oneContent)).append("</p>");
             }
         }
         documentBuilder.insertHtml(stringBuilder.toString(), true);
@@ -1227,15 +1228,12 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.settingBuildingTable(builder);
         String localPath = getLocalPath(title);
-        for (SchemeJudgeObject judgeObject : this.getSchemeJudgeObjectList()) {
-            createLiquidationAnalysisTable(builder, judgeObject);
-        }
+        createLiquidationAnalysisTable(builder);
         doc.save(localPath);
         return localPath;
     }
 
-    public void createLiquidationAnalysisTable(DocumentBuilder builder, SchemeJudgeObject judgeObject) throws Exception {
-        builder.writeln(getSchemeJudgeObjectShowName(judgeObject));
+    public void createLiquidationAnalysisTable(DocumentBuilder builder) throws Exception {
         //表头
         builder.insertCell();
         builder.writeln("物业类型");
@@ -1252,7 +1250,7 @@ public class GenerateBaseDataService {
         builder.insertCell();
         builder.insertCell();
         builder.insertCell();
-        builder.writeln(judgeObject.getEvaluationArea().toString());
+        builder.writeln(schemeAreaGroupService.getAreaEvaluateArea(schemeJudgeObjectFullList).toString());
         builder.endRow();
 
         builder.insertCell();
@@ -1260,12 +1258,9 @@ public class GenerateBaseDataService {
         builder.insertCell();
         builder.insertCell();
         builder.insertCell();
-        builder.writeln(judgeObject.getPrice().toString());
+        builder.writeln(schemeAreaGroupService.getAreaEvaluatePrice(schemeJudgeObjectFullList).toString());
         builder.endRow();
-        SchemeLiquidationAnalysis object = new SchemeLiquidationAnalysis();
-        object.setJudgeObjectId(judgeObject.getId());
-        SchemeLiquidationAnalysis schemeLiquidationAnalysis = schemeLiquidationAnalysisService.getDataByJudgeObjectId(judgeObject.getId());
-        List<SchemeLiquidationAnalysisItem> itemList = schemeLiquidationAnalysisService.getAnalysisItemList(schemeLiquidationAnalysis.getPlanDetailsId());
+        List<SchemeLiquidationAnalysisItem> itemList = schemeLiquidationAnalysisService.getAnalysisItemListByAreaId(areaId);
         for (SchemeLiquidationAnalysisItem item : itemList) {
             builder.insertCell();
             if (!StringUtils.isEmpty(item.getTaxRateName())) {
@@ -1295,6 +1290,7 @@ public class GenerateBaseDataService {
             }
             builder.endRow();
         }
+        SchemeLiquidationAnalysis schemeLiquidationAnalysis = schemeLiquidationAnalysisService.getDataByAreaId(areaId);
         builder.insertCell();
         builder.writeln("合计费用");
         builder.insertCell();
@@ -1533,14 +1529,14 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.setDefaultDocumentBuilderSetting(documentBuilder);
-        documentBuilder.writeln(String.format("%s:%s","机构名称",qualificationDto.getOrganizationName()));
-        documentBuilder.writeln(String.format("%s:%s","住所",qualificationDto.getOrganizationAddress()));
-        documentBuilder.writeln(String.format("%s:%s","法定代表人",qualificationDto.getLegalRepresentative()));
-        documentBuilder.writeln(String.format("%s:%s","工商注册号",qualificationDto.getRegisteredNo()));
-        documentBuilder.writeln(String.format("%s:%s","资质等级",qualificationDto.getOrganizationRank()));
-        documentBuilder.writeln(String.format("%s:%s","资质证书编号",qualificationDto.getCertificateNo()));
-        documentBuilder.writeln(String.format("%s:%s","资质证书有效期",qualificationDto.getCertificateEffectiveDate()));
-        documentBuilder.writeln(String.format("%s:%s","经营范围","评估房产"));
+        documentBuilder.writeln(String.format("%s:%s", "机构名称", qualificationDto.getOrganizationName()));
+        documentBuilder.writeln(String.format("%s:%s", "住所", qualificationDto.getOrganizationAddress()));
+        documentBuilder.writeln(String.format("%s:%s", "法定代表人", qualificationDto.getLegalRepresentative()));
+        documentBuilder.writeln(String.format("%s:%s", "工商注册号", qualificationDto.getRegisteredNo()));
+        documentBuilder.writeln(String.format("%s:%s", "资质等级", qualificationDto.getOrganizationRank()));
+        documentBuilder.writeln(String.format("%s:%s", "资质证书编号", qualificationDto.getCertificateNo()));
+        documentBuilder.writeln(String.format("%s:%s", "资质证书有效期", qualificationDto.getCertificateEffectiveDate()));
+        documentBuilder.writeln(String.format("%s:%s", "经营范围", "评估房产"));
         doc.save(localPath);
         return localPath;
     }
@@ -1671,6 +1667,32 @@ public class GenerateBaseDataService {
                 break;
             case PRINCIPLE:
                 result = evaluationPrincipleService.getReportPrinciple(this.projectInfo, areaId);
+                break;
+        }
+        String localPath = getLocalPath();
+        Document document = new Document();
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
+        builder.insertHtml(result, true);
+        document.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 变现分析与风险提示
+     *
+     * @param schemeSupportTypeEnum
+     * @return
+     * @throws Exception
+     */
+    public String getLiquidityRisk(SchemeSupportTypeEnum schemeSupportTypeEnum, Integer areaId) throws Exception {
+        if (projectInfo == null || schemeSupportTypeEnum == null) return "";
+        String result = "";
+        switch (schemeSupportTypeEnum) {
+            case REPORT_ANALYSIS_CATEGORY_LIQUIDITY:
+                result = dataReportAnalysisService.getReportLiquidity();
+                break;
+            case REPORT_ANALYSIS_CATEGORY_RISK:
+                result = dataReportAnalysisRiskService.getReportRisk();
                 break;
         }
         String localPath = getLocalPath();
@@ -2372,7 +2394,6 @@ public class GenerateBaseDataService {
                 if (schemeReimbursement != null) {
                     SchemeReimbursementItemVo query = new SchemeReimbursementItemVo();
                     query.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
-                    query.setJudgeObjectId(schemeReimbursement.getJudgeObjectId());
                     List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = schemeReimbursementService.findQueryBySchemeReimbursementItem(query);
                     if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
                         BigDecimal bigDecimal2 = new BigDecimal(0);
@@ -2433,7 +2454,6 @@ public class GenerateBaseDataService {
                 if (schemeReimbursement != null) {
                     SchemeReimbursementItemVo query = new SchemeReimbursementItemVo();
                     query.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
-                    query.setJudgeObjectId(schemeReimbursement.getJudgeObjectId());
                     List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = schemeReimbursementService.findQueryBySchemeReimbursementItem(query);
                     if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
                         BigDecimal bigDecimal = new BigDecimal(0);
@@ -3140,7 +3160,6 @@ public class GenerateBaseDataService {
                         if (Objects.equal(projectInfo.getEntrustPurpose(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId())) {
                             SchemeReimbursementItemVo query = new SchemeReimbursementItemVo();
                             query.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
-                            query.setJudgeObjectId(schemeReimbursement.getJudgeObjectId());
                             List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = schemeReimbursementService.findQueryBySchemeReimbursementItem(query);
                             if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
                                 for (SchemeReimbursementItemVo schemeReimbursementItemVo : schemeReimbursementItemVoList) {
@@ -5497,6 +5516,8 @@ public class GenerateBaseDataService {
         this.evaluationBasisService = SpringContextUtils.getBean(EvaluationBasisService.class);
         this.evaluationHypothesisService = SpringContextUtils.getBean(EvaluationHypothesisService.class);
         this.evaluationPrincipleService = SpringContextUtils.getBean(EvaluationPrincipleService.class);
+        this.dataReportAnalysisService = SpringContextUtils.getBean(DataReportAnalysisService.class);
+        this.dataReportAnalysisRiskService = SpringContextUtils.getBean(DataReportAnalysisRiskService.class);
 
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
@@ -5509,6 +5530,7 @@ public class GenerateBaseDataService {
             judgeObjectList = new ArrayList<SchemeJudgeObject>(0);
         }
         this.schemeJudgeObjectList = judgeObjectList;
+        this.schemeJudgeObjectFullList = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(areaId);
     }
 
 

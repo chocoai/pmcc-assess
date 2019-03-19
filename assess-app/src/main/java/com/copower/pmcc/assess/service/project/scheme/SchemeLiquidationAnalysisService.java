@@ -56,6 +56,14 @@ public class SchemeLiquidationAnalysisService {
 
     }
 
+    public List<SchemeLiquidationAnalysisItem> getAnalysisItemListByAreaId(Integer areaId) {
+        SchemeLiquidationAnalysisItem item = new SchemeLiquidationAnalysisItem();
+        item.setAreaId(areaId);
+        List<SchemeLiquidationAnalysisItem> list = schemeLiquidationAnalysisItemDao.getObjectList(item);
+        return list;
+
+    }
+
     /**
      * 初始化所有相关税费信息
      *
@@ -197,9 +205,9 @@ public class SchemeLiquidationAnalysisService {
         return schemeLiquidationAnalysisDao.getSchemeLiquidationAnalysis(where);
     }
 
-    public SchemeLiquidationAnalysis getDataByJudgeObjectId(Integer judgeObjectId) {
+    public SchemeLiquidationAnalysis getDataByAreaId(Integer areaId) {
         SchemeLiquidationAnalysis where = new SchemeLiquidationAnalysis();
-        where.setJudgeObjectId(judgeObjectId);
+        where.setAreaId(areaId);
         return schemeLiquidationAnalysisDao.getSchemeLiquidationAnalysis(where);
     }
 

@@ -41,7 +41,7 @@ public class DataReportAnalysisBackgroundService {
             dataReportAnalysis.setCreator(commonService.thisUserAccount());
             dataReportAnalysisDao.addReportAnalysis(dataReportAnalysis);
             //修改子模板
-            dataReportTemplateItemService.templateItemToSetMasterId(dataReportAnalysis.getId(), SchemeSupportTypeEnum.REPORT_ANALYSIS_BACKGROUND.getKey());
+            dataReportTemplateItemService.templateItemToSetMasterId(dataReportAnalysis.getId(), SchemeSupportTypeEnum.REPORT_ANALYSIS_CATEGORY_MARKET.getKey());
         }
     }
 }

@@ -35,9 +35,6 @@
                         <input type="hidden" name="id" value="${declare.id}">
                         <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
                         <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
-                        <div id="declareApplyFormHTML">
-
-                        </div>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">委托单位</label>

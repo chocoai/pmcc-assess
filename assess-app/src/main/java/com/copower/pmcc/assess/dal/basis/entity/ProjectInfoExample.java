@@ -805,6 +805,66 @@ public class ProjectInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andEntrustAimTypeIsNull() {
+            addCriterion("entrust_aim_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeIsNotNull() {
+            addCriterion("entrust_aim_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeEqualTo(Integer value) {
+            addCriterion("entrust_aim_type =", value, "entrustAimType");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeNotEqualTo(Integer value) {
+            addCriterion("entrust_aim_type <>", value, "entrustAimType");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeGreaterThan(Integer value) {
+            addCriterion("entrust_aim_type >", value, "entrustAimType");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("entrust_aim_type >=", value, "entrustAimType");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeLessThan(Integer value) {
+            addCriterion("entrust_aim_type <", value, "entrustAimType");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("entrust_aim_type <=", value, "entrustAimType");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeIn(List<Integer> values) {
+            addCriterion("entrust_aim_type in", values, "entrustAimType");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeNotIn(List<Integer> values) {
+            addCriterion("entrust_aim_type not in", values, "entrustAimType");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeBetween(Integer value1, Integer value2) {
+            addCriterion("entrust_aim_type between", value1, value2, "entrustAimType");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("entrust_aim_type not between", value1, value2, "entrustAimType");
+            return (Criteria) this;
+        }
+
         public Criteria andRemarkEntrustPurposeIsNull() {
             addCriterion("remark_entrust_purpose is null");
             return (Criteria) this;

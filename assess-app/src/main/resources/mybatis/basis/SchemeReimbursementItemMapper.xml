@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementItem" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="master_id" property="masterId" jdbcType="INTEGER" />
     <result column="judge_object_id" property="judgeObjectId" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="not_set_up_unit_price" property="notSetUpUnitPrice" jdbcType="DECIMAL" />
@@ -14,7 +15,9 @@
     <result column="other_total_price" property="otherTotalPrice" jdbcType="DECIMAL" />
     <result column="mortgage_unit_price" property="mortgageUnitPrice" jdbcType="DECIMAL" />
     <result column="mortgage_total_price" property="mortgageTotalPrice" jdbcType="DECIMAL" />
-    <result column="master_id" property="masterId" jdbcType="INTEGER" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,9 +78,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, judge_object_id, plan_details_id, not_set_up_unit_price, not_set_up_total_price, 
-    know_total_price, mortgaged_total_price, owed_total_price, other_total_price, mortgage_unit_price, 
-    mortgage_total_price, master_id
+    id, project_id, master_id, judge_object_id, plan_details_id, not_set_up_unit_price, 
+    not_set_up_total_price, know_total_price, mortgaged_total_price, owed_total_price, 
+    other_total_price, mortgage_unit_price, mortgage_total_price, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementItemExample" >
     select
@@ -113,16 +117,18 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_scheme_reimbursement_item (project_id, judge_object_id, plan_details_id, 
-      not_set_up_unit_price, not_set_up_total_price, 
+    insert into tb_scheme_reimbursement_item (project_id, master_id, judge_object_id, 
+      plan_details_id, not_set_up_unit_price, not_set_up_total_price, 
       know_total_price, mortgaged_total_price, owed_total_price, 
       other_total_price, mortgage_unit_price, mortgage_total_price, 
-      master_id)
-    values (#{projectId,jdbcType=INTEGER}, #{judgeObjectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
-      #{notSetUpUnitPrice,jdbcType=DECIMAL}, #{notSetUpTotalPrice,jdbcType=DECIMAL}, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{projectId,jdbcType=INTEGER}, #{masterId,jdbcType=INTEGER}, #{judgeObjectId,jdbcType=INTEGER}, 
+      #{planDetailsId,jdbcType=INTEGER}, #{notSetUpUnitPrice,jdbcType=DECIMAL}, #{notSetUpTotalPrice,jdbcType=DECIMAL}, 
       #{knowTotalPrice,jdbcType=DECIMAL}, #{mortgagedTotalPrice,jdbcType=DECIMAL}, #{owedTotalPrice,jdbcType=DECIMAL}, 
       #{otherTotalPrice,jdbcType=DECIMAL}, #{mortgageUnitPrice,jdbcType=DECIMAL}, #{mortgageTotalPrice,jdbcType=DECIMAL}, 
-      #{masterId,jdbcType=INTEGER})
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -132,6 +138,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
         project_id,
+      </if>
+      <if test="masterId != null" >
+        master_id,
       </if>
       <if test="judgeObjectId != null" >
         judge_object_id,
@@ -163,13 +172,22 @@
       <if test="mortgageTotalPrice != null" >
         mortgage_total_price,
       </if>
-      <if test="masterId != null" >
-        master_id,
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
         #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="masterId != null" >
+        #{masterId,jdbcType=INTEGER},
       </if>
       <if test="judgeObjectId != null" >
         #{judgeObjectId,jdbcType=INTEGER},
@@ -201,8 +219,14 @@
       <if test="mortgageTotalPrice != null" >
         #{mortgageTotalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="masterId != null" >
-        #{masterId,jdbcType=INTEGER},
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -220,6 +244,9 @@
       </if>
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.masterId != null" >
+        master_id = #{record.masterId,jdbcType=INTEGER},
       </if>
       <if test="record.judgeObjectId != null" >
         judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
@@ -251,8 +278,14 @@
       <if test="record.mortgageTotalPrice != null" >
         mortgage_total_price = #{record.mortgageTotalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.masterId != null" >
-        master_id = #{record.masterId,jdbcType=INTEGER},
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -263,6 +296,7 @@
     update tb_scheme_reimbursement_item
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
+      master_id = #{record.masterId,jdbcType=INTEGER},
       judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       not_set_up_unit_price = #{record.notSetUpUnitPrice,jdbcType=DECIMAL},
@@ -273,7 +307,9 @@
       other_total_price = #{record.otherTotalPrice,jdbcType=DECIMAL},
       mortgage_unit_price = #{record.mortgageUnitPrice,jdbcType=DECIMAL},
       mortgage_total_price = #{record.mortgageTotalPrice,jdbcType=DECIMAL},
-      master_id = #{record.masterId,jdbcType=INTEGER}
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -283,6 +319,9 @@
     <set >
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="masterId != null" >
+        master_id = #{masterId,jdbcType=INTEGER},
       </if>
       <if test="judgeObjectId != null" >
         judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
@@ -314,8 +353,14 @@
       <if test="mortgageTotalPrice != null" >
         mortgage_total_price = #{mortgageTotalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="masterId != null" >
-        master_id = #{masterId,jdbcType=INTEGER},
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -323,6 +368,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementItem" >
     update tb_scheme_reimbursement_item
     set project_id = #{projectId,jdbcType=INTEGER},
+      master_id = #{masterId,jdbcType=INTEGER},
       judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       not_set_up_unit_price = #{notSetUpUnitPrice,jdbcType=DECIMAL},
@@ -333,7 +379,9 @@
       other_total_price = #{otherTotalPrice,jdbcType=DECIMAL},
       mortgage_unit_price = #{mortgageUnitPrice,jdbcType=DECIMAL},
       mortgage_total_price = #{mortgageTotalPrice,jdbcType=DECIMAL},
-      master_id = #{masterId,jdbcType=INTEGER}
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -47,6 +47,7 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
             schemeLiquidationAnalysisService.initTaxAllocation(projectPlanDetails.getAreaId(), projectPlanDetails.getId());
         }
         modelAndView.addObject("master", schemeLiquidationAnalysis);
+        setModelParam(modelAndView,projectPlanDetails);
         return modelAndView;
     }
 
@@ -65,6 +66,7 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskLiquidationAnalysisApproval", processInsId, boxId, taskId, agentUserAccount);
         SchemeLiquidationAnalysis schemeLiquidationAnalysis = schemeLiquidationAnalysisService.getDataByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("master", schemeLiquidationAnalysis);
+        setModelParam(modelAndView,projectPlanDetails);
         return modelAndView;
     }
 
@@ -83,6 +85,7 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskLiquidationAnalysisIndex", processInsId, boxId, taskId, agentUserAccount);
         SchemeLiquidationAnalysis schemeLiquidationAnalysis = schemeLiquidationAnalysisService.getDataByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("master", schemeLiquidationAnalysis);
+        setModelParam(modelAndView,projectPlanDetails);
         return modelAndView;
     }
 
@@ -96,6 +99,7 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskLiquidationAnalysisApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         SchemeLiquidationAnalysis schemeLiquidationAnalysis = schemeLiquidationAnalysisService.getDataByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("master", schemeLiquidationAnalysis);
+        setModelParam(modelAndView,projectPlanDetails);
         return modelAndView;
     }
 
@@ -116,15 +120,19 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
 
     private void setModelParam(ModelAndView modelAndView, ProjectPlanDetails projectPlanDetails) {
         modelAndView.addObject("areaGroup", schemeAreaGroupService.get(projectPlanDetails.getAreaId()));
-        List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(projectPlanDetails.getAreaId());
+        List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(projectPlanDetails.getAreaId());
         BigDecimal groupArea = new BigDecimal("0");
         BigDecimal groupPrice = new BigDecimal("0");
         //应该获取最终测算好的价格与面积
         if (CollectionUtils.isNotEmpty(judgeObjects)) {
             for (SchemeJudgeObject judgeObject : judgeObjects) {
-                groupArea = groupArea.add(judgeObject.getEvaluationArea());
-
+                if(judgeObject.getEvaluationArea()!=null&&judgeObject.getPrice()!=null){
+                    groupArea = groupArea.add(judgeObject.getEvaluationArea());
+                    groupPrice=groupPrice.add(judgeObject.getEvaluationArea().multiply(judgeObject.getPrice()));
+                }
             }
         }
+        modelAndView.addObject("groupArea",groupArea);
+        modelAndView.addObject("groupPrice",groupPrice);
     }
 }

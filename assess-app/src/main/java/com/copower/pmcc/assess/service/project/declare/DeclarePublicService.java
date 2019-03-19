@@ -2,6 +2,8 @@ package com.copower.pmcc.assess.service.project.declare;
 
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.PoiUtils;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareApplyDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -507,9 +509,9 @@ public class DeclarePublicService {
     public boolean house(DeclareRealtyHouseCert declareRealtyHouseCert, StringBuilder builder, Row row, int i) throws Exception {
         List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_HOUSE_CATEGORY);
         //规划用途
-        List<BaseDataDic> planningUses = baseDataDicService.getCacheDataDicList("examine.house.load.utility");
+        List<BaseDataDic> planningUses = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_LOAD_UTILITY);
         //房产证类型
-        List<BaseDataDic> types = baseDataDicService.getCacheDataDicList("project.declare.house.certificate.type");
+        List<BaseDataDic> types = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_HOUSE_CERTIFICATE_TYPE);
 
         //省
         String provinceName = PoiUtils.getCellValue(row.getCell(0));

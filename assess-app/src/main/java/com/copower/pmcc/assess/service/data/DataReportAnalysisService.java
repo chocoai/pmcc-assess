@@ -54,7 +54,7 @@ public class DataReportAnalysisService {
             dataReportAnalysis.setCreator(commonService.thisUserAccount());
             dataReportAnalysisDao.addReportAnalysis(dataReportAnalysis);
             //修改子模板
-            dataReportTemplateItemService.templateItemToSetMasterId(dataReportAnalysis.getId(), SchemeSupportTypeEnum.REPORT_ANALYSIS_CASHABILITY.getKey());
+            dataReportTemplateItemService.templateItemToSetMasterId(dataReportAnalysis.getId(), SchemeSupportTypeEnum.REPORT_ANALYSIS_CATEGORY_LIQUIDITY.getKey());
         }
     }
 
@@ -140,4 +140,12 @@ public class DataReportAnalysisService {
         return dataReportAnalysisDao.getReportAnalysisList(province,city,district,type,entrustmentPurposeString);
     }
 
+    /**
+     * 获取上报告的变现分析数据
+     * @return
+     */
+    public String getReportLiquidity(){
+
+        return null;
+    }
 }

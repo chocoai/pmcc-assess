@@ -57,9 +57,4 @@ public class SchemeReimbursementDao {
         return null;
     }
 
-    public List<SchemeReimbursement> getSchemeReimbursements(List<Integer> judgeObjectIds) {
-        SchemeReimbursementExample example = new SchemeReimbursementExample();
-        example.createCriteria().andJudgeObjectIdIn(judgeObjectIds);
-        return schemeReimbursementMapper.selectByExample(example);
-    }
 }

@@ -12,6 +12,10 @@
     <result column="bis_check_original" property="bisCheckOriginal" jdbcType="BIT" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="special_case" property="specialCase" jdbcType="VARCHAR" />
+    <result column="segmentation_limit" property="segmentationLimit" jdbcType="VARCHAR" />
+    <result column="can_use" property="canUse" jdbcType="VARCHAR" />
+    <result column="application" property="application" jdbcType="INTEGER" />
+    <result column="certificate" property="certificate" jdbcType="VARCHAR" />
     <result column="rim_is_normal" property="rimIsNormal" jdbcType="VARCHAR" />
     <result column="abnormality" property="abnormality" jdbcType="VARCHAR" />
     <result column="entity_is_damage" property="entityIsDamage" jdbcType="VARCHAR" />
@@ -84,8 +88,9 @@
   </sql>
   <sql id="Base_Column_List" >
     id, project_id, plan_detail_id, process_ins_id, declare_record_id, evaluator, check_date, 
-    bis_check_original, remark, special_case, rim_is_normal, abnormality, entity_is_damage, 
-    damage_remark, transfer_limit, creator, gmt_created, gmt_modified
+    bis_check_original, remark, special_case, segmentation_limit, can_use, application, 
+    certificate, rim_is_normal, abnormality, entity_is_damage, damage_remark, transfer_limit, 
+    creator, gmt_created, gmt_modified
   </sql>
   <sql id="Blob_Column_List" >
     location
@@ -145,17 +150,19 @@
     insert into tb_survey_asset_inventory (project_id, plan_detail_id, process_ins_id, 
       declare_record_id, evaluator, check_date, 
       bis_check_original, remark, special_case, 
-      rim_is_normal, abnormality, entity_is_damage, 
-      damage_remark, transfer_limit, creator, 
-      gmt_created, gmt_modified, location
-      )
+      segmentation_limit, can_use, application, 
+      certificate, rim_is_normal, abnormality, 
+      entity_is_damage, damage_remark, transfer_limit, 
+      creator, gmt_created, gmt_modified, 
+      location)
     values (#{projectId,jdbcType=INTEGER}, #{planDetailId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
       #{declareRecordId,jdbcType=INTEGER}, #{evaluator,jdbcType=VARCHAR}, #{checkDate,jdbcType=TIMESTAMP}, 
       #{bisCheckOriginal,jdbcType=BIT}, #{remark,jdbcType=VARCHAR}, #{specialCase,jdbcType=VARCHAR}, 
-      #{rimIsNormal,jdbcType=VARCHAR}, #{abnormality,jdbcType=VARCHAR}, #{entityIsDamage,jdbcType=VARCHAR}, 
-      #{damageRemark,jdbcType=VARCHAR}, #{transferLimit,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{location,jdbcType=LONGVARCHAR}
-      )
+      #{segmentationLimit,jdbcType=VARCHAR}, #{canUse,jdbcType=VARCHAR}, #{application,jdbcType=INTEGER}, 
+      #{certificate,jdbcType=VARCHAR}, #{rimIsNormal,jdbcType=VARCHAR}, #{abnormality,jdbcType=VARCHAR}, 
+      #{entityIsDamage,jdbcType=VARCHAR}, #{damageRemark,jdbcType=VARCHAR}, #{transferLimit,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{location,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -189,6 +196,18 @@
       </if>
       <if test="specialCase != null" >
         special_case,
+      </if>
+      <if test="segmentationLimit != null" >
+        segmentation_limit,
+      </if>
+      <if test="canUse != null" >
+        can_use,
+      </if>
+      <if test="application != null" >
+        application,
+      </if>
+      <if test="certificate != null" >
+        certificate,
       </if>
       <if test="rimIsNormal != null" >
         rim_is_normal,
@@ -245,6 +264,18 @@
       </if>
       <if test="specialCase != null" >
         #{specialCase,jdbcType=VARCHAR},
+      </if>
+      <if test="segmentationLimit != null" >
+        #{segmentationLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="canUse != null" >
+        #{canUse,jdbcType=VARCHAR},
+      </if>
+      <if test="application != null" >
+        #{application,jdbcType=INTEGER},
+      </if>
+      <if test="certificate != null" >
+        #{certificate,jdbcType=VARCHAR},
       </if>
       <if test="rimIsNormal != null" >
         #{rimIsNormal,jdbcType=VARCHAR},
@@ -314,6 +345,18 @@
       <if test="record.specialCase != null" >
         special_case = #{record.specialCase,jdbcType=VARCHAR},
       </if>
+      <if test="record.segmentationLimit != null" >
+        segmentation_limit = #{record.segmentationLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.canUse != null" >
+        can_use = #{record.canUse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.application != null" >
+        application = #{record.application,jdbcType=INTEGER},
+      </if>
+      <if test="record.certificate != null" >
+        certificate = #{record.certificate,jdbcType=VARCHAR},
+      </if>
       <if test="record.rimIsNormal != null" >
         rim_is_normal = #{record.rimIsNormal,jdbcType=VARCHAR},
       </if>
@@ -358,6 +401,10 @@
       bis_check_original = #{record.bisCheckOriginal,jdbcType=BIT},
       remark = #{record.remark,jdbcType=VARCHAR},
       special_case = #{record.specialCase,jdbcType=VARCHAR},
+      segmentation_limit = #{record.segmentationLimit,jdbcType=VARCHAR},
+      can_use = #{record.canUse,jdbcType=VARCHAR},
+      application = #{record.application,jdbcType=INTEGER},
+      certificate = #{record.certificate,jdbcType=VARCHAR},
       rim_is_normal = #{record.rimIsNormal,jdbcType=VARCHAR},
       abnormality = #{record.abnormality,jdbcType=VARCHAR},
       entity_is_damage = #{record.entityIsDamage,jdbcType=VARCHAR},
@@ -383,6 +430,10 @@
       bis_check_original = #{record.bisCheckOriginal,jdbcType=BIT},
       remark = #{record.remark,jdbcType=VARCHAR},
       special_case = #{record.specialCase,jdbcType=VARCHAR},
+      segmentation_limit = #{record.segmentationLimit,jdbcType=VARCHAR},
+      can_use = #{record.canUse,jdbcType=VARCHAR},
+      application = #{record.application,jdbcType=INTEGER},
+      certificate = #{record.certificate,jdbcType=VARCHAR},
       rim_is_normal = #{record.rimIsNormal,jdbcType=VARCHAR},
       abnormality = #{record.abnormality,jdbcType=VARCHAR},
       entity_is_damage = #{record.entityIsDamage,jdbcType=VARCHAR},
@@ -425,6 +476,18 @@
       <if test="specialCase != null" >
         special_case = #{specialCase,jdbcType=VARCHAR},
       </if>
+      <if test="segmentationLimit != null" >
+        segmentation_limit = #{segmentationLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="canUse != null" >
+        can_use = #{canUse,jdbcType=VARCHAR},
+      </if>
+      <if test="application != null" >
+        application = #{application,jdbcType=INTEGER},
+      </if>
+      <if test="certificate != null" >
+        certificate = #{certificate,jdbcType=VARCHAR},
+      </if>
       <if test="rimIsNormal != null" >
         rim_is_normal = #{rimIsNormal,jdbcType=VARCHAR},
       </if>
@@ -466,6 +529,10 @@
       bis_check_original = #{bisCheckOriginal,jdbcType=BIT},
       remark = #{remark,jdbcType=VARCHAR},
       special_case = #{specialCase,jdbcType=VARCHAR},
+      segmentation_limit = #{segmentationLimit,jdbcType=VARCHAR},
+      can_use = #{canUse,jdbcType=VARCHAR},
+      application = #{application,jdbcType=INTEGER},
+      certificate = #{certificate,jdbcType=VARCHAR},
       rim_is_normal = #{rimIsNormal,jdbcType=VARCHAR},
       abnormality = #{abnormality,jdbcType=VARCHAR},
       entity_is_damage = #{entityIsDamage,jdbcType=VARCHAR},
@@ -488,6 +555,10 @@
       bis_check_original = #{bisCheckOriginal,jdbcType=BIT},
       remark = #{remark,jdbcType=VARCHAR},
       special_case = #{specialCase,jdbcType=VARCHAR},
+      segmentation_limit = #{segmentationLimit,jdbcType=VARCHAR},
+      can_use = #{canUse,jdbcType=VARCHAR},
+      application = #{application,jdbcType=INTEGER},
+      certificate = #{certificate,jdbcType=VARCHAR},
       rim_is_normal = #{rimIsNormal,jdbcType=VARCHAR},
       abnormality = #{abnormality,jdbcType=VARCHAR},
       entity_is_damage = #{entityIsDamage,jdbcType=VARCHAR},

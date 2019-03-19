@@ -5,7 +5,6 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="method" property="method" jdbcType="INTEGER" />
     <result column="formula" property="formula" jdbcType="VARCHAR" />
-    <result column="replace_principle" property="replacePrinciple" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -69,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, method, formula, replace_principle, creator, gmt_created, gmt_modified
+    id, method, formula, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataMethodFormulaExample" >
     select
@@ -105,12 +104,10 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_method_formula (method, formula, replace_principle, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{method,jdbcType=INTEGER}, #{formula,jdbcType=VARCHAR}, #{replacePrinciple,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_data_method_formula (method, formula, creator, 
+      gmt_created, gmt_modified)
+    values (#{method,jdbcType=INTEGER}, #{formula,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataMethodFormula" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -123,9 +120,6 @@
       </if>
       <if test="formula != null" >
         formula,
-      </if>
-      <if test="replacePrinciple != null" >
-        replace_principle,
       </if>
       <if test="creator != null" >
         creator,
@@ -143,9 +137,6 @@
       </if>
       <if test="formula != null" >
         #{formula,jdbcType=VARCHAR},
-      </if>
-      <if test="replacePrinciple != null" >
-        #{replacePrinciple,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -176,9 +167,6 @@
       <if test="record.formula != null" >
         formula = #{record.formula,jdbcType=VARCHAR},
       </if>
-      <if test="record.replacePrinciple != null" >
-        replace_principle = #{record.replacePrinciple,jdbcType=VARCHAR},
-      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -198,7 +186,6 @@
     set id = #{record.id,jdbcType=INTEGER},
       method = #{record.method,jdbcType=INTEGER},
       formula = #{record.formula,jdbcType=VARCHAR},
-      replace_principle = #{record.replacePrinciple,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -214,9 +201,6 @@
       </if>
       <if test="formula != null" >
         formula = #{formula,jdbcType=VARCHAR},
-      </if>
-      <if test="replacePrinciple != null" >
-        replace_principle = #{replacePrinciple,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -234,7 +218,6 @@
     update tb_data_method_formula
     set method = #{method,jdbcType=INTEGER},
       formula = #{formula,jdbcType=VARCHAR},
-      replace_principle = #{replacePrinciple,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

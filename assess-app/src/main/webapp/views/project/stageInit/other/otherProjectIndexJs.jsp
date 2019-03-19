@@ -295,6 +295,9 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.dataEntrustmentPurpose, item.entrustPurpose, function (html, data) {
                 $("#" + objProject.config.info.frm).find("select.entrustPurpose").empty().html(html).trigger('change');
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.dataEntrustmentPurposeMortgage, item.entrustAimType, function (html, data) {
+                $("#" + objProject.config.info.frm).find("select.entrustAimType").empty().html(html).trigger('change');
+            });
             AssessCommon.loadDataDicByKey(AssessDicKey.project_initiate_urgency, item.urgency, function (html, data) {
                 $("#" + objProject.config.info.frm).find("select.urgency").empty().html(html).trigger('change');
             });
@@ -306,14 +309,14 @@
                     });
                 }
             });
-            $("#" + objProject.config.info.frm).find("select.entrustPurpose").change(function () {
+           /* $("#" + objProject.config.info.frm).find("select.entrustPurpose").change(function () {
                 var entrustPurpose = $("#" + objProject.config.info.frm).find("select.entrustPurpose").val();
                 if (objProject.isNotBlank(entrustPurpose)) {
                     AssessCommon.getDataDicInfo(entrustPurpose, function (data) {
                         $("#" + objProject.config.info.frm).find("input[name='remarkEntrustPurpose']").val(data.remark);
                     });
                 }
-            });
+            });*/
         }
     };
 
