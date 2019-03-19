@@ -9,8 +9,6 @@ public class DataMethodFormula {
 
     private String formula;
 
-    private String replacePrinciple;
-
     private String creator;
 
     private Date gmtCreated;
@@ -39,14 +37,6 @@ public class DataMethodFormula {
 
     public void setFormula(String formula) {
         this.formula = formula == null ? null : formula.trim();
-    }
-
-    public String getReplacePrinciple() {
-        return replacePrinciple;
-    }
-
-    public void setReplacePrinciple(String replacePrinciple) {
-        this.replacePrinciple = replacePrinciple == null ? null : replacePrinciple.trim();
     }
 
     public String getCreator() {

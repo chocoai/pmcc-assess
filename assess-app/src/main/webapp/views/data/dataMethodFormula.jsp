@@ -93,7 +93,6 @@
         loadDataDicList: function () {
             var cols = [];
             cols.push({field: 'methodType', title: '方法'});
-            cols.push({field: 'replacePrinciple', title: '替换原则'});
             cols.push({field: 'formula', title: '公式内容'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -229,27 +228,13 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            替换原则
-                                        </label>
-                                        <div class="col-sm-10">
-                                                 <textarea placeholder="替换原则" name="replacePrinciple"
-                                                           class="form-control"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
                                             公式内容
                                         </label>
                                         <div class="col-sm-10">
-                                                 <%--<textarea placeholder="公式内容" name="formula"
-                                                           class="form-control"></textarea>--%>
-                                                     <div style="width:99%;height:200px;" id="formula"></div>
+                                            <div style="width:99%;height:200px;" id="formula"></div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>

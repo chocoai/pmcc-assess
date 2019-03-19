@@ -314,7 +314,7 @@ public class SchemeReportFileService extends BaseService {
         if (CollectionUtils.isEmpty(judgeObjectList)) return null;
         Map<Integer, List<SysAttachmentDto>> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            List<SchemeReimbursement> reimbursements = schemeReimbursementService.getSchemeReimbursements(Lists.newArrayList(schemeJudgeObject.getId()));
+            List<SchemeReimbursement> reimbursements = null;
             if (CollectionUtils.isNotEmpty(reimbursements)) {
                 SchemeReimbursement schemeReimbursement = reimbursements.get(0);
                 List<SysAttachmentDto> dtos = baseAttachmentService.getByField_tableId(schemeReimbursement.getId(), null, FormatUtils.entityNameConvertToTableName(SchemeReimbursement.class));

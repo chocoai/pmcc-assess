@@ -4,23 +4,19 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReimbursementDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReimbursementItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursement;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementItem;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeReimbursementDto;
-import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeReimbursementItemVo;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -72,11 +68,6 @@ public class SchemeReimbursementService {
             schemeReimbursement.setCreator(processControllerComponent.getThisUser());
             schemeReimbursementDao.addSchemeReimbursement(schemeReimbursement);
         }
-
-    }
-
-    public List<SchemeReimbursement> getSchemeReimbursements(List<Integer> judgeObjectIds) {
-        return schemeReimbursementDao.getSchemeReimbursements(judgeObjectIds);
     }
 
     public SchemeReimbursement getSingleObject(Integer id) {
@@ -110,49 +101,13 @@ public class SchemeReimbursementService {
 
 
     public SchemeReimbursement applyInit(ProjectPlanDetails projectPlanDetails) {
-        //清除未提交的数据
-        SchemeReimbursement invalid = new SchemeReimbursement();
-        invalid.setProcessInsId("0");
-        List<SchemeReimbursement> invalidList = schemeReimbursementDao.getObjectList(invalid);
-        if (CollectionUtils.isNotEmpty(invalidList)) {
-            for (SchemeReimbursement item : invalidList) {
-                schemeReimbursementDao.deleteSchemeReimbursement(item.getId());
-                //删除子表
-                List<SchemeReimbursementItemVo> schemeReimbursementItems = this.getItemByMasterId(item.getId());
-                for (SchemeReimbursementItemVo vo : schemeReimbursementItems) {
-                    schemeReimbursementItemDao.deleteObject(vo.getId());
-                }
-            }
-        }
-
         //初始化添加
         SchemeReimbursement master = new SchemeReimbursement();
         master.setProjectId(projectPlanDetails.getProjectId());
-        master.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
         master.setPlanDetailsId(projectPlanDetails.getId());
-        master.setProcessInsId("0");
         master.setStatus(ProcessStatusEnum.RUN.getValue());
         this.saveSchemeReimbursement(master);
-        List<SchemeJudgeObjectVo> SchemeJudgeObjectVos = schemeJudgeObjectService.getListByPid(projectPlanDetails.getJudgeObjectId());
-        if (CollectionUtils.isNotEmpty(SchemeJudgeObjectVos)) {
-            for (SchemeJudgeObjectVo item : SchemeJudgeObjectVos) {
-                SchemeReimbursementItem schemeReimbursementItem = new SchemeReimbursementItem();
-                schemeReimbursementItem.setProjectId(projectPlanDetails.getProjectId());
-                schemeReimbursementItem.setJudgeObjectId(item.getId());
-                schemeReimbursementItem.setPlanDetailsId(projectPlanDetails.getId());
-                schemeReimbursementItem.setMasterId(master.getId());
-                schemeReimbursementItemDao.addObject(schemeReimbursementItem);
-            }
-        }
-        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-        if (schemeJudgeObject != null) {
-            SchemeReimbursementItem schemeReimbursementItem = new SchemeReimbursementItem();
-            schemeReimbursementItem.setProjectId(projectPlanDetails.getProjectId());
-            schemeReimbursementItem.setJudgeObjectId(schemeReimbursementItem.getId());
-            schemeReimbursementItem.setPlanDetailsId(projectPlanDetails.getId());
-            schemeReimbursementItem.setMasterId(master.getId());
-            schemeReimbursementItemDao.addObject(schemeReimbursementItem);
-        }
+
         return master;
     }
 

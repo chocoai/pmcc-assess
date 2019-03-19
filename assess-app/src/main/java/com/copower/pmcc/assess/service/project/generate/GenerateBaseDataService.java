@@ -758,7 +758,6 @@ public class GenerateBaseDataService {
                         if (schemeReimbursement != null) {
                             SchemeReimbursementItemVo select = new SchemeReimbursementItemVo();
                             select.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
-                            select.setJudgeObjectId(schemeReimbursement.getJudgeObjectId());
                             List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = schemeReimbursementService.findQueryBySchemeReimbursementItem(select);
                             if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
                                 BigDecimal bigDecimal = new BigDecimal(0);
@@ -807,7 +806,6 @@ public class GenerateBaseDataService {
                         if (schemeReimbursement != null) {
                             SchemeReimbursementItemVo select = new SchemeReimbursementItemVo();
                             select.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
-                            select.setJudgeObjectId(schemeReimbursement.getJudgeObjectId());
                             List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = schemeReimbursementService.findQueryBySchemeReimbursementItem(select);
                             if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
                                 BigDecimal bigDecimal = new BigDecimal(0);
@@ -2368,7 +2366,6 @@ public class GenerateBaseDataService {
                 if (schemeReimbursement != null) {
                     SchemeReimbursementItemVo query = new SchemeReimbursementItemVo();
                     query.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
-                    query.setJudgeObjectId(schemeReimbursement.getJudgeObjectId());
                     List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = schemeReimbursementService.findQueryBySchemeReimbursementItem(query);
                     if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
                         BigDecimal bigDecimal2 = new BigDecimal(0);
@@ -2429,7 +2426,6 @@ public class GenerateBaseDataService {
                 if (schemeReimbursement != null) {
                     SchemeReimbursementItemVo query = new SchemeReimbursementItemVo();
                     query.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
-                    query.setJudgeObjectId(schemeReimbursement.getJudgeObjectId());
                     List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = schemeReimbursementService.findQueryBySchemeReimbursementItem(query);
                     if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
                         BigDecimal bigDecimal = new BigDecimal(0);
@@ -3136,7 +3132,6 @@ public class GenerateBaseDataService {
                         if (Objects.equal(projectInfo.getEntrustPurpose(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId())) {
                             SchemeReimbursementItemVo query = new SchemeReimbursementItemVo();
                             query.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
-                            query.setJudgeObjectId(schemeReimbursement.getJudgeObjectId());
                             List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = schemeReimbursementService.findQueryBySchemeReimbursementItem(query);
                             if (CollectionUtils.isNotEmpty(schemeReimbursementItemVoList)) {
                                 for (SchemeReimbursementItemVo schemeReimbursementItemVo : schemeReimbursementItemVoList) {

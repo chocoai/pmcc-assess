@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class SchemeReimbursement {
@@ -8,7 +7,7 @@ public class SchemeReimbursement {
 
     private Integer projectId;
 
-    private Integer judgeObjectId;
+    private Integer areaId;
 
     private Integer planDetailsId;
 
@@ -21,22 +20,6 @@ public class SchemeReimbursement {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private BigDecimal mortgageTotalPrice;
-
-    private BigDecimal mortgageUnitPrice;
-
-    private BigDecimal otherTotalPrice;
-
-    private BigDecimal owedTotalPrice;
-
-    private BigDecimal mortgagedTotalPrice;
-
-    private BigDecimal knowTotalPrice;
-
-    private BigDecimal notSetUpTotalPrice;
-
-    private BigDecimal notSetUpUnitPrice;
 
     public Integer getId() {
         return id;
@@ -54,12 +37,12 @@ public class SchemeReimbursement {
         this.projectId = projectId;
     }
 
-    public Integer getJudgeObjectId() {
-        return judgeObjectId;
+    public Integer getAreaId() {
+        return areaId;
     }
 
-    public void setJudgeObjectId(Integer judgeObjectId) {
-        this.judgeObjectId = judgeObjectId;
+    public void setAreaId(Integer areaId) {
+        this.areaId = areaId;
     }
 
     public Integer getPlanDetailsId() {
@@ -108,69 +91,5 @@ public class SchemeReimbursement {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public BigDecimal getMortgageTotalPrice() {
-        return mortgageTotalPrice;
-    }
-
-    public void setMortgageTotalPrice(BigDecimal mortgageTotalPrice) {
-        this.mortgageTotalPrice = mortgageTotalPrice;
-    }
-
-    public BigDecimal getMortgageUnitPrice() {
-        return mortgageUnitPrice;
-    }
-
-    public void setMortgageUnitPrice(BigDecimal mortgageUnitPrice) {
-        this.mortgageUnitPrice = mortgageUnitPrice;
-    }
-
-    public BigDecimal getOtherTotalPrice() {
-        return otherTotalPrice;
-    }
-
-    public void setOtherTotalPrice(BigDecimal otherTotalPrice) {
-        this.otherTotalPrice = otherTotalPrice;
-    }
-
-    public BigDecimal getOwedTotalPrice() {
-        return owedTotalPrice;
-    }
-
-    public void setOwedTotalPrice(BigDecimal owedTotalPrice) {
-        this.owedTotalPrice = owedTotalPrice;
-    }
-
-    public BigDecimal getMortgagedTotalPrice() {
-        return mortgagedTotalPrice;
-    }
-
-    public void setMortgagedTotalPrice(BigDecimal mortgagedTotalPrice) {
-        this.mortgagedTotalPrice = mortgagedTotalPrice;
-    }
-
-    public BigDecimal getKnowTotalPrice() {
-        return knowTotalPrice;
-    }
-
-    public void setKnowTotalPrice(BigDecimal knowTotalPrice) {
-        this.knowTotalPrice = knowTotalPrice;
-    }
-
-    public BigDecimal getNotSetUpTotalPrice() {
-        return notSetUpTotalPrice;
-    }
-
-    public void setNotSetUpTotalPrice(BigDecimal notSetUpTotalPrice) {
-        this.notSetUpTotalPrice = notSetUpTotalPrice;
-    }
-
-    public BigDecimal getNotSetUpUnitPrice() {
-        return notSetUpUnitPrice;
-    }
-
-    public void setNotSetUpUnitPrice(BigDecimal notSetUpUnitPrice) {
-        this.notSetUpUnitPrice = notSetUpUnitPrice;
     }
 }

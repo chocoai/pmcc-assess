@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -226,63 +225,63 @@ public class SchemeReimbursementExample {
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdIsNull() {
-            addCriterion("judge_object_id is null");
+        public Criteria andAreaIdIsNull() {
+            addCriterion("area_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdIsNotNull() {
-            addCriterion("judge_object_id is not null");
+        public Criteria andAreaIdIsNotNull() {
+            addCriterion("area_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdEqualTo(Integer value) {
-            addCriterion("judge_object_id =", value, "judgeObjectId");
+        public Criteria andAreaIdEqualTo(Integer value) {
+            addCriterion("area_id =", value, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdNotEqualTo(Integer value) {
-            addCriterion("judge_object_id <>", value, "judgeObjectId");
+        public Criteria andAreaIdNotEqualTo(Integer value) {
+            addCriterion("area_id <>", value, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdGreaterThan(Integer value) {
-            addCriterion("judge_object_id >", value, "judgeObjectId");
+        public Criteria andAreaIdGreaterThan(Integer value) {
+            addCriterion("area_id >", value, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("judge_object_id >=", value, "judgeObjectId");
+        public Criteria andAreaIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("area_id >=", value, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdLessThan(Integer value) {
-            addCriterion("judge_object_id <", value, "judgeObjectId");
+        public Criteria andAreaIdLessThan(Integer value) {
+            addCriterion("area_id <", value, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdLessThanOrEqualTo(Integer value) {
-            addCriterion("judge_object_id <=", value, "judgeObjectId");
+        public Criteria andAreaIdLessThanOrEqualTo(Integer value) {
+            addCriterion("area_id <=", value, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdIn(List<Integer> values) {
-            addCriterion("judge_object_id in", values, "judgeObjectId");
+        public Criteria andAreaIdIn(List<Integer> values) {
+            addCriterion("area_id in", values, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdNotIn(List<Integer> values) {
-            addCriterion("judge_object_id not in", values, "judgeObjectId");
+        public Criteria andAreaIdNotIn(List<Integer> values) {
+            addCriterion("area_id not in", values, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdBetween(Integer value1, Integer value2) {
-            addCriterion("judge_object_id between", value1, value2, "judgeObjectId");
+        public Criteria andAreaIdBetween(Integer value1, Integer value2) {
+            addCriterion("area_id between", value1, value2, "areaId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("judge_object_id not between", value1, value2, "judgeObjectId");
+        public Criteria andAreaIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("area_id not between", value1, value2, "areaId");
             return (Criteria) this;
         }
 
@@ -673,486 +672,6 @@ public class SchemeReimbursementExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageTotalPriceIsNull() {
-            addCriterion("mortgage_total_price is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageTotalPriceIsNotNull() {
-            addCriterion("mortgage_total_price is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageTotalPriceEqualTo(BigDecimal value) {
-            addCriterion("mortgage_total_price =", value, "mortgageTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageTotalPriceNotEqualTo(BigDecimal value) {
-            addCriterion("mortgage_total_price <>", value, "mortgageTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageTotalPriceGreaterThan(BigDecimal value) {
-            addCriterion("mortgage_total_price >", value, "mortgageTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageTotalPriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("mortgage_total_price >=", value, "mortgageTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageTotalPriceLessThan(BigDecimal value) {
-            addCriterion("mortgage_total_price <", value, "mortgageTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageTotalPriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("mortgage_total_price <=", value, "mortgageTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageTotalPriceIn(List<BigDecimal> values) {
-            addCriterion("mortgage_total_price in", values, "mortgageTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageTotalPriceNotIn(List<BigDecimal> values) {
-            addCriterion("mortgage_total_price not in", values, "mortgageTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageTotalPriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("mortgage_total_price between", value1, value2, "mortgageTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageTotalPriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("mortgage_total_price not between", value1, value2, "mortgageTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageUnitPriceIsNull() {
-            addCriterion("mortgage_unit_price is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageUnitPriceIsNotNull() {
-            addCriterion("mortgage_unit_price is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageUnitPriceEqualTo(BigDecimal value) {
-            addCriterion("mortgage_unit_price =", value, "mortgageUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageUnitPriceNotEqualTo(BigDecimal value) {
-            addCriterion("mortgage_unit_price <>", value, "mortgageUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageUnitPriceGreaterThan(BigDecimal value) {
-            addCriterion("mortgage_unit_price >", value, "mortgageUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageUnitPriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("mortgage_unit_price >=", value, "mortgageUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageUnitPriceLessThan(BigDecimal value) {
-            addCriterion("mortgage_unit_price <", value, "mortgageUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageUnitPriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("mortgage_unit_price <=", value, "mortgageUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageUnitPriceIn(List<BigDecimal> values) {
-            addCriterion("mortgage_unit_price in", values, "mortgageUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageUnitPriceNotIn(List<BigDecimal> values) {
-            addCriterion("mortgage_unit_price not in", values, "mortgageUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageUnitPriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("mortgage_unit_price between", value1, value2, "mortgageUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgageUnitPriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("mortgage_unit_price not between", value1, value2, "mortgageUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andOtherTotalPriceIsNull() {
-            addCriterion("other_total_price is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOtherTotalPriceIsNotNull() {
-            addCriterion("other_total_price is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOtherTotalPriceEqualTo(BigDecimal value) {
-            addCriterion("other_total_price =", value, "otherTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andOtherTotalPriceNotEqualTo(BigDecimal value) {
-            addCriterion("other_total_price <>", value, "otherTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andOtherTotalPriceGreaterThan(BigDecimal value) {
-            addCriterion("other_total_price >", value, "otherTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andOtherTotalPriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("other_total_price >=", value, "otherTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andOtherTotalPriceLessThan(BigDecimal value) {
-            addCriterion("other_total_price <", value, "otherTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andOtherTotalPriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("other_total_price <=", value, "otherTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andOtherTotalPriceIn(List<BigDecimal> values) {
-            addCriterion("other_total_price in", values, "otherTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andOtherTotalPriceNotIn(List<BigDecimal> values) {
-            addCriterion("other_total_price not in", values, "otherTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andOtherTotalPriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("other_total_price between", value1, value2, "otherTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andOtherTotalPriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("other_total_price not between", value1, value2, "otherTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwedTotalPriceIsNull() {
-            addCriterion("owed_total_price is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwedTotalPriceIsNotNull() {
-            addCriterion("owed_total_price is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwedTotalPriceEqualTo(BigDecimal value) {
-            addCriterion("owed_total_price =", value, "owedTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwedTotalPriceNotEqualTo(BigDecimal value) {
-            addCriterion("owed_total_price <>", value, "owedTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwedTotalPriceGreaterThan(BigDecimal value) {
-            addCriterion("owed_total_price >", value, "owedTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwedTotalPriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("owed_total_price >=", value, "owedTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwedTotalPriceLessThan(BigDecimal value) {
-            addCriterion("owed_total_price <", value, "owedTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwedTotalPriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("owed_total_price <=", value, "owedTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwedTotalPriceIn(List<BigDecimal> values) {
-            addCriterion("owed_total_price in", values, "owedTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwedTotalPriceNotIn(List<BigDecimal> values) {
-            addCriterion("owed_total_price not in", values, "owedTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwedTotalPriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("owed_total_price between", value1, value2, "owedTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwedTotalPriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("owed_total_price not between", value1, value2, "owedTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgagedTotalPriceIsNull() {
-            addCriterion("mortgaged_total_price is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgagedTotalPriceIsNotNull() {
-            addCriterion("mortgaged_total_price is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgagedTotalPriceEqualTo(BigDecimal value) {
-            addCriterion("mortgaged_total_price =", value, "mortgagedTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgagedTotalPriceNotEqualTo(BigDecimal value) {
-            addCriterion("mortgaged_total_price <>", value, "mortgagedTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgagedTotalPriceGreaterThan(BigDecimal value) {
-            addCriterion("mortgaged_total_price >", value, "mortgagedTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgagedTotalPriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("mortgaged_total_price >=", value, "mortgagedTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgagedTotalPriceLessThan(BigDecimal value) {
-            addCriterion("mortgaged_total_price <", value, "mortgagedTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgagedTotalPriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("mortgaged_total_price <=", value, "mortgagedTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgagedTotalPriceIn(List<BigDecimal> values) {
-            addCriterion("mortgaged_total_price in", values, "mortgagedTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgagedTotalPriceNotIn(List<BigDecimal> values) {
-            addCriterion("mortgaged_total_price not in", values, "mortgagedTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgagedTotalPriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("mortgaged_total_price between", value1, value2, "mortgagedTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andMortgagedTotalPriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("mortgaged_total_price not between", value1, value2, "mortgagedTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andKnowTotalPriceIsNull() {
-            addCriterion("know_total_price is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andKnowTotalPriceIsNotNull() {
-            addCriterion("know_total_price is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andKnowTotalPriceEqualTo(BigDecimal value) {
-            addCriterion("know_total_price =", value, "knowTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andKnowTotalPriceNotEqualTo(BigDecimal value) {
-            addCriterion("know_total_price <>", value, "knowTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andKnowTotalPriceGreaterThan(BigDecimal value) {
-            addCriterion("know_total_price >", value, "knowTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andKnowTotalPriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("know_total_price >=", value, "knowTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andKnowTotalPriceLessThan(BigDecimal value) {
-            addCriterion("know_total_price <", value, "knowTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andKnowTotalPriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("know_total_price <=", value, "knowTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andKnowTotalPriceIn(List<BigDecimal> values) {
-            addCriterion("know_total_price in", values, "knowTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andKnowTotalPriceNotIn(List<BigDecimal> values) {
-            addCriterion("know_total_price not in", values, "knowTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andKnowTotalPriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("know_total_price between", value1, value2, "knowTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andKnowTotalPriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("know_total_price not between", value1, value2, "knowTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpTotalPriceIsNull() {
-            addCriterion("not_set_up_total_price is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpTotalPriceIsNotNull() {
-            addCriterion("not_set_up_total_price is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpTotalPriceEqualTo(BigDecimal value) {
-            addCriterion("not_set_up_total_price =", value, "notSetUpTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpTotalPriceNotEqualTo(BigDecimal value) {
-            addCriterion("not_set_up_total_price <>", value, "notSetUpTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpTotalPriceGreaterThan(BigDecimal value) {
-            addCriterion("not_set_up_total_price >", value, "notSetUpTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpTotalPriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("not_set_up_total_price >=", value, "notSetUpTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpTotalPriceLessThan(BigDecimal value) {
-            addCriterion("not_set_up_total_price <", value, "notSetUpTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpTotalPriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("not_set_up_total_price <=", value, "notSetUpTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpTotalPriceIn(List<BigDecimal> values) {
-            addCriterion("not_set_up_total_price in", values, "notSetUpTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpTotalPriceNotIn(List<BigDecimal> values) {
-            addCriterion("not_set_up_total_price not in", values, "notSetUpTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpTotalPriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("not_set_up_total_price between", value1, value2, "notSetUpTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpTotalPriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("not_set_up_total_price not between", value1, value2, "notSetUpTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpUnitPriceIsNull() {
-            addCriterion("not_set_up_unit_price is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpUnitPriceIsNotNull() {
-            addCriterion("not_set_up_unit_price is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpUnitPriceEqualTo(BigDecimal value) {
-            addCriterion("not_set_up_unit_price =", value, "notSetUpUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpUnitPriceNotEqualTo(BigDecimal value) {
-            addCriterion("not_set_up_unit_price <>", value, "notSetUpUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpUnitPriceGreaterThan(BigDecimal value) {
-            addCriterion("not_set_up_unit_price >", value, "notSetUpUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpUnitPriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("not_set_up_unit_price >=", value, "notSetUpUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpUnitPriceLessThan(BigDecimal value) {
-            addCriterion("not_set_up_unit_price <", value, "notSetUpUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpUnitPriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("not_set_up_unit_price <=", value, "notSetUpUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpUnitPriceIn(List<BigDecimal> values) {
-            addCriterion("not_set_up_unit_price in", values, "notSetUpUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpUnitPriceNotIn(List<BigDecimal> values) {
-            addCriterion("not_set_up_unit_price not in", values, "notSetUpUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpUnitPriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("not_set_up_unit_price between", value1, value2, "notSetUpUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotSetUpUnitPriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("not_set_up_unit_price not between", value1, value2, "notSetUpUnitPrice");
             return (Criteria) this;
         }
     }

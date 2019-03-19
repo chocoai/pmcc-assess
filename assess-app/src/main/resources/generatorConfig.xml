@@ -16,6 +16,7 @@
                         userId="root" password="123456">
             <property name="useInformationSchema" value="true"></property>
             <property name="remarks" value="true"></property>
+            <property name="nullCatalogMeansCurrent" value="true"/>
         </jdbcConnection>
 
         <javaTypeResolver>
@@ -41,7 +42,8 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_project_info" domainObjectName="ProjectInfo"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <table tableName="tb_scheme_reimbursement" domainObjectName="SchemeReimbursement"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <table tableName="tb_scheme_reimbursement_item" domainObjectName="SchemeReimbursementItem"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
         <!--<table tableName="tb_scheme_liquidation_analysis_item" domainObjectName="SchemeLiquidationAnalysisItem"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
         <!--<table tableName="tb_data_evaluation_hypothesis" domainObjectName="DataEvaluationHypothesis"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
         <!--<table tableName="tb_data_evaluation_principle" domainObjectName="DataEvaluationPrinciple"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
