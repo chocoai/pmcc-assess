@@ -745,6 +745,276 @@ public class SurveyAssetInventoryExample {
             return (Criteria) this;
         }
 
+        public Criteria andSegmentationLimitIsNull() {
+            addCriterion("segmentation_limit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSegmentationLimitIsNotNull() {
+            addCriterion("segmentation_limit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSegmentationLimitEqualTo(String value) {
+            addCriterion("segmentation_limit =", value, "segmentationLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andSegmentationLimitNotEqualTo(String value) {
+            addCriterion("segmentation_limit <>", value, "segmentationLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andSegmentationLimitGreaterThan(String value) {
+            addCriterion("segmentation_limit >", value, "segmentationLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andSegmentationLimitGreaterThanOrEqualTo(String value) {
+            addCriterion("segmentation_limit >=", value, "segmentationLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andSegmentationLimitLessThan(String value) {
+            addCriterion("segmentation_limit <", value, "segmentationLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andSegmentationLimitLessThanOrEqualTo(String value) {
+            addCriterion("segmentation_limit <=", value, "segmentationLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andSegmentationLimitLike(String value) {
+            addCriterion("segmentation_limit like", value, "segmentationLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andSegmentationLimitNotLike(String value) {
+            addCriterion("segmentation_limit not like", value, "segmentationLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andSegmentationLimitIn(List<String> values) {
+            addCriterion("segmentation_limit in", values, "segmentationLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andSegmentationLimitNotIn(List<String> values) {
+            addCriterion("segmentation_limit not in", values, "segmentationLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andSegmentationLimitBetween(String value1, String value2) {
+            addCriterion("segmentation_limit between", value1, value2, "segmentationLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andSegmentationLimitNotBetween(String value1, String value2) {
+            addCriterion("segmentation_limit not between", value1, value2, "segmentationLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanUseIsNull() {
+            addCriterion("can_use is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanUseIsNotNull() {
+            addCriterion("can_use is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanUseEqualTo(String value) {
+            addCriterion("can_use =", value, "canUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanUseNotEqualTo(String value) {
+            addCriterion("can_use <>", value, "canUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanUseGreaterThan(String value) {
+            addCriterion("can_use >", value, "canUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanUseGreaterThanOrEqualTo(String value) {
+            addCriterion("can_use >=", value, "canUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanUseLessThan(String value) {
+            addCriterion("can_use <", value, "canUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanUseLessThanOrEqualTo(String value) {
+            addCriterion("can_use <=", value, "canUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanUseLike(String value) {
+            addCriterion("can_use like", value, "canUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanUseNotLike(String value) {
+            addCriterion("can_use not like", value, "canUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanUseIn(List<String> values) {
+            addCriterion("can_use in", values, "canUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanUseNotIn(List<String> values) {
+            addCriterion("can_use not in", values, "canUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanUseBetween(String value1, String value2) {
+            addCriterion("can_use between", value1, value2, "canUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanUseNotBetween(String value1, String value2) {
+            addCriterion("can_use not between", value1, value2, "canUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationIsNull() {
+            addCriterion("application is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationIsNotNull() {
+            addCriterion("application is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationEqualTo(Integer value) {
+            addCriterion("application =", value, "application");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationNotEqualTo(Integer value) {
+            addCriterion("application <>", value, "application");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationGreaterThan(Integer value) {
+            addCriterion("application >", value, "application");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationGreaterThanOrEqualTo(Integer value) {
+            addCriterion("application >=", value, "application");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationLessThan(Integer value) {
+            addCriterion("application <", value, "application");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationLessThanOrEqualTo(Integer value) {
+            addCriterion("application <=", value, "application");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationIn(List<Integer> values) {
+            addCriterion("application in", values, "application");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationNotIn(List<Integer> values) {
+            addCriterion("application not in", values, "application");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationBetween(Integer value1, Integer value2) {
+            addCriterion("application between", value1, value2, "application");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationNotBetween(Integer value1, Integer value2) {
+            addCriterion("application not between", value1, value2, "application");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertificateIsNull() {
+            addCriterion("certificate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertificateIsNotNull() {
+            addCriterion("certificate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertificateEqualTo(String value) {
+            addCriterion("certificate =", value, "certificate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertificateNotEqualTo(String value) {
+            addCriterion("certificate <>", value, "certificate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertificateGreaterThan(String value) {
+            addCriterion("certificate >", value, "certificate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertificateGreaterThanOrEqualTo(String value) {
+            addCriterion("certificate >=", value, "certificate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertificateLessThan(String value) {
+            addCriterion("certificate <", value, "certificate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertificateLessThanOrEqualTo(String value) {
+            addCriterion("certificate <=", value, "certificate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertificateLike(String value) {
+            addCriterion("certificate like", value, "certificate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertificateNotLike(String value) {
+            addCriterion("certificate not like", value, "certificate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertificateIn(List<String> values) {
+            addCriterion("certificate in", values, "certificate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertificateNotIn(List<String> values) {
+            addCriterion("certificate not in", values, "certificate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertificateBetween(String value1, String value2) {
+            addCriterion("certificate between", value1, value2, "certificate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertificateNotBetween(String value1, String value2) {
+            addCriterion("certificate not between", value1, value2, "certificate");
+            return (Criteria) this;
+        }
+
         public Criteria andRimIsNormalIsNull() {
             addCriterion("rim_is_normal is null");
             return (Criteria) this;

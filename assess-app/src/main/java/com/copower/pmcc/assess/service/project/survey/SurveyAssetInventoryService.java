@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventory
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryRightDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyAssetCommonDataDto;
+import com.copower.pmcc.assess.dto.output.basic.SurveyAssetInventoryVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -100,8 +101,9 @@ public class SurveyAssetInventoryService extends BaseService {
         return surveyAssetInventoryDao.getDataByProcessInsId(processInsId);
     }
 
-    public SurveyAssetInventory getDataByPlanDetailsId(Integer planDetailsId) {
-        return surveyAssetInventoryDao.getDataByPlanDetailsId(planDetailsId);
+    public SurveyAssetInventoryVo getDataByPlanDetailsId(Integer planDetailsId) {
+        SurveyAssetInventory dataByPlanDetailsId = surveyAssetInventoryDao.getDataByPlanDetailsId(planDetailsId);
+        return getSurveyAssetInventoryVo(dataByPlanDetailsId);
     }
 
     public SurveyAssetInventory getDataByDeclareId(Integer declareId) {
@@ -160,15 +162,15 @@ public class SurveyAssetInventoryService extends BaseService {
         where.setTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetInventory.class));
         where.setTableId(surveyAssetInventory.getId());
         List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(where);
-        if(CollectionUtils.isNotEmpty(attachmentList)){
+        if (CollectionUtils.isNotEmpty(attachmentList)) {
             where.setTableId(target.getId());
             baseAttachmentService.deleteAttachmentByDto(where);
             where.setTableName(null);
             for (SysAttachmentDto dto : attachmentList) {
                 try {
-                    baseAttachmentService.copyFtpAttachment(dto.getId(),where);
+                    baseAttachmentService.copyFtpAttachment(dto.getId(), where);
                 } catch (Exception e) {
-                    log.error(e.getMessage(),e);
+                    log.error(e.getMessage(), e);
                 }
             }
         }
@@ -193,4 +195,17 @@ public class SurveyAssetInventoryService extends BaseService {
         //初始化清查内容项
         surveyAssetInventoryContentService.initAssetInventoryContent(targetPlanDetails, targetDeclareRecord);
     }
+
+    public SurveyAssetInventoryVo getSurveyAssetInventoryVo(SurveyAssetInventory surveyAssetInventory) {
+        if (surveyAssetInventory == null) {
+            return null;
+        }
+        SurveyAssetInventoryVo vo = new SurveyAssetInventoryVo();
+        BeanUtils.copyProperties(surveyAssetInventory, vo);
+        if (surveyAssetInventory.getApplication() != null) {
+            vo.setApplicationName(baseDataDicService.getNameById(surveyAssetInventory.getApplication()));
+        }
+        return vo;
+    }
+
 }

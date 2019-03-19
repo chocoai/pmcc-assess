@@ -562,7 +562,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">房产证信息123</h3>
+                <h3 class="modal-title">房产证信息</h3>
             </div>
             <form id="frmDeclareRealtyHouseCert" class="form-horizontal">
                 <div class="modal-body">
