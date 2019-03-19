@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project.survey;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryContentDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.basic.SurveyAssetInventoryVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetInventoryContentVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -59,6 +60,9 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
         modelAndView.addObject("inventoryRightTypeList", inventoryRightTypeList); //数据字典
         modelAndView.addObject("thisUserInfo", thisUserInfo);    //当前操作用户信息
         modelAndView.addObject("surveyAssetInventoryContentVos", surveyAssetInventoryContentVos);
+        //房产证类型
+        List<BaseDataDic> types = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_HOUSE_CERTIFICATE_TYPE);
+        modelAndView.addObject("types", types);
         return modelAndView;
     }
 
@@ -75,9 +79,12 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/assetInventoryIndex", processInsId, boxId, taskId, agentUserAccount);
-        SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByPlanDetailsId(projectPlanDetails.getId());
+        SurveyAssetInventoryVo surveyAssetInventory = surveyAssetInventoryService.getDataByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("surveyAssetInventory", surveyAssetInventory);
         setModelViewParam(projectPlanDetails, modelAndView);
+        //房产证类型
+        List<BaseDataDic> types = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_HOUSE_CERTIFICATE_TYPE);
+        modelAndView.addObject("types", types);
         return modelAndView;
     }
 

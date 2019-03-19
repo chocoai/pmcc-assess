@@ -221,14 +221,14 @@
                                     })
                                 </script>
                             </c:forEach>
-                            <tr>
+                            <%--<tr>
                                 <td>
                                     周边环境是否正常
                                 </td>
                                 <td>
                                     <div class="x-valid">
                                         <select class="form-control" id="rimIsNormal" name="rimIsNormal" required
-                                                onchange="showRemark()">
+                                                onchange="showOther()">
                                             <option value="" selected>请选择</option>
                                             <option value="正常">正常</option>
                                             <option value="不正常">不正常</option>
@@ -251,7 +251,7 @@
                                 <td>
                                     <div class="x-valid">
                                         <select class="form-control" name="entityIsDamage" id="entityIsDamage"
-                                                onchange="showRemark()">
+                                                onchange="showOther()">
                                             <option value="" selected>请选择</option>
                                             <option value="损坏">损坏</option>
                                             <option value="未损坏">未损坏</option>
@@ -273,6 +273,64 @@
                                     <textarea placeholder="转让限制" name="transferLimit" id="transferLimit"
                                               class="form-control"
                                               value="${surveyAssetInventory.transferLimit}"></textarea>
+                                </td>
+                            </tr>--%>
+                            <tr>
+                                <td align="right" style="vertical-align:middle;width: 12.5%">
+                                    分割限制
+                                </td>
+                                <td style="width: 12.5%">
+                                    <div class="x-valid">
+                                        <select class="form-control" id="segmentationLimit" name="segmentationLimit"
+                                                required
+                                                onchange="showOther()">
+                                            <option value="可分">可分</option>
+                                            <option value="不可分" selected>不可分</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td align="right" style="vertical-align:middle;width: 12.5%">
+                                    <div class="showHidden">
+                                        能否使用
+                                    </div>
+                                </td>
+                                <td style="width: 12.5%">
+                                    <div class="x-valid" class="showHidden">
+                                        <select class="form-control" id="canUse" name="canUse">
+                                            <option value="" selected>请选择</option>
+                                            <option value="正常使用">正常使用</option>
+                                            <option value="不能正常使用">不能正常使用</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td align="right" style="vertical-align:middle;width: 12.5%">
+                                    <div class="showHidden">
+                                        用途
+                                    </div>
+                                </td>
+                                <td style="width: 12.5%">
+                                    <div class="x-valid" class="showHidden">
+                                        <select class="form-control" id="application" name="application">
+                                            <option value="">-请选择-</option>
+                                            <c:forEach var="items" items="${types}">
+                                                <option value="${items.id}">${items.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td align="right" style="vertical-align:middle;width: 12.5%">
+                                    <div class="showHidden">
+                                        是否办证
+                                    </div>
+                                </td>
+                                <td style="width: 12.5%">
+                                    <div class="x-valid" class="showHidden">
+                                        <select class="form-control" id="certificate" name="certificate">
+                                            <option value="" selected>请选择</option>
+                                            <option value="可办证">可办证</option>
+                                            <option value="已办证">已办证</option>
+                                        </select>
+                                    </div>
                                 </td>
                             </tr>
                             </tbody>
@@ -594,14 +652,14 @@
             }
         });
         if ("${surveyAssetInventory}") {
-            $("#transferLimit").val("${surveyAssetInventory.transferLimit}");
-            $("#damageRemark").val("${surveyAssetInventory.damageRemark}");
-            $("#entityIsDamage").val("${surveyAssetInventory.entityIsDamage}");
-            $("#abnormality").val("${surveyAssetInventory.abnormality}");
-            $("#rimIsNormal").val("${surveyAssetInventory.rimIsNormal}");
-            showRemark();
+            $("#segmentationLimit").val("${surveyAssetInventory.segmentationLimit}");
+            $("#canUse").val("${surveyAssetInventory.canUse}");
+            $("#application").val("${surveyAssetInventory.application}");
+            $("#certificate").val("${surveyAssetInventory.certificate}");
         }
-    });
+        showOther();
+    })
+    ;
 
     //验证登记与实际是否一致，如果不一致需填写相关内容
     function isAgreement(_this) {
@@ -725,11 +783,10 @@
         });
         var data = {};
         data.surveyAssetInventory = formParams("frm_asset");//评估人员 核对时间
-        data.surveyAssetInventory.transferLimit = $("#transferLimit").val();
-        data.surveyAssetInventory.rimIsNormal = $("#rimIsNormal").val();
-        data.surveyAssetInventory.entityIsDamage = $("#entityIsDamage").val();
-        data.surveyAssetInventory.abnormality = $("#abnormality").val();
-        data.surveyAssetInventory.damageRemark = $("#damageRemark").val();
+         data.surveyAssetInventory.segmentationLimit = $("#segmentationLimit").val();
+         data.surveyAssetInventory.canUse = $("#canUse").val();
+         data.surveyAssetInventory.application = $("#application").val();
+         data.surveyAssetInventory.certificate = $("#certificate").val();
         data.assetInventoryContentList = dataItem;
         data.surveyAssetInventory.specialCase = $("#specialCase").val();
         return data;
@@ -890,20 +947,18 @@
 
     }
 
-    function showRemark() {
-        if ($("#rimIsNormal").val() == "不正常") {
-            $("#showAbnormality").show();
+    function showOther() {
+        if ($("#segmentationLimit").val() == "可分") {
+            $("#segmentationLimit").parent().parent().siblings().each(function () {
+                $(this).find(".showHidden,div").css('display', 'block');
+            });
         } else {
-            $("#abnormality").val("");
-            $("#showAbnormality").hide();
-        }
-        if ($("#entityIsDamage").val() == "损坏") {
-            $("#showDamageRemark").show();
-        } else {
-            $("#damageRemark").val("");
-            $("#showDamageRemark").hide();
+            $("#segmentationLimit").parent().parent().siblings().each(function () {
+                $(this).find(".showHidden,div").css('display', 'none');
+            });
         }
     }
+
 </script>
 
 </html>

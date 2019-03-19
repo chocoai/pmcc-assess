@@ -134,7 +134,7 @@
                                 </c:if>
                             </tr>
                         </c:forEach>
-                        <tr>
+                     <%--   <tr>
                             <td>
                                 周边环境是否正常
                             </td>
@@ -170,7 +170,48 @@
                                 <label class="form-control">${surveyAssetInventory.transferLimit}
                                 </label>
                             </td>
-                        </tr>
+                        </tr>--%>
+                        <tr>style="width: 10%"
+                            <td align="right" style="vertical-align:middle;width: 12.5%">
+                                分割限制
+                            </td>
+                            <td style="width: 12.5%">
+                                <label class="form-control"  id="segmentationLimit">${surveyAssetInventory.segmentationLimit}
+                                </label>
+                            </td>
+                            <td align="right" style="vertical-align:middle;width: 12.5%">
+                                <div class="showHidden">
+                                能否使用
+                                </div>
+                            </td >
+                            <td style="width: 12.5%">
+                                <div class="x-valid" class="showHidden">
+                                <label class="form-control">${surveyAssetInventory.canUse}
+                                </label>
+                                </div>
+                            </td>
+                            <td align="right" style="vertical-align:middle;width: 12.5%">
+                                <div class="showHidden">
+                                用途
+                                </div>
+                            </td>
+                            <td style="width: 12.5%">
+                                <div class="x-valid" class="showHidden">
+                                <label class="form-control">${surveyAssetInventory.applicationName}
+                                </label>
+                                </div>
+                            </td>
+                            <td align="right" style="vertical-align:middle;width: 12.5%">
+                                <div class="showHidden">
+                                是否办证
+                                </div>
+                            </td >
+                            <td style="width: 12.5%">
+                                <div class="x-valid" class="showHidden">
+                                <label class="form-control">${surveyAssetInventory.certificate}
+                                </label>
+                                </div>
+                            </td>
                         </tbody>
                     </table>
                 </div>
@@ -375,7 +416,7 @@
         })
 
         if ("${surveyAssetInventory}") {
-            showRemark();
+            showOther();
         }
     })
 
@@ -449,16 +490,15 @@
 
     };
 
-    function showRemark() {
-        if ("${surveyAssetInventory.rimIsNormal}" == "不正常") {
-            $("#showAbnormality_d").show();
+    function showOther() {
+        if ("${surveyAssetInventory.segmentationLimit}" == "可分") {
+            $("#segmentationLimit").parent().siblings().each(function () {
+                $(this).find(".showHidden,div").css('display', 'block');
+            });
         } else {
-            $("#showAbnormality_d").hide();
-        }
-        if ("${surveyAssetInventory.entityIsDamage}" == "损坏") {
-            $("#showDamageRemark_d").show();
-        } else {
-            $("#showDamageRemark_d").hide();
+            $("#segmentationLimit").parent().siblings().each(function () {
+                $(this).find(".showHidden,div").css('display', 'none');
+            });
         }
     }
 </script>
