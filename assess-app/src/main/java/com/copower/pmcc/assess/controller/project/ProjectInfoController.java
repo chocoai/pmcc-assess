@@ -1,14 +1,12 @@
 package com.copower.pmcc.assess.controller.project;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
-import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
-import com.copower.pmcc.assess.dal.basis.entity.DataValueDefinition;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectFollow;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.data.DataValueDefinitionService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -45,6 +43,8 @@ import java.util.List;
 @RequestMapping(value = "/projectInfo", name = "项目控制器")
 public class ProjectInfoController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
+    @Autowired
+    private BaseDataDicService baseDataDicService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -290,6 +290,18 @@ public class ProjectInfoController {
         try {
             DataValueDefinition valueDefinition = dataValueDefinitionService.getValueDefinition(entrustPurpose, valueType);
             return HttpResult.newCorrectResult(valueDefinition);
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+            return HttpResult.newErrorResult("取得价值定义信息异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getRemarkEntrustPurpose", name = "取得委托目的描述", method = RequestMethod.POST)
+    public HttpResult getValueDefinition(Integer entrustAimType) {
+        try {
+            BaseDataDic dataDicById = baseDataDicService.getDataDicById(entrustAimType);
+            return HttpResult.newCorrectResult(dataDicById);
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
             return HttpResult.newErrorResult("取得价值定义信息异常");

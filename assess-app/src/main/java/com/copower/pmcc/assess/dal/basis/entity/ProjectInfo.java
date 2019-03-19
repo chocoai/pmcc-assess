@@ -25,6 +25,8 @@ public class ProjectInfo {
 
     private Integer entrustPurpose;
 
+    private Integer entrustAimType;
+
     private String remarkEntrustPurpose;
 
     private Integer valueType;
@@ -151,6 +153,14 @@ public class ProjectInfo {
 
     public void setEntrustPurpose(Integer entrustPurpose) {
         this.entrustPurpose = entrustPurpose;
+    }
+
+    public Integer getEntrustAimType() {
+        return entrustAimType;
+    }
+
+    public void setEntrustAimType(Integer entrustAimType) {
+        this.entrustAimType = entrustAimType;
     }
 
     public String getRemarkEntrustPurpose() {
