@@ -239,15 +239,15 @@
         if (info) {
             $(frm).initForm(info);
             if (info.investigationsStartDate) {
-                frm.find("input[name='investigationsStartDate']").val(formatDate(info.investigationsStartDate));
+                $(frm).find("input[name='investigationsStartDate']").val(formatDate(info.investigationsStartDate));
             }
             if (info.investigationsEndDate) {
-                frm.find("input[name='investigationsEndDate']").val(formatDate(info.investigationsEndDate));
+                $(frm).find("input[name='investigationsEndDate']").val(formatDate(info.investigationsEndDate));
             }
-            frm.find("input[name='reportIssuanceDate']").val(formatDate(info.reportIssuanceDate));
-            frm.find("input[name='homeWorkEndTime']").val(formatDate(info.homeWorkEndTime));
-            frm.find("select[name='qualificationType']").val(info.qualificationType).attr("selected", true);
-            frm.find("input[name='id']").val(info.id);
+            $(frm).find("input[name='reportIssuanceDate']").val(formatDate(info.reportIssuanceDate));
+            $(frm).find("input[name='homeWorkEndTime']").val(formatDate(info.homeWorkEndTime));
+            $(frm).find("select[name='qualificationType']").val(info.qualificationType).attr("selected", true);
+            $(frm).find("input[name='id']").val(info.id);
             $.each(schemeReportGenerationFileControlIdArray, function (i, n) {
                 fileShow(n + "" + areaGroupId, false, info.id);
             });
