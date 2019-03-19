@@ -55,7 +55,7 @@ public enum BaseReportFieldEnum implements Serializable {
     JudgeBuildLandStateSheet("", "估价建筑物实体状况"),
 
     HisRightDeclare("", "他项权申报"),//new 他项权申报;当该区域下有他项权信息并且填写了他权号，则将该文字显示出来前面加、号，否则先为空串
-    BestUseDesc("", "最佳利用描述"),//new 最佳利用描述
+    BestUseDesc("", "最佳利用方式"),//new 最佳利用方式
     DecalreFormTypeAll("", "申报启用表单类型"),//new 申报启用表单类型; 比如 房产证、土地证、不动产证
     HisRightHasLease("", "他权有无租赁权"),//new 他权有无租赁权
     /*
