@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRightRecord;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
@@ -22,6 +23,8 @@ public class ProjectTaskRightAssist implements ProjectTaskInterface {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private DeclareRecordService declareRecordService;
+    @Autowired
+    private SurveyAssetInventoryRightRecordService surveyAssetInventoryRightRecordService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {

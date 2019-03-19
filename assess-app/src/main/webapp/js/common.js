@@ -231,8 +231,7 @@ $(function () {
                 });
             }
         },
-        //根据项目字段获取项目类别
-        getProjectClassifyListByFieldName: function (fieldName, callback) {
+        loadProjectClassifyListByField:function (fieldName, value,callback) {
             if (fieldName) {
                 $.ajax({
                     url: getContextPath() + "/baseProjectClassify/getProjectClassifyListByFieldName",
@@ -245,7 +244,11 @@ $(function () {
                         if (result.ret) {
                             var retHtml = '<option value="" selected>-请选择-</option>';
                             $.each(result.data, function (i, item) {
-                                retHtml += ' <option value="' + item.id + '">' + item.name + '</option>';
+                                retHtml += '<option key="' + item.name + '" title="' + item.name + '" value="' + item.id + '"' ;
+                                if (item.id == value) {
+                                    retHtml += 'selected="selected"' ;
+                                }
+                                retHtml += '>' + item.name + '</option>' ;
                             });
                             if (callback) {
                                 callback(retHtml, result.data);
@@ -257,6 +260,10 @@ $(function () {
                     }
                 });
             }
+        },
+        //根据项目字段获取项目类别
+        getProjectClassifyListByFieldName: function (fieldName, callback) {
+            this.loadProjectClassifyListByField(fieldName,null,callback);
         },
 
         //根据项目类型获取项目类别

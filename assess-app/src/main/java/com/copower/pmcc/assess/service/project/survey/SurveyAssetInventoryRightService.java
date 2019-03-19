@@ -5,10 +5,12 @@ import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryRightDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetInventoryRightVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -51,31 +53,36 @@ public class SurveyAssetInventoryRightService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
-    public BootstrapTableVo getListByPlanDetailsId(Integer planDetailsId) {
+    public SurveyAssetInventoryRight getSurveyAssetInventoryRightById(Integer id) {
+        return surveyAssetInventoryRightDao.getSurveyAssetInventoryRightById(id);
+    }
+
+    public List<SurveyAssetInventoryRight> surveyAssetInventoryRights(Integer planDetailsId) {
+        SurveyAssetInventoryRight surveyAssetInventoryRight = new SurveyAssetInventoryRight();
+        surveyAssetInventoryRight.setPlanDetailsId(planDetailsId);
+        return surveyAssetInventoryRightDao.getSurveyAssetInventoryRightList(surveyAssetInventoryRight);
+    }
+
+    public List<SurveyAssetInventoryRight> getSurveyAssetInventoryRightList(SurveyAssetInventoryRight surveyAssetInventoryRight) {
+        return surveyAssetInventoryRightDao.getSurveyAssetInventoryRightList(surveyAssetInventoryRight);
+    }
+
+    public BootstrapTableVo getBootstrapTableVo(SurveyAssetInventoryRight surveyAssetInventoryRight) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightDao.getListByPlanDetailsId(planDetailsId);
+        List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = this.getSurveyAssetInventoryRightList(surveyAssetInventoryRight);
         List<SurveyAssetInventoryRightVo> surveyAssetInventoryRightVoList = getVoList(surveyAssetInventoryRightList);
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(surveyAssetInventoryRightVoList) ? new ArrayList<SurveyAssetInventoryRight>() : surveyAssetInventoryRightVoList);
         return vo;
     }
 
-    public List<SurveyAssetInventoryRight> surveyAssetInventoryRights(Integer planDetailsId){
-        return surveyAssetInventoryRightDao.getListByPlanDetailsId(planDetailsId);
-    }
-
-    public BootstrapTableVo getListByProjectId(Integer projectId) {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightDao.getListByProjectId(projectId, requestBaseParam.getSearch());
-        List<SurveyAssetInventoryRightVo> surveyAssetInventoryRightVoList = getVoList(surveyAssetInventoryRightList);
-        vo.setTotal(page.getTotal());
-        vo.setRows(CollectionUtils.isEmpty(surveyAssetInventoryRightVoList) ? new ArrayList<SurveyAssetInventoryRight>() : surveyAssetInventoryRightVoList);
-        return vo;
+    public void removeSurveyAssetInventoryRight(SurveyAssetInventoryRight surveyAssetInventoryRight) {
+        surveyAssetInventoryRightDao.removeSurveyAssetInventoryRight(surveyAssetInventoryRight);
     }
 
     public List<SurveyAssetInventoryRightVo> getVoList(List<SurveyAssetInventoryRight> list) {
@@ -83,30 +90,33 @@ public class SurveyAssetInventoryRightService {
         return LangUtils.transform(list, p -> {
             SurveyAssetInventoryRightVo surveyAssetInventoryRightVo = new SurveyAssetInventoryRightVo();
             BeanUtils.copyProperties(p, surveyAssetInventoryRightVo);
-            if (p.getType() != null) {
-                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(Integer.valueOf(p.getType()));
-                if (baseDataDic != null)
-                    surveyAssetInventoryRightVo.setTypeName(baseDataDic.getName());
-            }
             if (p.getCategory() != null) {
-                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(Integer.valueOf(p.getCategory()));
-                if (baseDataDic != null)
-                    surveyAssetInventoryRightVo.setCategoryName(baseDataDic.getName());
+                BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(p.getCategory());
+                if (projectClassify != null) {
+                    surveyAssetInventoryRightVo.setCategoryName(projectClassify.getName());
+                }
+            }
+            if (p.getType() != null) {
+                BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(p.getType());
+                if (projectClassify != null) {
+                    surveyAssetInventoryRightVo.setTypeName(projectClassify.getName());
+                }
             }
             return surveyAssetInventoryRightVo;
         });
     }
 
     /**
-     * 删除数据
+     * 更新数据
      *
      * @param surveyAssetInventoryRight
      * @throws BusinessException
      */
     public void save(SurveyAssetInventoryRight surveyAssetInventoryRight) throws BusinessException {
-        if (surveyAssetInventoryRight == null)
+        if (surveyAssetInventoryRight == null) {
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-        if (surveyAssetInventoryRight.getId() != null && surveyAssetInventoryRight.getId() > 0) {
+        }
+        if (surveyAssetInventoryRight.getId() != null && surveyAssetInventoryRight.getId().intValue() > 0) {
             surveyAssetInventoryRightDao.update(surveyAssetInventoryRight);
         } else {
             surveyAssetInventoryRight.setCreator(commonService.thisUserAccount());

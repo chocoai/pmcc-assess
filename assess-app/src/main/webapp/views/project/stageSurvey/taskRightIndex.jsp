@@ -4,11 +4,10 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-
 <script type="text/html" id="taskRightAssistDiv">
     <div class="x_content">
         <div class="btn-group">
-            <button type="button" class="btn btn-success" onclick="addData(this)"
+            <button type="button" class="btn btn-success" onclick="addData(this,'_number')"
                     data-toggle="modal" data-target="#divBox_number"> 新增
             </button>
         </div>
@@ -32,6 +31,24 @@
                 X
             </button>
         </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-success"
+                    onclick="delData(this,'_number')" aria-expanded="false">
+                删除他项权力
+            </button>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-success"
+                    onclick="editData(this,'_number')" aria-expanded="false">
+                编辑他项权力
+            </button>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-success"
+                    onclick="saveSurveyAssetInventoryRightRecord(true,'_number')" aria-expanded="false">
+                保存
+            </button>
+        </div>
         <table class="table table-bordered" id="tb_List_number">
             <!-- cerare document add ajax data-->
         </table>
@@ -50,7 +67,8 @@
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">申报</label>
                     <div class="col-sm-5">
-                        <select class="form-control search-select select2"  multiple="multiple"  required="required" name="recordIds">
+                        <select class="form-control search-select select2" multiple="multiple" required="required"
+                                name="recordIds">
                             <c:forEach var="items" items="${declareRecordList}">
                                 <option value="${items.id}">${items.name}</option>
                             </c:forEach>
@@ -67,7 +85,7 @@
             </div>
         </form>
         <input type="file" id="ajaxFileUpload_number" name="file" style="display: none;"
-               onchange="importRightData(this);">
+               onchange="importRightData(this,'_number');">
     </div>
 
     <div id="divBox_number" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
@@ -81,14 +99,14 @@
                 </div>
                 <div class="modal-body">
                     <form id="frm_inventory_right_number" class="form-horizontal">
-                        <input type="hidden" name="id" value="0">
                         <input type="hidden" name="inventoryRightRecordId">
+                        <input type="hidden" name="id" value="0">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-2 control-label">
                                     类别<span class="symbol required"></span>
                                 </label>
-                                <div class="col-sm-4">
+                                <div class="col-sm-10">
                                     <select class="form-control" required id="category" name="category">
                                     </select>
                                 </div>
@@ -214,7 +232,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="saveData(this)">
+                    <button type="button" class="btn btn-primary" onclick="saveData(this,'_number')">
                         保存
                     </button>
                 </div>
@@ -232,12 +250,10 @@
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!--填写表单-->
             <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
+                <div class="x_title">
                     <h3>他项权利
-                        <button class="btn btn-xs btn-success" onclick="appendHtml('',this)"><i class="fa fa-plus"></i>
+                        <button class="btn btn-xs btn-success" onclick="appendHtml('',this)">添加<i
+                                class="fa fa-plus"></i>
                         </button>
                     </h3>
                     <div class="clearfix"></div>
@@ -282,6 +298,21 @@
 <script type="text/javascript">
 
     //_number
+    var commonField = {
+        tbList: "tb_List",
+        divBox: "divBox",
+        inventoryFrm: "frm_inventory_right",
+        surveyFrm: "surveyAssetInventoryRightFrm",
+        inventoryRightFile: "inventoryRightFile",
+        specialCaseFile: "specialCaseFile",
+        taskRightAssistAppend: "taskRightAssistAppend",
+        taskRightAssistDiv: "taskRightAssistDiv",
+        ajaxFileUpload: "ajaxFileUpload",
+        getNumber: function () {
+            var number = parseInt(Math.random() * (999999 - 100000) + 100000, 10) + Math.round(Math.random() * 10);
+            return number;
+        }
+    };
 
     //上传附件通用
     function uploadFileCommon(fieldsName, tableName, id) {
@@ -311,7 +342,7 @@
     }
 
     //加载 他项权利列表
-    function loadAssetRightList(number) {
+    function loadAssetRightList(number, inventoryRightRecordId) {
         var cols = [];
         cols.push({field: 'typeName', title: '类型'});
         cols.push({field: 'categoryName', title: '类别'});
@@ -320,17 +351,19 @@
         cols.push({field: 'obligee', title: '权利人'});
         cols.push({field: 'registerArea', title: '登记面积'});
         cols.push({field: 'rightRank', title: '他权级次'});
-        $("#tb_List" + number).bootstrapTable('destroy');
-        TableInit("tb_List" + number, "${pageContext.request.contextPath}/surveyAssetInventoryRight/getListByPlanDetailsId", cols, {
-            planDetailsId: '${projectPlanDetails.id}'
+        $("#" + commonField.tbList + number).bootstrapTable('destroy');
+        TableInit(commonField.tbList + number, "${pageContext.request.contextPath}/surveyAssetInventoryRight/getListByPlanDetailsId", cols, {
+            planDetailsId: '${projectPlanDetails.id}', inventoryRightRecordId: inventoryRightRecordId
         }, {
-            showColumns: false,
-            showRefresh: false,
+            method: "get",
+            showColumns: true,
+            showRefresh: true,
             search: false,
+            striped: true,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();   //提示
             }
-        });
+        }, true);
     }
 
     /**
@@ -338,47 +371,132 @@
      * @returns {*|jQuery}
      */
     function appendHtml() {
-        var html = $("#taskRightAssistDiv").html();
-        var number = parseInt(Math.random() * (999999 - 100000) + 100000, 10) + Math.round(Math.random() * 10);
+        var html = $("#" + commonField.taskRightAssistDiv).html();
+        var number = commonField.getNumber();
         html = html.replace(/_number/g, number);
-        $("#taskRightAssistAppend").append(html);
+        $("#" + commonField.taskRightAssistAppend).append(html);
         $.ajax({
             url: "${pageContext.request.contextPath}/surveyAssetInventoryRightRecord/save",
             type: "post",
             dataType: "json",
             data: {
-                projectId:'${projectPlanDetails.projectId}',
-                planDetailsId:'${projectPlanDetails.id}'
+                projectId: '${projectPlanDetails.projectId}',
+                planDetailsId: '${projectPlanDetails.id}'
             },
             success: function (result) {
                 if (result.ret) {
-                    uploadFileCommon("specialCaseFile" + number, AssessDBKey.SurveyAssetInventoryRightRecord, result.data.id);
-                    showFileCommon("specialCaseFile" + number, AssessDBKey.SurveyAssetInventoryRightRecord,result.data.id);
-                    $("#frm_inventory_right" + number).find('[name=inventoryRightRecordId]').val(result.data.id);
-                    $("#surveyAssetInventoryRightFrm" + number).find("select[name='recordIds']").select2();
-                    $("#surveyAssetInventoryRightFrm" + number).find('[name=id]').val(result.data.id);
+                    uploadFileCommon(commonField.specialCaseFile + number, AssessDBKey.SurveyAssetInventoryRightRecord, result.data.id);
+                    showFileCommon(commonField.specialCaseFile + number, AssessDBKey.SurveyAssetInventoryRightRecord, result.data.id);
+                    $("#" + commonField.inventoryFrm + number).find('[name=inventoryRightRecordId]').val(result.data.id);
+                    $("#" + commonField.surveyFrm + number).find("select[name='recordIds']").select2();
+                    $("#" + commonField.surveyFrm + number).find('[name=id]').val(result.data.id);
+                    loadAssetRightList(number, result.data.id);
                 }
             },
             error: function (result) {
                 Alert("调用服务端方法失败，失败原因:" + result);
             }
         });
-        loadAssetRightList(number);
     }
 
     /**
      * 添加模型后对模型中的数据显示做必要的处理
      * @param _this
      */
-    function addData(_this) {
-        var text = $(_this).attr("data-target");
-        var value = text.replace(/[^0-9]/ig, "");
-        var inventoryRightRecordId = $("#frm_inventory_right" + value).find('[name=inventoryRightRecordId]').val();
-        $("#frm_inventory_right" + value).clearAll();
-        $("#frm_inventory_right" + value).find('[name=id]').val(0);
-        $("#frm_inventory_right" + value).find('[name=inventoryRightRecordId]').val(inventoryRightRecordId);
-        uploadFileCommon("inventoryRightFile" + value, AssessDBKey.SurveyAssetInventoryRight, 0);
-        showFileCommon("inventoryRightFile" + value, AssessDBKey.SurveyAssetInventoryRight, 0);
+    function addData(_this, value) {
+        var form = $("#" + commonField.inventoryFrm + value);
+        var inventoryRightRecordId = form.find('[name=inventoryRightRecordId]').val();
+        form.clearAll();
+        form.find('[name=inventoryRightRecordId]').val(inventoryRightRecordId);
+        uploadFileCommon(commonField.inventoryRightFile + value, AssessDBKey.SurveyAssetInventoryRight, 0);
+        showFileCommon(commonField.inventoryRightFile + value, AssessDBKey.SurveyAssetInventoryRight, 0);
+        AssessCommon.loadProjectClassifyListByField(AssessProjectClassifyKey.singleHousetaskRightCategory, null, function (html, data) {
+            form.find("select[name='category']").empty().html(html).trigger('change');
+        });
+        //日期触发
+        DatepickerUtils.parse();
+    }
+
+    /**
+     * @author:  zch
+     * 描述:编辑
+     * @date:
+     **/
+    function editData(_this, value) {
+        var x_content = $(_this).closest(".x_content");
+        var form = $("#" + commonField.inventoryFrm + value);
+        var rows = $("#" + commonField.tbList + value).bootstrapTable('getSelections');
+        if (!rows || rows.length <= 0) {
+            toastr.info("请选择要编辑的数据");
+        } else if (rows.length == 1) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/surveyAssetInventoryRight/get",
+                type: "get",
+                dataType: "json",
+                data: {id: rows[0].id},
+                success: function (result) {
+                    if (result.ret) {
+                        var data = result.data;
+                        form.clearAll();
+                        $("#" + commonField.divBox + value).modal("show");
+                        form.initForm(data);
+                        AssessCommon.loadProjectClassifyListByField(AssessProjectClassifyKey.singleHousetaskRightCategory, data.category, function (html, item) {
+                            form.find("select[name='category']").empty().html(html).trigger('change');
+                        });
+                        form.find("input[name='id']").val(data.id);
+                        form.find("input[name='registerDate']").val(formatDate(data.registerDate, false));
+                        form.find("input[name='beginDate']").val(formatDate(data.beginDate, false));
+                        form.find("input[name='endDate']").val(formatDate(data.endDate, false));
+                        uploadFileCommon(commonField.inventoryRightFile + value, AssessDBKey.SurveyAssetInventoryRight, data.id);
+                        showFileCommon(commonField.inventoryRightFile + value, AssessDBKey.SurveyAssetInventoryRight, data.id);
+                    }
+                }
+            })
+        } else {
+            toastr.info("只能选择一行数据进行编辑");
+        }
+    }
+
+    /**
+     * @author:  zch
+     * 描述:删除
+     * @date:
+     **/
+    function delData(_this, value) {
+        var x_content = $(_this).closest(".x_content");
+        var form = x_content.find("form").eq(0);
+        var rows = $("#" + commonField.tbList + value).bootstrapTable('getSelections');
+        if (!rows || rows.length <= 0) {
+            toastr.info("请选择要删除的数据");
+        } else {
+            var idArray = [];
+            $.each(rows, function (i, item) {
+                idArray.push(item.id);
+            });
+            Alert("确认要删除么？", 2, null, function () {
+                Loading.progressShow();
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/surveyAssetInventoryRight/delete",
+                    type: "post",
+                    dataType: "json",
+                    data: {id: idArray.join()},
+                    success: function (result) {
+                        Loading.progressHide();
+                        if (result.ret) {
+                            toastr.success('删除成功');
+                            loadAssetRightList(value, form.find("input[name='id']").val());
+                        }
+                        else {
+                            Alert("删除数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Loading.progressHide();
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            })
+        }
     }
 
     /**
@@ -388,16 +506,117 @@
     function cleanHTMLData(_this) {
         var x_content = $(_this).closest(".x_content");
         var div = x_content.prev();
-        x_content.remove();
-        div.remove();
+        var form = x_content.find("form").eq(0);
+        $.ajax({
+            url: "${pageContext.request.contextPath}/surveyAssetInventoryRightRecord/remove",
+            type: "post",
+            dataType: "json",
+            data: {id: form.find("input[name='id']").val()},
+            success: function (result) {
+                if (result.ret) {
+                    x_content.remove();
+                    div.remove();
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
     }
 
-    function saveData(_this) {
-
+    /**
+     * 保存数据
+     * @param _this
+     * @returns {boolean}
+     */
+    function saveData(_this, number) {
+        var form = $(_this).parent().parent().find("form").eq(0);
+        var frm = commonField.inventoryFrm + number;
+        if (!$("#" + frm).valid()) {
+            return false;
+        }
+        var data = formParams(frm);
+        data.type = '${projectInfo.projectCategoryId}';
+        data.projectId = '${projectInfo.id}';
+        data.planDetailsId = '${projectPlanDetails.id}';
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/surveyAssetInventoryRight/save",
+            type: "post",
+            dataType: "json",
+            data: {formData: JSON.stringify(data)},
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success('保存成功');
+                    $("#" + commonField.divBox + number).modal("hide");
+                    loadAssetRightList(number, data.inventoryRightRecordId);
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
     }
 
-    function importRightData(_this) {
+    function importRightData(_this,number) {
+        var ajaxFileUpload = commonField.ajaxFileUpload + number;
+        var item = formSerializeArray($("#" + commonField.surveyFrm + number));
+        Loading.progressShow();
+        $.ajaxFileUpload({
+            type: "POST",
+            url: "${pageContext.request.contextPath}/surveyAssetInventoryRight/importData",
+            data: {
+                projectId: '${projectId}',
+                certName: '${declareRecord.name}',
+                planDetailsId: ' ${projectPlanDetails.id}'
+            },//要传到后台的参数，没有可以不写
+            secureuri: false,//是否启用安全提交，默认为false
+            fileElementId: ajaxFileUpload,//文件选择框的id属性
+            dataType: 'json',//服务器返回的格式
+            async: false,
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    Alert(result.data.replace(/\n/g, '<br/>'));
+                    loadAssetRightList(number,item.id);
+                } else {
+                    Alert("导入数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result, status, e) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    }
 
+    function saveSurveyAssetInventoryRightRecord(flag, number) {
+        if (flag) {
+            var item = formSerializeArray($("#" + commonField.surveyFrm + number));
+            var data = [];
+            data.push(item);
+            $.ajax({
+                url: "${pageContext.request.contextPath}/surveyAssetInventoryRightRecord/saveFormData",
+                type: "post",
+                dataType: "json",
+                data: {formData: JSON.stringify(data)},
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        }
     }
 
     $(document).ready(function () {
@@ -407,9 +626,9 @@
 
     //提交
     function submit(flag) {
-        if (flag){
+        if (flag) {
             taskExploreIndex.checkAssignmentTask(true);
-        }else {
+        } else {
             taskExploreIndex.checkAssignmentTask(false);
         }
     }

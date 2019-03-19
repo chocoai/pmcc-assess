@@ -32,16 +32,26 @@ public class SurveyAssetInventoryRightController {
 
     @ResponseBody
     @RequestMapping(value = "/getListByPlanDetailsId", name = "取得他项权利列表", method = RequestMethod.GET)
-    public BootstrapTableVo list(Integer planDetailsId) {
-        BootstrapTableVo vo = surveyAssetInventoryRightService.getListByPlanDetailsId(planDetailsId);
+    public BootstrapTableVo list(SurveyAssetInventoryRight select) {
+        BootstrapTableVo vo = surveyAssetInventoryRightService.getBootstrapTableVo(select);
         return vo;
     }
 
     @ResponseBody
     @RequestMapping(value = "/getListByProjectId", name = "取得他项权利列表", method = RequestMethod.GET)
-    public BootstrapTableVo get(Integer projectId) {
-        BootstrapTableVo vo = surveyAssetInventoryRightService.getListByProjectId(projectId);
+    public BootstrapTableVo get(SurveyAssetInventoryRight select) {
+        BootstrapTableVo vo = surveyAssetInventoryRightService.getBootstrapTableVo(select);
         return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/get", name = "获取他项权利", method = RequestMethod.GET)
+    public HttpResult get(Integer id) {
+        try {
+            return HttpResult.newCorrectResult(surveyAssetInventoryRightService.getSurveyAssetInventoryRightById(id));
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
     }
 
     @ResponseBody
@@ -58,9 +68,12 @@ public class SurveyAssetInventoryRightController {
 
     @ResponseBody
     @RequestMapping(value = "/delete", name = "删除他项权利", method = RequestMethod.POST)
-    public HttpResult delete(@RequestParam(value = "id") Integer id) {
+    public HttpResult delete(String id) {
         try {
-            surveyAssetInventoryRightService.delete(id);
+            String[] ids = id.split(",");
+            for (String s : ids) {
+                surveyAssetInventoryRightService.delete(Integer.parseInt(s));
+            }
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -69,14 +82,14 @@ public class SurveyAssetInventoryRightController {
 
     @ResponseBody
     @RequestMapping(value = "/importData", name = "导入他项权利", method = RequestMethod.POST)
-    public HttpResult importData(SurveyAssetInventoryRight right,HttpServletRequest request) {
+    public HttpResult importData(SurveyAssetInventoryRight right, HttpServletRequest request) {
         try {
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
             Iterator<String> fileNames = multipartRequest.getFileNames();
             MultipartFile multipartFile = multipartRequest.getFile(fileNames.next());
-            if(multipartFile.isEmpty())
+            if (multipartFile.isEmpty())
                 return HttpResult.newErrorResult("上传的文件不能为空");
-            String s = surveyAssetInventoryRightService.importData(right,multipartFile);
+            String s = surveyAssetInventoryRightService.importData(right, multipartFile);
             return HttpResult.newCorrectResult(s);
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());

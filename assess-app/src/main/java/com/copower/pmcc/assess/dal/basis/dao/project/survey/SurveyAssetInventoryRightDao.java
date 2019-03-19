@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.basis.dao.project.survey;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRightExample;
 import com.copower.pmcc.assess.dal.basis.mapper.SurveyAssetInventoryRightMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -23,11 +24,26 @@ public class SurveyAssetInventoryRightDao {
         return i > 0;
     }
 
-
-
     public boolean update(SurveyAssetInventoryRight surveyAssetInventoryRight) {
         int i = surveyAssetInventoryRightMapper.updateByPrimaryKeySelective(surveyAssetInventoryRight);
         return i > 0;
+    }
+
+    public SurveyAssetInventoryRight getSurveyAssetInventoryRightById(Integer id){
+        return surveyAssetInventoryRightMapper.selectByPrimaryKey(id);
+    }
+
+    public List<SurveyAssetInventoryRight> getSurveyAssetInventoryRightList(SurveyAssetInventoryRight surveyAssetInventoryRight){
+        SurveyAssetInventoryRightExample example = new SurveyAssetInventoryRightExample();
+        example.setOrderByClause("id desc");
+        MybatisUtils.convertObj2Example(surveyAssetInventoryRight, example);
+        return surveyAssetInventoryRightMapper.selectByExample(example);
+    }
+
+    public void removeSurveyAssetInventoryRight(SurveyAssetInventoryRight surveyAssetInventoryRight){
+        SurveyAssetInventoryRightExample example = new SurveyAssetInventoryRightExample();
+        MybatisUtils.convertObj2Example(surveyAssetInventoryRight, example);
+        surveyAssetInventoryRightMapper.deleteByExample(example);
     }
 
 
@@ -46,7 +62,6 @@ public class SurveyAssetInventoryRightDao {
         if(StringUtils.isNotBlank(certName)){
             criteria.andCertNameLike(String.format("%%%s%%",certName));
         }
-
         example.setOrderByClause("id desc");
         List<SurveyAssetInventoryRight> surveyAssetInventoryRights = surveyAssetInventoryRightMapper.selectByExample(example);
         return surveyAssetInventoryRights;
