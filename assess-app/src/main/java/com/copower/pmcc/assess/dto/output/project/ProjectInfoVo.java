@@ -21,6 +21,7 @@ public class ProjectInfoVo extends ProjectInfo {
     private String projectTypeName;
     private String projectCategoryName;
     private String entrustPurposeName;
+    private String entrustAimTypeName;
     private String provinceName;
     private String cityName;
     private String districtName;
@@ -214,5 +215,13 @@ public class ProjectInfoVo extends ProjectInfo {
 
     public void setPropertyScopeName(String propertyScopeName) {
         this.propertyScopeName = propertyScopeName;
+    }
+
+    public String getEntrustAimTypeName() {
+        return entrustAimTypeName;
+    }
+
+    public void setEntrustAimTypeName(String entrustAimTypeName) {
+        this.entrustAimTypeName = entrustAimTypeName;
     }
 }

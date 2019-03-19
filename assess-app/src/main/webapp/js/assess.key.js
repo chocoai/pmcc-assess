@@ -87,6 +87,7 @@ AssessDicKey.projectDeclareUseRightType = "project.declare.use.right.type";//权
 AssessDicKey.dataTaxRateAllocation = "data.tax.rate.allocation";//税率配置
 AssessDicKey.dataEntrustmentPurpose = "data.entrustment.purpose";//委托目的
 AssessDicKey.value_type = "value.type";//价值类型
+AssessDicKey.dataEntrustmentPurposeMortgage = "data.entrustment.purpose.mortgage";//委托目的-抵押评估
 AssessDicKey.property_scope = "examine.house.scope.property";//评估范围
 AssessDicKey.project_initiate_urgency = "project.initiate.urgency";//紧急程度
 

@@ -522,6 +522,10 @@ public class ProjectInfoService {
             //委托目的
             projectInfoVo.setEntrustPurposeName(bidBaseDataDicService.getCacheDataDicById(projectInfo.getEntrustPurpose()).getName());
         }
+        if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getEntrustAimType())) {
+            //委托目的类别
+            projectInfoVo.setEntrustAimTypeName(bidBaseDataDicService.getCacheDataDicById(projectInfo.getEntrustAimType()).getName());
+        }
         if (StringUtils.isNotBlank(projectInfo.getProvince())) {
             //省
             projectInfoVo.setProvinceName(erpAreaService.getSysAreaName(projectInfo.getProvince()));
