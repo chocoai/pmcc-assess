@@ -97,7 +97,7 @@ public class BaseProjectClassifyDao {
 
     public List<BaseProjectClassify> getEnableListByPids(List<Integer> integers) {
         BaseProjectClassifyExample example = new BaseProjectClassifyExample();
-        example.createCriteria().andPidIn(integers);
+        example.createCriteria().andBisEnableEqualTo(true).andBisDeleteEqualTo(false).andPidIn(integers);
         return baseProjectClassifyMapper.selectByExample(example);
     }
 

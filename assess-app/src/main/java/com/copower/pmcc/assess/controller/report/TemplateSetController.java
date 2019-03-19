@@ -1,18 +1,18 @@
 package com.copower.pmcc.assess.controller.report;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.BaseReportTemplate;
 import com.copower.pmcc.assess.dto.input.CrmTreeDto;
-import com.copower.pmcc.assess.service.base.BaseReportService;
 import com.copower.pmcc.assess.service.TemplateSetService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.base.BaseReportService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,11 +46,9 @@ public class TemplateSetController {
     @RequestMapping(value = "/templateSetIndex", name = "进入报告配置页面")
     public ModelAndView templateSetIndex() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/base/templateSetIndex");
-        List<BaseProjectClassify> cacheProjectClassifyListByPid = baseProjectClassifyService.getCacheProjectClassifyListByPid(0);
-        List<Integer> transform = LangUtils.transform(cacheProjectClassifyListByPid, o -> o.getId());
-        List<BaseProjectClassify> projectTypeList = baseProjectClassifyService.getProjectClassifyListByPids(transform);
+        List<BaseProjectClassify> projectTypeList = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLE);
         modelAndView.addObject("projectTypeList", projectTypeList);
-        modelAndView.addObject("firstEntrust", cacheProjectClassifyListByPid.get(0).getId());//第一个抵押评估对象
+        modelAndView.addObject("firstEntrust", projectTypeList.get(0).getId());//第一个抵押评估对象
         List<BaseDataDic> entrustPurposeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         modelAndView.addObject("entrustPurposeList", entrustPurposeList);
         List<BaseDataDic> cacheDataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
