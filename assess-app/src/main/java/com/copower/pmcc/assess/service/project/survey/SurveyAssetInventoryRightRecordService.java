@@ -28,42 +28,42 @@ public class SurveyAssetInventoryRightRecordService {
     @Autowired
     private CommonService commonService;
 
-    public void clear(SurveyAssetInventoryRightRecord surveyAssetInventoryRightRecord){
+    public void clear(SurveyAssetInventoryRightRecord surveyAssetInventoryRightRecord) {
         surveyAssetInventoryRightRecord.setCreator(commonService.thisUserAccount());
         List<SurveyAssetInventoryRightRecord> surveyAssetInventoryRightRecordList = this.surveyAssetInventoryRightRecordList(surveyAssetInventoryRightRecord);
-        if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightRecordList)){
-            surveyAssetInventoryRightRecordList.stream().forEach(inventoryRightRecord -> {
+        if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightRecordList)) {
+            for (SurveyAssetInventoryRightRecord inventoryRightRecord : surveyAssetInventoryRightRecordList) {
                 SurveyAssetInventoryRight select = new SurveyAssetInventoryRight();
                 select.setInventoryRightRecordId(inventoryRightRecord.getId());
+                surveyAssetInventoryRightService.removeSurveyAssetInventoryRight(select);
                 try {
-                    surveyAssetInventoryRightService.removeSurveyAssetInventoryRight(select);
-                    this.deleteSurveyAssetInventoryRightRecordById(inventoryRightRecord.getId());
+                    deleteSurveyAssetInventoryRightRecordById(inventoryRightRecord.getId());
                 } catch (Exception e1) {
-                    logger.error(e1.getMessage(),e1);
+                    logger.error(e1.getMessage(), e1);
                 }
-            });
+            }
         }
     }
 
-    public boolean addSurveyAssetInventoryRightRecord(SurveyAssetInventoryRightRecord surveyAssetInventoryRightRecord)throws Exception {
+    public boolean addSurveyAssetInventoryRightRecord(SurveyAssetInventoryRightRecord surveyAssetInventoryRightRecord) throws Exception {
         surveyAssetInventoryRightRecord.setCreator(commonService.thisUserAccount());
         return surveyAssetInventoryRightRecordDao.addSurveyAssetInventoryRightRecord(surveyAssetInventoryRightRecord);
     }
 
-    public boolean updateSurveyAssetInventoryRightRecord(SurveyAssetInventoryRightRecord surveyAssetInventoryRightRecord)throws Exception{
+    public boolean updateSurveyAssetInventoryRightRecord(SurveyAssetInventoryRightRecord surveyAssetInventoryRightRecord) throws Exception {
         return surveyAssetInventoryRightRecordDao.updateSurveyAssetInventoryRightRecord(surveyAssetInventoryRightRecord);
     }
 
-    public boolean deleteSurveyAssetInventoryRightRecordById(Integer id)throws Exception{
+    public boolean deleteSurveyAssetInventoryRightRecordById(Integer id) throws Exception {
         return surveyAssetInventoryRightRecordDao.deleteSurveyAssetInventoryRightRecordById(id);
     }
 
-    public SurveyAssetInventoryRightRecord getSurveyAssetInventoryRightRecordById(Integer id)throws Exception{
+    public SurveyAssetInventoryRightRecord getSurveyAssetInventoryRightRecordById(Integer id) throws Exception {
         return surveyAssetInventoryRightRecordDao.getSurveyAssetInventoryRightRecordById(id);
     }
 
-    public List<SurveyAssetInventoryRightRecord> surveyAssetInventoryRightRecordList(SurveyAssetInventoryRightRecord surveyAssetInventoryRightRecord){
+    public List<SurveyAssetInventoryRightRecord> surveyAssetInventoryRightRecordList(SurveyAssetInventoryRightRecord surveyAssetInventoryRightRecord) {
         return surveyAssetInventoryRightRecordDao.surveyAssetInventoryRightRecordList(surveyAssetInventoryRightRecord);
     }
-    
+
 }

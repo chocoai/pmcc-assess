@@ -58,8 +58,7 @@
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">特殊情况</label>
                     <div class="col-sm-11">
-                                    <textarea placeholder="特殊情况" class="form-control"
-                                              name="specialCase"></textarea>
+                                    <textarea placeholder="特殊情况" class="form-control" name="specialcase"></textarea>
                     </div>
                 </div>
             </div>
@@ -252,7 +251,7 @@
             <div class="x_panel">
                 <div class="x_title">
                     <h3>他项权利
-                        <button class="btn btn-xs btn-success" onclick="appendHtml('',this)">添加<i
+                        <button class="btn btn-xs btn-success" onclick="appendHtml(false)">添加<i
                                 class="fa fa-plus"></i>
                         </button>
                     </h3>
@@ -370,33 +369,70 @@
      * 添加html,并且替换
      * @returns {*|jQuery}
      */
-    function appendHtml() {
-        var html = $("#" + commonField.taskRightAssistDiv).html();
-        var number = commonField.getNumber();
-        html = html.replace(/_number/g, number);
-        $("#" + commonField.taskRightAssistAppend).append(html);
-        $.ajax({
-            url: "${pageContext.request.contextPath}/surveyAssetInventoryRightRecord/save",
-            type: "post",
-            dataType: "json",
-            data: {
-                projectId: '${projectPlanDetails.projectId}',
-                planDetailsId: '${projectPlanDetails.id}'
-            },
-            success: function (result) {
-                if (result.ret) {
-                    uploadFileCommon(commonField.specialCaseFile + number, AssessDBKey.SurveyAssetInventoryRightRecord, result.data.id);
-                    showFileCommon(commonField.specialCaseFile + number, AssessDBKey.SurveyAssetInventoryRightRecord, result.data.id);
-                    $("#" + commonField.inventoryFrm + number).find('[name=inventoryRightRecordId]').val(result.data.id);
-                    $("#" + commonField.surveyFrm + number).find("select[name='recordIds']").select2();
-                    $("#" + commonField.surveyFrm + number).find('[name=id]').val(result.data.id);
-                    loadAssetRightList(number, result.data.id);
+    function appendHtml(flag) {
+        if (flag){
+            $.ajax({
+                url: "${pageContext.request.contextPath}/surveyAssetInventoryRightRecord/getSurveyAssetInventoryRightRecordList",
+                type: "get",
+                dataType: "json",
+                async:true,
+                data: {
+                    projectId: '${projectPlanDetails.projectId}',
+                    planDetailsId: '${projectPlanDetails.id}'
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        if (result.data.length >= 1){
+                            $.each(result.data,function (i,item) {
+                                var html = $("#" + commonField.taskRightAssistDiv).html();
+                                var number = commonField.getNumber();
+                                html = html.replace(/_number/g, number);
+                                $("#" + commonField.taskRightAssistAppend).append(html);
+                                uploadFileCommon(commonField.specialCaseFile + number, AssessDBKey.SurveyAssetInventoryRightRecord, item.id);
+                                showFileCommon(commonField.specialCaseFile + number, AssessDBKey.SurveyAssetInventoryRightRecord, item.id);
+                                $("#" + commonField.inventoryFrm + number).find('[name=inventoryRightRecordId]').val(item.id);
+                                $("#" + commonField.surveyFrm + number).initForm(item);
+                                $("#" + commonField.surveyFrm + number).find("select[name='recordIds']").val(item.recordIds.split(",")).trigger("change").select2();
+                                loadAssetRightList(number, item.id);
+                            });
+                        }else {
+                            flag = false;
+                        }
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
                 }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
+            });
+        }
+        if (!flag){
+            var html = $("#" + commonField.taskRightAssistDiv).html();
+            var number = commonField.getNumber();
+            html = html.replace(/_number/g, number);
+            $("#" + commonField.taskRightAssistAppend).append(html);
+            $.ajax({
+                url: "${pageContext.request.contextPath}/surveyAssetInventoryRightRecord/save",
+                type: "post",
+                dataType: "json",
+                data: {
+                    projectId: '${projectPlanDetails.projectId}',
+                    planDetailsId: '${projectPlanDetails.id}'
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        uploadFileCommon(commonField.specialCaseFile + number, AssessDBKey.SurveyAssetInventoryRightRecord, result.data.id);
+                        showFileCommon(commonField.specialCaseFile + number, AssessDBKey.SurveyAssetInventoryRightRecord, result.data.id);
+                        $("#" + commonField.inventoryFrm + number).find('[name=inventoryRightRecordId]').val(result.data.id);
+                        $("#" + commonField.surveyFrm + number).find("select[name='recordIds']").select2();
+                        $("#" + commonField.surveyFrm + number).initForm(result.data);
+                        loadAssetRightList(number, result.data.id);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        }
     }
 
     /**
@@ -621,17 +657,25 @@
 
     $(document).ready(function () {
         //a first load
-        appendHtml();
+        appendHtml(true);
     });
 
-    //提交
-    function submit(flag) {
-        if (flag) {
-            taskExploreIndex.checkAssignmentTask(true);
-        } else {
-            taskExploreIndex.checkAssignmentTask(false);
+
+    function submit(mustUseBox) {
+        // if (!$("#frm_asset").valid()) {
+        //     return false;
+        // }
+        var formData = JSON.stringify({});
+
+        if ("${processInsId}" != "0") {
+            submitEditToServer(formData);
+        }
+        else {
+            submitToServer(formData, mustUseBox);
         }
     }
+
+
 </script>
 
 

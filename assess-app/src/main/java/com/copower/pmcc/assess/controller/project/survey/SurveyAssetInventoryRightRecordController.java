@@ -68,6 +68,15 @@ public class SurveyAssetInventoryRightRecordController {
         }
     }
 
+    @GetMapping(value = "/getSurveyAssetInventoryRightRecordList",name = "")
+    public HttpResult getList(SurveyAssetInventoryRightRecord surveyAssetInventoryRightRecord){
+        try {
+            return HttpResult.newCorrectResult(surveyAssetInventoryRightRecordService.surveyAssetInventoryRightRecordList(surveyAssetInventoryRightRecord));
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
     @PostMapping(value = "/remove",name = "clear")
     public HttpResult remove(SurveyAssetInventoryRightRecord surveyAssetInventoryRightRecord){
         try {
