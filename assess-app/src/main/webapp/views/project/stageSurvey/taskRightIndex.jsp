@@ -45,7 +45,7 @@
         </div>
         <div class="btn-group">
             <button type="button" class="btn btn-success"
-                    onclick="saveSurveyAssetInventoryRightRecord(true,'_number')" aria-expanded="false">
+                    onclick="saveSurveyAssetInventoryRightRecord(true,'_number',null)" aria-expanded="false">
                 保存
             </button>
         </div>
@@ -58,13 +58,15 @@
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">特殊情况</label>
                     <div class="col-sm-11">
-                                    <textarea placeholder="特殊情况" class="form-control" name="specialcase"></textarea>
+                        <textarea placeholder="特殊情况" class="form-control"
+                                  name="specialcase"></textarea>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">申报</label>
+                    <label class="col-sm-1 control-label">申报<span
+                            class="symbol required"></span></label>
                     <div class="col-sm-5">
                         <select class="form-control search-select select2" multiple="multiple" required="required"
                                 name="recordIds">
@@ -108,6 +110,15 @@
                                 <div class="col-sm-10">
                                     <select class="form-control" required id="category" name="category">
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-2 control-label">他项权力描述<span
+                                        class="symbol required"></span></label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" required="required" name="remark"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -203,14 +214,6 @@
                                     <input placeholder="结束日期"
                                            name="endDate" data-date-format="yyyy-mm-dd"
                                            class="form-control date-picker dbdate" readonly="readonly">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-2 control-label">备注</label>
-                                <div class="col-sm-10">
-                                    <textarea class="form-control" name="remark"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -370,20 +373,20 @@
      * @returns {*|jQuery}
      */
     function appendHtml(flag) {
-        if (flag){
+        if (flag) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/surveyAssetInventoryRightRecord/getSurveyAssetInventoryRightRecordList",
                 type: "get",
                 dataType: "json",
-                async:false,
+                async: false,
                 data: {
                     projectId: '${projectPlanDetails.projectId}',
                     planDetailsId: '${projectPlanDetails.id}'
                 },
                 success: function (result) {
                     if (result.ret) {
-                        if (result.data.length >= 1){
-                            $.each(result.data,function (i,item) {
+                        if (result.data.length >= 1) {
+                            $.each(result.data, function (i, item) {
                                 var html = $("#" + commonField.taskRightAssistDiv).html();
                                 var number = commonField.getNumber();
                                 html = html.replace(/_number/g, number);
@@ -392,10 +395,14 @@
                                 showFileCommon(commonField.specialCaseFile + number, AssessDBKey.SurveyAssetInventoryRightRecord, item.id);
                                 $("#" + commonField.inventoryFrm + number).find('[name=inventoryRightRecordId]').val(item.id);
                                 $("#" + commonField.surveyFrm + number).initForm(item);
-                                $("#" + commonField.surveyFrm + number).find("select[name='recordIds']").val(item.recordIds.split(",")).trigger("change").select2();
+                                if (item.recordIds) {
+                                    $("#" + commonField.surveyFrm + number).find("select[name='recordIds']").val(item.recordIds.split(",")).trigger("change").select2();
+                                } else {
+                                    $("#" + commonField.surveyFrm + number).find("select[name='recordIds']").select2();
+                                }
                                 loadAssetRightList(number, item.id);
                             });
-                        }else {
+                        } else {
                             flag = false;
                         }
                     }
@@ -405,7 +412,7 @@
                 }
             });
         }
-        if (!flag){
+        if (!flag) {
             var html = $("#" + commonField.taskRightAssistDiv).html();
             var number = commonField.getNumber();
             html = html.replace(/_number/g, number);
@@ -598,7 +605,7 @@
         });
     }
 
-    function importRightData(_this,number) {
+    function importRightData(_this, number) {
         var ajaxFileUpload = commonField.ajaxFileUpload + number;
         var item = formSerializeArray($("#" + commonField.surveyFrm + number));
         Loading.progressShow();
@@ -618,7 +625,7 @@
                 Loading.progressHide();
                 if (result.ret) {
                     Alert(result.data.replace(/\n/g, '<br/>'));
-                    loadAssetRightList(number,item.id);
+                    loadAssetRightList(number, item.id);
                 } else {
                     Alert("导入数据失败，失败原因:" + result.errmsg);
                 }
@@ -630,8 +637,9 @@
         });
     }
 
-    function saveSurveyAssetInventoryRightRecord(flag, number) {
+    function saveSurveyAssetInventoryRightRecord(flag, number, callback) {
         if (flag) {
+            //单个保存
             var item = formSerializeArray($("#" + commonField.surveyFrm + number));
             var data = [];
             data.push(item);
@@ -652,6 +660,40 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             });
+        } else {
+            //保存所有
+            var data = [];
+            var forms = $("#" + commonField.taskRightAssistAppend).find("form");
+            //校验
+            for (var i = 0; i < forms.size(); i++) {
+                if (!$(forms[i]).valid()) {
+                    return false;
+                }
+            }
+            $.each(forms, function (i, n) {
+                var text = $(n).attr("id");
+                if (text.indexOf(commonField.surveyFrm) != -1) {
+                    var item = formSerializeArray($(n));
+                    data.push(item);
+                }
+            });
+            $.ajax({
+                url: "${pageContext.request.contextPath}/surveyAssetInventoryRightRecord/saveFormData",
+                type: "post",
+                dataType: "json",
+                data: {formData: JSON.stringify(data)},
+                success: function (result) {
+                    if (result.ret) {
+                        callback(data);
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
         }
     }
 
@@ -662,17 +704,15 @@
 
 
     function submit(mustUseBox) {
-        // if (!$("#frm_asset").valid()) {
-        //     return false;
-        // }
         var formData = JSON.stringify({});
-
-        if ("${processInsId}" != "0") {
-            submitEditToServer(formData);
-        }
-        else {
-            submitToServer(formData, mustUseBox);
-        }
+        saveSurveyAssetInventoryRightRecord(false, null, function () {
+            if ("${processInsId}" != "0") {
+                submitEditToServer(formData);
+            }
+            else {
+                submitToServer(formData, mustUseBox);
+            }
+        });
     }
 
 

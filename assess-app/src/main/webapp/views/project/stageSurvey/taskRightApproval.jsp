@@ -124,6 +124,10 @@
         var table = item.find("table").eq(0);
         loadAssetRightList(table.attr("id"),id);
     }
+
+    function saveform() {
+        saveApprovalform("");
+    }
 </script>
 </body>
 </html>
