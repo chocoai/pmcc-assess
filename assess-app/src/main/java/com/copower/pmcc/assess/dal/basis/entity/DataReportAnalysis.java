@@ -13,6 +13,8 @@ public class DataReportAnalysis {
 
     private String name;
 
+    private Integer marketBackgroundType;
+
     private Integer reportAnalysisType;
 
     private String template;
@@ -77,6 +79,14 @@ public class DataReportAnalysis {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public Integer getMarketBackgroundType() {
+        return marketBackgroundType;
+    }
+
+    public void setMarketBackgroundType(Integer marketBackgroundType) {
+        this.marketBackgroundType = marketBackgroundType;
     }
 
     public Integer getReportAnalysisType() {

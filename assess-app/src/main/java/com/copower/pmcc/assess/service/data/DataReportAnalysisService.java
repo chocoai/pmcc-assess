@@ -85,11 +85,11 @@ public class DataReportAnalysisService {
      * @param name
      * @return
      */
-    public BootstrapTableVo getReportAnalysisList(String name, Integer reportAnalysisType) {
+    public BootstrapTableVo getReportAnalysisList(String name,Integer type, Integer reportAnalysisType) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataReportAnalysis> hypothesisList = dataReportAnalysisDao.getReportAnalysisList(name, reportAnalysisType);
+        List<DataReportAnalysis> hypothesisList = dataReportAnalysisDao.getReportAnalysisList(name,type, reportAnalysisType);
         List<DataReportAnalysisVo> vos = LangUtils.transform(hypothesisList, p -> getReportAnalysisVo(p));
         vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(vos) ? new ArrayList<DataReportAnalysisVo>() : vos);
         vo.setTotal(page.getTotal());
@@ -116,6 +116,9 @@ public class DataReportAnalysisService {
         if (StringUtils.isNotBlank(reportAnalysis.getEntrustmentPurpose())) {
             vo.setEntrustmentPurposeName(baseDataDicService.getDataDicName(purposeDicList, reportAnalysis.getEntrustmentPurpose()));
         }
+        if(reportAnalysis.getMarketBackgroundType()!=null){
+            vo.setMarketBackgroundTypeName(baseDataDicService.getNameById(reportAnalysis.getMarketBackgroundType()));
+        }
         if (org.apache.commons.lang.StringUtils.isNotBlank(reportAnalysis.getProvince())) {
             vo.setProvinceName(erpAreaService.getSysAreaName(reportAnalysis.getProvince()));//省
         }
@@ -125,6 +128,7 @@ public class DataReportAnalysisService {
         if (org.apache.commons.lang.StringUtils.isNotBlank(reportAnalysis.getDistrict())) {
             vo.setDistrictName(erpAreaService.getSysAreaName(reportAnalysis.getDistrict()));//县
         }
+
         return vo;
     }
 

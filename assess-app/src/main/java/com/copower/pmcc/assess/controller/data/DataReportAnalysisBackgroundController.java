@@ -43,18 +43,20 @@ public class DataReportAnalysisBackgroundController {
     public ModelAndView index() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataReportAnalysisBackground");
         List<BaseDataDic> setUseList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.WORK_PROGRAMME_SET_USE);
-        List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
-        modelAndView.addObject("purposeDicList", purposeDicList);//所有省份
         modelAndView.addObject("setUseList", setUseList);//所有省份
+        List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
+        modelAndView.addObject("purposeDicList", purposeDicList);
+        List<BaseDataDic> types = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_MARKET);
+        modelAndView.addObject("types", types);
         dataReportTemplateItemService.initClean();
         return modelAndView;
     }
 
     @ResponseBody
     @RequestMapping(value = "/list", name = "显示列表", method = RequestMethod.GET)
-    public BootstrapTableVo list(String name) {
+    public BootstrapTableVo list(String name,Integer type) {
         BaseDataDic cacheDataDicByFieldName = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_MARKET);
-        return dataReportAnalysisService.getReportAnalysisList(name,cacheDataDicByFieldName.getId());
+        return dataReportAnalysisService.getReportAnalysisList(name,type,cacheDataDicByFieldName.getId());
     }
 
     @ResponseBody

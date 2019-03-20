@@ -26,11 +26,14 @@ public class DataReportAnalysisDao {
         return dataReportAnalysisMapper.updateByPrimaryKeySelective(evaluationReportAnalysis) == 1;
     }
 
-    public List<DataReportAnalysis> getReportAnalysisList(String name,Integer reportAnalysisType) {
+    public List<DataReportAnalysis> getReportAnalysisList(String name, Integer type,Integer reportAnalysisType) {
         DataReportAnalysisExample example = new DataReportAnalysisExample();
         DataReportAnalysisExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(name)) {
             criteria.andNameLike(String.format("%%%s%%", name));
+        }
+        if(type!=null){
+            criteria.andMarketBackgroundTypeEqualTo(type);
         }
         if(reportAnalysisType!=null){
             criteria.andReportAnalysisTypeEqualTo(reportAnalysisType);

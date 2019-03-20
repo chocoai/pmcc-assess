@@ -53,7 +53,7 @@ public class DataReportAnalysisController {
     @RequestMapping(value = "/list", name = "显示列表", method = RequestMethod.GET)
     public BootstrapTableVo list(String name) {
         BaseDataDic cacheDataDicByFieldName = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_LIQUIDITY);
-        return dataReportAnalysisService.getReportAnalysisList(name,cacheDataDicByFieldName.getId());
+        return dataReportAnalysisService.getReportAnalysisList(name,null,cacheDataDicByFieldName.getId());
     }
 
     @ResponseBody
