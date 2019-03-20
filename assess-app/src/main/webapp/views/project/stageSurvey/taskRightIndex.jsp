@@ -375,7 +375,7 @@
                 url: "${pageContext.request.contextPath}/surveyAssetInventoryRightRecord/getSurveyAssetInventoryRightRecordList",
                 type: "get",
                 dataType: "json",
-                async:true,
+                async:false,
                 data: {
                     projectId: '${projectPlanDetails.projectId}',
                     planDetailsId: '${projectPlanDetails.id}'

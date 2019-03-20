@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
@@ -38,6 +40,40 @@
 
                     <div class="x_content collapse">
                         <form class="form-horizontal" id="surveyAssetInventoryRightRecordForm${item.id}">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        申报
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control search-select select2" multiple="multiple" required="required"
+                                                name="recordIds">
+                                            <c:forEach var="n" items="${declareRecordList}">
+                                                <c:forTokens items="${item.recordIds}" delims="," var="nameS">
+                                                    <c:if test="${nameS == n.id}">
+                                                        <option value="${n.id}" selected="selected">${n.name}</option>
+                                                    </c:if>
+                                                    <c:if test="${nameS != n.id}">
+                                                        <option value="${n.id}">${n.name}</option>
+                                                    </c:if>
+                                                </c:forTokens>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        特殊情况
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <label class="form-control">
+                                                ${item.specialcase}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <div class="col-sm-12">
                                     <table class="table table-bordered" id="tbList${item.id}">
