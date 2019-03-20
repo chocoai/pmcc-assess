@@ -127,9 +127,9 @@
                                 <th style="width: 10%">证明文件</th>
                                 <th style="width: 10%">证明文件附件</th>
                                 <th style="width: 5%">证明人</th>
-                                <th style="width: 6%">调查时间</th>
-                                <th style="width: 6%">确认一致</th>
-                                <th style="width: 10%">操作</th>
+                                <th style="width: 8%">调查时间</th>
+                                <th style="width: 8%">确认一致</th>
+                                <th style="width: 6%">操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -221,65 +221,11 @@
                                     })
                                 </script>
                             </c:forEach>
-                            <%--<tr>
-                                <td>
-                                    周边环境是否正常
-                                </td>
-                                <td>
-                                    <div class="x-valid">
-                                        <select class="form-control" id="rimIsNormal" name="rimIsNormal" required
-                                                onchange="showOther()">
-                                            <option value="" selected>请选择</option>
-                                            <option value="正常">正常</option>
-                                            <option value="不正常">不正常</option>
-                                        </select>
-                                    </div>
-                                </td>
-                                <td colspan="8">
-                                    <div style="display:none" id="showAbnormality">
-                                        <div class="x-valid">
-                                            <input type="text" placeholder="原因" name="abnormality" id="abnormality"
-                                                   class="form-control " value="${surveyAssetInventory.abnormality}">
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
                             <tr>
-                                <td>
-                                    实物状况是否损坏
-                                </td>
-                                <td>
-                                    <div class="x-valid">
-                                        <select class="form-control" name="entityIsDamage" id="entityIsDamage"
-                                                onchange="showOther()">
-                                            <option value="" selected>请选择</option>
-                                            <option value="损坏">损坏</option>
-                                            <option value="未损坏">未损坏</option>
-                                        </select>
-                                    </div>
-                                </td>
-                                <td colspan="8">
-                                    <div style="display:none" id="showDamageRemark">
-                                        <div class="x-valid">
-                                            <input type="text" placeholder="原因" name="damageRemark" id="damageRemark"
-                                                   class="form-control " value="${surveyAssetInventory.damageRemark}">
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>转让限制</td>
-                                <td colspan="9">
-                                    <textarea placeholder="转让限制" name="transferLimit" id="transferLimit"
-                                              class="form-control"
-                                              value="${surveyAssetInventory.transferLimit}"></textarea>
-                                </td>
-                            </tr>--%>
-                            <tr>
-                                <td align="right" style="vertical-align:middle;width: 12.5%">
+                                <td align="right" style="vertical-align:middle;width: 10%">
                                     分割限制
                                 </td>
-                                <td style="width: 12.5%">
+                                <td style="width: 10%">
                                     <div class="x-valid">
                                         <select class="form-control" id="segmentationLimit" name="segmentationLimit"
                                                 required
@@ -289,12 +235,12 @@
                                         </select>
                                     </div>
                                 </td>
-                                <td align="right" style="vertical-align:middle;width: 12.5%">
+                                <td align="right" style="vertical-align:middle;width: 10%">
                                     <div class="showHidden">
                                         能否使用
                                     </div>
                                 </td>
-                                <td style="width: 12.5%">
+                                <td style="width: 10%">
                                     <div class="x-valid" class="showHidden">
                                         <select class="form-control" id="canUse" name="canUse">
                                             <option value="" selected>请选择</option>
@@ -303,12 +249,12 @@
                                         </select>
                                     </div>
                                 </td>
-                                <td align="right" style="vertical-align:middle;width: 12.5%">
+                                <td align="right" style="vertical-align:middle;width: 10%">
                                     <div class="showHidden">
                                         用途
                                     </div>
                                 </td>
-                                <td style="width: 12.5%">
+                                <td style="width: 10%">
                                     <div class="x-valid" class="showHidden">
                                         <select class="form-control" id="application" name="application">
                                             <option value="">-请选择-</option>
@@ -318,12 +264,12 @@
                                         </select>
                                     </div>
                                 </td>
-                                <td align="right" style="vertical-align:middle;width: 12.5%">
+                                <td align="right" style="vertical-align:middle;width: 10%">
                                     <div class="showHidden">
                                         是否办证
                                     </div>
                                 </td>
-                                <td style="width: 12.5%">
+                                <td style="width: 10%">
                                     <div class="x-valid" class="showHidden">
                                         <select class="form-control" id="certificate" name="certificate">
                                             <option value="" selected>请选择</option>
@@ -336,6 +282,65 @@
                             </tbody>
                         </table>
                     </form>
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title">
+                    <%--<ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>--%>
+                    <h3>损坏调查表</h3>
+                    <div class="clearfix"></div>
+                    <div class="x_content">
+                        <form id="damageSurvey" class="form-horizontal">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        区位损坏新增
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <div class="btn btn-xs btn-success"
+                                             onclick="appendHTML('zoneProjectName','zoneProjectItem','zoneBit',this)"><i
+                                                class="fa fa-plus"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <%-- <div class="form-group">
+                                 <div class="x-valid">
+                                     <label class="col-sm-1 control-label">
+                                         项目
+                                     </label>
+                                     <div class="col-sm-3">
+                                         <input class="form-control" name="zoneProjectName" type="text" required>
+                                     </div>
+                                     <label class="col-sm-1 control-label">
+                                         明细
+                                     </label>
+                                     <div class="col-sm-3">
+                                         <input class="form-control" name="zoneProjectItem" type="text" required>
+                                     </div>
+                                 </div>
+                             </div>--%>
+                            <div class="zoneBit">
+
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        实物损坏新增
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <div class="btn btn-xs btn-success"
+                                             onclick="appendHTML('entityProjectName','entityProjectItem','entity',this)">
+                                            <i class="fa fa-plus"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="entity">
+
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
             <div class="x_panel">
@@ -656,6 +661,9 @@
             $("#canUse").val("${surveyAssetInventory.canUse}");
             $("#application").val("${surveyAssetInventory.application}");
             $("#certificate").val("${surveyAssetInventory.certificate}");
+
+            writeHTMLData('zoneProjectName', 'zoneProjectItem', 'zoneBit', ${surveyAssetInventory.zoneDamage});
+            writeHTMLData('entityProjectName', 'entityProjectItem', 'entity', ${surveyAssetInventory.entityDamage});
         }
         showOther();
     })
@@ -783,12 +791,35 @@
         });
         var data = {};
         data.surveyAssetInventory = formParams("frm_asset");//评估人员 核对时间
-         data.surveyAssetInventory.segmentationLimit = $("#segmentationLimit").val();
-         data.surveyAssetInventory.canUse = $("#canUse").val();
-         data.surveyAssetInventory.application = $("#application").val();
-         data.surveyAssetInventory.certificate = $("#certificate").val();
+        data.surveyAssetInventory.segmentationLimit = $("#segmentationLimit").val();
+        data.surveyAssetInventory.canUse = $("#canUse").val();
+        data.surveyAssetInventory.application = $("#application").val();
+        data.surveyAssetInventory.certificate = $("#certificate").val();
         data.assetInventoryContentList = dataItem;
         data.surveyAssetInventory.specialCase = $("#specialCase").val();
+
+        data.surveyAssetInventory.zoneDamage = [];
+        data.surveyAssetInventory.entityDamage = [];
+        $("#damageSurvey").find('.form-group').each(function () {
+            var zoneBit = {};
+            var zoneProjectName = $(this).find('[name^=zoneProjectName]').val();
+            var zoneProjectItem = $(this).find('[name^=zoneProjectItem]').val();
+            if (zoneProjectName && zoneProjectItem) {
+                zoneBit.zoneProjectName = zoneProjectName;
+                zoneBit.zoneProjectItem = zoneProjectItem;
+                data.surveyAssetInventory.zoneDamage.push(zoneBit);
+            }
+
+            var entity = {};
+            var entityProjectName = $(this).find('[name^=entityProjectName]').val();
+            var entityProjectItem = $(this).find('[name^=entityProjectItem]').val();
+            if (entityProjectName && entityProjectItem) {
+                entity.entityProjectName = entityProjectName;
+                entity.entityProjectItem = entityProjectItem;
+                data.surveyAssetInventory.entityDamage.push(entity);
+            }
+        });
+
         return data;
     }
 
@@ -799,7 +830,11 @@
         if (!$("#frm_asset_inventory_content").valid()) {
             return false;
         }
+        if (!$("#damageSurvey").valid()) {
+            return false;
+        }
         var formData = JSON.stringify(getFormData());
+
 
         if ("${processInsId}" != "0") {
             submitEditToServer(formData);
@@ -958,6 +993,66 @@
             });
         }
     }
+
+    var num = 0;
+
+    function appendHTML(projectName, projectItem, item, this_) {
+        var html = "<div class='form-group' >";
+        html += "<div class='x-valid'>";
+
+        html += "<label class='col-sm-1 control-label'>" + "项目" + "</label>";
+        html += "<div class='col-sm-3'>";
+        html += "<input type='text' required class='form-control' name='" + projectName + num + "'>";
+        html += "</div>";
+
+        html += "<label class='col-sm-1 control-label'>" + "明细" + "</label>";
+        html += "<div class='col-sm-3'>";
+        html += "<input type='text' required class='form-control' name='" + projectItem + num + "'>";
+        html += "</div>";
+
+        html += " <div class='col-sm-2'>";
+        html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
+        html += "</div>";
+
+        html += "</div>";
+        html += "</div>";
+
+        num++;
+        $("." + item).append(html);
+    }
+
+    function cleanHTMLData(item) {
+        var value = "";
+        $(item).parent().parent().parent().remove();
+    }
+
+    function writeHTMLData(projectName, projectItem, item, json) {
+        $("." + item).empty();
+        var jsonarray = eval(json);
+        $.each(jsonarray, function (i, n) {
+            var html = "<div class='form-group' >";
+            html += "<div class='x-valid'>";
+
+            html += "<label class='col-sm-1 control-label'>" + "项目" + "</label>";
+            html += "<div class='col-sm-3'>";
+            html += "<input type='text' required class='form-control' name='" + projectName + i + "' value='" + n[projectName] + "'>";
+            html += "</div>";
+
+            html += "<label class='col-sm-1 control-label'>" + "明细" + "</label>";
+            html += "<div class='col-sm-3'>";
+            html += "<input type='text' required class='form-control' name='" + projectItem + i + "' value='" + n[projectItem] + "'>";
+            html += "</div>";
+
+            html += " <div class='col-sm-2'>";
+            html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
+            html += "</div>";
+
+            html += "</div>";
+            html += "</div>";
+            $("." + item).append(html);
+        })
+    }
+
 
 </script>
 
