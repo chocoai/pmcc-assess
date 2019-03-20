@@ -400,9 +400,9 @@ public class AsposeUtils {
                     builder.insertDocument(document, ImportFormatMode.KEEP_DIFFERENT_STYLES);
                     return ReplaceAction.REPLACE;
                 }, false);
-                doc.save(filePath);
             }
         }
+        doc.save(filePath);
     }
 
     /**

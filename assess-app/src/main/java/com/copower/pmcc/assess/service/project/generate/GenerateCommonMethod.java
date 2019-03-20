@@ -589,7 +589,7 @@ public class GenerateCommonMethod {
         if (StringUtils.isEmpty(title)) {
             title = String.format("%s%s","报告模板", DateUtils.format(new Date(),DateUtils.DATE_CHINESE_PATTERN));
         }
-        return String.format("%s\\%s%s%s", baseAttachmentService.createTempDirPath(UUID.randomUUID().toString()), title, UUID.randomUUID().toString(), ".doc");
+        return String.format("%s\\%s%s%s", baseAttachmentService.createTempDirPath(), title, UUID.randomUUID().toString(), ".doc");
     }
 
     /**

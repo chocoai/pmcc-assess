@@ -16,6 +16,7 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -149,7 +150,16 @@ public class DataReportAnalysisService {
      * @return
      */
     public String getReportLiquidity(){
-
-        return null;
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_LIQUIDITY);
+        if (baseDataDic == null) return "";
+        List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisDao.getReportAnalysisList(baseDataDic.getId());
+        if (CollectionUtils.isEmpty(reportAnalysisList)) return "";
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < reportAnalysisList.size(); i++) {
+            DataReportAnalysis dataReportAnalysis = reportAnalysisList.get(i);
+            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, dataReportAnalysis.getName())).append("</p>");
+            stringBuilder.append(dataReportAnalysis.getTemplate());
+        }
+        return stringBuilder.toString();
     }
 }

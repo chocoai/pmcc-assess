@@ -8,10 +8,13 @@ import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.common.CommonService;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class DataReportAnalysisRiskService {
@@ -47,10 +50,20 @@ public class DataReportAnalysisRiskService {
 
     /**
      * 获取上报告的风险提示数据
+     *
      * @return
      */
-    public String getReportRisk(){
-
-        return null;
+    public String getReportRisk() {
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_RISK);
+        if (baseDataDic == null) return "";
+        List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisDao.getReportAnalysisList(baseDataDic.getId());
+        if (CollectionUtils.isEmpty(reportAnalysisList)) return "";
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < reportAnalysisList.size(); i++) {
+            DataReportAnalysis dataReportAnalysis = reportAnalysisList.get(i);
+            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, dataReportAnalysis.getName())).append("</p>");
+            stringBuilder.append(dataReportAnalysis.getTemplate());
+        }
+        return stringBuilder.toString();
     }
 }
