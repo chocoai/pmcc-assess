@@ -139,38 +139,20 @@ public class CompileReportService {
     public void initReportDetail(ProjectPlanDetails projectPlanDetails) {
         int count = compileReportDetailDao.getCountByPlanDetailsId(projectPlanDetails.getId());
         if (count > 0) return;
+        BaseDataDic analysisType=baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_MARKET);
         List<BaseDataDic> dataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_MARKET);
         if(CollectionUtils.isEmpty(dataDicList)) return;
-        for (BaseDataDic baseDataDic : dataDicList) {//根据各种条件获取对应的模板数据
-
-        }
-
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
-        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(projectPhase.getPhaseKey());
-        if (baseDataDic == null) return;
-        ProjectPlanDetails areaPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(projectPlanDetails.getPid());
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-        SchemeAreaGroup areaGroup = schemeAreaGroupDao.get(areaPlanDetails.getAreaId());
-        List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisService.getDataReportAnalysisList(areaGroup.getProvince(), areaGroup.getCity(),
-                areaGroup.getDistrict(), baseDataDic.getId(), projectInfo.getEntrustPurpose());
         CompileReportDetail compileReportDetail = null;
-        if (CollectionUtils.isNotEmpty(reportAnalysisList)) {
-            for (DataReportAnalysis dataReportAnalysis : reportAnalysisList) {
-                compileReportDetail = new CompileReportDetail();
-                compileReportDetail.setCreator(commonService.thisUserAccount());
-                compileReportDetail.setName(dataReportAnalysis.getName());
-                compileReportDetail.setTemplate(dataReportAnalysis.getTemplate());
-                if (dataReportAnalysis.getBisModifiable() == Boolean.FALSE) {
-                    compileReportDetail.setContent(dataReportAnalysis.getTemplate());
-                }
-                compileReportDetail.setAreaId(areaPlanDetails.getAreaId());
-                compileReportDetail.setReportAnalysisType(baseDataDic.getId());
-                compileReportDetail.setReportAnalysisName(baseDataDic.getName());
-                compileReportDetail.setJsonContent(publicService.extractField(dataReportAnalysis.getTemplate()));
-                compileReportDetail.setPlanDetailsId(projectPlanDetails.getId());
-                compileReportDetail.setBisModifiable(dataReportAnalysis.getBisModifiable());
-                compileReportDetailDao.addReportDetail(compileReportDetail);
-            }
+        for (BaseDataDic baseDataDic : dataDicList) {//根据各种条件获取对应的模板数据
+            compileReportDetail = new CompileReportDetail();
+            compileReportDetail.setCreator(commonService.thisUserAccount());
+            compileReportDetail.setName(baseDataDic.getName());
+            compileReportDetail.setAreaId(projectPlanDetails.getAreaId());
+            compileReportDetail.setReportAnalysisType(analysisType.getId());
+            compileReportDetail.setReportAnalysisName(analysisType.getName());
+            compileReportDetail.setPlanDetailsId(projectPlanDetails.getId());
+            compileReportDetail.setBisModifiable(true);
+            compileReportDetailDao.addReportDetail(compileReportDetail);
         }
     }
 

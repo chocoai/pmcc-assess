@@ -20,7 +20,6 @@
                     compileInfoPanelHtml = compileInfoPanelHtml.replace(/{reportAnalysisTypeName}/g, item.reportAnalysisName).replace(/{reportAnalysisType}/g, item.reportAnalysisType);
                     $('.compileInfoContent').append(compileInfoPanelHtml);
                 }
-
                 var compileInfoWellHtml = '';
                 if (defaluts.readonly || !item.bisModifiable) {
                     compileInfoWellHtml = $('#compileInfoWellView').html();
@@ -28,21 +27,28 @@
                 } else {
                     compileInfoWellHtml = $('#compileInfoWell').html();
                     compileInfoWellHtml = compileInfoWellHtml.replace(/{id}/g, item.id).replace(/{name}/g, AssessCommon.toString(item.name));
-                    compileInfoWellHtml = compileInfoWellHtml.replace(/{template}/g, item.template).replace(/{content}/g, AssessCommon.toString(item.content));
+                    compileInfoWellHtml = compileInfoWellHtml.replace(/{content}/g, AssessCommon.toString(item.content));
+                    if(item.template){
+                        compileInfoWellHtml = compileInfoWellHtml.replace(/{template}/g, item.template);
+                    }else{
+                        compileInfoWellHtml = compileInfoWellHtml.replace(/{templateDisplay}/g, 'style="display:none"');
+                    }
                     //处理字段
                     var wellFields = '';
-                    var fieldArray = JSON.parse(item.jsonContent);
-                    if (fieldArray && fieldArray.length > 0) {
-                        wellFields = "<div class='form-group'>";
-                        for (var j = 0; j < fieldArray.length; j++) {
-                            if (j > 0 && j % 3 == 0) {
-                                wellFields += '</div><div class="form-group">';
+                    if(item.jsonContent){
+                        var fieldArray = JSON.parse(item.jsonContent);
+                        if (fieldArray && fieldArray.length > 0) {
+                            wellFields = "<div class='form-group'>";
+                            for (var j = 0; j < fieldArray.length; j++) {
+                                if (j > 0 && j % 3 == 0) {
+                                    wellFields += '</div><div class="form-group">';
+                                }
+                                var compileInfoFieldHtml = $("#compileInfoField").html();
+                                compileInfoFieldHtml = compileInfoFieldHtml.replace(/{key}/g, fieldArray[j].key).replace(/{value}/g, fieldArray[j].value);
+                                wellFields += compileInfoFieldHtml;
                             }
-                            var compileInfoFieldHtml = $("#compileInfoField").html();
-                            compileInfoFieldHtml = compileInfoFieldHtml.replace(/{key}/g, fieldArray[j].key).replace(/{value}/g, fieldArray[j].value);
-                            wellFields += compileInfoFieldHtml;
+                            wellFields += "</div>";
                         }
-                        wellFields += "</div>";
                     }
                     compileInfoWellHtml = compileInfoWellHtml.replace(/{wellFields}/g, wellFields);
                 }
@@ -115,7 +121,7 @@
 <script type="text/html" id="compileInfoWell">
     <div class="well">
         <input type="hidden" name="id" value="{id}">
-        <div class="form-group">
+        <div class="form-group" {templateDisplay}>
             <label class="col-sm-1 control-label">模板</label>
             <div class="col-sm-11"><label class="form-control template">{template}</label></div>
         </div>
