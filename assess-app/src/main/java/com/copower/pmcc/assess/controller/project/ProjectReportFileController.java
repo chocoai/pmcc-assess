@@ -43,9 +43,8 @@ public class ProjectReportFileController {
         modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId)));
         modelAndView.addObject("areaId", areaId);
         modelAndView.addObject("areaGroup", schemeAreaGroupService.get(areaId));
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaId);//该区域下的所有委估对象
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);//该区域下的所有委估对象
         modelAndView.addObject("judgeObjectList", judgeObjectList);
-        modelAndView.addObject("judgeObjectFullList", schemeJudgeObjectService.getJudgeObjectFullListByAreaId(areaId));
         modelAndView.addObject("ownershipCertFileList", schemeReportFileService.getOwnershipCertFileList(areaId));
         modelAndView.addObject("inventoryAddressFileList", schemeReportFileService.getInventoryAddressFileList(areaId));
         modelAndView.addObject("reimbursementFileList", schemeReportFileService.getReimbursementFileList(areaId));

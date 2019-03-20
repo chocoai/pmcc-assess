@@ -17,6 +17,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.PublicService;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicEstateTaggingService;
@@ -102,6 +103,8 @@ public class SchemeJudgeObjectService {
     private DataSetUseFieldService dataSetUseFieldService;
     @Autowired
     private DeclareRecordService declareRecordService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
 
     public boolean addSchemeJudgeObject(SchemeJudgeObject schemeJudgeObject) {
         return schemeJudgeObjectDao.addSchemeJudgeObject(schemeJudgeObject);
@@ -587,7 +590,6 @@ public class SchemeJudgeObjectService {
                             }
                         }
                         savePlanDetails(projectPlan, i, null, schemeJudgeObject, planDetails, phaseSurePrice);//确定单价
-                        this.makeJudgeObjectPosition(Lists.newArrayList(schemeJudgeObject.getId()));
                     }
                 }
                 if (CollectionUtils.isNotEmpty(judgeProjectPhases)) {
@@ -639,6 +641,14 @@ public class SchemeJudgeObjectService {
         if (CollectionUtils.isEmpty(judgeObjectIds)) return;
         for (Integer judgeObjectId : judgeObjectIds) {
             SchemeJudgeObject judgeObject = this.getSchemeJudgeObject(judgeObjectId);
+            //清除原数据
+            SysAttachmentDto delExample = new SysAttachmentDto();
+            delExample.setProjectId(judgeObject.getProjectId());
+            delExample.setTableId(judgeObject.getId());
+            delExample.setTableName(FormatUtils.entityNameConvertToTableName(SchemeJudgeObject.class));
+            delExample.setFieldsName(AssessUploadEnum.JUDGE_OBJECT_POSITION.getKey());
+            baseAttachmentService.deleteAttachmentByDto(delExample);
+
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
             List<BasicEstateTagging> taggingList = basicEstateTaggingService.getEstateTaggingList(basicApply.getId(), EstateTaggingTypeEnum.UNIT.getKey());
             if (CollectionUtils.isNotEmpty(taggingList)) {

@@ -79,7 +79,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content collapse">
-                    <c:forEach items="${judgeObjectFullList}" var="judgeObject">
+                    <c:forEach items="${judgeObjectList}" var="judgeObject">
                         <div class="row">
                             <input type="hidden" name="judgeObjectId" value="${judgeObject.id}">
                             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -185,80 +185,85 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content collapse">
-                    <input type="button" class="btn btn-success" value="添加" onclick="addReportFileCustom();">
-                    <c:forEach items="${judgeObjectList}" var="judgeObject">
-                        <div class="x_panel">
-                            <div class="x_title"><h4><strong>${judgeObject.name}</strong></h4></div>
-                            <div class="row">
+                    <div class="row">
+                        <c:forEach items="${judgeObjectList}" var="judgeObject">
+                            <c:if test="${not empty inventoryAddressFileList.get(judgeObject.id)}">
                                 <div class="col-sm-6">
                                     <div class="x_panel">
-                                        <div class="x_title">地址不一致附件</div>
-                                        <div>
-                                            <table class="table table-hover">
-                                                <thead>
-                                                <tr>
-                                                    <th>序号</th>
-                                                    <th>文件名称</th>
-                                                    <th>操作</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <c:forEach items="${inventoryAddressFileList.get(judgeObject.id)}"
-                                                           var="item" varStatus="i">
+                                        <div class="x_title"><h4><strong>${judgeObject.name}</strong></h4></div>
+                                        <div class="x_panel">
+                                            <div class="x_title">登记与实际地址不一致附件</div>
+                                            <div>
+                                                <table class="table table-hover">
+                                                    <thead>
                                                     <tr>
-                                                        <th>${i.index+1}</th>
-                                                        <td>${item.fileName}</td>
-                                                        <td>
-                                                            <input type="button" class="btn btn-xs btn-primary"
-                                                                   value="编辑"
-                                                                   onclick="FileUtils.editAttachment(${item.id},'${item.fileExtension}');">
-                                                            <input type="button" class="btn btn-xs btn-warning"
-                                                                   value="查看"
-                                                                   onclick="FileUtils.showAttachment(${item.id},'${item.fileExtension}');">
-                                                        </td>
+                                                        <th>序号</th>
+                                                        <th>文件名称</th>
+                                                        <th>操作</th>
                                                     </tr>
-                                                </c:forEach>
-                                                </tbody>
-                                            </table>
+                                                    </thead>
+                                                    <tbody>
+                                                    <c:forEach items="${inventoryAddressFileList.get(judgeObject.id)}" var="item" varStatus="i">
+                                                        <tr>
+                                                            <th>${i.index+1}</th>
+                                                            <td>${item.fileName}</td>
+                                                            <td>
+                                                                <input type="button" class="btn btn-xs btn-primary"
+                                                                       value="编辑"
+                                                                       onclick="FileUtils.editAttachment(${item.id},'${item.fileExtension}');">
+                                                                <input type="button" class="btn btn-xs btn-warning"
+                                                                       value="查看"
+                                                                       onclick="FileUtils.showAttachment(${item.id},'${item.fileExtension}');">
+                                                            </td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="x_panel">
-                                        <div class="x_title">法定优先受偿款附件</div>
-                                        <div>
-                                            <table class="table table-hover">
-                                                <thead>
+                            </c:if>
+                        </c:forEach>
+                    </div>
+                    <c:if test="${not empty reimbursementFileList}">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="x_panel">
+                                    <div class="x_title"><h4><strong>法定优先受偿款附件</strong></h4></div>
+                                    <div>
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>序号</th>
+                                                <th>文件名称</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <c:forEach items="${reimbursementFileList.get(judgeObject.id)}"
+                                                       var="item" varStatus="i">
                                                 <tr>
-                                                    <th>序号</th>
-                                                    <th>文件名称</th>
-                                                    <th>操作</th>
+                                                    <th>${i.index+1}</th>
+                                                    <td>${item.fileName}</td>
+                                                    <td>
+                                                        <input type="button" class="btn btn-xs btn-primary"
+                                                               value="编辑"
+                                                               onclick="FileUtils.editAttachment(${item.id},'${item.fileExtension}');">
+                                                        <input type="button" class="btn btn-xs btn-warning"
+                                                               value="查看"
+                                                               onclick="FileUtils.showAttachment(${item.id},'${item.fileExtension}');">
+                                                    </td>
                                                 </tr>
-                                                </thead>
-                                                <tbody>
-                                                <c:forEach items="${reimbursementFileList.get(judgeObject.id)}"
-                                                           var="item" varStatus="i">
-                                                    <tr>
-                                                        <th>${i.index+1}</th>
-                                                        <td>${item.fileName}</td>
-                                                        <td>
-                                                            <input type="button" class="btn btn-xs btn-primary"
-                                                                   value="编辑"
-                                                                   onclick="FileUtils.editAttachment(${item.id},'${item.fileExtension}');">
-                                                            <input type="button" class="btn btn-xs btn-warning"
-                                                                   value="查看"
-                                                                   onclick="FileUtils.showAttachment(${item.id},'${item.fileExtension}');">
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                            </c:forEach>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </c:forEach>
+                    </c:if>
+                    <input type="button" class="btn btn-success" value="添加" onclick="addReportFileCustom();">
                     <div class="row report-file-custom">
                     </div>
                 </div>
@@ -269,7 +274,7 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-                        <button id="btn_submit" class="btn btn-success" onclick="submit();">
+                        <button id="btn_submit" class="btn btn-warning" onclick="submit();">
                             保存<i style="margin-left: 10px" class="fa fa-save"></i>
                         </button>
                     </div>
@@ -285,8 +290,8 @@
     <div class="col-sm-6">
         <div class="x_panel">
             <div class="x_title">
-                {name}
-                <input type="button" class="btn btn-xs btn-warning" value="删除"
+                <label>{name}</label>
+                <input type="button" class="btn btn-xs btn-warning pull-right" value="删除"
                        onclick="deleteReportFileCustom(this,'{id}');"
                        style="margin-left: 5px;">
             </div>

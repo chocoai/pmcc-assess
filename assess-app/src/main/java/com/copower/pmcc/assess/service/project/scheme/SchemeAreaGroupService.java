@@ -247,6 +247,8 @@ public class SchemeAreaGroupService {
                         schemeJudgeObject.setSorting(i);
                         schemeJudgeObject.setCreator(commonService.thisUserAccount());
                         schemeJudgeObjectService.addSchemeJudgeObject(schemeJudgeObject);
+                        schemeJudgeObjectService.makeJudgeObjectPosition(Lists.newArrayList(schemeJudgeObject.getId()));
+
                         //反写申报数据的区域id
                         declareRecord.setAreaGroupId(areaGroup.getId());
                         declareRecordDao.updateDeclareRecord(declareRecord);

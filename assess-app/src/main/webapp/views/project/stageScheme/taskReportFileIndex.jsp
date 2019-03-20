@@ -74,7 +74,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content collapse">
-                    <c:forEach items="${judgeObjectFullList}" var="judgeObject">
+                    <c:forEach items="${judgeObjectList}" var="judgeObject">1
                         <div class="row">
                             <input type="hidden" name="judgeObjectId" value="${judgeObject.id}">
                             <div class="col-md-6 col-sm-6 col-xs-12">
