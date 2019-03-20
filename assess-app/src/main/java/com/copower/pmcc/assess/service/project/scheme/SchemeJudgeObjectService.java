@@ -155,13 +155,27 @@ public class SchemeJudgeObjectService {
 
     /**
      * 获取区域下完整的委估对象
-     *
+     * 不会获取合并的对象
      * @return
      */
     public List<SchemeJudgeObject> getJudgeObjectFullListByAreaId(Integer areaGroupId) {
         SchemeJudgeObject where = new SchemeJudgeObject();
         where.setAreaGroupId(areaGroupId);
         where.setBisMerge(false);
+        List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectDao.getJudgeObjectList(where);
+        return judgeObjects;
+    }
+
+    /**
+     * 获取区域下与权证对应的委估对象
+     * 不会获取到合并与拆分的对象，只与权证1对1
+     * @return
+     */
+    public List<SchemeJudgeObject> getJudgeObjectDeclareListByAreaId(Integer areaGroupId) {
+        SchemeJudgeObject where = new SchemeJudgeObject();
+        where.setAreaGroupId(areaGroupId);
+        where.setBisMerge(false);
+        where.setBisSplit(false);
         List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectDao.getJudgeObjectList(where);
         return judgeObjects;
     }
