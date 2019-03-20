@@ -4,6 +4,8 @@ import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationHypothesis;
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationHypothesisExample;
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationPrincipleExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataEvaluationHypothesisMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -63,4 +65,11 @@ public class EvaluationHypothesisDao {
         return evaluationHypothesisMapper.selectByPrimaryKey(id);
     }
 
+    public DataEvaluationHypothesis getSingleObject(DataEvaluationHypothesis dataEvaluationHypothesis) {
+        DataEvaluationHypothesisExample example = new DataEvaluationHypothesisExample();
+        MybatisUtils.convertObj2Example(dataEvaluationHypothesis, example);
+        List<DataEvaluationHypothesis> list = evaluationHypothesisMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(list)) return null;
+        return list.get(0);
+    }
 }
