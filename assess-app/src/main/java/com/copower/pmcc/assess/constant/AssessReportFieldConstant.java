@@ -23,4 +23,15 @@ public class AssessReportFieldConstant {
     public static final String HYPOTHESIS_UNCERTAIN_MATTER = "hypothesis.uncertain.matter";//未定事项假设
     public static final String TIME_ACTUAL_SURVEY = "time.actual.survey";//未定事项假设(实际用途)
     public static final String HYPOTHESIS_PURPOSE = "hypothesis.purpose";//未定事项假设(设定用途)
+
+    public static final String HYPOTHESIS_INCONFORMITY = "hypothesis.inconformity";//不相一致假设
+    public static final String LOAD_ADDRESS = "load.address";//证载地址
+    public static final String REGISTERED_ADDRESS = "registered.address";//登记地址
+    public static final String REGISTRATION_PURPOSES = "registration.purposes";//登记用途
+
+
+    public static final String HYPOTHESIS_GIST_INSUFFICIENT = "hypothesis.gist.insufficient";//依据不足假设
+    public static final String REFERENCE_SAME = "reference.same";//参考同类
+    public static final String ASSET_CHECK = "asset.check";//资产清查（入户调查）
+
 }

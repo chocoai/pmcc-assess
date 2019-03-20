@@ -79,6 +79,8 @@ public class AssessExamineTaskConstant {
     public static final String EXAMINE_BUILDING_FUNCTION_TYPE_HEAT_PRESERVATION = "building.function.type.heat.preservation";//保温
 
     public static final String EXAMINE_UNIT_HOUSE_LAYOUT = "unit.house_layout";//房型
+    public static final String EXAMINE_HOUSE_RESEARCH_INVESTIGATE = "examine.house.research.investigate";//入户调查
+    public static final String EXAMINE_HOUSE_RESEARCH_REFERENCE = "examine.house.research.reference";//参考同类
     public static final String EXAMINE_UNIT_HOUSE_TYPE = "examine.house.type";//房屋类型
     public static final String EXAMINE_HOUSE_STREET_LEVEL = "examine.house.street_level";//街道级别
     public static final String EXAMINE_HOUSE_TRAFFIC_FLOW = "examine.house.traffic_flow";//交通流量
