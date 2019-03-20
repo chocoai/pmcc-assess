@@ -464,6 +464,7 @@ public class SchemeJudgeObjectService {
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByPid(schemeJudgeObject.getId());
         for (SchemeJudgeObject judgeObject : judgeObjectList) {
             judgeObject.setBisEnable(true);
+            judgeObject.setPid(0);
             schemeJudgeObjectDao.updateSchemeJudgeObject(judgeObject);
         }
         schemeJudgeObjectDao.removeSchemeJudgeObject(id);

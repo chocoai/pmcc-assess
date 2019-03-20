@@ -72,7 +72,6 @@
                                 </button>
                             </div>
                         </div>
-
                     </form>
                     <table class="table table-bordered" id="tb_declare_record_list"></table>
                 </div>
@@ -610,7 +609,6 @@
             </div>
             <div class="modal-body">
                 <div class="x_content">
-
                 </div>
             </div>
             <div class="modal-footer">
@@ -987,6 +985,9 @@
                         }
                         lastTr.find('td:last').find(item.bisSplit ? '.judge-split' : '.judge-remove').remove();
                         lastTr.find('td:last').find(item.bisMerge ? '.judge-merge' : '.judge-merge-cancel').remove();
+                        if(item.splitNumber){
+                            lastTr.find('td:last').find('.judge-merge').remove();
+                        }
                         if (item.bisSetFunction) {
                             lastTr.find('td:last').find('.judge-method').removeClass('btn-success').addClass('btn-primary');
                         }

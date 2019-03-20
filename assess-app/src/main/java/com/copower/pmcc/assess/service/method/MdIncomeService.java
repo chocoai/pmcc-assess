@@ -680,9 +680,8 @@ public class MdIncomeService {
     public void updateLease(MdIncomeLease mdIncomeLease) {
         mdIncomeLeaseDao.updateIncomeLease(mdIncomeLease);
 
-        //计算总收入 月租金*出租率*月份数+押金*押金利率+其它收入
+        //计算总收入 月租金*出租率*月份数+其它收入
         BigDecimal total = mdIncomeLease.getRentalIncome().multiply(mdIncomeLease.getRentals()).multiply(new BigDecimal(mdIncomeLease.getMonthNumber()));
-        total = total.add(mdIncomeLease.getDeposit().multiply(mdIncomeLease.getDepositRate()));
         total = total.add(mdIncomeLease.getOtherIncome());
         MdIncomeDateSection incomeDateSection = mdIncomeDateSectionDao.getDateSectionById(mdIncomeLease.getSectionId());
         if (incomeDateSection != null) {
