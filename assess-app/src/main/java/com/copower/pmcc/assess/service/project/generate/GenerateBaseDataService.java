@@ -223,13 +223,13 @@ public class GenerateBaseDataService {
     public String getScopePropertyExplain() throws Exception {
         StringBuffer stringBuffer = new StringBuffer(16);
         if (getSchemeAreaGroup().getPropertyScope() != null) {
-            stringBuffer.append(baseDataDicService.getNameById(getSchemeAreaGroup().getPropertyScope()));
+            stringBuffer.append("评估(财产)范围").append(baseDataDicService.getNameById(getSchemeAreaGroup().getPropertyScope())).append(";");
         }
         if (StringUtils.isNotBlank(getSchemeAreaGroup().getScopeInclude())) {
-            stringBuffer.append(getSchemeAreaGroup().getScopeInclude());
+            stringBuffer.append("包含:").append(getSchemeAreaGroup().getScopeInclude()).append(";");
         }
         if (StringUtils.isNotBlank(getSchemeAreaGroup().getScopeNotInclude())) {
-            stringBuffer.append(getSchemeAreaGroup().getScopeNotInclude());
+            stringBuffer.append("不包含:").append(getSchemeAreaGroup().getScopeNotInclude()).append("。");
         }
         if (StringUtils.isEmpty(stringBuffer.toString())) {
             stringBuffer.append(errorStr);
@@ -258,7 +258,7 @@ public class GenerateBaseDataService {
      * @return
      * @throws Exception
      */
-    public String getSeat() throws Exception {
+    public String getSeat(boolean start) throws Exception {
         LinkedHashSet<String> stringSet = Sets.newLinkedHashSet();
         StringBuffer buffer = new StringBuffer(8);
         StringBuffer stringBuffer = new StringBuffer(8);
@@ -310,12 +310,22 @@ public class GenerateBaseDataService {
                         seats.add(stringBuffer.toString());
                         stringBuffer.delete(0, stringBuffer.toString().length());
                     });
-                    buffer.append(estateName);
-                    if (CollectionUtils.isNotEmpty(seats)) {
-                        String s = publicService.fusinString(seats);
-                        if (StringUtils.isNotBlank(s)) {
-                            buffer.append(s);
+                    if (start){
+                        buffer.append(estateName);
+                        if (CollectionUtils.isNotEmpty(seats)) {
+                            String s = publicService.fusinString(seats);
+                            if (StringUtils.isNotBlank(s)) {
+                                buffer.append(s);
+                            }
                         }
+                    }else {
+                        if (CollectionUtils.isNotEmpty(seats)) {
+                            String s = publicService.fusinString(seats);
+                            if (StringUtils.isNotBlank(s)) {
+                                buffer.append(s);
+                            }
+                        }
+                        buffer.append(estateName);
                     }
                     seats.clear();
                     stringSet.add(buffer.toString());
@@ -737,7 +747,7 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getTotalAmountMortgageValue() {
+    public String getTotalAmountMortgageValue()throws Exception {
         BigDecimal decimal = new BigDecimal(0);
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
                 projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
@@ -776,7 +786,9 @@ public class GenerateBaseDataService {
         if (decimal.doubleValue() > 0) {
             decimal = decimal.divide(new BigDecimal(10000));
         }
-        decimal = decimal.setScale(4, BigDecimal.ROUND_DOWN);
+        //
+        decimal = new BigDecimal(getTotalRealEstatePrice()).subtract(new BigDecimal(getStatutoryPriorityAmountTotal()));
+        decimal = decimal.setScale(4, BigDecimal.ROUND_HALF_UP);
         return decimal.toString();
     }
 
@@ -785,7 +797,7 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getTotalAmountMortgageValueCapitalization() {
+    public String getTotalAmountMortgageValueCapitalization()throws Exception {
         BigDecimal decimal = new BigDecimal(0);
         List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
                 projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
@@ -821,7 +833,10 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        decimal = decimal.setScale(2, BigDecimal.ROUND_HALF_DOWN);
+        //
+        decimal = new BigDecimal(getTotalRealEstatePrice()).subtract(new BigDecimal(getStatutoryPriorityAmountTotal()));
+        decimal = decimal.multiply(new BigDecimal(10000));
+        decimal = decimal.setScale(4, BigDecimal.ROUND_HALF_UP);
         decimal = new BigDecimal(Math.abs(decimal.doubleValue()));
         return CnNumberUtils.toUppercaseSubstring(decimal.toString());
     }
@@ -832,7 +847,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getValuationProjectName() throws Exception {
-        String s = getSeat();
+        String s = getSeat(false);
         if (getSchemeAreaGroup().getEntrustPurpose() != null) {
             s = String.format("%s%s", s, baseDataDicService.getNameById(getSchemeAreaGroup().getEntrustPurpose()));
         }
@@ -969,6 +984,7 @@ public class GenerateBaseDataService {
             }
             builder.endTable();
         }
+        generateCommonMethod.settingBuildingTable(builder);
         doc.save(localPath);
         return localPath;
     }
@@ -1060,6 +1076,7 @@ public class GenerateBaseDataService {
                 builder.endTable();
             }
         }
+        generateCommonMethod.settingBuildingTable(builder);
         doc.save(localPath);
         return localPath;
     }
@@ -1109,7 +1126,7 @@ public class GenerateBaseDataService {
             }
         }
         temp = temp.divide(new BigDecimal(10000));
-        temp = temp.setScale(4, BigDecimal.ROUND_HALF_DOWN);
+        temp = temp.setScale(4, BigDecimal.ROUND_HALF_UP);
         return temp.toString();
     }
 
@@ -1131,7 +1148,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        temp = temp.setScale(2, BigDecimal.ROUND_HALF_DOWN);
+        temp = temp.setScale(4, BigDecimal.ROUND_HALF_UP);
         temp = new BigDecimal(Math.abs(temp.doubleValue()));
         String s = CnNumberUtils.toUppercaseSubstring(temp.toString());
         return s;
@@ -2406,6 +2423,7 @@ public class GenerateBaseDataService {
             }
             if (bigDecimal.doubleValue() > 0) {
                 bigDecimal = bigDecimal.divide(new BigDecimal(10000));
+                bigDecimal= bigDecimal.setScale(4,BigDecimal.ROUND_HALF_UP);
             }
         }
         return bigDecimal.toString();
@@ -2835,7 +2853,13 @@ public class GenerateBaseDataService {
                     }
                     if (j == 3) {
                         if (StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getPublicSituation())) {
-                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getPublicSituation()) ? realEstateCertVoEntry.getValue().getPublicSituation() : errorStr));
+                            String value = null;
+                            if (NumberUtils.isNumber(realEstateCertVoEntry.getValue().getPublicSituation())) {
+                                value = baseDataDicService.getNameById(realEstateCertVoEntry.getValue().getPublicSituation());
+                            } else {
+                                value = realEstateCertVoEntry.getValue().getPublicSituation();
+                            }
+                            builder.writeln(String.format("%s", StringUtils.isNotBlank(value) ? value : errorStr));
                         }
                     }
                     if (j == 4) {
@@ -2845,7 +2869,13 @@ public class GenerateBaseDataService {
                     }
                     if (j == 5) {
                         if (StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getCertUse())) {
-                            builder.writeln(String.format("%s", StringUtils.isNotBlank(realEstateCertVoEntry.getValue().getCertUse()) ? baseDataDicService.getNameById(realEstateCertVoEntry.getValue().getCertUse()) : errorStr));
+                            String value = null;
+                            if (NumberUtils.isNumber(realEstateCertVoEntry.getValue().getCertUse())) {
+                                value = baseDataDicService.getNameById(realEstateCertVoEntry.getValue().getCertUse());
+                            } else {
+                                value = realEstateCertVoEntry.getValue().getCertUse();
+                            }
+                            builder.writeln(String.format("%s", StringUtils.isNotBlank(value) ? value : errorStr));
                         }
                     }
                     if (j == 6) {
