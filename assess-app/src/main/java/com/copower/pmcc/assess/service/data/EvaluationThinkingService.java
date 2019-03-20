@@ -9,10 +9,12 @@ import com.copower.pmcc.assess.dto.output.data.DataEvaluationThinkingVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.method.MdCommonService;
+import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -28,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,6 +51,8 @@ public class EvaluationThinkingService {
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
     private MdCommonService mdCommonService;
+    @Autowired
+    private GenerateCommonMethod generateCommonMethod;
 
     /**
      * 保存数据
@@ -155,11 +160,11 @@ public class EvaluationThinkingService {
     /**
      * 获取上报告的评估思路
      *
-     * @param methodTypeList
+     * @param map
      * @param projectInfo
      * @return
      */
-    public String getReportThinking(List<Integer> methodTypeList, ProjectInfo projectInfo) {
+    public String getReportThinking(HashMap<Integer, String> map, ProjectInfo projectInfo, List<Integer> baseJudgeNumber, List<Integer> otherJudgeNumber) {
         /*
         ①	先设立估价对象$(估价基准对象号)的市场价格为标准价，《以区域内类似房地产近期市场交易价格（比较法）》和《房地产未来预期收益（收益法）为导向综合》求取估价对象$(估价基准对象号)的市场价值。
         ②	再通$(评估其他方法)对估价对象$(评价对象号)进行特定因素调整，得到其市场价值。
@@ -173,26 +178,29 @@ public class EvaluationThinkingService {
         //第一段内容： 当只有一个方法时，根据方法取得模板，当有多个方法时，如果有多个基础方法则合并描述
         //第二段内容： 当方法中有其它方法，则用其它方法描述第二段
         //第三段内容： 当只有项目委托目的为抵押的时候才有第三段内容
-        if (CollectionUtils.isEmpty(methodTypeList)) return null;
+        if (map == null) return null;
         if (projectInfo == null) return null;
         StringBuilder firstDesc = new StringBuilder("<p style=\"text-indent:2em\">");//第一段描述
         StringBuilder secondDesc = new StringBuilder();//第二段描述
         StringBuilder thirdDesc = new StringBuilder();//第三段描述
         List<Integer> baseMethodList = Lists.newArrayList();
         List<Integer> baseOtherList = Lists.newArrayList();
-        for (Integer methodType : methodTypeList) {
-            if (mdCommonService.isBaseMethod(methodType))
-                baseMethodList.add(methodType);
-            if (mdCommonService.isOtherMethod(methodType))
-                baseOtherList.add(methodType);
+        for (Map.Entry<Integer, String> entry : map.entrySet()) {
+            if (mdCommonService.isBaseMethod(entry.getKey()))
+                baseMethodList.add(entry.getKey());
+            if (mdCommonService.isOtherMethod(entry.getKey()))
+                baseOtherList.add(entry.getKey());
         }
+
         if (baseMethodList.size() == 1) {
-            List<DataEvaluationThinking> thinkingList = evaluationThinkingDao.getThinkingListByMethod(String.valueOf(methodTypeList.get(0)));
+            List<DataEvaluationThinking> thinkingList = evaluationThinkingDao.getThinkingListByMethod(String.valueOf(baseMethodList.get(0)));
             if (CollectionUtils.isNotEmpty(thinkingList)) {
-                firstDesc.append("① ").append(thinkingList.get(0).getTemplateContent());
+                String thinkingTemp = thinkingList.get(0).getTemplateContent().replaceAll("#\\{估价对象号\\}", this.getJudgeNumber(map.get(baseMethodList.get(0))));
+                firstDesc.append("① ").append(thinkingTemp);
             }
         } else {
-            firstDesc.append("① 先设立估价对象$(估价基准对象号)的市场价格为标准价，");
+            String baseJudgeNumberString = generateCommonMethod.convertNumber(baseJudgeNumber);
+            firstDesc.append(String.format("① 先设立估价对象%s的市场价格为标准价，", baseJudgeNumberString));
             String firstString = new String();
             for (Integer methodTyp : baseMethodList) {
                 if (mdCommonService.isCompareMethod(methodTyp))
@@ -204,11 +212,13 @@ public class EvaluationThinkingService {
                 if (mdCommonService.isDevelopmentMethod(methodTyp))
                     firstString += developmentExplain + "和";
             }
-            firstDesc.append(StringUtils.strip(firstString, "和")).append("为导向综合求取估价对象$(估价基准对象号)的市场价值。");
+            firstDesc.append(StringUtils.strip(firstString, "和")).append(String.format("为导向综合求取估价对象%s的市场价值。", baseJudgeNumberString));
         }
         firstDesc.append("</p>");
         if (CollectionUtils.isNotEmpty(baseOtherList)) {
-            secondDesc.append("<p style=\"text-indent:2em\">").append(String.format("② 再通%s对估价对象$(评价对象号)进行特定因素调整，得到其市场价值。", baseDataDicService.getNameById(baseOtherList.get(0))));
+            String otherJudgeNumberString = generateCommonMethod.convertNumber(otherJudgeNumber);
+            secondDesc.append("<p style=\"text-indent:2em\">").append(String.format("② 再通%s对估价对象%s进行特定因素调整，得到其市场价值。"
+                            , baseDataDicService.getNameById(baseOtherList.get(0)), otherJudgeNumberString));
             secondDesc.append("</p>");
         }
         BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE);
@@ -221,5 +231,11 @@ public class EvaluationThinkingService {
             thirdDesc.append("最后将估价对象的市场价值扣除估价师知悉的法定优先受偿款得到估价对象的抵押价值。").append("</p>");
         }
         return stringBuilder.append(firstDesc).append(secondDesc).append(thirdDesc).toString();
+    }
+
+    private String getJudgeNumber(String number) {
+        if (StringUtils.isBlank(number)) return "";
+        List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(number));
+        return generateCommonMethod.convertNumber(integers);
     }
 }

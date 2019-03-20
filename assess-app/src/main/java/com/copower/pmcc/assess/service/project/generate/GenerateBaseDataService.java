@@ -5231,21 +5231,37 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getEvaluationThink() throws Exception {
-        HashSet<Integer> hashSet = Sets.newHashSet();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
-                if (CollectionUtils.isNotEmpty(schemeJudgeFunctionList)) {
-                    for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
-                        hashSet.add(schemeJudgeFunction.getMethodType());
-                    }
+        HashMap<Integer, String> map = Maps.newHashMap();
+        if (CollectionUtils.isEmpty(schemeJudgeObjectList)) return "";
+        List<Integer> baseJudgeId = Lists.newArrayList();//基准估价对象号
+        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+            if(schemeJudgeObject.getStandardJudgeId()!=null)
+                baseJudgeId.add(schemeJudgeObject.getStandardJudgeId());
+            List<SchemeJudgeFunction> schemeJudgeFunctionList = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
+            if (CollectionUtils.isEmpty(schemeJudgeFunctionList)) continue;
+            for (SchemeJudgeFunction schemeJudgeFunction : schemeJudgeFunctionList) {
+                if (map.containsKey(schemeJudgeFunction.getMethodType())) {
+                    String s = map.get(schemeJudgeFunction.getMethodType());
+                    map.put(schemeJudgeFunction.getMethodType(), String.format("%s,%s", s, schemeJudgeObject.getNumber()));
+                } else {
+                    map.put(schemeJudgeFunction.getMethodType(), schemeJudgeObject.getNumber());
                 }
+            }
+        }
+
+        List<Integer> baseJudgeNumber = Lists.newArrayList();//基准估价对象号
+        List<Integer> otherJudgeNumber = Lists.newArrayList();//其它估价对象号
+        for (SchemeJudgeObject judgeObject : this.schemeJudgeObjectFullList) {
+            if(baseJudgeId.contains(judgeObject.getId())){
+                baseJudgeNumber.add(Integer.valueOf(judgeObject.getNumber()));
+            }else{
+                otherJudgeNumber.add(Integer.valueOf(judgeObject.getNumber()));
             }
         }
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        String reportThinking = evaluationThinkingService.getReportThinking(Lists.newArrayList(hashSet), this.projectInfo);
+        String reportThinking = evaluationThinkingService.getReportThinking(map, this.projectInfo,baseJudgeNumber,otherJudgeNumber);
         builder.insertHtml(reportThinking, true);
         document.save(localPath);
         return localPath;
