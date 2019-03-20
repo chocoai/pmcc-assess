@@ -681,15 +681,21 @@ public class GenerateCommonMethod {
         builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
         //设置具体宽度
         builder.getCellFormat().setWidth(100);
+        Style style = builder.getParagraphFormat().getStyle();
+        style.setName(AsposeUtils.ImitationSongGB2312FontName);
+//        builder.getParagraphFormat().setStyle(style);
         //水平居中
         builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
-        //上下居中
-        builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+        builder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
+        builder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
+
     }
 
     public void setDefaultDocumentBuilderSetting(DocumentBuilder builder) throws Exception {
         builder.getFont().setName(AsposeUtils.ImitationSongGB2312FontName);
         builder.getFont().setSize(14.5);
+        //
+//        builder.getParagraphFormat().setAlignment(ParagraphAlignment.LEFT);
     }
 
     /**
