@@ -39,8 +39,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
- * Created by zly on 2018/5/11.
+ * @author: zch
+ * @date: 2019/3/18 17:29
+ * @description:他项权力普通类 (他项权利主类 > 他项权力申报类 > 他项权力普通类)
  */
 @Service
 public class SurveyAssetInventoryRightService {

@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * @author: zch
  * @date: 2019/3/18 17:29
- * @description:
+ * @description:他项权力申报类 (他项权利主类 > 他项权力申报类 > 他项权力普通类)
  */
 @Service
 public class SurveyAssetInventoryRightRecordService {
@@ -51,6 +51,17 @@ public class SurveyAssetInventoryRightRecordService {
     }
 
     public boolean updateSurveyAssetInventoryRightRecord(SurveyAssetInventoryRightRecord surveyAssetInventoryRightRecord) throws Exception {
+        SurveyAssetInventoryRight select = new SurveyAssetInventoryRight();
+        select.setInventoryRightRecordId(surveyAssetInventoryRightRecord.getId());
+        List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightService.getSurveyAssetInventoryRightList(select);
+        if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightList)){
+            for (SurveyAssetInventoryRight oo:surveyAssetInventoryRightList){
+                oo.setInventoryRightRecordId(surveyAssetInventoryRightRecord.getId());
+                oo.setPlanDetailsId(surveyAssetInventoryRightRecord.getPlanDetailsId());
+                oo.setProjectId(surveyAssetInventoryRightRecord.getProjectId());
+                surveyAssetInventoryRightService.save(oo);
+            }
+        }
         return surveyAssetInventoryRightRecordDao.updateSurveyAssetInventoryRightRecord(surveyAssetInventoryRightRecord);
     }
 

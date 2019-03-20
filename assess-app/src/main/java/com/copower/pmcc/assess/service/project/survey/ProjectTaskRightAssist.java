@@ -35,6 +35,8 @@ public class ProjectTaskRightAssist implements ProjectTaskInterface {
     private SurveyAssetInventoryRightService surveyAssetInventoryRightService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private SurveyAssetInventoryRightRecordCenterService surveyAssetInventoryRightRecordCenterService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -57,6 +59,8 @@ public class ProjectTaskRightAssist implements ProjectTaskInterface {
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskRightIndex", processInsId, boxId, taskId, agentUserAccount);
         this.clear(projectPlanDetails);
+        modelAndView.addObject("projectPlanDetails",projectPlanDetails);
+        modelAndView.addObject("declareRecordList",declareRecordService.getDeclareRecordByProjectId(projectPlanDetails.getProjectId()));
         return modelAndView;
     }
 
@@ -74,7 +78,11 @@ public class ProjectTaskRightAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
-
+        try {
+            surveyAssetInventoryRightRecordCenterService.updateSonRecord(projectPlanDetails,processInsId,formData);
+        } catch (Exception e) {
+            logger.error("更新失败!",e);
+        }
     }
 
     @Override
@@ -84,7 +92,11 @@ public class ProjectTaskRightAssist implements ProjectTaskInterface {
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-
+        try {
+            surveyAssetInventoryRightRecordCenterService.updateSonRecord(projectPlanDetails,processInsId,formData);
+        } catch (Exception e) {
+            logger.error("更新失败!",e);
+        }
     }
 
     /**

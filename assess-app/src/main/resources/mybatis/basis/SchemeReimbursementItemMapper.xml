@@ -3,6 +3,7 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.SchemeReimbursementItemMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementItem" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="master_id" property="masterId" jdbcType="INTEGER" />
     <result column="judge_object_id" property="judgeObjectId" jdbcType="INTEGER" />
@@ -78,7 +79,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, master_id, judge_object_id, plan_details_id, not_set_up_unit_price, 
+    id, name, project_id, master_id, judge_object_id, plan_details_id, not_set_up_unit_price, 
     not_set_up_total_price, know_total_price, mortgaged_total_price, owed_total_price, 
     other_total_price, mortgage_unit_price, mortgage_total_price, creator, gmt_created, 
     gmt_modified
@@ -117,18 +118,18 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_scheme_reimbursement_item (project_id, master_id, judge_object_id, 
-      plan_details_id, not_set_up_unit_price, not_set_up_total_price, 
-      know_total_price, mortgaged_total_price, owed_total_price, 
-      other_total_price, mortgage_unit_price, mortgage_total_price, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{projectId,jdbcType=INTEGER}, #{masterId,jdbcType=INTEGER}, #{judgeObjectId,jdbcType=INTEGER}, 
-      #{planDetailsId,jdbcType=INTEGER}, #{notSetUpUnitPrice,jdbcType=DECIMAL}, #{notSetUpTotalPrice,jdbcType=DECIMAL}, 
-      #{knowTotalPrice,jdbcType=DECIMAL}, #{mortgagedTotalPrice,jdbcType=DECIMAL}, #{owedTotalPrice,jdbcType=DECIMAL}, 
-      #{otherTotalPrice,jdbcType=DECIMAL}, #{mortgageUnitPrice,jdbcType=DECIMAL}, #{mortgageTotalPrice,jdbcType=DECIMAL}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_scheme_reimbursement_item (name, project_id, master_id, 
+      judge_object_id, plan_details_id, not_set_up_unit_price, 
+      not_set_up_total_price, know_total_price, mortgaged_total_price, 
+      owed_total_price, other_total_price, mortgage_unit_price, 
+      mortgage_total_price, creator, gmt_created, 
+      gmt_modified)
+    values (#{name,jdbcType=VARCHAR}, #{projectId,jdbcType=INTEGER}, #{masterId,jdbcType=INTEGER}, 
+      #{judgeObjectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{notSetUpUnitPrice,jdbcType=DECIMAL}, 
+      #{notSetUpTotalPrice,jdbcType=DECIMAL}, #{knowTotalPrice,jdbcType=DECIMAL}, #{mortgagedTotalPrice,jdbcType=DECIMAL}, 
+      #{owedTotalPrice,jdbcType=DECIMAL}, #{otherTotalPrice,jdbcType=DECIMAL}, #{mortgageUnitPrice,jdbcType=DECIMAL}, 
+      #{mortgageTotalPrice,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -136,6 +137,9 @@
     </selectKey>
     insert into tb_scheme_reimbursement_item
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        name,
+      </if>
       <if test="projectId != null" >
         project_id,
       </if>
@@ -183,6 +187,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
       <if test="projectId != null" >
         #{projectId,jdbcType=INTEGER},
       </if>
@@ -242,6 +249,9 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=INTEGER},
       </if>
@@ -295,6 +305,7 @@
   <update id="updateByExample" parameterType="map" >
     update tb_scheme_reimbursement_item
     set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
       project_id = #{record.projectId,jdbcType=INTEGER},
       master_id = #{record.masterId,jdbcType=INTEGER},
       judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
@@ -317,6 +328,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementItem" >
     update tb_scheme_reimbursement_item
     <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=INTEGER},
       </if>
@@ -367,7 +381,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementItem" >
     update tb_scheme_reimbursement_item
-    set project_id = #{projectId,jdbcType=INTEGER},
+    set name = #{name,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=INTEGER},
       master_id = #{masterId,jdbcType=INTEGER},
       judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
