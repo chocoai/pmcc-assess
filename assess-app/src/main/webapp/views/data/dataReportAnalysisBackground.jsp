@@ -26,9 +26,14 @@
                     <form id="frmQuery" class="form-horizontal">
                         <div class="form-group ">
                             <div>
-                                <label class="col-sm-1 control-label">名称</label>
+                                <label class="col-sm-1 control-label">类型</label>
                                 <div class="col-sm-2">
-                                    <input type="text" id="queryName" class="form-control">
+                                    <select required class="form-control search-select select2" id="queryType">
+                                        <option value="">请选择</option>
+                                        <c:forEach items="${types}" var="item">
+                                            <option value="${item.id}">${item.name}</option>
+                                        </c:forEach>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-sm-3">
@@ -102,10 +107,16 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            名称<span class="symbol required"></span>
+                                            类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <input required type="text" class="form-control" name="name">
+                                            <select required class="form-control search-select select2"
+                                                    name="marketBackgroundType">
+                                                <option value="">请选择</option>
+                                                <c:forEach items="${types}" var="item">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -269,7 +280,7 @@
                 return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName)
             }
         });
-        cols.push({field: 'name', title: '名称', width: '15%'});
+        cols.push({field: 'marketBackgroundTypeName', title: '类型', width: '15%'});
         cols.push({field: 'entrustmentPurposeName', title: '委托目的', width: '15%'});
         cols.push({field: 'template', title: '模板', width: '40%'});
         cols.push({
@@ -283,7 +294,7 @@
         });
         $("#tb_List").bootstrapTable('destroy');
         TableInit("tb_List", "${pageContext.request.contextPath}/reportAnalysisBackground/list", cols, {
-            name: $('#queryName').val(),
+            type: $('#queryType').val(),
         }, {
             showColumns: false,
             showRefresh: false,

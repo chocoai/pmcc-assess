@@ -7,6 +7,7 @@
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="district" property="district" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="market_background_type" property="marketBackgroundType" jdbcType="INTEGER" />
     <result column="report_analysis_type" property="reportAnalysisType" jdbcType="INTEGER" />
     <result column="template" property="template" jdbcType="VARCHAR" />
     <result column="entrustment_purpose" property="entrustmentPurpose" jdbcType="VARCHAR" />
@@ -80,9 +81,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, province, city, district, name, report_analysis_type, template, entrustment_purpose, 
-    set_use, rel_year, block_id, block_name, field_name, sorting, bis_modifiable, creator, 
-    gmt_created, gmt_modified
+    id, province, city, district, name, market_background_type, report_analysis_type, 
+    template, entrustment_purpose, set_use, rel_year, block_id, block_name, field_name, 
+    sorting, bis_modifiable, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysisExample" >
     select
@@ -119,17 +120,19 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_data_report_analysis (province, city, district, 
-      name, report_analysis_type, template, 
-      entrustment_purpose, set_use, rel_year, 
-      block_id, block_name, field_name, 
-      sorting, bis_modifiable, creator, 
-      gmt_created, gmt_modified)
+      name, market_background_type, report_analysis_type, 
+      template, entrustment_purpose, set_use, 
+      rel_year, block_id, block_name, 
+      field_name, sorting, bis_modifiable, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{reportAnalysisType,jdbcType=INTEGER}, #{template,jdbcType=VARCHAR}, 
-      #{entrustmentPurpose,jdbcType=VARCHAR}, #{setUse,jdbcType=INTEGER}, #{relYear,jdbcType=INTEGER}, 
-      #{blockId,jdbcType=INTEGER}, #{blockName,jdbcType=VARCHAR}, #{fieldName,jdbcType=VARCHAR}, 
-      #{sorting,jdbcType=INTEGER}, #{bisModifiable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{name,jdbcType=VARCHAR}, #{marketBackgroundType,jdbcType=INTEGER}, #{reportAnalysisType,jdbcType=INTEGER}, 
+      #{template,jdbcType=VARCHAR}, #{entrustmentPurpose,jdbcType=VARCHAR}, #{setUse,jdbcType=INTEGER}, 
+      #{relYear,jdbcType=INTEGER}, #{blockId,jdbcType=INTEGER}, #{blockName,jdbcType=VARCHAR}, 
+      #{fieldName,jdbcType=VARCHAR}, #{sorting,jdbcType=INTEGER}, #{bisModifiable,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -148,6 +151,9 @@
       </if>
       <if test="name != null" >
         name,
+      </if>
+      <if test="marketBackgroundType != null" >
+        market_background_type,
       </if>
       <if test="reportAnalysisType != null" >
         report_analysis_type,
@@ -201,6 +207,9 @@
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="marketBackgroundType != null" >
+        #{marketBackgroundType,jdbcType=INTEGER},
       </if>
       <if test="reportAnalysisType != null" >
         #{reportAnalysisType,jdbcType=INTEGER},
@@ -267,6 +276,9 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
+      <if test="record.marketBackgroundType != null" >
+        market_background_type = #{record.marketBackgroundType,jdbcType=INTEGER},
+      </if>
       <if test="record.reportAnalysisType != null" >
         report_analysis_type = #{record.reportAnalysisType,jdbcType=INTEGER},
       </if>
@@ -318,6 +330,7 @@
       city = #{record.city,jdbcType=VARCHAR},
       district = #{record.district,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
+      market_background_type = #{record.marketBackgroundType,jdbcType=INTEGER},
       report_analysis_type = #{record.reportAnalysisType,jdbcType=INTEGER},
       template = #{record.template,jdbcType=VARCHAR},
       entrustment_purpose = #{record.entrustmentPurpose,jdbcType=VARCHAR},
@@ -349,6 +362,9 @@
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="marketBackgroundType != null" >
+        market_background_type = #{marketBackgroundType,jdbcType=INTEGER},
       </if>
       <if test="reportAnalysisType != null" >
         report_analysis_type = #{reportAnalysisType,jdbcType=INTEGER},
@@ -398,6 +414,7 @@
       city = #{city,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
+      market_background_type = #{marketBackgroundType,jdbcType=INTEGER},
       report_analysis_type = #{reportAnalysisType,jdbcType=INTEGER},
       template = #{template,jdbcType=VARCHAR},
       entrustment_purpose = #{entrustmentPurpose,jdbcType=VARCHAR},

@@ -52,7 +52,7 @@ public class DataReportAnalysisRiskController {
     @RequestMapping(value = "/list", name = "显示列表", method = RequestMethod.GET)
     public BootstrapTableVo list(String name) {
         BaseDataDic cacheDataDicByFieldName = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_RISK);
-        return dataReportAnalysisService.getReportAnalysisList(name,cacheDataDicByFieldName.getId());
+        return dataReportAnalysisService.getReportAnalysisList(name,null,cacheDataDicByFieldName.getId());
     }
 
     @ResponseBody

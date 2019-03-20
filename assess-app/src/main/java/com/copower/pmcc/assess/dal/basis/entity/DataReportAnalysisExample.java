@@ -445,6 +445,66 @@ public class DataReportAnalysisExample {
             return (Criteria) this;
         }
 
+        public Criteria andMarketBackgroundTypeIsNull() {
+            addCriterion("market_background_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarketBackgroundTypeIsNotNull() {
+            addCriterion("market_background_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarketBackgroundTypeEqualTo(Integer value) {
+            addCriterion("market_background_type =", value, "marketBackgroundType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarketBackgroundTypeNotEqualTo(Integer value) {
+            addCriterion("market_background_type <>", value, "marketBackgroundType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarketBackgroundTypeGreaterThan(Integer value) {
+            addCriterion("market_background_type >", value, "marketBackgroundType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarketBackgroundTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("market_background_type >=", value, "marketBackgroundType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarketBackgroundTypeLessThan(Integer value) {
+            addCriterion("market_background_type <", value, "marketBackgroundType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarketBackgroundTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("market_background_type <=", value, "marketBackgroundType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarketBackgroundTypeIn(List<Integer> values) {
+            addCriterion("market_background_type in", values, "marketBackgroundType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarketBackgroundTypeNotIn(List<Integer> values) {
+            addCriterion("market_background_type not in", values, "marketBackgroundType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarketBackgroundTypeBetween(Integer value1, Integer value2) {
+            addCriterion("market_background_type between", value1, value2, "marketBackgroundType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarketBackgroundTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("market_background_type not between", value1, value2, "marketBackgroundType");
+            return (Criteria) this;
+        }
+
         public Criteria andReportAnalysisTypeIsNull() {
             addCriterion("report_analysis_type is null");
             return (Criteria) this;
