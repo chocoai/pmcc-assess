@@ -80,12 +80,12 @@
                             <th style="width: 10%">一致性内容</th>
                             <th style="width: 10%">登记</th>
                             <th style="width: 10%">实际</th>
-                            <th style="width: 6%">是否一致</th>
+                            <th style="width: 4%">是否一致</th>
                             <th style="width: 10%">差异原因</th>
                             <th style="width: 10%">证明文件</th>
                             <th style="width: 10%">证明文件附件</th>
                             <th style="width: 5%">证明人</th>
-                            <th style="width: 6%">调查时间</th>
+                            <th style="width: 8%">调查时间</th>
                             <th style="width: 6%">确认一致</th>
                         </tr>
                         </thead>
@@ -134,79 +134,42 @@
                                 </c:if>
                             </tr>
                         </c:forEach>
-                     <%--   <tr>
-                            <td>
-                                周边环境是否正常
-                            </td>
-                            <td>
-                                <label class="form-control">${surveyAssetInventory.rimIsNormal}
-                                </label>
-                            </td>
-                            <td colspan="8">
-                                <div style="display:none" id="showAbnormality_d">
-                                    <label class="form-control">${surveyAssetInventory.abnormality}</label>
-                                </div>
-                            </td>
-                        </tr>
                         <tr>
-                            <td>
-                                实物状况是否损坏
-                            </td>
-                            <td>
-                                <label class="form-control">${surveyAssetInventory.entityIsDamage}
-                                </label>
-
-                            </td>
-                            <td colspan="8">
-                                <div style="display:none" id="showDamageRemark_d">
-                                    <label class="form-control">${surveyAssetInventory.damageRemark}
-                                    </label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>转让限制</td>
-                            <td colspan="9">
-                                <label class="form-control">${surveyAssetInventory.transferLimit}
-                                </label>
-                            </td>
-                        </tr>--%>
-                        <tr>style="width: 10%"
-                            <td align="right" style="vertical-align:middle;width: 12.5%">
+                            <td align="right" style="vertical-align:middle;width: 10%">
                                 分割限制
                             </td>
-                            <td style="width: 12.5%">
+                            <td style="width: 10%">
                                 <label class="form-control"  id="segmentationLimit">${surveyAssetInventory.segmentationLimit}
                                 </label>
                             </td>
-                            <td align="right" style="vertical-align:middle;width: 12.5%">
+                            <td align="right" style="vertical-align:middle;width: 10%">
                                 <div class="showHidden">
                                 能否使用
                                 </div>
                             </td >
-                            <td style="width: 12.5%">
+                            <td style="width: 10%">
                                 <div class="x-valid" class="showHidden">
                                 <label class="form-control">${surveyAssetInventory.canUse}
                                 </label>
                                 </div>
                             </td>
-                            <td align="right" style="vertical-align:middle;width: 12.5%">
+                            <td align="right" style="vertical-align:middle;width: 10%">
                                 <div class="showHidden">
                                 用途
                                 </div>
                             </td>
-                            <td style="width: 12.5%">
+                            <td style="width: 10%">
                                 <div class="x-valid" class="showHidden">
                                 <label class="form-control">${surveyAssetInventory.applicationName}
                                 </label>
                                 </div>
                             </td>
-                            <td align="right" style="vertical-align:middle;width: 12.5%">
+                            <td align="right" style="vertical-align:middle;width: 10%">
                                 <div class="showHidden">
                                 是否办证
                                 </div>
                             </td >
-                            <td style="width: 12.5%">
+                            <td style="width: 10%">
                                 <div class="x-valid" class="showHidden">
                                 <label class="form-control">${surveyAssetInventory.certificate}
                                 </label>
@@ -216,6 +179,42 @@
                     </table>
                 </div>
             </div>
+
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
+                    <h3>损坏调查表</h3>
+                    <div class="clearfix"></div>
+                    <div class="x_content">
+                        <form id="damageSurvey" class="form-horizontal">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        区位损坏
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="zoneBit">
+
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        实物损坏
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="entity">
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
@@ -417,6 +416,10 @@
 
         if ("${surveyAssetInventory}") {
             showOther();
+
+            writeHTMLData( 'zoneProjectName', 'zoneProjectItem','zoneBit', ${surveyAssetInventory.zoneDamage});
+            writeHTMLData('entityProjectName', 'entityProjectItem', 'entity', ${surveyAssetInventory.entityDamage});
+
         }
     })
 
@@ -501,6 +504,33 @@
             });
         }
     }
+
+
+    function writeHTMLData(projectName, projectItem,item, json) {
+        $("." + item).empty();
+        var jsonarray = eval(json);
+        $.each(jsonarray, function (i, n) {
+            var html = "<div class='form-group' >";
+            html += "<div class='x-valid'>";
+
+            html += "<label class='col-sm-1 control-label'>" + "项目" + "</label>";
+            html += "<div class='col-sm-3'>";
+            html += "<label class='form-control'>"+n[projectName];
+            html += "</label>";
+            html += "</div>";
+
+            html += "<label class='col-sm-1 control-label'>" + "明细" + "</label>";
+            html += "<div class='col-sm-3'>";
+            html += "<label class='form-control'>"+n[projectItem];
+            html += "</label>";
+            html += "</div>";
+
+            html += "</div>";
+            html += "</div>";
+            $("." + item).append(html);
+        })
+    }
+
 </script>
 </body>
 </html>

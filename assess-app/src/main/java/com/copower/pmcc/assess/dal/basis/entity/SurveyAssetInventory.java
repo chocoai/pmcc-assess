@@ -31,6 +31,10 @@ public class SurveyAssetInventory {
 
     private String certificate;
 
+    private String zoneDamage;
+
+    private String entityDamage;
+
     private String rimIsNormal;
 
     private String abnormality;
@@ -159,6 +163,22 @@ public class SurveyAssetInventory {
 
     public void setCertificate(String certificate) {
         this.certificate = certificate == null ? null : certificate.trim();
+    }
+
+    public String getZoneDamage() {
+        return zoneDamage;
+    }
+
+    public void setZoneDamage(String zoneDamage) {
+        this.zoneDamage = zoneDamage == null ? null : zoneDamage.trim();
+    }
+
+    public String getEntityDamage() {
+        return entityDamage;
+    }
+
+    public void setEntityDamage(String entityDamage) {
+        this.entityDamage = entityDamage == null ? null : entityDamage.trim();
     }
 
     public String getRimIsNormal() {

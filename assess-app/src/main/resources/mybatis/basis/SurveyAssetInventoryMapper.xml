@@ -16,6 +16,8 @@
     <result column="can_use" property="canUse" jdbcType="VARCHAR" />
     <result column="application" property="application" jdbcType="INTEGER" />
     <result column="certificate" property="certificate" jdbcType="VARCHAR" />
+    <result column="zone_damage" property="zoneDamage" jdbcType="VARCHAR" />
+    <result column="entity_damage" property="entityDamage" jdbcType="VARCHAR" />
     <result column="rim_is_normal" property="rimIsNormal" jdbcType="VARCHAR" />
     <result column="abnormality" property="abnormality" jdbcType="VARCHAR" />
     <result column="entity_is_damage" property="entityIsDamage" jdbcType="VARCHAR" />
@@ -89,8 +91,8 @@
   <sql id="Base_Column_List" >
     id, project_id, plan_detail_id, process_ins_id, declare_record_id, evaluator, check_date, 
     bis_check_original, remark, special_case, segmentation_limit, can_use, application, 
-    certificate, rim_is_normal, abnormality, entity_is_damage, damage_remark, transfer_limit, 
-    creator, gmt_created, gmt_modified
+    certificate, zone_damage, entity_damage, rim_is_normal, abnormality, entity_is_damage, 
+    damage_remark, transfer_limit, creator, gmt_created, gmt_modified
   </sql>
   <sql id="Blob_Column_List" >
     location
@@ -151,18 +153,20 @@
       declare_record_id, evaluator, check_date, 
       bis_check_original, remark, special_case, 
       segmentation_limit, can_use, application, 
-      certificate, rim_is_normal, abnormality, 
-      entity_is_damage, damage_remark, transfer_limit, 
-      creator, gmt_created, gmt_modified, 
-      location)
+      certificate, zone_damage, entity_damage, 
+      rim_is_normal, abnormality, entity_is_damage, 
+      damage_remark, transfer_limit, creator, 
+      gmt_created, gmt_modified, location
+      )
     values (#{projectId,jdbcType=INTEGER}, #{planDetailId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
       #{declareRecordId,jdbcType=INTEGER}, #{evaluator,jdbcType=VARCHAR}, #{checkDate,jdbcType=TIMESTAMP}, 
       #{bisCheckOriginal,jdbcType=BIT}, #{remark,jdbcType=VARCHAR}, #{specialCase,jdbcType=VARCHAR}, 
       #{segmentationLimit,jdbcType=VARCHAR}, #{canUse,jdbcType=VARCHAR}, #{application,jdbcType=INTEGER}, 
-      #{certificate,jdbcType=VARCHAR}, #{rimIsNormal,jdbcType=VARCHAR}, #{abnormality,jdbcType=VARCHAR}, 
-      #{entityIsDamage,jdbcType=VARCHAR}, #{damageRemark,jdbcType=VARCHAR}, #{transferLimit,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{location,jdbcType=LONGVARCHAR})
+      #{certificate,jdbcType=VARCHAR}, #{zoneDamage,jdbcType=VARCHAR}, #{entityDamage,jdbcType=VARCHAR}, 
+      #{rimIsNormal,jdbcType=VARCHAR}, #{abnormality,jdbcType=VARCHAR}, #{entityIsDamage,jdbcType=VARCHAR}, 
+      #{damageRemark,jdbcType=VARCHAR}, #{transferLimit,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{location,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -208,6 +212,12 @@
       </if>
       <if test="certificate != null" >
         certificate,
+      </if>
+      <if test="zoneDamage != null" >
+        zone_damage,
+      </if>
+      <if test="entityDamage != null" >
+        entity_damage,
       </if>
       <if test="rimIsNormal != null" >
         rim_is_normal,
@@ -276,6 +286,12 @@
       </if>
       <if test="certificate != null" >
         #{certificate,jdbcType=VARCHAR},
+      </if>
+      <if test="zoneDamage != null" >
+        #{zoneDamage,jdbcType=VARCHAR},
+      </if>
+      <if test="entityDamage != null" >
+        #{entityDamage,jdbcType=VARCHAR},
       </if>
       <if test="rimIsNormal != null" >
         #{rimIsNormal,jdbcType=VARCHAR},
@@ -357,6 +373,12 @@
       <if test="record.certificate != null" >
         certificate = #{record.certificate,jdbcType=VARCHAR},
       </if>
+      <if test="record.zoneDamage != null" >
+        zone_damage = #{record.zoneDamage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.entityDamage != null" >
+        entity_damage = #{record.entityDamage,jdbcType=VARCHAR},
+      </if>
       <if test="record.rimIsNormal != null" >
         rim_is_normal = #{record.rimIsNormal,jdbcType=VARCHAR},
       </if>
@@ -405,6 +427,8 @@
       can_use = #{record.canUse,jdbcType=VARCHAR},
       application = #{record.application,jdbcType=INTEGER},
       certificate = #{record.certificate,jdbcType=VARCHAR},
+      zone_damage = #{record.zoneDamage,jdbcType=VARCHAR},
+      entity_damage = #{record.entityDamage,jdbcType=VARCHAR},
       rim_is_normal = #{record.rimIsNormal,jdbcType=VARCHAR},
       abnormality = #{record.abnormality,jdbcType=VARCHAR},
       entity_is_damage = #{record.entityIsDamage,jdbcType=VARCHAR},
@@ -434,6 +458,8 @@
       can_use = #{record.canUse,jdbcType=VARCHAR},
       application = #{record.application,jdbcType=INTEGER},
       certificate = #{record.certificate,jdbcType=VARCHAR},
+      zone_damage = #{record.zoneDamage,jdbcType=VARCHAR},
+      entity_damage = #{record.entityDamage,jdbcType=VARCHAR},
       rim_is_normal = #{record.rimIsNormal,jdbcType=VARCHAR},
       abnormality = #{record.abnormality,jdbcType=VARCHAR},
       entity_is_damage = #{record.entityIsDamage,jdbcType=VARCHAR},
@@ -488,6 +514,12 @@
       <if test="certificate != null" >
         certificate = #{certificate,jdbcType=VARCHAR},
       </if>
+      <if test="zoneDamage != null" >
+        zone_damage = #{zoneDamage,jdbcType=VARCHAR},
+      </if>
+      <if test="entityDamage != null" >
+        entity_damage = #{entityDamage,jdbcType=VARCHAR},
+      </if>
       <if test="rimIsNormal != null" >
         rim_is_normal = #{rimIsNormal,jdbcType=VARCHAR},
       </if>
@@ -533,6 +565,8 @@
       can_use = #{canUse,jdbcType=VARCHAR},
       application = #{application,jdbcType=INTEGER},
       certificate = #{certificate,jdbcType=VARCHAR},
+      zone_damage = #{zoneDamage,jdbcType=VARCHAR},
+      entity_damage = #{entityDamage,jdbcType=VARCHAR},
       rim_is_normal = #{rimIsNormal,jdbcType=VARCHAR},
       abnormality = #{abnormality,jdbcType=VARCHAR},
       entity_is_damage = #{entityIsDamage,jdbcType=VARCHAR},
@@ -559,6 +593,8 @@
       can_use = #{canUse,jdbcType=VARCHAR},
       application = #{application,jdbcType=INTEGER},
       certificate = #{certificate,jdbcType=VARCHAR},
+      zone_damage = #{zoneDamage,jdbcType=VARCHAR},
+      entity_damage = #{entityDamage,jdbcType=VARCHAR},
       rim_is_normal = #{rimIsNormal,jdbcType=VARCHAR},
       abnormality = #{abnormality,jdbcType=VARCHAR},
       entity_is_damage = #{entityIsDamage,jdbcType=VARCHAR},
