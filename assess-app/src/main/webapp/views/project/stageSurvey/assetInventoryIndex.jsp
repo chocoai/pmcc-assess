@@ -169,8 +169,8 @@
                                 <th style="width: 6%">是否一致</th>
                                 <th style="width: 10%">差异原因</th>
                                 <th style="width: 10%">证明文件</th>
-                                <th style="width: 10%">证明文件附件</th>
-                                <th style="width: 5%">证明人</th>
+                                <th style="width: 7%">证明文件附件</th>
+                                <th style="width: 7%">证明人</th>
                                 <th style="width: 8%">调查时间</th>
                                 <th style="width: 8%">确认一致</th>
                                 <th style="width: 6%">操作</th>
@@ -340,6 +340,30 @@
                         </div>
                         <div class="entity">
 
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
+                    <h3>转让限制</h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    转让限制
+                                </label>
+                                <div class="col-sm-11">
+                                    <textarea placeholder="转让限制" name="transferLimit" id="transferLimit"
+                                              class="form-control" value="${surveyAssetInventory.transferLimit}"></textarea>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -665,6 +689,7 @@
 
             $("#entityIsDamage").val("${surveyAssetInventory.entityIsDamage}");
             $("#rimIsNormal").val("${surveyAssetInventory.rimIsNormal}");
+            $("#transferLimit").val("${surveyAssetInventory.transferLimit}");
             writeHTMLData('zoneProjectName', 'zoneProjectItem', 'zoneBit', ${surveyAssetInventory.zoneDamage});
             writeHTMLData('entityProjectName', 'entityProjectItem', 'entity', ${surveyAssetInventory.entityDamage});
         }
@@ -802,6 +827,7 @@
         data.surveyAssetInventory.specialCase = $("#specialCase").val();
         data.surveyAssetInventory.rimIsNormal = $("#rimIsNormal").val();
         data.surveyAssetInventory.entityIsDamage = $("#entityIsDamage").val();
+        data.surveyAssetInventory.transferLimit = $("#transferLimit").val();
 
         data.surveyAssetInventory.zoneDamage = [];
         data.surveyAssetInventory.entityDamage = [];
