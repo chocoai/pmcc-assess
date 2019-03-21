@@ -158,7 +158,7 @@
                         html += "<tr>";
                         html += "<td class='hidden-xs'>";
                         html += '<input type="hidden" name="id" value="' + item.id + '">';
-                        html += item.judgeObjectName;
+                        html += item.name;
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
                         html += "<input type='text' onblur='getTotal("+item.id+");'  name='notSetUpTotalPrice_" + item.id + "' value='" + Number(item.notSetUpTotalPrice).toFixed(2) + "' class='form-control'>";

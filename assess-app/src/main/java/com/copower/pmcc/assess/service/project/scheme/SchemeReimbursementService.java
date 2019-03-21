@@ -31,6 +31,10 @@ public class SchemeReimbursementService {
     @Autowired
     private SchemeReimbursementItemDao schemeReimbursementItemDao;
 
+    public List<SchemeReimbursement> getObjectList(SchemeReimbursement schemeReimbursement){
+        return schemeReimbursementDao.getObjectList(schemeReimbursement);
+    }
+
     public SchemeReimbursement getDataByPlanDetailsId(Integer planDetailsId) {
         SchemeReimbursement where = new SchemeReimbursement();
         where.setPlanDetailsId(planDetailsId);
@@ -62,7 +66,7 @@ public class SchemeReimbursementService {
 
 
     public void saveSchemeReimbursement(SchemeReimbursement schemeReimbursement) {
-        if (schemeReimbursement.getId() != null && schemeReimbursement.getId() > 0) {
+        if (schemeReimbursement.getId() != null && schemeReimbursement.getId().intValue() > 0) {
             schemeReimbursementDao.editSchemeReimbursement(schemeReimbursement);
         } else {
             schemeReimbursement.setCreator(processControllerComponent.getThisUser());
@@ -116,6 +120,18 @@ public class SchemeReimbursementService {
         SchemeReimbursementItem schemeReimbursementItem = new SchemeReimbursementItem();
         schemeReimbursementItem.setMasterId(masterId);
         return findQueryBySchemeReimbursementItem(schemeReimbursementItem);
+    }
+
+    public void saveAndUpdateSchemeReimbursementItem(SchemeReimbursementItem schemeReimbursementItem){
+        if (schemeReimbursementItem == null){
+            return;
+        }
+        if (schemeReimbursementItem.getId() == null || schemeReimbursementItem.getId().intValue() == 0){
+            schemeReimbursementItem.setCreator(processControllerComponent.getThisUser());
+            schemeReimbursementItemDao.addObject(schemeReimbursementItem);
+        }else {
+            schemeReimbursementItemDao.updateObject(schemeReimbursementItem);
+        }
     }
 
     public List<SchemeReimbursementItemVo> findQueryBySchemeReimbursementItem(SchemeReimbursementItem schemeReimbursementItem) {
