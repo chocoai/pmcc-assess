@@ -46,6 +46,37 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">分割限制</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">${surveyAssetInventory.segmentationLimit}</label>
+                                </div>
+                            </div>
+                            <div id="showUse" style="display: none">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">能否使用</label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control">${surveyAssetInventory.canUse}</label>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">用途</label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control">${surveyAssetInventory.applicationName}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" id="showCertificate" style="display: none;">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">是否办证</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">${surveyAssetInventory.certificate}</label>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">证明文件</label>
@@ -80,7 +111,7 @@
                             <th style="width: 10%">一致性内容</th>
                             <th style="width: 10%">登记</th>
                             <th style="width: 10%">实际</th>
-                            <th style="width: 4%">是否一致</th>
+                            <th style="width: 6%">是否一致</th>
                             <th style="width: 10%">差异原因</th>
                             <th style="width: 10%">证明文件</th>
                             <th style="width: 10%">证明文件附件</th>
@@ -134,48 +165,6 @@
                                 </c:if>
                             </tr>
                         </c:forEach>
-                        <tr>
-                            <td align="right" style="vertical-align:middle;width: 10%">
-                                分割限制
-                            </td>
-                            <td style="width: 10%">
-                                <label class="form-control"  id="segmentationLimit">${surveyAssetInventory.segmentationLimit}
-                                </label>
-                            </td>
-                            <td align="right" style="vertical-align:middle;width: 10%">
-                                <div class="showHidden">
-                                能否使用
-                                </div>
-                            </td >
-                            <td style="width: 10%">
-                                <div class="x-valid" class="showHidden">
-                                <label class="form-control">${surveyAssetInventory.canUse}
-                                </label>
-                                </div>
-                            </td>
-                            <td align="right" style="vertical-align:middle;width: 10%">
-                                <div class="showHidden">
-                                用途
-                                </div>
-                            </td>
-                            <td style="width: 10%">
-                                <div class="x-valid" class="showHidden">
-                                <label class="form-control">${surveyAssetInventory.applicationName}
-                                </label>
-                                </div>
-                            </td>
-                            <td align="right" style="vertical-align:middle;width: 10%">
-                                <div class="showHidden">
-                                是否办证
-                                </div>
-                            </td >
-                            <td style="width: 10%">
-                                <div class="x-valid" class="showHidden">
-                                <label class="form-control">${surveyAssetInventory.certificate}
-                                </label>
-                                </div>
-                            </td>
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -187,35 +176,42 @@
                     </ul>
                     <h3>损坏调查表</h3>
                     <div class="clearfix"></div>
-                    <div class="x_content">
-                        <form id="damageSurvey" class="form-horizontal">
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        区位损坏
+                </div>
+                <div class="x_content">
+                    <form id="damageSurvey" class="form-horizontal">
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    区位是否损坏
+                                </label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">${surveyAssetInventory.rimIsNormal}
                                     </label>
                                 </div>
                             </div>
-                            <div class="zoneBit">
+                        </div>
+                        <div class="zoneBit">
 
-                            </div>
-
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        实物损坏
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    实物状况是否损坏
+                                </label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">${surveyAssetInventory.entityIsDamage}
                                     </label>
                                 </div>
                             </div>
-                            <div class="entity">
+                        </div>
+                        <div class="entity">
 
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
 
-            <div class="x_panel">
+    <%--        <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
@@ -246,7 +242,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>--%>
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
@@ -417,7 +413,7 @@
         if ("${surveyAssetInventory}") {
             showOther();
 
-            writeHTMLData( 'zoneProjectName', 'zoneProjectItem','zoneBit', ${surveyAssetInventory.zoneDamage});
+            writeHTMLData('zoneProjectName', 'zoneProjectItem', 'zoneBit', ${surveyAssetInventory.zoneDamage});
             writeHTMLData('entityProjectName', 'entityProjectItem', 'entity', ${surveyAssetInventory.entityDamage});
 
         }
@@ -495,18 +491,15 @@
 
     function showOther() {
         if ("${surveyAssetInventory.segmentationLimit}" == "可分") {
-            $("#segmentationLimit").parent().siblings().each(function () {
-                $(this).find(".showHidden,div").css('display', 'block');
-            });
+            $("#showCertificate").show();
+            $("#showUse").show();
         } else {
-            $("#segmentationLimit").parent().siblings().each(function () {
-                $(this).find(".showHidden,div").css('display', 'none');
-            });
+            $("#showCertificate").hide();
+            $("#showUse").hide();
         }
     }
 
-
-    function writeHTMLData(projectName, projectItem,item, json) {
+    function writeHTMLData(projectName, projectItem, item, json) {
         $("." + item).empty();
         var jsonarray = eval(json);
         $.each(jsonarray, function (i, n) {
@@ -515,13 +508,13 @@
 
             html += "<label class='col-sm-1 control-label'>" + "项目" + "</label>";
             html += "<div class='col-sm-3'>";
-            html += "<label class='form-control'>"+n[projectName];
+            html += "<label class='form-control'>" + n[projectName];
             html += "</label>";
             html += "</div>";
 
             html += "<label class='col-sm-1 control-label'>" + "明细" + "</label>";
             html += "<div class='col-sm-3'>";
-            html += "<label class='form-control'>"+n[projectItem];
+            html += "<label class='form-control'>" + n[projectItem];
             html += "</label>";
             html += "</div>";
 
