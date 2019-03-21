@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.SchemeReimbursementItemExample;
 import com.copower.pmcc.assess.dal.basis.mapper.SchemeReimbursementItemMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -49,8 +50,32 @@ public class SchemeReimbursementItemDao {
         if (schemeReimbursementItem.getNotSetUpUnitPrice() != null){
             criteria.andNotSetUpUnitPriceEqualTo(schemeReimbursementItem.getNotSetUpUnitPrice());
         }
+        if (schemeReimbursementItem.getNotSetUpTotalPrice() != null){
+            criteria.andNotSetUpTotalPriceEqualTo(schemeReimbursementItem.getNotSetUpTotalPrice());
+        }
         if (schemeReimbursementItem.getKnowTotalPrice() != null){
             criteria.andKnowTotalPriceEqualTo(schemeReimbursementItem.getKnowTotalPrice());
+        }
+        if (schemeReimbursementItem.getMortgagedTotalPrice() != null){
+            criteria.andMortgagedTotalPriceEqualTo(schemeReimbursementItem.getMortgagedTotalPrice());
+        }
+        if (schemeReimbursementItem.getMortgageUnitPrice() != null){
+            criteria.andMortgageUnitPriceEqualTo(schemeReimbursementItem.getMortgageUnitPrice());
+        }
+        if (schemeReimbursementItem.getMortgageTotalPrice() != null){
+            criteria.andMortgageTotalPriceEqualTo(schemeReimbursementItem.getMortgageTotalPrice());
+        }
+        if (schemeReimbursementItem.getOwedTotalPrice() != null){
+            criteria.andOwedTotalPriceEqualTo(schemeReimbursementItem.getOwedTotalPrice());
+        }
+        if (schemeReimbursementItem.getOtherTotalPrice() != null){
+            criteria.andOtherTotalPriceEqualTo(schemeReimbursementItem.getOtherTotalPrice());
+        }
+        if (StringUtils.isNotBlank(schemeReimbursementItem.getName())){
+            criteria.andNameEqualTo(schemeReimbursementItem.getName());
+        }
+        if (StringUtils.isNotBlank(schemeReimbursementItem.getCreator())){
+            criteria.andCreatorEqualTo(schemeReimbursementItem.getCreator());
         }
         return schemeReimbursementItemMapper.selectByExample(example);
     }

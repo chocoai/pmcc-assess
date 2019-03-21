@@ -38,7 +38,7 @@ public class SurveyAssetInventoryRightRecordCenterService {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
             if (declareRecord != null){
                 long count = declareRecordList.stream().filter(declareRecord1 -> Objects.equal(declareRecord1.getId(),declareRecord.getId())).count();
-                if (count == 1){
+                if (count >= 1){
                     schemeJudgeObjectDeclareRecordMap.put(schemeJudgeObject,declareRecord);
                 }
             }

@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.controller.project.scheme;
 
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeReimbursementItemVo;
-import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeReimbursementService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
@@ -22,8 +21,6 @@ import java.util.List;
 public class SchemeReimbursementController {
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
-    private SchemeJudgeObjectService schemeJudgeObjectService;
-    @Autowired
     private SchemeReimbursementService schemeReimbursementService;
 
 
@@ -34,6 +31,7 @@ public class SchemeReimbursementController {
             List<SchemeReimbursementItemVo> list = schemeReimbursementService.getItemByMasterId(masterId);
             return HttpResult.newCorrectResult(list);
     } catch (Exception e) {
+            logger.error("SchemeReimbursementController.getSchemeReimbursementList 获取数据异常",e);
         return HttpResult.newErrorResult("获取数据异常");
     }
    }

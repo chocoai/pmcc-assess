@@ -97,7 +97,7 @@
                     $.each(result.data, function (i, item) {
                         html += "<tr>";
                         html += "<td class='hidden-xs'>";
-                        html += item.judgeObjectName;
+                        html += item.name;
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
                         html += Number(item.notSetUpTotalPrice).toFixed(2);
