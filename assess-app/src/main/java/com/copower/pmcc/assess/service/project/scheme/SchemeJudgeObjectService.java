@@ -519,7 +519,6 @@ public class SchemeJudgeObjectService {
         if (CollectionUtils.isNotEmpty(schemeJudgeObjects)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjects) {
                 if (schemeJudgeObject.getId() != null && schemeJudgeObject.getId() > 0) {
-                    schemeJudgeObject.setGmtModified(new Date());
                     schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
                 }
             }
