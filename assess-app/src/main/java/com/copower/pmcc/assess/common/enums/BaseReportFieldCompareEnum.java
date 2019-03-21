@@ -8,32 +8,32 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2019/1/15 14:30
- * @Description:报告模板字段
+ * @Description:报告模板字段(市场比较法)
  */
 public enum BaseReportFieldCompareEnum {
-    CASE_NUMBER("", "案例个数", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    CASE_NUMBER( "案例个数"),
 
-    COMPARABLE_BASIS("", "比较法委估对象可比基础", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    LOCATION_CONDITION("", "比较法估价对象区位状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    RIGHTS_INTERESTS("", "比较法估价对象权益状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    ENTITY_CONDITION("", "比较法估价对象实体状况表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    COMPARABLE_BASIS( "比较法委估对象可比基础"),
+    LOCATION_CONDITION( "比较法估价对象区位状况表"),
+    RIGHTS_INTERESTS( "比较法估价对象权益状况表"),
+    ENTITY_CONDITION( "比较法估价对象实体状况表"),
 
-    PROPERTY_RANGE("", "比较法财产范围", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    PAYMENT_METHOD("", "比较法付款方式", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    FINANCING_CONDITION("", "比较法融资条件", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    TAX_BURDEN("", "比较法税费负担", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    TRANSACTION_MODIFICATION("", "比较法交易情况修正", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    DATE_REVISION("", "比较法期日修正", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    PROPERTY_RANGE( "比较法财产范围"),
+    PAYMENT_METHOD( "比较法付款方式"),
+    FINANCING_CONDITION( "比较法融资条件"),
+    TAX_BURDEN( "比较法税费负担"),
+    TRANSACTION_MODIFICATION( "比较法交易情况修正"),
+    DATE_REVISION( "比较法期日修正"),
 
-    MARKET_ADJUSTMENT("", "比较法委估对象市场状况调整", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    LOCATION_QUOTIENT("", "比较法估价对象区位指数表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    EQUITY_INDEX("", "比较法估价对象权益指数表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    ENTITY_INDEX("", "比较法估价对象实体指数表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    CALCULATION_RESULT("", "比较法测算结果表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    COUNT_COURSE("", "比较法测算过程", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
-    COUNT_RESULT("", "比较法测算结果", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    MARKET_ADJUSTMENT( "比较法委估对象市场状况调整"),
+    LOCATION_QUOTIENT( "比较法估价对象区位指数表"),
+    EQUITY_INDEX( "比较法估价对象权益指数表"),
+    ENTITY_INDEX( "比较法估价对象实体指数表"),
+    CALCULATION_RESULT( "比较法测算结果表"),
+    COUNT_COURSE( "比较法测算过程"),
+    COUNT_RESULT( "比较法测算结果"),
 
-    HOUSEPRICE_INDEX("", "比较法房价指数表", BaseReportFieldReplaceEnum.BOOKMARK.getKey()),
+    HOUSEPRICE_INDEX( "比较法房价指数表"),
     ;
     private String key;
 
@@ -45,6 +45,11 @@ public enum BaseReportFieldCompareEnum {
         this.key = key;
         this.describe = describe;
     }
+
+    private BaseReportFieldCompareEnum(String name) {
+        this.name = name;
+    }
+
 
     public static BaseReportFieldCompareEnum getEnumByName(String name) {
         for (BaseReportFieldCompareEnum e : BaseReportFieldCompareEnum.values()) {

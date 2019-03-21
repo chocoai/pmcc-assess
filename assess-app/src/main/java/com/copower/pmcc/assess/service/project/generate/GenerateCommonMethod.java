@@ -309,7 +309,7 @@ public class GenerateCommonMethod {
                     }
                 }
                 if (StringUtils.isNotBlank(name)) {
-                    name = String.format("%s%s号", name, entry.getKey());
+                    name = String.format("%s号%s", entry.getKey(), name);
                     listLinkedHashMap.put(name, entry.getValue());
                 } else {
                     continue;
@@ -321,6 +321,7 @@ public class GenerateCommonMethod {
 
     /**
      * 基本排序
+     *
      * @param schemeJudgeObjectList
      * @return
      */
@@ -433,13 +434,35 @@ public class GenerateCommonMethod {
         return stringBuilder.toString();
     }
 
-    public String getPercentileSystem(BigDecimal bigDecimal){
-        if (bigDecimal == null){
+    public String getPercentileSystem(BigDecimal bigDecimal) {
+        if (bigDecimal == null) {
             return null;
         }
-        bigDecimal= bigDecimal.multiply(new BigDecimal(100));
-        bigDecimal= bigDecimal.setScale(2,BigDecimal.ROUND_HALF_UP);
-        return String.format("%s%s",bigDecimal.toString(),"%");
+        bigDecimal = bigDecimal.multiply(new BigDecimal(100));
+        bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return String.format("%s%s", bigDecimal.toString(), "%");
+    }
+
+    /**
+     * 按照报告类型
+     *
+     * @param bigDecimal
+     * @return
+     */
+    public String getBigDecimalRound(BigDecimal bigDecimal, boolean tenThousand) {
+        //四舍五入,并且取到0
+        bigDecimal = bigDecimal.setScale(0, BigDecimal.ROUND_UP);
+        if (tenThousand) {
+            bigDecimal = bigDecimal.divide(new BigDecimal(10000));
+        }
+        if (bigDecimal.doubleValue() < 0){
+            //取绝对值
+            bigDecimal = new BigDecimal(Math.abs(bigDecimal.doubleValue()));
+            String s = bigDecimal.toString();
+            s = s.substring(1,bigDecimal.toString().length());
+//            bigDecimal = new BigDecimal(s);
+        }
+        return bigDecimal.toString();
     }
 
     /**
@@ -587,7 +610,7 @@ public class GenerateCommonMethod {
 
     public String getLocalPath(String title) {
         if (StringUtils.isEmpty(title)) {
-            title = String.format("%s%s","报告模板", DateUtils.format(new Date(),DateUtils.DATE_CHINESE_PATTERN));
+            title = String.format("%s%s", "报告模板", DateUtils.format(new Date(), DateUtils.DATE_CHINESE_PATTERN));
         }
         return String.format("%s\\%s%s%s", baseAttachmentService.createTempDirPath(), title, UUID.randomUUID().toString(), ".doc");
     }

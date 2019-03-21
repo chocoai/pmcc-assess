@@ -874,8 +874,8 @@ public class GenerateReportService {
                     if (baseReportField != null) {
                     }
                 }
-                //证载用途 / 证载用途分述
-                if (Objects.equal(BaseReportFieldEnum.CertificationPurpose.getName(), name) || Objects.equal(BaseReportFieldEnum.SeparationCertificateUses.getName(), name)) {
+                //证载用途
+                if (Objects.equal(BaseReportFieldEnum.CertificationPurpose.getName(), name) ) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSeparationCertificateUses());
                     if (baseReportField != null) {
@@ -1070,13 +1070,6 @@ public class GenerateReportService {
                     if (baseReportField != null) {
                     }
                 }
-                //分类评估总价
-                if (Objects.equal(BaseReportFieldEnum.EvaluationPriceCateGoryTotal.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationPriceCateGoryTotalOne());
-                    }
-                }
                 //估价对象的总价
                 if (Objects.equal(BaseReportFieldEnum.TotalValueValuationObject.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
@@ -1094,7 +1087,7 @@ public class GenerateReportService {
                 //估价对象选择估价方法
                 if (Objects.equal(BaseReportFieldEnum.SelectionValuationMethod.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSelectionValuationMethod());
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSelectionValuationMethod());
                     if (baseReportField != null) {
                     }
                 }
@@ -1292,19 +1285,6 @@ public class GenerateReportService {
                     if (baseReportField != null) {
                     }
                 }
-                //本次估价的总体思路和评估方法的选取
-                if (Objects.equal(BaseReportFieldEnum.theGeneralIdeaOfThisEvaluationAndTheSelectionOfEvaluationMethods.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    SysAttachmentDto query = new SysAttachmentDto();
-                    if (baseReportField != null) {
-                        query.setTableId(baseReportField.getId());
-                        query.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportField.class));
-                        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
-                        if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-                            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.gettheGeneralIdeaOfThisEvaluationAndTheSelectionOfEvaluationMethods(sysAttachmentDtoList.get(0)));
-                        }
-                    }
-                }
                 //分类评估方法结果
                 if (Objects.equal(BaseReportFieldEnum.EvaluationMethodResult.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
@@ -1371,7 +1351,7 @@ public class GenerateReportService {
                 //座落
                 if (Objects.equal(BaseReportFieldEnum.Seat.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSeat(true));
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSeat());
                     if (baseReportField != null) {
                     }
                 }
