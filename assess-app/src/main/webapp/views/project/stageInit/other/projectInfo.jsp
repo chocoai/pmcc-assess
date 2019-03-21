@@ -114,15 +114,6 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">评估基准日<span class="symbol required"></span></label>
-                <div class="col-sm-3">
-                    <input required="required" placeholder="评估基准日"
-                           name="valuationDate" data-date-format="yyyy-mm-dd"
-                           class="form-control date-picker dbdate" readonly="readonly"
-                           value="<fmt:formatDate value='${projectInfo.valuationDate}' pattern='yyyy-MM-dd'/>">
-                </div>
-            </div>
-            <div class="x-valid">
                 <label class="col-sm-1 control-label">项目经理<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <div class="input-group">
@@ -170,6 +161,15 @@
                         </button>
                         </span>
                     </div>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">评估基准日<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input required="required" placeholder="评估基准日"
+                           name="valuationDate" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate" readonly="readonly"
+                           value="<fmt:formatDate value='${projectInfo.valuationDate}' pattern='yyyy-MM-dd'/>">
                 </div>
             </div>
         </div>

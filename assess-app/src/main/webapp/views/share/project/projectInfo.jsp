@@ -518,8 +518,8 @@
         var cols = [];
         cols.push({field: 'cName', title: '姓名'});
         cols.push({field: 'cDept', title: '部门'});
+        cols.push({field: 'cPhone', title: '电话号码'});
         cols.push({field: 'cEmail', title: '邮箱'});
-        cols.push({field: 'cPhone', title: '部门'});
         TableInit(tb_List, "${pageContext.request.contextPath}/initiateContacts/getBootstrapTableVo", cols, {
             cPid: cPid,
             cType: cType,

@@ -210,7 +210,30 @@
                     </form>
                 </div>
             </div>
-
+            <div class="x_panel">
+                <div class="x_title">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
+                    <h3>转让限制</h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    转让限制
+                                </label>
+                                <div class="col-sm-11">
+                                    <label class="form-control">${surveyAssetInventory.transferLimit}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
     <%--        <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
