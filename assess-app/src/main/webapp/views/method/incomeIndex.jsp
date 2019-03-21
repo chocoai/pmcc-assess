@@ -83,7 +83,7 @@
                             for="leaseMode0">限制</label></span>
                     </div>
                     <div class="col-sm-2">
-                        <span class="radio-inline"><input type="radio" name="leaseMode" id="leaseMode1" value="1"
+                        <span class="radio-inline"><input type="radio" checked="checked" name="leaseMode" id="leaseMode1" value="1"
                                                           onchange="incomeIndex.leaseModeChange(this);"><label
                                 for="leaseMode1">无限制</label></span>
                     </div>

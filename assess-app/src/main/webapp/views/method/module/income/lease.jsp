@@ -960,7 +960,7 @@
         $("#leaseResultBody").find('tr').each(function () {
             var n = $(this).find('[data-name=yearCount]').text();
             if (!AssessCommon.isNumber(n)) return false;
-            n = parseInt(n);//期限
+            n = parseFloat(n);//期限
 
             var g = $(this).find('[data-name=rentalGrowthRate]').val();
             if (!AssessCommon.isNumber(g)) return false;

@@ -723,11 +723,11 @@ public class MdIncomeService {
             if (incomeTotal == null) {
                 throw new BusinessException("请先保存毛收入信息");
             }
-            BigDecimal total = incomeTotal.multiply(mdIncomeLeaseCost.getManagementCostRatio());
-            total = total.add(mdIncomeLeaseCost.getReplacementValue().multiply(mdIncomeLeaseCost.getMaintenanceCostRatio()));
-            total = total.add(incomeTotal.multiply(mdIncomeLeaseCost.getAdditionalRatio()));
-            total = total.add(incomeTotal.multiply(mdIncomeLeaseCost.getInsurancePremiumRatio()));
-            total = total.add(mdIncomeLeaseCost.getLandUseTax());
+            BigDecimal total = incomeTotal.multiply(mdIncomeLeaseCost.getManagementCostRatio());//管理费
+            total = total.add(mdIncomeLeaseCost.getReplacementValue().multiply(mdIncomeLeaseCost.getMaintenanceCostRatio()));//维护保养费
+            total = total.add(incomeTotal.multiply(mdIncomeLeaseCost.getAdditionalRatio()));//房产税、增值税及附加
+            total = total.add(mdIncomeLeaseCost.getReplacementValue().multiply(mdIncomeLeaseCost.getInsurancePremiumRatio()));//保险费
+            total = total.add(mdIncomeLeaseCost.getLandUseTax());//土地使用费
             incomeDateSection.setCostTotal(total);
             mdIncomeDateSectionDao.updateDateSection(incomeDateSection);
         }
