@@ -9,7 +9,6 @@ import com.copower.pmcc.assess.common.enums.BaseReportFieldMdIncomeEnum;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldReplaceEnum;
 import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.dao.project.generate.GenerateReportDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.generate.BookmarkAndRegexDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
@@ -19,7 +18,6 @@ import com.copower.pmcc.assess.service.base.BaseReportFieldService;
 import com.copower.pmcc.assess.service.base.BaseReportService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
-import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -32,7 +30,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,10 +45,6 @@ import java.util.*;
 public class GenerateReportService {
     @Autowired
     private ProjectInfoService projectInfoService;
-    @Autowired
-    private GenerateReportDao generateReportDao;
-    @Autowired
-    private DeclareRecordService declareRecordService;
     @Autowired
     private SchemeAreaGroupService schemeAreaGroupService;
     @Autowired
@@ -80,30 +73,6 @@ public class GenerateReportService {
         return schemeAreaGroupService.getAreaGroupList(projectId);
     }
 
-    /**
-     * 初始化用于生成报告记录信息
-     *
-     * @param projectId
-     * @param planId
-     */
-    @Transactional(rollbackFor = {Exception.class})
-    public void initGenerateReportRecord(Integer projectId, Integer planId) {
-        int count = generateReportDao.getGenerateReportRecordCount(projectId, planId);
-        if (count > 0) {
-            return;
-        }
-        List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordByProjectId(projectId);
-        if (CollectionUtils.isNotEmpty(declareRecords)) {
-            GenerateReportRecord generateReportRecord = null;
-            for (DeclareRecord declareRecord : declareRecords) {
-                generateReportRecord = new GenerateReportRecord();
-                BeanUtils.copyProperties(declareRecord, generateReportRecord);
-                generateReportRecord.setProjectId(projectId);
-                generateReportRecord.setPlanId(planId);
-                generateReportDao.addGenerateReportRecord(generateReportRecord);
-            }
-        }
-    }
 
     /**
      * 创建报告模板
