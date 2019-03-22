@@ -58,6 +58,8 @@ public class AssessDataDicKeyConstant {
     public static final String INVENTORY_RIGHT_TYPE = "project.survey.inventory.right.type";//他权类型
     public static final String INVENTORY_RIGHT_TYPE_HOUSE_LEASEHOLD = "project.survey.inventory.right.type.house.leasehold";//租赁权
     public static final String INVENTORY_RIGHT_TYPE_HOUSE_GUARANTEE = "project.survey.inventory.right.type.house.guarantee";//担保权
+    public static final String INVENTORY_RIGHT_TYPE_HOUSE_PLEDGE = "project.survey.inventory.right.type.house.pledge";//房产抵押权
+    public static final String INVENTORY_RIGHT_TYPE_HOUSE_OTHER = "project.survey.inventory.right.type.house.other";//房产其他
 
     /**
      * 评估方法

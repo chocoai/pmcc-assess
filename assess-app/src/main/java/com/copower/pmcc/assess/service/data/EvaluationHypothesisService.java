@@ -24,6 +24,7 @@ import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeFunctionService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryContentService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -95,6 +96,8 @@ public class EvaluationHypothesisService {
     private MdIncomeDao mdIncomeDao;
     @Autowired
     private GenerateReportGenerationService generateReportGenerationService;
+    @Autowired
+    private SurveyAssetInventoryRightService surveyAssetInventoryRightService;
 
 
     /**
@@ -338,28 +341,19 @@ public class EvaluationHypothesisService {
             if (AssessReportFieldConstant.HYPOTHESIS_GIST_INSUFFICIENT.equals(basis.getFieldName())) {
                 //参考同类委估对象号
                 StringBuilder referenceNum = new StringBuilder();
-                //入户调查为估对象号
+                //入户调查估对象号
                 StringBuilder assetCheckNum = new StringBuilder();
 
                 for (SchemeJudgeObject judgeObject : judgeObjectList) {
                     BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
                     BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
-                    List<DataReportTemplateItem> dataReportTemplateItemList = dataReportTemplateItemDao.getListByMasterId(basis.getId(), SchemeSupportTypeEnum.HYPOTHESIS.getKey());
-                    for (DataReportTemplateItem templateItem : dataReportTemplateItemList) {
-                        switch (templateItem.getFieldName()) {
-                            //参考同类
-                            case AssessReportFieldConstant.REFERENCE_SAME:
-                                if (AssessExamineTaskConstant.EXAMINE_HOUSE_RESEARCH_REFERENCE.equals(baseDataDicService.getCacheDataDicById(basicHouse.getResearchType()).getFieldName())) {
-                                    referenceNum.append(judgeObject.getNumber()).append(",");
-                                }
-                                break;
-                            //入户调查
-                          /*  case AssessReportFieldConstant.ASSET_CHECK:
-                                if (AssessExamineTaskConstant.EXAMINE_HOUSE_RESEARCH_INVESTIGATE.equals(baseDataDicService.getCacheDataDicById(basicHouse.getResearchType()).getFieldName())) {
-                                    assetCheckNum.append(judgeObject.getNumber()).append(",");
-                                }
-                                break;*/
-                        }
+                    //参考同类
+                    if (AssessExamineTaskConstant.EXAMINE_HOUSE_RESEARCH_REFERENCE.equals(baseDataDicService.getCacheDataDicById(basicHouse.getResearchType()).getFieldName())) {
+                        referenceNum.append(judgeObject.getNumber()).append(",");
+                    }
+                    //入户调查
+                    if (AssessExamineTaskConstant.EXAMINE_HOUSE_RESEARCH_INVESTIGATE.equals(baseDataDicService.getCacheDataDicById(basicHouse.getResearchType()).getFieldName())) {
+                        assetCheckNum.append(judgeObject.getNumber()).append(",");
                     }
 
                 }
@@ -391,26 +385,14 @@ public class EvaluationHypothesisService {
                 //实物损坏委估对象
                 StringBuilder entityDamage = new StringBuilder();
 
-                List<DataReportTemplateItem> dataReportTemplateItemList = dataReportTemplateItemDao.getListByMasterId(basis.getId(), SchemeSupportTypeEnum.HYPOTHESIS.getKey());
                 for (SchemeJudgeObject judgeObject : judgeObjectList) {
                     //对应资产清查内容
                     SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByDeclareId(judgeObject.getDeclareRecordId());
-
-                    for (DataReportTemplateItem templateItem : dataReportTemplateItemList) {
-                        switch (templateItem.getFieldName()) {
-                            //区位
-                            case AssessReportFieldConstant.SURROUNDINGS_CONDITION:
-                                if ("不正常".equals(surveyAssetInventory.getRimIsNormal())) {
-                                    surroundingsDamage.append(judgeObject.getNumber()).append(",");
-                                }
-                                break;
-                            //实物
-                            case AssessReportFieldConstant.ENTITY_CONDITION:
-                                if ("损坏".equals(surveyAssetInventory.getEntityIsDamage())) {
-                                    entityDamage.append(judgeObject.getNumber()).append(",");
-                                }
-                                break;
-                        }
+                    if ("不正常".equals(surveyAssetInventory.getRimIsNormal())) {
+                        surroundingsDamage.append(judgeObject.getNumber()).append(",");
+                    }
+                    if ("损坏".equals(surveyAssetInventory.getEntityIsDamage())) {
+                        entityDamage.append(judgeObject.getNumber()).append(",");
                     }
                 }
                 if(valuationDate.compareTo(investigationsEndDate)!=0){
@@ -428,6 +410,110 @@ public class EvaluationHypothesisService {
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{评估基准日}",sdf2.format(valuationDate))).append("</p>");
                 }
 
+            }
+
+            //一般假设
+            if (AssessReportFieldConstant.HYPOTHESIS_COMMON.equals(basis.getFieldName())) {
+                //有抵押权委估对象
+                StringBuilder havePledge = new StringBuilder();
+                //无抵押权委估对象
+                StringBuilder noPledge = new StringBuilder();
+                //有其他
+                StringBuilder haveOther = new StringBuilder();
+                //无其他
+                StringBuilder noOther = new StringBuilder();
+                //无建筑面积委估对象
+                StringBuilder noBuildingArea = new StringBuilder();
+                //无建筑结构委估对象
+                StringBuilder noBuildingConstruction = new StringBuilder();
+                //无转让限制委估对象
+                StringBuilder limit = new StringBuilder();
+                //内容
+                StringBuilder content = new StringBuilder();
+                StringBuilder limitContent = new StringBuilder();
+
+
+                Integer rightId = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE_HOUSE_PLEDGE).getId();
+                Integer otherId = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE_HOUSE_OTHER).getId();
+
+                for (SchemeJudgeObject judgeObject : judgeObjectList) {
+                    //对应资产清查内容
+                    SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByDeclareId(judgeObject.getDeclareRecordId());
+                    List<SurveyAssetInventoryContent> SurveyAssetInventoryContents = surveyAssetInventoryContentService.getContentListByPlanDetailsId(surveyAssetInventory.getPlanDetailId());
+                    for (SurveyAssetInventoryContent item : SurveyAssetInventoryContents) {
+                        switch (baseDataDicService.getCacheDataDicById(item.getInventoryContent()).getFieldName()) {
+                            //建筑面积
+                            case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_AREA:
+                                if (StringUtils.isEmpty(item.getRegistration()) || "无".equals(item.getRegistration().trim())) {
+                                    noBuildingArea.append(judgeObject.getNumber()).append(",");
+                                }
+                                break;
+                            //建筑结构
+                            case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_STRUCTURE:
+                                if (StringUtils.isEmpty(item.getRegistration()) || "无".equals(item.getRegistration().trim())) {
+                                    noBuildingConstruction.append(judgeObject.getNumber()).append(",");
+                                }
+                                break;
+                        }
+                    }
+                    //对应的他权信息
+                    List<SurveyAssetInventoryRight> rightList = surveyAssetInventoryRightService.surveyAssetInventoryRights(surveyAssetInventory.getPlanDetailId());
+                     for (SurveyAssetInventoryRight inventoryRight: rightList) {
+                        if(rightId.equals(inventoryRight.getCategory())){
+                            havePledge.append(judgeObject.getNumber()).append(",");
+                        }else {
+                            noPledge.append(judgeObject.getNumber()).append(",");
+                        }
+                        if(otherId.equals(inventoryRight.getCategory())){
+                            haveOther.append(judgeObject.getNumber()).append(",");
+                        }else {
+                            noOther.append(judgeObject.getNumber()).append(",");
+                        }
+                    }
+                    //转让限制
+                    if(StringUtils.isNotBlank(surveyAssetInventory.getTransferLimit())){
+                        limitContent.append(judgeObject.getNumber()).append("号委估对象,有转让限制").append(surveyAssetInventory.getTransferLimit()).append(";");
+                    }else {
+                        limit.append(judgeObject.getNumber()).append(",");
+                    }
+
+                }
+                if (StringUtils.isNotBlank(limit)) {
+                    String number = getSubstitutionPrincipleName(limit.toString());
+                    limitContent.append(number).append("委估对象土地使用权符合法定的转让条件为假设前提");
+                }
+                if (StringUtils.isNotBlank(havePledge)) {
+                    String number = getSubstitutionPrincipleName(havePledge.toString());
+                    content.append(number).append("委估对象有抵押;");
+                }
+                if (StringUtils.isNotBlank(noPledge)) {
+                    String number = getSubstitutionPrincipleName(noPledge.toString());
+                    content.append(number).append("委估对象无抵押;");
+                }
+                if (StringUtils.isNotBlank(haveOther)) {
+                    String number = getSubstitutionPrincipleName(haveOther.toString());
+                    content.append(number).append("委估对象有查封、诉讼、仲裁、司法强制执行或其他重大争议等禁止转让情形，房地产权属无纠纷;");
+                }
+                if (StringUtils.isNotBlank(noOther)) {
+                    String number = getSubstitutionPrincipleName(noOther.toString());
+                    content.append(number).append("委估对象无查封、诉讼、仲裁、司法强制执行或其他重大争议等禁止转让情形，房地产权属无纠纷;");
+                }
+                content.append(limitContent);
+                if (StringUtils.isNotBlank(content)) {
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.ALIENI_IURIS);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{一般假设他权与转让}", content)).append("</p>");
+                }
+
+                if (StringUtils.isNotBlank(noBuildingArea)) {
+                    String number = getSubstitutionPrincipleName(noBuildingArea.toString());
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.BUILDING_AREA);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number)).append("</p>");
+                }
+                if (StringUtils.isNotBlank(noBuildingConstruction)) {
+                    String number = getSubstitutionPrincipleName(noBuildingConstruction.toString());
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.BUILDING_CONSTRUCTION);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number)).append("</p>");
+                }
             }
 
         }

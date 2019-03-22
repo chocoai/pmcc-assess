@@ -3,13 +3,13 @@ package com.copower.pmcc.assess.service.data;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationBasisDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationBasis;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationBasisVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.project.declare.DeclarePublicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -46,6 +46,8 @@ public class EvaluationBasisService {
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
     private DataReportTemplateItemService dataReportTemplateItemService;
+    @Autowired
+    private DeclarePublicService declarePublicService;
 
     /**
      * 保存数据
@@ -154,11 +156,20 @@ public class EvaluationBasisService {
         //获取到数据后根据对应的规则生成相关报告数据内容
         List<DataEvaluationBasis> basisList = this.getEnableBasisList(projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), projectInfo.getEntrustPurpose());
         if (CollectionUtils.isEmpty(basisList)) return "";
+        //委估单位
+        DeclareApply declareApplyByProjectId = declarePublicService.getDeclareApplyByProjectId(projectInfo.getId());
+        String unit = declareApplyByProjectId.getClient();
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < basisList.size(); i++) {
             DataEvaluationBasis basis = basisList.get(i);
             stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s",i+1,basis.getName())).append("</p>");
             stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
+            //经济行为依据
+            if (AssessReportFieldConstant.BASIS_ECONOMIC_BEHAVIOR.equals(basis.getFieldName())) {
+                DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.ENTRUSTING_PARTY);
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委托单位}", unit)).append("</p>");
+
+            }
         }
         return stringBuilder.toString();
     }
