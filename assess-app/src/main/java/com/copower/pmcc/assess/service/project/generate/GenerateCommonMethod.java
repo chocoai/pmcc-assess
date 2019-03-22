@@ -455,11 +455,11 @@ public class GenerateCommonMethod {
         if (tenThousand) {
             bigDecimal = bigDecimal.divide(new BigDecimal(10000));
         }
-        if (bigDecimal.doubleValue() < 0){
+        if (bigDecimal.doubleValue() < 0) {
             //取绝对值
             bigDecimal = new BigDecimal(Math.abs(bigDecimal.doubleValue()));
             String s = bigDecimal.toString();
-            s = s.substring(1,bigDecimal.toString().length());
+            s = s.substring(1, bigDecimal.toString().length());
 //            bigDecimal = new BigDecimal(s);
         }
         return bigDecimal.toString();
@@ -681,11 +681,14 @@ public class GenerateCommonMethod {
         if (StringUtils.isNotBlank(imgPath) && FileUtils.checkImgSuffix(imgPath)) {
             File file = new File(imgPath);
             BufferedImage sourceImg = ImageIO.read(new FileInputStream(file));
-            builder.insertImage(imgPath,
-                    sourceImg.getWidth() > 400 ? 400 : sourceImg.getWidth(),
-                    sourceImg.getHeight() > 500 ? 500 : sourceImg.getHeight());
-            builder.write(" ");
+            int targetWidth = sourceImg.getWidth() > 400 ? 400 : sourceImg.getWidth();
+            builder.insertImage(imgPath, targetWidth, getImageTargeHeight(sourceImg.getWidth(), targetWidth, sourceImg.getHeight()));
         }
+    }
+
+    public int getImageTargeHeight(int sourceWidth, int targeWidth, int sourceHeight) {
+        int targetHeight = sourceHeight / (sourceWidth / targeWidth);
+        return targetHeight;
     }
 
     /**
@@ -737,4 +740,12 @@ public class GenerateCommonMethod {
         }
     }
 
+    /**
+     * 获取包装后的html，与当前word字体格式一致
+     * @param html
+     * @return
+     */
+    public String getWarpCssHtml(String html){
+       return String.format("<div style='font-family:仿宋_GB2312;line-height:150%%;font-size:14.0pt'>%s</div>", html);
+    }
 }

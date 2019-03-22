@@ -121,7 +121,7 @@ public class GenerateBaseDataService {
     private SchemeAreaGroup schemeAreaGroup = null;
     private List<SchemeJudgeObject> schemeJudgeObjectList = null;
     private List<SchemeJudgeObject> schemeJudgeObjectFullList = null;
-
+    private List<SchemeJudgeObject> schemeJudgeObjectDeclareList = null;
     //===========================================获取的值===============================
 
     //报告出具日期
@@ -1556,7 +1556,7 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        builder.insertHtml(String.format("<div style='font-family:仿宋_GB2312;line-height:150%%;font-size:14.0pt'>%s</div>", result), true);
+        builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
         document.save(localPath);
         return localPath;
     }
@@ -1582,7 +1582,7 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        builder.insertHtml(String.format("<div style='font-family:仿宋_GB2312;line-height:150%%;font-size:14.0pt'>%s</div>", result), true);
+        builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
         document.save(localPath);
         return localPath;
     }
@@ -4267,7 +4267,8 @@ public class GenerateBaseDataService {
      */
     public String getJUDGEOBJECTPRINCIPALCOPYSHEET() throws Exception {
         String localPath = getLocalPath();
-        new Document().save(localPath);
+        Document document = new Document();
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         SysAttachmentDto sysAttachmentDto = schemeReportFileService.getProjectProxyFileList(projectId);
         if (sysAttachmentDto != null) {
             String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
@@ -4275,10 +4276,9 @@ public class GenerateBaseDataService {
             if (FileUtils.checkImgSuffix(imgPath)) {
                 images.add(imgPath);
             }
-            if (CollectionUtils.isNotEmpty(images)) {
-                AsposeUtils.insertImage(localPath, images, 200, 100);
-            }
+            AsposeUtils.imageInsertToWrod(images, 1, builder);
         }
+        document.save(localPath);
         return localPath;
     }
 
@@ -4291,17 +4291,19 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        List<SchemeJudgeObject> schemeJudgeObjectList = this.schemeJudgeObjectDeclareList;
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("<span style=\"text-indent:2em\">%s</span>", schemeJudgeObject.getName())), true);
+                List<String> imgPathList = Lists.newArrayList();
                 List<SysAttachmentDto> sysAttachmentDtoList = schemeReportFileService.getJudgeObjectPositionFileList(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-                    builder.writeln(schemeJudgeObject.getName());
                     for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                        generateCommonMethod.builderInsertImage(builder, imgPath);
+                        imgPathList.add(imgPath);
                     }
                 }
+                AsposeUtils.imageInsertToWrod(imgPathList, 1, builder);
             }
         }
         document.save(localPath);
@@ -4317,16 +4319,17 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        List<SchemeJudgeObject> schemeJudgeObjectFullList = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(this.areaId);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectFullList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectFullList) {
+        if (CollectionUtils.isNotEmpty(this.schemeJudgeObjectDeclareList)) {
+            for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
                 List<SchemeReportFileItem> sysAttachmentDtoList = schemeReportFileService.getLiveSituationSelect(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-                    builder.writeln(schemeJudgeObject.getName());
+                    List<String> imgPathList = Lists.newArrayList();
+                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("<span style=\"text-indent:2em\">%s</span>", schemeJudgeObject.getName())), true);
                     for (SchemeReportFileItem sysAttachmentDto : sysAttachmentDtoList) {
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getAttachmentId());
-                        generateCommonMethod.builderInsertImage(builder, imgPath);
+                        imgPathList.add(imgPath);
                     }
+                    AsposeUtils.imageInsertToWrod(imgPathList, 3, builder);
                 }
             }
         }
@@ -4344,17 +4347,18 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         Map<Integer, List<SysAttachmentDto>> ownershipCertFileList = schemeReportFileService.getOwnershipCertFileList(areaId);
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+        if (CollectionUtils.isNotEmpty(this.schemeJudgeObjectDeclareList)) {
+            for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
                 List<SysAttachmentDto> sysAttachmentDtoList = ownershipCertFileList.get(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-                    builder.writeln(schemeJudgeObject.getName());
+                    List<String> imgPathList = Lists.newArrayList();
+                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("<span style=\"text-indent:2em\">%s</span>", schemeJudgeObject.getName())), true);
                     for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                        generateCommonMethod.builderInsertImage(builder, imgPath);
+                        imgPathList.add(imgPath);
                     }
+                    AsposeUtils.imageInsertToWrod(imgPathList, 1, builder);
                 }
             }
         }
@@ -4372,43 +4376,50 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+        List<String> imgPathList = null;
+        if (CollectionUtils.isNotEmpty(this.schemeJudgeObjectDeclareList)) {
             Map<Integer, List<SysAttachmentDto>> inventoryAddressFileList = schemeReportFileService.getInventoryAddressFileList(areaId);
-            Map<Integer, List<SysAttachmentDto>> reimbursementFileList = schemeReportFileService.getReimbursementFileList(areaId);
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                //1.先取地址不一致附件与法定优先受偿款附件
+            for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
+                //1.先取地址不一致附件
                 List<SysAttachmentDto> addressFileList = inventoryAddressFileList.get(schemeJudgeObject.getId());
-                List<SysAttachmentDto> reimFileList = reimbursementFileList.get(schemeJudgeObject.getId());
-                if (CollectionUtils.isEmpty(addressFileList) && CollectionUtils.isEmpty(reimFileList)) continue;
-                builder.writeln(schemeJudgeObject.getName());
+                if (CollectionUtils.isEmpty(addressFileList)) continue;
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("<span style=\"text-indent:2em\">%s</span>", schemeJudgeObject.getName())), true);
                 if (CollectionUtils.isNotEmpty(addressFileList)) {
-                    builder.writeln("地址不一致附件");
+                    builder.insertHtml(generateCommonMethod.getWarpCssHtml("<span style=\"text-indent:2em\">地址不一致附件</span>"), true);
                     for (SysAttachmentDto sysAttachmentDto : addressFileList) {
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                        generateCommonMethod.builderInsertImage(builder, imgPath);
+                        imgPathList.add(imgPath);
                     }
-                }
-                if (CollectionUtils.isNotEmpty(reimFileList)) {
-                    builder.writeln("法定优先受偿款附件");
-                    for (SysAttachmentDto sysAttachmentDto : reimFileList) {
-                        String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                        generateCommonMethod.builderInsertImage(builder, imgPath);
-                    }
+                    AsposeUtils.imageInsertToWrod(imgPathList,2,builder);
                 }
             }
         }
-        //2.取得自定义的附件
+
+        //2.法定优先受偿款附件
+
+        Map<Integer, List<SysAttachmentDto>> reimbursementFileList = schemeReportFileService.getReimbursementFileList(areaId);
+        List<SysAttachmentDto> reimFileList = reimbursementFileList.get(1);
+        if (CollectionUtils.isNotEmpty(reimFileList)) {
+            builder.writeln("法定优先受偿款附件");
+            for (SysAttachmentDto sysAttachmentDto : reimFileList) {
+                String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
+                generateCommonMethod.builderInsertImage(builder, imgPath);
+            }
+        }
+
+        //3.取得自定义的附件
         List<SchemeReportFileCustom> reportFileCustomList = schemeReportFileService.getReportFileCustomList(areaId);
         if (CollectionUtils.isNotEmpty(reportFileCustomList)) {
             for (SchemeReportFileCustom schemeReportFileCustom : reportFileCustomList) {
                 List<SysAttachmentDto> fileList = schemeReportFileService.getCustomFileList(schemeReportFileCustom.getId());
                 if (CollectionUtils.isNotEmpty(fileList)) {
-                    builder.writeln(schemeReportFileCustom.getName());
+                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("<span style=\"text-indent:2em\">%s</span>", schemeReportFileCustom.getName())), true);
+                    imgPathList=Lists.newArrayList();
                     for (SysAttachmentDto sysAttachmentDto : fileList) {
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
-                        generateCommonMethod.builderInsertImage(builder, imgPath);
+                        imgPathList.add(imgPath);
                     }
+                    AsposeUtils.imageInsertToWrod(imgPathList,2,builder);
                 }
             }
         }
@@ -5343,6 +5354,7 @@ public class GenerateBaseDataService {
         }
         this.schemeJudgeObjectList = judgeObjectList;
         this.schemeJudgeObjectFullList = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(areaId);
+        this.schemeJudgeObjectDeclareList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
     }
 
 

@@ -9,11 +9,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.List;
 
 /**
  * Created by kings on 2018-6-6.
@@ -407,30 +412,41 @@ public class AsposeUtils {
 
     /**
      * 图片插入到word中
+     *
      * @param imgPathList
      * @param colCount
-     * @param wordPath
+     * @param builder
      * @throws Exception
      */
-    public void imageInsertToWrod(List<String> imgPathList,Integer colCount,String wordPath) throws Exception {
-        Document document = new Document();
-        DocumentBuilder builder = new DocumentBuilder(document);
+    public static void imageInsertToWrod(List<String> imgPathList, Integer colCount, DocumentBuilder builder) throws Exception {
+        if (CollectionUtils.isEmpty(imgPathList)) throw new RuntimeException("imgPathList empty");
+        if (colCount == null || colCount <= 0) throw new RuntimeException("colCount empty");
+        if (builder == null) throw new RuntimeException("builder empty");
         Table table = builder.startTable();
-        int rowLength = imgPathList.size()%colCount>0?(imgPathList.size()/colCount)+1:imgPathList.size()/colCount;//列数
+        int rowLength = imgPathList.size() % colCount > 0 ? (imgPathList.size() / colCount) + 1 : imgPathList.size() / colCount;//列数
         Integer index = 0;
+        //根据不同列数设置 表格与图片的宽度 总宽度为560
+        int maxWidth = 560;
+        int cellWidth = maxWidth / colCount;
+        int imageMaxWidth = cellWidth - (60/colCount);
         for (int j = 0; j < rowLength; j++) {
             for (int k = 0; k < colCount; k++) {
                 builder.insertCell();
                 index = j * colCount + k;
                 if (index < imgPathList.size()) {
-                    builder.insertImage(imgPathList.get(index), RelativeHorizontalPosition.MARGIN, 40,
-                            RelativeVerticalPosition.MARGIN, 10, 150, 150, WrapType.SQUARE);
+                    String imgPath = imgPathList.get(index);
+                    File file = new File(imgPath);
+                    BufferedImage sourceImg = ImageIO.read(new FileInputStream(file));
+                    int targetWidth = sourceImg.getWidth() > imageMaxWidth ? imageMaxWidth : sourceImg.getWidth();
+                    int targeHeight = getImageTargeHeight(sourceImg.getWidth(), targetWidth, sourceImg.getHeight());
+                    builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 20,
+                            RelativeVerticalPosition.MARGIN, 10, targetWidth, targeHeight, WrapType.SQUARE);
                     //设置样式
                     builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
                     builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
                     builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
                     builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
-                    builder.getCellFormat().setWidth(200);
+                    builder.getCellFormat().setWidth(cellWidth);
                     builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
                     builder.getRowFormat().setAlignment(RowAlignment.CENTER);
                 }
@@ -438,6 +454,10 @@ public class AsposeUtils {
             builder.endRow();
         }
         table.setBorders(0, 0, Color.white);
-        document.save(wordPath);
+    }
+
+    public static int getImageTargeHeight(int sourceWidth, int targeWidth, int sourceHeight) {
+        int targetHeight = sourceHeight / (sourceWidth / targeWidth);
+        return targetHeight;
     }
 }
