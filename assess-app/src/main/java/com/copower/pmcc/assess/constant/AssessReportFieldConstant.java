@@ -50,4 +50,8 @@ public class AssessReportFieldConstant {
     public static final String BUILDING_AREA = "building.area";//建筑面积
     public static final String BUILDING_CONSTRUCTION = "building.construction";//建筑结构
 
+
+    public static final String BASIS_ECONOMIC_BEHAVIOR = "basis.economic.behavior";//经济行为依据
+    public static final String ENTRUSTING_PARTY = "entrusting.party";//委估单位
+
 }
