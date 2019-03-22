@@ -98,7 +98,9 @@ public class GenerateCommonMethod {
                         if (generateBaseExamineService.getBasicApply().getId() != null && generateBaseExamineService.getBasicApply().getId().intValue() != 0) {
                             if (generateBaseExamineService.getBasicBuilding().getBuildingStructureCategory() != null) {
                                 String key = baseDataDicService.getNameById(generateBaseExamineService.getBasicBuilding().getBuildingStructureCategory());
-                                this.putStringListMap(stringListMap, schemeJudgeObject, key);
+                                if (StringUtils.isNotBlank(key)) {
+                                    this.putStringListMap(stringListMap, schemeJudgeObject, key);
+                                }
                             }
                         }
                     }
@@ -127,7 +129,9 @@ public class GenerateCommonMethod {
         for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObjectList.get(i).getDeclareRecordId());
             if (declareRecord != null) {
-                this.putStringListMap(stringListMap, schemeJudgeObjectList.get(i), declareRecord.getOwnership());
+                if (StringUtils.isNotBlank(declareRecord.getOwnership())) {
+                    this.putStringListMap(stringListMap, schemeJudgeObjectList.get(i), declareRecord.getOwnership());
+                }
             }
         }
         String s = this.getSchemeJudgeObjectListShowName(stringListMap, null);
@@ -152,7 +156,9 @@ public class GenerateCommonMethod {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
             if (declareRecord != null) {
                 String key = declareRecord.getUseRightType();
-                this.putStringListMap(stringListMap, schemeJudgeObject, key);
+                if (StringUtils.isNotBlank(key)) {
+                    this.putStringListMap(stringListMap, schemeJudgeObject, key);
+                }
             }
         }
         String s = this.getSchemeJudgeObjectListShowName(stringListMap, null);
@@ -196,10 +202,14 @@ public class GenerateCommonMethod {
         }
         schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(schemeJudgeObject -> StringUtils.isNotBlank(schemeJudgeObject.getPracticalUse())).collect(Collectors.toList());
         for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
+            String value = null;
             if (NumberUtils.isNumber(schemeJudgeObjectList.get(i).getPracticalUse())) {
-                this.putStringListMap(stringListMap, schemeJudgeObjectList.get(i), baseDataDicService.getNameById(schemeJudgeObjectList.get(i).getPracticalUse()));
+                value = baseDataDicService.getNameById(schemeJudgeObjectList.get(i).getPracticalUse());
             } else {
-                this.putStringListMap(stringListMap, schemeJudgeObjectList.get(i), schemeJudgeObjectList.get(i).getPracticalUse());
+                value = schemeJudgeObjectList.get(i).getPracticalUse();
+            }
+            if (StringUtils.isNotBlank(value)){
+                this.putStringListMap(stringListMap, schemeJudgeObjectList.get(i),value);
             }
         }
         String s = this.getSchemeJudgeObjectListShowName(stringListMap, null);
@@ -716,6 +726,7 @@ public class GenerateCommonMethod {
         builder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
 
     }
+
 
     public void setDefaultDocumentBuilderSetting(DocumentBuilder builder) throws Exception {
         builder.getFont().setName(AsposeUtils.ImitationSongGB2312FontName);

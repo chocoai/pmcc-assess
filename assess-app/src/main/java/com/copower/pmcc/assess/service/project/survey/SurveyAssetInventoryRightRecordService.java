@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventory
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRightRecord;
 import com.copower.pmcc.erp.common.CommonService;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +45,29 @@ public class SurveyAssetInventoryRightRecordService {
             }
         }
     }
+
+    /**
+     * 利用申报id获取他项权力组信息
+     * @param declareRecordId
+     * @param projectId
+     * @return
+     */
+    public List<SurveyAssetInventoryRightRecord> getSurveyAssetInventoryRightRecordByDeclareRecord(Integer declareRecordId,Integer projectId){
+        List<SurveyAssetInventoryRightRecord> surveyAssetInventoryRightRecordList = Lists.newArrayList();
+        String value = declareRecordId.toString();
+        SurveyAssetInventoryRightRecord query = new SurveyAssetInventoryRightRecord();
+        query.setProjectId(projectId);
+        List<SurveyAssetInventoryRightRecord> rightRecordList = this.surveyAssetInventoryRightRecordList(query);
+        if (CollectionUtils.isNotEmpty(rightRecordList)){
+            rightRecordList.stream().forEach(surveyAssetInventoryRightRecord -> {
+                if (surveyAssetInventoryRightRecord.getRecordIds().indexOf(value) != -1){
+                    surveyAssetInventoryRightRecordList.add(surveyAssetInventoryRightRecord);
+                }
+            });
+        }
+        return surveyAssetInventoryRightRecordList;
+    }
+
 
     public boolean addSurveyAssetInventoryRightRecord(SurveyAssetInventoryRightRecord surveyAssetInventoryRightRecord) throws Exception {
         surveyAssetInventoryRightRecord.setCreator(commonService.thisUserAccount());
