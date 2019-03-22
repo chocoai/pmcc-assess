@@ -397,7 +397,7 @@ public class AsposeUtils {
                     DocumentBuilder builder = new DocumentBuilder((Document) e.getMatchNode().getDocument());
                     builder.moveTo(e.getMatchNode());
                     Document document = new Document(stringStringEntry.getValue());
-                    builder.insertDocument(document, ImportFormatMode.KEEP_DIFFERENT_STYLES);
+                    builder.insertDocument(document, ImportFormatMode.USE_DESTINATION_STYLES);
                     return ReplaceAction.REPLACE;
                 }, false);
             }

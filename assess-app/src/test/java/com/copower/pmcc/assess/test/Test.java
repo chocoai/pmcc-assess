@@ -5,11 +5,15 @@ import com.aspose.words.*;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 
 import java.awt.*;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.List;
 
 /**
@@ -150,5 +154,59 @@ public class Test {
         document.save("D:\\test\\2.doc");
     }
 
+    //word测试格式问题
+    @org.junit.Test
+    public void formatWordTest() throws Exception {
+        String localPath = "D:\\test\\100.doc";
+        Document document = new Document("D:\\test\\template.doc");
+        DocumentBuilder builder = new DocumentBuilder(document);
+        builder.insertHtml(String.format("<div style=\"font-family:仿宋_GB2312;line-height:150%%;font-size:14.0pt\">%s</div>","法律法规政策影响") , true);
+        document.save(localPath);
+        Map<String, String> map= Maps.newHashMap();
+//        map.put("${风险提示}","1、法律法规政策影响、\n" +
+//                "主要有房地产制度、房地产价格政策、税收政策、金融政策等几方面变化的影响。房地产制度从市场运做规范角度指引着房地产经济行，对房地产价格的影响最大，但一般制度制定后短期不容易变化。房地产价格政策是政府对房地产市场的各种宏观调控手段的综合，如制定最高限价、标准价格、通过土地供应增加房地产供给、严格房地产交易管理制度等，特别是通过土地供应增加房地产供给量，投放类型和投放区域，将对该区域同类房地产未来价格走向将有较大的影响。税收和金融政策属于房地产价格政策的间接调控手段，提高赋税水平或严格贷款审批程序、提高贷款利率，将压制投资类物业的发展水平。\n");
+        map.put("${风险提示}",localPath);
+        replaceTextToFile("D:\\test\\房产评估结果报告.doc",map);
+//        AsposeUtils.replaceText("D:\\test\\房产评估结果报告.doc",map);
+    }
 
+    /**
+     * 文本替换为文件
+     *
+     * @param filePath 被替换文件路径
+     * @param map      key为被替换内容 value为附件路径
+     */
+    public static void replaceTextToFile(String filePath, Map<String, String> map) throws Exception {
+        if (StringUtils.isBlank(filePath))
+            throw new Exception("error: empty file path");
+        if (map == null || map.isEmpty())
+            throw new Exception("error: empty map");
+        Document doc = new Document(filePath);
+        for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {
+            if (StringUtils.isNotBlank(stringStringEntry.getValue())) {
+                Pattern compile = Pattern.compile(escapeExprSpecialWord(stringStringEntry.getKey()));
+                doc.getRange().replace(compile, e -> {
+                    DocumentBuilder builder = new DocumentBuilder((Document) e.getMatchNode().getDocument());
+                    builder.moveTo(e.getMatchNode());
+                    Document document = new Document(stringStringEntry.getValue());
+                    //ArrayList sections = (ArrayList) Arrays.asList(srcDoc.getSections().toArray());
+                    builder.insertDocument(document, ImportFormatMode.USE_DESTINATION_STYLES);
+                    return ReplaceAction.REPLACE;
+                }, false);
+            }
+        }
+        doc.save(filePath);
+    }
+
+    public static String escapeExprSpecialWord(String keyword) {
+        if (StringUtils.isNotBlank(keyword)) {
+            String[] fbsArr = {"\\", "$", "(", ")", "*", "+", ".", "[", "]", "?", "^", "{", "}", "|"};
+            for (String key : fbsArr) {
+                if (keyword.contains(key)) {
+                    keyword = keyword.replace(key, "\\" + key);
+                }
+            }
+        }
+        return keyword;
+    }
 }

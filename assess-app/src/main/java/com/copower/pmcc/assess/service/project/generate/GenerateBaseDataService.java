@@ -739,7 +739,7 @@ public class GenerateBaseDataService {
      */
     public String getTotalAmountMortgageValue() throws Exception {
         BigDecimal decimal = new BigDecimal(getTotalRealEstatePrice()).subtract(new BigDecimal(getStatutoryPriorityAmountTotal()));
-        return generateCommonMethod.getBigDecimalRound(decimal,true);
+        return generateCommonMethod.getBigDecimalRound(decimal, true);
     }
 
     /**
@@ -749,7 +749,7 @@ public class GenerateBaseDataService {
      */
     public String getTotalAmountMortgageValueCapitalization() throws Exception {
         BigDecimal decimal = new BigDecimal(getTotalRealEstatePrice()).subtract(new BigDecimal(getStatutoryPriorityAmountTotal()));
-        return CnNumberUtils.toUppercaseSubstring(generateCommonMethod.getBigDecimalRound(decimal,false));
+        return CnNumberUtils.toUppercaseSubstring(generateCommonMethod.getBigDecimalRound(decimal, false));
     }
 
     /**
@@ -802,7 +802,7 @@ public class GenerateBaseDataService {
                 if (schemeJudgeObject.getEvaluationArea() != null && schemeJudgeObject.getPrice() != null) {
                     if (NumberUtils.isNumber(schemeJudgeObject.getEvaluationArea().toString()) && NumberUtils.isNumber(schemeJudgeObject.getPrice().toString())) {
                         BigDecimal bigDecimal = schemeJudgeObject.getEvaluationArea().multiply(schemeJudgeObject.getPrice());
-                        stringSet.add(String.format("%s:%s万元", getSchemeJudgeObjectShowName(schemeJudgeObject), generateCommonMethod.getBigDecimalRound(bigDecimal,true)));
+                        stringSet.add(String.format("%s:%s万元", getSchemeJudgeObjectShowName(schemeJudgeObject), generateCommonMethod.getBigDecimalRound(bigDecimal, true)));
                     }
                 }
             }
@@ -980,7 +980,7 @@ public class GenerateBaseDataService {
     }
 
     //房地产总价
-    private BigDecimal getTotalRealEstate(){
+    private BigDecimal getTotalRealEstate() {
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         BigDecimal temp = new BigDecimal(0);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -1002,7 +1002,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getTotalRealEstatePrice() {
-        return generateCommonMethod.getBigDecimalRound(getTotalRealEstate(),true);
+        return generateCommonMethod.getBigDecimalRound(getTotalRealEstate(), true);
     }
 
     /**
@@ -1011,7 +1011,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getCapitalizationAmount() {
-        String s = CnNumberUtils.toUppercaseSubstring(generateCommonMethod.getBigDecimalRound(getTotalRealEstate(),false));
+        String s = CnNumberUtils.toUppercaseSubstring(generateCommonMethod.getBigDecimalRound(getTotalRealEstate(), false));
         return s;
     }
 
@@ -1240,7 +1240,7 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getSelectionValuationMethod()throws Exception {
+    public String getSelectionValuationMethod() throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         StringBuilder stringBuilder = new StringBuilder(8);
@@ -1556,7 +1556,7 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        builder.insertHtml(result, true);
+        builder.insertHtml(String.format("<div style='font-family:仿宋_GB2312;line-height:150%%;font-size:14.0pt'>%s</div>", result), true);
         document.save(localPath);
         return localPath;
     }
@@ -1582,7 +1582,7 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        builder.insertHtml(result, true);
+        builder.insertHtml(String.format("<div style='font-family:仿宋_GB2312;line-height:150%%;font-size:14.0pt'>%s</div>", result), true);
         document.save(localPath);
         return localPath;
     }
@@ -2289,7 +2289,7 @@ public class GenerateBaseDataService {
                 }
             }
             if (bigDecimal.doubleValue() > 0) {
-                bigDecimal = new BigDecimal(generateCommonMethod.getBigDecimalRound(bigDecimal,true));
+                bigDecimal = new BigDecimal(generateCommonMethod.getBigDecimalRound(bigDecimal, true));
             }
         }
         return bigDecimal.toString();
@@ -4564,7 +4564,7 @@ public class GenerateBaseDataService {
         DataHisRightInfoPublicity dataHisRightInfoPublicity = dataHisRightInfoPublicityService.getDataHisRightInfoPublicity(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict());
         if (dataHisRightInfoPublicity != null) {
             String value = dataHisRightInfoPublicity.getContent();
-            if (StringUtils.isNotBlank(value.trim())){
+            if (StringUtils.isNotBlank(value.trim())) {
                 return value;
             }
         }
@@ -4582,10 +4582,10 @@ public class GenerateBaseDataService {
     public String getTypesFormEnabledDeclarationOffice() throws Exception {
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
         List<DeclareRecord> declareRecordList = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)){
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             schemeJudgeObjectList.stream().forEach(schemeJudgeObject -> {
                 DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-                if (declareRecord != null){
+                if (declareRecord != null) {
                     declareRecordList.add(declareRecord);
                 }
             });
