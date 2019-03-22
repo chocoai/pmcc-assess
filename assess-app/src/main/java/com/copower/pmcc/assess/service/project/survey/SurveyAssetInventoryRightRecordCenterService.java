@@ -70,6 +70,7 @@ public class SurveyAssetInventoryRightRecordCenterService {
         return rightRecordList;
     }
 
+
     /**
      * 更新关联子类
      *

@@ -39,6 +39,8 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRealtyRealEstateCe
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.*;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryContentService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightRecordCenterService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -107,6 +109,8 @@ public class GenerateBaseDataService {
     private EvaluationPrincipleService evaluationPrincipleService;
     private DataReportAnalysisService dataReportAnalysisService;
     private DataReportAnalysisRiskService dataReportAnalysisRiskService;
+    private SurveyAssetInventoryRightRecordService surveyAssetInventoryRightRecordService;
+    private SurveyAssetInventoryRightRecordCenterService surveyAssetInventoryRightRecordCenterService;
 
     /**
      * 构造器必须传入的参数
@@ -350,15 +354,19 @@ public class GenerateBaseDataService {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
                 if (declareRecord != null) {
+                    String value = null;
                     if (NumberUtils.isNumber(declareRecord.getPublicSituation())) {
-                        generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, baseDataDicService.getNameById(declareRecord.getPublicSituation()));
+                        value = baseDataDicService.getNameById(declareRecord.getPublicSituation());
                     } else {
-                        generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, declareRecord.getPublicSituation());
+                        value = declareRecord.getPublicSituation();
+                    }
+                    if (StringUtils.isNotBlank(value)) {
+                        generateCommonMethod.putStringListMap(stringListMap, schemeJudgeObject, value);
                     }
                 }
             }
         }
-        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, ",");
+        String s = generateCommonMethod.getSchemeJudgeObjectListShowName(stringListMap, null);
         if (StringUtils.isEmpty(s.trim())) {
             s = errorStr;
         }
@@ -739,7 +747,7 @@ public class GenerateBaseDataService {
      */
     public String getTotalAmountMortgageValue() throws Exception {
         BigDecimal decimal = new BigDecimal(getTotalRealEstatePrice()).subtract(new BigDecimal(getStatutoryPriorityAmountTotal()));
-        return generateCommonMethod.getBigDecimalRound(decimal,true);
+        return generateCommonMethod.getBigDecimalRound(decimal, true);
     }
 
     /**
@@ -749,7 +757,7 @@ public class GenerateBaseDataService {
      */
     public String getTotalAmountMortgageValueCapitalization() throws Exception {
         BigDecimal decimal = new BigDecimal(getTotalRealEstatePrice()).subtract(new BigDecimal(getStatutoryPriorityAmountTotal()));
-        return CnNumberUtils.toUppercaseSubstring(generateCommonMethod.getBigDecimalRound(decimal,false));
+        return CnNumberUtils.toUppercaseSubstring(generateCommonMethod.getBigDecimalRound(decimal, false));
     }
 
     /**
@@ -802,7 +810,7 @@ public class GenerateBaseDataService {
                 if (schemeJudgeObject.getEvaluationArea() != null && schemeJudgeObject.getPrice() != null) {
                     if (NumberUtils.isNumber(schemeJudgeObject.getEvaluationArea().toString()) && NumberUtils.isNumber(schemeJudgeObject.getPrice().toString())) {
                         BigDecimal bigDecimal = schemeJudgeObject.getEvaluationArea().multiply(schemeJudgeObject.getPrice());
-                        stringSet.add(String.format("%s:%s万元", getSchemeJudgeObjectShowName(schemeJudgeObject), generateCommonMethod.getBigDecimalRound(bigDecimal,true)));
+                        stringSet.add(String.format("%s:%s万元", getSchemeJudgeObjectShowName(schemeJudgeObject), generateCommonMethod.getBigDecimalRound(bigDecimal, true)));
                     }
                 }
             }
@@ -896,23 +904,35 @@ public class GenerateBaseDataService {
     public String getEvaluationMethodResult() throws Exception {
         String localPath = getLocalPath();
         Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        DocumentBuilder builder = new DocumentBuilder(doc);
         generateCommonMethod.settingBuildingTable(builder);
-        Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        Set<MergeCellModel> mergeCellModelHashSet = Sets.newHashSet();
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaId);
+        int num = 0;
+        Table table = builder.startTable();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                int row = 0;
-                builder.writeln(getSchemeJudgeObjectShowName(schemeJudgeObject));
-                Table table = builder.startTable();
+            for (int i = 0; i < 3; i++) {
+                builder.insertCell();
+                if (i == 0) builder.writeln("方法名称");
+                if (i == 1) builder.writeln("试算价格");
+                if (i == 2) builder.writeln("权重");
+            }
+            builder.endRow();
+            num++;
+            for (int k = 0; k < schemeJudgeObjectList.size(); k++) {
+                SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(k);
                 for (int i = 0; i < 3; i++) {
                     builder.insertCell();
-                    if (i == 0) builder.writeln("方法名称");
-                    if (i == 1) builder.writeln("试算价格");
-                    if (i == 2) builder.writeln("权重");
+                    if (i == 0) {
+                        builder.writeln(String.format("%s", getSchemeJudgeObjectShowName(schemeJudgeObject)));
+                    } else {
+                        builder.writeln();
+                    }
+                    mergeCellModelHashSet.add(new MergeCellModel(num, 0, num, 2));
                 }
                 builder.endRow();
-                row++;
+                num++;
+                //这多行,因此不能用估价对象来做行数
                 List<SchemeSurePriceItem> schemeSurePriceItemList = schemeSurePriceService.getSchemeSurePriceItemList(schemeJudgeObject.getId(), false);
                 if (CollectionUtils.isNotEmpty(schemeSurePriceItemList)) {
                     for (SchemeSurePriceItem schemeSurePriceItem : schemeSurePriceItemList) {
@@ -921,11 +941,15 @@ public class GenerateBaseDataService {
                             if (i == 0) {
                                 if (StringUtils.isNotBlank(schemeSurePriceItem.getMethodName())) {
                                     builder.writeln(schemeSurePriceItem.getMethodName());
+                                } else {
+                                    builder.writeln();
                                 }
                             }
                             if (i == 1) {
                                 if (schemeSurePriceItem.getTrialPrice() != null) {
                                     builder.writeln(schemeSurePriceItem.getTrialPrice().toString());
+                                } else {
+                                    builder.writeln();
                                 }
                             }
                             if (i == 2) {
@@ -933,11 +957,13 @@ public class GenerateBaseDataService {
                                     java.math.BigDecimal bigDecimal = schemeSurePriceItem.getWeight().multiply(new BigDecimal(100));
                                     bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
                                     builder.writeln(String.format("%s:%s", bigDecimal.toString(), "%"));
+                                } else {
+                                    builder.writeln();
                                 }
                             }
                         }
                         builder.endRow();
-                        row++;
+                        num++;
                     }
                 }
                 SchemeSurePrice schemeSurePrice = schemeSurePriceService.getSchemeSurePriceBySchemeJudgeObjectId(schemeJudgeObject.getId());
@@ -952,10 +978,10 @@ public class GenerateBaseDataService {
                                 builder.writeln(schemeSurePrice.getWeightExplain());
                             }
                         }
-                        mergeCellModelList.add(new MergeCellModel(row, 1, row, 2));
+                        mergeCellModelHashSet.add(new MergeCellModel(num, 1, num, 2));
                     }
                     builder.endRow();
-                    row++;
+                    num++;
                     for (int i = 0; i < 3; i++) {
                         builder.insertCell();
                         if (schemeSurePrice.getPrice() != null) {
@@ -966,21 +992,21 @@ public class GenerateBaseDataService {
                                 builder.writeln(schemeSurePrice.getPrice().toString());
                             }
                         }
-                        mergeCellModelList.add(new MergeCellModel(row, 1, row, 2));
+                        mergeCellModelHashSet.add(new MergeCellModel(num, 1, num, 2));
                     }
                     builder.endRow();
-                    row++;
+                    num++;
                 }
-                generateCommonMethod.mergeCellTable(mergeCellModelList, table);
-                builder.endTable();
             }
         }
+        generateCommonMethod.mergeCellTable(mergeCellModelHashSet, table);
+        builder.endTable();
         doc.save(localPath);
         return localPath;
     }
 
     //房地产总价
-    private BigDecimal getTotalRealEstate(){
+    private BigDecimal getTotalRealEstate() {
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         BigDecimal temp = new BigDecimal(0);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -1002,7 +1028,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getTotalRealEstatePrice() {
-        return generateCommonMethod.getBigDecimalRound(getTotalRealEstate(),true);
+        return generateCommonMethod.getBigDecimalRound(getTotalRealEstate(), true);
     }
 
     /**
@@ -1011,7 +1037,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getCapitalizationAmount() {
-        String s = CnNumberUtils.toUppercaseSubstring(generateCommonMethod.getBigDecimalRound(getTotalRealEstate(),false));
+        String s = CnNumberUtils.toUppercaseSubstring(generateCommonMethod.getBigDecimalRound(getTotalRealEstate(), false));
         return s;
     }
 
@@ -1055,41 +1081,41 @@ public class GenerateBaseDataService {
     //特别提示
     public String getHotTip() throws Exception {
         StringBuilder stringBuilder = new StringBuilder(16);
-        StringBuffer stringBuffer = new StringBuffer(8);
         Document doc = new Document();
-        String localPath = getLocalPath(UUID.randomUUID().toString());
+        String localPath = getLocalPath();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
-        int length = 3;
-        if (StringUtils.isNotBlank(getCertificateAssetInventory().trim())) {
-            length = 4;
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId).stream().filter(schemeJudgeObject -> schemeJudgeObject.getDeclareRecordId() != null).collect(Collectors.toList());
+        List<SurveyAssetInventoryRightRecord> surveyAssetInventoryRightRecordList = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            schemeJudgeObjectList.stream().forEach(schemeJudgeObject -> {
+                surveyAssetInventoryRightRecordList.addAll(surveyAssetInventoryRightRecordService.getSurveyAssetInventoryRightRecordByDeclareRecord(schemeJudgeObject.getDeclareRecordId(),projectId));
+            });
         }
-        for (int i = 0; i < length; i++) {
-            if (i == 0) {
-                String oneContent = "本函内容摘自估价报告，欲了解本次估价项目全面情况，请详见估价结果报告，报告使用时请特别关注估价假设和限制条件内容。";
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, oneContent)).append("</p>");
-            }
-            if (i == 1) {
-                String temp = getHisRightType();
-                if (Objects.equal(temp, errorStr)) {
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, "无")).append("</p>");
-                } else {
-                    String oneContent = String.format("根据委托人介绍及估价人员在${他权信息公示}，%s 已设定抵押权。", temp);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, oneContent)).append("</p>");
-                }
-            }
-            if (length == 4) {
-                if (i == 2) {
-                    stringBuffer.append("估价对象现场查勘地址为").append(getAssetInventoryCommon("actual")).append("。");
-                    stringBuffer.append("本次评估根据委托方提供的由").append(getAssetInventoryCommon("voucher")).append("出具的《证明》，");
-                    stringBuffer.append("本次以上地址为").append(getAssetInventoryCommon("sureConsistent")).append("同一地址。");
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, stringBuffer.toString())).append("</p>");
-                    stringBuffer.delete(0, stringBuffer.toString().length());
-                }
-            }
-            if (i == length - 1) {
-                String oneContent = "根据估价委托人提供的《法定优先受偿款情况说明》，估价对象于价值时点已设定抵押权，本次评估是抵押权存续期间的房地产估价（同行续贷），经过沟通，抵押权人已经知晓法定优先受偿款对估价对象价值的影响，且并不需要我们在抵押价值中予以扣除法定优先受偿款，故本报告假设估价对象在价值时点法定优先受偿款为0元（大写：人民币零元整），在此提请报告使用人加以关注。";
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, oneContent)).append("</p>");
-            }
+        int row = 0;
+        if (true) {
+            String oneContent = "本函内容摘自估价报告，欲了解本次估价项目全面情况，请详见估价结果报告，报告使用时请特别关注估价假设和限制条件内容。";
+            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, oneContent)).append("</p>");
+            row++;
+        }
+        if (true) {
+            String oneContent = String.format("根据委托人介绍及估价人员在成都市房地产评估管理服务信息系统（http://fcpg.cdfgj.gov.cn/）" +
+                    "上查询了解得知，截止价值时点，估价对象已设定 %s。", "");
+            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, oneContent)).append("</p>");
+            row++;
+        }
+        if (true) {
+            String oneContent = "估价对象现场查勘地址为高新区铁像寺路88号19栋1-3层。" +
+                    "本次评估根据委托方提供的由“成都商投世纪物业服务有限公司铁像寺水街物业服务中心”出具的《证明》，本次以上地址为同一地址。";
+            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, oneContent)).append("</p>");
+            row++;
+        }
+        if (true) {
+            String oneContent = "根据估价委托人提供的《法定优先受偿款情况说明》，估价对象于价值时点已设定抵押权，" +
+                    "本次评估是抵押权存续期间的房地产估价（同行续贷），经过沟通，" +
+                    "抵押权人已经知晓法定优先受偿款对估价对象价值的影响，" +
+                    "且并不需要我们在抵押价值中予以扣除法定优先受偿款，" +
+                    "故本报告假设估价对象在价值时点法定优先受偿款为0元（大写：人民币零元整），在此提请报告使用人加以关注。";
+            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", row + 1, oneContent)).append("</p>");
         }
         documentBuilder.insertHtml(stringBuilder.toString(), true);
         doc.save(localPath);
@@ -1240,7 +1266,7 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getSelectionValuationMethod()throws Exception {
+    public String getSelectionValuationMethod() throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         StringBuilder stringBuilder = new StringBuilder(8);
@@ -1898,7 +1924,7 @@ public class GenerateBaseDataService {
         StringBuilder stringBuilder = new StringBuilder(24);
         final String temp = "他权有无租赁权:";
         stringBuilder.append(temp);
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.OTHER_RIGHT, projectInfo.getProjectCategoryId());
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE_HOUSE_LEASEHOLD);
         if (projectPhase != null) {
@@ -1943,7 +1969,7 @@ public class GenerateBaseDataService {
      */
     public String getThereAnyOtherRight() throws Exception {
         Set<String> stringSet = Sets.newHashSet();
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.OTHER_RIGHT, projectInfo.getProjectCategoryId());
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (projectPhase != null) {
             if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -1991,7 +2017,7 @@ public class GenerateBaseDataService {
                 projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
                 .filter(projectPhaseVo -> {
-                    if (Objects.equal(AssessPhaseKeyConstant.ASSET_INVENTORY, projectPhaseVo.getPhaseKey())) {
+                    if (Objects.equal(AssessPhaseKeyConstant.OTHER_RIGHT, projectPhaseVo.getPhaseKey())) {
                         return true;
                     }
                     return false;
@@ -2045,7 +2071,7 @@ public class GenerateBaseDataService {
                 projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
                 .stream()
                 .filter(projectPhaseVo -> {
-                    if (Objects.equal(AssessPhaseKeyConstant.ASSET_INVENTORY, projectPhaseVo.getPhaseKey())) {
+                    if (Objects.equal(AssessPhaseKeyConstant.OTHER_RIGHT, projectPhaseVo.getPhaseKey())) {
                         return true;
                     }
                     return false;
@@ -2289,7 +2315,7 @@ public class GenerateBaseDataService {
                 }
             }
             if (bigDecimal.doubleValue() > 0) {
-                bigDecimal = new BigDecimal(generateCommonMethod.getBigDecimalRound(bigDecimal,true));
+                bigDecimal = new BigDecimal(generateCommonMethod.getBigDecimalRound(bigDecimal, true));
             }
         }
         return bigDecimal.toString();
@@ -4196,11 +4222,20 @@ public class GenerateBaseDataService {
                 SchemeInfo schemeInfo = getSchemeInfoId(CalculationMethodNameEnum.MdIncome, schemeJudgeObject);
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfo, projectId, areaId);
-                    stringSet.add(String.format("%s:%s", getSchemeJudgeObjectShowName(schemeJudgeObject), generateMdIncomeService.getTenancyrestrictionReamrk()));
+                    String value = generateMdIncomeService.getTenancyrestrictionReamrk();
+                    if (StringUtils.isNotBlank(value)) {
+                        if (!Objects.equal(errorStr, value)) {
+                            stringSet.add(String.format("%s:%s", getSchemeJudgeObjectShowName(schemeJudgeObject), value));
+                        }
+                    }
                 }
             }
         }
-        return generateCommonMethod.toSetStringSplitSpace(stringSet);
+        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
+        if (StringUtils.isEmpty(s.trim())) {
+            s = errorStr;
+        }
+        return s;
     }
 
     /**
@@ -4564,7 +4599,7 @@ public class GenerateBaseDataService {
         DataHisRightInfoPublicity dataHisRightInfoPublicity = dataHisRightInfoPublicityService.getDataHisRightInfoPublicity(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict());
         if (dataHisRightInfoPublicity != null) {
             String value = dataHisRightInfoPublicity.getContent();
-            if (StringUtils.isNotBlank(value.trim())){
+            if (StringUtils.isNotBlank(value.trim())) {
                 return value;
             }
         }
@@ -4582,10 +4617,10 @@ public class GenerateBaseDataService {
     public String getTypesFormEnabledDeclarationOffice() throws Exception {
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
         List<DeclareRecord> declareRecordList = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)){
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             schemeJudgeObjectList.stream().forEach(schemeJudgeObject -> {
                 DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-                if (declareRecord != null){
+                if (declareRecord != null) {
                     declareRecordList.add(declareRecord);
                 }
             });
@@ -5330,6 +5365,8 @@ public class GenerateBaseDataService {
         this.evaluationPrincipleService = SpringContextUtils.getBean(EvaluationPrincipleService.class);
         this.dataReportAnalysisService = SpringContextUtils.getBean(DataReportAnalysisService.class);
         this.dataReportAnalysisRiskService = SpringContextUtils.getBean(DataReportAnalysisRiskService.class);
+        this.surveyAssetInventoryRightRecordService = SpringContextUtils.getBean(SurveyAssetInventoryRightRecordService.class);
+        this.surveyAssetInventoryRightRecordCenterService = SpringContextUtils.getBean(SurveyAssetInventoryRightRecordCenterService.class);
 
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
