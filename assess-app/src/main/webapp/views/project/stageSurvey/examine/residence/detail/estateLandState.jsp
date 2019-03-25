@@ -168,6 +168,23 @@
                     <label class="form-control">${basicEstateLandState.fertility}</label>
                 </div>
             </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">稳定性</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicEstateLandState.holdOn}</label>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">基础设施完备度</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicEstateLandState.infrastructureCompletenessName}</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+
         </div>
     </form>
 

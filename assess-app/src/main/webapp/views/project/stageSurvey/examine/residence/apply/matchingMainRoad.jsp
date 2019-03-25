@@ -52,6 +52,58 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            是否限行<span class="symbol required"></span>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <span class="checkbox-inline">
+                                            <input type="radio" onchange="matchingMainRoad.prototype.showLimit(this)" id="limitBasicMatchingTraffic2" name="flag" value="true">
+                                            <label for="limitBasicMatchingTraffic2">是</label>
+                                        </span>
+                                        <span class="checkbox-inline">
+                                            <input type="radio" onchange="matchingMainRoad.prototype.showLimit(this)" checked="checked" id="limitBasicMatchingTraffic1" name="flag" value="false">
+                                            <label for="limitBasicMatchingTraffic1">否</label>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div style="display: none">
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                限行速度<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="limitSpeed"
+                                                       placeholder="限行速度" required="required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                限行时间<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="limitTime"
+                                                       placeholder="限行时间" required="required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                特殊限行<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select required="required" name="limitSpeial" class="form-control search-select select2 limitSpeial">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             距离<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">

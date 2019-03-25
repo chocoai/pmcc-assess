@@ -15,7 +15,8 @@ commonColumn.estateNetworkColumn = function () {
 commonColumn.estateParkingColumn = function () {
     var cols = [];
     cols.push({field: 'locationName', title: '车位位置'});
-    cols.push({field: 'parkingTypeName', title: '车位类型'});
+    // cols.push({field: 'parkingTypeName', title: '车位类型'});
+    cols.push({field: 'parkingEstateName', title: '楼盘车位'});
     cols.push({field: 'number', title: '车位数量'});
     cols.push({field: 'fileViewName', title: '附件'});
     return cols;
@@ -36,9 +37,9 @@ commonColumn.matchingEducationColumn = function () {
 commonColumn.matchingEnvironmentColumn = function () {
     var cols = [];
     cols.push({field: 'typeName', title: '环境类型'});
-    cols.push({field: 'categoryName', title: '影响因素'});
+    cols.push({field: 'categoryName', title: '影响要素'});
     cols.push({field: 'influenceDegreeName', title: '影响程度'});
-    cols.push({field: 'remark', title: '描述'});
+    cols.push({field: 'remark', title: '影响源描述'});
     return cols;
 }
 
@@ -46,6 +47,7 @@ commonColumn.matchingEnvironmentColumn = function () {
 commonColumn.matchingFinanceColumn = function () {
     var cols = [];
     cols.push({field: 'name', title: '金融名称'});
+    cols.push({field: 'distance', title: '与金融机构的距离'});
     cols.push({field: 'categoryName', title: '金融类别'});
     cols.push({field: 'natureName', title: '金融机构性质'});
     cols.push({field: 'serviceContentName', title: '服务类别'});
@@ -116,6 +118,7 @@ commonColumn.matchingTrafficHubColumn = function () {
     cols.push({field: 'name', title: '名称'});
     cols.push({field: 'natureName', title: '性质'});
     cols.push({field: 'distanceName', title: '距离'});
+    cols.push({field: 'costStandard', title: '收费标准'});
     return cols;
 }
 
@@ -124,6 +127,7 @@ commonColumn.matchingMainRoadColumn = function () {
     var cols = [];
     cols.push({field: 'name', title: '名称'});
     cols.push({field: 'distanceName', title: '距离'});
+    cols.push({field: 'limitSpeialName', title: '特殊限行'});
     return cols;
 }
 
@@ -374,6 +378,7 @@ commonColumn.houseCorollaryEquipmentColumn = function () {
 commonColumn.houseFaceStreetColumn = function () {
     var cols = [];
     cols.push({field: 'streetName', title: '名称'});
+    cols.push({field: 'positionName', title: '方位'});
     cols.push({field: 'streetLevelName', title: '街道级别'});
     cols.push({field: 'trafficFlowName', title: '交通流量'});
     cols.push({field: 'visitorsFlowrateName', title: '人流量'});

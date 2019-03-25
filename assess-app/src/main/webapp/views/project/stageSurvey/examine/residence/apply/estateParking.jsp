@@ -49,14 +49,26 @@
                                         </div>
                                     </div>
                                 </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<div class="x-valid">--%>
+                                        <%--<label class="col-sm-2 control-label">--%>
+                                            <%--车位类型<span class="symbol required"></span>--%>
+                                        <%--</label>--%>
+                                        <%--<div class="col-sm-10">--%>
+                                            <%--<select class="form-control search-select select2 parkingType"--%>
+                                                    <%--name="parkingType" required>--%>
+                                            <%--</select>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            车位类型<span class="symbol required"></span>
+                                            楼盘车位<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select class="form-control search-select select2 parkingType"
-                                                    name="parkingType" required>
+                                            <select class="form-control search-select select2 parkingEstate"
+                                                    name="parkingEstate" required>
                                             </select>
                                         </div>
                                     </div>

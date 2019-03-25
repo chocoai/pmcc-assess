@@ -6,6 +6,7 @@
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="number" property="number" jdbcType="INTEGER" />
     <result column="parking_type" property="parkingType" jdbcType="INTEGER" />
+    <result column="parking_estate" property="parkingEstate" jdbcType="INTEGER" />
     <result column="location" property="location" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -70,7 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, estate_id, number, parking_type, location, creator, gmt_created, gmt_modified
+    id, estate_id, number, parking_type, parking_estate, location, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateParkingExample" >
     select
@@ -107,11 +109,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_estate_parking (estate_id, number, parking_type, 
-      location, creator, gmt_created, 
-      gmt_modified)
+      parking_estate, location, creator, 
+      gmt_created, gmt_modified)
     values (#{estateId,jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, #{parkingType,jdbcType=INTEGER}, 
-      #{location,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{parkingEstate,jdbcType=INTEGER}, #{location,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateParking" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -127,6 +129,9 @@
       </if>
       <if test="parkingType != null" >
         parking_type,
+      </if>
+      <if test="parkingEstate != null" >
+        parking_estate,
       </if>
       <if test="location != null" >
         location,
@@ -150,6 +155,9 @@
       </if>
       <if test="parkingType != null" >
         #{parkingType,jdbcType=INTEGER},
+      </if>
+      <if test="parkingEstate != null" >
+        #{parkingEstate,jdbcType=INTEGER},
       </if>
       <if test="location != null" >
         #{location,jdbcType=INTEGER},
@@ -186,6 +194,9 @@
       <if test="record.parkingType != null" >
         parking_type = #{record.parkingType,jdbcType=INTEGER},
       </if>
+      <if test="record.parkingEstate != null" >
+        parking_estate = #{record.parkingEstate,jdbcType=INTEGER},
+      </if>
       <if test="record.location != null" >
         location = #{record.location,jdbcType=INTEGER},
       </if>
@@ -209,6 +220,7 @@
       estate_id = #{record.estateId,jdbcType=INTEGER},
       number = #{record.number,jdbcType=INTEGER},
       parking_type = #{record.parkingType,jdbcType=INTEGER},
+      parking_estate = #{record.parkingEstate,jdbcType=INTEGER},
       location = #{record.location,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -228,6 +240,9 @@
       </if>
       <if test="parkingType != null" >
         parking_type = #{parkingType,jdbcType=INTEGER},
+      </if>
+      <if test="parkingEstate != null" >
+        parking_estate = #{parkingEstate,jdbcType=INTEGER},
       </if>
       <if test="location != null" >
         location = #{location,jdbcType=INTEGER},
@@ -249,6 +264,7 @@
     set estate_id = #{estateId,jdbcType=INTEGER},
       number = #{number,jdbcType=INTEGER},
       parking_type = #{parkingType,jdbcType=INTEGER},
+      parking_estate = #{parkingEstate,jdbcType=INTEGER},
       location = #{location,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

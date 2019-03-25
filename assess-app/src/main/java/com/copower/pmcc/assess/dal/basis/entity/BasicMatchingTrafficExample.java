@@ -625,6 +625,336 @@ public class BasicMatchingTrafficExample {
             return (Criteria) this;
         }
 
+        public Criteria andLimitSpeedIsNull() {
+            addCriterion("limit_speed is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeedIsNotNull() {
+            addCriterion("limit_speed is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeedEqualTo(String value) {
+            addCriterion("limit_speed =", value, "limitSpeed");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeedNotEqualTo(String value) {
+            addCriterion("limit_speed <>", value, "limitSpeed");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeedGreaterThan(String value) {
+            addCriterion("limit_speed >", value, "limitSpeed");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeedGreaterThanOrEqualTo(String value) {
+            addCriterion("limit_speed >=", value, "limitSpeed");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeedLessThan(String value) {
+            addCriterion("limit_speed <", value, "limitSpeed");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeedLessThanOrEqualTo(String value) {
+            addCriterion("limit_speed <=", value, "limitSpeed");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeedLike(String value) {
+            addCriterion("limit_speed like", value, "limitSpeed");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeedNotLike(String value) {
+            addCriterion("limit_speed not like", value, "limitSpeed");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeedIn(List<String> values) {
+            addCriterion("limit_speed in", values, "limitSpeed");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeedNotIn(List<String> values) {
+            addCriterion("limit_speed not in", values, "limitSpeed");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeedBetween(String value1, String value2) {
+            addCriterion("limit_speed between", value1, value2, "limitSpeed");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeedNotBetween(String value1, String value2) {
+            addCriterion("limit_speed not between", value1, value2, "limitSpeed");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitTimeIsNull() {
+            addCriterion("limit_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitTimeIsNotNull() {
+            addCriterion("limit_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitTimeEqualTo(String value) {
+            addCriterion("limit_time =", value, "limitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitTimeNotEqualTo(String value) {
+            addCriterion("limit_time <>", value, "limitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitTimeGreaterThan(String value) {
+            addCriterion("limit_time >", value, "limitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitTimeGreaterThanOrEqualTo(String value) {
+            addCriterion("limit_time >=", value, "limitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitTimeLessThan(String value) {
+            addCriterion("limit_time <", value, "limitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitTimeLessThanOrEqualTo(String value) {
+            addCriterion("limit_time <=", value, "limitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitTimeLike(String value) {
+            addCriterion("limit_time like", value, "limitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitTimeNotLike(String value) {
+            addCriterion("limit_time not like", value, "limitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitTimeIn(List<String> values) {
+            addCriterion("limit_time in", values, "limitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitTimeNotIn(List<String> values) {
+            addCriterion("limit_time not in", values, "limitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitTimeBetween(String value1, String value2) {
+            addCriterion("limit_time between", value1, value2, "limitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitTimeNotBetween(String value1, String value2) {
+            addCriterion("limit_time not between", value1, value2, "limitTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeialIsNull() {
+            addCriterion("limit_speial is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeialIsNotNull() {
+            addCriterion("limit_speial is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeialEqualTo(Integer value) {
+            addCriterion("limit_speial =", value, "limitSpeial");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeialNotEqualTo(Integer value) {
+            addCriterion("limit_speial <>", value, "limitSpeial");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeialGreaterThan(Integer value) {
+            addCriterion("limit_speial >", value, "limitSpeial");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeialGreaterThanOrEqualTo(Integer value) {
+            addCriterion("limit_speial >=", value, "limitSpeial");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeialLessThan(Integer value) {
+            addCriterion("limit_speial <", value, "limitSpeial");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeialLessThanOrEqualTo(Integer value) {
+            addCriterion("limit_speial <=", value, "limitSpeial");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeialIn(List<Integer> values) {
+            addCriterion("limit_speial in", values, "limitSpeial");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeialNotIn(List<Integer> values) {
+            addCriterion("limit_speial not in", values, "limitSpeial");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeialBetween(Integer value1, Integer value2) {
+            addCriterion("limit_speial between", value1, value2, "limitSpeial");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitSpeialNotBetween(Integer value1, Integer value2) {
+            addCriterion("limit_speial not between", value1, value2, "limitSpeial");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagIsNull() {
+            addCriterion("flag is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagIsNotNull() {
+            addCriterion("flag is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagEqualTo(Boolean value) {
+            addCriterion("flag =", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagNotEqualTo(Boolean value) {
+            addCriterion("flag <>", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagGreaterThan(Boolean value) {
+            addCriterion("flag >", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("flag >=", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagLessThan(Boolean value) {
+            addCriterion("flag <", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagLessThanOrEqualTo(Boolean value) {
+            addCriterion("flag <=", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagIn(List<Boolean> values) {
+            addCriterion("flag in", values, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagNotIn(List<Boolean> values) {
+            addCriterion("flag not in", values, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagBetween(Boolean value1, Boolean value2) {
+            addCriterion("flag between", value1, value2, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("flag not between", value1, value2, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostStandardIsNull() {
+            addCriterion("cost_standard is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostStandardIsNotNull() {
+            addCriterion("cost_standard is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostStandardEqualTo(String value) {
+            addCriterion("cost_standard =", value, "costStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostStandardNotEqualTo(String value) {
+            addCriterion("cost_standard <>", value, "costStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostStandardGreaterThan(String value) {
+            addCriterion("cost_standard >", value, "costStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostStandardGreaterThanOrEqualTo(String value) {
+            addCriterion("cost_standard >=", value, "costStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostStandardLessThan(String value) {
+            addCriterion("cost_standard <", value, "costStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostStandardLessThanOrEqualTo(String value) {
+            addCriterion("cost_standard <=", value, "costStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostStandardLike(String value) {
+            addCriterion("cost_standard like", value, "costStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostStandardNotLike(String value) {
+            addCriterion("cost_standard not like", value, "costStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostStandardIn(List<String> values) {
+            addCriterion("cost_standard in", values, "costStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostStandardNotIn(List<String> values) {
+            addCriterion("cost_standard not in", values, "costStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostStandardBetween(String value1, String value2) {
+            addCriterion("cost_standard between", value1, value2, "costStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostStandardNotBetween(String value1, String value2) {
+            addCriterion("cost_standard not between", value1, value2, "costStandard");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

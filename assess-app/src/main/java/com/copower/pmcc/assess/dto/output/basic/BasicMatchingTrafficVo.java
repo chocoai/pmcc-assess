@@ -10,6 +10,8 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicMatchingTraffic;
 public class BasicMatchingTrafficVo extends BasicMatchingTraffic {
     private String distanceName;
     private String natureName;
+    private String limitSpeialName;
+    private String limitName;
 
     public String getDistanceName() {
         return distanceName;
@@ -25,5 +27,21 @@ public class BasicMatchingTrafficVo extends BasicMatchingTraffic {
 
     public void setNatureName(String natureName) {
         this.natureName = natureName;
+    }
+
+    public String getLimitSpeialName() {
+        return limitSpeialName;
+    }
+
+    public void setLimitSpeialName(String limitSpeialName) {
+        this.limitSpeialName = limitSpeialName;
+    }
+
+    public String getLimitName() {
+        return limitName;
+    }
+
+    public void setLimitName(String limitName) {
+        this.limitName = limitName;
     }
 }

@@ -10,6 +10,11 @@
     <result column="distance" property="distance" jdbcType="INTEGER" />
     <result column="line_name" property="lineName" jdbcType="VARCHAR" />
     <result column="the_line" property="theLine" jdbcType="VARCHAR" />
+    <result column="limit_speed" property="limitSpeed" jdbcType="VARCHAR" />
+    <result column="limit_time" property="limitTime" jdbcType="VARCHAR" />
+    <result column="limit_speial" property="limitSpeial" jdbcType="INTEGER" />
+    <result column="flag" property="flag" jdbcType="BIT" />
+    <result column="cost_standard" property="costStandard" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -73,8 +78,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, nature, estate_id, type, name, distance, line_name, the_line, creator, gmt_created, 
-    gmt_modified
+    id, nature, estate_id, type, name, distance, line_name, the_line, limit_speed, limit_time, 
+    limit_speial, flag, cost_standard, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicMatchingTrafficExample" >
     select
@@ -112,12 +117,16 @@
     </selectKey>
     insert into tb_basic_matching_traffic (nature, estate_id, type, 
       name, distance, line_name, 
-      the_line, creator, gmt_created, 
-      gmt_modified)
+      the_line, limit_speed, limit_time, 
+      limit_speial, flag, cost_standard, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{nature,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{distance,jdbcType=INTEGER}, #{lineName,jdbcType=VARCHAR}, 
-      #{theLine,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{theLine,jdbcType=VARCHAR}, #{limitSpeed,jdbcType=VARCHAR}, #{limitTime,jdbcType=VARCHAR}, 
+      #{limitSpeial,jdbcType=INTEGER}, #{flag,jdbcType=BIT}, #{costStandard,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicMatchingTraffic" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -145,6 +154,21 @@
       </if>
       <if test="theLine != null" >
         the_line,
+      </if>
+      <if test="limitSpeed != null" >
+        limit_speed,
+      </if>
+      <if test="limitTime != null" >
+        limit_time,
+      </if>
+      <if test="limitSpeial != null" >
+        limit_speial,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="costStandard != null" >
+        cost_standard,
       </if>
       <if test="creator != null" >
         creator,
@@ -177,6 +201,21 @@
       </if>
       <if test="theLine != null" >
         #{theLine,jdbcType=VARCHAR},
+      </if>
+      <if test="limitSpeed != null" >
+        #{limitSpeed,jdbcType=VARCHAR},
+      </if>
+      <if test="limitTime != null" >
+        #{limitTime,jdbcType=VARCHAR},
+      </if>
+      <if test="limitSpeial != null" >
+        #{limitSpeial,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=BIT},
+      </if>
+      <if test="costStandard != null" >
+        #{costStandard,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -222,6 +261,21 @@
       <if test="record.theLine != null" >
         the_line = #{record.theLine,jdbcType=VARCHAR},
       </if>
+      <if test="record.limitSpeed != null" >
+        limit_speed = #{record.limitSpeed,jdbcType=VARCHAR},
+      </if>
+      <if test="record.limitTime != null" >
+        limit_time = #{record.limitTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.limitSpeial != null" >
+        limit_speial = #{record.limitSpeial,jdbcType=INTEGER},
+      </if>
+      <if test="record.flag != null" >
+        flag = #{record.flag,jdbcType=BIT},
+      </if>
+      <if test="record.costStandard != null" >
+        cost_standard = #{record.costStandard,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -246,6 +300,11 @@
       distance = #{record.distance,jdbcType=INTEGER},
       line_name = #{record.lineName,jdbcType=VARCHAR},
       the_line = #{record.theLine,jdbcType=VARCHAR},
+      limit_speed = #{record.limitSpeed,jdbcType=VARCHAR},
+      limit_time = #{record.limitTime,jdbcType=VARCHAR},
+      limit_speial = #{record.limitSpeial,jdbcType=INTEGER},
+      flag = #{record.flag,jdbcType=BIT},
+      cost_standard = #{record.costStandard,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -277,6 +336,21 @@
       <if test="theLine != null" >
         the_line = #{theLine,jdbcType=VARCHAR},
       </if>
+      <if test="limitSpeed != null" >
+        limit_speed = #{limitSpeed,jdbcType=VARCHAR},
+      </if>
+      <if test="limitTime != null" >
+        limit_time = #{limitTime,jdbcType=VARCHAR},
+      </if>
+      <if test="limitSpeial != null" >
+        limit_speial = #{limitSpeial,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=BIT},
+      </if>
+      <if test="costStandard != null" >
+        cost_standard = #{costStandard,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -298,6 +372,11 @@
       distance = #{distance,jdbcType=INTEGER},
       line_name = #{lineName,jdbcType=VARCHAR},
       the_line = #{theLine,jdbcType=VARCHAR},
+      limit_speed = #{limitSpeed,jdbcType=VARCHAR},
+      limit_time = #{limitTime,jdbcType=VARCHAR},
+      limit_speial = #{limitSpeial,jdbcType=INTEGER},
+      flag = #{flag,jdbcType=BIT},
+      cost_standard = #{costStandard,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

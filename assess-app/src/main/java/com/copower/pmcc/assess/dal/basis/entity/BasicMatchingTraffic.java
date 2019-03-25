@@ -19,6 +19,16 @@ public class BasicMatchingTraffic {
 
     private String theLine;
 
+    private String limitSpeed;
+
+    private String limitTime;
+
+    private Integer limitSpeial;
+
+    private Boolean flag;
+
+    private String costStandard;
+
     private String creator;
 
     private Date gmtCreated;
@@ -87,6 +97,46 @@ public class BasicMatchingTraffic {
 
     public void setTheLine(String theLine) {
         this.theLine = theLine == null ? null : theLine.trim();
+    }
+
+    public String getLimitSpeed() {
+        return limitSpeed;
+    }
+
+    public void setLimitSpeed(String limitSpeed) {
+        this.limitSpeed = limitSpeed == null ? null : limitSpeed.trim();
+    }
+
+    public String getLimitTime() {
+        return limitTime;
+    }
+
+    public void setLimitTime(String limitTime) {
+        this.limitTime = limitTime == null ? null : limitTime.trim();
+    }
+
+    public Integer getLimitSpeial() {
+        return limitSpeial;
+    }
+
+    public void setLimitSpeial(Integer limitSpeial) {
+        this.limitSpeial = limitSpeial;
+    }
+
+    public Boolean getFlag() {
+        return flag;
+    }
+
+    public void setFlag(Boolean flag) {
+        this.flag = flag;
+    }
+
+    public String getCostStandard() {
+        return costStandard;
+    }
+
+    public void setCostStandard(String costStandard) {
+        this.costStandard = costStandard == null ? null : costStandard.trim();
     }
 
     public String getCreator() {

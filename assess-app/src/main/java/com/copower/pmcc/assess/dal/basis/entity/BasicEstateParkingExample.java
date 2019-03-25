@@ -345,6 +345,66 @@ public class BasicEstateParkingExample {
             return (Criteria) this;
         }
 
+        public Criteria andParkingEstateIsNull() {
+            addCriterion("parking_estate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParkingEstateIsNotNull() {
+            addCriterion("parking_estate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParkingEstateEqualTo(Integer value) {
+            addCriterion("parking_estate =", value, "parkingEstate");
+            return (Criteria) this;
+        }
+
+        public Criteria andParkingEstateNotEqualTo(Integer value) {
+            addCriterion("parking_estate <>", value, "parkingEstate");
+            return (Criteria) this;
+        }
+
+        public Criteria andParkingEstateGreaterThan(Integer value) {
+            addCriterion("parking_estate >", value, "parkingEstate");
+            return (Criteria) this;
+        }
+
+        public Criteria andParkingEstateGreaterThanOrEqualTo(Integer value) {
+            addCriterion("parking_estate >=", value, "parkingEstate");
+            return (Criteria) this;
+        }
+
+        public Criteria andParkingEstateLessThan(Integer value) {
+            addCriterion("parking_estate <", value, "parkingEstate");
+            return (Criteria) this;
+        }
+
+        public Criteria andParkingEstateLessThanOrEqualTo(Integer value) {
+            addCriterion("parking_estate <=", value, "parkingEstate");
+            return (Criteria) this;
+        }
+
+        public Criteria andParkingEstateIn(List<Integer> values) {
+            addCriterion("parking_estate in", values, "parkingEstate");
+            return (Criteria) this;
+        }
+
+        public Criteria andParkingEstateNotIn(List<Integer> values) {
+            addCriterion("parking_estate not in", values, "parkingEstate");
+            return (Criteria) this;
+        }
+
+        public Criteria andParkingEstateBetween(Integer value1, Integer value2) {
+            addCriterion("parking_estate between", value1, value2, "parkingEstate");
+            return (Criteria) this;
+        }
+
+        public Criteria andParkingEstateNotBetween(Integer value1, Integer value2) {
+            addCriterion("parking_estate not between", value1, value2, "parkingEstate");
+            return (Criteria) this;
+        }
+
         public Criteria andLocationIsNull() {
             addCriterion("location is null");
             return (Criteria) this;

@@ -128,6 +128,16 @@ public class BasicMatchingTrafficService {
         BeanUtils.copyProperties(basicMatchingTraffic,vo);
         vo.setDistanceName(baseDataDicService.getNameById(basicMatchingTraffic.getDistance()));
         vo.setNatureName(baseDataDicService.getNameById(basicMatchingTraffic.getNature()));
+        vo.setLimitSpeialName(baseDataDicService.getNameById(basicMatchingTraffic.getLimitSpeial()));
+        if (basicMatchingTraffic.getFlag() != null){
+            if (basicMatchingTraffic.getFlag()){
+                vo.setLimitName("是");
+            }else {
+                vo.setLimitName("否");
+            }
+        }else {
+            vo.setLimitName("无");
+        }
         return vo;
     }
 

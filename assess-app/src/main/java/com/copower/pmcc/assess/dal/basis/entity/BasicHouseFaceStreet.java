@@ -15,6 +15,8 @@ public class BasicHouseFaceStreet {
 
     private Integer visitorsFlowrate;
 
+    private Integer position;
+
     private String creator;
 
     private Date gmtCreated;
@@ -67,6 +69,14 @@ public class BasicHouseFaceStreet {
 
     public void setVisitorsFlowrate(Integer visitorsFlowrate) {
         this.visitorsFlowrate = visitorsFlowrate;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 
     public String getCreator() {
