@@ -58,6 +58,65 @@
                 </div>
             </div>
         </div>
+        <div  class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    物业类型
+                </label>
+                <div class="col-sm-3">
+                    <select name="propertyType"
+                            class="form-control propertyType">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    物业类别
+                </label>
+                <div class="col-sm-3">
+                    <select name="propertyCategory" class="form-control propertyCategory">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    首层位置
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="首层位置(数字)" data-rule-number='true'
+                           name="firstFloor" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    最高层
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="最高层(数字)" data-rule-number='true'
+                           name="maxFloor" class="form-control">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    套内面积
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="套内面积(数字)" data-rule-number='true'
+                           name="inJacketArea" class="form-control">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    使用面积
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="使用面积(数字)" data-rule-number='true'
+                           name="useArea" class="form-control">
+                </div>
+            </div>
+        </div>
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
@@ -152,15 +211,6 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    进深
-                </label>
-                <div class="col-sm-3">
-                    <input type="text" placeholder="进深(数字)" data-rule-number='true'
-                           name="diameterDepth" class="form-control">
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
                     土地使用年限
                 </label>
                 <div class="col-sm-3">
@@ -178,8 +228,6 @@
                            class="form-control date-picker dbdate openTime">
                 </div>
             </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     交房时间
@@ -190,6 +238,8 @@
                            class="form-control date-picker dbdate roomTime">
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     竣工时间获取方式
@@ -207,27 +257,6 @@
                     <input placeholder="竣工时间"
                            name="beCompletedTime" required data-date-format="yyyy-mm-dd"
                            class="form-control date-picker dbdate beCompletedTime">
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    物业类型
-                </label>
-                <div class="col-sm-3">
-                    <select name="propertyType"
-                            class="form-control propertyType">
-                    </select>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    物业类别
-                </label>
-                <div class="col-sm-3">
-                    <select name="propertyCategory" class="form-control propertyCategory">
-                    </select>
                 </div>
             </div>
             <div class="x-valid">
@@ -267,7 +296,38 @@
                     <input type="text" placeholder="建筑公司" class="form-control" name="builder">
                 </div>
             </div>
-
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    工程质量
+                </label>
+                <div class="col-sm-3">
+                    <select name="constructionQuality"
+                            class="form-control constructionQuality">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    外观风格
+                </label>
+                <div class="col-sm-3">
+                    <select name="appearanceStyle"
+                            class="form-control appearanceStyle">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    外观新旧
+                </label>
+                <div class="col-sm-3">
+                    <select name="appearanceNewAndOld"
+                            class="form-control appearanceNewAndOld">
+                    </select>
+                </div>
+            </div>
         </div>
 
         <div class="form-group" id="navButtonBuildGroupFileId">

@@ -496,6 +496,66 @@ public class BasicHouseExample {
             return (Criteria) this;
         }
 
+        public Criteria andHuxingIdIsNull() {
+            addCriterion("huxing_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingIdIsNotNull() {
+            addCriterion("huxing_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingIdEqualTo(Integer value) {
+            addCriterion("huxing_id =", value, "huxingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingIdNotEqualTo(Integer value) {
+            addCriterion("huxing_id <>", value, "huxingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingIdGreaterThan(Integer value) {
+            addCriterion("huxing_id >", value, "huxingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("huxing_id >=", value, "huxingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingIdLessThan(Integer value) {
+            addCriterion("huxing_id <", value, "huxingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingIdLessThanOrEqualTo(Integer value) {
+            addCriterion("huxing_id <=", value, "huxingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingIdIn(List<Integer> values) {
+            addCriterion("huxing_id in", values, "huxingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingIdNotIn(List<Integer> values) {
+            addCriterion("huxing_id not in", values, "huxingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingIdBetween(Integer value1, Integer value2) {
+            addCriterion("huxing_id between", value1, value2, "huxingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("huxing_id not between", value1, value2, "huxingId");
+            return (Criteria) this;
+        }
+
         public Criteria andHuxingNameIsNull() {
             addCriterion("huxing_name is null");
             return (Criteria) this;
@@ -633,6 +693,136 @@ public class BasicHouseExample {
 
         public Criteria andNewHuxingNameNotBetween(String value1, String value2) {
             addCriterion("new_huxing_name not between", value1, value2, "newHuxingName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionIsNull() {
+            addCriterion("spatial_distribution is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionIsNotNull() {
+            addCriterion("spatial_distribution is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionEqualTo(Integer value) {
+            addCriterion("spatial_distribution =", value, "spatialDistribution");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionNotEqualTo(Integer value) {
+            addCriterion("spatial_distribution <>", value, "spatialDistribution");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionGreaterThan(Integer value) {
+            addCriterion("spatial_distribution >", value, "spatialDistribution");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionGreaterThanOrEqualTo(Integer value) {
+            addCriterion("spatial_distribution >=", value, "spatialDistribution");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionLessThan(Integer value) {
+            addCriterion("spatial_distribution <", value, "spatialDistribution");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionLessThanOrEqualTo(Integer value) {
+            addCriterion("spatial_distribution <=", value, "spatialDistribution");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionIn(List<Integer> values) {
+            addCriterion("spatial_distribution in", values, "spatialDistribution");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionNotIn(List<Integer> values) {
+            addCriterion("spatial_distribution not in", values, "spatialDistribution");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionBetween(Integer value1, Integer value2) {
+            addCriterion("spatial_distribution between", value1, value2, "spatialDistribution");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionNotBetween(Integer value1, Integer value2) {
+            addCriterion("spatial_distribution not between", value1, value2, "spatialDistribution");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionDescIsNull() {
+            addCriterion("spatial_distribution_desc is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionDescIsNotNull() {
+            addCriterion("spatial_distribution_desc is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionDescEqualTo(String value) {
+            addCriterion("spatial_distribution_desc =", value, "spatialDistributionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionDescNotEqualTo(String value) {
+            addCriterion("spatial_distribution_desc <>", value, "spatialDistributionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionDescGreaterThan(String value) {
+            addCriterion("spatial_distribution_desc >", value, "spatialDistributionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionDescGreaterThanOrEqualTo(String value) {
+            addCriterion("spatial_distribution_desc >=", value, "spatialDistributionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionDescLessThan(String value) {
+            addCriterion("spatial_distribution_desc <", value, "spatialDistributionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionDescLessThanOrEqualTo(String value) {
+            addCriterion("spatial_distribution_desc <=", value, "spatialDistributionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionDescLike(String value) {
+            addCriterion("spatial_distribution_desc like", value, "spatialDistributionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionDescNotLike(String value) {
+            addCriterion("spatial_distribution_desc not like", value, "spatialDistributionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionDescIn(List<String> values) {
+            addCriterion("spatial_distribution_desc in", values, "spatialDistributionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionDescNotIn(List<String> values) {
+            addCriterion("spatial_distribution_desc not in", values, "spatialDistributionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionDescBetween(String value1, String value2) {
+            addCriterion("spatial_distribution_desc between", value1, value2, "spatialDistributionDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionDescNotBetween(String value1, String value2) {
+            addCriterion("spatial_distribution_desc not between", value1, value2, "spatialDistributionDesc");
             return (Criteria) this;
         }
 

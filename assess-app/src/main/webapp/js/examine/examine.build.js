@@ -54,6 +54,15 @@
                 buildingCommon.buildingForm.find('select.propertyCategory').empty().html(html).trigger('change');
             });
         });
+        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_construction_quality, data.constructionQuality, function (html, data) {
+            buildingCommon.buildingForm.find('[name=constructionQuality]').empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_appearance_style, data.appearanceStyle, function (html, data) {
+            buildingCommon.buildingForm.find('[name=appearanceStyle]').empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_appearance_new_and_old, data.appearanceNewAndOld, function (html, data) {
+            buildingCommon.buildingForm.find('[name=appearanceNewAndOld]').empty().html(html).trigger('change');
+        });
         AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_type, data.propertyType, function (html, data) {
             buildingCommon.buildingForm.find('select.propertyType').empty().html(html).trigger('change');
         });
