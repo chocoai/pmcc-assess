@@ -145,7 +145,14 @@
             </div>
 
         </div>
-
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">楼盘概况</label>
+                <div class="col-sm-11">
+                    <label class="form-control">${basicEstate.description}</label>
+                </div>
+            </div>
+        </div>
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">总平面图</label>

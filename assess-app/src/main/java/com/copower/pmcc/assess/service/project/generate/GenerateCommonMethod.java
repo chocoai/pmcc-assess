@@ -4,6 +4,7 @@ import com.aspose.words.*;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -208,8 +209,8 @@ public class GenerateCommonMethod {
             } else {
                 value = schemeJudgeObjectList.get(i).getPracticalUse();
             }
-            if (StringUtils.isNotBlank(value)){
-                this.putStringListMap(stringListMap, schemeJudgeObjectList.get(i),value);
+            if (StringUtils.isNotBlank(value)) {
+                this.putStringListMap(stringListMap, schemeJudgeObjectList.get(i), value);
             }
         }
         String s = this.getSchemeJudgeObjectListShowName(stringListMap, null);
@@ -753,10 +754,61 @@ public class GenerateCommonMethod {
 
     /**
      * 获取包装后的html，与当前word字体格式一致
+     *
      * @param html
      * @return
      */
-    public String getWarpCssHtml(String html){
-       return String.format("<div style='font-family:仿宋_GB2312;line-height:150%%;font-size:14.0pt'>%s</div>", html);
+    public String getWarpCssHtml(String html) {
+        return String.format("<div style='font-family:仿宋_GB2312;line-height:150%%;font-size:14.0pt'>%s</div>", html);
+    }
+
+    /**
+     * 估价对象合并描述
+     *
+     * @param map
+     * @return
+     */
+    public String judgeSummaryDesc(Map<Integer, String> map, String explain) {
+        if (map == null || map.size() <= 0) return "";
+        Map<String, List<Integer>> listMap = getStringListMap(map);
+        StringBuilder judgeBuilder = new StringBuilder();
+        StringBuilder contentBuilder = new StringBuilder();
+        for (Map.Entry<String, List<Integer>> stringListEntry : listMap.entrySet()) {
+            judgeBuilder.append(convertNumber(stringListEntry.getValue())).append("、");
+            contentBuilder.append(stringListEntry.getKey()).append("、");
+        }
+        String judgeString = StringUtils.strip(judgeBuilder.toString(), "、");
+        String contentStrig = StringUtils.strip(contentBuilder.toString(), "、");
+        return String.format("%s%s%s%s", judgeString, BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME, StringUtils.defaultString(explain), contentStrig);
+    }
+
+    private Map<String, List<Integer>> getStringListMap(Map<Integer, String> map) {
+        Map<String, List<Integer>> listMap = Maps.newHashMap();
+        for (Map.Entry<Integer, String> entry : map.entrySet()) {
+            if (listMap.containsKey(entry.getValue())) {
+                List<Integer> list = listMap.get(entry.getValue());
+                list.add(entry.getKey());
+            } else {
+                listMap.put(entry.getValue(), Lists.newArrayList(entry.getKey()));
+            }
+        }
+        return listMap;
+    }
+
+    /**
+     * 估价对象合并描述
+     *
+     * @param map
+     * @return
+     */
+    public String judgeEachDesc(Map<Integer, String> map, String explain, String symbol) {
+        if (map == null || map.size() <= 0) return "";
+        Map<String, List<Integer>> listMap = getStringListMap(map);
+        StringBuilder builder = new StringBuilder();
+        for (Map.Entry<String, List<Integer>> stringListEntry : listMap.entrySet()) {
+            builder.append(convertNumber(stringListEntry.getValue())).append(BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME)
+                    .append(StringUtils.defaultString(explain)).append(stringListEntry.getKey()).append(symbol);
+        }
+        return builder.toString();
     }
 }

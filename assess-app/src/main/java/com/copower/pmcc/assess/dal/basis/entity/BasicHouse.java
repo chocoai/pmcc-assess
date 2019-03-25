@@ -16,9 +16,15 @@ public class BasicHouse {
 
     private String floorDesc;
 
+    private Integer huxingId;
+
     private String huxingName;
 
     private String newHuxingName;
+
+    private Integer spatialDistribution;
+
+    private String spatialDistributionDesc;
 
     private Integer certUse;
 
@@ -92,6 +98,14 @@ public class BasicHouse {
         this.floorDesc = floorDesc == null ? null : floorDesc.trim();
     }
 
+    public Integer getHuxingId() {
+        return huxingId;
+    }
+
+    public void setHuxingId(Integer huxingId) {
+        this.huxingId = huxingId;
+    }
+
     public String getHuxingName() {
         return huxingName;
     }
@@ -106,6 +120,22 @@ public class BasicHouse {
 
     public void setNewHuxingName(String newHuxingName) {
         this.newHuxingName = newHuxingName == null ? null : newHuxingName.trim();
+    }
+
+    public Integer getSpatialDistribution() {
+        return spatialDistribution;
+    }
+
+    public void setSpatialDistribution(Integer spatialDistribution) {
+        this.spatialDistribution = spatialDistribution;
+    }
+
+    public String getSpatialDistributionDesc() {
+        return spatialDistributionDesc;
+    }
+
+    public void setSpatialDistributionDesc(String spatialDistributionDesc) {
+        this.spatialDistributionDesc = spatialDistributionDesc == null ? null : spatialDistributionDesc.trim();
     }
 
     public Integer getCertUse() {

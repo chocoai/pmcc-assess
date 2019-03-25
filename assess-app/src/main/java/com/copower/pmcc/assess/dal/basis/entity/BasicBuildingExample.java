@@ -1906,6 +1906,426 @@ public class BasicBuildingExample {
             return (Criteria) this;
         }
 
+        public Criteria andFirstFloorIsNull() {
+            addCriterion("first_floor is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstFloorIsNotNull() {
+            addCriterion("first_floor is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstFloorEqualTo(Integer value) {
+            addCriterion("first_floor =", value, "firstFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstFloorNotEqualTo(Integer value) {
+            addCriterion("first_floor <>", value, "firstFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstFloorGreaterThan(Integer value) {
+            addCriterion("first_floor >", value, "firstFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstFloorGreaterThanOrEqualTo(Integer value) {
+            addCriterion("first_floor >=", value, "firstFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstFloorLessThan(Integer value) {
+            addCriterion("first_floor <", value, "firstFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstFloorLessThanOrEqualTo(Integer value) {
+            addCriterion("first_floor <=", value, "firstFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstFloorIn(List<Integer> values) {
+            addCriterion("first_floor in", values, "firstFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstFloorNotIn(List<Integer> values) {
+            addCriterion("first_floor not in", values, "firstFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstFloorBetween(Integer value1, Integer value2) {
+            addCriterion("first_floor between", value1, value2, "firstFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstFloorNotBetween(Integer value1, Integer value2) {
+            addCriterion("first_floor not between", value1, value2, "firstFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxFloorIsNull() {
+            addCriterion("max_floor is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxFloorIsNotNull() {
+            addCriterion("max_floor is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxFloorEqualTo(Integer value) {
+            addCriterion("max_floor =", value, "maxFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxFloorNotEqualTo(Integer value) {
+            addCriterion("max_floor <>", value, "maxFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxFloorGreaterThan(Integer value) {
+            addCriterion("max_floor >", value, "maxFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxFloorGreaterThanOrEqualTo(Integer value) {
+            addCriterion("max_floor >=", value, "maxFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxFloorLessThan(Integer value) {
+            addCriterion("max_floor <", value, "maxFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxFloorLessThanOrEqualTo(Integer value) {
+            addCriterion("max_floor <=", value, "maxFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxFloorIn(List<Integer> values) {
+            addCriterion("max_floor in", values, "maxFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxFloorNotIn(List<Integer> values) {
+            addCriterion("max_floor not in", values, "maxFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxFloorBetween(Integer value1, Integer value2) {
+            addCriterion("max_floor between", value1, value2, "maxFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxFloorNotBetween(Integer value1, Integer value2) {
+            addCriterion("max_floor not between", value1, value2, "maxFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andInJacketAreaIsNull() {
+            addCriterion("in_jacket_area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInJacketAreaIsNotNull() {
+            addCriterion("in_jacket_area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInJacketAreaEqualTo(BigDecimal value) {
+            addCriterion("in_jacket_area =", value, "inJacketArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andInJacketAreaNotEqualTo(BigDecimal value) {
+            addCriterion("in_jacket_area <>", value, "inJacketArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andInJacketAreaGreaterThan(BigDecimal value) {
+            addCriterion("in_jacket_area >", value, "inJacketArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andInJacketAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("in_jacket_area >=", value, "inJacketArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andInJacketAreaLessThan(BigDecimal value) {
+            addCriterion("in_jacket_area <", value, "inJacketArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andInJacketAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("in_jacket_area <=", value, "inJacketArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andInJacketAreaIn(List<BigDecimal> values) {
+            addCriterion("in_jacket_area in", values, "inJacketArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andInJacketAreaNotIn(List<BigDecimal> values) {
+            addCriterion("in_jacket_area not in", values, "inJacketArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andInJacketAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("in_jacket_area between", value1, value2, "inJacketArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andInJacketAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("in_jacket_area not between", value1, value2, "inJacketArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseAreaIsNull() {
+            addCriterion("use_area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseAreaIsNotNull() {
+            addCriterion("use_area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseAreaEqualTo(BigDecimal value) {
+            addCriterion("use_area =", value, "useArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseAreaNotEqualTo(BigDecimal value) {
+            addCriterion("use_area <>", value, "useArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseAreaGreaterThan(BigDecimal value) {
+            addCriterion("use_area >", value, "useArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("use_area >=", value, "useArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseAreaLessThan(BigDecimal value) {
+            addCriterion("use_area <", value, "useArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("use_area <=", value, "useArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseAreaIn(List<BigDecimal> values) {
+            addCriterion("use_area in", values, "useArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseAreaNotIn(List<BigDecimal> values) {
+            addCriterion("use_area not in", values, "useArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("use_area between", value1, value2, "useArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("use_area not between", value1, value2, "useArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionQualityIsNull() {
+            addCriterion("construction_quality is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionQualityIsNotNull() {
+            addCriterion("construction_quality is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionQualityEqualTo(Integer value) {
+            addCriterion("construction_quality =", value, "constructionQuality");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionQualityNotEqualTo(Integer value) {
+            addCriterion("construction_quality <>", value, "constructionQuality");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionQualityGreaterThan(Integer value) {
+            addCriterion("construction_quality >", value, "constructionQuality");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionQualityGreaterThanOrEqualTo(Integer value) {
+            addCriterion("construction_quality >=", value, "constructionQuality");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionQualityLessThan(Integer value) {
+            addCriterion("construction_quality <", value, "constructionQuality");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionQualityLessThanOrEqualTo(Integer value) {
+            addCriterion("construction_quality <=", value, "constructionQuality");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionQualityIn(List<Integer> values) {
+            addCriterion("construction_quality in", values, "constructionQuality");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionQualityNotIn(List<Integer> values) {
+            addCriterion("construction_quality not in", values, "constructionQuality");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionQualityBetween(Integer value1, Integer value2) {
+            addCriterion("construction_quality between", value1, value2, "constructionQuality");
+            return (Criteria) this;
+        }
+
+        public Criteria andConstructionQualityNotBetween(Integer value1, Integer value2) {
+            addCriterion("construction_quality not between", value1, value2, "constructionQuality");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceStyleIsNull() {
+            addCriterion("appearance_style is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceStyleIsNotNull() {
+            addCriterion("appearance_style is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceStyleEqualTo(Integer value) {
+            addCriterion("appearance_style =", value, "appearanceStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceStyleNotEqualTo(Integer value) {
+            addCriterion("appearance_style <>", value, "appearanceStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceStyleGreaterThan(Integer value) {
+            addCriterion("appearance_style >", value, "appearanceStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceStyleGreaterThanOrEqualTo(Integer value) {
+            addCriterion("appearance_style >=", value, "appearanceStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceStyleLessThan(Integer value) {
+            addCriterion("appearance_style <", value, "appearanceStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceStyleLessThanOrEqualTo(Integer value) {
+            addCriterion("appearance_style <=", value, "appearanceStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceStyleIn(List<Integer> values) {
+            addCriterion("appearance_style in", values, "appearanceStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceStyleNotIn(List<Integer> values) {
+            addCriterion("appearance_style not in", values, "appearanceStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceStyleBetween(Integer value1, Integer value2) {
+            addCriterion("appearance_style between", value1, value2, "appearanceStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceStyleNotBetween(Integer value1, Integer value2) {
+            addCriterion("appearance_style not between", value1, value2, "appearanceStyle");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceNewAndOldIsNull() {
+            addCriterion("appearance_new_and_old is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceNewAndOldIsNotNull() {
+            addCriterion("appearance_new_and_old is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceNewAndOldEqualTo(Integer value) {
+            addCriterion("appearance_new_and_old =", value, "appearanceNewAndOld");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceNewAndOldNotEqualTo(Integer value) {
+            addCriterion("appearance_new_and_old <>", value, "appearanceNewAndOld");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceNewAndOldGreaterThan(Integer value) {
+            addCriterion("appearance_new_and_old >", value, "appearanceNewAndOld");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceNewAndOldGreaterThanOrEqualTo(Integer value) {
+            addCriterion("appearance_new_and_old >=", value, "appearanceNewAndOld");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceNewAndOldLessThan(Integer value) {
+            addCriterion("appearance_new_and_old <", value, "appearanceNewAndOld");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceNewAndOldLessThanOrEqualTo(Integer value) {
+            addCriterion("appearance_new_and_old <=", value, "appearanceNewAndOld");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceNewAndOldIn(List<Integer> values) {
+            addCriterion("appearance_new_and_old in", values, "appearanceNewAndOld");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceNewAndOldNotIn(List<Integer> values) {
+            addCriterion("appearance_new_and_old not in", values, "appearanceNewAndOld");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceNewAndOldBetween(Integer value1, Integer value2) {
+            addCriterion("appearance_new_and_old between", value1, value2, "appearanceNewAndOld");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppearanceNewAndOldNotBetween(Integer value1, Integer value2) {
+            addCriterion("appearance_new_and_old not between", value1, value2, "appearanceNewAndOld");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

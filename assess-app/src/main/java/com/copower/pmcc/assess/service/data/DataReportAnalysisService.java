@@ -2,12 +2,15 @@ package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataReportAnalysisDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.data.DataReportAnalysisVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicEstateService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -40,6 +43,12 @@ public class DataReportAnalysisService {
     private ErpAreaService erpAreaService;
     @Autowired
     private DataReportTemplateItemService dataReportTemplateItemService;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private SurveyCommonService surveyCommonService;
+    @Autowired
+    private BasicEstateService basicEstateService;
 
     /**
      * 保存数据
@@ -149,16 +158,31 @@ public class DataReportAnalysisService {
      * 获取上报告的变现分析数据
      * @return
      */
-    public String getReportLiquidity(){
+    public String getReportLiquidity(ProjectInfo projectInfo, Integer areaGroupId) throws Exception {
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_LIQUIDITY);
         if (baseDataDic == null) return "";
         List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisDao.getReportAnalysisList(baseDataDic.getId());
         if (CollectionUtils.isEmpty(reportAnalysisList)) return "";
         StringBuilder stringBuilder = new StringBuilder();
+
+        //对应委估对象
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaGroupId);
         for (int i = 0; i < reportAnalysisList.size(); i++) {
             DataReportAnalysis dataReportAnalysis = reportAnalysisList.get(i);
             stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, dataReportAnalysis.getName())).append("</p>");
-            stringBuilder.append(dataReportAnalysis.getTemplate());
+            stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportAnalysis.getTemplate()).append("</p>");
+            //开发程度分析
+            if (AssessReportFieldConstant.DEVELOPMENT_LEVEL.equals(dataReportAnalysis.getFieldName())) {
+                DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.BUILDING_PROFILE);
+                for (SchemeJudgeObject judgeObject : judgeObjectList) {
+                    BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
+                    BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+                    if(StringUtils.isNotBlank(basicEstate.getDescription())) {
+                        stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", judgeObject.getNumber() + "号").replace("#{楼盘概况}", basicEstate.getDescription())).append("</p>");
+                    }
+                }
+            }
+
         }
         return stringBuilder.toString();
     }
