@@ -1,11 +1,10 @@
 package com.copower.pmcc.assess.service.project.generate;
 
+import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.basic.BasicBuildingService;
-import com.copower.pmcc.assess.service.basic.BasicEstateService;
-import com.copower.pmcc.assess.service.basic.BasicHouseService;
+import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.google.common.collect.Maps;
@@ -36,6 +35,10 @@ public class GenerateHouseEntityService {
     private GenerateCommonMethod generateCommonMethod;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private BasicUnitHuxingService basicUnitHuxingService;
+    @Autowired
+    private BasicUnitService basicUnitService;
 
     /**
      * 获取楼盘名称
@@ -162,14 +165,28 @@ public class GenerateHouseEntityService {
      * @param judgeObjectIds
      * @return
      */
-    public String getSpatialDistribution(List<Integer> judgeObjectIds) {
+    public String getSpatialDistribution(List<Integer> judgeObjectIds) throws Exception {
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
         Map<Integer, String> map = Maps.newHashMap();
+        BaseDataDic production = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_UNIT_HUXING_TYPE_PRODUCTION);
+        BaseDataDic office = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_UNIT_HUXING_TYPE_OFFICE);
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
             BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
-            //if(basicHouse!=null&&basicHouse.getHouseNumber())
+            if (basicHouse != null && basicHouse.getHuxingId() != null && basicHouse.getHuxingId() > 0) {
+                BasicUnit basicUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
+                BasicUnitHuxing basicUnitHuxing = basicUnitHuxingService.getBasicUnitHuxingById(basicHouse.getHuxingId());
+                if (basicUnitHuxing == null) continue;
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(String.format("梯户比%s,",basicUnit.getElevatorHouseholdRatio()));
+                if (basicUnitHuxing.getType().equals(production.getId())) {//办公商业取开间进深
 
+                } else if (basicUnitHuxing.getType().equals(office.getId())) {//工业仓储取跨长跨宽
+
+                } else {
+                    stringBuilder.append(String.format("%s,%s;",basicUnitHuxing.getName(),basicUnitHuxing.getDescription()));
+                }
+            }
         }
         return generateCommonMethod.judgeSummaryDesc(map, "分别为");
     }

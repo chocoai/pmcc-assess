@@ -39,6 +39,7 @@
                 <label class="col-sm-1 control-label">户型</label>
                 <div class="col-sm-3">
                     <div class="input-group">
+                        <input type="hidden" name="huxingId" value="${basicHouse.huxingId}">
                         <input type="text" readonly="readonly" onclick="houseCommon.selectHuxing(this);"
                                placeholder="户型" class="form-control" name="huxingName"
                                value="${basicHouse.huxingName}">
@@ -92,6 +93,18 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
+                <label class="col-sm-1 control-label">空间布局</label>
+                <div class="col-sm-3">
+                    <select class="form-control orientation" name="spatialDistribution" >
+                    </select>
+                </div>
+            </div>
+            <input type="text" data-rule-maxlength="255" placeholder="空间布局描述"
+                   name="spatialDistributionDesc"
+                   class="form-control" value="${basicHouse.spatialDistributionDesc}">
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
                 <label class="col-sm-1 control-label">朝向<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <select class="form-control search-select select2 orientation" name="orientation" required>
@@ -132,7 +145,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">权益限制</label>
                 <div class="col-sm-3">
-                    <input type="text" data-rule-maxlength="100" placeholder="权益限制"
+                    <input type="text" data-rule-maxlength="255" placeholder="权益限制"
                            name="rightInterestsRestriction"
                            class="form-control" value="${basicHouse.rightInterestsRestriction}">
                 </div>
