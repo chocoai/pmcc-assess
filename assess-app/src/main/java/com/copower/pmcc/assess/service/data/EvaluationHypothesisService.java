@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
+import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataReportTemplateItemDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationHypothesisDao;
@@ -23,10 +24,7 @@ import com.copower.pmcc.assess.service.project.generate.GenerateReportGeneration
 import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeFunctionService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
-import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryContentService;
-import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightService;
-import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
-import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
+import com.copower.pmcc.assess.service.project.survey.*;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -38,6 +36,7 @@ import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -48,8 +47,11 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 3.1.2.12	评估假设
@@ -98,6 +100,8 @@ public class EvaluationHypothesisService {
     private GenerateReportGenerationService generateReportGenerationService;
     @Autowired
     private SurveyAssetInventoryRightService surveyAssetInventoryRightService;
+    @Autowired
+    private SurveyAssetInventoryRightRecordService surveyAssetInventoryRightRecordService;
 
 
     /**
@@ -209,11 +213,10 @@ public class EvaluationHypothesisService {
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
         //对应委估对象
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaGroupId);
+        Integer order = 0;
+        Integer order2 = 0;
         for (int i = 0; i < hypothesisList.size(); i++) {
             DataEvaluationHypothesis basis = hypothesisList.get(i);
-            stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, basis.getName())).append("</p>");
-            stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
-
             //未定事项假设
             if (AssessReportFieldConstant.HYPOTHESIS_UNCERTAIN_MATTER.equals(basis.getFieldName())) {
                 List<Integer> actualTimenumbers = new ArrayList<>();
@@ -243,6 +246,10 @@ public class EvaluationHypothesisService {
                         actualPurpose.append(judgeObject.getPracticalUse()).append("、");
                         settingPurpose.append(schemeJudgeObjectVo.getSetUseName()).append("、");
                     }
+                }
+                if (CollectionUtils.isNotEmpty(actualTimenumbers) || CollectionUtils.isNotEmpty(purposeNumbers)) {
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
                 }
                 if (CollectionUtils.isNotEmpty(actualTimenumbers)) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.TIME_ACTUAL_SURVEY);
@@ -311,6 +318,10 @@ public class EvaluationHypothesisService {
                         }
                     }
                 }
+                if (StringUtils.isNotBlank(loadAddressNum) || StringUtils.isNotBlank(registeredAddressNum) || StringUtils.isNotBlank(registrationPurposesNum)) {
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
+                }
                 if (StringUtils.isNotBlank(loadAddressNum)) {
                     String number = getSubstitutionPrincipleName(loadAddressNum.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.LOAD_ADDRESS);
@@ -357,6 +368,9 @@ public class EvaluationHypothesisService {
                     }
 
                 }
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
+
                 if (StringUtils.isNotBlank(referenceNum)) {
                     String number = getSubstitutionPrincipleName(referenceNum.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.REFERENCE_SAME);
@@ -395,25 +409,30 @@ public class EvaluationHypothesisService {
                         entityDamage.append(judgeObject.getNumber()).append(",");
                     }
                 }
-                if(valuationDate.compareTo(investigationsEndDate)!=0){
+                if (valuationDate.compareTo(investigationsEndDate) != 0 || StringUtils.isNotBlank(surroundingsDamage)|| StringUtils.isNotBlank(entityDamage)) {
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
+                }
+                if (valuationDate.compareTo(investigationsEndDate) != 0) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.DATE_ARE_CONSISTENT);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{查勘结束日期}", sdf2.format(investigationsEndDate)).replace("#{评估基准日}",sdf2.format(valuationDate))).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{查勘结束日期}", sdf2.format(investigationsEndDate)).replace("#{评估基准日}", sdf2.format(valuationDate))).append("</p>");
                 }
                 if (StringUtils.isNotBlank(surroundingsDamage)) {
                     String number = getSubstitutionPrincipleName(surroundingsDamage.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.SURROUNDINGS_CONDITION);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{评估基准日}",sdf2.format(valuationDate))).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{评估基准日}", sdf2.format(valuationDate))).append("</p>");
                 }
                 if (StringUtils.isNotBlank(entityDamage)) {
                     String number = getSubstitutionPrincipleName(entityDamage.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.ENTITY_CONDITION);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{评估基准日}",sdf2.format(valuationDate))).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{评估基准日}", sdf2.format(valuationDate))).append("</p>");
                 }
 
             }
 
             //一般假设
             if (AssessReportFieldConstant.HYPOTHESIS_COMMON.equals(basis.getFieldName())) {
+                StringBuilder allNum = new StringBuilder();
                 //有抵押权委估对象
                 StringBuilder havePledge = new StringBuilder();
                 //无抵押权委估对象
@@ -433,10 +452,11 @@ public class EvaluationHypothesisService {
                 StringBuilder limitContent = new StringBuilder();
 
 
-                Integer rightId = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE_HOUSE_PLEDGE).getId();
-                Integer otherId = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE_HOUSE_OTHER).getId();
+                Integer rightId = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_PLEDGE).getId();
+                Integer otherId = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_OTHER).getId();
 
                 for (SchemeJudgeObject judgeObject : judgeObjectList) {
+                    allNum.append(judgeObject.getNumber()).append(",");
                     //对应资产清查内容
                     SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByDeclareId(judgeObject.getDeclareRecordId());
                     List<SurveyAssetInventoryContent> SurveyAssetInventoryContents = surveyAssetInventoryContentService.getContentListByPlanDetailsId(surveyAssetInventory.getPlanDetailId());
@@ -457,31 +477,36 @@ public class EvaluationHypothesisService {
                         }
                     }
                     //对应的他权信息
-                    List<SurveyAssetInventoryRight> rightList = surveyAssetInventoryRightService.surveyAssetInventoryRights(surveyAssetInventory.getPlanDetailId());
-                     for (SurveyAssetInventoryRight inventoryRight: rightList) {
-                        if(rightId.equals(inventoryRight.getCategory())){
+                    List<SurveyAssetInventoryRight> rightList = Lists.newArrayList();
+                    List<SurveyAssetInventoryRightRecord> surveyAssetInventoryRightRecordList = surveyAssetInventoryRightRecordService.getSurveyAssetInventoryRightRecordByDeclareRecord(judgeObject.getDeclareRecordId(), judgeObject.getProjectId());
+                    if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightRecordList)) {
+                        rightList = surveyAssetInventoryRightService.surveyAssetInventoryRights(surveyAssetInventoryRightRecordList.get(0).getPlanDetailsId());
+                    }
+                    for (SurveyAssetInventoryRight inventoryRight : rightList) {
+                        if (rightId.equals(inventoryRight.getCategory())) {
                             havePledge.append(judgeObject.getNumber()).append(",");
-                        }else {
-                            noPledge.append(judgeObject.getNumber()).append(",");
                         }
-                        if(otherId.equals(inventoryRight.getCategory())){
+                        if (otherId.equals(inventoryRight.getCategory())) {
                             haveOther.append(judgeObject.getNumber()).append(",");
-                        }else {
-                            noOther.append(judgeObject.getNumber()).append(",");
                         }
                     }
                     //转让限制
-                    if(StringUtils.isNotBlank(surveyAssetInventory.getTransferLimit())){
+                    if (StringUtils.isNotBlank(surveyAssetInventory.getTransferLimit())) {
                         limitContent.append(judgeObject.getNumber()).append("号委估对象,有转让限制").append(surveyAssetInventory.getTransferLimit()).append(";");
-                    }else {
+                    } else {
                         limit.append(judgeObject.getNumber()).append(",");
                     }
 
                 }
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
+
                 if (StringUtils.isNotBlank(limit)) {
                     String number = getSubstitutionPrincipleName(limit.toString());
                     limitContent.append(number).append("委估对象土地使用权符合法定的转让条件为假设前提");
                 }
+                noPledge = minus(allNum, havePledge);
+                noOther = minus(allNum, haveOther);
                 if (StringUtils.isNotBlank(havePledge)) {
                     String number = getSubstitutionPrincipleName(havePledge.toString());
                     content.append(number).append("委估对象有抵押;");
@@ -499,21 +524,34 @@ public class EvaluationHypothesisService {
                     content.append(number).append("委估对象无查封、诉讼、仲裁、司法强制执行或其他重大争议等禁止转让情形，房地产权属无纠纷;");
                 }
                 content.append(limitContent);
+                //他权
                 if (StringUtils.isNotBlank(content)) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.ALIENI_IURIS);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{一般假设他权与转让}", content)).append("</p>");
-                }
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order) + "）", tagfilter(dataReportTemplateByField.getTemplate().replace("#{一般假设他权与转让}", content)))).append("</p>");
 
+                }
+                //安全质量
+                DataReportTemplateItem safetyQuality = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.SAFETY_QUALITY);
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order) + "）", tagfilter(safetyQuality.getTemplate()))).append("</p>");
+
+                //建筑
                 if (StringUtils.isNotBlank(noBuildingArea)) {
                     String number = getSubstitutionPrincipleName(noBuildingArea.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.BUILDING_AREA);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number)).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order) + "）", tagfilter(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number)))).append("</p>");
                 }
                 if (StringUtils.isNotBlank(noBuildingConstruction)) {
                     String number = getSubstitutionPrincipleName(noBuildingConstruction.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.BUILDING_CONSTRUCTION);
-                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number)).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order) + "）", tagfilter(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number)))).append("</p>");
                 }
+                //合理价格
+                DataReportTemplateItem reasonablePrice = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.REASONABLE_PRICE);
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order) + "）", tagfilter(reasonablePrice.getTemplate()))).append("</p>");
+
+                //公共设施
+                DataReportTemplateItem communalFacilities = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.COMMUNAL_FACILITIES);
+                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s%s", "（" + (++order) + "）", tagfilter(communalFacilities.getTemplate()))).append("</p>");
             }
 
         }
@@ -539,10 +577,41 @@ public class EvaluationHypothesisService {
         String[] s = str.toString().split(",");
         ArrayList<Integer> numbers = new ArrayList<>();
         for (String item : s) {
-            numbers.add(Integer.valueOf(item));
+            if (!numbers.contains(Integer.valueOf(item))) {
+                numbers.add(Integer.valueOf(item));
+            }
         }
         return generateCommonMethod.convertNumber(numbers) + "号";
     }
+
+    public StringBuilder minus(StringBuilder all, StringBuilder has) {
+        String[] arrAll = all.toString().split(",");
+        String[] arrHas = has.toString().split(",");
+        List<String> list = Arrays.asList(arrHas);
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String item : arrAll) {
+            if (!list.contains(item)) {
+                stringBuilder.append(item).append(",");
+            }
+        }
+
+        return stringBuilder;
+    }
+
+    public static String tagfilter(String str) {
+        final String regxpForHtml = "<([^>]*)>"; // 过滤所有以<开头以>结尾的标签
+        Pattern pattern = Pattern.compile(regxpForHtml);
+        Matcher matcher = pattern.matcher(str);
+        StringBuffer sb = new StringBuffer();
+        boolean result1 = matcher.find();
+        while (result1) {
+            matcher.appendReplacement(sb, "");
+            result1 = matcher.find();
+        }
+        matcher.appendTail(sb);
+        return sb.toString().trim();
+    }
+
 
     public void splicingContent(StringBuilder num, StringBuilder registrationContent, StringBuilder actualContent,
                                 StringBuilder remark, SchemeJudgeObject judgeObject, SurveyAssetInventoryContent item) {

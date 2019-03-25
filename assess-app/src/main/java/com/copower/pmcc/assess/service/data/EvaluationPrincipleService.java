@@ -202,6 +202,9 @@ public class EvaluationPrincipleService {
 
                 for (SchemeJudgeObject judgeObject : judgeObjectList) {
                     List<SchemeJudgeFunction> applicableJudgeFunctions = schemeJudgeFunctionService.getApplicableJudgeFunctions(judgeObject.getId());
+                    if(!CollectionUtils.isNotEmpty(applicableJudgeFunctions)){
+                        applicableJudgeFunctions = schemeJudgeFunctionService.getApplicableJudgeFunctions(judgeObject.getPid());
+                    }
                     for (SchemeJudgeFunction judgeFunction : applicableJudgeFunctions) {
                         BaseDataDic dataDicById = baseDataDicService.getDataDicById(judgeFunction.getMethodType());
                         String fieldName = dataDicById.getFieldName();

@@ -47,8 +47,11 @@ public class AssessReportFieldConstant {
 
     public static final String HYPOTHESIS_COMMON = "hypothesis.common";//一般假设
     public static final String ALIENI_IURIS = "alieni.iuris";//他权
+    public static final String SAFETY_QUALITY = "safety.quality";//安全质量
     public static final String BUILDING_AREA = "building.area";//建筑面积
     public static final String BUILDING_CONSTRUCTION = "building.construction";//建筑结构
+    public static final String REASONABLE_PRICE = "reasonable.price";//合理价格
+    public static final String COMMUNAL_FACILITIES = "communal.facilities";//公共设施
 
 
     public static final String BASIS_ECONOMIC_BEHAVIOR = "basis.economic.behavior";//经济行为依据
