@@ -207,9 +207,9 @@ public class EvaluationHypothesisService {
         StringBuilder stringBuilder = new StringBuilder();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+        //对应委估对象
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaGroupId);
         for (int i = 0; i < hypothesisList.size(); i++) {
-            //对应委估对象
-            List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaGroupId);
             DataEvaluationHypothesis basis = hypothesisList.get(i);
             stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", i + 1, basis.getName())).append("</p>");
             stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");

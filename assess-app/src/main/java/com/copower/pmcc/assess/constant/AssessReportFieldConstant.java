@@ -53,5 +53,18 @@ public class AssessReportFieldConstant {
 
     public static final String BASIS_ECONOMIC_BEHAVIOR = "basis.economic.behavior";//经济行为依据
     public static final String ENTRUSTING_PARTY = "entrusting.party";//委估单位
+    public static final String BASIS_FILE_GIST = "basis.file.gist";//法律、法规、政策性文件依据
+    public static final String BASIS_FILE_GIST_PLEDGE = "basis.file.gist.pledge";// 抵押评估
+    public static final String BASIS_FILE_GIST_IMPOSE = "basis.file.gist.impose";// 征收评估
+
+    public static final String BASIS_TECHNICAL_STANDARD = "basis.technical.standard";// 估价技术标准依据
+    public static final String BASIS_TECHNICAL_STANDARD_PLEDGE = "basis.technical.standard.pledge";// 估价技术标准依据(抵押)
+
+    public static final String BASIS_PERTINENT_DATA = "basis.pertinent.data";// 估价委托人提供的有关资料
+    public static final String BASIS_PERTINENT_DATA_PLEDGE = "basis.pertinent.data.pledge";// 估价委托人提供的有关资料(抵押)
+
+
+    public static final String DEVELOPMENT_LEVEL = "development.level";//开发程度分析
+    public static final String BUILDING_PROFILE = "building.profile";//楼盘概况
 
 }

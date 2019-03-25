@@ -6,10 +6,13 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationBasisDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.data.SurveyDamageDto;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationBasisVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.declare.DeclarePublicService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -48,6 +51,10 @@ public class EvaluationBasisService {
     private DataReportTemplateItemService dataReportTemplateItemService;
     @Autowired
     private DeclarePublicService declarePublicService;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private SurveyAssetInventoryService surveyAssetInventoryService;
 
     /**
      * 保存数据
@@ -151,13 +158,20 @@ public class EvaluationBasisService {
      * @param projectInfo
      * @return
      */
-    public String getReportBasic(ProjectInfo projectInfo) {
+    public String getReportBasic(ProjectInfo projectInfo, Integer areaId) {
         //根据项目类型、委托目的按排序顺序获取数据
         //获取到数据后根据对应的规则生成相关报告数据内容
         List<DataEvaluationBasis> basisList = this.getEnableBasisList(projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), projectInfo.getEntrustPurpose());
         if (CollectionUtils.isEmpty(basisList)) return "";
+        //抵押评估
+        Integer pledgeId = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId();
+        //征收评估
+        Integer imposeId = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_IMPOSE).getId();
+
         //委估单位
         DeclareApply declareApplyByProjectId = declarePublicService.getDeclareApplyByProjectId(projectInfo.getId());
+        //对应委估对象
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
         String unit = declareApplyByProjectId.getClient();
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < basisList.size(); i++) {
@@ -168,6 +182,59 @@ public class EvaluationBasisService {
             if (AssessReportFieldConstant.BASIS_ECONOMIC_BEHAVIOR.equals(basis.getFieldName())) {
                 DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.ENTRUSTING_PARTY);
                 stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{委托单位}", unit)).append("</p>");
+
+            }
+            //法律、法规、政策性文件依据
+            if (AssessReportFieldConstant.BASIS_FILE_GIST.equals(basis.getFieldName())) {
+                if(pledgeId.equals(projectInfo.getEntrustPurpose())){
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.BASIS_FILE_GIST_PLEDGE);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate()).append("</p>");
+                }else if(imposeId.equals(projectInfo.getEntrustPurpose())) {
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.BASIS_FILE_GIST_IMPOSE);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate()).append("</p>");
+                }
+            }
+            //估价技术标准依据
+            if (AssessReportFieldConstant.BASIS_TECHNICAL_STANDARD.equals(basis.getFieldName())) {
+                if(pledgeId.equals(projectInfo.getEntrustPurpose())){
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.BASIS_TECHNICAL_STANDARD_PLEDGE);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate()).append("</p>");
+                }
+            }
+            //估价委托人提供的有关资料
+            if (AssessReportFieldConstant.BASIS_PERTINENT_DATA.equals(basis.getFieldName())) {
+                if(pledgeId.equals(projectInfo.getEntrustPurpose())){
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.BASIS_PERTINENT_DATA_PLEDGE);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate()).append("</p>");
+                }else if(imposeId.equals(projectInfo.getEntrustPurpose())){
+                    StringBuilder damageContent = new StringBuilder();
+                    for (SchemeJudgeObject judgeObject : judgeObjectList) {
+                        //对应资产清查内容
+                        SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByDeclareId(judgeObject.getDeclareRecordId());
+                        if("不正常".equals(surveyAssetInventory.getRimIsNormal())){
+                            List<SurveyDamageDto> zoneDamegeList = JSON.parseArray(surveyAssetInventory.getZoneDamage(), SurveyDamageDto.class);
+                            damageContent.append(judgeObject.getNumber()).append("号委估对象区位损坏,");
+                            if(CollectionUtils.isNotEmpty(zoneDamegeList)){
+                                for (SurveyDamageDto dto : zoneDamegeList) {
+                                    damageContent.append("项目:").append(dto.getZoneProjectName()).append(",明细").append(dto.getZoneProjectItem()).append(";");
+                                }
+
+                            }
+                        }
+                        if("损坏".equals(surveyAssetInventory.getEntityIsDamage())){
+                            List<SurveyDamageDto> entityDamegeList = JSON.parseArray(surveyAssetInventory.getEntityDamage(), SurveyDamageDto.class);
+                            damageContent.append(judgeObject.getNumber()).append("号委估对象实体损坏,");
+                            if(CollectionUtils.isNotEmpty(entityDamegeList)){
+                                for (SurveyDamageDto dto : entityDamegeList) {
+                                    damageContent.append("项目:").append(dto.getEntityProjectName()).append(",明细").append(dto.getEntityProjectItem()).append(";");
+                                }
+
+                            }
+                        }
+                    }
+                        stringBuilder.append("（3）").append(damageContent);
+
+                }
 
             }
         }

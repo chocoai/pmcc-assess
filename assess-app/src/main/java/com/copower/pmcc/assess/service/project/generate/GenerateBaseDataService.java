@@ -1573,7 +1573,7 @@ public class GenerateBaseDataService {
                 result = evaluationHypothesisService.getReportHypothesis(this.projectInfo, areaId);
                 break;
             case BASIS:
-                result = evaluationBasisService.getReportBasic(this.projectInfo);
+                result = evaluationBasisService.getReportBasic(this.projectInfo, areaId);
                 break;
             case PRINCIPLE:
                 result = evaluationPrincipleService.getReportPrinciple(this.projectInfo, areaId);
@@ -1599,7 +1599,7 @@ public class GenerateBaseDataService {
         String result = "";
         switch (schemeSupportTypeEnum) {
             case REPORT_ANALYSIS_CATEGORY_LIQUIDITY:
-                result = dataReportAnalysisService.getReportLiquidity();
+                result = dataReportAnalysisService.getReportLiquidity(projectInfo, areaId);
                 break;
             case REPORT_ANALYSIS_CATEGORY_RISK:
                 result = dataReportAnalysisRiskService.getReportRisk();
