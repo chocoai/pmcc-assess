@@ -76,4 +76,13 @@ public class AssessReportFieldConstant {
     public static final String LAND_ENTITY_ANALYSIS = "land.entity.analysis";//土地实体分析
     public static final String LAND_ENTITY_ANALYSIS_HOUSES = "land.entity.analysis.houses";//土地实体分析
 
+    public static final String INDEPENDENCE_ANALYSIS = "independence.analysis";//独立性分析
+    public static final String INDEPENDENCE_ANALYSIS_INTACT = "independence.analysis.intact";//完好
+    public static final String INDEPENDENCE_ANALYSIS_DAMAGE = "independence.analysis.damage";//损坏
+
+    public static final String DIVISIBLE_ANALYSIS = "divisible.analysis";//可分割分析
+    public static final String DIVISIBLE_ANALYSIS_IMPARTIBILITY = "divisible.analysis.impartibility";//不可分
+    public static final String DIVISIBLE_ANALYSIS_DETACHABLE_CAN_RUSH = "divisible.analysis.detachable.can.rush";//可分（可办证）
+    public static final String DIVISIBLE_ANALYSIS_DETACHABLE_NOT_RUSH = "divisible.analysis.detachable.not.rush";//可分（不可办证）
+
 }

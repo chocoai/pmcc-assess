@@ -1,10 +1,12 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataReportAnalysisDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.data.SurveyDamageDto;
 import com.copower.pmcc.assess.dto.output.data.DataReportAnalysisVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -12,6 +14,7 @@ import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -61,6 +64,8 @@ public class DataReportAnalysisService {
     private DataBlockService dataBlockService;
     @Autowired
     private BasicEstateLandStateService basicEstateLandStateService;
+    @Autowired
+    private SurveyAssetInventoryService surveyAssetInventoryService;
 
     /**
      * 保存数据
@@ -241,6 +246,91 @@ public class DataReportAnalysisService {
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(plate.getTemplate().replace("#{估价对象号}",entry.getValue()).replace("#{区县}",erpAreaService.getSysAreaName(entry.getKey().getDistrict())).replace("#{楼盘名称}",entry.getKey().getName()).replace("#{土地实体结论}",landStateByEstateId.getConclusion())).append("</p>");
                 }
             }
+
+            //独立性分析
+            if (AssessReportFieldConstant.INDEPENDENCE_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
+                //完好委估对象
+                StringBuilder intact = new StringBuilder();
+
+                for (SchemeJudgeObject judgeObject : judgeObjectList) {
+                    StringBuilder damageContent = new StringBuilder();
+                    //对应资产清查内容
+                    SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByDeclareId(judgeObject.getDeclareRecordId());
+                    if(!"不正常".equals(surveyAssetInventory.getRimIsNormal()) && !"损坏".equals(surveyAssetInventory.getEntityIsDamage())){
+                        intact.append(judgeObject.getNumber()).append(",");
+                    }else {
+                        damageContent.append("损坏");
+                    }
+                    if ("不正常".equals(surveyAssetInventory.getRimIsNormal())) {
+                        List<SurveyDamageDto> zoneDamegeList = JSON.parseArray(surveyAssetInventory.getZoneDamage(), SurveyDamageDto.class);
+                        if(CollectionUtils.isNotEmpty(zoneDamegeList)){
+                            for (SurveyDamageDto dto : zoneDamegeList) {
+                                damageContent.append("项目:").append(dto.getZoneProjectName()).append(",明细").append(dto.getZoneProjectItem()).append(";");
+                            }
+
+                        }
+                    }
+                    if ("损坏".equals(surveyAssetInventory.getEntityIsDamage())) {
+                        List<SurveyDamageDto> entityDamegeList = JSON.parseArray(surveyAssetInventory.getEntityDamage(), SurveyDamageDto.class);
+                        if(CollectionUtils.isNotEmpty(entityDamegeList)){
+                            for (SurveyDamageDto dto : entityDamegeList) {
+                                damageContent.append("项目:").append(dto.getEntityProjectName()).append(",明细").append(dto.getEntityProjectItem()).append(";");
+                            }
+
+                        }
+                    }
+                    if (StringUtils.isNotBlank(damageContent)) {
+                        DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.INDEPENDENCE_ANALYSIS_DAMAGE);
+                        stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", judgeObject.getNumber()+"号").replace("#{区位状况损坏状况表}#{实体状况损坏状况表}；",damageContent)).append("</p>");
+                    }
+
+                }
+                if (StringUtils.isNotBlank(intact)) {
+                    String number = getSubstitutionPrincipleName(intact.toString());
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.INDEPENDENCE_ANALYSIS_INTACT);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number)).append("</p>");
+                }
+            }
+
+            //可分割分析
+            if (AssessReportFieldConstant.DIVISIBLE_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
+                //不可分
+                StringBuilder impartibility = new StringBuilder();
+                //可分可办证
+                StringBuilder detachableCanRush = new StringBuilder();
+                //可分不可办证
+                StringBuilder detachableNotRush = new StringBuilder();
+
+                for (SchemeJudgeObject judgeObject : judgeObjectList) {
+                    //对应资产清查内容
+                    SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByDeclareId(judgeObject.getDeclareRecordId());
+                    if("不可分".equals(surveyAssetInventory.getSegmentationLimit())){
+                        impartibility.append(judgeObject.getNumber()).append(",");
+                    }
+                    if("可分".equals(surveyAssetInventory.getSegmentationLimit())&&"可办证".equals(surveyAssetInventory.getCertificate())){
+                        detachableCanRush.append(judgeObject.getNumber()).append(",");
+                    }
+                    if("可分".equals(surveyAssetInventory.getSegmentationLimit())&&"不可办证".equals(surveyAssetInventory.getCertificate())){
+                        detachableNotRush.append(judgeObject.getNumber()).append(",");
+                    }
+                }
+                if (StringUtils.isNotBlank(impartibility)) {
+                    String number = getSubstitutionPrincipleName(impartibility.toString());
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.DIVISIBLE_ANALYSIS_IMPARTIBILITY);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number)).append("</p>");
+                }
+                if (StringUtils.isNotBlank(detachableCanRush)) {
+                    String number = getSubstitutionPrincipleName(detachableCanRush.toString());
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.DIVISIBLE_ANALYSIS_DETACHABLE_CAN_RUSH);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number)).append("</p>");
+                }
+                if (StringUtils.isNotBlank(detachableNotRush)) {
+                    String number = getSubstitutionPrincipleName(detachableNotRush.toString());
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.DIVISIBLE_ANALYSIS_DETACHABLE_NOT_RUSH);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number)).append("</p>");
+                }
+
+            }
         }
         return stringBuilder.toString();
     }
@@ -281,5 +371,16 @@ public class DataReportAnalysisService {
             map.put(basicEstate, number);
         }
         return map;
+    }
+
+    public String getSubstitutionPrincipleName(String str) {
+        String[] s = str.toString().split(",");
+        ArrayList<Integer> numbers = new ArrayList<>();
+        for (String item : s) {
+            if (!numbers.contains(Integer.valueOf(item))) {
+                numbers.add(Integer.valueOf(item));
+            }
+        }
+        return generateCommonMethod.convertNumber(numbers) + "号";
     }
 }
