@@ -70,4 +70,10 @@ public class AssessReportFieldConstant {
     public static final String DEVELOPMENT_LEVEL = "development.level";//开发程度分析
     public static final String BUILDING_PROFILE = "building.profile";//楼盘概况
 
+    public static final String LOCATION_ANALYSIS = "location.analysis";//估价对象区位分析
+    public static final String LOCATION_ANALYSIS_PLATE = "location.analysis.plate";//板块
+
+    public static final String LAND_ENTITY_ANALYSIS = "land.entity.analysis";//土地实体分析
+    public static final String LAND_ENTITY_ANALYSIS_HOUSES = "land.entity.analysis.houses";//土地实体分析
+
 }

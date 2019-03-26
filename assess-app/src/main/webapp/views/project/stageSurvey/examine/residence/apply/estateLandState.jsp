@@ -144,6 +144,13 @@
             <div class="col-sm-6 col-sm-offset-1" id="developmentDegreeContentContainer">
             </div>
         </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label">土地实体结论</label>
+            <div class="col-sm-11">
+                        <textarea class="form-control" name="conclusion"
+                                  placeholder="土地实体结论">${basicEstateLandState.conclusion}</textarea>
+            </div>
+        </div>
         <div class="x_title">开发限制条件</div>
         <div class="form-group">
             <div class="x-valid">
