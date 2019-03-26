@@ -1825,6 +1825,206 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
+        public Criteria andConclusionIsNull() {
+            addCriterion("conclusion is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionIsNotNull() {
+            addCriterion("conclusion is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionEqualTo(String value) {
+            addCriterion("conclusion =", value, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionNotEqualTo(String value) {
+            addCriterion("conclusion <>", value, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionGreaterThan(String value) {
+            addCriterion("conclusion >", value, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionGreaterThanOrEqualTo(String value) {
+            addCriterion("conclusion >=", value, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionLessThan(String value) {
+            addCriterion("conclusion <", value, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionLessThanOrEqualTo(String value) {
+            addCriterion("conclusion <=", value, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionLike(String value) {
+            addCriterion("conclusion like", value, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionNotLike(String value) {
+            addCriterion("conclusion not like", value, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionIn(List<String> values) {
+            addCriterion("conclusion in", values, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionNotIn(List<String> values) {
+            addCriterion("conclusion not in", values, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionBetween(String value1, String value2) {
+            addCriterion("conclusion between", value1, value2, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionNotBetween(String value1, String value2) {
+            addCriterion("conclusion not between", value1, value2, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoldOnIsNull() {
+            addCriterion("hold_on is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoldOnIsNotNull() {
+            addCriterion("hold_on is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoldOnEqualTo(String value) {
+            addCriterion("hold_on =", value, "holdOn");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoldOnNotEqualTo(String value) {
+            addCriterion("hold_on <>", value, "holdOn");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoldOnGreaterThan(String value) {
+            addCriterion("hold_on >", value, "holdOn");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoldOnGreaterThanOrEqualTo(String value) {
+            addCriterion("hold_on >=", value, "holdOn");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoldOnLessThan(String value) {
+            addCriterion("hold_on <", value, "holdOn");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoldOnLessThanOrEqualTo(String value) {
+            addCriterion("hold_on <=", value, "holdOn");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoldOnLike(String value) {
+            addCriterion("hold_on like", value, "holdOn");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoldOnNotLike(String value) {
+            addCriterion("hold_on not like", value, "holdOn");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoldOnIn(List<String> values) {
+            addCriterion("hold_on in", values, "holdOn");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoldOnNotIn(List<String> values) {
+            addCriterion("hold_on not in", values, "holdOn");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoldOnBetween(String value1, String value2) {
+            addCriterion("hold_on between", value1, value2, "holdOn");
+            return (Criteria) this;
+        }
+
+        public Criteria andHoldOnNotBetween(String value1, String value2) {
+            addCriterion("hold_on not between", value1, value2, "holdOn");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessIsNull() {
+            addCriterion("infrastructure_completeness is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessIsNotNull() {
+            addCriterion("infrastructure_completeness is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessEqualTo(Integer value) {
+            addCriterion("infrastructure_completeness =", value, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessNotEqualTo(Integer value) {
+            addCriterion("infrastructure_completeness <>", value, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessGreaterThan(Integer value) {
+            addCriterion("infrastructure_completeness >", value, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessGreaterThanOrEqualTo(Integer value) {
+            addCriterion("infrastructure_completeness >=", value, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessLessThan(Integer value) {
+            addCriterion("infrastructure_completeness <", value, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessLessThanOrEqualTo(Integer value) {
+            addCriterion("infrastructure_completeness <=", value, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessIn(List<Integer> values) {
+            addCriterion("infrastructure_completeness in", values, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessNotIn(List<Integer> values) {
+            addCriterion("infrastructure_completeness not in", values, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessBetween(Integer value1, Integer value2) {
+            addCriterion("infrastructure_completeness between", value1, value2, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessNotBetween(Integer value1, Integer value2) {
+            addCriterion("infrastructure_completeness not between", value1, value2, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

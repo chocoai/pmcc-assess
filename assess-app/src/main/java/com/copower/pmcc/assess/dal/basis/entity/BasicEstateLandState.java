@@ -55,6 +55,12 @@ public class BasicEstateLandState {
 
     private String fertility;
 
+    private String conclusion;
+
+    private String holdOn;
+
+    private Integer infrastructureCompleteness;
+
     private String creator;
 
     private Date gmtCreated;
@@ -267,6 +273,30 @@ public class BasicEstateLandState {
 
     public void setFertility(String fertility) {
         this.fertility = fertility == null ? null : fertility.trim();
+    }
+
+    public String getConclusion() {
+        return conclusion;
+    }
+
+    public void setConclusion(String conclusion) {
+        this.conclusion = conclusion == null ? null : conclusion.trim();
+    }
+
+    public String getHoldOn() {
+        return holdOn;
+    }
+
+    public void setHoldOn(String holdOn) {
+        this.holdOn = holdOn == null ? null : holdOn.trim();
+    }
+
+    public Integer getInfrastructureCompleteness() {
+        return infrastructureCompleteness;
+    }
+
+    public void setInfrastructureCompleteness(Integer infrastructureCompleteness) {
+        this.infrastructureCompleteness = infrastructureCompleteness;
     }
 
     public String getCreator() {
