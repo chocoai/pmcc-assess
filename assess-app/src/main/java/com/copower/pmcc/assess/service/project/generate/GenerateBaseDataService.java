@@ -111,6 +111,7 @@ public class GenerateBaseDataService {
     private DataReportAnalysisRiskService dataReportAnalysisRiskService;
     private SurveyAssetInventoryRightRecordService surveyAssetInventoryRightRecordService;
     private SurveyAssetInventoryRightRecordCenterService surveyAssetInventoryRightRecordCenterService;
+    private GenerateLoactionService generateLoactionService;
 
     /**
      * 构造器必须传入的参数
@@ -1088,7 +1089,7 @@ public class GenerateBaseDataService {
         List<SurveyAssetInventoryRightRecord> surveyAssetInventoryRightRecordList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             schemeJudgeObjectList.stream().forEach(schemeJudgeObject -> {
-                surveyAssetInventoryRightRecordList.addAll(surveyAssetInventoryRightRecordService.getSurveyAssetInventoryRightRecordByDeclareRecord(schemeJudgeObject.getDeclareRecordId(),projectId));
+                surveyAssetInventoryRightRecordList.addAll(surveyAssetInventoryRightRecordService.getSurveyAssetInventoryRightRecordByDeclareRecord(schemeJudgeObject.getDeclareRecordId(), projectId));
             });
         }
         int row = 0;
@@ -3152,398 +3153,70 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getJudgeObjectAreaStatusSheet() throws Exception {
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), true);
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
         Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
-        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
-                .stream()
-                .filter(projectPhaseVo -> {
-                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
-                        return false;
-                    }
-                    return false;
-                }).collect(Collectors.toList());
-        builder.writeln("估价对象区位状况表");
-        if (CollectionUtils.isNotEmpty(projectPhases)) {
-            for (ProjectPhase projectPhaseScene : projectPhases) {
-                if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-                    for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(i);
-                        ProjectPlanDetails query = new ProjectPlanDetails();
-                        query.setProjectId(projectId);
-                        query.setProjectPhaseId(projectPhaseScene.getId());
-                        query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                        DeclareRecord declareRecord = null;
-                        if (schemeJudgeObject.getDeclareRecordId() != null) {
-                            declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-                        }
-                        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                            for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                                GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
-                                if (generateBaseExamineService.getBasicApply().getId() != null) {
-                                    try {
-                                        for (int j = 0; j < 5; j++) {
-                                            switch (j) {
-                                                case 0:
-                                                    builder.writeln(String.format("%d%s", (j + 1), "位置状况包括:"));
-                                                    if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getSeat())) {
-                                                        builder.writeln(String.format("%s%s", "坐落:", declareRecord.getSeat()));
-                                                    } else {
-                                                        builder.writeln(String.format("%s%s", "坐落:", "无"));
-                                                    }
-                                                    String position = "";
-                                                    try {
-                                                        if (generateBaseExamineService.getByDataBlock() != null && generateBaseExamineService.getByDataBlock().getId() != null) {
-                                                            position = generateBaseExamineService.getByDataBlock().getPosition();
-                                                        }
-                                                    } catch (Exception e) {
-                                                        //未知异常
-                                                    }
-                                                    if (StringUtils.isNotBlank(position)) {
-                                                        builder.writeln(String.format("%s%s", "方位:", position));
-                                                    } else {
-                                                        builder.writeln(String.format("%s%s", "方位:", "无"));
-                                                    }
-                                                    builder.writeln(String.format("%s%s", "与重要场所的距离:", "0"));
-                                                    if (true) {
-                                                        List<BasicHouseFaceStreetVo> list = generateBaseExamineService.getBasicHouseFaceStreetList();
-                                                        StringBuilder stringBuilder = new StringBuilder(16);
-                                                        if (CollectionUtils.isNotEmpty(list)) {
-                                                            for (BasicHouseFaceStreetVo faceStreet : list) {
-                                                                stringBuilder.append(faceStreet.getStreetName())
-                                                                        .append(faceStreet.getStreetLevelName())
-                                                                        .append(faceStreet.getTrafficFlowName()).append(faceStreet.getVisitorsFlowrateName());
-                                                            }
-                                                            //临街（路）状况
-                                                            if (StringUtils.isNotBlank(stringBuilder.toString())) {
-                                                                builder.writeln(String.format("%s%s", "临街（路）状况:", stringBuilder.toString()));
-                                                            } else {
-                                                                builder.writeln(String.format("%s%s", "临街（路）状况:", "无"));
-                                                            }
-                                                            stringBuilder.delete(0, stringBuilder.toString().length());
-                                                            //人流量
-                                                            list.stream().forEach(faceStreet -> {
-                                                                if (faceStreet.getVisitorsFlowrate() != null) {
-                                                                    stringBuilder.append(baseDataDicService.getNameById(faceStreet.getVisitorsFlowrate()));
-                                                                }
-                                                            });
-                                                            if (StringUtils.isNotBlank(stringBuilder.toString())) {
-                                                                builder.writeln(String.format("%s%s", "人流量:", stringBuilder.toString()));
-                                                            } else {
-                                                                builder.writeln(String.format("%s%s", "人流量:", "无"));
-                                                            }
-                                                        }
-                                                    }
-                                                    if (generateBaseExamineService.getBasicBuilding() != null && StringUtils.isNotBlank(generateBaseExamineService.getBasicBuilding().getBuildingNumber())) {
-                                                        builder.writeln(String.format("%s%s", "楼栋:", generateBaseExamineService.getBasicBuilding().getBuildingNumber()));
-                                                    } else {
-                                                        builder.writeln(String.format("%s%s", "楼栋:", "无"));
-                                                    }
-                                                    if (generateBaseExamineService.getBasicBuilding() != null && generateBaseExamineService.getBasicBuilding().getFloorCount() != null) {
-                                                        builder.writeln(String.format("%s%s", "楼层:", generateBaseExamineService.getBasicBuilding().getFloorCount().toString()));
-                                                    } else {
-                                                        builder.writeln(String.format("%s%s", "楼层:", "无"));
-                                                    }
-                                                    if (generateBaseExamineService.getBasicBuilding() != null && generateBaseExamineService.getBasicHouse().getOrientation() != null) {
-                                                        builder.writeln(String.format("%s%s", "朝向:", baseDataDicService.getNameById(generateBaseExamineService.getBasicHouse().getOrientation())));
-                                                    } else {
-                                                        builder.writeln(String.format("%s%s", "朝向:", "无"));
-                                                    }
-                                                    builder.writeln(String.format("%s%s", "商业繁华度:", "估价对象所在区域为规划新城区，区域商业待发展，目前以超市、零售商店为主，商业繁华度一般"));
-                                                    break;
-                                                case 1:
-                                                    builder.writeln(String.format("%d%s", (j + 1), "交通状况包括:"));
-                                                    if (true) {
-                                                        StringBuilder stringBuilder = new StringBuilder(16);
-                                                        List<BasicMatchingTrafficVo> voList = generateBaseExamineService.getBasicMatchingTrafficList();
-                                                        if (CollectionUtils.isNotEmpty(voList)) {
-                                                            voList.stream().forEach(basicMatchingTrafficVo -> {
-                                                                stringBuilder.append(basicMatchingTrafficVo.getName())
-                                                                        .append(basicMatchingTrafficVo.getNatureName())
-                                                                        .append(basicMatchingTrafficVo.getDistanceName());
-                                                            });
-                                                        }
-                                                        if (StringUtils.isNotBlank(stringBuilder.toString())) {
-                                                            builder.writeln(String.format("%s%s", "道路状况:", stringBuilder.toString()));
-                                                        } else {
-                                                            builder.writeln(String.format("%s%s", "道路状况:", "无"));
-                                                        }
-                                                    }
-                                                    if (true) {
-                                                        List<BasicMatchingTrafficVo> matchingTrafficVoList = generateBaseExamineService.getBasicMatchingTrafficList();
-                                                        StringBuilder stringBuilder = new StringBuilder(16);
-                                                        if (CollectionUtils.isNotEmpty(matchingTrafficVoList)) {
-                                                            long a = matchingTrafficVoList.stream().filter(basicMatchingTrafficVo -> {
-                                                                if (Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.METRO.getName())) {
-                                                                    return true;
-                                                                }
-                                                                return false;
-                                                            }).count();
-                                                            long b = matchingTrafficVoList.stream().filter(basicMatchingTrafficVo -> {
-                                                                if (Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.TRANSIT.getName())) {
-                                                                    return true;
-                                                                }
-                                                                return false;
-                                                            }).count();
-                                                            if (a > 0) {
-                                                                stringBuilder.append("地铁 ");
-                                                            }
-                                                            if (b > 0) {
-                                                                stringBuilder.append("公交 ");
-                                                            }
-                                                        }
-                                                        if (StringUtils.isNotBlank(stringBuilder.toString())) {
-                                                            builder.writeln(String.format("%s%s", "出入可利用的交通工具:", stringBuilder.toString()));
-                                                        } else {
-                                                            builder.writeln(String.format("%s%s", "出入可利用的交通工具:", "无"));
-                                                        }
-                                                    }
-                                                    builder.writeln(String.format("%s%s", "交通管制情况:", "无"));
-                                                    builder.writeln(String.format("%s%s", "停车方便度:", "无"));
-                                                    builder.writeln(String.format("%s%s", "交通收费情况:", "无"));
-                                                    break;
-                                                case 2:
-                                                    builder.writeln(String.format("%d%s", (j + 1), "外部配套设施:"));
-                                                    if (true) {
-                                                        List<BasicEstateSupply> estateSupplyList = generateBaseExamineService.getBasicEstateSupplyList();
-                                                        StringBuilder stringBuilder = new StringBuilder(16);
-                                                        //楼盘下供电
-                                                        if (CollectionUtils.isNotEmpty(estateSupplyList)) {
-                                                            for (BasicEstateSupply supply : estateSupplyList) {
-                                                                if (org.apache.commons.lang.StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getName())) {
-                                                                    generateBaseExamineService.getCommonSupply(stringBuilder, supply);
-                                                                }
-                                                            }
-                                                        }
-                                                        //楼盘下供水
-                                                        if (CollectionUtils.isNotEmpty(estateSupplyList)) {
-                                                            for (BasicEstateSupply supply : estateSupplyList) {
-                                                                if (org.apache.commons.lang.StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_WATER.getName())) {
-                                                                    generateBaseExamineService.getCommonSupply(stringBuilder, supply);
-                                                                }
-                                                            }
-                                                        }
-                                                        //楼盘下排水
-                                                        if (CollectionUtils.isNotEmpty(estateSupplyList)) {
-                                                            for (BasicEstateSupply supply : estateSupplyList) {
-                                                                if (org.apache.commons.lang.StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_DRAIN_WATER.getName())) {
-                                                                    generateBaseExamineService.getCommonSupply(stringBuilder, supply);
-                                                                }
-                                                            }
-                                                        }
-                                                        //楼盘下采暖供热
-                                                        if (CollectionUtils.isNotEmpty(estateSupplyList)) {
-                                                            for (BasicEstateSupply supply : estateSupplyList) {
-                                                                if (org.apache.commons.lang.StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_HEATING.getName())) {
-                                                                    generateBaseExamineService.getCommonSupply(stringBuilder, supply);
-                                                                }
-                                                            }
-                                                        }
-                                                        //楼盘下供气
-                                                        if (CollectionUtils.isNotEmpty(estateSupplyList)) {
-                                                            for (BasicEstateSupply supply : estateSupplyList) {
-                                                                if (org.apache.commons.lang.StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATE_SUPPLY_GAS.getName())) {
-                                                                    generateBaseExamineService.getCommonSupply(stringBuilder, supply);
-                                                                }
-                                                            }
-                                                        }
-                                                        if (StringUtils.isNotBlank(stringBuilder.toString())) {
-                                                            builder.writeln(String.format("%s%s", "外部基础设施:", stringBuilder.toString()));
-                                                        } else {
-                                                            builder.writeln(String.format("%s%s", "外部基础设施:", "无"));
-                                                        }
-                                                    }
-                                                    break;
-                                                case 3:
-                                                    builder.writeln(String.format("%d%s", (j + 1), "外部公共服务设施:"));
-                                                    if (true) {
-                                                        StringBuilder stringBuilder = new StringBuilder(16);
-                                                        List<BasicMatchingLeisurePlace> leisurePlaceList = generateBaseExamineService.getBasicMatchingLeisurePlaceList();
-                                                        if (CollectionUtils.isNotEmpty(leisurePlaceList)) {
-                                                            for (BasicMatchingLeisurePlace leisurePlace : leisurePlaceList) {
-                                                                if (Objects.equal(leisurePlace.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())) {
-                                                                    stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(leisurePlace.getName()) ? "" : String.format("名称:%s；", leisurePlace.getName()));
-                                                                    stringBuilder.append(leisurePlace.getCategory() == null ? "" : String.format("类别:%s；", baseDataDicService.getNameById(leisurePlace.getCategory())));
-                                                                    stringBuilder.append(leisurePlace.getGrade() == null ? "" : String.format("档次:%s；", baseDataDicService.getNameById(leisurePlace.getGrade())));
-                                                                    stringBuilder.append(leisurePlace.getDistance() == null ? "" : String.format("距离:%s；", baseDataDicService.getNameById(leisurePlace.getDistance())));
-                                                                }
-                                                            }
-                                                        }
-                                                        if (StringUtils.isNotBlank(stringBuilder.toString())) {
-                                                            builder.writeln(String.format("%s%s", "购物:", stringBuilder.toString()));
-                                                        } else {
-                                                            builder.writeln(String.format("%s%s", "购物:", "无"));
-                                                        }
-                                                    }
-                                                    //银行 | 金融机构
-                                                    if (true) {
-                                                        StringBuilder stringBuilder = new StringBuilder(16);
-                                                        List<BasicMatchingFinanceVo> financeList = generateBaseExamineService.getBasicMatchingFinanceList();
-                                                        if (CollectionUtils.isNotEmpty(financeList)) {
-                                                            for (BasicMatchingFinance finance : financeList) {
-                                                                stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(finance.getName()) ? "" : String.format("名称:%s；", finance.getName()));
-                                                                stringBuilder.append(finance.getCategory() == null ? "" : String.format("类别:%s；", baseDataDicService.getNameById(finance.getCategory())));
-                                                                stringBuilder.append(finance.getNature() == null ? "" : String.format("金融机构性质:%s；", baseDataDicService.getNameById(finance.getNature())));
-                                                                stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(finance.getName()) ? "" : String.format("服务内容:%s；", finance.getName()));
-                                                            }
-                                                        }
-                                                        if (StringUtils.isNotBlank(stringBuilder.toString())) {
-                                                            builder.writeln(String.format("%s%s", "银行:", stringBuilder.toString()));
-                                                        } else {
-                                                            builder.writeln(String.format("%s%s", "银行:", "无"));
-                                                        }
-                                                    }
-                                                    //教育文化
-                                                    if (true) {
-                                                        StringBuilder stringBuilder = new StringBuilder(16);
-                                                        List<BasicMatchingEducation> educationList = generateBaseExamineService.getBasicMatchingEducatioListn();
-                                                        if (CollectionUtils.isNotEmpty(educationList)) {
-                                                            for (BasicMatchingEducation matchingEducation : educationList) {
-                                                                stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(matchingEducation.getSchoolName()) ? "" : String.format("学校名称:%s；", matchingEducation.getSchoolName()));
-                                                                stringBuilder.append(matchingEducation.getSchoolNature() == null ? "" : String.format("学校性质:%s；", baseDataDicService.getNameById(matchingEducation.getSchoolNature())));
-                                                                stringBuilder.append(matchingEducation.getSchoolGradation() == null ? "" : String.format("学校级次:%s；", baseDataDicService.getNameById(matchingEducation.getSchoolGradation())));
-                                                                stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(matchingEducation.getSchoolLevel()) ? "" : String.format("学校等级:%s；", baseDataDicService.getNameById(Integer.valueOf(matchingEducation.getSchoolLevel()))));
-                                                                stringBuilder.append(matchingEducation.getDistance() == null ? "" : String.format("距离:%s；", baseDataDicService.getNameById(matchingEducation.getDistance())));
-                                                            }
-                                                        }
-                                                        if (StringUtils.isNotBlank(stringBuilder.toString())) {
-                                                            builder.writeln(String.format("%s%s", "教育文化:", stringBuilder.toString()));
-                                                        } else {
-                                                            builder.writeln(String.format("%s%s", "教育文化:", "无"));
-                                                        }
-                                                    }
-                                                    //医疗康养
-                                                    if (true) {
-                                                        List<BasicMatchingMedical> matchingMedicalList = generateBaseExamineService.getBasicMatchingMedicalList();
-                                                        if (CollectionUtils.isNotEmpty(matchingMedicalList)) {
-                                                            StringBuilder stringBuilder = new StringBuilder(16);
-                                                            matchingMedicalList.stream().forEach(basicMatchingMedical -> {
-                                                                stringBuilder.append(basicMatchingMedical.getOrganizationName());
-                                                                stringBuilder.append(" ");
-                                                                stringBuilder.append(baseDataDicService.getNameById(basicMatchingMedical.getOrganizationLevel())).append(" ");
-                                                                stringBuilder.append(baseDataDicService.getNameById(basicMatchingMedical.getBedNumber())).append(" ");
-                                                                stringBuilder.append(baseDataDicService.getNameById(basicMatchingMedical.getDistance())).append(" ");
-                                                            });
-                                                            if (StringUtils.isNotBlank(stringBuilder.toString())) {
-                                                                builder.writeln(String.format("%s%s", "医疗康养:", stringBuilder.toString()));
-                                                            } else {
-                                                                builder.writeln(String.format("%s%s", "医疗康养:", "无"));
-                                                            }
-                                                        } else {
-                                                            builder.writeln(String.format("%s%s", "医疗康养:", "无"));
-                                                        }
-                                                    }
-                                                    if (true) {
-                                                        StringBuilder stringBuilder = new StringBuilder(16);
-                                                        List<BasicMatchingLeisurePlace> leisurePlaceList = generateBaseExamineService.getBasicMatchingLeisurePlaceList();
-                                                        if (CollectionUtils.isNotEmpty(leisurePlaceList)) {
-                                                            //娱乐休闲
-                                                            for (BasicMatchingLeisurePlace leisurePlace : leisurePlaceList) {
-                                                                if (Objects.equal(leisurePlace.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getKey())) {
-                                                                    stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(leisurePlace.getName()) ? "" : String.format("名称:%s；", leisurePlace.getName()));
-                                                                    stringBuilder.append(leisurePlace.getCategory() == null ? "" : String.format("类别:%s；", baseDataDicService.getNameById(leisurePlace.getCategory())));
-                                                                    stringBuilder.append(leisurePlace.getGrade() == null ? "" : String.format("档次:%s；", baseDataDicService.getNameById(leisurePlace.getGrade())));
-                                                                    stringBuilder.append(leisurePlace.getDistance() == null ? "" : String.format("距离:%s；", baseDataDicService.getNameById(leisurePlace.getDistance())));
-                                                                }
-                                                            }
-                                                            if (StringUtils.isNotBlank(stringBuilder.toString())) {
-                                                                builder.writeln(String.format("%s%s", "娱乐休闲:", stringBuilder.toString()));
-                                                            } else {
-                                                                builder.writeln(String.format("%s%s", "娱乐休闲:", "无"));
-                                                            }
-                                                            stringBuilder.delete(0, stringBuilder.toString().length());
-                                                            //餐饮文化
-                                                            for (BasicMatchingLeisurePlace leisurePlace : leisurePlaceList) {
-                                                                if (Objects.equal(leisurePlace.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getKey())) {
-                                                                    stringBuilder.append(org.apache.commons.lang.StringUtils.isEmpty(leisurePlace.getName()) ? "" : String.format("名称:%s；", leisurePlace.getName()));
-                                                                    stringBuilder.append(leisurePlace.getCategory() == null ? "" : String.format("类别:%s；", baseDataDicService.getNameById(leisurePlace.getCategory())));
-                                                                    stringBuilder.append(leisurePlace.getGrade() == null ? "" : String.format("档次:%s；", baseDataDicService.getNameById(leisurePlace.getGrade())));
-                                                                    stringBuilder.append(leisurePlace.getDistance() == null ? "" : String.format("距离:%s；", baseDataDicService.getNameById(leisurePlace.getDistance())));
-                                                                }
-                                                            }
-                                                            if (StringUtils.isNotBlank(stringBuilder.toString())) {
-                                                                builder.writeln(String.format("%s%s", "餐饮文化:", stringBuilder.toString()));
-                                                            } else {
-                                                                builder.writeln(String.format("%s%s", "餐饮文化:", "无"));
-                                                            }
-                                                        } else {
-                                                            builder.writeln(String.format("%s%s", "娱乐休闲:", "无"));
-                                                            builder.writeln(String.format("%s%s", "餐饮文化:", "无"));
-                                                        }
-                                                    }
-                                                    break;
-                                                case 4:
-                                                    builder.writeln(String.format("%d%s", (j + 1), "周围环境:"));
-                                                    //自然环境
-                                                    if (true) {
-                                                        StringBuilder stringBuilder = new StringBuilder(16);
-                                                        List<BasicMatchingEnvironmentVo> environmentList = generateBaseExamineService.getBasicMatchingEnvironmentList();
-                                                        if (CollectionUtils.isNotEmpty(environmentList)) {
-                                                            BaseDataDic naturalDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.ESTATE_ENVIRONMENT_TYPE_NATURAL);
-                                                            for (BasicMatchingEnvironment examineMatchingEnvironment : environmentList) {
-                                                                generateBaseExamineService.getEnvironmentString(stringBuilder, naturalDic, examineMatchingEnvironment);
-                                                            }
-                                                        }
-                                                        if (StringUtils.isNotBlank(stringBuilder.toString())) {
-                                                            builder.writeln(String.format("%s%s", "自然环境:", stringBuilder.toString()));
-                                                        } else {
-                                                            builder.writeln(String.format("%s%s", "自然环境:", "无"));
-                                                        }
-                                                    }
-                                                    //人文环境
-                                                    if (true) {
-                                                        StringBuilder stringBuilder = new StringBuilder(16);
-                                                        List<BasicMatchingEnvironmentVo> environmentList = generateBaseExamineService.getBasicMatchingEnvironmentList();
-                                                        if (CollectionUtils.isNotEmpty(environmentList)) {
-                                                            BaseDataDic culturalDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.ESTATE_ENVIRONMENT_TYPE_CULTURAL);
-                                                            for (BasicMatchingEnvironment examineMatchingEnvironment : environmentList) {
-                                                                generateBaseExamineService.getEnvironmentString(stringBuilder, culturalDic, examineMatchingEnvironment);
-                                                            }
-                                                        }
-                                                        if (StringUtils.isNotBlank(stringBuilder.toString())) {
-                                                            builder.writeln(String.format("%s%s", "人文环境:", stringBuilder.toString()));
-                                                        } else {
-                                                            builder.writeln(String.format("%s%s", "人文环境:", "无"));
-                                                        }
-                                                    }
-                                                    //景观
-                                                    if (true) {
-                                                        List<BasicMatchingEnvironmentVo> environmentList = generateBaseExamineService.getBasicMatchingEnvironmentList();
-                                                        StringBuilder stringBuilder = new StringBuilder(16);
-                                                        if (CollectionUtils.isNotEmpty(environmentList)) {
-                                                            BaseDataDic sceneryDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.ESTATE_ENVIRONMENT_TYPE_SCENERY);
-                                                            for (BasicMatchingEnvironment examineMatchingEnvironment : environmentList) {
-                                                                generateBaseExamineService.getEnvironmentString(stringBuilder, sceneryDic, examineMatchingEnvironment);
-                                                            }
-                                                        }
-                                                        if (StringUtils.isNotBlank(stringBuilder.toString())) {
-                                                            builder.writeln(String.format("%s%s", "景观:", stringBuilder.toString()));
-                                                        } else {
-                                                            builder.writeln(String.format("%s%s", "景观:", "无"));
-                                                        }
-                                                    }
-                                                    builder.writeln(String.format("%s%s", "区位综述:", "无"));
-                                                    break;
-                                                default:
-                                                    break;
-                                            }
-                                        }
-                                        builder.writeln();
-                                    } catch (Exception e1) {
-                                        //允许exception
-                                    }
-                                }
-                            }
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
+        LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = Maps.newLinkedHashMap();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && projectPhase != null) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                ProjectPlanDetails query = new ProjectPlanDetails();
+                query.setProjectId(projectId);
+                query.setProjectPhaseId(projectPhase.getId());
+                query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+                List<ProjectPlanDetails> projectDetails = projectPlanDetailsService.getProjectDetails(query);
+                if (CollectionUtils.isNotEmpty(projectDetails)) {
+                    for (ProjectPlanDetails projectPlanDetails : projectDetails) {
+                        GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
+                        BasicApply basicApply = generateBaseExamineService.getBasicApply();
+                        if (basicApply != null && basicApply.getId() != null) {
+                            schemeJudgeObjectLinkedHashMap.put(basicApply, schemeJudgeObject);
                         }
                     }
                 }
             }
+        }
+        documentBuilder.writeln("估价对象区位状况表");
+        for (Map.Entry<BasicApply, SchemeJudgeObject> schemeJudgeObjectEntry : schemeJudgeObjectLinkedHashMap.entrySet()) {
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectEntry.getValue();
+            BasicApply basicApply = schemeJudgeObjectEntry.getKey();
+            documentBuilder.writeln("1:位置状况");
+            documentBuilder.writeln(String.format("坐落:%s", generateLoactionService.getSeat(schemeJudgeObject.getDeclareRecordId(),basicApply.getId())));
+            documentBuilder.writeln(String.format("方位:%s", generateLoactionService.getPosition(basicApply.getId())));
+            documentBuilder.writeln(String.format("与重要场所的距离:%s", generateLoactionService.getWithImportantLocationDistance(basicApply.getId())));
+            documentBuilder.writeln(String.format("临街（路）状况:%s", generateLoactionService.getFaceStreet(basicApply)));
+            //楼层
+            List<Integer> judgeObjectIds = Lists.newArrayList();
+            if (schemeJudgeObject.getBisMerge()){
+                List<SchemeJudgeObject> schemeJudgeObjects = schemeJudgeObjectService.getChildrenJudgeObject(schemeJudgeObject.getId());
+                schemeJudgeObjects.add(schemeJudgeObject);
+                schemeJudgeObjects.stream().forEach(schemeJudgeObject1 -> judgeObjectIds.add(schemeJudgeObject1.getId()));
+            }else {
+                judgeObjectIds.add(schemeJudgeObject.getId());
+            }
+            documentBuilder.writeln(String.format("楼层:%s", generateLoactionService.getFloor(judgeObjectIds)));
+            documentBuilder.writeln(String.format("朝向:%s", generateLoactionService.getOrientation(basicApply)));
+            documentBuilder.writeln("2:交通状况包括");
+            documentBuilder.writeln(String.format("道路状况:%s", generateLoactionService.getRoadCondition(basicApply)));
+            documentBuilder.writeln(String.format("出入可利用的交通工具:%s", generateLoactionService.getAccessAvailableMeansTransport(basicApply)));
+            documentBuilder.writeln(String.format("交通管制情况:%s", generateLoactionService.getTrafficControl(basicApply)));
+            documentBuilder.writeln(String.format("停车方便度:%s", generateLoactionService.getParkingConvenience(basicApply)));
+            documentBuilder.writeln(String.format("交通收费情况:%s", generateLoactionService.getTrafficCharges(basicApply)));
+            documentBuilder.writeln("3:外部基础设施");
+            documentBuilder.writeln(String.format("%s", generateLoactionService.getExternalInfrastructure(basicApply)));
+            documentBuilder.writeln("4:外部公共服务设施");
+            documentBuilder.writeln(String.format("%s", generateLoactionService.getExternalPublicServiceFacilities(basicApply)));
+            documentBuilder.writeln("5:周围环境");
+            documentBuilder.writeln("5.1:自然要素");
+            documentBuilder.writeln(String.format("%s",generateLoactionService.getEnvironmentalScience(basicApply,EnvironmentalScienceEnum.NATURAL)));
+            documentBuilder.writeln("5.2:人文环境要素");
+            documentBuilder.writeln(String.format("%s",generateLoactionService.getEnvironmentalScience(basicApply,EnvironmentalScienceEnum.HUMANITY)));
+            documentBuilder.writeln("5.3:景观");
+            documentBuilder.writeln(String.format("%s",generateLoactionService.getEnvironmentalScience(basicApply,EnvironmentalScienceEnum.SCENERY)));
+            documentBuilder.writeln("6:综述");
+            documentBuilder.writeln(String.format("%s", generateLoactionService.content(schemeJudgeObject,basicApply)));
+            documentBuilder.writeln();
         }
         doc.save(localPath);
         return localPath;
@@ -4425,7 +4098,7 @@ public class GenerateBaseDataService {
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
                         imgPathList.add(imgPath);
                     }
-                    AsposeUtils.imageInsertToWrod(imgPathList,2,builder);
+                    AsposeUtils.imageInsertToWrod(imgPathList, 2, builder);
                 }
             }
         }
@@ -4449,12 +4122,12 @@ public class GenerateBaseDataService {
                 List<SysAttachmentDto> fileList = schemeReportFileService.getCustomFileList(schemeReportFileCustom.getId());
                 if (CollectionUtils.isNotEmpty(fileList)) {
                     builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("<span style=\"text-indent:2em\">%s</span>", schemeReportFileCustom.getName())), true);
-                    imgPathList=Lists.newArrayList();
+                    imgPathList = Lists.newArrayList();
                     for (SysAttachmentDto sysAttachmentDto : fileList) {
                         String imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
                         imgPathList.add(imgPath);
                     }
-                    AsposeUtils.imageInsertToWrod(imgPathList,2,builder);
+                    AsposeUtils.imageInsertToWrod(imgPathList, 2, builder);
                 }
             }
         }
@@ -5378,6 +5051,7 @@ public class GenerateBaseDataService {
         this.dataReportAnalysisRiskService = SpringContextUtils.getBean(DataReportAnalysisRiskService.class);
         this.surveyAssetInventoryRightRecordService = SpringContextUtils.getBean(SurveyAssetInventoryRightRecordService.class);
         this.surveyAssetInventoryRightRecordCenterService = SpringContextUtils.getBean(SurveyAssetInventoryRightRecordCenterService.class);
+        this.generateLoactionService = SpringContextUtils.getBean(GenerateLoactionService.class);
 
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);

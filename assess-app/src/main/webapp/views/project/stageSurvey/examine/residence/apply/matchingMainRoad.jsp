@@ -70,32 +70,32 @@
                                     <div class="form-group">
                                         <div class="x-valid">
                                             <label class="col-sm-2 control-label">
-                                                限行速度<span class="symbol required"></span>
+                                                限行速度
                                             </label>
                                             <div class="col-sm-10">
                                                 <input type="text" class="form-control" name="limitSpeed"
-                                                       placeholder="限行速度" required="required">
+                                                       placeholder="限行速度">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="x-valid">
                                             <label class="col-sm-2 control-label">
-                                                限行时间<span class="symbol required"></span>
+                                                限行时间
                                             </label>
                                             <div class="col-sm-10">
                                                 <input type="text" class="form-control" name="limitTime"
-                                                       placeholder="限行时间" required="required">
+                                                       placeholder="限行时间" >
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="x-valid">
                                             <label class="col-sm-2 control-label">
-                                                特殊限行<span class="symbol required"></span>
+                                                特殊限行
                                             </label>
                                             <div class="col-sm-10">
-                                                <select required="required" name="limitSpeial" class="form-control search-select select2 limitSpeial">
+                                                <select  name="limitSpeial" class="form-control search-select select2 limitSpeial">
                                                 </select>
                                             </div>
                                         </div>

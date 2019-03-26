@@ -128,6 +128,9 @@ commonColumn.matchingMainRoadColumn = function () {
     cols.push({field: 'name', title: '名称'});
     cols.push({field: 'distanceName', title: '距离'});
     cols.push({field: 'limitSpeialName', title: '特殊限行'});
+    cols.push({field: 'limitSpeed', title: '限行速度'});
+    cols.push({field: 'limitTime', title: '限行时间'});
+    cols.push({field: 'limitName', title: '是否限行'});
     return cols;
 }
 

@@ -109,7 +109,7 @@ public class GenerateBaseExamineService {
         List<BasicMatchingFinanceVo> vos = Lists.newArrayList();
         List<BasicMatchingFinance> financeList = basicMatchingFinanceService.getBasicMatchingFinanceList(getEstate().getId());
         if (CollectionUtils.isNotEmpty(financeList)){
-            financeList.parallelStream().forEach(basicMatchingFinance -> {
+            financeList.stream().forEach(basicMatchingFinance -> {
                 vos.add(basicMatchingFinanceService.getBasicMatchingFinanceVo(basicMatchingFinance));
             });
         }
@@ -280,7 +280,24 @@ public class GenerateBaseExamineService {
     }
 
     public GenerateBaseExamineService(Integer planDetailsId) {
+        init();
         this.planDetailsId = planDetailsId;
+        BasicApply apply = basicApplyService.getBasicApplyByPlanDetailsId(planDetailsId);
+        if (apply == null) {
+            apply = new BasicApply();
+            apply.setPlanDetailsId(planDetailsId);
+            logger.error("获取数据异常!", new Exception());
+        }
+        this.basicApply = apply;
+    }
+
+    public GenerateBaseExamineService(BasicApply apply){
+        init();
+        this.planDetailsId = apply.getPlanDetailsId();
+        this.basicApply = apply;
+    }
+
+    private void init(){
         this.basicApplyService = SpringContextUtils.getBean(BasicApplyService.class);
 
         this.basicHouseService = SpringContextUtils.getBean(BasicHouseService.class);
@@ -321,14 +338,6 @@ public class GenerateBaseExamineService {
         this.basicMatchingMaterialService = SpringContextUtils.getBean(BasicMatchingMaterialService.class);
         this.dataBlockService = SpringContextUtils.getBean(DataBlockService.class);
         this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
-
-        BasicApply apply = basicApplyService.getBasicApplyByPlanDetailsId(planDetailsId);
-        if (apply == null) {
-            apply = new BasicApply();
-            apply.setPlanDetailsId(planDetailsId);
-            logger.error("获取数据异常!", new Exception());
-        }
-        this.basicApply = apply;
     }
 
     private GenerateBaseExamineService() {
