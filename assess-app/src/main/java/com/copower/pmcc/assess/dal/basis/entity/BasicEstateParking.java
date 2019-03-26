@@ -11,6 +11,8 @@ public class BasicEstateParking {
 
     private Integer parkingType;
 
+    private Integer parkingEstate;
+
     private Integer location;
 
     private String creator;
@@ -49,6 +51,14 @@ public class BasicEstateParking {
 
     public void setParkingType(Integer parkingType) {
         this.parkingType = parkingType;
+    }
+
+    public Integer getParkingEstate() {
+        return parkingEstate;
+    }
+
+    public void setParkingEstate(Integer parkingEstate) {
+        this.parkingEstate = parkingEstate;
     }
 
     public Integer getLocation() {

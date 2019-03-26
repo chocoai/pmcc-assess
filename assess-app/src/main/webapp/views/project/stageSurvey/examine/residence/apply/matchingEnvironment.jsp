@@ -53,7 +53,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            影响因素<span class="symbol required"></span>
+                                            影响要素<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="category" class="form-control category">
@@ -76,7 +76,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            描述
+                                            影响源描述
                                         </label>
                                         <div class="col-sm-10">
                                             <textarea name="remark" class="form-control"></textarea>

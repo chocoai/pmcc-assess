@@ -11,6 +11,7 @@ public class BasicEstateParkingVo extends BasicEstateParking {
     private String fileViewName;
     private String parkingTypeName;
     private String locationName;
+    private String parkingEstateName;
 
     public String getFileViewName() {
         return fileViewName;
@@ -34,5 +35,13 @@ public class BasicEstateParkingVo extends BasicEstateParking {
 
     public void setLocationName(String locationName) {
         this.locationName = locationName;
+    }
+
+    public String getParkingEstateName() {
+        return parkingEstateName;
+    }
+
+    public void setParkingEstateName(String parkingEstateName) {
+        this.parkingEstateName = parkingEstateName;
     }
 }

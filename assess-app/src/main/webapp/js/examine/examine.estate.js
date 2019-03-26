@@ -149,6 +149,9 @@
         AssessCommon.loadDataDicByKey(AssessDicKey.estateTopographic_terrain, data.land.topographicTerrain, function (html, data) {
             estateCommon.estateLandStateForm.find('select.topographicTerrain').empty().html(html).trigger('change');
         });
+        AssessCommon.loadDataDicByKey(AssessDicKey.estate_infrastructureCompleteness, data.land.infrastructureCompleteness, function (html, data) {
+            estateCommon.estateLandStateForm.find('select.infrastructureCompleteness').empty().html(html).trigger('change');
+        });
         //绑定变更事件
         estateCommon.estateLandStateForm.find("select.landUseType").off('change').on('change', function () {
             AssessCommon.loadDataDicByPid($(this).val(), data.land.landUseCategory, function (html, data) {

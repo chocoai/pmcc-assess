@@ -15,6 +15,7 @@ public class BasicEstateLandStateVo extends BasicEstateLandState {
     private String planenessName;
     private String developmentDegreeName;
     private String topographicTerrainName;
+    private String infrastructureCompletenessName;
 
     public String getLandUseTypeName() {
         return landUseTypeName;
@@ -70,5 +71,13 @@ public class BasicEstateLandStateVo extends BasicEstateLandState {
 
     public void setTopographicTerrainName(String topographicTerrainName) {
         this.topographicTerrainName = topographicTerrainName;
+    }
+
+    public String getInfrastructureCompletenessName() {
+        return infrastructureCompletenessName;
+    }
+
+    public void setInfrastructureCompletenessName(String infrastructureCompletenessName) {
+        this.infrastructureCompletenessName = infrastructureCompletenessName;
     }
 }

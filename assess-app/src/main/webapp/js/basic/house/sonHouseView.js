@@ -696,6 +696,9 @@ var houseFaceStreet;
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_visitors_flowrate, item.visitorsFlowrate, function (html, data) {
                 $("#" + houseFaceStreet.prototype.config().frm).find("select.visitorsFlowrate").empty().html(html).trigger('change');
             });
+            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_position, item.position, function (html, data) {
+                $("#" + houseFaceStreet.prototype.config().frm).find('select.position').empty().html(html).trigger('change');
+            }, true);
         },
         appendHTML: function (item, this_) {
             var lableValue = "街道（道路）名称";

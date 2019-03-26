@@ -26,10 +26,10 @@ public class MyBatisGenerateBasicMapper {
     public static void main(String[] args) throws Exception {
 
         List<File> files = new ArrayList();
-        findFiles(System.getProperty("user.dir"), "generatorConfigBasic.xml", files);
+        findFiles(System.getProperty("user.dir"), "HHgeneratorConfig.xml", files);
         if (CollectionUtils.isNotEmpty(files)) {
             for (File configFile: files) {
-
+                System.out.print(configFile);
                 if (configFile.toString().contains("main") && configFile.toString().contains("resources")) {
                     System.out.println("MybatisGenerator XML is:" + configFile.toString());
 

@@ -105,12 +105,12 @@ public class BasicEstateLandStateService {
         return basicEstateLandStateDao.basicEstateLandStateList(basicEstateLandState);
     }
 
-    public BasicEstateLandState getLandStateByEstateId(Integer estateId){
+    public BasicEstateLandState getLandStateByEstateId(Integer estateId) {
         try {
-            BasicEstateLandState basicEstateLandState=new BasicEstateLandState();
+            BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
             basicEstateLandState.setEstateId(estateId);
             List<BasicEstateLandState> estateLandStates = basicEstateLandStateDao.basicEstateLandStateList(basicEstateLandState);
-            if(!CollectionUtils.isEmpty(estateLandStates)) return estateLandStates.get(0);
+            if (!CollectionUtils.isEmpty(estateLandStates)) return estateLandStates.get(0);
         } catch (SQLException e) {
             return null;
         }
@@ -154,6 +154,7 @@ public class BasicEstateLandStateService {
         if (basicEstateLandState.getTopographicTerrain() != null) {
             vo.setTopographicTerrainName(baseDataDicService.getNameById(basicEstateLandState.getTopographicTerrain()));
         }
+        vo.setInfrastructureCompletenessName(baseDataDicService.getNameById(basicEstateLandState.getInfrastructureCompleteness()));
         return vo;
     }
 

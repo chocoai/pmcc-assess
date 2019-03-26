@@ -62,6 +62,20 @@ public class BasicBuilding {
 
     private Integer buildingStructureCategory;
 
+    private Integer firstFloor;
+
+    private Integer maxFloor;
+
+    private BigDecimal inJacketArea;
+
+    private BigDecimal useArea;
+
+    private Integer constructionQuality;
+
+    private Integer appearanceStyle;
+
+    private Integer appearanceNewAndOld;
+
     private String creator;
 
     private Date gmtCreated;
@@ -298,6 +312,62 @@ public class BasicBuilding {
 
     public void setBuildingStructureCategory(Integer buildingStructureCategory) {
         this.buildingStructureCategory = buildingStructureCategory;
+    }
+
+    public Integer getFirstFloor() {
+        return firstFloor;
+    }
+
+    public void setFirstFloor(Integer firstFloor) {
+        this.firstFloor = firstFloor;
+    }
+
+    public Integer getMaxFloor() {
+        return maxFloor;
+    }
+
+    public void setMaxFloor(Integer maxFloor) {
+        this.maxFloor = maxFloor;
+    }
+
+    public BigDecimal getInJacketArea() {
+        return inJacketArea;
+    }
+
+    public void setInJacketArea(BigDecimal inJacketArea) {
+        this.inJacketArea = inJacketArea;
+    }
+
+    public BigDecimal getUseArea() {
+        return useArea;
+    }
+
+    public void setUseArea(BigDecimal useArea) {
+        this.useArea = useArea;
+    }
+
+    public Integer getConstructionQuality() {
+        return constructionQuality;
+    }
+
+    public void setConstructionQuality(Integer constructionQuality) {
+        this.constructionQuality = constructionQuality;
+    }
+
+    public Integer getAppearanceStyle() {
+        return appearanceStyle;
+    }
+
+    public void setAppearanceStyle(Integer appearanceStyle) {
+        this.appearanceStyle = appearanceStyle;
+    }
+
+    public Integer getAppearanceNewAndOld() {
+        return appearanceNewAndOld;
+    }
+
+    public void setAppearanceNewAndOld(Integer appearanceNewAndOld) {
+        this.appearanceNewAndOld = appearanceNewAndOld;
     }
 
     public String getCreator() {

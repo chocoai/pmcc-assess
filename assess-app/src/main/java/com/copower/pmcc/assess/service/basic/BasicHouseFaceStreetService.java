@@ -122,6 +122,7 @@ public class BasicHouseFaceStreetService {
         vo.setVisitorsFlowrateName(baseDataDicService.getNameById(basicHouseFaceStreet.getVisitorsFlowrate()));
         vo.setTrafficFlowName(baseDataDicService.getNameById(basicHouseFaceStreet.getTrafficFlow()));
         vo.setStreetLevelName(baseDataDicService.getNameById(basicHouseFaceStreet.getStreetLevel()));
+        vo.setPositionName(baseDataDicService.getNameById(basicHouseFaceStreet.getPosition()));
         return vo;
     }
 

@@ -2,15 +2,18 @@ package com.copower.pmcc.assess.test;
 
 
 import com.aspose.words.*;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.awt.*;
 import java.math.BigDecimal;
 import java.sql.*;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -27,7 +30,7 @@ public class Test {
 
     @org.junit.Test
     public void simpleTest() {
-        System.out.print(DateUtils.format(DateUtils.addDay(DateUtils.today(),1),DateUtils.DATE_PATTERN));
+        System.out.print(DateUtils.format(DateUtils.addDay(DateUtils.today(), 1), DateUtils.DATE_PATTERN));
         System.out.print(DateUtils.todayDate());
         String s = "[青白江区]成都市青白江区城厢镇金渊路81号";
         String substring = s.substring(1, s.indexOf(']'));
@@ -129,7 +132,7 @@ public class Test {
 
 
         int colLength = 2;//列数
-        int rowLength = list.size()%colLength>0?(list.size()/colLength)+1:list.size()/colLength;//列数
+        int rowLength = list.size() % colLength > 0 ? (list.size() / colLength) + 1 : list.size() / colLength;//列数
         Integer index = 0;
         for (int j = 0; j < rowLength; j++) {
             for (int k = 0; k < colLength; k++) {
@@ -160,13 +163,13 @@ public class Test {
         String localPath = "D:\\test\\100.doc";
         Document document = new Document("D:\\test\\template.doc");
         DocumentBuilder builder = new DocumentBuilder(document);
-        builder.insertHtml(String.format("<div style=\"font-family:仿宋_GB2312;line-height:150%%;font-size:14.0pt\">%s</div>","法律法规政策影响") , true);
+        builder.insertHtml(String.format("<div style=\"font-family:仿宋_GB2312;line-height:150%%;font-size:14.0pt\">%s</div>", "法律法规政策影响"), true);
         document.save(localPath);
-        Map<String, String> map= Maps.newHashMap();
+        Map<String, String> map = Maps.newHashMap();
 //        map.put("${风险提示}","1、法律法规政策影响、\n" +
 //                "主要有房地产制度、房地产价格政策、税收政策、金融政策等几方面变化的影响。房地产制度从市场运做规范角度指引着房地产经济行，对房地产价格的影响最大，但一般制度制定后短期不容易变化。房地产价格政策是政府对房地产市场的各种宏观调控手段的综合，如制定最高限价、标准价格、通过土地供应增加房地产供给、严格房地产交易管理制度等，特别是通过土地供应增加房地产供给量，投放类型和投放区域，将对该区域同类房地产未来价格走向将有较大的影响。税收和金融政策属于房地产价格政策的间接调控手段，提高赋税水平或严格贷款审批程序、提高贷款利率，将压制投资类物业的发展水平。\n");
-        map.put("${风险提示}",localPath);
-        replaceTextToFile("D:\\test\\房产评估结果报告.doc",map);
+        map.put("${风险提示}", localPath);
+        replaceTextToFile("D:\\test\\房产评估结果报告.doc", map);
 //        AsposeUtils.replaceText("D:\\test\\房产评估结果报告.doc",map);
     }
 
@@ -208,5 +211,106 @@ public class Test {
             }
         }
         return keyword;
+    }
+
+
+    @org.junit.Test
+    public void testMerge() {
+        Map<Integer, String> map = Maps.newHashMap();
+        map.put(1, "1层");
+        map.put(2, "1层");
+        map.put(3, "1层");
+        map.put(4, "4层");
+        map.put(5, "5层");
+        map.put(6, "6层");
+        System.out.print(mergeJudgeObjectDesc(map, "分别为"));
+    }
+
+
+    /**
+     * 合并估价对象描述内容
+     *
+     * @param map
+     * @return
+     */
+    public static String mergeJudgeObjectDesc(Map<Integer, String> map, String explain) {
+        if (map == null || map.size() <= 0) return "";
+        Map<String, List<Integer>> listMap = Maps.newHashMap();
+        for (Map.Entry<Integer, String> entry : map.entrySet()) {
+            if (listMap.containsKey(entry.getValue())) {
+                List<Integer> list = listMap.get(entry.getValue());
+                list.add(entry.getKey());
+            } else {
+                listMap.put(entry.getValue(), Lists.newArrayList(entry.getKey()));
+            }
+        }
+        StringBuilder judgeBuilder = new StringBuilder();
+        StringBuilder contentBuilder = new StringBuilder();
+        for (Map.Entry<String, List<Integer>> stringListEntry : listMap.entrySet()) {
+            judgeBuilder.append(convertNumber(stringListEntry.getValue())).append("、");
+            contentBuilder.append(stringListEntry.getKey()).append("、");
+        }
+        String judgeString = StringUtils.strip(judgeBuilder.toString(), "、");
+        String contentStrig = StringUtils.strip(contentBuilder.toString(), "、");
+        return String.format("%s%s%s%s", judgeString, BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME, StringUtils.defaultString(explain), contentStrig);
+    }
+
+    /**
+     * 数字转换
+     *
+     * @param numbers
+     * @return
+     */
+    public static String convertNumber(List<Integer> numbers) {
+        if (CollectionUtils.isNotEmpty(numbers)) {
+            Collections.sort(numbers);
+            Integer[] ints = new Integer[numbers.size()];
+            for (int i = 0; i < numbers.size(); i++) {
+                ints[i] = numbers.get(i);
+            }
+            String text = convert(ints, 0);
+            text = text.substring(0, text.length() - 1);
+            return text;
+        }
+        return " ";
+    }
+
+    /**
+     * 获取连续的数字组合
+     *
+     * @param ints
+     * @param index
+     * @return
+     */
+    public static String convert(Integer[] ints, int index) {
+        int end = index;
+        //结束条件，遍历完数组
+        if (ints.length == index) {
+            return "";
+        } else {
+            for (int i = index; i < ints.length; i++) {
+                if (i < ints.length - 1) {
+                    if (ints[i] + 1 == ints[i + 1]) {
+                        end = i;
+                    } else {
+                        if (i > index)
+                            end = end + 1;
+                        break;
+                    }
+                } else {
+                    if (end == ints.length - 2) {
+                        end = ints.length - 1;
+                        break;
+                    }
+                }
+            }
+            //相等说明不连续
+            if (index == end)
+                return ints[index] + "," + convert(ints, end + 1);
+                //连续
+            else
+                return ints[index] + "-" + ints[end] + "," + convert(ints, end + 1);
+
+        }
     }
 }

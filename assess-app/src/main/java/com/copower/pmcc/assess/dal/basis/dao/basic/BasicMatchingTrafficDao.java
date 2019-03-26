@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicMatchingTraffic;
 import com.copower.pmcc.assess.dal.basis.entity.BasicMatchingTrafficExample;
 import com.copower.pmcc.assess.dal.basis.mapper.BasicMatchingTrafficMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -47,6 +48,22 @@ public class BasicMatchingTrafficDao {
     public List<BasicMatchingTraffic> basicMatchingTrafficList(BasicMatchingTraffic basicMatchingTraffic){
         BasicMatchingTrafficExample example = new BasicMatchingTrafficExample();
         MybatisUtils.convertObj2Example(basicMatchingTraffic, example);
+        return basicMatchingTrafficMapper.selectByExample(example);
+    }
+
+    public List<BasicMatchingTraffic> findList(BasicMatchingTraffic basicMatchingTraffic){
+        BasicMatchingTrafficExample example = new BasicMatchingTrafficExample();
+        BasicMatchingTrafficExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        if (basicMatchingTraffic.getId() != null){
+            criteria.andIdEqualTo(basicMatchingTraffic.getId());
+        }
+        if (basicMatchingTraffic.getEstateId() != null){
+            criteria.andEstateIdEqualTo(basicMatchingTraffic.getEstateId());
+        }
+        if (StringUtils.isNotBlank(basicMatchingTraffic.getType())){
+            criteria.andTypeEqualTo(basicMatchingTraffic.getType());
+        }
         return basicMatchingTrafficMapper.selectByExample(example);
     }
 

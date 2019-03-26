@@ -256,6 +256,24 @@ var matchingMainRoad;
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_distance, item.distance, function (html, data) {
                 $("#" + matchingMainRoad.prototype.config().frm).find("select.distance").empty().html(html).trigger('change');
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.estate_mainRoad_limitSpeial, item.limitSpeial, function (html, data) {
+                $("#" + matchingMainRoad.prototype.config().frm).find("select.limitSpeial").empty().html(html).trigger('change');
+            });
+            $("#" + matchingMainRoad.prototype.config().frm).find("#limitBasicMatchingTraffic2").val(true);
+            $("#" + matchingMainRoad.prototype.config().frm).find("#limitBasicMatchingTraffic1").val(false);
+            if (item.flag){
+                $("#" + matchingMainRoad.prototype.config().frm).find("#limitBasicMatchingTraffic2").attr('checked', 'checked');
+            }else {
+                $("#" + matchingMainRoad.prototype.config().frm).find("#limitBasicMatchingTraffic1").attr('checked', 'checked');
+            }
+        },
+        showLimit:function (that) {
+            var item = $(that);
+            if (item.val() == 'true'){
+                $(that).parent().parent().parent().next().show();
+            }else {
+                $(that).parent().parent().parent().next().hide();
+            }
         }
     }
 
@@ -2503,6 +2521,9 @@ var estateParking;
 
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_car_type, item.parkingType, function (html, data) {
                 $("#" + estateParking.prototype.config().frm).find("select.parkingType").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.estate_car_parkingEstate, item.parkingEstate, function (html, data) {
+                $("#" + estateParking.prototype.config().frm).find("select.parkingEstate").empty().html(html).trigger('change');
             });
 
             FileUtils.uploadFiles({

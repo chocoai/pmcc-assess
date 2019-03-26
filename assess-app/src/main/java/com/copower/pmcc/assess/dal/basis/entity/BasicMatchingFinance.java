@@ -17,6 +17,8 @@ public class BasicMatchingFinance {
 
     private String autoServiceContent;
 
+    private String distance;
+
     private String creator;
 
     private Date gmtCreated;
@@ -77,6 +79,14 @@ public class BasicMatchingFinance {
 
     public void setAutoServiceContent(String autoServiceContent) {
         this.autoServiceContent = autoServiceContent == null ? null : autoServiceContent.trim();
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance == null ? null : distance.trim();
     }
 
     public String getCreator() {

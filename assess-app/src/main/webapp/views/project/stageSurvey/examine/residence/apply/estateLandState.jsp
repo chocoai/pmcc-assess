@@ -216,6 +216,20 @@
                            name="fertility" value="${basicEstateLandState.fertility}">
                 </div>
             </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">稳定性</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" placeholder="稳定性"
+                           name="holdOn" value="${basicEstateLandState.holdOn}">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">基础设施完备度</label>
+                <div class="col-sm-3">
+                    <select class="form-control search-select select2 infrastructureCompleteness" name="infrastructureCompleteness">
+                    </select>
+                </div>
+            </div>
         </div>
     </form>
 

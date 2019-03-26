@@ -123,6 +123,7 @@ public class BasicEstateParkingService {
             vo.setParkingTypeName(baseDataDicService.getNameById(basicEstateParking.getParkingType()));
         }
         vo.setLocationName(baseDataDicService.getNameById(basicEstateParking.getLocation()));
+        vo.setParkingEstateName(baseDataDicService.getNameById(basicEstateParking.getParkingEstate()));
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicEstateParking.getId(), null, FormatUtils.entityNameConvertToTableName(BasicEstateParking.class));
         StringBuilder builder = new StringBuilder();
         if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {

@@ -555,6 +555,76 @@ public class BasicMatchingFinanceExample {
             return (Criteria) this;
         }
 
+        public Criteria andDistanceIsNull() {
+            addCriterion("distance is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceIsNotNull() {
+            addCriterion("distance is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceEqualTo(String value) {
+            addCriterion("distance =", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceNotEqualTo(String value) {
+            addCriterion("distance <>", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceGreaterThan(String value) {
+            addCriterion("distance >", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceGreaterThanOrEqualTo(String value) {
+            addCriterion("distance >=", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceLessThan(String value) {
+            addCriterion("distance <", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceLessThanOrEqualTo(String value) {
+            addCriterion("distance <=", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceLike(String value) {
+            addCriterion("distance like", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceNotLike(String value) {
+            addCriterion("distance not like", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceIn(List<String> values) {
+            addCriterion("distance in", values, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceNotIn(List<String> values) {
+            addCriterion("distance not in", values, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceBetween(String value1, String value2) {
+            addCriterion("distance between", value1, value2, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceNotBetween(String value1, String value2) {
+            addCriterion("distance not between", value1, value2, "distance");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
