@@ -173,7 +173,6 @@ AssessDicKey.examineHouseLoadUtility = "examine.house.load.utility";//证载用�
 AssessDicKey.examineHousePracticalUse = "examine.house.practical.use";//实际用途
 AssessDicKey.examineHouseEnvironmentUse = "examine.house.environment.use";//使用环境
 AssessDicKey.examineHouseHouse_layout = "unit.house_layout";//房型
-AssessDicKey.examineCommonOrientation = "examine.common.orientation";//朝向
 AssessDicKey.examineHouseTransactionType = "examine.house.transaction.type";//交易类型
 AssessDicKey.examineHouseTransactionTypeSell = "examine.house.transaction.type.sell";//交易类型-出售
 AssessDicKey.examineHouseTransactionTypeLease = "examine.house.transaction.type.lease";//交易类型-出租
@@ -220,6 +219,9 @@ AssessDicKey.examine_house_heating_brand = "examine.house.heating.brand";//暖�
 AssessDicKey.examine_house_heating_method = "examine.house.heating.method";//供暖方式
 AssessDicKey.examine_house_heating_equipment_price_range = "examine.house.heating.equipment_price_range";//供暖设备价格区间
 AssessDicKey.examine_house_corollary_equipment_type = "examine.house.corollary.equipment.type";//配套设备设施 类型
+
+AssessDicKey.examineCommonOrientation = "examine.common.orientation";//朝向
+AssessDicKey.examineCommonMaterialGrade = "examine.common.material.grade";//材料档次
 
 //房屋完损度
 AssessDicKey.damaged_degree_structural_part = "structural.part";//房屋完损度-结构部分

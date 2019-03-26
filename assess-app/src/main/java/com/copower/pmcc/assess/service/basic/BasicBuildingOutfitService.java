@@ -125,15 +125,10 @@ public class BasicBuildingOutfitService {
         }
         BasicBuildingOutfitVo vo = new BasicBuildingOutfitVo();
         BeanUtils.copyProperties(basicBuildingOutfit,vo);
-        if (basicBuildingOutfit.getDecoratingMaterial() != null) {
-            vo.setDecoratingMaterialName(baseDataDicService.getNameById(basicBuildingOutfit.getDecoratingMaterial()));
-        }
-        if (basicBuildingOutfit.getMaterialPrice() != null) {
-            vo.setMaterialPriceName(baseDataDicService.getNameById(basicBuildingOutfit.getMaterialPrice()));
-        }
-        if (basicBuildingOutfit.getConstructionTechnology() != null) {
-            vo.setConstructionTechnologyName(baseDataDicService.getNameById(basicBuildingOutfit.getConstructionTechnology()));
-        }
+        vo.setDecoratingMaterialName(baseDataDicService.getNameById(basicBuildingOutfit.getDecoratingMaterial()));
+        vo.setMaterialPriceName(baseDataDicService.getNameById(basicBuildingOutfit.getMaterialPrice()));
+        vo.setConstructionTechnologyName(baseDataDicService.getNameById(basicBuildingOutfit.getConstructionTechnology()));
+        vo.setMaterialGradeName(baseDataDicService.getNameById(basicBuildingOutfit.getMaterialGrade()));
         return vo;
     }
     

@@ -42,7 +42,8 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_basic_house" domainObjectName="BasicHouse"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <!--<table tableName="tb_basic_building_outfit" ><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
+        <table tableName="tb_basic_unit_decorate" ><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
         <!--<table tableName="tb_scheme_reimbursement_item" domainObjectName="SchemeReimbursementItem"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
         <!--<table tableName="tb_scheme_liquidation_analysis_item" domainObjectName="SchemeLiquidationAnalysisItem"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
         <!--<table tableName="tb_data_evaluation_hypothesis" domainObjectName="DataEvaluationHypothesis"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->

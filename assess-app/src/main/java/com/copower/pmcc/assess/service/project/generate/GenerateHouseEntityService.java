@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -180,17 +181,23 @@ public class GenerateHouseEntityService {
                 BasicUnitHuxing basicUnitHuxing = basicUnitHuxingService.getBasicUnitHuxingById(basicHouse.getHuxingId());
                 if (basicUnitHuxing == null) continue;
                 StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append(String.format("梯户比%s,",basicUnit.getElevatorHouseholdRatio()));
+                stringBuilder.append(String.format("梯户比%s,", basicUnit.getElevatorHouseholdRatio()));
                 if (basicUnitHuxing.getType().equals(production.getId())) {//办公商业取开间进深
-
+                    stringBuilder.append(String.format("开间%s米,", basicUnitHuxing.getBay()));
+                    stringBuilder.append(String.format("进深%s米,", basicUnitHuxing.getDeep()));
                 } else if (basicUnitHuxing.getType().equals(office.getId())) {//工业仓储取跨长跨宽
-
+                    stringBuilder.append(String.format("跨长%s米,", basicUnitHuxing.getSpanLength()));
+                    stringBuilder.append(String.format("跨宽%s米,", basicUnitHuxing.getSpanWidth()));
+                    stringBuilder.append(String.format("跨数%s米,", basicUnitHuxing.getSpanNumber()));
                 } else {
-                    stringBuilder.append(String.format("%s,%s;",basicUnitHuxing.getName(),basicUnitHuxing.getDescription()));
+                    stringBuilder.append(String.format("%s,", basicUnitHuxing.getName()));
+                }
+                if (StringUtils.isNotBlank(basicUnitHuxing.getDescription())) {
+                    stringBuilder.append(basicUnitHuxing.getDescription());
                 }
             }
         }
-        return generateCommonMethod.judgeSummaryDesc(map, "分别为");
+        return generateCommonMethod.trim(generateCommonMethod.judgeEachDesc(map, "", ";"));
     }
 
 

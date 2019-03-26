@@ -45,8 +45,9 @@ public class MyBatisGenerateMapper {
                         List<TableConfiguration> tableConfigurations = context.getTableConfigurations();
                         for (TableConfiguration tableConfiguration: tableConfigurations) {
                             tables.add(tableConfiguration.getTableName());
+                            //自动设置DomainObjectName
+                            tableConfiguration.setDomainObjectName(FormatUtils.underlineToCamel(tableConfiguration.getTableName().replace("tb_",""), false));
                         }
-
                     }
 
                     //2.删除历史mapper等文件

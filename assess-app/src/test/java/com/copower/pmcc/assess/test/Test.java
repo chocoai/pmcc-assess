@@ -213,17 +213,28 @@ public class Test {
         return keyword;
     }
 
+    public static String trim(String str){
+        if (StringUtils.isBlank(str)) return str;
+        str = str.replaceAll(",+",",").replaceAll(";+",";")
+                .replaceAll("，+","，").replaceAll("、+","、")
+                .replaceAll("。+","。").replaceAll("；+","；")
+                .replaceAll("[,|，|、|;|；|.|。]+$","。");
+        return str;
+    }
+
 
     @org.junit.Test
     public void testMerge() {
-        Map<Integer, String> map = Maps.newHashMap();
-        map.put(1, "1层");
-        map.put(2, "1层");
-        map.put(3, "1层");
-        map.put(4, "4层");
-        map.put(5, "5层");
-        map.put(6, "6层");
-        System.out.print(mergeJudgeObjectDesc(map, "分别为"));
+        String str="张三,,李四；；王五,;。";
+        System.out.print(trim(str));
+//        Map<Integer, String> map = Maps.newHashMap();
+//        map.put(1, "1层");
+//        map.put(2, "1层");
+//        map.put(3, "1层");
+//        map.put(4, "4层");
+//        map.put(5, "5层");
+//        map.put(6, "6层");
+//        System.out.print(mergeJudgeObjectDesc(map, "分别为"));
     }
 
 

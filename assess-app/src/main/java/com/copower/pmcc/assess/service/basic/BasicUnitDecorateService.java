@@ -127,6 +127,7 @@ public class BasicUnitDecorateService {
         vo.setConstructionTechnologyName(baseDataDicService.getNameById(basicUnitDecorate.getConstructionTechnology()));
         vo.setMaterialPriceName(baseDataDicService.getNameById(basicUnitDecorate.getMaterialPriceRange()));
         vo.setDecoratingMaterialName(baseDataDicService.getNameById(basicUnitDecorate.getDecoratingMaterial()));
+        vo.setMaterialGradeName(baseDataDicService.getNameById(basicUnitDecorate.getMaterialGrade()));
         return vo;
     }
 }

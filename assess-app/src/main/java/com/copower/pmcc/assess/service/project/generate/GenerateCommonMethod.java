@@ -796,7 +796,7 @@ public class GenerateCommonMethod {
     }
 
     /**
-     * 估价对象合并描述
+     * 估价对象分别描述
      *
      * @param map
      * @return
@@ -810,5 +810,19 @@ public class GenerateCommonMethod {
                     .append(StringUtils.defaultString(explain)).append(stringListEntry.getKey()).append(symbol);
         }
         return builder.toString();
+    }
+
+    /**
+     * 处理字符串中错误的标点符号
+     * @param str
+     * @return
+     */
+    public String trim(String str){
+        if (StringUtils.isBlank(str)) return str;
+        str = str.replaceAll(",+",",").replaceAll(";+",";")
+                .replaceAll("，+","，").replaceAll("、+","、")
+                .replaceAll("。+","。").replaceAll("；+","；")
+                .replaceAll("[,|，|、|;|；|.|。]+$","。");
+        return str;
     }
 }
