@@ -225,66 +225,6 @@ public class BasicHouseWaterDrainExample {
             return (Criteria) this;
         }
 
-        public Criteria andTypeIsNull() {
-            addCriterion("type is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIsNotNull() {
-            addCriterion("type is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeEqualTo(Integer value) {
-            addCriterion("type =", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotEqualTo(Integer value) {
-            addCriterion("type <>", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeGreaterThan(Integer value) {
-            addCriterion("type >", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("type >=", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeLessThan(Integer value) {
-            addCriterion("type <", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeLessThanOrEqualTo(Integer value) {
-            addCriterion("type <=", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIn(List<Integer> values) {
-            addCriterion("type in", values, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotIn(List<Integer> values) {
-            addCriterion("type not in", values, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeBetween(Integer value1, Integer value2) {
-            addCriterion("type between", value1, value2, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
-            addCriterion("type not between", value1, value2, "type");
-            return (Criteria) this;
-        }
-
         public Criteria andDrainSystemIsNull() {
             addCriterion("drain_system is null");
             return (Criteria) this;
@@ -345,6 +285,66 @@ public class BasicHouseWaterDrainExample {
             return (Criteria) this;
         }
 
+        public Criteria andTypeIsNull() {
+            addCriterion("type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNotNull() {
+            addCriterion("type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeEqualTo(Integer value) {
+            addCriterion("type =", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotEqualTo(Integer value) {
+            addCriterion("type <>", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThan(Integer value) {
+            addCriterion("type >", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("type >=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThan(Integer value) {
+            addCriterion("type <", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("type <=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIn(List<Integer> values) {
+            addCriterion("type in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotIn(List<Integer> values) {
+            addCriterion("type not in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeBetween(Integer value1, Integer value2) {
+            addCriterion("type between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("type not between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
         public Criteria andProcessingModeIsNull() {
             addCriterion("processing_mode is null");
             return (Criteria) this;
@@ -402,6 +402,76 @@ public class BasicHouseWaterDrainExample {
 
         public Criteria andProcessingModeNotBetween(Integer value1, Integer value2) {
             addCriterion("processing_mode not between", value1, value2, "processingMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateIsNull() {
+            addCriterion("evaluate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateIsNotNull() {
+            addCriterion("evaluate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateEqualTo(String value) {
+            addCriterion("evaluate =", value, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateNotEqualTo(String value) {
+            addCriterion("evaluate <>", value, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateGreaterThan(String value) {
+            addCriterion("evaluate >", value, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateGreaterThanOrEqualTo(String value) {
+            addCriterion("evaluate >=", value, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateLessThan(String value) {
+            addCriterion("evaluate <", value, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateLessThanOrEqualTo(String value) {
+            addCriterion("evaluate <=", value, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateLike(String value) {
+            addCriterion("evaluate like", value, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateNotLike(String value) {
+            addCriterion("evaluate not like", value, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateIn(List<String> values) {
+            addCriterion("evaluate in", values, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateNotIn(List<String> values) {
+            addCriterion("evaluate not in", values, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateBetween(String value1, String value2) {
+            addCriterion("evaluate between", value1, value2, "evaluate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluateNotBetween(String value1, String value2) {
+            addCriterion("evaluate not between", value1, value2, "evaluate");
             return (Criteria) this;
         }
 

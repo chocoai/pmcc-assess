@@ -7,11 +7,13 @@ public class BasicHouseWaterDrain {
 
     private Integer houseId;
 
-    private Integer type;
-
     private Integer drainSystem;
 
+    private Integer type;
+
     private Integer processingMode;
+
+    private String evaluate;
 
     private String creator;
 
@@ -35,14 +37,6 @@ public class BasicHouseWaterDrain {
         this.houseId = houseId;
     }
 
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
     public Integer getDrainSystem() {
         return drainSystem;
     }
@@ -51,12 +45,28 @@ public class BasicHouseWaterDrain {
         this.drainSystem = drainSystem;
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     public Integer getProcessingMode() {
         return processingMode;
     }
 
     public void setProcessingMode(Integer processingMode) {
         this.processingMode = processingMode;
+    }
+
+    public String getEvaluate() {
+        return evaluate;
+    }
+
+    public void setEvaluate(String evaluate) {
+        this.evaluate = evaluate == null ? null : evaluate.trim();
     }
 
     public String getCreator() {

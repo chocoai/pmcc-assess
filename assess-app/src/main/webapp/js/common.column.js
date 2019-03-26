@@ -340,6 +340,7 @@ commonColumn.houseHeatingColumn = function () {
     var cols = [];
     cols.push({field: 'equipment', title: '设备品牌'});
     cols.push({field: 'categoryName', title: '类别'});
+    cols.push({field: 'supplyModeName', title: '供应方式'});
     cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
     return cols;
 }
@@ -349,6 +350,7 @@ commonColumn.houseAirConditionerColumn = function () {
     var cols = [];
     cols.push({field: 'equipment', title: '设备品牌'});
     cols.push({field: 'categoryName', title: '类别'});
+    cols.push({field: 'supplyModeName', title: '供应方式'});
     cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
     return cols;
 }
@@ -358,6 +360,7 @@ commonColumn.houseNewWindColumn = function () {
     var cols = [];
     cols.push({field: 'equipment', title: '设备品牌'});
     cols.push({field: 'categoryName', title: '类别'});
+    cols.push({field: 'supplyModeName', title: '供应方式'});
     cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
     return cols;
 }

@@ -11,16 +11,7 @@ public class BasicHouseEquipmentVo extends BasicHouseEquipment {
     private String categoryName;
     private String equipmentPriceName;
     private String fileName;
-
-
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
+    private String supplyModeName;
 
     public String getCategoryName() {
         return categoryName;
@@ -36,5 +27,21 @@ public class BasicHouseEquipmentVo extends BasicHouseEquipment {
 
     public void setEquipmentPriceName(String equipmentPriceName) {
         this.equipmentPriceName = equipmentPriceName;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getSupplyModeName() {
+        return supplyModeName;
+    }
+
+    public void setSupplyModeName(String supplyModeName) {
+        this.supplyModeName = supplyModeName;
     }
 }

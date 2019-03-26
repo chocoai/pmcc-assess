@@ -4,9 +4,10 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicHouseWaterDrain" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
-    <result column="type" property="type" jdbcType="INTEGER" />
     <result column="drain_system" property="drainSystem" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
     <result column="processing_mode" property="processingMode" jdbcType="INTEGER" />
+    <result column="evaluate" property="evaluate" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -70,7 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, house_id, type, drain_system, processing_mode, creator, gmt_created, gmt_modified
+    id, house_id, drain_system, type, processing_mode, evaluate, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseWaterDrainExample" >
     select
@@ -106,12 +108,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_house_water_drain (house_id, type, drain_system, 
-      processing_mode, creator, gmt_created, 
-      gmt_modified)
-    values (#{houseId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{drainSystem,jdbcType=INTEGER}, 
-      #{processingMode,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_basic_house_water_drain (house_id, drain_system, type, 
+      processing_mode, evaluate, creator, 
+      gmt_created, gmt_modified)
+    values (#{houseId,jdbcType=INTEGER}, #{drainSystem,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+      #{processingMode,jdbcType=INTEGER}, #{evaluate,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseWaterDrain" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -122,14 +124,17 @@
       <if test="houseId != null" >
         house_id,
       </if>
-      <if test="type != null" >
-        type,
-      </if>
       <if test="drainSystem != null" >
         drain_system,
       </if>
+      <if test="type != null" >
+        type,
+      </if>
       <if test="processingMode != null" >
         processing_mode,
+      </if>
+      <if test="evaluate != null" >
+        evaluate,
       </if>
       <if test="creator != null" >
         creator,
@@ -145,14 +150,17 @@
       <if test="houseId != null" >
         #{houseId,jdbcType=INTEGER},
       </if>
-      <if test="type != null" >
-        #{type,jdbcType=INTEGER},
-      </if>
       <if test="drainSystem != null" >
         #{drainSystem,jdbcType=INTEGER},
       </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
       <if test="processingMode != null" >
         #{processingMode,jdbcType=INTEGER},
+      </if>
+      <if test="evaluate != null" >
+        #{evaluate,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -180,14 +188,17 @@
       <if test="record.houseId != null" >
         house_id = #{record.houseId,jdbcType=INTEGER},
       </if>
-      <if test="record.type != null" >
-        type = #{record.type,jdbcType=INTEGER},
-      </if>
       <if test="record.drainSystem != null" >
         drain_system = #{record.drainSystem,jdbcType=INTEGER},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
       <if test="record.processingMode != null" >
         processing_mode = #{record.processingMode,jdbcType=INTEGER},
+      </if>
+      <if test="record.evaluate != null" >
+        evaluate = #{record.evaluate,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -207,9 +218,10 @@
     update tb_basic_house_water_drain
     set id = #{record.id,jdbcType=INTEGER},
       house_id = #{record.houseId,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=INTEGER},
       drain_system = #{record.drainSystem,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
       processing_mode = #{record.processingMode,jdbcType=INTEGER},
+      evaluate = #{record.evaluate,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -223,14 +235,17 @@
       <if test="houseId != null" >
         house_id = #{houseId,jdbcType=INTEGER},
       </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
-      </if>
       <if test="drainSystem != null" >
         drain_system = #{drainSystem,jdbcType=INTEGER},
       </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
       <if test="processingMode != null" >
         processing_mode = #{processingMode,jdbcType=INTEGER},
+      </if>
+      <if test="evaluate != null" >
+        evaluate = #{evaluate,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -247,9 +262,10 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseWaterDrain" >
     update tb_basic_house_water_drain
     set house_id = #{houseId,jdbcType=INTEGER},
-      type = #{type,jdbcType=INTEGER},
       drain_system = #{drainSystem,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
       processing_mode = #{processingMode,jdbcType=INTEGER},
+      evaluate = #{evaluate,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

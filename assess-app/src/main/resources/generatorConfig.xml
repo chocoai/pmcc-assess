@@ -42,12 +42,10 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <!--<table tableName="tb_basic_building_outfit" ><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
-        <table tableName="tb_basic_unit_decorate" ><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <!--<table tableName="tb_scheme_reimbursement_item" domainObjectName="SchemeReimbursementItem"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
-        <!--<table tableName="tb_scheme_liquidation_analysis_item" domainObjectName="SchemeLiquidationAnalysisItem"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
-        <!--<table tableName="tb_data_evaluation_hypothesis" domainObjectName="DataEvaluationHypothesis"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
-        <!--<table tableName="tb_data_evaluation_principle" domainObjectName="DataEvaluationPrinciple"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
-        <!--<table tableName="tb_data_report_template_item" domainObjectName="DataReportTemplateItem"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
+
+        <table tableName="tb_basic_house_equipment" ><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <table tableName="tb_basic_house_water" ><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <table tableName="tb_basic_house_water_drain" ><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <table tableName="tb_basic_house_intelligent" ><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
     </context>
 </generatorConfiguration>

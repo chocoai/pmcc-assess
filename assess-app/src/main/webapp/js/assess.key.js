@@ -222,6 +222,8 @@ AssessDicKey.examine_house_corollary_equipment_type = "examine.house.corollary.e
 
 AssessDicKey.examineCommonOrientation = "examine.common.orientation";//朝向
 AssessDicKey.examineCommonMaterialGrade = "examine.common.material.grade";//材料档次
+AssessDicKey.examineCommonGrade = "examine.common.grade";//档次
+AssessDicKey.examineCommonSupplyMode = "examine.common.supply.mode";//供应方式
 
 //房屋完损度
 AssessDicKey.damaged_degree_structural_part = "structural.part";//房屋完损度-结构部分
