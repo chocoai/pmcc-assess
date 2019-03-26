@@ -13,6 +13,8 @@ public class BasicHouseWater {
 
     private Integer pipeMaterial;
 
+    private Integer grade;
+
     private Integer boosterEquipment;
 
     private Integer pretreatedWater;
@@ -65,6 +67,14 @@ public class BasicHouseWater {
 
     public void setPipeMaterial(Integer pipeMaterial) {
         this.pipeMaterial = pipeMaterial;
+    }
+
+    public Integer getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Integer grade) {
+        this.grade = grade;
     }
 
     public Integer getBoosterEquipment() {

@@ -129,6 +129,9 @@ var unitDecorate;
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitInteriorDecorationMaterial, item.decoratingMaterial, function (html, data) {
                     $("#" + unitDecorate.prototype.config().frm).find('select.decoratingMaterial').empty().html(html).trigger('change');
                 });
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonMaterialGrade, item.materialGrade, function (html, data) {
+                    $("#" + unitDecorate.prototype.config().frm).find('select.materialGrade').empty().html(html).trigger('change');
+                });
             });
         }
     }

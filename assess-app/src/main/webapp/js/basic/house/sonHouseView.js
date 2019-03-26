@@ -127,6 +127,9 @@ var houseHeating;
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_heating_method, item.category, function (html, data) {
                 $("#" + houseHeating.prototype.config().frm).find("select.category").empty().html(html).trigger('change');
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonSupplyMode, item.grade, function (html, data) {
+                $("#" + houseHeating.prototype.config().frm).find("select.supplyMode").empty().html(html).trigger('change');
+            });
         }
     }
 
@@ -261,6 +264,9 @@ var houseAirConditioner;
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_air_conditioning_mode, item.category, function (html, data) {
                 $("#" + houseAirConditioner.prototype.config().frm).find("select.category").empty().html(html).trigger('change');
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonSupplyMode, item.grade, function (html, data) {
+                $("#" + houseAirConditioner.prototype.config().frm).find("select.supplyMode").empty().html(html).trigger('change');
+            });
         }
     }
 
@@ -393,6 +399,9 @@ var houseNewWind;
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_way_wind, item.category, function (html, data) {
                 $("#" + houseNewWind.prototype.config().frm).find("select.category").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonSupplyMode, item.grade, function (html, data) {
+                $("#" + houseNewWind.prototype.config().frm).find("select.supplyMode").empty().html(html).trigger('change');
             });
         }
     }

@@ -44,7 +44,9 @@
                                             装修部位<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input name="decorationPart" class="form-control" placeholder="装修部位" required="required">
+                                            <select required="required" name="decorationPart"
+                                                    class="form-control decorationPart">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -56,6 +58,18 @@
                                         <div class="col-sm-10">
                                             <select required="required" name="decoratingMaterial"
                                                     class="form-control decoratingMaterial">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            材料档次<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="materialGrade"
+                                                    class="form-control materialGrade">
                                             </select>
                                         </div>
                                     </div>

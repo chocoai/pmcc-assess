@@ -15,6 +15,8 @@ public class BasicBuildingOutfit {
 
     private Integer constructionTechnology;
 
+    private Integer materialGrade;
+
     private String creator;
 
     private Date gmtCreated;
@@ -69,6 +71,14 @@ public class BasicBuildingOutfit {
 
     public void setConstructionTechnology(Integer constructionTechnology) {
         this.constructionTechnology = constructionTechnology;
+    }
+
+    public Integer getMaterialGrade() {
+        return materialGrade;
+    }
+
+    public void setMaterialGrade(Integer materialGrade) {
+        this.materialGrade = materialGrade;
     }
 
     public String getCreator() {

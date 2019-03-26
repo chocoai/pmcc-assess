@@ -55,6 +55,8 @@ public class BasicEstateLandState {
 
     private String fertility;
 
+    private String conclusion;
+
     private String holdOn;
 
     private Integer infrastructureCompleteness;
@@ -271,6 +273,14 @@ public class BasicEstateLandState {
 
     public void setFertility(String fertility) {
         this.fertility = fertility == null ? null : fertility.trim();
+    }
+
+    public String getConclusion() {
+        return conclusion;
+    }
+
+    public void setConclusion(String conclusion) {
+        this.conclusion = conclusion == null ? null : conclusion.trim();
     }
 
     public String getHoldOn() {

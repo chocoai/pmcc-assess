@@ -7,6 +7,7 @@
     <result column="supply_mode" property="supplyMode" jdbcType="INTEGER" />
     <result column="piping_layout" property="pipingLayout" jdbcType="INTEGER" />
     <result column="pipe_material" property="pipeMaterial" jdbcType="INTEGER" />
+    <result column="grade" property="grade" jdbcType="INTEGER" />
     <result column="booster_equipment" property="boosterEquipment" jdbcType="INTEGER" />
     <result column="pretreated_water" property="pretreatedWater" jdbcType="INTEGER" />
     <result column="purification_equipment_price" property="purificationEquipmentPrice" jdbcType="INTEGER" />
@@ -74,8 +75,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, house_id, supply_mode, piping_layout, pipe_material, booster_equipment, pretreated_water, 
-    purification_equipment_price, fire_water_supply, creator, gmt_created, gmt_modified
+    id, house_id, supply_mode, piping_layout, pipe_material, grade, booster_equipment, 
+    pretreated_water, purification_equipment_price, fire_water_supply, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseWaterExample" >
     select
@@ -112,15 +114,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_house_water (house_id, supply_mode, piping_layout, 
-      pipe_material, booster_equipment, pretreated_water, 
-      purification_equipment_price, fire_water_supply, 
-      creator, gmt_created, gmt_modified
-      )
+      pipe_material, grade, booster_equipment, 
+      pretreated_water, purification_equipment_price, 
+      fire_water_supply, creator, gmt_created, 
+      gmt_modified)
     values (#{houseId,jdbcType=INTEGER}, #{supplyMode,jdbcType=INTEGER}, #{pipingLayout,jdbcType=INTEGER}, 
-      #{pipeMaterial,jdbcType=INTEGER}, #{boosterEquipment,jdbcType=INTEGER}, #{pretreatedWater,jdbcType=INTEGER}, 
-      #{purificationEquipmentPrice,jdbcType=INTEGER}, #{fireWaterSupply,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{pipeMaterial,jdbcType=INTEGER}, #{grade,jdbcType=INTEGER}, #{boosterEquipment,jdbcType=INTEGER}, 
+      #{pretreatedWater,jdbcType=INTEGER}, #{purificationEquipmentPrice,jdbcType=INTEGER}, 
+      #{fireWaterSupply,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseWater" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -139,6 +141,9 @@
       </if>
       <if test="pipeMaterial != null" >
         pipe_material,
+      </if>
+      <if test="grade != null" >
+        grade,
       </if>
       <if test="boosterEquipment != null" >
         booster_equipment,
@@ -174,6 +179,9 @@
       </if>
       <if test="pipeMaterial != null" >
         #{pipeMaterial,jdbcType=INTEGER},
+      </if>
+      <if test="grade != null" >
+        #{grade,jdbcType=INTEGER},
       </if>
       <if test="boosterEquipment != null" >
         #{boosterEquipment,jdbcType=INTEGER},
@@ -222,6 +230,9 @@
       <if test="record.pipeMaterial != null" >
         pipe_material = #{record.pipeMaterial,jdbcType=INTEGER},
       </if>
+      <if test="record.grade != null" >
+        grade = #{record.grade,jdbcType=INTEGER},
+      </if>
       <if test="record.boosterEquipment != null" >
         booster_equipment = #{record.boosterEquipment,jdbcType=INTEGER},
       </if>
@@ -255,6 +266,7 @@
       supply_mode = #{record.supplyMode,jdbcType=INTEGER},
       piping_layout = #{record.pipingLayout,jdbcType=INTEGER},
       pipe_material = #{record.pipeMaterial,jdbcType=INTEGER},
+      grade = #{record.grade,jdbcType=INTEGER},
       booster_equipment = #{record.boosterEquipment,jdbcType=INTEGER},
       pretreated_water = #{record.pretreatedWater,jdbcType=INTEGER},
       purification_equipment_price = #{record.purificationEquipmentPrice,jdbcType=INTEGER},
@@ -280,6 +292,9 @@
       </if>
       <if test="pipeMaterial != null" >
         pipe_material = #{pipeMaterial,jdbcType=INTEGER},
+      </if>
+      <if test="grade != null" >
+        grade = #{grade,jdbcType=INTEGER},
       </if>
       <if test="boosterEquipment != null" >
         booster_equipment = #{boosterEquipment,jdbcType=INTEGER},
@@ -311,6 +326,7 @@
       supply_mode = #{supplyMode,jdbcType=INTEGER},
       piping_layout = #{pipingLayout,jdbcType=INTEGER},
       pipe_material = #{pipeMaterial,jdbcType=INTEGER},
+      grade = #{grade,jdbcType=INTEGER},
       booster_equipment = #{boosterEquipment,jdbcType=INTEGER},
       pretreated_water = #{pretreatedWater,jdbcType=INTEGER},
       purification_equipment_price = #{purificationEquipmentPrice,jdbcType=INTEGER},

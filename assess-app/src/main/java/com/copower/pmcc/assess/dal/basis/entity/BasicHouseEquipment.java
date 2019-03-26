@@ -13,6 +13,8 @@ public class BasicHouseEquipment {
 
     private String equipment;
 
+    private Integer supplyMode;
+
     private Integer equipmentPrice;
 
     private String creator;
@@ -59,6 +61,14 @@ public class BasicHouseEquipment {
 
     public void setEquipment(String equipment) {
         this.equipment = equipment == null ? null : equipment.trim();
+    }
+
+    public Integer getSupplyMode() {
+        return supplyMode;
+    }
+
+    public void setSupplyMode(Integer supplyMode) {
+        this.supplyMode = supplyMode;
     }
 
     public Integer getEquipmentPrice() {

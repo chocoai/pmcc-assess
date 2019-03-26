@@ -10,6 +10,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -95,10 +96,10 @@ public class BasicUnitDecorateService {
         return basicUnitDecorateDao.basicUnitDecorateList(basicUnitDecorate);
     }
 
-    public List<BasicUnitDecorate> getBasicUnitDecorateList(Integer unitId) throws Exception {
+    public List<BasicUnitDecorateVo> getBasicUnitDecorateList(Integer unitId) throws Exception {
         BasicUnitDecorate where=new BasicUnitDecorate();
         where.setUnitId(unitId);
-        return basicUnitDecorateDao.basicUnitDecorateList(where);
+        return LangUtils.transform(basicUnitDecorateDao.basicUnitDecorateList(where),o->getBasicUnitDecorateVo(o)) ;
     }
 
     public void removeBasicUnitDecorate(BasicUnitDecorate basicUnitDecorate)throws Exception{
@@ -127,6 +128,7 @@ public class BasicUnitDecorateService {
         vo.setConstructionTechnologyName(baseDataDicService.getNameById(basicUnitDecorate.getConstructionTechnology()));
         vo.setMaterialPriceName(baseDataDicService.getNameById(basicUnitDecorate.getMaterialPriceRange()));
         vo.setDecoratingMaterialName(baseDataDicService.getNameById(basicUnitDecorate.getDecoratingMaterial()));
+        vo.setMaterialGradeName(baseDataDicService.getNameById(basicUnitDecorate.getMaterialGrade()));
         return vo;
     }
 }

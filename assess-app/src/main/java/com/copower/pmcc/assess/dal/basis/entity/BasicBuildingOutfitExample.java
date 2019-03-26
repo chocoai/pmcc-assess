@@ -475,6 +475,66 @@ public class BasicBuildingOutfitExample {
             return (Criteria) this;
         }
 
+        public Criteria andMaterialGradeIsNull() {
+            addCriterion("material_grade is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialGradeIsNotNull() {
+            addCriterion("material_grade is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialGradeEqualTo(Integer value) {
+            addCriterion("material_grade =", value, "materialGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialGradeNotEqualTo(Integer value) {
+            addCriterion("material_grade <>", value, "materialGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialGradeGreaterThan(Integer value) {
+            addCriterion("material_grade >", value, "materialGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialGradeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("material_grade >=", value, "materialGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialGradeLessThan(Integer value) {
+            addCriterion("material_grade <", value, "materialGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialGradeLessThanOrEqualTo(Integer value) {
+            addCriterion("material_grade <=", value, "materialGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialGradeIn(List<Integer> values) {
+            addCriterion("material_grade in", values, "materialGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialGradeNotIn(List<Integer> values) {
+            addCriterion("material_grade not in", values, "materialGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialGradeBetween(Integer value1, Integer value2) {
+            addCriterion("material_grade between", value1, value2, "materialGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialGradeNotBetween(Integer value1, Integer value2) {
+            addCriterion("material_grade not between", value1, value2, "materialGrade");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

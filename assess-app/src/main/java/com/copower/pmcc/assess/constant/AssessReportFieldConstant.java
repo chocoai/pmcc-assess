@@ -70,4 +70,22 @@ public class AssessReportFieldConstant {
     public static final String DEVELOPMENT_LEVEL = "development.level";//开发程度分析
     public static final String BUILDING_PROFILE = "building.profile";//楼盘概况
 
+    public static final String LOCATION_ANALYSIS = "location.analysis";//估价对象区位分析
+    public static final String LOCATION_ANALYSIS_PLATE = "location.analysis.plate";//板块
+
+    public static final String LAND_ENTITY_ANALYSIS = "land.entity.analysis";//土地实体分析
+    public static final String LAND_ENTITY_ANALYSIS_HOUSES = "land.entity.analysis.houses";//土地实体分析
+
+    public static final String INDEPENDENCE_ANALYSIS = "independence.analysis";//独立性分析
+    public static final String INDEPENDENCE_ANALYSIS_INTACT = "independence.analysis.intact";//完好
+    public static final String INDEPENDENCE_ANALYSIS_DAMAGE = "independence.analysis.damage";//损坏
+
+    public static final String DIVISIBLE_ANALYSIS = "divisible.analysis";//可分割分析
+    public static final String DIVISIBLE_ANALYSIS_IMPARTIBILITY = "divisible.analysis.impartibility";//不可分
+    public static final String DIVISIBLE_ANALYSIS_DETACHABLE_CAN_RUSH = "divisible.analysis.detachable.can.rush";//可分（可办证）
+    public static final String DIVISIBLE_ANALYSIS_DETACHABLE_NOT_RUSH = "divisible.analysis.detachable.not.rush";//可分（不可办证）
+
+    public static final String HOUSE_MARKET_CONDITION = "house.market.condition";//房地产市场状况
+    public static final String HOUSE_MARKET_CONDITION_PURPOSE = "house.market.condition.purpose";//用途
+
 }

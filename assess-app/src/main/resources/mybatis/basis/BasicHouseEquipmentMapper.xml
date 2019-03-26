@@ -7,6 +7,7 @@
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="category" property="category" jdbcType="INTEGER" />
     <result column="equipment" property="equipment" jdbcType="VARCHAR" />
+    <result column="supply_mode" property="supplyMode" jdbcType="INTEGER" />
     <result column="equipment_price" property="equipmentPrice" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -71,7 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, house_id, type, category, equipment, equipment_price, creator, gmt_created, gmt_modified
+    id, house_id, type, category, equipment, supply_mode, equipment_price, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseEquipmentExample" >
     select
@@ -108,11 +110,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_house_equipment (house_id, type, category, 
-      equipment, equipment_price, creator, 
-      gmt_created, gmt_modified)
+      equipment, supply_mode, equipment_price, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{houseId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, 
-      #{equipment,jdbcType=VARCHAR}, #{equipmentPrice,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{equipment,jdbcType=VARCHAR}, #{supplyMode,jdbcType=INTEGER}, #{equipmentPrice,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseEquipment" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -131,6 +135,9 @@
       </if>
       <if test="equipment != null" >
         equipment,
+      </if>
+      <if test="supplyMode != null" >
+        supply_mode,
       </if>
       <if test="equipmentPrice != null" >
         equipment_price,
@@ -157,6 +164,9 @@
       </if>
       <if test="equipment != null" >
         #{equipment,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyMode != null" >
+        #{supplyMode,jdbcType=INTEGER},
       </if>
       <if test="equipmentPrice != null" >
         #{equipmentPrice,jdbcType=INTEGER},
@@ -196,6 +206,9 @@
       <if test="record.equipment != null" >
         equipment = #{record.equipment,jdbcType=VARCHAR},
       </if>
+      <if test="record.supplyMode != null" >
+        supply_mode = #{record.supplyMode,jdbcType=INTEGER},
+      </if>
       <if test="record.equipmentPrice != null" >
         equipment_price = #{record.equipmentPrice,jdbcType=INTEGER},
       </if>
@@ -220,6 +233,7 @@
       type = #{record.type,jdbcType=VARCHAR},
       category = #{record.category,jdbcType=INTEGER},
       equipment = #{record.equipment,jdbcType=VARCHAR},
+      supply_mode = #{record.supplyMode,jdbcType=INTEGER},
       equipment_price = #{record.equipmentPrice,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -243,6 +257,9 @@
       <if test="equipment != null" >
         equipment = #{equipment,jdbcType=VARCHAR},
       </if>
+      <if test="supplyMode != null" >
+        supply_mode = #{supplyMode,jdbcType=INTEGER},
+      </if>
       <if test="equipmentPrice != null" >
         equipment_price = #{equipmentPrice,jdbcType=INTEGER},
       </if>
@@ -264,6 +281,7 @@
       type = #{type,jdbcType=VARCHAR},
       category = #{category,jdbcType=INTEGER},
       equipment = #{equipment,jdbcType=VARCHAR},
+      supply_mode = #{supplyMode,jdbcType=INTEGER},
       equipment_price = #{equipmentPrice,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

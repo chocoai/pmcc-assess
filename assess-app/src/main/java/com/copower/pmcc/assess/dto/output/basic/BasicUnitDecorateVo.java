@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicUnitDecorate;
 public class BasicUnitDecorateVo extends BasicUnitDecorate {
     private String decorationPartName;
     private String decoratingMaterialName;
+    private String materialGradeName;
     private String materialPriceName;
     private String constructionTechnologyName;
 
@@ -27,6 +28,14 @@ public class BasicUnitDecorateVo extends BasicUnitDecorate {
 
     public void setDecoratingMaterialName(String decoratingMaterialName) {
         this.decoratingMaterialName = decoratingMaterialName;
+    }
+
+    public String getMaterialGradeName() {
+        return materialGradeName;
+    }
+
+    public void setMaterialGradeName(String materialGradeName) {
+        this.materialGradeName = materialGradeName;
     }
 
     public String getMaterialPriceName() {

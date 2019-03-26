@@ -15,6 +15,7 @@ public class BasicBuildingOutfitVo extends BasicBuildingOutfit {
     private String materialPriceName;
 
     private String constructionTechnologyName;
+    private String materialGradeName;
 
     public String getDecorationPartName() {
         return decorationPartName;
@@ -46,5 +47,13 @@ public class BasicBuildingOutfitVo extends BasicBuildingOutfit {
 
     public void setConstructionTechnologyName(String constructionTechnologyName) {
         this.constructionTechnologyName = constructionTechnologyName;
+    }
+
+    public String getMaterialGradeName() {
+        return materialGradeName;
+    }
+
+    public void setMaterialGradeName(String materialGradeName) {
+        this.materialGradeName = materialGradeName;
     }
 }

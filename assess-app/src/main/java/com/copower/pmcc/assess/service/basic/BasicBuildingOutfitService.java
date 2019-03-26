@@ -10,6 +10,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -112,11 +113,11 @@ public class BasicBuildingOutfitService {
         return vo;
     }
 
-    public List<BasicBuildingOutfit> getBasicBuildingOutfitVos(Integer buildingId){
+    public List<BasicBuildingOutfitVo> getBasicBuildingOutfitVos(Integer buildingId){
         BasicBuildingOutfit where=new BasicBuildingOutfit();
         where.setBuildingId(buildingId);
         List<BasicBuildingOutfit> basicBuildingOutfitList = basicBuildingOutfitDao.basicBuildingOutfitList(where);
-        return basicBuildingOutfitList;
+        return LangUtils.transform(basicBuildingOutfitList,o->getBasicBuildingOutfitVo(o));
     }
 
     public BasicBuildingOutfitVo getBasicBuildingOutfitVo(BasicBuildingOutfit basicBuildingOutfit){
@@ -125,15 +126,10 @@ public class BasicBuildingOutfitService {
         }
         BasicBuildingOutfitVo vo = new BasicBuildingOutfitVo();
         BeanUtils.copyProperties(basicBuildingOutfit,vo);
-        if (basicBuildingOutfit.getDecoratingMaterial() != null) {
-            vo.setDecoratingMaterialName(baseDataDicService.getNameById(basicBuildingOutfit.getDecoratingMaterial()));
-        }
-        if (basicBuildingOutfit.getMaterialPrice() != null) {
-            vo.setMaterialPriceName(baseDataDicService.getNameById(basicBuildingOutfit.getMaterialPrice()));
-        }
-        if (basicBuildingOutfit.getConstructionTechnology() != null) {
-            vo.setConstructionTechnologyName(baseDataDicService.getNameById(basicBuildingOutfit.getConstructionTechnology()));
-        }
+        vo.setDecoratingMaterialName(baseDataDicService.getNameById(basicBuildingOutfit.getDecoratingMaterial()));
+        vo.setMaterialPriceName(baseDataDicService.getNameById(basicBuildingOutfit.getMaterialPrice()));
+        vo.setConstructionTechnologyName(baseDataDicService.getNameById(basicBuildingOutfit.getConstructionTechnology()));
+        vo.setMaterialGradeName(baseDataDicService.getNameById(basicBuildingOutfit.getMaterialGrade()));
         return vo;
     }
     

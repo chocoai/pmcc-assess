@@ -212,6 +212,7 @@ commonColumn.buildingOutfitColumn = function () {
     var cols = [];
     cols.push({field: 'decorationPart', title: '装修部位'});
     cols.push({field: 'decoratingMaterialName', title: '装修材料'});
+    cols.push({field: 'materialGradeName', title: '材料档次'});
     cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
     cols.push({field: 'materialPriceName', title: '材料价格区间'});
     return cols;
@@ -248,6 +249,7 @@ commonColumn.unitDecorateColumn = function () {
     var cols = [];
     cols.push({field: 'decorationPartName', title: '装修部位'});
     cols.push({field: 'decoratingMaterialName', title: '装修材料'});
+    cols.push({field: 'materialGradeName', title: '材料档次'});
     cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
     cols.push({field: 'materialPriceName', title: '材料价格区间'});
     return cols;
@@ -341,6 +343,7 @@ commonColumn.houseHeatingColumn = function () {
     var cols = [];
     cols.push({field: 'equipment', title: '设备品牌'});
     cols.push({field: 'categoryName', title: '类别'});
+    cols.push({field: 'supplyModeName', title: '供应方式'});
     cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
     return cols;
 }
@@ -350,6 +353,7 @@ commonColumn.houseAirConditionerColumn = function () {
     var cols = [];
     cols.push({field: 'equipment', title: '设备品牌'});
     cols.push({field: 'categoryName', title: '类别'});
+    cols.push({field: 'supplyModeName', title: '供应方式'});
     cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
     return cols;
 }
@@ -359,6 +363,7 @@ commonColumn.houseNewWindColumn = function () {
     var cols = [];
     cols.push({field: 'equipment', title: '设备品牌'});
     cols.push({field: 'categoryName', title: '类别'});
+    cols.push({field: 'supplyModeName', title: '供应方式'});
     cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
     return cols;
 }

@@ -128,16 +128,13 @@ public class BasicHouseEquipmentService {
         BeanUtils.copyProperties(basicHouseEquipment, vo);
         vo.setCategoryName(baseDataDicService.getNameById(basicHouseEquipment.getCategory()));
         vo.setEquipmentPriceName(baseDataDicService.getNameById(basicHouseEquipment.getEquipmentPrice()));
+        vo.setSupplyModeName(baseDataDicService.getNameById(basicHouseEquipment.getSupplyMode()));
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicHouseEquipment.getId(), null, FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
         StringBuilder builder = new StringBuilder();
         if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
-            if (sysAttachmentDtos.size() >= 1) {
-                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
-                    if (sysAttachmentDto != null) {
-                        builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto));
-                        builder.append(" ");
-                    }
-                }
+            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto));
+                builder.append(" ");
             }
             vo.setFileName(builder.toString());
         }

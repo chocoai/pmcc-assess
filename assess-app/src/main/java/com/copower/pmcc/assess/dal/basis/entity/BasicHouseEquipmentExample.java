@@ -425,6 +425,66 @@ public class BasicHouseEquipmentExample {
             return (Criteria) this;
         }
 
+        public Criteria andSupplyModeIsNull() {
+            addCriterion("supply_mode is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeIsNotNull() {
+            addCriterion("supply_mode is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeEqualTo(Integer value) {
+            addCriterion("supply_mode =", value, "supplyMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeNotEqualTo(Integer value) {
+            addCriterion("supply_mode <>", value, "supplyMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeGreaterThan(Integer value) {
+            addCriterion("supply_mode >", value, "supplyMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("supply_mode >=", value, "supplyMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeLessThan(Integer value) {
+            addCriterion("supply_mode <", value, "supplyMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeLessThanOrEqualTo(Integer value) {
+            addCriterion("supply_mode <=", value, "supplyMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeIn(List<Integer> values) {
+            addCriterion("supply_mode in", values, "supplyMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeNotIn(List<Integer> values) {
+            addCriterion("supply_mode not in", values, "supplyMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeBetween(Integer value1, Integer value2) {
+            addCriterion("supply_mode between", value1, value2, "supplyMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyModeNotBetween(Integer value1, Integer value2) {
+            addCriterion("supply_mode not between", value1, value2, "supplyMode");
+            return (Criteria) this;
+        }
+
         public Criteria andEquipmentPriceIsNull() {
             addCriterion("equipment_price is null");
             return (Criteria) this;

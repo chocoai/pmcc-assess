@@ -13,7 +13,7 @@ public class BasicHouseIntelligent {
 
     private String lampsLanterns;
 
-    private String intelligentSystem;
+    private Integer grade;
 
     private String remark;
 
@@ -22,6 +22,8 @@ public class BasicHouseIntelligent {
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private String intelligentSystem;
 
     public Integer getId() {
         return id;
@@ -63,12 +65,12 @@ public class BasicHouseIntelligent {
         this.lampsLanterns = lampsLanterns == null ? null : lampsLanterns.trim();
     }
 
-    public String getIntelligentSystem() {
-        return intelligentSystem;
+    public Integer getGrade() {
+        return grade;
     }
 
-    public void setIntelligentSystem(String intelligentSystem) {
-        this.intelligentSystem = intelligentSystem == null ? null : intelligentSystem.trim();
+    public void setGrade(Integer grade) {
+        this.grade = grade;
     }
 
     public String getRemark() {
@@ -101,5 +103,13 @@ public class BasicHouseIntelligent {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getIntelligentSystem() {
+        return intelligentSystem;
+    }
+
+    public void setIntelligentSystem(String intelligentSystem) {
+        this.intelligentSystem = intelligentSystem == null ? null : intelligentSystem.trim();
     }
 }

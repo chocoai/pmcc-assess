@@ -1,13 +1,19 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.basic.BasicBuildingOutfitVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicUnitDecorateVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +45,10 @@ public class GenerateHouseEntityService {
     private BasicUnitHuxingService basicUnitHuxingService;
     @Autowired
     private BasicUnitService basicUnitService;
+    @Autowired
+    private BasicBuildingOutfitService basicBuildingOutfitService;
+    @Autowired
+    private BasicUnitDecorateService basicUnitDecorateService;
 
     /**
      * 获取楼盘名称
@@ -178,16 +188,105 @@ public class GenerateHouseEntityService {
                 BasicUnitHuxing basicUnitHuxing = basicUnitHuxingService.getBasicUnitHuxingById(basicHouse.getHuxingId());
                 if (basicUnitHuxing == null) continue;
                 StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append(String.format("梯户比%s,",basicUnit.getElevatorHouseholdRatio()));
+                stringBuilder.append(String.format("梯户比%s,", basicUnit.getElevatorHouseholdRatio()));
                 if (basicUnitHuxing.getType().equals(production.getId())) {//办公商业取开间进深
-
+                    stringBuilder.append(String.format("开间%s米,", basicUnitHuxing.getBay()));
+                    stringBuilder.append(String.format("进深%s米,", basicUnitHuxing.getDeep()));
                 } else if (basicUnitHuxing.getType().equals(office.getId())) {//工业仓储取跨长跨宽
-
+                    stringBuilder.append(String.format("跨长%s米,", basicUnitHuxing.getSpanLength()));
+                    stringBuilder.append(String.format("跨宽%s米,", basicUnitHuxing.getSpanWidth()));
+                    stringBuilder.append(String.format("跨数%s米,", basicUnitHuxing.getSpanNumber()));
                 } else {
-                    stringBuilder.append(String.format("%s,%s;",basicUnitHuxing.getName(),basicUnitHuxing.getDescription()));
+                    stringBuilder.append(String.format("%s,", basicUnitHuxing.getName()));
+                }
+                if (StringUtils.isNotBlank(basicUnitHuxing.getDescription())) {
+                    stringBuilder.append(basicUnitHuxing.getDescription());
                 }
             }
         }
-        return generateCommonMethod.judgeSummaryDesc(map, "分别为");
+        return generateCommonMethod.trim(generateCommonMethod.judgeEachDesc(map, "", ";"));
     }
+
+    /**
+     * 获取装饰装修
+     *
+     * @param judgeObjectIds
+     * @return
+     */
+    public String getDecoration(List<Integer> judgeObjectIds) throws Exception {
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+        Map<String, List<Integer>> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+            BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
+            BasicUnit basicUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
+            String key = String.format("%s&%s", basicBuilding.getBuildingNumber(), basicUnit.getUnitNumber());
+            if (map.containsKey(key)) {
+                List<Integer> list = map.get(key);
+                list.add(schemeJudgeObject.getId());
+            } else {
+                map.put(key, Lists.newArrayList(schemeJudgeObject.getId()));
+            }
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Map.Entry<String, List<Integer>> entry : map.entrySet()) {
+            stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append(BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME);
+            SchemeJudgeObject judgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(entry.getValue().get(0));
+            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
+            BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
+            BasicUnit basicUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
+            List<BasicBuildingOutfitVo> outfitVos = basicBuildingOutfitService.getBasicBuildingOutfitVos(basicBuilding.getId());
+            StringBuilder outfitBuilder = new StringBuilder();
+            if (CollectionUtils.isNotEmpty(outfitVos)) {
+                outfitVos.forEach(o -> {
+                    outfitBuilder.append(o.getDecorationPart())
+                            .append(o.getMaterialGradeName()).append(o.getDecoratingMaterialName()).append(",");
+                });
+            }
+            stringBuilder.append(String.format("楼栋外装%s;", outfitBuilder));
+            List<BasicUnitDecorateVo> unitDecorates = basicUnitDecorateService.getBasicUnitDecorateList(basicUnit.getId());
+            StringBuilder unitDecorateBuilder = new StringBuilder();
+            if (CollectionUtils.isNotEmpty(unitDecorates)) {
+                unitDecorates.forEach(o -> {
+                    unitDecorateBuilder.append(o.getDecorationPartName())
+                            .append(o.getMaterialGradeName()).append(o.getDecoratingMaterialName()).append(",");
+                });
+            }
+            stringBuilder.append(String.format("楼栋内装%s;", outfitBuilder));
+        }
+        return generateCommonMethod.trim(stringBuilder.toString());
+    }
+
+    /**
+     * 获取外观
+     * @param judgeObjectIds
+     * @return
+     */
+    public String getAppearance(List<Integer> judgeObjectIds) throws Exception {
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+        Map<String, List<Integer>> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+            BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
+            String key = basicBuilding.getBuildingNumber();
+            if (map.containsKey(key)) {
+                List<Integer> list = map.get(key);
+                list.add(schemeJudgeObject.getId());
+            } else {
+                map.put(key, Lists.newArrayList(schemeJudgeObject.getId()));
+            }
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Map.Entry<String, List<Integer>> entry : map.entrySet()) {
+            stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append(BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME);
+            SchemeJudgeObject judgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(entry.getValue().get(0));
+            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
+            BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
+            stringBuilder.append(String.format("外观风格%s,",baseDataDicService.getNameById(basicBuilding.getAppearanceStyle()) ));
+            stringBuilder.append(String.format("外观%s;",baseDataDicService.getNameById(basicBuilding.getAppearanceNewAndOld()) ));
+        }
+        return generateCommonMethod.trim(stringBuilder.toString());
+    }
+
+
 }

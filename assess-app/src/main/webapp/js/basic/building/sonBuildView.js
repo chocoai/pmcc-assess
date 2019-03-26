@@ -140,6 +140,9 @@ var buildingModelView;
                     AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_decorating_material, item.decoratingMaterial, function (html, data) {
                         $("#" + buildingModelView.prototype.config().sonFrm).find('select.decoratingMaterial').empty().html(html).trigger('change');
                     });
+                    AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonMaterialGrade, item.materialGrade, function (html, data) {
+                        $("#" + buildingModelView.prototype.config().sonFrm).find('select.materialGrade').empty().html(html).trigger('change');
+                    });
                 },
                 loadDataDicList: function () {
                     var cols = commonColumn.buildingOutfitColumn();

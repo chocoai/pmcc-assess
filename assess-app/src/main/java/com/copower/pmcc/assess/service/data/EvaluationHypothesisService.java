@@ -368,9 +368,10 @@ public class EvaluationHypothesisService {
                     }
 
                 }
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
-                stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
-
+                if (StringUtils.isNotBlank(referenceNum)) {
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(String.format("%s、%s", ++order2, basis.getName())).append("</p>");
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(basis.getTemplate()).append("</p>");
+                }
                 if (StringUtils.isNotBlank(referenceNum)) {
                     String number = getSubstitutionPrincipleName(referenceNum.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.REFERENCE_SAME);
@@ -451,6 +452,8 @@ public class EvaluationHypothesisService {
                 StringBuilder content = new StringBuilder();
                 StringBuilder limitContent = new StringBuilder();
 
+                String pledgeRemark = new String();
+                String otherRemark = new String();
 
                 Integer rightId = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_PLEDGE).getId();
                 Integer otherId = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_TASKRIGHT_OTHER).getId();
@@ -482,12 +485,15 @@ public class EvaluationHypothesisService {
                     if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightRecordList)) {
                         rightList = surveyAssetInventoryRightService.surveyAssetInventoryRights(surveyAssetInventoryRightRecordList.get(0).getPlanDetailsId());
                     }
+
                     for (SurveyAssetInventoryRight inventoryRight : rightList) {
                         if (rightId.equals(inventoryRight.getCategory())) {
                             havePledge.append(judgeObject.getNumber()).append(",");
+                            pledgeRemark = inventoryRight.getRemark();
                         }
                         if (otherId.equals(inventoryRight.getCategory())) {
                             haveOther.append(judgeObject.getNumber()).append(",");
+                            otherRemark = inventoryRight.getRemark();
                         }
                     }
                     //转让限制
@@ -509,19 +515,19 @@ public class EvaluationHypothesisService {
                 noOther = minus(allNum, haveOther);
                 if (StringUtils.isNotBlank(havePledge)) {
                     String number = getSubstitutionPrincipleName(havePledge.toString());
-                    content.append(number).append("委估对象有抵押;");
+                    content.append(number).append("委估对象有").append(pledgeRemark).append(";");
                 }
                 if (StringUtils.isNotBlank(noPledge)) {
                     String number = getSubstitutionPrincipleName(noPledge.toString());
-                    content.append(number).append("委估对象无抵押;");
+                    content.append(number).append("委估对象无").append(pledgeRemark).append(";");
                 }
                 if (StringUtils.isNotBlank(haveOther)) {
                     String number = getSubstitutionPrincipleName(haveOther.toString());
-                    content.append(number).append("委估对象有查封、诉讼、仲裁、司法强制执行或其他重大争议等禁止转让情形，房地产权属无纠纷;");
+                    content.append(number).append("委估对象有").append(otherRemark).append(";");
                 }
                 if (StringUtils.isNotBlank(noOther)) {
                     String number = getSubstitutionPrincipleName(noOther.toString());
-                    content.append(number).append("委估对象无查封、诉讼、仲裁、司法强制执行或其他重大争议等禁止转让情形，房地产权属无纠纷;");
+                    content.append(number).append("委估对象无").append(otherRemark).append(";");
                 }
                 content.append(limitContent);
                 //他权
