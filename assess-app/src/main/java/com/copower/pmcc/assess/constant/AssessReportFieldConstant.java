@@ -85,4 +85,7 @@ public class AssessReportFieldConstant {
     public static final String DIVISIBLE_ANALYSIS_DETACHABLE_CAN_RUSH = "divisible.analysis.detachable.can.rush";//可分（可办证）
     public static final String DIVISIBLE_ANALYSIS_DETACHABLE_NOT_RUSH = "divisible.analysis.detachable.not.rush";//可分（不可办证）
 
+    public static final String HOUSE_MARKET_CONDITION = "house.market.condition";//房地产市场状况
+    public static final String HOUSE_MARKET_CONDITION_PURPOSE = "house.market.condition.purpose";//用途
+
 }
