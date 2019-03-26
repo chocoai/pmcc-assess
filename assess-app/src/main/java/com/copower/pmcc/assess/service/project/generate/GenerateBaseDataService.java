@@ -3781,7 +3781,7 @@ public class GenerateBaseDataService {
                                             case 4:
                                                 if (true) {
                                                     StringBuilder stringBuilder = new StringBuilder(16);
-                                                    List<BasicUnitDecorate> decorateList = generateBaseExamineService.getBasicUnitDecorateList();
+                                                    List<BasicUnitDecorateVo> decorateList = generateBaseExamineService.getBasicUnitDecorateList();
                                                     if (CollectionUtils.isNotEmpty(decorateList)) {
                                                         for (BasicUnitDecorate unitDecorate : decorateList) {
                                                             stringBuilder.append(unitDecorate.getDecorationPart() == null ? errorStr : String.format("装修部位:%s；", baseDataDicService.getNameById(unitDecorate.getDecorationPart())));
@@ -3893,7 +3893,7 @@ public class GenerateBaseDataService {
                                                 //外观
                                                 if (true) {
                                                     StringBuilder stringBuilder = new StringBuilder(16);
-                                                    List<BasicBuildingOutfit> outfitList = generateBaseExamineService.getBasicBuildingOutfitList();
+                                                    List<BasicBuildingOutfitVo> outfitList = generateBaseExamineService.getBasicBuildingOutfitList();
                                                     if (CollectionUtils.isNotEmpty(outfitList)) {
                                                         for (BasicBuildingOutfit outfit : outfitList) {
                                                             stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(outfit.getDecorationPart()) ? errorStr : String.format("装修部位:%s；", outfit.getDecorationPart()));

@@ -99,9 +99,14 @@
                     </select>
                 </div>
             </div>
-            <input type="text" data-rule-maxlength="255" placeholder="空间布局描述"
-                   name="spatialDistributionDesc"
-                   class="form-control" value="${basicHouse.spatialDistributionDesc}">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">空间布局描述</label>
+                <div class="col-sm-3">
+                    <input type="text" data-rule-maxlength="255" placeholder="空间布局描述"
+                           name="spatialDistributionDesc"
+                           class="form-control" value="${basicHouse.spatialDistributionDesc}">
+                </div>
+            </div>
         </div>
         <div class="form-group">
             <div class="x-valid">

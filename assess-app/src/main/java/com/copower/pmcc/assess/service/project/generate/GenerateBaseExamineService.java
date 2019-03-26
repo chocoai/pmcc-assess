@@ -173,7 +173,7 @@ public class GenerateBaseExamineService {
         return basicBuildingMaintenanceService.basicBuildingMaintenanceList(query);
     }
 
-    public List<BasicBuildingOutfit> getBasicBuildingOutfitList() {
+    public List<BasicBuildingOutfitVo> getBasicBuildingOutfitList() {
         return basicBuildingOutfitService.getBasicBuildingOutfitVos(getBasicBuilding().getId());
     }
 
@@ -202,7 +202,7 @@ public class GenerateBaseExamineService {
         return basicUnitElevatorService.getBasicUnitElevatorList(getBasicUnit().getId());
     }
 
-    public List<BasicUnitDecorate> getBasicUnitDecorateList() throws Exception {
+    public List<BasicUnitDecorateVo> getBasicUnitDecorateList() throws Exception {
         return basicUnitDecorateService.getBasicUnitDecorateList(getBasicUnit().getId());
     }
 

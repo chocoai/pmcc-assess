@@ -9,9 +9,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventory
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryRightDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareItemDto;
-import com.copower.pmcc.assess.dto.output.basic.BasicHouseIntelligentVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicMatchingEnvironmentVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicMatchingTrafficVo;
+import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
@@ -505,7 +503,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case ARCHITECTURAL_OUTFIT://建筑外装
                             stringBuilder = new StringBuilder();
-                            List<BasicBuildingOutfit> outfitList = basicBuildingOutfitService.getBasicBuildingOutfitVos(examineBuilding.getId());
+                            List<BasicBuildingOutfitVo> outfitList = basicBuildingOutfitService.getBasicBuildingOutfitVos(examineBuilding.getId());
                             if (CollectionUtils.isNotEmpty(outfitList)) {
                                 for (BasicBuildingOutfit outfit : outfitList) {
                                     stringBuilder.append(StringUtils.isBlank(outfit.getDecorationPart()) ? "" : String.format("装修部位:%s；", outfit.getDecorationPart()));
@@ -644,7 +642,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case INTERNAL_ASSEMBLY://内装
                             stringBuilder = new StringBuilder();
-                            List<BasicUnitDecorate> decorateList = basicUnitDecorateService.getBasicUnitDecorateList(examineUnit.getId());
+                            List<BasicUnitDecorateVo> decorateList = basicUnitDecorateService.getBasicUnitDecorateList(examineUnit.getId());
                             if (CollectionUtils.isNotEmpty(decorateList)) {
                                 for (BasicUnitDecorate unitDecorate : decorateList) {
                                     stringBuilder.append(unitDecorate.getDecorationPart() == null ? "" : String.format("装修部位:%s；", baseDataDicService.getNameById(unitDecorate.getDecorationPart())));

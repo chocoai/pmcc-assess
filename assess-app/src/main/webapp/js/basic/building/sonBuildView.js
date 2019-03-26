@@ -141,7 +141,7 @@ var buildingModelView;
                         $("#" + buildingModelView.prototype.config().sonFrm).find('select.decoratingMaterial').empty().html(html).trigger('change');
                     });
                     AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonMaterialGrade, item.materialGrade, function (html, data) {
-                        $("#" + unitDecorate.prototype.config().frm).find('select.materialGrade').empty().html(html).trigger('change');
+                        $("#" + buildingModelView.prototype.config().sonFrm).find('select.materialGrade').empty().html(html).trigger('change');
                     });
                 },
                 loadDataDicList: function () {
