@@ -26,7 +26,7 @@ public class MyBatisGenerateBasicMapper {
     public static void main(String[] args) throws Exception {
 
         List<File> files = new ArrayList();
-        findFiles(System.getProperty("user.dir"), "HHgeneratorConfig.xml", files);
+        findFiles(System.getProperty("user.dir"), "generatorConfig.xml", files);
         if (CollectionUtils.isNotEmpty(files)) {
             for (File configFile: files) {
                 System.out.print(configFile);

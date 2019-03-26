@@ -1825,6 +1825,76 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
+        public Criteria andConclusionIsNull() {
+            addCriterion("conclusion is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionIsNotNull() {
+            addCriterion("conclusion is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionEqualTo(String value) {
+            addCriterion("conclusion =", value, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionNotEqualTo(String value) {
+            addCriterion("conclusion <>", value, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionGreaterThan(String value) {
+            addCriterion("conclusion >", value, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionGreaterThanOrEqualTo(String value) {
+            addCriterion("conclusion >=", value, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionLessThan(String value) {
+            addCriterion("conclusion <", value, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionLessThanOrEqualTo(String value) {
+            addCriterion("conclusion <=", value, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionLike(String value) {
+            addCriterion("conclusion like", value, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionNotLike(String value) {
+            addCriterion("conclusion not like", value, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionIn(List<String> values) {
+            addCriterion("conclusion in", values, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionNotIn(List<String> values) {
+            addCriterion("conclusion not in", values, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionBetween(String value1, String value2) {
+            addCriterion("conclusion between", value1, value2, "conclusion");
+            return (Criteria) this;
+        }
+
+        public Criteria andConclusionNotBetween(String value1, String value2) {
+            addCriterion("conclusion not between", value1, value2, "conclusion");
+            return (Criteria) this;
+        }
+
         public Criteria andHoldOnIsNull() {
             addCriterion("hold_on is null");
             return (Criteria) this;
