@@ -43,11 +43,11 @@
                             </div>
 
                             <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary" onclick="dataDeveloper.prototype.loadDataDicList()">
+                                <button type="button" class="btn btn-primary" onclick="dataArchitecture.prototype.loadDataDicList()">
                                     查询
                                 </button>
 
-                                <button type="button" class="btn btn-success" onclick="dataDeveloper.prototype.showModel()"
+                                <button type="button" class="btn btn-success" onclick="dataArchitecture.prototype.showModel()"
                                         data-toggle="modal" href="#divBox"> 新增
                                 </button>
                             </div>
@@ -69,12 +69,12 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
     $(function () {
-        dataDeveloper.prototype.loadDataDicList();
+        dataArchitecture.prototype.loadDataDicList();
     });
-    var dataDeveloper = function () {
+    var dataArchitecture = function () {
 
     };
-    dataDeveloper.prototype = {
+    dataArchitecture.prototype = {
         config:function () {
             var data = {};
             data.table = "tb_FatherList" ;
@@ -87,19 +87,21 @@
             cols.push({field: 'buildingStructure', title: '建筑结构'});
             cols.push({field: 'buildingUseName', title: '用途'});
             cols.push({field: 'durableLife', title: '经济耐用年限'});
-            cols.push({field: 'residualValue', title: '残值率'});
+            cols.push({field: 'residualValue', title: '残值率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="dataDeveloper.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="dataDeveloper.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="dataArchitecture.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="dataArchitecture.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
             });
-            $("#"+dataDeveloper.prototype.config().table).bootstrapTable('destroy');
-            TableInit(dataDeveloper.prototype.config().table, "${pageContext.request.contextPath}/architecture/getArchitectureList", cols, {
+            $("#"+dataArchitecture.prototype.config().table).bootstrapTable('destroy');
+            TableInit(dataArchitecture.prototype.config().table, "${pageContext.request.contextPath}/architecture/getArchitectureList", cols, {
                 buildingStructure:$("#queryName").val()
             }, {
                 showColumns: false,
@@ -119,7 +121,7 @@
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('删除成功');
-                        dataDeveloper.prototype.loadDataDicList();
+                        dataArchitecture.prototype.loadDataDicList();
                     }
                     else {
                         Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -131,14 +133,14 @@
             })
         },
         showModel:function () {
-            $("#"+dataDeveloper.prototype.config().frm).clearAll();
-            $('#'+dataDeveloper.prototype.config().box).modal("show");
+            $("#"+dataArchitecture.prototype.config().frm).clearAll();
+            $('#'+dataArchitecture.prototype.config().box).modal("show");
         },
         saveData:function () {
-            if (!$("#"+dataDeveloper.prototype.config().frm).valid()){
+            if (!$("#"+dataArchitecture.prototype.config().frm).valid()){
                 return false;
             }
-            var data = formParams(dataDeveloper.prototype.config().frm);
+            var data = formParams(dataArchitecture.prototype.config().frm);
             $.ajax({
                 url:"${pageContext.request.contextPath}/architecture/addAndUpdateNewRate",
                 type: "post",
@@ -147,8 +149,8 @@
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
-                        $('#'+dataDeveloper.prototype.config().box).modal('hide');
-                        dataDeveloper.prototype.loadDataDicList();
+                        $('#'+dataArchitecture.prototype.config().box).modal('hide');
+                        dataArchitecture.prototype.loadDataDicList();
                     }
                     else {
                         Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -167,9 +169,12 @@
                 data: {id:id},
                 success: function (result) {
                     if (result.ret) {
-                        $("#"+dataDeveloper.prototype.config().frm).clearAll();
-                        $("#" + dataDeveloper.prototype.config().frm).initForm(result.data);
-                        $('#'+dataDeveloper.prototype.config().box).modal("show");
+                        $("#"+dataArchitecture.prototype.config().frm).clearAll().initForm(result.data);
+                        $("#"+dataArchitecture.prototype.config().frm).find('.x-percent').each(function () {
+                            $(this).attr('data-value', result.data.residualValue);
+                            AssessCommon.elementParsePercent($(this));
+                        })
+                        $('#'+dataArchitecture.prototype.config().box).modal("show");
                     }
                 },
                 error: function (result) {
@@ -252,7 +257,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="dataDeveloper.prototype.saveData()">
+                    <button type="button" class="btn btn-primary" onclick="dataArchitecture.prototype.saveData()">
                         保存
                     </button>
                 </div>

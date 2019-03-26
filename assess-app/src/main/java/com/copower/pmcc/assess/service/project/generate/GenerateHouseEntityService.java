@@ -39,6 +39,8 @@ public class GenerateHouseEntityService {
     private BasicUnitHuxingService basicUnitHuxingService;
     @Autowired
     private BasicUnitService basicUnitService;
+    @Autowired
+    private BasicEstateLandStateService basicEstateLandStateService;
 
     /**
      * 获取楼盘名称
@@ -190,4 +192,6 @@ public class GenerateHouseEntityService {
         }
         return generateCommonMethod.judgeSummaryDesc(map, "分别为");
     }
+
+
 }
