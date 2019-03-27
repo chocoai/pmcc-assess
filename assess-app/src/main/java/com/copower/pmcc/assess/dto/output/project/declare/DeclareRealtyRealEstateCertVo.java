@@ -20,6 +20,15 @@ public class DeclareRealtyRealEstateCertVo extends DeclareRealtyRealEstateCert {
     private String publicSituationName;
     private String useRightTypeName;
     private String registrationTimeFmt;
+    private String natureName;
+
+    public String getNatureName() {
+        return natureName;
+    }
+
+    public void setNatureName(String natureName) {
+        this.natureName = natureName;
+    }
 
     public String getRegistrationTimeFmt() {
         return registrationTimeFmt;

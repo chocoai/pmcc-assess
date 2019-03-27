@@ -75,6 +75,9 @@ declareRealtyRealEstateCert.init = function (item) {
     AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, item.planningUse, function (html, data) {
         $("#" + declareRealtyRealEstateCert.config.frm).find('select.planningUse').empty().html(html).trigger('change');
     });
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareRoomType, item.nature, function (html, data) {
+        $("#" + declareRealtyRealEstateCert.config.frm).find('select.nature').empty().html(html).trigger('change');
+    });
     AssessCommon.initAreaInfo({
         provinceTarget: $("#" + declareRealtyRealEstateCert.config.frm).find("select[name='province']"),
         cityTarget: $("#" + declareRealtyRealEstateCert.config.frm).find("select[name='city']"),

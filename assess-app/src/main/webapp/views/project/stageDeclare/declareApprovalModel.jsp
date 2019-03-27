@@ -341,7 +341,7 @@
             <div class="x-valid">
                <label class="col-sm-1 control-label">房屋性质</label>
                <div class="col-sm-3">
-                   <label class="form-control" name="nature"></label>
+                   <label class="form-control" name="natureName"></label>
                </div>
            </div>
         </div>
@@ -824,7 +824,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">房屋性质<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <label class="form-control" name="nature"></label>
+                    <label class="form-control" name="natureName"></label>
                 </div>
             </div>
         </div>

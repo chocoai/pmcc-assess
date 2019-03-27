@@ -16,6 +16,15 @@ public class DeclareRealtyHouseCertVo extends DeclareRealtyHouseCert {
     private String typeName;
     private String useStartDateFmt;
     private String useEndDateFmt;
+    private String natureName;
+
+    public String getNatureName() {
+        return natureName;
+    }
+
+    public void setNatureName(String natureName) {
+        this.natureName = natureName;
+    }
 
     public String getUseEndDateFmt() {
         return useEndDateFmt;

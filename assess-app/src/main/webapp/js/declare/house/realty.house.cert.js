@@ -88,6 +88,9 @@ assessCommonHouse.init = function (item) {
     AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, item.planningUse, function (html, data) {
         $("#" + assessCommonHouse.config.frm).find('select.planningUse').empty().html(html).trigger('change');
     });
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareRoomType, item.nature, function (html, data) {
+        $("#" + assessCommonHouse.config.frm).find('select.nature').empty().html(html).trigger('change');
+    });
     assessCommonHouse.fileUpload(assessCommonHouse.config.fileId, AssessDBKey.DeclareRealtyHouseCert, assessCommonHouse.isNotBlank(item.id) ? item.id : '0');
     assessCommonHouse.showFile(assessCommonHouse.config.fileId, AssessDBKey.DeclareRealtyHouseCert, assessCommonHouse.isNotBlank(item.id) ? item.id : '0');
 };

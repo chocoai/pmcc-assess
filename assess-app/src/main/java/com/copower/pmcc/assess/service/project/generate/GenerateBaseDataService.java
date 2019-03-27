@@ -3240,10 +3240,19 @@ public class GenerateBaseDataService {
         LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = getLinkedHashMapAndBasicApplyOrSchemeJudgeObject();
         documentBuilder.writeln("估价土地实体状况表");
         for (Map.Entry<BasicApply, SchemeJudgeObject> schemeJudgeObjectEntry : schemeJudgeObjectLinkedHashMap.entrySet()){
-            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectEntry.getValue();
             BasicApply basicApply = schemeJudgeObjectEntry.getKey();
             documentBuilder.writeln(String.format("1、名称:%s",generateLandEntityService.getLandName(basicApply)));
-            documentBuilder.writeln(String.format("1、四至:%s",generateLandEntityService.getLandName(basicApply)));
+            documentBuilder.writeln(String.format("2、四至:%s",generateLandEntityService.fourTheFor(basicApply)));
+            documentBuilder.writeln(String.format("3、土地面积:%s",generateLandEntityService.getLandArea(basicApply)));
+            documentBuilder.writeln(String.format("4、用途:%s",generateLandEntityService.getLandUse(basicApply)));
+            documentBuilder.writeln(String.format("5、形状:%s",generateLandEntityService.getShapeState(basicApply)));
+            documentBuilder.writeln(String.format("6、地势:%s",generateLandEntityService.getTopographicTerrain(basicApply)));
+            documentBuilder.writeln(String.format("7、土壤与地质:%s",generateLandEntityService.getSoil(basicApply)));
+            documentBuilder.writeln(String.format("8、基础设施完备度:%s",generateLandEntityService.getInfrastructureCompleteness(basicApply)));
+            documentBuilder.writeln(String.format("9、开发程度:%s",generateLandEntityService.getDevelopmentDegree(basicApply)));
+            documentBuilder.writeln(String.format("10、综上所述:"));
+            documentBuilder.writeln(String.format("%s",generateLandEntityService.getContent(basicApply,schemeJudgeObjectEntry.getValue())));
+            documentBuilder.writeln();
         }
         doc.save(localPath);
         return localPath;
