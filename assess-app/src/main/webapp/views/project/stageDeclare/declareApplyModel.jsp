@@ -280,21 +280,21 @@
                 } else {
                     buildingNumber = buildingNumber + "栋";
                 }
-               /* if (commonDeclareApplyModel.isNotBlank(district)) {
-                    AssessCommon.getAreaById(district, function (data) {
-                        if (!commonDeclareApplyModel.isNotBlank(data)) {
-                            district = "";
-                        } else {
-                            district = data.name;
-                        }
-                        text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                        engine.find("input[name='beLocated']").val(text);
-                    });
-                } else {
-                    district = "";
-                    text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                    engine.find("input[name='beLocated']").val(text);
-                }*/
+                /* if (commonDeclareApplyModel.isNotBlank(district)) {
+                     AssessCommon.getAreaById(district, function (data) {
+                         if (!commonDeclareApplyModel.isNotBlank(data)) {
+                             district = "";
+                         } else {
+                             district = data.name;
+                         }
+                         text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
+                         engine.find("input[name='beLocated']").val(text);
+                     });
+                 } else {
+                     district = "";
+                     text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
+                     engine.find("input[name='beLocated']").val(text);
+                 }*/
                 text = streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
                 engine.find("input[name='beLocated']").val(text);
             }
@@ -389,21 +389,21 @@
                 } else {
                     buildingNumber = buildingNumber + "栋";
                 }
-               /* if (commonDeclareApplyModel.isNotBlank(district)) {
-                    AssessCommon.getAreaById(district, function (data) {
-                        if (!commonDeclareApplyModel.isNotBlank(data)) {
-                            district = "";
-                        } else {
-                            district = data.name;
-                        }
-                        text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                        engine.find("input[name='beLocated']").val(text);
-                    });
-                } else {
-                    district = "";
-                    text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                    engine.find("input[name='beLocated']").val(text);
-                }*/
+                /* if (commonDeclareApplyModel.isNotBlank(district)) {
+                     AssessCommon.getAreaById(district, function (data) {
+                         if (!commonDeclareApplyModel.isNotBlank(data)) {
+                             district = "";
+                         } else {
+                             district = data.name;
+                         }
+                         text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
+                         engine.find("input[name='beLocated']").val(text);
+                     });
+                 } else {
+                     district = "";
+                     text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
+                     engine.find("input[name='beLocated']").val(text);
+                 }*/
                 text = streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
                 engine.find("input[name='beLocated']").val(text);
             }
@@ -1991,6 +1991,16 @@
                 </div>
             </div>
             <div class="x-valid">
+                <label class="col-sm-1 control-label">共有情况<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select required="required" name="publicSituation"
+                            class="form-control search-select select2 publicSituation">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     登记日期
                 </label>
@@ -2291,6 +2301,16 @@
                            placeholder="土地使用权人">
                 </div>
             </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">共有情况</label>
+                <div class="col-sm-3">
+                    <select required="required" name="publicSituation"
+                            class="form-control search-select select2 publicSituation">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     登记日期

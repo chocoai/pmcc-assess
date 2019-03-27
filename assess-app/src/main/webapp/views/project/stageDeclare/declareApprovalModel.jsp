@@ -259,6 +259,14 @@
                 </div>
             </div>
             <div class="x-valid">
+                <label class="col-sm-1 control-label">共有情况</label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="publicSituationName"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     登记日期<span class="symbol required"></span>
                 </label>
@@ -509,6 +517,14 @@
                     <label class="form-control" name="ownership"></label>
                 </div>
             </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">共有情况</label>
+                <div class="col-sm-3">
+                    <label class="form-control" name="publicSituationName"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="col-sm-1 control-label">
                 登记日期<span class="symbol required"></span>
             </label>
