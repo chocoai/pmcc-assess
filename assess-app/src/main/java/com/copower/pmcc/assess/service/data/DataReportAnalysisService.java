@@ -318,16 +318,22 @@ public class DataReportAnalysisService {
                 //可分不可办证
                 StringBuilder detachableNotRush = new StringBuilder();
 
+                //可办证
+                Integer passId = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.CERTIFICATE_HANDLING_TYPE_PASS).getId();
+                //不可办证
+                Integer refuseId = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.CERTIFICATE_HANDLING_TYPE_REFUSE).getId();
+
+
                 for (SchemeJudgeObject judgeObject : judgeObjectList) {
                     //对应资产清查内容
                     SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByDeclareId(judgeObject.getDeclareRecordId());
                     if ("不可分".equals(surveyAssetInventory.getSegmentationLimit())) {
                         impartibility.append(judgeObject.getNumber()).append(",");
                     }
-                    if ("可分".equals(surveyAssetInventory.getSegmentationLimit()) && "可办证".equals(surveyAssetInventory.getCertificate())) {
+                    if ("可分".equals(surveyAssetInventory.getSegmentationLimit()) && passId.equals(Integer.valueOf(surveyAssetInventory.getCertificate()))) {
                         detachableCanRush.append(judgeObject.getNumber()).append(",");
                     }
-                    if ("可分".equals(surveyAssetInventory.getSegmentationLimit()) && "不可办证".equals(surveyAssetInventory.getCertificate())) {
+                    if ("可分".equals(surveyAssetInventory.getSegmentationLimit()) && refuseId.equals(Integer.valueOf(surveyAssetInventory.getCertificate()))) {
                         detachableNotRush.append(judgeObject.getNumber()).append(",");
                     }
                 }
