@@ -2089,6 +2089,23 @@ var matchingEnvironment;
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_environment_influence_degree, item.influenceDegree, function (html, data) {
                 $("#" + matchingEnvironment.prototype.config().frm).find("select.influenceDegree").empty().html(html);
             });
+        },
+        initRemarkInfo:function (options) {
+            var defaults = {
+                useDefaultText: true,
+                typeTarget: undefined,
+                categoryTarget: undefined,
+                influenceDegreeTarget: undefined,
+                remarkTarget: undefined,
+                typeValue: undefined,
+                categoryValue: undefined,
+                influenceDegreeValue: undefined,
+                remarkValue: undefined,
+                success: function () {
+
+                }
+            };
+            defaults = $.extend({}, defaults, options);
         }
     }
 
