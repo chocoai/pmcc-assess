@@ -122,9 +122,10 @@
                                 <label class="col-sm-1 control-label">是否办证</label>
                                 <div class="col-sm-3">
                                     <select class="form-control" id="certificate" name="certificate">
-                                        <option value="" selected>请选择</option>
-                                        <option value="可办证">可办证</option>
-                                        <option value="已办证">已办证</option>
+                                        <option value="">-请选择-</option>
+                                        <c:forEach var="items" items="${certificateTypes}">
+                                            <option value="${items.id}">${items.name}</option>
+                                        </c:forEach>
                                     </select>
                                 </div>
                             </div>

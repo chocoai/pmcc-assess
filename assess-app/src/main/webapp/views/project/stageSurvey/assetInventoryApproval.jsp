@@ -73,7 +73,7 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">是否办证</label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${surveyAssetInventory.certificate}</label>
+                                    <label class="form-control">${surveyAssetInventory.certificateName}</label>
                                 </div>
                             </div>
                         </div>

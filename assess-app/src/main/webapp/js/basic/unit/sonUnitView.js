@@ -516,7 +516,7 @@ var unitElevator;
         },
         init: function (item) {
             $("#" + unitElevator.prototype.config().frm).clearAll().initForm(item);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitElevatorMaintenance, item.maintenance, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonMaintenanceSituation, item.maintenance, function (html, data) {
                 $("#" + unitElevator.prototype.config().frm).find('select.maintenance').empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitElevatorType, item.type, function (html, data) {

@@ -16,7 +16,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -131,12 +130,9 @@ public class BasicHouseIntelligentService {
         BeanUtils.copyProperties(basicHouseIntelligent, vo);
         vo.setSwitchCircuitName(baseDataDicService.getNameById(basicHouseIntelligent.getSwitchCircuit()));
         vo.setLayingMethodName(baseDataDicService.getNameById(basicHouseIntelligent.getLayingMethod()));
-        if (StringUtils.isNotBlank(basicHouseIntelligent.getLampsLanterns())) {
-            vo.setLampsLanternsName(caseHouseIntelligentService.getLampsLanternsName(basicHouseIntelligent.getLampsLanterns()));
-        }
-        if (StringUtils.isNotBlank(basicHouseIntelligent.getIntelligentSystem())) {
-            vo.setIntelligentSystemName(caseHouseIntelligentService.getIntelligentSystemName(basicHouseIntelligent.getIntelligentSystem()));
-        }
+        vo.setLampsLanternsName(caseHouseIntelligentService.getLampsLanternsName(basicHouseIntelligent.getLampsLanterns()));
+        vo.setGradeName(baseDataDicService.getNameById(basicHouseIntelligent.getGrade()));
+        vo.setIntelligentSystemName(caseHouseIntelligentService.getIntelligentSystemName(basicHouseIntelligent.getIntelligentSystem()));
         return vo;
     }
 

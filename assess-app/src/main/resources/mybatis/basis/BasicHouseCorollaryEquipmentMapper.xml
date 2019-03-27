@@ -7,10 +7,10 @@
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="category" property="category" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="equipment_use" property="equipmentUse" jdbcType="VARCHAR" />
+    <result column="equipment_use" property="equipmentUse" jdbcType="INTEGER" />
     <result column="parameter_index" property="parameterIndex" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="VARCHAR" />
-    <result column="maintenance_status" property="maintenanceStatus" jdbcType="VARCHAR" />
+    <result column="maintenance_status" property="maintenanceStatus" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -116,8 +116,8 @@
       price, maintenance_status, creator, 
       gmt_created, gmt_modified)
     values (#{houseId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}, 
-      #{name,jdbcType=VARCHAR}, #{equipmentUse,jdbcType=VARCHAR}, #{parameterIndex,jdbcType=VARCHAR}, 
-      #{price,jdbcType=VARCHAR}, #{maintenanceStatus,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{equipmentUse,jdbcType=INTEGER}, #{parameterIndex,jdbcType=VARCHAR}, 
+      #{price,jdbcType=VARCHAR}, #{maintenanceStatus,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCorollaryEquipment" >
@@ -174,7 +174,7 @@
         #{name,jdbcType=VARCHAR},
       </if>
       <if test="equipmentUse != null" >
-        #{equipmentUse,jdbcType=VARCHAR},
+        #{equipmentUse,jdbcType=INTEGER},
       </if>
       <if test="parameterIndex != null" >
         #{parameterIndex,jdbcType=VARCHAR},
@@ -183,7 +183,7 @@
         #{price,jdbcType=VARCHAR},
       </if>
       <if test="maintenanceStatus != null" >
-        #{maintenanceStatus,jdbcType=VARCHAR},
+        #{maintenanceStatus,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -221,7 +221,7 @@
         name = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.equipmentUse != null" >
-        equipment_use = #{record.equipmentUse,jdbcType=VARCHAR},
+        equipment_use = #{record.equipmentUse,jdbcType=INTEGER},
       </if>
       <if test="record.parameterIndex != null" >
         parameter_index = #{record.parameterIndex,jdbcType=VARCHAR},
@@ -230,7 +230,7 @@
         price = #{record.price,jdbcType=VARCHAR},
       </if>
       <if test="record.maintenanceStatus != null" >
-        maintenance_status = #{record.maintenanceStatus,jdbcType=VARCHAR},
+        maintenance_status = #{record.maintenanceStatus,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -253,10 +253,10 @@
       type = #{record.type,jdbcType=INTEGER},
       category = #{record.category,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      equipment_use = #{record.equipmentUse,jdbcType=VARCHAR},
+      equipment_use = #{record.equipmentUse,jdbcType=INTEGER},
       parameter_index = #{record.parameterIndex,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=VARCHAR},
-      maintenance_status = #{record.maintenanceStatus,jdbcType=VARCHAR},
+      maintenance_status = #{record.maintenanceStatus,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -280,7 +280,7 @@
         name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="equipmentUse != null" >
-        equipment_use = #{equipmentUse,jdbcType=VARCHAR},
+        equipment_use = #{equipmentUse,jdbcType=INTEGER},
       </if>
       <if test="parameterIndex != null" >
         parameter_index = #{parameterIndex,jdbcType=VARCHAR},
@@ -289,7 +289,7 @@
         price = #{price,jdbcType=VARCHAR},
       </if>
       <if test="maintenanceStatus != null" >
-        maintenance_status = #{maintenanceStatus,jdbcType=VARCHAR},
+        maintenance_status = #{maintenanceStatus,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -309,10 +309,10 @@
       type = #{type,jdbcType=INTEGER},
       category = #{category,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
-      equipment_use = #{equipmentUse,jdbcType=VARCHAR},
+      equipment_use = #{equipmentUse,jdbcType=INTEGER},
       parameter_index = #{parameterIndex,jdbcType=VARCHAR},
       price = #{price,jdbcType=VARCHAR},
-      maintenance_status = #{maintenanceStatus,jdbcType=VARCHAR},
+      maintenance_status = #{maintenanceStatus,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

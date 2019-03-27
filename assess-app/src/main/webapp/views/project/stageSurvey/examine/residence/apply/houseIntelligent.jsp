@@ -76,12 +76,24 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            档次
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select name="grade"
+                                                    class="form-control search-select select2 grade">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             智能系统<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <button class="btn btn-xs btn-success"
+                                            <a href="javascript://;" class="btn btn-xs btn-success"
                                                     onclick="houseIntelligent.prototype.appendHTML('',this)"><i
-                                                    class="fa fa-plus"></i></button>
+                                                    class="fa fa-plus"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -91,14 +103,19 @@
                                             <label class="col-sm-2 control-label">
                                                 智能系统
                                             </label>
-                                            <div class="col-sm-3">
+                                            <div class="col-sm-2">
                                                 <select required="required" name="intelligentSystem1"
                                                         class="form-control search-select select2 intelligentSystem1">
                                                 </select>
                                             </div>
-                                            <div class="col-sm-3">
+                                            <div class="col-sm-2">
                                                 <select required="required" name="layingMethod1"
                                                         class="form-control search-select select2 layingMethod1">
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <select required="required" name="intelligenceGrade1"
+                                                        class="form-control search-select select2 intelligenceGrade1">
                                                 </select>
                                             </div>
                                             <div class="col-sm-4">

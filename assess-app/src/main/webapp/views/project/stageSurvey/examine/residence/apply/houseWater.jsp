@@ -79,10 +79,21 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            给水升压设备<span class="symbol required"></span>
+                                            档次<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="boosterEquipment"
+                                            <select name="grade" class="form-control search-select select2 grade">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            给水升压设备
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select name="boosterEquipment"
                                                     class="form-control search-select select2 boosterEquipment">
                                             </select>
                                         </div>
@@ -91,10 +102,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            前置净水<span class="symbol required"></span>
+                                            前置净水
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="pretreatedWater"
+                                            <select name="pretreatedWater"
                                                     class="form-control search-select select2 pretreatedWater">
                                             </select>
                                         </div>
@@ -103,10 +114,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            前置净水设备价格区间<span class="symbol required"></span>
+                                            前置净水设备价格区间
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="purificationEquipmentPrice"
+                                            <select name="purificationEquipmentPrice"
                                                     class="form-control search-select select2 purificationEquipmentPrice">
                                             </select>
                                         </div>

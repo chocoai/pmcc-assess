@@ -425,62 +425,52 @@ public class BasicHouseCorollaryEquipmentExample {
             return (Criteria) this;
         }
 
-        public Criteria andEquipmentUseEqualTo(String value) {
+        public Criteria andEquipmentUseEqualTo(Integer value) {
             addCriterion("equipment_use =", value, "equipmentUse");
             return (Criteria) this;
         }
 
-        public Criteria andEquipmentUseNotEqualTo(String value) {
+        public Criteria andEquipmentUseNotEqualTo(Integer value) {
             addCriterion("equipment_use <>", value, "equipmentUse");
             return (Criteria) this;
         }
 
-        public Criteria andEquipmentUseGreaterThan(String value) {
+        public Criteria andEquipmentUseGreaterThan(Integer value) {
             addCriterion("equipment_use >", value, "equipmentUse");
             return (Criteria) this;
         }
 
-        public Criteria andEquipmentUseGreaterThanOrEqualTo(String value) {
+        public Criteria andEquipmentUseGreaterThanOrEqualTo(Integer value) {
             addCriterion("equipment_use >=", value, "equipmentUse");
             return (Criteria) this;
         }
 
-        public Criteria andEquipmentUseLessThan(String value) {
+        public Criteria andEquipmentUseLessThan(Integer value) {
             addCriterion("equipment_use <", value, "equipmentUse");
             return (Criteria) this;
         }
 
-        public Criteria andEquipmentUseLessThanOrEqualTo(String value) {
+        public Criteria andEquipmentUseLessThanOrEqualTo(Integer value) {
             addCriterion("equipment_use <=", value, "equipmentUse");
             return (Criteria) this;
         }
 
-        public Criteria andEquipmentUseLike(String value) {
-            addCriterion("equipment_use like", value, "equipmentUse");
-            return (Criteria) this;
-        }
-
-        public Criteria andEquipmentUseNotLike(String value) {
-            addCriterion("equipment_use not like", value, "equipmentUse");
-            return (Criteria) this;
-        }
-
-        public Criteria andEquipmentUseIn(List<String> values) {
+        public Criteria andEquipmentUseIn(List<Integer> values) {
             addCriterion("equipment_use in", values, "equipmentUse");
             return (Criteria) this;
         }
 
-        public Criteria andEquipmentUseNotIn(List<String> values) {
+        public Criteria andEquipmentUseNotIn(List<Integer> values) {
             addCriterion("equipment_use not in", values, "equipmentUse");
             return (Criteria) this;
         }
 
-        public Criteria andEquipmentUseBetween(String value1, String value2) {
+        public Criteria andEquipmentUseBetween(Integer value1, Integer value2) {
             addCriterion("equipment_use between", value1, value2, "equipmentUse");
             return (Criteria) this;
         }
 
-        public Criteria andEquipmentUseNotBetween(String value1, String value2) {
+        public Criteria andEquipmentUseNotBetween(Integer value1, Integer value2) {
             addCriterion("equipment_use not between", value1, value2, "equipmentUse");
             return (Criteria) this;
         }
@@ -635,62 +625,52 @@ public class BasicHouseCorollaryEquipmentExample {
             return (Criteria) this;
         }
 
-        public Criteria andMaintenanceStatusEqualTo(String value) {
+        public Criteria andMaintenanceStatusEqualTo(Integer value) {
             addCriterion("maintenance_status =", value, "maintenanceStatus");
             return (Criteria) this;
         }
 
-        public Criteria andMaintenanceStatusNotEqualTo(String value) {
+        public Criteria andMaintenanceStatusNotEqualTo(Integer value) {
             addCriterion("maintenance_status <>", value, "maintenanceStatus");
             return (Criteria) this;
         }
 
-        public Criteria andMaintenanceStatusGreaterThan(String value) {
+        public Criteria andMaintenanceStatusGreaterThan(Integer value) {
             addCriterion("maintenance_status >", value, "maintenanceStatus");
             return (Criteria) this;
         }
 
-        public Criteria andMaintenanceStatusGreaterThanOrEqualTo(String value) {
+        public Criteria andMaintenanceStatusGreaterThanOrEqualTo(Integer value) {
             addCriterion("maintenance_status >=", value, "maintenanceStatus");
             return (Criteria) this;
         }
 
-        public Criteria andMaintenanceStatusLessThan(String value) {
+        public Criteria andMaintenanceStatusLessThan(Integer value) {
             addCriterion("maintenance_status <", value, "maintenanceStatus");
             return (Criteria) this;
         }
 
-        public Criteria andMaintenanceStatusLessThanOrEqualTo(String value) {
+        public Criteria andMaintenanceStatusLessThanOrEqualTo(Integer value) {
             addCriterion("maintenance_status <=", value, "maintenanceStatus");
             return (Criteria) this;
         }
 
-        public Criteria andMaintenanceStatusLike(String value) {
-            addCriterion("maintenance_status like", value, "maintenanceStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andMaintenanceStatusNotLike(String value) {
-            addCriterion("maintenance_status not like", value, "maintenanceStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andMaintenanceStatusIn(List<String> values) {
+        public Criteria andMaintenanceStatusIn(List<Integer> values) {
             addCriterion("maintenance_status in", values, "maintenanceStatus");
             return (Criteria) this;
         }
 
-        public Criteria andMaintenanceStatusNotIn(List<String> values) {
+        public Criteria andMaintenanceStatusNotIn(List<Integer> values) {
             addCriterion("maintenance_status not in", values, "maintenanceStatus");
             return (Criteria) this;
         }
 
-        public Criteria andMaintenanceStatusBetween(String value1, String value2) {
+        public Criteria andMaintenanceStatusBetween(Integer value1, Integer value2) {
             addCriterion("maintenance_status between", value1, value2, "maintenanceStatus");
             return (Criteria) this;
         }
 
-        public Criteria andMaintenanceStatusNotBetween(String value1, String value2) {
+        public Criteria andMaintenanceStatusNotBetween(Integer value1, Integer value2) {
             addCriterion("maintenance_status not between", value1, value2, "maintenanceStatus");
             return (Criteria) this;
         }

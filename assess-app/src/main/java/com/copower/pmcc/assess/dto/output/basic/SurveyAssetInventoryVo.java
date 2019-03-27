@@ -8,7 +8,16 @@ import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory;
  * @Description:
  */
 public class SurveyAssetInventoryVo extends SurveyAssetInventory {
-  private String applicationName;
+    private String applicationName;
+    private String certificateName;
+
+    public String getCertificateName() {
+        return certificateName;
+    }
+
+    public void setCertificateName(String certificateName) {
+        this.certificateName = certificateName;
+    }
 
     public String getApplicationName() {
         return applicationName;

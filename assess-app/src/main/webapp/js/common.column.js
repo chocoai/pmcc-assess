@@ -311,6 +311,7 @@ commonColumn.houseIntelligentColumn = function () {
     cols.push({field: 'switchCircuitName', title: '开关回路'});
     cols.push({field: 'layingMethodName', title: '铺设方式'});
     cols.push({field: 'lampsLanternsName', title: '灯具'});
+    cols.push({field: 'gradeName', title: '档次'});
     cols.push({field: 'intelligentSystemName', title: '智能系统'});
     cols.push({field: 'remark', title: '备注'});
     return cols;
@@ -322,6 +323,7 @@ commonColumn.houseWaterColumn = function () {
     cols.push({field: 'supplyModeName', title: '给水方式'});
     cols.push({field: 'pipingLayoutName', title: '给水管道布置'});
     cols.push({field: 'pipeMaterialName', title: '给水管材料'});
+    cols.push({field: 'gradeName', title: '档次'});
     cols.push({field: 'boosterEquipmentName', title: '给水升压设备'});
     cols.push({field: 'pretreatedWaterName', title: '前置净水'});
     cols.push({field: 'purificationEquipmentPriceName', title: '前置净水设备价格区间'});
@@ -335,6 +337,7 @@ commonColumn.houseWaterDrainColumn = function () {
     cols.push({field: 'drainSystemName', title: '排水系统'});
     cols.push({field: 'typeName', title: '类别'});
     cols.push({field: 'processingModeName', title: '排水处理方式'});
+    cols.push({field: 'evaluate', title: '排水系统评价'});
     return cols;
 }
 
@@ -374,9 +377,9 @@ commonColumn.houseCorollaryEquipmentColumn = function () {
     cols.push({field: 'typeName', title: '类型'});
     cols.push({field: 'categoryName', title: '类别'});
     cols.push({field: 'name', title: '名称'});
+    cols.push({field: 'equipmentUseName', title: '用途'});
+    cols.push({field: 'maintenanceStatusName', title: '维护状况'});
     cols.push({field: 'parameterIndex', title: '参数指标'});
-    cols.push({field: 'equipmentUse', title: '用途'});
-    cols.push({field: 'maintenanceStatus', title: '维护状况'});
     cols.push({field: 'price', title: '价格'});
     cols.push({field: 'fileViewName', title: '附件'});
     return cols;

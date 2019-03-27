@@ -63,6 +63,9 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
         //房产证类型
         List<BaseDataDic> types = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_HOUSE_CERTIFICATE_TYPE);
         modelAndView.addObject("types", types);
+        //是否办证
+        List<BaseDataDic> certificateTypes = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.CERTIFICATE_HANDLING_TYPE);
+        modelAndView.addObject("certificateTypes", certificateTypes);
         return modelAndView;
     }
 
@@ -85,6 +88,9 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
         //房产证类型
         List<BaseDataDic> types = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_HOUSE_CERTIFICATE_TYPE);
         modelAndView.addObject("types", types);
+        //是否办证
+        List<BaseDataDic> certificateTypes = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.CERTIFICATE_HANDLING_TYPE);
+        modelAndView.addObject("certificateTypes", certificateTypes);
         return modelAndView;
     }
 

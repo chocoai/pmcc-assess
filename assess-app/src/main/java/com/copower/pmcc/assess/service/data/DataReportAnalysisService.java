@@ -38,6 +38,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -317,16 +318,22 @@ public class DataReportAnalysisService {
                 //可分不可办证
                 StringBuilder detachableNotRush = new StringBuilder();
 
+                //可办证
+                Integer passId = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.CERTIFICATE_HANDLING_TYPE_PASS).getId();
+                //不可办证
+                Integer refuseId = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.CERTIFICATE_HANDLING_TYPE_REFUSE).getId();
+
+
                 for (SchemeJudgeObject judgeObject : judgeObjectList) {
                     //对应资产清查内容
                     SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByDeclareId(judgeObject.getDeclareRecordId());
                     if ("不可分".equals(surveyAssetInventory.getSegmentationLimit())) {
                         impartibility.append(judgeObject.getNumber()).append(",");
                     }
-                    if ("可分".equals(surveyAssetInventory.getSegmentationLimit()) && "可办证".equals(surveyAssetInventory.getCertificate())) {
+                    if ("可分".equals(surveyAssetInventory.getSegmentationLimit()) && passId.equals(Integer.valueOf(surveyAssetInventory.getCertificate()))) {
                         detachableCanRush.append(judgeObject.getNumber()).append(",");
                     }
-                    if ("可分".equals(surveyAssetInventory.getSegmentationLimit()) && "不可办证".equals(surveyAssetInventory.getCertificate())) {
+                    if ("可分".equals(surveyAssetInventory.getSegmentationLimit()) && refuseId.equals(Integer.valueOf(surveyAssetInventory.getCertificate()))) {
                         detachableNotRush.append(judgeObject.getNumber()).append(",");
                     }
                 }
@@ -423,6 +430,32 @@ public class DataReportAnalysisService {
                     stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{他权描述}",rentRemark)).append("</p>");
                 }
 
+            }
+            //价值大小分析
+            if (AssessReportFieldConstant.VALUE_ANALYSIS.equals(dataReportAnalysis.getFieldName())) {
+                Integer num = judgeObjectList.size();
+                BigDecimal totalRealEstate = generateCommonMethod.getTotalRealEstate(areaGroupId);
+                BigDecimal rank = new BigDecimal("5000000");
+                if(rank.compareTo(totalRealEstate) == 1 && num < 5){
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.VALUE_ANALYSIS_CONDITION1);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate()).append("</p>");
+
+                }
+                if(rank.compareTo(totalRealEstate) == 1 && num >= 5){
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.VALUE_ANALYSIS_CONDITION2);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate()).append("</p>");
+
+                }
+                if(rank.compareTo(totalRealEstate) < 1 && num < 5){
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.VALUE_ANALYSIS_CONDITION3);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate()).append("</p>");
+
+                }
+                if(rank.compareTo(totalRealEstate) < 1 && num >= 5){
+                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.VALUE_ANALYSIS_CONDITION4);
+                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate()).append("</p>");
+
+                }
             }
         }
         return stringBuilder.toString();

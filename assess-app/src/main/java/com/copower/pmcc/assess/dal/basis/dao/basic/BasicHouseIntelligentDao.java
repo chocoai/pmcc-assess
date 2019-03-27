@@ -47,7 +47,7 @@ public class BasicHouseIntelligentDao {
     public List<BasicHouseIntelligent> basicHouseIntelligentList(BasicHouseIntelligent basicHouseIntelligent) {
         BasicHouseIntelligentExample example = new BasicHouseIntelligentExample();
         MybatisUtils.convertObj2Example(basicHouseIntelligent, example);
-        return basicHouseIntelligentMapper.selectByExample(example);
+        return basicHouseIntelligentMapper.selectByExampleWithBLOBs(example);
     }
 
     /**

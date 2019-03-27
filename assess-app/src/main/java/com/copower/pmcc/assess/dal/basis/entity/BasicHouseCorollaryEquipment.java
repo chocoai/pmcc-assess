@@ -13,13 +13,13 @@ public class BasicHouseCorollaryEquipment {
 
     private String name;
 
-    private String equipmentUse;
+    private Integer equipmentUse;
 
     private String parameterIndex;
 
     private String price;
 
-    private String maintenanceStatus;
+    private Integer maintenanceStatus;
 
     private String creator;
 
@@ -67,12 +67,12 @@ public class BasicHouseCorollaryEquipment {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getEquipmentUse() {
+    public Integer getEquipmentUse() {
         return equipmentUse;
     }
 
-    public void setEquipmentUse(String equipmentUse) {
-        this.equipmentUse = equipmentUse == null ? null : equipmentUse.trim();
+    public void setEquipmentUse(Integer equipmentUse) {
+        this.equipmentUse = equipmentUse;
     }
 
     public String getParameterIndex() {
@@ -91,12 +91,12 @@ public class BasicHouseCorollaryEquipment {
         this.price = price == null ? null : price.trim();
     }
 
-    public String getMaintenanceStatus() {
+    public Integer getMaintenanceStatus() {
         return maintenanceStatus;
     }
 
-    public void setMaintenanceStatus(String maintenanceStatus) {
-        this.maintenanceStatus = maintenanceStatus == null ? null : maintenanceStatus.trim();
+    public void setMaintenanceStatus(Integer maintenanceStatus) {
+        this.maintenanceStatus = maintenanceStatus;
     }
 
     public String getCreator() {
