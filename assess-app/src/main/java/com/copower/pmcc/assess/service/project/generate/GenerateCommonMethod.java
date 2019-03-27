@@ -781,6 +781,8 @@ public class GenerateCommonMethod {
 
     /**
      * 估价对象合并描述
+     * map 1:商业  2:商业  3:商业  4:住宅  explain:证载用途为
+     * 1-3、4证载用途为商业、住宅
      *
      * @param map
      * @return
@@ -814,6 +816,8 @@ public class GenerateCommonMethod {
 
     /**
      * 估价对象分别描述
+     * map 1:商业  2:商业  3:商业  4:住宅  explain:证载用途为 symbol:,
+     * 1号估价对象证载用途为商业,2号估价对象证载用途为商业,3号估价对象证载用途为商业,4号估价对象证载用途为住宅
      *
      * @param map
      * @return
@@ -830,16 +834,46 @@ public class GenerateCommonMethod {
     }
 
     /**
+     * 字符串合并描述
+     * 日照：好 采光：好 通风：差 隔音：差  explain:效果 symbol：，
+     * 日照、采光效果好，通风、隔音效果差
+     *
+     * @param map
+     * @param explain
+     * @return
+     */
+    public String stringSummaryDesc(Map<String, String> map, String explain, String symbol) {
+        if (map == null || map.size() <= 0) return "";
+        Map<String, List<String>> listMap = Maps.newHashMap();
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            if (listMap.containsKey(entry.getValue())) {
+                List<String> list = listMap.get(entry.getValue());
+                list.add(entry.getKey());
+            } else {
+                listMap.put(entry.getValue(), Lists.newArrayList(entry.getKey()));
+            }
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Map.Entry<String, List<String>> stringListEntry : listMap.entrySet()) {
+            List<String> strings = stringListEntry.getValue();
+            strings.forEach(o -> stringBuilder.append(o).append("、"));
+            stringBuilder.append(explain).append(stringListEntry.getKey()).append(symbol);
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
      * 处理字符串中错误的标点符号
+     *
      * @param str
      * @return
      */
-    public String trim(String str){
+    public String trim(String str) {
         if (StringUtils.isBlank(str)) return str;
-        str = str.replaceAll(",+",",").replaceAll(";+",";")
-                .replaceAll("，+","，").replaceAll("、+","、")
-                .replaceAll("。+","。").replaceAll("；+","；")
-                .replaceAll("[,|，|、|;|；|.|。]+$","。");
+        str = str.replaceAll(",+", ",").replaceAll(";+", ";")
+                .replaceAll("，+", "，").replaceAll("、+", "、")
+                .replaceAll("。+", "。").replaceAll("；+", "；")
+                .replaceAll("[,|，|、|;|；|.|。]+$", "。");
         return str;
     }
 }
