@@ -30,36 +30,11 @@
                 </div>
                 <div class="x_content">
                     <form id="frmQuery" class="form-horizontal">
-                        <%--<div class="form-group ">
-                            <div>
-                                <label class="col-sm-1 control-label">
-                                    方法
-                                </label>
-                                <div class="col-sm-3">
-                                    <select class="form-control" id="queryType">
-                                        <option value="">--请选择--</option>
-                                        <c:if test="${not empty methods}">
-                                            <c:forEach items="${methods}" var="item">
-                                                <option value="${item.id}">${item.name}</option>
-                                            </c:forEach>
-                                        </c:if>
-                                    </select>
-                                </div>
-                            </div>
 
-                            <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary"
-                                        onclick="dataValueDefinition.prototype.loadDataDicList()">
-                                    查询
-                                </button>--%>
-
-                                <button type="button" class="btn btn-success"
-                                        onclick="dataValueDefinition.prototype.showModel()"
-                                        data-toggle="modal" href="#divBox"> 新增
-                                </button>
-                            </div>
-                        </div>
-
+                        <button type="button" class="btn btn-success"
+                                onclick="dataValueDefinition.prototype.showModel()"
+                                data-toggle="modal" href="#divBox"> 新增
+                        </button>
                     </form>
                     <table class="table table-bordered" id="tb_FatherList">
                         <!-- cerare document add ajax data-->
@@ -67,7 +42,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <!-- end: MAIN CONTAINER -->
 </div>
@@ -238,7 +212,7 @@
                                         </div>
                                     </div>
                                 </div>
-                               <div class="form-group">
+                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             价值类型<span class="symbol required"></span>
@@ -301,7 +275,7 @@
                                         <div class="col-sm-10">
                                             <%--<textarea placeholder="填写模版" class="form-control" id="template"
                                                       name="template" required="required"></textarea>--%>
-                                                <div style="width:99%;height:200px;" id="template"></div>
+                                            <div style="width:99%;height:200px;" id="template"></div>
                                         </div>
                                     </div>
                                 </div>
