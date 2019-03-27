@@ -93,4 +93,10 @@ public class AssessReportFieldConstant {
     public static final String OTHER_ANALYSIS_PLEDGE = "other.analysis.pledge";//抵押
     public static final String OTHER_ANALYSIS_OTHER = "other.analysis.other";//其他
 
+    public static final String VALUE_ANALYSIS = "value.analysis";//价值大小分析
+    public static final String VALUE_ANALYSIS_CONDITION1 = "value.analysis.condition1";//金额小于500万元时，数量小于5
+    public static final String VALUE_ANALYSIS_CONDITION2 = "value.analysis.condition2";//金额小于500万元时，数量大于等于5
+    public static final String VALUE_ANALYSIS_CONDITION3 = "value.analysis.condition3";//金额大于500万元时，数量小于5
+    public static final String VALUE_ANALYSIS_CONDITION4 = "value.analysis.condition4";//金额大于500万元时，数量大于等于5
+
 }
