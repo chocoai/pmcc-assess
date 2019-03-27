@@ -208,6 +208,7 @@ public class GenerateLoactionService {
 
     /**
      * 环境
+     *
      * @param basicApply
      * @param scienceEnum
      * @return
@@ -218,39 +219,39 @@ public class GenerateLoactionService {
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicMatchingEnvironmentVo> basicMatchingEnvironmentVoList = generateBaseExamineService.getBasicMatchingEnvironmentList();
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(scienceEnum.getKey());
-        if (CollectionUtils.isNotEmpty(basicMatchingEnvironmentVoList)){
-            String a = "无影响" ;
-            String b = "影响一般" ;
-            String c = "影响较大" ;
-            String d = "有重大影响" ;
+        if (CollectionUtils.isNotEmpty(basicMatchingEnvironmentVoList)) {
+            String a = "无影响";
+            String b = "影响一般";
+            String c = "影响较大";
+            String d = "有重大影响";
             //自然环境要素
-            if (Objects.equal(scienceEnum.getKey(),EnvironmentalScienceEnum.NATURAL.getKey())){
-                environmentalScience(a,b,c,d,"空气",stringBuffer,basicMatchingEnvironmentVoList);
-                environmentalScience(a,b,c,d,"水体",stringBuffer,basicMatchingEnvironmentVoList);
-                environmentalScience(a,b,c,d,"美观",stringBuffer,basicMatchingEnvironmentVoList);
-                environmentalScience(a,b,c,d,"静密",stringBuffer,basicMatchingEnvironmentVoList);
-                environmentalScience(a,b,c,d,"空间",stringBuffer,basicMatchingEnvironmentVoList);
-                environmentalScience(a,b,c,d,"废弃",stringBuffer,basicMatchingEnvironmentVoList);
+            if (Objects.equal(scienceEnum.getKey(), EnvironmentalScienceEnum.NATURAL.getKey())) {
+                environmentalScience(a, b, c, d, "空气", stringBuffer, basicMatchingEnvironmentVoList);
+                environmentalScience(a, b, c, d, "水体", stringBuffer, basicMatchingEnvironmentVoList);
+                environmentalScience(a, b, c, d, "美观", stringBuffer, basicMatchingEnvironmentVoList);
+                environmentalScience(a, b, c, d, "静密", stringBuffer, basicMatchingEnvironmentVoList);
+                environmentalScience(a, b, c, d, "空间", stringBuffer, basicMatchingEnvironmentVoList);
+                environmentalScience(a, b, c, d, "废弃", stringBuffer, basicMatchingEnvironmentVoList);
                 stringBuffer.append("\r");
             }
             //人文环境要素
-            if (Objects.equal(scienceEnum.getKey(),EnvironmentalScienceEnum.HUMANITY.getKey())){
-                environmentalScience(a,b,c,d,"职业",stringBuffer,basicMatchingEnvironmentVoList);
-                environmentalScience(a,b,c,d,"收入水平",stringBuffer,basicMatchingEnvironmentVoList);
-                environmentalScience(a,b,c,d,"文化程度",stringBuffer,basicMatchingEnvironmentVoList);
-                environmentalScience(a,b,c,d,"宗教信仰",stringBuffer,basicMatchingEnvironmentVoList);
+            if (Objects.equal(scienceEnum.getKey(), EnvironmentalScienceEnum.HUMANITY.getKey())) {
+                environmentalScience(a, b, c, d, "职业", stringBuffer, basicMatchingEnvironmentVoList);
+                environmentalScience(a, b, c, d, "收入水平", stringBuffer, basicMatchingEnvironmentVoList);
+                environmentalScience(a, b, c, d, "文化程度", stringBuffer, basicMatchingEnvironmentVoList);
+                environmentalScience(a, b, c, d, "宗教信仰", stringBuffer, basicMatchingEnvironmentVoList);
                 stringBuffer.append("\r");
             }
             //景观要素
-            if (Objects.equal(scienceEnum.getKey(),EnvironmentalScienceEnum.SCENERY.getKey())){
-                environmentalScience(a,b,c,d,"海景",stringBuffer,basicMatchingEnvironmentVoList);
-                environmentalScience(a,b,c,d,"江景",stringBuffer,basicMatchingEnvironmentVoList);
-                environmentalScience(a,b,c,d,"河景",stringBuffer,basicMatchingEnvironmentVoList);
-                environmentalScience(a,b,c,d,"湖景",stringBuffer,basicMatchingEnvironmentVoList);
-                environmentalScience(a,b,c,d,"山景",stringBuffer,basicMatchingEnvironmentVoList);
-                environmentalScience(a,b,c,d,"公园",stringBuffer,basicMatchingEnvironmentVoList);
-                environmentalScience(a,b,c,d,"园林",stringBuffer,basicMatchingEnvironmentVoList);
-                environmentalScience(a,b,c,d,"中庭景观",stringBuffer,basicMatchingEnvironmentVoList);
+            if (Objects.equal(scienceEnum.getKey(), EnvironmentalScienceEnum.SCENERY.getKey())) {
+                environmentalScience(a, b, c, d, "海景", stringBuffer, basicMatchingEnvironmentVoList);
+                environmentalScience(a, b, c, d, "江景", stringBuffer, basicMatchingEnvironmentVoList);
+                environmentalScience(a, b, c, d, "河景", stringBuffer, basicMatchingEnvironmentVoList);
+                environmentalScience(a, b, c, d, "湖景", stringBuffer, basicMatchingEnvironmentVoList);
+                environmentalScience(a, b, c, d, "山景", stringBuffer, basicMatchingEnvironmentVoList);
+                environmentalScience(a, b, c, d, "公园", stringBuffer, basicMatchingEnvironmentVoList);
+                environmentalScience(a, b, c, d, "园林", stringBuffer, basicMatchingEnvironmentVoList);
+                environmentalScience(a, b, c, d, "中庭景观", stringBuffer, basicMatchingEnvironmentVoList);
                 stringBuffer.append("\r");
             }
         }
@@ -260,33 +261,43 @@ public class GenerateLoactionService {
         return stringBuffer.toString();
     }
 
-    private void environmentalScience(String a,String b,String c,String d,String key,StringBuffer stringBuffer,List<BasicMatchingEnvironmentVo> basicMatchingEnvironmentVoList){
-        BasicMatchingEnvironmentVo matchingEnvironmentVo = basicMatchingEnvironmentVoList.stream().filter(basicMatchingEnvironmentVo -> {
-            if (basicMatchingEnvironmentVo.getCategoryName().indexOf(key) != -1){
-                return true;
-            }
-            return false;
-        }).findFirst().get();
-        if (matchingEnvironmentVo != null){
-            if (Objects.equal(matchingEnvironmentVo.getInfluenceDegreeName(),a)){
+    private void environmentalScience(String a, String b, String c, String d, String key, StringBuffer stringBuffer, List<BasicMatchingEnvironmentVo> basicMatchingEnvironmentVoList) {
+        BasicMatchingEnvironmentVo matchingEnvironmentVo = null;
+        try {
+            matchingEnvironmentVo = basicMatchingEnvironmentVoList.stream().filter(basicMatchingEnvironmentVo -> {
+                if (basicMatchingEnvironmentVo.getCategory() != null && StringUtils.isNotBlank(basicMatchingEnvironmentVo.getCategoryName())) {
+                    if (basicMatchingEnvironmentVo.getCategoryName().indexOf(key) != -1) {
+                        return true;
+                    }
+                }
+                return false;
+            }).findFirst().get();
+        } catch (Exception e) {
+            //经常出现null parsent value 异常
+            logger.error(String.format("异常 com.copower.pmcc.assess.service.project.generate.GenerateLoactionService.environmentalScience %s", e.getMessage()), e);
+        }
+        if (matchingEnvironmentVo != null) {
+            if (Objects.equal(matchingEnvironmentVo.getInfluenceDegreeName(), a)) {
                 matchingEnvironmentVo.setRemark("优良");
             }
-            if (Objects.equal(matchingEnvironmentVo.getInfluenceDegreeName(),b)){
+            if (Objects.equal(matchingEnvironmentVo.getInfluenceDegreeName(), b)) {
                 matchingEnvironmentVo.setRemark("一般");
             }
-            if (Objects.equal(matchingEnvironmentVo.getInfluenceDegreeName(),c)){
+            if (Objects.equal(matchingEnvironmentVo.getInfluenceDegreeName(), c)) {
                 matchingEnvironmentVo.setRemark("差");
             }
-            if (Objects.equal(matchingEnvironmentVo.getInfluenceDegreeName(),d)){
+            if (Objects.equal(matchingEnvironmentVo.getInfluenceDegreeName(), d)) {
                 matchingEnvironmentVo.setRemark("非常差");
             }
-        }else {
+        } else {
             matchingEnvironmentVo = new BasicMatchingEnvironmentVo();
-            matchingEnvironmentVo.setRemark(String.format("无%s信息",key));
+            matchingEnvironmentVo.setRemark(String.format("无%s信息", key));
             matchingEnvironmentVo.setCategoryName(key);
             matchingEnvironmentVo.setInfluenceDegreeName("无影响要素");
         }
-        stringBuffer.append(matchingEnvironmentVo.getCategoryName()).append(matchingEnvironmentVo.getInfluenceDegreeName()).append(matchingEnvironmentVo.getRemark());
+        stringBuffer.append(matchingEnvironmentVo.getCategoryName())
+                .append(matchingEnvironmentVo.getInfluenceDegreeName())
+                .append(matchingEnvironmentVo.getRemark());
     }
 
     /**
@@ -666,8 +677,12 @@ public class GenerateLoactionService {
      */
     public String getOrientation(BasicApply basicApply) throws Exception {
         stringBuffer.delete(0, stringBuffer.toString().length());
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-        stringBuffer.append(baseDataDicService.getNameById(generateBaseExamineService.getBasicHouse().getOrientation()));
+        try {
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            stringBuffer.append(baseDataDicService.getNameById(generateBaseExamineService.getBasicHouse().getOrientation()));
+        } catch (Exception e1) {
+            logger.error("异常 com.copower.pmcc.assess.service.project.generate.GenerateLoactionService.getOrientation", e1);
+        }
         if (StringUtils.isEmpty(stringBuffer.toString().trim())) {
             stringBuffer.append(error);
         }
