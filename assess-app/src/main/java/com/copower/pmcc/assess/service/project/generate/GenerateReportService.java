@@ -950,17 +950,10 @@ public class GenerateReportService {
                         generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getjudgeBuildResultSurveySheet());
                     }
                 }
-                //计算过程
+                //主要计算过程
                 if (Objects.equal(BaseReportFieldEnum.ComputationProcess.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-
-                }
-                //相关参数选取与应用
-                if (Objects.equal(BaseReportFieldEnum.SelectionApplicationParameters.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSelectionApplicationParameters());
-                    if (baseReportField != null) {
-                    }
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getComputationProcess());
                 }
                 //估价对象市场价值的确定
                 if (Objects.equal(BaseReportFieldEnum.DeterminationMarketValueValuationObject.getName(), name)) {

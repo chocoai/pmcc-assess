@@ -39,20 +39,21 @@
                             <div class="col-md-9">
                                 <input type="hidden" id="tree_value" value="0">
                                 <div class="row">
-                                    <div class="col-xs-4">
+                                    <div class="col-xs-3">
                                         <select id='projectType' class='form-control search-select select2'
                                                 onchange="getProjectClassify()">
+                                            <option value="">-请选择-</option>
                                             <c:forEach var="item" items="${projectTypeList}">
                                                 <option value="${item.id}">${item.name}</option>
                                             </c:forEach>
                                         </select>
                                     </div>
-                                    <div class="col-xs-4">
+                                    <div class="col-xs-3">
                                         <select id='projectCategory' class='form-control  search-select select2'
                                                 onchange="loadTemplateTableList()">
                                         </select>
                                     </div>
-                                    <div class="col-xs-4">
+                                    <div class="col-xs-3">
                                         <select id='reportType'
                                                 class='form-control  search-select select2'
                                                 onchange="loadTemplateTableList()">
@@ -61,13 +62,13 @@
                                             </c:forEach>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="tab-content">
-                                    <p id="toolbar_files">
+                                    <div class="col-xs-3">
                                         <a class="btn btn-success" onclick="addReportTemplate()">
                                             新增模板
                                         </a>
-                                    </p>
+                                    </div>
+                                </div>
+                                <div class="tab-content">
                                     <table id="tb_files_list" class="table table-bordered"></table>
                                 </div>
                             </div>
