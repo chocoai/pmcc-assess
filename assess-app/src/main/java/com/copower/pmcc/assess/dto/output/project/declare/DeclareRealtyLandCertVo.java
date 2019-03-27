@@ -16,7 +16,15 @@ public class DeclareRealtyLandCertVo extends DeclareRealtyLandCert {
     private String terminationDateFmt;
     private String purposeName;
     private String useRightTypeName;
+    private String publicSituationName;
 
+    public String getPublicSituationName() {
+        return publicSituationName;
+    }
+
+    public void setPublicSituationName(String publicSituationName) {
+        this.publicSituationName = publicSituationName;
+    }
     public String getUseRightTypeName() {
         return useRightTypeName;
     }

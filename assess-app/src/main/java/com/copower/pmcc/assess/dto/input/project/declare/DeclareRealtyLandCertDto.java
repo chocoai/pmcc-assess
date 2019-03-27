@@ -79,6 +79,16 @@ public class DeclareRealtyLandCertDto {
 
     private String creator;
 
+    private String publicSituation;
+
+    public String getPublicSituation() {
+        return publicSituation;
+    }
+
+    public void setPublicSituation(String publicSituation) {
+        this.publicSituation = publicSituation;
+    }
+
     public Integer getId() {
         return id;
     }
