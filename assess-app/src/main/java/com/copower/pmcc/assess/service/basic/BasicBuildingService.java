@@ -13,7 +13,9 @@ import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.*;
+import com.copower.pmcc.assess.service.data.DataBuilderService;
 import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
+import com.copower.pmcc.assess.service.data.DataPropertyService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -24,6 +26,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -33,6 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.NumberUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -53,33 +57,21 @@ public class BasicBuildingService {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
-    private BasicBuildingFunctionService basicBuildingFunctionService;
-    @Autowired
-    private BasicBuildingMaintenanceService basicBuildingMaintenanceService;
-    @Autowired
-    private BasicBuildingOutfitService basicBuildingOutfitService;
-    @Autowired
-    private BasicBuildingSurfaceService basicBuildingSurfaceService;
-    @Autowired
     private BasicBuildingDao basicBuildingDao;
     @Autowired
     private BasicEstateService basicEstateService;
     @Autowired
     private CaseBuildingService caseBuildingService;
     @Autowired
-    private CaseBuildingOutfitService caseBuildingOutfitService;
-    @Autowired
-    private CaseBuildingMaintenanceService caseBuildingMaintenanceService;
-    @Autowired
-    private CaseBuildingSurfaceService caseBuildingSurfaceService;
-    @Autowired
-    private CaseBuildingFunctionService caseBuildingFunctionService;
-    @Autowired
     private PublicService publicService;
     @Autowired
     private DataBuildingNewRateService dataBuildingNewRateService;
     @Autowired
     private DdlMySqlAssist ddlMySqlAssist;
+    @Autowired
+    private DataPropertyService dataPropertyService;
+    @Autowired
+    private DataBuilderService dataBuilderService;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -124,6 +116,26 @@ public class BasicBuildingService {
      * @throws Exception
      */
     public Integer saveAndUpdateBasicBuilding(BasicBuilding basicBuilding) throws Exception {
+        if (basicBuilding != null) {
+            if (StringUtils.isNotBlank(basicBuilding.getProperty())) {
+                List<DataProperty> dataPropertyList = dataPropertyService.dataPropertyList(new DataProperty());
+                if (org.apache.commons.collections.CollectionUtils.isNotEmpty(dataPropertyList)) {
+                    DataProperty dataProperty = dataPropertyList.stream().filter(dataProperty1 -> Objects.equal(dataProperty1.getName(), basicBuilding.getProperty())).findFirst().get();
+                    if (dataProperty != null) {
+                        basicBuilding.setProperty(dataProperty.getId().toString());
+                    }
+                }
+            }
+            if (StringUtils.isNotBlank(basicBuilding.getBuilder())) {
+                List<DataBuilder> dataBuilderList = dataBuilderService.dataBuilderList(new DataBuilder());
+                if (org.apache.commons.collections.CollectionUtils.isNotEmpty(dataBuilderList)) {
+                    DataBuilder dataBuilder = dataBuilderList.stream().filter(dataBuilder1 -> Objects.equal(basicBuilding.getBuilder(),dataBuilder1.getName())).findFirst().get();
+                    if (dataBuilder != null) {
+                        basicBuilding.setBuilder(dataBuilder.getId().toString());
+                    }
+                }
+            }
+        }
         if (basicBuilding.getId() == null || basicBuilding.getId().intValue() == 0) {
             basicBuilding.setCreator(commonService.thisUserAccount());
             Integer id = basicBuildingDao.addBasicBuilding(basicBuilding);
@@ -212,6 +224,20 @@ public class BasicBuildingService {
         }
         if (basicBuilding.getBeCompletedTime() != null) {
             vo.setBeCompletedTimeName(DateUtils.format(basicBuilding.getBeCompletedTime()));
+        }
+        if (org.apache.commons.lang3.math.NumberUtils.isNumber(basicBuilding.getProperty())){
+            DataProperty dataProperty = dataPropertyService.getByDataPropertyId(Integer.parseInt(basicBuilding.getProperty()));
+            if (dataProperty != null){
+                vo.setProperty(dataProperty.getName());
+                vo.setPropertyName(dataProperty.getName());
+            }
+        }
+        if (org.apache.commons.lang3.math.NumberUtils.isNumber(basicBuilding.getBuilder())){
+            DataBuilder dataBuilder = dataBuilderService.getByDataBuilderId(Integer.parseInt(basicBuilding.getBuilder()));
+            if (dataBuilder != null){
+                vo.setBuildingName(dataBuilder.getName());
+                vo.setBuilder(dataBuilder.getName());
+            }
         }
         return vo;
     }
@@ -312,7 +338,7 @@ public class BasicBuildingService {
         SysAttachmentDto attachmentDto = new SysAttachmentDto();
         attachmentDto.setTableId(basicBuilding.getId());
         attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-        baseAttachmentService.copyFtpAttachments(example,attachmentDto);
+        baseAttachmentService.copyFtpAttachments(example, attachmentDto);
 
         StringBuilder sqlBuilder = new StringBuilder();
         SynchronousDataDto synchronousDataDto = new SynchronousDataDto();

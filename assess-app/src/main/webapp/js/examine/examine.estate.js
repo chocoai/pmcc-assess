@@ -225,6 +225,7 @@
                 estateCommon.onSelect(id);
             }
         });
+        estateCommon.estateForm.find('[name=developer]').apDeveloper();
     };
 
     //楼盘标注

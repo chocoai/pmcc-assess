@@ -71,6 +71,10 @@ public class DataDeveloperService {
        return dataDeveloperDao.getDataDeveloperList(name);
     }
 
+    public List<DataDeveloper> dataDeveloperList(DataDeveloper oo){
+        return dataDeveloperDao.dataDeveloperList(oo);
+    }
+
     public BootstrapTableVo getListVos(String name){
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();

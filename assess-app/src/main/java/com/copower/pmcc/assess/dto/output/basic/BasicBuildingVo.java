@@ -17,6 +17,7 @@ public class BasicBuildingVo extends BasicBuilding {
     private String propertyCategoryName;
     private String propertyTypeName;
     private String completedTimeTypeName;
+    private String propertyName;
 
     private String residenceUseYearName;
 
@@ -100,5 +101,13 @@ public class BasicBuildingVo extends BasicBuilding {
 
     public void setIndustryUseYearName(String industryUseYearName) {
         this.industryUseYearName = industryUseYearName;
+    }
+
+    public String getPropertyName() {
+        return propertyName;
+    }
+
+    public void setPropertyName(String propertyName) {
+        this.propertyName = propertyName;
     }
 }

@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.basis.dao.data;
 import com.copower.pmcc.assess.dal.basis.entity.DataDeveloper;
 import com.copower.pmcc.assess.dal.basis.entity.DataDeveloperExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataDeveloperMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -65,6 +66,12 @@ public class DataDeveloperDao {
             builder.append("%").append(name).append("%");
             criteria.andNameLike(builder.toString());
         }
+        return dataDeveloperMapper.selectByExample(example);
+    }
+
+    public List<DataDeveloper> dataDeveloperList(DataDeveloper oo){
+        DataDeveloperExample example = new DataDeveloperExample();
+        MybatisUtils.convertObj2Example(oo, example);
         return dataDeveloperMapper.selectByExample(example);
     }
 
