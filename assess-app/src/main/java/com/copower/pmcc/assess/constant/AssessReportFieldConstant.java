@@ -88,4 +88,9 @@ public class AssessReportFieldConstant {
     public static final String HOUSE_MARKET_CONDITION = "house.market.condition";//房地产市场状况
     public static final String HOUSE_MARKET_CONDITION_PURPOSE = "house.market.condition.purpose";//用途
 
+    public static final String OTHER_ANALYSIS = "other.analysis";//其他分析
+    public static final String OTHER_ANALYSIS_RENT = "other.analysis.rent";//出租
+    public static final String OTHER_ANALYSIS_PLEDGE = "other.analysis.pledge";//抵押
+    public static final String OTHER_ANALYSIS_OTHER = "other.analysis.other";//其他
+
 }
