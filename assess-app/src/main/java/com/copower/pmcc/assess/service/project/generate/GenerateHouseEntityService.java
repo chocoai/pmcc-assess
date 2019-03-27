@@ -59,12 +59,11 @@ public class GenerateHouseEntityService {
     /**
      * 获取楼盘名称
      *
-     * @param estateId
+     * @param basicEstate
      * @return
      */
-    public String getEstateName(Integer estateId) {
+    public String getEstateName(BasicEstate basicEstate) {
         try {
-            BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(estateId);
             if (basicEstate == null) return "";
             return basicEstate.getName();
         } catch (Exception e) {

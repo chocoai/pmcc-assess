@@ -518,6 +518,7 @@ public class GenerateCommonMethod {
         }
         if (CollectionUtils.isNotEmpty(objectList)) {
             objectList = getSortSchemeJudgeObject(objectList);
+            objectList = this.removeDuplicate(objectList);
         }
         return objectList;
     }
