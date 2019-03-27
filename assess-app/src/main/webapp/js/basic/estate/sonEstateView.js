@@ -2090,22 +2090,52 @@ var matchingEnvironment;
                 $("#" + matchingEnvironment.prototype.config().frm).find("select.influenceDegree").empty().html(html);
             });
         },
-        initRemarkInfo:function (options) {
-            var defaults = {
-                useDefaultText: true,
-                typeTarget: undefined,
-                categoryTarget: undefined,
-                influenceDegreeTarget: undefined,
-                remarkTarget: undefined,
-                typeValue: undefined,
-                categoryValue: undefined,
-                influenceDegreeValue: undefined,
-                remarkValue: undefined,
-                success: function () {
-
+        initRemarkInfo:function () {
+            var frm = $("#" + matchingEnvironment.prototype.config().frm) ;
+            var category = frm.find("select[name='category']").val();
+            var influenceDegree = frm.find("select[name='influenceDegree']").val();
+            if (category){
+                if (influenceDegree){
+                    AssessCommon.getDataDicInfo(category,function (item) {
+                        AssessCommon.getDataDicInfo(influenceDegree,function (n) {
+                            if (item.remark){
+                                var data = JSON.parse(item.remark);
+                                console.log(n);
+                                console.log(data.first);
+                                if (n.name == "无影响"){
+                                    frm.find("textarea").each(function () {
+                                        if ($(this).attr("name") == "remark"){
+                                            $(this).val(data.first);
+                                        }
+                                    });
+                                }
+                                if (n.name == "影响一般"){
+                                    frm.find("textarea").each(function () {
+                                        if ($(this).attr("name") == "remark"){
+                                            $(this).val(data.second);
+                                        }
+                                    });
+                                }
+                                if (n.name == "影响较大"){
+                                    //third == >
+                                    frm.find("textarea").each(function () {
+                                        if ($(this).attr("name") == "remark"){
+                                            $(this).val(data.thild);
+                                        }
+                                    });
+                                }
+                                if (n.name == "有重大影响"){
+                                    frm.find("textarea").each(function () {
+                                        if ($(this).attr("name") == "remark"){
+                                            $(this).val(data.fourth);
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    });
                 }
-            };
-            defaults = $.extend({}, defaults, options);
+            }
         }
     }
 

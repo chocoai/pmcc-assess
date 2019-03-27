@@ -56,7 +56,7 @@
                                             影响要素<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="category" class="form-control category">
+                                            <select required="required" name="category" class="form-control category" onchange="matchingEnvironment.prototype.initRemarkInfo()">
                                             </select>
                                         </div>
                                     </div>
@@ -67,7 +67,7 @@
                                             影响程度<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="influenceDegree"
+                                            <select required="required" name="influenceDegree" onchange="matchingEnvironment.prototype.initRemarkInfo()"
                                                     class="form-control  influenceDegree">
                                             </select>
                                         </div>
