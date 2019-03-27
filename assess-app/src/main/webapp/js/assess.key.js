@@ -159,7 +159,6 @@ AssessDicKey.completed_time_type = "completed.time.type";//建筑功能类型
 //单元
 AssessDicKey.examineUnitInteriorDecorationPart = "unit.interior.decoration.part";//内装装修部位
 AssessDicKey.examineUnitInteriorDecorationMaterial = "unit.interior.decoration.material";//内装装修材料
-AssessDicKey.examineUnitElevatorMaintenance = "unit.elevator.maintenance";//电梯维护情况
 AssessDicKey.examineUnitElevatorType = "unit.elevator.type";//电梯类型
 AssessDicKey.examineUnitHuxingType = "unit.huxing.type";//户型类别
 AssessDicKey.examineUnitHuxingTypeProduction = "unit.huxing.type.production";//户型类别-生产用房
@@ -219,11 +218,13 @@ AssessDicKey.examine_house_heating_brand = "examine.house.heating.brand";//暖�
 AssessDicKey.examine_house_heating_method = "examine.house.heating.method";//供暖方式
 AssessDicKey.examine_house_heating_equipment_price_range = "examine.house.heating.equipment_price_range";//供暖设备价格区间
 AssessDicKey.examine_house_corollary_equipment_type = "examine.house.corollary.equipment.type";//配套设备设施 类型
+AssessDicKey.examine_house_corollary_equipment_use = "examine.house.corollary.equipment.use";//配套设备设施 用途
 
 AssessDicKey.examineCommonOrientation = "examine.common.orientation";//朝向
 AssessDicKey.examineCommonMaterialGrade = "examine.common.material.grade";//材料档次
 AssessDicKey.examineCommonGrade = "examine.common.grade";//档次
 AssessDicKey.examineCommonSupplyMode = "examine.common.supply.mode";//供应方式
+AssessDicKey.examineCommonMaintenanceSituation = "examine.common.maintenance situation";//设备维护情况
 
 //房屋完损度
 AssessDicKey.damaged_degree_structural_part = "structural.part";//房屋完损度-结构部分

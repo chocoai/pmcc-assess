@@ -11,7 +11,7 @@ public class BasicHouseIntelligentVo extends BasicHouseIntelligent {
 
     private String switchCircuitName;
     private String layingMethodName;
-
+    private String gradeName;
     private String lampsLanternsName;
 
     private String intelligentSystemName;
@@ -30,6 +30,14 @@ public class BasicHouseIntelligentVo extends BasicHouseIntelligent {
 
     public void setLayingMethodName(String layingMethodName) {
         this.layingMethodName = layingMethodName;
+    }
+
+    public String getGradeName() {
+        return gradeName;
+    }
+
+    public void setGradeName(String gradeName) {
+        this.gradeName = gradeName;
     }
 
     public String getLampsLanternsName() {

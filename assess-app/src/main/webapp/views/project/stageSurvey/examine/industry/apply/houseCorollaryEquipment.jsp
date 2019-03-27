@@ -74,11 +74,12 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            参数指标<span class="symbol required"></span>
+                                            设备用途<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="parameterIndex" class="form-control"
-                                                   required="required">
+                                            <select required="required" name="equipmentUse"
+                                                    class="form-control equipmentUse">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -88,29 +89,29 @@
                                             维护状况<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="maintenanceStatus" class="form-control"
-                                                   required="required">
+                                            <select required="required" name="maintenanceStatus"
+                                                    class="form-control maintenanceStatus">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            设备用途<span class="symbol required"></span>
+                                            参数指标
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="equipmentUse" class="form-control"
-                                                   required="required">
+                                            <input type="text" name="parameterIndex" class="form-control">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            价格<span class="symbol required"></span>
+                                            价格
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="price" class="form-control" required="required">
+                                            <input type="text" name="price" class="form-control" >
                                         </div>
                                     </div>
                                 </div>

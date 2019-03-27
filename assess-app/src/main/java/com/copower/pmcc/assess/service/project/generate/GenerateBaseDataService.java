@@ -3182,17 +3182,17 @@ public class GenerateBaseDataService {
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectEntry.getValue();
             BasicApply basicApply = schemeJudgeObjectEntry.getKey();
             documentBuilder.writeln("1:位置状况");
-            documentBuilder.writeln(String.format("坐落:%s", generateLoactionService.getSeat(schemeJudgeObject.getDeclareRecordId(),basicApply.getId())));
+            documentBuilder.writeln(String.format("坐落:%s", generateLoactionService.getSeat(schemeJudgeObject.getDeclareRecordId(), basicApply.getId())));
             documentBuilder.writeln(String.format("方位:%s", generateLoactionService.getPosition(basicApply.getId())));
             documentBuilder.writeln(String.format("与重要场所的距离:%s", generateLoactionService.getWithImportantLocationDistance(basicApply.getId())));
             documentBuilder.writeln(String.format("临街（路）状况:%s", generateLoactionService.getFaceStreet(basicApply)));
             //楼层
             List<Integer> judgeObjectIds = Lists.newArrayList();
-            if (schemeJudgeObject.getBisMerge()){
+            if (schemeJudgeObject.getBisMerge()) {
                 List<SchemeJudgeObject> schemeJudgeObjects = schemeJudgeObjectService.getChildrenJudgeObject(schemeJudgeObject.getId());
                 schemeJudgeObjects.add(schemeJudgeObject);
                 schemeJudgeObjects.stream().forEach(schemeJudgeObject1 -> judgeObjectIds.add(schemeJudgeObject1.getId()));
-            }else {
+            } else {
                 judgeObjectIds.add(schemeJudgeObject.getId());
             }
             documentBuilder.writeln(String.format("楼层:%s", generateLoactionService.getFloor(judgeObjectIds)));
@@ -3209,13 +3209,13 @@ public class GenerateBaseDataService {
             documentBuilder.writeln(String.format("%s", generateLoactionService.getExternalPublicServiceFacilities(basicApply)));
             documentBuilder.writeln("5:周围环境");
             documentBuilder.writeln("5.1:自然要素");
-            documentBuilder.writeln(String.format("%s",generateLoactionService.getEnvironmentalScience(basicApply,EnvironmentalScienceEnum.NATURAL)));
+            documentBuilder.writeln(String.format("%s", generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.NATURAL)));
             documentBuilder.writeln("5.2:人文环境要素");
-            documentBuilder.writeln(String.format("%s",generateLoactionService.getEnvironmentalScience(basicApply,EnvironmentalScienceEnum.HUMANITY)));
+            documentBuilder.writeln(String.format("%s", generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.HUMANITY)));
             documentBuilder.writeln("5.3:景观");
-            documentBuilder.writeln(String.format("%s",generateLoactionService.getEnvironmentalScience(basicApply,EnvironmentalScienceEnum.SCENERY)));
+            documentBuilder.writeln(String.format("%s", generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.SCENERY)));
             documentBuilder.writeln("6:综述");
-            documentBuilder.writeln(String.format("%s", generateLoactionService.content(schemeJudgeObject,basicApply)));
+            documentBuilder.writeln(String.format("%s", generateLoactionService.content(schemeJudgeObject, basicApply)));
             documentBuilder.writeln();
         }
         doc.save(localPath);
@@ -3605,8 +3605,8 @@ public class GenerateBaseDataService {
                                                             stringBuilder.append(equipment.getCategory() == null ? errorStr : String.format("类别:%s；", baseDataDicService.getNameById(equipment.getCategory())));
                                                             stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(equipment.getName()) ? errorStr : String.format("名称:%s；", equipment.getName()));
                                                             stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(equipment.getParameterIndex()) ? errorStr : String.format("参数指标:%s；", equipment.getParameterIndex()));
-                                                            stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(equipment.getMaintenanceStatus()) ? errorStr : String.format("维护状况:%s；", equipment.getMaintenanceStatus()));
-                                                            stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(equipment.getEquipmentUse()) ? errorStr : String.format("设备用途:%s；", equipment.getEquipmentUse()));
+                                                            stringBuilder.append(equipment.getMaintenanceStatus() == null ? errorStr : String.format("维护状况:%s；", equipment.getMaintenanceStatus()));
+                                                            stringBuilder.append(equipment.getEquipmentUse() == null ? errorStr : String.format("设备用途:%s；", equipment.getEquipmentUse()));
                                                             stringBuilder.append(org.apache.commons.lang.StringUtils.isBlank(equipment.getPrice()) ? errorStr : String.format("价格:%s；", equipment.getPrice()));
                                                         }
                                                     }

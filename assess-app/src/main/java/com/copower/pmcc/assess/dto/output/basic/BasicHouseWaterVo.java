@@ -23,6 +23,7 @@ public class BasicHouseWaterVo extends BasicHouseWater {
     private String purificationEquipmentPriceName;
 
     private String fireWaterSupplyName;
+    private String gradeName;
 
 
     public String getPretreatedWaterName() {
@@ -79,5 +80,13 @@ public class BasicHouseWaterVo extends BasicHouseWater {
 
     public void setFireWaterSupplyName(String fireWaterSupplyName) {
         this.fireWaterSupplyName = fireWaterSupplyName;
+    }
+
+    public String getGradeName() {
+        return gradeName;
+    }
+
+    public void setGradeName(String gradeName) {
+        this.gradeName = gradeName;
     }
 }

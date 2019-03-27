@@ -110,33 +110,20 @@ public class CaseHouseIntelligentService {
         StringBuilder builder = new StringBuilder(128);
         if (!ObjectUtils.isEmpty(stringList)) {
             for (int i = 0; i < stringList.size(); i++) {
-                if (i == stringList.size() - 1) {
-                    JSONObject jsonObject = JSON.parseObject(stringList.get(i));
-                    JSONObject intelligentSystem = JSON.parseObject(jsonObject.getString("intelligentSystem"));
-                    JSONObject layingMethod = JSON.parseObject(jsonObject.getString("layingMethod"));
-                    String intelligentValue = intelligentSystem.getString("value");
-                    String layingMethodValue = layingMethod.getString("value");
-                    if (NumberUtils.isNumber(intelligentValue) && NumberUtils.isNumber(layingMethodValue)) {
-                        builder.append("(").append(baseDataDicService.getNameById(Integer.parseInt(intelligentValue))).append("");
-                        builder.append("-");
-                        builder.append("").append(baseDataDicService.getNameById(Integer.parseInt(layingMethodValue))).append(")");
-                    }
-                } else {
-                    JSONObject jsonObject = JSON.parseObject(stringList.get(i));
-                    JSONObject intelligentSystem = JSON.parseObject(jsonObject.getString("intelligentSystem"));
-                    JSONObject layingMethod = JSON.parseObject(jsonObject.getString("layingMethod"));
-                    String intelligentValue = intelligentSystem.getString("value");
-                    String layingMethodValue = layingMethod.getString("value");
-                    if (NumberUtils.isNumber(intelligentValue) && NumberUtils.isNumber(layingMethodValue)) {
-                        builder.append("(").append(baseDataDicService.getNameById(Integer.parseInt(intelligentValue))).append("");
-                        builder.append("-");
-                        builder.append("").append(baseDataDicService.getNameById(Integer.parseInt(layingMethodValue))).append(")");
-                        builder.append(",");
-                    }
-                }
+                JSONObject jsonObject = JSON.parseObject(stringList.get(i));
+                JSONObject intelligentSystem = JSON.parseObject(jsonObject.getString("intelligentSystem"));
+                JSONObject layingMethod = JSON.parseObject(jsonObject.getString("layingMethod"));
+                JSONObject intelligenceGrade = JSON.parseObject(jsonObject.getString("intelligenceGrade"));
+                if (intelligentSystem != null)
+                    builder.append(baseDataDicService.getNameById(intelligentSystem.getString("value"))).append("/");
+                if (layingMethod != null)
+                    builder.append(baseDataDicService.getNameById(layingMethod.getString("value"))).append("/");
+                if (intelligenceGrade != null)
+                    builder.append(baseDataDicService.getNameById(intelligenceGrade.getString("value")));
+                builder.append("；");
             }
         }
-        return builder.toString();
+        return StringUtils.strip(builder.toString(), ",");
     }
 
 

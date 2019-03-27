@@ -146,6 +146,8 @@ public class BasicHouseCorollaryEquipmentService {
         }
         vo.setCategoryName(baseDataDicService.getNameById(basicHouseCorollaryEquipment.getCategory()));
         vo.setTypeName(baseDataDicService.getNameById(basicHouseCorollaryEquipment.getType()));
+        vo.setEquipmentUseName(baseDataDicService.getNameById(basicHouseCorollaryEquipment.getEquipmentUse()));
+        vo.setMaintenanceStatusName(baseDataDicService.getNameById(basicHouseCorollaryEquipment.getMaintenanceStatus()));
         return vo;
     }
     

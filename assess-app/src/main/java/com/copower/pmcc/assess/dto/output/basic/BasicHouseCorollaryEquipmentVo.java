@@ -10,7 +10,8 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicHouseCorollaryEquipment;
 public class BasicHouseCorollaryEquipmentVo extends BasicHouseCorollaryEquipment {
     private String fileViewName;
     private String typeName;
-
+    private String equipmentUseName;
+    private String maintenanceStatusName;
     private String categoryName;
     private String priceName;
 
@@ -44,5 +45,21 @@ public class BasicHouseCorollaryEquipmentVo extends BasicHouseCorollaryEquipment
 
     public void setFileViewName(String fileViewName) {
         this.fileViewName = fileViewName;
+    }
+
+    public String getEquipmentUseName() {
+        return equipmentUseName;
+    }
+
+    public void setEquipmentUseName(String equipmentUseName) {
+        this.equipmentUseName = equipmentUseName;
+    }
+
+    public String getMaintenanceStatusName() {
+        return maintenanceStatusName;
+    }
+
+    public void setMaintenanceStatusName(String maintenanceStatusName) {
+        this.maintenanceStatusName = maintenanceStatusName;
     }
 }

@@ -713,8 +713,8 @@ public class MdMarketCompareFieldService extends BaseService {
                                             stringBuilder.append(equipment.getCategory() == null ? "" : String.format("类别:%s；", baseDataDicService.getNameById(equipment.getCategory())));
                                             stringBuilder.append(StringUtils.isBlank(equipment.getName()) ? "" : String.format("名称:%s；", equipment.getName()));
                                             stringBuilder.append(StringUtils.isBlank(equipment.getParameterIndex()) ? "" : String.format("参数指标:%s；", equipment.getParameterIndex()));
-                                            stringBuilder.append(StringUtils.isBlank(equipment.getMaintenanceStatus()) ? "" : String.format("维护状况:%s；", equipment.getMaintenanceStatus()));
-                                            stringBuilder.append(StringUtils.isBlank(equipment.getEquipmentUse()) ? "" : String.format("设备用途:%s；", equipment.getEquipmentUse()));
+                                            stringBuilder.append(equipment.getMaintenanceStatus() == null ? "" : String.format("维护状况:%s；", equipment.getMaintenanceStatus()));
+                                            stringBuilder.append(equipment.getEquipmentUse() == null ? "" : String.format("设备用途:%s；", equipment.getEquipmentUse()));
                                             stringBuilder.append(StringUtils.isBlank(equipment.getPrice()) ? "" : String.format("价格:%s；", equipment.getPrice()));
                                         }
                                     }

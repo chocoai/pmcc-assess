@@ -130,6 +130,7 @@ public class BasicHouseWaterService {
         vo.setBoosterEquipmentName(baseDataDicService.getNameById(basicHouseWater.getBoosterEquipment()));
         vo.setPipingLayoutName(baseDataDicService.getNameById(basicHouseWater.getPipingLayout()));
         vo.setPipeMaterialName(baseDataDicService.getNameById(basicHouseWater.getPipeMaterial()));
+        vo.setGradeName(baseDataDicService.getNameById(basicHouseWater.getGrade()));
         vo.setSupplyModeName(baseDataDicService.getNameById(basicHouseWater.getSupplyMode()));
         vo.setPurificationEquipmentPriceName(baseDataDicService.getNameById(basicHouseWater.getPurificationEquipmentPrice()));
         vo.setFireWaterSupplyName(baseDataDicService.getNameById(basicHouseWater.getFireWaterSupply()));
