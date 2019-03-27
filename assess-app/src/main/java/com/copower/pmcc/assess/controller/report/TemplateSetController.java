@@ -48,12 +48,10 @@ public class TemplateSetController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/base/templateSetIndex");
         List<BaseProjectClassify> projectTypeList = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLE);
         modelAndView.addObject("projectTypeList", projectTypeList);
-        modelAndView.addObject("firstEntrust", projectTypeList.get(0).getId());//第一个抵押评估对象
         List<BaseDataDic> entrustPurposeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         modelAndView.addObject("entrustPurposeList", entrustPurposeList);
         List<BaseDataDic> cacheDataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
         modelAndView.addObject("reportType", cacheDataDicList);
-        modelAndView.addObject("firstReportType", cacheDataDicList.get(0).getId());
         modelAndView.addObject("currUserAccount", processControllerComponent.getThisUser());
         return modelAndView;
     }

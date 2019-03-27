@@ -2222,12 +2222,12 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 相关参数选取与应用
+     * 主要计算过程
      *
      * @return
      * @throws Exception
      */
-    public String getSelectionApplicationParameters() throws Exception {
+    public String getComputationProcess() throws Exception {
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
