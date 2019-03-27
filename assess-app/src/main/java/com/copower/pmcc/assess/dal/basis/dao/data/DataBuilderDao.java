@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.basis.dao.data;
 import com.copower.pmcc.assess.dal.basis.entity.DataBuilder;
 import com.copower.pmcc.assess.dal.basis.entity.DataBuilderExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataBuilderMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -91,6 +92,12 @@ public class DataBuilderDao {
      */
     public DataBuilder getByDataBuilderId(Integer id){
         return dataBuilderMapper.selectByPrimaryKey(id);
+    }
+
+    public List<DataBuilder> dataBuilderList(DataBuilder oo){
+        DataBuilderExample example = new DataBuilderExample();
+        MybatisUtils.convertObj2Example(oo, example);
+        return dataBuilderMapper.selectByExample(example);
     }
 
     /**

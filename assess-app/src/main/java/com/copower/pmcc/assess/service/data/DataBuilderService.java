@@ -85,6 +85,10 @@ public class DataBuilderService {
         return dataBuilderDao.getDataBuilderList(name);
     }
 
+    public List<DataBuilder> dataBuilderList(DataBuilder oo){
+        return dataBuilderDao.dataBuilderList(oo);
+    }
+
     /**
      * 功能描述:
      *

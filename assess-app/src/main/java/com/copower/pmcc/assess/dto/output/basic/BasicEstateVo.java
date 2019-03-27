@@ -20,6 +20,8 @@ public class BasicEstateVo extends BasicEstate {
     private String drainWaterName;
     private String supplyHeatingName;
 
+    private String developerName;
+
     public String getProvinceName() {
         return provinceName;
     }
@@ -98,5 +100,13 @@ public class BasicEstateVo extends BasicEstate {
 
     public void setDrainWaterName(String drainWaterName) {
         this.drainWaterName = drainWaterName;
+    }
+
+    public String getDeveloperName() {
+        return developerName;
+    }
+
+    public void setDeveloperName(String developerName) {
+        this.developerName = developerName;
     }
 }

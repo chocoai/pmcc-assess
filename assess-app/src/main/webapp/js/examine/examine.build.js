@@ -219,6 +219,8 @@
     };
 
     buildingCommon.autocompleteStart = function () {
+        buildingCommon.buildingForm.find('input[name=property]').apProperty();
+        buildingCommon.buildingForm.find('input[name=builder]').apBuilder();
         $("#txt_building_search").apBuilding({
             caseEstateId: function () {
                 return basicCommon.getCaseEstateId();

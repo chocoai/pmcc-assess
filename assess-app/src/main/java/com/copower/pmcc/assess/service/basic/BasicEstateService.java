@@ -17,6 +17,7 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.assess.service.data.DataBlockService;
+import com.copower.pmcc.assess.service.data.DataDeveloperService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -27,8 +28,10 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -121,6 +124,8 @@ public class BasicEstateService {
     private CaseEstateTaggingService caseEstateTaggingService;
     @Autowired
     private DdlMySqlAssist ddlMySqlAssist;
+    @Autowired
+    private DataDeveloperService dataDeveloperService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -144,6 +149,17 @@ public class BasicEstateService {
      * @throws Exception
      */
     public Integer saveAndUpdateBasicEstate(BasicEstate basicEstate) throws Exception {
+        if (basicEstate != null){
+            if (StringUtils.isNotBlank(basicEstate.getDeveloper())){
+                List<DataDeveloper> dataDeveloperList = dataDeveloperService.dataDeveloperList(new DataDeveloper());
+                if (org.apache.commons.collections.CollectionUtils.isNotEmpty(dataDeveloperList)){
+                    DataDeveloper dataDeveloper = dataDeveloperList.stream().filter(dataDeveloper1 -> Objects.equal(basicEstate.getDeveloper(),dataDeveloper1.getName())).findFirst().get();
+                    if (dataDeveloper != null){
+                        basicEstate.setDeveloper(dataDeveloper.getId().toString());
+                    }
+                }
+            }
+        }
         if (basicEstate.getId() == null || basicEstate.getId().intValue() == 0) {
             basicEstate.setCreator(commonService.thisUserAccount());
             Integer id = basicEstateDao.addBasicEstate(basicEstate);
@@ -218,6 +234,13 @@ public class BasicEstateService {
         vo.setSupplyWaterName(baseDataDicService.getNameById(basicEstate.getSupplyWater()));
         vo.setDrainWaterName(baseDataDicService.getNameById(basicEstate.getDrainWater()));
         vo.setSupplyHeatingName(baseDataDicService.getNameById(basicEstate.getSupplyHeating()));
+        if (NumberUtils.isNumber(basicEstate.getDeveloper())){
+            DataDeveloper dataDeveloper = dataDeveloperService.getByDataDeveloperId(Integer.parseInt(basicEstate.getDeveloper()));
+            if (dataDeveloper != null){
+                vo.setDeveloper(dataDeveloper.getName());
+                vo.setDeveloperName(dataDeveloper.getName());
+            }
+        }
         return vo;
     }
 
