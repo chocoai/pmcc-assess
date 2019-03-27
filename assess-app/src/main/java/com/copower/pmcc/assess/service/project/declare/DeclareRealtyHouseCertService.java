@@ -351,6 +351,9 @@ public class DeclareRealtyHouseCertService {
         if (NumberUtils.isNumber(declareRealtyHouseCert.getType())) {
             vo.setTypeName(baseDataDicService.getNameById(declareRealtyHouseCert.getType()));
         }
+        if (NumberUtils.isNumber(declareRealtyHouseCert.getNature())) {
+            vo.setNatureName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyHouseCert.getNature())));
+        }
         if (StringUtils.isNotBlank(declareRealtyHouseCert.getProvince())) {
             if (NumberUtils.isNumber(declareRealtyHouseCert.getProvince())) {
                 //省
