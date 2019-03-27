@@ -112,6 +112,7 @@ public class GenerateBaseDataService {
     private SurveyAssetInventoryRightRecordService surveyAssetInventoryRightRecordService;
     private SurveyAssetInventoryRightRecordCenterService surveyAssetInventoryRightRecordCenterService;
     private GenerateLoactionService generateLoactionService;
+    private GenerateLandEntityService generateLandEntityService;
 
     /**
      * 构造器必须传入的参数
@@ -3146,17 +3147,8 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
-
-    /**
-     * 估价对象区位状况表
-     *
-     * @return
-     */
-    public String getJudgeObjectAreaStatusSheet() throws Exception {
+    private LinkedHashMap<BasicApply, SchemeJudgeObject> getLinkedHashMapAndBasicApplyOrSchemeJudgeObject(){
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
-        Document doc = new Document();
-        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
-        String localPath = getLocalPath();
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
         LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = Maps.newLinkedHashMap();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && projectPhase != null) {
@@ -3177,6 +3169,20 @@ public class GenerateBaseDataService {
                 }
             }
         }
+        return schemeJudgeObjectLinkedHashMap;
+    }
+
+
+    /**
+     * 估价对象区位状况表
+     *
+     * @return
+     */
+    public String getJudgeObjectAreaStatusSheet() throws Exception {
+        Document doc = new Document();
+        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
+        String localPath = getLocalPath();
+        LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = getLinkedHashMapAndBasicApplyOrSchemeJudgeObject();
         documentBuilder.writeln("估价对象区位状况表");
         for (Map.Entry<BasicApply, SchemeJudgeObject> schemeJudgeObjectEntry : schemeJudgeObjectLinkedHashMap.entrySet()) {
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectEntry.getValue();
@@ -3229,138 +3235,15 @@ public class GenerateBaseDataService {
      */
     public String getJudgeObjectLandStateSheet() throws Exception {
         Document doc = new Document();
-        List<SchemeJudgeObject> schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(getSchemeJudgeObjectList(), true);
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
-        List<ProjectPhase> projectPhases = projectPhaseService.queryProjectPhaseByCategory(
-                projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), null)
-                .stream()
-                .filter(projectPhaseVo -> {
-                    if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
-                        return true;
-                    }
-                    if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
-                        return false;
-                    }
-                    return false;
-                }).collect(Collectors.toList());
-        builder.writeln("估价土地实体状况表");
-        if (CollectionUtils.isNotEmpty(projectPhases)) {
-            for (ProjectPhase projectPhaseScene : projectPhases) {
-                if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-                    for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-                        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(i);
-                        ProjectPlanDetails query = new ProjectPlanDetails();
-                        query.setProjectId(projectId);
-                        query.setProjectPhaseId(projectPhaseScene.getId());
-                        query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                            for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                                GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
-                                if (generateBaseExamineService.getBasicApply().getId() != null && generateBaseExamineService.getPlanDetailsId() != null) {
-                                    try {
-                                        for (int j = 0; j < 10; j++) {
-                                            switch (j) {
-                                                case 0:
-                                                    String name = String.format("%s", generateBaseExamineService.getBasicEstateLandState().getName());
-                                                    if (StringUtils.isNotBlank(name)) {
-                                                        builder.writeln(String.format("%d%s%s", (j + 1), "名称:", name));
-                                                    } else {
-                                                        builder.writeln(String.format("%d%s%s", (j + 1), "名称:", "无"));
-                                                    }
-                                                    break;
-                                                case 1:
-                                                    //"东至,南至,西至,北至"
-                                                    if (true) {
-                                                        StringBuilder stringBuilder = new StringBuilder(10);
-                                                        stringBuilder.append(StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getEastTo()) ? generateBaseExamineService.getBasicEstateLandState().getEastTo() : errorStr);
-                                                        stringBuilder.append(",");
-                                                        stringBuilder.append(StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getSouthTo()) ? generateBaseExamineService.getBasicEstateLandState().getSouthTo() : errorStr);
-                                                        stringBuilder.append(",");
-                                                        stringBuilder.append(StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getWestTo()) ? generateBaseExamineService.getBasicEstateLandState().getWestTo() : errorStr);
-                                                        stringBuilder.append(",");
-                                                        stringBuilder.append(StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getNorthTo()) ? generateBaseExamineService.getBasicEstateLandState().getNorthTo() : errorStr);
-                                                        stringBuilder.append(",");
-                                                        if (StringUtils.isNotBlank(stringBuilder.toString())) {
-                                                            builder.writeln(String.format("%d%s%s", (j + 1), "东至,南至,西至,北至:", stringBuilder.toString()));
-                                                        } else {
-                                                            builder.writeln(String.format("%d%s%s", (j + 1), "东至,南至,西至,北至:", "无"));
-                                                        }
-                                                    }
-                                                    break;
-                                                case 2:
-                                                    if (StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getLandArea())) {
-                                                        builder.writeln(String.format("%d%s%s", (j + 1), "土地面积:", generateBaseExamineService.getBasicEstateLandState().getLandArea()));
-                                                    } else {
-                                                        builder.writeln(String.format("%d%s%s", (j + 1), "土地面积:", "无"));
-                                                    }
-                                                    break;
-                                                case 3:
-                                                    //用途
-                                                    if (true) {
-                                                        StringBuilder stringBuilder = new StringBuilder(10);
-                                                        if (StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getLandUseTypeName())) {
-                                                            stringBuilder.append("土地类型:");
-                                                            stringBuilder.append(StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getLandUseTypeName()) ? generateBaseExamineService.getBasicEstateLandState().getLandUseTypeName() : "无");
-                                                            stringBuilder.append(";");
-                                                            stringBuilder.append("土地级别:");
-                                                            stringBuilder.append(StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getLandLevelName()) ? generateBaseExamineService.getBasicEstateLandState().getLandLevelName() : "无");
-                                                        }
-                                                        if (StringUtils.isNotBlank(stringBuilder.toString())) {
-                                                            builder.writeln(String.format("%d%s%s", (j + 1), "用途:", stringBuilder.toString()));
-                                                        } else {
-                                                            builder.writeln(String.format("%d%s%s", (j + 1), "用途:", "无"));
-                                                        }
-                                                    }
-                                                    break;
-                                                case 4:
-                                                    if (StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getShapeStateName())) {
-                                                        builder.writeln(String.format("%d%s%s", (j + 1), "形状:", generateBaseExamineService.getBasicEstateLandState().getShapeStateName()));
-                                                    } else {
-                                                        builder.writeln(String.format("%d%s%s", (j + 1), "形状:", "无"));
-                                                    }
-                                                    break;
-                                                case 5:
-                                                    if (StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getPlanenessName())) {
-                                                        builder.writeln(String.format("%d%s%s", (j + 1), "地形:", generateBaseExamineService.getBasicEstateLandState().getPlanenessName()));
-                                                    } else {
-                                                        builder.writeln(String.format("%d%s%s", (j + 1), "地形:", "无"));
-                                                    }
-                                                    break;
-                                                case 6:
-                                                    if (StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getTopographicTerrainName())) {
-                                                        builder.writeln(String.format("%d%s%s", (j + 1), "地势:", generateBaseExamineService.getBasicEstateLandState().getTopographicTerrainName()));
-                                                    } else {
-                                                        builder.writeln(String.format("%d%s%s", (j + 1), "地势:", "无"));
-                                                    }
-                                                    break;
-                                                case 7:
-                                                    builder.writeln(String.format("%d%s%s", (j + 1), "地质:", "无"));
-                                                    break;
-                                                case 8:
-                                                    if (StringUtils.isNotBlank(generateBaseExamineService.getBasicEstateLandState().getDevelopmentDegreeName())) {
-                                                        builder.writeln(String.format("%d%s%s", (j + 1), "开发程度:", generateBaseExamineService.getBasicEstateLandState().getDevelopmentDegreeName()));
-                                                    } else {
-                                                        builder.writeln(String.format("%d%s%s", (j + 1), "开发程度:", "无"));
-                                                    }
-                                                    break;
-                                                case 9:
-                                                    builder.writeln(String.format("%s%s", "综上所述:", "无"));
-                                                    break;
-                                                default:
-                                                    break;
-                                            }
-                                        }
-                                        builder.writeln();
-                                    } catch (Exception e) {
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = getLinkedHashMapAndBasicApplyOrSchemeJudgeObject();
+        documentBuilder.writeln("估价土地实体状况表");
+        for (Map.Entry<BasicApply, SchemeJudgeObject> schemeJudgeObjectEntry : schemeJudgeObjectLinkedHashMap.entrySet()){
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectEntry.getValue();
+            BasicApply basicApply = schemeJudgeObjectEntry.getKey();
+            documentBuilder.writeln(String.format("1、名称:%s",generateLandEntityService.getLandName(basicApply)));
+            documentBuilder.writeln(String.format("1、四至:%s",generateLandEntityService.getLandName(basicApply)));
         }
         doc.save(localPath);
         return localPath;
@@ -5052,6 +4935,7 @@ public class GenerateBaseDataService {
         this.surveyAssetInventoryRightRecordService = SpringContextUtils.getBean(SurveyAssetInventoryRightRecordService.class);
         this.surveyAssetInventoryRightRecordCenterService = SpringContextUtils.getBean(SurveyAssetInventoryRightRecordCenterService.class);
         this.generateLoactionService = SpringContextUtils.getBean(GenerateLoactionService.class);
+        this.generateLandEntityService = SpringContextUtils.getBean(GenerateLandEntityService.class);
 
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);

@@ -115,6 +115,23 @@ public class GenerateCommonMethod {
         return s;
     }
 
+    //房地产总价
+    public BigDecimal getTotalRealEstate(Integer areId) {
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areId);
+        BigDecimal temp = new BigDecimal(0);
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                if (schemeJudgeObject.getEvaluationArea() != null && schemeJudgeObject.getPrice() != null) {
+                    if (NumberUtils.isNumber(schemeJudgeObject.getEvaluationArea().toString()) && NumberUtils.isNumber(schemeJudgeObject.getPrice().toString())) {
+                        BigDecimal bigDecimal = schemeJudgeObject.getEvaluationArea().multiply(schemeJudgeObject.getPrice());
+                        temp = temp.add(bigDecimal);
+                    }
+                }
+            }
+        }
+        return temp;
+    }
+
     /**
      * 权利人
      *

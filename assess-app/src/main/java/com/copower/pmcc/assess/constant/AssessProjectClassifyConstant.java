@@ -18,4 +18,5 @@ public class AssessProjectClassifyConstant {
 
     public static final String SINGLE_HOUSE_PROPERTY_TASKRIGHT_PLEDGE  = "single.house.property.taskRight.pledge";  //抵押权
     public static final String SINGLE_HOUSE_PROPERTY_TASKRIGHT_OTHER  = "single.house.property.taskRight.other";  //其它权
+    public static final String SINGLE_HOUSE_PROPERTY_TASKRIGHT_RENT  = "single.house.property.taskRight.rent";  //出租
 }

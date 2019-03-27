@@ -62,6 +62,10 @@ public class AssessDataDicKeyConstant {
     public static final String INVENTORY_RIGHT_TYPE_HOUSE_PLEDGE = "project.survey.inventory.right.type.house.pledge";//房产抵押权
     public static final String INVENTORY_RIGHT_TYPE_HOUSE_OTHER = "project.survey.inventory.right.type.house.other";//房产其他
 
+    public static final String CERTIFICATE_HANDLING_TYPE = "certificate.handling.type"; //是否办证
+    public static final String CERTIFICATE_HANDLING_TYPE_PASS = "certificate.handling.type.pass"; //可办证
+    public static final String CERTIFICATE_HANDLING_TYPE_REFUSE = "certificate.handling.type.refuse"; //不可办证
+
     /**
      * 评估方法
      */

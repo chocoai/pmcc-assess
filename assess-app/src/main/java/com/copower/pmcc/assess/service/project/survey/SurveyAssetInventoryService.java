@@ -205,6 +205,9 @@ public class SurveyAssetInventoryService extends BaseService {
         if (surveyAssetInventory.getApplication() != null) {
             vo.setApplicationName(baseDataDicService.getNameById(surveyAssetInventory.getApplication()));
         }
+        if (StringUtils.isNotBlank(surveyAssetInventory.getCertificate())) {
+            vo.setCertificateName(baseDataDicService.getNameById(surveyAssetInventory.getCertificate()));
+        }
         return vo;
     }
 
