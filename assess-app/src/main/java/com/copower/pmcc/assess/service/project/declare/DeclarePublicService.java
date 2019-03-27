@@ -70,6 +70,8 @@ public class DeclarePublicService {
         List<BaseDataDic> useRightTypes = baseDataDicService.getCacheDataDicList("project.declare.use.right.type");
         //权利类型
         List<BaseDataDic> types = baseDataDicService.getCacheDataDicList("project.declare.land.certificate.type");
+        //房屋性质
+        List<BaseDataDic> natures = baseDataDicService.getCacheDataDicList("project.declare.room.type");
 
         //省
         String provinceName = PoiUtils.getCellValue(row.getCell(0));
@@ -194,10 +196,17 @@ public class DeclarePublicService {
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(9)))) {
             oo.setHousingStructure(PoiUtils.getCellValue(row.getCell(9)));
         }
-        //房屋性质
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(10)))) {
-            oo.setNature(PoiUtils.getCellValue(row.getCell(10)));
+        //验证基础字典中数据
+        String nature = PoiUtils.getCellValue(row.getCell(10));
+        typeDic = baseDataDicService.getDataDicByName(natures, nature);
+        if (typeDic == null) {
+            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(房屋性质)", i));
+            return false;
+        } else {
+            nature = String.valueOf(typeDic.getId());
         }
+        //房屋性质
+        oo.setNature(nature);
         //建筑面积
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(11)))) {
             oo.setFloorArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(11))));
@@ -311,6 +320,8 @@ public class DeclarePublicService {
         List<BaseDataDic> useRightTypes = baseDataDicService.getCacheDataDicList("project.declare.use.right.type");
         //类型
         List<BaseDataDic> types = baseDataDicService.getCacheDataDicList("project.declare.land.certificate.type");
+        //共有情况
+        List<BaseDataDic> publicSituations = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_COMMON_SITUATION);
 
         //省
         String provinceName = PoiUtils.getCellValue(row.getCell(0));
@@ -382,15 +393,26 @@ public class DeclarePublicService {
             declareRealtyLandCert.setOwnership(PoiUtils.getCellValue(row.getCell(4)));
         }
 
+        String publicSituation = PoiUtils.getCellValue(row.getCell(5));
+        BaseDataDic typeDic = baseDataDicService.getDataDicByName(publicSituations, publicSituation);
+        if (typeDic == null) {
+            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(共有情况)", i));
+            return false;
+        } else {
+            publicSituation = String.valueOf(typeDic.getId());
+        }
+        //共有情况
+        declareRealtyLandCert.setPublicSituation(publicSituation);
+
         //登记日期
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(5)))) {
-            declareRealtyLandCert.setRegistrationDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(5))));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(6)))) {
+            declareRealtyLandCert.setRegistrationDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(6))));
         }
 
         //房屋坐落
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(6)))) {
-            declareRealtyLandCert.setBeLocated(PoiUtils.getCellValue(row.getCell(6)));
-            String located = PoiUtils.getCellValue(row.getCell(6));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(7)))) {
+            declareRealtyLandCert.setBeLocated(PoiUtils.getCellValue(row.getCell(7)));
+            String located = PoiUtils.getCellValue(row.getCell(7));
             if (StringUtils.isNotBlank(located)) {
                 String reg = "^.*?号";//街道号
                 Pattern p = Pattern.compile(reg);
@@ -440,19 +462,19 @@ public class DeclarePublicService {
         }
 
         //地号
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(7)))) {
-            declareRealtyLandCert.setLandNumber(PoiUtils.getCellValue(row.getCell(7)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(8)))) {
+            declareRealtyLandCert.setLandNumber(PoiUtils.getCellValue(row.getCell(8)));
         }
         //图号
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(8)))) {
-            declareRealtyLandCert.setGraphNumber(PoiUtils.getCellValue(row.getCell(8)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(9)))) {
+            declareRealtyLandCert.setGraphNumber(PoiUtils.getCellValue(row.getCell(9)));
         } else {
             builder.append(String.format("\n第%s行异常：图号必须填写", i));
             return false;
         }
         //土地用途
-        String purpose = PoiUtils.getCellValue(row.getCell(9));
-        BaseDataDic typeDic = baseDataDicService.getDataDicByName(purposes, purpose);
+        String purpose = PoiUtils.getCellValue(row.getCell(10));
+        typeDic = baseDataDicService.getDataDicByName(purposes, purpose);
         if (typeDic == null) {
             builder.append(String.format("\n第%s行异常：土地用途与系统配置的名称不一致", i));
             return false;
@@ -462,7 +484,7 @@ public class DeclarePublicService {
         declareRealtyLandCert.setPurpose(purpose);
 
         //使用权类型
-        String useRightType = PoiUtils.getCellValue(row.getCell(10));
+        String useRightType = PoiUtils.getCellValue(row.getCell(11));
         typeDic = baseDataDicService.getDataDicByName(useRightTypes, useRightType);
         if (typeDic == null) {
             builder.append(String.format("\n第%s行异常：使用权类型与系统配置的名称不一致", i));
@@ -473,28 +495,28 @@ public class DeclarePublicService {
         declareRealtyLandCert.setUseRightType(useRightType);
 
         //终止日期
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(11)))) {
-            declareRealtyLandCert.setTerminationDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(11))));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(12)))) {
+            declareRealtyLandCert.setTerminationDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(12))));
         }
         //取得价格
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(12)))) {
-            declareRealtyLandCert.setAcquisitionPrice(new BigDecimal(PoiUtils.getCellValue(row.getCell(12))));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(13)))) {
+            declareRealtyLandCert.setAcquisitionPrice(new BigDecimal(PoiUtils.getCellValue(row.getCell(13))));
         }
         //使用权面积
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(13)))) {
-            declareRealtyLandCert.setUseRightArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(13))));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(14)))) {
+            declareRealtyLandCert.setUseRightArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(14))));
         }
         //分摊面积
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(14)))) {
-            declareRealtyLandCert.setApportionmentArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(14))));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(15)))) {
+            declareRealtyLandCert.setApportionmentArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(15))));
         }
         //登记机关
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(15)))) {
-            declareRealtyLandCert.setRegistrationAuthority(PoiUtils.getCellValue(row.getCell(15)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(16)))) {
+            declareRealtyLandCert.setRegistrationAuthority(PoiUtils.getCellValue(row.getCell(16)));
         }
         //记事
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(16)))) {
-            declareRealtyLandCert.setMemo(PoiUtils.getCellValue(row.getCell(16)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(17)))) {
+            declareRealtyLandCert.setMemo(PoiUtils.getCellValue(row.getCell(17)));
         }
         return true;
     }
@@ -512,6 +534,10 @@ public class DeclarePublicService {
         List<BaseDataDic> planningUses = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_LOAD_UTILITY);
         //房产证类型
         List<BaseDataDic> types = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_HOUSE_CERTIFICATE_TYPE);
+        //共有情况
+        List<BaseDataDic> publicSituations = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_COMMON_SITUATION);
+        //房屋性质
+        List<BaseDataDic> natures = baseDataDicService.getCacheDataDicList("project.declare.room.type");
 
         //省
         String provinceName = PoiUtils.getCellValue(row.getCell(0));
@@ -577,14 +603,25 @@ public class DeclarePublicService {
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(5)))) {
             declareRealtyHouseCert.setFloorArea(PoiUtils.getCellValue(row.getCell(5)));
         }
+        //验证基础字典中数据
+        String publicSituation = PoiUtils.getCellValue(row.getCell(6));
+        BaseDataDic typeDic = baseDataDicService.getDataDicByName(publicSituations, publicSituation);
+        if (typeDic == null) {
+            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(共有情况)", i));
+            return false;
+        } else {
+            publicSituation = String.valueOf(typeDic.getId());
+        }
+        //共有情况
+        declareRealtyHouseCert.setPublicSituation(publicSituation);
         //登记日期
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(6)))) {
-            declareRealtyHouseCert.setRegistrationDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(6))));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(7)))) {
+            declareRealtyHouseCert.setRegistrationDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(7))));
         }
         //房屋坐落
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(7)))) {
-            declareRealtyHouseCert.setBeLocated(PoiUtils.getCellValue(row.getCell(7)));
-            String located = PoiUtils.getCellValue(row.getCell(7));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(8)))) {
+            declareRealtyHouseCert.setBeLocated(PoiUtils.getCellValue(row.getCell(8)));
+            String located = PoiUtils.getCellValue(row.getCell(8));
             if (StringUtils.isNotBlank(located)) {
                 String reg = "^.*?号";//街道号
                 Pattern p = Pattern.compile(reg);
@@ -633,8 +670,8 @@ public class DeclarePublicService {
             return false;
         }
         //验证基础字典中数据
-        String planningUse = PoiUtils.getCellValue(row.getCell(8));
-        BaseDataDic typeDic = baseDataDicService.getDataDicByName(planningUses, planningUse);
+        String planningUse = PoiUtils.getCellValue(row.getCell(9));
+        typeDic = baseDataDicService.getDataDicByName(planningUses, planningUse);
         if (typeDic == null) {
             builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(规划用途)", i));
             return false;
@@ -644,48 +681,56 @@ public class DeclarePublicService {
         //规划用途
         declareRealtyHouseCert.setPlanningUse(planningUse);
         //房屋结构
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(9)))) {
-            declareRealtyHouseCert.setHousingStructure(PoiUtils.getCellValue(row.getCell(9)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(10)))) {
+            declareRealtyHouseCert.setHousingStructure(PoiUtils.getCellValue(row.getCell(10)));
+        }
+        //验证基础字典中数据
+        String nature = PoiUtils.getCellValue(row.getCell(11));
+        typeDic = baseDataDicService.getDataDicByName(natures, nature);
+        if (typeDic == null) {
+            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(房屋性质)", i));
+            return false;
+        } else {
+            nature = String.valueOf(typeDic.getId());
         }
         //房屋性质
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(10)))) {
-            declareRealtyHouseCert.setNature(PoiUtils.getCellValue(row.getCell(10)));
-        }
+        declareRealtyHouseCert.setNature(nature);
+
         //证载面积
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(11)))) {
-            declareRealtyHouseCert.setEvidenceArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(11))));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(12)))) {
+            declareRealtyHouseCert.setEvidenceArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(12))));
         }
         //套内面积
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(12)))) {
-            declareRealtyHouseCert.setInnerArea(PoiUtils.getCellValue(row.getCell(12)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(13)))) {
+            declareRealtyHouseCert.setInnerArea(PoiUtils.getCellValue(row.getCell(13)));
         }
         //总层数
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(13)))) {
-            declareRealtyHouseCert.setFloorCount(PoiUtils.getCellValue(row.getCell(13)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(14)))) {
+            declareRealtyHouseCert.setFloorCount(PoiUtils.getCellValue(row.getCell(14)));
         }
         //土地使用年限起
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(14)))) {
-            declareRealtyHouseCert.setUseStartDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(14))));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(15)))) {
+            declareRealtyHouseCert.setUseStartDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(15))));
         }
         //土地使用年限止
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(15)))) {
-            declareRealtyHouseCert.setUseEndDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(15))));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(16)))) {
+            declareRealtyHouseCert.setUseEndDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(16))));
         }
         //公摊面积
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(16)))) {
-            declareRealtyHouseCert.setPublicArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(16))));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(17)))) {
+            declareRealtyHouseCert.setPublicArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(17))));
         }
         //土地取得方式
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(17)))) {
-            declareRealtyHouseCert.setLandAcquisition(PoiUtils.getCellValue(row.getCell(17)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(18)))) {
+            declareRealtyHouseCert.setLandAcquisition(PoiUtils.getCellValue(row.getCell(18)));
         }
        //登记机关
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(18)))) {
-            declareRealtyHouseCert.setRegistrationAuthority(PoiUtils.getCellValue(row.getCell(18)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(19)))) {
+            declareRealtyHouseCert.setRegistrationAuthority(PoiUtils.getCellValue(row.getCell(19)));
         }
         //其它
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(19)))) {
-            declareRealtyHouseCert.setOther(PoiUtils.getCellValue(row.getCell(19)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(20)))) {
+            declareRealtyHouseCert.setOther(PoiUtils.getCellValue(row.getCell(20)));
         }
 
         return true;

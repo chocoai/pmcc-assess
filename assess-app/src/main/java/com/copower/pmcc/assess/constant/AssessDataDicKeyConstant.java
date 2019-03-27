@@ -43,6 +43,7 @@ public class AssessDataDicKeyConstant {
      */
      public static final String PROJECT_DECLARE_ECONOMIC_INDICATORS = "project.declare.economic.indicators";  //紧急程度
      public static final String PROJECT_DECLARE_HOUSE_CERTIFICATE_TYPE = "project.declare.house.certificate.type";//房产证类型
+     public static final String PROJECT_DECLARE_COMMON_SITUATION = "project.declare.common.situation";//共有情况
 
     /*
      * 项目查勘
