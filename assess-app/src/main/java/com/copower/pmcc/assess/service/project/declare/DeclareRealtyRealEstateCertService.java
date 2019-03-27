@@ -185,7 +185,9 @@ public class DeclareRealtyRealEstateCertService {
         DeclareRealtyRealEstateCertVo vo = new DeclareRealtyRealEstateCertVo();
         BeanUtils.copyProperties(declareRealtyRealEstateCert, vo);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        vo.setUseEndDateFmt(sdf.format(declareRealtyRealEstateCert.getUseEndDate()));
+        if (declareRealtyRealEstateCert.getUseEndDate() != null) {
+            vo.setUseEndDateFmt(sdf.format(declareRealtyRealEstateCert.getUseEndDate()));
+        }
         if (declareRealtyRealEstateCert.getRegistrationTime() != null) {
             vo.setRegistrationTimeFmt(sdf.format(declareRealtyRealEstateCert.getRegistrationTime()));
         }

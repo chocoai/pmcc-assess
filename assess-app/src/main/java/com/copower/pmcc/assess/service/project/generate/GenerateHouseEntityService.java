@@ -49,6 +49,12 @@ public class GenerateHouseEntityService {
     private BasicBuildingOutfitService basicBuildingOutfitService;
     @Autowired
     private BasicUnitDecorateService basicUnitDecorateService;
+    @Autowired
+    private BasicBuildingFunctionService basicBuildingFunctionService;
+    @Autowired
+    private BasicHouseRoomService basicHouseRoomService;
+
+    //物业这块无需处理
 
     /**
      * 获取楼盘名称
@@ -259,11 +265,43 @@ public class GenerateHouseEntityService {
 
     /**
      * 获取外观
+     *
      * @param judgeObjectIds
      * @return
      */
     public String getAppearance(List<Integer> judgeObjectIds) throws Exception {
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+        Map<String, List<Integer>> map = groupByBuilding(judgeObjectList);
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Map.Entry<String, List<Integer>> entry : map.entrySet()) {
+            stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append(BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME);
+            SchemeJudgeObject judgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(entry.getValue().get(0));
+            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
+            BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
+            stringBuilder.append(String.format("外观风格%s,", baseDataDicService.getNameById(basicBuilding.getAppearanceStyle())));
+            stringBuilder.append(String.format("外观%s;", baseDataDicService.getNameById(basicBuilding.getAppearanceNewAndOld())));
+        }
+        return generateCommonMethod.trim(stringBuilder.toString());
+    }
+
+    /**
+     * 获取设备设施
+     *
+     * @param judgeObjectIds
+     * @return
+     */
+    public String getEquipmentFacilitie(List<Integer> judgeObjectIds) {//
+
+        return null;
+    }
+
+    /**
+     * 估价对象按楼栋分组
+     *
+     * @param judgeObjectList
+     * @return
+     */
+    private Map<String, List<Integer>> groupByBuilding(List<SchemeJudgeObject> judgeObjectList) {
         Map<String, List<Integer>> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
@@ -276,17 +314,53 @@ public class GenerateHouseEntityService {
                 map.put(key, Lists.newArrayList(schemeJudgeObject.getId()));
             }
         }
+        return map;
+    }
+
+    /**
+     * 获取建筑功能
+     *
+     * @param judgeObjectIds
+     * @return
+     */
+    public String getBuildingFunction(List<Integer> judgeObjectIds) {
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+        Map<String, List<Integer>> map = groupByBuilding(judgeObjectList);
         StringBuilder stringBuilder = new StringBuilder();
+        //楼栋中的建筑功能按楼栋描述
         for (Map.Entry<String, List<Integer>> entry : map.entrySet()) {
-            stringBuilder.append(generateCommonMethod.convertNumber(entry.getValue())).append(BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME);
             SchemeJudgeObject judgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(entry.getValue().get(0));
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
             BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
-            stringBuilder.append(String.format("外观风格%s,",baseDataDicService.getNameById(basicBuilding.getAppearanceStyle()) ));
-            stringBuilder.append(String.format("外观%s;",baseDataDicService.getNameById(basicBuilding.getAppearanceNewAndOld()) ));
+            List<BasicBuildingFunction> functionList = basicBuildingFunctionService.getBasicBuildingFunctionList(basicBuilding.getId());
+            if (CollectionUtils.isNotEmpty(functionList)) {
+                stringBuilder.append(basicBuilding.getBuildingName());
+                for (int i = 0; i < functionList.size(); i++) {
+                    BasicBuildingFunction function = functionList.get(i);
+                    stringBuilder.append(baseDataDicService.getNameById(function.getDecorationPart()))
+                            .append(baseDataDicService.getNameById(function.getType()));
+                    stringBuilder.append(i == (functionList.size() - 1) ? "；" : "，");
+                }
+            }
+        }
+        //房间中采光等信息按估价对象分别描述
+        for (SchemeJudgeObject judgeObject : judgeObjectList) {
+            stringBuilder.append(String.format("%s%s", judgeObject.getNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
+            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
+            BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
+            List<BasicHouseRoom> roomList = basicHouseRoomService.getBasicHouseRoomList(basicHouse.getId());
+
+            for (BasicHouseRoom room : roomList) {
+                stringBuilder.append(baseDataDicService.getNameById(room.getRoomType()));
+                Map<String, String> stringMap = Maps.newHashMap();
+                stringMap.put("通风",room.getAeration());
+                stringMap.put("日照",room.getSunshine());
+                stringMap.put("采光",room.getLighting());
+                stringMap.put("隔音",room.getSoundInsulation());
+                stringBuilder.append(generateCommonMethod.stringSummaryDesc(stringMap,"","，"));
+            }
         }
         return generateCommonMethod.trim(stringBuilder.toString());
     }
-
 
 }

@@ -50,6 +50,8 @@ public class DeclareRecord {
 
     private BigDecimal practicalArea;
 
+    private Integer nature;
+
     private String useRightType;
 
     private String housingStructure;
@@ -256,6 +258,14 @@ public class DeclareRecord {
 
     public void setPracticalArea(BigDecimal practicalArea) {
         this.practicalArea = practicalArea;
+    }
+
+    public Integer getNature() {
+        return nature;
+    }
+
+    public void setNature(Integer nature) {
+        this.nature = nature;
     }
 
     public String getUseRightType() {

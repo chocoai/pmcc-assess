@@ -80,6 +80,8 @@ public class DeclareRealtyLandCert {
 
     private Date gmtModified;
 
+    private String publicSituation;
+
     public Integer getId() {
         return id;
     }
@@ -382,5 +384,13 @@ public class DeclareRealtyLandCert {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getPublicSituation() {
+        return publicSituation;
+    }
+
+    public void setPublicSituation(String publicSituation) {
+        this.publicSituation = publicSituation == null ? null : publicSituation.trim();
     }
 }

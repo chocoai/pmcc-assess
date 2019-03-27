@@ -2645,6 +2645,76 @@ public class DeclareRealtyLandCertExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andPublicSituationIsNull() {
+            addCriterion("public_situation is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationIsNotNull() {
+            addCriterion("public_situation is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationEqualTo(String value) {
+            addCriterion("public_situation =", value, "publicSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationNotEqualTo(String value) {
+            addCriterion("public_situation <>", value, "publicSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationGreaterThan(String value) {
+            addCriterion("public_situation >", value, "publicSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationGreaterThanOrEqualTo(String value) {
+            addCriterion("public_situation >=", value, "publicSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationLessThan(String value) {
+            addCriterion("public_situation <", value, "publicSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationLessThanOrEqualTo(String value) {
+            addCriterion("public_situation <=", value, "publicSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationLike(String value) {
+            addCriterion("public_situation like", value, "publicSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationNotLike(String value) {
+            addCriterion("public_situation not like", value, "publicSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationIn(List<String> values) {
+            addCriterion("public_situation in", values, "publicSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationNotIn(List<String> values) {
+            addCriterion("public_situation not in", values, "publicSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationBetween(String value1, String value2) {
+            addCriterion("public_situation between", value1, value2, "publicSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationNotBetween(String value1, String value2) {
+            addCriterion("public_situation not between", value1, value2, "publicSituation");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

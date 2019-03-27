@@ -537,196 +537,6 @@ public class GenerateReportService {
                     if (baseReportField != null) {
                     }
                 }
-
-                //替代原则
-                if (Objects.equal(BaseReportFieldEnum.SubstitutionPrinciple.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSubstitutionPrinciple());
-                    if (baseReportField != null) {
-                    }
-                }
-                //未定事项假设
-                if (Objects.equal(BaseReportFieldEnum.UncertaintyAssumption.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getUncertaintyAssumption());
-                    if (baseReportField != null) {
-                    }
-                }
-                //背离事实假设
-                if (Objects.equal(BaseReportFieldEnum.DeviationFromFactualAssumptions.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDeviationFromFactualAssumptions());
-                    if (baseReportField != null) {
-                    }
-                }
-                //不相一致假设
-                if (Objects.equal(BaseReportFieldEnum.InconsistentHypothesis.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getInconsistentHypothesis());
-                    if (baseReportField != null) {
-                    }
-                }
-                //变现分析通用性
-                if (Objects.equal(BaseReportFieldEnum.UniversalityLiquidityAnalysis.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getUniversalityLiquidityAnalysis());
-                    if (baseReportField != null) {
-                    }
-                }
-                //变现分析独立使用性
-                if (Objects.equal(BaseReportFieldEnum.IndependentUsabilityCashFlowAnalysis.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getIndependentUsabilityCashFlowAnalysis());
-                    if (baseReportField != null) {
-                    }
-                }
-                //变现分析可分割转让性
-                if (Objects.equal(BaseReportFieldEnum.LiquidityAnalysisSeparableTransferability.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityAnalysisSeparableTransferability());
-                    if (baseReportField != null) {
-                    }
-                }
-                //变现分析房地产区位
-                if (Objects.equal(BaseReportFieldEnum.CashAnalysisRealEstateLocation.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCashAnalysisRealEstateLocation());
-                    if (baseReportField != null) {
-                    }
-                }
-                //变现分析房地产开发程度
-                if (Objects.equal(BaseReportFieldEnum.CashAnalysisDegreeRealEstateDevelopment.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCashAnalysisDegreeRealEstateDevelopment());
-                    if (baseReportField != null) {
-                    }
-                }
-                //变现分析房地产价值大小
-                if (Objects.equal(BaseReportFieldEnum.CashAnalysisValueRealEstate.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCashAnalysisValueRealEstate());
-                    if (baseReportField != null) {
-                    }
-                }
-                //变现分析房地产市场状况
-                if (Objects.equal(BaseReportFieldEnum.CashAnalysisRealEstateMarket.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCashAnalysisRealEstateMarket());
-                    if (baseReportField != null) {
-                    }
-                }
-                //变现分析其他
-                if (Objects.equal(BaseReportFieldEnum.CashAnalysisOthers.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCashAnalysisOthers());
-                    if (baseReportField != null) {
-                    }
-                }
-                //变现拍卖底价规定
-                if (Objects.equal(BaseReportFieldEnum.BasePriceRegulationCashAuction.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getBasePriceRegulationCashAuction());
-                    if (baseReportField != null) {
-                    }
-                }
-                //变现时间长短
-                if (Objects.equal(BaseReportFieldEnum.HowLongLiquidationTime.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHowLongLiquidationTime());
-                    if (baseReportField != null) {
-                    }
-                }
-                //变现综合分析
-                if (Objects.equal(BaseReportFieldEnum.Cash_inComprehensiveAnalysis.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCash_inComprehensiveAnalysis());
-                    if (baseReportField != null) {
-                    }
-                }
-                //风险区域规划、城市发展战略、城市规划、土地利用对房地产的影响
-                if (Objects.equal(BaseReportFieldEnum.ThreeMajorRiskPlanning.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getThreeMajorRiskPlanning());
-                    if (baseReportField != null) {
-                    }
-                }
-                //风险相邻物业抵押影响
-                if (Objects.equal(BaseReportFieldEnum.TheImpactMortgageRiskyNeighbouringProperty.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getTheImpactMortgageRiskyNeighbouringProperty());
-                    if (baseReportField != null) {
-                    }
-                }
-                //风险租赁影响
-                if (Objects.equal(BaseReportFieldEnum.ImpactRiskLeasing.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getImpactRiskLeasingy());
-                    if (baseReportField != null) {
-                    }
-                }
-                //风险整体变现影响
-                if (Objects.equal(BaseReportFieldEnum.OverallLiquidityImpactRisk.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getOverallLiquidityImpactRisk());
-                    if (baseReportField != null) {
-                    }
-                }
-                //风险不可抗力影响
-                if (Objects.equal(BaseReportFieldEnum.RiskForceMajeureEffect.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRiskForceMajeureEffect());
-                    if (baseReportField != null) {
-                    }
-                }
-                //风险政策变化影响
-                if (Objects.equal(BaseReportFieldEnum.ImpactRiskPolicyChange.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getImpactRiskPolicyChange());
-                    if (baseReportField != null) {
-                    }
-                }
-                //风险抵押物特殊事件影响
-                if (Objects.equal(BaseReportFieldEnum.ImpactSpecialEventsRiskMortgage.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getImpactSpecialEventsRiskMortgage());
-                    if (baseReportField != null) {
-                    }
-                }
-                //风险抵押物使用不当
-                if (Objects.equal(BaseReportFieldEnum.ImproperUseRiskCollateral.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getImproperUseRiskCollaterale());
-                    if (baseReportField != null) {
-                    }
-                }
-                //风险抵押物功能及替代物
-                if (Objects.equal(BaseReportFieldEnum.FunctionsSubstitutesRiskMortgage.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getFunctionsSubstitutesRiskMortgage());
-                    if (baseReportField != null) {
-                    }
-                }
-                //风险抵押物环境影响
-                if (Objects.equal(BaseReportFieldEnum.EnvironmentalImpactRiskMortgage.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEnvironmentalImpactRiskMortgage());
-                    if (baseReportField != null) {
-                    }
-                }
-                //风险抵押期间因抵押物原因而引起的房地产信贷风险关注点
-                if (Objects.equal(BaseReportFieldEnum.ConcernRealEstateCreditRiskCausedMortgageReasonsDuringRiskMortgagePeriod.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getConcernRealEstateCreditRiskCausedMortgageReasonsDuringRiskMortgagePeriod());
-                    if (baseReportField != null) {
-                    }
-                }
-                //依据不足假设
-                if (Objects.equal(BaseReportFieldEnum.InsufficientHypothesis.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getInsufficientHypothesis());
-                    if (baseReportField != null) {
-                    }
-                }
                 //变现比率
                 if (Objects.equal(BaseReportFieldEnum.LiquidRatios.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
@@ -739,90 +549,6 @@ public class GenerateReportService {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportCity());
                     if (baseReportField != null) {
-                    }
-                }
-                //假设开发法适用原因
-                if (Objects.equal(BaseReportFieldEnum.DevelopmentAssistApplyReason.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDevelopmentAssistApplyReason());
-                    }
-                }
-                //假设开发法不适用原因
-                if (Objects.equal(BaseReportFieldEnum.DevelopmentAssistNotApplicableReason.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDevelopmentAssistNotApplicableReason());
-                    }
-                }
-                //假设开发法评估思路
-                if (Objects.equal(BaseReportFieldEnum.DevelopmentAssistThink.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDevelopmentAssistThink());
-                    }
-                }
-                //收益法适用原因
-                if (Objects.equal(BaseReportFieldEnum.IncomeAssistApplyReason.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getIncomeAssistApplyReason());
-                    }
-                }
-                //收益法不适用原因
-                if (Objects.equal(BaseReportFieldEnum.IncomeAssistNotApplicableReason.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getIncomeAssistNotApplicableReason());
-                    }
-                }
-                //收益法评估思路
-                if (Objects.equal(BaseReportFieldEnum.IncomeAssistThink.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getIncomeAssistThink());
-                    }
-                }
-                //市场比较法适用原因
-                if (Objects.equal(BaseReportFieldEnum.CompareAssistApplyReason.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCompareAssistApplyReason());
-                    }
-                }
-                //市场比较法不适用原因
-                if (Objects.equal(BaseReportFieldEnum.CompareAssistNotApplicableReason.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCompareAssistNotApplicableReason());
-                    }
-                }
-                //市场比较法评估思路
-                if (Objects.equal(BaseReportFieldEnum.CompareAssistThink.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCompareAssistThink());
-                    }
-                }
-                //成本法适用原因
-                if (Objects.equal(BaseReportFieldEnum.CostAssistApplyReason.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCostAssistApplyReason());
-                    }
-                }
-                //成本法不适用原因
-                if (Objects.equal(BaseReportFieldEnum.CostAssistNotApplicableReason.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCostAssistNotApplicableReason());
-                    }
-                }
-                //成本法评估思路
-                if (Objects.equal(BaseReportFieldEnum.CostAssistThink.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCostAssistThink());
                     }
                 }
                 //区位
@@ -851,20 +577,6 @@ public class GenerateReportService {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     if (baseReportField != null) {
                         generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValueTypeDesc());
-                    }
-                }
-                //价值内涵
-                if (Objects.equal(BaseReportFieldEnum.ValueConnotation.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValueImplication());
-                    }
-                }
-                //价值内涵描述
-                if (Objects.equal(BaseReportFieldEnum.ValueImplicationDesc.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValueImplicationDesc());
                     }
                 }
                 //设定用途
@@ -949,20 +661,6 @@ public class GenerateReportService {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     if (baseReportField != null) {
                         generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSummaryEvaluationMethod());
-                    }
-                }
-                //评估方法分述
-                if (Objects.equal(BaseReportFieldEnum.AssessmentMethods.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    if (baseReportField != null) {
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAssessmentMethods());
-                    }
-                }
-                //技术思路通用模板
-                if (Objects.equal(BaseReportFieldEnum.GeneralTemplateTechnicalIdea.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getGeneralTemplateTechnicalIdea());
-                    if (baseReportField != null) {
                     }
                 }
                 //土地他项权利情况
@@ -1061,13 +759,6 @@ public class GenerateReportService {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     if (baseReportField != null) {
                         generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationPriceCateGoryOne());
-                    }
-                }
-                //分类评估面积
-                if (Objects.equal(BaseReportFieldEnum.EvaluationAreaCateGory.getName(), name)) {
-                    BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationAreaCateGoryOne());
-                    if (baseReportField != null) {
                     }
                 }
                 //估价对象的总价
@@ -1175,8 +866,8 @@ public class GenerateReportService {
                     if (baseReportField != null) {
                     }
                 }
-                //最佳利用描述
-                if (Objects.equal(BaseReportFieldEnum.OptimumUtilizationDescription.getName(), name)) {
+                //最佳利用方式
+                if (Objects.equal(BaseReportFieldEnum.BestUseDesc.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getOptimumUtilizationDescription());
                     if (baseReportField != null) {

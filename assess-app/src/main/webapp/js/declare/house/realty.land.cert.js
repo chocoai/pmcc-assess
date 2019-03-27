@@ -179,6 +179,9 @@ assessCommonLand.init = function (item) {
     AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, item.purpose, function (html, data) {
         $("#" + assessCommonLand.config.frm).find('select.purpose').empty().html(html).trigger('change');
     });
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, item.publicSituation, function (html, data) {
+        $("#" + assessCommonLand.config.frm).find('select.publicSituation').empty().html(html).trigger('change');
+    });
     assessCommonLand.fileUpload(assessCommonLand.config.fileId, AssessDBKey.DeclareRealtyLandCert, assessCommonLand.isNotBlank(item.id) ? item.id : "0");
     assessCommonLand.showFile(assessCommonLand.config.fileId, AssessDBKey.DeclareRealtyLandCert, assessCommonLand.isNotBlank(item.id) ? item.id : "0");
 };

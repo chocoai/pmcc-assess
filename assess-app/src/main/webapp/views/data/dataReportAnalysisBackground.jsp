@@ -54,7 +54,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <!-- end: MAIN CONTAINER -->
 </div>
@@ -254,7 +253,6 @@
 
 <%@include file="/views/data/dataReportTemplateItem.jsp" %>
 <%@include file="/views/share/main_footer.jsp" %>
-<%@include file="/views/basic/basicIndexCommon.jsp" %>
 <script type="application/javascript">
     $(function () {
         loadReportAnalysisList();
