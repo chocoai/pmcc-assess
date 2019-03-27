@@ -1724,8 +1724,9 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">房屋性质</label>
                 <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="房屋性质" name="nature" class="form-control">
+                    <select required="required" name="nature"
+                            class="form-control search-select select2 nature">
+                    </select>
                 </div>
             </div>
         </div>
@@ -2092,8 +2093,9 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">房屋性质</label>
                 <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="房屋性质" name="nature" class="form-control">
+                    <select required="required" name="nature"
+                            class="form-control search-select select2 nature">
+                    </select>
                 </div>
             </div>
         </div>
