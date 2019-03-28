@@ -42,7 +42,7 @@ public class DeclareRealtyHouseCert {
 
     private Date registrationTime;
 
-    private String nature;
+    private Integer nature;
 
     private String floorCount;
 
@@ -242,12 +242,12 @@ public class DeclareRealtyHouseCert {
         this.registrationTime = registrationTime;
     }
 
-    public String getNature() {
+    public Integer getNature() {
         return nature;
     }
 
-    public void setNature(String nature) {
-        this.nature = nature == null ? null : nature.trim();
+    public void setNature(Integer nature) {
+        this.nature = nature;
     }
 
     public String getFloorCount() {

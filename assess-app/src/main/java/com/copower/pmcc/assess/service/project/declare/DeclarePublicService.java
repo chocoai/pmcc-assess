@@ -206,7 +206,7 @@ public class DeclarePublicService {
             nature = String.valueOf(typeDic.getId());
         }
         //房屋性质
-        oo.setNature(nature);
+        oo.setNature(Integer.valueOf(nature));
         //建筑面积
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(11)))) {
             oo.setFloorArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(11))));
@@ -694,7 +694,7 @@ public class DeclarePublicService {
             nature = String.valueOf(typeDic.getId());
         }
         //房屋性质
-        declareRealtyHouseCert.setNature(nature);
+        declareRealtyHouseCert.setNature(Integer.valueOf(nature));
 
         //证载面积
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(12)))) {
