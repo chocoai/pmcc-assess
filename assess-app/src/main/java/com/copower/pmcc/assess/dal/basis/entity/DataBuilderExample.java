@@ -245,62 +245,52 @@ public class DataBuilderExample {
             return (Criteria) this;
         }
 
-        public Criteria andCompanyNatureEqualTo(String value) {
+        public Criteria andCompanyNatureEqualTo(Integer value) {
             addCriterion("company_nature =", value, "companyNature");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyNatureNotEqualTo(String value) {
+        public Criteria andCompanyNatureNotEqualTo(Integer value) {
             addCriterion("company_nature <>", value, "companyNature");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyNatureGreaterThan(String value) {
+        public Criteria andCompanyNatureGreaterThan(Integer value) {
             addCriterion("company_nature >", value, "companyNature");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyNatureGreaterThanOrEqualTo(String value) {
+        public Criteria andCompanyNatureGreaterThanOrEqualTo(Integer value) {
             addCriterion("company_nature >=", value, "companyNature");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyNatureLessThan(String value) {
+        public Criteria andCompanyNatureLessThan(Integer value) {
             addCriterion("company_nature <", value, "companyNature");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyNatureLessThanOrEqualTo(String value) {
+        public Criteria andCompanyNatureLessThanOrEqualTo(Integer value) {
             addCriterion("company_nature <=", value, "companyNature");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyNatureLike(String value) {
-            addCriterion("company_nature like", value, "companyNature");
-            return (Criteria) this;
-        }
-
-        public Criteria andCompanyNatureNotLike(String value) {
-            addCriterion("company_nature not like", value, "companyNature");
-            return (Criteria) this;
-        }
-
-        public Criteria andCompanyNatureIn(List<String> values) {
+        public Criteria andCompanyNatureIn(List<Integer> values) {
             addCriterion("company_nature in", values, "companyNature");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyNatureNotIn(List<String> values) {
+        public Criteria andCompanyNatureNotIn(List<Integer> values) {
             addCriterion("company_nature not in", values, "companyNature");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyNatureBetween(String value1, String value2) {
+        public Criteria andCompanyNatureBetween(Integer value1, Integer value2) {
             addCriterion("company_nature between", value1, value2, "companyNature");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyNatureNotBetween(String value1, String value2) {
+        public Criteria andCompanyNatureNotBetween(Integer value1, Integer value2) {
             addCriterion("company_nature not between", value1, value2, "companyNature");
             return (Criteria) this;
         }
@@ -375,62 +365,52 @@ public class DataBuilderExample {
             return (Criteria) this;
         }
 
-        public Criteria andSocialPrestigeEqualTo(String value) {
+        public Criteria andSocialPrestigeEqualTo(Integer value) {
             addCriterion("social_prestige =", value, "socialPrestige");
             return (Criteria) this;
         }
 
-        public Criteria andSocialPrestigeNotEqualTo(String value) {
+        public Criteria andSocialPrestigeNotEqualTo(Integer value) {
             addCriterion("social_prestige <>", value, "socialPrestige");
             return (Criteria) this;
         }
 
-        public Criteria andSocialPrestigeGreaterThan(String value) {
+        public Criteria andSocialPrestigeGreaterThan(Integer value) {
             addCriterion("social_prestige >", value, "socialPrestige");
             return (Criteria) this;
         }
 
-        public Criteria andSocialPrestigeGreaterThanOrEqualTo(String value) {
+        public Criteria andSocialPrestigeGreaterThanOrEqualTo(Integer value) {
             addCriterion("social_prestige >=", value, "socialPrestige");
             return (Criteria) this;
         }
 
-        public Criteria andSocialPrestigeLessThan(String value) {
+        public Criteria andSocialPrestigeLessThan(Integer value) {
             addCriterion("social_prestige <", value, "socialPrestige");
             return (Criteria) this;
         }
 
-        public Criteria andSocialPrestigeLessThanOrEqualTo(String value) {
+        public Criteria andSocialPrestigeLessThanOrEqualTo(Integer value) {
             addCriterion("social_prestige <=", value, "socialPrestige");
             return (Criteria) this;
         }
 
-        public Criteria andSocialPrestigeLike(String value) {
-            addCriterion("social_prestige like", value, "socialPrestige");
-            return (Criteria) this;
-        }
-
-        public Criteria andSocialPrestigeNotLike(String value) {
-            addCriterion("social_prestige not like", value, "socialPrestige");
-            return (Criteria) this;
-        }
-
-        public Criteria andSocialPrestigeIn(List<String> values) {
+        public Criteria andSocialPrestigeIn(List<Integer> values) {
             addCriterion("social_prestige in", values, "socialPrestige");
             return (Criteria) this;
         }
 
-        public Criteria andSocialPrestigeNotIn(List<String> values) {
+        public Criteria andSocialPrestigeNotIn(List<Integer> values) {
             addCriterion("social_prestige not in", values, "socialPrestige");
             return (Criteria) this;
         }
 
-        public Criteria andSocialPrestigeBetween(String value1, String value2) {
+        public Criteria andSocialPrestigeBetween(Integer value1, Integer value2) {
             addCriterion("social_prestige between", value1, value2, "socialPrestige");
             return (Criteria) this;
         }
 
-        public Criteria andSocialPrestigeNotBetween(String value1, String value2) {
+        public Criteria andSocialPrestigeNotBetween(Integer value1, Integer value2) {
             addCriterion("social_prestige not between", value1, value2, "socialPrestige");
             return (Criteria) this;
         }

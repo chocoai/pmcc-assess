@@ -19,6 +19,7 @@ public class AssessDataDicKeyConstant {
     public static final String DATA_EARLYWARNING_TYPE = "data.earlywarning.type";  //预警类型
     public static final String DATA_EARLYWARNING_MODE = "data.earlywarning.mode";  //预警方式
     public static final String DATA_BUILDER_QUALIFICATION_LEVEL = "data.builder.qualification_level";//建造商资质等级
+    public static final String DATA_COMPANY_REPUTATION = "data.company.reputation";//公司信誉
 
     /*
      * 报告配置

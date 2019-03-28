@@ -1,10 +1,14 @@
 package com.copower.pmcc.assess.controller.data;
 
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataDeveloper;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataDeveloperService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
@@ -15,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * @Auther: zch
@@ -31,14 +37,19 @@ public class DataDeveloperController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private BaseDataDicService baseDataDicService;
+    private ProjectInfoService projectInfoService;
     @Autowired
-    private BaseAttachmentService baseAttachmentService;
+    private BaseDataDicService baseDataDicService;
 
     @RequestMapping(value = "/view", name = "转到index页面 ",method = {RequestMethod.GET})
     public ModelAndView index() {
         String view = "/data/dataDeveloperView" ;
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        List<CrmBaseDataDicDto> unitPropertiesList = projectInfoService.getUnitPropertiesList();
+        modelAndView.addObject("unitPropertiesList", unitPropertiesList);
+        List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_COMPANY_REPUTATION);
+        modelAndView.addObject("reputations", baseDataDic);
+
         return modelAndView;
     }
 

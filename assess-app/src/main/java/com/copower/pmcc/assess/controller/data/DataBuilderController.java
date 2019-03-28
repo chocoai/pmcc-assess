@@ -5,7 +5,9 @@ import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataBuilder;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBuilderService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.apache.commons.lang.StringUtils;
@@ -35,6 +37,8 @@ public class DataBuilderController {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private DataBuilderService dataBuilderService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     @RequestMapping(value = "/view", name = "转到index页面 ", method = {RequestMethod.GET})
     public ModelAndView index() {
@@ -42,6 +46,11 @@ public class DataBuilderController {
         List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_BUILDER_QUALIFICATION_LEVEL);
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         modelAndView.addObject("baseList", baseDataDic);
+        List<CrmBaseDataDicDto> unitPropertiesList = projectInfoService.getUnitPropertiesList();
+        modelAndView.addObject("unitPropertiesList", unitPropertiesList);
+        List<BaseDataDic> reputations = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_COMPANY_REPUTATION);
+        modelAndView.addObject("reputations", reputations);
+
         return modelAndView;
     }
 

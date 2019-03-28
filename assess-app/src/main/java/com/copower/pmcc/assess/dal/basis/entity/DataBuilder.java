@@ -7,11 +7,11 @@ public class DataBuilder {
 
     private String name;
 
-    private String companyNature;
+    private Integer companyNature;
 
     private Integer qualificationGrade;
 
-    private String socialPrestige;
+    private Integer socialPrestige;
 
     private String creator;
 
@@ -35,12 +35,12 @@ public class DataBuilder {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getCompanyNature() {
+    public Integer getCompanyNature() {
         return companyNature;
     }
 
-    public void setCompanyNature(String companyNature) {
-        this.companyNature = companyNature == null ? null : companyNature.trim();
+    public void setCompanyNature(Integer companyNature) {
+        this.companyNature = companyNature;
     }
 
     public Integer getQualificationGrade() {
@@ -51,12 +51,12 @@ public class DataBuilder {
         this.qualificationGrade = qualificationGrade;
     }
 
-    public String getSocialPrestige() {
+    public Integer getSocialPrestige() {
         return socialPrestige;
     }
 
-    public void setSocialPrestige(String socialPrestige) {
-        this.socialPrestige = socialPrestige == null ? null : socialPrestige.trim();
+    public void setSocialPrestige(Integer socialPrestige) {
+        this.socialPrestige = socialPrestige;
     }
 
     public String getCreator() {
