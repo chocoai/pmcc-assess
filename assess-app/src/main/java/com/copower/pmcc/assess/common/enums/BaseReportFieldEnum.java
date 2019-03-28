@@ -120,7 +120,7 @@ public enum BaseReportFieldEnum implements Serializable {
     LiquidRatios("变现比率"),
     LiquidTime("变现时间"),
     ANALYSIS_CATEGORY_RISK("风险提示"),
-    ReportCity("出具报告城市"),
+    ReportArea("出具报告区域"),
 
 
     JUDGEOBJECTPRINCIPALCOPYSHEET("估价委托书复印件"),

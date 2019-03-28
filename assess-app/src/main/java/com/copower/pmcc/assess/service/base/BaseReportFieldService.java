@@ -74,14 +74,14 @@ public class BaseReportFieldService {
     }
 
     public BaseReportField getCacheReportFieldByName(String name) {
-        String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_REPORT_FIELD_NAME_ITEM, name);
-        try {
-            BaseReportField sysReportField = LangUtils.singleCache(costsKeyPrefix, name, BaseReportField.class, o -> baseReportFieldDao.getBaseReportFieldByName(o));
-            return sysReportField;
-        } catch (Exception e) {
-            return baseReportFieldDao.getBaseReportFieldByName(name);
-        }
-
+//        String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_REPORT_FIELD_NAME_ITEM, name);
+//        try {
+//            BaseReportField sysReportField = LangUtils.singleCache(costsKeyPrefix, name, BaseReportField.class, o -> baseReportFieldDao.getBaseReportFieldByName(o));
+//            return sysReportField;
+//        } catch (Exception e) {
+//            return baseReportFieldDao.getBaseReportFieldByName(name);
+//        }
+        return new BaseReportField();
     }
 
     //region 获取缓存中的数据字典数据
@@ -118,11 +118,9 @@ public class BaseReportFieldService {
         }
 
     }
-    
-    
-    
 
-    public List<BaseReportField> query(BaseReportField baseReportField){
+
+    public List<BaseReportField> query(BaseReportField baseReportField) {
         return baseReportFieldDao.query(baseReportField);
     }
 
@@ -194,7 +192,7 @@ public class BaseReportFieldService {
             if (!baseReportFieldDao.addObject(baseReportFieldTemp)) {
                 throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
             }
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BaseReportField.class),baseReportFieldTemp.getId());
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BaseReportField.class), baseReportFieldTemp.getId());
         }
     }
     //endregion
@@ -225,7 +223,7 @@ public class BaseReportFieldService {
         return baseReportFieldDao.getEnableList(fieldName);
     }
 
-    public List<BaseReportField> getListObject(String fieldName, String name){
+    public List<BaseReportField> getListObject(String fieldName, String name) {
         return baseReportFieldDao.getListObject(fieldName, name);
     }
 

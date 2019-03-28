@@ -1,7 +1,10 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.alibaba.fastjson.JSON;
-import com.aspose.words.*;
+import com.aspose.words.Document;
+import com.aspose.words.DocumentBuilder;
+import com.aspose.words.SaveFormat;
+import com.aspose.words.Table;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.ad.api.dto.AdPersonalQualificationDto;
 import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
@@ -10,18 +13,17 @@ import com.copower.pmcc.assess.common.CnNumberUtils;
 import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
-import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.dto.output.data.DataQualificationVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeReimbursementItemVo;
+import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -58,7 +60,6 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -112,6 +113,7 @@ public class GenerateBaseDataService {
     private GenerateLandEntityService generateLandEntityService;
     private SurveyCommonService surveyCommonService;
     private GenerateHouseEntityService generateHouseEntityService;
+    private ErpAreaService erpAreaService;
 
     /**
      * 构造器必须传入的参数
@@ -398,20 +400,19 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 功能描述: 出具报告城市
+     * 功能描述: 出具报告区域名称
      *
      * @param:
      * @return:
      * @auther: zch
      * @date: 2019/2/27 15:17
      */
-    public String getReportCity() throws Exception {
-        String reportCity = getSchemeAreaGroup().getAreaName();
-        if (StringUtils.isNotBlank(reportCity)) {
-            return reportCity;
-        } else {
-            return errorStr;
+    public String getReportAreaName() throws Exception {
+        SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
+        if (StringUtils.isNotBlank(schemeAreaGroup.getDistrict())) {
+           return erpAreaService.getSysAreaName(schemeAreaGroup.getDistrict());
         }
+        return erpAreaService.getSysAreaName(schemeAreaGroup.getCity());
     }
 
     /**
@@ -4308,7 +4309,7 @@ public class GenerateBaseDataService {
         this.generateLandEntityService = SpringContextUtils.getBean(GenerateLandEntityService.class);
         this.surveyCommonService = SpringContextUtils.getBean(SurveyCommonService.class);
         this.generateHouseEntityService = SpringContextUtils.getBean(GenerateHouseEntityService.class);
-
+        this.erpAreaService = SpringContextUtils.getBean(ErpAreaService.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
         if (areaGroup == null) {

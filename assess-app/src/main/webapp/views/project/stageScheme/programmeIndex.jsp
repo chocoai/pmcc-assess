@@ -710,8 +710,8 @@
                class="btn btn-xs btn-warning judge-merge-cancel tooltips">取消合并</a>
             <a href="javascript://" title="评估方法" onclick="programmeMethod.setMethod(this);"
                class="btn btn-xs btn-success judge-method tooltips">方法</a>
-            <a href="javascript://" title="其它信息" onclick="programme.editOtherInfo(this);"
-               class="btn btn-xs btn-success judge-other tooltips">其它信息</a>
+            <%--<a href="javascript://" title="其它信息" onclick="programme.editOtherInfo(this);"--%>
+               <%--class="btn btn-xs btn-success judge-other tooltips">其它信息</a>--%>
         </td>
     </tr>
 </script>

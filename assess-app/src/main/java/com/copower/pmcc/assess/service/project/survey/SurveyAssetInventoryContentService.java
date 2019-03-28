@@ -109,25 +109,27 @@ public class SurveyAssetInventoryContentService {
                 surveyAssetInventoryContent.setProjectId(projectId);
                 surveyAssetInventoryContent.setPlanDetailsId(projectPlanDetails.getId());
                 surveyAssetInventoryContent.setInventoryContent(baseDataDic.getId());
-                switch (baseDataDic.getFieldName()) {
-                    case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS://登记地址与实际地址
-                    case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS://房产证与土地证证载地址
-                        surveyAssetInventoryContent.setRegistration(declareRecord.getSeat());
-                        break;
-                    case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_USE://登记用途与实际用途
-                        if (StringUtils.isNotBlank(declareRecord.getCertUse())) {
-                            surveyAssetInventoryContent.setRegistration(declareRecord.getCertUse());
-                        }
-                        break;
-                    case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_STRUCTURE://登记结构与实际结构
-                        if (StringUtils.isNotBlank(declareRecord.getHousingStructure())) {
-                            surveyAssetInventoryContent.setRegistration(declareRecord.getHousingStructure());
-                        }
-                        break;
-                    case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_AREA://登记面积与实际面积
-                        if (declareRecord.getFloorArea() != null)
-                            surveyAssetInventoryContent.setRegistration(String.valueOf(declareRecord.getFloorArea()));
-                        break;
+                if(StringUtils.isNotBlank(baseDataDic.getFieldName())){
+                    switch (baseDataDic.getFieldName()) {
+                        case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS://登记地址与实际地址
+                        case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS://房产证与土地证证载地址
+                            surveyAssetInventoryContent.setRegistration(declareRecord.getSeat());
+                            break;
+                        case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_USE://登记用途与实际用途
+                            if (StringUtils.isNotBlank(declareRecord.getCertUse())) {
+                                surveyAssetInventoryContent.setRegistration(declareRecord.getCertUse());
+                            }
+                            break;
+                        case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_STRUCTURE://登记结构与实际结构
+                            if (StringUtils.isNotBlank(declareRecord.getHousingStructure())) {
+                                surveyAssetInventoryContent.setRegistration(declareRecord.getHousingStructure());
+                            }
+                            break;
+                        case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_AREA://登记面积与实际面积
+                            if (declareRecord.getFloorArea() != null)
+                                surveyAssetInventoryContent.setRegistration(String.valueOf(declareRecord.getFloorArea()));
+                            break;
+                    }
                 }
                 surveyAssetInventoryContentDao.save(surveyAssetInventoryContent);
             }

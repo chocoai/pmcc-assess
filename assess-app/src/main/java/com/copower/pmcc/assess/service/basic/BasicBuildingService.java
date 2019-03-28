@@ -12,7 +12,7 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.cases.*;
+import com.copower.pmcc.assess.service.cases.CaseBuildingService;
 import com.copower.pmcc.assess.service.data.DataBuilderService;
 import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
 import com.copower.pmcc.assess.service.data.DataPropertyService;
@@ -26,7 +26,6 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -36,7 +35,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.NumberUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -116,26 +114,6 @@ public class BasicBuildingService {
      * @throws Exception
      */
     public Integer saveAndUpdateBasicBuilding(BasicBuilding basicBuilding) throws Exception {
-        if (basicBuilding != null) {
-            if (StringUtils.isNotBlank(basicBuilding.getProperty())) {
-                List<DataProperty> dataPropertyList = dataPropertyService.dataPropertyList(new DataProperty());
-                if (org.apache.commons.collections.CollectionUtils.isNotEmpty(dataPropertyList)) {
-                    DataProperty dataProperty = dataPropertyList.stream().filter(dataProperty1 -> Objects.equal(dataProperty1.getName(), basicBuilding.getProperty())).findFirst().get();
-                    if (dataProperty != null) {
-                        basicBuilding.setProperty(dataProperty.getId().toString());
-                    }
-                }
-            }
-            if (StringUtils.isNotBlank(basicBuilding.getBuilder())) {
-                List<DataBuilder> dataBuilderList = dataBuilderService.dataBuilderList(new DataBuilder());
-                if (org.apache.commons.collections.CollectionUtils.isNotEmpty(dataBuilderList)) {
-                    DataBuilder dataBuilder = dataBuilderList.stream().filter(dataBuilder1 -> Objects.equal(basicBuilding.getBuilder(),dataBuilder1.getName())).findFirst().get();
-                    if (dataBuilder != null) {
-                        basicBuilding.setBuilder(dataBuilder.getId().toString());
-                    }
-                }
-            }
-        }
         if (basicBuilding.getId() == null || basicBuilding.getId().intValue() == 0) {
             basicBuilding.setCreator(commonService.thisUserAccount());
             Integer id = basicBuildingDao.addBasicBuilding(basicBuilding);

@@ -167,6 +167,7 @@ AssessDicKey.examineUnitHuxingTypeStay = "unit.huxing.type.stay";//户型类别-
 AssessDicKey.examineUnitHuxingTypeOffice = "unit.huxing.type.office";//户型类别-行政办公用房
 
 //房屋
+AssessDicKey.examineHouseSpatialDistribution = "examine.house.spatial.distribution";//空间布局
 AssessDicKey.examineHouseFinancingConditions = "examine.house.financing.conditions";//融资条件
 AssessDicKey.examineHouseScopeProperty = "examine.house.scope.property";//财产范围
 AssessDicKey.examineHouseLoadUtility = "examine.house.load.utility";//证载用途
@@ -187,6 +188,7 @@ AssessDicKey.examineHouseInformationSourceType = "examine.house.information.sour
 AssessDicKey.examineHouseInformationSourceTypeOpen = "examine.house.information.source.type.open";//信息来源类型-公开信息
 AssessDicKey.examineHouseInformationSourceCategory = "examine.house.information.source.category";//信息来源类别
 AssessDicKey.examineHouseResearchType = "examine.house.research.type";//调查方式
+
 
 AssessDicKey.examine_house_room_part = "examine.house.room.part";//房间装修部位
 AssessDicKey.examine_house_room_material = "examine.house.room.material";//房间装修材料
