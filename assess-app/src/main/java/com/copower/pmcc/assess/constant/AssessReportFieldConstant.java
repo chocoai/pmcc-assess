@@ -53,6 +53,14 @@ public class AssessReportFieldConstant {
     public static final String REASONABLE_PRICE = "reasonable.price";//合理价格
     public static final String COMMUNAL_FACILITIES = "communal.facilities";//公共设施
 
+    public static final String HYPOTHESIS_USE_RESTRICTION = "hypothesis.use.restriction";//评估报告的使用限制
+    public static final String HYPOTHESIS_USE_RESTRICTION_PURPOSE = "hypothesis.use.restriction.purpose";//估价报告用途
+    public static final String HYPOTHESIS_USE_RESTRICTION_PLEDGE = "hypothesis.use.restriction.pledge";//评估基准日与报告有效期
+    public static final String HYPOTHESIS_USE_RESTRICTION_NOT_PLEDGE = "hypothesis.use.restriction.not.pledge";//报告有效期
+    public static final String HYPOTHESIS_USE_RESTRICTION_CONTENT = "hypothesis.use.restriction.content";//成交价格与报告内容
+    public static final String HYPOTHESIS_USE_RESTRICTION_EXPLAIN = "hypothesis.use.restriction.explain";//解释
+    public static final String HYPOTHESIS_USE_RESTRICTION_OTHER = "hypothesis.use.restriction.other";//其它
+
 
     public static final String BASIS_ECONOMIC_BEHAVIOR = "basis.economic.behavior";//经济行为依据
     public static final String ENTRUSTING_PARTY = "entrusting.party";//委估单位

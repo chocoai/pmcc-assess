@@ -28,7 +28,6 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -149,17 +148,6 @@ public class BasicEstateService {
      * @throws Exception
      */
     public Integer saveAndUpdateBasicEstate(BasicEstate basicEstate) throws Exception {
-        if (basicEstate != null){
-            if (StringUtils.isNotBlank(basicEstate.getDeveloper())){
-                List<DataDeveloper> dataDeveloperList = dataDeveloperService.dataDeveloperList(new DataDeveloper());
-                if (org.apache.commons.collections.CollectionUtils.isNotEmpty(dataDeveloperList)){
-                    DataDeveloper dataDeveloper = dataDeveloperList.stream().filter(dataDeveloper1 -> Objects.equal(basicEstate.getDeveloper(),dataDeveloper1.getName())).findFirst().get();
-                    if (dataDeveloper != null){
-                        basicEstate.setDeveloper(dataDeveloper.getId().toString());
-                    }
-                }
-            }
-        }
         if (basicEstate.getId() == null || basicEstate.getId().intValue() == 0) {
             basicEstate.setCreator(commonService.thisUserAccount());
             Integer id = basicEstateDao.addBasicEstate(basicEstate);

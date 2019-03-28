@@ -7,9 +7,9 @@ public class DataProperty {
 
     private String name;
 
-    private String companyNature;
+    private Integer companyNature;
 
-    private String socialPrestige;
+    private Integer socialPrestige;
 
     private String creator;
 
@@ -33,20 +33,20 @@ public class DataProperty {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getCompanyNature() {
+    public Integer getCompanyNature() {
         return companyNature;
     }
 
-    public void setCompanyNature(String companyNature) {
-        this.companyNature = companyNature == null ? null : companyNature.trim();
+    public void setCompanyNature(Integer companyNature) {
+        this.companyNature = companyNature;
     }
 
-    public String getSocialPrestige() {
+    public Integer getSocialPrestige() {
         return socialPrestige;
     }
 
-    public void setSocialPrestige(String socialPrestige) {
-        this.socialPrestige = socialPrestige == null ? null : socialPrestige.trim();
+    public void setSocialPrestige(Integer socialPrestige) {
+        this.socialPrestige = socialPrestige;
     }
 
     public String getCreator() {

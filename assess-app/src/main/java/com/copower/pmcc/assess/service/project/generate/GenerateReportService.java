@@ -314,7 +314,8 @@ public class GenerateReportService {
                 if (Objects.equal(BaseReportFieldEnum.EVALUATION_HYPOTHESIS.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     if (baseReportField != null) {
-                        generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipleBasisHypothesis(SchemeSupportTypeEnum.HYPOTHESIS, generateReportGeneration.getAreaGroupId()));
+                        String hypothesis = generateBaseDataService.getPrincipleBasisHypothesis(SchemeSupportTypeEnum.HYPOTHESIS, generateReportGeneration.getAreaGroupId());
+                        generateCommonMethod.putValue(false, false, true, preMap, bookmarkMap, fileMap, name, hypothesis);
                     }
                 }
                 //评估依据
@@ -545,9 +546,9 @@ public class GenerateReportService {
                     }
                 }
                 //出具报告城市
-                if (Objects.equal(BaseReportFieldEnum.ReportCity.getName(), name)) {
+                if (Objects.equal(BaseReportFieldEnum.ReportArea.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportCity());
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportAreaName());
                     if (baseReportField != null) {
                     }
                 }
@@ -587,7 +588,7 @@ public class GenerateReportService {
                     }
                 }
                 //证载用途
-                if (Objects.equal(BaseReportFieldEnum.CertificationPurpose.getName(), name) ) {
+                if (Objects.equal(BaseReportFieldEnum.CertificationPurpose.getName(), name)) {
                     BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByName(name);
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSeparationCertificateUses());
                     if (baseReportField != null) {

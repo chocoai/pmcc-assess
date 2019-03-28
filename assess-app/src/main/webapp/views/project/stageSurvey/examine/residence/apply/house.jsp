@@ -95,7 +95,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">空间布局</label>
                 <div class="col-sm-3">
-                    <select class="form-control orientation" name="spatialDistribution" >
+                    <select class="form-control spatialDistribution" name="spatialDistribution" >
                     </select>
                 </div>
             </div>

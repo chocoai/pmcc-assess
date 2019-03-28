@@ -65,12 +65,21 @@
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
-
+<%@include file="/views/data/dataPropertyServiceItem.jsp" %>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
     $(function () {
         dataProperty.prototype.loadDataDicList();
     });
+
+    function showItemable() {
+        var id = $("#id").val();
+        if(!id){
+            id = 0;
+        }
+        dataPropertyServiceItem.prototype.showStartModel(id);
+    }
+
     var dataProperty = function () {
 
     };
@@ -85,8 +94,8 @@
         loadDataDicList:function () {
             var cols = [];
             cols.push({field: 'name', title: '名称'});
-            cols.push({field: 'companyNature', title: '公司性质'});
-            cols.push({field: 'socialPrestige', title: '社会信誉'});
+            cols.push({field: 'companyNatureName', title: '公司性质'});
+            cols.push({field: 'socialPrestigeName', title: '社会信誉'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -213,8 +222,12 @@
                                             公司性质
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="companyNature"
-                                                   placeholder="公司性质">
+                                            <select name="companyNature" class="form-control search-select select2">
+                                                <option value="">-请选择-</option>
+                                                <c:forEach items="${unitPropertiesList}" var="item">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -224,11 +237,19 @@
                                             社会信誉
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea class="form-control" name="socialPrestige" placeholder="社会信誉">
-
-                                            </textarea>
+                                            <select name="socialPrestige" class="form-control search-select select2">
+                                                <option value="">-请选择-</option>
+                                                <c:forEach items="${reputations}" var="item">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-success"
+                                            onclick="showItemable()" data-toggle="modal"> 设置服务内容
+                                    </button>
                                 </div>
                             </div>
                         </div>

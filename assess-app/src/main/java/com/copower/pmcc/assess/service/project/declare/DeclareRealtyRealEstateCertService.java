@@ -246,8 +246,8 @@ public class DeclareRealtyRealEstateCertService {
         if (NumberUtils.isNumber(declareRealtyRealEstateCert.getUseRightType())) {
             vo.setUseRightTypeName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyRealEstateCert.getUseRightType())));
         }
-        if (NumberUtils.isNumber(declareRealtyRealEstateCert.getNature())) {
-            vo.setNatureName(baseDataDicService.getNameById(Integer.parseInt(declareRealtyRealEstateCert.getNature())));
+        if (declareRealtyRealEstateCert.getNature() != null) {
+            vo.setNatureName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getNature()));
         }
         return vo;
     }
