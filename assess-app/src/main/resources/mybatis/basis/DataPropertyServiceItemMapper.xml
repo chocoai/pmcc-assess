@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataPropertyMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataProperty" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataPropertyServiceItemMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataPropertyServiceItem" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="company_nature" property="companyNature" jdbcType="INTEGER" />
-    <result column="social_prestige" property="socialPrestige" jdbcType="INTEGER" />
+    <result column="master_id" property="masterId" jdbcType="INTEGER" />
+    <result column="service_type" property="serviceType" jdbcType="INTEGER" />
+    <result column="service_content" property="serviceContent" jdbcType="INTEGER" />
+    <result column="service_time" property="serviceTime" jdbcType="TIMESTAMP" />
+    <result column="grade_evaluation" property="gradeEvaluation" jdbcType="INTEGER" />
+    <result column="charges_notes" property="chargesNotes" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -69,15 +72,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, company_nature, social_prestige, creator, gmt_created, gmt_modified
+    id, master_id, service_type, service_content, service_time, grade_evaluation, charges_notes, 
+    creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataPropertyExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataPropertyServiceItemExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_data_property
+    from tb_data_property_service_item
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -88,44 +92,55 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_data_property
+    from tb_data_property_service_item
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_data_property
+    delete from tb_data_property_service_item
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataPropertyExample" >
-    delete from tb_data_property
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataPropertyServiceItemExample" >
+    delete from tb_data_property_service_item
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataProperty" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataPropertyServiceItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_property (name, company_nature, social_prestige, 
+    insert into tb_data_property_service_item (master_id, service_type, service_content, 
+      service_time, grade_evaluation, charges_notes, 
       creator, gmt_created, gmt_modified
       )
-    values (#{name,jdbcType=VARCHAR}, #{companyNature,jdbcType=INTEGER}, #{socialPrestige,jdbcType=INTEGER}, 
+    values (#{masterId,jdbcType=INTEGER}, #{serviceType,jdbcType=INTEGER}, #{serviceContent,jdbcType=INTEGER}, 
+      #{serviceTime,jdbcType=TIMESTAMP}, #{gradeEvaluation,jdbcType=INTEGER}, #{chargesNotes,jdbcType=VARCHAR}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataProperty" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataPropertyServiceItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_property
+    insert into tb_data_property_service_item
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="name != null" >
-        name,
+      <if test="masterId != null" >
+        master_id,
       </if>
-      <if test="companyNature != null" >
-        company_nature,
+      <if test="serviceType != null" >
+        service_type,
       </if>
-      <if test="socialPrestige != null" >
-        social_prestige,
+      <if test="serviceContent != null" >
+        service_content,
+      </if>
+      <if test="serviceTime != null" >
+        service_time,
+      </if>
+      <if test="gradeEvaluation != null" >
+        grade_evaluation,
+      </if>
+      <if test="chargesNotes != null" >
+        charges_notes,
       </if>
       <if test="creator != null" >
         creator,
@@ -138,14 +153,23 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
+      <if test="masterId != null" >
+        #{masterId,jdbcType=INTEGER},
       </if>
-      <if test="companyNature != null" >
-        #{companyNature,jdbcType=INTEGER},
+      <if test="serviceType != null" >
+        #{serviceType,jdbcType=INTEGER},
       </if>
-      <if test="socialPrestige != null" >
-        #{socialPrestige,jdbcType=INTEGER},
+      <if test="serviceContent != null" >
+        #{serviceContent,jdbcType=INTEGER},
+      </if>
+      <if test="serviceTime != null" >
+        #{serviceTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gradeEvaluation != null" >
+        #{gradeEvaluation,jdbcType=INTEGER},
+      </if>
+      <if test="chargesNotes != null" >
+        #{chargesNotes,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -158,26 +182,35 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataPropertyExample" resultType="java.lang.Integer" >
-    select count(*) from tb_data_property
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataPropertyServiceItemExample" resultType="java.lang.Integer" >
+    select count(*) from tb_data_property_service_item
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_data_property
+    update tb_data_property_service_item
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
+      <if test="record.masterId != null" >
+        master_id = #{record.masterId,jdbcType=INTEGER},
       </if>
-      <if test="record.companyNature != null" >
-        company_nature = #{record.companyNature,jdbcType=INTEGER},
+      <if test="record.serviceType != null" >
+        service_type = #{record.serviceType,jdbcType=INTEGER},
       </if>
-      <if test="record.socialPrestige != null" >
-        social_prestige = #{record.socialPrestige,jdbcType=INTEGER},
+      <if test="record.serviceContent != null" >
+        service_content = #{record.serviceContent,jdbcType=INTEGER},
+      </if>
+      <if test="record.serviceTime != null" >
+        service_time = #{record.serviceTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gradeEvaluation != null" >
+        grade_evaluation = #{record.gradeEvaluation,jdbcType=INTEGER},
+      </if>
+      <if test="record.chargesNotes != null" >
+        charges_notes = #{record.chargesNotes,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -194,11 +227,14 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_data_property
+    update tb_data_property_service_item
     set id = #{record.id,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
-      company_nature = #{record.companyNature,jdbcType=INTEGER},
-      social_prestige = #{record.socialPrestige,jdbcType=INTEGER},
+      master_id = #{record.masterId,jdbcType=INTEGER},
+      service_type = #{record.serviceType,jdbcType=INTEGER},
+      service_content = #{record.serviceContent,jdbcType=INTEGER},
+      service_time = #{record.serviceTime,jdbcType=TIMESTAMP},
+      grade_evaluation = #{record.gradeEvaluation,jdbcType=INTEGER},
+      charges_notes = #{record.chargesNotes,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -206,17 +242,26 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataProperty" >
-    update tb_data_property
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataPropertyServiceItem" >
+    update tb_data_property_service_item
     <set >
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
+      <if test="masterId != null" >
+        master_id = #{masterId,jdbcType=INTEGER},
       </if>
-      <if test="companyNature != null" >
-        company_nature = #{companyNature,jdbcType=INTEGER},
+      <if test="serviceType != null" >
+        service_type = #{serviceType,jdbcType=INTEGER},
       </if>
-      <if test="socialPrestige != null" >
-        social_prestige = #{socialPrestige,jdbcType=INTEGER},
+      <if test="serviceContent != null" >
+        service_content = #{serviceContent,jdbcType=INTEGER},
+      </if>
+      <if test="serviceTime != null" >
+        service_time = #{serviceTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gradeEvaluation != null" >
+        grade_evaluation = #{gradeEvaluation,jdbcType=INTEGER},
+      </if>
+      <if test="chargesNotes != null" >
+        charges_notes = #{chargesNotes,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -230,11 +275,14 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataProperty" >
-    update tb_data_property
-    set name = #{name,jdbcType=VARCHAR},
-      company_nature = #{companyNature,jdbcType=INTEGER},
-      social_prestige = #{socialPrestige,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataPropertyServiceItem" >
+    update tb_data_property_service_item
+    set master_id = #{masterId,jdbcType=INTEGER},
+      service_type = #{serviceType,jdbcType=INTEGER},
+      service_content = #{serviceContent,jdbcType=INTEGER},
+      service_time = #{serviceTime,jdbcType=TIMESTAMP},
+      grade_evaluation = #{gradeEvaluation,jdbcType=INTEGER},
+      charges_notes = #{chargesNotes,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

@@ -1,9 +1,14 @@
 package com.copower.pmcc.assess.controller.data;
 
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataProperty;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataPropertyService;
+import com.copower.pmcc.assess.service.data.DataPropertyServiceItemService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.apache.commons.lang.StringUtils;
@@ -16,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 /**
  * @Auther: zch
  * @Date: 2018/7/18 18:54
@@ -24,19 +31,31 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping(value = "/dataProperty")
 public class DataPropertyController {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private DataPropertyService dataPropertyService;
-    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
+    @Autowired
+    private DataPropertyServiceItemService dataPropertyServiceItemService;
 
     @RequestMapping(value = "/view", name = "转到index页面 ", method = {RequestMethod.GET})
     public ModelAndView index() {
         String view = "/data/dataPropertyView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        List<CrmBaseDataDicDto> unitPropertiesList = projectInfoService.getUnitPropertiesList();
+        modelAndView.addObject("unitPropertiesList", unitPropertiesList);
+        List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_COMPANY_REPUTATION);
+        modelAndView.addObject("reputations", baseDataDic);
+        List<BaseDataDic> serviceContent = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_SERVICE_CONTENT);
+        modelAndView.addObject("serviceContent", serviceContent);
+
+        dataPropertyServiceItemService.initClean();
         return modelAndView;
     }
 
@@ -86,11 +105,7 @@ public class DataPropertyController {
     @RequestMapping(value = "/saveAndUpdateDataProperty", method = {RequestMethod.POST}, name = "更新物业")
     public HttpResult saveAndUpdate(DataProperty dataProperty) {
         try {
-            if (dataProperty.getId() == null || dataProperty.getId().equals(0)) {
-                dataPropertyService.addDataPropertyReturnId(dataProperty);
-            } else {
-                dataPropertyService.updateDataProperty(dataProperty);
-            }
+            dataPropertyService.saveAndUpdate(dataProperty);
             return HttpResult.newCorrectResult("保存 success!");
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
