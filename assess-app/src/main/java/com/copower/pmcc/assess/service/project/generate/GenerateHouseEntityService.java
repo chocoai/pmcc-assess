@@ -56,20 +56,6 @@ public class GenerateHouseEntityService {
 
     //物业这块无需处理
 
-    /**
-     * 获取楼盘名称
-     *
-     * @param basicEstate
-     * @return
-     */
-    public String getEstateName(BasicEstate basicEstate) {
-        try {
-            if (basicEstate == null) return "";
-            return basicEstate.getName();
-        } catch (Exception e) {
-            return "";
-        }
-    }
 
     /**
      * 获取建造年份
@@ -117,7 +103,24 @@ public class GenerateHouseEntityService {
      * @return
      */
     public String getBuildingStructure(List<Integer> judgeObjectIds) {
-        return "";
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+        Map<Integer, String> map = Maps.newHashMap();
+        StringBuilder builder = new StringBuilder(8);
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+            BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
+            if (basicBuilding != null) {
+                if (basicBuilding.getBuildingStructureType() != null) {
+                    builder.append(String.format("%s", baseDataDicService.getNameById(basicBuilding.getBuildingStructureType())));
+                }
+                if (basicBuilding.getBuildingStructureCategory() != null) {
+                    builder.append(String.format("%s", baseDataDicService.getNameById(basicBuilding.getBuildingStructureCategory())));
+                }
+                map.put(schemeJudgeObject.getId(), builder.toString());
+                builder.delete(0, builder.toString().length());
+            }
+        }
+        return generateCommonMethod.judgeEachDesc(map, "", ";");
     }
 
     /**
@@ -290,8 +293,13 @@ public class GenerateHouseEntityService {
      * @return
      */
     public String getEquipmentFacilitie(List<Integer> judgeObjectIds) {//
-
-        return null;
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(judgeObjectIds);
+        StringBuilder stringBuilder = new StringBuilder(8);
+        Map<String, List<Integer>> houseMap = groupByHouse(judgeObjectList);
+        for (Map.Entry<String,List<Integer>> stringEntry:houseMap.entrySet()){
+            stringBuilder.append(stringEntry.getKey()).append("单元");
+        }
+        return generateCommonMethod.trim(stringBuilder.toString());
     }
 
     /**
@@ -311,6 +319,61 @@ public class GenerateHouseEntityService {
                 list.add(schemeJudgeObject.getId());
             } else {
                 map.put(key, Lists.newArrayList(schemeJudgeObject.getId()));
+            }
+        }
+        return map;
+    }
+
+    /**
+     * 估价对象按房屋分组
+     *
+     * @param judgeObjectList
+     * @return
+     */
+    private Map<String, List<Integer>> groupByHouse(List<SchemeJudgeObject> judgeObjectList) {
+        Map<String, List<Integer>> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            BasicHouse oo = generateBaseExamineService.getBasicHouse();
+            if (oo == null) {
+                continue;
+            }
+            String key = oo.getHouseNumber();
+            if (map.containsKey(key)) {
+                List<Integer> list = map.get(key);
+                list.add(schemeJudgeObject.getId());
+            } else {
+                map.put(key, Lists.newArrayList(schemeJudgeObject.getId()));
+            }
+        }
+        return map;
+    }
+
+    /**
+     * 估价对象按单元分组
+     *
+     * @param judgeObjectList
+     * @return
+     */
+    private Map<String, List<Integer>> groupByUnit(List<SchemeJudgeObject> judgeObjectList) {
+        Map<String, List<Integer>> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            try {
+                BasicUnit oo = generateBaseExamineService.getBasicUnit();
+                if (oo == null) {
+                    continue;
+                }
+                String key = oo.getUnitNumber();
+                if (map.containsKey(key)) {
+                    List<Integer> list = map.get(key);
+                    list.add(schemeJudgeObject.getId());
+                } else {
+                    map.put(key, Lists.newArrayList(schemeJudgeObject.getId()));
+                }
+            } catch (Exception e) {
             }
         }
         return map;
@@ -352,11 +415,11 @@ public class GenerateHouseEntityService {
             for (BasicHouseRoom room : roomList) {
                 stringBuilder.append(baseDataDicService.getNameById(room.getRoomType()));
                 Map<String, String> stringMap = Maps.newHashMap();
-                stringMap.put("通风",room.getAeration());
-                stringMap.put("日照",room.getSunshine());
-                stringMap.put("采光",room.getLighting());
-                stringMap.put("隔音",room.getSoundInsulation());
-                stringBuilder.append(generateCommonMethod.stringSummaryDesc(stringMap,"","，"));
+                stringMap.put("通风", room.getAeration());
+                stringMap.put("日照", room.getSunshine());
+                stringMap.put("采光", room.getLighting());
+                stringMap.put("隔音", room.getSoundInsulation());
+                stringBuilder.append(generateCommonMethod.stringSummaryDesc(stringMap, "", "，"));
             }
         }
         return generateCommonMethod.trim(stringBuilder.toString());

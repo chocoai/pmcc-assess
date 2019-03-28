@@ -5,6 +5,8 @@ import java.util.Date;
 public class BasicEstateParking {
     private Integer id;
 
+    private String name;
+
     private Integer estateId;
 
     private Integer number;
@@ -27,6 +29,14 @@ public class BasicEstateParking {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public Integer getEstateId() {

@@ -44,7 +44,7 @@
         <!-- 具体表 -->
 
 
-        <table tableName="tb_basic_matching_finance" domainObjectName="BasicMatchingFinance">
+        <table tableName="tb_basic_estate_parking" domainObjectName="BasicEstateParking">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

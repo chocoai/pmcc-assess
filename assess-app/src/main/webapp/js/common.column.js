@@ -14,9 +14,10 @@ commonColumn.estateNetworkColumn = function () {
 //楼盘-车位信息
 commonColumn.estateParkingColumn = function () {
     var cols = [];
+    cols.push({field: 'name', title: '停车场名称'});
     cols.push({field: 'locationName', title: '车位位置'});
-    // cols.push({field: 'parkingTypeName', title: '车位类型'});
-    cols.push({field: 'parkingEstateName', title: '楼盘车位'});
+    cols.push({field: 'parkingTypeName', title: '车位类型'});
+    cols.push({field: 'parkingEstateName', title: '停车场类别'});
     cols.push({field: 'number', title: '车位数量'});
     cols.push({field: 'fileViewName', title: '附件'});
     return cols;

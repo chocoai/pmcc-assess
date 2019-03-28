@@ -9,7 +9,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>车位</h4>
+        <h4>停车场</h4>
         <div class="clearfix"></div>
     </div>
     <div class="x_content collapse">
@@ -29,7 +29,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">车位</h3>
+                <h3 class="modal-title">停车场</h3>
             </div>
             <form id="frmEstateParking" class="form-horizontal">
                 <input type="hidden" name="id">
@@ -37,6 +37,29 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            停车场名称
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="name"
+                                                   placeholder="停车场名称">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            停车场类别<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control search-select select2 parkingEstate"
+                                                    name="parkingEstate" required>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
@@ -49,26 +72,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<div class="x-valid">--%>
-                                        <%--<label class="col-sm-2 control-label">--%>
-                                            <%--车位类型<span class="symbol required"></span>--%>
-                                        <%--</label>--%>
-                                        <%--<div class="col-sm-10">--%>
-                                            <%--<select class="form-control search-select select2 parkingType"--%>
-                                                    <%--name="parkingType" required>--%>
-                                            <%--</select>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            楼盘车位<span class="symbol required"></span>
+                                            车位类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select class="form-control search-select select2 parkingEstate"
-                                                    name="parkingEstate" required>
+                                            <select class="form-control search-select select2 parkingType"
+                                                    name="parkingType" required>
                                             </select>
                                         </div>
                                     </div>

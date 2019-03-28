@@ -14,6 +14,7 @@ import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
@@ -33,6 +34,8 @@ import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -57,6 +60,8 @@ public class GenerateCommonMethod {
     private DataSetUseFieldService dataSetUseFieldService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private SurveyCommonService surveyCommonService;
 
     public final String SchemeJudgeObjectName = "委估对象";
     public final String errorStr = "无";
@@ -271,7 +276,7 @@ public class GenerateCommonMethod {
     }
 
     /**
-     * 拼接
+     * 获取 (楼盘名称和街道号) 的估价对象集合
      *
      * @param schemeJudgeObjectList
      * @param projectInfo
@@ -343,6 +348,37 @@ public class GenerateCommonMethod {
                     continue;
                 }
             }
+        }
+        return listLinkedHashMap;
+    }
+
+    /**
+     * 相同楼盘名称的估价对象集合
+     *
+     * @return
+     * @throws Exception
+     */
+    public LinkedHashMap<String, List<SchemeJudgeObject>> getLinkedHashMapEstateNameSchemeJudgeObjectList(Integer areaId) throws Exception {
+        LinkedHashMap<String, List<SchemeJudgeObject>> listLinkedHashMap = Maps.newLinkedHashMap();
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaId);
+        schemeJudgeObjectList = this.getByRootAndChildSchemeJudgeObjectList(schemeJudgeObjectList, true);
+        schemeJudgeObjectList = this.removeDuplicate(schemeJudgeObjectList);
+        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+            if (basicApply == null || basicApply.getId() == null) {
+                continue;
+            }
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            BasicEstate basicEstate = generateBaseExamineService.getEstate();
+            if (basicEstate == null || StringUtils.isEmpty(basicEstate.getName())) {
+                continue;
+            }
+            List<SchemeJudgeObject> schemeJudgeObjects = listLinkedHashMap.get(basicEstate.getName());
+            if (CollectionUtils.isEmpty(schemeJudgeObjects)) {
+                schemeJudgeObjects = Lists.newArrayList();
+            }
+            schemeJudgeObjects.add(schemeJudgeObject);
+            listLinkedHashMap.put(basicEstate.getName(), schemeJudgeObjects);
         }
         return listLinkedHashMap;
     }
@@ -876,5 +912,24 @@ public class GenerateCommonMethod {
                 .replaceAll("。+", "。").replaceAll("；+", "；")
                 .replaceAll("[,|，|、|;|；|.|。]+$", "。");
         return str;
+    }
+
+    /**
+     * 提取数字
+     * @param text
+     * @return
+     */
+    public  String getNumber(String text){
+        if (StringUtils.isEmpty(text)){
+            return "0" ;
+        }
+        if (NumberUtils.isNumber(text)){
+            return text;
+        }
+        String regEx="[^0-9]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(text);
+        String s =  m.replaceAll("").trim();
+        return StringUtils.isNotBlank(s)?s:"0";
     }
 }

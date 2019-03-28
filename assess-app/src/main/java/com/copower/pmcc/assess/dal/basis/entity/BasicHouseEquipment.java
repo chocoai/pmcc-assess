@@ -9,6 +9,8 @@ public class BasicHouseEquipment {
 
     private String type;
 
+    private Integer grade;
+
     private Integer category;
 
     private String equipment;
@@ -45,6 +47,14 @@ public class BasicHouseEquipment {
 
     public void setType(String type) {
         this.type = type == null ? null : type.trim();
+    }
+
+    public Integer getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Integer grade) {
+        this.grade = grade;
     }
 
     public Integer getCategory() {
