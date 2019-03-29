@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DataValueDefinitionExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataValueDefinitionMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +22,18 @@ import java.util.List;
 public class DataValueDefinitionDao {
     @Autowired
     private DataValueDefinitionMapper dataValueDefinitionMapper;
+
+    public List<DataValueDefinition> getValueDefinition(String entrustPurpose, String valueType) {
+        DataValueDefinitionExample example = new DataValueDefinitionExample();
+        DataValueDefinitionExample.Criteria criteria = example.createCriteria();
+        if(StringUtils.isNotBlank(entrustPurpose)){
+            criteria.andEntrustmentPurposeLike(String.format("%%%s%%",entrustPurpose));
+        }
+        if(StringUtils.isNotBlank(valueType)){
+            criteria.andValueTypeLike(String.format("%%%s%%",valueType));
+        }
+        return dataValueDefinitionMapper.selectByExample(example);
+    }
 
     public List<DataValueDefinition> getListObject(DataValueDefinition dataValueDefinition) {
         DataValueDefinitionExample example = new DataValueDefinitionExample();
