@@ -37,14 +37,18 @@
                         <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">委托单位</label>
+                                <label class="col-sm-1 control-label">
+                                    委托单位<span class="symbol required"></span>
+                                </label>
                                 <div class="col-sm-3">
                                     <input name="client" class="form-control" placeholder="委托单位"
                                            required value='${declare.client}' />
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">完成时限</label>
+                                <label class="col-sm-1 control-label">
+                                    完成时限<span class="symbol required"></span>
+                                </label>
                                 <div class="col-sm-3">
                                     <input required="required" placeholder="完成时限" id="dateLimit"
                                            name="dateLimit" data-date-format="yyyy-mm-dd" required
