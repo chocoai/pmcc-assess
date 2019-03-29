@@ -11,6 +11,8 @@ public class BasicHouseWaterDrain {
 
     private Integer type;
 
+    private Integer organization;
+
     private Integer processingMode;
 
     private String evaluate;
@@ -51,6 +53,14 @@ public class BasicHouseWaterDrain {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Integer getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Integer organization) {
+        this.organization = organization;
     }
 
     public Integer getProcessingMode() {

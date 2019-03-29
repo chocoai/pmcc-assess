@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.dto.output.basic;
 
 import com.copower.pmcc.assess.dal.basis.entity.BasicBuilding;
+import com.copower.pmcc.assess.dal.basis.entity.DataBuilder;
+import com.copower.pmcc.assess.dal.basis.entity.DataProperty;
 
 
 /**
@@ -22,6 +24,8 @@ public class BasicBuildingVo extends BasicBuilding {
     private String residenceUseYearName;
 
     private String industryUseYearName;
+    private DataBuilder dataBuilder;
+    private DataProperty dataProperty;
 
     public String getCompletedTimeTypeName() {
         return completedTimeTypeName;
@@ -109,5 +113,21 @@ public class BasicBuildingVo extends BasicBuilding {
 
     public void setPropertyName(String propertyName) {
         this.propertyName = propertyName;
+    }
+
+    public DataBuilder getDataBuilder() {
+        return dataBuilder;
+    }
+
+    public void setDataBuilder(DataBuilder dataBuilder) {
+        this.dataBuilder = dataBuilder;
+    }
+
+    public DataProperty getDataProperty() {
+        return dataProperty;
+    }
+
+    public void setDataProperty(DataProperty dataProperty) {
+        this.dataProperty = dataProperty;
     }
 }

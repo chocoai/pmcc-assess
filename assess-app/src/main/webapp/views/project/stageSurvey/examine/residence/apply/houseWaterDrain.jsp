@@ -64,6 +64,18 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            体系<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required name="organization"
+                                                    class="form-control search-select select2 organization">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             排水处理方式<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
