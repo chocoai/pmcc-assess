@@ -40,12 +40,11 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            给水方式<span class="symbol required"></span>
+                                            消防给水<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select name="supplyMode"
-                                                    class="form-control search-select select2 supplyMode">
-
+                                            <select required="required" name="fireWaterSupply"
+                                                    class="form-control search-select select2 fireWaterSupply">
                                             </select>
                                         </div>
                                     </div>
@@ -126,11 +125,12 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            消防给水<span class="symbol required"></span>
+                                            给水方式<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="fireWaterSupply"
-                                                    class="form-control search-select select2 fireWaterSupply">
+                                            <select name="supplyMode"
+                                                    class="form-control search-select select2 supplyMode">
+
                                             </select>
                                         </div>
                                     </div>

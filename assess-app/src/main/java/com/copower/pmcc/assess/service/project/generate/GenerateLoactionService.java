@@ -9,12 +9,9 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
-import com.copower.pmcc.assess.service.basic.BasicBuildingService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
-import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
-import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
@@ -26,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,7 +90,7 @@ public class GenerateLoactionService {
         List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = generateBaseExamineService.getBasicHouseFaceStreetList();
         if (CollectionUtils.isNotEmpty(basicHouseFaceStreetVoList)) {
             basicHouseFaceStreetVoList.stream().forEach(basicHouseFaceStreetVo -> {
-                if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getPositionName())){
+                if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getPositionName())) {
                     stringBuffer
                             .append(String.format("%s", StringUtils.isNotBlank(basicHouseFaceStreetVo.getPositionName()) ? basicHouseFaceStreetVo.getPositionName() : error))
                             .append(basicHouseFaceStreetVo.getStreetName()).append("\r");
@@ -134,40 +132,59 @@ public class GenerateLoactionService {
                 .collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(matchingMarketList)) {
             stringBuffer.append(basicEstate.getName());
-            matchingMarketList.stream().forEach(leisurePlace -> {
+            for (int i = 0; i < matchingMarketList.size(); i++) {
+                BasicMatchingLeisurePlace leisurePlace = matchingMarketList.get(i);
                 stringBuffer.append("购物商场距离")
                         .append(String.format("大约%s米", generateCommonMethod.getNumber(baseDataDicService.getNameById(leisurePlace.getDistance()))))
                         .append("有")
                         .append(baseDataDicService.getNameById(leisurePlace.getCategory()))
                         .append(leisurePlace.getName());
-            });
-            stringBuffer.append(";\r");
+                if (i == matchingMarketList.size() - 1) {
+                    stringBuffer.append(";");
+                } else {
+                    stringBuffer.append(",");
+                }
+            }
+            stringBuffer.append("\r");
         }
         if (CollectionUtils.isNotEmpty(matchingRestaurantList)) {
             stringBuffer.append(basicEstate.getName());
-            matchingRestaurantList.stream().forEach(leisurePlace -> {
+            for (int i = 0; i < matchingRestaurantList.size(); i++) {
+                BasicMatchingLeisurePlace leisurePlace = matchingRestaurantList.get(i);
                 stringBuffer.append("餐饮距离")
                         .append(String.format("大约%s米", generateCommonMethod.getNumber(baseDataDicService.getNameById(leisurePlace.getDistance()))))
                         .append("有")
                         .append(baseDataDicService.getNameById(leisurePlace.getCategory()))
                         .append(leisurePlace.getName());
-            });
-            stringBuffer.append(";\r");
+                if (i == matchingRestaurantList.size() - 1) {
+                    stringBuffer.append(";");
+                } else {
+                    stringBuffer.append(",");
+                }
+            }
+            stringBuffer.append("\r");
         }
         if (CollectionUtils.isNotEmpty(matchingRecreationList)) {
             stringBuffer.append(basicEstate.getName());
-            matchingRecreationList.stream().forEach(leisurePlace -> {
+            for (int i = 0; i < matchingRecreationList.size(); i++) {
+                BasicMatchingLeisurePlace leisurePlace = matchingRecreationList.get(i);
                 stringBuffer.append("休闲娱乐距离")
                         .append(String.format("大约%s米", generateCommonMethod.getNumber(baseDataDicService.getNameById(leisurePlace.getDistance()))))
                         .append("有")
                         .append(baseDataDicService.getNameById(leisurePlace.getCategory()))
                         .append(leisurePlace.getName());
-            });
-            stringBuffer.append(";\r");
+                if (i == matchingRecreationList.size() - 1) {
+                    stringBuffer.append(";");
+                } else {
+                    stringBuffer.append(",");
+                }
+            }
+            stringBuffer.append("\r");
         }
         if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
             stringBuffer.append(basicEstate.getName());
-            basicMatchingFinanceVoList.stream().forEach(basicMatchingFinanceVo -> {
+            for (int i = 0; i < basicMatchingFinanceVoList.size(); i++) {
+                BasicMatchingFinanceVo basicMatchingFinanceVo = basicMatchingFinanceVoList.get(i);
                 String v = null;
                 if (NumberUtils.isNumber(basicMatchingFinanceVo.getDistance())) {
                     v = baseDataDicService.getNameById(basicMatchingFinanceVo.getDistance());
@@ -182,30 +199,46 @@ public class GenerateLoactionService {
                         .append("有")
                         .append(baseDataDicService.getNameById(basicMatchingFinanceVo.getCategory()))
                         .append(basicMatchingFinanceVo.getName());
-            });
-            stringBuffer.append(";\r");
+                if (i == basicMatchingFinanceVoList.size() - 1) {
+                    stringBuffer.append(";");
+                } else {
+                    stringBuffer.append(",");
+                }
+            }
+            stringBuffer.append("\r");
         }
         if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {
             stringBuffer.append(basicEstate.getName());
-            basicMatchingMedicalList.stream().forEach(basicMatchingMedical -> {
+            for (int i = 0; i < basicMatchingMedicalList.size(); i++) {
+                BasicMatchingMedical basicMatchingMedical = basicMatchingMedicalList.get(i);
                 stringBuffer.append("医疗距离")
                         .append(String.format("大约%s米", generateCommonMethod.getNumber(baseDataDicService.getNameById(basicMatchingMedical.getDistance()))))
                         .append("有")
                         .append(baseDataDicService.getNameById(basicMatchingMedical.getOrganizationLevel()))
                         .append(basicMatchingMedical.getOrganizationName());
-            });
-            stringBuffer.append(";\r");
+                if (i == basicMatchingMedicalList.size() - 1 || basicMatchingMedicalList.size() == 1) {
+                    stringBuffer.append(";");
+                } else {
+                    stringBuffer.append(",");
+                }
+            }
+            stringBuffer.append("\r");
         }
         if (CollectionUtils.isNotEmpty(basicMatchingEducationList)) {
             stringBuffer.append(basicEstate.getName());
-            basicMatchingEducationList.stream().forEach(basicMatchingEducation -> {
+            for (int i = 0; i < basicMatchingEducationList.size(); i++) {
+                BasicMatchingEducation basicMatchingEducation = basicMatchingEducationList.get(i);
                 stringBuffer.append("教育距离")
                         .append(String.format("大约%s米", generateCommonMethod.getNumber(baseDataDicService.getNameById(basicMatchingEducation.getDistance()))))
                         .append("有")
                         .append(baseDataDicService.getNameById(basicMatchingEducation.getSchoolNature()))
                         .append(basicMatchingEducation.getSchoolName());
-            });
-            stringBuffer.append(";\r");
+                if (i == basicMatchingEducationList.size() - 1 || basicMatchingEducationList.size() == 1) {
+                    stringBuffer.append("。");
+                } else {
+                    stringBuffer.append(",");
+                }
+            }
         }
         if (StringUtils.isEmpty(stringBuffer.toString().trim())) {
             stringBuffer.append(error);
@@ -234,29 +267,47 @@ public class GenerateLoactionService {
             //自然环境要素
             if (Objects.equal(scienceEnum.getKey(), EnvironmentalScienceEnum.NATURAL.getKey())) {
                 environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "空气", stringBuffer, basicMatchingEnvironmentVoList);
+                stringBuffer.append("，");
                 environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "水体质量", stringBuffer, basicMatchingEnvironmentVoList);
+                stringBuffer.append("，");
                 environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "美观度", stringBuffer, basicMatchingEnvironmentVoList);
+                stringBuffer.append("，");
                 environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "静密程度", stringBuffer, basicMatchingEnvironmentVoList);
+                stringBuffer.append("，");
                 environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "空间辐射", stringBuffer, basicMatchingEnvironmentVoList);
+                stringBuffer.append("，");
                 environmentalScience(EnvironmentalScienceEnum.NATURAL, a, b, c, d, "废弃物", stringBuffer, basicMatchingEnvironmentVoList);
+                stringBuffer.append("。");
             }
             //人文环境要素
             if (Objects.equal(scienceEnum.getKey(), EnvironmentalScienceEnum.HUMANITY.getKey())) {
                 environmentalScience(EnvironmentalScienceEnum.HUMANITY, a, b, c, d, "相邻利用物业状况", stringBuffer, basicMatchingEnvironmentVoList);
+                stringBuffer.append("，");
                 environmentalScience(EnvironmentalScienceEnum.HUMANITY, a, b, c, d, "居民特征", stringBuffer, basicMatchingEnvironmentVoList);
+                stringBuffer.append("，");
                 environmentalScience(EnvironmentalScienceEnum.HUMANITY, a, b, c, d, "治安状况", stringBuffer, basicMatchingEnvironmentVoList);
+                stringBuffer.append("，");
                 environmentalScience(EnvironmentalScienceEnum.HUMANITY, a, b, c, d, "相邻利用物业状况", stringBuffer, basicMatchingEnvironmentVoList);
+                stringBuffer.append("。");
             }
             //景观要素
             if (Objects.equal(scienceEnum.getKey(), EnvironmentalScienceEnum.SCENERY.getKey())) {
                 environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "海景", stringBuffer, basicMatchingEnvironmentVoList);
+                stringBuffer.append("，");
                 environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "江景", stringBuffer, basicMatchingEnvironmentVoList);
+                stringBuffer.append("，");
                 environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "河景", stringBuffer, basicMatchingEnvironmentVoList);
+                stringBuffer.append("，");
                 environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "湖景", stringBuffer, basicMatchingEnvironmentVoList);
+                stringBuffer.append("，");
                 environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "山景", stringBuffer, basicMatchingEnvironmentVoList);
+                stringBuffer.append("，");
                 environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "公园", stringBuffer, basicMatchingEnvironmentVoList);
+                stringBuffer.append("，");
                 environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "园林", stringBuffer, basicMatchingEnvironmentVoList);
+                stringBuffer.append("，");
                 environmentalScience(EnvironmentalScienceEnum.SCENERY, a, b, c, d, "中庭景观", stringBuffer, basicMatchingEnvironmentVoList);
+                stringBuffer.append("。");
             }
         }
         if (StringUtils.isEmpty(stringBuffer.toString().trim())) {
@@ -281,7 +332,7 @@ public class GenerateLoactionService {
             logger.error(String.format("异常 com.copower.pmcc.assess.service.project.generate.GenerateLoactionService.environmentalScience %s", e.getMessage()), e);
         }
         if (!Objects.equal(EnvironmentalScienceEnum.SCENERY.getKey(), scienceEnum.getKey())) {
-            if (matchingEnvironmentVo != null){
+            if (matchingEnvironmentVo != null) {
                 if (Objects.equal(matchingEnvironmentVo.getInfluenceDegreeName(), a)) {
                     matchingEnvironmentVo.setRemark("优良");
                 }
@@ -296,13 +347,13 @@ public class GenerateLoactionService {
                 }
             }
         }
-        if (matchingEnvironmentVo == null){
+        if (matchingEnvironmentVo == null) {
             matchingEnvironmentVo = new BasicMatchingEnvironmentVo();
             matchingEnvironmentVo.setRemark(String.format("无%s信息", key));
         }
         stringBuffer.append(key).append(matchingEnvironmentVo.getRemark());
-        if (StringUtils.isNotBlank(stringBuffer.toString().trim())){
-            stringBuffer.append("，");
+        if (StringUtils.isNotBlank(stringBuffer.toString().trim())) {
+
         }
     }
 
@@ -374,7 +425,9 @@ public class GenerateLoactionService {
                 if (Objects.equal("未选定", basicHouseFaceStreetVo.getPositionName())) {
                     v = "无基本的配套道路体系";
                 }
-                stringBuffer.append(v);
+                if (StringUtils.isNotBlank(v)) {
+                    stringBuffer.append(v);
+                }
             });
         } else {
             stringBuffer.append("配套道路体系信息暂时无");
@@ -445,15 +498,18 @@ public class GenerateLoactionService {
         List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = generateBaseExamineService.getBasicHouseFaceStreetList();
         stringBuffer.append(basicEstate.getName());
         if (CollectionUtils.isNotEmpty(basicHouseFaceStreetVoList)) {
-            basicHouseFaceStreetVoList.stream().forEach(basicHouseFaceStreetVo -> {
+            for (int i = 0; i < basicHouseFaceStreetVoList.size(); i++) {
+                BasicHouseFaceStreetVo basicHouseFaceStreetVo = basicHouseFaceStreetVoList.get(i);
                 stringBuffer.append(StringUtils.isNotBlank(basicHouseFaceStreetVo.getPositionName()) ? basicHouseFaceStreetVo.getPositionName() : "方位无")
                         .append(StringUtils.isNotBlank(basicHouseFaceStreetVo.getStreetLevelName()) ? basicHouseFaceStreetVo.getStreetLevelName() : "道路等级无");
                 stringBuffer.append(StringUtils.isNotBlank(basicHouseFaceStreetVo.getStreetName()) ? basicHouseFaceStreetVo.getStreetName() : "街道名称无");
                 stringBuffer.append(",")
                         .append(StringUtils.isNotBlank(basicHouseFaceStreetVo.getTrafficFlowName()) ? String.format("交通流量%s", basicHouseFaceStreetVo.getTrafficFlowName()) : "交通流量无").append("、")
                         .append(StringUtils.isNotBlank(basicHouseFaceStreetVo.getVisitorsFlowrateName()) ? String.format("人流量%s", basicHouseFaceStreetVo.getVisitorsFlowrateName()) : "人流量无。");
-                stringBuffer.append("\r");
-            });
+                if (i != basicHouseFaceStreetVoList.size() - 1) {
+                    stringBuffer.append("\r");
+                }
+            }
         } else {
             stringBuffer.append(error);
         }
@@ -488,26 +544,34 @@ public class GenerateLoactionService {
             return false;
         }).collect(Collectors.toList());
         BasicEstate basicEstate = generateBaseExamineService.getEstate();
-        stringBuffer.append(basicEstate.getName());
         if (CollectionUtils.isNotEmpty(transitList)) {
-            stringBuffer.append("距");
-            transitList.stream().forEach(basicMatchingTrafficVo -> {
+            for (int i = 0; i < transitList.size(); i++) {
+                BasicMatchingTrafficVo basicMatchingTrafficVo = transitList.get(i);
+                stringBuffer.append("距");
                 stringBuffer.append(basicMatchingTrafficVo.getName());
                 stringBuffer.append(String.format("大约%s米", generateCommonMethod.getNumber(basicMatchingTrafficVo.getDistanceName())));
-                stringBuffer.append("有").append("所在线路").append(basicMatchingTrafficVo.getTheLine()).append(",");
-            });
+                stringBuffer.append("有").append("线路").append(basicMatchingTrafficVo.getTheLine());
+                if (i == transitList.size() - 1) {
+                    stringBuffer.append("。");
+                } else {
+                    stringBuffer.append(",");
+                }
+            }
             stringBuffer.append("。\r");
         }
         if (CollectionUtils.isNotEmpty(metroList)) {
-
-            stringBuffer.append("距");
-            int i = 0;
-            metroList.stream().forEach(basicMatchingTrafficVo -> {
+            for (int i = 0; i < metroList.size(); i++) {
+                BasicMatchingTrafficVo basicMatchingTrafficVo = metroList.get(i);
+                stringBuffer.append("距");
                 stringBuffer.append(basicMatchingTrafficVo.getName());
                 stringBuffer.append(String.format("大约%s米", generateCommonMethod.getNumber(basicMatchingTrafficVo.getDistanceName())));
-                stringBuffer.append("有").append("所在线路").append(basicMatchingTrafficVo.getTheLine()).append(",");
-            });
-            stringBuffer.append("");
+                stringBuffer.append("有").append("线路").append(basicMatchingTrafficVo.getTheLine());
+                if (i == metroList.size() - 1) {
+                    stringBuffer.append("。");
+                } else {
+                    stringBuffer.append(",");
+                }
+            }
         }
         if (StringUtils.isEmpty(stringBuffer.toString().trim())) {
             stringBuffer.append(error);
@@ -533,13 +597,15 @@ public class GenerateLoactionService {
                 commonParkingList.stream().forEach(basicEstateParking -> {
                     stringBuffer.append(StringUtils.isNotBlank(basicEstateParking.getName()) ? basicEstateParking.getName() : "名称无").append("有");
                     if (basicEstateParking.getNumber() != null) {
-                        stringBuffer.append(basicEstateParking.getNumber()).append("辆");
-                    }else {
-                        stringBuffer.append("0辆");
+                        stringBuffer.append(basicEstateParking.getNumber()).append("辆车位");
+                    } else {
+                        stringBuffer.append("0辆车位");
                     }
                     stringBuffer.append(";");
                 });
-                stringBuffer.append("\r");
+                if (CollectionUtils.isNotEmpty(mySelfParkingList)) {
+                    stringBuffer.append("\r");
+                }
             }
             if (CollectionUtils.isNotEmpty(mySelfParkingList)) {
                 mySelfParkingList.stream().forEach(basicEstateParking -> {
@@ -547,13 +613,12 @@ public class GenerateLoactionService {
                     String v = baseDataDicService.getNameById(basicEstateParking.getParkingType());
                     stringBuffer.append(StringUtils.isNotBlank(v) ? v : "停车场类型无").append("有");
                     if (basicEstateParking.getNumber() != null) {
-                        stringBuffer.append(basicEstateParking.getNumber()).append("辆");
-                    }else {
-                        stringBuffer.append("0辆");
+                        stringBuffer.append(basicEstateParking.getNumber()).append("辆车位");
+                    } else {
+                        stringBuffer.append("0辆车位");
                     }
                     stringBuffer.append(";");
                 });
-                stringBuffer.append("\r");
             }
         }
         if (StringUtils.isEmpty(stringBuffer.toString().trim())) {
@@ -655,10 +720,16 @@ public class GenerateLoactionService {
                     return false;
                 }).collect(Collectors.toList());
                 if (CollectionUtils.isNotEmpty(trafficHubList)) {
-                    trafficHubList.stream().forEach(basicMatchingTrafficVo -> {
+                    for (int i = 0; i < trafficHubList.size(); i++) {
+                        BasicMatchingTrafficVo basicMatchingTrafficVo = trafficHubList.get(i);
                         stringBuffer.append("距").append(basicMatchingTrafficVo.getName())
                                 .append(String.format("大约%s米", generateCommonMethod.getNumber(basicMatchingTrafficVo.getDistanceName())));
-                    });
+                        if (i == trafficHubList.size() - 1) {
+                            stringBuffer.append("。");
+                        } else {
+                            stringBuffer.append(",");
+                        }
+                    }
                     stringBuffer.append("\r");
                 }
                 //主要转换
@@ -669,26 +740,39 @@ public class GenerateLoactionService {
                     return false;
                 }).collect(Collectors.toList());
                 if (CollectionUtils.isNotEmpty(mainConversionList)) {
-                    mainConversionList.stream().forEach(basicMatchingTrafficVo -> {
+                    for (int i = 0; i < mainConversionList.size(); i++) {
+                        BasicMatchingTrafficVo basicMatchingTrafficVo = mainConversionList.get(i);
                         stringBuffer.append("距").append(basicMatchingTrafficVo.getName())
                                 .append(String.format("大约%s米", generateCommonMethod.getNumber(basicMatchingTrafficVo.getDistanceName())));
-                    });
+                        if (i == mainConversionList.size() - 1) {
+                            stringBuffer.append("。");
+                        } else {
+                            stringBuffer.append(",");
+                        }
+                    }
                     stringBuffer.append("\r");
                 }
             }
             //购物商场
             if (CollectionUtils.isNotEmpty(basicMatchingLeisurePlaceList)) {
-                basicMatchingLeisurePlaceList.stream().forEach(leisurePlace -> {
+                for (int i = 0; i < basicMatchingLeisurePlaceList.size(); i++) {
+                    BasicMatchingLeisurePlace leisurePlace = basicMatchingLeisurePlaceList.get(i);
                     if (leisurePlace.getDistance() != null) {
                         stringBuffer.append("距").append(leisurePlace.getName())
                                 .append(String.format("大约%s米", generateCommonMethod.getNumber(baseDataDicService.getNameById(leisurePlace.getDistance()))));
+                        if (i == basicMatchingLeisurePlaceList.size() - 1) {
+                            stringBuffer.append("。");
+                        } else {
+                            stringBuffer.append(",");
+                        }
                     }
-                });
+                }
                 stringBuffer.append("\r");
             }
             //金融服务
             if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
-                basicMatchingFinanceVoList.stream().forEach(basicMatchingFinanceVo -> {
+                for (int i = 0; i < basicMatchingFinanceVoList.size(); i++) {
+                    BasicMatchingFinanceVo basicMatchingFinanceVo = basicMatchingFinanceVoList.get(i);
                     String value = null;
                     if (NumberUtils.isNumber(basicMatchingFinanceVo.getDistance())) {
                         value = baseDataDicService.getNameById(basicMatchingFinanceVo.getDistance());
@@ -698,19 +782,32 @@ public class GenerateLoactionService {
                     } else {
                         value = basicMatchingFinanceVo.getDistance();
                     }
+                    if (StringUtils.isEmpty(value)) {
+                        value = "0";
+                    }
                     stringBuffer.append("距").append(basicMatchingFinanceVo.getName()).append("大约").append(value).append("米");
-                });
+                    if (i == basicMatchingFinanceVoList.size() - 1) {
+                        stringBuffer.append("。");
+                    } else {
+                        stringBuffer.append(",");
+                    }
+                }
                 stringBuffer.append("\r");
             }
             //医疗
             if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {
-                basicMatchingMedicalList.stream().forEach(basicMatchingMedical -> {
+                for (int i = 0; i < basicMatchingMedicalList.size(); i++) {
+                    BasicMatchingMedical basicMatchingMedical = basicMatchingMedicalList.get(i);
                     if (basicMatchingMedical.getDistance() != null) {
                         stringBuffer.append("距").append(basicMatchingMedical.getOrganizationName())
                                 .append(String.format("大约%s米", generateCommonMethod.getNumber(baseDataDicService.getNameById(basicMatchingMedical.getDistance()))));
+                        if (i == basicMatchingMedicalList.size() - 1) {
+                            stringBuffer.append("。");
+                        } else {
+                            stringBuffer.append(",");
+                        }
                     }
-                });
-                stringBuffer.append("\r");
+                }
             }
         }
         if (StringUtils.isEmpty(stringBuffer.toString().trim())) {
@@ -793,7 +890,8 @@ public class GenerateLoactionService {
                         continue;
                     }
                     stringBuffer.append(basicBuilding.getBuildingNumber()).append("栋");
-                    stringBuffer.append(basicBuilding.getFloorHeight().toString()).append("层");
+                    BigDecimal bigDecimal = basicBuilding.getFloorHeight().setScale(0, BigDecimal.ROUND_UP);
+                    stringBuffer.append(bigDecimal.toString()).append("层");
                     stringBuffer.append("建筑的第").append(basicHouse.getFloor()).append("层");
                 }
             }

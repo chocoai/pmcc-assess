@@ -415,6 +415,76 @@ public class BasicHouseEquipmentExample {
             return (Criteria) this;
         }
 
+        public Criteria andSupplyWeastIsNull() {
+            addCriterion("supply_weast is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastIsNotNull() {
+            addCriterion("supply_weast is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastEqualTo(String value) {
+            addCriterion("supply_weast =", value, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastNotEqualTo(String value) {
+            addCriterion("supply_weast <>", value, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastGreaterThan(String value) {
+            addCriterion("supply_weast >", value, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastGreaterThanOrEqualTo(String value) {
+            addCriterion("supply_weast >=", value, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastLessThan(String value) {
+            addCriterion("supply_weast <", value, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastLessThanOrEqualTo(String value) {
+            addCriterion("supply_weast <=", value, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastLike(String value) {
+            addCriterion("supply_weast like", value, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastNotLike(String value) {
+            addCriterion("supply_weast not like", value, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastIn(List<String> values) {
+            addCriterion("supply_weast in", values, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastNotIn(List<String> values) {
+            addCriterion("supply_weast not in", values, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastBetween(String value1, String value2) {
+            addCriterion("supply_weast between", value1, value2, "supplyWeast");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWeastNotBetween(String value1, String value2) {
+            addCriterion("supply_weast not between", value1, value2, "supplyWeast");
+            return (Criteria) this;
+        }
+
         public Criteria andEquipmentIsNull() {
             addCriterion("equipment is null");
             return (Criteria) this;

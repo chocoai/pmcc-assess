@@ -13,6 +13,8 @@ public class BasicHouseEquipment {
 
     private Integer category;
 
+    private String supplyWeast;
+
     private String equipment;
 
     private Integer supplyMode;
@@ -63,6 +65,14 @@ public class BasicHouseEquipment {
 
     public void setCategory(Integer category) {
         this.category = category;
+    }
+
+    public String getSupplyWeast() {
+        return supplyWeast;
+    }
+
+    public void setSupplyWeast(String supplyWeast) {
+        this.supplyWeast = supplyWeast == null ? null : supplyWeast.trim();
     }
 
     public String getEquipment() {
