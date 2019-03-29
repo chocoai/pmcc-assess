@@ -184,8 +184,9 @@ public class SchemeLiquidationAnalysisService {
     public void commit(String formData, String processInsId) throws BusinessException {
         SchemeLiquidationAnalysisApplyDto analysisApplyDto = JSON.parseObject(formData, SchemeLiquidationAnalysisApplyDto.class);
         SchemeLiquidationAnalysis schemeLiquidationAnalysis = this.getSchemeLiquidationAnalysis(analysisApplyDto.getId());
-        schemeLiquidationAnalysis.setTotal(analysisApplyDto.getTotal());
-        schemeLiquidationAnalysis.setProcessInsId(processInsId);
+//        schemeLiquidationAnalysis.setTotal(analysisApplyDto.getTotal());
+//        schemeLiquidationAnalysis.setProcessInsId(processInsId);
+        BeanUtils.copyProperties(analysisApplyDto, schemeLiquidationAnalysis);
         schemeLiquidationAnalysisDao.editSchemeLiquidationAnalysis(schemeLiquidationAnalysis);
 
         //修改子表
