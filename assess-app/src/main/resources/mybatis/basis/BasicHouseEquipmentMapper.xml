@@ -7,6 +7,7 @@
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="grade" property="grade" jdbcType="INTEGER" />
     <result column="category" property="category" jdbcType="INTEGER" />
+    <result column="supply_weast" property="supplyWeast" jdbcType="VARCHAR" />
     <result column="equipment" property="equipment" jdbcType="VARCHAR" />
     <result column="supply_mode" property="supplyMode" jdbcType="INTEGER" />
     <result column="equipment_price" property="equipmentPrice" jdbcType="INTEGER" />
@@ -73,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, house_id, type, grade, category, equipment, supply_mode, equipment_price, creator, 
-    gmt_created, gmt_modified
+    id, house_id, type, grade, category, supply_weast, equipment, supply_mode, equipment_price, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseEquipmentExample" >
     select
@@ -111,13 +112,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_house_equipment (house_id, type, grade, 
-      category, equipment, supply_mode, 
-      equipment_price, creator, gmt_created, 
-      gmt_modified)
+      category, supply_weast, equipment, 
+      supply_mode, equipment_price, creator, 
+      gmt_created, gmt_modified)
     values (#{houseId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{grade,jdbcType=INTEGER}, 
-      #{category,jdbcType=INTEGER}, #{equipment,jdbcType=VARCHAR}, #{supplyMode,jdbcType=INTEGER}, 
-      #{equipmentPrice,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{category,jdbcType=INTEGER}, #{supplyWeast,jdbcType=VARCHAR}, #{equipment,jdbcType=VARCHAR}, 
+      #{supplyMode,jdbcType=INTEGER}, #{equipmentPrice,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseEquipment" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -136,6 +137,9 @@
       </if>
       <if test="category != null" >
         category,
+      </if>
+      <if test="supplyWeast != null" >
+        supply_weast,
       </if>
       <if test="equipment != null" >
         equipment,
@@ -168,6 +172,9 @@
       </if>
       <if test="category != null" >
         #{category,jdbcType=INTEGER},
+      </if>
+      <if test="supplyWeast != null" >
+        #{supplyWeast,jdbcType=VARCHAR},
       </if>
       <if test="equipment != null" >
         #{equipment,jdbcType=VARCHAR},
@@ -213,6 +220,9 @@
       <if test="record.category != null" >
         category = #{record.category,jdbcType=INTEGER},
       </if>
+      <if test="record.supplyWeast != null" >
+        supply_weast = #{record.supplyWeast,jdbcType=VARCHAR},
+      </if>
       <if test="record.equipment != null" >
         equipment = #{record.equipment,jdbcType=VARCHAR},
       </if>
@@ -243,6 +253,7 @@
       type = #{record.type,jdbcType=VARCHAR},
       grade = #{record.grade,jdbcType=INTEGER},
       category = #{record.category,jdbcType=INTEGER},
+      supply_weast = #{record.supplyWeast,jdbcType=VARCHAR},
       equipment = #{record.equipment,jdbcType=VARCHAR},
       supply_mode = #{record.supplyMode,jdbcType=INTEGER},
       equipment_price = #{record.equipmentPrice,jdbcType=INTEGER},
@@ -267,6 +278,9 @@
       </if>
       <if test="category != null" >
         category = #{category,jdbcType=INTEGER},
+      </if>
+      <if test="supplyWeast != null" >
+        supply_weast = #{supplyWeast,jdbcType=VARCHAR},
       </if>
       <if test="equipment != null" >
         equipment = #{equipment,jdbcType=VARCHAR},
@@ -295,6 +309,7 @@
       type = #{type,jdbcType=VARCHAR},
       grade = #{grade,jdbcType=INTEGER},
       category = #{category,jdbcType=INTEGER},
+      supply_weast = #{supplyWeast,jdbcType=VARCHAR},
       equipment = #{equipment,jdbcType=VARCHAR},
       supply_mode = #{supplyMode,jdbcType=INTEGER},
       equipment_price = #{equipmentPrice,jdbcType=INTEGER},

@@ -101,6 +101,7 @@ commonColumn.matchingTransitColumn = function () {
     cols.push({field: 'name', title: '名称'});
     cols.push({field: 'distanceName', title: '距离'});
     cols.push({field: 'theLine', title: '所在线路'});
+    cols.push({field: 'costStandard', title: '收费标准'});
     return cols;
 }
 
@@ -110,6 +111,7 @@ commonColumn.matchingMetroColumn = function () {
     cols.push({field: 'name', title: '名称'});
     cols.push({field: 'distanceName', title: '距离'});
     cols.push({field: 'theLine', title: '所在线路'});
+    cols.push({field: 'costStandard', title: '收费标准'});
     return cols;
 }
 
@@ -132,6 +134,7 @@ commonColumn.matchingMainRoadColumn = function () {
     cols.push({field: 'limitSpeed', title: '限行速度'});
     cols.push({field: 'limitTime', title: '限行时间'});
     cols.push({field: 'limitName', title: '是否限行'});
+    cols.push({field: 'costStandard', title: '收费标准'});
     return cols;
 }
 
@@ -139,6 +142,7 @@ commonColumn.matchingMainRoadColumn = function () {
 commonColumn.matchingMainConversionColumn = function () {
     var cols = [];
     cols.push({field: 'name', title: '名称'});
+    cols.push({field: 'costStandard', title: '收费标准'});
     cols.push({field: 'distanceName', title: '距离'});
     return cols;
 }
@@ -346,6 +350,8 @@ commonColumn.houseWaterDrainColumn = function () {
 commonColumn.houseHeatingColumn = function () {
     var cols = [];
     cols.push({field: 'equipment', title: '设备品牌'});
+    cols.push({field: 'gradeName', title: '档次'});
+    cols.push({field: 'supplyWeast', title: '供应方式'});
     cols.push({field: 'categoryName', title: '类别'});
     cols.push({field: 'supplyModeName', title: '供应方式'});
     cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
@@ -356,6 +362,8 @@ commonColumn.houseHeatingColumn = function () {
 commonColumn.houseAirConditionerColumn = function () {
     var cols = [];
     cols.push({field: 'equipment', title: '设备品牌'});
+    cols.push({field: 'gradeName', title: '档次'});
+    cols.push({field: 'supplyWeast', title: '供应方式'});
     cols.push({field: 'categoryName', title: '类别'});
     cols.push({field: 'supplyModeName', title: '供应方式'});
     cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
@@ -367,6 +375,8 @@ commonColumn.houseNewWindColumn = function () {
     var cols = [];
     cols.push({field: 'equipment', title: '设备品牌'});
     cols.push({field: 'categoryName', title: '类别'});
+    cols.push({field: 'supplyWeast', title: '供应方式'});
+    cols.push({field: 'gradeName', title: '档次'});
     cols.push({field: 'supplyModeName', title: '供应方式'});
     cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
     return cols;

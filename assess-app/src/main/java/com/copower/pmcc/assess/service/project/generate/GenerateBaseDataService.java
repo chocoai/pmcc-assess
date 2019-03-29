@@ -412,7 +412,7 @@ public class GenerateBaseDataService {
     public String getReportAreaName() throws Exception {
         SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
         if (StringUtils.isNotBlank(schemeAreaGroup.getDistrict())) {
-           return erpAreaService.getSysAreaName(schemeAreaGroup.getDistrict());
+            return erpAreaService.getSysAreaName(schemeAreaGroup.getDistrict());
         }
         return erpAreaService.getSysAreaName(schemeAreaGroup.getCity());
     }
@@ -2766,10 +2766,18 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
-    private LinkedHashMap<BasicApply, SchemeJudgeObject> getLinkedHashMapAndBasicApplyOrSchemeJudgeObject() {
+    /**
+     * 获取不重复楼盘和估价对象的一一对应集合
+     *
+     * @return
+     * @throws Exception
+     */
+    private LinkedHashMap<BasicApply, SchemeJudgeObject> getLinkedHashMapAndBasicApplyOrSchemeJudgeObject() throws Exception {
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaId);
+        schemeJudgeObjectList = generateCommonMethod.getByRootAndChildSchemeJudgeObjectList(schemeJudgeObjectList, true);
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
         LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = Maps.newLinkedHashMap();
+        Map<String, String> stringMap = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList) && projectPhase != null) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 ProjectPlanDetails query = new ProjectPlanDetails();
@@ -2777,15 +2785,28 @@ public class GenerateBaseDataService {
                 query.setProjectPhaseId(projectPhase.getId());
                 query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                 List<ProjectPlanDetails> projectDetails = projectPlanDetailsService.getProjectDetails(query);
-                if (CollectionUtils.isNotEmpty(projectDetails)) {
+                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+                if (CollectionUtils.isNotEmpty(projectDetails) && declareRecord != null) {
                     for (ProjectPlanDetails projectPlanDetails : projectDetails) {
                         GenerateBaseExamineService generateBaseExamineService = getGenerateBaseExamineService(projectPlanDetails.getId());
                         BasicApply basicApply = generateBaseExamineService.getBasicApply();
                         if (basicApply != null && basicApply.getId() != null) {
-                            schemeJudgeObjectLinkedHashMap.put(basicApply, schemeJudgeObject);
+                            BasicEstate basicEstate = generateBaseExamineService.getEstate();
+                            if (basicEstate != null && StringUtils.isNotBlank(basicEstate.getName())) {
+                                String value = StringUtils.isNotBlank(declareRecord.getStreetNumber()) ? declareRecord.getStreetNumber() : "街道无";
+                                stringMap.put(String.format("%s%s", basicEstate.getName(), value),
+                                        String.format("%s,%s", basicApply.getPlanDetailsId().toString(), schemeJudgeObject.getId().toString()));
+                            }
                         }
                     }
                 }
+            }
+        }
+        if (!stringMap.isEmpty()) {
+            for (Map.Entry<String, String> stringEntry : stringMap.entrySet()) {
+                GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(Integer.parseInt(stringEntry.getValue().split(",")[0]));
+                SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(Integer.parseInt(stringEntry.getValue().split(",")[1]));
+                schemeJudgeObjectLinkedHashMap.put(generateBaseExamineService.getBasicApply(), schemeJudgeObject);
             }
         }
         return schemeJudgeObjectLinkedHashMap;
@@ -2801,18 +2822,10 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
+        StringBuilder stringBuilder = new StringBuilder(8);
         LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = getLinkedHashMapAndBasicApplyOrSchemeJudgeObject();
         for (Map.Entry<BasicApply, SchemeJudgeObject> schemeJudgeObjectEntry : schemeJudgeObjectLinkedHashMap.entrySet()) {
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectEntry.getValue();
-            BasicApply basicApply = schemeJudgeObjectEntry.getKey();
-            documentBuilder.writeln("1:位置状况");
-            documentBuilder.writeln(String.format("坐落:%s", generateLoactionService.getSeat(schemeJudgeObject.getDeclareRecordId(), basicApply.getId())));
-            documentBuilder.writeln(String.format("方位:%s", generateLoactionService.getPosition(basicApply.getId())));
-            documentBuilder.writeln(String.format("与重要场所的距离:"));
-            documentBuilder.writeln(generateLoactionService.getWithImportantLocationDistance(basicApply.getId()));
-            documentBuilder.writeln(String.format("临街（路）状况:"));
-            documentBuilder.writeln(generateLoactionService.getFaceStreet(basicApply));
-            //楼层
             List<Integer> judgeObjectIds = Lists.newArrayList();
             if (schemeJudgeObject.getBisMerge()) {
                 List<SchemeJudgeObject> schemeJudgeObjects = schemeJudgeObjectService.getChildrenJudgeObject(schemeJudgeObject.getId());
@@ -2821,28 +2834,44 @@ public class GenerateBaseDataService {
             } else {
                 judgeObjectIds.add(schemeJudgeObject.getId());
             }
-            documentBuilder.writeln(String.format("楼层:%s", generateLoactionService.getFloor(judgeObjectIds)));
-            documentBuilder.writeln(String.format("朝向:%s", generateLoactionService.getOrientation(basicApply)));
-            documentBuilder.writeln("2:交通状况包括");
-            documentBuilder.writeln(String.format("道路状况:%s", generateLoactionService.getRoadCondition(basicApply)));
-            documentBuilder.writeln(String.format("出入可利用的交通工具:%s", generateLoactionService.getAccessAvailableMeansTransport(basicApply)));
-            documentBuilder.writeln(String.format("交通管制情况:%s", generateLoactionService.getTrafficControl(basicApply)));
-            documentBuilder.writeln(String.format("停车方便度:%s", generateLoactionService.getParkingConvenience(basicApply)));
-            documentBuilder.writeln(String.format("交通收费情况:%s", generateLoactionService.getTrafficCharges(basicApply)));
-            documentBuilder.writeln("3:外部基础设施");
-            documentBuilder.writeln(String.format("%s", generateLoactionService.getExternalInfrastructure(basicApply)));
-            documentBuilder.writeln("4:外部公共服务设施");
-            documentBuilder.writeln(String.format("%s", generateLoactionService.getExternalPublicServiceFacilities(basicApply)));
-            documentBuilder.writeln("5:周围环境");
-            documentBuilder.writeln("5.1:自然要素");
-            documentBuilder.writeln(String.format("%s", generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.NATURAL)));
-            documentBuilder.writeln("5.2:人文环境要素");
-            documentBuilder.writeln(String.format("%s", generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.HUMANITY)));
-            documentBuilder.writeln("5.3:景观");
-            documentBuilder.writeln(String.format("%s", generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.SCENERY)));
-            documentBuilder.writeln("6:综述");
-            documentBuilder.writeln(String.format("%s", generateLoactionService.content(schemeJudgeObject, basicApply)));
-            documentBuilder.writeln();
+            BasicApply basicApply = schemeJudgeObjectEntry.getKey();
+            stringBuilder.append("1:位置状况").append("\r");
+            stringBuilder.append(String.format("坐落:%s", generateLoactionService.getSeat(schemeJudgeObject.getDeclareRecordId(), basicApply.getId()))).append("\r");
+            stringBuilder.append(String.format("方位:%s", generateLoactionService.getPosition(basicApply.getId()))).append("\r");
+            stringBuilder.append(String.format("与重要场所的距离:")).append("\r");
+            stringBuilder.append(generateLoactionService.getWithImportantLocationDistance(basicApply.getId())).append("\r");
+            stringBuilder.append(String.format("临街（路）状况:")).append("\r");
+            stringBuilder.append(generateLoactionService.getFaceStreet(basicApply)).append("\r");
+            stringBuilder.append(String.format("楼层:%s", generateLoactionService.getFloor(judgeObjectIds))).append("\r");
+            stringBuilder.append(String.format("朝向:%s", generateLoactionService.getOrientation(basicApply))).append("\r");
+            stringBuilder.append("2:交通状况包括").append("\r");
+            stringBuilder.append(String.format("道路状况:")).append("\r");
+            stringBuilder.append(generateLoactionService.getRoadCondition(basicApply)).append("\r");
+            stringBuilder.append(String.format("出入可利用的交通工具:")).append("\r");
+            stringBuilder.append(generateLoactionService.getAccessAvailableMeansTransport(basicApply)).append("\r");
+            stringBuilder.append(String.format("交通管制情况:")).append("\r");
+            stringBuilder.append(generateLoactionService.getTrafficControl(basicApply)).append("\r");
+            stringBuilder.append(String.format("停车方便度:")).append("\r");
+            stringBuilder.append(generateLoactionService.getParkingConvenience(basicApply)).append("\r");
+            stringBuilder.append(String.format("交通收费情况:")).append("\r");
+            stringBuilder.append(generateLoactionService.getTrafficCharges(basicApply)).append("\r");
+            stringBuilder.append("3:外部基础设施").append("\r");
+            stringBuilder.append(String.format("%s", generateLoactionService.getExternalInfrastructure(basicApply))).append("\r");
+            stringBuilder.append("4:外部公共服务设施").append("\r");
+            stringBuilder.append(String.format("%s", generateLoactionService.getExternalPublicServiceFacilities(basicApply))).append("\r");
+            stringBuilder.append("5:周围环境").append("\r");
+            stringBuilder.append("5.1:自然要素").append("\r");
+            stringBuilder.append(String.format("%s", generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.NATURAL))).append("\r");
+            stringBuilder.append("5.2:人文环境要素").append("\r");
+            stringBuilder.append(String.format("%s", generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.HUMANITY))).append("\r");
+            stringBuilder.append("5.3:景观").append("\r");
+            stringBuilder.append(String.format("%s", generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.SCENERY))).append("\r");
+            stringBuilder.append("6:综述").append("\r");
+            stringBuilder.append(String.format("%s", generateLoactionService.content(schemeJudgeObject, basicApply)));
+            if (StringUtils.isNotBlank(stringBuilder.toString().trim())) {
+                documentBuilder.writeln(stringBuilder.toString());
+                documentBuilder.writeln();
+            }
         }
         doc.save(localPath);
         return localPath;
@@ -2888,9 +2917,9 @@ public class GenerateBaseDataService {
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
         LinkedHashMap<String, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getLinkedHashMapEstateNameSchemeJudgeObjectList(areaId);
-        if (!linkedHashMap.isEmpty()){
-            for (Map.Entry<String,List<SchemeJudgeObject>> listEntry:linkedHashMap.entrySet()){
-                List<Integer> integerList = listEntry.getValue().stream().map( oo -> oo.getId()).collect(Collectors.toList());
+        if (!linkedHashMap.isEmpty()) {
+            for (Map.Entry<String, List<SchemeJudgeObject>> listEntry : linkedHashMap.entrySet()) {
+                List<Integer> integerList = listEntry.getValue().stream().map(oo -> oo.getId()).collect(Collectors.toList());
                 documentBuilder.writeln(String.format("1、楼盘名称:%s", listEntry.getKey()));
                 documentBuilder.writeln(String.format("2、建筑年份:%s", generateHouseEntityService.getBuildingYear(integerList)));
                 documentBuilder.writeln(String.format("3、工程质量:%s", generateHouseEntityService.getConstructionQuality(integerList)));
